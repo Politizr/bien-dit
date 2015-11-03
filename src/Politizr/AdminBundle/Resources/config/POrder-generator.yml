@@ -11,22 +11,27 @@ params:
         p_user_id:
             label:          Utilisateur
         p_user:
+            dbType:         model
             label:          Utilisateur
         p_o_payment_state_id:
             label:          Paiement
         p_o_payment_state:
+            dbType:         model
             label:          Paiement
         p_o_order_state_id:
             label:          Etat
         p_o_order_state:
+            dbType:         model
             label:          Etat
         p_o_payment_type_id:
             label:          Mode paiement
         p_o_payment_type:
+            dbType:         model
             label:          Mode paiement
         p_o_subscription_id:
             label:          Formule
         p_o_subscription:
+            dbType:         model
             label:          Formule
         subscription_title:
             label:          Titre
@@ -82,16 +87,18 @@ builders:
                 group_1: 
                     "Toutes":                   ~
                     "Ouvertes":
-                        default: true
+                        default:                1
                         filters:
-                            filterByPOOrderStateId: 1
+                            p_o_order_state_id: 1
                     "Traitées":
                         filters:
-                            filterByPOOrderStateId: 2
+                            p_o_order_state_id: 2
                     "Annulées":
                         filters:
-                            filterByPOOrderStateId: 3
-            display:                            [ id, p_o_order_state, p_o_payment_state, p_o_subscription, p_o_payment_type, p_user, price, promotion, total ]
+                            p_o_order_state_id: 3
+            display:                            [ id, p_o_order_state, p_o_payment_state, p_o_subscription, p_o_payment_type, p_user_id, price, promotion, total ]
+            # filtersMode:                        top
+            filters:                            [ id, p_o_order_state_id, p_o_order_state, p_o_payment_state, p_o_subscription, p_o_payment_type, p_user_id, created_at ]
             actions:
                 new:                            ~
             object_actions:
@@ -102,28 +109,19 @@ builders:
         params:                                 ~
         filename:                               ~
         filetype:                               ~
-    filters:
-        params:
-            display:                            [ id, p_o_order_state, p_o_payment_state, p_o_subscription, p_o_payment_type, p_user, created_at ]
-            fields:
-                p_user:
-                    addFormOptions:
-                        query:                  \Politizr\Model\PUserQuery::create()->orderByName() 
     new:
         params:
             title:                              "Création d'une commande"
             display:
-                "Champs principaux":            [ [ p_user ], [ p_o_subscription ], [ subscription_begin_at, subscription_end_at ], [ p_o_order_state ], [ p_o_payment_state, p_o_payment_type ], [ price, promotion, total ] ]
+                "Champs principaux":            [ [ p_user_id ], [ p_o_subscription ], [ subscription_begin_at, subscription_end_at ], [ p_o_order_state ], [ p_o_payment_state, p_o_payment_type ], [ price, promotion, total ] ]
                 "Champs complémentaires":       [ [ information ], [ gender, firstname, name ], [ phone, email ], [ elective_mandates ] ]
             fields:
-                p_user:
+                p_user_id:
+                    label:                      Utilisateur
+                    formType:                   choice
+                    dbType:                     VARCHAR
                     addFormOptions:
-                        empty_value:            ""
-                        query:                  \Politizr\Model\PUserQuery::create()->orderByName() 
-                subscription_begin_at:
-                    formType:                   afe_date_picker
-                subscription_end_at:
-                    formType:                   afe_date_picker
+                        choices:                \Politizr\Model\PUserQuery::create()->orderByName()->find()->toKeyValue()
                 price:
                     formType:                   money
                 promotion:
@@ -139,14 +137,15 @@ builders:
             tabs:
                 "Commande":
                     "Type":                     [ [ p_o_subscription ], [ price, promotion, total ], [ subscription_title, subscription_description ], [ subscription_begin_at, subscription_end_at ], [ information ] ]
+                "Objets":
+                    "Utilisateur":              [ p_user ]
                 "Utilisateur":
-                    "Objet associé":            [ [ p_user ] ]
                     "Coordonnées":              [ [ gender, firstname, name ], [ phone, email ] ]
                     "Justificatifs":            [ uploadedSupportingDocument, elective_mandates ]
-                "Facture":
-                    "Facture":                  [ invoice_ref, block_invoice ]
-                "Emails":
-                    "Emails":                   [ block_mail ]
+                # "Facture":
+                #     "Facture":                  [ invoice_ref, block_invoice ]
+                # "Emails":
+                #     "Emails":                   [ block_mail ]
                 "Paiement":
                     "Informations":             [ [ p_o_payment_state, p_o_payment_type ] ]
                 "Statut":
@@ -157,24 +156,20 @@ builders:
                 uploadedSupportingDocument:
                     dbType:                     VARCHAR
                     label:                      Justificatif
-                    formType:                   afe_single_upload
+                    formType:                   file
                     addFormOptions:
-                        deleteable:             supportingDocument
+                        # deleteable:             supportingDocument
                         data_class:             Symfony\Component\HttpFoundation\File\File            
                 p_user:
                     addFormOptions:
-                        empty_value:            ""
-                        query:                  \Politizr\Model\PUserQuery::create()->orderByName() 
+                        disabled:               true
+                        read_only:              true
                 price:
                     formType:                   money
                 promotion:
                     formType:                   money
                 total:
                     formType:                   money
-                subscription_begin_at:
-                    formType:                   afe_date_picker
-                subscription_end_at:
-                    formType:                   afe_date_picker
                 block_invoice:
                     label:                      " "
                     formType:                   hidden
@@ -200,8 +195,9 @@ builders:
             tabs:
                 "Commande":
                     "Type":                     [ [ p_o_subscription ], [ price, promotion, total ], [ subscription_title, subscription_description ], [ subscription_begin_at, subscription_end_at ], [ information ] ]
+                "Objets":
+                    "Utilisateur":              [ block_p_user ]
                 "Utilisateur":
-                    "Objet associé":            [ [ p_user ] ]
                     "Coordonnées":              [ [ gender, firstname, name ], [ phone, email ] ]
                     "Justificatifs":            [ supporting_document, elective_mandates ]
                 "Paiement":
@@ -210,9 +206,9 @@ builders:
                     "Actuel":                   [ [ p_o_order_state ] ]
                 "Attributs":
                     "Création":                 [ [ created_at, updated_at ] ]
-            # fields:
-            #     last_connect:
-            #         label:                      Date de dernière connexion
+            fields:
+                block_p_user:
+                    label:                      "Auteur"
             actions:
                 list:                           ~
                 edit:                           ~

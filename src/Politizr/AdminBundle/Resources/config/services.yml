@@ -3,21 +3,30 @@ services:
     # LISTENERS
     politzr_admin.listener.email:
         class:      Politizr\AdminBundle\Listener\EmailListener
-        arguments:  [ @mailer, @templating, @logger, "%contact_email%", "%noreply_email%" ]
+        arguments:  [ @mailer, @templating, @logger, "%contact_email%", "%support_email%" ]
         tags:
             - { name: kernel.event_listener, event: order_email }
 
     politzr_admin.listener.pdf:
         class:      Politizr\AdminBundle\Listener\PDFListener
-        arguments:  [ @kernel, @mailer, @templating, @html2pdf, @logger ]
+        arguments:  [ @kernel, @mailer, @templating, @html2pdf_factory, @logger ]
         tags:
             - { name: kernel.event_listener, event: order_pdf }
 
+    # XHR
+    politizr.xhr.admin:
+        class: Politizr\AdminBundle\Lib\Xhr\XhrAdmin
+        arguments:
+            - @security.token_storage
+            - @router
+            - @templating
+            - @politizr.manager.tag
+            - @logger
 
 
     # EXTENSIONS TWIG
     politzr_admin.twig.admin_ajax_extension:
-        class:                              Politizr\AdminBundle\Twig\AdminAjaxExtension
-        arguments:                          [ @service_container ]
+        class: Politizr\AdminBundle\Twig\PolitizrAdminExtension
+        arguments: [ @service_container ]
         tags:
-                                            - { name: twig.extension }
+            - { name: twig.extension }

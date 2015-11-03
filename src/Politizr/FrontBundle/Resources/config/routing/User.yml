@@ -1,0 +1,71 @@
+################################################################################
+#               PUBLIC
+################################################################################
+UserDetail:
+    pattern:  /auteur/{slug}
+    defaults: { _controller: PolitizrFrontBundle:User:detail }
+    requirements:
+        _method:        GET
+
+################################################################################
+#               CITIZEN
+################################################################################
+HomepageC:
+    pattern:  /citoyen
+    defaults: { _controller: PolitizrFrontBundle:User:homepage }
+
+TimelineC:
+    pattern:  /citoyen/timeline
+    defaults: { _controller: PolitizrFrontBundle:User:timeline }
+
+ReputationC:
+    pattern:  /citoyen/mon-compte/ma-reputation
+    defaults: { _controller: PolitizrFrontBundle:User:reputation }
+
+ProfileC:
+    pattern:  /citoyen/mon-profil
+    defaults: { _controller: PolitizrFrontBundle:User:profile }
+
+EditProfileC:
+    pattern:  /citoyen/mon-compte/mon-profil
+    defaults: { _controller: PolitizrFrontBundle:User:editProfile }
+
+EditPersoC:
+    pattern:  /citoyen/mon-compte/mes-informations-personnelles
+    defaults: { _controller: PolitizrFrontBundle:User:editPerso }
+
+EditNotificationsC:
+    pattern:  /citoyen/mon-compte/mes-notifications
+    defaults: { _controller: PolitizrFrontBundle:User:editNotifications }
+
+
+################################################################################
+#               ELECTED
+################################################################################
+HomepageE:
+    pattern:  /elu
+    defaults: { _controller: PolitizrFrontBundle:User:homepage }
+
+TimelineE:
+    pattern:  /elu/timeline
+    defaults: { _controller: PolitizrFrontBundle:User:timeline }
+
+ReputationE:
+    pattern:  /elu/mon-compte/ma-reputation
+    defaults: { _controller: PolitizrFrontBundle:User:reputation }
+
+ProfileE:
+    pattern:  /elu/mon-profil
+    defaults: { _controller: PolitizrFrontBundle:User:profile }
+
+EditProfileE:
+    pattern:  /elu/mon-compte/mon-profil
+    defaults: { _controller: PolitizrFrontBundle:User:editProfile }
+
+EditPersoE:
+    pattern:  /elu/mon-compte/mes-informations-personnelles
+    defaults: { _controller: PolitizrFrontBundle:User:editPerso }
+
+EditNotificationsE:
+    pattern:  /elu/mon-compte/mes-notifications
+    defaults: { _controller: PolitizrFrontBundle:User:editNotifications }

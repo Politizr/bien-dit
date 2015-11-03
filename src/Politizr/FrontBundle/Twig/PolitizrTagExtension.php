@@ -1,8 +1,8 @@
 <?php
-namespace Politizr\Frontbundle\Twig;
+namespace Politizr\FrontBundle\Twig;
 
 /**
- * Extension Twig / Gestion de  l'édition des tags
+ * Tag's twig extension
  *
  * @author Lionel Bouzonville
  */
@@ -13,6 +13,7 @@ class PolitizrTagExtension extends \Twig_Extension
     private $logger;
     private $router;
     private $templating;
+    private $securityTokenStorage;
 
     private $user;
 
@@ -26,9 +27,10 @@ class PolitizrTagExtension extends \Twig_Extension
         $this->logger = $serviceContainer->get('logger');
         $this->router = $serviceContainer->get('router');
         $this->templating = $serviceContainer->get('templating');
+        $this->securityContext = $serviceContainer->get('security.context');
 
-        // Récupération du user en session
-        $token = $serviceContainer->get('security.context')->getToken();
+        // get connected user
+        $token = $this->securityContext->getToken();
         if ($token && $user = $token->getUser()) {
             $className = 'Politizr\Model\PUser';
             if ($user && $user instanceof $className) {
@@ -57,6 +59,11 @@ class PolitizrTagExtension extends \Twig_Extension
                 'debateTagsEdit',
                 array('is_safe' => array('html'))
             ),
+            'reactionTagsEdit'  => new \Twig_Function_Method(
+                $this,
+                'reactionTagsEdit',
+                array('is_safe' => array('html'))
+            ),
             'userFollowTagsEdit'  => new \Twig_Function_Method(
                 $this,
                 'userFollowTagsEdit',
@@ -82,14 +89,13 @@ class PolitizrTagExtension extends \Twig_Extension
 
 
     /**
-     *  Gestion des tags d'un débat
+     * Debate's tagged tags
      *
-     *  @param $debate      PDDebate    PDDebate
-     *  @param $tagTypeId   integer     ID type de tag
-     *  @param $zoneId      integer     ID de la zone CSS
-     *  @param $newTag      boolean     Ajout de nouveau tag possible ou pas
-     *
-     *  @return string
+     * @param PDDebate $debate
+     * @param integer $tagTypeId
+     * @param integer $zoneId CSS zone id
+     * @param boolean $newTag can create new tag
+     * @return string
      */
     public function debateTagsEdit($debate, $tagTypeId, $zoneId = 1, $newTag = false)
     {
@@ -98,17 +104,92 @@ class PolitizrTagExtension extends \Twig_Extension
         // $this->logger->info('$tagTypeId = '.print_r($tagTypeId, true));
         // $this->logger->info('$zoneId = '.print_r($zoneId, true));
 
+        // Construction des chemins XHR
+        $xhrPathCreate = $this->templating->render(
+            'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
+            array(
+                'xhrRoute' => 'ROUTE_TAG_DEBATE_CREATE',
+                'xhrService' => 'tag',
+                'xhrMethod' => 'debateAddTag',
+                'xhrType' => 'RETURN_HTML',
+            )
+        );
+
+        $xhrPathDelete = $this->templating->render(
+            'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
+            array(
+                'xhrRoute' => 'ROUTE_TAG_DEBATE_DELETE',
+                'xhrService' => 'tag',
+                'xhrMethod' => 'debateDeleteTag',
+                'xhrType' => 'RETURN_BOOLEAN',
+            )
+        );
+
         // Construction du rendu du tag
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Fragment\Tag:glListEdit.html.twig',
+            'PolitizrFrontBundle:Tag:_edit.html.twig',
             array(
                 'object' => $debate,
                 'tagTypeId' => $tagTypeId,
                 'zoneId' => $zoneId,
                 'newTag' => $newTag,
                 'tags' => $debate->getTags($tagTypeId),
-                'addPath' => 'DebateAddTag',
-                'deletePath' => 'DebateDeleteTag',
+                'pathCreate' => $xhrPathCreate,
+                'pathDelete' => $xhrPathDelete,
+            )
+        );
+
+        return $html;
+    }
+
+    /**
+     * Debate's tagged tags
+     *
+     * @param PDReaction $reaction
+     * @param integer $tagTypeId
+     * @param integer $zoneId CSS zone id
+     * @param boolean $newTag can create new tag
+     * @return string
+     */
+    public function reactionTagsEdit($reaction, $tagTypeId, $zoneId = 1, $newTag = false)
+    {
+        $this->logger->info('*** reactionTagsEdit');
+        // $this->logger->info('$reaction = '.print_r($reaction, true));
+        // $this->logger->info('$tagTypeId = '.print_r($tagTypeId, true));
+        // $this->logger->info('$zoneId = '.print_r($zoneId, true));
+
+        // Construction des chemins XHR
+        $xhrPathCreate = $this->templating->render(
+            'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
+            array(
+                'xhrRoute' => 'ROUTE_TAG_DEBATE_CREATE',
+                'xhrService' => 'tag',
+                'xhrMethod' => 'reactionAddTag',
+                'xhrType' => 'RETURN_HTML',
+            )
+        );
+
+        $xhrPathDelete = $this->templating->render(
+            'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
+            array(
+                'xhrRoute' => 'ROUTE_TAG_DEBATE_DELETE',
+                'xhrService' => 'tag',
+                'xhrMethod' => 'reactionDeleteTag',
+                'xhrType' => 'RETURN_BOOLEAN',
+            )
+        );
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Tag:_edit.html.twig',
+            array(
+                'object' => $reaction,
+                'tagTypeId' => $tagTypeId,
+                'zoneId' => $zoneId,
+                'newTag' => $newTag,
+                'tags' => $reaction->getTags($tagTypeId),
+                'pathCreate' => $xhrPathCreate,
+                'pathDelete' => $xhrPathDelete,
             )
         );
 
@@ -133,17 +214,38 @@ class PolitizrTagExtension extends \Twig_Extension
         // $this->logger->info('$tagTypeId = '.print_r($tagTypeId, true));
         // $this->logger->info('$zoneId = '.print_r($zoneId, true));
 
+        // Construction des chemins XHR
+        $xhrPathCreate = $this->templating->render(
+            'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
+            array(
+                'xhrRoute' => 'ROUTE_TAG_USER_FOLLOW_CREATE',
+                'xhrService' => 'tag',
+                'xhrMethod' => 'userFollowAddTag',
+                'xhrType' => 'RETURN_HTML',
+            )
+        );
+
+        $xhrPathDelete = $this->templating->render(
+            'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
+            array(
+                'xhrRoute' => 'ROUTE_TAG_USER_FOLLOW_DELETE',
+                'xhrService' => 'tag',
+                'xhrMethod' => 'userFollowDeleteTag',
+                'xhrType' => 'RETURN_BOOLEAN',
+            )
+        );
+
         // Construction du rendu du tag
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Fragment\Tag:glListEdit.html.twig',
+            'PolitizrFrontBundle:Tag:_edit.html.twig',
             array(
                 'object' => $user,
                 'tagTypeId' => $tagTypeId,
                 'zoneId' => $zoneId,
                 'newTag' => $newTag,
                 'tags' => $user->getFollowTags($tagTypeId),
-                'addPath' => 'UserFollowAddTag',
-                'deletePath' => 'UserFollowDeleteTag',
+                'pathCreate' => $xhrPathCreate,
+                'pathDelete' => $xhrPathDelete,
                 )
         );
 
@@ -164,21 +266,42 @@ class PolitizrTagExtension extends \Twig_Extension
     public function userTaggedTagsEdit($user, $tagTypeId, $zoneId = 1, $newTag = false)
     {
         $this->logger->info('*** userTaggedTagsEdit');
-        // $this->logger->info('$debate = '.print_r($debate, true));
+        // $this->logger->info('$debate = '.print_r($user, true));
         // $this->logger->info('$tagTypeId = '.print_r($tagTypeId, true));
         // $this->logger->info('$zoneId = '.print_r($zoneId, true));
 
+        // Construction des chemins XHR
+        $xhrPathCreate = $this->templating->render(
+            'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
+            array(
+                'xhrRoute' => 'ROUTE_TAG_USER_TAGGED_CREATE',
+                'xhrService' => 'tag',
+                'xhrMethod' => 'userTaggedAddTag',
+                'xhrType' => 'RETURN_HTML',
+            )
+        );
+
+        $xhrPathDelete = $this->templating->render(
+            'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
+            array(
+                'xhrRoute' => 'ROUTE_TAG_USER_TAGGED_DELETE',
+                'xhrService' => 'tag',
+                'xhrMethod' => 'userTaggedDeleteTag',
+                'xhrType' => 'RETURN_BOOLEAN',
+            )
+        );
+
         // Construction du rendu du tag
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Fragment\Tag:glListEdit.html.twig',
+            'PolitizrFrontBundle:Tag:_edit.html.twig',
             array(
                 'object' => $user,
                 'tagTypeId' => $tagTypeId,
                 'zoneId' => $zoneId,
                 'newTag' => $newTag,
                 'tags' => $user->getTaggedTags($tagTypeId),
-                'addPath' => 'UserTaggedAddTag',
-                'deletePath' => 'UserTaggedDeleteTag',
+                'pathCreate' => $xhrPathCreate,
+                'pathDelete' => $xhrPathDelete,
                 )
         );
 

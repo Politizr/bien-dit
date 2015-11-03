@@ -1,0 +1,21 @@
+<h1>Signaler un contenu indésirable</h1>
+<div class="formIntro">
+    Tout signalement est étudié individuellement avant modération.<br>
+    Tout signalement justifié (propos injurieux, obscène, illégal) vous vaudra un gain de points de réputation.<br>
+    Au contraire, tout signalement abusif sera sanctionné d’une perte de points de réputation.
+</div>
+<div class="abuseContext">
+    {{ context | purify }}
+</div>
+<form id="formAbuseReporting">
+    {{ form_errors(formAbuse) }}
+    {{ form_widget(formAbuse.message, { 'attr': {'placeholder': 'Commentaire (facultatif)'}}) }}
+    {{ form_rest(formAbuse) }}
+    <div class="actionsButtons withLoaderInside">
+        <div class="ajaxLoader" style="display: none;">
+            <div class="ajaxLoaderSpinner"></div><div class="ajaxLoaderBg"></div><div class="ajaxLoaderBlockClick"></div>
+        </div>
+        <input type="button" action="createAbuseReporting" value="&#xe82b; Valider">
+        <div class="cancel" action="cancelModal">Annuler</div>
+    </div>
+</form>

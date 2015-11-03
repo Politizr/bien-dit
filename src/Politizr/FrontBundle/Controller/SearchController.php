@@ -9,8 +9,15 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+use Politizr\Exception\InconsistentDataException;
+
 use Politizr\FrontBundle\Form\Type\SearchType;
 
+/**
+ * Search controller
+ *
+ * @author Lionel Bouzonville
+ */
 class SearchController extends Controller
 {
     /**
@@ -33,7 +40,6 @@ class SearchController extends Controller
             ));
     }
 
-
     /**
      *  Recherche
      */
@@ -47,7 +53,7 @@ class SearchController extends Controller
         );
 
         $query = $request->query->get('recherche')['query'];
-        $pager = $this->get('politizr.service.search')->pagerQuery($query);
+        $pager = $this->get('politizr.xhr.search')->pagerQuery($query);
         
         return $this->render('PolitizrFrontBundle:Navigation:searchResult.html.twig', array(
                     'query' => $query,

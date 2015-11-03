@@ -9,8 +9,14 @@ Politizr\Model\PUser:
     properties:
         p_u_status_id:
             - Type:
-                type:         integer 
-                message:     "La valeur {{ value }} n'est pas un type {{ type }} valide."
+                type:       integer 
+                message:    "La valeur {{ value }} n'est pas un type {{ type }} valide."
+            - NotBlank:     ~
+        firstname:
+            - NotBlank:     ~
+        name:
+            - NotBlank:     ~
+        username:
             - NotBlank:     ~
 
 
@@ -24,13 +30,6 @@ Politizr\Model\POrder:
             - NotBlank:     ~
 
 ##################################### DOCUMENT #####################################
-
-# Politizr\Model\PDocument:
-#     properties:
-#         p_user_id:
-#             - NotBlank:     ~
-#         title:
-#             - NotBlank:     ~
 
 # Politizr\Model\PDDebate:
 #     properties:
@@ -101,9 +100,21 @@ Politizr\Model\PTTagType:
         title:
             - NotBlank:     ~
 
+Politizr\Model\PRBadgeFamily:
+    properties:
+        title:
+            - NotBlank:     ~
+
 Politizr\Model\PRBadgeType:
     properties:
         title:
+            - NotBlank:     ~
+
+Politizr\Model\PQOrganization:
+    properties:
+        title:
+            - NotBlank:     ~
+        initials:
             - NotBlank:     ~
 
 Politizr\Model\POSubscription:

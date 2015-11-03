@@ -1,0 +1,52 @@
+<div class="modalItem listPost">
+    <div class="postSummary">
+        <div class="pad40">
+            <div class="postSummaryHeader">
+                <div class="readingTime">
+                    <i class="iconTime"></i>
+                    {{ reaction | readingTime }}
+                </div>
+                <div class="postNote">
+                    <div class="notePlus">
+                        {{ reaction.notePos }}<i class="iconNotePlus"></i>
+                    </div>
+                    <div class="noteMinus">
+                        <i class="iconNoteMinus"></i>{{ reaction.noteNeg }}
+                    </div>
+                </div>
+            </div>
+            <div class="postSummaryFooter">
+                <div class="postSummaryGotoParent">
+                    {{ reaction | linkParentReaction }}
+                </div>
+                <div class="postSummaryTagList">
+                    {{ reaction | docTags }}
+                </div>
+                <div class="postSummaryTitle">
+                    <a href="{{ path('ReactionDetail', { 'slug': reaction.slug }) }}">
+                        {{ reaction.title }}
+                    </a>
+                </div>
+                <div class="postSummaryAuthor">
+                    {% include 'PolitizrFrontBundle:User:_authorMini.html.twig' with { 'user': reaction.user } only %}
+                </div>
+                <div class="postSummaryActivity">
+                    <div class="reactionsCounter">
+                        <i class="iconReaction"></i>
+                        {{ reaction | nbReactions }}
+                    </div>
+                    <div class="commentsCounter" action="paragraphCommentsCounter">
+                        <i class="iconComment"></i>
+                        {{ reaction | nbComments }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        {{ reaction | image('debate_header') }}
+    </div>
+    <div class="subscribe{% if app.user.id == reaction.debate.pUserId %} noSelfSubscribe{% endif %}">
+        {{ reaction.debate | linkSubscribeDebate }}
+    </div>
+    <a href="{{ path('ReactionDetail', { 'slug': reaction.slug }) }}" class="modalItemShow"><i class="iconGoTo"></i>Afficher</a>
+</div>

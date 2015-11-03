@@ -4,21 +4,18 @@ namespace Politizr\Model;
 
 use Politizr\Model\om\BasePOPaymentType;
 
+/**
+ *
+ * @author Lionel Bouzonville
+ */
 class POPaymentType extends BasePOPaymentType
 {
-    // ************************************************************************************ //
-    //                                        CONSTANTES
-    // ************************************************************************************ //
-    const BANK_TRANSFER = 1;
-    const CREDIT_CARD = 2;
-    const CHECK = 3;
-    const PAYPAL = 4;
-    // ************************************************************************************ //
-
     /**
      *
+     * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return $this->getTitle();
     }
 }

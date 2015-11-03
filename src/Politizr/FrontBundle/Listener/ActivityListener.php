@@ -2,7 +2,7 @@
 
 namespace Politizr\FrontBundle\Listener;
  
-use Symfony\Component\Security\Core\SecurityContext;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\HttpKernel;
 
@@ -15,11 +15,15 @@ use Politizr\Model\PUser;
  */
 class ActivityListener
 {
-    protected $context;
- 
-    public function __construct(SecurityContext $context)
+    protected $securityTokenStorage;
+
+    /**
+     *
+     * @param @security.token_storage
+     */
+    public function __construct(TokenStorage $securityTokenStorage)
     {
-        $this->context = $context;
+        $this->securityTokenStorage = $securityTokenStorage;
     }
  
     /**
@@ -35,8 +39,8 @@ class ActivityListener
         }
  
         // We are checking a token authentification is available before using the User
-        if ($this->context->getToken()) {
-            $user = $this->context->getToken()->getUser();
+        if ($this->securityTokenStorage->getToken()) {
+            $user = $this->securityTokenStorage->getToken()->getUser();
  
             // We are using a delay during wich the user will be considered as still active, in order to avoid too much UPDATE in the database
             $delay = new \DateTime();

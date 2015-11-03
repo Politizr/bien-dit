@@ -9,6 +9,9 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
+use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
+use Glorpen\Propel\PropelBundle\Events\DetectOMClassEvent;
+use Glorpen\Propel\PropelBundle\Events\PeerEvent;
 use Politizr\Model\PDRComment;
 use Politizr\Model\PDRCommentPeer;
 use Politizr\Model\PDReactionPeer;
@@ -28,7 +31,7 @@ abstract class BasePDRCommentPeer
     const OM_CLASS = 'Politizr\\Model\\PDRComment';
 
     /** the related TableMap class for this table */
-    const TM_CLASS = 'PDRCommentTableMap';
+    const TM_CLASS = 'Politizr\\Model\\map\\PDRCommentTableMap';
 
     /** The total number of columns. */
     const NUM_COLUMNS = 12;
@@ -79,7 +82,7 @@ abstract class BasePDRCommentPeer
     const DEFAULT_STRING_FORMAT = 'YAML';
 
     /**
-     * An identiy map to hold any loaded instances of PDRComment objects.
+     * An identity map to hold any loaded instances of PDRComment objects.
      * This must be public so that other peer classes can access this when hydrating from JOIN
      * queries.
      * @var        array PDRComment[]
@@ -161,8 +164,8 @@ abstract class BasePDRCommentPeer
      *
      * Using this method you can maintain SQL abstraction while using column aliases.
      * <code>
-     *        $c->addAlias("alias1", TablePeer::TABLE_NAME);
-     *        $c->addJoin(TablePeer::alias("alias1", TablePeer::PRIMARY_KEY_COLUMN), TablePeer::PRIMARY_KEY_COLUMN);
+     *		$c->addAlias("alias1", TablePeer::TABLE_NAME);
+     *		$c->addJoin(TablePeer::alias("alias1", TablePeer::PRIMARY_KEY_COLUMN), TablePeer::PRIMARY_KEY_COLUMN);
      * </code>
      * @param      string $alias The alias for the current table.
      * @param      string $column The column name for current table. (i.e. PDRCommentPeer::COLUMN_NAME).
@@ -183,7 +186,7 @@ abstract class BasePDRCommentPeer
      * @param      Criteria $criteria object containing the columns to add.
      * @param      string   $alias    optional table alias
      * @throws PropelException Any exceptions caught during processing will be
-     *         rethrown wrapped into a PropelException.
+     *		 rethrown wrapped into a PropelException.
      */
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
@@ -265,9 +268,9 @@ abstract class BasePDRCommentPeer
      *
      * @param      Criteria $criteria object used to create the SELECT statement.
      * @param      PropelPDO $con
-     * @return                 PDRComment
+     * @return PDRComment
      * @throws PropelException Any exceptions caught during processing will be
-     *         rethrown wrapped into a PropelException.
+     *		 rethrown wrapped into a PropelException.
      */
     public static function doSelectOne(Criteria $criteria, PropelPDO $con = null)
     {
@@ -287,7 +290,7 @@ abstract class BasePDRCommentPeer
      * @param      PropelPDO $con
      * @return array           Array of selected Objects
      * @throws PropelException Any exceptions caught during processing will be
-     *         rethrown wrapped into a PropelException.
+     *		 rethrown wrapped into a PropelException.
      */
     public static function doSelect(Criteria $criteria, PropelPDO $con = null)
     {
@@ -302,7 +305,7 @@ abstract class BasePDRCommentPeer
      * @param      Criteria $criteria The Criteria object used to build the SELECT statement.
      * @param      PropelPDO $con The connection to use
      * @throws PropelException Any exceptions caught during processing will be
-     *         rethrown wrapped into a PropelException.
+     *		 rethrown wrapped into a PropelException.
      * @return PDOStatement The executed PDOStatement object.
      * @see        BasePeer::doSelect()
      */
@@ -332,7 +335,7 @@ abstract class BasePDRCommentPeer
      * to the cache in order to ensure that the same objects are always returned by doSelect*()
      * and retrieveByPK*() calls.
      *
-     * @param      PDRComment $obj A PDRComment object.
+     * @param PDRComment $obj A PDRComment object.
      * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
      */
     public static function addInstanceToPool($obj, $key = null)
@@ -382,7 +385,7 @@ abstract class BasePDRCommentPeer
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
      * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-     * @return   PDRComment Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+     * @return PDRComment Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
      * @see        getPrimaryKeyHash()
      */
     public static function getInstanceFromPool($key)
@@ -403,10 +406,8 @@ abstract class BasePDRCommentPeer
      */
     public static function clearInstancePool($and_clear_all_references = false)
     {
-      if ($and_clear_all_references)
-      {
-        foreach (PDRCommentPeer::$instances as $instance)
-        {
+      if ($and_clear_all_references) {
+        foreach (PDRCommentPeer::$instances as $instance) {
           $instance->clearAllReferences(true);
         }
       }
@@ -461,7 +462,7 @@ abstract class BasePDRCommentPeer
      * objects that inherit from the default.
      *
      * @throws PropelException Any exceptions caught during processing will be
-     *         rethrown wrapped into a PropelException.
+     *		 rethrown wrapped into a PropelException.
      */
     public static function populateObjects(PDOStatement $stmt)
     {
@@ -494,7 +495,7 @@ abstract class BasePDRCommentPeer
      * @param      array $row PropelPDO resultset row.
      * @param      int $startcol The 0-based offset for reading from the resultset row.
      * @throws PropelException Any exceptions caught during processing will be
-     *         rethrown wrapped into a PropelException.
+     *		 rethrown wrapped into a PropelException.
      * @return array (PDRComment object, last column rank)
      */
     public static function populateObject($row, $startcol = 0)
@@ -506,7 +507,7 @@ abstract class BasePDRCommentPeer
             // $obj->hydrate($row, $startcol, true); // rehydrate
             $col = $startcol + PDRCommentPeer::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = PDRCommentPeer::OM_CLASS;
+            $cls = PDRCommentPeer::getOMClass($row, $startcol);
             $obj = new $cls();
             $col = $obj->hydrate($row, $startcol);
             PDRCommentPeer::addInstanceToPool($obj, $key);
@@ -625,7 +626,7 @@ abstract class BasePDRCommentPeer
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
      * @return array           Array of PDRComment objects.
      * @throws PropelException Any exceptions caught during processing will be
-     *         rethrown wrapped into a PropelException.
+     *		 rethrown wrapped into a PropelException.
      */
     public static function doSelectJoinPUser(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
@@ -692,7 +693,7 @@ abstract class BasePDRCommentPeer
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
      * @return array           Array of PDRComment objects.
      * @throws PropelException Any exceptions caught during processing will be
-     *         rethrown wrapped into a PropelException.
+     *		 rethrown wrapped into a PropelException.
      */
     public static function doSelectJoinPDReaction(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
@@ -812,7 +813,7 @@ abstract class BasePDRCommentPeer
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
      * @return array           Array of PDRComment objects.
      * @throws PropelException Any exceptions caught during processing will be
-     *         rethrown wrapped into a PropelException.
+     *		 rethrown wrapped into a PropelException.
      */
     public static function doSelectJoinAll(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
@@ -1007,7 +1008,7 @@ abstract class BasePDRCommentPeer
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
      * @return array           Array of PDRComment objects.
      * @throws PropelException Any exceptions caught during processing will be
-     *         rethrown wrapped into a PropelException.
+     *		 rethrown wrapped into a PropelException.
      */
     public static function doSelectJoinAllExceptPUser(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
@@ -1081,7 +1082,7 @@ abstract class BasePDRCommentPeer
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
      * @return array           Array of PDRComment objects.
      * @throws PropelException Any exceptions caught during processing will be
-     *         rethrown wrapped into a PropelException.
+     *		 rethrown wrapped into a PropelException.
      */
     public static function doSelectJoinAllExceptPDReaction(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
@@ -1151,7 +1152,7 @@ abstract class BasePDRCommentPeer
      * This method is not needed for general use but a specific application could have a need.
      * @return TableMap
      * @throws PropelException Any exceptions caught during processing will be
-     *         rethrown wrapped into a PropelException.
+     *		 rethrown wrapped into a PropelException.
      */
     public static function getTableMap()
     {
@@ -1165,7 +1166,7 @@ abstract class BasePDRCommentPeer
     {
       $dbMap = Propel::getDatabaseMap(BasePDRCommentPeer::DATABASE_NAME);
       if (!$dbMap->hasTable(BasePDRCommentPeer::TABLE_NAME)) {
-        $dbMap->addTableObject(new PDRCommentTableMap());
+        $dbMap->addTableObject(new \Politizr\Model\map\PDRCommentTableMap());
       }
     }
 
@@ -1177,6 +1178,13 @@ abstract class BasePDRCommentPeer
      */
     public static function getOMClass($row = 0, $colnum = 0)
     {
+
+        $event = new DetectOMClassEvent(PDRCommentPeer::OM_CLASS, $row, $colnum);
+        EventDispatcherProxy::trigger('om.detect', $event);
+        if($event->isDetected()){
+            return $event->getDetectedClass();
+        }
+
         return PDRCommentPeer::OM_CLASS;
     }
 
@@ -1187,7 +1195,7 @@ abstract class BasePDRCommentPeer
      * @param      PropelPDO $con the PropelPDO connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
-     *         rethrown wrapped into a PropelException.
+     *		 rethrown wrapped into a PropelException.
      */
     public static function doInsert($values, PropelPDO $con = null)
     {
@@ -1215,7 +1223,7 @@ abstract class BasePDRCommentPeer
             $con->beginTransaction();
             $pk = BasePeer::doInsert($criteria, $con);
             $con->commit();
-        } catch (PropelException $e) {
+        } catch (Exception $e) {
             $con->rollBack();
             throw $e;
         }
@@ -1230,7 +1238,7 @@ abstract class BasePDRCommentPeer
      * @param      PropelPDO $con The connection to use (specify PropelPDO connection object to exert more control over transactions).
      * @return int             The number of affected rows (if supported by underlying database driver).
      * @throws PropelException Any exceptions caught during processing will be
-     *         rethrown wrapped into a PropelException.
+     *		 rethrown wrapped into a PropelException.
      */
     public static function doUpdate($values, PropelPDO $con = null)
     {
@@ -1288,7 +1296,7 @@ abstract class BasePDRCommentPeer
             $con->commit();
 
             return $affectedRows;
-        } catch (PropelException $e) {
+        } catch (Exception $e) {
             $con->rollBack();
             throw $e;
         }
@@ -1301,9 +1309,9 @@ abstract class BasePDRCommentPeer
      *              which is used to create the DELETE statement
      * @param      PropelPDO $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
-     *                if supported by native driver or if emulated using Propel.
+     *				if supported by native driver or if emulated using Propel.
      * @throws PropelException Any exceptions caught during processing will be
-     *         rethrown wrapped into a PropelException.
+     *		 rethrown wrapped into a PropelException.
      */
      public static function doDelete($values, PropelPDO $con = null)
      {
@@ -1347,7 +1355,7 @@ abstract class BasePDRCommentPeer
             $con->commit();
 
             return $affectedRows;
-        } catch (PropelException $e) {
+        } catch (Exception $e) {
             $con->rollBack();
             throw $e;
         }
@@ -1360,7 +1368,7 @@ abstract class BasePDRCommentPeer
      *
      * NOTICE: This does not apply to primary or foreign keys for now.
      *
-     * @param      PDRComment $obj The object to validate.
+     * @param PDRComment $obj The object to validate.
      * @param      mixed $cols Column name or array of column names.
      *
      * @return mixed TRUE if all columns are valid or the error message of the first invalid column.
@@ -1393,7 +1401,7 @@ abstract class BasePDRCommentPeer
     /**
      * Retrieve a single object by pkey.
      *
-     * @param      int $pk the primary key.
+     * @param int $pk the primary key.
      * @param      PropelPDO $con the connection to use
      * @return PDRComment
      */
@@ -1423,7 +1431,7 @@ abstract class BasePDRCommentPeer
      * @param      PropelPDO $con the connection to use
      * @return PDRComment[]
      * @throws PropelException Any exceptions caught during processing will be
-     *         rethrown wrapped into a PropelException.
+     *		 rethrown wrapped into a PropelException.
      */
     public static function retrieveByPKs($pks, PropelPDO $con = null)
     {
@@ -1449,3 +1457,4 @@ abstract class BasePDRCommentPeer
 //
 BasePDRCommentPeer::buildTableMap();
 
+EventDispatcherProxy::trigger(array('construct','peer.construct'), new PeerEvent('Politizr\Model\om\BasePDRCommentPeer'));

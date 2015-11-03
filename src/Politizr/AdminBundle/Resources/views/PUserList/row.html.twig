@@ -1,5 +1,9 @@
 {% extends_admingenerated "PolitizrAdminBundle:PUserList:row.html.twig" %}
 
 {% block list_td_column_file_name %}
-    <img src="{{ asset('uploads/users/'~PUser.fileName) | imagine_filter('admin_list_thumb') }}" alt="{{ PUser.fileName }}" />
+    {{ PUser | photo('admin_list_thumb') }}
 {% endblock list_td_column_file_name %}
+
+{% block list_td_column_p_u_status_id %}
+    {{ PUser.PUStatus }}
+{% endblock list_td_column_p_u_status_id %}

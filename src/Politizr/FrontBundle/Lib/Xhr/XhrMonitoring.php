@@ -1,0 +1,293 @@
+<?php
+namespace Politizr\FrontBundle\Lib\Xhr;
+
+use Symfony\Component\HttpFoundation\Request;
+
+use StudioEcho\Lib\StudioEchoUtils;
+
+use Politizr\Exception\InconsistentDataException;
+use Politizr\Exception\FormValidationException;
+
+use Politizr\Constant\ObjectTypeConstants;
+
+use Politizr\Model\PMAbuseReporting;
+use Politizr\Model\PMAskForUpdate;
+
+use Politizr\Model\PUserQuery;
+use Politizr\Model\PDDebateQuery;
+use Politizr\Model\PDReactionQuery;
+use Politizr\Model\PDDCommentQuery;
+use Politizr\Model\PDRCommentQuery;
+
+use Politizr\FrontBundle\Form\Type\PMAbuseReportingType;
+use Politizr\FrontBundle\Form\Type\PMAskForUpdateType;
+
+/**
+ * XHR service for monitoring management.
+ *
+ * @author Lionel Bouzonville
+ */
+class XhrMonitoring
+{
+    private $securityTokenStorage;
+    private $templating;
+    private $formFactory;
+    private $logger;
+
+    /**
+     *
+     * @param @security.token_storage
+     * @param @templating
+     * @param @form.factory
+     * @param @logger
+     */
+    public function __construct(
+        $securityTokenStorage,
+        $templating,
+        $formFactory,
+        $logger
+    ) {
+        $this->securityTokenStorage = $securityTokenStorage;
+
+        $this->templating = $templating;
+
+        $this->formFactory = $formFactory;
+
+        $this->logger = $logger;
+    }
+
+
+    /* ######################################################################################################## */
+    /*                                        PRIVATE FUNCTIONS                                                 */
+    /* ######################################################################################################## */
+
+    /**
+     * Compute the rendering template of the modal context
+     *
+     * @param int $id   Object ID
+     * @param string $type
+     * @return string
+     */
+    private function getModalContext($id, $type)
+    {
+        // context
+        switch ($type) {
+            case ObjectTypeConstants::TYPE_USER:
+                $contextUser = PUserQuery::create()->findPk($id);
+                if (null === $contextUser) {
+                    throw InconsistentDataException(sprintf('Object type %s ID#%s is null.', $type, $id));
+                }
+
+                $context = $this->templating->render(
+                    'PolitizrFrontBundle:Monitoring:_contextUser.html.twig',
+                    array(
+                        'user' => $contextUser,
+                    )
+                );
+
+                break;
+            case ObjectTypeConstants::TYPE_DEBATE:
+                $contextDebate = PDDebateQuery::create()->findPk($id);
+                if (null === $contextDebate) {
+                    throw InconsistentDataException(sprintf('Object type %s ID#%s is null.', $type, $id));
+                }
+
+                $context = $this->templating->render(
+                    'PolitizrFrontBundle:Monitoring:_contextDebate.html.twig',
+                    array(
+                        'debate' => $contextDebate,
+                    )
+                );
+
+                break;
+            case ObjectTypeConstants::TYPE_REACTION:
+                $contextReaction = PDReactionQuery::create()->findPk($id);
+                if (null === $contextReaction) {
+                    throw InconsistentDataException(sprintf('Object type %s ID#%s is null.', $type, $id));
+                }
+
+                $context = $this->templating->render(
+                    'PolitizrFrontBundle:Monitoring:_contextReaction.html.twig',
+                    array(
+                        'reaction' => $contextReaction,
+                    )
+                );
+
+                break;
+            case ObjectTypeConstants::TYPE_DEBATE_COMMENT:
+            case ObjectTypeConstants::TYPE_REACTION_COMMENT:
+                if ($type == ObjectTypeConstants::TYPE_DEBATE_COMMENT) {
+                    $query = PDDCommentQuery::create();
+                } else {
+                    $query = PDRCommentQuery::create();
+                }
+
+                $contextComment = $query->findPk($id);
+                if (null === $contextComment) {
+                    throw InconsistentDataException(sprintf('Object type %s ID#%s is null.', $type, $id));
+                }
+
+                $context = $this->templating->render(
+                    'PolitizrFrontBundle:Monitoring:_contextComment.html.twig',
+                    array(
+                        'comment' => $contextComment,
+                    )
+                );
+
+                break;
+            default:
+                // @todo case default > throw IDException in all switch/case code
+                throw InconsistentDataException(sprintf('Object type %s is not defined.', $type));
+        }
+
+        return $context;
+    }
+
+    /* ######################################################################################################## */
+    /*                                                 ABUSE                                                    */
+    /* ######################################################################################################## */
+
+    /**
+     * Abuse form
+     */
+    public function abuse(Request $request)
+    {
+        $this->logger->info('*** abuse');
+        
+        // Request arguments
+        $id = $request->get('subjectId');
+        $this->logger->info('$id = ' . print_r($id, true));
+        $type = $request->get('type');
+        $this->logger->info('$type = ' . print_r($type, true));
+
+        $user = $this->securityTokenStorage->getToken()->getUser();
+
+        // get context rendering
+        $context = $this->getModalContext($id, $type);
+
+        // form
+        $abuseReporting = new PMAbuseReporting();
+        $abuseReporting->setPUserId($user->getId());
+        $abuseReporting->setPObjectName($type);
+        $abuseReporting->setPObjectId($id);
+
+        $formAbuse = $this->formFactory->create(new PMAbuseReportingType(), $abuseReporting);
+
+        // Rendering
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Monitoring:_abuse.html.twig',
+            array(
+                'context' => $context,
+                'formAbuse' => $formAbuse->createView(),
+            )
+        );
+
+        return array(
+            'context' => $context,
+            'html' => $html,
+            );
+    }
+
+    /**
+     * Abuse form submit
+     */
+    public function abuseCreate(Request $request)
+    {
+        $this->logger->info('*** abuseCreate');
+
+        $user = $this->securityTokenStorage->getToken()->getUser();
+
+        // Function process
+        $formAbuse = $this->formFactory->create(new PMAbuseReportingType(), new PMAbuseReporting());
+
+        $formAbuse->bind($request);
+        if ($formAbuse->isValid()) {
+            $abuse = $formAbuse->getData();
+
+            if ($abuse->getPUserId() != $user->getId()) {
+                throw new InconsistentDataException(sprintf('User id-%s tries to post a abuse for user id-%s.', $user->getId(), $abuse->getPUserId()));
+            }
+
+            $abuse->save();
+        } else {
+            $errors = StudioEchoUtils::getAjaxFormErrors($formAbuse);
+            throw new FormValidationException($errors);
+        }
+
+        return true;
+    }
+
+    /* ######################################################################################################## */
+    /*                                           ASK FOR UPDATE                                                 */
+    /* ######################################################################################################## */
+
+    /**
+     * Ask for update form
+     */
+    public function askForUpdate(Request $request)
+    {
+        $this->logger->info('*** askForUpdate');
+        
+        // Request arguments
+        $id = $request->get('subjectId');
+        $this->logger->info('$id = ' . print_r($id, true));
+        $type = $request->get('type');
+        $this->logger->info('$type = ' . print_r($type, true));
+
+        $user = $this->securityTokenStorage->getToken()->getUser();
+
+        // get context rendering
+        $context = $this->getModalContext($id, $type);
+
+        // form
+        $askForUpdate = new PMAskForUpdate();
+        $askForUpdate->setPUserId($user->getId());
+        $askForUpdate->setPObjectName($type);
+        $askForUpdate->setPObjectId($id);
+
+        $formAskForUpdate = $this->formFactory->create(new PMAskForUpdateType(), $askForUpdate);
+
+        // Rendering
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Monitoring:_askForUpdate.html.twig',
+            array(
+                'context' => $context,
+                'formAskForUpdate' => $formAskForUpdate->createView(),
+            )
+        );
+
+        return array(
+            'context' => $context,
+            'html' => $html,
+            );
+    }
+
+    /**
+     * Abuse form submit
+     */
+    public function askForUpdateCreate(Request $request)
+    {
+        $this->logger->info('*** askForUpdateCreate');
+
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        
+        // Function process
+        $formAskForUpdate = $this->formFactory->create(new PMAskForUpdateType(), new PMAskForUpdate());
+
+        $formAskForUpdate->bind($request);
+        if ($formAskForUpdate->isValid()) {
+            $askForUpdate = $formAskForUpdate->getData();
+
+            if ($askForUpdate->getPUserId() != $user->getId()) {
+                throw new InconsistentDataException(sprintf('User id-%s tries to post an ask for update for user id-%s.', $user->getId(), $askForUpdate->getPUserId()));
+            }
+
+            $askForUpdate->save();
+        } else {
+            $errors = StudioEchoUtils::getAjaxFormErrors($formAskForUpdate);
+            throw new FormValidationException($errors);
+        }
+
+        return true;
+    }
+}

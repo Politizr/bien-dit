@@ -42,6 +42,7 @@ use Politizr\Model\PUserArchiveQuery;
  * @method PUserArchiveQuery orderByPUStatusId($order = Criteria::ASC) Order by the p_u_status_id column
  * @method PUserArchiveQuery orderByFileName($order = Criteria::ASC) Order by the file_name column
  * @method PUserArchiveQuery orderByBackFileName($order = Criteria::ASC) Order by the back_file_name column
+ * @method PUserArchiveQuery orderByCopyright($order = Criteria::ASC) Order by the copyright column
  * @method PUserArchiveQuery orderByGender($order = Criteria::ASC) Order by the gender column
  * @method PUserArchiveQuery orderByFirstname($order = Criteria::ASC) Order by the firstname column
  * @method PUserArchiveQuery orderByName($order = Criteria::ASC) Order by the name column
@@ -89,6 +90,7 @@ use Politizr\Model\PUserArchiveQuery;
  * @method PUserArchiveQuery groupByPUStatusId() Group by the p_u_status_id column
  * @method PUserArchiveQuery groupByFileName() Group by the file_name column
  * @method PUserArchiveQuery groupByBackFileName() Group by the back_file_name column
+ * @method PUserArchiveQuery groupByCopyright() Group by the copyright column
  * @method PUserArchiveQuery groupByGender() Group by the gender column
  * @method PUserArchiveQuery groupByFirstname() Group by the firstname column
  * @method PUserArchiveQuery groupByName() Group by the name column
@@ -142,6 +144,7 @@ use Politizr\Model\PUserArchiveQuery;
  * @method PUserArchive findOneByPUStatusId(int $p_u_status_id) Return the first PUserArchive filtered by the p_u_status_id column
  * @method PUserArchive findOneByFileName(string $file_name) Return the first PUserArchive filtered by the file_name column
  * @method PUserArchive findOneByBackFileName(string $back_file_name) Return the first PUserArchive filtered by the back_file_name column
+ * @method PUserArchive findOneByCopyright(string $copyright) Return the first PUserArchive filtered by the copyright column
  * @method PUserArchive findOneByGender(int $gender) Return the first PUserArchive filtered by the gender column
  * @method PUserArchive findOneByFirstname(string $firstname) Return the first PUserArchive filtered by the firstname column
  * @method PUserArchive findOneByName(string $name) Return the first PUserArchive filtered by the name column
@@ -189,6 +192,7 @@ use Politizr\Model\PUserArchiveQuery;
  * @method array findByPUStatusId(int $p_u_status_id) Return PUserArchive objects filtered by the p_u_status_id column
  * @method array findByFileName(string $file_name) Return PUserArchive objects filtered by the file_name column
  * @method array findByBackFileName(string $back_file_name) Return PUserArchive objects filtered by the back_file_name column
+ * @method array findByCopyright(string $copyright) Return PUserArchive objects filtered by the copyright column
  * @method array findByGender(int $gender) Return PUserArchive objects filtered by the gender column
  * @method array findByFirstname(string $firstname) Return PUserArchive objects filtered by the firstname column
  * @method array findByName(string $name) Return PUserArchive objects filtered by the name column
@@ -316,7 +320,7 @@ abstract class BasePUserArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `last_activity`, `p_u_status_id`, `file_name`, `back_file_name`, `gender`, `firstname`, `name`, `birthday`, `subtitle`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_connected_days`, `nb_views`, `qualified`, `validated`, `online`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_user_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `last_activity`, `p_u_status_id`, `file_name`, `back_file_name`, `copyright`, `gender`, `firstname`, `name`, `birthday`, `subtitle`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_connected_days`, `nb_views`, `qualified`, `validated`, `online`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_user_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -1269,6 +1273,35 @@ abstract class BasePUserArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PUserArchivePeer::BACK_FILE_NAME, $backFileName, $comparison);
+    }
+
+    /**
+     * Filter the query on the copyright column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByCopyright('fooValue');   // WHERE copyright = 'fooValue'
+     * $query->filterByCopyright('%fooValue%'); // WHERE copyright LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $copyright The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserArchiveQuery The current query, for fluid interface
+     */
+    public function filterByCopyright($copyright = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($copyright)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $copyright)) {
+                $copyright = str_replace('*', '%', $copyright);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PUserArchivePeer::COPYRIGHT, $copyright, $comparison);
     }
 
     /**

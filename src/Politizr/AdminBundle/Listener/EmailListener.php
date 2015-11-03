@@ -4,7 +4,8 @@ namespace Politizr\AdminBundle\Listener;
 
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-use Politizr\Model\POOrderState;
+use Politizr\Constant\OrderConstants;
+
 use Politizr\Model\POEmail;
 
 /**
@@ -20,20 +21,20 @@ class EmailListener
     protected $logger;
 
     protected $contactEmail;
-    protected $noreplyEmail;
+    protected $supportEmail;
 
 
     /**
      *
      */
-    public function __construct($mailer, $templating, $logger, $contactEmail, $noreplyEmail)
+    public function __construct($mailer, $templating, $logger, $contactEmail, $supportEmail)
     {
         $this->mailer = $mailer;
         $this->templating = $templating;
         $this->logger = $logger;
 
         $this->contactEmail = $contactEmail;
-        $this->noreplyEmail = $noreplyEmail;
+        $this->supportEmail = $supportEmail;
     }
 
     /**
@@ -46,30 +47,30 @@ class EmailListener
         $this->logger->info('*** onOrderEmail');
 
         $order = $event->getSubject();
-        $subject = 'Politizr - ';
+        $subject = '[ Politizr ] ';
         switch ($order->getPOOrderStateId()) {
-            case POOrderState::CREATED:
+            case OrderConstants::ORDER_CREATED:
                 $template = 'order';
                 $subject .= 'Commande créée';
                 $pj = null;
                 break;
-            case POOrderState::WAITING:
+            case OrderConstants::ORDER_WAITING:
                 $template = 'order';
                 $subject .= 'Commande en attente';
                 $pj = null;
                 break;
-            case POOrderState::OPEN:
+            case OrderConstants::ORDER_OPEN:
                 $template = 'order';
                 $subject .= 'Commande ouverte';
                 $pj = null;
                 break;
-            case POOrderState::HANDLED:
+            case OrderConstants::ORDER_HANDLED:
                 $template = 'order';
                 $subject .= 'Commande traitée';
                 $pj = null;
                 $pj = $order->getInvoiceFilename();
                 break;
-            case POOrderState::CANCELED:
+            case OrderConstants::ORDER_CANCELED:
                 $template = 'order';
                 $subject .= 'Commande annulée';
                 $pj = null;
@@ -91,12 +92,13 @@ class EmailListener
 
             $message = \Swift_Message::newInstance()
                     ->setSubject($subject)
-                    ->setFrom(array($this->contactEmail => 'Politizr'))
+                    ->setFrom(array($this->contactEmail => 'Support@Politizr'))
                     ->setTo($order->getEmail())
                     // ->setBcc(array('lionel@politizr.com'))
                     ->setBody($htmlBody, 'text/html', 'utf-8')
                     ->addPart($txtBody, 'text/plain', 'utf-8')
             ;
+            $message->getHeaders()->addTextHeader('X-CMail-GroupName', 'Order billing');
 
             // Facture en PJ
             if ($pj) {

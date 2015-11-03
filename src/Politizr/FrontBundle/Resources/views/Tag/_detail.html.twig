@@ -1,0 +1,8 @@
+{% if (tag.ptTagTypeId == constant('\\Politizr\\Constant\\TagConstants::TAG_TYPE_GEO')) %}
+    {% set twbLabel = "geo" %}
+{% elseif (tag.ptTagTypeId == constant('\\Politizr\\Constant\\TagConstants::TAG_TYPE_THEME'))%}
+    {% set twbLabel = "theme" %}
+{% else %}
+    {% set twbLabel = "default" %}
+{% endif %}
+<span class="tag {{ twbLabel }}" action="modalTagged" model="PTag" slug="{{ tag.slug }}">{{ tag.title }}</span>

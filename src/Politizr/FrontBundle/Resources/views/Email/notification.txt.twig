@@ -1,7 +1,9 @@
-Nouvelle notification le {{ notif.createdAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM à HH'h'mm" ) | capitalize }}
+{% include 'PolitizrFrontBundle:Notification:_notificationTitle.html.twig' with { 'notificationId': notif.pNotificationId } %}
 
-{{ notif | linkedNotification(true) }}
+{{ notif.createdAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM à HH'h'mm" ) | capitalize }}
 
-Réglez vos paramètres de notifications depuis le menu "mes notifications" de votre compte sur {% if (isGrantedE()) %}{{ url('MyNotificationsE') }}{% else %}{{ url('MyNotificationsC') }}{% endif %}.
+{{ notif | linkedNotification(type = constant('Politizr\\Constant\\NotificationConstants::TYPE_EMAIL_TXT')) }}
 
-{% include 'PolitizrFrontBundle:Email:signature.txt.twig' %}
+Réglez vos paramètres de notifications depuis le menu "mes notifications" de votre compte sur {% if (isGrantedE()) %}{{ url('EditNotificationsE') }}{% else %}{{ url('EditNotificationsC') }}{% endif %}.
+
+{% include 'PolitizrFrontBundle:Email:_signature.txt.twig' %}

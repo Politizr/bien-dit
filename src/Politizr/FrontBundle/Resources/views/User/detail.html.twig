@@ -1,0 +1,69 @@
+{% set layout = 'PolitizrFrontBundle::layoutPublic.html.twig' %}
+{% if (isGrantedE() or isGrantedC()) %}
+    {% set layout = 'PolitizrFrontBundle::layoutConnected.html.twig' %}
+{% endif %}
+{% extends layout %}
+
+{% block title %}
+    {{ parent() }} - Utilisateur {{ user }}
+{% endblock title %}
+
+{% block header %}
+    {% if app.user and app.user | isAuthorizedToReportAbuse %}
+        {% embed 'PolitizrFrontBundle:Navigation\\Header:_headerConnected.html.twig' %}
+            {% block abuse %}
+                {% include 'PolitizrFrontBundle:Monitoring:_abuseLink.html.twig' with { 'subjectId': user.id, 'type': user.type } only %}
+            {% endblock abuse %}
+        {% endembed %}
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{% block connexionBox %}
+    {% if not is_granted('ROLE_PROFILE_COMPLETED') %}
+        {{ render(controller('PolitizrFrontBundle:Security:login')) }}
+    {% endif %}
+{% endblock %}
+
+{% block fixedActions %}
+    <div id="fixedActions">
+        {% if app.user.id == user.id %}
+            <div class="editProfile">
+                <div class="ajaxLoader" style="display: none;">
+                    <div class="ajaxLoaderSpinner"></div><div class="ajaxLoaderBg"></div><div class="ajaxLoaderBlockClick"></div>
+                </div>
+                <a href="{{ path('EditProfile'~profileSuffix) }}">                  
+                    <i class="iconEdit"></i>
+                    éditer
+                </a>
+            </div>
+        {% else %}
+            <div class="subscribe{% if app.user.id == user.id %} noSelfSubscribe{% endif %}">
+                {{ user | linkSubscribeUser }}
+            </div>
+        {% endif %}
+    </div>
+{% endblock fixedActions %}
+
+{% block main %}
+    {% include 'PolitizrFrontBundle:User:_detail.html.twig' %}
+{% endblock main %}
+
+{% block javascriptFooter %}
+    {{ parent() }}
+
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/user/detail.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/timeline/timeline.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    <script>
+        // on document ready
+        $(function() {
+            timelineUserList({{ user.id }});
+        });
+    </script>
+{% endblock javascriptFooter %}

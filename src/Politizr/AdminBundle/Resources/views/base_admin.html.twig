@@ -1,44 +1,44 @@
-{% extends "AdmingeneratorGeneratorBundle::base_admin.html.twig" %}
+{% extends "AdmingeneratorGeneratorBundle::base.html.twig" %}
 
 {% block title %}Module d'administration Politizr{% endblock %}
 
-{% block scripts_head %}
-    {{ parent() }}
-    <link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,700,700italic,400italic' rel='stylesheet' type='text/css'>
-{% endblock %}
-
-{% block navbar %}
-   {% embed 'AdmingeneratorGeneratorBundle::base_admin_navbar.html.twig' %}
-        {% block brand_text %}
-            Politizr
-        {% endblock brand_text %}
-        {% block menu %}
-            {{ knp_menu_render('PolitizrAdminBundle:AdminMenu:navbarMenu') }}
-        {% endblock %}
-    {% endembed %}
-{% endblock navbar %}
-  
 {% block stylesheets %}
     {{ parent() }}
 
-    {% include 'AvocodeFormExtensionsBundle::stylesheets.html.twig' %}
-    {% if form is defined %}
-        {{ afe_form_stylesheet(form) }}
-    {% endif %}
+    <link rel="stylesheet" href="{{ asset('bundles/politizradmin/css/ui-lightness/jquery-ui-1.10.4.custom.css') }}">
+    <link rel="stylesheet" href="{{ asset('bundles/politizradmin/css/font-awesome/css/font-awesome.min.css') }}" type="text/css" media="all" />
 {% endblock %}
 
-{% block javascripts %}
+{% block javascripts_head %}
     {{ parent() }}
+    
+    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/jquery-ui.autocomplete.min.js') }}"></script>
 
-    {% include 'AvocodeFormExtensionsBundle::javascripts.html.twig' %}
-    {% if form is defined %}
-        {{ afe_form_javascript(form) }}
-    {% endif %}
+    <!-- XHR routing -->
+    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/xhr.js') }}"></script>
+    <script type="text/javascript">
+        var baseUrl = '{{ app.request.getBaseUrl }}';
+    </script>
 {% endblock %}
-  
-{% block footer %}
-    <div id="footer" class="text-center">
-        <hr/>
-        <h2 class="label label-default">&copy; Politizr 2015</h2>
-    </div> 
+
+
+{% block header %}
+    {% embed 'AdmingeneratorGeneratorBundle::header.html.twig' %}
+        {% block logo %}
+            {% set brand_path = (admingenerator_config('dashboard_route') is not null) ? path(admingenerator_config('dashboard_route')) : '#' %}
+            <a class="logo" href="{{ brand_path }}">
+                <img src="{{ asset('bundles/politizradmin/images/logo.jpg') }}" alt="Administration Politizr" />
+            </a>
+        {% endblock %}
+    {% endembed %}
 {% endblock %}
+
+{% block sidebar %}
+    <aside class="main-sidebar sidebar-offcanvas">
+        {% embed 'AdmingeneratorGeneratorBundle:Sidebar:layout.html.twig' %}
+            {% block sidebar_menu %}
+                {{ knp_menu_render('PolitizrAdminBundle:AdminMenu:sidebarMenu') }}
+            {% endblock %}
+        {% endembed %}
+    </aside>
+{% endblock sidebar %}

@@ -1,16 +1,14 @@
-<div id="tagsZone-{{ zoneId }}">
-    {# Variables #}
-    <div class="tagsAttr" ptTagTypeId="{{ ptTagTypeId }}" objectId="{{ pdDebate.id }}" addUrl="{{ path('AdminAddPDDTaggedTPTag') }}"></div>
-    
-    {# Sélection #}
-    <input type="text" class="selectedTag" />
-    <input type="hidden" class="selectedTagID" />
-    <a class="addUserTag">Ajouter</a>
+<div class="addTag" id="editTagZone-{{ zoneId }}" tagTypeId="{{ tagTypeId }}" subjectId="{{ object.id }}" newTag="{{ newTag }}" path="{{ path(addPath) }}">
 
-    {# Affichage #}
-    <div class="displayTagsZone">
-        {% for pTag in pTags %}
-            {% include 'PolitizrAdminBundle:Fragment:Tag.html.twig' with { 'objectId': pdDebate.id, 'pTagId': pTag.id, 'pTagTitle': pTag.title, 'deleteUrl': path('AdminDeletePDDTaggedTPTag') } %}
+    {# @todo maj code avec normalisation camelCase #}
+    <div class="editableTagList">
+        {% for tag in tags %}
+            {% include 'PolitizrFrontBundle:Tag:_detailEditable.html.twig' with { 'subjectId': object.id, 'tag': tag, 'deleteUrl': path(deletePath) } %}&nbsp;
         {% endfor %}
     </div>
+
+    {# Sélection #}
+    <input type="text" class="selectedTag" placeholder="saisissez une nouvelle thématique" />
+    <input type="hidden" class="selectedTagID" />
+    <button type="button" action="addTag"><i class="iconCheck"></i></button>
 </div>

@@ -1,16 +1,20 @@
 {% extends_admingenerated "PolitizrAdminBundle:PUserEdit:index.html.twig" %}
 
-{% block scripts_head %}
+{% block javascripts %}
     {{ parent() }}
 
     <!-- TinyMCE -->
     {% include "PolitizrAdminBundle::tinymce-full.html.twig" %}
 {% endblock %}
 
+{% block object_actions_script_container %}
+    <script>
+        var nbZones = 2;
+        var xhrRoute = ADMIN_ROUTE_TAG_LISTING;
+    </script>
 
-{# Autocomplete CSS #}
-{% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/ui-lightness/jquery-ui-1.10.4.custom.css') }}">
-{% endblock %}
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/politizr/tag/accentMap.js') }}"></script>    
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/politizr/tag/editTags.js') }}"></script>  
 
+    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/reputation/user.js') }}"></script>  
+{% endblock object_actions_script_container %}

@@ -1,0 +1,61 @@
+generator:                  admingenerator.generator.propel
+params:
+    model:                  Politizr\Model\PMAppException
+    namespace_prefix:       Politizr
+    concurrency_lock:       ~
+    bundle_name:            AdminBundle
+    pk_requirement:         ~
+    fields:
+        id:
+            label:          ID
+        line:
+            label:          Ligne
+        file:
+            label:          Fichier
+        code:
+            label:          Code erreur
+        message:
+            label:          Message
+        stack_trace:
+            label:          Stack trace
+        created_at:
+            label:          Création
+        updated_at:
+            label:          Mis à jour
+    object_actions:
+        delete:             ~
+    batch_actions:
+        delete:             ~
+builders:
+    list:
+        params:
+            title:                              Liste des exceptions
+            max_per_page:                       50
+            sort:                               [ id, DESC ]
+            display:                            [ message, created_at ]
+            object_actions:
+                show:                           ~
+                delete:                         ~
+    excel:
+        params: ~
+        filename: ~
+        filetype: ~
+    show:
+        params:
+            title:                              "Visualisation exception {{ PMAppException.id }}"
+            tabs:
+                "Contenu":
+                    "Texte":                    [ [ line, file ], [ code, message ] ]
+                "Pile":
+                    "Pile exception":           [ stack_trace ]
+                "Attributs":
+                    "Création":                 [ [ created_at, updated_at ] ]
+            actions:
+              list:                             ~
+              delete:                           ~
+    actions:
+        params:
+            object_actions:
+                delete: ~
+            batch_actions:
+                delete: ~

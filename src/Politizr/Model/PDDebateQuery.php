@@ -6,178 +6,361 @@ use Politizr\Model\om\BasePDDebateQuery;
 
 use Geocoder\Result\Geocoded;
 
+/**
+ * Debate query
+ *
+ * @author Lionel Bouzonville
+ */
 class PDDebateQuery extends BasePDDebateQuery
 {
-
-    // *****************************    SURCHARGE / DOCUMENT    ************************* //
-    
-
-    // *****************************    AGGREGATIONS / UTILES    ************************* //
+    /* ######################################################################################################## */
+    /*                                                  RAW SQL                                                 */
+    /* ######################################################################################################## */
     
     /**
-     * Cumule les contraintes associés à un objet en ligne
+     * Debates' suggestion for user.
      *
-     * @return  Query
+     * @see app/sql/suggestions.sql
+     *
+     * @todo:
+     *   > + suggestions depuis les tags des débats déjà suivis
+     *
+     * @param  integer     $userId
+     * @param  integer     $offset
+     * @param  integer     $limit
+     * @return string
+     */
+    private function getSuggestionsSql($userId, $offset, $limit = 10)
+    {
+        // Requête SQL
+        $sql = "
+SELECT DISTINCT
+    id,
+    p_user_id,
+    title,
+    file_name,
+    copyright,
+    description,
+    note_pos,
+    note_neg,
+    nb_views,
+    published,
+    published_at,
+    published_by,
+    favorite,
+    online,
+    created_at,
+    updated_at,
+    slug
+FROM (
+( SELECT DISTINCT p_d_debate.*, 0 as nb_users, 1 as unionsorting
+FROM p_d_debate
+    LEFT JOIN p_d_d_tagged_t
+        ON p_d_debate.id = p_d_d_tagged_t.p_d_debate_id
+WHERE
+    p_d_d_tagged_t.p_tag_id IN (
+                SELECT p_tag.id
+                FROM p_tag
+                    LEFT JOIN p_u_follow_t
+                        ON p_tag.id = p_u_follow_t.p_tag_id
+                WHERE
+                    p_tag.online = true
+                    AND p_u_follow_t.p_user_id = ".$userId."
+    )
+    AND p_d_debate.online = 1
+    AND p_d_debate.published = 1
+    AND p_d_debate.id NOT IN (SELECT p_d_debate_id FROM p_u_follow_d_d WHERE p_user_id = ".$userId.")
+    AND p_d_debate.p_user_id <> ".$userId."
+)
+
+UNION DISTINCT
+
+( SELECT DISTINCT p_d_debate.*, COUNT(p_u_follow_d_d.p_d_debate_id) as nb_users, 2 as unionsorting
+FROM p_d_debate
+    LEFT JOIN p_u_follow_d_d
+        ON p_d_debate.id = p_u_follow_d_d.p_d_debate_id
+WHERE
+    p_d_debate.online = 1
+    AND p_d_debate.published = 1
+    AND p_d_debate.id NOT IN (SELECT p_d_debate_id FROM p_u_follow_d_d WHERE p_user_id = ".$userId.")
+    AND p_d_debate.p_user_id <> ".$userId."
+GROUP BY p_d_debate.id
+ORDER BY nb_users DESC
+)
+
+ORDER BY unionsorting ASC
+) unionsorting
+
+LIMIT ".$offset.", ".$limit."
+";
+
+        return $sql;
+    }
+
+    /**
+     * PDDebate objects hydratation from raw sql
+     *
+     * @param string $sql
+     * @return PropelCollection
+     */
+    private function hydrateFromSql($sql)
+    {
+        $timeline = array();
+
+        if ($sql) {
+            // Exécution de la requête brute
+            $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
+            $stmt = $con->prepare($sql);
+            $stmt->execute();
+
+            $result = $stmt->fetchAll();
+
+            $collection = new \PropelCollection();
+            foreach ($result as $row) {
+                $debate = new PDDebate();
+                $debate->hydrate($row);
+
+                $collection->append($debate);
+            }
+        }
+
+        return $collection;
+    }
+
+    /**
+     * Find debates by user's suggestion
+     *
+     * @param integer $userId
+     * @param integer $offset
+     * @param integer $limit
+     * @return PropelCollection[PDDebate]
+     */
+    public function findBySuggestion($userId, $offset = 0, $limit = 10)
+    {
+        $sql = $this->getSuggestionsSql($userId, $offset, $limit);
+        $debates = $this->hydrateFromSql($sql);
+
+        return $debates;
+    }
+
+    /* ######################################################################################################## */
+    /*                                             AGGREGATIONS                                                 */
+    /* ######################################################################################################## */
+    
+    /**
+     *
+     * @return PDDebateQuery
      */
     public function online()
     {
-        return $this->filterByOnline(true)->filterByPublished(true);
+        return $this
+            ->filterByOnline(true)
+            ->filterByPublished(true);
     }
 
+    /* ######################################################################################################## */
+    /*                                         CUSTOM FILTERS / ORDERS                                          */
+    /* ######################################################################################################## */
+    
     /**
-     * Ordonne suivant un mot clef défini sur la vue.
+     * Order by keyword
+     * @todo refactor keyword to constant
      *
-     * @param $keyword      string      Mot clef pour l'ordonnancement issu du html
-     * @return  Query
+     * @param string $keyword
+     * @return PDDebateQuery
      */
     public function orderWithKeyword($keyword = 'last')
     {
-        return $this->_if('mostFollowed' === $keyword)
-                        ->orderByMostFollowed()
-                    ->_elseif('bestNote' === $keyword)
-                        ->orderByNote()
-                    ->_elseif('last' === $keyword)
-                        ->orderByLast()
-                    ->_endif();
+        return $this
+            ->_if('mostFollowed' === $keyword)
+                ->orderByMostFollowed()
+            ->_elseif('bestNote' === $keyword)
+                ->orderByNote()
+            ->_elseif('last' === $keyword)
+                ->orderByLast()
+            ->_endif();
     }
 
     /**
-     * Ordonne les objets par meilleur note
+     * Order by note pos
      *
-     * @return  Query
+     * @return PDDebateQuery
      */
     public function orderByNote()
     {
-        return $this->orderByNotePos(\Criteria::DESC);
+        return $this->orderByNotePos('desc')->orderByNoteNeg('asc');
     }
 
     /**
-     * Ordonne les objets par nombre de followers
+     * Order by number of followers
      *
-     * @return  Query
+     * @return PDDebateQuery
      */
     public function orderByMostFollowed()
     {
-        return $this->joinPuFollowDdPDDebate('PUFollowDD', \Criteria::LEFT_JOIN)
-                ->withColumn('COUNT(PUFollowDD.PUserId)', 'NbFollowers')
-                ->groupBy('Id')
-                ->orderBy('NbFollowers', \Criteria::DESC)
-                ;
-
+        return $this
+            ->joinPuFollowDdPDDebate('PUFollowDD', \Criteria::LEFT_JOIN)
+            ->withColumn('COUNT(PUFollowDD.PUserId)', 'NbFollowers')
+            ->groupBy('Id')
+            ->orderBy('NbFollowers', 'desc');
     }
 
     /**
-     * Ordonne les objets par derniers débats publiés
+     * Order by last published
      *
+     * @return PDDebateQuery
      */
     public function orderByLast()
     {
-        return $this->orderByPublishedAt(\Criteria::DESC);
+        return $this->orderByPublishedAt('desc');
     }
 
     /**
-     * Filtre suivant le mot(s) clef(s) défini sur la vue
+     * Filter by keyword
      *
-     * @param array $keywords
-     * @param \Politizr\Model\PUser $user
-     * @return Query
+     * @param array[string] $keywords
+     * @return PDDebateQuery
      */
-    public function filterByKeywords($keywords = null, \Politizr\Model\PUser $user = null)
+    public function filterByKeywords($keywords = null)
     {
-        return $this->_if($keywords && in_array('newest', $keywords))
-                        ->filterByNewest()
-                    ->_endif()
-                    ->_if($keywords && in_array('qualified', $keywords))
-                        ->filterByQualified()
-                    ->_endif()
-                    ->_if($keywords && in_array('suggestion', $keywords))
-                        ->filterBySuggestion($user)
-                    ->_endif()
-                    ;
+        return $this
+            ->_if($keywords && (in_array('lastDay', $keywords)))
+                ->filterByLastDay()
+            ->_endif()
+            ->_if($keywords && (in_array('lastWeek', $keywords)))
+                ->filterByLastWeek()
+            ->_endif()
+            ->_if($keywords && (in_array('lastMonth', $keywords)))
+                ->filterByLastMonth()
+            ->_endif()
+            ->_if($keywords && in_array('qualified', $keywords))
+                ->filterByQualified()
+            ->_endif()
+            ->_if($keywords && in_array('citizen', $keywords))
+                ->filterByCitizen()
+            ->_endif();
     }
 
     /**
-     * Filtre les objets les plus récents
+     * Filter by published during last 24h
      *
-     * @return  Query
+     * @return PDDebateQuery
      */
-    public function filterByNewest()
+    public function filterByLastDay()
     {
         // Dates début / fin
         $now = new \DateTime();
-        $nowMin24 = new \DateTime();
-        $nowMin24->modify('-1 day');
+        $fromAt = new \DateTime();
+        $fromAt->modify('-1 day');
 
-        // -24h tant que moins de X résultats
-        $nb = 0;
-        while ($nb < 10) {
-            $nb = PDDebateQuery::create()
-                    ->online()
-                    ->filterByPublishedAt(array('min' => $nowMin24, 'max' => $now))
-                    ->count();
-            $nowMin24->modify('-1 day');
-        }
-
-        return $this->filterByPublishedAt(array('min' => $nowMin24, 'max' => $now));
-
+        return $this->filterByPublishedAt(array('min' => $fromAt));
     }
 
     /**
-     * Filtre les objets uniquement rédigés par des profils débatteurs
+     * Filter by published during last week
      *
-     * @return  Query
+     * @return PDDebateQuery
+     */
+    public function filterByLastWeek()
+    {
+        // Dates début / fin
+        $now = new \DateTime();
+        $fromAt = new \DateTime();
+        $fromAt->modify('-1 week');
+
+        return $this->filterByPublishedAt(array('min' => $fromAt));
+    }
+
+    /**
+     * Filter by published during last month
+     *
+     * @return PDDebateQuery
+     */
+    public function filterByLastMonth()
+    {
+        // Dates début / fin
+        $now = new \DateTime();
+        $fromAt = new \DateTime();
+        $fromAt->modify('-1 month');
+
+        return $this->filterByPublishedAt(array('min' => $fromAt));
+    }
+
+    /**
+     * Filter by qualified
+     *
+     * @return PDDebateQuery
      */
     public function filterByQualified()
     {
-
-        return $this->usePUserQuery()
-                        ->filterByQualified(true)
-                    ->endUse()
-                    ;
-
+        return $this
+            ->usePUserQuery()
+                ->filterByQualified(true)
+            ->endUse();
     }
 
     /**
-     * Filtre les objets en fonction des tags suivis par le user entré en paramètre.
+     * Filter by not qualified
      *
-     * @return  Query
+     * @return PDDebateQuery
      */
-    public function filterBySuggestion(\Politizr\Model\PUser $user = null)
+    public function filterByCitizen()
     {
-        if (null === $user) {
-            return $this;
-        } else {
-            // Récupère la liste des IDs des tags suivis
-            $followedIds = PTagQuery::create()
-                            ->select('Id')
-                            ->usePuFollowTPTagQuery()
-                                ->filterByPUserId($user->getId())
-                            ->endUse()
-                            ->setDistinct()
-                            ->find();
-
-            // Récupère les débats
-            $query = $this->usePddTaggedTQuery()
-                            ->filterByPTagId($followedIds->getData())
-                        ->endUse()
-                        // débats non suivis uniquement
-                        ->where('p_d_debate.id NOT IN (SELECT p_d_debate_id FROM p_u_follow_d_d WHERE p_user_id = ?)', $user->getId())
-                        ->setDistinct()
-                        ;
-        
-            return $query;
-        }
-
+        return $this
+            ->usePUserQuery()
+                ->filterByQualified(false)
+            ->endUse();
     }
 
     /**
-     * Filtre les objets par géolocalisation
-     * TODO requête géoloc / tags
+     * Filter by array of tags id
      *
-     * @param   Geocoder\Result\Geocoded    $geocoded
-     * @return  Query
+     * @param array[int]
+     * @return PDDebateQuery
+     */
+    public function filterByTags($tagIds)
+    {
+        return $this
+            ->usePDDTaggedTQuery()
+                ->filterByPTagId($tagIds)
+            ->endUse();
+    }
+
+    /**
+     * Filter by geolocalization
+     *
+     * @param Geocoded $geocoded
+     * @return PDDebateQuery
      */
     public function filterByGeolocalization(Geocoded $geocoded)
     {
+    }
+    
+    /* ######################################################################################################## */
+    /*                                              FILTERBY IF                                                 */
+    /* ######################################################################################################## */
+
+    /**
+     *
+     * @param boolean $online
+     */
+    public function filterIfOnline($online = null)
+    {
+        return $this
+            ->_if(null !== $online)
+                ->filterByOnline($online)
+            ->_endif();
+    }
+
+    /**
+     *
+     * @param boolean $published
+     */
+    public function filterIfPublished($published = null)
+    {
+        return $this
+            ->_if(null !== $published)
+                ->filterByPublished($published)
+            ->_endif();
     }
 }

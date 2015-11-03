@@ -1,0 +1,53 @@
+<div id="modalUploadBox" style="display: none;">
+    <div id="modalUploadBg" action="modalUploadClose"></div>
+    <div class="wrapper">
+        <div id="modalUpload" style="display: none;">
+            <h4>illustration</h4>
+            <div class="modalUploadIllustrationContainer" style="display: block;">
+                <div id="currentPhoto">
+                    <div id="uploadedPhoto">
+                        {% if debate.fileName %}
+                            {{ debate | image('debate_header') }}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="toggleIllustrationShadow maskIllustrationShadow" action="maskIllustrationShadow"><i class="iconCheck"></i> Masquer l'ombre</div>
+                <div class="toggleIllustrationShadow showIllustrationShadow" action="showIllustrationShadow"><i class="iconCheck"></i> Afficher l'ombre</div> 
+            </div>
+            <form id="formDocumentPhoto" action="{{ path('XhrGeneric', {'xhrRoute': constant('Politizr\\Constant\\XhrConstants::ROUTE_DOCUMENT_PHOTO_UPLOAD'), 'xhrService': 'document', 'xhrMethod': 'documentPhotoUpload', 'xhrType': constant('Politizr\\Constant\\XhrConstants::RETURN_URL')}) }}" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="id" value="{{ debate.id }}">
+                <input type="hidden" name="type" value="{{ constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE') }}">
+                <div id="uploadFileContainer">
+                    <input type="file" name="fileName" id="fileName">
+                    <label action="fileSelect" for="fileName" tabindex="0">parcourir</label>
+                    <div class="photoDelete">
+                        <a action="fileDelete" subjectId="{{ debate.id }}"><i class="iconDraft"></i>supprimer</a>
+                    </div>
+                </div>
+            </form>
+            <div class="fieldsetHeader">
+                <div class="fieldsetHeaderTitle">Crédits photos</div>
+                <i class="iconQuestion" action="toggleHelper"></i>
+                <div class="helperSlider helperSliderRight" style="display: none;">
+                    <i class="iconArrowUp"></i>
+                    <i class="iconCross" action="hideHelper"></i>
+                    @todo : slider ajout d'un lien 
+                </div>
+            </div>
+            <div class="editable copyright">
+                {{ debate.copyright | purify }}
+            </div>
+            <div class="photoInfoSave">
+                <a action="debatePhotoInfoSave" subjectId="{{ debate.id }}">
+                    <i class="iconCheckInSquare"></i> Valider
+                </a>
+            </div>
+            <a class="cancelModalUploadBox" action="modalUploadClose">Annuler</a>
+            <form method="POST" name="debate_photo_info" id="formDebatePhotoInfoUpdate">
+                {# hidden form inputs filled by js #}
+                {{ form_row(formPhotoInfo.copyright) }}
+                {{ form_rest(formPhotoInfo) }}
+            </form>
+        </div>
+    </div>
+</div>  

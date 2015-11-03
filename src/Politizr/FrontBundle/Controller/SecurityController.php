@@ -10,11 +10,12 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Core\AuthenticationEvents;
 use Symfony\Component\Security\Core\Event\AuthenticationEvent;
+
+use Politizr\Exception\InconsistentDataException;
 
 use Politizr\Model\PUser;
 use Politizr\Model\POrderQuery;
@@ -32,18 +33,11 @@ use Politizr\FrontBundle\Form\Type\LostPasswordType;
 use Politizr\FrontBundle\Form\Type\POrderSubscriptionType;
 
 /**
- * Gestion des inscriptions / connexions
+ * Security controller
  *
  * http://nyrodev.info/fr/posts/286/Connexions-OAuth-Multiple-avec-Symfony-2-3
- *
- * TODO:
- *  - lire:
- *          http://sirprize.me/scribble/under-the-hood-of-symfony-security/
- *          http://www.reecefowell.com/2011/10/26/redirecting-on-loginlogout-in-symfony2-using-loginhandlers/
- *  - sortir les envois d'emails dans une classe dédiée
- *  - implémentation BaseFacebook pour exploitation API et récupération infos annexes supplémentaires (photo)
- *  - personnaliser les exception
- *  - ajout de nouvelles étapes d'inscription > proposition de suggestions + gestion des affinités politiques (citoyen)
+ * http://sirprize.me/scribble/under-the-hood-of-symfony-security/
+ * http://www.reecefowell.com/2011/10/26/redirecting-on-loginlogout-in-symfony2-using-loginhandlers/
  *
  * @author Lionel Bouzonville
  */
@@ -55,7 +49,25 @@ class SecurityController extends Controller
     /* ######################################################################################################## */
 
     /**
-     *  Déconnexion
+     * Login
+     */
+    public function loginAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** loginAction');
+
+        // Function process
+        $formLogin = $this->createForm(new LoginType());
+        $formLostPassword = $this->createForm(new LostPasswordType());
+
+        return $this->render('PolitizrFrontBundle:Security:login.html.twig', array(
+            'formLogin' => $formLogin->createView(),
+            'formLostPassword' => $formLostPassword->createView(),
+        ));
+    }
+
+    /**
+     * Logout
      */
     public function logoutAction()
     {
@@ -66,7 +78,7 @@ class SecurityController extends Controller
     }
 
     /**
-     *  Annulation inscription
+     * Cancel inscription
      */
     public function cancelInscriptionAction()
     {
@@ -81,24 +93,6 @@ class SecurityController extends Controller
 
         $user->deleteWithoutArchive();
         return $this->redirect($this->generateUrl('Logout'));
-    }
-
-    /**
-     * Connexion
-     */
-    public function loginAction()
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** loginAction');
-
-        // Formulaire
-        $formLogin = $this->createForm(new LoginType());
-        $formLostPassword = $this->createForm(new LostPasswordType());
-
-        return $this->render('PolitizrFrontBundle:Navigation:login.html.twig', array(
-                        'formLogin' => $formLogin->createView(),
-                        'formLostPassword' => $formLostPassword->createView()
-            ));
     }
 
     /* ######################################################################################################## */
@@ -137,8 +131,8 @@ class SecurityController extends Controller
         if ($form->isValid()) {
             $user = $form->getData();
 
-            // Service associé au démarrage de l'inscription
-            $this->get('politizr.service.security')->inscriptionStart($user);
+            // load user inscription start process
+            $this->get('politizr.functional.security')->inscriptionCitizenStart($user);
 
             return $this->redirect($this->generateUrl('InscriptionContact'));
         }
@@ -179,13 +173,14 @@ class SecurityController extends Controller
         if ($form->isValid()) {
             $user = $form->getData();
 
+            // @todo refactor migrate to postSubmit event
             // Canonicalization email
             $canonicalizeEmail = $this->get('fos_user.util.email_canonicalizer');
             $user->setEmailCanonical($canonicalizeEmail->canonicalize($user->getEmail()));
             $user->save();
 
             // Service associé à la finalisation de l'inscription
-            $this->get('politizr.service.security')->inscriptionFinish($user);
+            $this->get('politizr.functional.security')->inscriptionCitizenFinish($user);
 
             return $this->redirect($this->generateUrl('HomepageC'));
         }
@@ -232,7 +227,7 @@ class SecurityController extends Controller
             $user = $form->getData();
 
             // Service associé au démarrage de l'inscription débatteur
-            $this->get('politizr.service.security')->inscriptionElectedStart($user);
+            $this->get('politizr.functional.security')->inscriptionElectedStart($user);
 
             // gestion upload pièce ID
             $file = $form['uploaded_supporting_document']->getData();
@@ -268,7 +263,7 @@ class SecurityController extends Controller
         // profil déjà validé => étape 2 directement
         $user = $this->getUser();
         if ($user->getValidated()) {
-            $this->get('politizr.service.security')->migrationElectedStart($user);
+            $this->get('politizr.functional.security')->migrationElectedStart($user);
 
             return $this->redirect($this->generateUrl('InscriptionElectedOrder'));
         }
@@ -298,7 +293,7 @@ class SecurityController extends Controller
             $user = $form->getData();
 
             // Service associé au démarrage de la migration vers un compte débatteur
-            $this->get('politizr.service.security')->migrationElectedStart($user);
+            $this->get('politizr.functional.security')->migrationElectedStart($user);
 
             // gestion upload pièce ID
             $file = $form['uploaded_supporting_document']->getData();
@@ -332,9 +327,9 @@ class SecurityController extends Controller
         $form = $this->createForm(new POrderSubscriptionType());
 
         // Cas migration formule > MAJ du layout
-        $layout = 'PolitizrFrontBundle::layout.html.twig';
+        $layout = 'PolitizrFrontBundle::layoutPublic.html.twig';
         if ($user->hasRole('ROLE_CITIZEN')) {
-            $layout = 'PolitizrFrontBundle::layoutC.html.twig';
+            $layout = 'PolitizrFrontBundle::layoutConnected.html.twig';
         }
 
         return $this->render('PolitizrFrontBundle:Security:inscriptionElectedOrder.html.twig', array(
@@ -367,9 +362,9 @@ class SecurityController extends Controller
         }
 
         // Cas migration formule > MAJ du layout
-        $layout = 'PolitizrFrontBundle::layout.html.twig';
+        $layout = 'PolitizrFrontBundle::layoutPublic.html.twig';
         if ($user->hasRole('ROLE_CITIZEN')) {
-            $layout = 'PolitizrFrontBundle::layoutC.html.twig';
+            $layout = 'PolitizrFrontBundle::layoutConnected.html.twig';
         }
 
         return $this->render('PolitizrFrontBundle:Security:inscriptionElectedOrder.html.twig', array(
@@ -393,9 +388,9 @@ class SecurityController extends Controller
         $payments = POPaymentTypeQuery::create()->filterByOnline(true)->orderByRank()->find();
         
         // Cas migration formule > MAJ du layout
-        $layout = 'PolitizrFrontBundle::layout.html.twig';
+        $layout = 'PolitizrFrontBundle::layoutPublic.html.twig';
         if ($user->hasRole('ROLE_CITIZEN')) {
-            $layout = 'PolitizrFrontBundle::layoutC.html.twig';
+            $layout = 'PolitizrFrontBundle::layoutConnected.html.twig';
         }
 
         return $this->render('PolitizrFrontBundle:Security:inscriptionElectedPayment.html.twig', array(
@@ -413,7 +408,7 @@ class SecurityController extends Controller
         $logger->info('*** inscriptionElectedPaymentFinishedAction');
 
         // Mise à jour de la commande
-        $this->get('politizr.service.security')->updateOrderPaymentFinished();
+        $this->get('politizr.functional.security')->updateOrderPaymentCompleted();
 
         return $this->redirect($this->generateUrl('InscriptionElectedThanking'));
     }
@@ -427,7 +422,7 @@ class SecurityController extends Controller
         $logger->info('*** inscriptionElectedPaymentCanceledAction');
 
         // Mise à jour de la commande
-        $this->get('politizr.service.security')->updateOrderPaymentCanceled();
+        $this->get('politizr.functional.security')->updateOrderPaymentCanceled();
 
         // Suppression des valeurs en session
         $this->get('session')->remove('p_order_id');
@@ -459,12 +454,12 @@ class SecurityController extends Controller
         $this->get('session')->remove('p_order_id');
         
         // Finalisation du process d'inscription débatteur
-        $this->get('politizr.service.security')->inscriptionFinishElected($user);
+        $this->get('politizr.functional.security')->inscriptionFinishElected($user);
 
         // Cas migration formule > MAJ du layout
-        $layout = 'PolitizrFrontBundle::layout.html.twig';
+        $layout = 'PolitizrFrontBundle::layoutPublic.html.twig';
         if ($user->hasRole('ROLE_CITIZEN')) {
-            $layout = 'PolitizrFrontBundle::layoutC.html.twig';
+            $layout = 'PolitizrFrontBundle::layoutConnected.html.twig';
         }
 
         return $this->render('PolitizrFrontBundle:Security:inscriptionElectedThanking.html.twig', array(
@@ -502,7 +497,7 @@ class SecurityController extends Controller
         $logger->info('*** oauthRegisterAction');
 
         // Appel du service connexion oauth ou création user + connexion oauth suivant les cas
-        $redirectUrl = $this->get('politizr.service.security')->oauthRegister();
+        $redirectUrl = $this->get('politizr.functional.security')->oauthRegister();
 
         // Redirection
         return $this->redirect($redirectUrl);

@@ -3,10 +3,9 @@ namespace Politizr\Model\Tests\PUser;
 
 use Politizr\Model\Tests\PolitizrTestBase;
 
+use Politizr\Constant\UserConstants;
+
 use Politizr\Model\PUser;
-use Politizr\Model\PUStatus;
-
-
 
 /**
  *     Classe de test de PUser
@@ -18,7 +17,7 @@ use Politizr\Model\PUStatus;
  *       http://keiruaprod.fr/symblog-fr/docs/tests-unitaires-et-fonctionels-phpunit.html
  *       + mockery
  *
- *  TODO:
+ *  @todo:
  *        - test de l'upload
  *        - init / purge de la bdd?
  *
@@ -28,7 +27,7 @@ class PUserTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * This is run before each unit test
-     * TODO: it populates the database?
+     * @todo: it populates the database?
      */
     protected function setUp()
     {
@@ -37,7 +36,7 @@ class PUserTest extends \PHPUnit_Framework_TestCase
 
     /**
      * This is run after each unit test
-     * TODO: it empties the database?
+     * @todo: it empties the database?
      */
     protected function tearDown()
     {
@@ -45,7 +44,7 @@ class PUserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     *    
+     *
      */
     public function test__toString()
     {
@@ -71,18 +70,8 @@ class PUserTest extends \PHPUnit_Framework_TestCase
     /**
      *
      */
-    public function testGetBirthdayText() {
-        $pUser = new PUser();
-
-        $pUser->setBirthday(new \DateTime('1976-12-04'));
-
-        $this->assertEquals('04/12/1976', $pUser->getBirthdayText(), 'PUser->getBirthdayText() doit renvoyer au format "dd/mm/YYYY".');
-    }
-
-    /**
-     *
-     */
-    public function testCreateRawSlug() {
+    public function testCreateRawSlug()
+    {
         $pUser = new PUser();
 
         $pUser->setFirstname('Frédéric');
@@ -94,11 +83,12 @@ class PUserTest extends \PHPUnit_Framework_TestCase
     /**
      *
      */
-    public function testSerializeUnserialize() {
+    public function testSerializeUnserialize()
+    {
         $pUser = new PUser();
 
         $pUser->setId(1);
-        $pUser->setPUStatusId(PUStatus::ACTIVED);
+        $pUser->setPUStatusId(UserConstants::STATUS_ACTIVED);
         $pUser->setUsername("françoish");
         $pUser->setName("Hollande");
         $pUser->setFirstname("François");
@@ -118,7 +108,7 @@ class PUserTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(1, $pUser->getId(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');
         $this->assertEquals(false, $pUser->getQualified(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');
-        $this->assertEquals(PUStatus::ACTIVED, $pUser->getPUStatusId(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');
+        $this->assertEquals(UserConstants::STATUS_ACTIVED, $pUser->getPUStatusId(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');
         $this->assertEquals("françoish", $pUser->getUsername(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');
         $this->assertEquals("Hollande", $pUser->getName(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');
         $this->assertEquals("François", $pUser->getFirstname(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');
@@ -130,5 +120,4 @@ class PUserTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(false, $pUser->getCredentialsExpired(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');
         $this->assertEquals(true, $pUser->getEnabled(), 'PUser seralize / deserialize ne doit pas perdre de valeur.');
     }
-
 }

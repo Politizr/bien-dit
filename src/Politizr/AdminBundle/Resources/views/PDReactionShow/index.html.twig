@@ -1,6 +1,20 @@
 {% extends_admingenerated "PolitizrAdminBundle:PDReactionShow:index.html.twig" %}
 
 
+{# Objets #}
+{% block show_column_block_p_user %}
+    {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_USER'), PDReaction.PUserId) }}
+{% endblock %}
+
+{% block show_column_block_p_d_debate %}
+    {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE'), PDReaction.PDDebateId) }}
+{% endblock %}
+
+{% block show_column_block_parent %}
+    {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION'), PDReaction.ParentReactionId) }}
+{% endblock %}
+
+
 {# Image #}
 {% block show_column_file_name %}
     <img src="{{ asset('uploads/documents/'~PDReaction.fileName) | imagine_filter('admin_show_thumb') }}" alt="{{ PDReaction.fileName }}" />
@@ -15,7 +29,14 @@
     {{ PDReaction.getDescription | raw }}
 {% endblock %}
 
-{# TODO: prévoir des helper twig d'affichage: contenus, tags, users / spécial admin avec gestion ajax d'ajout/suppression? #}
+{# Block front link #}
+{% block show_column_block_front %}
+    {% if PDReaction.online and PDReaction.published %}
+        <a href="{{ path('ReactionDetail', {'slug': PDReaction.slug}) }}" target="_blank">Consulter</a>
+    {% else %}
+        Hors ligne
+    {% endif %}
+{% endblock %}
 
 {# Bloc commentaires #}
 {% block show_column_block_comments %}

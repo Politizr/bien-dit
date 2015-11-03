@@ -1,8 +1,0 @@
-{# Gestion Twig des notations #}
-{% if type == constant('Politizr\\Model\\PDocument::TYPE_DEBATE') %} 
-    {{ object | linkNoteDebate }}
-{% elseif type == constant('Politizr\\Model\\PDocument::TYPE_REACTION') %} 
-    {{ object | linkNoteReaction }}
-{% elseif type == constant('Politizr\\Model\\PDocument::TYPE_COMMENT') %} 
-    {{ object | linkNoteComment }}
-{% endif %}

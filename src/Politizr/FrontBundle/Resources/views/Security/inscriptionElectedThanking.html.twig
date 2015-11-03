@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block main %}
-    <div id="main" class="container">
+    <div id="main">
         <h1>Validation par nos services</h1>
         <div id="box-order-thanking">
             <h3>Récapitulatif paiement</h3>
@@ -15,9 +15,9 @@
             <p>
                 Commande n°{{ order.id }}
             </p>
-            {% if order.POPaymentStateId == constant('Politizr\\Model\\POPaymentState::REFUSED') %}
+            {% if order.POPaymentStateId == constant('Politizr\\Constant\\OrderConstants::PAYMENT_REFUSED') %}
                 <p>Votre paiement a été refusé: votre commande ne sera pas prise en compte.</p>
-            {% elseif order.POPaymentStateId == constant('Politizr\\Model\\POPaymentState::CANCELED') %}
+            {% elseif order.POPaymentStateId == constant('Politizr\\Constant\\OrderConstants::PAYMENT_CANCELED') %}
                 <p>Votre paiement a été annulé: votre commande ne sera pas prise en compte.</p>
             {% else %}
                 <p>Type de paiement: <b>{{ order.POPaymentType }}</b></p>
@@ -37,8 +37,3 @@
         <hr>
     </div>
 {% endblock main %}
-
-
-{% block javascriptFooter %}
-    {{ parent() }}
-{% endblock javascriptFooter %}

@@ -1,0 +1,13 @@
+<div id="displayCommentsZone">
+    <a href="{{ path('Politizr_AdminBundle_PDDComment_list') }}">
+        {% if comments | length > 0 %}
+            <b>{{ comments | length }} commentaires ont été rédigés pour ce débat.</b>
+        {% else %}
+            <b>Aucun commentaire rédigé pour ce débat.</b>
+        {% endif %}
+    </a>
+    <hr>
+    {% for comment in comments %}
+        {% include 'PolitizrAdminBundle:Fragment\\Comment:_comment.html.twig' with { 'comment': comment, 'withDocContext': false } %}
+    {% endfor %}
+</div>

@@ -1,0 +1,15 @@
+<div id="publicHeader">
+    <div class="wrapper">
+        <div class="headerLogo">
+            <a href="{{ path('Homepage') }}"><i class="iconPltzrLogoAlt"></i><span>politizr</span></a>
+        </div>
+        <div id="headerRight">
+            {% if is_granted('ROLE_CITIZEN_INSCRIPTION') or is_granted('ROLE_ELECTED_INSCRIPTION') %}
+                <a href="{{ path('CancelInscription') }}">Annuler l'inscription</a>
+            {% else %}
+                <a href="{{ path('Login') }}">identification</a>
+                <a href="https://www.politizr.com/inscription" target="blank">inscription</a>
+            {% endif %}
+        </div>
+    </div>
+</div>

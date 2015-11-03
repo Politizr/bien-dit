@@ -1,0 +1,52 @@
+<div id="modalUploadBox" style="display: none;">
+    <div id="modalUploadBg" action="modalUploadClose"></div>
+    <div class="wrapper">
+        <div id="modalUpload" style="display: none;">
+            <h4>illustration</h4>
+            <div class="modalUploadIllustrationContainer" style="display: block;">
+                <div id="currentPhoto">
+                    <div id="uploadedBackPhoto">
+                        {% if user.backFileName %}
+                            {{ user | photoBack('user_bio_back') }}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="toggleIllustrationShadow maskIllustrationShadow" action="maskIllustrationShadow"><i class="iconCheck"></i> Masquer l'ombre</div>
+                <div class="toggleIllustrationShadow showIllustrationShadow" action="showIllustrationShadow"><i class="iconCheck"></i> Afficher l'ombre</div> 
+            </div>
+            <form id="formUserBackPhoto" action="{{ path('XhrGeneric', {'xhrRoute': constant('Politizr\\Constant\\XhrConstants::ROUTE_USER_BACK_PHOTO_UPLOAD'), 'xhrService': 'user', 'xhrMethod': 'userBackPhotoUpload', 'xhrType': constant('Politizr\\Constant\\XhrConstants::RETURN_URL')}) }}" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="id" value="{{ user.id }}">
+                <div id="uploadFileContainer">
+                    <input type="file" name="backFileName" id="backFileName">
+                    <label action="backFileSelect" for="backFileName" tabindex="0">parcourir</label>
+                    <div class="photoDelete">
+                        <a action="backFileDelete" subjectId="{{ user.id }}"><i class="iconCross"></i>supprimer</a>
+                    </div>
+                </div>
+            </form>
+            <div class="fieldsetHeader">
+                <div class="fieldsetHeaderTitle">Crédits photos</div>
+                <i class="iconQuestion" action="toggleHelper"></i>
+                <div class="helperSlider helperSliderRight" style="display: none;">
+                    <i class="iconArrowUp"></i>
+                    <i class="iconCross" action="hideHelper"></i>
+                    @todo : slider ajout d'un lien 
+                </div>
+            </div>
+            <div class="editable copyright">
+                {{ user.copyright | purify }}
+            </div>
+            <div class="photoInfoSave">
+                <a action="userBackPhotoInfoSave" subjectId="{{ user.id }}">
+                    <i class="iconCheckInSquare"></i> Valider
+                </a>
+            </div>
+            <a class="cancelModalUploadBox" action="modalUploadClose">Annuler</a>
+            <form method="POST" name="user_photo_info" id="formUserBackPhotoInfoUpdate">
+                {# hidden form inputs filled by js #}
+                {{ form_row(formBackPhotoInfo.copyright) }}
+                {{ form_rest(formBackPhotoInfo) }}
+            </form>
+        </div>
+    </div>
+</div>  

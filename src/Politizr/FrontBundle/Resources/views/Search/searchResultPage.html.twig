@@ -1,0 +1,22 @@
+{% set results = pager.CurrentPageResults %}
+
+<div class="boxResults">
+    {% for result in results %}
+        {% if result.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE') %}
+            {% include 'PolitizrFrontBundle:Fragment\\Debate:ListRowSearch.html.twig' with { 'debate': result, 'highlights': result.highlights } %}
+        {% elseif result.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION') %}
+            {% include 'PolitizrFrontBundle:Fragment\\Reaction:ListRowSearch.html.twig' with { 'reaction': result } %}
+        {% elseif result.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_USER') %}
+            {% include 'PolitizrFrontBundle:Fragment\\User:ListRowSearch.html.twig' with { 'user': result } %}
+        {% endif %}
+        <hr>
+    {% endfor %}    
+</div>
+
+{% if pager.hasNextPage %}
+    <div id="scroll-nav" class="row">
+        <div class="col-sm-12 text-center">
+            <a class="btn btn-primary" action="paginateNext" query="{{ query }}" page="{{ pager.nextPage }}">suite</a>
+        </div>
+    </div>
+{% endif %}

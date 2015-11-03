@@ -4,42 +4,60 @@ namespace Politizr\Model;
 
 use Politizr\Model\om\BasePOrder;
 
+use Symfony\Component\HttpFoundation\File\File;
+
+use Politizr\Constant\PathConstants;
+
+/**
+ * Order object model
+ *
+ * @author Lionel Bouzonville
+ */
 class POrder extends BasePOrder
 {
-
-    // ************************************************************************************ //
-    //                                        CONSTANTES
-    // ************************************************************************************ //
-      const UPLOAD_PATH = '/../../../web/uploads/supporting/';
-      const UPLOAD_WEB_PATH = '/uploads/supporting/';
-
-
-    // ******************* SIMPLE UPLOAD MANAGEMENT **************** //
-    // https://github.com/avocode/FormExtensions/blob/master/Resources/doc/single-upload/overview.md
-
-    // Colonnes virtuelles / fichiers
+    // simple upload management
     public $uploadedSupportingDocument;
-    public function setUploadedSupportingDocument($uploadedFileName) {
+
+    /**
+     * @todo migrate physical deletion in special command instead of save
+     */
+    public function postDelete(\PropelPDO $con = null)
+    {
+        $this->removeUpload();
+    }
+
+    /* ######################################################################################################## */
+    /*                                      SIMPLE UPLOAD MANAGEMENT                                            */
+    /* ######################################################################################################## */
+
+    /**
+     *
+     * @param string $uploadedFileName
+     */
+    public function setUploadedSupportingDocument($uploadedFileName)
+    {
         $this->uploadedSupportingDocument = $uploadedFileName;
     }
 
     /**
      *
+     * @return string
      */
     public function getUploadedSupportingDocumentWebPath()
     {
-        return POrder::UPLOAD_WEB_PATH . $this->supporting_document;
+        return PathConstants::ORDER_UPLOAD_WEB_PATH . $this->supporting_document;
     }
     
     /**
-     * 
+     *
+     * @return File
      */
     public function getUploadedSupportingDocument()
     {
         // inject file into property (if uploaded)
         if ($this->supporting_document) {
-            return new \Symfony\Component\HttpFoundation\File\File(
-                __DIR__ . POrder::UPLOAD_PATH . $this->supporting_document
+            return new File(
+                __DIR__ . PathConstants::ORDER_UPLOAD_PATH . $this->supporting_document
             );
         }
 
@@ -47,7 +65,9 @@ class POrder extends BasePOrder
     }
 
     /**
-     *    Gestion physique de l'upload
+     *
+     * @param File $file
+     * @return string file name
      */
     public function upload($file = null)
     {
@@ -55,55 +75,42 @@ class POrder extends BasePOrder
               return;
         }
 
-        // Extension et nom de fichier
+        // extension
         $extension = $file->guessExtension();
         if (!$extension) {
               $extension = 'bin';
         }
-        $fileName = 'p-o-' . \StudioEcho\Lib\StudioEchoUtils::randomString() . '.' . $extension;
-        // $fileName = $file->getClientOriginalName();
+
+        // file name
+        $fileName = 'politizr-order-' . \StudioEcho\Lib\StudioEchoUtils::randomString() . '.' . $extension;
 
         // move takes the target directory and then the target filename to move to
-        $fileUploaded = $file->move(__DIR__ . POrder::UPLOAD_PATH, $fileName);
+        $fileUploaded = $file->move(__DIR__ . PathConstants::ORDER_UPLOAD_PATH, $fileName);
 
-        // file_name
+        // file name
         return $fileName;
-    }    
+    }
+
 
     /**
-     *    Surcharge pour gérer la suppression physique.
+     * @todo migrate physical deletion in special command instead of save
      */
-    public function setSupportingDocument($v)
+    public function setSupportingDocument($fileName)
     {
-        if (!$v) {
+        if (!$fileName) {
             $this->removeUpload();
         }
-        parent::setSupportingDocument($v);
+        parent::setSupportingDocument($fileName);
     }
 
     /**
-     *  Surcharge pour gérer la suppression physique.
-     */
-    public function postDelete(\PropelPDO $con = null)
-    {
-        $this->removeUpload();
-    }
-
-    /**
-     *     Suppression physique des fichiers.
+     *
+     * @param $uploadedSupportingDocument
      */
     public function removeUpload($uploadedSupportingDocument = true)
     {
-        if ($uploadedSupportingDocument && $this->supporting_document && file_exists(__DIR__ . POrder::UPLOAD_PATH . $this->supporting_document)) {
-            unlink(__DIR__ . POrder::UPLOAD_PATH . $this->supporting_document);
+        if ($uploadedSupportingDocument && $this->supporting_document && file_exists(__DIR__ . PathConstants::ORDER_UPLOAD_PATH . $this->supporting_document)) {
+            unlink(__DIR__ . PathConstants::ORDER_UPLOAD_PATH . $this->supporting_document);
         }
-    }
-
-
-
-    /*************** ADMIN GENERATOR VIRTUAL FIELDS HACK **************************/
-    public function getBlockInvoice() {
-    }
-    public function getBlockMail() {
     }
 }

@@ -1,23 +1,28 @@
 <?php
-namespace Politizr\Frontbundle\Twig;
+namespace Politizr\FrontBundle\Twig;
 
-use Politizr\Model\PDocument;
+use Politizr\Constant\ObjectTypeConstants;
+use Politizr\Constant\PathConstants;
+use Politizr\Constant\ReputationConstants;
+
+use Politizr\Model\PDocumentInterface;
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDReaction;
-use Politizr\Model\PDComment;
-use Politizr\Model\PRAction;
+use Politizr\Model\PDCommentInterface;
 
-use Politizr\Model\PDocumentQuery;
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
-use Politizr\Model\PDCommentQuery;
+use Politizr\Model\PDDCommentQuery;
+use Politizr\Model\PDRCommentQuery;
 use Politizr\Model\PUReputationQuery;
 use Politizr\Model\PUFollowDDQuery;
 
 use Politizr\FrontBundle\Lib\TimelineRow;
 
+use Politizr\Exception\InconsistentDataException;
+
 /**
- * Extension Twig / Gestion des documents
+ * Document's twig extension
  *
  * @author Lionel Bouzonville
  */
@@ -28,6 +33,9 @@ class PolitizrDocumentExtension extends \Twig_Extension
     private $logger;
     private $router;
     private $templating;
+    private $securityTokenStorage;
+    private $timelineService;
+    private $globalTools;
 
     private $user;
 
@@ -41,9 +49,12 @@ class PolitizrDocumentExtension extends \Twig_Extension
         $this->logger = $serviceContainer->get('logger');
         $this->router = $serviceContainer->get('router');
         $this->templating = $serviceContainer->get('templating');
+        $this->securityContext = $serviceContainer->get('security.context');
+        $this->timelineService = $serviceContainer->get('politizr.functional.timeline');
+        $this->globalTools = $serviceContainer->get('politizr.tools.global');
 
-        // Récupération du user en session
-        $token = $serviceContainer->get('security.context')->getToken();
+        // get connected user
+        $token = $this->securityContext->getToken();
         if ($token && $user = $token->getUser()) {
             $className = 'Politizr\Model\PUser';
             if ($user && $user instanceof $className) {
@@ -79,13 +90,38 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 array('is_safe' => array('html'))
             ),
             new \Twig_SimpleFilter(
+                'itemContextReaction',
+                array($this, 'itemContextReaction'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
+                'nbComments',
+                array($this, 'nbComments'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
+                'readingTime',
+                array($this, 'readingTime'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
                 'docTags',
                 array($this, 'docTags'),
                 array('is_safe' => array('html'))
             ),
             new \Twig_SimpleFilter(
+                'excerpt',
+                array($this, 'excerpt'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
                 'nbViewsFormat',
                 array($this, 'nbViewsFormat'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
+                'linkParentReaction',
+                array($this, 'linkParentReaction'),
                 array('is_safe' => array('html'))
             ),
             new \Twig_SimpleFilter(
@@ -137,33 +173,55 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
 
     /* ######################################################################################################## */
-    /*                                             FILTRES                                                      */
+    /*                                             FILTERS                                                      */
     /* ######################################################################################################## */
 
     /**
-     *  Image d'en-tête d'un document
+     * Load an <img> html tag with the image of document and apply it a filter.
      *
-     *  @param $document          PDocument
-     *
-     *  @return html
+     * @param PDocumentInterface $document
+     * @param string $filterName
+     * @param boolean $withShadow
+     * @param boolean $email
+     * @return html
      */
-    public function image($document, $filterName = 'debate_header')
+    public function image(PDocumentInterface $document, $filterName = 'debate_header', $withShadow = true, $email = false)
     {
         // $this->logger->info('*** image');
         // $this->logger->info('$document = '.print_r($document, true));
 
-        $path = 'bundles/politizrfront/images/default_debate.jpg';
-        if ($fileName = $document->getFileName()) {
-            $path = 'uploads/documents/'.$fileName;
+        switch ($document->getType()) {
+            case ObjectTypeConstants::TYPE_DEBATE:
+                $uploadWebPath = PathConstants::DEBATE_UPLOAD_WEB_PATH;
+                $fileName = $document->getFileName();
+                $path = $uploadWebPath.$fileName;
+                if (empty($fileName)) {
+                    $path = PathConstants::DEBATE_DEFAULT_PATH . 'default_debate.jpg';
+                }
+                break;
+            case ObjectTypeConstants::TYPE_REACTION:
+                $uploadWebPath = PathConstants::REACTION_UPLOAD_WEB_PATH;
+                $fileName = $document->getFileName();
+                $path = $uploadWebPath.$fileName;
+                if (empty($fileName)) {
+                    $path = PathConstants::REACTION_DEFAULT_PATH . 'default_reaction.jpg';
+                }
+                break;
+        }
+
+        $template= '_imageHeader.html.twig';
+        if ($email) {
+            $template = '_imageEmail.html.twig';
         }
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Fragment\\Global:Image.html.twig',
+            'PolitizrFrontBundle:Document:'.$template,
             array(
-                'document' => $document,
+                'title' => $document->getTitle(),
                 'path' => $path,
                 'filterName' => $filterName,
+                'withShadow' => $withShadow
             )
         );
 
@@ -172,73 +230,155 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
 
     /**
-     *  Nombre de réactions d'un document.
+     * Document's number of reactions
      *
-     *  pour un débat: nombre de réaction total / pour une réaction: nombre de réactions filles
-     *
-     *  @param $document          PDocument
-     *
-     *  @return html
+     * @param PDocumentInterface $document
+     * @return html
      */
-    public function nbReactions($document)
+    public function nbReactions(PDocumentInterface $document)
     {
         // $this->logger->info('*** nbReactions');
         // $this->logger->info('$document = '.print_r($document, true));
 
         $nbReactions = 0;
-        switch(get_class($document)) {
-            case PDocument::TYPE_DEBATE:
+        switch ($document->getType()) {
+            case ObjectTypeConstants::TYPE_DEBATE:
                 $nbReactions = $document->countReactions(true, true);
-                $url = $this->router->generate('DebateFeed', array('slug' => $document->getSlug()));
                 break;
-            case PDocument::TYPE_REACTION:
-                $nbReactions = $document->countChildrenReactions(true, true);
-                $url = $this->router->generate('ReactionDetail', array('slug' => $document->getSlug()));
+            case ObjectTypeConstants::TYPE_REACTION:
+                // 1st level only:
+                // $nbReactions = $document->countChildrenReactions(true, true);
+                $nbReactions = $document->countDescendantsReactions(true, true);
                 break;
         }
 
-        if ($nbReactions === 0) {
-            $reactions = 'Aucune réaction';
-        } elseif ($nbReactions === 1) {
-            $reactions = '1 réaction';
+        if (0 === $nbReactions) {
+            $html = 'Aucune réaction';
+        } elseif (1 === $nbReactions) {
+            $html = '1 réaction';
         } else {
-            $reactions = $nbReactions.' réactions';
+            $html = $nbReactions.' réactions';
+        }
+
+        return $html;
+    }
+
+    /**
+     * Render the item reaction context
+     *
+     * @param PDReaction $reaction
+     * @param boolean $debateContext
+     * @return string
+     */
+    public function itemContextReaction(PDReaction $reaction, $debateContext)
+    {
+        $parentReaction = null;
+        if ($reaction->getLevel() > 1) {
+            $parentReaction = $reaction->getParent();
+        }
+        $parentDebate = $reaction->getDebate();
+
+        $debateIsFollowed = false;
+        if ($this->user) {
+            $debateIsFollowed = $parentDebate->isFollowedBy($this->user->getId());
         }
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Fragment\\Global:NbReactions.html.twig',
+            'PolitizrFrontBundle:Reaction:_itemContext.html.twig',
             array(
-                'document' => $document,
-                'url' => $url,
-                'nbReactions' => $nbReactions,
-                'reactions' => $reactions,
+                'reaction' => $reaction,
+                'parentReaction' => $parentReaction,
+                'parentDebate' => $parentDebate,
+                'debateIsFollowed' => $debateIsFollowed,
+                'debateContext' => $debateContext
             )
         );
 
         return $html;
-
     }
 
+    /**
+     * Nombre de commentaires d'un document.
+     *
+     * @param PDocumentInterface $document
+     * @param integer $paragraphNo
+     * @return string
+     */
+    public function nbComments(PDocumentInterface $document, $paragraphNo = null)
+    {
+        // $this->logger->info('*** nbComments');
+        // $this->logger->info('$document = '.print_r($document, true));
+
+        $nbComments = $document->countComments(true, $paragraphNo);
+
+        if (null === $paragraphNo) {
+            // Affichage globale
+            if (0 === $nbComments) {
+                $html = 'Aucun commentaire';
+            } elseif (1 === $nbComments) {
+                $html = '1 commentaire';
+            } else {
+                $html = $nbComments.' commentaires';
+            }
+        } else {
+            // Affichage par paragraphe
+            if (0 === $nbComments) {
+                $html = '';
+            } else {
+                $html = $nbComments;
+            }
+        }
+
+        return $html;
+    }
 
     /**
-     * Tags d'un débat
+     * Reading time of a document
      *
-     * @param \Politizr\Model\PDDebate $debate      Objet
-     * @param integer $tagTypeId                    Type de tag
-     * @return string                               Structure HTML
+     * @param PDocumentInterface $document
+     * @return string
      */
-    public function docTags($debate, $tagTypeId = null)
+    public function readingTime(PDocumentInterface $document)
+    {
+        // $this->logger->info('*** readingTime');
+        // $this->logger->info('$document = '.print_r($document, true));
+
+        $nbWords = $this->globalTools->countWords($document->getDescription());
+
+        // https://medium.com/the-story/read-time-and-you-bc2048ab620c
+        // average reading time = 275WPM
+        $minutes = round($nbWords/275);
+
+        if (0 == $minutes) {
+            $html = '< 1 minute';
+        } elseif (1 == $minutes) {
+            $html = '1 minute';
+        } else {
+            $html = sprintf('%d minutes', $minutes);
+        }
+
+        return $html;
+    }
+
+    /**
+     * Debate's tags
+     *
+     * @param PDocumentInterface $document
+     * @param integer $tagTypeId
+     * @return string
+     */
+    public function docTags(PDocumentInterface $document, $tagTypeId = null)
     {
         // $this->logger->info('*** doctags');
-        // $this->logger->info('$debate = '.print_r($debate, true));
+        // $this->logger->info('$document = '.print_r($document, true));
         // $this->logger->info('$tagTypeId = '.print_r($tagTypeId, true));
 
-        $tags = $debate->getTags($tagTypeId);
+        $tags = $document->getTags($tagTypeId);
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Fragment\\Tag:glListRead.html.twig',
+            'PolitizrFrontBundle:Tag:_list.html.twig',
             array(
                 'tags' => $tags
             )
@@ -248,11 +388,38 @@ class PolitizrDocumentExtension extends \Twig_Extension
     }
 
     /**
-     *  Nombre de vues d'un document
+     * HTML text excerpt of X first paragraphs
      *
-     *  @param $nbViews         integer
+     * @param string $text
+     * @param integer $nbParagraph
+     * @return string
+     */
+    public function excerpt($text, $nbParagraph = 1)
+    {
+        // $this->logger->info('*** excerpt');
+        // $this->logger->info('$document = '.print_r($text, true));
+        // $this->logger->info('$nbParagraph = '.print_r($nbParagraph, true));
+
+        // Paragraphs explode
+        $paragraphs = $this->globalTools->explodeParagraphs($text);
+
+        // Extract the first nbParagrpah
+        $paragraphs = array_slice($paragraphs, 0, $nbParagraph);
+
+        // Paragraphs to string reconstruction
+        $html = '';
+        foreach ($paragraphs as $paragraph) {
+            $html .= sprintf('<p>%s</p>', $paragraph);
+        }
+
+        return $html;
+    }
+
+    /**
+     * Nombre de vues d'un document
      *
-     *  @return html
+     * @param int $nbViews
+     * @return html
      */
     public function nbViewsFormat($nbViews)
     {
@@ -279,12 +446,55 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
     }
 
+
     /**
-     *  Affiche & active / désactive les Note + / Note -
+     * Affiche le lien vers le document parent (réaction ou débat) de la réaction courante
      *
-     *  @param $nbViews         integer
+     * @param PDReaction $reaction
+     * @param boolean $edit
+     * @return string
+     */
+    public function linkParentReaction(PDReaction $reaction, $edit = false)
+    {
+        // $this->logger->info('*** linkParentReaction');
+        // $this->logger->info('$debate = '.print_r($reaction, true));
+
+        if ($edit) {
+            if (null == $reaction->getParentReactionId()) {
+                $parent = $reaction->getDebate();
+                $url = $this->router->generate('DebateDetail', array('slug' => $parent->getSlug()));
+            } else {
+                $parent = PDReactionQuery::create()->findPk($reaction->getParentReactionId());
+                $url = $this->router->generate('ReactionDetail', array('slug' => $parent->getSlug()));
+            }
+        } else {
+            if ($reaction->getLevel() > 1) {
+                $parent = $reaction->getParent();
+                $url = $this->router->generate('ReactionDetail', array('slug' => $parent->getSlug()));
+            } else {
+                $parent = $reaction->getDebate();
+                $url = $this->router->generate('DebateDetail', array('slug' => $parent->getSlug()));
+            }
+        }
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Reaction:_linkParentReaction.html.twig',
+            array(
+                'parent' => $parent,
+                'url' => $url,
+            )
+        );
+
+        return $html;
+
+    }
+
+    /**
+     * Affiche & active / désactive les Note + / Note -
      *
-     *  @return html
+     * @param PDDebate $debate
+     * @return html
      */
     public function linkNoteDebate(PDDebate $debate)
     {
@@ -294,21 +504,29 @@ class PolitizrDocumentExtension extends \Twig_Extension
         $pos = false;
         $neg = false;
 
+        $score = null;
+        $isAuthorizedToNotateNeg = false;
+        $isOwnDocument = false;
+        $hasAlreadyNotePos = false;
+        $hasAlreadyNoteNeg = false;
+
         if ($this->user) {
-            $document = PDocumentQuery::create()
+            $ownDebate = PDDebateQuery::create()
                 ->filterByPUserId($this->user->getId())
                 ->filterById($debate->getId())
                 ->findOne();
 
-            if ($document) {
+            if ($ownDebate) {
                 $pos = true;
                 $neg = true;
+
+                $isOwnDocument = true;
             } else {
                 $queryPos = PUReputationQuery::create()
-                    ->filterByPRActionId(PRAction::ID_D_AUTHOR_DEBATE_NOTE_POS)
+                    ->filterByPRActionId(ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_NOTE_POS)
                     ->filterByPObjectName('Politizr\Model\PDDebate');
                 $queryNeg = PUReputationQuery::create()
-                    ->filterByPRActionId(PRAction::ID_D_AUTHOR_DEBATE_NOTE_NEG)
+                    ->filterByPRActionId(ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_NOTE_NEG)
                     ->filterByPObjectName('Politizr\Model\PDDebate');
 
                 $notePos = $queryPos->filterByPUserId($this->user->getId())
@@ -316,6 +534,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
                     ->findOne();
                 if ($notePos) {
                     $pos = true;
+                    $hasAlreadyNotePos = true;
                 }
 
                 $noteNeg = $queryNeg->filterByPUserId($this->user->getId())
@@ -323,23 +542,35 @@ class PolitizrDocumentExtension extends \Twig_Extension
                     ->findOne();
                 if ($noteNeg) {
                     $neg = true;
+                    $hasAlreadyNoteNeg = true;
+                }
+
+                // min score management
+                $score = $this->user->getReputationScore();
+                if ($score >= ReputationConstants::ACTION_DEBATE_NOTE_NEG) {
+                    $isAuthorizedToNotateNeg = true;
                 }
             }
         }
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Fragment\\Reputation:Notation.html.twig',
+            'PolitizrFrontBundle:Reputation:_notation.html.twig',
             array(
                 'object' => $debate,
-                'type' => PDocument::TYPE_DEBATE,
+                'type' => ObjectTypeConstants::TYPE_DEBATE,
                 'pos' => $pos,
                 'neg' => $neg,
+                'score' => $score,
+                'minScore' => ReputationConstants::ACTION_DEBATE_NOTE_NEG,
+                'isAuthorizedToNotateNeg' => $isAuthorizedToNotateNeg,
+                'isOwnDocument' => $isOwnDocument,
+                'hasAlreadyNotePos' => $hasAlreadyNotePos,
+                'hasAlreadyNoteNeg' => $hasAlreadyNoteNeg,
             )
         );
 
         return $html;
-
     }
 
     /**
@@ -357,21 +588,29 @@ class PolitizrDocumentExtension extends \Twig_Extension
         $pos = false;
         $neg = false;
 
+        $score = null;
+        $isAuthorizedToNotateNeg = false;
+        $isOwnDocument = false;
+        $hasAlreadyNotePos = false;
+        $hasAlreadyNoteNeg = false;
+
         if ($this->user) {
-            $document = PDocumentQuery::create()
+            $ownReaction = PDReactionQuery::create()
                 ->filterByPUserId($this->user->getId())
                 ->filterById($reaction->getId())
                 ->findOne();
 
-            if ($document) {
+            if ($ownReaction) {
                 $pos = true;
                 $neg = true;
+
+                $isOwnDocument = true;
             } else {
                 $queryPos = PUReputationQuery::create()
-                    ->filterByPRActionId(PRAction::ID_D_AUTHOR_REACTION_NOTE_POS)
+                    ->filterByPRActionId(ReputationConstants::ACTION_ID_D_AUTHOR_REACTION_NOTE_POS)
                     ->filterByPObjectName('Politizr\Model\PDReaction');
                 $queryNeg = PUReputationQuery::create()
-                    ->filterByPRActionId(PRAction::ID_D_AUTHOR_REACTION_NOTE_NEG)
+                    ->filterByPRActionId(ReputationConstants::ACTION_ID_D_AUTHOR_REACTION_NOTE_NEG)
                     ->filterByPObjectName('Politizr\Model\PDReaction');
 
                 $notePos = $queryPos->filterByPUserId($this->user->getId())
@@ -379,6 +618,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
                     ->findOne();
                 if ($notePos) {
                     $pos = true;
+                    $hasAlreadyNotePos = true;
                 }
 
                 $noteNeg = $queryNeg->filterByPUserId($this->user->getId())
@@ -386,18 +626,31 @@ class PolitizrDocumentExtension extends \Twig_Extension
                     ->findOne();
                 if ($noteNeg) {
                     $neg = true;
+                    $hasAlreadyNoteNeg = true;
+                }
+
+                // min score management
+                $score = $this->user->getReputationScore();
+                if ($score >= ReputationConstants::ACTION_REACTION_NOTE_NEG) {
+                    $isAuthorizedToNotateNeg = true;
                 }
             }
         }
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Fragment\\Reputation:Notation.html.twig',
+            'PolitizrFrontBundle:Reputation:_notation.html.twig',
             array(
                 'object' => $reaction,
-                'type' => PDocument::TYPE_REACTION,
+                'type' => ObjectTypeConstants::TYPE_REACTION,
                 'pos' => $pos,
                 'neg' => $neg,
+                'score' => $score,
+                'minScore' => ReputationConstants::ACTION_REACTION_NOTE_NEG,
+                'isAuthorizedToNotateNeg' => $isAuthorizedToNotateNeg,
+                'isOwnDocument' => $isOwnDocument,
+                'hasAlreadyNotePos' => $hasAlreadyNotePos,
+                'hasAlreadyNoteNeg' => $hasAlreadyNoteNeg,
             )
         );
 
@@ -412,7 +665,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
      *
      *  @return html
      */
-    public function linkNoteComment(PDComment $comment)
+    public function linkNoteComment(PDCommentInterface $comment)
     {
         // $this->logger->info('*** linkNoteComment');
         // $this->logger->info('$comment = '.print_r($comment, true));
@@ -420,8 +673,26 @@ class PolitizrDocumentExtension extends \Twig_Extension
         $pos = false;
         $neg = false;
 
+        $score = null;
+        $isAuthorizedToNotateNeg = false;
+        $isOwnDocument = false;
+        $hasAlreadyNotePos = false;
+        $hasAlreadyNoteNeg = false;
+
         if ($this->user) {
-            $document = PDocumentQuery::create()
+            switch ($comment->getType()) {
+                case ObjectTypeConstants::TYPE_DEBATE_COMMENT:
+                    $type = ObjectTypeConstants::TYPE_DEBATE_COMMENT;
+                    $query = PDDCommentQuery::create();
+                    break;
+                case ObjectTypeConstants::TYPE_REACTION_COMMENT:
+                    $type = ObjectTypeConstants::TYPE_REACTION_COMMENT;
+                    $query = PDRCommentQuery::create();
+                    break;
+                default:
+                    throw new InconsistentDataException('Object type not managed');
+            }
+            $document = $query
                 ->filterByPUserId($this->user->getId())
                 ->filterById($comment->getId())
                 ->findOne();
@@ -429,19 +700,22 @@ class PolitizrDocumentExtension extends \Twig_Extension
             if ($document) {
                 $pos = true;
                 $neg = true;
+
+                $isOwnDocument = true;
             } else {
                 $queryPos = PUReputationQuery::create()
-                    ->filterByPRActionId(PRAction::ID_D_AUTHOR_COMMENT_NOTE_POS)
-                    ->filterByPObjectName('Politizr\Model\PDComment');
+                    ->filterByPRActionId(ReputationConstants::ACTION_ID_D_AUTHOR_COMMENT_NOTE_POS)
+                    ->filterByPObjectName($comment->getType());
                 $queryNeg = PUReputationQuery::create()
-                    ->filterByPRActionId(PRAction::ID_D_AUTHOR_COMMENT_NOTE_NEG)
-                    ->filterByPObjectName('Politizr\Model\PDComment');
+                    ->filterByPRActionId(ReputationConstants::ACTION_ID_D_AUTHOR_COMMENT_NOTE_NEG)
+                    ->filterByPObjectName($comment->getType());
 
                 $notePos = $queryPos->filterByPUserId($this->user->getId())
                     ->filterByPObjectId($comment->getId())
                     ->findOne();
                 if ($notePos) {
                     $pos = true;
+                    $hasAlreadyNotePos = true;
                 }
 
                 $noteNeg = $queryNeg->filterByPUserId($this->user->getId())
@@ -449,18 +723,31 @@ class PolitizrDocumentExtension extends \Twig_Extension
                     ->findOne();
                 if ($noteNeg) {
                     $neg = true;
+                    $hasAlreadyNoteNeg = true;
+                }
+
+                // min score management
+                $score = $this->user->getReputationScore();
+                if ($score >= ReputationConstants::ACTION_COMMENT_NOTE_NEG) {
+                    $isAuthorizedToNotateNeg = true;
                 }
             }
         }
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Fragment\\Reputation:Notation.html.twig',
+            'PolitizrFrontBundle:Reputation:_notation.html.twig',
             array(
                 'object' => $comment,
-                'type' => PDocument::TYPE_COMMENT,
+                'type' => $comment->getType(),
                 'pos' => $pos,
                 'neg' => $neg,
+                'score' => $score,
+                'minScore' => ReputationConstants::ACTION_COMMENT_NOTE_NEG,
+                'isAuthorizedToNotateNeg' => $isAuthorizedToNotateNeg,
+                'isOwnDocument' => $isOwnDocument,
+                'hasAlreadyNotePos' => $hasAlreadyNotePos,
+                'hasAlreadyNoteNeg' => $hasAlreadyNoteNeg,
             )
         );
 
@@ -469,41 +756,44 @@ class PolitizrDocumentExtension extends \Twig_Extension
     }
 
     /**
-     *  Affiche le lien "Suivre" / "Ne plus suivre" / "M'inscrire" suivant le cas
+     * Follow / unfollow debate
      *
-     *  @param $debate       PDDebate
-     *
-     *  @return string
+     * @param PDDebate $debate
+     * @return string
      */
     public function linkSubscribeDebate(PDDebate $debate)
     {
         // $this->logger->info('*** linkSubscribeDebate');
         // $this->logger->info('$debate = '.print_r($debate, true));
 
+        $owner = false;
         $follower = false;
         if ($this->user) {
-            $follow = PUFollowDDQuery::create()
-                ->filterByPUserId($this->user->getId())
-                ->filterByPDDebateId($debate->getId())
-                ->findOne();
-            
-            if ($follow) {
-                $follower = true;
+            if ($debate->isOwner($this->user->getId())) {
+                $owner = true;
+            } else {
+                $follow = PUFollowDDQuery::create()
+                    ->filterByPUserId($this->user->getId())
+                    ->filterByPDDebateId($debate->getId())
+                    ->findOne();
+                
+                if ($follow) {
+                    $follower = true;
+                }
             }
         }
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Fragment\\Follow:Subscribe.html.twig',
+            'PolitizrFrontBundle:Follow:_subscribeDebate.html.twig',
             array(
                 'object' => $debate,
-                'type' => PDocument::TYPE_DEBATE,
+                'owner' => $owner,
                 'follower' => $follower
             )
         );
 
         return $html;
-
     }
 
     /**
@@ -543,90 +833,45 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
     }
 
-
-
     /* ######################################################################################################## */
     /*                                             FONCTIONS                                                    */
     /* ######################################################################################################## */
 
     /**
-     *  Rendu d'une ligne de la timeline en fonction du type
+     * Render an item timeline row
      *
-     * @param $timelineRow      Objet TimelineRow
-     *
+     * @param TimelineRow $timelineRow
+     * @param boolean $debateContext
      * @return string
      */
-    public function timelineRow(TimelineRow $timelineRow)
+    public function timelineRow(TimelineRow $timelineRow, $debateContext = false)
     {
         $this->logger->info('*** timelineRow');
         $this->logger->info('$timelineRow = '.print_r($timelineRow, true));
 
         $html = '';
+
         switch ($timelineRow->getType()) {
-            case PDocument::TYPE_DEBATE:
-                $debate = PDDebateQuery::create()->findPk($timelineRow->getId());
-                $html = $this->templating->render(
-                    'PolitizrFrontBundle:Fragment\\Debate:TimelineRow.html.twig',
-                    array(
-                        'debate' => $debate
-                    )
-                );
+            case ObjectTypeConstants::TYPE_DEBATE:
+                $html = $this->timelineService->generateRenderingItemDebate($timelineRow->getId(), $debateContext);
+
                 break;
-            case PDocument::TYPE_REACTION:
-                $reaction = PDReactionQuery::create()->findPk($timelineRow->getId());
+            case ObjectTypeConstants::TYPE_REACTION:
+                $html = $this->timelineService->generateRenderingItemReaction($timelineRow->getId(), $debateContext);
 
-                // MAJ de variables spécifiques aux réactions
-                $parentReaction = null;
-                $isParentReactionMine = false;
-                $isParentDebateMine = false;
-                if ($reaction->getLevel() > 1) {
-                    $parentReaction = $reaction->getParent();
-                    if ($reaction->getDebate() && $this->user->getId() == $reaction->getDebate()->getPUserId()) {
-                        $isParentDebateMine = true;
-                    }
-                    if ($this->user->getId() == $parentReaction->getPUserId()) {
-                        $isParentReactionMine = true;
-                    }
-                } elseif ($reaction->getDebate() && $this->user->getId() == $reaction->getDebate()->getPUserId()) {
-                    $isParentDebateMine = true;
-                }
-
-                $html = $this->templating->render(
-                    'PolitizrFrontBundle:Fragment\\Reaction:TimelineRow.html.twig',
-                    array(
-                        'reaction' => $reaction,
-                        'parentReaction' => $parentReaction,
-                        'isParentReactionMine' => $isParentReactionMine,
-                        'isParentDebateMine' => $isParentDebateMine,
-                    )
-                );
                 break;
-            case PDocument::TYPE_COMMENT:
-                $comment = PDCommentQuery::create()->findPk($timelineRow->getId());
+            case ObjectTypeConstants::TYPE_DEBATE_COMMENT:
+                $html = $this->timelineService->generateRenderingItemDebateComment($timelineRow->getId(), $debateContext);
 
-                // MAJ de variables spécifiques aux commentaires
-                $isParentMine = false;
-                if ($comment->getPDocument() && $this->user->getId() == $comment->getPDocument()->getPUserId()) {
-                    $isParentMine = true;
-                }
+                break;
+            case ObjectTypeConstants::TYPE_REACTION_COMMENT:
+                $html = $this->timelineService->generateRenderingItemReactionComment($timelineRow->getId(), $debateContext);
 
-                $html = $this->templating->render(
-                    'PolitizrFrontBundle:Fragment\\Comment:TimelineRow.html.twig',
-                    array(
-                        'comment' => $comment,
-                        'isParentMine' => $isParentMine,
-                    )
-                );
                 break;
         }
 
         return $html;
-
     }
-
-
-
-
 
     public function getName()
     {

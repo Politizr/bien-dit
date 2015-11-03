@@ -13,6 +13,7 @@ use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
 use Glorpen\Propel\PropelBundle\Events\DetectOMClassEvent;
 use Glorpen\Propel\PropelBundle\Events\PeerEvent;
 use Politizr\Model\PDDTaggedTPeer;
+use Politizr\Model\PDRTaggedTPeer;
 use Politizr\Model\PTTagTypePeer;
 use Politizr\Model\PTag;
 use Politizr\Model\PTagPeer;
@@ -412,6 +413,9 @@ abstract class BasePTagPeer
         // Invalidate objects in PDDTaggedTPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PDDTaggedTPeer::clearInstancePool();
+        // Invalidate objects in PDRTaggedTPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PDRTaggedTPeer::clearInstancePool();
     }
 
     /**

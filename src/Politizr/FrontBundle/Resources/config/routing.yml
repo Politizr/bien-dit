@@ -7,6 +7,10 @@ OAuth:
     resource: "./routing/SecurityOAuth.yml"
     prefix:   /oauth/
 
+# Security
+Security:
+    resource: "./routing/Security.yml"
+
 # PUBLIQUE
 Public:
     resource: "./routing/Public.yml"
@@ -15,62 +19,19 @@ Public:
 Search:
     resource: "./routing/Search.yml"
 
-# LOGIN & INSCRIPTION & ACCOUNT
-User:
-    resource: "./routing/Inscription.yml"
-
 # DOCUMENT
 Document:
     resource: "./routing/Document.yml"
 
-# CITOYEN
-Citizen:
-    resource: "./routing/Citizen.yml"
-
-# ELU
-Elected:
-    resource: "./routing/Elected.yml"
-
-################################################################################
-#				ROUTING XHR 
-################################################################################
-
-# RECHERCHE
-XhrSearch:
-    resource: "./routing/xhr/Search.yml"
-
-# LOGIN & INSCRIPTION & ACCOUNT
-XhrInscription:
-    resource: "./routing/xhr/Inscription.yml"
-
-# SUIVI DEBAT / USER
-XhrFollow:
-    resource: "./routing/xhr/Follow.yml"
-
-# NOTATION DEBAT / REACTION / COMMENTAIRE
-XhrNotation:
-    resource: "./routing/xhr/Notation.yml"
-
-# GESTION TAGS
-XhrTag:
-    resource: "./routing/xhr/Tag.yml"
-
-# GESTION INFOS MON PROFIL
-XhrUserProfile:
-    resource: "./routing/xhr/UserProfile.yml"
-
-# GESTION INFOS PERSOS
-XhrUserPerso:
-    resource: "./routing/xhr/UserPerso.yml"
-
-# GESTION INFOS SOUSCRIPTION NOTIFICATIONS
-XhrUserNotification:
-    resource: "./routing/xhr/UserNotification.yml"
-
-# GESTION LISTING
-XhrListing:
-    resource: "./routing/xhr/Listing.yml"
-
 # DOCUMENT
-XhrDocument:
-    resource: "./routing/xhr/Document.yml"
+User:
+    resource: "./routing/User.yml"
+
+# GENERIC XHR
+XhrGeneric:
+    pattern:  /xhr/{xhrRoute}/{xhrService}/{xhrMethod}.{xhrType}.json
+    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrGeneric:xhr }
+    requirements:
+        _method:        POST
+        xhrRoute:       ".+"
+        xhrType:        \d

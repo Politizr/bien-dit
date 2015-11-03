@@ -4,50 +4,42 @@ namespace Politizr\Model;
 
 use Politizr\Model\om\BasePTagQuery;
 
-
-use Politizr\Model\PTag;
-use Politizr\Model\PTagType;
-
+/**
+ * Tag query
+ *
+ * @author Lionel Bouzonville
+ */
 class PTagQuery extends BasePTagQuery
 {
+    /* ######################################################################################################## */
+    /*                                              FILTERBY IF                                                 */
+    /* ######################################################################################################## */
+
     /**
-     * Création d'un nouveau tag.
-     * Pas de création si un slug équivalent est trouvé pour le même type.
      *
-     * @param string $title     Titre
-     * @param integer $typeId   ID Type
-     * @param boolean $online   En ligne
-     * @return integer          ID du nouveau tag, ou false si aucun tag créé
+     * @param boolean $online
+     * @return PTagQuery
      */
-    public function addTag($title = '', $typeId = null, $userId = null, $online = true)
+    public function filterIfOnline($online = null)
     {
-        $slug = \StudioEcho\Lib\StudioEchoUtils::generateSlug($title);
-        $tag = PTagQuery::create()
-                    // ->_if($typeId)
-                    //     ->filterByPTTagTypeId($typeId)
-                    // ->_endif()
-                    ->filterBySlug($slug)
-                    ->findOne();
+        return $this
+            ->_if(null !== $online)
+                ->filterByOnline($online)
+            ->_endif();
+    }
 
-        if ($tag) {
-            return false;
-        } else {
-            // Création du nouveau tag
-            $tag = new PTag();
-
-            // Type non défini > tag thématique
-            if (null === $typeId) {
-                $typeId = PTTagType::TYPE_THEME;
-            }
-
-            $tag->setTitle($title);
-            $tag->setPTTagTypeId($typeId);
-            $tag->setPUserId($userId);
-            $tag->setOnline($online);
-
-            $tag->save();
-        }
-
-        return $tag->getId();
+    /**
+     *
+     * @param boolean $typeId
+     * @return PTagQuery
+     */
+    public function filterIfTypeId($typeId = null)
+    {
+        return $this
+            ->_if(null !== $typeId)
+                ->filterByPTTagTypeId($typeId)
+            ->_else()
+                ->orderByPTTagTypeId()
+            ->_endif();
     }
 }

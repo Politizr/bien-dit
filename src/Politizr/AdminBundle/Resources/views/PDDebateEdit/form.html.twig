@@ -1,19 +1,16 @@
 {% extends_admingenerated "PolitizrAdminBundle:PDDebateEdit:form.html.twig" %}
 
-{# Blocs tags #}
-{% block form_block_tags_geo %}
-    {{ adminDebateTags(PDDebate, constant('\\Politizr\\Model\\PTTagType::TYPE_GEO'), 1, 'edit') }}
+{# Bloc tags #}
+{% block form_row_block_tags %}
+    {{ adminDebateTags(PDDebate, null, 1, true) }}
 {% endblock %}
 
-{% block form_block_tags_theme %}
-    {{ adminDebateTags(PDDebate, constant('\\Politizr\\Model\\PTTagType::TYPE_THEME'), 2, 'edit') }}
-{% endblock %}
+{% block object_actions_script_container %}
+    <script>
+        var nbZones = 2;
+        var xhrRoute = ADMIN_ROUTE_TAG_LISTING;
+    </script>
 
-{# Bloc réactions #}
-{% block form_block_reactions %}
-    {{ adminDebateReactions(PDDebate, 'edit') }}
-{% endblock %}
-
-{% block generic_actions_script %}
-    {% include 'PolitizrAdminBundle:Fragment:tags.js.twig' with { 'nbZones': 2 } %}
-{% endblock %}
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/politizr/tag/accentMap.js') }}"></script>    
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/politizr/tag/editTags.js') }}"></script>  
+{% endblock object_actions_script_container %}

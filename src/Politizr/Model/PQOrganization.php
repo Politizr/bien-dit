@@ -4,27 +4,28 @@ namespace Politizr\Model;
 
 use Politizr\Model\om\BasePQOrganization;
 
+use Politizr\Constant\PathConstants;
+
+/**
+ * Organization object model
+ *
+ * @author Lionel Bouzonville
+ */
 class PQOrganization extends BasePQOrganization
 {
-    // ************************************************************************************ //
-    //                                        CONSTANTES
-    // ************************************************************************************ //
-      const UPLOAD_PATH = '/../../../web/uploads/organizations/';
-      const UPLOAD_WEB_PATH = '/uploads/organizations/';
-
-    // *****************************  OBJET / STRING  ****************** //
-
-
+    // simple upload management
+    public $uploadedFileName;
 
     /**
      *
+     * @return string
      */
     public function __toString()
     {
         return $this->getInitials();
     }
 
-     /**
+    /**
      * Override to manage accented characters
      * @return string
      */
@@ -34,38 +35,50 @@ class PQOrganization extends BasePQOrganization
         $slug = $this->cleanupSlugPart($toSlug);
         return $slug;
     }
-    // ************************************************************************************ //
-    //                                        METHODES ADMIN GENERATOR
-    // ************************************************************************************ //
+
+    /**
+     * @todo: gestion d'une exception spécifique à ES
+     *
+     */
+    public function postDelete(\PropelPDO $con = null)
+    {
+        // @todo refactor to command
+        $this->removeUpload();
+    }
 
 
+    /* ######################################################################################################## */
+    /*                                      SIMPLE UPLOAD MANAGEMENT                                            */
+    /* ######################################################################################################## */
 
-    // ******************* SIMPLE UPLOAD MANAGEMENT **************** //
-    // https://github.com/avocode/FormExtensions/blob/master/Resources/doc/single-upload/overview.md
-
-    // Colonnes virtuelles / fichiers
-    public $uploadedFileName;
-    public function setUploadedFileName($uploadedFileName) {
+    /**
+     *
+     * @param string $uploadedFileName
+     */
+    public function setUploadedFileName($uploadedFileName)
+    {
         $this->uploadedFileName = $uploadedFileName;
     }
 
     /**
      *
+     * @return string
      */
     public function getUploadedFileNameWebPath()
     {
-        return PQOrganization::UPLOAD_WEB_PATH . $this->file_name;
+        return PathConstants::ORGANIZATION_UPLOAD_WEB_PATH . $this->file_name;
     }
     
     /**
-     * 
+     *
+     * @return File
      */
     public function getUploadedFileName()
     {
         // inject file into property (if uploaded)
         if ($this->file_name) {
-            return new \Symfony\Component\HttpFoundation\File\File(
-                __DIR__ . PQOrganization::UPLOAD_PATH . $this->file_name
+            return new File(
+                __DIR__ . PathConstants::ORGANIZATION_UPLOAD_PATH . $this->file_name
             );
         }
 
@@ -73,55 +86,51 @@ class PQOrganization extends BasePQOrganization
     }
 
     /**
-     *  Gestion physique de l'upload
+     *
+     * @param File $file
+     * @return string file name
      */
     public function upload($file = null)
     {
-          if (null === $file) {
+        if (null === $file) {
               return;
-          }
+        }
 
-        // Extension et nom de fichier
+        // extension
         $extension = $file->guessExtension();
         if (!$extension) {
               $extension = 'bin';
         }
-        $fileName = 'pol-' . \StudioEcho\Lib\StudioEchoUtils::randomString() . '.' . $extension;
+
+        // file name
+        $fileName = 'politizr-orga-' . \StudioEcho\Lib\StudioEchoUtils::randomString() . '.' . $extension;
 
         // move takes the target directory and then the target filename to move to
-        $fileUploaded = $file->move(__DIR__ . PQOrganization::UPLOAD_PATH, $fileName);
+        $fileUploaded = $file->move(__DIR__ . PathConstants::ORGANIZATION_UPLOAD_PATH, $fileName);
 
-        // file_name
+        // file name
         return $fileName;
-    }    
-
-    /**
-     *    Surcharge pour gérer la suppression physique.
-     */
-    public function setFileName($v)
-    {
-          if (!$v) {
-              $this->removeUpload();
-          }
-          parent::setFileName($v);
     }
 
     /**
-     *  Surcharge pour gérer la suppression physique.
+     * @todo migrate physical deletion in special command instead of save
      */
-    public function postDelete(\PropelPDO $con = null)
+    public function setFileName($fileName)
     {
-         $this->removeUpload();
+        if (null !== $fileName) {
+            $this->removeUpload();
+        }
+        parent::setFileName($fileName);
     }
 
     /**
-     *     Suppression physique des fichiers.
+     *
+     * @param $uploadedFileName
      */
     public function removeUpload($uploadedFileName = true)
     {
-          if ($uploadedFileName && $this->file_name && file_exists(__DIR__ . PQOrganization::UPLOAD_PATH . $this->file_name)) {
-                unlink(__DIR__ . PQOrganization::UPLOAD_PATH . $this->file_name);
-          }
+        if ($uploadedFileName && $this->file_name && file_exists(__DIR__ . PathConstants::ORGANIZATION_UPLOAD_PATH . $this->file_name)) {
+            unlink(__DIR__ . PathConstants::ORGANIZATION_UPLOAD_PATH . $this->file_name);
+        }
     }
-
 }

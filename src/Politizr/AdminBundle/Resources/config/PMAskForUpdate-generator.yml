@@ -1,0 +1,70 @@
+generator:                  admingenerator.generator.propel
+params:
+    model:                  Politizr\Model\PMAskForUpdate
+    namespace_prefix:       Politizr
+    concurrency_lock:       ~
+    bundle_name:            AdminBundle
+    pk_requirement:         ~
+    fields:
+        id:
+            label:          ID
+        p_user_id:
+            label:          Utilisateur
+        p_user:
+            label:          Utilisateur
+        p_object_name:
+            label:          Objet associé
+        p_object_id:
+            label:          ID objet associé
+        message:
+            label:          Message
+        created_at:
+            label:          Création
+        updated_at:
+            label:          Mis à jour
+    object_actions:
+        delete:             ~
+    batch_actions:
+        delete:             ~
+builders:
+    list:
+        params:
+            title:                              Liste des demandes de modification
+            max_per_page:                       50
+            sort:                               [ id, DESC ]
+            display:                            [ p_user, message, created_at ]
+            object_actions:
+                show:                           ~
+                delete:                         ~
+    excel:
+        params: ~
+        filename: ~
+        filetype: ~
+    show:
+        params:
+            title:                              "Visualisation demande de modification {{ PMAskForUpdate.id }}"
+            tabs:
+                "Contenu":
+                    "Texte":                    [ message ]
+                "Objets":
+                    "Utilisateur":              [ [ p_user ] ]
+                    "Objet associé":            [ [ block_p_object ] ]
+                "Attributs":
+                    "Création":                 [ [ created_at, updated_at ] ]
+            fields:
+                block_p_object:
+                    label:                      "Objet"
+                    grid_class:                 "col-md-12"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+                    addFormOptions:
+                        mapped:                 false
+            actions:
+              list:                             ~
+              delete:                           ~
+    actions:
+        params:
+            object_actions:
+                delete: ~
+            batch_actions:
+                delete: ~

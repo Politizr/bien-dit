@@ -9,4 +9,5 @@ use Admingenerated\PolitizrAdminBundle\BasePDDebateController\ListController as 
  */
 class ListController extends BaseListController
 {
+
 }

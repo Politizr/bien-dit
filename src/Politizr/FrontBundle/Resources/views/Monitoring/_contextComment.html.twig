@@ -1,0 +1,9 @@
+<div class="contextImage">
+    {{ comment.user | photo('user_40') }}
+</div>
+<div class="contextTitle">
+    {% include 'PolitizrFrontBundle:User:_authorMini.html.twig' with { 'user': comment.user } only %}
+</div>
+<div class="contextDescription">
+    <p>{{ comment.description | truncate(250) }}</p>
+</div>

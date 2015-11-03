@@ -1,0 +1,6 @@
+{% include 'PolitizrFrontBundle:Notification\\MessageEmail\\Txt:_emailNotificationHeader.txt.twig' with {'document': document} only %}
+
+Vous avez reçu une note négative sur votre commentaire:
+{% include 'PolitizrFrontBundle:Notification\\MessageEmail\\Txt:_emailContent.txt.twig' with {'url': url, 'description': title} only %}
+
+{% include 'PolitizrFrontBundle:Notification\\MessageEmail\\Txt:_emailNotificationFooter.txt.twig' with {'url': url} only %}

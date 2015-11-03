@@ -12,8 +12,8 @@ use Propel\PropelBundle\Validator\Constraints\UniqueObject;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * form minimaliste > token, id
- * 
+ * Reaction edition form
+ *
  * @author Lionel Bouzonville
  */
 class PDReactionType extends AbstractType
@@ -22,56 +22,40 @@ class PDReactionType extends AbstractType
     {
 
         $builder->add('id', 'hidden', array(
-            'required' => true, 
-            )
-        );
+            'required' => true,
+        ));
         
         $builder->add('p_d_debate_id', 'hidden', array(
-            'required' => true, 
-            )
-        );
+            'required' => true,
+        ));
         
         $builder->add('p_user_id', 'hidden', array(
-            'required' => true, 
-            )
-        );
+            'required' => true,
+        ));
         
-
-        $builder->add('title', 'text', array(
+        $builder->add('title', 'textarea', array(
             'required' => false,
-            'label' => 'Titre', 
+            'attr' => array(
+                'maxlength' => 100
             )
-        );
-        
-        $builder->add('summary', 'hidden', array(
-            'required' => false,
-            'label' => 'Résumé', 
-            )
-        );
+        ));
         
         $builder->add('description', 'hidden', array(
             'required' => false,
-            'label' => 'Description', 
-            'attr' =>   array(
-                'class' => 'editor',
-                )
-            )
-        );
-
-        
+        ));
     }
 
     /**
-     * 
+     *
      * @return string
      */
     public function getName()
     {
         return 'reaction';
-    }    
+    }
     
     /**
-     * 
+     *
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
@@ -79,5 +63,4 @@ class PDReactionType extends AbstractType
             'data_class' => 'Politizr\Model\PDReaction',
         ));
     }
-
 }

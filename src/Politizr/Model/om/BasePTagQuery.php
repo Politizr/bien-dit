@@ -17,6 +17,8 @@ use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
 use Glorpen\Propel\PropelBundle\Events\QueryEvent;
 use Politizr\Model\PDDTaggedT;
 use Politizr\Model\PDDebate;
+use Politizr\Model\PDRTaggedT;
+use Politizr\Model\PDReaction;
 use Politizr\Model\PTTagType;
 use Politizr\Model\PTag;
 use Politizr\Model\PTagPeer;
@@ -67,6 +69,10 @@ use Politizr\Model\PUser;
  * @method PTagQuery leftJoinPDDTaggedT($relationAlias = null) Adds a LEFT JOIN clause to the query using the PDDTaggedT relation
  * @method PTagQuery rightJoinPDDTaggedT($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PDDTaggedT relation
  * @method PTagQuery innerJoinPDDTaggedT($relationAlias = null) Adds a INNER JOIN clause to the query using the PDDTaggedT relation
+ *
+ * @method PTagQuery leftJoinPDRTaggedT($relationAlias = null) Adds a LEFT JOIN clause to the query using the PDRTaggedT relation
+ * @method PTagQuery rightJoinPDRTaggedT($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PDRTaggedT relation
+ * @method PTagQuery innerJoinPDRTaggedT($relationAlias = null) Adds a INNER JOIN clause to the query using the PDRTaggedT relation
  *
  * @method PTag findOne(PropelPDO $con = null) Return the first PTag matching the query
  * @method PTag findOneOrCreate(PropelPDO $con = null) Return the first PTag matching the query, or a new PTag object populated from the query conditions when no match is found
@@ -965,6 +971,80 @@ abstract class BasePTagQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query by a related PDRTaggedT object
+     *
+     * @param   PDRTaggedT|PropelObjectCollection $pDRTaggedT  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PTagQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPDRTaggedT($pDRTaggedT, $comparison = null)
+    {
+        if ($pDRTaggedT instanceof PDRTaggedT) {
+            return $this
+                ->addUsingAlias(PTagPeer::ID, $pDRTaggedT->getPTagId(), $comparison);
+        } elseif ($pDRTaggedT instanceof PropelObjectCollection) {
+            return $this
+                ->usePDRTaggedTQuery()
+                ->filterByPrimaryKeys($pDRTaggedT->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPDRTaggedT() only accepts arguments of type PDRTaggedT or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PDRTaggedT relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PTagQuery The current query, for fluid interface
+     */
+    public function joinPDRTaggedT($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PDRTaggedT');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PDRTaggedT');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PDRTaggedT relation PDRTaggedT object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PDRTaggedTQuery A secondary query class using the current class as primary query
+     */
+    public function usePDRTaggedTQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPDRTaggedT($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PDRTaggedT', '\Politizr\Model\PDRTaggedTQuery');
+    }
+
+    /**
      * Filter the query by a related PUser object
      * using the p_u_tagged_t table as cross reference
      *
@@ -1012,6 +1092,23 @@ abstract class BasePTagQuery extends ModelCriteria
         return $this
             ->usePDDTaggedTQuery()
             ->filterByPDDebate($pDDebate, $comparison)
+            ->endUse();
+    }
+
+    /**
+     * Filter the query by a related PDReaction object
+     * using the p_d_r_tagged_t table as cross reference
+     *
+     * @param   PDReaction $pDReaction the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return   PTagQuery The current query, for fluid interface
+     */
+    public function filterByPDReaction($pDReaction, $comparison = Criteria::EQUAL)
+    {
+        return $this
+            ->usePDRTaggedTQuery()
+            ->filterByPDReaction($pDReaction, $comparison)
             ->endUse();
     }
 

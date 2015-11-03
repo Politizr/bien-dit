@@ -1,0 +1,11 @@
+services:
+    # SERVICES UTILITAIRES
+    politizr.tools.global:
+        class: Politizr\FrontBundle\Lib\Tools\GlobalTools
+        arguments:
+            - @security.authorization_checker
+            - @security.context
+            - @form.factory
+            - @validator
+            - @logger
+

@@ -7,13 +7,17 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Politizr\Model\om\BasePDDTaggedT;
 
+/**
+ * Relation debate <-> tag
+ *
+ * @author Lionel Bouzonville
+ */
 class PDDTaggedT extends BasePDDTaggedT implements ContainerAwareInterface
 {
-    // *****************************  ELASTIC SEARCH  ****************** //
     private $elasticaPersister;
 
     /**
-     *
+     * @param ContainerInterface $container
      */
     public function setContainer(ContainerInterface $container = null)
     {
@@ -23,53 +27,47 @@ class PDDTaggedT extends BasePDDTaggedT implements ContainerAwareInterface
     }
 
     /**
-     * TODO: gestion d'une exception spécifique à ES
-     *
+     * @todo: gestion d'une exception spécifique à ES
      */
     public function postInsert(\PropelPDO $con = null)
     {
         if ($this->elasticaPersister) {
-            // Récupération de l'objet indexé associé
             $debate = PDDebateQuery::create()->findPk($this->getPDDebateId());
             if ($debate && $debate->isIndexable()) {
-                $this->elasticaPersister->replaceOne($debate);
+                // $this->elasticaPersister->replaceOne($debate);
             }
         } else {
-            throw new \Exception('Service d\'indexation non dispo');
+            throw new \Exception('Indexation service not found');
         }
     }
 
     /**
-     * TODO: gestion d'une exception spécifique à ES
-     *
+     * @todo: gestion d'une exception spécifique à ES
      */
     public function postUpdate(\PropelPDO $con = null)
     {
         if ($this->elasticaPersister) {
-            // Récupération de l'objet indexé associé
             $debate = PDDebateQuery::create()->findPk($this->getPDDebateId());
             if ($debate && $debate->isIndexable()) {
-                $this->elasticaPersister->replaceOne($debate);
+                // $this->elasticaPersister->replaceOne($debate);
             }
         } else {
-            throw new \Exception('Service d\'indexation non dispo');
+            throw new \Exception('Indexation service not found');
         }
     }
 
     /**
-     * TODO: gestion d'une exception spécifique à ES
-     *
+     * @todo: gestion d'une exception spécifique à ES
      */
     public function postDelete(\PropelPDO $con = null)
     {
         if ($this->elasticaPersister) {
-            // Récupération de l'objet indexé associé
             $debate = PDDebateQuery::create()->findPk($this->getPDDebateId());
             if ($debate && $debate->isIndexable()) {
-                $this->elasticaPersister->replaceOne($debate);
+                // $this->elasticaPersister->replaceOne($debate);
             }
         } else {
-            throw new \Exception('Service d\'indexation non dispo');
+            throw new \Exception('Indexation service not found');
         }
     }
 }

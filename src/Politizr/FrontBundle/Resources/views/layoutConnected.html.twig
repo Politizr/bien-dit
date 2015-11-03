@@ -1,0 +1,91 @@
+{# common "connected" layout #}
+{% extends 'PolitizrFrontBundle::baseFront.html.twig' %}
+
+{% block title %}
+    {% if (isGrantedE()) %}
+        Politizr - Débatteur {{ app.user }}
+    {% elseif (isGrantedC()) %}
+        Politizr - Citoyen {{ app.user }}
+    {% endif %}
+{% endblock title %}
+
+{% block description %}
+    {% if (isGrantedE()) %}
+        Politizr débatteur
+    {% elseif (isGrantedC()) %}
+        Politizr citoyen
+    {% endif %}
+{% endblock description %}
+
+{% block metaopengraph %}
+    {% block ogImage %}{% render controller("PolitizrFrontBundle:Social:ogImage") %}{% endblock ogImage %}
+    <meta property="og:site_name" content="Politizr" /> 
+    <meta property="og:title" content="{% block ogTitle %}Politizr{% endblock ogTitle %}" /> 
+    <meta property="og:url" content="{% block ogUrl %}{{ app.request.uri }}{% endblock ogUrl %}" /> 
+    <meta property="og:description" content="{% block ogDescription %}Politizr{% endblock ogDescription %}" />
+{% endblock metaopengraph %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/styleUser.css') }}">
+{% endblock %}
+
+{% block javascriptHeader %}
+    {{ parent() }}
+
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/chart.min.js') }}"></script>
+{% endblock %}
+
+{% block wrapper %}
+    <div class="wrapper">
+        {% block header %}
+            {% include 'PolitizrFrontBundle:Navigation\\Header:_headerConnected.html.twig' %}
+        {% endblock %}
+
+        {% block content %}
+            {% block fixedActions %}
+                <div id="fixedActions">
+                </div>
+            {% endblock fixedActions %}
+            {% block goUp %}
+                <div id="goUpHolder">
+                    <div id="goUp" action="goUp"><i class="iconArrowUp"></i></div>
+                </div>
+            {% endblock goUp %}
+            <div id="content">
+                {% block notifications %}
+                    {% include 'PolitizrFrontBundle:Notification:_notifications.html.twig' %}
+                {% endblock notifications %}
+
+                {% block main %}
+                {% endblock main %}
+
+                {% block footer %}
+                    {% include 'PolitizrFrontBundle:Navigation\\Footer:_footer.html.twig' %}
+                {% endblock %}
+            </div>
+        {% endblock content %}
+    </div>
+{% endblock wrapper %}
+
+{% block javascriptFooter %}
+    {{ parent() }}
+
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/global.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/xhr.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/notification/display.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/follow/subscribe.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/modal/opening.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/paginatedList/loading.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/paginatedList/search.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/tag/accentMap.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/tag/search.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/monitoring/abuse.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/monitoring/askForUpdate.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/reputation/reputation.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock javascriptFooter %}

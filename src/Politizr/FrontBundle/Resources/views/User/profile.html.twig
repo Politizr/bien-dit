@@ -1,0 +1,41 @@
+{% extends 'PolitizrFrontBundle::layoutConnected.html.twig' %}
+
+{% block title %}
+    {{ parent() }} - Mon profil
+{% endblock title %}
+
+{% block fixedActions %}
+    <div id="fixedActions">
+        <div class="editProfile">
+            <div class="ajaxLoader" style="display: none;">
+                <div class="ajaxLoaderSpinner"></div><div class="ajaxLoaderBg"></div><div class="ajaxLoaderBlockClick"></div>
+            </div>
+            <a href="{{ path('EditProfile'~profileSuffix) }}">                  
+                <i class="iconEdit"></i>
+                éditer
+            </a>
+        </div>
+    </div>
+{% endblock fixedActions %}
+
+{% block main %}
+    {% include 'PolitizrFrontBundle:User:_detail.html.twig' %}
+{% endblock main %}
+
+{% block javascriptFooter %}
+    {{ parent() }}
+
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/user/detail.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/timeline/timeline.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    <script>
+        // on document ready
+        $(function() {
+            timelineUserList({{ user.id }});
+        });
+    </script>
+{% endblock javascriptFooter %}

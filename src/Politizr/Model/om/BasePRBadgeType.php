@@ -17,9 +17,11 @@ use \PropelObjectCollection;
 use \PropelPDO;
 use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
 use Glorpen\Propel\PropelBundle\Events\ModelEvent;
-use Politizr\Model\PRBadge;
-use Politizr\Model\PRBadgeQuery;
+use Politizr\Model\PRBadgeFamily;
+use Politizr\Model\PRBadgeFamilyQuery;
 use Politizr\Model\PRBadgeType;
+use Politizr\Model\PRBadgeTypeArchive;
+use Politizr\Model\PRBadgeTypeArchiveQuery;
 use Politizr\Model\PRBadgeTypePeer;
 use Politizr\Model\PRBadgeTypeQuery;
 
@@ -81,10 +83,10 @@ abstract class BasePRBadgeType extends BaseObject implements Persistent
     protected $sortable_rank;
 
     /**
-     * @var        PropelObjectCollection|PRBadge[] Collection to store aggregation of PRBadge objects.
+     * @var        PropelObjectCollection|PRBadgeFamily[] Collection to store aggregation of PRBadgeFamily objects.
      */
-    protected $collPRBadges;
-    protected $collPRBadgesPartial;
+    protected $collPRBadgeFamilies;
+    protected $collPRBadgeFamiliesPartial;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -114,11 +116,14 @@ abstract class BasePRBadgeType extends BaseObject implements Persistent
      */
     protected $sortableQueries = array();
 
+    // archivable behavior
+    protected $archiveOnDelete = true;
+
     /**
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
-    protected $pRBadgesScheduledForDeletion = null;
+    protected $pRBadgeFamiliesScheduledForDeletion = null;
 
     /**
      * Get the [id] column value.
@@ -488,7 +493,7 @@ abstract class BasePRBadgeType extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->collPRBadges = null;
+            $this->collPRBadgeFamilies = null;
 
         } // if (deep)
     }
@@ -523,6 +528,16 @@ abstract class BasePRBadgeType extends BaseObject implements Persistent
 
             PRBadgeTypePeer::shiftRank(-1, $this->getSortableRank() + 1, null, $con);
             PRBadgeTypePeer::clearInstancePool();
+
+            // archivable behavior
+            if ($ret) {
+                if ($this->archiveOnDelete) {
+                    // do nothing yet. The object will be archived later when calling PRBadgeTypeQuery::delete().
+                } else {
+                    $deleteQuery->setArchiveOnDelete(false);
+                    $this->archiveOnDelete = true;
+                }
+            }
 
             if ($ret) {
                 $deleteQuery->delete($con);
@@ -652,17 +667,17 @@ abstract class BasePRBadgeType extends BaseObject implements Persistent
                 $this->resetModified();
             }
 
-            if ($this->pRBadgesScheduledForDeletion !== null) {
-                if (!$this->pRBadgesScheduledForDeletion->isEmpty()) {
-                    PRBadgeQuery::create()
-                        ->filterByPrimaryKeys($this->pRBadgesScheduledForDeletion->getPrimaryKeys(false))
+            if ($this->pRBadgeFamiliesScheduledForDeletion !== null) {
+                if (!$this->pRBadgeFamiliesScheduledForDeletion->isEmpty()) {
+                    PRBadgeFamilyQuery::create()
+                        ->filterByPrimaryKeys($this->pRBadgeFamiliesScheduledForDeletion->getPrimaryKeys(false))
                         ->delete($con);
-                    $this->pRBadgesScheduledForDeletion = null;
+                    $this->pRBadgeFamiliesScheduledForDeletion = null;
                 }
             }
 
-            if ($this->collPRBadges !== null) {
-                foreach ($this->collPRBadges as $referrerFK) {
+            if ($this->collPRBadgeFamilies !== null) {
+                foreach ($this->collPRBadgeFamilies as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -841,8 +856,8 @@ abstract class BasePRBadgeType extends BaseObject implements Persistent
             }
 
 
-                if ($this->collPRBadges !== null) {
-                    foreach ($this->collPRBadges as $referrerFK) {
+                if ($this->collPRBadgeFamilies !== null) {
+                    foreach ($this->collPRBadgeFamilies as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
                             $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
                         }
@@ -944,8 +959,8 @@ abstract class BasePRBadgeType extends BaseObject implements Persistent
         }
 
         if ($includeForeignObjects) {
-            if (null !== $this->collPRBadges) {
-                $result['PRBadges'] = $this->collPRBadges->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            if (null !== $this->collPRBadgeFamilies) {
+                $result['PRBadgeFamilies'] = $this->collPRBadgeFamilies->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -1122,9 +1137,9 @@ abstract class BasePRBadgeType extends BaseObject implements Persistent
             // store object hash to prevent cycle
             $this->startCopy = true;
 
-            foreach ($this->getPRBadges() as $relObj) {
+            foreach ($this->getPRBadgeFamilies() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addPRBadge($relObj->copy($deepCopy));
+                    $copyObj->addPRBadgeFamily($relObj->copy($deepCopy));
                 }
             }
 
@@ -1189,42 +1204,42 @@ abstract class BasePRBadgeType extends BaseObject implements Persistent
      */
     public function initRelation($relationName)
     {
-        if ('PRBadge' == $relationName) {
-            $this->initPRBadges();
+        if ('PRBadgeFamily' == $relationName) {
+            $this->initPRBadgeFamilies();
         }
     }
 
     /**
-     * Clears out the collPRBadges collection
+     * Clears out the collPRBadgeFamilies collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return PRBadgeType The current object (for fluent API support)
-     * @see        addPRBadges()
+     * @see        addPRBadgeFamilies()
      */
-    public function clearPRBadges()
+    public function clearPRBadgeFamilies()
     {
-        $this->collPRBadges = null; // important to set this to null since that means it is uninitialized
-        $this->collPRBadgesPartial = null;
+        $this->collPRBadgeFamilies = null; // important to set this to null since that means it is uninitialized
+        $this->collPRBadgeFamiliesPartial = null;
 
         return $this;
     }
 
     /**
-     * reset is the collPRBadges collection loaded partially
+     * reset is the collPRBadgeFamilies collection loaded partially
      *
      * @return void
      */
-    public function resetPartialPRBadges($v = true)
+    public function resetPartialPRBadgeFamilies($v = true)
     {
-        $this->collPRBadgesPartial = $v;
+        $this->collPRBadgeFamiliesPartial = $v;
     }
 
     /**
-     * Initializes the collPRBadges collection.
+     * Initializes the collPRBadgeFamilies collection.
      *
-     * By default this just sets the collPRBadges collection to an empty array (like clearcollPRBadges());
+     * By default this just sets the collPRBadgeFamilies collection to an empty array (like clearcollPRBadgeFamilies());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
@@ -1233,17 +1248,17 @@ abstract class BasePRBadgeType extends BaseObject implements Persistent
      *
      * @return void
      */
-    public function initPRBadges($overrideExisting = true)
+    public function initPRBadgeFamilies($overrideExisting = true)
     {
-        if (null !== $this->collPRBadges && !$overrideExisting) {
+        if (null !== $this->collPRBadgeFamilies && !$overrideExisting) {
             return;
         }
-        $this->collPRBadges = new PropelObjectCollection();
-        $this->collPRBadges->setModel('PRBadge');
+        $this->collPRBadgeFamilies = new PropelObjectCollection();
+        $this->collPRBadgeFamilies->setModel('PRBadgeFamily');
     }
 
     /**
-     * Gets an array of PRBadge objects which contain a foreign key that references this object.
+     * Gets an array of PRBadgeFamily objects which contain a foreign key that references this object.
      *
      * If the $criteria is not null, it is used to always fetch the results from the database.
      * Otherwise the results are fetched from the database the first time, then cached.
@@ -1253,107 +1268,107 @@ abstract class BasePRBadgeType extends BaseObject implements Persistent
      *
      * @param Criteria $criteria optional Criteria object to narrow the query
      * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|PRBadge[] List of PRBadge objects
+     * @return PropelObjectCollection|PRBadgeFamily[] List of PRBadgeFamily objects
      * @throws PropelException
      */
-    public function getPRBadges($criteria = null, PropelPDO $con = null)
+    public function getPRBadgeFamilies($criteria = null, PropelPDO $con = null)
     {
-        $partial = $this->collPRBadgesPartial && !$this->isNew();
-        if (null === $this->collPRBadges || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collPRBadges) {
+        $partial = $this->collPRBadgeFamiliesPartial && !$this->isNew();
+        if (null === $this->collPRBadgeFamilies || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPRBadgeFamilies) {
                 // return empty collection
-                $this->initPRBadges();
+                $this->initPRBadgeFamilies();
             } else {
-                $collPRBadges = PRBadgeQuery::create(null, $criteria)
+                $collPRBadgeFamilies = PRBadgeFamilyQuery::create(null, $criteria)
                     ->filterByPRBadgeType($this)
                     ->find($con);
                 if (null !== $criteria) {
-                    if (false !== $this->collPRBadgesPartial && count($collPRBadges)) {
-                      $this->initPRBadges(false);
+                    if (false !== $this->collPRBadgeFamiliesPartial && count($collPRBadgeFamilies)) {
+                      $this->initPRBadgeFamilies(false);
 
-                      foreach ($collPRBadges as $obj) {
-                        if (false == $this->collPRBadges->contains($obj)) {
-                          $this->collPRBadges->append($obj);
+                      foreach ($collPRBadgeFamilies as $obj) {
+                        if (false == $this->collPRBadgeFamilies->contains($obj)) {
+                          $this->collPRBadgeFamilies->append($obj);
                         }
                       }
 
-                      $this->collPRBadgesPartial = true;
+                      $this->collPRBadgeFamiliesPartial = true;
                     }
 
-                    $collPRBadges->getInternalIterator()->rewind();
+                    $collPRBadgeFamilies->getInternalIterator()->rewind();
 
-                    return $collPRBadges;
+                    return $collPRBadgeFamilies;
                 }
 
-                if ($partial && $this->collPRBadges) {
-                    foreach ($this->collPRBadges as $obj) {
+                if ($partial && $this->collPRBadgeFamilies) {
+                    foreach ($this->collPRBadgeFamilies as $obj) {
                         if ($obj->isNew()) {
-                            $collPRBadges[] = $obj;
+                            $collPRBadgeFamilies[] = $obj;
                         }
                     }
                 }
 
-                $this->collPRBadges = $collPRBadges;
-                $this->collPRBadgesPartial = false;
+                $this->collPRBadgeFamilies = $collPRBadgeFamilies;
+                $this->collPRBadgeFamiliesPartial = false;
             }
         }
 
-        return $this->collPRBadges;
+        return $this->collPRBadgeFamilies;
     }
 
     /**
-     * Sets a collection of PRBadge objects related by a one-to-many relationship
+     * Sets a collection of PRBadgeFamily objects related by a one-to-many relationship
      * to the current object.
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param PropelCollection $pRBadges A Propel collection.
+     * @param PropelCollection $pRBadgeFamilies A Propel collection.
      * @param PropelPDO $con Optional connection object
      * @return PRBadgeType The current object (for fluent API support)
      */
-    public function setPRBadges(PropelCollection $pRBadges, PropelPDO $con = null)
+    public function setPRBadgeFamilies(PropelCollection $pRBadgeFamilies, PropelPDO $con = null)
     {
-        $pRBadgesToDelete = $this->getPRBadges(new Criteria(), $con)->diff($pRBadges);
+        $pRBadgeFamiliesToDelete = $this->getPRBadgeFamilies(new Criteria(), $con)->diff($pRBadgeFamilies);
 
 
-        $this->pRBadgesScheduledForDeletion = $pRBadgesToDelete;
+        $this->pRBadgeFamiliesScheduledForDeletion = $pRBadgeFamiliesToDelete;
 
-        foreach ($pRBadgesToDelete as $pRBadgeRemoved) {
-            $pRBadgeRemoved->setPRBadgeType(null);
+        foreach ($pRBadgeFamiliesToDelete as $pRBadgeFamilyRemoved) {
+            $pRBadgeFamilyRemoved->setPRBadgeType(null);
         }
 
-        $this->collPRBadges = null;
-        foreach ($pRBadges as $pRBadge) {
-            $this->addPRBadge($pRBadge);
+        $this->collPRBadgeFamilies = null;
+        foreach ($pRBadgeFamilies as $pRBadgeFamily) {
+            $this->addPRBadgeFamily($pRBadgeFamily);
         }
 
-        $this->collPRBadges = $pRBadges;
-        $this->collPRBadgesPartial = false;
+        $this->collPRBadgeFamilies = $pRBadgeFamilies;
+        $this->collPRBadgeFamiliesPartial = false;
 
         return $this;
     }
 
     /**
-     * Returns the number of related PRBadge objects.
+     * Returns the number of related PRBadgeFamily objects.
      *
      * @param Criteria $criteria
      * @param boolean $distinct
      * @param PropelPDO $con
-     * @return int             Count of related PRBadge objects.
+     * @return int             Count of related PRBadgeFamily objects.
      * @throws PropelException
      */
-    public function countPRBadges(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    public function countPRBadgeFamilies(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        $partial = $this->collPRBadgesPartial && !$this->isNew();
-        if (null === $this->collPRBadges || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collPRBadges) {
+        $partial = $this->collPRBadgeFamiliesPartial && !$this->isNew();
+        if (null === $this->collPRBadgeFamilies || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPRBadgeFamilies) {
                 return 0;
             }
 
             if ($partial && !$criteria) {
-                return count($this->getPRBadges());
+                return count($this->getPRBadgeFamilies());
             }
-            $query = PRBadgeQuery::create(null, $criteria);
+            $query = PRBadgeFamilyQuery::create(null, $criteria);
             if ($distinct) {
                 $query->distinct();
             }
@@ -1363,28 +1378,28 @@ abstract class BasePRBadgeType extends BaseObject implements Persistent
                 ->count($con);
         }
 
-        return count($this->collPRBadges);
+        return count($this->collPRBadgeFamilies);
     }
 
     /**
-     * Method called to associate a PRBadge object to this object
-     * through the PRBadge foreign key attribute.
+     * Method called to associate a PRBadgeFamily object to this object
+     * through the PRBadgeFamily foreign key attribute.
      *
-     * @param    PRBadge $l PRBadge
+     * @param    PRBadgeFamily $l PRBadgeFamily
      * @return PRBadgeType The current object (for fluent API support)
      */
-    public function addPRBadge(PRBadge $l)
+    public function addPRBadgeFamily(PRBadgeFamily $l)
     {
-        if ($this->collPRBadges === null) {
-            $this->initPRBadges();
-            $this->collPRBadgesPartial = true;
+        if ($this->collPRBadgeFamilies === null) {
+            $this->initPRBadgeFamilies();
+            $this->collPRBadgeFamiliesPartial = true;
         }
 
-        if (!in_array($l, $this->collPRBadges->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddPRBadge($l);
+        if (!in_array($l, $this->collPRBadgeFamilies->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPRBadgeFamily($l);
 
-            if ($this->pRBadgesScheduledForDeletion and $this->pRBadgesScheduledForDeletion->contains($l)) {
-                $this->pRBadgesScheduledForDeletion->remove($this->pRBadgesScheduledForDeletion->search($l));
+            if ($this->pRBadgeFamiliesScheduledForDeletion and $this->pRBadgeFamiliesScheduledForDeletion->contains($l)) {
+                $this->pRBadgeFamiliesScheduledForDeletion->remove($this->pRBadgeFamiliesScheduledForDeletion->search($l));
             }
         }
 
@@ -1392,56 +1407,31 @@ abstract class BasePRBadgeType extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PRBadge $pRBadge The pRBadge object to add.
+     * @param	PRBadgeFamily $pRBadgeFamily The pRBadgeFamily object to add.
      */
-    protected function doAddPRBadge($pRBadge)
+    protected function doAddPRBadgeFamily($pRBadgeFamily)
     {
-        $this->collPRBadges[]= $pRBadge;
-        $pRBadge->setPRBadgeType($this);
+        $this->collPRBadgeFamilies[]= $pRBadgeFamily;
+        $pRBadgeFamily->setPRBadgeType($this);
     }
 
     /**
-     * @param	PRBadge $pRBadge The pRBadge object to remove.
+     * @param	PRBadgeFamily $pRBadgeFamily The pRBadgeFamily object to remove.
      * @return PRBadgeType The current object (for fluent API support)
      */
-    public function removePRBadge($pRBadge)
+    public function removePRBadgeFamily($pRBadgeFamily)
     {
-        if ($this->getPRBadges()->contains($pRBadge)) {
-            $this->collPRBadges->remove($this->collPRBadges->search($pRBadge));
-            if (null === $this->pRBadgesScheduledForDeletion) {
-                $this->pRBadgesScheduledForDeletion = clone $this->collPRBadges;
-                $this->pRBadgesScheduledForDeletion->clear();
+        if ($this->getPRBadgeFamilies()->contains($pRBadgeFamily)) {
+            $this->collPRBadgeFamilies->remove($this->collPRBadgeFamilies->search($pRBadgeFamily));
+            if (null === $this->pRBadgeFamiliesScheduledForDeletion) {
+                $this->pRBadgeFamiliesScheduledForDeletion = clone $this->collPRBadgeFamilies;
+                $this->pRBadgeFamiliesScheduledForDeletion->clear();
             }
-            $this->pRBadgesScheduledForDeletion[]= clone $pRBadge;
-            $pRBadge->setPRBadgeType(null);
+            $this->pRBadgeFamiliesScheduledForDeletion[]= clone $pRBadgeFamily;
+            $pRBadgeFamily->setPRBadgeType(null);
         }
 
         return $this;
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this PRBadgeType is new, it will return
-     * an empty collection; or if this PRBadgeType has previously
-     * been saved, it will retrieve related PRBadges from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in PRBadgeType.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|PRBadge[] List of PRBadge objects
-     */
-    public function getPRBadgesJoinPRBadgeMetal($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = PRBadgeQuery::create(null, $criteria);
-        $query->joinWith('PRBadgeMetal', $join_behavior);
-
-        return $this->getPRBadges($query, $con);
     }
 
     /**
@@ -1477,8 +1467,8 @@ abstract class BasePRBadgeType extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
-            if ($this->collPRBadges) {
-                foreach ($this->collPRBadges as $o) {
+            if ($this->collPRBadgeFamilies) {
+                foreach ($this->collPRBadgeFamilies as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -1486,10 +1476,10 @@ abstract class BasePRBadgeType extends BaseObject implements Persistent
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
-        if ($this->collPRBadges instanceof PropelCollection) {
-            $this->collPRBadges->clearIterator();
+        if ($this->collPRBadgeFamilies instanceof PropelCollection) {
+            $this->collPRBadgeFamilies->clearIterator();
         }
-        $this->collPRBadges = null;
+        $this->collPRBadgeFamilies = null;
     }
 
     /**
@@ -1875,6 +1865,111 @@ abstract class BasePRBadgeType extends BaseObject implements Persistent
             call_user_func_array($query['callable'], $query['arguments']);
         }
         $this->sortableQueries = array();
+    }
+
+    // archivable behavior
+
+    /**
+     * Get an archived version of the current object.
+     *
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return     PRBadgeTypeArchive An archive object, or null if the current object was never archived
+     */
+    public function getArchive(PropelPDO $con = null)
+    {
+        if ($this->isNew()) {
+            return null;
+        }
+        $archive = PRBadgeTypeArchiveQuery::create()
+            ->filterByPrimaryKey($this->getPrimaryKey())
+            ->findOne($con);
+
+        return $archive;
+    }
+    /**
+     * Copy the data of the current object into a $archiveTablePhpName archive object.
+     * The archived object is then saved.
+     * If the current object has already been archived, the archived object
+     * is updated and not duplicated.
+     *
+     * @param PropelPDO $con Optional connection object
+     *
+     * @throws PropelException If the object is new
+     *
+     * @return     PRBadgeTypeArchive The archive object based on this object
+     */
+    public function archive(PropelPDO $con = null)
+    {
+        if ($this->isNew()) {
+            throw new PropelException('New objects cannot be archived. You must save the current object before calling archive().');
+        }
+        if (!$archive = $this->getArchive($con)) {
+            $archive = new PRBadgeTypeArchive();
+            $archive->setPrimaryKey($this->getPrimaryKey());
+        }
+        $this->copyInto($archive, $deepCopy = false, $makeNew = false);
+        $archive->setArchivedAt(time());
+        $archive->save($con);
+
+        return $archive;
+    }
+
+    /**
+     * Revert the the current object to the state it had when it was last archived.
+     * The object must be saved afterwards if the changes must persist.
+     *
+     * @param PropelPDO $con Optional connection object
+     *
+     * @throws PropelException If the object has no corresponding archive.
+     *
+     * @return PRBadgeType The current object (for fluent API support)
+     */
+    public function restoreFromArchive(PropelPDO $con = null)
+    {
+        if (!$archive = $this->getArchive($con)) {
+            throw new PropelException('The current object has never been archived and cannot be restored');
+        }
+        $this->populateFromArchive($archive);
+
+        return $this;
+    }
+
+    /**
+     * Populates the the current object based on a $archiveTablePhpName archive object.
+     *
+     * @param      PRBadgeTypeArchive $archive An archived object based on the same class
+      * @param      Boolean $populateAutoIncrementPrimaryKeys
+     *               If true, autoincrement columns are copied from the archive object.
+     *               If false, autoincrement columns are left intact.
+      *
+     * @return     PRBadgeType The current object (for fluent API support)
+     */
+    public function populateFromArchive($archive, $populateAutoIncrementPrimaryKeys = false) {
+        if ($populateAutoIncrementPrimaryKeys) {
+            $this->setId($archive->getId());
+        }
+        $this->setTitle($archive->getTitle());
+        $this->setDescription($archive->getDescription());
+        $this->setCreatedAt($archive->getCreatedAt());
+        $this->setUpdatedAt($archive->getUpdatedAt());
+        $this->setSortableRank($archive->getSortableRank());
+
+        return $this;
+    }
+
+    /**
+     * Removes the object from the database without archiving it.
+     *
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return     PRBadgeType The current object (for fluent API support)
+     */
+    public function deleteWithoutArchive(PropelPDO $con = null)
+    {
+        $this->archiveOnDelete = false;
+
+        return $this->delete($con);
     }
 
     // event behavior

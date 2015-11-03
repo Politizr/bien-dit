@@ -21,9 +21,17 @@ fos_user_change_password:
 ################################################################################
 #               CUSTOM ROUTES
 ################################################################################
+# ADMIN GENERIC XHR
+AdminXhrGeneric:
+    pattern:  /adminxhr/{xhrRoute}/{xhrService}/{xhrMethod}.{xhrType}.json
+    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrGeneric:xhr }
+    requirements:
+        _method:        POST
+        xhrRoute:       ".+"
+        xhrType:        \d
 
 # Accueil
-admin_homepage:
+PolitizrAdminHomepage:
     pattern:  /
     defaults: { _controller: PolitizrAdminBundle:Homepage\AdminHomepage:index }
 
@@ -92,14 +100,15 @@ Politizr_AdminBundle_PDReaction:
     type:     admingenerator_nested
     prefix:   /PDReaction
 
-
-# Contenus / Commentaires
-Politizr_AdminBundle_PDComment:
-    resource: "@PolitizrAdminBundle/Controller/PDComment/"
+Politizr_AdminBundle_PDDComment:
+    resource: "@PolitizrAdminBundle/Controller/PDDComment/"
     type:     admingenerator
-    prefix:   /PDComment
+    prefix:   /PDDComment
 
-
+Politizr_AdminBundle_PDRComment:
+    resource: "@PolitizrAdminBundle/Controller/PDRComment/"
+    type:     admingenerator
+    prefix:   /PDRComment
 
 
 # Tags
@@ -127,15 +136,25 @@ Politizr_AdminBundle_PTTagType:
     type:     admingenerator
     prefix:   /PTTagType
 
+Politizr_AdminBundle_PRBadgeFamily:
+    resource: "@PolitizrAdminBundle/Controller/PRBadgeFamily/"
+    type:     admingenerator
+    prefix:   /PRBadgeFamily
+
 Politizr_AdminBundle_PRBadgeType:
     resource: "@PolitizrAdminBundle/Controller/PRBadgeType/"
     type:     admingenerator
     prefix:   /PRBadgeType
 
-Politizr_AdminBundle_PRBadgeMetal:
-    resource: "@PolitizrAdminBundle/Controller/PRBadgeMetal/"
+Politizr_AdminBundle_PQOrganization:
+    resource: "@PolitizrAdminBundle/Controller/PQOrganization/"
     type:     admingenerator
-    prefix:   /PRBadgeMetal
+    prefix:   /PQOrganization
+
+Politizr_AdminBundle_PQMandate:
+    resource: "@PolitizrAdminBundle/Controller/PQMandate/"
+    type:     admingenerator
+    prefix:   /PQMandate
 
 Politizr_AdminBundle_POSubscription:
     resource: "@PolitizrAdminBundle/Controller/POSubscription/"
@@ -157,31 +176,21 @@ Politizr_AdminBundle_POOrderState:
     type:     admingenerator
     prefix:   /POOrderState
 
-################################################################################
-#               ADMIN AJAX
-################################################################################
-AdminGetPTags:
-    pattern:  /getPTags.{_format}
-    defaults: { _controller: PolitizrAdminBundle:AdminAjax\AdminAjax:getPTags, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
+# Monitoring
+Politizr_AdminBundle_PMAbuseReporting:
+    resource: "@PolitizrAdminBundle/Controller/PMAbuseReporting/"
+    type:     admingenerator
+    prefix:   /PMAbuseReporting
 
-AdminAddPUTaggedTPTag:
-    pattern:  /addPUTaggedTPTag.{_format}
-    defaults: { _controller: PolitizrAdminBundle:AdminAjax\AdminAjax:addPUTaggedTPTag, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
+Politizr_AdminBundle_PMAskForUpdate:
+    resource: "@PolitizrAdminBundle/Controller/PMAskForUpdate/"
+    type:     admingenerator
+    prefix:   /PMAskForUpdate
 
-AdminDeletePUTaggedTPTag:
-    pattern:  /deletePUTaggedTPTag.{_format}
-    defaults: { _controller: PolitizrAdminBundle:AdminAjax\AdminAjax:deletePUTaggedTPTag, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
+Politizr_AdminBundle_PMAppException:
+    resource: "@PolitizrAdminBundle/Controller/PMAppException/"
+    type:     admingenerator
+    prefix:   /PMAppException
 
-AdminAddPDDTaggedTPTag:
-    pattern:  /addPDDTaggedTPTag.{_format}
-    defaults: { _controller: PolitizrAdminBundle:AdminAjax\AdminAjax:addPDDTaggedTPTag, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
 
-AdminDeletePDDTaggedTPTag:
-    pattern:  /deletePDDTaggedTPTag.{_format}
-    defaults: { _controller: PolitizrAdminBundle:AdminAjax\AdminAjax:deletePDDTaggedTPTag, _format: json }
-    requirements: { _format: (xml|json), _method: POST }
 

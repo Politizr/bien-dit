@@ -14,20 +14,22 @@ params:
             label:          Arbre / Gauche
         tree_right:
             label:          Arbre / Droite
-        p_d_debate_id:
-            label:          Débat associé
-        p_d_debate:
-            label:          Débat associé
         p_user_id:
             label:          ID Utilisateur
         p_user:
             label:          Utilisateur
+        p_d_debate_id:
+            label:          ID Débat associé
+        p_d_debate:
+            label:          Débat associé
+        parent_reaction_id:
+            label:          ID Réaction associée
+        parent:
+            label:          Réaction associée
         file_name:
             label:          Image
         title:
             label:          Titre
-        summary:
-            label:          Résumé
         description:
             label:          Description
         note_pos:
@@ -54,90 +56,62 @@ builders:
     list:
         params:
             title:                              Liste des réactions
-            # colonnes tableaux > MAJ manuelle dans Fragment/DebateReactions
-            display:                            [ id, tree_level, parent, p_user, title, summary, note_pos, note_neg, online, published, published_at ]
-            actions:
-                new:                            ~
+            max_per_page:                       50
+            sort:                               [ published_at, DESC ]
+            scopes:
+                group_1: 
+                    "Tous":                     ~
+                    "Publiés":
+                        default:                1
+                        filters:
+                            published:          1
+                    "Brouillons":
+                        filters:
+                            published:          0
+            display:                            [ id, p_user_id, p_d_debate_id, parent_reaction_id, tree_level, title, online, published, published_at, created_at ]
+            # filtersMode:                        top
+            filters:                            [ id, p_user_id, p_d_debate_id, parent_reaction_id, tree_level, title, online, published, published_at, created_at ]
             object_actions:
                 show:                           ~
                 edit:                           ~
                 delete:                         ~
-#                 new_node:
-#                     label:                      Nouvelle réaction
     excel:
         params: ~
         filename: ~
         filetype: ~
-    filters:
-        params:
-            display:                            [ id, p_user, p_d_debate, published, published_at, online, created_at ]
-            fields:
-                p_user:
-                    addFormOptions:
-                        query:                  \Politizr\Model\PUserQuery::create()->orderByName() 
-    new:
-        params:
-            title:                              "Création d'un contenu réaction"
-            display:
-                "Champs principaux":            [ p_user_id, parent_node, p_d_debate_id, title ]
-                "Champs complémentaires":       [ summary ]
-            fields:
-                p_d_debate_id:
-                    formType:                   hidden
-                p_user_id:
-                    label:                      Utilisateur
-                    formType:                   choice
-                    dbType:                     VARCHAR
-                    addFormOptions:
-                        choices:                \Politizr\Model\PUserQuery::create()->orderByName()->find()->toKeyValue()
-                parent_node:
-                    label:                      Réaction
-                    formType:                   choice
-                    dbType:                     collection
-                    addFormOptions:
-                        mapped:                 false
-                        choices:                \Politizr\Model\PDReactionQuery::create()->find()->toKeyValue()
-                summary:
-                    addFormOptions:
-                        attr:                   { class : tinymce }
-            actions:
-                save:                           ~
-                list:
-                    label:                      Retour au débat
     edit:
         params:
             title:                              "Edition du contenu réaction '{{ PDReaction.getTitle }}'"
             tabs:
                 "Contenu":
-                    "Texte":                    [ p_d_debate_id, uploadedFileName, title, summary, description ]
+                    "Texte":                    [ uploadedFileName, title, description ]
                 "Objets":
-                    "Utilisateur":              [ [ p_user_id ] ]
+                    "Utilisateur":              [ p_user ]
+                    "Débat":                    [ p_d_debate ]
+                    # "Réaction parente":         [ parent ]
                 "Statut":
-                    "Publication":              [ [ published ], [ published_by ], [ published_at ] ]
+                    "Publication":              [ [ published, published_by, published_at ] ]
                     "Notes":                    [ [ note_pos, note_neg ] ]
                 "Attributs":
                     "Création":                 [ [ online ], [ created_at, updated_at ] ]
             fields:
-                p_d_debate_id:
-                    formType:                   hidden
                 uploadedFileName:
                     dbType:                     VARCHAR
                     label:                      Photo
-                    formType:                   afe_single_upload
+                    formType:                   file
                     addFormOptions:
-                        # nameable:               fileName
-                        deleteable:             fileName
+                        # deleteable:             fileName
                         data_class:             Symfony\Component\HttpFoundation\File\File
-                p_user_id:
-                    label:                      Utilisateur
-                    formType:                   choice
-                    dbType:                     VARCHAR
+                p_user:
                     addFormOptions:
-                        choices:                \Politizr\Model\PUserQuery::create()->orderByName()->find()->toKeyValue()
-                summary:
+                        disabled:               true
+                        read_only:              true
+                p_d_debate:
                     addFormOptions:
-                        attr:                   { class : tinymce }
+                        disabled:               true
+                        read_only:              true
                 description:
+                    grid_class:                 "col-md-12"
                     addFormOptions:
                         attr:                   { class : tinymce }
                 published_at:
@@ -153,29 +127,38 @@ builders:
             actions:
                 save:                           ~
                 show:                           ~
-                list:
-                    label:                      Retour au débat
+                list:                           ~
+                delete:                         ~
     show:
         params:
             title:                              "Visualisation du contenu réaction '{{ PDReaction.getTitle }}'"
             tabs:
                 "Contenu":
-                    "Texte":                    [ file_name, title, summary, description ]
+                    "Texte":                    [ file_name, title, description ]
                 "Objets":
-                    "Utilisateur":              [ [ p_user ] ]
-                    "Débat":                    [ [ p_d_debate ] ]
+                    "Utilisateur":              [ block_p_user ]
+                    "Document":                 [ block_p_d_debate, block_parent ]
                 "Commentaires":
                     "Commentaires associés":    [ block_comments ]
                 "Statut":
                     "Publication":              [ [ published ], [ published_by ], [ published_at ] ]
                 "Attributs":
                     "Création":                 [ [ online ], [ created_at, updated_at ] ]
+                "Front":
+                    "Rendu":                    [ block_front ]
             fields:
+                block_p_user:
+                    label:                      "Auteur"
+                block_p_d_debate:
+                    label:                      "Débat"
+                block_parent:
+                    label:                      "Réaction parente"
                 block_comments:
                     label:                      "Commentaires"
+                block_front:
+                    label:                      "Rendu front"
             actions:
-                list:
-                    label:                      Retour au débat
+                list:                           ~
                 edit:                           ~
                 delete:                         ~
     actions:

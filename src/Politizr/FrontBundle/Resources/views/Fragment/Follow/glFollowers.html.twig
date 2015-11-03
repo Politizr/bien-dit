@@ -1,6 +1,0 @@
-{# Gestion Twig followers #}
-{% if type == constant('Politizr\\Model\\PDocument::TYPE_DEBATE') %} 
-    {{ object | followersDebate }}
-{% elseif type == constant('Politizr\\Model\\PDocument::TYPE_USER') %} 
-    {{ object | followersUser }}
-{% endif %}

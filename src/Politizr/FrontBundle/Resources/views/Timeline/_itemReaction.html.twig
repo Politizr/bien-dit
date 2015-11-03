@@ -1,0 +1,68 @@
+<div class="timelineItem">
+    <div class="timelineItemHeader">
+        {% include 'PolitizrFrontBundle:Navigation\\DateTime:_timeAt.html.twig' with { 'dateTimeAt': reaction.publishedAt } only %}
+    </div>
+
+    {% spaceless %}
+        <div class="timelineItemHolder">
+
+            <div class="timelineItemContext">
+                {{ reaction | itemContextReaction(debateContext) }}
+            </div>
+            
+            <div class="timelineItemContent timelineItemOfficial">
+                <div class="timelineItemObject">
+                    <i class="iconNotifNo"></i>
+                    {% if authorIsMe %}
+                        Vous avez rédigé une réaction:&nbsp;
+                    {% else %}
+                        {% include 'PolitizrFrontBundle:User:_authorName.html.twig' with { 'user': reaction.user, 'isFollowed': authorIsFollowed } only %}
+                        {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with { 'user': reaction.user } only %} a rédigé une réaction:&nbsp;
+                    {% endif %}
+                </div>
+                <div class="timelineItemHighlight">
+                    <div class="timelineItemIllustration">
+                        <a href="{{ path('ReactionDetail', { 'slug': reaction.slug }) }}">
+                            {{ reaction | image('debate_timeline', false) }}
+                        </a>
+                    </div>
+                    <div class="avatar40">
+                        {{ reaction.user | photo('user_40') }}
+                    </div>
+                    <a href="{{ path('ReactionDetail', { 'slug': reaction.slug }) }}">
+                        <span>{{ reaction.title }}</span>
+                        {{ reaction.description | excerpt | purify }}
+                    </a>                 
+                </div>
+                <div class="timelineItemContentFooter">
+                    <div class="timelineItemContentFooterLeft">
+                        <div class="reactionsCounter">
+                            <i class="iconReaction"></i>
+                            {{ reaction | nbReactions }}
+                        </div>
+                        <div class="commentsCounter" action="paragraphCommentsCounter">
+                            <i class="iconComment"></i>
+                            {{ reaction | nbComments }}
+                        </div>
+                        <div class="readingTime">
+                            <i class="iconTime"></i>
+                            {{ reaction | readingTime }}
+                        </div>
+                    </div>
+                    <div class="postNote">
+                        <div class="notePlus">
+                            {{ reaction.notePos }}<i class="iconNotePlus"></i>
+                        </div>
+                        <div class="noteMinus">
+                            <i class="iconNoteMinus"></i>{{ reaction.noteNeg }}
+                        </div>
+                    </div>  
+                </div>
+            </div>
+        </div>
+
+    {% endspaceless %}
+    <div class="timelineItemFooter">
+        <a href="{{ path('ReactionDetail', { 'slug': reaction.slug }) }}"><i class="iconGoTo"></i>Afficher</a>
+    </div>
+</div>

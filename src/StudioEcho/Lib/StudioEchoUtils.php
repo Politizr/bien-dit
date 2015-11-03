@@ -3,10 +3,8 @@ namespace StudioEcho\Lib;
 
 /**
  * Description of StudioEchoUtils
- * TODO: MAJ avec la version github
- * /!\ nouvelles méthodes
  *
- * TODO > méthodes utilisées à migrer vers le serice UtilsManager
+ * @todo migration vers GlobalTools?
  *
  * @author Studio Echo / Lionel Bouzonville
  */
@@ -24,7 +22,7 @@ class StudioEchoUtils
         $txt = str_replace(array_keys($transliterationTable), array_values($transliterationTable), $txt);
 
         // remove accents resulting from OSX's iconv
-        $txt = str_replace(array('\'', '`', '^'), '', $txt);
+        $txt = str_replace(array('\'', '`', '^'), ' ', $txt);
 
         return $txt;
     }

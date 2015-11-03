@@ -4,37 +4,96 @@ namespace Politizr\Model;
 
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\File\File;
+
+use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\Count;
 
 use FOS\ElasticaBundle\Transformer\HighlightableModelInterface;
 
+use StudioEcho\Lib\StudioEchoUtils;
+
 use Politizr\Exception\InconsistentDataException;
+
+use Politizr\Constant\ObjectTypeConstants;
+use Politizr\Constant\PathConstants;
 
 use Politizr\Model\om\BasePDReaction;
 
-class PDReaction extends BasePDReaction implements ContainerAwareInterface, HighlightableModelInterface
+/**
+ * Reaction model object
+ *
+ * @author Lionel Bouzonville
+ */
+class PDReaction extends BasePDReaction implements PDocumentInterface, ContainerAwareInterface, HighlightableModelInterface
 {
-    // ************************************************************************************ //
-    //                                        CONSTANTES
-    // ************************************************************************************ //
-      const UPLOAD_PATH = '/../../../web/uploads/documents/';
-      const UPLOAD_WEB_PATH = '/uploads/documents/';
+    // simple upload management
+    public $uploadedFileName;
 
-
-      /**
-       *
-       */
-    public function getClassName()
-    {
-        return PDocument::TYPE_REACTION;
-    }
-
-    // *****************************  ELASTIC SEARCH  ****************** //
-       private $elasticaPersister;
+    // elastica search
+    private $elasticaPersister;
     private $highlights;
 
-       /**
-        *
-        */
+    /**
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        $title = $this->getTitle();
+
+        if (!empty($title)) {
+            return $this->getTitle();
+        }
+
+        return 'Pas de titre';
+    }
+
+    /**
+     * @see PDocumentInterface::getType
+     */
+    public function getType()
+    {
+        return ObjectTypeConstants::TYPE_REACTION;
+    }
+
+
+    /**
+     * @see PDocumentInterface::isDisplayed
+     */
+    public function isDisplayed()
+    {
+        return $this->getOnline() && $this->getPublished();
+    }
+
+    /**
+     * Return constraints to be applied before publication
+     *
+     * @return Collection
+     */
+    public function getPublishConstraints()
+    {
+        $collectionConstraint = new Collection(array(
+            'title' => array(
+                new NotBlank(['message' => 'Le titre ne doit pas être vide']),
+                new Length(['max' => 100, 'maxMessage' => 'Le titre doit contenir {{ limit }} caractères maximum.']),
+            ),
+            'description' => array(
+                new NotBlank(['message' => 'La description ne doit pas être vide']),
+                new Length(['min' => 141, 'minMessage' => 'Le corps de la publication doit contenir {{ limit }} caractères minimum.']),
+            ),
+            'geoTags' => new Count(['min' => 1, 'minMessage' => 'Au moins {{ limit }} thématique géographique (département, région, France, Europe, Monde).']),
+            'allTags' => new Count(['min' => 3, 'minMessage' => 'Au moins {{ limit }} thématiques au total.']),
+        ));
+
+        return $collectionConstraint;
+    }
+
+    /**
+     * @param ContainerInterface $container
+     */
     public function setContainer(ContainerInterface $container = null)
     {
         if ($container) {
@@ -44,7 +103,7 @@ class PDReaction extends BasePDReaction implements ContainerAwareInterface, High
 
     /**
      *
-      */
+     */
     public function getHighlights()
     {
         return $this->highlights;
@@ -62,133 +121,98 @@ class PDReaction extends BasePDReaction implements ContainerAwareInterface, High
 
 
     /**
-     * TODO: gestion d'une exception spécifique à ES
+     * @todo: gestion d'une exception spécifique à ES
      *
      */
     public function postInsert(\PropelPDO $con = null)
     {
         if ($this->elasticaPersister) {
             if ($this->isIndexable()) {
-                $this->elasticaPersister->insertOne($this);
+                // $this->elasticaPersister->insertOne($this);
             }
         } else {
-            throw new \Exception('Service d\'indexation non dispo');
+            throw new \Exception('Indexation service not found');
         }
     }
 
     /**
-     * TODO: gestion d'une exception spécifique à ES
+     * @todo: gestion d'une exception spécifique à ES
      *
      */
     public function postUpdate(\PropelPDO $con = null)
     {
         if ($this->elasticaPersister) {
             if ($this->isIndexable()) {
-                $this->elasticaPersister->insertOne($this);
+                // $this->elasticaPersister->insertOne($this);
             }
         } else {
-            throw new \Exception('Service d\'indexation non dispo');
+            throw new \Exception('Indexation service not found');
         }
     }
 
     /**
-     * TODO: gestion d'une exception spécifique à ES
+     * @todo: gestion d'une exception spécifique à ES
      *
      */
     public function postDelete(\PropelPDO $con = null)
     {
         if ($this->elasticaPersister) {
-            $this->elasticaPersister->deleteOne($this);
+            // $this->elasticaPersister->deleteOne($this);
         } else {
-            throw new \Exception('Service d\'indexation non dispo');
+            throw new \Exception('Indexation service not found');
         }
 
-        // + gestion de l'upload
+        // @todo refactor to command
         $this->removeUpload();
     }
 
-
     /**
-     *  Appel au moment de l'indexation pour vérifier que l'objet est indexable
+     * Indexation process call to know if object is indexable
      *
-     *  @return boolean
+     * @return boolean
      */
     public function isIndexable()
     {
         return $this->getOnline() && $this->getPublished();
     }
 
-
-
-    // *****************************  OBJET / STRING  ****************** //
-
     /**
-     *
-     */
-    public function __toString()
-    {
-        return $this->getTitle();
-    }
-
-     /**
      * Override to manage accented characters
      * @return string
      */
     protected function createRawSlug()
     {
-        $toSlug =  \StudioEcho\Lib\StudioEchoUtils::transliterateString($this->getTitle());
+        $toSlug =  StudioEchoUtils::transliterateString($this->getTitle());
         $slug = $this->cleanupSlugPart($toSlug);
         return $slug;
     }
 
     /**
-     *    Surcharge pour gérer la date et l'auteur de la publication.
+     * Manage publisher information
      *
-     *
+     * @param \PropelPDO $con
      */
     public function preSave(\PropelPDO $con = null)
     {
-        // TODO > en commentaire pour avoir des fixtures variées (à supprimer)
-        // if ($this->published && ($this->isNew() || in_array(PDReactionPeer::PUBLISHED, $this->modifiedColumns))) {
-        //     $this->setPublishedAt(time());
-        // } else {
-        //     $this->setPublishedAt(null);
-        // }
-
-        // User associé
-        // TODO > chaine en dur
         $publisher = $this->getPUser();
         if ($publisher) {
-            $this->setPublishedBy($publisher->getFirstname().' '.$publisher->getName());
+            $this->setPublishedBy($publisher->getFullName());
         } else {
+            // @todo label in constant
             $this->setPublishedBy('Auteur inconnu');
         }
 
         return parent::preSave($con);
     }
 
+    /* ######################################################################################################## */
+    /*                                      SIMPLE UPLOAD MANAGEMENT                                            */
+    /* ######################################################################################################## */
+
     /**
-     * Surcharge pour gérer les conflits entre les behaviors Archivable et ConcreteInheritance
-     * https://github.com/propelorm/Propel/issues/366
      *
-     * @param PropelPDO $con Optional connection object
-     *
-     * @return     PDDebate The current object (for fluent API support)
+     * @param string $uploadedFileName
      */
-    public function deleteWithoutArchive(PropelPDO $con = null)
-    {
-        $this->archiveOnDelete = false;
-        $this->getParentOrCreate($con)->archiveOnDelete = false;
-
-        return $this->delete($con);
-    }
-
-
-    // ******************* SIMPLE UPLOAD MANAGEMENT **************** //
-    // https://github.com/avocode/FormExtensions/blob/master/Resources/doc/single-upload/overview.md
-
-    // Colonnes virtuelles / fichiers
-    public $uploadedFileName;
     public function setUploadedFileName($uploadedFileName)
     {
         $this->uploadedFileName = $uploadedFileName;
@@ -196,30 +220,33 @@ class PDReaction extends BasePDReaction implements ContainerAwareInterface, High
 
     /**
      *
+     * @return string
      */
     public function getUploadedFileNameWebPath()
     {
-        return PDReaction::UPLOAD_WEB_PATH . $this->file_name;
+        return PathConstants::REACTION_UPLOAD_WEB_PATH . $this->file_name;
     }
     
     /**
      *
+     * @return File
      */
     public function getUploadedFileName()
     {
         // inject file into property (if uploaded)
         if ($this->file_name) {
-            return new \Symfony\Component\HttpFoundation\File\File(
-                __DIR__ . PDReaction::UPLOAD_PATH . $this->file_name
+            return new File(
+                __DIR__ . PathConstants::REACTION_UPLOAD_PATH . $this->file_name
             );
         }
 
         return null;
     }
 
-
     /**
-     *  Gestion physique de l'upload
+     *
+     * @param File $file
+     * @return string file name
      */
     public function upload($file = null)
     {
@@ -227,54 +254,59 @@ class PDReaction extends BasePDReaction implements ContainerAwareInterface, High
               return;
         }
 
-        // Extension et nom de fichier
+        // extension
         $extension = $file->guessExtension();
         if (!$extension) {
               $extension = 'bin';
         }
-        $fileName = 'p-d-r-' . \StudioEcho\Lib\StudioEchoUtils::randomString() . '.' . $extension;
+
+        // file name
+        $fileName = $this->computeFileName() . '.' . $extension;
 
         // move takes the target directory and then the target filename to move to
-        $fileUploaded = $file->move(__DIR__ . PDReaction::UPLOAD_PATH, $fileName);
+        $fileUploaded = $file->move(__DIR__ . PathConstants::REACTION_UPLOAD_PATH, $fileName);
 
-        // file_name
+        // file name
         return $fileName;
     }
 
     /**
-     *    Surcharge pour gérer la suppression physique.
+     * @todo migrate physical deletion in special command instead of save
      */
-    public function setFileName($v)
+    public function setFileName($fileName)
     {
-        if (!$v) {
+        if (null !== $fileName) {
             $this->removeUpload();
         }
-        parent::setFileName($v);
+        parent::setFileName($fileName);
     }
 
     /**
-     *     Suppression physique des fichiers.
+     *
+     * @param $uploadedFileName
      */
     public function removeUpload($uploadedFileName = true)
     {
-        if ($uploadedFileName && $this->file_name && file_exists(__DIR__ . PDReaction::UPLOAD_PATH . $this->file_name)) {
-              unlink(__DIR__ . PDReaction::UPLOAD_PATH . $this->file_name);
+        if ($uploadedFileName && $this->file_name && file_exists(__DIR__ . PathConstants::REACTION_UPLOAD_PATH . $this->file_name)) {
+            unlink(__DIR__ . PathConstants::REACTION_UPLOAD_PATH . $this->file_name);
         }
     }
-    
-
-
-    // *****************************  DEBAT / REACTION  ****************** //
-
+   
     /**
-     * Renvoit le document associé à la réaction
+     * Compute a reaction file name
      *
-     * @return     PDDebate     Objet débat
+     * @return string
      */
-    public function getDocument()
+    public function computeFileName()
     {
-        return parent::getPDocument();
+        $fileName = 'politizr-reaction-' . StudioEchoUtils::randomString();
+
+        return $fileName;
     }
+ 
+    /* ######################################################################################################## */
+    /*                                                  DEBATE                                                  */
+    /* ######################################################################################################## */
 
     /**
      * Renvoit le débat associé à la réaction
@@ -286,111 +318,175 @@ class PDReaction extends BasePDReaction implements ContainerAwareInterface, High
         return parent::getPDDebate();
     }
 
-    // *****************************    USERS   ************************* //
+    /* ######################################################################################################## */
+    /*                                                      TAGS                                                */
+    /* ######################################################################################################## */
 
     /**
-     * Renvoie les abonnés qualifiés - au débat associé à la réaction courante.
+     * Debate's array tags
+     * - used by publish constraints
+     * - used by elastica indexation
      *
-     * @return     PropelObjectCollection PUser[] List
+     * @return array[string]
      */
-    public function getFollowersQ()
+    public function getArrayTags($tagTypeId = null, $online = true)
     {
-        $pdDebate = parent::getPDDebate();
+        $query = PTagQuery::create()
+            ->select('Title')
+            ->filterIfTypeId($tagTypeId)
+            ->filterIfOnline($online)
+            ->orderByTitle()
+            ->setDistinct();
 
-        $pUsers = null;
-        if ($pdDebate) {
-            $pUsers = $this->getPDDebate()->getFollowersQ();
-        }
-
-        return $pUsers;
+        return parent::getPTags($query)->toArray();
     }
 
     /**
-     * Renvoie les abonnés citoyens - au débat associé à la réaction courante.
-     *
-     * @return     PropelObjectCollection PUser[] List
+     * @see PDocumentInterface::getTags
      */
-    public function getFollowersC()
+    public function getTags($tagTypeId = null, $online = true)
     {
-        $pdDebate = parent::getPDDebate();
+        $query = PTagQuery::create()
+            ->filterIfTypeId($tagTypeId)
+            ->filterIfOnline($online)
+            // ->orderByTitle()
+            ->setDistinct();
 
-        $pUsers = null;
-        if ($pdDebate) {
-            $pUsers = $this->getPDDebate()->getFollowersC();
-        }
-
-        return $pUsers;
+        return parent::getPTags($query);
     }
 
-
-
-    // *****************************    REACTIONS   ************************* //
+    /* ######################################################################################################## */
+    /*                                                  COMMENTS                                                */
+    /* ######################################################################################################## */
 
     /**
-     *    Renvoit les réactions enfants associées à la réaction courante.
-     *
-     *
-     * @return PropelCollection d'objets PDReaction
+     * @see ObjectTypeConstants::countComments
      */
-    public function getChildrenReactions($online = true, $published = true)
+    public function countComments($online = true, $paragraphNo = null)
+    {
+        $query = PDRCommentQuery::create()
+            ->filterIfOnline($online)
+            ->filterIfParagraphNo($paragraphNo);
+        
+        return parent::countPDRComments($query);
+    }
+
+    /**
+     * @see ObjectTypeConstants::getComments
+     */
+    public function getComments($online = true, $paragraphNo = null, $orderBy = null)
+    {
+        $query = PDRCommentQuery::create()
+            ->filterIfOnline($online)
+            ->filterIfParagraphNo($paragraphNo)
+            ->_if($orderBy)
+                ->orderBy($orderBy[0], $orderBy[1])
+            ->_else()
+                ->orderBy('p_d_r_comment.created_at', 'desc')
+            ->_endif();
+
+        return parent::getPDRComments($query);
+    }
+    
+    /* ######################################################################################################## */
+    /*                                                   USERS                                                  */
+    /* ######################################################################################################## */
+
+    /**
+     * @see parent::getPUser
+     */
+    public function getUser()
+    {
+        return $this->getPUser();
+    }
+
+    /**
+     * @see PDocumentInterface::isOwner
+     */
+    public function isOwner($userId)
+    {
+        if ($this->getPUserId() == $userId) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /* ######################################################################################################## */
+    /*                                               REACTIONS                                                  */
+    /* ######################################################################################################## */
+
+    /**
+     * Nested tree children
+     *
+     * @param boolean $online
+     * @param boolean $published
+     * @return PropelCollection[PDReaction]
+     */
+    public function getChildrenReactions($online = null, $published = null)
     {
         $query = PDReactionQuery::create()
-                    ->filterByOnline($online)
-                    ->filterByPublished($published);
+            ->filterIfOnline($online)
+            ->filterIfPublished($published);
 
         return parent::getChildren($query);
     }
 
     /**
-     *    Renvoit les réactions descendantes associées à la réaction courante.
+     * Nested tree descendants
      *
-     *
-     * @return PropelCollection d'objets PDReaction
+     * @param boolean $online
+     * @param boolean $published
+     * @return PropelCollection[PDReaction]
      */
-    public function getDescendantsReactions($online = true, $published = true)
+    public function getDescendantsReactions($online = null, $published = null)
     {
         $query = PDReactionQuery::create()
-                    ->filterByOnline($online)
-                    ->filterByPublished($published);
-
+            ->filterIfOnline($online)
+            ->filterIfPublished($published);
+                    
         return parent::getDescendants($query);
     }
 
     /**
-     *    Renvoit le nombre de réactions publiées associées à la réaction courante.
+     * Reaction's descendant count
      *
-     *     @param     integer     $online         réactions en ligne
-     *     @param     integer     $published      réactions publiées
-     *
-     * @return PropelCollection d'objets PDReaction
+     * @param boolean $online
+     * @param boolean $published
+     * @return int
      */
-    public function countChildrenReactions($online = true, $published = true)
+    public function countDescendantsReactions($online = null, $published = null)
     {
         $query = PDReactionQuery::create()
-                    ->filterByOnline($online)
-                    ->filterByPublished($published)
-                    ->orderByPublishedAt(\Criteria::DESC);
+            ->filterIfOnline($online)
+            ->filterIfPublished($published)
+            ->orderByPublishedAt('desc');
+
+        return parent::countDescendants($query);
+    }
+
+    /**
+     * Reaction's children count
+     *
+     * @param boolean $online
+     * @param boolean $published
+     * @return int
+     */
+    public function countChildrenReactions($online = null, $published = null)
+    {
+        $query = PDReactionQuery::create()
+            ->filterIfOnline($online)
+            ->filterIfPublished($published)
+            ->orderByPublishedAt('desc');
 
         return parent::countChildren($query);
     }
 
     /**
-     *     @see countChildrenReactions
+     * @see PDReaction::countChildrenReactions
      */
-    public function countReactions()
+    public function countReactions($online = null, $published = null)
     {
-        return $this->countChildrenReactions(true, true);
-    }
-
-
-
-    // *****************************    USERS   ************************* //
-    
-    /**
-     *
-     */
-    public function getUser()
-    {
-        return $this->getPUser();
+        return $this->countChildrenReactions($online, $published);
     }
 }

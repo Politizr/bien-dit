@@ -1,21 +1,29 @@
 <?php
-namespace Politizr\Frontbundle\Twig;
+namespace Politizr\FrontBundle\Twig;
 
-use Politizr\Model\PDocument;
-use Politizr\Model\PUStatus;
+use Symfony\Component\Form\FormView;
+
+use Politizr\Constant\NotificationConstants;
+use Politizr\Constant\ReputationConstants;
+use Politizr\Constant\ObjectTypeConstants;
+use Politizr\Constant\UserConstants;
+use Politizr\Constant\PathConstants;
+
+use Politizr\Model\PDDebate;
 use Politizr\Model\PNotification;
 use Politizr\Model\PUNotification;
+use Politizr\Model\PUser;
 
 use Politizr\Model\PUFollowUQuery;
 use Politizr\Model\PRBadgeQuery;
-use Politizr\Model\PDocumentQuery;
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
-use Politizr\Model\PDCommentQuery;
+use Politizr\Model\PDDCommentQuery;
+use Politizr\Model\PDRCommentQuery;
 use Politizr\Model\PUserQuery;
 
 /**
- * Extension Twig / Gestion des users
+ * User's twig extension
  *
  * @author Lionel Bouzonville
  */
@@ -26,6 +34,8 @@ class PolitizrUserExtension extends \Twig_Extension
     private $logger;
     private $router;
     private $templating;
+    private $securityTokenStorage;
+    private $securityAuthorizationChecker;
 
     private $user;
 
@@ -39,9 +49,11 @@ class PolitizrUserExtension extends \Twig_Extension
         $this->logger = $serviceContainer->get('logger');
         $this->router = $serviceContainer->get('router');
         $this->templating = $serviceContainer->get('templating');
+        $this->securityContext = $serviceContainer->get('security.context');
+        $this->securityAuthorizationChecker =$serviceContainer->get('security.authorization_checker');
 
-        // Récupération du user en session
-        $token = $serviceContainer->get('security.context')->getToken();
+        // get connected user
+        $token = $this->securityContext->getToken();
         if ($token && $user = $token->getUser()) {
             $className = 'Politizr\Model\PUser';
             if ($user && $user instanceof $className) {
@@ -67,6 +79,11 @@ class PolitizrUserExtension extends \Twig_Extension
     {
         return array(
             new \Twig_SimpleFilter(
+                'icon',
+                array($this, 'icon'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
                 'photo',
                 array($this, 'photo'),
                 array('is_safe' => array('html'))
@@ -82,8 +99,8 @@ class PolitizrUserExtension extends \Twig_Extension
                 array('is_safe' => array('html'))
             ),
             new \Twig_SimpleFilter(
-                'tags',
-                array($this, 'tags'),
+                'userTags',
+                array($this, 'userTags'),
                 array('is_safe' => array('html'))
             ),
             new \Twig_SimpleFilter(
@@ -99,6 +116,31 @@ class PolitizrUserExtension extends \Twig_Extension
             new \Twig_SimpleFilter(
                 'linkedNotification',
                 array($this, 'linkedNotification'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
+                'isAuthorizedToReact',
+                array($this, 'isAuthorizedToReact'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
+                'isAuthorizedToReportAbuse',
+                array($this, 'isAuthorizedToReportAbuse'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
+                'isAuthorizedToNewComment',
+                array($this, 'isAuthorizedToNewComment'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
+                'isAuthorizedToPublishDebate',
+                array($this, 'isAuthorizedToPublishDebate'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
+                'isAuthorizedToPublishReaction',
+                array($this, 'isAuthorizedToPublishReaction'),
                 array('is_safe' => array('html'))
             ),
         );
@@ -121,30 +163,58 @@ class PolitizrUserExtension extends \Twig_Extension
     /* ######################################################################################################## */
 
     /**
-     *  Photo de profil d'un user
+     * User's profile default icon
      *
-     *  @param $user         PUser       PUser
-     *
-     *  @return html
+     * @param PUser $user
+     * @return html
      */
-    public function photo($user, $filterName = 'user_bio', $effect = 'img-rounded')
+    public function icon(PUser $user)
     {
         // $this->logger->info('*** photo');
         // $this->logger->info('$user = '.print_r($user, true));
 
-        $path = 'bundles/politizrfront/images/default_user.png';
+        return $this->photo($user, 'user_15', false, false, 'profil15_default.png');
+    }
+
+    /**
+     * User's profile photo
+     *
+     * @param PUser $user
+     * @param string $filterName
+     * @param boolean $withLink
+     * @param boolean $email
+     * @param string $default
+     * @return html
+     */
+    public function photo(PUser $user, $filterName = 'user_bio', $withLink = true, $email = false, $default = 'profil_default.png')
+    {
+        // $this->logger->info('*** photo');
+        // $this->logger->info('$user = '.print_r($user, true));
+
+        $path = 'bundles/politizrfront/images/'.$default;
         if ($user && $fileName = $user->getFileName()) {
             $path = 'uploads/users/'.$fileName;
         }
 
+        $template= '_photo.html.twig';
+        if ($email) {
+            $template = '_photoEmail.html.twig';
+        }
+
+        // URL detail
+        $url = null;
+        if ($withLink && $user) {
+            $url = $this->router->generate('UserDetail', array('slug' => $user->getSlug()));
+        }
+
         // Construction du rendu du tag
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Fragment\\Global:UserPhoto.html.twig',
+            'PolitizrFrontBundle:User:'.$template,
             array(
                 'user' => $user,
                 'path' => $path,
+                'url' => $url,
                 'filterName' => $filterName,
-                'effect' => $effect,
                 )
         );
 
@@ -152,89 +222,97 @@ class PolitizrUserExtension extends \Twig_Extension
     }
 
     /**
-     *  Photo de profil d'un user
+     * Load an <img> html tag with the back profile photo of user and apply it a filter.
      *
-     *  @param $user         PUser       PUser
-     *
-     *  @return html
+     * @param PUser $user
+     * @return html
      */
-    public function photoBack($user, $filterName = 'user_bio_back')
+    public function photoBack(PUser $user, $filterName = 'user_bio_back')
     {
         // $this->logger->info('*** photoBack');
         // $this->logger->info('$user = '.print_r($user, true));
 
-        $path = '/bundles/politizrfront/images/default_user_back.jpg';
+        $path = '/bundles/politizrfront/images/default_profile.jpg';
         if ($user && $fileName = $user->getBackFileName()) {
-            $path = '/uploads/users/'.$fileName;
+            $path = PathConstants::USER_UPLOAD_WEB_PATH.$fileName;
         }
 
-        return $path;
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:User:_imageHeader.html.twig',
+            array(
+                'title' => $user->getFullName(),
+                'path' => $path,
+                'filterName' => $filterName,
+            )
+        );
+
+        return $html;
     }
 
 
    /**
-     *  Affiche les tags suivis par un user suivant le type fourni
+     * Display user's following tags
      *
-     * @param $user         PUser       PUser
-     * @param $tagTypeId    integer     ID type de tag
-     *
+     * @param PUser $user
+     * @param integer $tagTypeId
      * @return string
      */
-    public function followTags($user, $tagTypeId)
+    public function followTags(PUser $user, $tagTypeId = null)
     {
         $this->logger->info('*** followTags');
         // $this->logger->info('$user = '.print_r($user, true));
         // $this->logger->info('$pTTagType = '.print_r($pTTagType, true));
 
+        $tags = $user->getFollowTags($tagTypeId);
+ 
         // Construction du rendu du tag
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Fragment\\Tag:glListRead.html.twig',
+            'PolitizrFrontBundle:Tag:_list.html.twig',
             array(
-                'tags' => $user->getFollowTags($tagTypeId)
+                'tags' => $tags
             )
         );
 
         return $html;
-
     }
 
    /**
-     *  Affiche les tags associés à un user suivant le type fourni
+     * Display user's tags
      *
-     * @param $user         PUser       PUser
-     * @param $tagTypeId    integer     ID type de tag
-     *
+     * @param PUser $user
+     * @param integer $tagTypeId
      * @return string
      */
-    public function tags($user, $tagTypeId)
+    public function userTags(PUser $user, $tagTypeId = null)
     {
-        $this->logger->info('*** tags');
+        $this->logger->info('*** userTags');
         // $this->logger->info('$uiser = '.print_r($uiser, true));
         // $this->logger->info('$pTTagType = '.print_r($pTTagType, true));
 
+        $tags = $user->getTaggedTags($tagTypeId);
+
         // Construction du rendu du tag
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Fragment\\Tag:glListRead.html.twig',
+            'PolitizrFrontBundle:Tag:_list.html.twig',
             array(
-                'tags' => $user->getTaggedTags($tagTypeId),
+                'tags' => $tags
             )
         );
 
         return $html;
-
     }
 
 
     /**
-     *  Affiche le lien "Suivre" / "Ne plus suivre" / "M'inscrire" suivant le cas
+     * Follow / unfollow user
      *
-     * @param $user       PUser
-     *
+     * @param PUser $user
      * @return string
      */
-    public function linkSubscribeUser(\Politizr\Model\PUser $user)
+    public function linkSubscribeUser(PUser $user)
     {
-        // $this->logger->info('*** linkSubscribeDebate');
+        // $this->logger->info('*** linkSubscribeUser');
         // $this->logger->info('$debate = '.print_r($user, true));
 
         $follower = false;
@@ -251,26 +329,23 @@ class PolitizrUserExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Fragment\\Follow:Subscribe.html.twig',
+            'PolitizrFrontBundle:Follow:_subscribeUser.html.twig',
             array(
                 'object' => $user,
-                'type' => PDocument::TYPE_USER,
                 'follower' => $follower
             )
         );
 
         return $html;
-
     }
 
     /**
      *  Affiche le bloc des followers
      *
-     *  @param $user       PUser
-     *
-     *  @return string
+     * @param PUser $user
+     * @return string
      */
-    public function followersUser(\Politizr\Model\PUser $user)
+    public function followersUser(PUser $user)
     {
         // $this->logger->info('*** followersUser');
         // $this->logger->info('$debate = '.print_r($user, true));
@@ -302,99 +377,286 @@ class PolitizrUserExtension extends \Twig_Extension
 
 
     /**
-     * Construit la structure texte + liens associé à une notification.
+     * Notification HTML rendering
+     * @todo add test on returning objects + throw InconsistentDataException (InconsistentDataEventException?)
      *
-     * @param $notification         PUNotification
-     * @param $absolute             boolean                 URL absolu pour les liens
-     *
+     * @param PUNotification $notification
+     * @param int $type NotificationConstants
      * @return html
      */
-    public function linkedNotification(PUNotification $notification, $absolute = false)
+    public function linkedNotification(PUNotification $notification, $type = NotificationConstants::TYPE_SCREEN)
     {
-        // $this->logger->info('*** linkedNotification');
-        // $this->logger->info('$notification = '.print_r($notification, true));
+        $this->logger->info('*** linkedNotification');
+        $this->logger->info('$notification = '.print_r($notification, true));
+        $this->logger->info('$type = '.print_r($type, true));
+
+        // absolute URL for email notif
+        $absolute = false;
+        if (NotificationConstants::TYPE_EMAIL === $type) {
+            $absolute = true;
+        }
 
         // Récupération de l'objet d'interaction
-        $commentDoc = '';
-        $reactionParentTitle = null;
-        $reactionParentUrl = null;
+        $title = '';
+        $url = '#';
+        $document = null;
+        $documentUrl = '#';
         switch ($notification->getPObjectName()) {
-            case PDocument::TYPE_DEBATE:
+            case ObjectTypeConstants::TYPE_DEBATE:
                 $subject = PDDebateQuery::create()->findPk($notification->getPObjectId());
-                $title = $subject->getTitle();
-                $url = $this->router->generate('DebateDetail', array('slug' => $subject->getSlug()), $absolute);
+
+                if ($subject) {
+                    $title = $subject->getTitle();
+                    $url = $this->router->generate('DebateDetail', array('slug' => $subject->getSlug()), $absolute);
+                }
                 break;
-            case PDocument::TYPE_REACTION:
+            case ObjectTypeConstants::TYPE_REACTION:
                 $subject = PDReactionQuery::create()->findPk($notification->getPObjectId());
-                $title = $subject->getTitle();
-                $url = $this->router->generate('ReactionDetail', array('slug' => $subject->getSlug()), $absolute);
                 
-                // Document parent associée à la réaction
-                if ($subject->getTreeLevel() > 1) {
-                    // Réaction parente
-                    $parent = $subject->getParent();
-                    $reactionParentTitle = $parent->getTitle();
-                    $reactionParentUrl = $this->router->generate('ReactionDetail', array('slug' => $parent->getSlug()), $absolute);
-                } else {
-                    // Débat
-                    $debate = $subject->getDebate();
-                    $reactionParentTitle = $debate->getTitle();
-                    $reactionParentUrl = $this->router->generate('DebateDetail', array('slug' => $debate->getSlug()), $absolute);
+                if ($subject) {
+                    $title = $subject->getTitle();
+                    $url = $this->router->generate('ReactionDetail', array('slug' => $subject->getSlug()), $absolute);
+
+                    // Document parent associée à la réaction
+                    if ($subject->getTreeLevel() > 1) {
+                        // Réaction parente
+                        $document = $subject->getParent();
+                        $documentUrl = $this->router->generate('ReactionDetail', array('slug' => $document->getSlug()), $absolute);
+                    } else {
+                        // Débat
+                        $document = $subject->getDebate();
+                        $documentUrl = $this->router->generate('DebateDetail', array('slug' => $document->getSlug()), $absolute);
+                    }
                 }
 
                 break;
-            case PDocument::TYPE_COMMENT:
-                $subject = PDCommentQuery::create()->findPk($notification->getPObjectId());
+            case ObjectTypeConstants::TYPE_DEBATE_COMMENT:
+                $subject = PDDCommentQuery::create()->findPk($notification->getPObjectId());
                 
-                $title = $subject->getDescription();
-                $document = PDocumentQuery::create()->findPk($subject->getPDocumentId());
-                $commentDoc = $document->getTitle();
-                if ($document->getDescendantClass() == PDocument::TYPE_DEBATE) {
-                    $url = $this->router->generate('DebateDetail', array('slug' => $document->getDebate()->getSlug()), $absolute);
-                } else {
-                    $url = $this->router->generate('ReactionDetail', array('slug' => $document->getReaction()->getSlug()), $absolute);
+                if ($subject) {
+                    $document = $subject->getPDocument();
+                    $title = $subject->getDescription();
+                    $url = $this->router->generate('DebateDetail', array('slug' => $document->getSlug()), $absolute) . '#p-' . $subject->getParagraphNo();
+                    $documentUrl = $this->router->generate('DebateDetail', array('slug' => $document->getSlug()), $absolute);
                 }
                 break;
-            case PDocument::TYPE_USER:
+            case ObjectTypeConstants::TYPE_REACTION_COMMENT:
+                $subject = PDRCommentQuery::create()->findPk($notification->getPObjectId());
+                
+                if ($subject) {
+                    $document = $subject->getPDocument();
+                    $title = $subject->getDescription();
+                    $url = $this->router->generate('ReactionDetail', array('slug' => $document->getSlug()), $absolute) . '#p-' . $subject->getParagraphNo();
+                    $documentUrl = $this->router->generate('ReactionDetail', array('slug' => $document->getSlug()), $absolute);
+                }
+                break;
+            case ObjectTypeConstants::TYPE_USER:
                 $subject = PUserQuery::create()->findPk($notification->getPObjectId());
-                $title = $subject->getFirstname().' '.$subject->getName();
-                $url = $this->router->generate('UserDetail', array('slug' => $subject->getSlug()), $absolute);
-                break;
-            case 'Politizr\Model\PRBadge':
-                $subject = PRBadgeQuery::create()->findPk($notification->getPObjectId());
-                $title = $subject->getTitle();
 
-                $url = $this->router->generate('MyReputationC', array(), $absolute);
-                if ($this->isGrantedE()) {
-                    $url = $this->router->generate('MyReputationE', array(), $absolute);
+                if ($subject) {
+                    $title = $subject->getFirstname().' '.$subject->getName();
+                    $url = $this->router->generate('UserDetail', array('slug' => $subject->getSlug()), $absolute);
                 }
+                break;
+            case ObjectTypeConstants::TYPE_BADGE:
+                $subject = PRBadgeQuery::create()->findPk($notification->getPObjectId());
+
+                if ($subject) {
+                    $title = $subject->getTitle();
+                }
+                
                 break;
         }
 
         // Récupération de l'auteur de l'interaction
         $author = PUserQuery::create()->findPk($notification->getPAuthorUserId());
-        $authorUrl = $this->router->generate('UserDetail', array('slug' => $author->getSlug()), $absolute);
 
-        // Construction du rendu du tag
-        $html = $this->templating->render(
-            'PolitizrFrontBundle:Fragment\\User:glNotification.html.twig',
-            array(
-                'id' => $notification->getPNotificationId(),
-                'puId' => $notification->getId(),
-                'author' => $author,
-                'authorUrl' => $authorUrl,
-                'title' => $title,
-                'url' => $url,
-                'commentDoc' => $commentDoc,
-                'reactionParentTitle' => $reactionParentTitle,
-                'reactionParentUrl' => $reactionParentUrl,
-            )
-        );
+        $authorUrl = null;
+        if ($author) {
+            $authorUrl = $this->router->generate('UserDetail', array('slug' => $author->getSlug()), $absolute);
+        }
+
+        // Screen / Email rendering
+        if (NotificationConstants::TYPE_EMAIL === $type || NotificationConstants::TYPE_EMAIL_TXT === $type) {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:Notification:_notificationMessage.html.twig',
+                array(
+                    'type' => $type,
+                    'notification' => $notification,
+                    'notificationId' => $notification->getPNotificationId(),
+                    'subject' => $subject,
+                    'title' => $title,
+                    'url' => $url,
+                    'author' => $author,
+                    'authorUrl' => $authorUrl,
+                    'document' => $document,
+                    'documentUrl' => $documentUrl,
+                )
+            );
+        } else {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:Notification:_notification.html.twig',
+                array(
+                    'notification' => $notification,
+                    'notificationId' => $notification->getPNotificationId(),
+                    'subject' => $subject,
+                    'title' => $title,
+                    'url' => $url,
+                    'author' => $author,
+                    'authorUrl' => $authorUrl,
+                    'document' => $document,
+                    'documentUrl' => $documentUrl,
+                )
+            );
+        }
 
         return $html;
     }
 
+    /**
+     * Test if the user can publish a reaction to the debate
+     *
+     * @param PUser $user
+     * @param PDDebate $debate
+     * @return boolean
+     */
+    public function isAuthorizedToReact(PUser $user, PDDebate $debate)
+    {
+        // $this->logger->info('*** isAuthorizedToReact');
+        // $this->logger->info('$user = '.print_r($user, true));
+        // $this->logger->info('$debate = '.print_r($debate, true));
 
+        // elected profile can react
+        if ($this->securityAuthorizationChecker->isGranted('ROLE_ELECTED')) {
+            return true;
+        }
+
+        // author of the debate can react
+        // + min reputation to reach
+        $debateUser = $debate->getUser();
+        $id = $user->getId();
+        $score = $user->getReputationScore();
+        if ($debateUser->getId() === $id && $score >= ReputationConstants::ACTION_REACTION_WRITE) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Test if the user can report an abuse
+     *
+     * @param PUser $user
+     * @return boolean
+     */
+    public function isAuthorizedToReportAbuse(PUser $user)
+    {
+        // $this->logger->info('*** isAuthorizedToReportAbuse');
+        // $this->logger->info('$user = '.print_r($user, true));
+
+        $score = $user->getReputationScore();
+        if ($score >= ReputationConstants::ACTION_ABUSE_REPORT) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Display the new comment form - or not - depending of the reputation score
+     *
+     * @param PUser $user
+     * @param FormView $formComment
+     * @return string
+     */
+    public function isAuthorizedToNewComment(PUser $user, FormView $formComment)
+    {
+        // $this->logger->info('*** isAuthorizedToNewComment');
+        // $this->logger->info('$user = '.print_r($user, true));
+
+        $score = $user->getReputationScore();
+        if ($score >= ReputationConstants::ACTION_COMMENT_WRITE) {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:Comment:_new.html.twig',
+                array(
+                    'formComment' => $formComment,
+                )
+            );
+        } else {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:Reputation:_cannotComment.html.twig',
+                array(
+                    'score' => $score,
+                )
+            );
+        }
+
+        return $html;
+    }
+
+    /**
+     * Display the publish link - or not - depending of the reputation score
+     *
+     * @param PUser $user
+     * @param int $debateId
+     * @return string
+     */
+    public function isAuthorizedToPublishDebate(PUser $user, $debateId)
+    {
+        // $this->logger->info('*** isAuthorizedToPublishDebate');
+        // $this->logger->info('$user = '.print_r($user, true));
+
+        $score = $user->getReputationScore();
+        if ($score >= ReputationConstants::ACTION_DEBATE_WRITE) {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:Debate:_publishLink.html.twig',
+                array(
+                    'debateId' => $debateId,
+                )
+            );
+        } else {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:Reputation:_cannotPublishDebate.html.twig',
+                array(
+                    'score' => $score,
+                )
+            );
+        }
+
+        return $html;
+    }
+
+    /**
+     * Display the publish link - or not - depending of the reputation score
+     *
+     * @param PUser $user
+     * @param int $reactionId
+     * @return string
+     */
+    public function isAuthorizedToPublishReaction(PUser $user, $reactionId)
+    {
+        // $this->logger->info('*** isAuthorizedToPublishReaction');
+        // $this->logger->info('$user = '.print_r($user, true));
+
+        $score = $user->getReputationScore();
+        if ($score >= ReputationConstants::ACTION_REACTION_WRITE) {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:Reaction:_publishLink.html.twig',
+                array(
+                    'reactionId' => $reactionId,
+                )
+            );
+        } else {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:Reputation:_cannotPublishReaction.html.twig',
+                array(
+                    'score' => $score,
+                )
+            );
+        }
+
+        return $html;
+    }
 
     /* ######################################################################################################## */
     /*                                             FONCTIONS                                                    */
@@ -411,7 +673,7 @@ class PolitizrUserExtension extends \Twig_Extension
     {
         $this->logger->info('*** isGrantedC');
 
-        if ($this->sc->get('security.context')->isGranted('ROLE_CITIZEN') &&
+        if ($this->securityAuthorizationChecker->isGranted('ROLE_CITIZEN') &&
             $this->user &&
             $this->user->getOnline()) {
             return true;
@@ -432,9 +694,9 @@ class PolitizrUserExtension extends \Twig_Extension
     {
         $this->logger->info('*** isGrantedE');
 
-        if ($this->sc->get('security.context')->isGranted('ROLE_ELECTED') &&
+        if ($this->securityAuthorizationChecker->isGranted('ROLE_ELECTED') &&
             $this->user &&
-            $this->user->getPUStatusId() == PUStatus::ACTIVED &&
+            $this->user->getPUStatusId() == UserConstants::STATUS_ACTIVED &&
             $this->user->getOnline()) {
             return true;
         }

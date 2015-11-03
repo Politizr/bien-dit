@@ -1,0 +1,6 @@
+<div class="listTab postTab">
+    {% for debate in debates %}
+        {% include 'PolitizrFrontBundle:Debate:_listRow.html.twig' with { 'debate': debate } only %}
+    {% endfor %}
+</div>
+{% include 'PolitizrFrontBundle:PaginatedList:_scrollNav.html.twig' with { 'moreResults': moreResults, 'offset': offset, 'action': paginateNextAction } %}

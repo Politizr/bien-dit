@@ -56,7 +56,7 @@ class PRBadgeTypeTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('PRBadge', 'Politizr\\Model\\PRBadge', RelationMap::ONE_TO_MANY, array('id' => 'p_r_badge_type_id', ), 'CASCADE', 'CASCADE', 'PRBadges');
+        $this->addRelation('PRBadgeFamily', 'Politizr\\Model\\PRBadgeFamily', RelationMap::ONE_TO_MANY, array('id' => 'p_r_badge_type_id', ), 'CASCADE', 'CASCADE', 'PRBadgeFamilies');
     } // buildRelations()
 
     /**
@@ -81,6 +81,16 @@ class PRBadgeTypeTableMap extends TableMap
   'rank_column' => 'sortable_rank',
   'use_scope' => 'false',
   'scope_column' => '',
+),
+            'archivable' =>  array (
+  'archive_table' => '',
+  'archive_phpname' => NULL,
+  'archive_class' => '',
+  'log_archived_at' => 'true',
+  'archived_at_column' => 'archived_at',
+  'archive_on_insert' => 'false',
+  'archive_on_update' => 'false',
+  'archive_on_delete' => 'true',
 ),
             'event' =>  array (
 ),

@@ -1,74 +1,99 @@
 # NOTIFICATION
 
-# Constantes de classe PNotification + glNotification.html.twig à MAJ en parallèle
+# Types
+Politizr\Model\PNType:
+    publication:
+        title:              Publication
+    commentaire:
+        title:              Commentaire
+    abonnement:
+        title:              Abonnement
+    profil:
+        title:              Profil
+
+# Constantes de classe PNotification  / Politizr/Constants/PNotificationConstants
 Politizr\Model\PNotification:
     d_comment_publish:
         online:             true
-        title:              Un commentaire a été publié sur un de vos documents
+        p_n_type_id:        publication
+        title:              Lorsqu'un commentaire a été publié sur une de mes publications.
         description:        |
             Un commentaire a été publié sur un de vos documents
     d_note_pos:
         online:             true
-        title:              Une note positive a été donnée sur un de vos documents
+        p_n_type_id:        publication
+        title:              Lorsqu'une note positive a été donnée à une de mes publications.
         description:        |
             Une note positive a été donnée sur un de vos documents
     d_note_neg:
         online:             true
-        title:              Une note négative a été donnée sur un de vos documents
+        p_n_type_id:        publication
+        title:              Lorsqu'une note négative a été donnée à une de mes publications.
         description:        |
             Une note négative a été donnée sur un de vos documents
     d_d_reaction_publish:
         online:             true
-        title:              Une réaction a été publiée sur un de vos débats
+        p_n_type_id:        publication
+        title:              Lorsqu'une réaction a été publiée sur un de mes débats.
         description:        |
             Une réaction a été publiée sur un de vos débats
     d_d_followed:
         online:             true
-        title:              Un utilisateur suit un de vos débats
+        p_n_type_id:        publication
+        title:              Lorsqu'un utilisateur suit un de mes débats.
         description:        |
             Un utilisateur suit un de vos débats
     d_r_reaction_publish:
         online:             true
-        title:              Une réaction a été publiée sur une de vos réactions
+        p_n_type_id:        publication
+        title:              Lorsqu'une réaction a été publiée sur une de mes réactions.
         description:        |
             Une réaction a été publiée sur une de vos réactions
     d_c_note_pos:
         online:             true
-        title:              Note positive sur un de vos commentaires
+        p_n_type_id:        commentaire
+        title:              Lorsqu'une note positive a été attribuée à un de mes commentaires.
         description:        |
             Une note positive a été donnée sur un de vos commentaires
     d_c_note_neg:
         online:             true
-        title:              Note négative sur un de vos commentaires
+        p_n_type_id:        commentaire
+        title:              Lorsqu'une note negative a été attribuée à un de mes commentaires.
         description:        |
             Une note négative a été donnée sur un de vos commentaires
     u_followed:
         online:             true
-        title:              Un utilisateur suit votre profil
+        p_n_type_id:        profil
+        title:              Lorsqu'un nouvel utilisateur s'abonne à mon profil.
         description:        |
             Un utilisateur suit votre profil
     u_badge:
         online:             true
-        title:              Vous avez obtenu un badge
+        p_n_type_id:        profil
+        title:              Lorsque j'obtiens un nouveau badge.
         description:        |
             Vous avez obtenu un badge
     s_u_debate_publish:
         online:             true
-        title:              Un débat a été publié par un utilisateur suivi
+        p_n_type_id:        abonnement
+        title:              Lorsqu'un débat a été publié par un utilisateur suivi.
         description:        |
             Un débat a été publié par un utilisateur suivi
     s_u_reaction_publish:
         online:             true
-        title:              Une réaction a été publiée par un utilisateur suivi
+        p_n_type_id:        abonnement
+        title:              Lorsqu'une réaction a été publiée par un utilisateur suivi.
         description:        |
             Une réaction a été publiée par un utilisateur suivi
     s_u_comment_publish:
         online:             true
-        title:              Un commentaire a été publié par un utilisateur suivi
+        p_n_type_id:        abonnement
+        title:              Lorsqu'un commentaire a été publié par un utilisateur suivi.
         description:        |
             Un commentaire a été publié par un utilisateur suivi
     s_d_reaction_publish:
         online:             true
-        title:              Une réaction a été publié sur un débat suivi
+        p_n_type_id:        abonnement
+        title:              Lorsqu'une réaction a été publié sur un débat suivi.
         description:        |
             Une réaction a été publiée sur un débat suivi

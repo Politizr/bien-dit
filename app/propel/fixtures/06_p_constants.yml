@@ -1,0 +1,171 @@
+# USER DATAS
+Politizr\Model\PUStatus:
+    activ:
+        id:             1
+        title:          Actif
+    validation:
+        id:             2
+        title:          En cours de validation
+    exclude:
+        id:             3
+        title:          Exclu
+    archive:
+        id:             4
+        title:          Archivé
+
+
+# ORDER DATAS
+Politizr\Model\POOrderState:
+    create:
+        id:         1
+        title:      Commande créée
+    waiting:
+        id:         2
+        title:      Commande en attente
+    open:
+        id:         3
+        title:      Commande ouverte
+    handled:
+        id:         4
+        title:      Commande traitée
+    cancel:
+        id:         5
+        title:      Commande annulée
+
+
+Politizr\Model\POPaymentState:
+    process:
+        id:         1
+        title:      Paiement en cours de traitement
+    waiting:
+        id:         2
+        title:      Paiement en attente
+    done:
+        id:         3
+        title:      Paiement effectué
+    refused:
+        id:         4
+        title:      Paiement refusé
+    canceled:
+        id:         5
+        title:      Paiement annulé
+
+
+Politizr\Model\POPaymentType:
+    virement:
+        id:             1
+        sortable_rank:  1
+        online:         true
+        title:          Virement
+        description:    |
+            Virement bancaire
+    cb:
+        id:             2
+        sortable_rank:  2
+        online:         true
+        title:          Carte Bancaire
+        description:    |
+            Carte Bancaire
+    cheque:
+        id:             3
+        sortable_rank:  3
+        online:         true
+        title:          Chèque
+        description:    |
+            Chèque
+    paypal:
+        id:             4
+        sortable_rank:  4
+        online:         true
+        title:          Paypal
+        description:    |
+            Paypal
+
+
+Politizr\Model\POSubscription:
+    1mois:
+        online:         true
+        sortable_rank:  1
+        title:          Abonnement 1 mois
+        description:    |
+            Abonnement mensuel
+        price:          5
+    1an:
+        online:         true
+        sortable_rank:  1
+        title:          Abonnement 1 an
+        description:    |
+            Abonnement pour 1 an
+        price:          50
+
+# USERS "admin" > lionel + thomas
+Politizr\Model\PUser:
+    lionel:
+        p_u_status_id:          activ
+
+        gender:                 Monsieur
+        firstname:              Lionel
+        name:                   B
+        birthday:               1976-12-04
+
+        subtitle:               Administrateur Politizr
+        biography:              |
+            Administrateur Politizr
+
+        website:                http://www.politizr.com
+        twitter:                https://twitter.com/politizr
+        facebook:               https://facebook.com/politizr
+        phone:                  06 78 58 27 45
+
+        nb_views:               0
+
+        qualified:              1
+        validated:              1
+        online:                 1
+
+        username:               lionelb
+        username_canonical:     lionelb
+        email:                  lionel@politizr.com
+        email_canonical:        lionel@politizr.com
+        enabled:                1
+        salt:                   87yw2i7c75kw00oskg4k0g0kw0sosog
+        password:               kFlfDbSXA8LW/BwFsstRRWRGwRmiH7MGxomNGQSKZvj3cOuc35HPRjodswqfB5LqAa/V3b5ahWjd3pxmitB7gA==
+        locked:                 '0'
+        expired:                '0'
+        credentials_expired:    '0'
+        roles:                  [ ROLE_ELECTED, ROLE_PROFILE_COMPLETED, ROLE_CITIZEN ]
+
+    thomas:
+        p_u_status_id:          activ
+
+        gender:                 Monsieur
+        firstname:              Thomas
+        name:                   C
+        birthday:               1978-08-28
+
+        subtitle:               Administrateur Politizr
+        biography:              |
+            Administrateur Politizr
+
+        website:                http://www.politizr.com
+        twitter:                https://twitter.com/politizr
+        facebook:               https://facebook.com/politizr
+        phone:                  06 71 20 73 01
+
+        nb_views:               0
+
+        qualified:              1
+        validated:              1
+        online:                 1
+
+        username:               thomasc
+        username_canonical:     thomasc
+        email:                  thomas@politizr.com
+        email_canonical:        thomas@politizr.com
+        enabled:                1
+        salt:                   pdnxt6h8wi880osowcgwwssoc88sw4g
+        password:               T9mlNDEtPRE0pwE3oz6AXLUe3FBMxrl0mjvdYLKTJneBPqp3UCQ+fDP5RLktt8KlJvl0o6lk/AK2SueQoZkl6w==
+        locked:                 '0'
+        expired:                '0'
+        credentials_expired:    '0'
+        roles:                  [ ROLE_ELECTED, ROLE_PROFILE_COMPLETED, ROLE_CITIZEN ]

@@ -1,0 +1,18 @@
+{% spaceless %}
+    <div class="modalSidebar">
+        <h1>Abonnés</h1>
+        <div class="listCriteria criteriaSidebar">
+            <form id="listOrder"></form>
+            <form id="listFilter"></form>
+        </div>
+    </div>
+    <div id="paginatedList" class="listContainer" url="{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
+        'xhrRoute': 'ROUTE_MODAL_FOLLOWERS_LIST',
+        'xhrService': 'modal',
+        'xhrMethod': 'followerList',
+        'xhrType': 'RETURN_HTML',
+    } only %}"
+    withFilters="true" data-subject-id="{{ subject.id }}">
+        <div id="listContent" class="modalList withSidebar"></div>
+    </div>
+{% endspaceless %}

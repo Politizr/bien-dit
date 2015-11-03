@@ -12,12 +12,12 @@ params:
             label:          ID Utilisateur
         p_user:
             label:          Utilisateur
+            addFormOptions:
+                query:                  \Politizr\Model\PUserQuery::create()->orderByName() 
         file_name:
             label:          Image
         title:
             label:          Titre
-        summary:
-            label:          Résumé
         description:
             label:          Description
         note_pos:
@@ -45,23 +45,23 @@ builders:
         params:
             title:                              Liste des débats
             max_per_page:                       50
-            sort:                               [ created_at, DESC ]
+            sort:                               [ published_at, DESC ]
             scopes:
                 group_1: 
                     "Tous":                     ~
                     "Publiés":
-                        default:                true
+                        default:                1
                         filters:
-                            filterByPublished:  true
+                            published:          1
                     "Brouillons":
                         filters:
-                            filterByPublished:  false
-            display:                            [ file_name, id, p_user, title, summary, count_reactions, online, published, published_at, created_at ]
+                            published:          0
+            display:                            [ file_name, id, p_user_id, title, count_reactions, online, published, published_at, created_at ]
+            # filtersMode:                        top
+            filters:                            [ id, p_user_id, title, online, published, published_at, created_at ]
             fields:
                 count_reactions:
                     label:                      Réactions
-            actions:
-                new:                            ~
             object_actions:
                 show:                           ~
                 edit:                           ~
@@ -70,46 +70,18 @@ builders:
         params: ~
         filename: ~
         filetype: ~
-    filters:
-        params:
-            display:                            [ id, p_user_id, published, published_at, online, created_at ]
-            fields:
-                p_user:
-                    addFormOptions:
-                        query:                  \Politizr\Model\PUserQuery::create()->orderByName() 
-    new:
-        params:
-            title:                              "Création d'un contenu débat"
-            display:
-                "Champs principaux":            [ [ p_user_id ], [ title ] ]
-                "Champs complémentaires":       [ [ summary ] ]
-            fields:
-                p_user_id:
-                    label:                      Utilisateur
-                    formType:                   choice
-                    dbType:                     VARCHAR
-                    addFormOptions:
-                        choices:                \Politizr\Model\PUserQuery::create()->orderByName()->find()->toKeyValue()
-                summary:
-                    addFormOptions:
-                        attr:                   { class : tinymce }
-            actions:
-              save:                             ~
-              list:                             ~
     edit:
         params:
             title:                              "Edition du contenu débat '{{ PDDebate.title }}'"
             tabs:
                 "Contenu":
-                    "Texte":                    [ uploadedFileName, title, summary, description ]
+                    "Texte":                    [ uploadedFileName, title, description ]
                 "Objets":
-                    "Utilisateur":              [ [ p_user_id ] ]
-                "Réactions":
-                    "Réactions associées":      [ block_reactions ]
+                    "Utilisateur":              [ p_user ]
                 "Tags":
-                    "Tags associés":            [ block_tags_geo, block_tags_theme ]
+                    "Tags associés":            [ block_tags ]
                 "Statut":
-                    "Publication":              [ [ published ], [ published_by ], [ published_at ] ]
+                    "Publication":              [ [ published, published_by, published_at ] ]
                     "Notes":                    [ [ note_pos, note_neg ] ]
                 "Attributs":
                     "Création":                 [ [ online ], [ created_at, updated_at ] ]
@@ -117,37 +89,21 @@ builders:
                 uploadedFileName:
                     dbType:                     VARCHAR
                     label:                      Photo
-                    formType:                   afe_single_upload
+                    formType:                   file
                     addFormOptions:
-                        # nameable:               fileName
-                        deleteable:             fileName
+                        # deleteable:             fileName
                         data_class:             Symfony\Component\HttpFoundation\File\File
-                p_user_id:
-                    label:                      Utilisateur
-                    formType:                   choice
-                    dbType:                     VARCHAR
+                p_user:
                     addFormOptions:
-                        choices:                \Politizr\Model\PUserQuery::create()->orderByName()->find()->toKeyValue()
-                summary:
-                    addFormOptions:
-                        attr:                   { class : tinymce }
+                        disabled:               true
+                        read_only:              true
                 description:
+                    grid_class:                 "col-md-12"
                     addFormOptions:
                         attr:                   { class : tinymce }
-                block_reactions:
-                    label:                      "Réactions"
-                    formType:                   hidden
-                    dbType:                     VARCHAR
-                    addFormOptions:
-                        mapped:                 false
-                block_tags_geo:
-                    label:                      "Tags Géo"
-                    formType:                   hidden
-                    dbType:                     VARCHAR
-                    addFormOptions:
-                        mapped:                 false
-                block_tags_theme:
-                    label:                      "Tags Thématiques"
+                block_tags:
+                    label:                      "Tags"
+                    grid_class:                 "col-md-12"
                     formType:                   hidden
                     dbType:                     VARCHAR
                     addFormOptions:
@@ -172,34 +128,38 @@ builders:
             title:                              "Visualisation du contenu débat '{{ PDDebate.getTitle }}'"
             tabs:
                 "Contenu":
-                    "Texte":                    [ file_name, title, summary, description ]
+                    "Texte":                    [ file_name, title, description ]
                 "Objets":
-                    "Utilisateur":              [ [ p_user ] ]
+                    "Utilisateur":              [ block_p_user ]
                 "Réactions":
                     "Réactions associées":      [ block_reactions ]
                 "Commentaires":
                     "Commentaires associés":    [ block_comments ]
                 "Tags":
-                    "Tags associés":            [ block_tags_geo, block_tags_theme ]
+                    "Tags associés":            [ block_tags ]
                 "Abonnés":
                     "Utilisateurs":             [ block_followers_q, block_followers_c ]
                 "Statut":
                     "Publication":              [ [ published ], [ published_by ], [ published_at ] ]
                 "Attributs":
                     "Création":                 [ [ online ], [ created_at, updated_at ] ]
+                "Front":
+                    "Rendu":                    [ block_front ]
             fields:
+                block_p_user:
+                    label:                      "Auteur"
                 block_reactions:
                     label:                      "Réactions"
                 block_comments:
                     label:                      "Commentaires"
-                block_tags_geo:
-                    label:                      "Tags Géo"
-                block_tags_theme:
-                    label:                      "Tags Thématiques"
+                block_tags:
+                    label:                      "Tags"
                 block_followers_q:
                     label:                      "Qualifiés"
                 block_followers_c:
                     label:                      "Citoyens"
+                block_front:
+                    label:                      "Rendu front"
             actions:
                 list:                           ~
                 edit:                           ~

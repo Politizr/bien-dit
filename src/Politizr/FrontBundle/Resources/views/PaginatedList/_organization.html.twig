@@ -1,0 +1,23 @@
+{% spaceless %}
+    <div class="modalSidebar">
+        <h1>{{ subject.title }}</h1>
+        <div class="organizationInfo">
+            <div class="organization">{{ subject.initials }}</div>
+            {% if subject.url %}
+                <a class="organizationLink" href="{{ subject.url }}" target="_blank"><i class="iconGoTo"></i>Site officiel</a>
+            {% endif %}
+        </div>
+        <div class="listCriteria criteriaSidebar">
+            <form id="listOrder"></form>
+            <form id="listFilter"></form>
+        </div> 
+    </div>
+    <div id="paginatedList" class="listContainer" url="{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
+        'xhrRoute': 'ROUTE_MODAL_ORGANIZATION_USER_LIST',
+        'xhrService': 'modal',
+        'xhrMethod': 'organizationUserList',
+        'xhrType': 'RETURN_HTML',
+    } only %}" withFilters="true" data-subject-id="{{ subject.id }}">
+        <div id="listContent" class="modalList withSidebar"></div>
+    </div>
+{% endspaceless %}

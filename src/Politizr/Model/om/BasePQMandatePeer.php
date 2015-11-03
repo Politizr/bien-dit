@@ -35,22 +35,22 @@ abstract class BasePQMandatePeer
     const TM_CLASS = 'Politizr\\Model\\map\\PQMandateTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 8;
+    const NUM_COLUMNS = 9;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 8;
+    const NUM_HYDRATE_COLUMNS = 9;
 
     /** the column name for the id field */
     const ID = 'p_q_mandate.id';
 
-    /** the column name for the p_q_type_id field */
-    const P_Q_TYPE_ID = 'p_q_mandate.p_q_type_id';
-
     /** the column name for the title field */
     const TITLE = 'p_q_mandate.title';
+
+    /** the column name for the select_title field */
+    const SELECT_TITLE = 'p_q_mandate.select_title';
 
     /** the column name for the online field */
     const ONLINE = 'p_q_mandate.online';
@@ -66,6 +66,9 @@ abstract class BasePQMandatePeer
 
     /** the column name for the sortable_rank field */
     const SORTABLE_RANK = 'p_q_mandate.sortable_rank';
+
+    /** the column name for the p_q_type_id field */
+    const P_Q_TYPE_ID = 'p_q_mandate.p_q_type_id';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -98,12 +101,12 @@ abstract class BasePQMandatePeer
      * e.g. PQMandatePeer::$fieldNames[PQMandatePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'PQTypeId', 'Title', 'Online', 'CreatedAt', 'UpdatedAt', 'Slug', 'SortableRank', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pQTypeId', 'title', 'online', 'createdAt', 'updatedAt', 'slug', 'sortableRank', ),
-        BasePeer::TYPE_COLNAME => array (PQMandatePeer::ID, PQMandatePeer::P_Q_TYPE_ID, PQMandatePeer::TITLE, PQMandatePeer::ONLINE, PQMandatePeer::CREATED_AT, PQMandatePeer::UPDATED_AT, PQMandatePeer::SLUG, PQMandatePeer::SORTABLE_RANK, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_Q_TYPE_ID', 'TITLE', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', 'SLUG', 'SORTABLE_RANK', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'p_q_type_id', 'title', 'online', 'created_at', 'updated_at', 'slug', 'sortable_rank', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Title', 'SelectTitle', 'Online', 'CreatedAt', 'UpdatedAt', 'Slug', 'SortableRank', 'PQTypeId', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'title', 'selectTitle', 'online', 'createdAt', 'updatedAt', 'slug', 'sortableRank', 'pQTypeId', ),
+        BasePeer::TYPE_COLNAME => array (PQMandatePeer::ID, PQMandatePeer::TITLE, PQMandatePeer::SELECT_TITLE, PQMandatePeer::ONLINE, PQMandatePeer::CREATED_AT, PQMandatePeer::UPDATED_AT, PQMandatePeer::SLUG, PQMandatePeer::SORTABLE_RANK, PQMandatePeer::P_Q_TYPE_ID, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'TITLE', 'SELECT_TITLE', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', 'SLUG', 'SORTABLE_RANK', 'P_Q_TYPE_ID', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'title', 'select_title', 'online', 'created_at', 'updated_at', 'slug', 'sortable_rank', 'p_q_type_id', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -113,12 +116,12 @@ abstract class BasePQMandatePeer
      * e.g. PQMandatePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PQTypeId' => 1, 'Title' => 2, 'Online' => 3, 'CreatedAt' => 4, 'UpdatedAt' => 5, 'Slug' => 6, 'SortableRank' => 7, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pQTypeId' => 1, 'title' => 2, 'online' => 3, 'createdAt' => 4, 'updatedAt' => 5, 'slug' => 6, 'sortableRank' => 7, ),
-        BasePeer::TYPE_COLNAME => array (PQMandatePeer::ID => 0, PQMandatePeer::P_Q_TYPE_ID => 1, PQMandatePeer::TITLE => 2, PQMandatePeer::ONLINE => 3, PQMandatePeer::CREATED_AT => 4, PQMandatePeer::UPDATED_AT => 5, PQMandatePeer::SLUG => 6, PQMandatePeer::SORTABLE_RANK => 7, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_Q_TYPE_ID' => 1, 'TITLE' => 2, 'ONLINE' => 3, 'CREATED_AT' => 4, 'UPDATED_AT' => 5, 'SLUG' => 6, 'SORTABLE_RANK' => 7, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_q_type_id' => 1, 'title' => 2, 'online' => 3, 'created_at' => 4, 'updated_at' => 5, 'slug' => 6, 'sortable_rank' => 7, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Title' => 1, 'SelectTitle' => 2, 'Online' => 3, 'CreatedAt' => 4, 'UpdatedAt' => 5, 'Slug' => 6, 'SortableRank' => 7, 'PQTypeId' => 8, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'title' => 1, 'selectTitle' => 2, 'online' => 3, 'createdAt' => 4, 'updatedAt' => 5, 'slug' => 6, 'sortableRank' => 7, 'pQTypeId' => 8, ),
+        BasePeer::TYPE_COLNAME => array (PQMandatePeer::ID => 0, PQMandatePeer::TITLE => 1, PQMandatePeer::SELECT_TITLE => 2, PQMandatePeer::ONLINE => 3, PQMandatePeer::CREATED_AT => 4, PQMandatePeer::UPDATED_AT => 5, PQMandatePeer::SLUG => 6, PQMandatePeer::SORTABLE_RANK => 7, PQMandatePeer::P_Q_TYPE_ID => 8, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'TITLE' => 1, 'SELECT_TITLE' => 2, 'ONLINE' => 3, 'CREATED_AT' => 4, 'UPDATED_AT' => 5, 'SLUG' => 6, 'SORTABLE_RANK' => 7, 'P_Q_TYPE_ID' => 8, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'title' => 1, 'select_title' => 2, 'online' => 3, 'created_at' => 4, 'updated_at' => 5, 'slug' => 6, 'sortable_rank' => 7, 'p_q_type_id' => 8, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -193,22 +196,24 @@ abstract class BasePQMandatePeer
     {
         if (null === $alias) {
             $criteria->addSelectColumn(PQMandatePeer::ID);
-            $criteria->addSelectColumn(PQMandatePeer::P_Q_TYPE_ID);
             $criteria->addSelectColumn(PQMandatePeer::TITLE);
+            $criteria->addSelectColumn(PQMandatePeer::SELECT_TITLE);
             $criteria->addSelectColumn(PQMandatePeer::ONLINE);
             $criteria->addSelectColumn(PQMandatePeer::CREATED_AT);
             $criteria->addSelectColumn(PQMandatePeer::UPDATED_AT);
             $criteria->addSelectColumn(PQMandatePeer::SLUG);
             $criteria->addSelectColumn(PQMandatePeer::SORTABLE_RANK);
+            $criteria->addSelectColumn(PQMandatePeer::P_Q_TYPE_ID);
         } else {
             $criteria->addSelectColumn($alias . '.id');
-            $criteria->addSelectColumn($alias . '.p_q_type_id');
             $criteria->addSelectColumn($alias . '.title');
+            $criteria->addSelectColumn($alias . '.select_title');
             $criteria->addSelectColumn($alias . '.online');
             $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
             $criteria->addSelectColumn($alias . '.slug');
             $criteria->addSelectColumn($alias . '.sortable_rank');
+            $criteria->addSelectColumn($alias . '.p_q_type_id');
         }
     }
 

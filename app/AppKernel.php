@@ -18,51 +18,47 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new JMS\AopBundle\JMSAopBundle(),
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
-            
+
+            // Propel
+            new Propel\PropelBundle\PropelBundle(),
+            new Bazinga\Bundle\FakerBundle\BazingaFakerBundle(),
+            new Glorpen\Propel\PropelBundle\GlorpenPropelBundle(),
+
             // FOSUserBundle
             new FOS\UserBundle\FOSUserBundle(),
             
             // OAuthBundle
             new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
             
-            // Menu
-            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
-
-            // Pager
-            new WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle(),
-            
             // HTML2PDF
             new Ensepar\Html2pdfBundle\EnseparHtml2pdfBundle(),
-
-            // Generator
-            new Avocode\FormExtensionsBundle\AvocodeFormExtensionsBundle(),
-            new Admingenerator\GeneratorBundle\AdmingeneratorGeneratorBundle(),
-            new Admingenerator\UserBundle\AdmingeneratorUserBundle(),
-            new Liuggio\ExcelBundle\LiuggioExcelBundle(),
-
-            // Propel
-            new Propel\PropelBundle\PropelBundle(),
-            new Bazinga\Bundle\FakerBundle\BazingaFakerBundle(),
-            new Glorpen\Propel\PropelBundle\GlorpenPropelBundle(),
             
+            // Admin Generator & dependencies
+            new Admingenerator\GeneratorBundle\AdmingeneratorGeneratorBundle(),
+            new JMS\DiExtraBundle\JMSDiExtraBundle($this),
+            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+            new WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle(),
+    
             // Liip Imagine
             new Liip\ImagineBundle\LiipImagineBundle(),
 
             // Géolocalisation
             new Bazinga\Bundle\GeocoderBundle\BazingaGeocoderBundle(),
 
-            // Twitter Bootstrap
-            new Braincrafted\Bundle\BootstrapBundle\BraincraftedBootstrapBundle(),
-
             // FOSElastica
             new FOS\ElasticaBundle\FOSElasticaBundle(),
+
+            // HTML Purifier
+            new Exercise\HTMLPurifierBundle\ExerciseHTMLPurifierBundle(),
 
             // Project Bundle,
             new Politizr\FrontBundle\PolitizrFrontBundle(),
             new Politizr\AdminBundle\PolitizrAdminBundle(),
+            new Politizr\CommandBundle\PolitizrCommandBundle(),
         );
 
-        if (in_array($this->getEnvironment(), array('dev', 'test', 'stage'))) {
+        if (in_array($this->getEnvironment(), array('dev', 'test', 'stage', 'debug'))) {
+            $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();

@@ -15,10 +15,12 @@ use \PropelObjectCollection;
 use \PropelPDO;
 use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
 use Glorpen\Propel\PropelBundle\Events\QueryEvent;
-use Politizr\Model\PDComment;
+use Politizr\Model\PDDComment;
 use Politizr\Model\PDDebate;
+use Politizr\Model\PDRComment;
 use Politizr\Model\PDReaction;
-use Politizr\Model\PDocument;
+use Politizr\Model\PMAbuseReporting;
+use Politizr\Model\PMAskForUpdate;
 use Politizr\Model\PNotification;
 use Politizr\Model\POrder;
 use Politizr\Model\PQOrganization;
@@ -70,6 +72,7 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery orderByPUStatusId($order = Criteria::ASC) Order by the p_u_status_id column
  * @method PUserQuery orderByFileName($order = Criteria::ASC) Order by the file_name column
  * @method PUserQuery orderByBackFileName($order = Criteria::ASC) Order by the back_file_name column
+ * @method PUserQuery orderByCopyright($order = Criteria::ASC) Order by the copyright column
  * @method PUserQuery orderByGender($order = Criteria::ASC) Order by the gender column
  * @method PUserQuery orderByFirstname($order = Criteria::ASC) Order by the firstname column
  * @method PUserQuery orderByName($order = Criteria::ASC) Order by the name column
@@ -116,6 +119,7 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery groupByPUStatusId() Group by the p_u_status_id column
  * @method PUserQuery groupByFileName() Group by the file_name column
  * @method PUserQuery groupByBackFileName() Group by the back_file_name column
+ * @method PUserQuery groupByCopyright() Group by the copyright column
  * @method PUserQuery groupByGender() Group by the gender column
  * @method PUserQuery groupByFirstname() Group by the firstname column
  * @method PUserQuery groupByName() Group by the name column
@@ -201,13 +205,29 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery rightJoinPUSubscribeScreenPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUSubscribeScreenPUser relation
  * @method PUserQuery innerJoinPUSubscribeScreenPUser($relationAlias = null) Adds a INNER JOIN clause to the query using the PUSubscribeScreenPUser relation
  *
- * @method PUserQuery leftJoinPDocument($relationAlias = null) Adds a LEFT JOIN clause to the query using the PDocument relation
- * @method PUserQuery rightJoinPDocument($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PDocument relation
- * @method PUserQuery innerJoinPDocument($relationAlias = null) Adds a INNER JOIN clause to the query using the PDocument relation
+ * @method PUserQuery leftJoinPDDebate($relationAlias = null) Adds a LEFT JOIN clause to the query using the PDDebate relation
+ * @method PUserQuery rightJoinPDDebate($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PDDebate relation
+ * @method PUserQuery innerJoinPDDebate($relationAlias = null) Adds a INNER JOIN clause to the query using the PDDebate relation
  *
- * @method PUserQuery leftJoinPDComment($relationAlias = null) Adds a LEFT JOIN clause to the query using the PDComment relation
- * @method PUserQuery rightJoinPDComment($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PDComment relation
- * @method PUserQuery innerJoinPDComment($relationAlias = null) Adds a INNER JOIN clause to the query using the PDComment relation
+ * @method PUserQuery leftJoinPDReaction($relationAlias = null) Adds a LEFT JOIN clause to the query using the PDReaction relation
+ * @method PUserQuery rightJoinPDReaction($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PDReaction relation
+ * @method PUserQuery innerJoinPDReaction($relationAlias = null) Adds a INNER JOIN clause to the query using the PDReaction relation
+ *
+ * @method PUserQuery leftJoinPDDComment($relationAlias = null) Adds a LEFT JOIN clause to the query using the PDDComment relation
+ * @method PUserQuery rightJoinPDDComment($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PDDComment relation
+ * @method PUserQuery innerJoinPDDComment($relationAlias = null) Adds a INNER JOIN clause to the query using the PDDComment relation
+ *
+ * @method PUserQuery leftJoinPDRComment($relationAlias = null) Adds a LEFT JOIN clause to the query using the PDRComment relation
+ * @method PUserQuery rightJoinPDRComment($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PDRComment relation
+ * @method PUserQuery innerJoinPDRComment($relationAlias = null) Adds a INNER JOIN clause to the query using the PDRComment relation
+ *
+ * @method PUserQuery leftJoinPMAskForUpdate($relationAlias = null) Adds a LEFT JOIN clause to the query using the PMAskForUpdate relation
+ * @method PUserQuery rightJoinPMAskForUpdate($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PMAskForUpdate relation
+ * @method PUserQuery innerJoinPMAskForUpdate($relationAlias = null) Adds a INNER JOIN clause to the query using the PMAskForUpdate relation
+ *
+ * @method PUserQuery leftJoinPMAbuseReporting($relationAlias = null) Adds a LEFT JOIN clause to the query using the PMAbuseReporting relation
+ * @method PUserQuery rightJoinPMAbuseReporting($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PMAbuseReporting relation
+ * @method PUserQuery innerJoinPMAbuseReporting($relationAlias = null) Adds a INNER JOIN clause to the query using the PMAbuseReporting relation
  *
  * @method PUserQuery leftJoinPUFollowURelatedByPUserId($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUFollowURelatedByPUserId relation
  * @method PUserQuery rightJoinPUFollowURelatedByPUserId($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUFollowURelatedByPUserId relation
@@ -216,14 +236,6 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery leftJoinPUFollowURelatedByPUserFollowerId($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUFollowURelatedByPUserFollowerId relation
  * @method PUserQuery rightJoinPUFollowURelatedByPUserFollowerId($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUFollowURelatedByPUserFollowerId relation
  * @method PUserQuery innerJoinPUFollowURelatedByPUserFollowerId($relationAlias = null) Adds a INNER JOIN clause to the query using the PUFollowURelatedByPUserFollowerId relation
- *
- * @method PUserQuery leftJoinPDDebate($relationAlias = null) Adds a LEFT JOIN clause to the query using the PDDebate relation
- * @method PUserQuery rightJoinPDDebate($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PDDebate relation
- * @method PUserQuery innerJoinPDDebate($relationAlias = null) Adds a INNER JOIN clause to the query using the PDDebate relation
- *
- * @method PUserQuery leftJoinPDReaction($relationAlias = null) Adds a LEFT JOIN clause to the query using the PDReaction relation
- * @method PUserQuery rightJoinPDReaction($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PDReaction relation
- * @method PUserQuery innerJoinPDReaction($relationAlias = null) Adds a INNER JOIN clause to the query using the PDReaction relation
  *
  * @method PUser findOne(PropelPDO $con = null) Return the first PUser matching the query
  * @method PUser findOneOrCreate(PropelPDO $con = null) Return the first PUser matching the query, or a new PUser object populated from the query conditions when no match is found
@@ -252,6 +264,7 @@ use Politizr\Model\PUserQuery;
  * @method PUser findOneByPUStatusId(int $p_u_status_id) Return the first PUser filtered by the p_u_status_id column
  * @method PUser findOneByFileName(string $file_name) Return the first PUser filtered by the file_name column
  * @method PUser findOneByBackFileName(string $back_file_name) Return the first PUser filtered by the back_file_name column
+ * @method PUser findOneByCopyright(string $copyright) Return the first PUser filtered by the copyright column
  * @method PUser findOneByGender(int $gender) Return the first PUser filtered by the gender column
  * @method PUser findOneByFirstname(string $firstname) Return the first PUser filtered by the firstname column
  * @method PUser findOneByName(string $name) Return the first PUser filtered by the name column
@@ -298,6 +311,7 @@ use Politizr\Model\PUserQuery;
  * @method array findByPUStatusId(int $p_u_status_id) Return PUser objects filtered by the p_u_status_id column
  * @method array findByFileName(string $file_name) Return PUser objects filtered by the file_name column
  * @method array findByBackFileName(string $back_file_name) Return PUser objects filtered by the back_file_name column
+ * @method array findByCopyright(string $copyright) Return PUser objects filtered by the copyright column
  * @method array findByGender(int $gender) Return PUser objects filtered by the gender column
  * @method array findByFirstname(string $firstname) Return PUser objects filtered by the firstname column
  * @method array findByName(string $name) Return PUser objects filtered by the name column
@@ -430,7 +444,7 @@ abstract class BasePUserQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `last_activity`, `p_u_status_id`, `file_name`, `back_file_name`, `gender`, `firstname`, `name`, `birthday`, `subtitle`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_connected_days`, `nb_views`, `qualified`, `validated`, `online`, `created_at`, `updated_at`, `slug` FROM `p_user` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `last_activity`, `p_u_status_id`, `file_name`, `back_file_name`, `copyright`, `gender`, `firstname`, `name`, `birthday`, `subtitle`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_connected_days`, `nb_views`, `qualified`, `validated`, `online`, `created_at`, `updated_at`, `slug` FROM `p_user` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -1385,6 +1399,35 @@ abstract class BasePUserQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PUserPeer::BACK_FILE_NAME, $backFileName, $comparison);
+    }
+
+    /**
+     * Filter the query on the copyright column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByCopyright('fooValue');   // WHERE copyright = 'fooValue'
+     * $query->filterByCopyright('%fooValue%'); // WHERE copyright LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $copyright The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function filterByCopyright($copyright = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($copyright)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $copyright)) {
+                $copyright = str_replace('*', '%', $copyright);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PUserPeer::COPYRIGHT, $copyright, $comparison);
     }
 
     /**
@@ -3152,41 +3195,41 @@ abstract class BasePUserQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related PDocument object
+     * Filter the query by a related PDDebate object
      *
-     * @param   PDocument|PropelObjectCollection $pDocument  the related object to use as filter
+     * @param   PDDebate|PropelObjectCollection $pDDebate  the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return                 PUserQuery The current query, for fluid interface
      * @throws PropelException - if the provided filter is invalid.
      */
-    public function filterByPDocument($pDocument, $comparison = null)
+    public function filterByPDDebate($pDDebate, $comparison = null)
     {
-        if ($pDocument instanceof PDocument) {
+        if ($pDDebate instanceof PDDebate) {
             return $this
-                ->addUsingAlias(PUserPeer::ID, $pDocument->getPUserId(), $comparison);
-        } elseif ($pDocument instanceof PropelObjectCollection) {
+                ->addUsingAlias(PUserPeer::ID, $pDDebate->getPUserId(), $comparison);
+        } elseif ($pDDebate instanceof PropelObjectCollection) {
             return $this
-                ->usePDocumentQuery()
-                ->filterByPrimaryKeys($pDocument->getPrimaryKeys())
+                ->usePDDebateQuery()
+                ->filterByPrimaryKeys($pDDebate->getPrimaryKeys())
                 ->endUse();
         } else {
-            throw new PropelException('filterByPDocument() only accepts arguments of type PDocument or PropelCollection');
+            throw new PropelException('filterByPDDebate() only accepts arguments of type PDDebate or PropelCollection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the PDocument relation
+     * Adds a JOIN clause to the query using the PDDebate relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return PUserQuery The current query, for fluid interface
      */
-    public function joinPDocument($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function joinPDDebate($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('PDocument');
+        $relationMap = $tableMap->getRelation('PDDebate');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -3201,14 +3244,14 @@ abstract class BasePUserQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'PDocument');
+            $this->addJoinObject($join, 'PDDebate');
         }
 
         return $this;
     }
 
     /**
-     * Use the PDocument relation PDocument object
+     * Use the PDDebate relation PDDebate object
      *
      * @see       useQuery()
      *
@@ -3216,51 +3259,51 @@ abstract class BasePUserQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return   \Politizr\Model\PDocumentQuery A secondary query class using the current class as primary query
+     * @return   \Politizr\Model\PDDebateQuery A secondary query class using the current class as primary query
      */
-    public function usePDocumentQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function usePDDebateQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
-            ->joinPDocument($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'PDocument', '\Politizr\Model\PDocumentQuery');
+            ->joinPDDebate($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PDDebate', '\Politizr\Model\PDDebateQuery');
     }
 
     /**
-     * Filter the query by a related PDComment object
+     * Filter the query by a related PDReaction object
      *
-     * @param   PDComment|PropelObjectCollection $pDComment  the related object to use as filter
+     * @param   PDReaction|PropelObjectCollection $pDReaction  the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return                 PUserQuery The current query, for fluid interface
      * @throws PropelException - if the provided filter is invalid.
      */
-    public function filterByPDComment($pDComment, $comparison = null)
+    public function filterByPDReaction($pDReaction, $comparison = null)
     {
-        if ($pDComment instanceof PDComment) {
+        if ($pDReaction instanceof PDReaction) {
             return $this
-                ->addUsingAlias(PUserPeer::ID, $pDComment->getPUserId(), $comparison);
-        } elseif ($pDComment instanceof PropelObjectCollection) {
+                ->addUsingAlias(PUserPeer::ID, $pDReaction->getPUserId(), $comparison);
+        } elseif ($pDReaction instanceof PropelObjectCollection) {
             return $this
-                ->usePDCommentQuery()
-                ->filterByPrimaryKeys($pDComment->getPrimaryKeys())
+                ->usePDReactionQuery()
+                ->filterByPrimaryKeys($pDReaction->getPrimaryKeys())
                 ->endUse();
         } else {
-            throw new PropelException('filterByPDComment() only accepts arguments of type PDComment or PropelCollection');
+            throw new PropelException('filterByPDReaction() only accepts arguments of type PDReaction or PropelCollection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the PDComment relation
+     * Adds a JOIN clause to the query using the PDReaction relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return PUserQuery The current query, for fluid interface
      */
-    public function joinPDComment($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function joinPDReaction($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('PDComment');
+        $relationMap = $tableMap->getRelation('PDReaction');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -3275,14 +3318,14 @@ abstract class BasePUserQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'PDComment');
+            $this->addJoinObject($join, 'PDReaction');
         }
 
         return $this;
     }
 
     /**
-     * Use the PDComment relation PDComment object
+     * Use the PDReaction relation PDReaction object
      *
      * @see       useQuery()
      *
@@ -3290,13 +3333,309 @@ abstract class BasePUserQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return   \Politizr\Model\PDCommentQuery A secondary query class using the current class as primary query
+     * @return   \Politizr\Model\PDReactionQuery A secondary query class using the current class as primary query
      */
-    public function usePDCommentQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function usePDReactionQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
-            ->joinPDComment($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'PDComment', '\Politizr\Model\PDCommentQuery');
+            ->joinPDReaction($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PDReaction', '\Politizr\Model\PDReactionQuery');
+    }
+
+    /**
+     * Filter the query by a related PDDComment object
+     *
+     * @param   PDDComment|PropelObjectCollection $pDDComment  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PUserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPDDComment($pDDComment, $comparison = null)
+    {
+        if ($pDDComment instanceof PDDComment) {
+            return $this
+                ->addUsingAlias(PUserPeer::ID, $pDDComment->getPUserId(), $comparison);
+        } elseif ($pDDComment instanceof PropelObjectCollection) {
+            return $this
+                ->usePDDCommentQuery()
+                ->filterByPrimaryKeys($pDDComment->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPDDComment() only accepts arguments of type PDDComment or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PDDComment relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function joinPDDComment($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PDDComment');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PDDComment');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PDDComment relation PDDComment object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PDDCommentQuery A secondary query class using the current class as primary query
+     */
+    public function usePDDCommentQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinPDDComment($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PDDComment', '\Politizr\Model\PDDCommentQuery');
+    }
+
+    /**
+     * Filter the query by a related PDRComment object
+     *
+     * @param   PDRComment|PropelObjectCollection $pDRComment  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PUserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPDRComment($pDRComment, $comparison = null)
+    {
+        if ($pDRComment instanceof PDRComment) {
+            return $this
+                ->addUsingAlias(PUserPeer::ID, $pDRComment->getPUserId(), $comparison);
+        } elseif ($pDRComment instanceof PropelObjectCollection) {
+            return $this
+                ->usePDRCommentQuery()
+                ->filterByPrimaryKeys($pDRComment->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPDRComment() only accepts arguments of type PDRComment or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PDRComment relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function joinPDRComment($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PDRComment');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PDRComment');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PDRComment relation PDRComment object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PDRCommentQuery A secondary query class using the current class as primary query
+     */
+    public function usePDRCommentQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinPDRComment($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PDRComment', '\Politizr\Model\PDRCommentQuery');
+    }
+
+    /**
+     * Filter the query by a related PMAskForUpdate object
+     *
+     * @param   PMAskForUpdate|PropelObjectCollection $pMAskForUpdate  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PUserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPMAskForUpdate($pMAskForUpdate, $comparison = null)
+    {
+        if ($pMAskForUpdate instanceof PMAskForUpdate) {
+            return $this
+                ->addUsingAlias(PUserPeer::ID, $pMAskForUpdate->getPUserId(), $comparison);
+        } elseif ($pMAskForUpdate instanceof PropelObjectCollection) {
+            return $this
+                ->usePMAskForUpdateQuery()
+                ->filterByPrimaryKeys($pMAskForUpdate->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPMAskForUpdate() only accepts arguments of type PMAskForUpdate or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PMAskForUpdate relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function joinPMAskForUpdate($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PMAskForUpdate');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PMAskForUpdate');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PMAskForUpdate relation PMAskForUpdate object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PMAskForUpdateQuery A secondary query class using the current class as primary query
+     */
+    public function usePMAskForUpdateQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinPMAskForUpdate($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PMAskForUpdate', '\Politizr\Model\PMAskForUpdateQuery');
+    }
+
+    /**
+     * Filter the query by a related PMAbuseReporting object
+     *
+     * @param   PMAbuseReporting|PropelObjectCollection $pMAbuseReporting  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PUserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPMAbuseReporting($pMAbuseReporting, $comparison = null)
+    {
+        if ($pMAbuseReporting instanceof PMAbuseReporting) {
+            return $this
+                ->addUsingAlias(PUserPeer::ID, $pMAbuseReporting->getPUserId(), $comparison);
+        } elseif ($pMAbuseReporting instanceof PropelObjectCollection) {
+            return $this
+                ->usePMAbuseReportingQuery()
+                ->filterByPrimaryKeys($pMAbuseReporting->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPMAbuseReporting() only accepts arguments of type PMAbuseReporting or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PMAbuseReporting relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function joinPMAbuseReporting($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PMAbuseReporting');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PMAbuseReporting');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PMAbuseReporting relation PMAbuseReporting object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PMAbuseReportingQuery A secondary query class using the current class as primary query
+     */
+    public function usePMAbuseReportingQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinPMAbuseReporting($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PMAbuseReporting', '\Politizr\Model\PMAbuseReportingQuery');
     }
 
     /**
@@ -3445,154 +3784,6 @@ abstract class BasePUserQuery extends ModelCriteria
         return $this
             ->joinPUFollowURelatedByPUserFollowerId($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'PUFollowURelatedByPUserFollowerId', '\Politizr\Model\PUFollowUQuery');
-    }
-
-    /**
-     * Filter the query by a related PDDebate object
-     *
-     * @param   PDDebate|PropelObjectCollection $pDDebate  the related object to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return                 PUserQuery The current query, for fluid interface
-     * @throws PropelException - if the provided filter is invalid.
-     */
-    public function filterByPDDebate($pDDebate, $comparison = null)
-    {
-        if ($pDDebate instanceof PDDebate) {
-            return $this
-                ->addUsingAlias(PUserPeer::ID, $pDDebate->getPUserId(), $comparison);
-        } elseif ($pDDebate instanceof PropelObjectCollection) {
-            return $this
-                ->usePDDebateQuery()
-                ->filterByPrimaryKeys($pDDebate->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByPDDebate() only accepts arguments of type PDDebate or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the PDDebate relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return PUserQuery The current query, for fluid interface
-     */
-    public function joinPDDebate($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('PDDebate');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'PDDebate');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the PDDebate relation PDDebate object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   \Politizr\Model\PDDebateQuery A secondary query class using the current class as primary query
-     */
-    public function usePDDebateQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        return $this
-            ->joinPDDebate($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'PDDebate', '\Politizr\Model\PDDebateQuery');
-    }
-
-    /**
-     * Filter the query by a related PDReaction object
-     *
-     * @param   PDReaction|PropelObjectCollection $pDReaction  the related object to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return                 PUserQuery The current query, for fluid interface
-     * @throws PropelException - if the provided filter is invalid.
-     */
-    public function filterByPDReaction($pDReaction, $comparison = null)
-    {
-        if ($pDReaction instanceof PDReaction) {
-            return $this
-                ->addUsingAlias(PUserPeer::ID, $pDReaction->getPUserId(), $comparison);
-        } elseif ($pDReaction instanceof PropelObjectCollection) {
-            return $this
-                ->usePDReactionQuery()
-                ->filterByPrimaryKeys($pDReaction->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByPDReaction() only accepts arguments of type PDReaction or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the PDReaction relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return PUserQuery The current query, for fluid interface
-     */
-    public function joinPDReaction($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('PDReaction');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'PDReaction');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the PDReaction relation PDReaction object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   \Politizr\Model\PDReactionQuery A secondary query class using the current class as primary query
-     */
-    public function usePDReactionQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        return $this
-            ->joinPDReaction($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'PDReaction', '\Politizr\Model\PDReactionQuery');
     }
 
     /**

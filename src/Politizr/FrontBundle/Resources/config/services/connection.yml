@@ -1,0 +1,14 @@
+parameters:
+    politizr.oauth_user_provider.class:     Politizr\Security\User\Provider\OAuthUserProvider
+
+services:
+    hwi_oauth.user.provider.entity:
+        class:                              HWI\Bundle\OAuthBundle\Security\Core\User\OAuthUserProvider
+
+    politizr.login_user_provider:
+        class:                              Politizr\Security\User\Provider\PUserProvider
+
+    politizr.oauth_user_provider:
+        class:                              "%politizr.oauth_user_provider.class%"
+        arguments:                          [ @service_container ]
+

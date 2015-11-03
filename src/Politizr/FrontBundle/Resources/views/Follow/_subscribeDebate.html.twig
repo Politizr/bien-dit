@@ -1,0 +1,4 @@
+<div class="{% if follower %}actionUnfollow{% else %}actionFollow{% endif %} withLoaderInside">
+    {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+    {% include 'PolitizrFrontBundle:Follow:_subscribeDebateLink.html.twig' %}
+</div>

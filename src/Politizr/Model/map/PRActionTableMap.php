@@ -45,8 +45,6 @@ class PRActionTableMap extends TableMap
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addColumn('title', 'Title', 'VARCHAR', false, 150, null);
         $this->addColumn('description', 'Description', 'LONGVARCHAR', false, null, null);
-        $this->addColumn('p_object_name', 'PObjectName', 'VARCHAR', false, 150, null);
-        $this->addColumn('p_object_id', 'PObjectId', 'INTEGER', false, null, null);
         $this->addColumn('score_evolution', 'ScoreEvolution', 'INTEGER', false, null, null);
         $this->addColumn('online', 'Online', 'BOOLEAN', false, 1, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);

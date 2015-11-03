@@ -1,0 +1,59 @@
+{% spaceless %}
+{% if
+    notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_D_COMMENT_PUBLISH') 
+%}
+    Un commentaire a été publié sur une de mes publications
+{% elseif
+    notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_D_NOTE_POS')
+%}
+    Une note positive a été donnée à une de mes publications
+{% elseif
+    notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_D_NOTE_NEG')
+%}
+    Une note négative a été donnée à une de mes publications
+{% elseif
+    notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_D_D_REACTION_PUBLISH')
+%}
+    Une réaction a été publiée sur un de mes débats
+{% elseif
+    notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_D_D_FOLLOWED')
+%}
+    Un utilisateur suit un de mes débats
+{% elseif
+    notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_D_R_REACTION_PUBLISH')
+%}
+    Une réaction a été publiée sur une de mes réactions
+{% elseif
+    notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_D_C_NOTE_POS')
+%}
+    Une note positive a été attribuée à un de mes commentaires
+{% elseif
+    notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_D_C_NOTE_NEG')
+%}
+    Une note negative a été attribuée à un de mes commentaires
+{% elseif
+    notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_U_FOLLOWED')
+%}
+    Un nouvel utilisateur s'abonne à mon profil
+{% elseif
+    notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_U_BADGE')
+%}
+    J'obtiens un nouveau badge
+{% elseif
+    notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_S_U_DEBATE_PUBLISH')
+%}
+    Un débat a été publié par un utilisateur suivi
+{% elseif
+    notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_S_U_REACTION_PUBLISH')
+%}
+    Une réaction a été publiée par un utilisateur suivi
+{% elseif
+    notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_S_U_COMMENT_PUBLISH')
+%}
+    Un commentaire a été publié par un utilisateur suivi
+{% elseif
+    notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_S_D_REACTION_PUBLISH')
+%}
+    Une réaction a été publié sur un débat suivi
+{% endif %}
+{% endspaceless %}

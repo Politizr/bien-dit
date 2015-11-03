@@ -12,6 +12,7 @@ use \PropelPDO;
 use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
 use Glorpen\Propel\PropelBundle\Events\DetectOMClassEvent;
 use Glorpen\Propel\PropelBundle\Events\PeerEvent;
+use Politizr\Model\PNTypePeer;
 use Politizr\Model\PNotification;
 use Politizr\Model\PNotificationPeer;
 use Politizr\Model\PUNotificationPeer;
@@ -35,16 +36,19 @@ abstract class BasePNotificationPeer
     const TM_CLASS = 'Politizr\\Model\\map\\PNotificationTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 6;
+    const NUM_COLUMNS = 7;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 6;
+    const NUM_HYDRATE_COLUMNS = 7;
 
     /** the column name for the id field */
     const ID = 'p_notification.id';
+
+    /** the column name for the p_n_type_id field */
+    const P_N_TYPE_ID = 'p_notification.p_n_type_id';
 
     /** the column name for the title field */
     const TITLE = 'p_notification.title';
@@ -80,12 +84,12 @@ abstract class BasePNotificationPeer
      * e.g. PNotificationPeer::$fieldNames[PNotificationPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Title', 'Description', 'Online', 'CreatedAt', 'UpdatedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'title', 'description', 'online', 'createdAt', 'updatedAt', ),
-        BasePeer::TYPE_COLNAME => array (PNotificationPeer::ID, PNotificationPeer::TITLE, PNotificationPeer::DESCRIPTION, PNotificationPeer::ONLINE, PNotificationPeer::CREATED_AT, PNotificationPeer::UPDATED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'TITLE', 'DESCRIPTION', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'title', 'description', 'online', 'created_at', 'updated_at', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'PNTypeId', 'Title', 'Description', 'Online', 'CreatedAt', 'UpdatedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pNTypeId', 'title', 'description', 'online', 'createdAt', 'updatedAt', ),
+        BasePeer::TYPE_COLNAME => array (PNotificationPeer::ID, PNotificationPeer::P_N_TYPE_ID, PNotificationPeer::TITLE, PNotificationPeer::DESCRIPTION, PNotificationPeer::ONLINE, PNotificationPeer::CREATED_AT, PNotificationPeer::UPDATED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_N_TYPE_ID', 'TITLE', 'DESCRIPTION', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'p_n_type_id', 'title', 'description', 'online', 'created_at', 'updated_at', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -95,12 +99,12 @@ abstract class BasePNotificationPeer
      * e.g. PNotificationPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Title' => 1, 'Description' => 2, 'Online' => 3, 'CreatedAt' => 4, 'UpdatedAt' => 5, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'title' => 1, 'description' => 2, 'online' => 3, 'createdAt' => 4, 'updatedAt' => 5, ),
-        BasePeer::TYPE_COLNAME => array (PNotificationPeer::ID => 0, PNotificationPeer::TITLE => 1, PNotificationPeer::DESCRIPTION => 2, PNotificationPeer::ONLINE => 3, PNotificationPeer::CREATED_AT => 4, PNotificationPeer::UPDATED_AT => 5, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'TITLE' => 1, 'DESCRIPTION' => 2, 'ONLINE' => 3, 'CREATED_AT' => 4, 'UPDATED_AT' => 5, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'title' => 1, 'description' => 2, 'online' => 3, 'created_at' => 4, 'updated_at' => 5, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PNTypeId' => 1, 'Title' => 2, 'Description' => 3, 'Online' => 4, 'CreatedAt' => 5, 'UpdatedAt' => 6, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pNTypeId' => 1, 'title' => 2, 'description' => 3, 'online' => 4, 'createdAt' => 5, 'updatedAt' => 6, ),
+        BasePeer::TYPE_COLNAME => array (PNotificationPeer::ID => 0, PNotificationPeer::P_N_TYPE_ID => 1, PNotificationPeer::TITLE => 2, PNotificationPeer::DESCRIPTION => 3, PNotificationPeer::ONLINE => 4, PNotificationPeer::CREATED_AT => 5, PNotificationPeer::UPDATED_AT => 6, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_N_TYPE_ID' => 1, 'TITLE' => 2, 'DESCRIPTION' => 3, 'ONLINE' => 4, 'CREATED_AT' => 5, 'UPDATED_AT' => 6, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_n_type_id' => 1, 'title' => 2, 'description' => 3, 'online' => 4, 'created_at' => 5, 'updated_at' => 6, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -175,6 +179,7 @@ abstract class BasePNotificationPeer
     {
         if (null === $alias) {
             $criteria->addSelectColumn(PNotificationPeer::ID);
+            $criteria->addSelectColumn(PNotificationPeer::P_N_TYPE_ID);
             $criteria->addSelectColumn(PNotificationPeer::TITLE);
             $criteria->addSelectColumn(PNotificationPeer::DESCRIPTION);
             $criteria->addSelectColumn(PNotificationPeer::ONLINE);
@@ -182,6 +187,7 @@ abstract class BasePNotificationPeer
             $criteria->addSelectColumn(PNotificationPeer::UPDATED_AT);
         } else {
             $criteria->addSelectColumn($alias . '.id');
+            $criteria->addSelectColumn($alias . '.p_n_type_id');
             $criteria->addSelectColumn($alias . '.title');
             $criteria->addSelectColumn($alias . '.description');
             $criteria->addSelectColumn($alias . '.online');
@@ -494,6 +500,244 @@ abstract class BasePNotificationPeer
         }
 
         return array($obj, $col);
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining the related PNType table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinPNType(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(PNotificationPeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            PNotificationPeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+
+        // Set the correct dbName
+        $criteria->setDbName(PNotificationPeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(PNotificationPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(PNotificationPeer::P_N_TYPE_ID, PNTypePeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
+     * Selects a collection of PNotification objects pre-filled with their PNType objects.
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of PNotification objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinPNType(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(PNotificationPeer::DATABASE_NAME);
+        }
+
+        PNotificationPeer::addSelectColumns($criteria);
+        $startcol = PNotificationPeer::NUM_HYDRATE_COLUMNS;
+        PNTypePeer::addSelectColumns($criteria);
+
+        $criteria->addJoin(PNotificationPeer::P_N_TYPE_ID, PNTypePeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = PNotificationPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PNotificationPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+
+                $cls = PNotificationPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                PNotificationPeer::addInstanceToPool($obj1, $key1);
+            } // if $obj1 already loaded
+
+            $key2 = PNTypePeer::getPrimaryKeyHashFromRow($row, $startcol);
+            if ($key2 !== null) {
+                $obj2 = PNTypePeer::getInstanceFromPool($key2);
+                if (!$obj2) {
+
+                    $cls = PNTypePeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol);
+                    PNTypePeer::addInstanceToPool($obj2, $key2);
+                } // if obj2 already loaded
+
+                // Add the $obj1 (PNotification) to $obj2 (PNType)
+                $obj2->addPNotification($obj1);
+
+            } // if joined row was not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining all related tables
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinAll(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(PNotificationPeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            PNotificationPeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+
+        // Set the correct dbName
+        $criteria->setDbName(PNotificationPeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(PNotificationPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(PNotificationPeer::P_N_TYPE_ID, PNTypePeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+    /**
+     * Selects a collection of PNotification objects pre-filled with all related objects.
+     *
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of PNotification objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinAll(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(PNotificationPeer::DATABASE_NAME);
+        }
+
+        PNotificationPeer::addSelectColumns($criteria);
+        $startcol2 = PNotificationPeer::NUM_HYDRATE_COLUMNS;
+
+        PNTypePeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + PNTypePeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(PNotificationPeer::P_N_TYPE_ID, PNTypePeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = PNotificationPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PNotificationPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+                $cls = PNotificationPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                PNotificationPeer::addInstanceToPool($obj1, $key1);
+            } // if obj1 already loaded
+
+            // Add objects for joined PNType rows
+
+            $key2 = PNTypePeer::getPrimaryKeyHashFromRow($row, $startcol2);
+            if ($key2 !== null) {
+                $obj2 = PNTypePeer::getInstanceFromPool($key2);
+                if (!$obj2) {
+
+                    $cls = PNTypePeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol2);
+                    PNTypePeer::addInstanceToPool($obj2, $key2);
+                } // if obj2 loaded
+
+                // Add the $obj1 (PNotification) to the collection in $obj2 (PNType)
+                $obj2->addPNotification($obj1);
+            } // if joined row not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
     }
 
     /**

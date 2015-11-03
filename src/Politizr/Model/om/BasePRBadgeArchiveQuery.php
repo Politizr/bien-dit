@@ -18,23 +18,23 @@ use Politizr\Model\PRBadgeArchiveQuery;
 
 /**
  * @method PRBadgeArchiveQuery orderById($order = Criteria::ASC) Order by the id column
- * @method PRBadgeArchiveQuery orderByPRBadgeTypeId($order = Criteria::ASC) Order by the p_r_badge_type_id column
- * @method PRBadgeArchiveQuery orderByPRBadgeMetalId($order = Criteria::ASC) Order by the p_r_badge_metal_id column
+ * @method PRBadgeArchiveQuery orderByPRBadgeFamilyId($order = Criteria::ASC) Order by the p_r_badge_family_id column
  * @method PRBadgeArchiveQuery orderByTitle($order = Criteria::ASC) Order by the title column
- * @method PRBadgeArchiveQuery orderByDescription($order = Criteria::ASC) Order by the description column
  * @method PRBadgeArchiveQuery orderByOnline($order = Criteria::ASC) Order by the online column
  * @method PRBadgeArchiveQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PRBadgeArchiveQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
+ * @method PRBadgeArchiveQuery orderBySlug($order = Criteria::ASC) Order by the slug column
+ * @method PRBadgeArchiveQuery orderBySortableRank($order = Criteria::ASC) Order by the sortable_rank column
  * @method PRBadgeArchiveQuery orderByArchivedAt($order = Criteria::ASC) Order by the archived_at column
  *
  * @method PRBadgeArchiveQuery groupById() Group by the id column
- * @method PRBadgeArchiveQuery groupByPRBadgeTypeId() Group by the p_r_badge_type_id column
- * @method PRBadgeArchiveQuery groupByPRBadgeMetalId() Group by the p_r_badge_metal_id column
+ * @method PRBadgeArchiveQuery groupByPRBadgeFamilyId() Group by the p_r_badge_family_id column
  * @method PRBadgeArchiveQuery groupByTitle() Group by the title column
- * @method PRBadgeArchiveQuery groupByDescription() Group by the description column
  * @method PRBadgeArchiveQuery groupByOnline() Group by the online column
  * @method PRBadgeArchiveQuery groupByCreatedAt() Group by the created_at column
  * @method PRBadgeArchiveQuery groupByUpdatedAt() Group by the updated_at column
+ * @method PRBadgeArchiveQuery groupBySlug() Group by the slug column
+ * @method PRBadgeArchiveQuery groupBySortableRank() Group by the sortable_rank column
  * @method PRBadgeArchiveQuery groupByArchivedAt() Group by the archived_at column
  *
  * @method PRBadgeArchiveQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
@@ -44,23 +44,23 @@ use Politizr\Model\PRBadgeArchiveQuery;
  * @method PRBadgeArchive findOne(PropelPDO $con = null) Return the first PRBadgeArchive matching the query
  * @method PRBadgeArchive findOneOrCreate(PropelPDO $con = null) Return the first PRBadgeArchive matching the query, or a new PRBadgeArchive object populated from the query conditions when no match is found
  *
- * @method PRBadgeArchive findOneByPRBadgeTypeId(int $p_r_badge_type_id) Return the first PRBadgeArchive filtered by the p_r_badge_type_id column
- * @method PRBadgeArchive findOneByPRBadgeMetalId(int $p_r_badge_metal_id) Return the first PRBadgeArchive filtered by the p_r_badge_metal_id column
+ * @method PRBadgeArchive findOneByPRBadgeFamilyId(int $p_r_badge_family_id) Return the first PRBadgeArchive filtered by the p_r_badge_family_id column
  * @method PRBadgeArchive findOneByTitle(string $title) Return the first PRBadgeArchive filtered by the title column
- * @method PRBadgeArchive findOneByDescription(string $description) Return the first PRBadgeArchive filtered by the description column
  * @method PRBadgeArchive findOneByOnline(boolean $online) Return the first PRBadgeArchive filtered by the online column
  * @method PRBadgeArchive findOneByCreatedAt(string $created_at) Return the first PRBadgeArchive filtered by the created_at column
  * @method PRBadgeArchive findOneByUpdatedAt(string $updated_at) Return the first PRBadgeArchive filtered by the updated_at column
+ * @method PRBadgeArchive findOneBySlug(string $slug) Return the first PRBadgeArchive filtered by the slug column
+ * @method PRBadgeArchive findOneBySortableRank(int $sortable_rank) Return the first PRBadgeArchive filtered by the sortable_rank column
  * @method PRBadgeArchive findOneByArchivedAt(string $archived_at) Return the first PRBadgeArchive filtered by the archived_at column
  *
  * @method array findById(int $id) Return PRBadgeArchive objects filtered by the id column
- * @method array findByPRBadgeTypeId(int $p_r_badge_type_id) Return PRBadgeArchive objects filtered by the p_r_badge_type_id column
- * @method array findByPRBadgeMetalId(int $p_r_badge_metal_id) Return PRBadgeArchive objects filtered by the p_r_badge_metal_id column
+ * @method array findByPRBadgeFamilyId(int $p_r_badge_family_id) Return PRBadgeArchive objects filtered by the p_r_badge_family_id column
  * @method array findByTitle(string $title) Return PRBadgeArchive objects filtered by the title column
- * @method array findByDescription(string $description) Return PRBadgeArchive objects filtered by the description column
  * @method array findByOnline(boolean $online) Return PRBadgeArchive objects filtered by the online column
  * @method array findByCreatedAt(string $created_at) Return PRBadgeArchive objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PRBadgeArchive objects filtered by the updated_at column
+ * @method array findBySlug(string $slug) Return PRBadgeArchive objects filtered by the slug column
+ * @method array findBySortableRank(int $sortable_rank) Return PRBadgeArchive objects filtered by the sortable_rank column
  * @method array findByArchivedAt(string $archived_at) Return PRBadgeArchive objects filtered by the archived_at column
  */
 abstract class BasePRBadgeArchiveQuery extends ModelCriteria
@@ -168,7 +168,7 @@ abstract class BasePRBadgeArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_r_badge_type_id`, `p_r_badge_metal_id`, `title`, `description`, `online`, `created_at`, `updated_at`, `archived_at` FROM `p_r_badge_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_r_badge_family_id`, `title`, `online`, `created_at`, `updated_at`, `slug`, `sortable_rank`, `archived_at` FROM `p_r_badge_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -301,17 +301,17 @@ abstract class BasePRBadgeArchiveQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the p_r_badge_type_id column
+     * Filter the query on the p_r_badge_family_id column
      *
      * Example usage:
      * <code>
-     * $query->filterByPRBadgeTypeId(1234); // WHERE p_r_badge_type_id = 1234
-     * $query->filterByPRBadgeTypeId(array(12, 34)); // WHERE p_r_badge_type_id IN (12, 34)
-     * $query->filterByPRBadgeTypeId(array('min' => 12)); // WHERE p_r_badge_type_id >= 12
-     * $query->filterByPRBadgeTypeId(array('max' => 12)); // WHERE p_r_badge_type_id <= 12
+     * $query->filterByPRBadgeFamilyId(1234); // WHERE p_r_badge_family_id = 1234
+     * $query->filterByPRBadgeFamilyId(array(12, 34)); // WHERE p_r_badge_family_id IN (12, 34)
+     * $query->filterByPRBadgeFamilyId(array('min' => 12)); // WHERE p_r_badge_family_id >= 12
+     * $query->filterByPRBadgeFamilyId(array('max' => 12)); // WHERE p_r_badge_family_id <= 12
      * </code>
      *
-     * @param     mixed $pRBadgeTypeId The value to use as filter.
+     * @param     mixed $pRBadgeFamilyId The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
@@ -319,16 +319,16 @@ abstract class BasePRBadgeArchiveQuery extends ModelCriteria
      *
      * @return PRBadgeArchiveQuery The current query, for fluid interface
      */
-    public function filterByPRBadgeTypeId($pRBadgeTypeId = null, $comparison = null)
+    public function filterByPRBadgeFamilyId($pRBadgeFamilyId = null, $comparison = null)
     {
-        if (is_array($pRBadgeTypeId)) {
+        if (is_array($pRBadgeFamilyId)) {
             $useMinMax = false;
-            if (isset($pRBadgeTypeId['min'])) {
-                $this->addUsingAlias(PRBadgeArchivePeer::P_R_BADGE_TYPE_ID, $pRBadgeTypeId['min'], Criteria::GREATER_EQUAL);
+            if (isset($pRBadgeFamilyId['min'])) {
+                $this->addUsingAlias(PRBadgeArchivePeer::P_R_BADGE_FAMILY_ID, $pRBadgeFamilyId['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($pRBadgeTypeId['max'])) {
-                $this->addUsingAlias(PRBadgeArchivePeer::P_R_BADGE_TYPE_ID, $pRBadgeTypeId['max'], Criteria::LESS_EQUAL);
+            if (isset($pRBadgeFamilyId['max'])) {
+                $this->addUsingAlias(PRBadgeArchivePeer::P_R_BADGE_FAMILY_ID, $pRBadgeFamilyId['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -339,49 +339,7 @@ abstract class BasePRBadgeArchiveQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PRBadgeArchivePeer::P_R_BADGE_TYPE_ID, $pRBadgeTypeId, $comparison);
-    }
-
-    /**
-     * Filter the query on the p_r_badge_metal_id column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByPRBadgeMetalId(1234); // WHERE p_r_badge_metal_id = 1234
-     * $query->filterByPRBadgeMetalId(array(12, 34)); // WHERE p_r_badge_metal_id IN (12, 34)
-     * $query->filterByPRBadgeMetalId(array('min' => 12)); // WHERE p_r_badge_metal_id >= 12
-     * $query->filterByPRBadgeMetalId(array('max' => 12)); // WHERE p_r_badge_metal_id <= 12
-     * </code>
-     *
-     * @param     mixed $pRBadgeMetalId The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PRBadgeArchiveQuery The current query, for fluid interface
-     */
-    public function filterByPRBadgeMetalId($pRBadgeMetalId = null, $comparison = null)
-    {
-        if (is_array($pRBadgeMetalId)) {
-            $useMinMax = false;
-            if (isset($pRBadgeMetalId['min'])) {
-                $this->addUsingAlias(PRBadgeArchivePeer::P_R_BADGE_METAL_ID, $pRBadgeMetalId['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($pRBadgeMetalId['max'])) {
-                $this->addUsingAlias(PRBadgeArchivePeer::P_R_BADGE_METAL_ID, $pRBadgeMetalId['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(PRBadgeArchivePeer::P_R_BADGE_METAL_ID, $pRBadgeMetalId, $comparison);
+        return $this->addUsingAlias(PRBadgeArchivePeer::P_R_BADGE_FAMILY_ID, $pRBadgeFamilyId, $comparison);
     }
 
     /**
@@ -411,35 +369,6 @@ abstract class BasePRBadgeArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PRBadgeArchivePeer::TITLE, $title, $comparison);
-    }
-
-    /**
-     * Filter the query on the description column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByDescription('fooValue');   // WHERE description = 'fooValue'
-     * $query->filterByDescription('%fooValue%'); // WHERE description LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $description The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PRBadgeArchiveQuery The current query, for fluid interface
-     */
-    public function filterByDescription($description = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($description)) {
-                $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $description)) {
-                $description = str_replace('*', '%', $description);
-                $comparison = Criteria::LIKE;
-            }
-        }
-
-        return $this->addUsingAlias(PRBadgeArchivePeer::DESCRIPTION, $description, $comparison);
     }
 
     /**
@@ -553,6 +482,77 @@ abstract class BasePRBadgeArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PRBadgeArchivePeer::UPDATED_AT, $updatedAt, $comparison);
+    }
+
+    /**
+     * Filter the query on the slug column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterBySlug('fooValue');   // WHERE slug = 'fooValue'
+     * $query->filterBySlug('%fooValue%'); // WHERE slug LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $slug The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PRBadgeArchiveQuery The current query, for fluid interface
+     */
+    public function filterBySlug($slug = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($slug)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $slug)) {
+                $slug = str_replace('*', '%', $slug);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PRBadgeArchivePeer::SLUG, $slug, $comparison);
+    }
+
+    /**
+     * Filter the query on the sortable_rank column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterBySortableRank(1234); // WHERE sortable_rank = 1234
+     * $query->filterBySortableRank(array(12, 34)); // WHERE sortable_rank IN (12, 34)
+     * $query->filterBySortableRank(array('min' => 12)); // WHERE sortable_rank >= 12
+     * $query->filterBySortableRank(array('max' => 12)); // WHERE sortable_rank <= 12
+     * </code>
+     *
+     * @param     mixed $sortableRank The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PRBadgeArchiveQuery The current query, for fluid interface
+     */
+    public function filterBySortableRank($sortableRank = null, $comparison = null)
+    {
+        if (is_array($sortableRank)) {
+            $useMinMax = false;
+            if (isset($sortableRank['min'])) {
+                $this->addUsingAlias(PRBadgeArchivePeer::SORTABLE_RANK, $sortableRank['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($sortableRank['max'])) {
+                $this->addUsingAlias(PRBadgeArchivePeer::SORTABLE_RANK, $sortableRank['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PRBadgeArchivePeer::SORTABLE_RANK, $sortableRank, $comparison);
     }
 
     /**

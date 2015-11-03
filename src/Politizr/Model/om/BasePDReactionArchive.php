@@ -41,54 +41,6 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
     protected $startCopy = false;
 
     /**
-     * The value for the p_d_debate_id field.
-     * @var        int
-     */
-    protected $p_d_debate_id;
-
-    /**
-     * The value for the parent_reaction_id field.
-     * @var        int
-     */
-    protected $parent_reaction_id;
-
-    /**
-     * The value for the created_at field.
-     * @var        string
-     */
-    protected $created_at;
-
-    /**
-     * The value for the updated_at field.
-     * @var        string
-     */
-    protected $updated_at;
-
-    /**
-     * The value for the slug field.
-     * @var        string
-     */
-    protected $slug;
-
-    /**
-     * The value for the tree_left field.
-     * @var        int
-     */
-    protected $tree_left;
-
-    /**
-     * The value for the tree_right field.
-     * @var        int
-     */
-    protected $tree_right;
-
-    /**
-     * The value for the tree_level field.
-     * @var        int
-     */
-    protected $tree_level;
-
-    /**
      * The value for the id field.
      * @var        int
      */
@@ -99,6 +51,18 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
      * @var        int
      */
     protected $p_user_id;
+
+    /**
+     * The value for the p_d_debate_id field.
+     * @var        int
+     */
+    protected $p_d_debate_id;
+
+    /**
+     * The value for the parent_reaction_id field.
+     * @var        int
+     */
+    protected $parent_reaction_id;
 
     /**
      * The value for the title field.
@@ -113,10 +77,10 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
     protected $file_name;
 
     /**
-     * The value for the summary field.
+     * The value for the copyright field.
      * @var        string
      */
-    protected $summary;
+    protected $copyright;
 
     /**
      * The value for the description field.
@@ -175,6 +139,42 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
     protected $online;
 
     /**
+     * The value for the created_at field.
+     * @var        string
+     */
+    protected $created_at;
+
+    /**
+     * The value for the updated_at field.
+     * @var        string
+     */
+    protected $updated_at;
+
+    /**
+     * The value for the slug field.
+     * @var        string
+     */
+    protected $slug;
+
+    /**
+     * The value for the tree_left field.
+     * @var        int
+     */
+    protected $tree_left;
+
+    /**
+     * The value for the tree_right field.
+     * @var        int
+     */
+    protected $tree_right;
+
+    /**
+     * The value for the tree_level field.
+     * @var        int
+     */
+    protected $tree_level;
+
+    /**
      * The value for the archived_at field.
      * @var        string
      */
@@ -224,152 +224,6 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [p_d_debate_id] column value.
-     *
-     * @return int
-     */
-    public function getPDDebateId()
-    {
-
-        return $this->p_d_debate_id;
-    }
-
-    /**
-     * Get the [parent_reaction_id] column value.
-     *
-     * @return int
-     */
-    public function getParentReactionId()
-    {
-
-        return $this->parent_reaction_id;
-    }
-
-    /**
-     * Get the [optionally formatted] temporal [created_at] column value.
-     *
-     *
-     * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *				 If format is null, then the raw DateTime object will be returned.
-     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
-     * @throws PropelException - if unable to parse/validate the date/time value.
-     */
-    public function getCreatedAt($format = null)
-    {
-        if ($this->created_at === null) {
-            return null;
-        }
-
-        if ($this->created_at === '0000-00-00 00:00:00') {
-            // while technically this is not a default value of null,
-            // this seems to be closest in meaning.
-            return null;
-        }
-
-        try {
-            $dt = new DateTime($this->created_at);
-        } catch (Exception $x) {
-            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->created_at, true), $x);
-        }
-
-        if ($format === null) {
-            // Because propel.useDateTimeClass is true, we return a DateTime object.
-            return $dt;
-        }
-
-        if (strpos($format, '%') !== false) {
-            return strftime($format, $dt->format('U'));
-        }
-
-        return $dt->format($format);
-
-    }
-
-    /**
-     * Get the [optionally formatted] temporal [updated_at] column value.
-     *
-     *
-     * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *				 If format is null, then the raw DateTime object will be returned.
-     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
-     * @throws PropelException - if unable to parse/validate the date/time value.
-     */
-    public function getUpdatedAt($format = null)
-    {
-        if ($this->updated_at === null) {
-            return null;
-        }
-
-        if ($this->updated_at === '0000-00-00 00:00:00') {
-            // while technically this is not a default value of null,
-            // this seems to be closest in meaning.
-            return null;
-        }
-
-        try {
-            $dt = new DateTime($this->updated_at);
-        } catch (Exception $x) {
-            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->updated_at, true), $x);
-        }
-
-        if ($format === null) {
-            // Because propel.useDateTimeClass is true, we return a DateTime object.
-            return $dt;
-        }
-
-        if (strpos($format, '%') !== false) {
-            return strftime($format, $dt->format('U'));
-        }
-
-        return $dt->format($format);
-
-    }
-
-    /**
-     * Get the [slug] column value.
-     *
-     * @return string
-     */
-    public function getSlug()
-    {
-
-        return $this->slug;
-    }
-
-    /**
-     * Get the [tree_left] column value.
-     *
-     * @return int
-     */
-    public function getTreeLeft()
-    {
-
-        return $this->tree_left;
-    }
-
-    /**
-     * Get the [tree_right] column value.
-     *
-     * @return int
-     */
-    public function getTreeRight()
-    {
-
-        return $this->tree_right;
-    }
-
-    /**
-     * Get the [tree_level] column value.
-     *
-     * @return int
-     */
-    public function getTreeLevel()
-    {
-
-        return $this->tree_level;
-    }
-
-    /**
      * Get the [id] column value.
      *
      * @return int
@@ -389,6 +243,28 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
     {
 
         return $this->p_user_id;
+    }
+
+    /**
+     * Get the [p_d_debate_id] column value.
+     *
+     * @return int
+     */
+    public function getPDDebateId()
+    {
+
+        return $this->p_d_debate_id;
+    }
+
+    /**
+     * Get the [parent_reaction_id] column value.
+     *
+     * @return int
+     */
+    public function getParentReactionId()
+    {
+
+        return $this->parent_reaction_id;
     }
 
     /**
@@ -414,14 +290,14 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [summary] column value.
+     * Get the [copyright] column value.
      *
      * @return string
      */
-    public function getSummary()
+    public function getCopyright()
     {
 
-        return $this->summary;
+        return $this->copyright;
     }
 
     /**
@@ -553,6 +429,130 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [optionally formatted] temporal [created_at] column value.
+     *
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getCreatedAt($format = null)
+    {
+        if ($this->created_at === null) {
+            return null;
+        }
+
+        if ($this->created_at === '0000-00-00 00:00:00') {
+            // while technically this is not a default value of null,
+            // this seems to be closest in meaning.
+            return null;
+        }
+
+        try {
+            $dt = new DateTime($this->created_at);
+        } catch (Exception $x) {
+            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->created_at, true), $x);
+        }
+
+        if ($format === null) {
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
+            return $dt;
+        }
+
+        if (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        }
+
+        return $dt->format($format);
+
+    }
+
+    /**
+     * Get the [optionally formatted] temporal [updated_at] column value.
+     *
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getUpdatedAt($format = null)
+    {
+        if ($this->updated_at === null) {
+            return null;
+        }
+
+        if ($this->updated_at === '0000-00-00 00:00:00') {
+            // while technically this is not a default value of null,
+            // this seems to be closest in meaning.
+            return null;
+        }
+
+        try {
+            $dt = new DateTime($this->updated_at);
+        } catch (Exception $x) {
+            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->updated_at, true), $x);
+        }
+
+        if ($format === null) {
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
+            return $dt;
+        }
+
+        if (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        }
+
+        return $dt->format($format);
+
+    }
+
+    /**
+     * Get the [slug] column value.
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+
+        return $this->slug;
+    }
+
+    /**
+     * Get the [tree_left] column value.
+     *
+     * @return int
+     */
+    public function getTreeLeft()
+    {
+
+        return $this->tree_left;
+    }
+
+    /**
+     * Get the [tree_right] column value.
+     *
+     * @return int
+     */
+    public function getTreeRight()
+    {
+
+        return $this->tree_right;
+    }
+
+    /**
+     * Get the [tree_level] column value.
+     *
+     * @return int
+     */
+    public function getTreeLevel()
+    {
+
+        return $this->tree_level;
+    }
+
+    /**
      * Get the [optionally formatted] temporal [archived_at] column value.
      *
      *
@@ -591,178 +591,6 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
         return $dt->format($format);
 
     }
-
-    /**
-     * Set the value of [p_d_debate_id] column.
-     *
-     * @param  int $v new value
-     * @return PDReactionArchive The current object (for fluent API support)
-     */
-    public function setPDDebateId($v)
-    {
-        if ($v !== null && is_numeric($v)) {
-            $v = (int) $v;
-        }
-
-        if ($this->p_d_debate_id !== $v) {
-            $this->p_d_debate_id = $v;
-            $this->modifiedColumns[] = PDReactionArchivePeer::P_D_DEBATE_ID;
-        }
-
-
-        return $this;
-    } // setPDDebateId()
-
-    /**
-     * Set the value of [parent_reaction_id] column.
-     *
-     * @param  int $v new value
-     * @return PDReactionArchive The current object (for fluent API support)
-     */
-    public function setParentReactionId($v)
-    {
-        if ($v !== null && is_numeric($v)) {
-            $v = (int) $v;
-        }
-
-        if ($this->parent_reaction_id !== $v) {
-            $this->parent_reaction_id = $v;
-            $this->modifiedColumns[] = PDReactionArchivePeer::PARENT_REACTION_ID;
-        }
-
-
-        return $this;
-    } // setParentReactionId()
-
-    /**
-     * Sets the value of [created_at] column to a normalized version of the date/time value specified.
-     *
-     * @param mixed $v string, integer (timestamp), or DateTime value.
-     *               Empty strings are treated as null.
-     * @return PDReactionArchive The current object (for fluent API support)
-     */
-    public function setCreatedAt($v)
-    {
-        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->created_at !== null || $dt !== null) {
-            $currentDateAsString = ($this->created_at !== null && $tmpDt = new DateTime($this->created_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
-            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
-            if ($currentDateAsString !== $newDateAsString) {
-                $this->created_at = $newDateAsString;
-                $this->modifiedColumns[] = PDReactionArchivePeer::CREATED_AT;
-            }
-        } // if either are not null
-
-
-        return $this;
-    } // setCreatedAt()
-
-    /**
-     * Sets the value of [updated_at] column to a normalized version of the date/time value specified.
-     *
-     * @param mixed $v string, integer (timestamp), or DateTime value.
-     *               Empty strings are treated as null.
-     * @return PDReactionArchive The current object (for fluent API support)
-     */
-    public function setUpdatedAt($v)
-    {
-        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->updated_at !== null || $dt !== null) {
-            $currentDateAsString = ($this->updated_at !== null && $tmpDt = new DateTime($this->updated_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
-            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
-            if ($currentDateAsString !== $newDateAsString) {
-                $this->updated_at = $newDateAsString;
-                $this->modifiedColumns[] = PDReactionArchivePeer::UPDATED_AT;
-            }
-        } // if either are not null
-
-
-        return $this;
-    } // setUpdatedAt()
-
-    /**
-     * Set the value of [slug] column.
-     *
-     * @param  string $v new value
-     * @return PDReactionArchive The current object (for fluent API support)
-     */
-    public function setSlug($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->slug !== $v) {
-            $this->slug = $v;
-            $this->modifiedColumns[] = PDReactionArchivePeer::SLUG;
-        }
-
-
-        return $this;
-    } // setSlug()
-
-    /**
-     * Set the value of [tree_left] column.
-     *
-     * @param  int $v new value
-     * @return PDReactionArchive The current object (for fluent API support)
-     */
-    public function setTreeLeft($v)
-    {
-        if ($v !== null && is_numeric($v)) {
-            $v = (int) $v;
-        }
-
-        if ($this->tree_left !== $v) {
-            $this->tree_left = $v;
-            $this->modifiedColumns[] = PDReactionArchivePeer::TREE_LEFT;
-        }
-
-
-        return $this;
-    } // setTreeLeft()
-
-    /**
-     * Set the value of [tree_right] column.
-     *
-     * @param  int $v new value
-     * @return PDReactionArchive The current object (for fluent API support)
-     */
-    public function setTreeRight($v)
-    {
-        if ($v !== null && is_numeric($v)) {
-            $v = (int) $v;
-        }
-
-        if ($this->tree_right !== $v) {
-            $this->tree_right = $v;
-            $this->modifiedColumns[] = PDReactionArchivePeer::TREE_RIGHT;
-        }
-
-
-        return $this;
-    } // setTreeRight()
-
-    /**
-     * Set the value of [tree_level] column.
-     *
-     * @param  int $v new value
-     * @return PDReactionArchive The current object (for fluent API support)
-     */
-    public function setTreeLevel($v)
-    {
-        if ($v !== null && is_numeric($v)) {
-            $v = (int) $v;
-        }
-
-        if ($this->tree_level !== $v) {
-            $this->tree_level = $v;
-            $this->modifiedColumns[] = PDReactionArchivePeer::TREE_LEVEL;
-        }
-
-
-        return $this;
-    } // setTreeLevel()
 
     /**
      * Set the value of [id] column.
@@ -807,6 +635,48 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
     } // setPUserId()
 
     /**
+     * Set the value of [p_d_debate_id] column.
+     *
+     * @param  int $v new value
+     * @return PDReactionArchive The current object (for fluent API support)
+     */
+    public function setPDDebateId($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->p_d_debate_id !== $v) {
+            $this->p_d_debate_id = $v;
+            $this->modifiedColumns[] = PDReactionArchivePeer::P_D_DEBATE_ID;
+        }
+
+
+        return $this;
+    } // setPDDebateId()
+
+    /**
+     * Set the value of [parent_reaction_id] column.
+     *
+     * @param  int $v new value
+     * @return PDReactionArchive The current object (for fluent API support)
+     */
+    public function setParentReactionId($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->parent_reaction_id !== $v) {
+            $this->parent_reaction_id = $v;
+            $this->modifiedColumns[] = PDReactionArchivePeer::PARENT_REACTION_ID;
+        }
+
+
+        return $this;
+    } // setParentReactionId()
+
+    /**
      * Set the value of [title] column.
      *
      * @param  string $v new value
@@ -849,25 +719,25 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
     } // setFileName()
 
     /**
-     * Set the value of [summary] column.
+     * Set the value of [copyright] column.
      *
      * @param  string $v new value
      * @return PDReactionArchive The current object (for fluent API support)
      */
-    public function setSummary($v)
+    public function setCopyright($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->summary !== $v) {
-            $this->summary = $v;
-            $this->modifiedColumns[] = PDReactionArchivePeer::SUMMARY;
+        if ($this->copyright !== $v) {
+            $this->copyright = $v;
+            $this->modifiedColumns[] = PDReactionArchivePeer::COPYRIGHT;
         }
 
 
         return $this;
-    } // setSummary()
+    } // setCopyright()
 
     /**
      * Set the value of [description] column.
@@ -1085,6 +955,136 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
     } // setOnline()
 
     /**
+     * Sets the value of [created_at] column to a normalized version of the date/time value specified.
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return PDReactionArchive The current object (for fluent API support)
+     */
+    public function setCreatedAt($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->created_at !== null || $dt !== null) {
+            $currentDateAsString = ($this->created_at !== null && $tmpDt = new DateTime($this->created_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->created_at = $newDateAsString;
+                $this->modifiedColumns[] = PDReactionArchivePeer::CREATED_AT;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setCreatedAt()
+
+    /**
+     * Sets the value of [updated_at] column to a normalized version of the date/time value specified.
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return PDReactionArchive The current object (for fluent API support)
+     */
+    public function setUpdatedAt($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->updated_at !== null || $dt !== null) {
+            $currentDateAsString = ($this->updated_at !== null && $tmpDt = new DateTime($this->updated_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->updated_at = $newDateAsString;
+                $this->modifiedColumns[] = PDReactionArchivePeer::UPDATED_AT;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setUpdatedAt()
+
+    /**
+     * Set the value of [slug] column.
+     *
+     * @param  string $v new value
+     * @return PDReactionArchive The current object (for fluent API support)
+     */
+    public function setSlug($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->slug !== $v) {
+            $this->slug = $v;
+            $this->modifiedColumns[] = PDReactionArchivePeer::SLUG;
+        }
+
+
+        return $this;
+    } // setSlug()
+
+    /**
+     * Set the value of [tree_left] column.
+     *
+     * @param  int $v new value
+     * @return PDReactionArchive The current object (for fluent API support)
+     */
+    public function setTreeLeft($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->tree_left !== $v) {
+            $this->tree_left = $v;
+            $this->modifiedColumns[] = PDReactionArchivePeer::TREE_LEFT;
+        }
+
+
+        return $this;
+    } // setTreeLeft()
+
+    /**
+     * Set the value of [tree_right] column.
+     *
+     * @param  int $v new value
+     * @return PDReactionArchive The current object (for fluent API support)
+     */
+    public function setTreeRight($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->tree_right !== $v) {
+            $this->tree_right = $v;
+            $this->modifiedColumns[] = PDReactionArchivePeer::TREE_RIGHT;
+        }
+
+
+        return $this;
+    } // setTreeRight()
+
+    /**
+     * Set the value of [tree_level] column.
+     *
+     * @param  int $v new value
+     * @return PDReactionArchive The current object (for fluent API support)
+     */
+    public function setTreeLevel($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->tree_level !== $v) {
+            $this->tree_level = $v;
+            $this->modifiedColumns[] = PDReactionArchivePeer::TREE_LEVEL;
+        }
+
+
+        return $this;
+    } // setTreeLevel()
+
+    /**
      * Sets the value of [archived_at] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
@@ -1147,28 +1147,28 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
     {
         try {
 
-            $this->p_d_debate_id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->parent_reaction_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
-            $this->created_at = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-            $this->updated_at = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-            $this->slug = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-            $this->tree_left = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
-            $this->tree_right = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
-            $this->tree_level = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
-            $this->id = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
-            $this->p_user_id = ($row[$startcol + 9] !== null) ? (int) $row[$startcol + 9] : null;
-            $this->title = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
-            $this->file_name = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
-            $this->summary = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
-            $this->description = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
-            $this->note_pos = ($row[$startcol + 14] !== null) ? (int) $row[$startcol + 14] : null;
-            $this->note_neg = ($row[$startcol + 15] !== null) ? (int) $row[$startcol + 15] : null;
-            $this->nb_views = ($row[$startcol + 16] !== null) ? (int) $row[$startcol + 16] : null;
-            $this->published = ($row[$startcol + 17] !== null) ? (boolean) $row[$startcol + 17] : null;
-            $this->published_at = ($row[$startcol + 18] !== null) ? (string) $row[$startcol + 18] : null;
-            $this->published_by = ($row[$startcol + 19] !== null) ? (string) $row[$startcol + 19] : null;
-            $this->favorite = ($row[$startcol + 20] !== null) ? (boolean) $row[$startcol + 20] : null;
-            $this->online = ($row[$startcol + 21] !== null) ? (boolean) $row[$startcol + 21] : null;
+            $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
+            $this->p_user_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
+            $this->p_d_debate_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+            $this->parent_reaction_id = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
+            $this->title = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->file_name = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->copyright = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->description = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+            $this->note_pos = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
+            $this->note_neg = ($row[$startcol + 9] !== null) ? (int) $row[$startcol + 9] : null;
+            $this->nb_views = ($row[$startcol + 10] !== null) ? (int) $row[$startcol + 10] : null;
+            $this->published = ($row[$startcol + 11] !== null) ? (boolean) $row[$startcol + 11] : null;
+            $this->published_at = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+            $this->published_by = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
+            $this->favorite = ($row[$startcol + 14] !== null) ? (boolean) $row[$startcol + 14] : null;
+            $this->online = ($row[$startcol + 15] !== null) ? (boolean) $row[$startcol + 15] : null;
+            $this->created_at = ($row[$startcol + 16] !== null) ? (string) $row[$startcol + 16] : null;
+            $this->updated_at = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
+            $this->slug = ($row[$startcol + 18] !== null) ? (string) $row[$startcol + 18] : null;
+            $this->tree_left = ($row[$startcol + 19] !== null) ? (int) $row[$startcol + 19] : null;
+            $this->tree_right = ($row[$startcol + 20] !== null) ? (int) $row[$startcol + 20] : null;
+            $this->tree_level = ($row[$startcol + 21] !== null) ? (int) $row[$startcol + 21] : null;
             $this->archived_at = ($row[$startcol + 22] !== null) ? (string) $row[$startcol + 22] : null;
             $this->resetModified();
 
@@ -1402,35 +1402,17 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
 
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(PDReactionArchivePeer::P_D_DEBATE_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`p_d_debate_id`';
-        }
-        if ($this->isColumnModified(PDReactionArchivePeer::PARENT_REACTION_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`parent_reaction_id`';
-        }
-        if ($this->isColumnModified(PDReactionArchivePeer::CREATED_AT)) {
-            $modifiedColumns[':p' . $index++]  = '`created_at`';
-        }
-        if ($this->isColumnModified(PDReactionArchivePeer::UPDATED_AT)) {
-            $modifiedColumns[':p' . $index++]  = '`updated_at`';
-        }
-        if ($this->isColumnModified(PDReactionArchivePeer::SLUG)) {
-            $modifiedColumns[':p' . $index++]  = '`slug`';
-        }
-        if ($this->isColumnModified(PDReactionArchivePeer::TREE_LEFT)) {
-            $modifiedColumns[':p' . $index++]  = '`tree_left`';
-        }
-        if ($this->isColumnModified(PDReactionArchivePeer::TREE_RIGHT)) {
-            $modifiedColumns[':p' . $index++]  = '`tree_right`';
-        }
-        if ($this->isColumnModified(PDReactionArchivePeer::TREE_LEVEL)) {
-            $modifiedColumns[':p' . $index++]  = '`tree_level`';
-        }
         if ($this->isColumnModified(PDReactionArchivePeer::ID)) {
             $modifiedColumns[':p' . $index++]  = '`id`';
         }
         if ($this->isColumnModified(PDReactionArchivePeer::P_USER_ID)) {
             $modifiedColumns[':p' . $index++]  = '`p_user_id`';
+        }
+        if ($this->isColumnModified(PDReactionArchivePeer::P_D_DEBATE_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`p_d_debate_id`';
+        }
+        if ($this->isColumnModified(PDReactionArchivePeer::PARENT_REACTION_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`parent_reaction_id`';
         }
         if ($this->isColumnModified(PDReactionArchivePeer::TITLE)) {
             $modifiedColumns[':p' . $index++]  = '`title`';
@@ -1438,8 +1420,8 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PDReactionArchivePeer::FILE_NAME)) {
             $modifiedColumns[':p' . $index++]  = '`file_name`';
         }
-        if ($this->isColumnModified(PDReactionArchivePeer::SUMMARY)) {
-            $modifiedColumns[':p' . $index++]  = '`summary`';
+        if ($this->isColumnModified(PDReactionArchivePeer::COPYRIGHT)) {
+            $modifiedColumns[':p' . $index++]  = '`copyright`';
         }
         if ($this->isColumnModified(PDReactionArchivePeer::DESCRIPTION)) {
             $modifiedColumns[':p' . $index++]  = '`description`';
@@ -1468,6 +1450,24 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PDReactionArchivePeer::ONLINE)) {
             $modifiedColumns[':p' . $index++]  = '`online`';
         }
+        if ($this->isColumnModified(PDReactionArchivePeer::CREATED_AT)) {
+            $modifiedColumns[':p' . $index++]  = '`created_at`';
+        }
+        if ($this->isColumnModified(PDReactionArchivePeer::UPDATED_AT)) {
+            $modifiedColumns[':p' . $index++]  = '`updated_at`';
+        }
+        if ($this->isColumnModified(PDReactionArchivePeer::SLUG)) {
+            $modifiedColumns[':p' . $index++]  = '`slug`';
+        }
+        if ($this->isColumnModified(PDReactionArchivePeer::TREE_LEFT)) {
+            $modifiedColumns[':p' . $index++]  = '`tree_left`';
+        }
+        if ($this->isColumnModified(PDReactionArchivePeer::TREE_RIGHT)) {
+            $modifiedColumns[':p' . $index++]  = '`tree_right`';
+        }
+        if ($this->isColumnModified(PDReactionArchivePeer::TREE_LEVEL)) {
+            $modifiedColumns[':p' . $index++]  = '`tree_level`';
+        }
         if ($this->isColumnModified(PDReactionArchivePeer::ARCHIVED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`archived_at`';
         }
@@ -1482,35 +1482,17 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case '`p_d_debate_id`':
-                        $stmt->bindValue($identifier, $this->p_d_debate_id, PDO::PARAM_INT);
-                        break;
-                    case '`parent_reaction_id`':
-                        $stmt->bindValue($identifier, $this->parent_reaction_id, PDO::PARAM_INT);
-                        break;
-                    case '`created_at`':
-                        $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
-                        break;
-                    case '`updated_at`':
-                        $stmt->bindValue($identifier, $this->updated_at, PDO::PARAM_STR);
-                        break;
-                    case '`slug`':
-                        $stmt->bindValue($identifier, $this->slug, PDO::PARAM_STR);
-                        break;
-                    case '`tree_left`':
-                        $stmt->bindValue($identifier, $this->tree_left, PDO::PARAM_INT);
-                        break;
-                    case '`tree_right`':
-                        $stmt->bindValue($identifier, $this->tree_right, PDO::PARAM_INT);
-                        break;
-                    case '`tree_level`':
-                        $stmt->bindValue($identifier, $this->tree_level, PDO::PARAM_INT);
-                        break;
                     case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
                     case '`p_user_id`':
                         $stmt->bindValue($identifier, $this->p_user_id, PDO::PARAM_INT);
+                        break;
+                    case '`p_d_debate_id`':
+                        $stmt->bindValue($identifier, $this->p_d_debate_id, PDO::PARAM_INT);
+                        break;
+                    case '`parent_reaction_id`':
+                        $stmt->bindValue($identifier, $this->parent_reaction_id, PDO::PARAM_INT);
                         break;
                     case '`title`':
                         $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
@@ -1518,8 +1500,8 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
                     case '`file_name`':
                         $stmt->bindValue($identifier, $this->file_name, PDO::PARAM_STR);
                         break;
-                    case '`summary`':
-                        $stmt->bindValue($identifier, $this->summary, PDO::PARAM_STR);
+                    case '`copyright`':
+                        $stmt->bindValue($identifier, $this->copyright, PDO::PARAM_STR);
                         break;
                     case '`description`':
                         $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
@@ -1547,6 +1529,24 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
                         break;
                     case '`online`':
                         $stmt->bindValue($identifier, (int) $this->online, PDO::PARAM_INT);
+                        break;
+                    case '`created_at`':
+                        $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
+                        break;
+                    case '`updated_at`':
+                        $stmt->bindValue($identifier, $this->updated_at, PDO::PARAM_STR);
+                        break;
+                    case '`slug`':
+                        $stmt->bindValue($identifier, $this->slug, PDO::PARAM_STR);
+                        break;
+                    case '`tree_left`':
+                        $stmt->bindValue($identifier, $this->tree_left, PDO::PARAM_INT);
+                        break;
+                    case '`tree_right`':
+                        $stmt->bindValue($identifier, $this->tree_right, PDO::PARAM_INT);
+                        break;
+                    case '`tree_level`':
+                        $stmt->bindValue($identifier, $this->tree_level, PDO::PARAM_INT);
                         break;
                     case '`archived_at`':
                         $stmt->bindValue($identifier, $this->archived_at, PDO::PARAM_STR);
@@ -1679,70 +1679,70 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
     {
         switch ($pos) {
             case 0:
-                return $this->getPDDebateId();
-                break;
-            case 1:
-                return $this->getParentReactionId();
-                break;
-            case 2:
-                return $this->getCreatedAt();
-                break;
-            case 3:
-                return $this->getUpdatedAt();
-                break;
-            case 4:
-                return $this->getSlug();
-                break;
-            case 5:
-                return $this->getTreeLeft();
-                break;
-            case 6:
-                return $this->getTreeRight();
-                break;
-            case 7:
-                return $this->getTreeLevel();
-                break;
-            case 8:
                 return $this->getId();
                 break;
-            case 9:
+            case 1:
                 return $this->getPUserId();
                 break;
-            case 10:
+            case 2:
+                return $this->getPDDebateId();
+                break;
+            case 3:
+                return $this->getParentReactionId();
+                break;
+            case 4:
                 return $this->getTitle();
                 break;
-            case 11:
+            case 5:
                 return $this->getFileName();
                 break;
-            case 12:
-                return $this->getSummary();
+            case 6:
+                return $this->getCopyright();
                 break;
-            case 13:
+            case 7:
                 return $this->getDescription();
                 break;
-            case 14:
+            case 8:
                 return $this->getNotePos();
                 break;
-            case 15:
+            case 9:
                 return $this->getNoteNeg();
                 break;
-            case 16:
+            case 10:
                 return $this->getNbViews();
                 break;
-            case 17:
+            case 11:
                 return $this->getPublished();
                 break;
-            case 18:
+            case 12:
                 return $this->getPublishedAt();
                 break;
-            case 19:
+            case 13:
                 return $this->getPublishedBy();
                 break;
-            case 20:
+            case 14:
                 return $this->getFavorite();
                 break;
-            case 21:
+            case 15:
                 return $this->getOnline();
+                break;
+            case 16:
+                return $this->getCreatedAt();
+                break;
+            case 17:
+                return $this->getUpdatedAt();
+                break;
+            case 18:
+                return $this->getSlug();
+                break;
+            case 19:
+                return $this->getTreeLeft();
+                break;
+            case 20:
+                return $this->getTreeRight();
+                break;
+            case 21:
+                return $this->getTreeLevel();
                 break;
             case 22:
                 return $this->getArchivedAt();
@@ -1775,28 +1775,28 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
         $alreadyDumpedObjects['PDReactionArchive'][$this->getPrimaryKey()] = true;
         $keys = PDReactionArchivePeer::getFieldNames($keyType);
         $result = array(
-            $keys[0] => $this->getPDDebateId(),
-            $keys[1] => $this->getParentReactionId(),
-            $keys[2] => $this->getCreatedAt(),
-            $keys[3] => $this->getUpdatedAt(),
-            $keys[4] => $this->getSlug(),
-            $keys[5] => $this->getTreeLeft(),
-            $keys[6] => $this->getTreeRight(),
-            $keys[7] => $this->getTreeLevel(),
-            $keys[8] => $this->getId(),
-            $keys[9] => $this->getPUserId(),
-            $keys[10] => $this->getTitle(),
-            $keys[11] => $this->getFileName(),
-            $keys[12] => $this->getSummary(),
-            $keys[13] => $this->getDescription(),
-            $keys[14] => $this->getNotePos(),
-            $keys[15] => $this->getNoteNeg(),
-            $keys[16] => $this->getNbViews(),
-            $keys[17] => $this->getPublished(),
-            $keys[18] => $this->getPublishedAt(),
-            $keys[19] => $this->getPublishedBy(),
-            $keys[20] => $this->getFavorite(),
-            $keys[21] => $this->getOnline(),
+            $keys[0] => $this->getId(),
+            $keys[1] => $this->getPUserId(),
+            $keys[2] => $this->getPDDebateId(),
+            $keys[3] => $this->getParentReactionId(),
+            $keys[4] => $this->getTitle(),
+            $keys[5] => $this->getFileName(),
+            $keys[6] => $this->getCopyright(),
+            $keys[7] => $this->getDescription(),
+            $keys[8] => $this->getNotePos(),
+            $keys[9] => $this->getNoteNeg(),
+            $keys[10] => $this->getNbViews(),
+            $keys[11] => $this->getPublished(),
+            $keys[12] => $this->getPublishedAt(),
+            $keys[13] => $this->getPublishedBy(),
+            $keys[14] => $this->getFavorite(),
+            $keys[15] => $this->getOnline(),
+            $keys[16] => $this->getCreatedAt(),
+            $keys[17] => $this->getUpdatedAt(),
+            $keys[18] => $this->getSlug(),
+            $keys[19] => $this->getTreeLeft(),
+            $keys[20] => $this->getTreeRight(),
+            $keys[21] => $this->getTreeLevel(),
             $keys[22] => $this->getArchivedAt(),
         );
         $virtualColumns = $this->virtualColumns;
@@ -1838,70 +1838,70 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
     {
         switch ($pos) {
             case 0:
-                $this->setPDDebateId($value);
-                break;
-            case 1:
-                $this->setParentReactionId($value);
-                break;
-            case 2:
-                $this->setCreatedAt($value);
-                break;
-            case 3:
-                $this->setUpdatedAt($value);
-                break;
-            case 4:
-                $this->setSlug($value);
-                break;
-            case 5:
-                $this->setTreeLeft($value);
-                break;
-            case 6:
-                $this->setTreeRight($value);
-                break;
-            case 7:
-                $this->setTreeLevel($value);
-                break;
-            case 8:
                 $this->setId($value);
                 break;
-            case 9:
+            case 1:
                 $this->setPUserId($value);
                 break;
-            case 10:
+            case 2:
+                $this->setPDDebateId($value);
+                break;
+            case 3:
+                $this->setParentReactionId($value);
+                break;
+            case 4:
                 $this->setTitle($value);
                 break;
-            case 11:
+            case 5:
                 $this->setFileName($value);
                 break;
-            case 12:
-                $this->setSummary($value);
+            case 6:
+                $this->setCopyright($value);
                 break;
-            case 13:
+            case 7:
                 $this->setDescription($value);
                 break;
-            case 14:
+            case 8:
                 $this->setNotePos($value);
                 break;
-            case 15:
+            case 9:
                 $this->setNoteNeg($value);
                 break;
-            case 16:
+            case 10:
                 $this->setNbViews($value);
                 break;
-            case 17:
+            case 11:
                 $this->setPublished($value);
                 break;
-            case 18:
+            case 12:
                 $this->setPublishedAt($value);
                 break;
-            case 19:
+            case 13:
                 $this->setPublishedBy($value);
                 break;
-            case 20:
+            case 14:
                 $this->setFavorite($value);
                 break;
-            case 21:
+            case 15:
                 $this->setOnline($value);
+                break;
+            case 16:
+                $this->setCreatedAt($value);
+                break;
+            case 17:
+                $this->setUpdatedAt($value);
+                break;
+            case 18:
+                $this->setSlug($value);
+                break;
+            case 19:
+                $this->setTreeLeft($value);
+                break;
+            case 20:
+                $this->setTreeRight($value);
+                break;
+            case 21:
+                $this->setTreeLevel($value);
                 break;
             case 22:
                 $this->setArchivedAt($value);
@@ -1930,28 +1930,28 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
     {
         $keys = PDReactionArchivePeer::getFieldNames($keyType);
 
-        if (array_key_exists($keys[0], $arr)) $this->setPDDebateId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setParentReactionId($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setCreatedAt($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setUpdatedAt($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setSlug($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setTreeLeft($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setTreeRight($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setTreeLevel($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setId($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setPUserId($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setTitle($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setFileName($arr[$keys[11]]);
-        if (array_key_exists($keys[12], $arr)) $this->setSummary($arr[$keys[12]]);
-        if (array_key_exists($keys[13], $arr)) $this->setDescription($arr[$keys[13]]);
-        if (array_key_exists($keys[14], $arr)) $this->setNotePos($arr[$keys[14]]);
-        if (array_key_exists($keys[15], $arr)) $this->setNoteNeg($arr[$keys[15]]);
-        if (array_key_exists($keys[16], $arr)) $this->setNbViews($arr[$keys[16]]);
-        if (array_key_exists($keys[17], $arr)) $this->setPublished($arr[$keys[17]]);
-        if (array_key_exists($keys[18], $arr)) $this->setPublishedAt($arr[$keys[18]]);
-        if (array_key_exists($keys[19], $arr)) $this->setPublishedBy($arr[$keys[19]]);
-        if (array_key_exists($keys[20], $arr)) $this->setFavorite($arr[$keys[20]]);
-        if (array_key_exists($keys[21], $arr)) $this->setOnline($arr[$keys[21]]);
+        if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
+        if (array_key_exists($keys[1], $arr)) $this->setPUserId($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setPDDebateId($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setParentReactionId($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setTitle($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setFileName($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setCopyright($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setDescription($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setNotePos($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setNoteNeg($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setNbViews($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setPublished($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setPublishedAt($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setPublishedBy($arr[$keys[13]]);
+        if (array_key_exists($keys[14], $arr)) $this->setFavorite($arr[$keys[14]]);
+        if (array_key_exists($keys[15], $arr)) $this->setOnline($arr[$keys[15]]);
+        if (array_key_exists($keys[16], $arr)) $this->setCreatedAt($arr[$keys[16]]);
+        if (array_key_exists($keys[17], $arr)) $this->setUpdatedAt($arr[$keys[17]]);
+        if (array_key_exists($keys[18], $arr)) $this->setSlug($arr[$keys[18]]);
+        if (array_key_exists($keys[19], $arr)) $this->setTreeLeft($arr[$keys[19]]);
+        if (array_key_exists($keys[20], $arr)) $this->setTreeRight($arr[$keys[20]]);
+        if (array_key_exists($keys[21], $arr)) $this->setTreeLevel($arr[$keys[21]]);
         if (array_key_exists($keys[22], $arr)) $this->setArchivedAt($arr[$keys[22]]);
     }
 
@@ -1964,19 +1964,13 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
     {
         $criteria = new Criteria(PDReactionArchivePeer::DATABASE_NAME);
 
-        if ($this->isColumnModified(PDReactionArchivePeer::P_D_DEBATE_ID)) $criteria->add(PDReactionArchivePeer::P_D_DEBATE_ID, $this->p_d_debate_id);
-        if ($this->isColumnModified(PDReactionArchivePeer::PARENT_REACTION_ID)) $criteria->add(PDReactionArchivePeer::PARENT_REACTION_ID, $this->parent_reaction_id);
-        if ($this->isColumnModified(PDReactionArchivePeer::CREATED_AT)) $criteria->add(PDReactionArchivePeer::CREATED_AT, $this->created_at);
-        if ($this->isColumnModified(PDReactionArchivePeer::UPDATED_AT)) $criteria->add(PDReactionArchivePeer::UPDATED_AT, $this->updated_at);
-        if ($this->isColumnModified(PDReactionArchivePeer::SLUG)) $criteria->add(PDReactionArchivePeer::SLUG, $this->slug);
-        if ($this->isColumnModified(PDReactionArchivePeer::TREE_LEFT)) $criteria->add(PDReactionArchivePeer::TREE_LEFT, $this->tree_left);
-        if ($this->isColumnModified(PDReactionArchivePeer::TREE_RIGHT)) $criteria->add(PDReactionArchivePeer::TREE_RIGHT, $this->tree_right);
-        if ($this->isColumnModified(PDReactionArchivePeer::TREE_LEVEL)) $criteria->add(PDReactionArchivePeer::TREE_LEVEL, $this->tree_level);
         if ($this->isColumnModified(PDReactionArchivePeer::ID)) $criteria->add(PDReactionArchivePeer::ID, $this->id);
         if ($this->isColumnModified(PDReactionArchivePeer::P_USER_ID)) $criteria->add(PDReactionArchivePeer::P_USER_ID, $this->p_user_id);
+        if ($this->isColumnModified(PDReactionArchivePeer::P_D_DEBATE_ID)) $criteria->add(PDReactionArchivePeer::P_D_DEBATE_ID, $this->p_d_debate_id);
+        if ($this->isColumnModified(PDReactionArchivePeer::PARENT_REACTION_ID)) $criteria->add(PDReactionArchivePeer::PARENT_REACTION_ID, $this->parent_reaction_id);
         if ($this->isColumnModified(PDReactionArchivePeer::TITLE)) $criteria->add(PDReactionArchivePeer::TITLE, $this->title);
         if ($this->isColumnModified(PDReactionArchivePeer::FILE_NAME)) $criteria->add(PDReactionArchivePeer::FILE_NAME, $this->file_name);
-        if ($this->isColumnModified(PDReactionArchivePeer::SUMMARY)) $criteria->add(PDReactionArchivePeer::SUMMARY, $this->summary);
+        if ($this->isColumnModified(PDReactionArchivePeer::COPYRIGHT)) $criteria->add(PDReactionArchivePeer::COPYRIGHT, $this->copyright);
         if ($this->isColumnModified(PDReactionArchivePeer::DESCRIPTION)) $criteria->add(PDReactionArchivePeer::DESCRIPTION, $this->description);
         if ($this->isColumnModified(PDReactionArchivePeer::NOTE_POS)) $criteria->add(PDReactionArchivePeer::NOTE_POS, $this->note_pos);
         if ($this->isColumnModified(PDReactionArchivePeer::NOTE_NEG)) $criteria->add(PDReactionArchivePeer::NOTE_NEG, $this->note_neg);
@@ -1986,6 +1980,12 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PDReactionArchivePeer::PUBLISHED_BY)) $criteria->add(PDReactionArchivePeer::PUBLISHED_BY, $this->published_by);
         if ($this->isColumnModified(PDReactionArchivePeer::FAVORITE)) $criteria->add(PDReactionArchivePeer::FAVORITE, $this->favorite);
         if ($this->isColumnModified(PDReactionArchivePeer::ONLINE)) $criteria->add(PDReactionArchivePeer::ONLINE, $this->online);
+        if ($this->isColumnModified(PDReactionArchivePeer::CREATED_AT)) $criteria->add(PDReactionArchivePeer::CREATED_AT, $this->created_at);
+        if ($this->isColumnModified(PDReactionArchivePeer::UPDATED_AT)) $criteria->add(PDReactionArchivePeer::UPDATED_AT, $this->updated_at);
+        if ($this->isColumnModified(PDReactionArchivePeer::SLUG)) $criteria->add(PDReactionArchivePeer::SLUG, $this->slug);
+        if ($this->isColumnModified(PDReactionArchivePeer::TREE_LEFT)) $criteria->add(PDReactionArchivePeer::TREE_LEFT, $this->tree_left);
+        if ($this->isColumnModified(PDReactionArchivePeer::TREE_RIGHT)) $criteria->add(PDReactionArchivePeer::TREE_RIGHT, $this->tree_right);
+        if ($this->isColumnModified(PDReactionArchivePeer::TREE_LEVEL)) $criteria->add(PDReactionArchivePeer::TREE_LEVEL, $this->tree_level);
         if ($this->isColumnModified(PDReactionArchivePeer::ARCHIVED_AT)) $criteria->add(PDReactionArchivePeer::ARCHIVED_AT, $this->archived_at);
 
         return $criteria;
@@ -2050,18 +2050,12 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
+        $copyObj->setPUserId($this->getPUserId());
         $copyObj->setPDDebateId($this->getPDDebateId());
         $copyObj->setParentReactionId($this->getParentReactionId());
-        $copyObj->setCreatedAt($this->getCreatedAt());
-        $copyObj->setUpdatedAt($this->getUpdatedAt());
-        $copyObj->setSlug($this->getSlug());
-        $copyObj->setTreeLeft($this->getTreeLeft());
-        $copyObj->setTreeRight($this->getTreeRight());
-        $copyObj->setTreeLevel($this->getTreeLevel());
-        $copyObj->setPUserId($this->getPUserId());
         $copyObj->setTitle($this->getTitle());
         $copyObj->setFileName($this->getFileName());
-        $copyObj->setSummary($this->getSummary());
+        $copyObj->setCopyright($this->getCopyright());
         $copyObj->setDescription($this->getDescription());
         $copyObj->setNotePos($this->getNotePos());
         $copyObj->setNoteNeg($this->getNoteNeg());
@@ -2071,6 +2065,12 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
         $copyObj->setPublishedBy($this->getPublishedBy());
         $copyObj->setFavorite($this->getFavorite());
         $copyObj->setOnline($this->getOnline());
+        $copyObj->setCreatedAt($this->getCreatedAt());
+        $copyObj->setUpdatedAt($this->getUpdatedAt());
+        $copyObj->setSlug($this->getSlug());
+        $copyObj->setTreeLeft($this->getTreeLeft());
+        $copyObj->setTreeRight($this->getTreeRight());
+        $copyObj->setTreeLevel($this->getTreeLevel());
         $copyObj->setArchivedAt($this->getArchivedAt());
         if ($makeNew) {
             $copyObj->setNew(true);
@@ -2123,19 +2123,13 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
      */
     public function clear()
     {
-        $this->p_d_debate_id = null;
-        $this->parent_reaction_id = null;
-        $this->created_at = null;
-        $this->updated_at = null;
-        $this->slug = null;
-        $this->tree_left = null;
-        $this->tree_right = null;
-        $this->tree_level = null;
         $this->id = null;
         $this->p_user_id = null;
+        $this->p_d_debate_id = null;
+        $this->parent_reaction_id = null;
         $this->title = null;
         $this->file_name = null;
-        $this->summary = null;
+        $this->copyright = null;
         $this->description = null;
         $this->note_pos = null;
         $this->note_neg = null;
@@ -2145,6 +2139,12 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
         $this->published_by = null;
         $this->favorite = null;
         $this->online = null;
+        $this->created_at = null;
+        $this->updated_at = null;
+        $this->slug = null;
+        $this->tree_left = null;
+        $this->tree_right = null;
+        $this->tree_level = null;
         $this->archived_at = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;

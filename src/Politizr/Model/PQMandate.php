@@ -4,10 +4,15 @@ namespace Politizr\Model;
 
 use Politizr\Model\om\BasePQMandate;
 
+/**
+ *
+ * @author Lionel Bouzonville
+ */
 class PQMandate extends BasePQMandate
 {
     /**
      *
+     * @return string
      */
     public function __toString()
     {
@@ -24,5 +29,4 @@ class PQMandate extends BasePQMandate
         $slug = $this->cleanupSlugPart($toSlug);
         return $slug;
     }
-
 }

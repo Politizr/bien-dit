@@ -1,0 +1,24 @@
+<div class="reaction">
+    <div class="reaction-parentDebateTitle">Associé au débat <b>{{ reaction.debate.title }}</b></div>
+    <div class="reaction-parentReactionTitle">
+        {% set parentReaction = reaction.getParent %}
+        {% if parentReaction %}
+            Associé à la réaction <b>{{ parentReaction.title }}</b>
+        {% else %}
+            <b>Pas de réaction parente</b>
+        {% endif %}
+    </div>
+    <hr>
+    <div class="reaction-title"><b>{{ reaction.title }}</b></div>
+    <hr>
+    <div class="reaction-online">{% if reaction.online %}En ligne{% else %}Hors ligne{% endif %}</div>
+    <div class="reaction-published">{% if reaction.published %}Publié le {{ reaction.publishedAt | date('d/m/Y H:i') }}{% else %}Brouillon{% endif %}</div>
+    <hr>
+    <div class="reaction-nbReactions">{{ reaction.countChildrenReactions }} réactions</div>
+    <div class="reaction-nbFollowers">{{ reaction.countComments }} commentaires</div>
+    <div class="reaction-note"><b>{{ reaction.notePos }} +</b> &nbsp; <b>{{ reaction.noteNeg }} -</b></div>
+    <hr>
+    <a href="{{ path('Politizr_AdminBundle_PDReaction_edit', { 'pk': reaction.id }) }}">Editer</a>&nbsp;-&nbsp; 
+    <a href="{{ path('Politizr_AdminBundle_PDReaction_show', { 'pk': reaction.id }) }}">Consulter</a>
+    <hr>
+</div>

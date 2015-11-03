@@ -1,0 +1,11 @@
+<div id="displayCommentsZone">
+    {% if comments | length > 0 %}
+        <b>{{ comments | length }} commentaires ont été rédigés par {{ user }}</b>
+    {% else %}
+        <b>Aucun commentaire rédigé par {{ user }}</b>
+    {% endif %}
+    <hr>
+    {% for comment in comments %}
+        {% include 'PolitizrAdminBundle:Fragment\\Comment:_comment.html.twig' with { 'comment': comment, 'withDocContext': true } %}
+    {% endfor %}
+</div>

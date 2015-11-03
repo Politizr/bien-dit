@@ -1,0 +1,7 @@
+{# @todo normalisation à mettreen place pour les templates se contentant d'appeller un filtre twig pour afficher un autre template#}
+{# Gestion Twig suivre débat / user #}
+{% if type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE') %} 
+    {{ object | linkSubscribeDebate }}
+{% elseif type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_USER') %} 
+    {{ object | linkSubscribeUser }}
+{% endif %}

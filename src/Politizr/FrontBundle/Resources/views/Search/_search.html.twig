@@ -1,0 +1,26 @@
+{% spaceless %}
+    <div class="modalSidebar">
+        <div id="searchByTag">
+            <form class="searchForm" id="searchFormId" action="#">
+                <input id="searchInput" class="selectedTag" autofocus="autofocus" type="text" placeholder="Saisissez une thématique">
+                <input type="hidden" class="selectedTagID" />
+
+                <div class="searchTagList">
+                </div>
+                <input type="submit" class="searchSubmit" value="&#xe80c; Lancez votre recherche">
+            </form>
+        </div>
+        <div id="searchFilters">
+        </div>
+    </div>
+    <div id="paginatedList" class="listContainer"
+        url="{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
+            'xhrRoute': 'ROUTE_MODAL_SEARCH_DEBATE_BY_TAGS_LIST',
+            'xhrService': 'modal',
+            'xhrMethod': 'searchDebateList',
+            'xhrType': 'RETURN_HTML',
+        } only %}"
+        withFilters="true">
+        <div id="listContent" class="modalList withSidebar"></div>
+    </div>
+{% endspaceless %}

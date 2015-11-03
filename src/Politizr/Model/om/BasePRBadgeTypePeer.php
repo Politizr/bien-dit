@@ -12,7 +12,7 @@ use \PropelPDO;
 use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
 use Glorpen\Propel\PropelBundle\Events\DetectOMClassEvent;
 use Glorpen\Propel\PropelBundle\Events\PeerEvent;
-use Politizr\Model\PRBadgePeer;
+use Politizr\Model\PRBadgeFamilyPeer;
 use Politizr\Model\PRBadgeType;
 use Politizr\Model\PRBadgeTypePeer;
 use Politizr\Model\PRBadgeTypeQuery;
@@ -397,9 +397,9 @@ abstract class BasePRBadgeTypePeer
      */
     public static function clearRelatedInstancePool()
     {
-        // Invalidate objects in PRBadgePeer instance pool,
+        // Invalidate objects in PRBadgeFamilyPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PRBadgePeer::clearInstancePool();
+        PRBadgeFamilyPeer::clearInstancePool();
     }
 
     /**

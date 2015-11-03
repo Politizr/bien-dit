@@ -4,10 +4,10 @@
     <table name="p_tag">
         <behavior name="timestampable" />
         <behavior name="query_cache" />
-        <behavior name="archivable" />
         <behavior name="sluggable">
             <parameter name="slug_pattern" value="{title}" />
         </behavior>
+        <behavior name="archivable" />
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="p_t_tag_type_id" type="integer" required="true" />
@@ -37,31 +37,48 @@
     </table>
 
 
-
-
-
     <table name="p_r_badge">
         <behavior name="timestampable" />
         <behavior name="query_cache" />
-        <behavior name="archivable" />
         <behavior name="sluggable">
             <parameter name="slug_pattern" value="{title}" />
         </behavior>
+        <behavior name="sortable" >
+            <parameter name="use_scope" value="true" />
+            <parameter name="scope_column" value="p_r_badge_family_id" />
+        </behavior>
+        <behavior name="archivable" />
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_r_badge_family_id" type="integer" required="true" />
+        
+        <column name="title" type="varchar" size="150" />
+
+        <column name="online" type="boolean" />
+
+        <foreign-key foreignTable="p_r_badge_family" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_r_badge_family_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+    <table name="p_r_badge_family">
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+        <behavior name="sortable" >
+            <parameter name="use_scope" value="true" />
+            <parameter name="scope_column" value="p_r_badge_type_id" />
+        </behavior>
+        <behavior name="archivable" />
+
         <column name="p_r_badge_type_id" type="integer" required="true" />
-        <column name="p_r_badge_metal_id" type="integer" required="true" />
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         
         <column name="title" type="varchar" size="150" />
         <column name="description" type="longvarchar" />
 
-        <column name="online" type="boolean" />
-
         <foreign-key foreignTable="p_r_badge_type" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_r_badge_type_id" foreign="id" />
-        </foreign-key>
-        <foreign-key foreignTable="p_r_badge_metal" onDelete="CASCADE" onUpdate="CASCADE">
-            <reference local="p_r_badge_metal_id" foreign="id" />
         </foreign-key>
     </table>
 
@@ -69,25 +86,13 @@
         <behavior name="timestampable" />
         <behavior name="query_cache" />
         <behavior name="sortable" />
+        <behavior name="archivable" />
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         
         <column name="title" type="varchar" size="150" />
         <column name="description" type="longvarchar" />
     </table>
-
-    <table name="p_r_badge_metal">
-        <behavior name="timestampable" />
-        <behavior name="query_cache" />
-        <behavior name="sortable" />
-        
-        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
-        
-        <column name="title" type="varchar" size="150" />
-        <column name="description" type="longvarchar" />
-    </table>
-
-
 
 
 
@@ -102,9 +107,6 @@
         
         <column name="title" type="varchar" size="150" />
         <column name="description" type="longvarchar" />
-
-        <column name="p_object_name" type="varchar" size="150" />
-        <column name="p_object_id" type="integer" />
 
         <column name="score_evolution" type="integer" />
 
@@ -297,9 +299,8 @@
 
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
 
-        <column name="p_q_type_id" type="integer" required="true" />
-
         <column name="title" type="varchar" size="250" />
+        <column name="select_title" type="varchar" size="250" />
 
         <column name="online" type="boolean" />
 
@@ -320,6 +321,7 @@
         </behavior>
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_q_type_id" type="integer" required="true" />
 
         <column name="title" type="varchar" size="250" />
         <column name="initials" type="varchar" size="50" />
@@ -337,20 +339,33 @@
     </table>
 
 
-
-
     <table name="p_notification">
         <behavior name="timestampable" />
         <behavior name="query_cache" />
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_n_type_id" type="integer" required="true" />
 
         <column name="title" type="varchar" size="250" />
         <column name="description" type="longvarchar" />
         
         <column name="online" type="boolean" />
+
+        <foreign-key foreignTable="p_n_type" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_n_type_id" foreign="id" />
+        </foreign-key>        
     </table>
 
+    <table name="p_n_type">
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        
+        <column name="title" type="varchar" size="150" />
+
+        <column name="description" type="longvarchar" />
+    </table>
 
     <table name="p_user">
         <behavior name="timestampable" />
@@ -395,13 +410,16 @@
         <column name="p_u_status_id" type="integer" required="true" />
 
         <column name="file_name" type="varchar" size="150" />
+
         <column name="back_file_name" type="varchar" size="150" />
+        <column name="copyright" type="longvarchar" />
+
         <column name="gender" type="enum" valueSet="Madame, Monsieur" />
         <column name="firstname" type="varchar" size="150" />
         <column name="name" type="varchar" size="150" />
         <column name="birthday" type="date" />
 
-        <column name="subtitle" type="varchar" size="500" />
+        <column name="subtitle" type="longvarchar" />
         <column name="biography" type="longvarchar" />
 
         <column name="website" type="varchar" size="150" />
@@ -679,22 +697,23 @@
     </table>
 
 
-
-
-
-    <table name="p_document">
+    <table name="p_d_debate">
+        <behavior name="timestampable" />
         <behavior name="query_cache" />
+        <behavior name="sluggable">
+            <parameter name="slug_pattern" value="{title}" />
+        </behavior>
         <behavior name="archivable" />
-        
+
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="p_user_id" type="integer" required="false" />
 
         <column name="title" type="varchar" size="100" />
 
         <column name="file_name" type="varchar" size="150" />
+        <column name="copyright" type="longvarchar" />
 
-        <column name="summary" type="longvarchar" />
-        <column name="description" type="longvarchar" />
+        <column name="description" type="clob" />
 
         <column name="note_pos" type="integer" defaultValue="0" />
         <column name="note_neg" type="integer" defaultValue="0" />
@@ -713,18 +732,6 @@
         </foreign-key>
     </table>
 
-    <table name="p_d_debate">
-        <behavior name="timestampable" />
-        <behavior name="query_cache" />
-        <behavior name="sluggable">
-            <parameter name="slug_pattern" value="{title}" />
-        </behavior>
-        <behavior name="concrete_inheritance">
-            <parameter name="extends" value="p_document" />
-        </behavior>
-
-    </table>
-
     <table name="p_d_reaction">
         <behavior name="timestampable" />
         <behavior name="query_cache" />
@@ -735,26 +742,49 @@
             <parameter name="use_scope" value="true" />
             <parameter name="scope_column" value="p_d_debate_id" />
         </behavior>
-        <behavior name="concrete_inheritance">
-            <parameter name="extends" value="p_document" />
-        </behavior>
+        <behavior name="archivable" />
 
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_user_id" type="integer" required="false" />
         <column name="p_d_debate_id" type="integer" required="true" />
         <column name="parent_reaction_id" type="integer" required="false" />
+
+        <column name="title" type="varchar" size="100" />
+
+        <column name="file_name" type="varchar" size="150" />
+        <column name="copyright" type="longvarchar" />
+
+        <column name="description" type="clob" />
+
+        <column name="note_pos" type="integer" defaultValue="0" />
+        <column name="note_neg" type="integer" defaultValue="0" />
+
+        <column name="nb_views" type="integer" />
+
+        <column name="published" type="boolean" />
+        <column name="published_at" type="timestamp" />
+        <column name="published_by" type="varchar" size="300" />
+
+        <column name="favorite" type="boolean" />
+        <column name="online" type="boolean" />
+
+        <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_user_id" foreign="id" />
+        </foreign-key>
 
         <foreign-key foreignTable="p_d_debate" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_d_debate_id" foreign="id" />
         </foreign-key>
     </table>
 
-    <table name="p_d_comment">
+    <table name="p_d_d_comment">
         <behavior name="timestampable" />
         <behavior name="query_cache" />
         <behavior name="archivable" />
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="p_user_id" type="integer" />
-        <column name="p_document_id" type="integer" required="true" />
+        <column name="p_d_debate_id" type="integer" required="true" />
 
         <column name="description" type="longvarchar" />
         <column name="paragraph_no" type="integer" />
@@ -770,8 +800,36 @@
         <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />
         </foreign-key>
-        <foreign-key foreignTable="p_document" onDelete="CASCADE" onUpdate="CASCADE">
-            <reference local="p_document_id" foreign="id" />
+        <foreign-key foreignTable="p_d_debate" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_d_debate_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+    <table name="p_d_r_comment">
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+        <behavior name="archivable" />
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_user_id" type="integer" />
+        <column name="p_d_reaction_id" type="integer" required="true" />
+
+        <column name="description" type="longvarchar" />
+        <column name="paragraph_no" type="integer" />
+
+        <column name="note_pos" type="integer" defaultValue="0" />
+        <column name="note_neg" type="integer" defaultValue="0" />
+
+        <column name="published_at" type="timestamp" />
+        <column name="published_by" type="varchar" size="300" />
+
+        <column name="online" type="boolean" />
+
+        <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_user_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="p_d_reaction" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_d_reaction_id" foreign="id" />
         </foreign-key>
     </table>
 
@@ -792,5 +850,74 @@
         </foreign-key>
     </table>
 
+    <table name="p_d_r_tagged_t" isCrossRef="true">
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+        <behavior name="archivable" />
+
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_d_reaction_id" type="integer" required="true" />
+        <column name="p_tag_id" type="integer" required="true" />
+
+        <foreign-key foreignTable="p_d_reaction" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_d_reaction_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="p_tag" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_tag_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+
+
+
+    <table name="p_m_ask_for_update">
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+        <behavior name="archivable" />
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_user_id" type="integer" required="false" />  
+        
+        <column name="p_object_name" type="varchar" size="150" />
+        <column name="p_object_id" type="integer" />
+
+        <column name="message" type="longvarchar" />
+
+        <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_user_id" foreign="id" />
+        </foreign-key>        
+    </table>
+
+    <table name="p_m_abuse_reporting">
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+        <behavior name="archivable" />
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_user_id" type="integer" required="false" />  
+        
+        <column name="p_object_name" type="varchar" size="150" />
+        <column name="p_object_id" type="integer" />
+
+        <column name="message" type="longvarchar" />
+
+        <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_user_id" foreign="id" />
+        </foreign-key>        
+    </table>
+
+    <table name="p_m_app_exception">
+        <behavior name="timestampable" />
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        
+        <column name="file" type="varchar" size="250" />
+        <column name="line" type="integer" />
+
+        <column name="code" type="integer" />
+        <column name="message" type="varchar" size="1500" />
+
+        <column name="stack_trace" type="clob" />      
+    </table>
 
 </database>

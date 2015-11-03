@@ -1,0 +1,165 @@
+{% extends 'PolitizrFrontBundle::layoutConnected.html.twig' %}
+
+{% block javascriptHeader %}
+    {{ parent() }}
+
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.cycle2.min.js') }}"></script>  
+{% endblock javascriptHeader %}
+
+{% block title %}
+    {{ parent() }} - Éditer une réaction
+{% endblock title %}
+
+{% block header %}
+    {% embed 'PolitizrFrontBundle:Navigation\\Header:_headerConnected.html.twig' %}
+        {% block socialLinks %}{% endblock socialLinks %}
+    {% endembed %}
+{% endblock header %}
+
+{% block modalBox %}
+    {{ parent() }}
+
+    {% include 'PolitizrFrontBundle:Reaction:_modalEditUpload.html.twig' %}
+{% endblock modalBox %}
+
+
+{% block fixedActions %}
+    <!-- @todo html/css loader ajax sur l'ensemble des boutons d'actions et pas action par action -->
+    <div id="fixedActions">
+        <div class="ajaxLoader" style="display: none;">
+            <div class="ajaxLoaderSpinner"></div><div class="ajaxLoaderBg"></div><div class="ajaxLoaderBlockClick"></div>
+        </div>
+        <div class="actionSave">
+            <a action="reactionSave" subjectId="{{ reaction.id }}"><i class="iconDraft"></i>enregistrer</a>
+        </div>
+
+        {{ app.user | isAuthorizedToPublishReaction(reaction.id) }}
+
+        <div class="actionDelete">
+            <!-- @todo html/css à prévoir & styler -->
+            <a action="reactionDelete" subjectId="{{ reaction.id }}"><i class="iconCross"></i>supprimer</a>
+        </div>
+    </div>
+{% endblock fixedActions %}
+
+{% block main %}
+    <div id="main">
+        <form method="POST" name="reaction" id="formReactionUpdate" class="autoSubmitForm">
+            <div class="postSummary">
+                <div class="pad40">
+                    <div class="postSummaryFooter">
+                        <!-- @todo fonctionnel > est-ce bien raisonnable de disposer d'un lien "normal" au niveau d'un écran d'édition? -->
+                        <div class="postSummaryGotoParent">
+                            {{ reaction | linkParentReaction(true) }}
+                        </div>
+                        {{ form_widget(form.title, { 'attr': {'class': 'postSummaryTitle', 'placeholder': 'Donnez un titre à votre réaction'}}) }}
+                    </div>
+                </div>
+                <div id="bigCamera" action="modalUploadOpen"><i class="iconCamera"></i><i class="iconNotifYes"></i></div>
+
+                <div id="illustrationMain">
+                    {{ reaction | image('debate_header') }}
+                </div>
+            </div>
+            <div id="illustration_l">
+                {{ reaction | image('debate_header') }}
+            </div>
+            <div id="illustration_r">
+                {{ reaction | image('debate_header') }}
+            </div>
+            <div id="copyrightHolder">
+                <i class="iconCopyright" action="showCopyright"></i>
+                <div id="copyrightBox" style="display: none;" action="showCopyright">
+                    <i class="iconArrowUp"></i>
+                    <div id="copyright">
+                        {{ reaction.copyright | purify }}
+                    </div>
+                </div>
+            </div>
+
+            <div id="lateralHolder">
+                <div id="lateralInfo">
+                    <i class="iconInfo"></i><br>
+                    <b>Attention, une fois publié, vous ne pourrez plus modifier votre réaction.</b>
+                </div>
+            </div>
+            
+            <div class="tagBox">
+                <div class="fieldsetHeader">
+                    <div class="fieldsetHeaderTitle">les thématiques de la réaction</div>
+                    <i class="iconQuestion" action="toggleHelper"></i>
+                    <div class="helperSlider helperSliderRight" style="display: none;">
+                        <i class="iconArrowUp"></i>
+                        <i class="iconCross" action="hideHelper"></i>
+                        @todo : slider ajouter un tag
+                    </div>
+                </div>
+
+                {{ reactionTagsEdit(reaction, null, 1, true) }}
+            </div>
+
+            <div id="switchEditionMode">
+                <div id="swithEditionIndependentEdition" action="activeComparedEdition" class="swithEdition">Rédaction comparée<span><i class="iconSwitchRight"></i>Rédaction autonome</span></div>
+                <div id="swithEditionComparedEdition" action="activeIndenpendentEdition" class="swithEdition" style="display: none;"><span>Rédaction comparée<i class="iconSwitchLeft"></i></span>Rédaction autonome</div>
+            </div>
+                
+            <div id="postText">
+                <div class="paragraph">
+                    <i class="iconQuestion" action="toggleHelper"></i>
+                    <div class="helperSlider helperSliderLeft" style="display: none;">
+                        <i class="iconArrowUp"></i>
+                        <i class="iconCross" action="hideHelper"></i>
+                        <h4>éditer un champ texte</h4>
+                        {% include 'PolitizrFrontBundle:Navigation\\Helper:_edition.html.twig' %}
+                    </div>
+                    <div class="editable description">
+                        {{ reaction.description | purify }}
+                    </div>
+                </div>
+            </div>
+
+            <div id="originalText" class="withLoaderInside" style="display: none;">
+                <div class="ajaxLoader" style="display: none;"><div class="ajaxLoaderSpinner"></div><div class="ajaxLoaderBg"></div><div class="ajaxLoaderBlockClick"></div></div>
+                <div class="postTitle">
+                    {{ parent.title }}
+                </div>
+                <div class="authorName">
+                    <span>Par</span>
+                    {% include 'PolitizrFrontBundle:User:_authorName.html.twig' with { 'user': parent.user } only %}
+                    {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with { 'user': parent.user } only %}
+                </div>
+                {% for paragraph in paragraphs %}
+                    <div class="paragraph">
+                        <p>{{ paragraph | purify }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+
+            {# hidden form inputs filled by js #}
+            {{ form_row(form.description) }}
+            {{ form_rest(form) }}
+        </form>
+    </div>
+{% endblock main %}
+
+{% block javascriptFooter %}
+    {{ parent() }}
+
+    <script>
+        var nbZones = 1;
+        var xhrRoute = ROUTE_TAG_LISTING;
+        var xhrUrlPrefix = '/xhr';
+    </script>
+
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/smoke.min.js'
+        '@PolitizrFrontBundle/Resources/public/js/medium-editor.min.js'
+        '@PolitizrFrontBundle/Resources/public/js/jquery.form.min.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/tag/editTags.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/document/medium.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/document/edit.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/document/editPhoto.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock javascriptFooter %}

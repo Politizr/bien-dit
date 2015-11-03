@@ -43,17 +43,11 @@ abstract class BasePRBadgeArchivePeer
     /** the column name for the id field */
     const ID = 'p_r_badge_archive.id';
 
-    /** the column name for the p_r_badge_type_id field */
-    const P_R_BADGE_TYPE_ID = 'p_r_badge_archive.p_r_badge_type_id';
-
-    /** the column name for the p_r_badge_metal_id field */
-    const P_R_BADGE_METAL_ID = 'p_r_badge_archive.p_r_badge_metal_id';
+    /** the column name for the p_r_badge_family_id field */
+    const P_R_BADGE_FAMILY_ID = 'p_r_badge_archive.p_r_badge_family_id';
 
     /** the column name for the title field */
     const TITLE = 'p_r_badge_archive.title';
-
-    /** the column name for the description field */
-    const DESCRIPTION = 'p_r_badge_archive.description';
 
     /** the column name for the online field */
     const ONLINE = 'p_r_badge_archive.online';
@@ -63,6 +57,12 @@ abstract class BasePRBadgeArchivePeer
 
     /** the column name for the updated_at field */
     const UPDATED_AT = 'p_r_badge_archive.updated_at';
+
+    /** the column name for the slug field */
+    const SLUG = 'p_r_badge_archive.slug';
+
+    /** the column name for the sortable_rank field */
+    const SORTABLE_RANK = 'p_r_badge_archive.sortable_rank';
 
     /** the column name for the archived_at field */
     const ARCHIVED_AT = 'p_r_badge_archive.archived_at';
@@ -86,11 +86,11 @@ abstract class BasePRBadgeArchivePeer
      * e.g. PRBadgeArchivePeer::$fieldNames[PRBadgeArchivePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'PRBadgeTypeId', 'PRBadgeMetalId', 'Title', 'Description', 'Online', 'CreatedAt', 'UpdatedAt', 'ArchivedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pRBadgeTypeId', 'pRBadgeMetalId', 'title', 'description', 'online', 'createdAt', 'updatedAt', 'archivedAt', ),
-        BasePeer::TYPE_COLNAME => array (PRBadgeArchivePeer::ID, PRBadgeArchivePeer::P_R_BADGE_TYPE_ID, PRBadgeArchivePeer::P_R_BADGE_METAL_ID, PRBadgeArchivePeer::TITLE, PRBadgeArchivePeer::DESCRIPTION, PRBadgeArchivePeer::ONLINE, PRBadgeArchivePeer::CREATED_AT, PRBadgeArchivePeer::UPDATED_AT, PRBadgeArchivePeer::ARCHIVED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_R_BADGE_TYPE_ID', 'P_R_BADGE_METAL_ID', 'TITLE', 'DESCRIPTION', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', 'ARCHIVED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'p_r_badge_type_id', 'p_r_badge_metal_id', 'title', 'description', 'online', 'created_at', 'updated_at', 'archived_at', ),
+        BasePeer::TYPE_PHPNAME => array ('Id', 'PRBadgeFamilyId', 'Title', 'Online', 'CreatedAt', 'UpdatedAt', 'Slug', 'SortableRank', 'ArchivedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pRBadgeFamilyId', 'title', 'online', 'createdAt', 'updatedAt', 'slug', 'sortableRank', 'archivedAt', ),
+        BasePeer::TYPE_COLNAME => array (PRBadgeArchivePeer::ID, PRBadgeArchivePeer::P_R_BADGE_FAMILY_ID, PRBadgeArchivePeer::TITLE, PRBadgeArchivePeer::ONLINE, PRBadgeArchivePeer::CREATED_AT, PRBadgeArchivePeer::UPDATED_AT, PRBadgeArchivePeer::SLUG, PRBadgeArchivePeer::SORTABLE_RANK, PRBadgeArchivePeer::ARCHIVED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_R_BADGE_FAMILY_ID', 'TITLE', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', 'SLUG', 'SORTABLE_RANK', 'ARCHIVED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'p_r_badge_family_id', 'title', 'online', 'created_at', 'updated_at', 'slug', 'sortable_rank', 'archived_at', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
@@ -101,11 +101,11 @@ abstract class BasePRBadgeArchivePeer
      * e.g. PRBadgeArchivePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PRBadgeTypeId' => 1, 'PRBadgeMetalId' => 2, 'Title' => 3, 'Description' => 4, 'Online' => 5, 'CreatedAt' => 6, 'UpdatedAt' => 7, 'ArchivedAt' => 8, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pRBadgeTypeId' => 1, 'pRBadgeMetalId' => 2, 'title' => 3, 'description' => 4, 'online' => 5, 'createdAt' => 6, 'updatedAt' => 7, 'archivedAt' => 8, ),
-        BasePeer::TYPE_COLNAME => array (PRBadgeArchivePeer::ID => 0, PRBadgeArchivePeer::P_R_BADGE_TYPE_ID => 1, PRBadgeArchivePeer::P_R_BADGE_METAL_ID => 2, PRBadgeArchivePeer::TITLE => 3, PRBadgeArchivePeer::DESCRIPTION => 4, PRBadgeArchivePeer::ONLINE => 5, PRBadgeArchivePeer::CREATED_AT => 6, PRBadgeArchivePeer::UPDATED_AT => 7, PRBadgeArchivePeer::ARCHIVED_AT => 8, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_R_BADGE_TYPE_ID' => 1, 'P_R_BADGE_METAL_ID' => 2, 'TITLE' => 3, 'DESCRIPTION' => 4, 'ONLINE' => 5, 'CREATED_AT' => 6, 'UPDATED_AT' => 7, 'ARCHIVED_AT' => 8, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_r_badge_type_id' => 1, 'p_r_badge_metal_id' => 2, 'title' => 3, 'description' => 4, 'online' => 5, 'created_at' => 6, 'updated_at' => 7, 'archived_at' => 8, ),
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PRBadgeFamilyId' => 1, 'Title' => 2, 'Online' => 3, 'CreatedAt' => 4, 'UpdatedAt' => 5, 'Slug' => 6, 'SortableRank' => 7, 'ArchivedAt' => 8, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pRBadgeFamilyId' => 1, 'title' => 2, 'online' => 3, 'createdAt' => 4, 'updatedAt' => 5, 'slug' => 6, 'sortableRank' => 7, 'archivedAt' => 8, ),
+        BasePeer::TYPE_COLNAME => array (PRBadgeArchivePeer::ID => 0, PRBadgeArchivePeer::P_R_BADGE_FAMILY_ID => 1, PRBadgeArchivePeer::TITLE => 2, PRBadgeArchivePeer::ONLINE => 3, PRBadgeArchivePeer::CREATED_AT => 4, PRBadgeArchivePeer::UPDATED_AT => 5, PRBadgeArchivePeer::SLUG => 6, PRBadgeArchivePeer::SORTABLE_RANK => 7, PRBadgeArchivePeer::ARCHIVED_AT => 8, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_R_BADGE_FAMILY_ID' => 1, 'TITLE' => 2, 'ONLINE' => 3, 'CREATED_AT' => 4, 'UPDATED_AT' => 5, 'SLUG' => 6, 'SORTABLE_RANK' => 7, 'ARCHIVED_AT' => 8, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_r_badge_family_id' => 1, 'title' => 2, 'online' => 3, 'created_at' => 4, 'updated_at' => 5, 'slug' => 6, 'sortable_rank' => 7, 'archived_at' => 8, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
@@ -181,23 +181,23 @@ abstract class BasePRBadgeArchivePeer
     {
         if (null === $alias) {
             $criteria->addSelectColumn(PRBadgeArchivePeer::ID);
-            $criteria->addSelectColumn(PRBadgeArchivePeer::P_R_BADGE_TYPE_ID);
-            $criteria->addSelectColumn(PRBadgeArchivePeer::P_R_BADGE_METAL_ID);
+            $criteria->addSelectColumn(PRBadgeArchivePeer::P_R_BADGE_FAMILY_ID);
             $criteria->addSelectColumn(PRBadgeArchivePeer::TITLE);
-            $criteria->addSelectColumn(PRBadgeArchivePeer::DESCRIPTION);
             $criteria->addSelectColumn(PRBadgeArchivePeer::ONLINE);
             $criteria->addSelectColumn(PRBadgeArchivePeer::CREATED_AT);
             $criteria->addSelectColumn(PRBadgeArchivePeer::UPDATED_AT);
+            $criteria->addSelectColumn(PRBadgeArchivePeer::SLUG);
+            $criteria->addSelectColumn(PRBadgeArchivePeer::SORTABLE_RANK);
             $criteria->addSelectColumn(PRBadgeArchivePeer::ARCHIVED_AT);
         } else {
             $criteria->addSelectColumn($alias . '.id');
-            $criteria->addSelectColumn($alias . '.p_r_badge_type_id');
-            $criteria->addSelectColumn($alias . '.p_r_badge_metal_id');
+            $criteria->addSelectColumn($alias . '.p_r_badge_family_id');
             $criteria->addSelectColumn($alias . '.title');
-            $criteria->addSelectColumn($alias . '.description');
             $criteria->addSelectColumn($alias . '.online');
             $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
+            $criteria->addSelectColumn($alias . '.slug');
+            $criteria->addSelectColumn($alias . '.sortable_rank');
             $criteria->addSelectColumn($alias . '.archived_at');
         }
     }

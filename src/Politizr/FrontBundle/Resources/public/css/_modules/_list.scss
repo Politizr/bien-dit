@@ -1,0 +1,169 @@
+@import "../_global/colors";
+
+.listContainer {
+/*
+	width: 960px;
+	margin-left: auto;
+	margin-right: auto;
+	background: blue;
+*/
+	width: 700px;
+	float: right;
+}
+
+// filters
+.listCriteria {
+	float: left;
+	clear: both;
+	width: 220px;
+	padding: 0;
+	margin: 40px 0 0 0;
+	text-align: left;
+	font-family: nerissemibold;
+	font-size: 10px;
+	text-transform: uppercase;
+}
+
+.listCriteria label { 
+	color: $semiDarkGrey; 
+	cursor: pointer;
+	padding-left: 12px;
+	position: relative;
+	clear: both;
+	float: left;
+	margin-bottom: 10px;
+}
+.listCriteria .inlineLabels label {
+	clear: none;
+	margin-right: 20px;
+}
+
+.listCriteria form, .listCriteriaFormSubLevel {
+	width: 100%;
+	float: left;
+	clear: both;
+	margin-bottom: 20px;
+}
+.listCriteria form:last-child, .listCriteriaFormSubLevel:last-child {margin-bottom: 0;}
+
+.listCriteria input {display: none;}
+.listCriteria input:checked + label {	color: $highlight;}
+.listCriteria label:hover { color: $highlight;}
+
+.listCriteria label i {
+	position: absolute;
+	left: 0;
+	font-size: 7px;
+}
+.listCriteria label i.iconCheck {font-size: 8px;}
+
+.listCriteria.listCriteriaTabs {
+	margin: 40px 0 0 0;
+	padding: 15px 0 0 0;
+	border-top: solid 1px #d1d1d1;
+}
+
+.listCriteria.listCriteriaTabs label {
+	float: left;
+	margin: 0 40px 0 0;
+	padding: 0;
+	color: $semiGrey;
+	position: relative;
+	clear: none;
+	font-family: 'nerisblack';
+}
+
+.listCriteria.listCriteriaTabs label:hover, .listCriteria.listCriteriaTabs input:checked+label {
+	border-top: solid 3px $highlight;
+	padding-top: 14px;
+	margin-top: -17px;
+	color: $highlight;
+}
+
+
+// list
+
+.modalList {	
+	padding: 0 0 60px 0;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+	width: 960px;
+	clear: both;
+}
+
+.modalList.withSidebar {
+	width: 700px;
+	clear: none;
+	float: right;
+	padding-top: 80px;
+}
+
+.modalList.withSidebar .modalItem {float: right;}
+
+.modalItem {
+	width: 700px;
+	display: inline-block;
+	text-align: left;
+	margin-bottom: 80px;
+	position: relative;
+}
+
+a.modalItemShow {
+	float: left;
+	margin: 20px 0 0 0;
+	color: $highlight;
+	font-family: nerissemibold;
+	position: relative;
+	padding-left: 17px;
+}
+
+.listPost a.modalItemShow, .listProfile a.modalItemShow {margin-left: 40px;}
+
+a.modalItemShow i {	position: absolute;	left: -2px; }
+a.modalItemShow:hover {color: $darkGrey;}
+
+#modalBoxContent .subscribe {
+	position: absolute;
+	z-index: 4;
+	right: 40px;
+	bottom:0;
+	text-transform: uppercase;
+	color: #fff;
+}
+
+.noSelfSubscribe {
+	display: none;
+}
+
+#modalBoxContent .subscribe .actionFollow, #modalBoxContent .subscribe .actionUnfollow {
+	width: 180px;
+	padding: 20px 0;
+	margin: 0;
+	float: left;
+	text-align: center;
+	color: #fff;
+	-moz-box-shadow: 0px 0px 20px 0px $darkGrey;
+	-webkit-box-shadow: 0px 0px 20px 0px $darkGrey;
+	-o-box-shadow: 0px 0px 20px 0px $darkGrey;
+	box-shadow: 0px 0px 20px 0px $darkGrey;
+}
+#modalBoxContent .subscribe .actionFollow { background-color: $highlight;}
+#modalBoxContent .subscribe .actionFollow:hover { background-color: $darkGrey;}
+
+#modalBoxContent .subscribe .actionUnfollow { background-color: $darkGrey;}
+#modalBoxContent .subscribe .actionUnfollow:hover { background-color: $highlight;}
+
+#modalBoxContent .subscribe i {
+	position: relative;
+	left: auto;
+	font-size: 12px;
+	padding-right: 5px;
+	font-size: 11px;
+	top: -1px;
+}
+
+// manager profile / debate
+
+.profileManager .modalItem .modalItemShow {	margin-left: 0;}
+.profileManager h1, .debateManager h1 { margin-bottom: 60px;}

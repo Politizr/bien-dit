@@ -1,10 +1,47 @@
-<p>
-    Nouvelle notification le {{ notif.createdAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM à HH'h'mm" ) | capitalize }}.
-</p>
-<p>
-    <strong>{{ notif | linkedNotification(true) }}</strong>
-</p>
-<p>
-    <i>Réglez vos paramètres de notifications depuis le menu <a href="{% if (isGrantedE()) %}{{ url('MyNotificationsE') }}{% else %}{{ url('MyNotificationsC') }}{% endif %}">"mes notifications"</a> de votre compte.</i>
-</p>
-{% include 'PolitizrFrontBundle:Email:signature.html.twig' %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>{% include 'PolitizrFrontBundle:Notification:_notificationTitle.html.twig' with { 'notificationId': notif.pNotificationId } %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body bgcolor="#2D2D2D" style="-webkit-text-size-adjust: 80%; margin: 0; font-size: 12px; font-family: Tahoma, Geneva, sans-serif; color: #2D2D2D;">
+        <table width="100%" bgcolor="#2D2D2D" style="border: solid 20px #2D2D2D;" cellpadding="0" cellspacing="0">
+            <tr>
+                <td>
+                    <!-- fix outlook max-width bug -->
+                    <!--[if (gte mso 9)|(IE)]><table width="560" align="center" cellpadding="0" cellspacing="0" border="0"><tr><td><![endif]-->
+                    <table style="width: 100%; max-width: 560px;" align="center" cellpadding="0" cellspacing="0" border="0">
+                        
+                        <!-- header -->
+                        <tr>
+                            <td colspan="2" style="text-align: center; padding: 20px 0 40px 0">
+                                <a href="http://www.politizr.com" target="_blank"><img src="{{ asset('bundles/politizrfront/imagesMail/logoPolitizr.jpg', absolute=true) }}" alt="Rendez-vous sur politizr.com" style="width: 55%"/></a>
+                            </td>
+                        </tr>
+
+                        <!-- date -->
+                        <tr style="background-color: #FFFFFF; font-family: Georgia, Times, serif;">
+                            <td colspan="2" style="padding: 40px; font-size: 13px;">
+                                <i>{{ notif.createdAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM à HH'h'mm" ) | capitalize }}</i>
+                            </td>
+                        </tr>
+
+                        {{ notif | linkedNotification(type = constant('Politizr\\Constant\\NotificationConstants::TYPE_EMAIL')) }}
+                        
+                        <!-- footer -->
+                        <tr>
+                            <td colspan="2" style="text-align: center; padding: 40px 0; color:#9d9d9d; font-size: 10px;">
+                                Vous pouvez régler vos paramètres de notifications depuis <a href="{% if (isGrantedE()) %}{{ url('EditNotificationsE') }}{% else %}{{ url('EditNotificationsC') }}{% endif %}" style="color:#9d9d9d; text-decoration: underline;"><span style="color:#9d9d9d;">votre compte Politizr</span></a>.
+                            </td>
+                        </tr>
+
+                        {% include 'PolitizrFrontBundle:Email:_signature.html.twig' %}
+
+                    </table>
+                    <!--[if (gte mso 9)|(IE)]></td></tr></table><![endif]-->
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>

@@ -4,43 +4,115 @@ namespace Politizr\Model;
 
 use Politizr\Model\om\BasePTag;
 
+use StudioEcho\Lib\StudioEchoUtils;
+
+/**
+ * Tag object model
+ *
+ * @author Lionel Bouzonville
+ */
 class PTag extends BasePTag
 {
     /**
      *
+     * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return $this->getTitle();
     }
 
-     /**
+    /**
      * Override to manage accented characters
      * @return string
      */
     protected function createRawSlug()
     {
-        $toSlug =  \StudioEcho\Lib\StudioEchoUtils::transliterateString($this->getTitle());
+        $toSlug = StudioEchoUtils::transliterateString($this->getTitle());
         $slug = $this->cleanupSlugPart($toSlug);
         return $slug;
     }
     
-
-    /******************************************************************************/
-
+    /* ######################################################################################################## */
+    /*                                                 DEBATES                                                  */
+    /* ######################################################################################################## */
+    
     /**
-     *     Surcharge simplification du nom de la méthode
+     * @see parent::countPDDTaggedTs
      */
-    public function countPUsers(\PropelPDO $con = null, $doQuery = true)
+    public function countDebates($query = null)
     {
-        return parent::countPuTaggedTPTags($con, $doQuery);
+        return parent::countPDDTaggedTs($query);
     }
 
     /**
-     *     Surcharge simplification du nom de la méthode
+     * Debate's tags
      */
-    public function getPUsers(\PropelPDO $con = null, $doQuery = true)
+    public function getDebates($online = null)
     {
-        return parent::getPuTaggedTPTags($con, $doQuery);
+        $debates = PDDebateQuery::create()
+            ->usePDDTaggedTQuery()
+                ->filterByPTagId($this->getId())
+            ->endUse()
+            ->filterIfOnline($online)
+            ->find();
+
+        return $debates;
+    }
+    
+    /* ######################################################################################################## */
+    /*                                                   USERS                                                  */
+    /* ######################################################################################################## */
+    
+    /**
+     * @see parent::countPuTaggedTPTags
+     */
+    public function countTaggedTagUsers($query = null)
+    {
+        return parent::countPuTaggedTPTags($query);
     }
 
+    /**
+     * Tagged tag's users
+     *
+     * @param $online
+     * @return PropelCollection[PUser]
+     */
+    public function getTaggedTagUsers($online = null)
+    {
+        $users = PUserQuery::create()
+            ->usePuTaggedTPUserQuery()
+                ->filterByPTagId($this->getId())
+            ->endUse()
+            ->filterIfOnline($online)
+            ->find();
+
+        return $users;
+    }
+
+    /**
+     * @see parent::countPuTaggedTPTags
+     */
+    public function countFollowedTagUsers($query = null)
+    {
+        return parent::countPuFollowTPUsers($query);
+    }
+
+    /**
+     * Follow tag's users
+     *
+     * @param $online
+     * @return PropelCollection[PUser]
+     */
+    public function getFollowTagUsers($online = null)
+    {
+        $users = PUserQuery::create()
+            ->usePuFollowTPUserQuery()
+                ->filterByPTagId($this->getId())
+            ->endUse()
+            ->filterIfOnline($online)
+            ->find();
+
+        return $users;
+    }
 }

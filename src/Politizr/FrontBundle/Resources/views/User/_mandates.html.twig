@@ -1,0 +1,18 @@
+{% for mandate in mandates %}
+    <div class="mandateItem">
+        <div class="mandatePeriod">
+            {% if (mandate.isCurrent) %}
+                Depuis {{ mandate.beginAt | date('Y') }}
+            {% else %}
+                De {{ mandate.beginAt | date('Y') }} à {{ mandate.endAt | date('Y') }}
+            {% endif %}
+        </div>
+        <div class="mandateDetail">
+            {{ mandate.mandateNaming }}
+            {% if mandate.organization %}
+                <div class="organization" action="modalOrganization" model="PQOrganization" slug="{{ mandate.organization.slug }}">{{ mandate.organization.initials }}</div>
+            {% endif %}
+            <div class="mandateLocalization">{{ mandate.localization | purify  }}</div>
+        </div>
+    </div>
+{% endfor %}

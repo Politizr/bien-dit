@@ -1,0 +1,33 @@
+{% extends 'PolitizrFrontBundle::layoutConnected.html.twig' %}
+
+{% block title %}
+    {{ parent() }} - Mon fil d'actualités
+{% endblock title %}
+
+{% block main %}
+    <div id="timeline">
+        <div id="timelineHeader" class="stickyTimelineHeader" style="display: none">
+            <div class="timelineMore">
+                Abonnez-vous à des <span action="modalSuggestions">débats</span> et des <span action="modalSuggestions">profils</span> et <span action="reloadPage">rechargez</span> votre politizr!
+            </div>
+        </div>
+        <div id="listContent"></div>
+    </div>
+{% endblock main %}
+
+{% block javascriptFooter %}
+    {{ parent() }}
+
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/timeline/timeline.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    <script>
+        // on document ready
+        $(function() {
+            timelineList();
+        });
+    </script>
+{% endblock javascriptFooter %}

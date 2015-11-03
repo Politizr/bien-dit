@@ -4,24 +4,18 @@ namespace Politizr\Model;
 
 use Politizr\Model\om\BasePTTagType;
 
+/**
+ *
+ * @author Lionel Bouzonville
+ */
 class PTTagType extends BasePTTagType
 {
-    // ************************************************************************************ //
-    //                                        CONSTANTES
-    // ************************************************************************************ //
-    const TYPE_GEO = 1;
-    const TYPE_THEME = 2;
-
-    // ************************************************************************************ //
-
     /**
      *
+     * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return $this->getTitle();
-    }
-
-    /*************** ADMIN GENERATOR VIRTUAL FIELDS HACK **************************/
-    public function getBlockTags() {
     }
 }

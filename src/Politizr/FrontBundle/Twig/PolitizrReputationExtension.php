@@ -1,18 +1,21 @@
 <?php
-namespace Politizr\Frontbundle\Twig;
+namespace Politizr\FrontBundle\Twig;
 
 use Politizr\Model\PDocumentQuery;
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
-use Politizr\Model\PDCommentQuery;
+use Politizr\Model\PDDCommentQuery;
+use Politizr\Model\PDRCommentQuery;
 use Politizr\Model\PUserQuery;
 
-use Politizr\Model\PRBadgeMetal;
 use Politizr\Model\PUReputation;
-use Politizr\Model\PDocument;
+use Politizr\Model\PRBadge;
+
+use Politizr\Constant\ObjectTypeConstants;
+use Politizr\Constant\ReputationConstants;
 
 /**
- * Extension Twig / Gestion réputation
+ * User's reputation twig extension
  *
  * @author Lionel Bouzonville
  */
@@ -23,6 +26,7 @@ class PolitizrReputationExtension extends \Twig_Extension
     private $logger;
     private $router;
     private $templating;
+    private $securityTokenStorage;
 
     private $user;
 
@@ -36,9 +40,10 @@ class PolitizrReputationExtension extends \Twig_Extension
         $this->logger = $serviceContainer->get('logger');
         $this->router = $serviceContainer->get('router');
         $this->templating = $serviceContainer->get('templating');
+        $this->securityContext = $serviceContainer->get('security.context');
 
-        // Récupération du user en session
-        $token = $serviceContainer->get('security.context')->getToken();
+        // get connected user
+        $token = $this->securityContext->getToken();
         if ($token && $user = $token->getUser()) {
             $className = 'Politizr\Model\PUser';
             if ($user && $user instanceof $className) {
@@ -56,12 +61,10 @@ class PolitizrReputationExtension extends \Twig_Extension
     /*                                              FONCTIONS ET FILTRES                                        */
     /* ######################################################################################################## */
 
-
     /**
-     *  Renvoie la liste des filtres
-     */
-    /**
-     *  Renvoie la liste des filtres
+     * Filters list
+     *
+     * @return array
      */
     public function getFilters()
     {
@@ -76,18 +79,9 @@ class PolitizrReputationExtension extends \Twig_Extension
                 array($this, 'scoreEvolution'),
                 array('is_safe' => array('html'))
             ),
-        );
-    }
-
-    /**
-     *  Renvoie la liste des fonctions
-     */
-    public function getFunctions()
-    {
-        return array(
-            'badgeMetalTwBootClass'  => new \Twig_Function_Method(
-                $this,
-                'badgeMetalTwBootClass',
+            new \Twig_SimpleFilter(
+                'howToReach',
+                array($this, 'howToReach'),
                 array('is_safe' => array('html'))
             ),
         );
@@ -99,11 +93,10 @@ class PolitizrReputationExtension extends \Twig_Extension
     /* ######################################################################################################## */
 
     /**
-     *  Construit un lien vers le débat / réaction / commentaire sur lequel il y a eu interaction.
+     * Construit un lien vers le débat / réaction / commentaire sur lequel il y a eu interaction.
      *
-     *  @param $reputation          PUReputation
-     *
-     *  @return html
+     * @param PUReputation $reputation
+     * @return html
      */
     public function linkedReputation(PUReputation $reputation)
     {
@@ -114,7 +107,7 @@ class PolitizrReputationExtension extends \Twig_Extension
         $title = 'Action inconnue';
 
         switch ($reputation->getPObjectName()) {
-            case PDocument::TYPE_DEBATE:
+            case ObjectTypeConstants::TYPE_DEBATE:
                 $subject = PDDebateQuery::create()->findPk($reputation->getPObjectId());
                 if ($subject) {
                     $title = $subject->getTitle();
@@ -124,7 +117,7 @@ class PolitizrReputationExtension extends \Twig_Extension
                     $url = '#';
                 }
                 break;
-            case PDocument::TYPE_REACTION:
+            case ObjectTypeConstants::TYPE_REACTION:
                 $subject = PDReactionQuery::create()->findPk($reputation->getPObjectId());
                 if ($subject) {
                     $title = $subject->getTitle();
@@ -134,22 +127,31 @@ class PolitizrReputationExtension extends \Twig_Extension
                     $url = '#';
                 }
                 break;
-            case PDocument::TYPE_COMMENT:
-                $subject = PDCommentQuery::create()->findPk($reputation->getPObjectId());
+            case ObjectTypeConstants::TYPE_DEBATE_COMMENT:
+                $subject = PDDCommentQuery::create()->findPk($reputation->getPObjectId());
+
                 if ($subject) {
                     $title = $subject->getDescription();
-                    $document = PDocumentQuery::create()->findPk($subject->getPDocumentId());
-                    if ($document->getDescendantClass() == PDocument::TYPE_DEBATE) {
-                        $url = $this->router->generate('DebateDetail', array('slug' => $document->getDebate()->getSlug()));
-                    } else {
-                        $url = $this->router->generate('ReactionDetail', array('slug' => $document->getReaction()->getSlug()));
-                    }
+                    $document = $subject->getPDocument();
+                    $url = $this->router->generate('DebateDetail', array('slug' => $document->getSlug()));
                 } else {
                     $title = 'Commentaire supprimé';
                     $url = '#';
                 }
                 break;
-            case PDocument::TYPE_USER:
+            case ObjectTypeConstants::TYPE_REACTION_COMMENT:
+                $subject = PDRCommentQuery::create()->findPk($reputation->getPObjectId());
+
+                if ($subject) {
+                    $title = $subject->getDescription();
+                    $document = $subject->getPDocument();
+                    $url = $this->router->generate('ReactionDetail', array('slug' => $document->getSlug()));
+                } else {
+                    $title = 'Commentaire supprimé';
+                    $url = '#';
+                }
+                break;
+            case ObjectTypeConstants::TYPE_USER:
                 $subject = PUserQuery::create()->findPk($reputation->getPObjectId());
                 if ($subject) {
                     $title = $subject->getFirstname().' '.$subject->getName();
@@ -169,9 +171,9 @@ class PolitizrReputationExtension extends \Twig_Extension
 
     /**
      *  Renvoie l'évolution du score de réputation formatté.
+     * @todo dead code
      *
-     *  @param $reputation          PUReputation
-     *
+     *  @param PUReputation $reputation
      *  @return html
      */
     public function scoreEvolution(PUReputation $reputation)
@@ -197,37 +199,143 @@ class PolitizrReputationExtension extends \Twig_Extension
     }
 
 
+    /**
+     * Return explanation about how to reach a badge
+     *
+     * @param PRBadge $badge
+     * @return html
+     */
+    public function howToReach(PRBadge $badge)
+    {
+        // $this->logger->info('*** howToReach');
+        // $this->logger->info('$badge = '.print_r($badge, true));
+
+        $family = $badge->getPRBadgeFamily();
+
+        switch($badge->getId()) {
+            case ReputationConstants::BADGE_ID_QUERELLE:
+                $html = sprintf($family->getDescription(), ReputationConstants::QUERELLE_NB_REACTIONS);
+                break;
+            case ReputationConstants::BADGE_ID_CONTROVERSE:
+                $html = sprintf($family->getDescription(), ReputationConstants::CONTROVERSE_NB_REACTIONS);
+                break;
+            case ReputationConstants::BADGE_ID_POLEMIQUE:
+                $html = sprintf($family->getDescription(), ReputationConstants::POLEMIQUE_NB_REACTIONS);
+                break;
+            case ReputationConstants::BADGE_ID_REDACTEUR:
+                $html = sprintf($family->getDescription(), ReputationConstants::REDACTEUR_NB_DOCUMENTS, ReputationConstants::REDACTEUR_NB_NOTEPOS);
+                break;
+            case ReputationConstants::BADGE_ID_REDACTEUR:
+                $html = sprintf($family->getDescription(), ReputationConstants::REDACTEUR_NB_DOCUMENTS, ReputationConstants::REDACTEUR_NB_NOTEPOS);
+                break;
+            case ReputationConstants::BADGE_ID_AUTEUR:
+                $html = sprintf($family->getDescription(), ReputationConstants::AUTEUR_NB_DOCUMENTS, ReputationConstants::AUTEUR_NB_NOTEPOS);
+                break;
+            case ReputationConstants::BADGE_ID_ECRIVAIN:
+                $html = sprintf($family->getDescription(), ReputationConstants::ECRIVAIN_NB_DOCUMENTS, ReputationConstants::ECRIVAIN_NB_NOTEPOS);
+                break;
+            case ReputationConstants::BADGE_ID_ECLAIREUR:
+                $html = sprintf($family->getDescription(), ReputationConstants::ECLAIREUR_NB_DEBATES);
+                break;
+            case ReputationConstants::BADGE_ID_AVANT_GARDE:
+                $html = sprintf($family->getDescription(), ReputationConstants::AVANT_GARDE_NB_DEBATES);
+                break;
+            case ReputationConstants::BADGE_ID_GUIDE:
+                $html = sprintf($family->getDescription(), ReputationConstants::GUIDE_NB_DEBATES);
+                break;
+            case ReputationConstants::BADGE_ID_ANNOTATEUR:
+                $html = sprintf($family->getDescription(), ReputationConstants::ANNOTATEUR_NB_COMMENTS);
+                break;
+            case ReputationConstants::BADGE_ID_GLOSSATEUR:
+                $html = sprintf($family->getDescription(), ReputationConstants::GLOSSATEUR_NB_COMMENTS);
+                break;
+            case ReputationConstants::BADGE_ID_COMMENTATEUR:
+                $html = sprintf($family->getDescription(), ReputationConstants::COMMENTATEUR_NB_COMMENTS);
+                break;
+            case ReputationConstants::BADGE_ID_EFFRONTE:
+                $html = sprintf($family->getDescription(), ReputationConstants::EFFRONTE_NOTEPOS);
+                break;
+            case ReputationConstants::BADGE_ID_IMPERTINENT:
+                $html = sprintf($family->getDescription(), ReputationConstants::IMPERTINENT_NOTEPOS);
+                break;
+            case ReputationConstants::BADGE_ID_AUDACIEUX:
+                $html = sprintf($family->getDescription(), ReputationConstants::AUDACIEUX_NOTEPOS);
+                break;
+            case ReputationConstants::BADGE_ID_STUDIEUX:
+                $html = $family->getDescription();
+                break;
+            case ReputationConstants::BADGE_ID_TAGUEUR:
+                $html = sprintf($family->getDescription(), ReputationConstants::TAGUEUR_NB_TAGS);
+                break;
+            case ReputationConstants::BADGE_ID_SURVEILLANT:
+                $html = sprintf($family->getDescription(), ReputationConstants::SURVEILLANT_NB_MODERATIONS);
+                break;
+            case ReputationConstants::BADGE_ID_FOUGUEUX:
+                $html = sprintf($family->getDescription(), ReputationConstants::FOUGUEUX_NB_NOTEPOS);
+                break;
+            case ReputationConstants::BADGE_ID_ENTHOUSIASTE:
+                $html = sprintf($family->getDescription(), ReputationConstants::ENTHOUSIASTE_NB_NOTEPOS);
+                break;
+            case ReputationConstants::BADGE_ID_PASSIONNE:
+                $html = sprintf($family->getDescription(), ReputationConstants::PASSIONNE_NB_NOTEPOS);
+                break;
+            case ReputationConstants::BADGE_ID_PERSIFLEUR:
+                $html = sprintf($family->getDescription(), ReputationConstants::PERSIFLEUR_NB_NOTENEG);
+                break;
+            case ReputationConstants::BADGE_ID_REPROBATEUR:
+                $html = sprintf($family->getDescription(), ReputationConstants::REPROBATEUR_NB_NOTENEG);
+                break;
+            case ReputationConstants::BADGE_ID_CRITIQUE:
+                $html = sprintf($family->getDescription(), ReputationConstants::CRITIQUE_NB_NOTENEG);
+                break;
+            case ReputationConstants::BADGE_ID_ATTENTIF:
+                $html = sprintf($family->getDescription(), ReputationConstants::ATTENTIF_NB_DAYS);
+                break;
+            case ReputationConstants::BADGE_ID_ASSIDU:
+                $html = sprintf($family->getDescription(), ReputationConstants::ASSIDU_NB_DAYS);
+                break;
+            case ReputationConstants::BADGE_ID_FIDELE:
+                $html = sprintf($family->getDescription(), ReputationConstants::FIDELE_NB_DAYS);
+                break;
+            case ReputationConstants::BADGE_ID_SUIVEUR:
+                $html = sprintf($family->getDescription(), ReputationConstants::SUIVEUR_NB_SUBSCRIBES);
+                break;
+            case ReputationConstants::BADGE_ID_DISCIPLE:
+                $html = sprintf($family->getDescription(), ReputationConstants::DISCIPLE_NB_SUBSCRIBES);
+                break;
+            case ReputationConstants::BADGE_ID_INCONDITIONNEL:
+                $html = sprintf($family->getDescription(), ReputationConstants::INCONDITIONNEL_NB_SUBSCRIBES);
+                break;
+            case ReputationConstants::BADGE_ID_IMPORTANT:
+                $html = sprintf($family->getDescription(), ReputationConstants::IMPORTANT_NB_FOLLOWERS);
+                break;
+            case ReputationConstants::BADGE_ID_INFLUENT:
+                $html = sprintf($family->getDescription(), ReputationConstants::INFLUENT_NB_FOLLOWERS);
+                break;
+            case ReputationConstants::BADGE_ID_INCONTOURNABLE:
+                $html = sprintf($family->getDescription(), ReputationConstants::INCONTOURNABLE_NB_FOLLOWERS);
+                break;
+            case ReputationConstants::BADGE_ID_PORTE_VOIX:
+                $html = sprintf($family->getDescription(), ReputationConstants::PORTE_VOIX_NB_SHARE);
+                break;
+            case ReputationConstants::BADGE_ID_FAN:
+                $html = sprintf($family->getDescription(), ReputationConstants::FAN_NB_SHARE);
+                break;
+            case ReputationConstants::BADGE_ID_AMBASSADEUR:
+                $html = sprintf($family->getDescription(), ReputationConstants::AMBASSADEUR_NB_SHARE);
+                break;
+            default:
+                throw new InconsistentDataException(sprintf('Badge ID-%s not recognized', $badge->getId()));
+        }
+
+        return $html;
+    }
 
 
     /* ######################################################################################################## */
     /*                                             FONCTIONS                                                    */
     /* ######################################################################################################## */
 
-
-   /**
-     *  Renvoit une classe de label twitter bootstrap 3 en fonction de l'id BadgeMetal
-     *
-     *  @param $uiser        uiser       PDDebate
-     *  @param $tagTypeId  integer     ID type de tag
-     *
-     *  @return string
-     */
-    public function badgeMetalTwBootClass($badgeMetalId)
-    {
-        $this->logger->info('*** badgeMetalTwBootClass');
-        // $this->logger->info('$badgeMetalId = '.print_r($badgeMetalId, true));
-
-        $twClass = 'label-info';
-        if ($badgeMetalId == PRBadgeMetal::GOLD) {
-            $twClass = 'label-warning';
-        } elseif ($badgeMetalId == PRBadgeMetal::SILVER) {
-            $twClass = 'label-default';
-        } elseif ($badgeMetalId == PRBadgeMetal::BRONZE) {
-            $twClass = 'label-danger';
-        }
-
-        return $twClass;
-    }
 
     public function getName()
     {

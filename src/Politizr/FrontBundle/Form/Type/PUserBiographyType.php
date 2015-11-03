@@ -15,8 +15,8 @@ use Symfony\Component\Validator\Constraints\Url;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * Gestion de la MAJ des données personnelles
- * 
+ * User profile edit
+ *
  * @author Lionel Bouzonville
  */
 class PUserBiographyType extends AbstractType
@@ -28,56 +28,47 @@ class PUserBiographyType extends AbstractType
         $builder->add('qualified', 'hidden');
         $builder->add('p_u_status_id', 'hidden');
 
-        $builder->add('subtitle', 'text', array(  
+        $builder->add('subtitle', 'hidden', array(
             'required' => false,
             'label' => 'Résumé',
-            'attr' =>   array(
-                'size' => 80,
-                'placeholder' => 'Résumé en 1 phrase',
-                ),
-            )
-        );
+        ));
 
         $builder->add('biography', 'hidden', array(
             'required' => false,
-            'label' => 'Biographie', 
-            )
-        );
+            'label' => 'Biographie',
+        ));
         
-        $builder->add('website', 'text', array(  
+        $builder->add('website', 'text', array(
             'required' => false,
-            'label' => 'Site internet', 
+            'label' => 'Site internet',
             'attr' =>   array(
                 'size' => 25,
                 'placeholder' => 'Site web',
                 ),
             'constraints' => new Url(array('message' => 'L\'url n\'a pas un format valide.'))
-            )
-        );
+        ));
 
-        $builder->add('twitter', 'text', array(  
+        $builder->add('twitter', 'text', array(
             'required' => false,
-            'label' => 'Twitter', 
+            'label' => 'Twitter',
             'attr' =>   array(
                 'size' => 25,
                 'placeholder' => 'Twitter',
                 ),
             'constraints' => new Url(array('message' => 'L\'url n\'a pas un format valide.'))
-            )
-        );
+        ));
 
-        $builder->add('facebook', 'text', array(  
+        $builder->add('facebook', 'text', array(
             'required' => false,
-            'label' => 'Facebook', 
+            'label' => 'Facebook',
             'attr' =>   array(
                 'size' => 25,
                 'placeholder' => 'Facebook',
                 ),
             'constraints' => new Url(array('message' => 'L\'url n\'a pas un format valide.'))
-            )
-        );
+        ));
 
-        // $builder->add('phone', 'text', array(  
+        // $builder->add('phone', 'text', array(
         //     'required' => false,
         //     'label' => 'Téléphone',
         //     )
@@ -85,16 +76,16 @@ class PUserBiographyType extends AbstractType
     }
 
     /**
-     * 
+     *
      * @return string
      */
     public function getName()
     {
         return 'user';
-    }    
+    }
     
     /**
-     * 
+     *
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
@@ -102,5 +93,4 @@ class PUserBiographyType extends AbstractType
             'data_class' => 'Politizr\Model\PUser',
         ));
     }
-
 }

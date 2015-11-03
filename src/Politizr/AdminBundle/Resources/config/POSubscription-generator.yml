@@ -27,7 +27,7 @@ params:
 builders:
     list:
         params:
-            title:                              Liste des formules d'abonnement
+            title:                              "Liste des formules abonnement"
             max_per_page:                       50
             sort:                               [ sortable_rank, ASC ]
             display:                            [ title, price, description ]
@@ -46,12 +46,9 @@ builders:
         params: ~
         filename: ~
         filetype: ~
-    filters:
-        params:
-            display:                            [ title, created_at ]
     new:
         params:
-            title:                              "Création d'une formule d'abonnement"
+            title:                              "Création une formule d'abonnement"
             display:
                 "Champs principaux":            [ [ title, price ] ]
                 "Champs complémentaires":       [ [ description ] ]

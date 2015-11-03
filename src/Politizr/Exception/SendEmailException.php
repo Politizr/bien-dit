@@ -2,7 +2,11 @@
 
 namespace Politizr\Exception;
 
-class SendEmailException extends \Exception implements SendEmailExceptionInterface
+/**
+ *
+ * @author Lionel Bouzonville
+ */
+class SendEmailException extends PolitizrException implements SendEmailExceptionInterface
 {
     public function __construct($message = null, \Exception $previous = null, $code = 0)
     {

@@ -43,6 +43,7 @@ class PNotificationTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
+        $this->addForeignKey('p_n_type_id', 'PNTypeId', 'INTEGER', 'p_n_type', 'id', true, null, null);
         $this->addColumn('title', 'Title', 'VARCHAR', false, 250, null);
         $this->addColumn('description', 'Description', 'LONGVARCHAR', false, null, null);
         $this->addColumn('online', 'Online', 'BOOLEAN', false, 1, null);
@@ -56,6 +57,7 @@ class PNotificationTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('PNType', 'Politizr\\Model\\PNType', RelationMap::MANY_TO_ONE, array('p_n_type_id' => 'id', ), 'CASCADE', 'CASCADE');
         $this->addRelation('PUNotificationPNotification', 'Politizr\\Model\\PUNotification', RelationMap::ONE_TO_MANY, array('id' => 'p_notification_id', ), 'CASCADE', 'CASCADE', 'PUNotificationPNotifications');
         $this->addRelation('PUSubscribeEmailPNotification', 'Politizr\\Model\\PUSubscribeEmail', RelationMap::ONE_TO_MANY, array('id' => 'p_notification_id', ), 'CASCADE', 'CASCADE', 'PUSubscribeEmailPNotifications');
         $this->addRelation('PUSubscribeScreenPNotification', 'Politizr\\Model\\PUSubscribeScreen', RelationMap::ONE_TO_MANY, array('id' => 'p_notification_id', ), 'CASCADE', 'CASCADE', 'PUSubscribeScreenPNotifications');

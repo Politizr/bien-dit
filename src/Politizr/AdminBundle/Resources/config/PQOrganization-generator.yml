@@ -1,0 +1,139 @@
+generator:                  admingenerator.generator.propel
+params:
+    model:                  Politizr\Model\PQOrganization
+    namespace_prefix:       Politizr
+    concurrency_lock:       ~
+    bundle_name:            AdminBundle
+    pk_requirement:         ~
+    fields:
+        id:
+            label:          ID
+        p_q_type_id:
+            label:          ID Type
+        p_q_type:
+            label:          Type
+            dbType:         model
+            formType:       model
+            addFormOptions:
+                multiple:   true
+                required:   false
+                class:      Politizr\Model\PQType
+                query:      \Politizr\Model\PQTypeQuery::create()->orderByTitle() 
+        title:
+            label:          Titre
+        initials:
+            label:          Initiales
+        description:
+            label:          Description
+        file_name:
+            label:          Logo
+        url:
+            label:          URL
+        online:
+            label:          En ligne
+        created_at:
+            label:          Création
+        updated_at:
+            label:          Mis à jour
+    object_actions:
+        delete:             ~
+    batch_actions:
+        delete:             ~
+builders:
+    list:
+        params:
+            title:                              Liste des organisations
+            max_per_page:                       50
+            sort:                               [ sortable_rank, ASC ]
+            scopes:
+                group_1: 
+                    "Tous":                     ~
+                    "Partis politiques":
+                        default:                1
+                        filters: 
+                            p_q_type_id:        1
+            display:                            [ file_name, p_q_type_id, initials, title ]
+            filters:                            [ p_q_type, p_q_type_id, initials ]
+            actions:
+                new:                            ~
+            object_actions:
+                edit:                           ~
+                delete:                         ~
+                moveUp:                         ~
+                moveDown:                       ~
+    excel:
+        params: ~
+        filename: ~
+        filetype: ~
+    new:
+        params:
+            title:                              "Création d'une organisation"
+            display:
+                "Champs principaux":            [ [ initials, title ], [ p_q_type ] ]
+            fields:
+                p_q_type:
+                    dbType:                     model
+                    formType:                   model
+                    addFormOptions:
+                        multiple:               false
+                        required:               false
+                        class:                  Politizr\Model\PQType
+                        query:                  \Politizr\Model\PQTypeQuery::create()->orderById()
+            actions:
+              save:                             ~
+              list:                             ~
+    edit:
+        params:
+            title:                              "Edition de l'organisation '{{ PQOrganization.title }}'"
+            tabs:
+                "Contenu":
+                    "Texte":                    [ [ initials, title ] ]
+                    "Plus informations":        [ description, url ]
+                "Attributs":
+                    "Type":                     [ p_q_type ]
+                    "En ligne":                 [ online ]
+                    "Création":                 [ [ created_at, updated_at ] ]
+            fields:
+                p_q_type:
+                    dbType:                     model
+                    formType:                   model
+                    addFormOptions:
+                        multiple:               false
+                        required:               false
+                        class:                  Politizr\Model\PQType
+                        query:                  \Politizr\Model\PQTypeQuery::create()->orderById()
+                description:
+                    grid_class:                 "col-md-12"
+                created_at:
+                    addFormOptions:
+                      widget:                   single_text
+                updated_at:
+                    addFormOptions:
+                      widget:                   single_text
+            actions:
+                save: ~
+                list: ~
+    # show:
+    #     params:
+    #         title:                              "Visualisation de l'action '{{ PQOrganization.title }}'"
+    #         tabs:
+    #             "Contenu":
+    #                 "Texte":                    [ [ title, score_evolution ], [ description ] ]
+    #             "Attributs":
+    #                 "Création":                 [ [ created_at, updated_at ] ]
+    #         fields:
+    #             block_badges:
+    #                 label:                      "Badges"
+    #                 formType:                   hidden
+    #                 dbType:                     VARCHAR
+    #         actions:
+    #           list:                             ~
+    #           delete:                           ~
+    actions:
+        params:
+            object_actions:
+                moveUp:                         ~
+                moveDown:                       ~
+                delete: ~
+            batch_actions:
+                delete: ~

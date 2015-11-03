@@ -1,16 +1,28 @@
 imports:
-    - { resource: config_dev.yml }
+    - { resource: config.yml }
 
 framework:
-    test: ~
+    router:   { resource: "%kernel.root_dir%/config/routing.yml" }
+    profiler: { only_exceptions: false }
+
+    # http://symfony.com/doc/current/reference/configuration/framework.html#session
     session:
-        storage_id: session.storage.mock_file
-    profiler:
-        enabled: false
+        # cookies should only be sent over secure connections.
+        # cookie_secure: true
 
-web_profiler:
-    toolbar: false
-    intercept_redirects: false
+monolog:
+    handlers:
+        main:
+            type:  stream
+            path:  %kernel.logs_dir%/%kernel.environment%.log
+            level: debug
+        firephp:
+            type:  firephp
+            level: info
+#         chromephp:
+#             type:  chromephp
+#             level: info
 
-swiftmailer:
-    disable_delivery: true
+# swiftmailer:
+#     delivery_address: thomas@ecologic-com.com
+#     delivery_address: lionel.bouzonville@gmail.com

@@ -63,9 +63,11 @@ class PTagTableMap extends TableMap
         $this->addRelation('PuTaggedTPTag', 'Politizr\\Model\\PUTaggedT', RelationMap::ONE_TO_MANY, array('id' => 'p_tag_id', ), 'CASCADE', 'CASCADE', 'PuTaggedTPTags');
         $this->addRelation('PuFollowTPTag', 'Politizr\\Model\\PUFollowT', RelationMap::ONE_TO_MANY, array('id' => 'p_tag_id', ), 'CASCADE', 'CASCADE', 'PuFollowTPTags');
         $this->addRelation('PDDTaggedT', 'Politizr\\Model\\PDDTaggedT', RelationMap::ONE_TO_MANY, array('id' => 'p_tag_id', ), 'CASCADE', 'CASCADE', 'PDDTaggedTs');
+        $this->addRelation('PDRTaggedT', 'Politizr\\Model\\PDRTaggedT', RelationMap::ONE_TO_MANY, array('id' => 'p_tag_id', ), 'CASCADE', 'CASCADE', 'PDRTaggedTs');
         $this->addRelation('PuTaggedTPUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PuTaggedTPUsers');
         $this->addRelation('PuFollowTPUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PuFollowTPUsers');
         $this->addRelation('PDDebate', 'Politizr\\Model\\PDDebate', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PDDebates');
+        $this->addRelation('PDReaction', 'Politizr\\Model\\PDReaction', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PDReactions');
     } // buildRelations()
 
     /**
@@ -86,16 +88,6 @@ class PTagTableMap extends TableMap
   'backend' => 'apc',
   'lifetime' => 3600,
 ),
-            'archivable' =>  array (
-  'archive_table' => '',
-  'archive_phpname' => NULL,
-  'archive_class' => '',
-  'log_archived_at' => 'true',
-  'archived_at_column' => 'archived_at',
-  'archive_on_insert' => 'false',
-  'archive_on_update' => 'false',
-  'archive_on_delete' => 'true',
-),
             'sluggable' =>  array (
   'add_cleanup' => 'true',
   'slug_column' => 'slug',
@@ -105,6 +97,16 @@ class PTagTableMap extends TableMap
   'separator' => '-',
   'permanent' => 'false',
   'scope_column' => '',
+),
+            'archivable' =>  array (
+  'archive_table' => '',
+  'archive_phpname' => NULL,
+  'archive_class' => '',
+  'log_archived_at' => 'true',
+  'archived_at_column' => 'archived_at',
+  'archive_on_insert' => 'false',
+  'archive_on_update' => 'false',
+  'archive_on_delete' => 'true',
 ),
             'event' =>  array (
 ),

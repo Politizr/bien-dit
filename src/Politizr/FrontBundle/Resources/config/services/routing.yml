@@ -1,0 +1,4 @@
+services:
+    politizr.routing.xhr:
+        class: Politizr\FrontBundle\Lib\Routing\XhrCreateResponse
+        arguments: [ @service_container ]

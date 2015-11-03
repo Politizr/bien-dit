@@ -1,0 +1,11 @@
+<div class="user">
+    <div class="user-name"><b>{{ user }}</b></div>
+    <hr>
+    <div class="user-qualified">{% if user.qualified %}Qualifié{% else %}Citoyen{% endif %}</div>
+    <div class="user-online">{% if user.online %}En ligne{% else %}Hors ligne{% endif %}</div>
+    <div class="user-createdAt">Créé le {{ user.createdAt | date('d/m/Y H:i') }}</div>
+    <hr>
+    <a href="{{ path('Politizr_AdminBundle_PUser_edit', { 'pk': user.id }) }}">Editer</a>&nbsp;-&nbsp; 
+    <a href="{{ path('Politizr_AdminBundle_PUser_show', { 'pk': user.id }) }}">Consulter</a>
+    <hr>
+</div>

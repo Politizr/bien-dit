@@ -1,11 +1,5 @@
 {% extends_admingenerated "PolitizrAdminBundle:PUserShow:index.html.twig" %}
 
-{# Autocomplete CSS #}
-{% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/ui-lightness/jquery-ui-1.10.4.custom.css') }}">
-{% endblock %}
-
 {# Contenus #}
 {% block show_column_summary %}
     {{ PUser.summary | raw }}
@@ -18,35 +12,41 @@
 
 {# Image #}
 {% block show_column_file_name %}
-    <img src="{{ asset('uploads/users/'~PUser.fileName) | imagine_filter('admin_show_thumb') }}" alt="{{ PUser.fileName }}" />
+    {% if PUser.fileName %}
+        <img src="{{ asset('uploads/users/'~PUser.fileName) | imagine_filter('admin_show_thumb') }}" alt="{{ PUser.fileName }}" />
+    {% endif %}
 {% endblock %}
 
-{# Bloc tags #}
-{% block show_column_block_tags_geo %}
-    {{ adminUserTags(PUser, constant('\\Politizr\\Model\\PTTagType::TYPE_GEO'), 2, 'show') }}
+{# User's tag #}
+{% block show_column_block_tags_public %}
+    {{ adminUserTags(PUser, null, 1, mode='show') }}
+{% endblock %}
+
+{# User's private tags #}
+{% block show_column_block_tags_private %}
+    {{ adminUserPrivateTags(PUser, null, 2, mode='show') }}
 {% endblock %}
 
 {# Blocs badges #}
 {% block show_column_block_badges_debat %}
-    {{ adminUserBadges(PUser, constant('\\Politizr\\Model\\PRBadgeType::TYPE_DEBATE'), 1) }}
+    {{ adminUserBadges(PUser, constant('\\Politizr\\Constant\\ReputationConstants::BADGE_TYPE_DEBATE'), 1) }}
 {% endblock %}
 
 {% block show_column_block_badges_comment %}
-    {{ adminUserBadges(PUser, constant('\\Politizr\\Model\\PRBadgeType::TYPE_COMMENT'), 2) }}
+    {{ adminUserBadges(PUser, constant('\\Politizr\\Constant\\ReputationConstants::BADGE_TYPE_COMMENT'), 2) }}
 {% endblock %}
 
 {% block show_column_block_badges_participation %}
-    {{ adminUserBadges(PUser, constant('\\Politizr\\Model\\PRBadgeType::TYPE_PARTICIPATION'), 3) }}
+    {{ adminUserBadges(PUser, constant('\\Politizr\\Constant\\ReputationConstants::BADGE_TYPE_PARTICIPATION'), 3) }}
 {% endblock %}
 
 {% block show_column_block_badges_moderation %}
-    {{ adminUserBadges(PUser, constant('\\Politizr\\Model\\PRBadgeType::TYPE_MODERATION'), 4) }}
+    {{ adminUserBadges(PUser, constant('\\Politizr\\Constant\\ReputationConstants::BADGE_TYPE_MODERATION'), 4) }}
 {% endblock %}
 
 {% block show_column_block_badges_autre %}
-    {{ adminUserBadges(PUser, constant('\\Politizr\\Model\\PRBadgeType::TYPE_OTHER'), 5) }}
+    {{ adminUserBadges(PUser, constant('\\Politizr\\Constant\\ReputationConstants::BADGE_TYPE_OTHER'), 5) }}
 {% endblock %}
-
 
 {# Bloc débats #}
 {% block show_column_block_debates %}
@@ -59,30 +59,25 @@
 {% endblock %}
 
 
-{# Bloc commentaires documents #}
-{% block show_column_block_comments %}
-    {{ adminUserComments(PUser) }}
+{# Bloc commentaires débats #}
+{% block show_column_block_d_comments %}
+    {{ adminUserDComments(PUser) }}
+{% endblock %}
+
+{# Bloc commentaires réactions #}
+{% block show_column_block_r_comments %}
+    {{ adminUserRComments(PUser) }}
 {% endblock %}
 
 
-{# Bloc followers qualifiés #}
-{% block show_column_block_followers_q %}
-    {{ adminUserFollowersQ(PUser) }}
+{# Bloc followers #}
+{% block show_column_block_followers %}
+    {{ adminUserFollowers(PUser) }}
 {% endblock %}
 
-{# Bloc followers citoyens #}
-{% block show_column_block_followers_c %}
-    {{ adminUserFollowersC(PUser) }}
-{% endblock %}
-
-{# Bloc subscribers qualifiés #}
-{% block show_column_block_subscribers_q %}
-    {{ adminUserSubscribersQ(PUser) }}
-{% endblock %}
-
-{# Bloc subscribers citoyens #}
-{% block show_column_block_subscribers_c %}
-    {{ adminUserSubscribersC(PUser) }}
+{# Bloc subscribers #}
+{% block show_column_block_subscribers %}
+    {{ adminUserSubscribers(PUser) }}
 {% endblock %}
 
 {# Bloc affinités politiques #}
@@ -90,7 +85,22 @@
     {{ adminUserAffinities(PUser) }}
 {% endblock %}
 
-
-{% block generic_actions_script %}
-    {% include 'PolitizrAdminBundle:Fragment:tags.js.twig' with { 'nbZones': 2 } %}
+{# Block front link #}
+{% block show_column_block_front %}
+    {% if PUser.online %}
+        <a href="{{ path('UserDetail', {'slug': PUser.slug}) }}" target="_blank">Consulter</a>
+    {% else %}
+        Hors ligne
+    {% endif %}
 {% endblock %}
+
+
+{% block object_actions_script_container %}
+    <script>
+        var nbZones = 2;
+        var xhrRoute = ADMIN_ROUTE_TAG_LISTING;
+    </script>
+
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/politizr/tag/accentMap.js') }}"></script>    
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/politizr/tag/editTags.js') }}"></script>  
+{% endblock object_actions_script_container %}

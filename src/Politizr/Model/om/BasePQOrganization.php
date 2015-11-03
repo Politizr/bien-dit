@@ -59,6 +59,12 @@ abstract class BasePQOrganization extends BaseObject implements Persistent
     protected $id;
 
     /**
+     * The value for the p_q_type_id field.
+     * @var        int
+     */
+    protected $p_q_type_id;
+
+    /**
      * The value for the title field.
      * @var        string
      */
@@ -117,12 +123,6 @@ abstract class BasePQOrganization extends BaseObject implements Persistent
      * @var        int
      */
     protected $sortable_rank;
-
-    /**
-     * The value for the p_q_type_id field.
-     * @var        int
-     */
-    protected $p_q_type_id;
 
     /**
      * @var        PQType
@@ -235,6 +235,17 @@ abstract class BasePQOrganization extends BaseObject implements Persistent
     public function __construct(){
         parent::__construct();
         EventDispatcherProxy::trigger(array('construct','model.construct'), new ModelEvent($this));
+    }
+
+    /**
+     * Get the [p_q_type_id] column value.
+     *
+     * @return int
+     */
+    public function getPQTypeId()
+    {
+
+        return $this->p_q_type_id;
     }
 
     /**
@@ -406,17 +417,6 @@ abstract class BasePQOrganization extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [p_q_type_id] column value.
-     *
-     * @return int
-     */
-    public function getPQTypeId()
-    {
-
-        return $this->p_q_type_id;
-    }
-
-    /**
      * Set the value of [id] column.
      *
      * @param  int $v new value
@@ -436,6 +436,34 @@ abstract class BasePQOrganization extends BaseObject implements Persistent
 
         return $this;
     } // setId()
+
+    /**
+     * Set the value of [p_q_type_id] column.
+     *
+     * @param  int $v new value
+     * @return PQOrganization The current object (for fluent API support)
+     */
+    public function setPQTypeId($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->p_q_type_id !== $v) {
+            // sortable behavior
+            $this->oldScope = $this->p_q_type_id;
+
+            $this->p_q_type_id = $v;
+            $this->modifiedColumns[] = PQOrganizationPeer::P_Q_TYPE_ID;
+        }
+
+        if ($this->aPQType !== null && $this->aPQType->getId() !== $v) {
+            $this->aPQType = null;
+        }
+
+
+        return $this;
+    } // setPQTypeId()
 
     /**
      * Set the value of [title] column.
@@ -660,34 +688,6 @@ abstract class BasePQOrganization extends BaseObject implements Persistent
     } // setSortableRank()
 
     /**
-     * Set the value of [p_q_type_id] column.
-     *
-     * @param  int $v new value
-     * @return PQOrganization The current object (for fluent API support)
-     */
-    public function setPQTypeId($v)
-    {
-        if ($v !== null && is_numeric($v)) {
-            $v = (int) $v;
-        }
-
-        if ($this->p_q_type_id !== $v) {
-            // sortable behavior
-            $this->oldScope = $this->p_q_type_id;
-
-            $this->p_q_type_id = $v;
-            $this->modifiedColumns[] = PQOrganizationPeer::P_Q_TYPE_ID;
-        }
-
-        if ($this->aPQType !== null && $this->aPQType->getId() !== $v) {
-            $this->aPQType = null;
-        }
-
-
-        return $this;
-    } // setPQTypeId()
-
-    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -720,17 +720,17 @@ abstract class BasePQOrganization extends BaseObject implements Persistent
         try {
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->title = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
-            $this->initials = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-            $this->file_name = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-            $this->description = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-            $this->url = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->online = ($row[$startcol + 6] !== null) ? (boolean) $row[$startcol + 6] : null;
-            $this->created_at = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-            $this->updated_at = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
-            $this->slug = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
-            $this->sortable_rank = ($row[$startcol + 10] !== null) ? (int) $row[$startcol + 10] : null;
-            $this->p_q_type_id = ($row[$startcol + 11] !== null) ? (int) $row[$startcol + 11] : null;
+            $this->p_q_type_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
+            $this->title = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
+            $this->initials = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+            $this->file_name = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->description = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->url = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->online = ($row[$startcol + 7] !== null) ? (boolean) $row[$startcol + 7] : null;
+            $this->created_at = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+            $this->updated_at = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+            $this->slug = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+            $this->sortable_rank = ($row[$startcol + 11] !== null) ? (int) $row[$startcol + 11] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -1137,6 +1137,9 @@ abstract class BasePQOrganization extends BaseObject implements Persistent
         if ($this->isColumnModified(PQOrganizationPeer::ID)) {
             $modifiedColumns[':p' . $index++]  = '`id`';
         }
+        if ($this->isColumnModified(PQOrganizationPeer::P_Q_TYPE_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`p_q_type_id`';
+        }
         if ($this->isColumnModified(PQOrganizationPeer::TITLE)) {
             $modifiedColumns[':p' . $index++]  = '`title`';
         }
@@ -1167,9 +1170,6 @@ abstract class BasePQOrganization extends BaseObject implements Persistent
         if ($this->isColumnModified(PQOrganizationPeer::SORTABLE_RANK)) {
             $modifiedColumns[':p' . $index++]  = '`sortable_rank`';
         }
-        if ($this->isColumnModified(PQOrganizationPeer::P_Q_TYPE_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`p_q_type_id`';
-        }
 
         $sql = sprintf(
             'INSERT INTO `p_q_organization` (%s) VALUES (%s)',
@@ -1183,6 +1183,9 @@ abstract class BasePQOrganization extends BaseObject implements Persistent
                 switch ($columnName) {
                     case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
+                        break;
+                    case '`p_q_type_id`':
+                        $stmt->bindValue($identifier, $this->p_q_type_id, PDO::PARAM_INT);
                         break;
                     case '`title`':
                         $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
@@ -1213,9 +1216,6 @@ abstract class BasePQOrganization extends BaseObject implements Persistent
                         break;
                     case '`sortable_rank`':
                         $stmt->bindValue($identifier, $this->sortable_rank, PDO::PARAM_INT);
-                        break;
-                    case '`p_q_type_id`':
-                        $stmt->bindValue($identifier, $this->p_q_type_id, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -1391,37 +1391,37 @@ abstract class BasePQOrganization extends BaseObject implements Persistent
                 return $this->getId();
                 break;
             case 1:
-                return $this->getTitle();
+                return $this->getPQTypeId();
                 break;
             case 2:
-                return $this->getInitials();
+                return $this->getTitle();
                 break;
             case 3:
-                return $this->getFileName();
+                return $this->getInitials();
                 break;
             case 4:
-                return $this->getDescription();
+                return $this->getFileName();
                 break;
             case 5:
-                return $this->getUrl();
+                return $this->getDescription();
                 break;
             case 6:
-                return $this->getOnline();
+                return $this->getUrl();
                 break;
             case 7:
-                return $this->getCreatedAt();
+                return $this->getOnline();
                 break;
             case 8:
-                return $this->getUpdatedAt();
+                return $this->getCreatedAt();
                 break;
             case 9:
-                return $this->getSlug();
+                return $this->getUpdatedAt();
                 break;
             case 10:
-                return $this->getSortableRank();
+                return $this->getSlug();
                 break;
             case 11:
-                return $this->getPQTypeId();
+                return $this->getSortableRank();
                 break;
             default:
                 return null;
@@ -1453,17 +1453,17 @@ abstract class BasePQOrganization extends BaseObject implements Persistent
         $keys = PQOrganizationPeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getTitle(),
-            $keys[2] => $this->getInitials(),
-            $keys[3] => $this->getFileName(),
-            $keys[4] => $this->getDescription(),
-            $keys[5] => $this->getUrl(),
-            $keys[6] => $this->getOnline(),
-            $keys[7] => $this->getCreatedAt(),
-            $keys[8] => $this->getUpdatedAt(),
-            $keys[9] => $this->getSlug(),
-            $keys[10] => $this->getSortableRank(),
-            $keys[11] => $this->getPQTypeId(),
+            $keys[1] => $this->getPQTypeId(),
+            $keys[2] => $this->getTitle(),
+            $keys[3] => $this->getInitials(),
+            $keys[4] => $this->getFileName(),
+            $keys[5] => $this->getDescription(),
+            $keys[6] => $this->getUrl(),
+            $keys[7] => $this->getOnline(),
+            $keys[8] => $this->getCreatedAt(),
+            $keys[9] => $this->getUpdatedAt(),
+            $keys[10] => $this->getSlug(),
+            $keys[11] => $this->getSortableRank(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1521,37 +1521,37 @@ abstract class BasePQOrganization extends BaseObject implements Persistent
                 $this->setId($value);
                 break;
             case 1:
-                $this->setTitle($value);
+                $this->setPQTypeId($value);
                 break;
             case 2:
-                $this->setInitials($value);
+                $this->setTitle($value);
                 break;
             case 3:
-                $this->setFileName($value);
+                $this->setInitials($value);
                 break;
             case 4:
-                $this->setDescription($value);
+                $this->setFileName($value);
                 break;
             case 5:
-                $this->setUrl($value);
+                $this->setDescription($value);
                 break;
             case 6:
-                $this->setOnline($value);
+                $this->setUrl($value);
                 break;
             case 7:
-                $this->setCreatedAt($value);
+                $this->setOnline($value);
                 break;
             case 8:
-                $this->setUpdatedAt($value);
+                $this->setCreatedAt($value);
                 break;
             case 9:
-                $this->setSlug($value);
+                $this->setUpdatedAt($value);
                 break;
             case 10:
-                $this->setSortableRank($value);
+                $this->setSlug($value);
                 break;
             case 11:
-                $this->setPQTypeId($value);
+                $this->setSortableRank($value);
                 break;
         } // switch()
     }
@@ -1578,17 +1578,17 @@ abstract class BasePQOrganization extends BaseObject implements Persistent
         $keys = PQOrganizationPeer::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setTitle($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setInitials($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setFileName($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setDescription($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setUrl($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setOnline($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setCreatedAt($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setUpdatedAt($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setSlug($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setSortableRank($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setPQTypeId($arr[$keys[11]]);
+        if (array_key_exists($keys[1], $arr)) $this->setPQTypeId($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setTitle($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setInitials($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setFileName($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setDescription($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setUrl($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setOnline($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setCreatedAt($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setUpdatedAt($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setSlug($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setSortableRank($arr[$keys[11]]);
     }
 
     /**
@@ -1601,6 +1601,7 @@ abstract class BasePQOrganization extends BaseObject implements Persistent
         $criteria = new Criteria(PQOrganizationPeer::DATABASE_NAME);
 
         if ($this->isColumnModified(PQOrganizationPeer::ID)) $criteria->add(PQOrganizationPeer::ID, $this->id);
+        if ($this->isColumnModified(PQOrganizationPeer::P_Q_TYPE_ID)) $criteria->add(PQOrganizationPeer::P_Q_TYPE_ID, $this->p_q_type_id);
         if ($this->isColumnModified(PQOrganizationPeer::TITLE)) $criteria->add(PQOrganizationPeer::TITLE, $this->title);
         if ($this->isColumnModified(PQOrganizationPeer::INITIALS)) $criteria->add(PQOrganizationPeer::INITIALS, $this->initials);
         if ($this->isColumnModified(PQOrganizationPeer::FILE_NAME)) $criteria->add(PQOrganizationPeer::FILE_NAME, $this->file_name);
@@ -1611,7 +1612,6 @@ abstract class BasePQOrganization extends BaseObject implements Persistent
         if ($this->isColumnModified(PQOrganizationPeer::UPDATED_AT)) $criteria->add(PQOrganizationPeer::UPDATED_AT, $this->updated_at);
         if ($this->isColumnModified(PQOrganizationPeer::SLUG)) $criteria->add(PQOrganizationPeer::SLUG, $this->slug);
         if ($this->isColumnModified(PQOrganizationPeer::SORTABLE_RANK)) $criteria->add(PQOrganizationPeer::SORTABLE_RANK, $this->sortable_rank);
-        if ($this->isColumnModified(PQOrganizationPeer::P_Q_TYPE_ID)) $criteria->add(PQOrganizationPeer::P_Q_TYPE_ID, $this->p_q_type_id);
 
         return $criteria;
     }
@@ -1675,6 +1675,7 @@ abstract class BasePQOrganization extends BaseObject implements Persistent
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
+        $copyObj->setPQTypeId($this->getPQTypeId());
         $copyObj->setTitle($this->getTitle());
         $copyObj->setInitials($this->getInitials());
         $copyObj->setFileName($this->getFileName());
@@ -1685,7 +1686,6 @@ abstract class BasePQOrganization extends BaseObject implements Persistent
         $copyObj->setUpdatedAt($this->getUpdatedAt());
         $copyObj->setSlug($this->getSlug());
         $copyObj->setSortableRank($this->getSortableRank());
-        $copyObj->setPQTypeId($this->getPQTypeId());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -3016,6 +3016,7 @@ abstract class BasePQOrganization extends BaseObject implements Persistent
     public function clear()
     {
         $this->id = null;
+        $this->p_q_type_id = null;
         $this->title = null;
         $this->initials = null;
         $this->file_name = null;
@@ -3026,7 +3027,6 @@ abstract class BasePQOrganization extends BaseObject implements Persistent
         $this->updated_at = null;
         $this->slug = null;
         $this->sortable_rank = null;
-        $this->p_q_type_id = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;

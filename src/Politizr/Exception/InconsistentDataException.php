@@ -2,7 +2,11 @@
 
 namespace Politizr\Exception;
 
-class InconsistentDataException extends \Exception implements InconsistentDataExceptionInterface
+/**
+ *
+ * @author Lionel Bouzonville
+ */
+class InconsistentDataException extends PolitizrException implements InconsistentDataExceptionInterface
 {
     public function __construct($message = null, \Exception $previous = null, $code = 0)
     {

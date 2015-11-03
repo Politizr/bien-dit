@@ -124,26 +124,43 @@ DROP TABLE IF EXISTS `p_r_badge`;
 CREATE TABLE `p_r_badge`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `p_r_badge_type_id` INTEGER NOT NULL,
-    `p_r_badge_metal_id` INTEGER NOT NULL,
+    `p_r_badge_family_id` INTEGER NOT NULL,
     `title` VARCHAR(150),
-    `description` TEXT,
     `online` TINYINT(1),
     `created_at` DATETIME,
     `updated_at` DATETIME,
     `slug` VARCHAR(255),
+    `sortable_rank` INTEGER,
     PRIMARY KEY (`id`),
     UNIQUE INDEX `p_r_badge_slug` (`slug`(255)),
-    INDEX `p_r_badge_FI_1` (`p_r_badge_type_id`),
-    INDEX `p_r_badge_FI_2` (`p_r_badge_metal_id`),
+    INDEX `p_r_badge_FI_1` (`p_r_badge_family_id`),
     CONSTRAINT `p_r_badge_FK_1`
+        FOREIGN KEY (`p_r_badge_family_id`)
+        REFERENCES `p_r_badge_family` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_r_badge_family
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_r_badge_family`;
+
+CREATE TABLE `p_r_badge_family`
+(
+    `p_r_badge_type_id` INTEGER NOT NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `title` VARCHAR(150),
+    `description` TEXT,
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    `sortable_rank` INTEGER,
+    PRIMARY KEY (`id`),
+    INDEX `p_r_badge_family_FI_1` (`p_r_badge_type_id`),
+    CONSTRAINT `p_r_badge_family_FK_1`
         FOREIGN KEY (`p_r_badge_type_id`)
         REFERENCES `p_r_badge_type` (`id`)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE,
-    CONSTRAINT `p_r_badge_FK_2`
-        FOREIGN KEY (`p_r_badge_metal_id`)
-        REFERENCES `p_r_badge_metal` (`id`)
         ON UPDATE CASCADE
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
@@ -155,23 +172,6 @@ CREATE TABLE `p_r_badge`
 DROP TABLE IF EXISTS `p_r_badge_type`;
 
 CREATE TABLE `p_r_badge_type`
-(
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `title` VARCHAR(150),
-    `description` TEXT,
-    `created_at` DATETIME,
-    `updated_at` DATETIME,
-    `sortable_rank` INTEGER,
-    PRIMARY KEY (`id`)
-) ENGINE=InnoDB;
-
--- ---------------------------------------------------------------------
--- p_r_badge_metal
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `p_r_badge_metal`;
-
-CREATE TABLE `p_r_badge_metal`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `title` VARCHAR(150),
@@ -444,13 +444,14 @@ DROP TABLE IF EXISTS `p_q_mandate`;
 CREATE TABLE `p_q_mandate`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `p_q_type_id` INTEGER NOT NULL,
     `title` VARCHAR(250),
+    `select_title` VARCHAR(250),
     `online` TINYINT(1),
     `created_at` DATETIME,
     `updated_at` DATETIME,
     `slug` VARCHAR(255),
     `sortable_rank` INTEGER,
+    `p_q_type_id` INTEGER,
     PRIMARY KEY (`id`),
     UNIQUE INDEX `p_q_mandate_slug` (`slug`(255)),
     INDEX `p_q_mandate_FI_1` (`p_q_type_id`),
@@ -470,6 +471,7 @@ DROP TABLE IF EXISTS `p_q_organization`;
 CREATE TABLE `p_q_organization`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `p_q_type_id` INTEGER NOT NULL,
     `title` VARCHAR(250),
     `initials` VARCHAR(50),
     `file_name` VARCHAR(150),
@@ -480,7 +482,6 @@ CREATE TABLE `p_q_organization`
     `updated_at` DATETIME,
     `slug` VARCHAR(255),
     `sortable_rank` INTEGER,
-    `p_q_type_id` INTEGER,
     PRIMARY KEY (`id`),
     UNIQUE INDEX `p_q_organization_slug` (`slug`(255)),
     INDEX `p_q_organization_FI_1` (`p_q_type_id`),
@@ -500,9 +501,32 @@ DROP TABLE IF EXISTS `p_notification`;
 CREATE TABLE `p_notification`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `p_n_type_id` INTEGER NOT NULL,
     `title` VARCHAR(250),
     `description` TEXT,
     `online` TINYINT(1),
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    PRIMARY KEY (`id`),
+    INDEX `p_notification_FI_1` (`p_n_type_id`),
+    CONSTRAINT `p_notification_FK_1`
+        FOREIGN KEY (`p_n_type_id`)
+        REFERENCES `p_n_type` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_n_type
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_n_type`;
+
+CREATE TABLE `p_n_type`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `title` VARCHAR(150),
+    `description` TEXT,
     `created_at` DATETIME,
     `updated_at` DATETIME,
     PRIMARY KEY (`id`)
@@ -541,11 +565,12 @@ CREATE TABLE `p_user`
     `p_u_status_id` INTEGER NOT NULL,
     `file_name` VARCHAR(150),
     `back_file_name` VARCHAR(150),
+    `copyright` TEXT,
     `gender` TINYINT,
     `firstname` VARCHAR(150),
     `name` VARCHAR(150),
     `birthday` DATE,
-    `subtitle` VARCHAR(500),
+    `subtitle` TEXT,
     `biography` TEXT,
     `website` VARCHAR(150),
     `twitter` VARCHAR(150),
@@ -977,38 +1002,6 @@ CREATE TABLE `p_u_subscribe_screen`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
--- p_document
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `p_document`;
-
-CREATE TABLE `p_document`
-(
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `p_user_id` INTEGER,
-    `title` VARCHAR(100),
-    `file_name` VARCHAR(150),
-    `summary` TEXT,
-    `description` TEXT,
-    `note_pos` INTEGER DEFAULT 0,
-    `note_neg` INTEGER DEFAULT 0,
-    `nb_views` INTEGER,
-    `published` TINYINT(1),
-    `published_at` DATETIME,
-    `published_by` VARCHAR(300),
-    `favorite` TINYINT(1),
-    `online` TINYINT(1),
-    `descendant_class` VARCHAR(100),
-    PRIMARY KEY (`id`),
-    INDEX `p_document_FI_1` (`p_user_id`),
-    CONSTRAINT `p_document_FK_1`
-        FOREIGN KEY (`p_user_id`)
-        REFERENCES `p_user` (`id`)
-        ON UPDATE CASCADE
-        ON DELETE SET NULL
-) ENGINE=InnoDB;
-
--- ---------------------------------------------------------------------
 -- p_d_debate
 -- ---------------------------------------------------------------------
 
@@ -1016,15 +1009,12 @@ DROP TABLE IF EXISTS `p_d_debate`;
 
 CREATE TABLE `p_d_debate`
 (
-    `created_at` DATETIME,
-    `updated_at` DATETIME,
-    `slug` VARCHAR(255),
-    `id` INTEGER NOT NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
     `p_user_id` INTEGER,
     `title` VARCHAR(100),
     `file_name` VARCHAR(150),
-    `summary` TEXT,
-    `description` TEXT,
+    `copyright` TEXT,
+    `description` LONGTEXT,
     `note_pos` INTEGER DEFAULT 0,
     `note_neg` INTEGER DEFAULT 0,
     `nb_views` INTEGER,
@@ -1033,14 +1023,13 @@ CREATE TABLE `p_d_debate`
     `published_by` VARCHAR(300),
     `favorite` TINYINT(1),
     `online` TINYINT(1),
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    `slug` VARCHAR(255),
     PRIMARY KEY (`id`),
     UNIQUE INDEX `p_d_debate_slug` (`slug`(255)),
-    INDEX `p_d_debate_I_1` (`p_user_id`),
+    INDEX `p_d_debate_FI_1` (`p_user_id`),
     CONSTRAINT `p_d_debate_FK_1`
-        FOREIGN KEY (`id`)
-        REFERENCES `p_document` (`id`)
-        ON DELETE CASCADE,
-    CONSTRAINT `p_d_debate_FK_2`
         FOREIGN KEY (`p_user_id`)
         REFERENCES `p_user` (`id`)
         ON UPDATE CASCADE
@@ -1055,20 +1044,14 @@ DROP TABLE IF EXISTS `p_d_reaction`;
 
 CREATE TABLE `p_d_reaction`
 (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `p_user_id` INTEGER,
     `p_d_debate_id` INTEGER NOT NULL,
     `parent_reaction_id` INTEGER,
-    `created_at` DATETIME,
-    `updated_at` DATETIME,
-    `slug` VARCHAR(255),
-    `tree_left` INTEGER,
-    `tree_right` INTEGER,
-    `tree_level` INTEGER,
-    `id` INTEGER NOT NULL,
-    `p_user_id` INTEGER,
     `title` VARCHAR(100),
     `file_name` VARCHAR(150),
-    `summary` TEXT,
-    `description` TEXT,
+    `copyright` TEXT,
+    `description` LONGTEXT,
     `note_pos` INTEGER DEFAULT 0,
     `note_neg` INTEGER DEFAULT 0,
     `nb_views` INTEGER,
@@ -1077,37 +1060,39 @@ CREATE TABLE `p_d_reaction`
     `published_by` VARCHAR(300),
     `favorite` TINYINT(1),
     `online` TINYINT(1),
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    `slug` VARCHAR(255),
+    `tree_left` INTEGER,
+    `tree_right` INTEGER,
+    `tree_level` INTEGER,
     PRIMARY KEY (`id`),
     UNIQUE INDEX `p_d_reaction_slug` (`slug`(255)),
-    INDEX `p_d_reaction_FI_1` (`p_d_debate_id`),
-    INDEX `p_d_reaction_I_2` (`p_user_id`),
+    INDEX `p_d_reaction_FI_1` (`p_user_id`),
+    INDEX `p_d_reaction_FI_2` (`p_d_debate_id`),
     CONSTRAINT `p_d_reaction_FK_1`
-        FOREIGN KEY (`p_d_debate_id`)
-        REFERENCES `p_d_debate` (`id`)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE,
-    CONSTRAINT `p_d_reaction_FK_2`
-        FOREIGN KEY (`id`)
-        REFERENCES `p_document` (`id`)
-        ON DELETE CASCADE,
-    CONSTRAINT `p_d_reaction_FK_3`
         FOREIGN KEY (`p_user_id`)
         REFERENCES `p_user` (`id`)
         ON UPDATE CASCADE
-        ON DELETE SET NULL
+        ON DELETE SET NULL,
+    CONSTRAINT `p_d_reaction_FK_2`
+        FOREIGN KEY (`p_d_debate_id`)
+        REFERENCES `p_d_debate` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
--- p_d_comment
+-- p_d_d_comment
 -- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `p_d_comment`;
+DROP TABLE IF EXISTS `p_d_d_comment`;
 
-CREATE TABLE `p_d_comment`
+CREATE TABLE `p_d_d_comment`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `p_user_id` INTEGER,
-    `p_document_id` INTEGER NOT NULL,
+    `p_d_debate_id` INTEGER NOT NULL,
     `description` TEXT,
     `paragraph_no` INTEGER,
     `note_pos` INTEGER DEFAULT 0,
@@ -1118,16 +1103,51 @@ CREATE TABLE `p_d_comment`
     `created_at` DATETIME,
     `updated_at` DATETIME,
     PRIMARY KEY (`id`),
-    INDEX `p_d_comment_FI_1` (`p_user_id`),
-    INDEX `p_d_comment_FI_2` (`p_document_id`),
-    CONSTRAINT `p_d_comment_FK_1`
+    INDEX `p_d_d_comment_FI_1` (`p_user_id`),
+    INDEX `p_d_d_comment_FI_2` (`p_d_debate_id`),
+    CONSTRAINT `p_d_d_comment_FK_1`
         FOREIGN KEY (`p_user_id`)
         REFERENCES `p_user` (`id`)
         ON UPDATE CASCADE
         ON DELETE SET NULL,
-    CONSTRAINT `p_d_comment_FK_2`
-        FOREIGN KEY (`p_document_id`)
-        REFERENCES `p_document` (`id`)
+    CONSTRAINT `p_d_d_comment_FK_2`
+        FOREIGN KEY (`p_d_debate_id`)
+        REFERENCES `p_d_debate` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_d_r_comment
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_d_r_comment`;
+
+CREATE TABLE `p_d_r_comment`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `p_user_id` INTEGER,
+    `p_d_reaction_id` INTEGER NOT NULL,
+    `description` TEXT,
+    `paragraph_no` INTEGER,
+    `note_pos` INTEGER DEFAULT 0,
+    `note_neg` INTEGER DEFAULT 0,
+    `published_at` DATETIME,
+    `published_by` VARCHAR(300),
+    `online` TINYINT(1),
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    PRIMARY KEY (`id`),
+    INDEX `p_d_r_comment_FI_1` (`p_user_id`),
+    INDEX `p_d_r_comment_FI_2` (`p_d_reaction_id`),
+    CONSTRAINT `p_d_r_comment_FK_1`
+        FOREIGN KEY (`p_user_id`)
+        REFERENCES `p_user` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE SET NULL,
+    CONSTRAINT `p_d_r_comment_FK_2`
+        FOREIGN KEY (`p_d_reaction_id`)
+        REFERENCES `p_d_reaction` (`id`)
         ON UPDATE CASCADE
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
@@ -1161,6 +1181,49 @@ CREATE TABLE `p_d_d_tagged_t`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- p_m_abuse_reporting
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_m_abuse_reporting`;
+
+CREATE TABLE `p_m_abuse_reporting`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `p_user_id` INTEGER,
+    `p_object_name` VARCHAR(150),
+    `p_object_id` INTEGER,
+    `message` TEXT,
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    PRIMARY KEY (`id`),
+    INDEX `p_m_abuse_reporting_FI_1` (`p_user_id`),
+    CONSTRAINT `p_m_abuse_reporting_FK_1`
+        FOREIGN KEY (`p_user_id`)
+        REFERENCES `p_user` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE SET NULL
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_m_app_exception
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_m_app_exception`;
+
+CREATE TABLE `p_m_app_exception`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `file` VARCHAR(250),
+    `line` INTEGER,
+    `code` INTEGER,
+    `message` VARCHAR(250),
+    `stack_trace` LONGTEXT,
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- p_tag_archive
 -- ---------------------------------------------------------------------
 
@@ -1175,10 +1238,12 @@ CREATE TABLE `p_tag_archive`
     `online` TINYINT(1),
     `created_at` DATETIME,
     `updated_at` DATETIME,
+    `slug` VARCHAR(255),
     `archived_at` DATETIME,
     PRIMARY KEY (`id`),
     INDEX `p_tag_archive_I_1` (`p_t_tag_type_id`),
-    INDEX `p_tag_archive_I_2` (`p_user_id`)
+    INDEX `p_tag_archive_I_2` (`p_user_id`),
+    INDEX `p_tag_archive_I_3` (`slug`(255))
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -1190,17 +1255,55 @@ DROP TABLE IF EXISTS `p_r_badge_archive`;
 CREATE TABLE `p_r_badge_archive`
 (
     `id` INTEGER NOT NULL,
-    `p_r_badge_type_id` INTEGER NOT NULL,
-    `p_r_badge_metal_id` INTEGER NOT NULL,
+    `p_r_badge_family_id` INTEGER NOT NULL,
     `title` VARCHAR(150),
-    `description` TEXT,
     `online` TINYINT(1),
     `created_at` DATETIME,
     `updated_at` DATETIME,
+    `slug` VARCHAR(255),
+    `sortable_rank` INTEGER,
     `archived_at` DATETIME,
     PRIMARY KEY (`id`),
-    INDEX `p_r_badge_archive_I_1` (`p_r_badge_type_id`),
-    INDEX `p_r_badge_archive_I_2` (`p_r_badge_metal_id`)
+    INDEX `p_r_badge_archive_I_1` (`p_r_badge_family_id`),
+    INDEX `p_r_badge_archive_I_2` (`slug`(255))
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_r_badge_family_archive
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_r_badge_family_archive`;
+
+CREATE TABLE `p_r_badge_family_archive`
+(
+    `p_r_badge_type_id` INTEGER NOT NULL,
+    `id` INTEGER NOT NULL,
+    `title` VARCHAR(150),
+    `description` TEXT,
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    `sortable_rank` INTEGER,
+    `archived_at` DATETIME,
+    PRIMARY KEY (`id`),
+    INDEX `p_r_badge_family_archive_I_1` (`p_r_badge_type_id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_r_badge_type_archive
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_r_badge_type_archive`;
+
+CREATE TABLE `p_r_badge_type_archive`
+(
+    `id` INTEGER NOT NULL,
+    `title` VARCHAR(150),
+    `description` TEXT,
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    `sortable_rank` INTEGER,
+    `archived_at` DATETIME,
+    PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -1279,11 +1382,12 @@ CREATE TABLE `p_user_archive`
     `p_u_status_id` INTEGER NOT NULL,
     `file_name` VARCHAR(150),
     `back_file_name` VARCHAR(150),
+    `copyright` TEXT,
     `gender` TINYINT,
     `firstname` VARCHAR(150),
     `name` VARCHAR(150),
     `birthday` DATE,
-    `subtitle` VARCHAR(500),
+    `subtitle` TEXT,
     `biography` TEXT,
     `website` VARCHAR(150),
     `twitter` VARCHAR(150),
@@ -1334,33 +1438,6 @@ CREATE TABLE `p_u_mandate_archive`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
--- p_document_archive
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `p_document_archive`;
-
-CREATE TABLE `p_document_archive`
-(
-    `id` INTEGER NOT NULL,
-    `p_user_id` INTEGER,
-    `title` VARCHAR(100),
-    `file_name` VARCHAR(150),
-    `summary` TEXT,
-    `description` TEXT,
-    `note_pos` INTEGER DEFAULT 0,
-    `note_neg` INTEGER DEFAULT 0,
-    `nb_views` INTEGER,
-    `published` TINYINT(1),
-    `published_at` DATETIME,
-    `published_by` VARCHAR(300),
-    `favorite` TINYINT(1),
-    `online` TINYINT(1),
-    `archived_at` DATETIME,
-    PRIMARY KEY (`id`),
-    INDEX `p_document_archive_I_1` (`p_user_id`)
-) ENGINE=InnoDB;
-
--- ---------------------------------------------------------------------
 -- p_d_debate_archive
 -- ---------------------------------------------------------------------
 
@@ -1368,15 +1445,12 @@ DROP TABLE IF EXISTS `p_d_debate_archive`;
 
 CREATE TABLE `p_d_debate_archive`
 (
-    `created_at` DATETIME,
-    `updated_at` DATETIME,
-    `slug` VARCHAR(255),
     `id` INTEGER NOT NULL,
     `p_user_id` INTEGER,
     `title` VARCHAR(100),
     `file_name` VARCHAR(150),
-    `summary` TEXT,
-    `description` TEXT,
+    `copyright` TEXT,
+    `description` LONGTEXT,
     `note_pos` INTEGER DEFAULT 0,
     `note_neg` INTEGER DEFAULT 0,
     `nb_views` INTEGER,
@@ -1385,6 +1459,9 @@ CREATE TABLE `p_d_debate_archive`
     `published_by` VARCHAR(300),
     `favorite` TINYINT(1),
     `online` TINYINT(1),
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    `slug` VARCHAR(255),
     `archived_at` DATETIME,
     PRIMARY KEY (`id`),
     INDEX `p_d_debate_archive_I_1` (`p_user_id`),
@@ -1399,20 +1476,14 @@ DROP TABLE IF EXISTS `p_d_reaction_archive`;
 
 CREATE TABLE `p_d_reaction_archive`
 (
-    `p_d_debate_id` INTEGER NOT NULL,
-    `parent_reaction_id` INTEGER,
-    `created_at` DATETIME,
-    `updated_at` DATETIME,
-    `slug` VARCHAR(255),
-    `tree_left` INTEGER,
-    `tree_right` INTEGER,
-    `tree_level` INTEGER,
     `id` INTEGER NOT NULL,
     `p_user_id` INTEGER,
+    `p_d_debate_id` INTEGER NOT NULL,
+    `parent_reaction_id` INTEGER,
     `title` VARCHAR(100),
     `file_name` VARCHAR(150),
-    `summary` TEXT,
-    `description` TEXT,
+    `copyright` TEXT,
+    `description` LONGTEXT,
     `note_pos` INTEGER DEFAULT 0,
     `note_neg` INTEGER DEFAULT 0,
     `nb_views` INTEGER,
@@ -1421,24 +1492,30 @@ CREATE TABLE `p_d_reaction_archive`
     `published_by` VARCHAR(300),
     `favorite` TINYINT(1),
     `online` TINYINT(1),
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    `slug` VARCHAR(255),
+    `tree_left` INTEGER,
+    `tree_right` INTEGER,
+    `tree_level` INTEGER,
     `archived_at` DATETIME,
     PRIMARY KEY (`id`),
-    INDEX `p_d_reaction_archive_I_1` (`p_d_debate_id`),
-    INDEX `p_d_reaction_archive_I_2` (`p_user_id`),
+    INDEX `p_d_reaction_archive_I_1` (`p_user_id`),
+    INDEX `p_d_reaction_archive_I_2` (`p_d_debate_id`),
     INDEX `p_d_reaction_archive_I_3` (`slug`(255))
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
--- p_d_comment_archive
+-- p_d_d_comment_archive
 -- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `p_d_comment_archive`;
+DROP TABLE IF EXISTS `p_d_d_comment_archive`;
 
-CREATE TABLE `p_d_comment_archive`
+CREATE TABLE `p_d_d_comment_archive`
 (
     `id` INTEGER NOT NULL,
     `p_user_id` INTEGER,
-    `p_document_id` INTEGER NOT NULL,
+    `p_d_debate_id` INTEGER NOT NULL,
     `description` TEXT,
     `paragraph_no` INTEGER,
     `note_pos` INTEGER DEFAULT 0,
@@ -1450,8 +1527,34 @@ CREATE TABLE `p_d_comment_archive`
     `updated_at` DATETIME,
     `archived_at` DATETIME,
     PRIMARY KEY (`id`),
-    INDEX `p_d_comment_archive_I_1` (`p_user_id`),
-    INDEX `p_d_comment_archive_I_2` (`p_document_id`)
+    INDEX `p_d_d_comment_archive_I_1` (`p_user_id`),
+    INDEX `p_d_d_comment_archive_I_2` (`p_d_debate_id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_d_r_comment_archive
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_d_r_comment_archive`;
+
+CREATE TABLE `p_d_r_comment_archive`
+(
+    `id` INTEGER NOT NULL,
+    `p_user_id` INTEGER,
+    `p_d_reaction_id` INTEGER NOT NULL,
+    `description` TEXT,
+    `paragraph_no` INTEGER,
+    `note_pos` INTEGER DEFAULT 0,
+    `note_neg` INTEGER DEFAULT 0,
+    `published_at` DATETIME,
+    `published_by` VARCHAR(300),
+    `online` TINYINT(1),
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    `archived_at` DATETIME,
+    PRIMARY KEY (`id`),
+    INDEX `p_d_r_comment_archive_I_1` (`p_user_id`),
+    INDEX `p_d_r_comment_archive_I_2` (`p_d_reaction_id`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -1471,6 +1574,26 @@ CREATE TABLE `p_d_d_tagged_t_archive`
     PRIMARY KEY (`id`),
     INDEX `p_d_d_tagged_t_archive_I_1` (`p_d_debate_id`),
     INDEX `p_d_d_tagged_t_archive_I_2` (`p_tag_id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_m_abuse_reporting_archive
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_m_abuse_reporting_archive`;
+
+CREATE TABLE `p_m_abuse_reporting_archive`
+(
+    `id` INTEGER NOT NULL,
+    `p_user_id` INTEGER,
+    `p_object_name` VARCHAR(150),
+    `p_object_id` INTEGER,
+    `message` TEXT,
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    `archived_at` DATETIME,
+    PRIMARY KEY (`id`),
+    INDEX `p_m_abuse_reporting_archive_I_1` (`p_user_id`)
 ) ENGINE=InnoDB;
 
 # This restores the fkey checks, after having unset them earlier

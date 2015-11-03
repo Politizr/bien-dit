@@ -9,7 +9,8 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-use Politizr\Model\PQType;
+use Politizr\Constant\QualificationConstants;
+
 use Politizr\Model\PQOrganizationQuery;
 
 /**
@@ -22,7 +23,7 @@ class PUserAffinitiesType extends AbstractType
     // Permet de filtrer sur le type d'organisation
     private $pqTypeId;
 
-    public function __construct($pqTypeId = PQType::ID_ELECTIF)
+    public function __construct($pqTypeId = QualificationConstants::TYPE_ELECTIV)
     {
         $this->pqTypeId = $pqTypeId;
     }

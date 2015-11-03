@@ -1,0 +1,24 @@
+{% spaceless %}
+    <div class="listCriteria listCriteriaTabs">
+        <form id="listType">
+            <input type="radio" class="type" name="type" id="debateType" value="debate" url="{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
+        'xhrRoute': 'ROUTE_MODAL_SEARCH_DEBATE_BY_TAGS_LIST',
+        'xhrService': 'modal',
+        'xhrMethod': 'searchDebateList',
+        'xhrType': 'RETURN_HTML',
+    } only %}" checked/>
+            <label for="debateType">publications</label>
+            <input type="radio" class="type" name="type" id="userType" value="user" url="{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
+        'xhrRoute': 'ROUTE_MODAL_SEARCH_USER_BY_TAGS_LIST',
+        'xhrService': 'modal',
+        'xhrMethod': 'searchUserList',
+        'xhrType': 'RETURN_HTML',
+    } only %}" />
+            <label for="userType">profils</label>
+        </form>
+    </div>
+    <div class="listCriteria criteriaSidebar">
+        <form id="listOrder">{{ listOrder | raw }}</form>
+        <form id="listFilter">{{ listFilter | raw }}</form>
+    </div> 
+{% endspaceless %}

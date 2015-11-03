@@ -2,6 +2,8 @@
 
 namespace Politizr\FrontBundle\Listener;
 
+use Politizr\Exception\SendEmailException;
+
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
@@ -14,23 +16,31 @@ class EmailListener
 
     protected $mailer;
     protected $templating;
+    protected $monitoringManager;
     protected $logger;
 
     protected $contactEmail;
-    protected $noreplyEmail;
+    protected $supportEmail;
 
 
     /**
      *
+     * @param @mailer $mailer
+     * @param @templating
+     * @param @politizr.manager.monitoring
+     * @param @logger
+     * @param string $contactEmail
+     * @param string $supportEmail
      */
-    public function __construct($mailer, $templating, $logger, $contactEmail, $noreplyEmail)
+    public function __construct($mailer, $templating, $monitoringManager, $logger, $contactEmail, $supportEmail)
     {
         $this->mailer = $mailer;
         $this->templating = $templating;
+        $this->monitoringManager = $monitoringManager;
         $this->logger = $logger;
 
         $this->contactEmail = $contactEmail;
-        $this->noreplyEmail = $noreplyEmail;
+        $this->supportEmail = $supportEmail;
     }
 
     /**
@@ -60,13 +70,14 @@ class EmailListener
             );
 
             $message = \Swift_Message::newInstance()
-                    ->setSubject('Politizr - Réinitialisation du mot de passe')
-                    ->setFrom(array($this->noreplyEmail => 'Politizr'))
+                    ->setSubject('[ Politizr ] Réinitialisation du mot de passe')
+                    ->setFrom(array($this->supportEmail => 'Support@Politizr'))
                     ->setTo($user->getEmail())
                     // ->setBcc(array('lionel@politizr.com'))
                     ->setBody($htmlBody, 'text/html', 'utf-8')
                     ->addPart($txtBody, 'text/plain', 'utf-8')
             ;
+            $message->getHeaders()->addTextHeader('X-CMail-GroupName', 'Lost password');
 
             // Envoi email
             $failedRecipients = array();
@@ -81,7 +92,7 @@ class EmailListener
                 $this->logger->err('Exception - message = '.$e->getMessage());
             }
             
-            throw $e;
+            throw new SendEmailException($e->getMessage(), $e);
         }
     }
 
@@ -112,13 +123,14 @@ class EmailListener
             );
 
             $message = \Swift_Message::newInstance()
-                    ->setSubject('Politizr - Mise à jour de sécurité')
-                    ->setFrom(array($this->noreplyEmail => 'Politizr'))
+                    ->setSubject('[ Politizr ] Mise à jour de sécurité')
+                    ->setFrom(array($this->supportEmail => 'Support@Politizr'))
                     ->setTo($user->getEmail())
                     // ->setBcc(array('lionel@politizr.com'))
                     ->setBody($htmlBody, 'text/html', 'utf-8')
                     ->addPart($txtBody, 'text/plain', 'utf-8')
             ;
+            $message->getHeaders()->addTextHeader('X-CMail-GroupName', 'Update password');
 
             // Envoi email
             $failedRecipients = array();
@@ -133,7 +145,7 @@ class EmailListener
                 $this->logger->err('Exception - message = '.$e->getMessage());
             }
             
-            throw $e;
+            throw new SendEmailException($e->getMessage(), $e);
         }
     }
 
@@ -157,20 +169,21 @@ class EmailListener
                 )
             );
             $txtBody = $this->templating->render(
-                'PolitizrFrontBundle:Email:notification.html.twig',
+                'PolitizrFrontBundle:Email:notification.txt.twig',
                 array(
                     'notif' => $puNotifications,
                 )
             );
 
             $message = \Swift_Message::newInstance()
-                    ->setSubject('Vous avez une notification!')
-                    ->setFrom(array($this->noreplyEmail => 'Politizr'))
+                    ->setSubject('[ Politizr ] Nouvelle notification')
+                    ->setFrom(array($this->supportEmail => 'Support@Politizr'))
                     ->setTo($userEmail)
                     // ->setBcc(array('lionel@politizr.com'))
                     ->setBody($htmlBody, 'text/html', 'utf-8')
                     ->addPart($txtBody, 'text/plain', 'utf-8')
             ;
+            $message->getHeaders()->addTextHeader('X-CMail-GroupName', 'Notification');
 
             // Envoi email
             $failedRecipients = array();
@@ -181,11 +194,8 @@ class EmailListener
                 throw new \Exception('email non envoyé - code retour = '.$send.' - adresse(s) en échec = '.print_r($failedRecipients, true));
             }
         } catch (\Exception $e) {
-            if (null !== $this->logger) {
-                $this->logger->err('Exception - message = '.$e->getMessage());
-            }
-            
-            throw $e;
+            $this->logger->err('Exception - message = '.$e->getMessage());
+            $pmAppException = $this->monitoringManager->createAppException($e);
         }
     }
 }

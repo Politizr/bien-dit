@@ -2,6 +2,7 @@
 
 namespace Politizr\Model\om;
 
+use \BaseObject;
 use \BasePeer;
 use \Criteria;
 use \DateTime;
@@ -16,6 +17,8 @@ use \PropelObjectCollection;
 use \PropelPDO;
 use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
 use Glorpen\Propel\PropelBundle\Events\ModelEvent;
+use Politizr\Model\PDDComment;
+use Politizr\Model\PDDCommentQuery;
 use Politizr\Model\PDDTaggedT;
 use Politizr\Model\PDDTaggedTQuery;
 use Politizr\Model\PDDebate;
@@ -25,8 +28,6 @@ use Politizr\Model\PDDebatePeer;
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReaction;
 use Politizr\Model\PDReactionQuery;
-use Politizr\Model\PDocument;
-use Politizr\Model\PDocumentQuery;
 use Politizr\Model\PTag;
 use Politizr\Model\PTagQuery;
 use Politizr\Model\PUFollowDD;
@@ -34,7 +35,7 @@ use Politizr\Model\PUFollowDDQuery;
 use Politizr\Model\PUser;
 use Politizr\Model\PUserQuery;
 
-abstract class BasePDDebate extends PDocument implements Persistent
+abstract class BasePDDebate extends BaseObject implements Persistent
 {
     /**
      * Peer class name
@@ -54,24 +55,6 @@ abstract class BasePDDebate extends PDocument implements Persistent
      * @var       boolean
      */
     protected $startCopy = false;
-
-    /**
-     * The value for the created_at field.
-     * @var        string
-     */
-    protected $created_at;
-
-    /**
-     * The value for the updated_at field.
-     * @var        string
-     */
-    protected $updated_at;
-
-    /**
-     * The value for the slug field.
-     * @var        string
-     */
-    protected $slug;
 
     /**
      * The value for the id field.
@@ -98,10 +81,10 @@ abstract class BasePDDebate extends PDocument implements Persistent
     protected $file_name;
 
     /**
-     * The value for the summary field.
+     * The value for the copyright field.
      * @var        string
      */
-    protected $summary;
+    protected $copyright;
 
     /**
      * The value for the description field.
@@ -160,9 +143,22 @@ abstract class BasePDDebate extends PDocument implements Persistent
     protected $online;
 
     /**
-     * @var        PDocument
+     * The value for the created_at field.
+     * @var        string
      */
-    protected $aPDocument;
+    protected $created_at;
+
+    /**
+     * The value for the updated_at field.
+     * @var        string
+     */
+    protected $updated_at;
+
+    /**
+     * The value for the slug field.
+     * @var        string
+     */
+    protected $slug;
 
     /**
      * @var        PUser
@@ -180,6 +176,12 @@ abstract class BasePDDebate extends PDocument implements Persistent
      */
     protected $collPDReactions;
     protected $collPDReactionsPartial;
+
+    /**
+     * @var        PropelObjectCollection|PDDComment[] Collection to store aggregation of PDDComment objects.
+     */
+    protected $collPDDComments;
+    protected $collPDDCommentsPartial;
 
     /**
      * @var        PropelObjectCollection|PDDTaggedT[] Collection to store aggregation of PDDTaggedT objects.
@@ -248,6 +250,12 @@ abstract class BasePDDebate extends PDocument implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
+    protected $pDDCommentsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
     protected $pDDTaggedTsScheduledForDeletion = null;
 
     /**
@@ -271,97 +279,6 @@ abstract class BasePDDebate extends PDocument implements Persistent
         parent::__construct();
         $this->applyDefaultValues();
         EventDispatcherProxy::trigger(array('construct','model.construct'), new ModelEvent($this));
-    }
-
-    /**
-     * Get the [optionally formatted] temporal [created_at] column value.
-     *
-     *
-     * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *				 If format is null, then the raw DateTime object will be returned.
-     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
-     * @throws PropelException - if unable to parse/validate the date/time value.
-     */
-    public function getCreatedAt($format = null)
-    {
-        if ($this->created_at === null) {
-            return null;
-        }
-
-        if ($this->created_at === '0000-00-00 00:00:00') {
-            // while technically this is not a default value of null,
-            // this seems to be closest in meaning.
-            return null;
-        }
-
-        try {
-            $dt = new DateTime($this->created_at);
-        } catch (Exception $x) {
-            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->created_at, true), $x);
-        }
-
-        if ($format === null) {
-            // Because propel.useDateTimeClass is true, we return a DateTime object.
-            return $dt;
-        }
-
-        if (strpos($format, '%') !== false) {
-            return strftime($format, $dt->format('U'));
-        }
-
-        return $dt->format($format);
-
-    }
-
-    /**
-     * Get the [optionally formatted] temporal [updated_at] column value.
-     *
-     *
-     * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *				 If format is null, then the raw DateTime object will be returned.
-     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
-     * @throws PropelException - if unable to parse/validate the date/time value.
-     */
-    public function getUpdatedAt($format = null)
-    {
-        if ($this->updated_at === null) {
-            return null;
-        }
-
-        if ($this->updated_at === '0000-00-00 00:00:00') {
-            // while technically this is not a default value of null,
-            // this seems to be closest in meaning.
-            return null;
-        }
-
-        try {
-            $dt = new DateTime($this->updated_at);
-        } catch (Exception $x) {
-            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->updated_at, true), $x);
-        }
-
-        if ($format === null) {
-            // Because propel.useDateTimeClass is true, we return a DateTime object.
-            return $dt;
-        }
-
-        if (strpos($format, '%') !== false) {
-            return strftime($format, $dt->format('U'));
-        }
-
-        return $dt->format($format);
-
-    }
-
-    /**
-     * Get the [slug] column value.
-     *
-     * @return string
-     */
-    public function getSlug()
-    {
-
-        return $this->slug;
     }
 
     /**
@@ -409,14 +326,14 @@ abstract class BasePDDebate extends PDocument implements Persistent
     }
 
     /**
-     * Get the [summary] column value.
+     * Get the [copyright] column value.
      *
      * @return string
      */
-    public function getSummary()
+    public function getCopyright()
     {
 
-        return $this->summary;
+        return $this->copyright;
     }
 
     /**
@@ -548,71 +465,95 @@ abstract class BasePDDebate extends PDocument implements Persistent
     }
 
     /**
-     * Sets the value of [created_at] column to a normalized version of the date/time value specified.
+     * Get the [optionally formatted] temporal [created_at] column value.
      *
-     * @param mixed $v string, integer (timestamp), or DateTime value.
-     *               Empty strings are treated as null.
-     * @return PDDebate The current object (for fluent API support)
-     */
-    public function setCreatedAt($v)
-    {
-        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->created_at !== null || $dt !== null) {
-            $currentDateAsString = ($this->created_at !== null && $tmpDt = new DateTime($this->created_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
-            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
-            if ($currentDateAsString !== $newDateAsString) {
-                $this->created_at = $newDateAsString;
-                $this->modifiedColumns[] = PDDebatePeer::CREATED_AT;
-            }
-        } // if either are not null
-
-
-        return $this;
-    } // setCreatedAt()
-
-    /**
-     * Sets the value of [updated_at] column to a normalized version of the date/time value specified.
      *
-     * @param mixed $v string, integer (timestamp), or DateTime value.
-     *               Empty strings are treated as null.
-     * @return PDDebate The current object (for fluent API support)
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
+     * @throws PropelException - if unable to parse/validate the date/time value.
      */
-    public function setUpdatedAt($v)
+    public function getCreatedAt($format = null)
     {
-        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->updated_at !== null || $dt !== null) {
-            $currentDateAsString = ($this->updated_at !== null && $tmpDt = new DateTime($this->updated_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
-            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
-            if ($currentDateAsString !== $newDateAsString) {
-                $this->updated_at = $newDateAsString;
-                $this->modifiedColumns[] = PDDebatePeer::UPDATED_AT;
-            }
-        } // if either are not null
-
-
-        return $this;
-    } // setUpdatedAt()
-
-    /**
-     * Set the value of [slug] column.
-     *
-     * @param  string $v new value
-     * @return PDDebate The current object (for fluent API support)
-     */
-    public function setSlug($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
+        if ($this->created_at === null) {
+            return null;
         }
 
-        if ($this->slug !== $v) {
-            $this->slug = $v;
-            $this->modifiedColumns[] = PDDebatePeer::SLUG;
+        if ($this->created_at === '0000-00-00 00:00:00') {
+            // while technically this is not a default value of null,
+            // this seems to be closest in meaning.
+            return null;
         }
 
+        try {
+            $dt = new DateTime($this->created_at);
+        } catch (Exception $x) {
+            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->created_at, true), $x);
+        }
 
-        return $this;
-    } // setSlug()
+        if ($format === null) {
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
+            return $dt;
+        }
+
+        if (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        }
+
+        return $dt->format($format);
+
+    }
+
+    /**
+     * Get the [optionally formatted] temporal [updated_at] column value.
+     *
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getUpdatedAt($format = null)
+    {
+        if ($this->updated_at === null) {
+            return null;
+        }
+
+        if ($this->updated_at === '0000-00-00 00:00:00') {
+            // while technically this is not a default value of null,
+            // this seems to be closest in meaning.
+            return null;
+        }
+
+        try {
+            $dt = new DateTime($this->updated_at);
+        } catch (Exception $x) {
+            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->updated_at, true), $x);
+        }
+
+        if ($format === null) {
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
+            return $dt;
+        }
+
+        if (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        }
+
+        return $dt->format($format);
+
+    }
+
+    /**
+     * Get the [slug] column value.
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+
+        return $this->slug;
+    }
 
     /**
      * Set the value of [id] column.
@@ -629,10 +570,6 @@ abstract class BasePDDebate extends PDocument implements Persistent
         if ($this->id !== $v) {
             $this->id = $v;
             $this->modifiedColumns[] = PDDebatePeer::ID;
-        }
-
-        if ($this->aPDocument !== null && $this->aPDocument->getId() !== $v) {
-            $this->aPDocument = null;
         }
 
 
@@ -707,25 +644,25 @@ abstract class BasePDDebate extends PDocument implements Persistent
     } // setFileName()
 
     /**
-     * Set the value of [summary] column.
+     * Set the value of [copyright] column.
      *
      * @param  string $v new value
      * @return PDDebate The current object (for fluent API support)
      */
-    public function setSummary($v)
+    public function setCopyright($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->summary !== $v) {
-            $this->summary = $v;
-            $this->modifiedColumns[] = PDDebatePeer::SUMMARY;
+        if ($this->copyright !== $v) {
+            $this->copyright = $v;
+            $this->modifiedColumns[] = PDDebatePeer::COPYRIGHT;
         }
 
 
         return $this;
-    } // setSummary()
+    } // setCopyright()
 
     /**
      * Set the value of [description] column.
@@ -943,6 +880,73 @@ abstract class BasePDDebate extends PDocument implements Persistent
     } // setOnline()
 
     /**
+     * Sets the value of [created_at] column to a normalized version of the date/time value specified.
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function setCreatedAt($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->created_at !== null || $dt !== null) {
+            $currentDateAsString = ($this->created_at !== null && $tmpDt = new DateTime($this->created_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->created_at = $newDateAsString;
+                $this->modifiedColumns[] = PDDebatePeer::CREATED_AT;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setCreatedAt()
+
+    /**
+     * Sets the value of [updated_at] column to a normalized version of the date/time value specified.
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function setUpdatedAt($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->updated_at !== null || $dt !== null) {
+            $currentDateAsString = ($this->updated_at !== null && $tmpDt = new DateTime($this->updated_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->updated_at = $newDateAsString;
+                $this->modifiedColumns[] = PDDebatePeer::UPDATED_AT;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setUpdatedAt()
+
+    /**
+     * Set the value of [slug] column.
+     *
+     * @param  string $v new value
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function setSlug($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->slug !== $v) {
+            $this->slug = $v;
+            $this->modifiedColumns[] = PDDebatePeer::SLUG;
+        }
+
+
+        return $this;
+    } // setSlug()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -982,23 +986,23 @@ abstract class BasePDDebate extends PDocument implements Persistent
     {
         try {
 
-            $this->created_at = ($row[$startcol + 0] !== null) ? (string) $row[$startcol + 0] : null;
-            $this->updated_at = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
-            $this->slug = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-            $this->id = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
-            $this->p_user_id = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
-            $this->title = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->file_name = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
-            $this->summary = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-            $this->description = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
-            $this->note_pos = ($row[$startcol + 9] !== null) ? (int) $row[$startcol + 9] : null;
-            $this->note_neg = ($row[$startcol + 10] !== null) ? (int) $row[$startcol + 10] : null;
-            $this->nb_views = ($row[$startcol + 11] !== null) ? (int) $row[$startcol + 11] : null;
-            $this->published = ($row[$startcol + 12] !== null) ? (boolean) $row[$startcol + 12] : null;
-            $this->published_at = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
-            $this->published_by = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
-            $this->favorite = ($row[$startcol + 15] !== null) ? (boolean) $row[$startcol + 15] : null;
-            $this->online = ($row[$startcol + 16] !== null) ? (boolean) $row[$startcol + 16] : null;
+            $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
+            $this->p_user_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
+            $this->title = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
+            $this->file_name = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+            $this->copyright = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->description = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->note_pos = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
+            $this->note_neg = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
+            $this->nb_views = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
+            $this->published = ($row[$startcol + 9] !== null) ? (boolean) $row[$startcol + 9] : null;
+            $this->published_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+            $this->published_by = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+            $this->favorite = ($row[$startcol + 12] !== null) ? (boolean) $row[$startcol + 12] : null;
+            $this->online = ($row[$startcol + 13] !== null) ? (boolean) $row[$startcol + 13] : null;
+            $this->created_at = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
+            $this->updated_at = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
+            $this->slug = ($row[$startcol + 16] !== null) ? (string) $row[$startcol + 16] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -1031,9 +1035,6 @@ abstract class BasePDDebate extends PDocument implements Persistent
     public function ensureConsistency()
     {
 
-        if ($this->aPDocument !== null && $this->id !== $this->aPDocument->getId()) {
-            $this->aPDocument = null;
-        }
         if ($this->aPUser !== null && $this->p_user_id !== $this->aPUser->getId()) {
             $this->aPUser = null;
         }
@@ -1076,11 +1077,12 @@ abstract class BasePDDebate extends PDocument implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->aPDocument = null;
             $this->aPUser = null;
             $this->collPuFollowDdPDDebates = null;
 
             $this->collPDReactions = null;
+
+            $this->collPDDComments = null;
 
             $this->collPDDTaggedTs = null;
 
@@ -1128,9 +1130,6 @@ abstract class BasePDDebate extends PDocument implements Persistent
             if ($ret) {
                 $deleteQuery->delete($con);
                 $this->postDelete($con);
-                // concrete_inheritance behavior
-                $this->getParentOrCreate($con)->delete($con);
-
                 // event behavior
                 EventDispatcherProxy::trigger(array('delete.post', 'model.delete.post'), new ModelEvent($this));
                 $con->commit();
@@ -1181,11 +1180,6 @@ abstract class BasePDDebate extends PDocument implements Persistent
             } elseif (!$this->getSlug()) {
                 $this->setSlug($this->createSlug());
             }
-            // concrete_inheritance behavior
-            $parent = $this->getSyncParent($con);
-            $parent->save($con);
-            $this->setPrimaryKey($parent->getPrimaryKey());
-
             // event behavior
             EventDispatcherProxy::trigger('model.save.pre', new ModelEvent($this));
             if ($isInsert) {
@@ -1256,13 +1250,6 @@ abstract class BasePDDebate extends PDocument implements Persistent
             // were passed to this object by their corresponding set
             // method.  This object relates to these object(s) by a
             // foreign key reference.
-
-            if ($this->aPDocument !== null) {
-                if ($this->aPDocument->isModified() || $this->aPDocument->isNew()) {
-                    $affectedRows += $this->aPDocument->save($con);
-                }
-                $this->setPDocument($this->aPDocument);
-            }
 
             if ($this->aPUser !== null) {
                 if ($this->aPUser->isModified() || $this->aPUser->isNew()) {
@@ -1368,6 +1355,23 @@ abstract class BasePDDebate extends PDocument implements Persistent
                 }
             }
 
+            if ($this->pDDCommentsScheduledForDeletion !== null) {
+                if (!$this->pDDCommentsScheduledForDeletion->isEmpty()) {
+                    PDDCommentQuery::create()
+                        ->filterByPrimaryKeys($this->pDDCommentsScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->pDDCommentsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPDDComments !== null) {
+                foreach ($this->collPDDComments as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
             if ($this->pDDTaggedTsScheduledForDeletion !== null) {
                 if (!$this->pDDTaggedTsScheduledForDeletion->isEmpty()) {
                     PDDTaggedTQuery::create()
@@ -1405,17 +1409,12 @@ abstract class BasePDDebate extends PDocument implements Persistent
         $modifiedColumns = array();
         $index = 0;
 
+        $this->modifiedColumns[] = PDDebatePeer::ID;
+        if (null !== $this->id) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . PDDebatePeer::ID . ')');
+        }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(PDDebatePeer::CREATED_AT)) {
-            $modifiedColumns[':p' . $index++]  = '`created_at`';
-        }
-        if ($this->isColumnModified(PDDebatePeer::UPDATED_AT)) {
-            $modifiedColumns[':p' . $index++]  = '`updated_at`';
-        }
-        if ($this->isColumnModified(PDDebatePeer::SLUG)) {
-            $modifiedColumns[':p' . $index++]  = '`slug`';
-        }
         if ($this->isColumnModified(PDDebatePeer::ID)) {
             $modifiedColumns[':p' . $index++]  = '`id`';
         }
@@ -1428,8 +1427,8 @@ abstract class BasePDDebate extends PDocument implements Persistent
         if ($this->isColumnModified(PDDebatePeer::FILE_NAME)) {
             $modifiedColumns[':p' . $index++]  = '`file_name`';
         }
-        if ($this->isColumnModified(PDDebatePeer::SUMMARY)) {
-            $modifiedColumns[':p' . $index++]  = '`summary`';
+        if ($this->isColumnModified(PDDebatePeer::COPYRIGHT)) {
+            $modifiedColumns[':p' . $index++]  = '`copyright`';
         }
         if ($this->isColumnModified(PDDebatePeer::DESCRIPTION)) {
             $modifiedColumns[':p' . $index++]  = '`description`';
@@ -1458,6 +1457,15 @@ abstract class BasePDDebate extends PDocument implements Persistent
         if ($this->isColumnModified(PDDebatePeer::ONLINE)) {
             $modifiedColumns[':p' . $index++]  = '`online`';
         }
+        if ($this->isColumnModified(PDDebatePeer::CREATED_AT)) {
+            $modifiedColumns[':p' . $index++]  = '`created_at`';
+        }
+        if ($this->isColumnModified(PDDebatePeer::UPDATED_AT)) {
+            $modifiedColumns[':p' . $index++]  = '`updated_at`';
+        }
+        if ($this->isColumnModified(PDDebatePeer::SLUG)) {
+            $modifiedColumns[':p' . $index++]  = '`slug`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `p_d_debate` (%s) VALUES (%s)',
@@ -1469,15 +1477,6 @@ abstract class BasePDDebate extends PDocument implements Persistent
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case '`created_at`':
-                        $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
-                        break;
-                    case '`updated_at`':
-                        $stmt->bindValue($identifier, $this->updated_at, PDO::PARAM_STR);
-                        break;
-                    case '`slug`':
-                        $stmt->bindValue($identifier, $this->slug, PDO::PARAM_STR);
-                        break;
                     case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
@@ -1490,8 +1489,8 @@ abstract class BasePDDebate extends PDocument implements Persistent
                     case '`file_name`':
                         $stmt->bindValue($identifier, $this->file_name, PDO::PARAM_STR);
                         break;
-                    case '`summary`':
-                        $stmt->bindValue($identifier, $this->summary, PDO::PARAM_STR);
+                    case '`copyright`':
+                        $stmt->bindValue($identifier, $this->copyright, PDO::PARAM_STR);
                         break;
                     case '`description`':
                         $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
@@ -1520,6 +1519,15 @@ abstract class BasePDDebate extends PDocument implements Persistent
                     case '`online`':
                         $stmt->bindValue($identifier, (int) $this->online, PDO::PARAM_INT);
                         break;
+                    case '`created_at`':
+                        $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
+                        break;
+                    case '`updated_at`':
+                        $stmt->bindValue($identifier, $this->updated_at, PDO::PARAM_STR);
+                        break;
+                    case '`slug`':
+                        $stmt->bindValue($identifier, $this->slug, PDO::PARAM_STR);
+                        break;
                 }
             }
             $stmt->execute();
@@ -1527,6 +1535,13 @@ abstract class BasePDDebate extends PDocument implements Persistent
             Propel::log($e->getMessage(), Propel::LOG_ERR);
             throw new PropelException(sprintf('Unable to execute INSERT statement [%s]', $sql), $e);
         }
+
+        try {
+            $pk = $con->lastInsertId();
+        } catch (Exception $e) {
+            throw new PropelException('Unable to get autoincrement id.', $e);
+        }
+        $this->setId($pk);
 
         $this->setNew(false);
     }
@@ -1612,12 +1627,6 @@ abstract class BasePDDebate extends PDocument implements Persistent
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
-            if ($this->aPDocument !== null) {
-                if (!$this->aPDocument->validate($columns)) {
-                    $failureMap = array_merge($failureMap, $this->aPDocument->getValidationFailures());
-                }
-            }
-
             if ($this->aPUser !== null) {
                 if (!$this->aPUser->validate($columns)) {
                     $failureMap = array_merge($failureMap, $this->aPUser->getValidationFailures());
@@ -1640,6 +1649,14 @@ abstract class BasePDDebate extends PDocument implements Persistent
 
                 if ($this->collPDReactions !== null) {
                     foreach ($this->collPDReactions as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
+                if ($this->collPDDComments !== null) {
+                    foreach ($this->collPDDComments as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
                             $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
                         }
@@ -1690,55 +1707,55 @@ abstract class BasePDDebate extends PDocument implements Persistent
     {
         switch ($pos) {
             case 0:
-                return $this->getCreatedAt();
-                break;
-            case 1:
-                return $this->getUpdatedAt();
-                break;
-            case 2:
-                return $this->getSlug();
-                break;
-            case 3:
                 return $this->getId();
                 break;
-            case 4:
+            case 1:
                 return $this->getPUserId();
                 break;
-            case 5:
+            case 2:
                 return $this->getTitle();
                 break;
-            case 6:
+            case 3:
                 return $this->getFileName();
                 break;
-            case 7:
-                return $this->getSummary();
+            case 4:
+                return $this->getCopyright();
                 break;
-            case 8:
+            case 5:
                 return $this->getDescription();
                 break;
-            case 9:
+            case 6:
                 return $this->getNotePos();
                 break;
-            case 10:
+            case 7:
                 return $this->getNoteNeg();
                 break;
-            case 11:
+            case 8:
                 return $this->getNbViews();
                 break;
-            case 12:
+            case 9:
                 return $this->getPublished();
                 break;
-            case 13:
+            case 10:
                 return $this->getPublishedAt();
                 break;
-            case 14:
+            case 11:
                 return $this->getPublishedBy();
                 break;
-            case 15:
+            case 12:
                 return $this->getFavorite();
                 break;
-            case 16:
+            case 13:
                 return $this->getOnline();
+                break;
+            case 14:
+                return $this->getCreatedAt();
+                break;
+            case 15:
+                return $this->getUpdatedAt();
+                break;
+            case 16:
+                return $this->getSlug();
                 break;
             default:
                 return null;
@@ -1769,23 +1786,23 @@ abstract class BasePDDebate extends PDocument implements Persistent
         $alreadyDumpedObjects['PDDebate'][$this->getPrimaryKey()] = true;
         $keys = PDDebatePeer::getFieldNames($keyType);
         $result = array(
-            $keys[0] => $this->getCreatedAt(),
-            $keys[1] => $this->getUpdatedAt(),
-            $keys[2] => $this->getSlug(),
-            $keys[3] => $this->getId(),
-            $keys[4] => $this->getPUserId(),
-            $keys[5] => $this->getTitle(),
-            $keys[6] => $this->getFileName(),
-            $keys[7] => $this->getSummary(),
-            $keys[8] => $this->getDescription(),
-            $keys[9] => $this->getNotePos(),
-            $keys[10] => $this->getNoteNeg(),
-            $keys[11] => $this->getNbViews(),
-            $keys[12] => $this->getPublished(),
-            $keys[13] => $this->getPublishedAt(),
-            $keys[14] => $this->getPublishedBy(),
-            $keys[15] => $this->getFavorite(),
-            $keys[16] => $this->getOnline(),
+            $keys[0] => $this->getId(),
+            $keys[1] => $this->getPUserId(),
+            $keys[2] => $this->getTitle(),
+            $keys[3] => $this->getFileName(),
+            $keys[4] => $this->getCopyright(),
+            $keys[5] => $this->getDescription(),
+            $keys[6] => $this->getNotePos(),
+            $keys[7] => $this->getNoteNeg(),
+            $keys[8] => $this->getNbViews(),
+            $keys[9] => $this->getPublished(),
+            $keys[10] => $this->getPublishedAt(),
+            $keys[11] => $this->getPublishedBy(),
+            $keys[12] => $this->getFavorite(),
+            $keys[13] => $this->getOnline(),
+            $keys[14] => $this->getCreatedAt(),
+            $keys[15] => $this->getUpdatedAt(),
+            $keys[16] => $this->getSlug(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1793,9 +1810,6 @@ abstract class BasePDDebate extends PDocument implements Persistent
         }
 
         if ($includeForeignObjects) {
-            if (null !== $this->aPDocument) {
-                $result['PDocument'] = $this->aPDocument->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
             if (null !== $this->aPUser) {
                 $result['PUser'] = $this->aPUser->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
@@ -1804,6 +1818,9 @@ abstract class BasePDDebate extends PDocument implements Persistent
             }
             if (null !== $this->collPDReactions) {
                 $result['PDReactions'] = $this->collPDReactions->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collPDDComments) {
+                $result['PDDComments'] = $this->collPDDComments->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collPDDTaggedTs) {
                 $result['PDDTaggedTs'] = $this->collPDDTaggedTs->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -1843,55 +1860,55 @@ abstract class BasePDDebate extends PDocument implements Persistent
     {
         switch ($pos) {
             case 0:
-                $this->setCreatedAt($value);
-                break;
-            case 1:
-                $this->setUpdatedAt($value);
-                break;
-            case 2:
-                $this->setSlug($value);
-                break;
-            case 3:
                 $this->setId($value);
                 break;
-            case 4:
+            case 1:
                 $this->setPUserId($value);
                 break;
-            case 5:
+            case 2:
                 $this->setTitle($value);
                 break;
-            case 6:
+            case 3:
                 $this->setFileName($value);
                 break;
-            case 7:
-                $this->setSummary($value);
+            case 4:
+                $this->setCopyright($value);
                 break;
-            case 8:
+            case 5:
                 $this->setDescription($value);
                 break;
-            case 9:
+            case 6:
                 $this->setNotePos($value);
                 break;
-            case 10:
+            case 7:
                 $this->setNoteNeg($value);
                 break;
-            case 11:
+            case 8:
                 $this->setNbViews($value);
                 break;
-            case 12:
+            case 9:
                 $this->setPublished($value);
                 break;
-            case 13:
+            case 10:
                 $this->setPublishedAt($value);
                 break;
-            case 14:
+            case 11:
                 $this->setPublishedBy($value);
                 break;
-            case 15:
+            case 12:
                 $this->setFavorite($value);
                 break;
-            case 16:
+            case 13:
                 $this->setOnline($value);
+                break;
+            case 14:
+                $this->setCreatedAt($value);
+                break;
+            case 15:
+                $this->setUpdatedAt($value);
+                break;
+            case 16:
+                $this->setSlug($value);
                 break;
         } // switch()
     }
@@ -1917,23 +1934,23 @@ abstract class BasePDDebate extends PDocument implements Persistent
     {
         $keys = PDDebatePeer::getFieldNames($keyType);
 
-        if (array_key_exists($keys[0], $arr)) $this->setCreatedAt($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setUpdatedAt($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setSlug($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setId($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setPUserId($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setTitle($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setFileName($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setSummary($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setDescription($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setNotePos($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setNoteNeg($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setNbViews($arr[$keys[11]]);
-        if (array_key_exists($keys[12], $arr)) $this->setPublished($arr[$keys[12]]);
-        if (array_key_exists($keys[13], $arr)) $this->setPublishedAt($arr[$keys[13]]);
-        if (array_key_exists($keys[14], $arr)) $this->setPublishedBy($arr[$keys[14]]);
-        if (array_key_exists($keys[15], $arr)) $this->setFavorite($arr[$keys[15]]);
-        if (array_key_exists($keys[16], $arr)) $this->setOnline($arr[$keys[16]]);
+        if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
+        if (array_key_exists($keys[1], $arr)) $this->setPUserId($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setTitle($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setFileName($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setCopyright($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setDescription($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setNotePos($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setNoteNeg($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setNbViews($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setPublished($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setPublishedAt($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setPublishedBy($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setFavorite($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setOnline($arr[$keys[13]]);
+        if (array_key_exists($keys[14], $arr)) $this->setCreatedAt($arr[$keys[14]]);
+        if (array_key_exists($keys[15], $arr)) $this->setUpdatedAt($arr[$keys[15]]);
+        if (array_key_exists($keys[16], $arr)) $this->setSlug($arr[$keys[16]]);
     }
 
     /**
@@ -1945,14 +1962,11 @@ abstract class BasePDDebate extends PDocument implements Persistent
     {
         $criteria = new Criteria(PDDebatePeer::DATABASE_NAME);
 
-        if ($this->isColumnModified(PDDebatePeer::CREATED_AT)) $criteria->add(PDDebatePeer::CREATED_AT, $this->created_at);
-        if ($this->isColumnModified(PDDebatePeer::UPDATED_AT)) $criteria->add(PDDebatePeer::UPDATED_AT, $this->updated_at);
-        if ($this->isColumnModified(PDDebatePeer::SLUG)) $criteria->add(PDDebatePeer::SLUG, $this->slug);
         if ($this->isColumnModified(PDDebatePeer::ID)) $criteria->add(PDDebatePeer::ID, $this->id);
         if ($this->isColumnModified(PDDebatePeer::P_USER_ID)) $criteria->add(PDDebatePeer::P_USER_ID, $this->p_user_id);
         if ($this->isColumnModified(PDDebatePeer::TITLE)) $criteria->add(PDDebatePeer::TITLE, $this->title);
         if ($this->isColumnModified(PDDebatePeer::FILE_NAME)) $criteria->add(PDDebatePeer::FILE_NAME, $this->file_name);
-        if ($this->isColumnModified(PDDebatePeer::SUMMARY)) $criteria->add(PDDebatePeer::SUMMARY, $this->summary);
+        if ($this->isColumnModified(PDDebatePeer::COPYRIGHT)) $criteria->add(PDDebatePeer::COPYRIGHT, $this->copyright);
         if ($this->isColumnModified(PDDebatePeer::DESCRIPTION)) $criteria->add(PDDebatePeer::DESCRIPTION, $this->description);
         if ($this->isColumnModified(PDDebatePeer::NOTE_POS)) $criteria->add(PDDebatePeer::NOTE_POS, $this->note_pos);
         if ($this->isColumnModified(PDDebatePeer::NOTE_NEG)) $criteria->add(PDDebatePeer::NOTE_NEG, $this->note_neg);
@@ -1962,6 +1976,9 @@ abstract class BasePDDebate extends PDocument implements Persistent
         if ($this->isColumnModified(PDDebatePeer::PUBLISHED_BY)) $criteria->add(PDDebatePeer::PUBLISHED_BY, $this->published_by);
         if ($this->isColumnModified(PDDebatePeer::FAVORITE)) $criteria->add(PDDebatePeer::FAVORITE, $this->favorite);
         if ($this->isColumnModified(PDDebatePeer::ONLINE)) $criteria->add(PDDebatePeer::ONLINE, $this->online);
+        if ($this->isColumnModified(PDDebatePeer::CREATED_AT)) $criteria->add(PDDebatePeer::CREATED_AT, $this->created_at);
+        if ($this->isColumnModified(PDDebatePeer::UPDATED_AT)) $criteria->add(PDDebatePeer::UPDATED_AT, $this->updated_at);
+        if ($this->isColumnModified(PDDebatePeer::SLUG)) $criteria->add(PDDebatePeer::SLUG, $this->slug);
 
         return $criteria;
     }
@@ -2025,13 +2042,10 @@ abstract class BasePDDebate extends PDocument implements Persistent
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setCreatedAt($this->getCreatedAt());
-        $copyObj->setUpdatedAt($this->getUpdatedAt());
-        $copyObj->setSlug($this->getSlug());
         $copyObj->setPUserId($this->getPUserId());
         $copyObj->setTitle($this->getTitle());
         $copyObj->setFileName($this->getFileName());
-        $copyObj->setSummary($this->getSummary());
+        $copyObj->setCopyright($this->getCopyright());
         $copyObj->setDescription($this->getDescription());
         $copyObj->setNotePos($this->getNotePos());
         $copyObj->setNoteNeg($this->getNoteNeg());
@@ -2041,6 +2055,9 @@ abstract class BasePDDebate extends PDocument implements Persistent
         $copyObj->setPublishedBy($this->getPublishedBy());
         $copyObj->setFavorite($this->getFavorite());
         $copyObj->setOnline($this->getOnline());
+        $copyObj->setCreatedAt($this->getCreatedAt());
+        $copyObj->setUpdatedAt($this->getUpdatedAt());
+        $copyObj->setSlug($this->getSlug());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -2061,15 +2078,16 @@ abstract class BasePDDebate extends PDocument implements Persistent
                 }
             }
 
+            foreach ($this->getPDDComments() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPDDComment($relObj->copy($deepCopy));
+                }
+            }
+
             foreach ($this->getPDDTaggedTs() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addPDDTaggedT($relObj->copy($deepCopy));
                 }
-            }
-
-            $relObj = $this->getPDocument();
-            if ($relObj) {
-                $copyObj->setPDocument($relObj->copy($deepCopy));
             }
 
             //unflag object copy
@@ -2120,52 +2138,6 @@ abstract class BasePDDebate extends PDocument implements Persistent
         }
 
         return self::$peer;
-    }
-
-    /**
-     * Declares an association between this object and a PDocument object.
-     *
-     * @param                  PDocument $v
-     * @return PDDebate The current object (for fluent API support)
-     * @throws PropelException
-     */
-    public function setPDocument(PDocument $v = null)
-    {
-        if ($v === null) {
-            $this->setId(NULL);
-        } else {
-            $this->setId($v->getId());
-        }
-
-        $this->aPDocument = $v;
-
-        // Add binding for other direction of this 1:1 relationship.
-        if ($v !== null) {
-            $v->setPDDebate($this);
-        }
-
-
-        return $this;
-    }
-
-
-    /**
-     * Get the associated PDocument object
-     *
-     * @param PropelPDO $con Optional Connection object.
-     * @param $doQuery Executes a query to get the object if required
-     * @return PDocument The associated PDocument object.
-     * @throws PropelException
-     */
-    public function getPDocument(PropelPDO $con = null, $doQuery = true)
-    {
-        if ($this->aPDocument === null && ($this->id !== null) && $doQuery) {
-            $this->aPDocument = PDocumentQuery::create()->findPk($this->id, $con);
-            // Because this foreign key represents a one-to-one relationship, we will create a bi-directional association.
-            $this->aPDocument->setPDDebate($this);
-        }
-
-        return $this->aPDocument;
     }
 
     /**
@@ -2236,6 +2208,9 @@ abstract class BasePDDebate extends PDocument implements Persistent
         }
         if ('PDReaction' == $relationName) {
             $this->initPDReactions();
+        }
+        if ('PDDComment' == $relationName) {
+            $this->initPDDComments();
         }
         if ('PDDTaggedT' == $relationName) {
             $this->initPDDTaggedTs();
@@ -2734,12 +2709,237 @@ abstract class BasePDDebate extends PDocument implements Persistent
      * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|PDReaction[] List of PDReaction objects
      */
-    public function getPDReactionsJoinPDocument($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public function getPDReactionsJoinPUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $query = PDReactionQuery::create(null, $criteria);
-        $query->joinWith('PDocument', $join_behavior);
+        $query->joinWith('PUser', $join_behavior);
 
         return $this->getPDReactions($query, $con);
+    }
+
+    /**
+     * Clears out the collPDDComments collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PDDebate The current object (for fluent API support)
+     * @see        addPDDComments()
+     */
+    public function clearPDDComments()
+    {
+        $this->collPDDComments = null; // important to set this to null since that means it is uninitialized
+        $this->collPDDCommentsPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPDDComments collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPDDComments($v = true)
+    {
+        $this->collPDDCommentsPartial = $v;
+    }
+
+    /**
+     * Initializes the collPDDComments collection.
+     *
+     * By default this just sets the collPDDComments collection to an empty array (like clearcollPDDComments());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPDDComments($overrideExisting = true)
+    {
+        if (null !== $this->collPDDComments && !$overrideExisting) {
+            return;
+        }
+        $this->collPDDComments = new PropelObjectCollection();
+        $this->collPDDComments->setModel('PDDComment');
+    }
+
+    /**
+     * Gets an array of PDDComment objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PDDebate is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PDDComment[] List of PDDComment objects
+     * @throws PropelException
+     */
+    public function getPDDComments($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPDDCommentsPartial && !$this->isNew();
+        if (null === $this->collPDDComments || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPDDComments) {
+                // return empty collection
+                $this->initPDDComments();
+            } else {
+                $collPDDComments = PDDCommentQuery::create(null, $criteria)
+                    ->filterByPDDebate($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPDDCommentsPartial && count($collPDDComments)) {
+                      $this->initPDDComments(false);
+
+                      foreach ($collPDDComments as $obj) {
+                        if (false == $this->collPDDComments->contains($obj)) {
+                          $this->collPDDComments->append($obj);
+                        }
+                      }
+
+                      $this->collPDDCommentsPartial = true;
+                    }
+
+                    $collPDDComments->getInternalIterator()->rewind();
+
+                    return $collPDDComments;
+                }
+
+                if ($partial && $this->collPDDComments) {
+                    foreach ($this->collPDDComments as $obj) {
+                        if ($obj->isNew()) {
+                            $collPDDComments[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPDDComments = $collPDDComments;
+                $this->collPDDCommentsPartial = false;
+            }
+        }
+
+        return $this->collPDDComments;
+    }
+
+    /**
+     * Sets a collection of PDDComment objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pDDComments A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function setPDDComments(PropelCollection $pDDComments, PropelPDO $con = null)
+    {
+        $pDDCommentsToDelete = $this->getPDDComments(new Criteria(), $con)->diff($pDDComments);
+
+
+        $this->pDDCommentsScheduledForDeletion = $pDDCommentsToDelete;
+
+        foreach ($pDDCommentsToDelete as $pDDCommentRemoved) {
+            $pDDCommentRemoved->setPDDebate(null);
+        }
+
+        $this->collPDDComments = null;
+        foreach ($pDDComments as $pDDComment) {
+            $this->addPDDComment($pDDComment);
+        }
+
+        $this->collPDDComments = $pDDComments;
+        $this->collPDDCommentsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PDDComment objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PDDComment objects.
+     * @throws PropelException
+     */
+    public function countPDDComments(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPDDCommentsPartial && !$this->isNew();
+        if (null === $this->collPDDComments || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPDDComments) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPDDComments());
+            }
+            $query = PDDCommentQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPDDebate($this)
+                ->count($con);
+        }
+
+        return count($this->collPDDComments);
+    }
+
+    /**
+     * Method called to associate a PDDComment object to this object
+     * through the PDDComment foreign key attribute.
+     *
+     * @param    PDDComment $l PDDComment
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function addPDDComment(PDDComment $l)
+    {
+        if ($this->collPDDComments === null) {
+            $this->initPDDComments();
+            $this->collPDDCommentsPartial = true;
+        }
+
+        if (!in_array($l, $this->collPDDComments->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPDDComment($l);
+
+            if ($this->pDDCommentsScheduledForDeletion and $this->pDDCommentsScheduledForDeletion->contains($l)) {
+                $this->pDDCommentsScheduledForDeletion->remove($this->pDDCommentsScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PDDComment $pDDComment The pDDComment object to add.
+     */
+    protected function doAddPDDComment($pDDComment)
+    {
+        $this->collPDDComments[]= $pDDComment;
+        $pDDComment->setPDDebate($this);
+    }
+
+    /**
+     * @param	PDDComment $pDDComment The pDDComment object to remove.
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function removePDDComment($pDDComment)
+    {
+        if ($this->getPDDComments()->contains($pDDComment)) {
+            $this->collPDDComments->remove($this->collPDDComments->search($pDDComment));
+            if (null === $this->pDDCommentsScheduledForDeletion) {
+                $this->pDDCommentsScheduledForDeletion = clone $this->collPDDComments;
+                $this->pDDCommentsScheduledForDeletion->clear();
+            }
+            $this->pDDCommentsScheduledForDeletion[]= clone $pDDComment;
+            $pDDComment->setPDDebate(null);
+        }
+
+        return $this;
     }
 
 
@@ -2748,7 +2948,7 @@ abstract class BasePDDebate extends PDocument implements Persistent
      * an identical criteria, it returns the collection.
      * Otherwise if this PDDebate is new, it will return
      * an empty collection; or if this PDDebate has previously
-     * been saved, it will retrieve related PDReactions from storage.
+     * been saved, it will retrieve related PDDComments from storage.
      *
      * This method is protected by default in order to keep the public
      * api reasonable.  You can provide public methods for those you
@@ -2757,14 +2957,14 @@ abstract class BasePDDebate extends PDocument implements Persistent
      * @param Criteria $criteria optional Criteria object to narrow the query
      * @param PropelPDO $con optional connection object
      * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|PDReaction[] List of PDReaction objects
+     * @return PropelObjectCollection|PDDComment[] List of PDDComment objects
      */
-    public function getPDReactionsJoinPUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public function getPDDCommentsJoinPUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
-        $query = PDReactionQuery::create(null, $criteria);
+        $query = PDDCommentQuery::create(null, $criteria);
         $query->joinWith('PUser', $join_behavior);
 
-        return $this->getPDReactions($query, $con);
+        return $this->getPDDComments($query, $con);
     }
 
     /**
@@ -3396,14 +3596,11 @@ abstract class BasePDDebate extends PDocument implements Persistent
      */
     public function clear()
     {
-        $this->created_at = null;
-        $this->updated_at = null;
-        $this->slug = null;
         $this->id = null;
         $this->p_user_id = null;
         $this->title = null;
         $this->file_name = null;
-        $this->summary = null;
+        $this->copyright = null;
         $this->description = null;
         $this->note_pos = null;
         $this->note_neg = null;
@@ -3413,6 +3610,9 @@ abstract class BasePDDebate extends PDocument implements Persistent
         $this->published_by = null;
         $this->favorite = null;
         $this->online = null;
+        $this->created_at = null;
+        $this->updated_at = null;
+        $this->slug = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
@@ -3446,6 +3646,11 @@ abstract class BasePDDebate extends PDocument implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collPDDComments) {
+                foreach ($this->collPDDComments as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collPDDTaggedTs) {
                 foreach ($this->collPDDTaggedTs as $o) {
                     $o->clearAllReferences($deep);
@@ -3460,9 +3665,6 @@ abstract class BasePDDebate extends PDocument implements Persistent
                 foreach ($this->collPTags as $o) {
                     $o->clearAllReferences($deep);
                 }
-            }
-            if ($this->aPDocument instanceof Persistent) {
-              $this->aPDocument->clearAllReferences($deep);
             }
             if ($this->aPUser instanceof Persistent) {
               $this->aPUser->clearAllReferences($deep);
@@ -3479,6 +3681,10 @@ abstract class BasePDDebate extends PDocument implements Persistent
             $this->collPDReactions->clearIterator();
         }
         $this->collPDReactions = null;
+        if ($this->collPDDComments instanceof PropelCollection) {
+            $this->collPDDComments->clearIterator();
+        }
+        $this->collPDDComments = null;
         if ($this->collPDDTaggedTs instanceof PropelCollection) {
             $this->collPDDTaggedTs->clearIterator();
         }
@@ -3491,7 +3697,6 @@ abstract class BasePDDebate extends PDocument implements Persistent
             $this->collPTags->clearIterator();
         }
         $this->collPTags = null;
-        $this->aPDocument = null;
         $this->aPUser = null;
     }
 
@@ -3661,80 +3866,6 @@ abstract class BasePDDebate extends PDocument implements Persistent
         return $slug2 . ($slugNum + 1);
     }
 
-    // concrete_inheritance behavior
-
-    /**
-     * Get or Create the parent PDocument object of the current object
-     *
-     * @return    PDocument The parent object
-     */
-    public function getParentOrCreate($con = null)
-    {
-        if ($this->isNew()) {
-            if ($this->isPrimaryKeyNull()) {
-                //this prevent issue with deep copy & save parent object
-                if (null === ($parent = $this->getPDocument($con))) {
-                    $parent = new PDocument();
-                }
-                $parent->setDescendantClass('Politizr\Model\PDDebate');
-
-                return $parent;
-            } else {
-                $parent = PDocumentQuery::create()->findPk($this->getPrimaryKey(), $con);
-                if (null === $parent || null !== $parent->getDescendantClass()) {
-                    $parent = new PDocument();
-                    $parent->setPrimaryKey($this->getPrimaryKey());
-                    $parent->setDescendantClass('Politizr\Model\PDDebate');
-                }
-
-                return $parent;
-            }
-        }
-
-        return PDocumentQuery::create()->findPk($this->getPrimaryKey(), $con);
-    }
-
-    /**
-     * Create or Update the parent PDocument object
-     * And return its primary key
-     *
-     * @return    int The primary key of the parent object
-     */
-    public function getSyncParent($con = null)
-    {
-        $parent = $this->getParentOrCreate($con);
-        $parent->setPUserId($this->getPUserId());
-        $parent->setTitle($this->getTitle());
-        $parent->setFileName($this->getFileName());
-        $parent->setSummary($this->getSummary());
-        $parent->setDescription($this->getDescription());
-        $parent->setNotePos($this->getNotePos());
-        $parent->setNoteNeg($this->getNoteNeg());
-        $parent->setNbViews($this->getNbViews());
-        $parent->setPublished($this->getPublished());
-        $parent->setPublishedAt($this->getPublishedAt());
-        $parent->setPublishedBy($this->getPublishedBy());
-        $parent->setFavorite($this->getFavorite());
-        $parent->setOnline($this->getOnline());
-        if ($this->getPUser() && $this->getPUser()->isNew()) {
-            $parent->setPUser($this->getPUser());
-        }
-
-        return $parent;
-    }
-
-    // event behavior
-    public function preCommit(\PropelPDO $con = null){}
-    public function preCommitSave(\PropelPDO $con = null){}
-    public function preCommitDelete(\PropelPDO $con = null){}
-    public function preCommitUpdate(\PropelPDO $con = null){}
-    public function preCommitInsert(\PropelPDO $con = null){}
-    public function preRollback(\PropelPDO $con = null){}
-    public function preRollbackSave(\PropelPDO $con = null){}
-    public function preRollbackDelete(\PropelPDO $con = null){}
-    public function preRollbackUpdate(\PropelPDO $con = null){}
-    public function preRollbackInsert(\PropelPDO $con = null){}
-
     // archivable behavior
 
     /**
@@ -3807,19 +3938,20 @@ abstract class BasePDDebate extends PDocument implements Persistent
      * Populates the the current object based on a $archiveTablePhpName archive object.
      *
      * @param      PDDebateArchive $archive An archived object based on the same class
-      * @param      Boolean $populateAutoIncrementPrimaryKeys Not used! Defined to comply with php strict standards
+      * @param      Boolean $populateAutoIncrementPrimaryKeys
+     *               If true, autoincrement columns are copied from the archive object.
+     *               If false, autoincrement columns are left intact.
       *
      * @return     PDDebate The current object (for fluent API support)
      */
     public function populateFromArchive($archive, $populateAutoIncrementPrimaryKeys = false) {
-        $this->setCreatedAt($archive->getCreatedAt());
-        $this->setUpdatedAt($archive->getUpdatedAt());
-        $this->setSlug($archive->getSlug());
-        $this->setId($archive->getId());
+        if ($populateAutoIncrementPrimaryKeys) {
+            $this->setId($archive->getId());
+        }
         $this->setPUserId($archive->getPUserId());
         $this->setTitle($archive->getTitle());
         $this->setFileName($archive->getFileName());
-        $this->setSummary($archive->getSummary());
+        $this->setCopyright($archive->getCopyright());
         $this->setDescription($archive->getDescription());
         $this->setNotePos($archive->getNotePos());
         $this->setNoteNeg($archive->getNoteNeg());
@@ -3829,6 +3961,9 @@ abstract class BasePDDebate extends PDocument implements Persistent
         $this->setPublishedBy($archive->getPublishedBy());
         $this->setFavorite($archive->getFavorite());
         $this->setOnline($archive->getOnline());
+        $this->setCreatedAt($archive->getCreatedAt());
+        $this->setUpdatedAt($archive->getUpdatedAt());
+        $this->setSlug($archive->getSlug());
 
         return $this;
     }
@@ -3846,5 +3981,17 @@ abstract class BasePDDebate extends PDocument implements Persistent
 
         return $this->delete($con);
     }
+
+    // event behavior
+    public function preCommit(\PropelPDO $con = null){}
+    public function preCommitSave(\PropelPDO $con = null){}
+    public function preCommitDelete(\PropelPDO $con = null){}
+    public function preCommitUpdate(\PropelPDO $con = null){}
+    public function preCommitInsert(\PropelPDO $con = null){}
+    public function preRollback(\PropelPDO $con = null){}
+    public function preRollbackSave(\PropelPDO $con = null){}
+    public function preRollbackDelete(\PropelPDO $con = null){}
+    public function preRollbackUpdate(\PropelPDO $con = null){}
+    public function preRollbackInsert(\PropelPDO $con = null){}
 
 }

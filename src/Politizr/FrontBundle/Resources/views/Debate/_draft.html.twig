@@ -1,0 +1,16 @@
+<div class="publicationsListItem withLoaderInside">
+    <div class="ajaxLoader" style="display: none;">
+        <div class="ajaxLoaderSpinner"></div><div class="ajaxLoaderBg"></div><div class="ajaxLoaderBlockClick"></div>
+    </div>
+    <div class="publicationsListItemHeader">
+        <span>débat</span>dernière mise à jour {% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAtTiny.html.twig' with { 'dateTimeAt': debate.updatedAt } only %}
+    </div>
+    <div class="publicationsListItemTitle">
+        <a href="{{ path('DebateDraftEdit'~profileSuffix, { 'id': debate.id }) }}">
+            {{ debate.title }}
+        </a>
+    </div>
+    <div class="publicationsListItemActions">
+        <a href="{{ path('DebateDraftEdit'~profileSuffix, { 'id': debate.id }) }}"><i class="iconEdit"></i>Éditer</a>
+    </div>
+</div>

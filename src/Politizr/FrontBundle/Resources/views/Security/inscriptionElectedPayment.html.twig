@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block main %}
-    <div id="main" class="container">
+    <div id="main">
         <h1>Mode de paiement</h1>
         <p class="bg-info">Choisissez le mode de paiement.</p>
         <div id="box-inscription-elected-payment">
@@ -13,7 +13,7 @@
                 <div class="payment-choice">
                     <input type="radio" name="radio-choice" action="payment-choice"><label>{{ payment.title }}</label>
                     <div class="payment-detail">
-                        {{ payment.description | raw }}
+                        {{ payment.description | purify }}
                         <br/>
                         <a action="payment-process" class="btn btn-success" pOPaymentTypeId="{{ payment.id }}">procéder au paiement</a>
                     </div>
@@ -24,8 +24,12 @@
     </div>
 {% endblock main %}
 
-
 {% block javascriptFooter %}
     {{ parent() }}
-    {% include 'PolitizrFrontBundle:JS:paymentProcess.js.twig' %}
+
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/security/payment.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 {% endblock javascriptFooter %}

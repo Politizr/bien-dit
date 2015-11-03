@@ -1,0 +1,49 @@
+<h1>Ma réputation, mes badges</h1>
+<div id="reputationPoints">{{ reputationScore }}</div>
+
+<div id="modalReputationChart" class="withLoaderInside">
+    <div class="ajaxLoader" style="display: none;">
+        <i class="iconSpin5 animateSpin"></i>
+        <div class="ajaxLoaderBg"></div>
+    </div>
+    <div class="modalChartLegend">
+        <div class="chartTitle">Réputation</div>
+        <div class="chartDotHighlight"><i class="iconNotifYes"></i>Total des points de réputation</div>
+    </div>
+    <div class="chartReputationLine">
+        <div class="chartNavPrev" action="paginatePrevChart" startAt=""><i class="iconArrowLeft"></i></div>
+        <div class="chartNavNext" action="paginateNextChart" startAt=""><i class="iconArrowRight"></i></div>
+        <div>
+            <canvas id="reputationLine"></canvas>
+        </div>
+    </div>
+</div>
+
+<div id="modalBadges">
+    {% for badgeType in badgesType %}
+        <div class="modalBadgeItem">
+            <h3>badges {{ badgeType.title }}</h3>
+            {% for badgeFamily in badgeType.badgeFamilies %}
+                {% for badge in badgeFamily.badges %}
+                    {% if loop.first %}
+                        <div class="badgeDescription">{{ badgeFamily.title }}</div>
+                        <div class="badgeProgressBar">
+                    {% endif %}
+                    {% set badgeStep = 'badgeStepOne' %}
+                    {% if loop.index == 2 %}
+                        {% set badgeStep = 'badgeStepTwo' %}
+                    {% elseif loop.index == 3 %}
+                        {% set badgeStep = 'badgeStepThree' %}
+                    {% endif %}
+                    <div class="{% if badge.id in badgeIds %}badgeAcquired {% endif %}{{ badgeStep }}{% if badgeFamily.badges | length == 1 %} {{ badgeInOnlyOneStep }}{% endif %}">
+                        {{ badge.title }}
+                        <span class="infoBadge">{{ badge | howToReach }}</span>
+                    </div>
+                    {% if loop.last %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        </div>
+    {% endfor %}
+</div>

@@ -1,5 +1,5 @@
 parameters:
-    database_driver: pdo_mysql
+    database_driver: mysql
     database_host: localhost
     database_port: null
     database_name: ***
@@ -12,12 +12,17 @@ parameters:
     mailer_user:       ***
     mailer_password:   ***
     mailer_encryption: null
+
     locale: fr
     secret: 79b0b1f8ea9a911a6961f56e5144524c
 
     # Email contact
     contact_email: contact@politizr.com
-    noreply_email: ne-pas-repondre@politizr.com
+    noreply_email: postmaster@politizr.com
+
+    # Hosts
+    host.admin: *
+    host.public: *
 
     # OAuth parameters
     # Facebook

@@ -23,22 +23,24 @@ use Politizr\Model\PUMandate;
 
 /**
  * @method PQMandateQuery orderById($order = Criteria::ASC) Order by the id column
- * @method PQMandateQuery orderByPQTypeId($order = Criteria::ASC) Order by the p_q_type_id column
  * @method PQMandateQuery orderByTitle($order = Criteria::ASC) Order by the title column
+ * @method PQMandateQuery orderBySelectTitle($order = Criteria::ASC) Order by the select_title column
  * @method PQMandateQuery orderByOnline($order = Criteria::ASC) Order by the online column
  * @method PQMandateQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PQMandateQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  * @method PQMandateQuery orderBySlug($order = Criteria::ASC) Order by the slug column
  * @method PQMandateQuery orderBySortableRank($order = Criteria::ASC) Order by the sortable_rank column
+ * @method PQMandateQuery orderByPQTypeId($order = Criteria::ASC) Order by the p_q_type_id column
  *
  * @method PQMandateQuery groupById() Group by the id column
- * @method PQMandateQuery groupByPQTypeId() Group by the p_q_type_id column
  * @method PQMandateQuery groupByTitle() Group by the title column
+ * @method PQMandateQuery groupBySelectTitle() Group by the select_title column
  * @method PQMandateQuery groupByOnline() Group by the online column
  * @method PQMandateQuery groupByCreatedAt() Group by the created_at column
  * @method PQMandateQuery groupByUpdatedAt() Group by the updated_at column
  * @method PQMandateQuery groupBySlug() Group by the slug column
  * @method PQMandateQuery groupBySortableRank() Group by the sortable_rank column
+ * @method PQMandateQuery groupByPQTypeId() Group by the p_q_type_id column
  *
  * @method PQMandateQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method PQMandateQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -55,22 +57,24 @@ use Politizr\Model\PUMandate;
  * @method PQMandate findOne(PropelPDO $con = null) Return the first PQMandate matching the query
  * @method PQMandate findOneOrCreate(PropelPDO $con = null) Return the first PQMandate matching the query, or a new PQMandate object populated from the query conditions when no match is found
  *
- * @method PQMandate findOneByPQTypeId(int $p_q_type_id) Return the first PQMandate filtered by the p_q_type_id column
  * @method PQMandate findOneByTitle(string $title) Return the first PQMandate filtered by the title column
+ * @method PQMandate findOneBySelectTitle(string $select_title) Return the first PQMandate filtered by the select_title column
  * @method PQMandate findOneByOnline(boolean $online) Return the first PQMandate filtered by the online column
  * @method PQMandate findOneByCreatedAt(string $created_at) Return the first PQMandate filtered by the created_at column
  * @method PQMandate findOneByUpdatedAt(string $updated_at) Return the first PQMandate filtered by the updated_at column
  * @method PQMandate findOneBySlug(string $slug) Return the first PQMandate filtered by the slug column
  * @method PQMandate findOneBySortableRank(int $sortable_rank) Return the first PQMandate filtered by the sortable_rank column
+ * @method PQMandate findOneByPQTypeId(int $p_q_type_id) Return the first PQMandate filtered by the p_q_type_id column
  *
  * @method array findById(int $id) Return PQMandate objects filtered by the id column
- * @method array findByPQTypeId(int $p_q_type_id) Return PQMandate objects filtered by the p_q_type_id column
  * @method array findByTitle(string $title) Return PQMandate objects filtered by the title column
+ * @method array findBySelectTitle(string $select_title) Return PQMandate objects filtered by the select_title column
  * @method array findByOnline(boolean $online) Return PQMandate objects filtered by the online column
  * @method array findByCreatedAt(string $created_at) Return PQMandate objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PQMandate objects filtered by the updated_at column
  * @method array findBySlug(string $slug) Return PQMandate objects filtered by the slug column
  * @method array findBySortableRank(int $sortable_rank) Return PQMandate objects filtered by the sortable_rank column
+ * @method array findByPQTypeId(int $p_q_type_id) Return PQMandate objects filtered by the p_q_type_id column
  */
 abstract class BasePQMandateQuery extends ModelCriteria
 {
@@ -180,7 +184,7 @@ abstract class BasePQMandateQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_q_type_id`, `title`, `online`, `created_at`, `updated_at`, `slug`, `sortable_rank` FROM `p_q_mandate` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `title`, `select_title`, `online`, `created_at`, `updated_at`, `slug`, `sortable_rank`, `p_q_type_id` FROM `p_q_mandate` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -313,50 +317,6 @@ abstract class BasePQMandateQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the p_q_type_id column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByPQTypeId(1234); // WHERE p_q_type_id = 1234
-     * $query->filterByPQTypeId(array(12, 34)); // WHERE p_q_type_id IN (12, 34)
-     * $query->filterByPQTypeId(array('min' => 12)); // WHERE p_q_type_id >= 12
-     * $query->filterByPQTypeId(array('max' => 12)); // WHERE p_q_type_id <= 12
-     * </code>
-     *
-     * @see       filterByPQType()
-     *
-     * @param     mixed $pQTypeId The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PQMandateQuery The current query, for fluid interface
-     */
-    public function filterByPQTypeId($pQTypeId = null, $comparison = null)
-    {
-        if (is_array($pQTypeId)) {
-            $useMinMax = false;
-            if (isset($pQTypeId['min'])) {
-                $this->addUsingAlias(PQMandatePeer::P_Q_TYPE_ID, $pQTypeId['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($pQTypeId['max'])) {
-                $this->addUsingAlias(PQMandatePeer::P_Q_TYPE_ID, $pQTypeId['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(PQMandatePeer::P_Q_TYPE_ID, $pQTypeId, $comparison);
-    }
-
-    /**
      * Filter the query on the title column
      *
      * Example usage:
@@ -383,6 +343,35 @@ abstract class BasePQMandateQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PQMandatePeer::TITLE, $title, $comparison);
+    }
+
+    /**
+     * Filter the query on the select_title column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterBySelectTitle('fooValue');   // WHERE select_title = 'fooValue'
+     * $query->filterBySelectTitle('%fooValue%'); // WHERE select_title LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $selectTitle The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PQMandateQuery The current query, for fluid interface
+     */
+    public function filterBySelectTitle($selectTitle = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($selectTitle)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $selectTitle)) {
+                $selectTitle = str_replace('*', '%', $selectTitle);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PQMandatePeer::SELECT_TITLE, $selectTitle, $comparison);
     }
 
     /**
@@ -570,6 +559,50 @@ abstract class BasePQMandateQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the p_q_type_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPQTypeId(1234); // WHERE p_q_type_id = 1234
+     * $query->filterByPQTypeId(array(12, 34)); // WHERE p_q_type_id IN (12, 34)
+     * $query->filterByPQTypeId(array('min' => 12)); // WHERE p_q_type_id >= 12
+     * $query->filterByPQTypeId(array('max' => 12)); // WHERE p_q_type_id <= 12
+     * </code>
+     *
+     * @see       filterByPQType()
+     *
+     * @param     mixed $pQTypeId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PQMandateQuery The current query, for fluid interface
+     */
+    public function filterByPQTypeId($pQTypeId = null, $comparison = null)
+    {
+        if (is_array($pQTypeId)) {
+            $useMinMax = false;
+            if (isset($pQTypeId['min'])) {
+                $this->addUsingAlias(PQMandatePeer::P_Q_TYPE_ID, $pQTypeId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($pQTypeId['max'])) {
+                $this->addUsingAlias(PQMandatePeer::P_Q_TYPE_ID, $pQTypeId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PQMandatePeer::P_Q_TYPE_ID, $pQTypeId, $comparison);
+    }
+
+    /**
      * Filter the query by a related PQType object
      *
      * @param   PQType|PropelObjectCollection $pQType The related object(s) to use as filter
@@ -603,7 +636,7 @@ abstract class BasePQMandateQuery extends ModelCriteria
      *
      * @return PQMandateQuery The current query, for fluid interface
      */
-    public function joinPQType($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinPQType($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('PQType');
@@ -638,7 +671,7 @@ abstract class BasePQMandateQuery extends ModelCriteria
      *
      * @return   \Politizr\Model\PQTypeQuery A secondary query class using the current class as primary query
      */
-    public function usePQTypeQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function usePQTypeQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
             ->joinPQType($relationAlias, $joinType)
@@ -1001,7 +1034,7 @@ abstract class BasePQMandateQuery extends ModelCriteria
      *
      * @return PQMandateQuery The current query, for fluid interface
      */
-    public function inList($scope)
+    public function inList($scope = null)
     {
 
         PQMandatePeer::sortableApplyScopeCriteria($this, $scope, 'addUsingAlias');
@@ -1018,7 +1051,7 @@ abstract class BasePQMandateQuery extends ModelCriteria
      *
      * @return    PQMandateQuery The current query, for fluid interface
      */
-    public function filterByRank($rank, $scope)
+    public function filterByRank($rank, $scope = null)
     {
 
 
@@ -1059,7 +1092,7 @@ abstract class BasePQMandateQuery extends ModelCriteria
      *
      * @return    PQMandate
      */
-    public function findOneByRank($rank, $scope, PropelPDO $con = null)
+    public function findOneByRank($rank, $scope = null, PropelPDO $con = null)
     {
 
         return $this
@@ -1076,7 +1109,7 @@ abstract class BasePQMandateQuery extends ModelCriteria
      *
      * @return     mixed the list of results, formatted by the current formatter
      */
-    public function findList($scope, $con = null)
+    public function findList($scope = null, $con = null)
     {
 
 
@@ -1095,7 +1128,7 @@ abstract class BasePQMandateQuery extends ModelCriteria
      *
      * @return    integer highest position
      */
-    public function getMaxRank($scope, PropelPDO $con = null)
+    public function getMaxRank($scope = null, PropelPDO $con = null)
     {
         if ($con === null) {
             $con = Propel::getConnection(PQMandatePeer::DATABASE_NAME);

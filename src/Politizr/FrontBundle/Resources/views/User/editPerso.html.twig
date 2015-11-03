@@ -1,0 +1,121 @@
+{% extends 'PolitizrFrontBundle::layoutConnected.html.twig' %}
+
+{% block title %}
+    {{ parent() }} - Mes informations personnelles
+{% endblock title %}
+
+{% block main %}
+    <div id="prefs" class="connexionPrefs">
+        <h1>Mes informations personnelles</h1>
+
+        {% if isGrantedE() %} 
+            <h2>Vous disposez actuellement d'un compte débatteur.</h2>
+        {% else %}
+            <h2>Vous disposez actuellement d'un compte citoyen.</h2>
+        {% endif %}
+
+        <div id="boxPerso1">
+            <h3>Votre identité</h3>
+            {% if app.user.validated %}
+                <p class="formInfo">
+                    <i class="iconAlert"></i>Ces informations ont été validées par nos services et ne peuvent être modifiées.
+                </p>
+                <div class="actionAskForUpdate">
+                    <a action="modalAskForUpdate" type="{{ constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_USER') }}" subjectId="{{ user.id }}"><i class="iconPublish"></i>Demande de modification</a>
+                </div>
+            {% endif %}
+
+            <form name="user" method="post" id="formPerso1">
+                {{ form_errors(formPerso1) }}
+
+                <div class="formGroup">
+                    <label>Civilité</label>
+                    {{ form_widget(formPerso1.gender) }}
+                </div>
+                <div class="formGroup">
+                    <label>Prénom</label>
+                    {{ form_widget(formPerso1.firstname) }}
+                </div>
+                <div class="formGroup">
+                    <label>Nom</label>
+                    {{ form_widget(formPerso1.name) }}
+                </div>
+                <div class="formGroup">
+                    <label>Date de naissance</label>
+                    {{ form_widget(formPerso1.birthday, { 'attr': { 'placeholder': 'JJ/MM/AAAA' }}) }}
+                </div>
+                {{ form_rest(formPerso1) }}
+    
+                {% if not app.user.validated %}
+                    <button type="button" action="submitPerso">
+                        <i class="iconCheck"></i>Mettre à jour
+                    </button>
+                {% endif %}
+            </form>
+        </div>
+
+        <div id="boxPerso2">
+            <h3>Votre email et votre abonnement newsletter</h3>
+            <form name="user" method="post" id="formPerso2">
+                {{ form_errors(formPerso2) }}
+
+                <div class="formGroup">
+                    <label>Email</label>
+                    {{ form_widget(formPerso2.email.first) }}
+                </div>
+                <div class="formGroup">
+                    <label>Confirmation email</label>
+                    {{ form_widget(formPerso2.email.second) }}
+                </div>
+                <div class="formGroup">
+                    {# @todo fix the label for the checkbox #}
+                    {{ form_widget(formPerso2.newsletter) }}
+                    {{ form_label(formPerso2.newsletter, 'Abonnement newsletter', {'label_attr': {'name': 'user_newsletter'}}) }}
+                </div>
+
+                {{ form_rest(formPerso2) }}
+
+                <button type="button" action="submitPerso">
+                    <i class="iconCheck"></i>Mettre à jour
+                </button>
+            </form>
+        </div>
+        
+        <div id="boxPerso3">
+            <h3>Vos identifiant et mot de passe de connexion</h3>
+            <p class="formInfo"><i class="iconAlert"></i>Identifiants et mot de passe pour une connexion hors OpenID (Facebook, Twitter, Google).</p>
+            <form name="user" method="post" id="formPerso3">
+                {{ form_errors(formPerso3) }}
+
+                <div class="formGroup">
+                    <label>Email</label>
+                    {{ form_widget(formPerso3.username) }}
+                </div>
+                <div class="formGroup">
+                    <label>Mot de passe</label>
+                    {{ form_widget(formPerso3.plainPassword.first) }}
+                </div>
+                <div class="formGroup">
+                    <label>Confirmation</label>
+                    {{ form_widget(formPerso3.plainPassword.second) }}
+                </div>
+
+                {{ form_rest(formPerso3) }}
+           
+                <button type="button" action="submitPerso">
+                    <i class="iconCheck"></i>Mettre à jour
+                </button>
+            </form>
+        </div>
+    </div>
+{% endblock main %}
+
+{% block javascriptFooter %}
+    {{ parent() }}
+
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/user/editPerso.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock javascriptFooter %}

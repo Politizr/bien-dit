@@ -1645,7 +1645,7 @@ abstract class BasePQType extends BaseObject implements Persistent
                 $this->pQMandatesScheduledForDeletion = clone $this->collPQMandates;
                 $this->pQMandatesScheduledForDeletion->clear();
             }
-            $this->pQMandatesScheduledForDeletion[]= clone $pQMandate;
+            $this->pQMandatesScheduledForDeletion[]= $pQMandate;
             $pQMandate->setPQType(null);
         }
 
@@ -1870,7 +1870,7 @@ abstract class BasePQType extends BaseObject implements Persistent
                 $this->pQOrganizationsScheduledForDeletion = clone $this->collPQOrganizations;
                 $this->pQOrganizationsScheduledForDeletion->clear();
             }
-            $this->pQOrganizationsScheduledForDeletion[]= $pQOrganization;
+            $this->pQOrganizationsScheduledForDeletion[]= clone $pQOrganization;
             $pQOrganization->setPQType(null);
         }
 

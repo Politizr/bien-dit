@@ -1,5 +1,9 @@
 {% extends_admingenerated "PolitizrAdminBundle:POrderShow:index.html.twig" %}
 
+{% block show_column_block_p_user %}
+    {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_USER'), POrder.PUserId) }}
+{% endblock %}
+
 {% block show_column_supporting_document %}
     {% if POrder.supportingDocument %}
         <a href="{{ constant('Politizr\\Model\\POrder::UPLOAD_WEB_PATH') ~ POrder.supportingDocument }}">{{ POrder.supportingDocument }}</a>

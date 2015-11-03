@@ -4,152 +4,359 @@ namespace Politizr\Model;
 
 use Politizr\Model\om\BasePUserQuery;
 
+use Politizr\Constant\UserConstants;
+
+/**
+ * User query
+ *
+ * @author Lionel Bouzonville
+ */
 class PUserQuery extends BasePUserQuery
 {
+    /* ######################################################################################################## */
+    /*                                                  RAW SQL                                                 */
+    /* ######################################################################################################## */
+        
+    /**
+     * Users' suggestion for user.
+     *
+     * @see app/sql/suggestions.sql
+     *
+     * @todo:
+     *   > + suggestions depuis les users déjà suivis
+     *
+     * @param  integer     $userId
+     * @param  integer     $offset
+     * @param  integer     $count
+     * @return string
+     */
+    private function getSuggestionsSql($userId, $offset, $count = 10)
+    {
+        // Requête SQL
+        $sql = "
+#  Concordance des tags suivis / tags caractérisant des users
+SELECT DISTINCT
+    id,
+    provider,
+    provider_id,
+    nickname,
+    realname,
+    username,
+    username_canonical,
+    email,
+    email_canonical,
+    enabled,
+    salt,
+    password,
+    last_login,
+    locked,
+    expired,
+    expires_at,
+    confirmation_token,
+    password_requested_at,
+    credentials_expired,
+    credentials_expire_at,
+    roles,
+    last_activity,
+    p_u_status_id,
+    file_name,
+    back_file_name,
+    copyright,
+    gender,
+    firstname,
+    name,
+    birthday,
+    subtitle,
+    biography,
+    website,
+    twitter,
+    facebook,
+    phone,
+    newsletter,
+    last_connect,
+    nb_connected_days,
+    nb_views,
+    qualified,
+    validated,
+    online,
+    created_at,
+    updated_at,
+    slug
+FROM (
+( SELECT p_user.*, COUNT(p_user.id) as nb_users, 1 as unionsorting
+FROM p_user
+    LEFT JOIN p_u_tagged_t
+        ON p_user.id = p_u_tagged_t.p_user_id
+WHERE
+    p_u_tagged_t.p_tag_id IN (
+                SELECT p_tag.id
+                FROM p_tag
+                    LEFT JOIN p_u_follow_t
+                        ON p_tag.id = p_u_follow_t.p_tag_id
+                WHERE
+                    p_tag.online = true
+                    AND p_u_follow_t.p_user_id = ".$userId."
+    )
+    AND p_user.online = 1
+    AND p_user.id NOT IN (SELECT p_user_id FROM p_u_follow_u WHERE p_user_follower_id = ".$userId.")
+    AND p_user.id <> ".$userId." 
+)
 
+UNION DISTINCT
 
-    // *****************************    AGGREGATIONS / UTILES    ************************* //
+#  Users les plus populaires
+( SELECT p_user.*, COUNT(p_u_follow_u.p_user_id) as nb_users, 2 as unionsorting
+FROM p_user
+    LEFT JOIN p_u_follow_u
+        ON p_user.id = p_u_follow_u.p_user_id
+WHERE
+    p_user.online = 1
+    AND p_user.id NOT IN (SELECT p_user_id FROM p_u_follow_u WHERE p_user_follower_id = ".$userId.")
+    AND p_user.id <> ".$userId."
+GROUP BY p_user.id
+ORDER BY nb_users DESC
+)
+
+ORDER BY unionsorting ASC
+) unionsorting
+
+LIMIT ".$offset.", ".$count."
+        ";
+
+        return $sql;
+    }
+
+    /**
+     * PUsers objects hydratation from raw sql
+     *
+     * @param string $sql
+     * @return PropelCollection
+     */
+    private function hydrateFromSql($sql)
+    {
+        $timeline = array();
+
+        if ($sql) {
+            // Exécution de la requête brute
+            $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
+            $stmt = $con->prepare($sql);
+            $stmt->execute();
+
+            $result = $stmt->fetchAll();
+
+            $collection = new \PropelCollection();
+            foreach ($result as $row) {
+                $user = new PUser();
+                $user->hydrate($row);
+
+                $collection->append($user);
+            }
+        }
+
+        return $collection;
+    }
+
+    /**
+     * Find users by user's suggestion
+     *
+     * @param integer $userId
+     * @param integer $offset
+     * @param integer $limit
+     * @return PropelCollection[PUser]
+     */
+    public function findBySuggestion($userId, $offset = 0, $limit = 10)
+    {
+        $sql = $this->getSuggestionsSql($userId, $offset, $limit);
+        $users = $this->hydrateFromSql($sql);
+
+        return $users;
+    }
+
+    /* ######################################################################################################## */
+    /*                                             AGGREGATIONS                                                 */
+    /* ######################################################################################################## */
     
     /**
-     * Cumule les contraintes associés à un objet en ligne
      *
-     * @return  Query
+     * @return PUserQuery
      */
     public function online()
     {
-        return $this->filterByOnline(true)->filterByPUStatusId(PUStatus::ACTIVED);
+        return $this
+            ->filterByOnline(true)
+            ->filterByPUStatusId(UserConstants::STATUS_ACTIVED);
     }
 
     /**
-     * Ordonne suivant un mot clef défini sur la vue.
      *
-     * @param $keyword      string      Mot clef pour l'ordonnancement issu du html
-     * @return  Query
+     * @param string $keyword
+     * @return PUserQuery
      */
     public function orderWithKeyword($keyword = 'last')
     {
-        return $this->_if('mostFollowed' === $keyword)
-                        ->orderByMostFollowed()
-                    ->_elseif('last' === $keyword)
-                        ->orderByLast()
-                    ->_endif();
+        return $this
+            ->_if('mostFollowed' === $keyword)
+                ->orderByMostFollowed()
+            ->_elseif('last' === $keyword)
+                ->orderByLast()
+            ->_endif();
     }
 
     /**
-     * Ordonne les objets par meilleur note
      *
-     * @return  Query
-     */
-    public function orderByNote()
-    {
-        return $this->orderByNotePos(\Criteria::DESC);
-    }
-
-
-    /**
-     * Ordonne les objets par nombre de followers
-     *
-     * @return  Query
+     * @return PUserQuery
      */
     public function orderByMostFollowed()
     {
-        return $this->joinPUFollowURelatedByPUserId('PUFollowU', \Criteria::LEFT_JOIN)
-                ->withColumn('COUNT(PUFollowU.PUserId)', 'NbFollowers')
-                ->groupBy('Id')
-                ->orderBy('NbFollowers', \Criteria::DESC)
-                ;
+        return $this
+            ->joinPUFollowURelatedByPUserId('PUFollowU', \Criteria::LEFT_JOIN)
+            ->withColumn('COUNT(PUFollowU.PUserId)', 'NbFollowers')
+            ->groupBy('Id')
+            ->orderBy('NbFollowers', 'desc');
     }
 
     /**
-     * Ordonne les objets par derniers créées
      *
+     * @return PUserQuery
      */
     public function orderByLast()
     {
-        return $this->orderByCreatedAt(\Criteria::DESC);
+        return $this->orderByCreatedAt('desc');
     }
 
     /**
-     * Filtre suivant le mot(s) clef(s) défini sur la vue
      *
-     * @param array $keywords
-     * @param \Politizr\Model\PUser $user
-     * @return Query
+     * @param array[string] $keywords
+     * @return PUserQuery
      */
-    public function filterByKeywords($keywords = null, \Politizr\Model\PUser $user = null)
+    public function filterByKeywords($keywords = null)
     {
-        return $this->_if($keywords && in_array('newest', $keywords))
-                        ->filterByNewest()
-                    ->_endif()
-                    ->_if($keywords && in_array('qualified', $keywords))
-                        ->filterByQualified(true)
-                    ->_endif()
-                    ->_if($keywords && in_array('suggestion', $keywords))
-                        ->filterBySuggestion($user)
-                    ->_endif()
-                    ;
+        return $this
+            ->_if($keywords && (in_array('lastDay', $keywords)))
+                ->filterByLastDay()
+            ->_endif()
+            ->_if($keywords && (in_array('lastWeek', $keywords)))
+                ->filterByLastWeek()
+            ->_endif()
+            ->_if($keywords && (in_array('lastMonth', $keywords)))
+                ->filterByLastMonth()
+            ->_endif()
+            ->_if($keywords && in_array('qualified', $keywords))
+                ->filterByQualified(true)
+            ->_endif()
+            ->_if($keywords && in_array('citizen', $keywords))
+                ->filterByQualified(false)
+            ->_endif();
     }
 
     /**
-     * Filtre les objets les plus récents
      *
-     * @return  Query
+     * @return PUserQuery
      */
-    public function filterByNewest()
+    public function filterByLastDay()
     {
         // Dates début / fin
         $now = new \DateTime();
-        $nowMin24 = new \DateTime();
+        $fromAt = new \DateTime();
+        $fromAt->modify('-1 day');
 
-        // -24h tant qu'il n'y a pas de résultats significatifs
-        $nb = 0;
-        while ($nb < 10) {
-            $nb = PUserQuery::create()->online()->filterByCreatedAt(array('min' => $nowMin24, 'max' => $now))->count();
-            $nowMin24->modify('-1 day');
-        }
-
-        return $this->filterByCreatedAt(array('min' => $nowMin24, 'max' => $now));
+        return $this->filterByCreatedAt(array('min' => $fromAt));
     }
 
     /**
-     * Filtre les objets en fonction des tags suivis par le user entré en paramètre.
      *
-     * @return  Query
+     * @return PUserQuery
      */
-    public function filterBySuggestion(\Politizr\Model\PUser $user = null)
+    public function filterByLastWeek()
     {
-        if (null === $user) {
-            return $this;
-        } else {
-            // Récupère la liste des IDs des tags suivis
-            $followedIds = PTagQuery::create()
-                            ->select('Id')
-                            ->filterByOnline(true)
-                            ->filterByPuFollowTPUser($user)
-                            ->find();
+        // Dates début / fin
+        $now = new \DateTime();
+        $fromAt = new \DateTime();
+        $fromAt->modify('-1 week');
 
-            // Récupère les débats
-            $query = $this->usePuTaggedTPUserQuery()
-                            ->filterByPTagId($followedIds->getData())
-                        ->endUse()
-                        // débats non suivis uniquement
-                        ->where('p_user.id NOT IN (SELECT p_user_id FROM p_u_follow_u WHERE p_user_id = ?)', $user->getId())
-                        ->filterById($user->getId(), \Criteria::NOT_EQUAL)
-                        ->setDistinct()
-                        ;
-        
-            return $query;
-        }
+        return $this->filterByCreatedAt(array('min' => $fromAt));
     }
 
     /**
-     * Filtre les objets par géolocalisation
-     * TODO requête géoloc / tags
      *
-     * @param   Geocoder\Result\Geocoded    $geocoded
-     * @return  Query
+     * @return PUserQuery
+     */
+    public function filterByLastMonth()
+    {
+        // Dates début / fin
+        $now = new \DateTime();
+        $fromAt = new \DateTime();
+        $fromAt->modify('-1 month');
+
+        return $this->filterByCreatedAt(array('min' => $fromAt));
+    }
+
+    /**
+     * Filter by array of tags id
+     *
+     * @param array[int]
+     * @return PDDebateQuery
+     */
+    public function filterByTags($tagIds)
+    {
+        return $this
+            ->usePuTaggedTPUserQuery()
+                ->filterByPTagId($tagIds)
+            ->endUse();
+    }
+
+    /**
+     * Filter by geolocalization
+     *
+     * @param Geocoded $geocoded
+     * @return PDDebateQuery
      */
     public function filterByGeolocalization(Geocoded $geocoded)
     {
+    }
+
+    /* ######################################################################################################## */
+    /*                                              FILTERBY IF                                                 */
+    /* ######################################################################################################## */
+
+    /**
+     *
+     * @param boolean $online
+     * @return PUserQuery
+     */
+    public function filterIfOnline($online = null)
+    {
+        return $this
+            ->_if(null !== $online)
+                ->filterByOnline($online)
+            ->_endif();
+    }
+
+    /**
+     *
+     * @param boolean $qualified
+     * @return PUserQuery
+     */
+    public function filterIfQualified($qualified = null)
+    {
+        return $this
+            ->_if(null !== $qualified)
+                ->filterByQualified($qualified)
+            ->_endif();
+    }
+
+    /**
+     *
+     * @param boolean $notifReaction
+     * @return PUserQuery
+     */
+    public function filterIfNotifReaction($notifReaction = null)
+    {
+        return $this
+            ->_if(null !== $notifReaction)
+                ->usePuFollowDdPUserQuery()
+                    ->filterByNotifReaction($notifReaction)
+                ->endUse()
+            ->_endif();
     }
 }

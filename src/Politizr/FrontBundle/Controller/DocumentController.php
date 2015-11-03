@@ -10,19 +10,22 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+use Politizr\Exception\InconsistentDataException;
+
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
-use Politizr\Model\PDocumentQuery;
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PQOrganizationQuery;
 use Politizr\Model\PTagQuery;
 
 
 use Politizr\FrontBundle\Form\Type\PDDebateType;
+use Politizr\FrontBundle\Form\Type\PDDebatePhotoInfoType;
 use Politizr\FrontBundle\Form\Type\PDReactionType;
+use Politizr\FrontBundle\Form\Type\PDReactionPhotoInfoType;
 
 /**
- * Gestion des documents: débats, réactions, commentaires.
+ * Document controller: debates, reactions, comments
  *
  * @author Lionel Bouzonville
  */
@@ -34,28 +37,6 @@ class DocumentController extends Controller
     /* ######################################################################################################## */
 
     /**
-     * Fil débat
-     */
-    public function debateFeedAction($slug)
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** debateFeedAction');
-        $logger->info('$slug = '.print_r($slug, true));
-
-        $debate = PDDebateQuery::create()->filterBySlug($slug)->findOne();
-        if (!$debate) {
-            throw new NotFoundHttpException('Debate "'.$slug.'" not found.');
-        }
-        if (!$debate->getOnline()) {
-            throw new NotFoundHttpException('Debate "'.$slug.'" not online.');
-        }
-
-        return $this->render('PolitizrFrontBundle:Document:debateFeed.html.twig', array(
-                    'debate' => $debate
-        ));
-    }
-
-    /**
      * Détail débat
      */
     public function debateDetailAction($slug)
@@ -63,6 +44,11 @@ class DocumentController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** debateDetailAction');
         $logger->info('$slug = '.print_r($slug, true));
+
+        $suffix = $this->get('politizr.tools.global')->computeProfileSuffix();
+        if (null === $suffix) {
+            return $this->redirect($this->generateUrl('Login'));
+        }
 
         $debate = PDDebateQuery::create()->filterBySlug($slug)->findOne();
         if (!$debate) {
@@ -78,16 +64,17 @@ class DocumentController extends Controller
         $debate->setNbViews($debate->getNbViews() + 1);
         $debate->save();
 
-        // Explosion des paragraphes / http://stackoverflow.com/questions/8757826/i-need-to-split-text-delimited-by-paragraph-tag
-        $description = str_replace('</p>', '', $debate->getDescription());
-        $paragraphs = explode('<p>', $description);
-        array_shift($paragraphs);
+        // Paragraphs explode
+        $utilsManager = $this->get('politizr.tools.global');
+        $paragraphs = $utilsManager->explodeParagraphs($debate->getDescription());
 
-        return $this->render('PolitizrFrontBundle:Document:debateDetail.html.twig', array(
-                    'debate' => $debate,
-                    'paragraphs' => $paragraphs,
+        return $this->render('PolitizrFrontBundle:Debate:detail.html.twig', array(
+            'profileSuffix' => $this->get('politizr.tools.global')->computeProfileSuffix(),
+            'debate' => $debate,
+            'paragraphs' => $paragraphs,
         ));
     }
+
 
     /**
      * Détail réaction
@@ -97,6 +84,11 @@ class DocumentController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** reactionDetailAction');
         $logger->info('$slug = '.print_r($slug, true));
+
+        $suffix = $this->get('politizr.tools.global')->computeProfileSuffix();
+        if (null === $suffix) {
+            return $this->redirect($this->generateUrl('Login'));
+        }
 
         $reaction = PDReactionQuery::create()->filterBySlug($slug)->findOne();
         if (!$reaction) {
@@ -117,71 +109,95 @@ class DocumentController extends Controller
         $reaction->setNbViews($reaction->getNbViews() + 1);
         $reaction->save();
 
-        // Explosion des paragraphes / http://stackoverflow.com/questions/8757826/i-need-to-split-text-delimited-by-paragraph-tag
-        $description = str_replace('</p>', '', $reaction->getDescription());
-        $paragraphs = explode('<p>', $description);
-        array_shift($paragraphs);
+        // Paragraphs explode
+        $utilsManager = $this->get('politizr.tools.global');
+        $paragraphs = $utilsManager->explodeParagraphs($reaction->getDescription());
 
-        return $this->render('PolitizrFrontBundle:Document:reactionDetail.html.twig', array(
-                    'reaction' => $reaction,
-                    'debate' => $debate,
-                    'paragraphs' => $paragraphs,
+        return $this->render('PolitizrFrontBundle:Reaction:detail.html.twig', array(
+            'profileSuffix' => $this->get('politizr.tools.global')->computeProfileSuffix(),
+            'reaction' => $reaction,
+            'debate' => $debate,
+            'paragraphs' => $paragraphs,
         ));
     }
 
     /**
-     * Détail auteur
+     * Fil débat
      */
-    public function userDetailAction($slug)
+    public function debateFeedAction($slug)
     {
         $logger = $this->get('logger');
-        $logger->info('*** userDetailAction');
+        $logger->info('*** debateFeedAction');
         $logger->info('$slug = '.print_r($slug, true));
 
-        $user = PUserQuery::create()->filterBySlug($slug)->findOne();
-        if (!$user) {
-            throw new NotFoundHttpException('User "'.$slug.'" not found.');
-        }
-        if (!$user->getOnline()) {
-            throw new NotFoundHttpException('User "'.$slug.'" not online.');
+        $suffix = $this->get('politizr.tools.global')->computeProfileSuffix();
+        if (null === $suffix) {
+            return $this->redirect($this->generateUrl('Login'));
         }
 
-        $user->setNbViews($user->getNbViews() + 1);
-        $user->save();
+        $debate = PDDebateQuery::create()->filterBySlug($slug)->findOne();
+        if (!$debate) {
+            throw new NotFoundHttpException('Debate "'.$slug.'" not found.');
+        }
+        if (!$debate->getOnline()) {
+            throw new NotFoundHttpException('Debate "'.$slug.'" not online.');
+        }
 
-        // PDDebate (collection)
-        $debates = $user->getDebates();
+        // get debate feed
+        $timelineService = $this->get('politizr.functional.timeline');
 
-        // PDReaction (collection)
-        $reactions = $user->getReactions();
+        $timeline = $timelineService->generateDebateFeedTimeline($debate->getId());
+        $timelineDateKey = $timelineService->generateTimelineDateKey($timeline);
 
-        return $this->render('PolitizrFrontBundle:Document:userDetail.html.twig', array(
-                    'user' => $user,
-                    'debates' => $debates,
-                    'reactions' => $reactions
-            ));
+        $noResult = false;
+        if (count($timeline) == 0) {
+            $noResult = true;
+        }
+
+        return $this->render('PolitizrFrontBundle:Debate:feed.html.twig', array(
+            'profileSuffix' => $this->get('politizr.tools.global')->computeProfileSuffix(),
+            'debate' => $debate,
+            'timelineDateKey' => $timelineDateKey,
+            'noResult' => $noResult,
+        ));
     }
+
 
     /* ######################################################################################################## */
     /*                                              ÉDITION DEBAT                                               */
     /* ######################################################################################################## */
 
     /**
-     *  Création d'un nouveau débat
+     * Création d'un nouveau débat
      */
     public function debateNewAction()
     {
         $logger = $this->get('logger');
         $logger->info('*** debateNewAction');
 
-        // Service associé a la création d'une réaction
-        $debate = $this->get('politizr.service.document')->debateNew();
+        $user = $this->getUser();
+        if (!$user) {
+            throw new InconsistentDataException('Current user not found.');
+        }
 
-        return $this->redirect($this->generateUrl('DebateDraftEdit', array('id' => $debate->getId())));
+        // search "as new" already created debate
+        $debate = PDDebateQuery::create()
+                    ->filterByPUserId($user->getId())
+                    ->where('p_d_debate.created_at = p_d_debate.updated_at')
+                    ->findOne();
+
+        if (!$debate) {
+            $debate = $this->get('politizr.functional.document')->createDebate();
+        }
+
+        return $this->redirect($this->generateUrl('DebateDraftEdit'.$this->get('politizr.tools.global')->computeProfileSuffix(), array(
+            'id' => $debate->getId()
+        )));
     }
 
     /**
-     *  Edition d'un débat
+     * Edition d'un débat
+     * @todo remove id to manage with slug > force user to set a title when he creates a new debate?
      */
     public function debateEditAction($id)
     {
@@ -189,29 +205,27 @@ class DocumentController extends Controller
         $logger->info('*** debateEditAction');
         $logger->info('$id = '.print_r($id, true));
 
-        // Récupération user courant
         $user = $this->getUser();
 
-        // *********************************** //
-        //      Récupération objets vue
-        // *********************************** //
-        $document = PDocumentQuery::create()->findPk($id);
-        if (!$document) {
-            throw new InconsistentDataException('Document n°'.$id.' not found.');
-        }
-        if (!$document->isOwner($user->getId())) {
-            throw new InconsistentDataException('Document n°'.$id.' is not yours.');
-        }
-        if ($document->getPublished()) {
-            throw new InconsistentDataException('Document n°'.$id.' is published and cannot be edited anymore.');
-        }
-
         $debate = PDDebateQuery::create()->findPk($id);
+        if (!$debate) {
+            throw new InconsistentDataException('Debate n°'.$id.' not found.');
+        }
+        if (!$debate->isOwner($user->getId())) {
+            throw new InconsistentDataException('Debate n°'.$id.' is not yours.');
+        }
+        if ($debate->getPublished()) {
+            throw new InconsistentDataException('Debate n°'.$id.' is published and cannot be edited anymore.');
+        }
+        
         $form = $this->createForm(new PDDebateType(), $debate);
+        $formPhotoInfo = $this->createForm(new PDDebatePhotoInfoType(), $debate);
 
-        return $this->render('PolitizrFrontBundle:Document:debateEdit.html.twig', array(
+        return $this->render('PolitizrFrontBundle:Debate:edit.html.twig', array(
+            'profileSuffix' => $this->get('politizr.tools.global')->computeProfileSuffix(),
             'debate' => $debate,
             'form' => $form->createView(),
+            'formPhotoInfo' => $formPhotoInfo->createView(),
             ));
     }
 
@@ -220,21 +234,38 @@ class DocumentController extends Controller
     /* ######################################################################################################## */
 
     /**
-     *  Création d'une nouvelle réaction
+     * Création d'une nouvelle réaction
      */
     public function reactionNewAction($debateId, $parentId)
     {
         $logger = $this->get('logger');
         $logger->info('*** reactionNewAction');
 
-        // Service associé a la création d'une réaction
-        $reaction = $this->get('politizr.service.document')->reactionNew($debateId, $parentId);
+        $user = $this->getUser();
+        if (!$user) {
+            throw new InconsistentDataException('Current user not found.');
+        }
 
-        return $this->redirect($this->generateUrl('ReactionDraftEdit', array('id' => $reaction->getId())));
+        // search "as new" already created reaction
+        $reaction = PDReactionQuery::create()
+                    ->filterByPUserId($user->getId())
+                    ->filterByPDDebateId($debateId)
+                    ->filterByParentReactionId($parentId)
+                    ->where('p_d_reaction.created_at = p_d_reaction.updated_at')
+                    ->findOne();
+
+        if (!$reaction) {
+            $reaction = $this->get('politizr.functional.document')->createReaction($debateId, $parentId);
+        }
+
+        return $this->redirect($this->generateUrl('ReactionDraftEdit'.$this->get('politizr.tools.global')->computeProfileSuffix(), array(
+            'id' => $reaction->getId()
+        )));
     }
 
     /**
-     *  Edition d'une réaction
+     * Edition d'une réaction
+     * @todo remove id to manage with slug > force user to set a title when he creates a new debate?
      */
     public function reactionEditAction($id)
     {
@@ -242,78 +273,76 @@ class DocumentController extends Controller
         $logger->info('*** reactionEditAction');
         $logger->info('$id = '.print_r($id, true));
 
-        // Récupération user courant
         $user = $this->getUser();
 
-        $document = PDocumentQuery::create()->findPk($id);
-        if (!$document) {
-            throw new InconsistentDataException('Document n°'.$id.' not found.');
+        $reaction = PDReactionQuery::create()->findPk($id);
+        if (!$reaction) {
+            throw new InconsistentDataException('Reaction n°'.$id.' not found.');
         }
-        if (!$document->isOwner($user->getId())) {
-            throw new InconsistentDataException('Document n°'.$id.' is not yours.');
+        if (!$reaction->isOwner($user->getId())) {
+            throw new InconsistentDataException('Reaction n°'.$id.' is not yours.');
         }
-        if ($document->getPublished()) {
-            throw new InconsistentDataException('Document n°'.$id.' is published and cannot be edited anymore.');
+        if ($reaction->getPublished()) {
+            throw new InconsistentDataException('Reaction n°'.$id.' is published and cannot be edited anymore.');
         }
 
+        // parent document for compared edition
+        if (null == $reaction->getParentReactionId()) {
+            $parent = $reaction->getDebate();
+        } else {
+            $parent = PDReactionQuery::create()->findPk($reaction->getParentReactionId());
+        }
+
+        // Paragraphs explode
+        $utilsManager = $this->get('politizr.tools.global');
+        $paragraphs = $utilsManager->explodeParagraphs($parent->getDescription());
+
+        // forms
         $reaction = PDReactionQuery::create()->findPk($id);
         $form = $this->createForm(new PDReactionType(), $reaction);
+        $formPhotoInfo = $this->createForm(new PDReactionPhotoInfoType(), $reaction);
 
-        return $this->render('PolitizrFrontBundle:Document:reactionEdit.html.twig', array(
+        return $this->render('PolitizrFrontBundle:Reaction:edit.html.twig', array(
+            'profileSuffix' => $this->get('politizr.tools.global')->computeProfileSuffix(),
             'reaction' => $reaction,
+            'parent' => $parent,
+            'paragraphs' => $paragraphs,
             'form' => $form->createView(),
+            'formPhotoInfo' => $formPhotoInfo->createView(),
             ));
     }
 
     /* ######################################################################################################## */
-    /*                             PAGE ORGANISATION / PARTI POLITIQUE                                          */
+    /*                                                  DRAFTS                                                  */
     /* ######################################################################################################## */
 
     /**
-     *  Détail d'une organisation
+     * Drafts
      */
-    public function organizationAction($slug)
+    public function draftsAction()
     {
         $logger = $this->get('logger');
-        $logger->info('*** organizationAction');
-        $logger->info('$slug = '.print_r($slug, true));
+        $logger->info('*** draftsAction');
 
-        $organization = PQOrganizationQuery::create()->filterBySlug($slug)->findOne();
-        if (!$organization) {
-            throw new NotFoundHttpException('Organization "'.$slug.'" not found.');
-        }
-        if (!$organization->getOnline()) {
-            throw new NotFoundHttpException('Organization "'.$slug.'" not online.');
-        }
-
-        return $this->render('PolitizrFrontBundle:Document:organization.html.twig', array(
-            'organization' => $organization,
-            ));
+        return $this->render('PolitizrFrontBundle:Document:drafts.html.twig', array(
+            'profileSuffix' => $this->get('politizr.tools.global')->computeProfileSuffix(),
+        ));
     }
 
     /* ######################################################################################################## */
-    /*                                              PAGE TAG                                                    */
+    /*                                                 CONTRIBUTIONS                                            */
     /* ######################################################################################################## */
 
     /**
-     *  Détail d'un tag
+     * Debates & Reactions
      */
-    public function tagAction($slug)
+    public function myPublicationsAction()
     {
         $logger = $this->get('logger');
-        $logger->info('*** tagAction');
-        $logger->info('$slug = '.print_r($slug, true));
+        $logger->info('*** myPublicationsAction');
 
-        $tag = PTagQuery::create()->filterBySlug($slug)->findOne();
-        if (!$tag) {
-            throw new NotFoundHttpException('Tag "'.$slug.'" not found.');
-        }
-        if (!$tag->getOnline()) {
-            throw new NotFoundHttpException('Tag "'.$slug.'" not online.');
-        }
-
-        return $this->render('PolitizrFrontBundle:Document:tag.html.twig', array(
-            'tag' => $tag,
-            ));
+        return $this->render('PolitizrFrontBundle:Document:myPublications.html.twig', array(
+            'profileSuffix' => $this->get('politizr.tools.global')->computeProfileSuffix(),
+        ));
     }
 }

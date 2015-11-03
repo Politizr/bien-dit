@@ -1,0 +1,50 @@
+@import "_global/colors";
+@import "_restive/modal1000";
+@import "_restive/actions1000";
+@import "_restive/post1000";
+@import "_restive/timeline1000";
+@import "_restive/profile1000";
+@import "_restive/form1000";
+
+//////presets
+body.css1000 .wrapper {	width: 100%;	position: relative;}
+
+body.css1000 #header {
+	width: 100%;
+	margin-left: auto;
+	left: auto;
+}
+
+body.css1000 #content {	padding-top: 60px;	width: calc(100% - 260px);}
+body.css1000 #content #notifications {width: calc(100% - 260px);}
+body.css1000 #illustration_l, body.css1000 #illustration_r {display: none;}
+body.css1000 #footer {	width: calc(100% - 260px);}
+body.css1000 #goUpHolder, body.css1000 .copyrightHolder { display: none;}
+
+////// edit
+// no "new debate" or "draft" link in menu
+body.css1000 #menu .pad40 a {display: none;}
+body.css1000 #menu .pad40 a.linkMyPolitizr, body.css1000 #menu .pad40 a.miniLink {display: block;}
+
+// no help
+body.css760 i.iconQuestion {display: none;}
+
+//////header
+body.css1000 #headerCenter {	width: calc(100% - 342px);}
+body.css1000 #logged {display: none;}
+
+//////footer
+body.css1000 #footerLeft {
+	float: left;
+	width: calc(100% - 20px);
+	padding-left: 20px;
+}
+
+body.css1000 #footerRight {
+	float: left;
+	width: calc(100% - 20px);
+	padding-left: 20px;
+	text-align: left;
+	clear: both;
+	margin-top: 10px;
+}

@@ -1,0 +1,23 @@
+{% for formMandate in formMandateViews %}
+    <div class="editMandateItem">
+        <form method="POST" name="formMandateUpdate" id="formMandateUpdate">
+            {{ form_errors(formMandate) }}
+
+            <div class="editMandateWhatAndWhere">
+                {{ form_widget(formMandate.p_q_mandate, { 'attr': {'data-jcf': '{"wrapNative": false, "fakeDropInBody": false, "maxVisibleItems": 10, "flipDropToFit": false}'}}) }}
+                {{ form_widget(formMandate.localization, { 'attr': {'placeholder': 'lieu ou circonscription'}}) }}
+            </div>
+            <span class="dea">de</span>
+            <div class="editMandatePeriod">
+                {{ form_widget(formMandate.begin_at, { 'maxlength': 4, 'attr': {'placeholder': 'AAAA'}}) }}
+                <span class="dea">à</span>
+                {{ form_widget(formMandate.end_at, { 'maxlength': 4, 'attr': {'placeholder': 'AAAA'}}) }}
+            </div>
+            <div class="mandateActions">
+                <a class="editMandateDeleteItem" action="mandateDelete" subjectId="{{ formMandate.vars.value.id }}"><i class="iconRemove"></i>Supprimer ce mandat</a>
+                <a class="editMandateCreate" action="mandateUpdate"><i class="iconCheck"></i>Enregistrer</a>
+            </div>    
+            {{ form_rest(formMandate) }}
+        </form>
+    </div>
+{% endfor %}

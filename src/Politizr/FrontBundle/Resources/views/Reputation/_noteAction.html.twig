@@ -1,0 +1,10 @@
+{# Gestion Twig des notations #}
+{% if type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE') %} 
+    {{ object | linkNoteDebate }}
+{% elseif type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION') %} 
+    {{ object | linkNoteReaction }}
+{% elseif type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE_COMMENT') %} 
+    {{ object | linkNoteComment }}
+{% elseif type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION_COMMENT') %} 
+    {{ object | linkNoteComment }}
+{% endif %}

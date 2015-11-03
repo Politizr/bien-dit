@@ -1,38 +1,18 @@
 {% extends_admingenerated "PolitizrAdminBundle:PDDebateEdit:index.html.twig" %}
 
-{% block scripts_head %}
-    {{ parent() }}
-
-    <!-- TinyMCE -->
-    {% include "PolitizrAdminBundle::tinymce-full.html.twig" %}
-{% endblock %}
-
-{# Autocomplete CSS #}
-{% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/ui-lightness/jquery-ui-1.10.4.custom.css') }}">
-
-    <!-- nested set jquery plugin style -->
-    <link rel="stylesheet" href="{{ asset('bundles/politizradmin/css/nested.css') }}">
-{% endblock %}
-
-
 {% block javascripts %}
     {{ parent() }}
 
-    {# TODO > gestion JS du nested set des réactions #}
-    <script src="{{ asset("bundles/politizradmin/js/jquery-sortable.js") }}"></script>
+    {# TinyMCE #}
+    {% include "PolitizrAdminBundle::tinymce-full.html.twig" %}
+{% endblock %}
 
+{% block object_actions_script_container %}
     <script>
-        $(function () {
-            $('.table-sortable').sortable({
-              containerSelector: 'table',
-              itemPath: '> tbody',
-              itemSelector: 'tr',
-              placeholder: '<tr class="placeholder"/>'
-            })
-        })
+        var nbZones = 1;
+        var xhrRoute = ADMIN_ROUTE_TAG_LISTING;
     </script>
 
-{% endblock %}
-  
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/politizr/tag/accentMap.js') }}"></script>    
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/politizr/tag/editTags.js') }}"></script>  
+{% endblock object_actions_script_container %}

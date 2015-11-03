@@ -1,0 +1,100 @@
+generator:                  admingenerator.generator.propel
+params:
+    model:                  Politizr\Model\PRBadgeFamily
+    namespace_prefix:       Politizr
+    concurrency_lock:       ~
+    bundle_name:            AdminBundle
+    pk_requirement:         ~
+    fields:
+        id:
+            label:          ID
+        p_r_badge_type_id:
+            label:          Famille
+        p_r_badge_type:
+            label:          Famille
+        title:
+            label:          Titre
+        description:
+            label:          Description
+        created_at:
+            label:          Création
+        updated_at:
+            label:          Mis à jour
+    object_actions:
+        delete:             ~
+    batch_actions:
+        delete:             ~
+builders:
+    list:
+        params:
+            title:                              Liste des familles de badge
+            max_per_page:                       50
+            sort:                               [ title, ASC ]
+            display:                            [ title, p_r_badge_type, description ]
+            # filtersMode:                        top
+            filters:                            [ p_r_badge_type ]
+            actions:
+                new:                            ~
+            object_actions:
+                show:                           ~
+                edit:                           ~
+                delete:                         ~
+    excel:
+        params: ~
+        filename: ~
+        filetype: ~
+    new:
+        params:
+            title:                              "Création d'une famille de badge"
+            display:
+                "Champs principaux":            [ [ p_r_badge_type ], [ title ] ]
+                "Champs complémentaires":       [ [ description ] ]
+            fields:
+                p_r_badge_type:
+                    addFormOptions:
+                        query:                  \Politizr\Model\PRBadgeTypeQuery::create()->orderByRank() 
+            actions:
+              save:                             ~
+              list:                             ~
+    edit:
+        params:
+            title:                              "Edition de la famille de badge '{{ PRBadgeFamily.title }}'"
+            tabs:
+                "Contenu":
+                    "Texte":                    [ [ title ], [ description ] ]
+                "Attributs":
+                    "Création":                 [ [ created_at, updated_at ] ]
+            fields:
+                created_at:
+                    addFormOptions:
+                      widget:                   single_text
+                updated_at:
+                    addFormOptions:
+                      widget:                   single_text
+            actions:
+                save: ~
+                list: ~
+    show:
+        params:
+            title:                              "Visualisation du type de badge '{{ PRBadgeFamily.title }}'"
+            tabs:
+                "Contenu":
+                    "Texte":                    [ [ title ], [ description ] ]
+                "Badges":
+                    "Badges associés":          [ ]
+                "Attributs":
+                    "Création":                 [ [ created_at, updated_at ] ]
+            fields:
+                block_badges:
+                    label:                      "Badges"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+            actions:
+              list:                             ~
+              delete:                           ~
+    actions:
+        params:
+            object_actions:
+                delete: ~
+            batch_actions:
+                delete: ~

@@ -1,0 +1,154 @@
+{# @todo refactor layout management for profile screens #}
+{% set layout = 'PolitizrFrontBundle::layoutPublic.html.twig' %}
+{% if (isGrantedE()) %}
+    {% set layout = 'PolitizrFrontBundle::layoutConnected.html.twig' %}
+    {% set profileSuffix = 'E' %}
+    {% set reactionPath = 'ReactionDraftNewE' %}
+{% elseif (isGrantedC()) %}
+    {% set layout = 'PolitizrFrontBundle::layoutConnected.html.twig' %} 
+    {% set profileSuffix = 'C' %}
+    {% set reactionPath = 'ReactionDraftNewC' %}
+{% endif %}
+{% extends layout %}
+
+{% block title %}
+    {{ parent() }} - {{ reaction.title }}
+{% endblock title %}
+
+{% block header %}
+    {% if app.user and app.user | isAuthorizedToReportAbuse %}
+        {% embed 'PolitizrFrontBundle:Navigation\\Header:_headerConnected.html.twig' %}
+            {% block abuse %}
+                {% include 'PolitizrFrontBundle:Monitoring:_abuseLink.html.twig' with { 'subjectId': reaction.id, 'type': reaction.type } only %}
+            {% endblock abuse %}
+        {% endembed %}
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{% block connexionBox %}
+    {% if not is_granted('ROLE_PROFILE_COMPLETED') %}
+        {{ render(controller('PolitizrFrontBundle:Security:login')) }}
+    {% endif %}
+{% endblock %}
+
+{% block fixedActions %}
+    <div id="fixedActions">
+        {% if app.user and app.user.id == reaction.pUserId %}
+            <div class="actionAskForUpdate">
+                <a action="modalAskForUpdate" type="{{ constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION') }}" subjectId="{{ reaction.id }}"><i class="iconPublish"></i>Demande de modification</a>
+            </div>
+        {% endif %}
+        {% if app.user and app.user | isAuthorizedToReact(debate) %}
+            <a class="actionReact" href="{{ path(reactionPath, { 'debateId': debate.id, 'parentId': reaction.id }) }}">
+                <i class="iconReaction"></i>réagir
+            </a>
+        {% endif %}
+        <a class="actionGotoDebate" href="{{ path('DebateFeed', { 'slug': debate.slug }) }}">
+            <i class="iconTimeline"></i>fil du débat
+        </a>
+        <div class="subscribe{% if app.user.id == reaction.pUserId %} noSelfSubscribe{% endif %}">
+            {{ debate | linkSubscribeDebate }}
+        </div>
+    </div>
+{% endblock fixedActions %}
+
+{% block main %}
+    <div id="main">
+        <div class="postSummary">
+            <div class="pad40">
+                <div class="postSummaryHeader">
+                    <div class="readingTime">
+                        <i class="iconTime"></i>{{ reaction | readingTime }}
+                    </div>
+                    <div class="postNote">
+                        <div class="notePlus">
+                            {{ reaction.notePos }}<i class="iconNotePlus"></i>
+                        </div>
+                        <div class="noteMinus">
+                            <i class="iconNoteMinus"></i>{{ reaction.noteNeg }}
+                        </div>
+                    </div>
+                </div>
+                <div class="postSummaryFooter">
+                    <div class="postSummaryGotoParent">
+                        {{ reaction | linkParentReaction }}
+                    </div>
+                    <div class="postSummaryTagList">
+                        {{ reaction | docTags }}
+                    </div>
+                    <div class="postSummaryTitle">
+                        {{ reaction.title }}
+                    </div>
+                    <div class="postSummaryActivity">
+                        <div class="reactionsCounter">
+                            <i class="iconReaction"></i>
+                            {{ reaction | nbReactions }}
+                        </div>
+                        <div class="commentsCounter" action="paragraphCommentsCounter">
+                            <i class="iconComment"></i>
+                            {{ reaction | nbComments }}
+                        </div>
+                    </div>
+                </div>
+            </div>                      
+            {{ reaction | image('debate_header') }}
+        </div>
+        <div id="illustration_l">
+            {{ reaction | image('debate_header') }}
+        </div>
+        <div id="illustration_r">
+            {{ reaction | image('debate_header') }}
+        </div>
+
+        {% include 'PolitizrFrontBundle:Document:_copyright.html.twig' with { 'copyright': reaction.copyright } %}
+
+        <div id="lateralHolder">
+            <div id="postAuthor">
+                {% include 'PolitizrFrontBundle:User:_author.html.twig' with { 'user': reaction.user } only %}
+            </div>
+            <div id="postInfos">
+                {% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'dateTimeAt': reaction.publishedAt } only %}
+            </div>
+        </div>
+
+        <div id="postText">
+            {% for paragraph in paragraphs %}
+                <div id="p-{{ loop.index }}" class="paragraph">
+                    <div class="counter">
+                        {% include 'PolitizrFrontBundle:Comment:_counter.html.twig' with { 'document': reaction, 'paragraphNo': loop.index } only %}
+                    </div>
+                    {{ paragraph | purify }}
+                    <div class="comments"></div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div id="giveNote">
+            <span>noter cette publication : </span>
+            <div class="notes postNote withLoaderInside">
+                <div class="ajaxLoader" style="display: none;">
+                    <div class="ajaxLoaderSpinner"></div><div class="ajaxLoaderBg"></div><div class="ajaxLoaderBlockClick"></div>
+                </div>                
+                {{ reaction | linkNoteReaction }}
+            </div>
+        </div>
+
+        {% if reaction.countReactions(true, true) %}
+            {% include 'PolitizrFrontBundle:Reaction:_listReactionsToPost.html.twig' with { 'document': reaction } only %}
+        {% endif %}
+
+    </div>
+{% endblock main %}
+
+{% block javascriptFooter %}
+    {{ parent() }}
+
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/reputation/notation.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/document/comments.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock javascriptFooter %}

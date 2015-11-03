@@ -1,0 +1,37 @@
+services:
+    politizr.manager.user:
+        class: Politizr\FrontBundle\Lib\Manager\UserManager
+        arguments:
+            - @security.encoder_factory
+            - @fos_user.util.username_canonicalizer
+            - @fos_user.util.email_canonicalizer
+            - @logger
+
+    politizr.manager.document:
+        class: Politizr\FrontBundle\Lib\Manager\DocumentManager
+        arguments: [ @politizr.tools.global, @logger ]
+
+    politizr.manager.tag:
+        class: Politizr\FrontBundle\Lib\Manager\TagManager
+        arguments: [ @logger ]
+
+    politizr.manager.qualification:
+        class: Politizr\FrontBundle\Lib\Manager\QualificationManager
+        arguments: [ @logger ]
+
+    politizr.manager.reputation:
+        class: Politizr\FrontBundle\Lib\Manager\ReputationManager
+        arguments: [ @logger ]
+
+    politizr.manager.order:
+        class: Politizr\FrontBundle\Lib\Manager\OrderManager
+        arguments: [ @logger ]
+
+    politizr.manager.notification:
+        class: Politizr\FrontBundle\Lib\Manager\NotificationManager
+        arguments: [ @logger ]
+
+    politizr.manager.monitoring:
+        class: Politizr\FrontBundle\Lib\Manager\MonitoringManager
+        arguments: [ @logger ]
+

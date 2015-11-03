@@ -1,9 +1,0 @@
-################################################################################
-# RECHERCHE
-################################################################################
-SearchPage:
-    pattern:  /search-page.{_format}
-    defaults: { _controller: PolitizrFrontBundle:Xhr\XhrSearch:searchPage, page: 1, _format: json }
-    requirements:
-        _format:        (xml|json)
-        _method:        POST

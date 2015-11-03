@@ -1,6 +1,7 @@
 imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
+    - { resource: services.yml }
     - { resource: @GlorpenPropelBundle/Resources/config/config.yml }
 
 parameters:
@@ -19,11 +20,32 @@ framework:
     form:            true
     csrf_protection: true
     validation:      { enabled: true }
-    templating:      { engines: ['twig'] } #assets_version: SomeVersionScheme
 
     default_locale:  %locale%
     # trust_proxy_headers: false # Should Request object should trust proxy headers (X_FORWARDED_FOR/HTTP_CLIENT_IP)
-    session:         true
+
+    # http://symfony.com/doc/current/reference/configuration/framework.html#session
+    session:
+        name: pzr
+        # 3 months
+        cookie_lifetime: 7776000
+        # 3 hours
+        gc_maxlifetime: 10800
+        # http://vvv.tobiassjosten.net/symfony/keep-symfony2-sessions-through-cache-clear/
+        save_path: %kernel.root_dir%/sessions
+        # http only
+        cookie_httponly: true
+
+    # admingenerator assetic packages definition
+    templating:
+        engines: ['twig']
+        packages:
+            admingenerator_css:
+                version: 1.0
+                version_format: "%%1$s?v%%2$s" 
+            admingenerator_js:
+                version: 1.0
+                version_format: "%%1$s?v%%2$s"
 
 # Twig Configuration
 twig:
@@ -47,35 +69,18 @@ twig:
 # Assetic Configuration
 assetic:
     filters:
+        uglifyjs2:
+            bin:            /usr/bin/uglifyjs
+        uglifycss:
+            bin:            /usr/bin/uglifycss
         cssrewrite:         ~
-        sass:
-            bin:            /usr/local/bin/sass
-            apply_to:       "\.scss$"
-        less:
-            node:           /usr/bin/nodejs
-            node_paths:     [/usr/local/lib/node_modules]
-            apply_to:       "\.less$"
-
-# Twitter Bootstrap config
-braincrafted_bootstrap:
-    output_dir:             bootstrap
-    assets_dir:             %kernel.root_dir%/../vendor/twbs/bootstrap
-    jquery_path:            %kernel.root_dir%/../web/bundles/politizrfront/js/jquery-1.11.1.min.js
-    less_filter:            sass # "less", "lessphp", "sass" or "none"
-    fonts_dir:              %kernel.root_dir%/../web/fonts
-    icon_prefix:            fa
-    fontawesome_dir:        %kernel.root_dir%/../vendor/fortawesome/font-awesome
-    auto_configure:
-        assetic:            true
-        twig:               true
-        knp_menu:           true
-        knp_paginator:      true
-    customize:
-        variables_file:     ~
-        bootstrap_output:   %kernel.root_dir%/Resources/less/bootstrap.less
-        bootstrap_template: BraincraftedBootstrapBundle:Bootstrap:bootstrap.less.twig
-
-
+#         sass:
+#             bin:            /usr/local/bin/sass
+#             apply_to:       "\.scss$"
+#         less:
+#             node:           /usr/bin/nodejs
+#             node_paths:     [/usr/local/lib/node_modules]
+#             apply_to:       "\.less$"
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -101,26 +106,21 @@ jms_security_extra:
 
 # Propel Configuration
 propel:
-    # The next two lines are useless if you are using Composer
-    # to manage your dependencies
-    path:       "%kernel.root_dir%/../vendor/propel"
-    phing_path: "%kernel.root_dir%/../vendor/phing"
-
-    #db connection
     dbal:
+        default_connection:         default
         connections:
             default:
-               driver:             mysql
-               user:               %database_user%
-               password:           %database_password%
-               dsn:                mysql:host=%database_host%;dbname=%database_name%
-               options:
-                   ATTR_PERSISTENT: false
-               attributes:
-                   ATTR_EMULATE_PREPARES: true
-               settings:
-                   charset:        { value: UTF8 }
-                   queries:        { query: 'set names utf8' }
+                driver:             %database_driver%
+                user:               %database_user%
+                password:           %database_password%
+                dsn:                %database_driver%:host=%database_host%;dbname=%database_name%
+                options:
+                    ATTR_PERSISTENT: false
+                attributes:
+                    ATTR_EMULATE_PREPARES: true
+                settings:
+                    charset:        { value: UTF8 }
+                    queries:        { query: 'set names utf8' }
 
 # FOSUser Configuration
 fos_user:
@@ -140,20 +140,76 @@ knp_menu:
     templating:         false # if true, enables the helper for PHP templates
     default_renderer:   twig # The renderer to use, list is also available by default
 
-# AdminGeneratorGenerator Configuration
+# Admin Generator
+# https://github.com/symfony2admingenerator/GeneratorBundle/blob/master/Resources/doc/installation/configuration.md
 admingenerator_generator:
-    base_admin_template:  PolitizrAdminBundle::base_admin.html.twig
-    dashboard_welcome_path: admin_homepage
+    ## Global
+    use_doctrine_orm: false
+    use_doctrine_odm: false
+    use_propel: true
+    overwrite_if_exists: false
+    base_admin_template: PolitizrAdminBundle::base_admin.html.twig
+    dashboard_route: PolitizrAdminHomepage
+    login_route: fos_user_security_login
+    logout_route: fos_user_security_logout
+    exit_route: ~
+    generator_cache: ~
 
-#    templates_dirs:       [ %kernel.root_dir%/../vendor/cedriclombardot/admingenerator-oldtheme-bundle/Admingenerator/OldThemeBundle/Resources/templates ]
-    use_propel:           true
-    use_doctrine_orm:     false
-    use_doctrine_odm:     false
-
-    login_path:           fos_user_security_login
-    logout_path:          fos_user_security_logout
-
+    ## Twig and Templates
+    twig:
+        use_form_resources: true
+        use_localized_date: false
+        date_format: Y-m-d
+        datetime_format: Y-m-d H:i:s
+        localized_date_format: medium
+        localized_datetime_format: medium
+        number_format:
+            decimal: 0
+            decimal_point: ,
+            thousand_separator: .
+    templates_dirs: []
+    stylesheets: [] # array of {path: path_to_stylesheet, media: all}
+    javascripts: [] # array of {path: path_to_javascript, route: route_name, routeparams: [value1, value2]}
     form_types:
+        doctrine_orm:
+            datetime:     datetime 
+            vardatetime:  datetime 
+            datetimetz:   datetime 
+            date:         datetime 
+            time:         time 
+            decimal:      number 
+            float:        number 
+            integer:      integer 
+            bigint:       integer 
+            smallint:     integer 
+            string:       text 
+            text:         textarea
+            entity:       entity 
+            collection:   collection 
+            array:        collection 
+            boolean:      checkbox 
+        doctrine_odm:
+            datetime:     datetime 
+            timestamp:    datetime 
+            vardatetime:  datetime 
+            datetimetz:   datetime 
+            date:         datetime 
+            time:         time 
+            decimal:      number 
+            float:        number 
+            int:          integer 
+            integer:      integer 
+            int_id:       integer 
+            bigint:       integer 
+            smallint:     integer 
+            id:           text 
+            custom_id:    text 
+            string:       text 
+            text:         textarea 
+            document:     document 
+            collection:   collection 
+            hash:         collection 
+            boolean:      checkbox 
         propel:
             TIMESTAMP:    datetime 
             BU_TIMESTAMP: datetime 
@@ -180,52 +236,95 @@ admingenerator_generator:
             PHP_ARRAY:    collection 
             ENUM:         choice 
             BOOLEAN:      checkbox 
-            BOOLEAN_EMU:  checkbox
-
+            BOOLEAN_EMU:  checkbox 
     filter_types:
+        doctrine_orm:
+            datetime:      datetime
+            vardatetime:   datetime
+            datetimetz:    datetime
+            date:          date
+            time:          time
+            decimal:       number
+            float:         number
+            integer:       number
+            bigint:        number
+            smallint:      number
+            string:        text
+            entity:        model
+            collection:    collection
+            array:         text
+            boolean:       choice
+        doctrine_odm:
+            datetime:      datetime
+            timestamp:     datetime
+            vardatetime:   datetime
+            datetimetz:    datetime
+            date:          date
+            time:          time
+            decimal:       number
+            float:         number
+            int:           number
+            integer:       number
+            int_id:        number
+            bigint:        number
+            smallint:      number
+            id:            text
+            custom_id:     text
+            string:        text
+            text:          text
+            document:      model
+            collection:    collection
+            hash:          text
+            boolean:       choice
         propel:
-          BOOLEAN:       choice
-          BOOLEAN_EMU:   choice
-          collection:    model
-          DATE:          afe_daterange_picker
-          BU_DATE:       afe_daterange_picker
-          TIMESTAMP:     afe_daterange_picker 
-          BU_TIMESTAMP:  afe_daterange_picker 
-
-    twig:
-        use_localized_date:           true
-        # by default the localized date is disabled thats why default settings 
-        # use PHP date()'s format if you enable localized date make sure to change 
-        # these to ISO 8601 compatible format!
-        date_format:                  'dd/MM/Y'         # for ISO 8601 "yyyy-MM-dd"
-        datetime_format:              'dd/MM/Y H:mm'     # for ISO 8601 "yyyy-MM-dd HH:mm:ss"
-        localized_date_format:        "medium"
-        localized_datetime_format:    "medium"
-        number_format:
-          decimal:        2
-          decimal_point:  ','
-          thousand_separator: ' '
-
-
-    stylesheets:
-      - { path: bundles/politizradmin/css/backoffice.css }
-
-# AdminGeneratorUser Configuration
-admingenerator_user:
-    login_template:      PolitizrAdminBundle::Login\login.html.twig
+            TIMESTAMP:     datetime
+            BU_TIMESTAMP:  datetime
+            DATE:          date
+            BU_DATE:       date
+            TIME:          time
+            FLOAT:         number
+            REAL:          number
+            DOUBLE:        number
+            DECIMAL:       number
+            TINYINT:       number
+            SMALLINT:      number
+            INTEGER:       number
+            BIGINT:        number
+            NUMERIC:       number
+            CHAR:          text
+            VARCHAR:       text
+            LONGVARCHAR:   text
+            BLOB:          text
+            CLOB:          text
+            CLOB_EMU:      text
+            model:         model
+            collection:    collection
+            PHP_ARRAY:     text
+            ENUM:          text
+            BOOLEAN:       choice
+            BOOLEAN_EMU:   choice
 
 # Liip Imagine Configuration
 liip_imagine:
+    resolvers:
+        default:
+            web_path:
+              web_root:     %kernel.root_dir%/../web
+              cache_prefix: /uploads/cache
+
+#    loaders:
+#        default:
+#            filesystem:
+#                data_root: ~  # %kernel.root_dir%/../web/
+#
 #    driver:               gd
-#    web_root:             %kernel.root_dir%/../web
-#    data_root:            %kernel.root_dir%/../web
-    cache_mkdir_mode:     0777
-    cache_prefix:         /uploads/cache
-#    cache:                web_path
-#    cache_clearer:        true
-#    data_loader:          filesystem
-#    controller_action:    liip_imagine.controller:filterAction
-#    formats:              []
+#    cache:                default
+#    data_loader:          default
+#    default_image:        null
+#    controller:
+#        filter_action:         liip_imagine.controller:filterAction
+#        filter_runtime_action: liip_imagine.controller:filterRuntimeAction
+
     filter_sets:
         # ADMIN
         admin_list_thumb:
@@ -246,43 +345,68 @@ liip_imagine:
         facebook_share:
             quality:              100
             filters:
-                thumbnail:         { size: [400, 400], mode: outbound }
+                thumbnail:         { size: [400, 400], mode: inbound }
 
         debate_header:
             quality:              100
             filters:
-                thumbnail:         { size: [640, 480], mode: outbound }
+                relative_resize:  { widen: 700 }
+
         debate_list:
             quality:              100
             filters:
-                thumbnail:         { size: [640, 200], mode: outbound }
+                relative_resize:  { widen: 700 }
+
+        debate_timeline:
+            quality:              100
+            filters:
+                relative_resize:  { widen: 600 }
+
+        debate_abuse:
+            quality:              100
+            filters:
+                relative_resize:  { widen: 200 }
 
         user_bio_back:
             quality:              100
             filters:
-                thumbnail:         { size: [640, 480], mode: inbound }
+                relative_resize:  { widen: 700 }
+
         user_bio:
             quality:              100
             filters:
-                thumbnail:         { size: [150, 150], mode: outbound }
-        user_mini:
+                relative_resize:  { widen: 60 }
+
+        user_15:
             quality:              100
             filters:
-                thumbnail:         { size: [25, 25], mode: outbound }
+                relative_resize:  { widen: 15 }
+
+        user_40:
+            quality:              100
+            filters:
+                relative_resize:  { widen: 40 }
+
+        user_60:
+            quality:              100
+            filters:
+                relative_resize:  { widen: 60 }
+
         user_follower:
             quality:              100
             filters:
-                thumbnail:         { size: [50, 50], mode: outbound }
+                relative_resize:  { widen: 40 }
 
         organization_mini:
             quality:              100
             filters:
-                relative_resize:  { heighten: 30 }
+                relative_resize:  { widen: 30 }
 
         organization_detail:
             quality:              100
             filters:
-                relative_resize: { heighten: 250 }
+                relative_resize:  { heighten: 80 }
+
 
 
         # FRONT / ESPACE CITOYEN
@@ -304,11 +428,13 @@ bazinga_faker:
             custom_formatters:
                 PUStatusId:             { method: numberBetween, parameters: [ 1, 1 ] }
 
+                Copyright:              { method: lorem, parameters: [ 1, 1 ] }
+
                 Firstname:              { method: firstname }
                 Name:                   { method: lastname }
 
                 Subtitle:               { method: realText, parameters: [ 75 ] }
-                Biography:              { method: paragraphs, parameters: [ 4, true ] }
+                Biography:              { method: lorem, parameters: [ 50, 10, 5, 2, 2, 0, 0, 0, 0 ] }
 
                 Website:                { method: url }
                 Twitter:                { method: lexify, parameters: [ 'https://twitter.com/??????' ] }
@@ -371,7 +497,7 @@ bazinga_faker:
                 PRActionId:             { method: numberBetween, parameters: [ 1, 12 ] }
 
 
-      #################################################################################################################
+        #################################################################################################################
         #                                   COMMANDE
         #################################################################################################################
         Politizr\Model\POrder:
@@ -410,7 +536,8 @@ bazinga_faker:
             custom_formatters:
                 Title:                  { method: realText, parameters: [ 75 ] }
 
-                Summary:                { method: lorem, parameters: [ 5, 2, 0, 0, 0, 0, 0, 0, 0 ] }
+                Copyright:              { method: lorem, parameters: [ 1, 1 ] }
+
                 Description:            { method: lorem, parameters: [ 50, 10, 5, 2, 2, 0, 0, 0, 0 ] }
 
                 NotePos:                { method: numberBetween, parameters: [ 2, 50 ] }
@@ -437,11 +564,28 @@ bazinga_faker:
                 PDDebateId:             { method: numberBetween, parameters: [ 1, 6 ] }
                 PTagId:                 { method: numberBetween, parameters: [ 1, 35 ] }
 
-        Politizr\Model\PDComment:
+        Politizr\Model\PDDComment:
             number:                     50
             custom_formatters:
+                PDDebateId:             { method: numberBetween, parameters: [ 1, 6 ] }
                 PUserId:                { method: numberBetween, parameters: [ 1, 70 ] }
-                PDocumentId:            { method: numberBetween, parameters: [ 1, 6 ] }
+
+                Description:            { method: realText, parameters: [ 250 ] }
+                ParagraphNo:            { method: randomDigit }
+
+                NotePos:                { method: numberBetween, parameters: [ 2, 50 ] }
+                NoteNeg:                { method: numberBetween, parameters: [ 2, 50 ] }
+
+                PublishedBy:            { method: null }
+                PublishedAt:            { method: dateTimeThisYear }
+
+                Online:                 { method: boolean, parameters: [ 100 ] }
+
+        Politizr\Model\PDRComment:
+            number:                     50
+            custom_formatters:
+                PDReactionId:           { method: numberBetween, parameters: [ 1, 9 ] }
+                PUserId:                { method: numberBetween, parameters: [ 1, 70 ] }
 
                 Description:            { method: realText, parameters: [ 250 ] }
                 ParagraphNo:            { method: randomDigit }
@@ -477,8 +621,14 @@ hwi_oauth:
             client_id:                  %facebook_client_id%
             client_secret:              %facebook_client_secret%
             scope:                      %facebook_scope%
+            infos_url:                  "https://graph.facebook.com/me?fields=id,name,email,birthday,picture.type(square)"
+            paths:
+                email:                  email
+                birthday:               birthday
+                profilepicture:         picture.data.url
             options:        
                 display:                popup               #dialog is optimized for popup window
+
         twitter:
             type:                       twitter
             client_id:                  %twitter_api_key%
@@ -489,6 +639,9 @@ hwi_oauth:
             client_id:                  %google_client_id%
             client_secret:              %google_client_secret%
             scope:                      "%google_scope%"
+            options:
+                # access_type:       online
+                approval_prompt: force
 
 # FOSElastica
 fos_elastica:
@@ -537,16 +690,13 @@ fos_elastica:
                     # https://github.com/FriendsOfSymfony/FOSElasticaBundle/blob/master/Resources/doc/types.md#testing-if-an-object-should-be-indexed
                     indexable_callback:         'isIndexable'
                     mappings:
-                        arrayTags:
+                        tags:
+                            property_path:      arrayTags
                             boost:              6
                             index_analyzer:     custom_analyzer
                             search_analyzer:    custom_search_analyzer
                         title:
                             boost:              3
-                            index_analyzer:     custom_analyzer
-                            search_analyzer:    custom_search_analyzer
-                        summary:
-                            boost:              2
                             index_analyzer:     custom_analyzer
                             search_analyzer:    custom_search_analyzer
                         description:
@@ -574,10 +724,6 @@ fos_elastica:
                             boost:              3
                             index_analyzer:     custom_analyzer
                             search_analyzer:    custom_search_analyzer
-                        summary:
-                            boost:              2
-                            index_analyzer:     custom_analyzer
-                            search_analyzer:    custom_search_analyzer
                         description:
                             boost:              1
                             index_analyzer:     custom_analyzer
@@ -592,7 +738,8 @@ fos_elastica:
                 p_user:
                     indexable_callback:         'isIndexable'
                     mappings:
-                        arrayTags:
+                        tags:
+                            property_path:      arrayTags
                             boost:              6
                             index_analyzer:     custom_analyzer
                             search_analyzer:    custom_search_analyzer
@@ -615,3 +762,8 @@ fos_elastica:
                         finder:         ~
                         elastica_to_model_transformer:
                             ignore_missing: true
+
+# HTMLPurifierBundle
+exercise_html_purifier:
+    default:
+        Cache.SerializerPath: '%kernel.cache_dir%'

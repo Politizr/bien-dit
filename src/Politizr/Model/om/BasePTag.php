@@ -21,6 +21,10 @@ use Politizr\Model\PDDTaggedT;
 use Politizr\Model\PDDTaggedTQuery;
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDDebateQuery;
+use Politizr\Model\PDRTaggedT;
+use Politizr\Model\PDRTaggedTQuery;
+use Politizr\Model\PDReaction;
+use Politizr\Model\PDReactionQuery;
 use Politizr\Model\PTTagType;
 use Politizr\Model\PTTagTypeQuery;
 use Politizr\Model\PTag;
@@ -133,6 +137,12 @@ abstract class BasePTag extends BaseObject implements Persistent
     protected $collPDDTaggedTsPartial;
 
     /**
+     * @var        PropelObjectCollection|PDRTaggedT[] Collection to store aggregation of PDRTaggedT objects.
+     */
+    protected $collPDRTaggedTs;
+    protected $collPDRTaggedTsPartial;
+
+    /**
      * @var        PropelObjectCollection|PUser[] Collection to store aggregation of PUser objects.
      */
     protected $collPuTaggedTPUsers;
@@ -146,6 +156,11 @@ abstract class BasePTag extends BaseObject implements Persistent
      * @var        PropelObjectCollection|PDDebate[] Collection to store aggregation of PDDebate objects.
      */
     protected $collPDDebates;
+
+    /**
+     * @var        PropelObjectCollection|PDReaction[] Collection to store aggregation of PDReaction objects.
+     */
+    protected $collPDReactions;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -192,6 +207,12 @@ abstract class BasePTag extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
+    protected $pDReactionsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
     protected $puTaggedTPTagsScheduledForDeletion = null;
 
     /**
@@ -205,6 +226,12 @@ abstract class BasePTag extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $pDDTaggedTsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pDRTaggedTsScheduledForDeletion = null;
 
     /**
      * Get the [id] column value.
@@ -670,9 +697,12 @@ abstract class BasePTag extends BaseObject implements Persistent
 
             $this->collPDDTaggedTs = null;
 
+            $this->collPDRTaggedTs = null;
+
             $this->collPuTaggedTPUsers = null;
             $this->collPuFollowTPUsers = null;
             $this->collPDDebates = null;
+            $this->collPDReactions = null;
         } // if (deep)
     }
 
@@ -939,6 +969,32 @@ abstract class BasePTag extends BaseObject implements Persistent
                 }
             }
 
+            if ($this->pDReactionsScheduledForDeletion !== null) {
+                if (!$this->pDReactionsScheduledForDeletion->isEmpty()) {
+                    $pks = array();
+                    $pk = $this->getPrimaryKey();
+                    foreach ($this->pDReactionsScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
+                        $pks[] = array($remotePk, $pk);
+                    }
+                    PDRTaggedTQuery::create()
+                        ->filterByPrimaryKeys($pks)
+                        ->delete($con);
+                    $this->pDReactionsScheduledForDeletion = null;
+                }
+
+                foreach ($this->getPDReactions() as $pDReaction) {
+                    if ($pDReaction->isModified()) {
+                        $pDReaction->save($con);
+                    }
+                }
+            } elseif ($this->collPDReactions) {
+                foreach ($this->collPDReactions as $pDReaction) {
+                    if ($pDReaction->isModified()) {
+                        $pDReaction->save($con);
+                    }
+                }
+            }
+
             if ($this->puTaggedTPTagsScheduledForDeletion !== null) {
                 if (!$this->puTaggedTPTagsScheduledForDeletion->isEmpty()) {
                     PUTaggedTQuery::create()
@@ -984,6 +1040,23 @@ abstract class BasePTag extends BaseObject implements Persistent
 
             if ($this->collPDDTaggedTs !== null) {
                 foreach ($this->collPDDTaggedTs as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->pDRTaggedTsScheduledForDeletion !== null) {
+                if (!$this->pDRTaggedTsScheduledForDeletion->isEmpty()) {
+                    PDRTaggedTQuery::create()
+                        ->filterByPrimaryKeys($this->pDRTaggedTsScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->pDRTaggedTsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPDRTaggedTs !== null) {
+                foreach ($this->collPDRTaggedTs as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -1216,6 +1289,14 @@ abstract class BasePTag extends BaseObject implements Persistent
                     }
                 }
 
+                if ($this->collPDRTaggedTs !== null) {
+                    foreach ($this->collPDRTaggedTs as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
 
             $this->alreadyInValidation = false;
         }
@@ -1333,6 +1414,9 @@ abstract class BasePTag extends BaseObject implements Persistent
             }
             if (null !== $this->collPDDTaggedTs) {
                 $result['PDDTaggedTs'] = $this->collPDDTaggedTs->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collPDRTaggedTs) {
+                $result['PDRTaggedTs'] = $this->collPDRTaggedTs->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -1539,6 +1623,12 @@ abstract class BasePTag extends BaseObject implements Persistent
                 }
             }
 
+            foreach ($this->getPDRTaggedTs() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPDRTaggedT($relObj->copy($deepCopy));
+                }
+            }
+
             //unflag object copy
             $this->startCopy = false;
         } // if ($deepCopy)
@@ -1712,6 +1802,9 @@ abstract class BasePTag extends BaseObject implements Persistent
         }
         if ('PDDTaggedT' == $relationName) {
             $this->initPDDTaggedTs();
+        }
+        if ('PDRTaggedT' == $relationName) {
+            $this->initPDRTaggedTs();
         }
     }
 
@@ -2466,6 +2559,256 @@ abstract class BasePTag extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collPDRTaggedTs collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PTag The current object (for fluent API support)
+     * @see        addPDRTaggedTs()
+     */
+    public function clearPDRTaggedTs()
+    {
+        $this->collPDRTaggedTs = null; // important to set this to null since that means it is uninitialized
+        $this->collPDRTaggedTsPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPDRTaggedTs collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPDRTaggedTs($v = true)
+    {
+        $this->collPDRTaggedTsPartial = $v;
+    }
+
+    /**
+     * Initializes the collPDRTaggedTs collection.
+     *
+     * By default this just sets the collPDRTaggedTs collection to an empty array (like clearcollPDRTaggedTs());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPDRTaggedTs($overrideExisting = true)
+    {
+        if (null !== $this->collPDRTaggedTs && !$overrideExisting) {
+            return;
+        }
+        $this->collPDRTaggedTs = new PropelObjectCollection();
+        $this->collPDRTaggedTs->setModel('PDRTaggedT');
+    }
+
+    /**
+     * Gets an array of PDRTaggedT objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PTag is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PDRTaggedT[] List of PDRTaggedT objects
+     * @throws PropelException
+     */
+    public function getPDRTaggedTs($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPDRTaggedTsPartial && !$this->isNew();
+        if (null === $this->collPDRTaggedTs || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPDRTaggedTs) {
+                // return empty collection
+                $this->initPDRTaggedTs();
+            } else {
+                $collPDRTaggedTs = PDRTaggedTQuery::create(null, $criteria)
+                    ->filterByPTag($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPDRTaggedTsPartial && count($collPDRTaggedTs)) {
+                      $this->initPDRTaggedTs(false);
+
+                      foreach ($collPDRTaggedTs as $obj) {
+                        if (false == $this->collPDRTaggedTs->contains($obj)) {
+                          $this->collPDRTaggedTs->append($obj);
+                        }
+                      }
+
+                      $this->collPDRTaggedTsPartial = true;
+                    }
+
+                    $collPDRTaggedTs->getInternalIterator()->rewind();
+
+                    return $collPDRTaggedTs;
+                }
+
+                if ($partial && $this->collPDRTaggedTs) {
+                    foreach ($this->collPDRTaggedTs as $obj) {
+                        if ($obj->isNew()) {
+                            $collPDRTaggedTs[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPDRTaggedTs = $collPDRTaggedTs;
+                $this->collPDRTaggedTsPartial = false;
+            }
+        }
+
+        return $this->collPDRTaggedTs;
+    }
+
+    /**
+     * Sets a collection of PDRTaggedT objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pDRTaggedTs A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PTag The current object (for fluent API support)
+     */
+    public function setPDRTaggedTs(PropelCollection $pDRTaggedTs, PropelPDO $con = null)
+    {
+        $pDRTaggedTsToDelete = $this->getPDRTaggedTs(new Criteria(), $con)->diff($pDRTaggedTs);
+
+
+        $this->pDRTaggedTsScheduledForDeletion = $pDRTaggedTsToDelete;
+
+        foreach ($pDRTaggedTsToDelete as $pDRTaggedTRemoved) {
+            $pDRTaggedTRemoved->setPTag(null);
+        }
+
+        $this->collPDRTaggedTs = null;
+        foreach ($pDRTaggedTs as $pDRTaggedT) {
+            $this->addPDRTaggedT($pDRTaggedT);
+        }
+
+        $this->collPDRTaggedTs = $pDRTaggedTs;
+        $this->collPDRTaggedTsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PDRTaggedT objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PDRTaggedT objects.
+     * @throws PropelException
+     */
+    public function countPDRTaggedTs(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPDRTaggedTsPartial && !$this->isNew();
+        if (null === $this->collPDRTaggedTs || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPDRTaggedTs) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPDRTaggedTs());
+            }
+            $query = PDRTaggedTQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPTag($this)
+                ->count($con);
+        }
+
+        return count($this->collPDRTaggedTs);
+    }
+
+    /**
+     * Method called to associate a PDRTaggedT object to this object
+     * through the PDRTaggedT foreign key attribute.
+     *
+     * @param    PDRTaggedT $l PDRTaggedT
+     * @return PTag The current object (for fluent API support)
+     */
+    public function addPDRTaggedT(PDRTaggedT $l)
+    {
+        if ($this->collPDRTaggedTs === null) {
+            $this->initPDRTaggedTs();
+            $this->collPDRTaggedTsPartial = true;
+        }
+
+        if (!in_array($l, $this->collPDRTaggedTs->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPDRTaggedT($l);
+
+            if ($this->pDRTaggedTsScheduledForDeletion and $this->pDRTaggedTsScheduledForDeletion->contains($l)) {
+                $this->pDRTaggedTsScheduledForDeletion->remove($this->pDRTaggedTsScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PDRTaggedT $pDRTaggedT The pDRTaggedT object to add.
+     */
+    protected function doAddPDRTaggedT($pDRTaggedT)
+    {
+        $this->collPDRTaggedTs[]= $pDRTaggedT;
+        $pDRTaggedT->setPTag($this);
+    }
+
+    /**
+     * @param	PDRTaggedT $pDRTaggedT The pDRTaggedT object to remove.
+     * @return PTag The current object (for fluent API support)
+     */
+    public function removePDRTaggedT($pDRTaggedT)
+    {
+        if ($this->getPDRTaggedTs()->contains($pDRTaggedT)) {
+            $this->collPDRTaggedTs->remove($this->collPDRTaggedTs->search($pDRTaggedT));
+            if (null === $this->pDRTaggedTsScheduledForDeletion) {
+                $this->pDRTaggedTsScheduledForDeletion = clone $this->collPDRTaggedTs;
+                $this->pDRTaggedTsScheduledForDeletion->clear();
+            }
+            $this->pDRTaggedTsScheduledForDeletion[]= clone $pDRTaggedT;
+            $pDRTaggedT->setPTag(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PTag is new, it will return
+     * an empty collection; or if this PTag has previously
+     * been saved, it will retrieve related PDRTaggedTs from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PTag.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PDRTaggedT[] List of PDRTaggedT objects
+     */
+    public function getPDRTaggedTsJoinPDReaction($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PDRTaggedTQuery::create(null, $criteria);
+        $query->joinWith('PDReaction', $join_behavior);
+
+        return $this->getPDRTaggedTs($query, $con);
+    }
+
+    /**
      * Clears out the collPuTaggedTPUsers collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
@@ -3027,6 +3370,193 @@ abstract class BasePTag extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collPDReactions collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PTag The current object (for fluent API support)
+     * @see        addPDReactions()
+     */
+    public function clearPDReactions()
+    {
+        $this->collPDReactions = null; // important to set this to null since that means it is uninitialized
+        $this->collPDReactionsPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * Initializes the collPDReactions collection.
+     *
+     * By default this just sets the collPDReactions collection to an empty collection (like clearPDReactions());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @return void
+     */
+    public function initPDReactions()
+    {
+        $this->collPDReactions = new PropelObjectCollection();
+        $this->collPDReactions->setModel('PDReaction');
+    }
+
+    /**
+     * Gets a collection of PDReaction objects related by a many-to-many relationship
+     * to the current object by way of the p_d_r_tagged_t cross-reference table.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PTag is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return PropelObjectCollection|PDReaction[] List of PDReaction objects
+     */
+    public function getPDReactions($criteria = null, PropelPDO $con = null)
+    {
+        if (null === $this->collPDReactions || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPDReactions) {
+                // return empty collection
+                $this->initPDReactions();
+            } else {
+                $collPDReactions = PDReactionQuery::create(null, $criteria)
+                    ->filterByPTag($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    return $collPDReactions;
+                }
+                $this->collPDReactions = $collPDReactions;
+            }
+        }
+
+        return $this->collPDReactions;
+    }
+
+    /**
+     * Sets a collection of PDReaction objects related by a many-to-many relationship
+     * to the current object by way of the p_d_r_tagged_t cross-reference table.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pDReactions A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PTag The current object (for fluent API support)
+     */
+    public function setPDReactions(PropelCollection $pDReactions, PropelPDO $con = null)
+    {
+        $this->clearPDReactions();
+        $currentPDReactions = $this->getPDReactions(null, $con);
+
+        $this->pDReactionsScheduledForDeletion = $currentPDReactions->diff($pDReactions);
+
+        foreach ($pDReactions as $pDReaction) {
+            if (!$currentPDReactions->contains($pDReaction)) {
+                $this->doAddPDReaction($pDReaction);
+            }
+        }
+
+        $this->collPDReactions = $pDReactions;
+
+        return $this;
+    }
+
+    /**
+     * Gets the number of PDReaction objects related by a many-to-many relationship
+     * to the current object by way of the p_d_r_tagged_t cross-reference table.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param boolean $distinct Set to true to force count distinct
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return int the number of related PDReaction objects
+     */
+    public function countPDReactions($criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        if (null === $this->collPDReactions || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPDReactions) {
+                return 0;
+            } else {
+                $query = PDReactionQuery::create(null, $criteria);
+                if ($distinct) {
+                    $query->distinct();
+                }
+
+                return $query
+                    ->filterByPTag($this)
+                    ->count($con);
+            }
+        } else {
+            return count($this->collPDReactions);
+        }
+    }
+
+    /**
+     * Associate a PDReaction object to this object
+     * through the p_d_r_tagged_t cross reference table.
+     *
+     * @param  PDReaction $pDReaction The PDRTaggedT object to relate
+     * @return PTag The current object (for fluent API support)
+     */
+    public function addPDReaction(PDReaction $pDReaction)
+    {
+        if ($this->collPDReactions === null) {
+            $this->initPDReactions();
+        }
+
+        if (!$this->collPDReactions->contains($pDReaction)) { // only add it if the **same** object is not already associated
+            $this->doAddPDReaction($pDReaction);
+            $this->collPDReactions[] = $pDReaction;
+
+            if ($this->pDReactionsScheduledForDeletion and $this->pDReactionsScheduledForDeletion->contains($pDReaction)) {
+                $this->pDReactionsScheduledForDeletion->remove($this->pDReactionsScheduledForDeletion->search($pDReaction));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PDReaction $pDReaction The pDReaction object to add.
+     */
+    protected function doAddPDReaction(PDReaction $pDReaction)
+    {
+        // set the back reference to this object directly as using provided method either results
+        // in endless loop or in multiple relations
+        if (!$pDReaction->getPTags()->contains($this)) { $pDRTaggedT = new PDRTaggedT();
+            $pDRTaggedT->setPDReaction($pDReaction);
+            $this->addPDRTaggedT($pDRTaggedT);
+
+            $foreignCollection = $pDReaction->getPTags();
+            $foreignCollection[] = $this;
+        }
+    }
+
+    /**
+     * Remove a PDReaction object to this object
+     * through the p_d_r_tagged_t cross reference table.
+     *
+     * @param PDReaction $pDReaction The PDRTaggedT object to relate
+     * @return PTag The current object (for fluent API support)
+     */
+    public function removePDReaction(PDReaction $pDReaction)
+    {
+        if ($this->getPDReactions()->contains($pDReaction)) {
+            $this->collPDReactions->remove($this->collPDReactions->search($pDReaction));
+            if (null === $this->pDReactionsScheduledForDeletion) {
+                $this->pDReactionsScheduledForDeletion = clone $this->collPDReactions;
+                $this->pDReactionsScheduledForDeletion->clear();
+            }
+            $this->pDReactionsScheduledForDeletion[]= $pDReaction;
+        }
+
+        return $this;
+    }
+
+    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
@@ -3076,6 +3606,11 @@ abstract class BasePTag extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collPDRTaggedTs) {
+                foreach ($this->collPDRTaggedTs as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collPuTaggedTPUsers) {
                 foreach ($this->collPuTaggedTPUsers as $o) {
                     $o->clearAllReferences($deep);
@@ -3088,6 +3623,11 @@ abstract class BasePTag extends BaseObject implements Persistent
             }
             if ($this->collPDDebates) {
                 foreach ($this->collPDDebates as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collPDReactions) {
+                foreach ($this->collPDReactions as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -3113,6 +3653,10 @@ abstract class BasePTag extends BaseObject implements Persistent
             $this->collPDDTaggedTs->clearIterator();
         }
         $this->collPDDTaggedTs = null;
+        if ($this->collPDRTaggedTs instanceof PropelCollection) {
+            $this->collPDRTaggedTs->clearIterator();
+        }
+        $this->collPDRTaggedTs = null;
         if ($this->collPuTaggedTPUsers instanceof PropelCollection) {
             $this->collPuTaggedTPUsers->clearIterator();
         }
@@ -3125,6 +3669,10 @@ abstract class BasePTag extends BaseObject implements Persistent
             $this->collPDDebates->clearIterator();
         }
         $this->collPDDebates = null;
+        if ($this->collPDReactions instanceof PropelCollection) {
+            $this->collPDReactions->clearIterator();
+        }
+        $this->collPDReactions = null;
         $this->aPTTagType = null;
         $this->aPUser = null;
     }
@@ -3161,113 +3709,6 @@ abstract class BasePTag extends BaseObject implements Persistent
         $this->modifiedColumns[] = PTagPeer::UPDATED_AT;
 
         return $this;
-    }
-
-    // archivable behavior
-
-    /**
-     * Get an archived version of the current object.
-     *
-     * @param PropelPDO $con Optional connection object
-     *
-     * @return     PTagArchive An archive object, or null if the current object was never archived
-     */
-    public function getArchive(PropelPDO $con = null)
-    {
-        if ($this->isNew()) {
-            return null;
-        }
-        $archive = PTagArchiveQuery::create()
-            ->filterByPrimaryKey($this->getPrimaryKey())
-            ->findOne($con);
-
-        return $archive;
-    }
-    /**
-     * Copy the data of the current object into a $archiveTablePhpName archive object.
-     * The archived object is then saved.
-     * If the current object has already been archived, the archived object
-     * is updated and not duplicated.
-     *
-     * @param PropelPDO $con Optional connection object
-     *
-     * @throws PropelException If the object is new
-     *
-     * @return     PTagArchive The archive object based on this object
-     */
-    public function archive(PropelPDO $con = null)
-    {
-        if ($this->isNew()) {
-            throw new PropelException('New objects cannot be archived. You must save the current object before calling archive().');
-        }
-        if (!$archive = $this->getArchive($con)) {
-            $archive = new PTagArchive();
-            $archive->setPrimaryKey($this->getPrimaryKey());
-        }
-        $this->copyInto($archive, $deepCopy = false, $makeNew = false);
-        $archive->setArchivedAt(time());
-        $archive->save($con);
-
-        return $archive;
-    }
-
-    /**
-     * Revert the the current object to the state it had when it was last archived.
-     * The object must be saved afterwards if the changes must persist.
-     *
-     * @param PropelPDO $con Optional connection object
-     *
-     * @throws PropelException If the object has no corresponding archive.
-     *
-     * @return PTag The current object (for fluent API support)
-     */
-    public function restoreFromArchive(PropelPDO $con = null)
-    {
-        if (!$archive = $this->getArchive($con)) {
-            throw new PropelException('The current object has never been archived and cannot be restored');
-        }
-        $this->populateFromArchive($archive);
-
-        return $this;
-    }
-
-    /**
-     * Populates the the current object based on a $archiveTablePhpName archive object.
-     *
-     * @param      PTagArchive $archive An archived object based on the same class
-      * @param      Boolean $populateAutoIncrementPrimaryKeys
-     *               If true, autoincrement columns are copied from the archive object.
-     *               If false, autoincrement columns are left intact.
-      *
-     * @return     PTag The current object (for fluent API support)
-     */
-    public function populateFromArchive($archive, $populateAutoIncrementPrimaryKeys = false) {
-        if ($populateAutoIncrementPrimaryKeys) {
-            $this->setId($archive->getId());
-        }
-        $this->setPTTagTypeId($archive->getPTTagTypeId());
-        $this->setPUserId($archive->getPUserId());
-        $this->setTitle($archive->getTitle());
-        $this->setOnline($archive->getOnline());
-        $this->setCreatedAt($archive->getCreatedAt());
-        $this->setUpdatedAt($archive->getUpdatedAt());
-        $this->setSlug($archive->getSlug());
-
-        return $this;
-    }
-
-    /**
-     * Removes the object from the database without archiving it.
-     *
-     * @param PropelPDO $con Optional connection object
-     *
-     * @return     PTag The current object (for fluent API support)
-     */
-    public function deleteWithoutArchive(PropelPDO $con = null)
-    {
-        $this->archiveOnDelete = false;
-
-        return $this->delete($con);
     }
 
     // sluggable behavior
@@ -3400,6 +3841,113 @@ abstract class BasePTag extends BaseObject implements Persistent
         }
 
         return $slug2 . ($slugNum + 1);
+    }
+
+    // archivable behavior
+
+    /**
+     * Get an archived version of the current object.
+     *
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return     PTagArchive An archive object, or null if the current object was never archived
+     */
+    public function getArchive(PropelPDO $con = null)
+    {
+        if ($this->isNew()) {
+            return null;
+        }
+        $archive = PTagArchiveQuery::create()
+            ->filterByPrimaryKey($this->getPrimaryKey())
+            ->findOne($con);
+
+        return $archive;
+    }
+    /**
+     * Copy the data of the current object into a $archiveTablePhpName archive object.
+     * The archived object is then saved.
+     * If the current object has already been archived, the archived object
+     * is updated and not duplicated.
+     *
+     * @param PropelPDO $con Optional connection object
+     *
+     * @throws PropelException If the object is new
+     *
+     * @return     PTagArchive The archive object based on this object
+     */
+    public function archive(PropelPDO $con = null)
+    {
+        if ($this->isNew()) {
+            throw new PropelException('New objects cannot be archived. You must save the current object before calling archive().');
+        }
+        if (!$archive = $this->getArchive($con)) {
+            $archive = new PTagArchive();
+            $archive->setPrimaryKey($this->getPrimaryKey());
+        }
+        $this->copyInto($archive, $deepCopy = false, $makeNew = false);
+        $archive->setArchivedAt(time());
+        $archive->save($con);
+
+        return $archive;
+    }
+
+    /**
+     * Revert the the current object to the state it had when it was last archived.
+     * The object must be saved afterwards if the changes must persist.
+     *
+     * @param PropelPDO $con Optional connection object
+     *
+     * @throws PropelException If the object has no corresponding archive.
+     *
+     * @return PTag The current object (for fluent API support)
+     */
+    public function restoreFromArchive(PropelPDO $con = null)
+    {
+        if (!$archive = $this->getArchive($con)) {
+            throw new PropelException('The current object has never been archived and cannot be restored');
+        }
+        $this->populateFromArchive($archive);
+
+        return $this;
+    }
+
+    /**
+     * Populates the the current object based on a $archiveTablePhpName archive object.
+     *
+     * @param      PTagArchive $archive An archived object based on the same class
+      * @param      Boolean $populateAutoIncrementPrimaryKeys
+     *               If true, autoincrement columns are copied from the archive object.
+     *               If false, autoincrement columns are left intact.
+      *
+     * @return     PTag The current object (for fluent API support)
+     */
+    public function populateFromArchive($archive, $populateAutoIncrementPrimaryKeys = false) {
+        if ($populateAutoIncrementPrimaryKeys) {
+            $this->setId($archive->getId());
+        }
+        $this->setPTTagTypeId($archive->getPTTagTypeId());
+        $this->setPUserId($archive->getPUserId());
+        $this->setTitle($archive->getTitle());
+        $this->setOnline($archive->getOnline());
+        $this->setCreatedAt($archive->getCreatedAt());
+        $this->setUpdatedAt($archive->getUpdatedAt());
+        $this->setSlug($archive->getSlug());
+
+        return $this;
+    }
+
+    /**
+     * Removes the object from the database without archiving it.
+     *
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return     PTag The current object (for fluent API support)
+     */
+    public function deleteWithoutArchive(PropelPDO $con = null)
+    {
+        $this->archiveOnDelete = false;
+
+        return $this->delete($con);
     }
 
     // event behavior

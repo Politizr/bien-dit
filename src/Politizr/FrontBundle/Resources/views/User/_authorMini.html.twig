@@ -1,0 +1,9 @@
+{% spaceless %}
+    {% if user %}
+        <span>par</span>
+        {% include 'PolitizrFrontBundle:User:_authorName.html.twig' with { user: user } only %}
+        {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with { user: user } only %}
+    {% else %}
+        <i>utilisateur supprimé</i>
+    {% endif %}
+{% endspaceless %}

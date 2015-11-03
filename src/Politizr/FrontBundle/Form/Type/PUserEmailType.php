@@ -15,7 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Gestion de la MAJ des données personnelles
- * 
+ *
  * @author Lionel Bouzonville
  */
 class PUserEmailType extends AbstractType
@@ -35,46 +35,34 @@ class PUserEmailType extends AbstractType
         $builder->add('email', 'repeated', array(
             'required' => true,
             'first_options' =>   array(
-                'label' => 'Email', 
+                'label' => 'Email',
                 ),
             'second_options' =>   array(
-                'label' => 'Confirmation email', 
+                'label' => 'Confirmation email',
                 ),
             'type' => 'email',
             'constraints' => array(
                 new NotBlank(array('message' => 'Email obligatoire.')),
                 new Email(array('message' => 'Le format de l\'email n\'est pas valide.'))
                 )
-            )
-        );
+        ));
 
-        $builder->add('newsletter', 'checkbox', array(  
-            'required' => false,
-            'label' => 'Je souhaite recevoir les news de Politizr', 
-            'attr'     => array( 'checked' => 'checked', 'align_with_widget' => true )
-            )
-        );
-
-
-        $builder->add('actions', 'form_actions', [
-            'buttons' => [
-                'save' => ['type' => 'button', 'options' => ['label' => 'Mettre à jour', 'attr' => [ 'class' => 'btn-success', 'action' => 'btn-submit-perso', 'form-id-name' => 'form-perso2' ] ]],
-                ]
-            ]);
-
+        $builder->add('newsletter', 'checkbox', array(
+            'required' => false
+        ));
     }
 
     /**
-     * 
+     *
      * @return string
      */
     public function getName()
     {
         return 'user';
-    }    
+    }
     
     /**
-     * 
+     *
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
@@ -82,5 +70,4 @@ class PUserEmailType extends AbstractType
             'data_class' => 'Politizr\Model\PUser',
         ));
     }
-
 }

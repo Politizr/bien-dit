@@ -1,14 +1,15 @@
 politizr_admin:
     resource: "@PolitizrAdminBundle/Resources/config/routing.yml"
-    prefix:   /admin
+    host:     "%host.admin%"
+    prefix:   /
 
 politizr_front:
     resource: "@PolitizrFrontBundle/Resources/config/routing.yml"
+    host:     "%host.public%"
     prefix:   /
 
-_imagine:
-    resource: .
-    type:     imagine
+_liip_imagine:
+    resource: "@LiipImagineBundle/Resources/config/routing.xml"
 
 # Internal routing configuration to handle ESI
 #_internal:

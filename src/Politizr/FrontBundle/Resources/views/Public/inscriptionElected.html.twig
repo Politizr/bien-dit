@@ -1,4 +1,8 @@
-{% extends 'PolitizrFrontBundle::layout.html.twig' %}
+{% extends 'PolitizrFrontBundle::layoutPublic.html.twig' %}
+
+{% block title %}
+    {{ parent() }} - Inscription élu(e) ou ancien(ne) élu(e)
+{% endblock title %}
 
 {% block connexionBox %}
     {{ render(controller('PolitizrFrontBundle:Security:login')) }}
@@ -9,7 +13,7 @@
 {% endblock %}
 
 {% block main %}
-    <div id="main" class="container">
+    <div id="main">
         <h1>Inscription Élu</h1>
         <p class="bg-info">Vous exercez ou avez exercé un mandat électif, vous pouvez souscrire un abonnement pour disposer d'un compte vous permettant de débattre avec les débatteurs sur Politizr.</p>
         <hr>
@@ -40,7 +44,8 @@
                 {{ form_row(form.username) }}
                 {{ form_row(form.plainPassword) }}
 
-                {{ form_row(form.actions) }}
+                <button type="submit">Valider</button>
+                
             {{ form_end(form) }}
             <span class="label label-warning pull-right">Tous les champs sont obligatoires</span>
         </div>
@@ -52,5 +57,10 @@
 
 {% block javascriptFooter %}
     {{ parent() }}
-    {% include 'PolitizrFrontBundle:JS:login.js.twig' %}
+
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/security/login.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 {% endblock javascriptFooter %}

@@ -1,0 +1,472 @@
+# DOCUMENT DATAS
+Politizr\Model\PDDebate:
+    debat1:
+        p_user_id:      depute1
+
+        title:			Devons-nous créer une CDU-CSU française?
+
+        file_name:      <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/documents', '640', '480', 'city', false) ?>
+        copyright:      <p>&copy; Politizr</p>
+
+        description:    |
+            <p>
+                Les élections européennes ont réveillé une fracture, interne à l’UMP, sur la
+                position à adopter par rapport à l’Union européenne. Le partage ne se fait pas
+                sur le diagnostic – très critique – mais sur les réformes susceptibles de
+                permettre à l’Union de fonctionner correctement : ceux qui veulent aller de
+                l’avant avec plus d’intégration sont critiqués par ceux qui voudraient re-
+                nationaliser une partie du fonctionnement communautaire. Cette ligne de
+                fracture suit à peu près l’ancien clivage UDF/RPR dont nous sommes les
+                héritiers. Elle profite surtout à des partis qui contestent l’objet même de
+                l’UMP, à savoir rassembler le centre et la droite. L’UDI, Debout la République
+                et bien entendu le Front National ont ainsi capitalisé plus de voix que la
+                seule UMP. S’agissant du FN, c’est d’autant plus paradoxal que ce parti ne
+                prône pas, comme les euro-alternatifs de l’UMP, une refondation européenne,
+                mais bien son délitement pur et simple.
+            </p>
+            <p>
+                Ce clivage européen se retrouve sur d’autres sujets, moins tranchants, comme
+                la place de l’Etat dans l’économie, l’organisation des collectivités
+                territoriales, ou bien la politique familiale et sociétale. Voilà pourquoi, à
+                l’heure où s’ouvre une fenêtre inédite pour reconstruire l’UMP, nous pensons
+                qu’il faut prendre acte de ces clivages, les assumer, et revendiquer cette
+                richesse de vues, sans tomber dans la cacophonie ni dans le schéma dépassé et
+                déraisonnable de la vieille opposition RPR/UDF. Pour cela, nous proposons une
+                organisation alternative, inspirée de la CDU-CSU allemande. La CDU et la CSU
+                sont deux partis distincts, et ce qu’on appelle la CDU/CSU n’a pas d’existence
+                juridique en tant que telle en dehors du groupe CDU/CSU au Bundestag, qui
+                rassemble les parlementaires membres de deux partis. Depuis 1949, ceux-ci
+                présentent un candidat commun à la chancellerie lors des élections fédérales,
+                et agissent de concert lors de la formation des coalitions. Les deux partis
+                ont aussi une organisation de jeunesse commune, la Junge Union.
+            </p>
+            <p>
+                La marque « UMP » a trop souffert : il faut en changer, au profit d’une
+                structure inédite de deux partis frères, un social-libéral, centriste et
+                européen, l’autre plus jacobin, étatiste et euro-alternatif. Ces deux partis
+                éliraient chacun leur président avec leurs propres règlements internes, mais
+                un président fédéral coifferait cette alliance, en étant élu par l’ensemble
+                des adhérents des deux partis. Ce triumvirat dirigerait notre famille
+                politique, le président fédéral ayant la charge d’assurer la cohérence et
+                l’unité de la ligne politique.
+            </p>
+            <p>
+                Idéalement, en fonction des caractéristiques politiques propres de chaque
+                région, l’union de la Droite et du Centre serait représentée par une des deux
+                formations au plan local, celle qui recueille la majorité des suffrages. Dans
+                les départements « mixtes », les élus auraient la possibilité de s’étiqueter
+                comme appartenant à l’une ou à l’autre de ces deux formations, ou alors se
+                réclamer directement de l’étiquette fédérale, mais il y aurait une seule
+                organisation administrative commune par département. Les deux formations ne
+                présenteraient pas de candidatures rivales ou concurrentes sur une même
+                circonscription, à l’exception des élections européennes, pour lesquelles
+                présenter deux listes seraient plus cohérent qu’une liste mélangée.
+            </p>
+            <p>
+                L’UMP a besoin d’idées neuves et de notre génération pour les amener dans le
+                débat public : l’heure est à la reconstruction.
+            </p>
+            <p>
+                Tribune coécrite avec Julien Aubert
+                http://www.lopinion.fr/10-juin-2014/creons-cdu-csu-francaise-13182
+            </p>
+
+        published:      true
+        online:         true
+
+        published_at:   '2014-08-10 20:00:00'
+
+        note_pos:		10
+        note_neg:		1
+
+    debat2:
+        p_user_id:      depute2
+
+        file_name:      <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/documents', '640', '480', 'city', false) ?>
+        copyright:      <p>&copy; Politizr</p>
+
+        title:          L'UMP a-t-elle raison de saborder la loi sur les ondes électromagnétiques?
+
+        description:    |
+            <p>
+                Nous regrettons que du fait du recours par des Sénateurs de l’UMP à des
+                procédés dilatoires, l’examen de la proposition de loi « ondes » du Groupe
+                Écologiste du Sénat – adoptée à l’Assemblée nationale le 23 janvier dernier –
+                n’ait pu être mené à son terme ce mardi 17 juin, au cours de l’espace réservé
+                du groupe écologiste du Sénat. De ce fait, l’examen de proposition de loi sur
+                la nocivité du diesel pour la santé, initialement prévue juste après, n’a même
+                pas pu commencer. C’est une grosse déception, surtout sur deux sujets aussi
+                importants pour la santé des français.
+            </p>
+            <p>
+                Notre mobilisation se poursuit cependant.
+            </p>
+            <p>
+                Concernant la PPL Ondes :
+                <a href="http://www.senat.fr/espace_presse/actualites/201406/ondes_electromagnetiques_une_proposition_de_loi_pour_plus_de_sobriete_de_transparence_et_de_concertation.html?altcast_code=ac51a16cf8">Vous pouvez 
+                retrouver ici les débats qui ont eu lien en séance</a>. Et signer la pétition lancée par Avaaz pour soutenir la proposition
+                de loi de Laurence et empêcher la victoire du lobby Orange/SFR/Bouygues/Free.
+            </p>
+            <p>
+                Concernant la PPL Nocivité du Diesel pour la santé:
+                Suite à une concertation avec les acteurs et associations mobilisés à nos
+                côtés pour faire avancer notre combat, nous avons introduit un amendement qui
+                modifie totalement notre dispositif initial. Il s’agit d’intégrer dans
+                l’actuel système de bonus malus qui s’applique d’ores et déjà au CO2 – pour
+                lutter contre le réchauffement climatique – un deuxième critère concernant la
+                pollution de l’air (particules fines et oxyde de carbone, le fameux NOX). Le
+                bonus malus est en effet un dispositif à la fois incitatif et dissuasif: les
+                sommes versées pour le malus permettront de verser des bonus, primes
+                incitatives aux consommateurs choisissant d’acheter des véhicules neufs mois
+                polluants.  Vous trouverez en pièce jointe l’intervention qu’Aline avait prévu
+                de prononcer, et qui vous détaille la démarche qui a été la sienne Ce
+                dispositif sera redéposé dès le mois de juillet sous forme d’amendement à
+                l’occasion du collectif budgétaire, ce qui nous permettra de poursuivre – en
+                lien avec les associations également mobilisées sur la question – notre
+                travail de conviction auprès de nos collègues mais aussi des consommateurs, en
+                attendant la prochaine niche du groupe écologiste.
+            </p>
+            <p>
+                Communiqué coécrit avec Aline Archimbaud
+                http://alinearchimbaud.fr/?cat=23
+            </p>
+
+        published:      true
+        online:         true
+
+        published_at:   '2014-07-10 20:00:00'
+        nb_views:       <?php $faker('numberBetween', 150, 1500) ?>
+
+        note_pos:       <?php $faker('numberBetween', 2, 50) ?>
+        note_neg:       <?php $faker('numberBetween', 2, 50) ?>
+
+    debat3:
+        p_user_id:      depute3
+
+        file_name:      <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/documents', '640', '480', 'city', false) ?>
+        copyright:      <p>&copy; Politizr</p>
+
+        title:          Mayote: la France abuse-t-elle de l'intégrité territoriale des Comores?
+
+        description:    |
+            <p>
+                Après avoir pris connaissance, ce jour, des déclarations du Président de
+                l’Union des Comores aux Nations Unies, je tiens à exprimer ma vive déception
+                de constater que celui-ci continue à placer la question de relations
+                renouvelées entre la France et l’Union des Comores sous le seul angle de ce
+                qu’il appelle « l’intégrité territoriale des Comores », c’est-à-dire du retour
+                du Département de Mayotte dans
+                le giron des Comores.
+            </p>
+            <p>
+                Une telle approche me conforte dans ma position qui considère que la
+                question du visa n’est nullement en cause dans le flux des populations
+                constaté entre nos voisins et Mayotte et que son instrumentalisation par les
+                autorités des Comores ne relève que de cet objectif à nouveau réaffirmé.
+            </p>
+            <p>
+                Il est évident que rien dans la déclaration de Paris du 21/06/2013 ne permet
+                une telle approche. Cette position que nous regrettons et condamnons fermement
+                montre encore une fois, si besoin était, le bien-fondé de la vigilance 
+                historique des élus de Mayotte à l’égard des dirigeants de l’Union des
+                Comores quels qu’ils soient.
+            </p>
+            <p>
+                Je tiens ce soir à redire solennellement à la population de Mayotte, que pour
+                ma part, nous n’accepterons jamais le moindre marchandage quant à
+                la souveraineté de la France sur Mayotte. Ce n’est pas cela la coopération que
+                nous appelons de nos vœux et je sais pouvoir compter en cela sur la
+                détermination et la volonté des Mahorais dans notre choix d’ancrer notre île
+                dans la France.
+            </p>
+            <p>
+                http://www.comores-actualites.com/actualites-comores/comores-ibrahim-aboubacar-est-decu-du-discours-dikililou-a-la-68e-agnu/
+            </p>
+
+        published:      true
+        online:         true
+
+        published_at:   '2014-06-10 20:00:00'
+        nb_views:       <?php $faker('numberBetween', 150, 1500) ?>
+
+        note_pos:       <?php $faker('numberBetween', 2, 50) ?>
+        note_neg:       <?php $faker('numberBetween', 2, 50) ?>
+
+    # http://www.rhonealpes.fr/263-groupe-fn.htm
+    debat4:
+        p_user_id:      depute4
+
+        file_name:      <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/documents', '640', '480', 'city', false) ?>
+        copyright:      <p>&copy; Politizr</p>
+
+        title:          Histoire de triangles
+
+        description:    |
+            <p>
+                Je manque peut-être de culture générale, mais j’ignorais la
+                référence à ce triangle noir.En disant “SOS danger”, je
+                voulais figurer un triangle de danger, quand mon collègue PS
+                Christian Assaf avait parlé de triangle rose.
+            </p>
+            <p>
+                Je n’ai pas non plus pensé que Christiane Taubira était noire, comme ça a pu
+                être dit.Je pense que c’est pour ça qu’elle a sur-réagi.Comment peut-on me
+                reprocher de faire le parallèle avec sa couleur de peau ?
+            </p>
+            <p>
+                Mme la garde des Sceaux, avec cet article, vous avez voulu expliquer
+                l'inexplicable. On essaie de bricoler avec les mots. Malheureusement ça va
+                plus loin, on bricole avec les fondements de la société. (...)Je peux vous
+                assurer que mes collègues pédopsychiatres se réveillent et se rendent compte
+                qu'il y a un vrai danger. Et d'ailleurs, je regarde mon collègue député de
+                l'Hérault, monsieur Assaf, pour lui dire qu'il y a un pédopsychiatre qui est
+                reconnu, et on peut pas le soupçonner de consanguinité politique avec nous,
+                qui alerte toute la société. Vous savez madame la garde des Sceaux, ce n'est
+                pas du triangle rose qu'il parle, mais d'un triangle noir, avec inscription
+                SOS Danger.
+            </p>
+            <p>
+                http://lelab.europe1.fr/mariage-homo-elie-aboud-declare-ignorer-la-reference-au-triangle-noir-7175
+            </p>
+
+        published:      true
+        online:         true
+
+        published_at:   '2014-05-10 20:00:00'
+
+        nb_views:       <?php $faker('numberBetween', 150, 1500) ?>
+
+        note_pos:       <?php $faker('numberBetween', 2, 50) ?>
+        note_neg:       <?php $faker('numberBetween', 2, 50) ?>
+
+    # http://www.rhonealpes.fr/265-groupe-fdg.htm
+    debat5:
+        p_user_id:      depute5
+
+        file_name:      <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/documents', '640', '480', 'city', false) ?>
+        copyright:      <p>&copy; Politizr</p>
+
+        title:          Lettre à mes amis de l'UMP pour notre crédibilité politique
+
+        description:    |
+            <p>
+                Alors que les initiatives individuelles de rentrée politique
+                se multiplient à l'UMP, cent jours avant le congrès
+                refondateur, les enjeux pour ce parti sont majeurs,
+                conséquences de la crise qui le traverse.
+            </p>
+            <p>
+                À sa fondation en 2002, il s'agissait de ne pas laisser un jour, face à face,
+                la gauche et l'extrême droite. Cet enjeu est aujourd'hui d'une actualité
+                encore plus pressante. Qui que soit le prochain président du parti, qui que
+                soit le candidat désigné ensuite pour l'élection présidentielle, nos
+                compatriotes ne veulent plus d'une droite qui se recycle et ne tire pas les
+                leçons de ses erreurs. En un mot, l'UMP doit accepter de faire peau neuve,
+                avec des idées innovantes et de nouvelles méthodes qui, seules, peuvent
+                restaurer sa crédibilité face à la gauche et à l'extrême droite.
+            </p>
+            <p>
+                L'UMP doit d'abord surmonter une crise profonde: morale, politique et
+                financière. Moralement, nous avons laissé s'installer des pratiques opaques et
+                calamiteuses. Politiquement, nous avons été insuffisants dans nos missions
+                d'écoute et d'analyse. Financièrement, certains à l'UMP sont allés de
+                l'imprudence à la malversation, laissant une dette colossale. Afin de jouer
+                son indispensable rôle démocratique de grand parti de la droite et du centre,
+                l'UMP doit de nouveau inspirer confiance et crédibilité.
+            </p>
+            <p>
+                La confiance suppose d'abord le respect de règles éthiques irréprochables.
+                Sans de telles règles, c'est l'avenir même de l'UMP qui est en jeu. Le parti
+                devra arrêter une procédure démocratique incontestable, à la fois pour
+                désigner ses cadres, ses candidats et pour organiser les primaires élargies de
+                2016, afin de sélectionner celui ou celle que l'UMP soutiendra pour l'élection
+                présidentielle de 2017.
+            </p>
+            <p>
+                La confiance des électeurs résultera ensuite de la crédibilité du projet
+                politique, et surtout du courage du candidat qui le portera, quitte à
+                bouleverser l'establishment.
+            </p>
+            <p>
+                La crédibilité politique, c'est admettre que, si la gauche porte depuis 1981
+                une large part des erreurs qui ont conduit la France dans une situation
+                économique et sociale très critique, la droite et le centre, c'est-à-dire
+                depuis douze ans l'UMP, n'ont pas su corriger cette trajectoire funeste.
+            </p>
+            <p>
+                Restaurer la crédibilité exige de rompre avec les pratiques qui ont montré
+                leur insuffisance et d'ouvrir largement notre écoute et notre projet à tous
+                ceux qui le voudront. Outre les experts et think-tanks, les militants dans les
+                fédérations, nous devrons parfois franchir les barrières et consulter au-delà
+                de notre sensibilité politique, dans toutes les sphères de la communauté
+                nationale, voire internationale.
+            </p>
+            <p>
+                Il nous faut aussi compter sur ceux qui n'ont jamais poussé la porte d'un
+                parti politique, et qui pourtant créent la richesse de notre pays: nous devons
+                capter l'expérience et la pratique de tous les acteurs de l'entreprise et de
+                tous ceux qui contribuent à l'équilibre socio-économique.
+                Une ligne politique crédible se fondera sur deux priorités: l'efficacité et la
+                stabilité. C'est un travail immense de réécriture de nombreux textes qu'il
+                n'est que temps d'engager.
+            </p>
+            <p>
+                La question de la mise en œuvre des réformes est centrale. Depuis la fin des
+                années 1970, ce sont le temps et les procédures qui ont eu raison des quelques
+                réformes de structure initiées par les gouvernements successifs. Si certaines
+                réformes ont pu aboutir, c'est après un long et tumultueux parcours qui en a
+                atténué, quelquefois même inversé, les effets escomptés.
+            </p>
+            <p>
+                La crédibilité repose donc autant sur le fond des réformes que sur leur mise
+                en œuvre rapide. La Ve République offre trois moyens puissants à l'exécutif
+                pour agir: l'élection au suffrage universel du président de la République, le
+                référendum et les ordonnances.
+            </p>
+            <p>
+                Par conséquent, le candidat soutenu par l'UMP pourra exposer aux Français son
+                programme de réformes et la façon dont il entend l'appliquer, par un
+                référendum organisé le même jour que le premier tour des élections
+                législatives (c'est-à-dire deux mois après l'élection présidentielle).
+            </p>
+            <p>
+                Ce référendum apportera les ajustements constitutionnels souhaitables et
+                autorisera le gouvernement à légiférer par ordonnances pour les mesures les
+                plus urgentes. Les candidats aux primaires pourraient s'engager sur cette
+                ligne, une véritable charte, pour ma part c'est ce que j'attends de celui à
+                qui j'apporterai, le moment venu, mon soutien.
+            </p>
+            <p>
+                Certains ne manqueront pas de reprocher à cette méthode le fait que l'on ne
+                soumette pas les textes au contrôle du Parlement. Mais les mêmes s'accorderont
+                sur l'urgence et la nécessité de réformes structurelles fondamentales ;
+                celles-là mêmes qu'ils n'ont pas su ou pu conduire. La solution la meilleure
+                est de se mettre au travail en rédigeant ces textes. C'est une urgence, au-
+                delà des polémiques de l'UMP, puisqu'il s'agit de l'avenir de la France.
+            </p>
+            <p>
+                http://www.lefigaro.fr/vox/politique/2014/08/21/31001-20140821ARTFIG00001-bernard-accoyer-lettre-a-mes-amis-de-l-ump-pour-notre-credibilite-politique.php
+            </p>
+
+        published:      true
+        online:         true
+
+        published_at:   '2014-04-10 20:00:00'
+        nb_views:       <?php $faker('numberBetween', 150, 1500) ?>
+
+        note_pos:       <?php $faker('numberBetween', 2, 50) ?>
+        note_neg:       <?php $faker('numberBetween', 2, 50) ?>
+
+    # http://www.rhonealpes.fr/266-groupe-prg.htm
+    debat6:
+        p_user_id:      depute6
+
+        file_name:      <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/documents', '640', '480', 'city', false) ?>
+        copyright:      <p>&copy; Politizr</p>
+
+        title:          Les forces armés françaises en Irak?
+
+        description:    |
+            <p>
+                Si je crois profondément que l’action militaire a des limites, je constate
+                aussi que, dans cette zone, face à cet ennemi-là, l’inaction serait la pire
+                des choses – le précédent syrien nous a malheureusement montré qu’elle
+                renforçait les extrémistes.
+            </p>
+            <p>
+                C’est un processus courant, lorsque l’on se prépare à l’affrontement, de
+                tenter de décrédibiliser son ennemi pour justifier son engagement, voire pour
+                se rassurer. Je ne me livrerai pas à ce type d’exercice, tant la simple
+                réalité du programme totalitaire et des moyens utilisés par Daech sont
+                parlants. En revanche, je veux souligner ici trois éléments dont l’importance
+                est fondamentale pour l’analyse de la situation.
+            </p>
+            <p>
+                Le premier de ces éléments est l’échelle à laquelle agit ce mouvement. En
+                raison de la situation préexistante en Irak, l’ampleur des moyens et des buts
+                de guerre affichés doit nous alerter. L’adversaire veut sortir d’une logique
+                d’affrontement asymétrique, à laquelle nous étions habitués, pour s’élever en
+                alternative aux régimes politiques existants dans la région, voire au-delà.
+                D’une certaine façon, la situation est bien plus grave qu’avec Ben Laden, dont
+                les buts de guerre étaient limités géographiquement.
+            </p>
+            <p>
+                Le deuxième élément est la contagion du fléau. Au-delà de l’instauration d’un
+                régime totalitaire en Irak, on sait que l’objectif suivant est celui d’un
+                affrontement direct avec le monde chiite, donc avec l’Iran, sachant que l’idée
+                est aussi d’obtenir une jonction avec les divers groupes djihadistes armés en
+                Syrie, au Liban, et pourquoi pas – car tel est ce qui est en train de se
+                profiler – en Égypte, en Libye, au Sahel, voire jusqu’au golfe de Guinée.
+            </p>
+            <p>
+                Il existe aujourd’hui une porosité entre les différents mouvements existants
+                et, malheureusement, l’otage français en Algérie en est la démonstration.
+            </p>
+            <p>
+                Le troisième élément est le risque que la situation fait peser sur notre pays
+                et la capacité de résilience de notre population. Je ne développerai pas ce
+                point, mais il est fondamental. Depuis le 11 septembre 2001, la conflictualité
+                croît sans cesse dans notre environnement, y compris dans notre environnement
+                proche. Je n’évoquerai pas ici les errements de la Russie qui sont d’un autre
+                ordre, mais je signale toutefois que l’ensemble des théories sur la paix
+                éternelle en Europe et sur le rôle pacificateur de l’économie de marché ont
+                été balayés par les faits. Il en résulte un problème pour l’Europe et, bien
+                sûr, pour la France. Ce problème est l’inadéquation des moyens et des menaces
+                au sein de l’Union européenne. Si deux Livres blancs successifs ont permis
+                d’établir la continuité entre sécurité et défense, et si des efforts sont
+                faits dans le domaine du renseignement, les chiffres sont néanmoins
+                inquiétants. Depuis 1990, la part de PIB des dépenses de défense de notre pays
+                en normes OTAN est passée de 3,3 % à 1,9 %, soit une baisse de 1,4 point de
+                PIB.
+            </p>
+            <p>
+                En dix ans, le budget de la défense a diminué de 20 %. Quant aux pays
+                européens, ils sont allés encore plus loin : ils ne consacrent que 1 % de leur
+                PIB aux dépenses de défense contre, je le répète, près de 2 % pour la France.
+            </p>
+            <p>
+                Monsieur le Premier ministre, vous avez avec le ministre de la
+                défense le meilleur élève toutes catégories de la maîtrise des
+                dépenses publiques. Nous le vérifions régulièrement à la
+                commission de la défense. Nous sommes arrivés au bout de
+                l’exercice et nous sommes, hélas, rattrapés par de sombres
+                réalités. 
+            </p>
+            <p>
+                La loi de programmation militaire et l’investissement personnel du ministre de
+                la défense nous permettent de passer un cap difficile, mais ayons conscience
+                que l’augmentation de nos capacités militaires est désormais indispensable en
+                attendant, comme cela a été dit par le ministre lui-même, de pouvoir retrouver
+                meilleure fortune ainsi que les 2 % du PIB.
+            </p>
+            <p>
+                Le Livre blanc avait identifié les menaces auxquelles nous sommes confrontés.
+                Ceux qui ont travaillé sur ces questions ne sont pas surpris par ce qui
+                arrive. La loi de programmation militaire a décliné les préconisations du
+                Livre blanc, ce qui nous permet aujourd’hui d’intervenir dans de bonnes
+                conditions. Monsieur Fillon, votre gouvernement avait créé la délégation
+                parlementaire au renseignement à l’occasion du précédent Livre blanc.
+            </p>
+            <p>
+                Nous avons renforcé son pouvoir de contrôle et je vous informe que la
+                délégation parlementaire au renseignement se réunira dès demain pour
+                auditionner les différents services, examiner les erreurs éventuellement
+                commises à Marseille, ainsi que vous l’avez évoqué. Tenue au secret-défense,
+                la délégation parlementaire au renseignement est désormais une institution de
+                notre Parlement et dispose de toutes facultés pour examiner la situation et
+                faire des propositions si cela s’avérait nécessaire. À cet égard, je précise
+                que la loi renforçant les dispositions relatives à la lutte contre le
+                terrorisme votée la semaine dernière émane de cette délégation.
+            </p>
+            <p>
+                http://www.patricia-adam.fr/?p=2745
+            </p>
+
+        published:      true
+        online:         true
+
+        published_at:   '2014-03-10 20:00:00'
+        nb_views:       <?php $faker('numberBetween', 150, 1500) ?>
+
+        note_pos:       <?php $faker('numberBetween', 2, 50) ?>
+        note_neg:       <?php $faker('numberBetween', 2, 50) ?>

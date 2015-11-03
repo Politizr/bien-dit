@@ -4,16 +4,17 @@ namespace Politizr\FrontBundle\Listener;
 
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-use Politizr\Model\PNotification;
+use Politizr\Constant\NotificationConstants;
+
 use Politizr\Model\PUNotification;
 
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PRBadgeQuery;
 
 /**
- *  Gestion des actions mettant à jour la réputation
+ * Gestion des actions mettant à jour la réputation
  *
- *  @author Lionel Bouzonville
+ * @author Lionel Bouzonville
  */
 class NotificationListener
 {
@@ -24,7 +25,7 @@ class NotificationListener
     /**
      *
      */
-    public function __construct($logger, \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher)
+    public function __construct($logger, $eventDispatcher)
     {
         $this->logger = $logger;
         $this->eventDispatcher = $eventDispatcher;
@@ -55,10 +56,11 @@ class NotificationListener
         switch($objectName) {
             case 'Politizr\Model\PDDebate':
             case 'Politizr\Model\PDReaction':
-                $pNotificationId = PNotification::ID_D_NOTE_POS;
+                $pNotificationId = NotificationConstants::ID_D_NOTE_POS;
                 break;
-            case 'Politizr\Model\PDComment':
-                $pNotificationId = PNotification::ID_D_C_NOTE_POS;
+            case 'Politizr\Model\PDDComment':
+            case 'Politizr\Model\PDRComment':
+                $pNotificationId = NotificationConstants::ID_D_C_NOTE_POS;
                 break;
         }
 
@@ -93,10 +95,11 @@ class NotificationListener
         switch($objectName) {
             case 'Politizr\Model\PDDebate':
             case 'Politizr\Model\PDReaction':
-                $pNotificationId = PNotification::ID_D_NOTE_NEG;
+                $pNotificationId = NotificationConstants::ID_D_NOTE_NEG;
                 break;
-            case 'Politizr\Model\PDComment':
-                $pNotificationId = PNotification::ID_D_C_NOTE_NEG;
+            case 'Politizr\Model\PDDComment':
+            case 'Politizr\Model\PDRComment':
+                $pNotificationId = NotificationConstants::ID_D_C_NOTE_NEG;
                 break;
         }
 
@@ -130,7 +133,7 @@ class NotificationListener
         // Liste des users suivant l'auteur du document et souhaitant être notifié de ses publications
         $users = $authorUser->getNotifDebateFollowers();
         foreach ($users as $user) {
-            $pNotificationId = PNotification::ID_S_U_DEBATE_PUBLISH;
+            $pNotificationId = NotificationConstants::ID_S_U_DEBATE_PUBLISH;
             $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId);
 
             // Alerte email
@@ -146,6 +149,7 @@ class NotificationListener
      * Notifications associées à gérer:
      * - Une réaction a été publiée sur un de vos débats / une de vos réactions
      * - Une réaction a été publié sur un débat suivi
+     * - Une réaction a été publié sur un auteur suivi
      *
      * @param GenericEvent
      */
@@ -161,7 +165,7 @@ class NotificationListener
         // Débat associé à la réaction
         $debate = $subject->getPDDebate();
         $debateUserId = $debate->getPUserId();
-        $pNotificationId = PNotification::ID_D_D_REACTION_PUBLISH;
+        $pNotificationId = NotificationConstants::ID_D_D_REACTION_PUBLISH;
 
         $puNotification = $this->insertPUNotification($debateUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
 
@@ -174,7 +178,7 @@ class NotificationListener
             $parent = $subject->getParent();
 
             $targetUserId = $parent->getPUserId();
-            $pNotificationId = PNotification::ID_D_R_REACTION_PUBLISH;
+            $pNotificationId = NotificationConstants::ID_D_R_REACTION_PUBLISH;
 
             $puNotification = $this->insertPUNotification($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
 
@@ -186,7 +190,7 @@ class NotificationListener
         // Liste des users suivant le débat et souhaitant être notifiés des réactions
         $users = $debate->getNotifReactionFollowers();
         foreach ($users as $user) {
-            $pNotificationId = PNotification::ID_S_D_REACTION_PUBLISH;
+            $pNotificationId = NotificationConstants::ID_S_D_REACTION_PUBLISH;
             $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId);
 
             // Alerte email
@@ -200,7 +204,7 @@ class NotificationListener
         // Liste des users suivant l'auteur du document et souhaitant être notifié de ses publications
         $users = $authorUser->getNotifReactionFollowers();
         foreach ($users as $user) {
-            $pNotificationId = PNotification::ID_S_U_REACTION_PUBLISH;
+            $pNotificationId = NotificationConstants::ID_S_U_REACTION_PUBLISH;
             $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId);
 
             // Alerte email
@@ -225,7 +229,7 @@ class NotificationListener
 
         $subject = $event->getSubject();
         $authorUserId = $event->getArgument('author_user_id');
-        $pNotificationId = PNotification::ID_D_COMMENT_PUBLISH;
+        $pNotificationId = NotificationConstants::ID_D_COMMENT_PUBLISH;
         $objectName = get_class($subject);
         $objectId = $subject->getId();
 
@@ -245,7 +249,7 @@ class NotificationListener
         // Liste des users suivant l'auteur du commentaire et souhaitant être notifié de ses publications
         $users = $authorUser->getNotifCommentFollowers();
         foreach ($users as $user) {
-            $pNotificationId = PNotification::ID_S_U_COMMENT_PUBLISH;
+            $pNotificationId = NotificationConstants::ID_S_U_COMMENT_PUBLISH;
             $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId);
 
             // Alerte email
@@ -269,7 +273,7 @@ class NotificationListener
 
         $subject = $event->getSubject();
         $authorUserId = $event->getArgument('author_user_id');
-        $pNotificationId = PNotification::ID_D_D_FOLLOWED;
+        $pNotificationId = NotificationConstants::ID_D_D_FOLLOWED;
 
         $objectName = get_class($subject);
         $objectId = $subject->getId();
@@ -299,7 +303,7 @@ class NotificationListener
 
         $subject = $event->getSubject();
         $authorUserId = $event->getArgument('author_user_id');
-        $pNotificationId = PNotification::ID_U_FOLLOWED;
+        $pNotificationId = NotificationConstants::ID_U_FOLLOWED;
         
         $objectName = get_class($subject);
         $objectId = $subject->getId();
@@ -329,7 +333,7 @@ class NotificationListener
         $this->logger->info('*** onNBadgeWin');
 
         $subject = $event->getSubject();
-        $pNotificationId = PNotification::ID_U_BADGE;
+        $pNotificationId = NotificationConstants::ID_U_BADGE;
         
         $targetUserId = $subject->getPUserId();
         $authorUserId = $targetUserId;

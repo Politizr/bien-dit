@@ -1,0 +1,58 @@
+<div id="header" class="menuMobileHolder">
+    <div class="headerLogo">
+        <a href="{{ path('Homepage'~profileSuffix) }}">
+            <i class="iconPltzrLogo"></i>
+        </a>
+    </div>
+    <div id="menuMobileTriggerMenu" action="menuMobileTriggerMenu"><i class="iconMenu"></i></div>
+    <div id="menuMobileTriggerActions" action="menuMobileTriggerActions"><i class="iconNotePlus"></i></div>
+    <div id="headerCenter">
+        {% spaceless %}
+            <div id="linkNotifications" action="linkNotifications" class="active">
+                <i class="iconNotifYes"></i>
+                <span id="notifCounter">-</span>&nbsp;notifications
+            </div>
+            <div id="linkRanking" action="modalRanking">
+                <i class="iconRanking"></i>classement
+            </div>                
+            <div id="linkSuggestions" action="modalSuggestions">
+                <i class="iconBookmark"></i>suggestions
+            </div>
+            <div id="logged">
+                <a href="{{ path('Profile'~profileSuffix) }}">
+                    {{ app.user.firstname }} {{ app.user.name }}
+                    <span class="avatar15">
+                        {{ app.user | icon }}
+                    </span>
+                </a>
+            </div>
+        {% endspaceless %}
+    </div>
+    <div id="headerRight">
+        <div id="linkMenuPreferences">
+            <div id="openMenuPreferences" action="openMenuPreferences"><i class="iconGear"></i><i class="iconArrowDown"></i></div>
+            <div id="hideMenuPreferences" action="hideMenuPreferences" style="display: none;"><i class="iconGear"></i><i class="iconArrowUp"></i></div>
+        </div>              
+        <div id="menuPreferences" action="menuPreferences" style="display: none;">
+            <div class="pad40">
+                {% include 'PolitizrFrontBundle:Navigation\\Menu:_menuSettings.html.twig' %}
+            </div>
+        </div>
+    </div>
+    <div id="menu">
+        <div class="pad40">
+            {% include 'PolitizrFrontBundle:Navigation\\Menu:_menu.html.twig' %}
+        </div>
+    </div>
+    {% block contextLinks %}
+        <div id="social">
+            <div class="pad40">
+                {% block social %}
+                    {% include 'PolitizrFrontBundle:Navigation\\Social:_share.html.twig' with { 'uri': app.request.uri } %}
+                {% endblock social %}
+                {% block abuse %}
+                {% endblock abuse %}
+            </div>
+        </div>
+    {% endblock contextLinks %}
+</div>

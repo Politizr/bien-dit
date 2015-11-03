@@ -1,0 +1,250 @@
+{% extends 'PolitizrFrontBundle::layoutConnected.html.twig' %}
+
+{% block title %}
+    {{ parent() }} - Édition de mon profil
+{% endblock title %}
+
+{% block javascriptHeader %}
+    {{ parent() }}
+
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.cycle2.min.js') }}"></script>
+
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jcf.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jcf.select.js') }}"></script>
+{% endblock javascriptHeader %}
+
+{% block header %}
+    {% embed 'PolitizrFrontBundle:Navigation\\Header:_headerConnected.html.twig' %}
+        {% block socialLinks %}{% endblock socialLinks %}
+    {% endembed %}
+{% endblock header %}
+
+{% block modalBox %}
+    {{ parent() }}
+
+    {% include 'PolitizrFrontBundle:User:_modalEditBackUpload.html.twig' %}
+{% endblock modalBox %}
+
+
+{% block fixedActions %}
+    <div id="fixedActions">
+        <div class="ajaxLoader" style="display: none;">
+            <div class="ajaxLoaderSpinner"></div><div class="ajaxLoaderBg"></div><div class="ajaxLoaderBlockClick"></div>
+        </div>
+        <div class="actionSave">
+            <a action="userProfileUpdate"><i class="iconDraft"></i>enregistrer</a>
+        </div>
+    </div>   
+{% endblock fixedActions %}
+
+{% block main %}
+    <div id="main">
+        <div id="profileHeader">
+            <div class="pad40">
+                <div id="profileSummaryFooter">
+                    <div class="avatar60">
+                        <div id="smallCamera">
+                            <form id="formUserPhoto" action="{{ path('XhrGeneric', {'xhrRoute': constant('Politizr\\Constant\\XhrConstants::ROUTE_USER_PHOTO_UPLOAD'), 'xhrService': 'user', 'xhrMethod': 'userPhotoUpload', 'xhrType': constant('Politizr\\Constant\\XhrConstants::RETURN_URL')}) }}" method="post" enctype="multipart/form-data">
+                                <input type="hidden" name="id" value="{{ user.id }}">
+                                <div id="uploadFileContainer">
+                                    <input type="file" name="fileName" id="fileName">
+                                    <label action="fileSelect" for="fileName" tabindex="0"><i class="iconCamera"></i><i class="iconNotifYes"></i></label>
+                                    <div class="photoDelete">
+                                        <a action="fileDelete" subjectId="{{ user.id }}"><i class="iconCross"></i></a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div id="uploadedPhoto">
+                            {{ user | photo('user_60') }}
+                        </div>
+                    </div>
+                    <div id="profileNameHolder">
+                        <div id="profileNameBottom">
+                            <div id="profileName">
+                                {{ user }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>                      
+
+            <div id="bigCamera" action="modalBackUploadOpen">
+                <i class="iconCamera"></i><i class="iconNotifYes"></i>
+            </div>
+            <div class="profileHeaderIllustration">
+                {{ user | photoBack('user_bio_back') }}
+            </div>             
+        </div>
+        <div id="illustration_l">
+            {{ user | photoBack('user_bio_back') }}
+        </div>
+        <div id="illustration_r">
+            {{ user | photoBack('user_bio_back') }}
+        </div>
+
+        <div id="copyrightHolder">
+            <i class="iconCopyright" action="showCopyright"></i>
+            <div id="copyrightBox" style="display: none;" action="showCopyright">
+                <i class="iconArrowUp"></i>
+                <div id="copyright">
+                    {{ user.copyright | purify }}
+                </div>
+            </div>
+        </div>
+
+        <div id="editMyPublicTags" class="tagBox">
+            <div class="fieldsetHeader">
+                <div class="fieldsetHeaderTitle">mes thématiques publiques</div>
+                <i class="iconQuestion" action="toggleHelper"></i>
+                <div class="helperSlider helperSliderRight" style="display: none;">
+                    <i class="iconArrowUp"></i>
+                    <i class="iconCross" action="hideHelper"></i>
+                    @todo : slider ajouter un tag
+                </div>
+            </div>
+
+            {{ userTaggedTagsEdit(user, null, 1, true) }}
+        </div>
+
+        <div id="editMyPrivateTags" class="tagBox">
+            <div class="fieldsetHeader">
+                <div class="fieldsetHeaderTitle">mes thématiques privées</div>
+                <i class="iconQuestion" action="toggleHelper"></i>
+                <div class="helperSlider helperSliderRight" style="display: none;">
+                    <i class="iconArrowUp"></i>
+                    <i class="iconCross" action="hideHelper"></i>
+                    @todo : slider ajouter un tag
+                </div>
+            </div>
+
+            {{ userFollowTagsEdit(user, null, 2, true) }}
+        </div>
+
+        {% if formOrga %}
+            <div id="editParti" class="profileFieldset">
+                <div class="fieldsetHeader">
+                    <div class="fieldsetHeaderTitle">famille politique</div>
+                    <i class="iconQuestion" action="toggleHelper"></i>
+                    <div class="helperSlider helperSliderRight" style="display: none;">
+                        <i class="iconArrowUp"></i>
+                        <i class="iconCross" action="hideHelper"></i>
+                        <h4>choix des partis politiques</h4>
+                        {% include 'PolitizrFrontBundle:Navigation\\Helper:_organizations.html.twig' %}
+                    </div>
+                </div>
+
+                <form method="POST" name="userOrganization" id="formUserOrganizationUpdate">
+                    {{ form_errors(formOrga) }}
+
+                    {{ form_widget(formOrga.PUCurrentQOPQOrganization, { 'attr': {'action': 'organizationUpdate', 'data-jcf': '{"wrapNative": false, "fakeDropInBody": false, "maxVisibleItems": 5, "flipDropToFit": false}'}}) }}
+                    {{ form_rest(formOrga) }}
+                </form>
+
+            </div>
+        {% endif %}
+
+        <form method="POST" name="userBiography" id="formUserProfileUpdate">
+            <div id="editInAFewWord" class="profileFieldset">
+                <div class="fieldsetHeader">
+                    <div class="fieldsetHeaderTitle">en quelques mots</div>
+                    <i class="iconQuestion" action="toggleHelper"></i>
+                    <div class="helperSlider helperSliderRight" style="display: none;">
+                        <i class="iconArrowUp"></i>
+                        <i class="iconCross" action="hideHelper"></i>
+                        <h4>éditer un champ texte</h4>
+                        {% include 'PolitizrFrontBundle:Navigation\\Helper:_edition.html.twig' %}
+                    </div>
+                </div>
+                <div class="editable subtitle">{{ user.subtitle | purify }}</div>
+            </div>
+
+            <div class="fieldsetHeader">
+                <div class="fieldsetHeaderTitle">ma biographie</div>
+                <i class="iconQuestion" action="toggleHelper"></i>
+                <div class="helperSlider helperSliderRight" style="display: none;">
+                    <i class="iconArrowUp"></i>
+                    <i class="iconCross" action="hideHelper"></i>
+                    <h4>éditer un champ texte</h4>
+                    {% include 'PolitizrFrontBundle:Navigation\\Helper:_edition.html.twig' %}
+                </div>
+            </div>
+
+            <div id="postText" class="profileFieldset">
+                <div class="paragraph">
+                    <div class="editable biography">
+                        {{ user.biography | purify }}
+                    </div>
+                </div>
+            </div>
+
+            <div id="socialLinks" class="profileFieldset">
+                <div class="fieldsetHeader">
+                    <div class="fieldsetHeaderTitle">mes liens</div>
+                </div>
+                <div class="profileTwitter">
+                    <i class="iconSocialTw"></i>{{ form_widget(formBio.twitter, { 'attr': {'placeholder': 'Compte Twitter'}}) }}
+                </div>
+                <div class="profileFacebook">
+                    <i class="iconSocialFb"></i>{{ form_widget(formBio.facebook, { 'attr': {'placeholder': 'Compte Facebook'}}) }}
+                </div>
+                <div class="profileWebsite">
+                    <i class="iconLink"></i>{{ form_widget(formBio.website, { 'attr': {'placeholder': 'Site web'}}) }}
+                </div>
+            </div>         
+
+            {# hidden form inputs filled by js #}
+            {{ form_row(formBio.subtitle) }}
+            {{ form_row(formBio.biography) }}
+            {{ form_rest(formBio) }}
+        </form>
+
+        {% if user.isQualified %}
+            <div id="myMandate" class="profileFieldset">
+                <div class="fieldsetHeader">
+                    <div class="fieldsetHeaderTitle">mes mandats</div>
+                    <i class="iconQuestion" action="toggleHelper"></i>
+                    <div class="helperSlider helperSliderRight" style="display: none;">
+                        <i class="iconArrowUp"></i>
+                        <i class="iconCross" action="hideHelper"></i>
+                        @todo : slider ajouter un mandat
+                    </div>
+                </div>
+
+                <!-- @todo HTML/CSS styler les années en select -->
+                <div id="newMandate" class="editMandateItem">
+                    {% include 'PolitizrFrontBundle:User:_newMandate.html.twig' with { 'formMandate': formMandate } %}
+                </div>
+
+                <div id="myMandates">
+                    {% if formMandate and formMandateViews %}
+                        {% include 'PolitizrFrontBundle:User:_editMandates.html.twig' with { 'formMandateViews': formMandateViews } %}
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock main %}
+
+{% block javascriptFooter %}
+    {{ parent() }}
+
+    <script>
+        var nbZones = 2;
+        var xhrRoute = ROUTE_TAG_LISTING;
+        var xhrUrlPrefix = '/xhr';
+    </script>
+
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/smoke.min.js'
+        '@PolitizrFrontBundle/Resources/public/js/medium-editor.min.js'
+        '@PolitizrFrontBundle/Resources/public/js/jquery.form.min.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/tag/editTags.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/document/medium.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/user/editProfile.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/user/editPhoto.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock javascriptFooter %}
+

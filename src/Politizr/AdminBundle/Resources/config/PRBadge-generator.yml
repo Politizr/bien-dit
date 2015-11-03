@@ -8,18 +8,12 @@ params:
     fields:
         id:
             label:          ID
-        p_r_badge_type_id:
-            label:          Type
-        p_r_badge_type:
-            label:          Type
-        p_r_badge_metal_id:
-            label:          Niveau
-        p_r_badge_metal:
-            label:          Niveau
+        p_r_badge_family_id:
+            label:          Famille
+        p_r_badge_family:
+            label:          Famille
         title:
             label:          Titre
-        description:
-            label:          Description
         online:
             label:          En ligne
         created_at:
@@ -35,8 +29,10 @@ builders:
         params:
             title:                              Liste des badges
             max_per_page:                       50
-            sort:                               [ title, ASC ]
-            display:                            [ title, p_r_badge_type, p_r_badge_metal, description, nb_users, online ]
+            sort:                               [ id, ASC ]
+            display:                            [ title, p_r_badge_family, nb_users, online ]
+            # filtersMode:                        top
+            filters:                            [ title, p_r_badge_family, online, created_at ]
             actions:
                 new:                            ~
             object_actions:
@@ -49,23 +45,15 @@ builders:
         params: ~
         filename: ~
         filetype: ~
-    filters:
-        params:
-            display:                            [ title, p_r_badge_metal, p_r_badge_type, online, created_at ]
-            fields:
-                p_r_badge_type:
-                    addFormOptions:
-                        query:                  \Politizr\Model\PRBadgeTypeQuery::create()->orderByTitle() 
     new:
         params:
             title:                              "Création d'un badge"
             display:
-                "Champs principaux":            [ [ p_r_badge_type, p_r_badge_metal ], [ title ] ]
-                "Champs complémentaires":       [ [ description ] ]
+                "Champs principaux":            [ [ p_r_badge_family ], [ title ] ]
             fields:
-                p_r_badge_type:
+                p_r_badge_family:
                     addFormOptions:
-                        query:                  \Politizr\Model\PRBadgeTypeQuery::create()->orderByTitle() 
+                        query:                  \Politizr\Model\PRBadgeFamilyQuery::create()->orderByRank() 
             actions:
               save:                             ~
               list:                             ~
@@ -74,13 +62,13 @@ builders:
             title:                              "Edition du badge '{{ PRBadge.title }}'"
             tabs:
                 "Contenu":
-                    "Texte":                    [ [ p_r_badge_type , p_r_badge_metal ], [ title ], [ description ] ]
+                    "Texte":                    [ [ p_r_badge_family  ], [ title ] ]
                 "Attributs":
                     "Création":                 [ [ online ], [ created_at, updated_at ] ]
             fields:
-                p_r_badge_type:
+                p_r_badge_family:
                     addFormOptions:
-                        query:                  \Politizr\Model\PRBadgeTypeQuery::create()->orderByTitle() 
+                        query:                  \Politizr\Model\PRBadgeFamilyQuery::create()->orderByRank() 
                 created_at:
                     addFormOptions:
                       widget:                   single_text
@@ -95,7 +83,7 @@ builders:
 #             title:                              "Visualisation du badge '{{ PRBadge.title }}'"
 #             tabs:
 #                 "Contenu":
-#                     "Texte":                    [ [ p_r_badge_type, p_r_badge_metal ], [ title ], [ description ] ]
+#                     "Texte":                    [ [ p_r_badge_family ], [ title ] ]
 #                 "Utilisation":
 #                     "Utilisateurs badgés":      [ block_users ]
 #                 "Attributs":

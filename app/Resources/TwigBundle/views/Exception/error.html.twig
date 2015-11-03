@@ -1,0 +1,47 @@
+{% extends 'PolitizrFrontBundle::layoutError.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style type="text/css" media="screen" >
+        #randomBg {
+            position: fixed; 
+            left: 0; 
+            top: 0; 
+            width: 100%; 
+            height: 100%; 
+            z-index: -1; 
+            background-size: cover; 
+            background-position: center bottom;
+        }
+    </style>
+{% endblock %}
+
+{% block wrapper %}
+    <center>
+        <i class="iconPltzrLogoAlt"></i><br>
+        <span>Erreur {{ status_code }}</span><br>
+        <h1>Une erreur interne au serveur<br>ne nous permet pas de poursuivre...</h1>
+        <p>
+            <a href="{{ path('Homepage') }}"><i class="iconEdit"></i>Accéder à la page d'accueil du site</a>
+        </p>
+    </center>
+
+    <div id="randomBg"></div>
+{% endblock wrapper %}
+
+{% block javascriptFooter %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        var imgCount = 5;
+        var dir = '/bundles/politizrfront/images/';
+        var randomCount = Math.round(Math.random() * (imgCount - 1)) + 1;
+        var images = new Array
+                images[1] = "500a.jpg",
+                images[2] = "500b.jpg",
+                images[3] = "500c.jpg",
+                images[4] = "500d.jpg",
+                images[5] = "500e.jpg",
+        document.getElementById("randomBg").style.backgroundImage = "url(" + dir + images[randomCount] + ")"; 
+    </script>
+{% endblock javascriptFooter %}

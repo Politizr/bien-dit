@@ -5,6 +5,7 @@ Homepage:
     pattern:  /
     defaults: { _controller: PolitizrFrontBundle:Public:homepage }
 
-Presentation:
-    pattern:  /presentation
-    defaults: { _controller: PolitizrFrontBundle:Public:presentation }
+Help:
+    pattern:  /assistance
+    defaults: { _controller: PolitizrFrontBundle:Public:help }
+

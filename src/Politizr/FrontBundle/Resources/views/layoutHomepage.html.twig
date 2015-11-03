@@ -1,0 +1,52 @@
+{% extends 'PolitizrFrontBundle::baseFront.html.twig' %}
+
+{% block title %}Politizr{% endblock title %}
+{% block description %}Politizr{% endblock description %}
+
+{% block metaopengraph %}
+    {% block ogImage %}{% render controller("PolitizrFrontBundle:Social:ogImage") %}{% endblock ogImage %}
+    <meta property="og:site_name" content="Politizr" /> 
+    <meta property="og:title" content="{% block ogTitle %}Politizr{% endblock ogTitle %}" /> 
+    <meta property="og:url" content="{% block ogUrl %}{{ app.request.uri }}{% endblock ogUrl %}" /> 
+    <meta property="og:description" content="{% block ogDescription %}Politizr{% endblock ogDescription %}" />
+{% endblock metaopengraph %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/stylePublic.css') }}">
+{% endblock %}
+
+{% block wrapper %}
+    {% block header %}
+        {% include 'PolitizrFrontBundle:Navigation\\Header:_header.html.twig' %}
+    {% endblock %}
+
+    {% block content %}
+    {% endblock content %}
+
+    {% block footer %}
+        {% include 'PolitizrFrontBundle:Navigation\\Footer:_footerHomepage.html.twig' %}
+    {% endblock %}
+{% endblock wrapper %}
+
+
+{% block javascriptFooter %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        var routeXhrGeneric = '{{ app.request.getBaseUrl }}/xhr/%xhrRoute%/%xhrService%/%xhrMethod%.%xhrType%.json';
+    </script>
+
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/global.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/xhr.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/security/login.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/paginatedList/loading.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/paginatedList/search.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/tag/accentMap.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/tag/search.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock javascriptFooter %}

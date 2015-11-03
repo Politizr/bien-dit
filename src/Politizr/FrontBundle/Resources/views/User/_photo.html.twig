@@ -1,0 +1,9 @@
+{% spaceless %}    
+{% if url %}
+    <a href="{{ url }}">
+{% endif %}
+<img src="{{ asset(path) | imagine_filter(filterName) }}" alt="{{ user }}">
+{% if url %}
+    </a>
+{% endif %}
+{% endspaceless %}

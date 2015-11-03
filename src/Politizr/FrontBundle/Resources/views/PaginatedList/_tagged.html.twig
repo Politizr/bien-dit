@@ -1,0 +1,37 @@
+{% spaceless %}
+    <div class="modalSidebar">
+        <h1>{{ subject.title }}</h1>
+        <div class="listCriteria listCriteriaTabs">
+            <form id="listType">
+                <input type="radio" class="type" name="type" id="debateType" value="debate" url="{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
+            'xhrRoute': 'ROUTE_MODAL_TAG_DEBATE_LIST',
+            'xhrService': 'modal',
+            'xhrMethod': 'tagDebateList',
+            'xhrType': 'RETURN_HTML',
+        } only %}" checked/>
+                <label for="debateType">publications</label>
+                <input type="radio" class="type" name="type" id="userType" value="user" url="{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
+            'xhrRoute': 'ROUTE_MODAL_TAG_USER_LIST',
+            'xhrService': 'modal',
+            'xhrMethod': 'tagUserList',
+            'xhrType': 'RETURN_HTML',
+        } only %}" />
+                <label for="userType">profils</label>
+            </form>
+        </div>
+        <div class="listCriteria criteriaSidebar">
+            <form id="listOrder"></form>
+            <form id="listFilter"></form>
+        </div> 
+    </div>
+    <div id="paginatedList" class="listContainer" url="{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
+            'xhrRoute': 'ROUTE_MODAL_TAG_DEBATE_LIST',
+            'xhrService': 'modal',
+            'xhrMethod': 'tagDebateList',
+            'xhrType': 'RETURN_HTML',
+        } only %}"
+        withFilters="true"
+        data-subject-id="{{ subject.id }}">
+        <div id="listContent" class="modalList withSidebar">
+    </div>
+{% endspaceless %}

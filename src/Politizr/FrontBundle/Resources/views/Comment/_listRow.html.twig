@@ -1,0 +1,10 @@
+<div class="commentsItem commentsPostAuthor">
+    {% include 'PolitizrFrontBundle:Monitoring:_abuseLink.html.twig' with { 'subjectId': comment.id, 'type': comment.type } only %}
+
+    <div class="avatar40">
+        {{ comment.user | photo('user_40') }}
+    </div>
+    <div class="commentsContent withLoaderInside">
+        {% include 'PolitizrFrontBundle:Comment:_comment.html.twig' with { 'comment': comment } only %}
+    </div>
+</div>

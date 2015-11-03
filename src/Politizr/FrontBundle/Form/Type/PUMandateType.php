@@ -9,13 +9,16 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-use Politizr\Model\PQType;
+use Politizr\FrontBundle\Form\DataTransformer\YearToDateTransformer;
+
+use Politizr\Constant\QualificationConstants;
+
 use Politizr\Model\PQOrganizationQuery;
 use Politizr\Model\PQMandateQuery;
 
 /**
- * Mandat
- * 
+ * User mandate edit form
+ *
  * @author Lionel Bouzonville
  */
 class PUMandateType extends AbstractType
@@ -23,7 +26,8 @@ class PUMandateType extends AbstractType
     // Permet de filtrer sur le type d'organisation
     private $pqTypeId;
 
-    public function __construct($pqTypeId = PQType::ID_ELECTIF) {
+    public function __construct($pqTypeId = QualificationConstants::TYPE_ELECTIV)
+    {
         $this->pqTypeId = $pqTypeId;
     }
 
@@ -33,19 +37,24 @@ class PUMandateType extends AbstractType
         $builder->add('p_user_id', 'hidden');
         $builder->add('p_q_type_id', 'hidden');
 
-        // Liste des organisations politiques
+        // Mandates type list
         $builder->add('p_q_mandate', 'model', array(
                 'required' => true,
                 'label' => 'Type de mandat',
                 'class' => 'Politizr\\Model\\PQMandate',
                 'query' => PQMandateQuery::create()->filterByPQTypeId($this->pqTypeId)->filterByOnline(true)->orderByRank(),
+                // @todo Fix group_by property
+                // https://github.com/propelorm/PropelBundle/issues/358
+                // http://stackoverflow.com/questions/32602183/propel-form-type-model-w-group-by-is-rendered-without-property-display
+                // 'group_by' => 'selectTitle',
                 'property' => 'title',
+                'index_property' => 'id',
                 'multiple' => false,
                 'expanded' => false,
                 'constraints' => new NotBlank(array('message' => 'Choix d\'un mandat obligatoire.')),
             ));
 
-        // Date de début
+        // Localization
         $builder->add('localization', 'text', array(
                 'required' => true,
                 'label' => 'Localisation',
@@ -53,51 +62,51 @@ class PUMandateType extends AbstractType
                 'attr' => array('placeholder' => 'Ville, circonscriptrion, etc...')
             ));
         
-        // Liste des organisations politiques
-        $builder->add('p_q_organization', 'model', array(
-                'required' => false,
-                'label' => 'Parti Politique',
-                'class' => 'Politizr\\Model\\PQOrganization',
-                'query' => PQOrganizationQuery::create()->filterByPQTypeId($this->pqTypeId)->filterByOnline(true)->orderByRank(),
-                'property' => 'title',
-                'multiple' => false,
-                'expanded' => false,
-            ));
+        // // Liste des organisations politiques
+        // $builder->add('p_q_organization', 'model', array(
+        //         'required' => false,
+        //         'label' => 'Parti Politique',
+        //         'class' => 'Politizr\\Model\\PQOrganization',
+        //         'query' => PQOrganizationQuery::create()->filterByPQTypeId($this->pqTypeId)->filterByOnline(true)->orderByRank(),
+        //         'property' => 'title',
+        //         'multiple' => false,
+        //         'expanded' => false,
+        //     ));
 
-        // Date de début
-        $builder->add('begin_at', 'date', array(
-                'required' => true,
-                'label' => 'Date de début',
-                'widget' => 'single_text',
-                'format' => 'dd/MM/yyyy',
-                'constraints' => new NotBlank(array('message' => 'Saisie d\'une date de début obligatoire.')),
-                'invalid_message' => 'La date doit être au format JJ/MM/AAAA',
-                'attr' => array('placeholder' => 'JJ/MM/AAAA')
-            ));
+        // Begin date
+        $builder->add(
+            $builder->create(
+                'begin_at',
+                'text',
+                array(
+                    'required' => true,
+                    'constraints' => array(
+                        new NotBlank(array('message' => 'Saisie d\'une année de début obligatoire.')),
+                    )
+                )
+            )->addModelTransformer(new YearToDateTransformer())
+        );
         
         // Date de fin
-        $builder->add('end_at', 'date', array(
-                'required' => false,
-                'label' => 'Date de fin',
-                'widget' => 'single_text',
-                'format' => 'dd/MM/yyyy',
-                'invalid_message' => 'La date doit être au format JJ/MM/AAAA',
-                'attr' => array('placeholder' => 'JJ/MM/AAAA')
-            ));
-        
+        $builder->add(
+            $builder->create(
+                'end_at',
+                'text'
+            )->addModelTransformer(new YearToDateTransformer())
+        );
     }
 
     /**
-     * 
+     *
      * @return string
      */
     public function getName()
     {
         return 'mandate';
-    }    
+    }
     
     /**
-     * 
+     *
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
@@ -105,5 +114,4 @@ class PUMandateType extends AbstractType
             'data_class' => 'Politizr\Model\PUMandate',
         ));
     }
-
 }
