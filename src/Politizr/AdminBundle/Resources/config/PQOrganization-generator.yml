@@ -44,7 +44,7 @@ builders:
         params:
             title:                              Liste des organisations
             max_per_page:                       50
-            sort:                               [ title, ASC ]
+            sort:                               [ sortable_rank, ASC ]
             scopes:
                 group_1: 
                     "Tous":                     ~
@@ -59,6 +59,8 @@ builders:
             object_actions:
                 edit:                           ~
                 delete:                         ~
+                moveUp:                         ~
+                moveDown:                       ~
     excel:
         params: ~
         filename: ~
@@ -130,6 +132,8 @@ builders:
     actions:
         params:
             object_actions:
+                moveUp:                         ~
+                moveDown:                       ~
                 delete: ~
             batch_actions:
                 delete: ~

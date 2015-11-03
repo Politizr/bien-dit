@@ -54,19 +54,27 @@ Politizr\Model\PQOrganization:
     parti1:
         online:             true
         p_q_type_id:        electif
-        title:              Lutte Ouvrière
-        initials:           LO
-        file_name:          lo.jpg
+        title:              Extrême gauche
+        initials:           EXTG
+        file_name:          nologo.jpg
         description:        <?php $faker('paragraphs', 4, true); ?>
-        url:                https://www.lutte-ouvriere.org
-    parti2:
-        online:             true
-        p_q_type_id:        electif
-        title:              Nouveau Parti Anticapitaliste
-        initials:           NPA
-        file_name:          npa.png
-        description:        <?php $faker('paragraphs', 4, true); ?>
-        url:                https://www.npa2009.org
+        url:                null
+#     parti1:
+#         online:             true
+#         p_q_type_id:        electif
+#         title:              Lutte Ouvrière
+#         initials:           LO
+#         file_name:          lo.jpg
+#         description:        <?php $faker('paragraphs', 4, true); ?>
+#         url:                https://www.lutte-ouvriere.org
+#     parti2:
+#         online:             true
+#         p_q_type_id:        electif
+#         title:              Nouveau Parti Anticapitaliste
+#         initials:           NPA
+#         file_name:          npa.png
+#         description:        <?php $faker('paragraphs', 4, true); ?>
+#         url:                https://www.npa2009.org
 #     parti3:
 #         online:             true
 #         p_q_type_id:        electif
@@ -172,6 +180,14 @@ Politizr\Model\PQOrganization:
         file_name:          fn.png
         description:        <?php $faker('paragraphs', 4, true); ?>
         url:                http://www.frontnational.com
+    parti16:
+        online:             true
+        p_q_type_id:        electif
+        title:              Extrême droite
+        initials:           EXTD
+        file_name:          nologo.jpg
+        description:        <?php $faker('paragraphs', 4, true); ?>
+        url:                null
 
 
 # LISTE DE TOUS LES MANDATS EXISTANTS
