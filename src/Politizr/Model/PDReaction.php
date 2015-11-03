@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\Count;
 
 use FOS\ElasticaBundle\Transformer\HighlightableModelInterface;
 
@@ -82,7 +83,9 @@ class PDReaction extends BasePDReaction implements PDocumentInterface, Container
             'description' => array(
                 new NotBlank(['message' => 'La description ne doit pas être vide']),
                 new Length(['min' => 141, 'minMessage' => 'Le corps de la publication doit contenir {{ limit }} caractères minimum.']),
-            )
+            ),
+            'geoTags' => new Count(['min' => 1, 'minMessage' => 'Au moins {{ limit }} thématique géographique (département, région, France, Europe, Monde).']),
+            'allTags' => new Count(['min' => 3, 'minMessage' => 'Au moins {{ limit }} thématiques au total.']),
         ));
 
         return $collectionConstraint;
@@ -313,6 +316,43 @@ class PDReaction extends BasePDReaction implements PDocumentInterface, Container
     public function getDebate()
     {
         return parent::getPDDebate();
+    }
+
+    /* ######################################################################################################## */
+    /*                                                      TAGS                                                */
+    /* ######################################################################################################## */
+
+    /**
+     * Debate's array tags
+     * - used by publish constraints
+     * - used by elastica indexation
+     *
+     * @return array[string]
+     */
+    public function getArrayTags($tagTypeId = null, $online = true)
+    {
+        $query = PTagQuery::create()
+            ->select('Title')
+            ->filterIfTypeId($tagTypeId)
+            ->filterIfOnline($online)
+            ->orderByTitle()
+            ->setDistinct();
+
+        return parent::getPTags($query)->toArray();
+    }
+
+    /**
+     * @see PDocumentInterface::getTags
+     */
+    public function getTags($tagTypeId = null, $online = true)
+    {
+        $query = PTagQuery::create()
+            ->filterIfTypeId($tagTypeId)
+            ->filterIfOnline($online)
+            // ->orderByTitle()
+            ->setDistinct();
+
+        return parent::getPTags($query);
     }
 
     /* ######################################################################################################## */

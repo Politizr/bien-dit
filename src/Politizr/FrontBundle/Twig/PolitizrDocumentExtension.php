@@ -364,17 +364,17 @@ class PolitizrDocumentExtension extends \Twig_Extension
     /**
      * Debate's tags
      *
-     * @param PDDebate $debate
+     * @param PDocumentInterface $document
      * @param integer $tagTypeId
      * @return string
      */
-    public function docTags(PDDebate $debate, $tagTypeId = null)
+    public function docTags(PDocumentInterface $document, $tagTypeId = null)
     {
         // $this->logger->info('*** doctags');
-        // $this->logger->info('$debate = '.print_r($debate, true));
+        // $this->logger->info('$document = '.print_r($document, true));
         // $this->logger->info('$tagTypeId = '.print_r($tagTypeId, true));
 
-        $tags = $debate->getTags($tagTypeId);
+        $tags = $document->getTags($tagTypeId);
 
         // Construction du rendu du tag
         $html = $this->templating->render(

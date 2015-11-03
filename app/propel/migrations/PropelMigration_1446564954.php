@@ -2,10 +2,10 @@
 
 /**
  * Data object containing the SQL and PHP code to migrate the database
- * up to version 1446539466.
- * Generated on 2015-11-03 09:31:06 by lionel
+ * up to version 1446564954.
+ * Generated on 2015-11-03 16:35:54 by lionel
  */
-class PropelMigration_1446539466
+class PropelMigration_1446564954
 {
 
     public function preUp($manager)
@@ -42,42 +42,39 @@ class PropelMigration_1446539466
 # It "suspends judgement" for fkey relationships until are tables are set.
 SET FOREIGN_KEY_CHECKS = 0;
 
-DROP INDEX `p_d_reaction_FI_3` ON `p_d_reaction`;
-
-DROP INDEX `p_d_reaction_archive_I_3` ON `p_d_reaction_archive`;
-
-CREATE INDEX `p_d_reaction_archive_I_3` ON `p_d_reaction_archive` (`slug`);
-
-CREATE TABLE `p_m_ask_for_update`
+CREATE TABLE `p_d_r_tagged_t`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `p_user_id` INTEGER,
-    `p_object_name` VARCHAR(150),
-    `p_object_id` INTEGER,
-    `message` TEXT,
+    `p_d_reaction_id` INTEGER NOT NULL,
+    `p_tag_id` INTEGER NOT NULL,
     `created_at` DATETIME,
     `updated_at` DATETIME,
     PRIMARY KEY (`id`),
-    INDEX `p_m_ask_for_update_FI_1` (`p_user_id`),
-    CONSTRAINT `p_m_ask_for_update_FK_1`
-        FOREIGN KEY (`p_user_id`)
-        REFERENCES `p_user` (`id`)
+    INDEX `p_d_r_tagged_t_FI_1` (`p_d_reaction_id`),
+    INDEX `p_d_r_tagged_t_FI_2` (`p_tag_id`),
+    CONSTRAINT `p_d_r_tagged_t_FK_1`
+        FOREIGN KEY (`p_d_reaction_id`)
+        REFERENCES `p_d_reaction` (`id`)
         ON UPDATE CASCADE
-        ON DELETE SET NULL
+        ON DELETE CASCADE,
+    CONSTRAINT `p_d_r_tagged_t_FK_2`
+        FOREIGN KEY (`p_tag_id`)
+        REFERENCES `p_tag` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
-CREATE TABLE `p_m_ask_for_update_archive`
+CREATE TABLE `p_d_r_tagged_t_archive`
 (
     `id` INTEGER NOT NULL,
-    `p_user_id` INTEGER,
-    `p_object_name` VARCHAR(150),
-    `p_object_id` INTEGER,
-    `message` TEXT,
+    `p_d_reaction_id` INTEGER NOT NULL,
+    `p_tag_id` INTEGER NOT NULL,
     `created_at` DATETIME,
     `updated_at` DATETIME,
     `archived_at` DATETIME,
     PRIMARY KEY (`id`),
-    INDEX `p_m_ask_for_update_archive_I_1` (`p_user_id`)
+    INDEX `p_d_r_tagged_t_archive_I_1` (`p_d_reaction_id`),
+    INDEX `p_d_r_tagged_t_archive_I_2` (`p_tag_id`)
 ) ENGINE=InnoDB;
 
 # This restores the fkey checks, after having unset them earlier
@@ -100,15 +97,9 @@ SET FOREIGN_KEY_CHECKS = 1;
 # It "suspends judgement" for fkey relationships until are tables are set.
 SET FOREIGN_KEY_CHECKS = 0;
 
-DROP TABLE IF EXISTS `p_m_ask_for_update`;
+DROP TABLE IF EXISTS `p_d_r_tagged_t`;
 
-DROP TABLE IF EXISTS `p_m_ask_for_update_archive`;
-
-CREATE INDEX `p_d_reaction_FI_3` ON `p_d_reaction` (`parent_reaction_id`);
-
-DROP INDEX `p_d_reaction_archive_I_3` ON `p_d_reaction_archive`;
-
-CREATE INDEX `p_d_reaction_archive_I_3` ON `p_d_reaction_archive` (`parent_reaction_id`);
+DROP TABLE IF EXISTS `p_d_r_tagged_t_archive`;
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

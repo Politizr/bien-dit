@@ -20,7 +20,7 @@
                     {{ reaction | linkParentReaction }}
                 </div>
                 <div class="postSummaryTagList">
-                    ...
+                    {{ reaction | docTags }}
                 </div>
                 <div class="postSummaryTitle">
                     <a href="{{ path('ReactionDetail', { 'slug': reaction.slug }) }}">

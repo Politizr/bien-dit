@@ -586,7 +586,9 @@ class XhrDocument
         $valid = $this->globalTools->validateConstraints(
             array(
                 'title' => $reaction->getTitle(),
-                'description' => strip_tags($reaction->getDescription())
+                'description' => strip_tags($reaction->getDescription()),
+                'geoTags' => $reaction->getArrayTags(TagConstants::TAG_TYPE_GEO),
+                'allTags' => $reaction->getArrayTags(),
             ),
             $reaction->getPublishConstraints(),
             $errorString

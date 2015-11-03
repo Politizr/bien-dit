@@ -325,9 +325,7 @@ class PDDebate extends BasePDDebate implements PDocumentInterface, ContainerAwar
     }
 
     /**
-     * Debate's tags
-     *
-     * @return PropelCollection[PTag]
+     * @see PDocumentInterface::getTags
      */
     public function getTags($tagTypeId = null, $online = true)
     {

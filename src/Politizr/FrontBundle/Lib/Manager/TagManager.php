@@ -10,11 +10,13 @@ use Politizr\Constant\TagConstants;
 
 use Politizr\Model\PTag;
 use Politizr\Model\PDDTaggedT;
+use Politizr\Model\PDRTaggedT;
 use Politizr\Model\PUFollowT;
 use Politizr\Model\PUTaggedT;
 
 use Politizr\Model\PTagQuery;
 use Politizr\Model\PDDTaggedTQuery;
+use Politizr\Model\PDRTaggedTQuery;
 use Politizr\Model\PUFollowTQuery;
 use Politizr\Model\PUTaggedTQuery;
 
@@ -128,6 +130,25 @@ class TagManager
     }
 
     /**
+     * Create a new PDRTaggedT
+     *
+     * @param integer $reactionId
+     * @param integer $tagId
+     * @return PDDTaggedT
+     */
+    public function createReactionTag($reactionId, $tagId)
+    {
+        $pdrTaggedT = new PDRTaggedT();
+
+        $pdrTaggedT->setPDReactionId($reactionId);
+        $pdrTaggedT->setPTagId($tagId);
+
+        $pdrTaggedT->save();
+
+        return $pdrTaggedT;
+    }
+
+    /**
      * Delete a PDDTaggedT
      *
      * @param integer $debateId
@@ -138,6 +159,23 @@ class TagManager
     {
         $result = PDDTaggedTQuery::create()
             ->filterByPDDebateId($debateId)
+            ->filterByPTagId($tagId)
+            ->delete();
+
+        return $result;
+    }
+
+    /**
+     * Delete a PDRTaggedT
+     *
+     * @param integer $reactionId
+     * @param integer $tagId
+     * @return integer
+     */
+    public function deleteReactionTag($reactionId, $tagId)
+    {
+        $result = PDRTaggedTQuery::create()
+            ->filterByPDReactionId($reactionId)
             ->filterByPTagId($tagId)
             ->delete();
 

@@ -56,4 +56,11 @@ interface PDocumentInterface
      * @return int
      */
     public function countComments($online = true, $paragraphNo = null);
+
+    /**
+     * Get the tagged tags objects
+     *
+     * @return PropelCollection[PTag]
+     */
+    public function getTags();
 }

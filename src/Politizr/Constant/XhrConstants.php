@@ -99,6 +99,8 @@ class XhrConstants
     const ROUTE_TAG_SEARCH_LISTING = 'tags/search/listing';
     const ROUTE_TAG_DEBATE_CREATE = 'profil/debat/tag/create';
     const ROUTE_TAG_DEBATE_DELETE = 'profil/debat/tag/delete';
+    const ROUTE_TAG_REACTION_CREATE = 'profil/reaction/tag/create';
+    const ROUTE_TAG_REACTION_DELETE = 'profil/reaction/tag/delete';
     const ROUTE_TAG_USER_FOLLOW_CREATE = 'profil/utilisateur/follow/tag/create';
     const ROUTE_TAG_USER_FOLLOW_DELETE = 'profil/utilisateur/follow/tag/delete';
     const ROUTE_TAG_USER_TAGGED_CREATE = 'profil/utilisateur/tagged/tag/create';

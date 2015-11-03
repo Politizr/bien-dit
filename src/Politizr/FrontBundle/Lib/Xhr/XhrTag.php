@@ -13,6 +13,7 @@ use Politizr\Model\PTag;
 
 use Politizr\Model\PTagQuery;
 use Politizr\Model\PDDTaggedTQuery;
+use Politizr\Model\PDRTaggedTQuery;
 use Politizr\Model\PUFollowTQuery;
 use Politizr\Model\PUTaggedTQuery;
 
@@ -249,6 +250,95 @@ class XhrTag
 
         // Function process
         $this->tagManager->deleteDebateTag($subjectId, $tagId);
+
+        return true;
+    }
+
+    /* ######################################################################################################## */
+    /*                                                    REACTION                                              */
+    /* ######################################################################################################## */
+
+    /**
+     * Reaction's tag creation
+     */
+    public function reactionAddTag(Request $request)
+    {
+        $this->logger->info('*** reactionAddTag');
+
+        // Request arguments
+        $tagTitle = $request->get('tagTitle');
+        $this->logger->info('$tagTitle = ' . print_r($tagTitle, true));
+        $tagId = $request->get('tagId');
+        $this->logger->info('$tagId = ' . print_r($tagId, true));
+        $tagTypeId = $request->get('tagTypeId');
+        $this->logger->info('$tagTypeId = ' . print_r($tagTypeId, true));
+        $subjectId = $request->get('subjectId');
+        $this->logger->info('$subjectId = ' . print_r($subjectId, true));
+        $newTag = $request->get('newTag');
+        $this->logger->info('$newTag = ' . print_r($newTag, true));
+
+        // Function process
+        if (empty($tagTypeId)) {
+            $tagTypeId = null;
+        }
+
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        $tag = $this->retrieveOrCreateTag($tagId, $tagTitle, $tagTypeId, $user->getId(), $newTag);
+
+        // associate tag to reaction
+        $pdrTaggedT = PDRTaggedTQuery::create()
+            ->filterByPDReactionId($subjectId)
+            ->filterByPTagId($tag->getId())
+            ->findOne();
+
+        if ($pdrTaggedT) {
+            $created = false;
+            $htmlTag = null;
+        } else {
+            $created = true;
+            $this->tagManager->createReactionTag($subjectId, $tag->getId());
+
+            $xhrPathDelete = $this->templating->render(
+                'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
+                array(
+                    'xhrRoute' => 'ROUTE_TAG_REACTION_DELETE',
+                    'xhrService' => 'tag',
+                    'xhrMethod' => 'reactionDeleteTag',
+                    'xhrType' => 'RETURN_BOOLEAN',
+                )
+            );
+
+            $htmlTag = $this->templating->render(
+                'PolitizrFrontBundle:Tag:_detailEditable.html.twig',
+                array(
+                    'subjectId' => $subjectId,
+                    'tag' => $tag,
+                    'path' => $xhrPathDelete
+                )
+            );
+        }
+
+        return array(
+            'created' => $created,
+            'htmlTag' => $htmlTag
+            );
+    }
+
+    /**
+     * Reaction's tag deletion
+     */
+    public function reactionDeleteTag(Request $request)
+    {
+        $this->logger->info('*** reactionDeleteTag');
+        
+        // Request arguments
+        $tagId = $request->get('tagId');
+        $this->logger->info('$tagId = ' . print_r($tagId, true));
+        $subjectId = $request->get('subjectId');
+        $this->logger->info('$subjectId = ' . print_r($subjectId, true));
+
+        // Function process
+        $this->tagManager->deleteReactionTag($subjectId, $tagId);
 
         return true;
     }

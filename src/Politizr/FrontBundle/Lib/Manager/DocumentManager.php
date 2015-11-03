@@ -5,6 +5,7 @@ use Politizr\Exception\InconsistentDataException;
 
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDReaction;
+use Politizr\Model\PDRTaggedT;
 
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
@@ -236,6 +237,33 @@ LIMIT ".$offset.", ".$count."
         $reaction->setParentReactionId($parentId);
 
         $reaction->save();
+
+        return $reaction;
+    }
+
+    /**
+     * Init reaction's tags by default = parent's ones
+     *
+     * @param PDReaction $reaction
+     * @return PDReaction
+     */
+    public function initReactionTaggedTags($reaction)
+    {
+        $parent = $reaction->getParent();
+        if (!$parent) {
+            $parent = $reaction->getDebate();
+        }
+
+        $tags = $parent->getTags();
+
+        foreach ($tags as $tag) {
+            $pdrTaggedT = new PDRTaggedT();
+
+            $pdrTaggedT->setPTagId($tag->getId());
+            $pdrTaggedT->setPDReactionId($reaction->getId());
+
+            $pdrTaggedT->save();
+        }
 
         return $reaction;
     }

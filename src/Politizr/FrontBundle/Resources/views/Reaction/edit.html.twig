@@ -84,6 +84,20 @@
                 </div>
             </div>
             
+            <div class="tagBox">
+                <div class="fieldsetHeader">
+                    <div class="fieldsetHeaderTitle">les thématiques de la réaction</div>
+                    <i class="iconQuestion" action="toggleHelper"></i>
+                    <div class="helperSlider helperSliderRight" style="display: none;">
+                        <i class="iconArrowUp"></i>
+                        <i class="iconCross" action="hideHelper"></i>
+                        @todo : slider ajouter un tag
+                    </div>
+                </div>
+
+                {{ reactionTagsEdit(reaction, null, 1, true) }}
+            </div>
+
             <div id="switchEditionMode">
                 <div id="swithEditionIndependentEdition" action="activeComparedEdition" class="swithEdition">Rédaction comparée<span><i class="iconSwitchRight"></i>Rédaction autonome</span></div>
                 <div id="swithEditionComparedEdition" action="activeIndenpendentEdition" class="swithEdition" style="display: none;"><span>Rédaction comparée<i class="iconSwitchLeft"></i></span>Rédaction autonome</div>
@@ -131,10 +145,17 @@
 {% block javascriptFooter %}
     {{ parent() }}
 
+    <script>
+        var nbZones = 1;
+        var xhrRoute = ROUTE_TAG_LISTING;
+        var xhrUrlPrefix = '/xhr';
+    </script>
+
     {% javascripts
         '@PolitizrFrontBundle/Resources/public/js/smoke.min.js'
         '@PolitizrFrontBundle/Resources/public/js/medium-editor.min.js'
         '@PolitizrFrontBundle/Resources/public/js/jquery.form.min.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/tag/editTags.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/document/medium.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/document/edit.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/document/editPhoto.js'

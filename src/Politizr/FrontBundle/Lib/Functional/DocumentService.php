@@ -168,8 +168,11 @@ class DocumentService
             }
         }
 
-        // Create debate for user
+        // Create reaction for user
         $reaction = $this->documentManager->createReaction($user->getId(), $debate->getId(), $parentId);
+
+        // Init default reaction's tagged tags
+        $this->documentManager->initReactionTaggedTags($reaction);
 
         return $reaction;
     }

@@ -850,6 +850,23 @@
         </foreign-key>
     </table>
 
+    <table name="p_d_r_tagged_t" isCrossRef="true">
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+        <behavior name="archivable" />
+
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_d_reaction_id" type="integer" required="true" />
+        <column name="p_tag_id" type="integer" required="true" />
+
+        <foreign-key foreignTable="p_d_reaction" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_d_reaction_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="p_tag" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_tag_id" foreign="id" />
+        </foreign-key>
+    </table>
+
 
 
 

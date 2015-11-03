@@ -14,6 +14,7 @@ use Glorpen\Propel\PropelBundle\Events\DetectOMClassEvent;
 use Glorpen\Propel\PropelBundle\Events\PeerEvent;
 use Politizr\Model\PDDebatePeer;
 use Politizr\Model\PDRCommentPeer;
+use Politizr\Model\PDRTaggedTPeer;
 use Politizr\Model\PDReaction;
 use Politizr\Model\PDReactionPeer;
 use Politizr\Model\PUserPeer;
@@ -496,6 +497,9 @@ abstract class BasePDReactionPeer
         // Invalidate objects in PDRCommentPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PDRCommentPeer::clearInstancePool();
+        // Invalidate objects in PDRTaggedTPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PDRTaggedTPeer::clearInstancePool();
     }
 
     /**
