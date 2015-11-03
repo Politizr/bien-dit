@@ -103,7 +103,7 @@ function timelineUserList(userId, init, offset) {
                 }
 
                 // maj DOM onSuccess
-                stickyDate();
+                // stickyDate();
                 fullImgLiquid();
             }
             $('#ajaxGlobalLoader').hide();
