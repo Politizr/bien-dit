@@ -124,6 +124,8 @@ class XhrConstants
     // MONITORING
     const ROUTE_MONITORING_ABUSE = 'profil/signaler-un-abus';
     const ROUTE_MONITORING_ABUSE_CHECK = 'profil/signaler-un-abus/check';
+    const ROUTE_MONITORING_ASK_FOR_UPDATE = 'profil/modifier-mes-donnees';
+    const ROUTE_MONITORING_ASK_FOR_UPDATE_CHECK = 'profil/modifier-mes-donnees/check';
 
     // ******************************************************** //
     //                  XHR URL REWRITING (ADMIN)

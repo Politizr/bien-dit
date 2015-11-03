@@ -111,6 +111,8 @@ var ROUTE_TIMELINE_USER = 'user/timeline';
 // MONITORING
 var ROUTE_MONITORING_ABUSE = 'profil/signaler-un-abus';
 var ROUTE_MONITORING_ABUSE_CHECK = 'profil/signaler-un-abus/check';
+var ROUTE_MONITORING_ASK_FOR_UPDATE = 'profil/modifier-mes-donnees';
+var ROUTE_MONITORING_ASK_FOR_UPDATE_CHECK = 'profil/modifier-mes-donnees/check';
 
 // ******************************************************** //
 //                  XHR URL REWRITING (ADMIN)

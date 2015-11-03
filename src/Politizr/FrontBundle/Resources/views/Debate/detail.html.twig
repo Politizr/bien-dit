@@ -28,6 +28,11 @@
 
 {% block fixedActions %}
     <div id="fixedActions">
+        {% if app.user and app.user.id == debate.pUserId %}
+            <div class="actionAskForUpdate">
+                <a action="modalAskForUpdate" type="{{ constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE') }}" subjectId="{{ debate.id }}"><i class="iconPublish"></i>Demande de modification</a>
+            </div>
+        {% endif %}
         {% if app.user and app.user | isAuthorizedToReact(debate) %}
             <a class="actionReact" href="{{ path('ReactionDraftNew'~profileSuffix, { 'debateId': debate.id, 'parentId': null }) }}">
                 <i class="iconReaction"></i>réagir

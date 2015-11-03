@@ -119,6 +119,7 @@ class PUserTableMap extends TableMap
         $this->addRelation('PDReaction', 'Politizr\\Model\\PDReaction', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'SET NULL', 'CASCADE', 'PDReactions');
         $this->addRelation('PDDComment', 'Politizr\\Model\\PDDComment', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'SET NULL', 'CASCADE', 'PDDComments');
         $this->addRelation('PDRComment', 'Politizr\\Model\\PDRComment', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'SET NULL', 'CASCADE', 'PDRComments');
+        $this->addRelation('PMAskForUpdate', 'Politizr\\Model\\PMAskForUpdate', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'SET NULL', 'CASCADE', 'PMAskForUpdates');
         $this->addRelation('PMAbuseReporting', 'Politizr\\Model\\PMAbuseReporting', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'SET NULL', 'CASCADE', 'PMAbuseReportings');
         $this->addRelation('PUFollowURelatedByPUserId', 'Politizr\\Model\\PUFollowU', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', null, 'PUFollowUsRelatedByPUserId');
         $this->addRelation('PUFollowURelatedByPUserFollowerId', 'Politizr\\Model\\PUFollowU', RelationMap::ONE_TO_MANY, array('id' => 'p_user_follower_id', ), 'CASCADE', null, 'PUFollowUsRelatedByPUserFollowerId');

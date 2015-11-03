@@ -137,7 +137,12 @@ class AdminMenu extends AdmingeneratorMenuBuilder
         );
         $this->addLinkRoute(
             $monitoring,
-            'Exceptions',
+            'Demande de modification',
+            'Politizr_AdminBundle_PMAskForUpdate_list'
+        );
+        $this->addLinkRoute(
+            $monitoring,
+            'Exception',
             'Politizr_AdminBundle_PMAppException_list'
         );
 

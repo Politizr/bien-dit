@@ -18,8 +18,11 @@
             <h3>Votre identité</h3>
             {% if app.user.validated %}
                 <p class="formInfo">
-                    <i class="iconAlert"></i>Ces informations ont été validées par nos services et ne peuvent être modifiées: si vous désirez les corriger, contactez directement Politizr.
+                    <i class="iconAlert"></i>Ces informations ont été validées par nos services et ne peuvent être modifiées.
                 </p>
+                <div class="actionAskForUpdate">
+                    <a action="modalAskForUpdate" type="{{ constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_USER') }}" subjectId="{{ user.id }}"><i class="iconPublish"></i>Demande de modification</a>
+                </div>
             {% endif %}
 
             <form name="user" method="post" id="formPerso1">

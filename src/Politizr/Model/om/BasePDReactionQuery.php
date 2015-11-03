@@ -81,14 +81,6 @@ use Politizr\Model\PUser;
  * @method PDReactionQuery rightJoinPDDebate($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PDDebate relation
  * @method PDReactionQuery innerJoinPDDebate($relationAlias = null) Adds a INNER JOIN clause to the query using the PDDebate relation
  *
- * @method PDReactionQuery leftJoinPDReactionRelatedByParentReactionId($relationAlias = null) Adds a LEFT JOIN clause to the query using the PDReactionRelatedByParentReactionId relation
- * @method PDReactionQuery rightJoinPDReactionRelatedByParentReactionId($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PDReactionRelatedByParentReactionId relation
- * @method PDReactionQuery innerJoinPDReactionRelatedByParentReactionId($relationAlias = null) Adds a INNER JOIN clause to the query using the PDReactionRelatedByParentReactionId relation
- *
- * @method PDReactionQuery leftJoinPDReactionRelatedById($relationAlias = null) Adds a LEFT JOIN clause to the query using the PDReactionRelatedById relation
- * @method PDReactionQuery rightJoinPDReactionRelatedById($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PDReactionRelatedById relation
- * @method PDReactionQuery innerJoinPDReactionRelatedById($relationAlias = null) Adds a INNER JOIN clause to the query using the PDReactionRelatedById relation
- *
  * @method PDReactionQuery leftJoinPDRComment($relationAlias = null) Adds a LEFT JOIN clause to the query using the PDRComment relation
  * @method PDReactionQuery rightJoinPDRComment($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PDRComment relation
  * @method PDReactionQuery innerJoinPDRComment($relationAlias = null) Adds a INNER JOIN clause to the query using the PDRComment relation
@@ -482,8 +474,6 @@ abstract class BasePDReactionQuery extends ModelCriteria
      * $query->filterByParentReactionId(array('min' => 12)); // WHERE parent_reaction_id >= 12
      * $query->filterByParentReactionId(array('max' => 12)); // WHERE parent_reaction_id <= 12
      * </code>
-     *
-     * @see       filterByPDReactionRelatedByParentReactionId()
      *
      * @param     mixed $parentReactionId The value to use as filter.
      *              Use scalar values for equality.
@@ -1302,156 +1292,6 @@ abstract class BasePDReactionQuery extends ModelCriteria
         return $this
             ->joinPDDebate($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'PDDebate', '\Politizr\Model\PDDebateQuery');
-    }
-
-    /**
-     * Filter the query by a related PDReaction object
-     *
-     * @param   PDReaction|PropelObjectCollection $pDReaction The related object(s) to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return                 PDReactionQuery The current query, for fluid interface
-     * @throws PropelException - if the provided filter is invalid.
-     */
-    public function filterByPDReactionRelatedByParentReactionId($pDReaction, $comparison = null)
-    {
-        if ($pDReaction instanceof PDReaction) {
-            return $this
-                ->addUsingAlias(PDReactionPeer::PARENT_REACTION_ID, $pDReaction->getId(), $comparison);
-        } elseif ($pDReaction instanceof PropelObjectCollection) {
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-
-            return $this
-                ->addUsingAlias(PDReactionPeer::PARENT_REACTION_ID, $pDReaction->toKeyValue('PrimaryKey', 'Id'), $comparison);
-        } else {
-            throw new PropelException('filterByPDReactionRelatedByParentReactionId() only accepts arguments of type PDReaction or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the PDReactionRelatedByParentReactionId relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return PDReactionQuery The current query, for fluid interface
-     */
-    public function joinPDReactionRelatedByParentReactionId($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('PDReactionRelatedByParentReactionId');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'PDReactionRelatedByParentReactionId');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the PDReactionRelatedByParentReactionId relation PDReaction object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   \Politizr\Model\PDReactionQuery A secondary query class using the current class as primary query
-     */
-    public function usePDReactionRelatedByParentReactionIdQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        return $this
-            ->joinPDReactionRelatedByParentReactionId($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'PDReactionRelatedByParentReactionId', '\Politizr\Model\PDReactionQuery');
-    }
-
-    /**
-     * Filter the query by a related PDReaction object
-     *
-     * @param   PDReaction|PropelObjectCollection $pDReaction  the related object to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return                 PDReactionQuery The current query, for fluid interface
-     * @throws PropelException - if the provided filter is invalid.
-     */
-    public function filterByPDReactionRelatedById($pDReaction, $comparison = null)
-    {
-        if ($pDReaction instanceof PDReaction) {
-            return $this
-                ->addUsingAlias(PDReactionPeer::ID, $pDReaction->getParentReactionId(), $comparison);
-        } elseif ($pDReaction instanceof PropelObjectCollection) {
-            return $this
-                ->usePDReactionRelatedByIdQuery()
-                ->filterByPrimaryKeys($pDReaction->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByPDReactionRelatedById() only accepts arguments of type PDReaction or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the PDReactionRelatedById relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return PDReactionQuery The current query, for fluid interface
-     */
-    public function joinPDReactionRelatedById($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('PDReactionRelatedById');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'PDReactionRelatedById');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the PDReactionRelatedById relation PDReaction object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   \Politizr\Model\PDReactionQuery A secondary query class using the current class as primary query
-     */
-    public function usePDReactionRelatedByIdQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        return $this
-            ->joinPDReactionRelatedById($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'PDReactionRelatedById', '\Politizr\Model\PDReactionQuery');
     }
 
     /**

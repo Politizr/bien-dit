@@ -1,0 +1,5 @@
+{% extends_admingenerated "PolitizrAdminBundle:PMAskForUpdateShow:index.html.twig" %}
+
+{% block show_column_block_p_object %}
+    {{ adminCreatePath(PMAskForUpdate.PObjectName, PMAskForUpdate.PObjectId, true) }}
+{% endblock %}

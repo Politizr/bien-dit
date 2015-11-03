@@ -10,7 +10,6 @@ $("body").on("click", "[action='modalReputation']", function() {
     loadReputation();
 });
 
-
 // modal abuse
 $("body").on("click", "[action='modalAbuse']", function() {
     // console.log('*** modalAbuse');
@@ -24,6 +23,21 @@ $("body").on("click", "[action='modalAbuse']", function() {
     // console.log(type);
 
     loadAbuseBox(subjectId, type);
+});
+
+// modal ask for update
+$("body").on("click", "[action='modalAskForUpdate']", function() {
+    // console.log('*** modalAbuse');
+    $('#modalBox#modalBoxContent').removeClass().addClass('formAskForUpdate');
+    modalLoading();
+
+    var subjectId = $(this).attr('subjectId');
+    var type = $(this).attr('type');
+
+    console.log(subjectId);
+    console.log(type);
+
+    loadAskForUpdateBox(subjectId, type);
 });
 
 // ***************************************** //
@@ -241,6 +255,45 @@ function loadAbuseBox(subjectId, type) {
         ROUTE_MONITORING_ABUSE,
         'monitoring',
         'abuse',
+        RETURN_HTML
+        );
+
+    $.ajax({
+        type: 'POST',
+        url: xhrPath,
+        data: { 'subjectId': subjectId, 'type': type },
+        dataType: 'json',
+        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
+        statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
+        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
+        success: function(data) {
+            if (data['error']) {
+                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                $('#infoBoxHolder .boxError').show();
+            } else {
+                $('#modalBoxContent').html(data['html']);
+            }
+            $('#ajaxGlobalLoader').hide();
+        }
+    });
+}
+
+/**
+ * Ask for update box loading
+ */
+function loadAskForUpdateBox(subjectId, type) {
+    // console.log('*** loadAbuseBox');
+    subjectId = (typeof subjectId === "undefined") ? null : subjectId;
+    type = (typeof type === "undefined") ? null : type;
+
+    if (subjectId == null || type == null) {
+        return false;
+    }
+
+    var xhrPath = getXhrPath(
+        ROUTE_MONITORING_ASK_FOR_UPDATE,
+        'monitoring',
+        'askForUpdate',
         RETURN_HTML
         );
 

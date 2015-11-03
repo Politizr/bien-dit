@@ -27,6 +27,8 @@ use Politizr\Model\PDReaction;
 use Politizr\Model\PDReactionQuery;
 use Politizr\Model\PMAbuseReporting;
 use Politizr\Model\PMAbuseReportingQuery;
+use Politizr\Model\PMAskForUpdate;
+use Politizr\Model\PMAskForUpdateQuery;
 use Politizr\Model\PNotification;
 use Politizr\Model\PNotificationQuery;
 use Politizr\Model\POrder;
@@ -500,6 +502,12 @@ abstract class BasePUser extends BaseObject implements Persistent
     protected $collPDRCommentsPartial;
 
     /**
+     * @var        PropelObjectCollection|PMAskForUpdate[] Collection to store aggregation of PMAskForUpdate objects.
+     */
+    protected $collPMAskForUpdates;
+    protected $collPMAskForUpdatesPartial;
+
+    /**
      * @var        PropelObjectCollection|PMAbuseReporting[] Collection to store aggregation of PMAbuseReporting objects.
      */
     protected $collPMAbuseReportings;
@@ -783,6 +791,12 @@ abstract class BasePUser extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $pDRCommentsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pMAskForUpdatesScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -2924,6 +2938,8 @@ abstract class BasePUser extends BaseObject implements Persistent
 
             $this->collPDRComments = null;
 
+            $this->collPMAskForUpdates = null;
+
             $this->collPMAbuseReportings = null;
 
             $this->collPUFollowUsRelatedByPUserId = null;
@@ -3721,6 +3737,24 @@ abstract class BasePUser extends BaseObject implements Persistent
                 }
             }
 
+            if ($this->pMAskForUpdatesScheduledForDeletion !== null) {
+                if (!$this->pMAskForUpdatesScheduledForDeletion->isEmpty()) {
+                    foreach ($this->pMAskForUpdatesScheduledForDeletion as $pMAskForUpdate) {
+                        // need to save related object because we set the relation to null
+                        $pMAskForUpdate->save($con);
+                    }
+                    $this->pMAskForUpdatesScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPMAskForUpdates !== null) {
+                foreach ($this->collPMAskForUpdates as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
             if ($this->pMAbuseReportingsScheduledForDeletion !== null) {
                 if (!$this->pMAbuseReportingsScheduledForDeletion->isEmpty()) {
                     foreach ($this->pMAbuseReportingsScheduledForDeletion as $pMAbuseReporting) {
@@ -4341,6 +4375,14 @@ abstract class BasePUser extends BaseObject implements Persistent
                     }
                 }
 
+                if ($this->collPMAskForUpdates !== null) {
+                    foreach ($this->collPMAskForUpdates as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
                 if ($this->collPMAbuseReportings !== null) {
                     foreach ($this->collPMAbuseReportings as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
@@ -4676,6 +4718,9 @@ abstract class BasePUser extends BaseObject implements Persistent
             }
             if (null !== $this->collPDRComments) {
                 $result['PDRComments'] = $this->collPDRComments->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collPMAskForUpdates) {
+                $result['PMAskForUpdates'] = $this->collPMAskForUpdates->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collPMAbuseReportings) {
                 $result['PMAbuseReportings'] = $this->collPMAbuseReportings->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -5217,6 +5262,12 @@ abstract class BasePUser extends BaseObject implements Persistent
                 }
             }
 
+            foreach ($this->getPMAskForUpdates() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPMAskForUpdate($relObj->copy($deepCopy));
+                }
+            }
+
             foreach ($this->getPMAbuseReportings() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addPMAbuseReporting($relObj->copy($deepCopy));
@@ -5401,6 +5452,9 @@ abstract class BasePUser extends BaseObject implements Persistent
         }
         if ('PDRComment' == $relationName) {
             $this->initPDRComments();
+        }
+        if ('PMAskForUpdate' == $relationName) {
+            $this->initPMAskForUpdates();
         }
         if ('PMAbuseReporting' == $relationName) {
             $this->initPMAbuseReportings();
@@ -9513,31 +9567,6 @@ abstract class BasePUser extends BaseObject implements Persistent
         return $this->getPDReactions($query, $con);
     }
 
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this PUser is new, it will return
-     * an empty collection; or if this PUser has previously
-     * been saved, it will retrieve related PDReactions from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in PUser.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|PDReaction[] List of PDReaction objects
-     */
-    public function getPDReactionsJoinPDReactionRelatedByParentReactionId($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = PDReactionQuery::create(null, $criteria);
-        $query->joinWith('PDReactionRelatedByParentReactionId', $join_behavior);
-
-        return $this->getPDReactions($query, $con);
-    }
-
     /**
      * Clears out the collPDDComments collection
      *
@@ -10036,6 +10065,231 @@ abstract class BasePUser extends BaseObject implements Persistent
         $query->joinWith('PDReaction', $join_behavior);
 
         return $this->getPDRComments($query, $con);
+    }
+
+    /**
+     * Clears out the collPMAskForUpdates collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PUser The current object (for fluent API support)
+     * @see        addPMAskForUpdates()
+     */
+    public function clearPMAskForUpdates()
+    {
+        $this->collPMAskForUpdates = null; // important to set this to null since that means it is uninitialized
+        $this->collPMAskForUpdatesPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPMAskForUpdates collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPMAskForUpdates($v = true)
+    {
+        $this->collPMAskForUpdatesPartial = $v;
+    }
+
+    /**
+     * Initializes the collPMAskForUpdates collection.
+     *
+     * By default this just sets the collPMAskForUpdates collection to an empty array (like clearcollPMAskForUpdates());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPMAskForUpdates($overrideExisting = true)
+    {
+        if (null !== $this->collPMAskForUpdates && !$overrideExisting) {
+            return;
+        }
+        $this->collPMAskForUpdates = new PropelObjectCollection();
+        $this->collPMAskForUpdates->setModel('PMAskForUpdate');
+    }
+
+    /**
+     * Gets an array of PMAskForUpdate objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PUser is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PMAskForUpdate[] List of PMAskForUpdate objects
+     * @throws PropelException
+     */
+    public function getPMAskForUpdates($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPMAskForUpdatesPartial && !$this->isNew();
+        if (null === $this->collPMAskForUpdates || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPMAskForUpdates) {
+                // return empty collection
+                $this->initPMAskForUpdates();
+            } else {
+                $collPMAskForUpdates = PMAskForUpdateQuery::create(null, $criteria)
+                    ->filterByPUser($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPMAskForUpdatesPartial && count($collPMAskForUpdates)) {
+                      $this->initPMAskForUpdates(false);
+
+                      foreach ($collPMAskForUpdates as $obj) {
+                        if (false == $this->collPMAskForUpdates->contains($obj)) {
+                          $this->collPMAskForUpdates->append($obj);
+                        }
+                      }
+
+                      $this->collPMAskForUpdatesPartial = true;
+                    }
+
+                    $collPMAskForUpdates->getInternalIterator()->rewind();
+
+                    return $collPMAskForUpdates;
+                }
+
+                if ($partial && $this->collPMAskForUpdates) {
+                    foreach ($this->collPMAskForUpdates as $obj) {
+                        if ($obj->isNew()) {
+                            $collPMAskForUpdates[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPMAskForUpdates = $collPMAskForUpdates;
+                $this->collPMAskForUpdatesPartial = false;
+            }
+        }
+
+        return $this->collPMAskForUpdates;
+    }
+
+    /**
+     * Sets a collection of PMAskForUpdate objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pMAskForUpdates A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PUser The current object (for fluent API support)
+     */
+    public function setPMAskForUpdates(PropelCollection $pMAskForUpdates, PropelPDO $con = null)
+    {
+        $pMAskForUpdatesToDelete = $this->getPMAskForUpdates(new Criteria(), $con)->diff($pMAskForUpdates);
+
+
+        $this->pMAskForUpdatesScheduledForDeletion = $pMAskForUpdatesToDelete;
+
+        foreach ($pMAskForUpdatesToDelete as $pMAskForUpdateRemoved) {
+            $pMAskForUpdateRemoved->setPUser(null);
+        }
+
+        $this->collPMAskForUpdates = null;
+        foreach ($pMAskForUpdates as $pMAskForUpdate) {
+            $this->addPMAskForUpdate($pMAskForUpdate);
+        }
+
+        $this->collPMAskForUpdates = $pMAskForUpdates;
+        $this->collPMAskForUpdatesPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PMAskForUpdate objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PMAskForUpdate objects.
+     * @throws PropelException
+     */
+    public function countPMAskForUpdates(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPMAskForUpdatesPartial && !$this->isNew();
+        if (null === $this->collPMAskForUpdates || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPMAskForUpdates) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPMAskForUpdates());
+            }
+            $query = PMAskForUpdateQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPUser($this)
+                ->count($con);
+        }
+
+        return count($this->collPMAskForUpdates);
+    }
+
+    /**
+     * Method called to associate a PMAskForUpdate object to this object
+     * through the PMAskForUpdate foreign key attribute.
+     *
+     * @param    PMAskForUpdate $l PMAskForUpdate
+     * @return PUser The current object (for fluent API support)
+     */
+    public function addPMAskForUpdate(PMAskForUpdate $l)
+    {
+        if ($this->collPMAskForUpdates === null) {
+            $this->initPMAskForUpdates();
+            $this->collPMAskForUpdatesPartial = true;
+        }
+
+        if (!in_array($l, $this->collPMAskForUpdates->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPMAskForUpdate($l);
+
+            if ($this->pMAskForUpdatesScheduledForDeletion and $this->pMAskForUpdatesScheduledForDeletion->contains($l)) {
+                $this->pMAskForUpdatesScheduledForDeletion->remove($this->pMAskForUpdatesScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PMAskForUpdate $pMAskForUpdate The pMAskForUpdate object to add.
+     */
+    protected function doAddPMAskForUpdate($pMAskForUpdate)
+    {
+        $this->collPMAskForUpdates[]= $pMAskForUpdate;
+        $pMAskForUpdate->setPUser($this);
+    }
+
+    /**
+     * @param	PMAskForUpdate $pMAskForUpdate The pMAskForUpdate object to remove.
+     * @return PUser The current object (for fluent API support)
+     */
+    public function removePMAskForUpdate($pMAskForUpdate)
+    {
+        if ($this->getPMAskForUpdates()->contains($pMAskForUpdate)) {
+            $this->collPMAskForUpdates->remove($this->collPMAskForUpdates->search($pMAskForUpdate));
+            if (null === $this->pMAskForUpdatesScheduledForDeletion) {
+                $this->pMAskForUpdatesScheduledForDeletion = clone $this->collPMAskForUpdates;
+                $this->pMAskForUpdatesScheduledForDeletion->clear();
+            }
+            $this->pMAskForUpdatesScheduledForDeletion[]= $pMAskForUpdate;
+            $pMAskForUpdate->setPUser(null);
+        }
+
+        return $this;
     }
 
     /**
@@ -12941,6 +13195,11 @@ abstract class BasePUser extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collPMAskForUpdates) {
+                foreach ($this->collPMAskForUpdates as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collPMAbuseReportings) {
                 foreach ($this->collPMAbuseReportings as $o) {
                     $o->clearAllReferences($deep);
@@ -13103,6 +13362,10 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->collPDRComments->clearIterator();
         }
         $this->collPDRComments = null;
+        if ($this->collPMAskForUpdates instanceof PropelCollection) {
+            $this->collPMAskForUpdates->clearIterator();
+        }
+        $this->collPMAskForUpdates = null;
         if ($this->collPMAbuseReportings instanceof PropelCollection) {
             $this->collPMAbuseReportings->clearIterator();
         }

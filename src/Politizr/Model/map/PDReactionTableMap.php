@@ -45,7 +45,7 @@ class PDReactionTableMap extends TableMap
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addForeignKey('p_user_id', 'PUserId', 'INTEGER', 'p_user', 'id', false, null, null);
         $this->addForeignKey('p_d_debate_id', 'PDDebateId', 'INTEGER', 'p_d_debate', 'id', true, null, null);
-        $this->addForeignKey('parent_reaction_id', 'ParentReactionId', 'INTEGER', 'p_d_reaction', 'id', false, null, null);
+        $this->addColumn('parent_reaction_id', 'ParentReactionId', 'INTEGER', false, null, null);
         $this->addColumn('title', 'Title', 'VARCHAR', false, 100, null);
         $this->addColumn('file_name', 'FileName', 'VARCHAR', false, 150, null);
         $this->addColumn('copyright', 'Copyright', 'LONGVARCHAR', false, null, null);
@@ -74,8 +74,6 @@ class PDReactionTableMap extends TableMap
     {
         $this->addRelation('PUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_ONE, array('p_user_id' => 'id', ), 'SET NULL', 'CASCADE');
         $this->addRelation('PDDebate', 'Politizr\\Model\\PDDebate', RelationMap::MANY_TO_ONE, array('p_d_debate_id' => 'id', ), 'CASCADE', 'CASCADE');
-        $this->addRelation('PDReactionRelatedByParentReactionId', 'Politizr\\Model\\PDReaction', RelationMap::MANY_TO_ONE, array('parent_reaction_id' => 'id', ), 'CASCADE', 'CASCADE');
-        $this->addRelation('PDReactionRelatedById', 'Politizr\\Model\\PDReaction', RelationMap::ONE_TO_MANY, array('id' => 'parent_reaction_id', ), 'CASCADE', 'CASCADE', 'PDReactionsRelatedById');
         $this->addRelation('PDRComment', 'Politizr\\Model\\PDRComment', RelationMap::ONE_TO_MANY, array('id' => 'p_d_reaction_id', ), 'CASCADE', 'CASCADE', 'PDRComments');
     } // buildRelations()
 

@@ -182,6 +182,11 @@ Politizr_AdminBundle_PMAbuseReporting:
     type:     admingenerator
     prefix:   /PMAbuseReporting
 
+Politizr_AdminBundle_PMAskForUpdate:
+    resource: "@PolitizrAdminBundle/Controller/PMAskForUpdate/"
+    type:     admingenerator
+    prefix:   /PMAskForUpdate
+
 Politizr_AdminBundle_PMAppException:
     resource: "@PolitizrAdminBundle/Controller/PMAppException/"
     type:     admingenerator

@@ -853,6 +853,24 @@
 
 
 
+    <table name="p_m_ask_for_update">
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+        <behavior name="archivable" />
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_user_id" type="integer" required="false" />  
+        
+        <column name="p_object_name" type="varchar" size="150" />
+        <column name="p_object_id" type="integer" />
+
+        <column name="message" type="longvarchar" />
+
+        <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_user_id" foreign="id" />
+        </foreign-key>        
+    </table>
+
     <table name="p_m_abuse_reporting">
         <behavior name="timestampable" />
         <behavior name="query_cache" />

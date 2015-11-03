@@ -20,6 +20,7 @@ use Politizr\Model\PDDebate;
 use Politizr\Model\PDRComment;
 use Politizr\Model\PDReaction;
 use Politizr\Model\PMAbuseReporting;
+use Politizr\Model\PMAskForUpdate;
 use Politizr\Model\PNotification;
 use Politizr\Model\POrder;
 use Politizr\Model\PQOrganization;
@@ -219,6 +220,10 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery leftJoinPDRComment($relationAlias = null) Adds a LEFT JOIN clause to the query using the PDRComment relation
  * @method PUserQuery rightJoinPDRComment($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PDRComment relation
  * @method PUserQuery innerJoinPDRComment($relationAlias = null) Adds a INNER JOIN clause to the query using the PDRComment relation
+ *
+ * @method PUserQuery leftJoinPMAskForUpdate($relationAlias = null) Adds a LEFT JOIN clause to the query using the PMAskForUpdate relation
+ * @method PUserQuery rightJoinPMAskForUpdate($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PMAskForUpdate relation
+ * @method PUserQuery innerJoinPMAskForUpdate($relationAlias = null) Adds a INNER JOIN clause to the query using the PMAskForUpdate relation
  *
  * @method PUserQuery leftJoinPMAbuseReporting($relationAlias = null) Adds a LEFT JOIN clause to the query using the PMAbuseReporting relation
  * @method PUserQuery rightJoinPMAbuseReporting($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PMAbuseReporting relation
@@ -3483,6 +3488,80 @@ abstract class BasePUserQuery extends ModelCriteria
         return $this
             ->joinPDRComment($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'PDRComment', '\Politizr\Model\PDRCommentQuery');
+    }
+
+    /**
+     * Filter the query by a related PMAskForUpdate object
+     *
+     * @param   PMAskForUpdate|PropelObjectCollection $pMAskForUpdate  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PUserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPMAskForUpdate($pMAskForUpdate, $comparison = null)
+    {
+        if ($pMAskForUpdate instanceof PMAskForUpdate) {
+            return $this
+                ->addUsingAlias(PUserPeer::ID, $pMAskForUpdate->getPUserId(), $comparison);
+        } elseif ($pMAskForUpdate instanceof PropelObjectCollection) {
+            return $this
+                ->usePMAskForUpdateQuery()
+                ->filterByPrimaryKeys($pMAskForUpdate->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPMAskForUpdate() only accepts arguments of type PMAskForUpdate or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PMAskForUpdate relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function joinPMAskForUpdate($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PMAskForUpdate');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PMAskForUpdate');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PMAskForUpdate relation PMAskForUpdate object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PMAskForUpdateQuery A secondary query class using the current class as primary query
+     */
+    public function usePMAskForUpdateQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinPMAskForUpdate($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PMAskForUpdate', '\Politizr\Model\PMAskForUpdateQuery');
     }
 
     /**
