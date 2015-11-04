@@ -22,6 +22,8 @@
     {% elseif type == constant('Politizr\\Constant\\ListingConstants::MODAL_TYPE_TAG') %}
         {% if context == constant('Politizr\\Constant\\ListingConstants::MODAL_DEBATES') %}
             Aucun débat ne correspond à cette thématique.
+        {% elseif context == constant('Politizr\\Constant\\ListingConstants::MODAL_REACTIONS') %}
+            Aucune réaction ne correspond à cette thématique.
         {% elseif context == constant('Politizr\\Constant\\ListingConstants::MODAL_USERS') %}
             Aucun utilisateur ne correspond à cette thématique.
         {% endif %}

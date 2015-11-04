@@ -70,6 +70,7 @@ class XhrConstants
     const ROUTE_MODAL_SUGGESTION_REACTION_LIST = 'profil/liste/suggestion/reaction';
     const ROUTE_MODAL_SUGGESTION_USER_LIST = 'profil/liste/suggestion/utilisateur';
     const ROUTE_MODAL_TAG_DEBATE_LIST = 'profil/liste/tag/debat';
+    const ROUTE_MODAL_TAG_REACTION_LIST = 'profil/liste/tag/reaction';
     const ROUTE_MODAL_TAG_USER_LIST = 'profil/liste/tag/utilisateur';
     const ROUTE_MODAL_FOLLOWED_DEBATE_LIST = 'profil/liste/follow/debat';
     const ROUTE_MODAL_FOLLOWED_USER_LIST = 'profil/liste/follow/utilisateur';

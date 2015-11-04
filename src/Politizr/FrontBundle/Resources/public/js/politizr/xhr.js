@@ -57,6 +57,7 @@ var ROUTE_MODAL_SUGGESTION_DEBATE_LIST = 'profil/liste/suggestion/debat';
 var ROUTE_MODAL_SUGGESTION_REACTION_LIST = 'profil/liste/suggestion/reaction';
 var ROUTE_MODAL_SUGGESTION_USER_LIST = 'profil/liste/suggestion/utilisateur';
 var ROUTE_MODAL_TAG_DEBATE_LIST = 'profil/liste/tag/debat';
+var ROUTE_MODAL_TAG_REACTION_LIST = 'profil/liste/tag/reaction';
 var ROUTE_MODAL_TAG_USER_LIST = 'profil/liste/tag/utilisateur';
 var ROUTE_MODAL_FOLLOWED_DEBATE_LIST = 'profil/liste/follow/debat';
 var ROUTE_MODAL_FOLLOWED_USER_LIST = 'profil/liste/follow/utilisateur';

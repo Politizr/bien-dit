@@ -653,6 +653,10 @@ class XhrModal
     }
 
 
+    /* ######################################################################################################## */
+    /*                                                   TAG                                                    */
+    /* ######################################################################################################## */
+
     /**
      * Tag debate listing
      */
@@ -698,6 +702,63 @@ class XhrModal
                 'PolitizrFrontBundle:PaginatedList:_debates.html.twig',
                 array(
                     'debates' => $debates,
+                    'offset' => intval($offset) + ListingConstants::MODAL_CLASSIC_PAGINATION,
+                    'moreResults' => $moreResults,
+                    'paginateNextAction' => 'paginateNext'
+                )
+            );
+        }
+
+        return array(
+            'html' => $html,
+            );
+    }
+
+    /**
+     * Tag reaction listing
+     */
+    public function tagReactionList(Request $request)
+    {
+        $this->logger->info('*** tagReactionList');
+        
+        // Request arguments
+        $queryParams = $this->getFiltersFromRequest($request);
+        $order = $queryParams[0];
+        $filters = $queryParams[1];
+        $offset = $queryParams[2];
+        $subjectId = $queryParams[3];
+
+        // Function process
+        $reactions = PDReactionQuery::create()
+                    ->distinct()
+                    ->online()
+                    ->usePDRTaggedTQuery()
+                        ->filterByPTagId($subjectId)
+                    ->endUse()
+                    ->filterByKeywords($filters)
+                    ->orderWithKeyword($order)
+                    ->limit(ListingConstants::MODAL_CLASSIC_PAGINATION)
+                    ->offset($offset)
+                    ->find();
+
+        $moreResults = false;
+        if (sizeof($reactions) == ListingConstants::MODAL_CLASSIC_PAGINATION) {
+            $moreResults = true;
+        }
+
+        if ($offset == 0 && count($reactions) == 0) {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_noResult.html.twig',
+                array(
+                    'type' => ListingConstants::MODAL_TYPE_TAG,
+                    'context' => ListingConstants::MODAL_REACTIONS,
+                )
+            );
+        } else {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_reactions.html.twig',
+                array(
+                    'reactions' => $reactions,
                     'offset' => intval($offset) + ListingConstants::MODAL_CLASSIC_PAGINATION,
                     'moreResults' => $moreResults,
                     'paginateNextAction' => 'paginateNext'
