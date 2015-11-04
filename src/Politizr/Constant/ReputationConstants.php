@@ -82,8 +82,6 @@ class ReputationConstants
     // ******************************************************** //
     const ACTION_ID_D_SHARE= 30;
     
-
-
     // ******************************************************** //
     //            PRBADGE OBJECT ID CONSTANTS
     // ******************************************************** //
@@ -196,4 +194,28 @@ class ReputationConstants
     const PORTE_VOIX_NB_SHARE = 5;
     const FAN_NB_SHARE = 20;
     const AMBASSADEUR_NB_SHARE = 50;
+
+
+    // ******************************************************** //
+    //                  Useful static methods
+    // ******************************************************** //
+
+    /**
+     * Return "positives" actions: publication, note+, follow
+     *
+     * @return array
+     */
+    public static function getPositivesPRActionsId()
+    {
+        return [
+            ReputationConstants::ACTION_ID_D_DEBATE_PUBLISH,
+            ReputationConstants::ACTION_ID_D_REACTION_PUBLISH,
+            ReputationConstants::ACTION_ID_D_COMMENT_PUBLISH,
+            ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_NOTE_POS,
+            ReputationConstants::ACTION_ID_D_AUTHOR_REACTION_NOTE_POS,
+            ReputationConstants::ACTION_ID_D_AUTHOR_COMMENT_NOTE_POS,
+            ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_FOLLOW,
+            ReputationConstants::ACTION_ID_U_AUTHOR_USER_FOLLOW,
+        ];
+    }
 }

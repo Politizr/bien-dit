@@ -525,6 +525,9 @@ class XhrModal
         $order = $queryParams[0];
         $filters = $queryParams[1];
         $offset = $queryParams[2];
+        $this->logger->info('order = '.print_r($order, true));
+        $this->logger->info('filters = '.print_r($filters, true));
+        $this->logger->info('offset = '.print_r($offset, true));
 
         // Function process
         $users = PUserQuery::create()
