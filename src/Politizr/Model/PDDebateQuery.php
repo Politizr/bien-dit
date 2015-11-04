@@ -178,6 +178,12 @@ LIMIT ".$offset.", ".$limit."
                 ->orderByNote()
             ->_elseif('last' === $keyword)
                 ->orderByLast()
+            ->_elseif('mostReactions' === $keyword)
+                ->orderByMostReactions()
+            ->_elseif('mostComments' === $keyword)
+                ->orderByMostComments()
+            ->_elseif('mostViews' === $keyword)
+                ->orderByMostViews()
             ->_endif();
     }
 
@@ -204,6 +210,48 @@ LIMIT ".$offset.", ".$limit."
             ->groupBy('Id')
             ->orderBy('NbFollowers', 'desc');
     }
+
+    /**
+     * Order by number of reactions
+     *
+     * @return PDDebateQuery
+     */
+    public function orderByMostReactions()
+    {
+        return $this
+            ->withColumn('COUNT(p_d_reaction.Id)', 'NbReactions')
+            ->join('PDReaction', \Criteria::LEFT_JOIN)
+            ->where('PDReaction.published = true')
+            ->groupBy('Id')
+            ->orderBy('NbReactions', 'desc');
+    }
+
+    /**
+     * Order by number of comments
+     *
+     * @return PDDebateQuery
+     */
+    public function orderByMostComments()
+    {
+        return $this
+            ->withColumn('COUNT(p_d_d_comment.Id)', 'NbComments')
+            ->join('PDDComment', \Criteria::LEFT_JOIN)
+            ->where('PDDComment.online = true')
+            ->groupBy('Id')
+            ->orderBy('NbComments', 'desc');
+    }
+
+    /**
+     * Order by number of views
+     *
+     * @return PDDebateQuery
+     */
+    public function orderByMostViews()
+    {
+        return $this
+            ->orderByNbViews('desc');
+    }
+
 
     /**
      * Order by last published
