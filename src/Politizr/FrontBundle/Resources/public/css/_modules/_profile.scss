@@ -103,6 +103,8 @@
 	margin-top: -6px;
 	position: relative;
 }
+#profileName a { color: #fff;}
+#profileName a:hover { color: $highlight;}
 
 #profileSummaryFooter .organization { background-color: $darkGrey; position: absolute; bottom: 4px;}
 #profileSummaryFooter .organization:hover {background-color: $highlight; }
