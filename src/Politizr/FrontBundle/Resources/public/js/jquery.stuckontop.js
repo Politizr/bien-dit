@@ -71,7 +71,7 @@
 
             var placeholder = undefined;
             var originalWidth = header.outerWidth();
-            var headerOffset = header.position().top;
+            // var headerOffset = header.position().top;
 
             $(window).scroll(function () {
                 // var containerTop = container.offset().top + headerOffset;

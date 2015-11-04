@@ -704,7 +704,7 @@ class XhrDocument
                 'path' => $uploadWebPath . $fileName,
                 'filterName' => 'debate_header',
                 'title' => $document->getTitle(),
-                'withShadow' => true
+                'withShadow' => false
             )
         );
 

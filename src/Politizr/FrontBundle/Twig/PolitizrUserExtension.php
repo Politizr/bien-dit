@@ -225,9 +225,11 @@ class PolitizrUserExtension extends \Twig_Extension
      * Load an <img> html tag with the back profile photo of user and apply it a filter.
      *
      * @param PUser $user
+     * @param string $filterName
+     * @param boolean $withShadow
      * @return html
      */
-    public function photoBack(PUser $user, $filterName = 'user_bio_back')
+    public function photoBack(PUser $user, $filterName = 'user_bio_back', $withShadow = true)
     {
         // $this->logger->info('*** photoBack');
         // $this->logger->info('$user = '.print_r($user, true));
@@ -244,6 +246,7 @@ class PolitizrUserExtension extends \Twig_Extension
                 'title' => $user->getFullName(),
                 'path' => $path,
                 'filterName' => $filterName,
+                'withShadow' => $withShadow,
             )
         );
 

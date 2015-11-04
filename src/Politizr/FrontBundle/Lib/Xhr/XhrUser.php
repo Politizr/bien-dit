@@ -230,6 +230,7 @@ class XhrUser
                 'title' => $user->__toString(),
                 'path' => $path,
                 'filterName' => 'user_bio_back',
+                'withShadow' => true
             )
         );
 
@@ -364,6 +365,7 @@ class XhrUser
                 'path' => $uploadWebPath . $fileName,
                 'filterName' => 'user_bio_back',
                 'title' => $user->__toString(),
+                'withShadow' => false
             )
         );
 
