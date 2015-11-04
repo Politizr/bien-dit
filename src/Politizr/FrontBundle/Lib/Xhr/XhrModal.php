@@ -278,6 +278,73 @@ class XhrModal
     }
 
     /**
+     * Reaction search by tags listing
+     */
+    public function searchReactionList(Request $request)
+    {
+        $this->logger->info('*** searchReactionList');
+
+        // Request arguments
+        $queryParams = $this->getFiltersFromRequest($request);
+        $order = $queryParams[0];
+        $filters = $queryParams[1];
+        $offset = $queryParams[2];
+
+        // Function process
+
+        // Get tags from search session
+        $session = $request->getSession();
+        $tags = $session->get('search/tag');
+        $this->logger->info('session tags = '.print_r($tags, true));
+
+        // at least one tag
+        if (empty($tags)) {
+            $error = 'Vous devez saisir au moins un tag';
+            throw new FormValidationException($error);
+        }
+
+        // @todo http://dba.stackexchange.com/questions/45512/how-do-i-select-items-from-a-table-where-a-single-column-must-contain-two-or-mo
+        $reactions = PDReactionQuery::create()
+                    ->distinct()
+                    ->online()
+                    ->filterByTags($tags)
+                    ->filterByKeywords($filters)
+                    ->orderWithKeyword($order)
+                    ->limit(ListingConstants::MODAL_CLASSIC_PAGINATION)
+                    ->offset($offset)
+                    ->find();
+
+        $moreResults = false;
+        if (sizeof($reactions) == ListingConstants::MODAL_CLASSIC_PAGINATION) {
+            $moreResults = true;
+        }
+
+        if ($offset == 0 && count($reactions) == 0) {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_noResult.html.twig',
+                array(
+                    'type' => ListingConstants::MODAL_TYPE_SEARCH,
+                    'context' => ListingConstants::MODAL_REACTIONS,
+                )
+            );
+        } else {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_reactions.html.twig',
+                array(
+                    'reactions' => $reactions,
+                    'offset' => intval($offset) + ListingConstants::MODAL_CLASSIC_PAGINATION,
+                    'moreResults' => $moreResults,
+                    'paginateNextAction' => 'paginateSearchNext'
+                )
+            );
+        }
+
+        return array(
+            'html' => $html,
+            );
+    }
+
+    /**
      * User search by tags listing
      */
     public function searchUserList(Request $request)
@@ -828,6 +895,10 @@ class XhrModal
             );
     }
 
+    /* ######################################################################################################## */
+    /*                                            ORGANIZATION                                                  */
+    /* ######################################################################################################## */
+
     /**
      * Organization user listing
      */
@@ -889,6 +960,10 @@ class XhrModal
             'html' => $html,
             );
     }
+
+    /* ######################################################################################################## */
+    /*                                                FOLLOWED                                                  */
+    /* ######################################################################################################## */
 
     /**
      * Followed debates listing
@@ -1005,6 +1080,10 @@ class XhrModal
             'html' => $html,
             );
     }
+
+    /* ######################################################################################################## */
+    /*                                                FOLLOWER                                                  */
+    /* ######################################################################################################## */
 
     /**
      * Follower listing

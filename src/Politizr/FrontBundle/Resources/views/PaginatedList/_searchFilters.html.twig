@@ -2,18 +2,27 @@
     <div class="listCriteria listCriteriaTabs">
         <form id="listType">
             <input type="radio" class="type" name="type" id="debateType" value="debate" url="{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
-        'xhrRoute': 'ROUTE_MODAL_SEARCH_DEBATE_BY_TAGS_LIST',
-        'xhrService': 'modal',
-        'xhrMethod': 'searchDebateList',
-        'xhrType': 'RETURN_HTML',
-    } only %}" checked/>
-            <label for="debateType">publications</label>
+                    'xhrRoute': 'ROUTE_MODAL_SEARCH_DEBATE_BY_TAGS_LIST',
+                    'xhrService': 'modal',
+                    'xhrMethod': 'searchDebateList',
+                    'xhrType': 'RETURN_HTML',
+                } only %}" checked/>
+            <label for="debateType">débats</label>
+
+            <input type="radio" class="type" name="type" id="reactionType" value="reaction" url="{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
+                    'xhrRoute': 'ROUTE_MODAL_SEARCH_REACTION_BY_TAGS_LIST',
+                    'xhrService': 'modal',
+                    'xhrMethod': 'searchReactionList',
+                    'xhrType': 'RETURN_HTML',
+                } only %}"/>
+            <label for="reactionType">réactions</label>
+            
             <input type="radio" class="type" name="type" id="userType" value="user" url="{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
-        'xhrRoute': 'ROUTE_MODAL_SEARCH_USER_BY_TAGS_LIST',
-        'xhrService': 'modal',
-        'xhrMethod': 'searchUserList',
-        'xhrType': 'RETURN_HTML',
-    } only %}" />
+                    'xhrRoute': 'ROUTE_MODAL_SEARCH_USER_BY_TAGS_LIST',
+                    'xhrService': 'modal',
+                    'xhrMethod': 'searchUserList',
+                    'xhrType': 'RETURN_HTML',
+                } only %}" />
             <label for="userType">profils</label>
         </form>
     </div>

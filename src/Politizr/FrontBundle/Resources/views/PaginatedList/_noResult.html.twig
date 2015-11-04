@@ -2,6 +2,8 @@
     {% if type == constant('Politizr\\Constant\\ListingConstants::MODAL_TYPE_SEARCH') %}
         {% if context == constant('Politizr\\Constant\\ListingConstants::MODAL_DEBATES') %}
             Aucun débat ne correspond à votre recherche.
+        {% elseif context == constant('Politizr\\Constant\\ListingConstants::MODAL_REACTIONS') %}
+            Aucune réaction ne correspond à votre recherche.
         {% elseif context == constant('Politizr\\Constant\\ListingConstants::MODAL_USERS') %}
             Aucun utilisateur ne correspond à votre recherche.
         {% endif %}

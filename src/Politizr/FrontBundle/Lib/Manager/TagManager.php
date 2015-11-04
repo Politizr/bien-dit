@@ -49,14 +49,20 @@ class TagManager
     public function getArrayTags($tagTypeId = null, $used = false, $online = true)
     {
         $usedByUserTagIds = [];
+        $usedByReactionTagIds = [];
         $usedByDebateTagIds = [];
         if ($used) {
-            $usedByUserTagIds = PUTaggedTQuery::create()
+            $usedByDebateTagIds = PDDTaggedTQuery::create()
                 ->select('PTagId')
                 ->find()
                 ->toArray();
 
-            $usedByDebateTagIds = PDDTaggedTQuery::create()
+            $usedByReactionTagIds = PDRTaggedTQuery::create()
+                ->select('PTagId')
+                ->find()
+                ->toArray();
+
+            $usedByUserTagIds = PUTaggedTQuery::create()
                 ->select('PTagId')
                 ->find()
                 ->toArray();
@@ -72,9 +78,11 @@ class TagManager
                 ->filterByPTTagTypeId($tagTypeId)
             ->_endif()
             ->_if($used)
-                ->filterById($usedByUserTagIds)
-                ->_or()
                 ->filterById($usedByDebateTagIds)
+                ->_or()
+                ->filterById($usedByReactionTagIds)
+                ->_or()
+                ->filterById($usedByUserTagIds)
             ->_endif()
             ->orderByTitle()
             ->find()
