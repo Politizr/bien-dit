@@ -141,11 +141,11 @@ textarea:focus, input:focus { outline: 0;}
 }
 #searchByTag form.searchForm input.searchSubmit:hover {color: $darkGrey;}
 
-// form abus
-form#formAbuseReporting {	width: 660px;}
+// form abus + ask for update
+form#formAbuseReporting, form#formAskForUpdate {	width: 660px;}
 .abuseContext { width: 660px;}
 
-form#formAbuseReporting {
+form#formAbuseReporting, form#formAskForUpdate {
 	clear: both;
 	margin-left: auto;
 	margin-right: auto;
@@ -158,6 +158,14 @@ form#formAbuseReporting {
 	font-family: 'Merriweather';
 	font-size: 13px;
 	line-height: 160%;
+}
+.modal .abuseContext h1, .modal .abuseContext h2, .modal .abuseContext ul, .modal .abuseContext blockquote {
+	margin: 0;
+	text-align: left;
+	font-family: 'Merriweather';
+	font-size: 13px;
+	line-height: 160%;
+	list-style: none;
 }
 
 .contextImage { 
@@ -192,7 +200,7 @@ form#formAbuseReporting {
 	margin-top: 5px;
 }
 
-form#formAbuseReporting textarea {
+form#formAbuseReporting textarea, form#formAskForUpdate textarea {
 	padding: 20px;
 	width: 618px;
 	height: 98px;
@@ -202,9 +210,9 @@ form#formAbuseReporting textarea {
 	font-size: 13px;
 }
 
-form#formAbuseReporting .actionsButtons { margin: 60px 0;}
+form#formAbuseReporting .actionsButtons, form#formAskForUpdate .actionsButtons { margin: 60px 0;}
 
-form#formAbuseReporting input[type=button] {
+form#formAbuseReporting input[type=button], form#formAskForUpdate input[type=button] {
 	background-color: $highlight;
 	color: #fff;
 	text-transform: uppercase;
@@ -217,7 +225,7 @@ form#formAbuseReporting input[type=button] {
 	text-align: center;
 }
 
-form#formAbuseReporting .cancel {
+form#formAbuseReporting .cancel, form#formAskForUpdate .cancel {
 	position: absolute;
 	bottom: 0;
 	left: 200px;
@@ -226,4 +234,4 @@ form#formAbuseReporting .cancel {
 	cursor: pointer;
 }
 
-form#formAbuseReporting form input[type=button]:hover {	background-color: $darkGrey;}
+form#formAbuseReporting form input[type=button]:hover, form#formAskForUpdate form input[type=button]:hover {	background-color: $darkGrey;}

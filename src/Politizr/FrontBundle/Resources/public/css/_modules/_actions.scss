@@ -59,6 +59,15 @@
 }
 #fixedActions .cannotPublishDebate a:hover, #fixedActions .cannotPublishReaction a:hover {color: $highlight;}
 
+#fixedActions .actionAskForUpdate a {
+	text-transform: none;
+	text-align: left;
+	width: auto;
+	padding: 0;
+	margin: 13px 0;
+}
+.actionAskForUpdate a:hover {color: $highlight;}
+
 
 /// got to update under
 

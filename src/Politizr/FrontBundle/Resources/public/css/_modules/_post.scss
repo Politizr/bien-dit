@@ -508,6 +508,8 @@ a.linkToPost:hover {color: $darkGrey;}
     font-style: italic;
 	line-height: 150%;
 }
+.authorSubtitle a { color: $darkGrey;}
+.authorSubtitle a:hover { color: $highlight;}
 
 #postAuthor span {
 	display: inline-block;
