@@ -36,6 +36,7 @@ class PolitizrUserExtension extends \Twig_Extension
     private $templating;
     private $securityTokenStorage;
     private $securityAuthorizationChecker;
+    private $globalTools;
 
     private $user;
 
@@ -47,10 +48,14 @@ class PolitizrUserExtension extends \Twig_Extension
         $this->sc = $serviceContainer;
         
         $this->logger = $serviceContainer->get('logger');
+        
         $this->router = $serviceContainer->get('router');
         $this->templating = $serviceContainer->get('templating');
+        
         $this->securityContext = $serviceContainer->get('security.context');
         $this->securityAuthorizationChecker =$serviceContainer->get('security.authorization_checker');
+
+        $this->globalTools = $serviceContainer->get('politizr.tools.global');
 
         // get connected user
         $token = $this->securityContext->getToken();
@@ -154,6 +159,7 @@ class PolitizrUserExtension extends \Twig_Extension
         return array(
             'isGrantedC'  => new \Twig_Function_Method($this, 'isGrantedC', array('is_safe' => array('html'))),
             'isGrantedE'  => new \Twig_Function_Method($this, 'isGrantedE', array('is_safe' => array('html'))),
+            'profileSuffix'  => new \Twig_Function_Method($this, 'profileSuffix', array('is_safe' => array('html'))),
         );
     }
 
@@ -191,6 +197,8 @@ class PolitizrUserExtension extends \Twig_Extension
         // $this->logger->info('*** photo');
         // $this->logger->info('$user = '.print_r($user, true));
 
+        $profileSuffix = $this->globalTools->computeProfileSuffix();
+
         $path = 'bundles/politizrfront/images/'.$default;
         if ($user && $fileName = $user->getFileName()) {
             $path = 'uploads/users/'.$fileName;
@@ -204,7 +212,7 @@ class PolitizrUserExtension extends \Twig_Extension
         // URL detail
         $url = null;
         if ($withLink && $user) {
-            $url = $this->router->generate('UserDetail', array('slug' => $user->getSlug()));
+            $url = $this->router->generate('UserDetail'.$profileSuffix, array('slug' => $user->getSlug()));
         }
 
         // Construction du rendu du tag
@@ -393,6 +401,8 @@ class PolitizrUserExtension extends \Twig_Extension
         $this->logger->info('$notification = '.print_r($notification, true));
         $this->logger->info('$type = '.print_r($type, true));
 
+        $profileSuffix = $this->globalTools->computeProfileSuffix();
+
         // absolute URL for email notif
         $absolute = false;
         if (NotificationConstants::TYPE_EMAIL === $type) {
@@ -410,7 +420,7 @@ class PolitizrUserExtension extends \Twig_Extension
 
                 if ($subject) {
                     $title = $subject->getTitle();
-                    $url = $this->router->generate('DebateDetail', array('slug' => $subject->getSlug()), $absolute);
+                    $url = $this->router->generate('DebateDetail'.$profileSuffix, array('slug' => $subject->getSlug()), $absolute);
                 }
                 break;
             case ObjectTypeConstants::TYPE_REACTION:
@@ -418,17 +428,17 @@ class PolitizrUserExtension extends \Twig_Extension
                 
                 if ($subject) {
                     $title = $subject->getTitle();
-                    $url = $this->router->generate('ReactionDetail', array('slug' => $subject->getSlug()), $absolute);
+                    $url = $this->router->generate('ReactionDetail'.$profileSuffix, array('slug' => $subject->getSlug()), $absolute);
 
                     // Document parent associée à la réaction
                     if ($subject->getTreeLevel() > 1) {
                         // Réaction parente
                         $document = $subject->getParent();
-                        $documentUrl = $this->router->generate('ReactionDetail', array('slug' => $document->getSlug()), $absolute);
+                        $documentUrl = $this->router->generate('ReactionDetail'.$profileSuffix, array('slug' => $document->getSlug()), $absolute);
                     } else {
                         // Débat
                         $document = $subject->getDebate();
-                        $documentUrl = $this->router->generate('DebateDetail', array('slug' => $document->getSlug()), $absolute);
+                        $documentUrl = $this->router->generate('DebateDetail'.$profileSuffix, array('slug' => $document->getSlug()), $absolute);
                     }
                 }
 
@@ -439,8 +449,8 @@ class PolitizrUserExtension extends \Twig_Extension
                 if ($subject) {
                     $document = $subject->getPDocument();
                     $title = $subject->getDescription();
-                    $url = $this->router->generate('DebateDetail', array('slug' => $document->getSlug()), $absolute) . '#p-' . $subject->getParagraphNo();
-                    $documentUrl = $this->router->generate('DebateDetail', array('slug' => $document->getSlug()), $absolute);
+                    $url = $this->router->generate('DebateDetail'.$profileSuffix, array('slug' => $document->getSlug()), $absolute) . '#p-' . $subject->getParagraphNo();
+                    $documentUrl = $this->router->generate('DebateDetail'.$profileSuffix, array('slug' => $document->getSlug()), $absolute);
                 }
                 break;
             case ObjectTypeConstants::TYPE_REACTION_COMMENT:
@@ -449,8 +459,8 @@ class PolitizrUserExtension extends \Twig_Extension
                 if ($subject) {
                     $document = $subject->getPDocument();
                     $title = $subject->getDescription();
-                    $url = $this->router->generate('ReactionDetail', array('slug' => $document->getSlug()), $absolute) . '#p-' . $subject->getParagraphNo();
-                    $documentUrl = $this->router->generate('ReactionDetail', array('slug' => $document->getSlug()), $absolute);
+                    $url = $this->router->generate('ReactionDetail'.$profileSuffix, array('slug' => $document->getSlug()), $absolute) . '#p-' . $subject->getParagraphNo();
+                    $documentUrl = $this->router->generate('ReactionDetail'.$profileSuffix, array('slug' => $document->getSlug()), $absolute);
                 }
                 break;
             case ObjectTypeConstants::TYPE_USER:
@@ -458,7 +468,7 @@ class PolitizrUserExtension extends \Twig_Extension
 
                 if ($subject) {
                     $title = $subject->getFirstname().' '.$subject->getName();
-                    $url = $this->router->generate('UserDetail', array('slug' => $subject->getSlug()), $absolute);
+                    $url = $this->router->generate('UserDetail'.$profileSuffix, array('slug' => $subject->getSlug()), $absolute);
                 }
                 break;
             case ObjectTypeConstants::TYPE_BADGE:
@@ -476,7 +486,7 @@ class PolitizrUserExtension extends \Twig_Extension
 
         $authorUrl = null;
         if ($author) {
-            $authorUrl = $this->router->generate('UserDetail', array('slug' => $author->getSlug()), $absolute);
+            $authorUrl = $this->router->generate('UserDetail'.$profileSuffix, array('slug' => $author->getSlug()), $absolute);
         }
 
         // Screen / Email rendering
@@ -666,11 +676,9 @@ class PolitizrUserExtension extends \Twig_Extension
     /* ######################################################################################################## */
 
     /**
-     *  Test l'autorisation d'un user citoyen et de l'état de son inscription
+     * Test current user granted ROLE_ELECTED
      *
-     * @param $user         PUser à tester
-     *
-     * @return string
+     * @return boolean
      */
     public function isGrantedC()
     {
@@ -687,11 +695,9 @@ class PolitizrUserExtension extends \Twig_Extension
 
 
     /**
-     * Test l'autorisation d'un user débatteur et de l'état de son inscription
+     * Test current user granted ROLE_ELECTED
      *
-     * @param $user         PUser à tester
-     *
-     * @return string
+     * @return boolean
      */
     public function isGrantedE()
     {
@@ -705,6 +711,18 @@ class PolitizrUserExtension extends \Twig_Extension
         }
 
         return false;
+    }
+
+    /**
+     * Get suffix profile for routing / profiles
+     *
+     * @return string
+     */
+    public function profileSuffix()
+    {
+        $this->logger->info('*** profileSuffix');
+
+        return $this->globalTools->computeProfileSuffix();
     }
 
     /**

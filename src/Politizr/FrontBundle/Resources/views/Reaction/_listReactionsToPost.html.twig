@@ -21,7 +21,7 @@
                     {{ reaction.user | photo('user_40') }}
                 </div>
                 <div class="reactionsToPostItemPostTitle">
-                    <a href="{{ path('ReactionDetail', { 'slug': reaction.slug }) }}">
+                    <a href="{{ path('ReactionDetail'~profileSuffix(), { 'slug': reaction.slug }) }}">
                         <span>{{ reaction.title }}</span>
                         {{ reaction.description | excerpt | purify }}
                     </a>
@@ -50,7 +50,7 @@
                         <i class="iconNoteLightMinus"></i>{{ reaction.noteNeg }}
                     </div>
                 </div>
-                <a href="{{ path('ReactionDetail', { 'slug': reaction.slug }) }}" class="linkToPost">
+                <a href="{{ path('ReactionDetail'~profileSuffix(), { 'slug': reaction.slug }) }}" class="linkToPost">
                     <i class="iconGoTo"></i>
                     Afficher
                 </a>

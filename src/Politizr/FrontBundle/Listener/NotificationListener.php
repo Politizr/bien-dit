@@ -149,7 +149,7 @@ class NotificationListener
      * Notifications associées à gérer:
      * - Une réaction a été publiée sur un de vos débats / une de vos réactions
      * - Une réaction a été publié sur un débat suivi
-     * - Une réaction a été publié sur un auteur suivi
+     * - Une réaction a été publié par un auteur suivi
      *
      * @param GenericEvent
      */
@@ -203,6 +203,8 @@ class NotificationListener
 
         // Liste des users suivant l'auteur du document et souhaitant être notifié de ses publications
         $users = $authorUser->getNotifReactionFollowers();
+
+        // @todo soustraire la liste des users "suivant le débat et souhaitant être notifiés"
         foreach ($users as $user) {
             $pNotificationId = NotificationConstants::ID_S_U_REACTION_PUBLISH;
             $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId);

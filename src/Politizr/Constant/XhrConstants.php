@@ -93,7 +93,6 @@ class XhrConstants
 
     // SECURITY
     const ROUTE_SECURITY_LOGIN = 'login';
-    const ROUTE_SECURITY_LOGIN_CHECK = 'login/check';
     const ROUTE_SECURITY_LOST_PASSWORD_CHECK = 'password/init';
     const ROUTE_SECURITY_PAYMENT_PROCESS = 'v/paiement';
 

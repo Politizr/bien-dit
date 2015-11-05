@@ -1,7 +1,7 @@
 <div class="listTab profileTab">
     {% for user in users %}
         {% if user and user.slug %}
-            {% include 'PolitizrFrontBundle:User:_listRow.html.twig' with { 'user': user } only %}
+            {% include 'PolitizrFrontBundle:User:_listRow.html.twig' with { 'user': user } %}
         {% endif %}
     {% endfor %}
 </div>

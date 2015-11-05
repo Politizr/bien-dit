@@ -80,7 +80,6 @@ var ROUTE_SEARCH_TAG_CLEAR_SESSION = 'search/tag/session/clear';
 
 // SECURITY
 var ROUTE_SECURITY_LOGIN = 'login';
-var ROUTE_SECURITY_LOGIN_CHECK = 'login/check';
 var ROUTE_SECURITY_LOST_PASSWORD_CHECK = 'password/init';
 var ROUTE_SECURITY_PAYMENT_PROCESS = 'v/paiement';
 

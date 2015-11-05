@@ -2,6 +2,7 @@
 {% if (isGrantedE() or isGrantedC()) %}
     {% set layout = 'PolitizrFrontBundle::layoutConnected.html.twig' %}
 {% endif %}
+
 {% extends layout %}
 
 {% block title %}
@@ -38,7 +39,7 @@
                 <i class="iconReaction"></i>réagir
             </a>
         {% endif %}
-        <a class="actionGotoDebate" href="{{ path('DebateFeed', { 'slug': debate.slug }) }}">
+        <a class="actionGotoDebate" href="{{ path('DebateFeed'~profileSuffix, { 'slug': debate.slug }) }}">
             <i class="iconTimeline"></i>fil du débat
         </a>
         <div class="subscribe{% if app.user.id == debate.pUserId %} noSelfSubscribe{% endif %}">

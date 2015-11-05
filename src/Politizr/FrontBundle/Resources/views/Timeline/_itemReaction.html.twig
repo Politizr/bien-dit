@@ -22,14 +22,14 @@
                 </div>
                 <div class="timelineItemHighlight">
                     <div class="timelineItemIllustration">
-                        <a href="{{ path('ReactionDetail', { 'slug': reaction.slug }) }}">
+                        <a href="{{ path('ReactionDetail'~profileSuffix(), { 'slug': reaction.slug }) }}">
                             {{ reaction | image('debate_timeline', false) }}
                         </a>
                     </div>
                     <div class="avatar40">
                         {{ reaction.user | photo('user_40') }}
                     </div>
-                    <a href="{{ path('ReactionDetail', { 'slug': reaction.slug }) }}">
+                    <a href="{{ path('ReactionDetail'~profileSuffix(), { 'slug': reaction.slug }) }}">
                         <span>{{ reaction.title }}</span>
                         {{ reaction.description | excerpt | purify }}
                     </a>                 
@@ -63,6 +63,6 @@
 
     {% endspaceless %}
     <div class="timelineItemFooter">
-        <a href="{{ path('ReactionDetail', { 'slug': reaction.slug }) }}"><i class="iconGoTo"></i>Afficher</a>
+        <a href="{{ path('ReactionDetail'~profileSuffix(), { 'slug': reaction.slug }) }}"><i class="iconGoTo"></i>Afficher</a>
     </div>
 </div>

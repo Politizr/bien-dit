@@ -20,7 +20,7 @@
             {% if citizenUser %}
                 <div class="liveItemLeft">
                     <div class="avatar60">
-                        <a href="{{ path('UserDetail', { 'slug': citizenUser.slug }) }}">
+                        <a href="{{ path('UserDetail'~profileSuffix(), { 'slug': citizenUser.slug }) }}">
                             {{ citizenUser | photo('user_60') }}
                         </a>
                     </div>
@@ -35,7 +35,7 @@
             {% if electedUser %}
                 <div class="liveItemRight">
                     <div class="avatar60">
-                        <a href="{{ path('UserDetail', { 'slug': electedUser.slug }) }}">
+                        <a href="{{ path('UserDetail'~profileSuffix(), { 'slug': electedUser.slug }) }}">
                             {{ electedUser | photo('user_60') }}
                         </a>
                     </div>
