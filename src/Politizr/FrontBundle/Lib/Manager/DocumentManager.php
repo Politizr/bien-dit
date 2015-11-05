@@ -249,13 +249,14 @@ LIMIT ".$offset.", ".$count."
      */
     public function initReactionTaggedTags($reaction)
     {
-        $parent = $reaction->getParent();
-        if (!$parent) {
+        $parentReactionId = $reaction->getParentReactionId();
+        if ($parentReactionId) {
+            $parent = PDReactionQuery::create()->findPk($parentReactionId);
+        } else {
             $parent = $reaction->getDebate();
         }
 
         $tags = $parent->getTags();
-
         foreach ($tags as $tag) {
             $pdrTaggedT = new PDRTaggedT();
 
