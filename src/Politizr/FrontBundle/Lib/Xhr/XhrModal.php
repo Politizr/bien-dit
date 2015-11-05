@@ -695,16 +695,16 @@ class XhrModal
                     break;
                 }
             }
+        }
 
-            if ($nbUsers == 0) {
-                $html = $this->templating->render(
-                    'PolitizrFrontBundle:PaginatedList:_noResult.html.twig',
-                    array(
-                        'type' => ListingConstants::MODAL_TYPE_SUGGESTION,
-                        'context' => ListingConstants::MODAL_USERS,
-                    )
-                );
-            }
+        if ($offset == 0 && $nbUsers == 0) {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_noResult.html.twig',
+                array(
+                    'type' => ListingConstants::MODAL_TYPE_SUGGESTION,
+                    'context' => ListingConstants::MODAL_USERS,
+                )
+            );
         } else {
             $html = $this->templating->render(
                 'PolitizrFrontBundle:PaginatedList:_users.html.twig',
