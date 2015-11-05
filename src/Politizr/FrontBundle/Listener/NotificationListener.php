@@ -263,18 +263,21 @@ class NotificationListener
             $dispatcher =  $this->eventDispatcher->dispatch('n_e_check', $event);
         }
 
-        // Récupération de l'auteur du débat
+        // Récupération de l'auteur du commentaire
         $authorUser = PUserQuery::create()->findPk($authorUserId);
 
         // Liste des users suivant l'auteur du commentaire et souhaitant être notifié de ses publications
         $users = $authorUser->getNotifCommentFollowers();
         foreach ($users as $user) {
-            $pNotificationId = NotificationConstants::ID_S_U_COMMENT_PUBLISH;
-            $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId);
+            // don't notif UC3 & UC4 (followed user publish comment for my debate/reaction)
+            if ($user->getId() != $targetUserId) {
+                $pNotificationId = NotificationConstants::ID_S_U_COMMENT_PUBLISH;
+                $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId);
 
-            // Alerte email
-            $event = new GenericEvent($puNotification);
-            $dispatcher =  $this->eventDispatcher->dispatch('n_e_check', $event);
+                // Alerte email
+                $event = new GenericEvent($puNotification);
+                $dispatcher =  $this->eventDispatcher->dispatch('n_e_check', $event);
+            }
         }
     }
 
