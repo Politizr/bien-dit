@@ -53,7 +53,7 @@
                         {% else %}
                             <a class="noLink">
                         {% endif %}
-                            <p>{{ comment.description }}</p>
+                            <p>{{ comment.description | purify }}</p>
                         </a>
                 </div>
                 <div class="timelineItemContentFooter">
