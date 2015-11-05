@@ -34,8 +34,8 @@ $("body").on("click", "[action='modalAskForUpdate']", function() {
     var subjectId = $(this).attr('subjectId');
     var type = $(this).attr('type');
 
-    console.log(subjectId);
-    console.log(type);
+    // console.log(subjectId);
+    // console.log(type);
 
     loadAskForUpdateBox(subjectId, type);
 });
