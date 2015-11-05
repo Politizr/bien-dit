@@ -1,0 +1,6 @@
+# secure cookie
+security:
+    firewalls:
+        user_area:
+            remember_me:
+                secure:                     true

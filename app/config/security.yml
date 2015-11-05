@@ -69,15 +69,19 @@ security:
                 login_path:                 /connexion
                 failure_path:               /connexion
                 check_path:                 /connexion_check
+                remember_me:                true
             remember_me:
                 key:                        "%secret%"
-                lifetime:                   31536000                # 365 jours en secondes
-                path:                       /
-                domain:                     ~
+                name:                       POLITIZRME
+                secure:                     false
+                httponly:                   true
+                always_remember_me:         true
             logout:
+                invalidate_session: true
+                delete_cookies:
+                    POLITIZRME: { path: null, domain: null}
                 path:                       /logout
                 target:                     /
-                invalidate_session:         false
             anonymous:                      true
 
     access_control:
