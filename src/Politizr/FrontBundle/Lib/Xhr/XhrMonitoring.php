@@ -3,6 +3,8 @@ namespace Politizr\FrontBundle\Lib\Xhr;
 
 use Symfony\Component\HttpFoundation\Request;
 
+use Symfony\Component\EventDispatcher\GenericEvent;
+
 use StudioEcho\Lib\StudioEchoUtils;
 
 use Politizr\Exception\InconsistentDataException;
@@ -32,6 +34,7 @@ class XhrMonitoring
     private $securityTokenStorage;
     private $templating;
     private $formFactory;
+    private $eventDispatcher;
     private $logger;
 
     /**
@@ -39,12 +42,14 @@ class XhrMonitoring
      * @param @security.token_storage
      * @param @templating
      * @param @form.factory
+     * @param @event_dispatcher
      * @param @logger
      */
     public function __construct(
         $securityTokenStorage,
         $templating,
         $formFactory,
+        $eventDispatcher,
         $logger
     ) {
         $this->securityTokenStorage = $securityTokenStorage;
@@ -52,6 +57,8 @@ class XhrMonitoring
         $this->templating = $templating;
 
         $this->formFactory = $formFactory;
+
+        $this->eventDispatcher = $eventDispatcher;
 
         $this->logger = $logger;
     }
@@ -209,6 +216,10 @@ class XhrMonitoring
             }
 
             $abuse->save();
+
+            // email
+            $event = new GenericEvent($abuse);
+            $dispatcher =  $this->eventDispatcher->dispatch('monitoring_email', $event);
         } else {
             $errors = StudioEchoUtils::getAjaxFormErrors($formAbuse);
             throw new FormValidationException($errors);
@@ -283,6 +294,10 @@ class XhrMonitoring
             }
 
             $askForUpdate->save();
+
+            // email
+            $event = new GenericEvent($askForUpdate);
+            $dispatcher =  $this->eventDispatcher->dispatch('monitoring_email', $event);
         } else {
             $errors = StudioEchoUtils::getAjaxFormErrors($formAskForUpdate);
             throw new FormValidationException($errors);

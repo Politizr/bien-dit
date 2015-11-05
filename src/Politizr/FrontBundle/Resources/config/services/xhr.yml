@@ -84,5 +84,6 @@ services:
             - @security.token_storage
             - @templating
             - @form.factory
+            - @event_dispatcher
             - @logger
 

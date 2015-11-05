@@ -2,9 +2,11 @@
 
 namespace Politizr\FrontBundle\Listener;
 
+use Symfony\Component\EventDispatcher\GenericEvent;
+
 use Politizr\Exception\SendEmailException;
 
-use Symfony\Component\EventDispatcher\GenericEvent;
+use Politizr\Model\PMonitoredInterface;
 
 /**
  *  Envoi des emails
@@ -146,6 +148,55 @@ class EmailListener
             }
             
             throw new SendEmailException($e->getMessage(), $e);
+        }
+    }
+
+    /**
+     * Monitoring.
+     *
+     * @param GenericEvent
+     */
+    public function onMonitoringEmail(GenericEvent $event)
+    {
+        $this->logger->info('*** onMonitoringEmail');
+
+        // subject implements PMonitoredInterface
+        $monitored = $event->getSubject();
+
+        try {
+            $htmlBody = $this->templating->render(
+                'PolitizrFrontBundle:Email:monitoring.html.twig',
+                array(
+                    'monitored' => $monitored,
+                )
+            );
+            $txtBody = $this->templating->render(
+                'PolitizrFrontBundle:Email:monitoring.txt.twig',
+                array(
+                    'monitored' => $monitored,
+                )
+            );
+
+            $message = \Swift_Message::newInstance()
+                    ->setSubject('[ Politizr ] Monitoring')
+                    ->setFrom(array($this->supportEmail => 'Support@Politizr'))
+                    ->setTo(array($this->supportEmail => 'Support@Politizr'))
+                    ->setBody($htmlBody, 'text/html', 'utf-8')
+                    ->addPart($txtBody, 'text/plain', 'utf-8')
+            ;
+            $message->getHeaders()->addTextHeader('X-CMail-GroupName', 'Monitoring');
+
+            // Envoi email
+            $failedRecipients = array();
+            $send = $this->mailer->send($message, $failedRecipients);
+
+            $this->logger->info('send = '.print_r($send, true));
+            if (!$send) {
+                throw new \Exception('email non envoyé - code retour = '.$send.' - adresse(s) en échec = '.print_r($failedRecipients, true));
+            }
+        } catch (\Exception $e) {
+            $this->logger->err('Exception - message = '.$e->getMessage());
+            $pmAppException = $this->monitoringManager->createAppException($e);
         }
     }
 

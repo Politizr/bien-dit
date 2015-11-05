@@ -1,0 +1,17 @@
+{% spaceless %}
+<p>
+{% if monitored.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_ABUSE') %}
+Signalement d'un abus
+{% elseif monitored.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_ASK_FOR_UPDATE') %}
+Demande de modification
+{% endif %}
+par user id-{{ monitored.pUserId }}
+</p>
+<ul>Document concerné:
+    <li>Type d'objet: {{ monitored.pObjectName }}</li>
+    <li>ID objet: {{ monitored.pObjectId }}</li>
+</ul>
+<p>
+{{ monitored.message }}
+</p>
+{% endspaceless %}

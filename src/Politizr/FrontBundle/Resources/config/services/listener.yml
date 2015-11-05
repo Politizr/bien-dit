@@ -11,6 +11,7 @@ services:
         tags:
             - { name: kernel.event_listener, event: lost_password_email }
             - { name: kernel.event_listener, event: upd_password_email }
+            - { name: kernel.event_listener, event: monitoring_email }
             - { name: kernel.event_listener, event: notification_email }
 
     politzr.listener.notification:
