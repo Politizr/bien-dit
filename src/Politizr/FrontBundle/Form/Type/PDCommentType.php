@@ -5,6 +5,9 @@ namespace Politizr\FrontBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
@@ -41,6 +44,19 @@ class PDCommentType extends AbstractType
                 'placeholder' => 'Votre commentaire...',
                 )
         ));
+
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            $comment = $event->getForm()->getData();
+
+            $cleanedDescription = $comment->getDescription();
+
+            // strip html tags
+            $cleanedDescription = strip_tags($cleanedDescription);
+            // transform \n => <br>
+            $cleanedDescription = nl2br($cleanedDescription);
+
+            $comment->setDescription($cleanedDescription);
+        });
     }
 
     /**

@@ -80,7 +80,6 @@ services:
     politizr.xhr.monitoring:
         class: Politizr\FrontBundle\Lib\Xhr\XhrMonitoring
         arguments:
-        arguments:
             - @security.token_storage
             - @templating
             - @form.factory
