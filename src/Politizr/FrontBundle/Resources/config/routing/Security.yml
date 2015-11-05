@@ -10,7 +10,6 @@ LoginCheck:
 
 Logout:
     pattern:  /deconnexion
-    defaults: { _controller: PolitizrFrontBundle:Security:logout }
 
 CancelInscription:
     pattern:  /annuler-inscription

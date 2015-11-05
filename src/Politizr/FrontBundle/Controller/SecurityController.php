@@ -79,17 +79,6 @@ class SecurityController extends Controller
     }
 
     /**
-     * Logout
-     */
-    public function logoutAction()
-    {
-        $this->get('session')->clear();
-        $this->get('security.context')->setToken(null);
-
-        return $this->redirect($this->generateUrl('Homepage'));
-    }
-
-    /**
      * Cancel inscription
      */
     public function cancelInscriptionAction()

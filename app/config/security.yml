@@ -77,10 +77,10 @@ security:
                 httponly:                   true
                 always_remember_me:         true
             logout:
-                invalidate_session: true
+                invalidate_session:         true
                 delete_cookies:
-                    POLITIZRME: { path: null, domain: null}
-                path:                       /logout
+                    POLITIZRME:             { path: null, domain: null}
+                path:                       /deconnexion
                 target:                     /
             anonymous:                      true
 
