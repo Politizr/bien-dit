@@ -1,6 +1,6 @@
 {% include 'PolitizrFrontBundle:Notification\\MessageEmail\\Txt:_emailNotificationHeader.txt.twig' with {'document': subject} only %}
 
-{% include 'PolitizrFrontBundle:Notification\\MessageEmail\\Txt:_emailDocumentSubject.txt.twig' with {'url': documentUrl, 'title': document.title } only %}
+{% include 'PolitizrFrontBundle:Notification\\MessageEmail\\Txt:_emailSubject.txt.twig' with {'url': documentUrl, 'title': document.title } only %}
 
 {% include 'PolitizrFrontBundle:Notification\\MessageEmail\\Txt:_emailAuthorPhoto.txt.twig' with {'author': author, 'authorUrl': authorUrl } only %}
 

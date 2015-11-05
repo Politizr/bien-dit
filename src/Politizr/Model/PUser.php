@@ -576,9 +576,9 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
      *
      * @return PropelObjectCollection[PUser]
      */
-    public function getNotifDebateFollowers()
+    public function getNotifDebateFollowers($query = null)
     {
-        return $this->getFollowers(null, 'AND p_u_follow_u.notif_debate = true');
+        return $this->getFollowers($query, 'AND p_u_follow_u.notif_debate = true');
     }
 
     /**
@@ -586,9 +586,9 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
      *
      * @return PropelObjectCollection[PUser]
      */
-    public function getNotifReactionFollowers()
+    public function getNotifReactionFollowers($query = null)
     {
-        return $this->getFollowers(null, 'AND p_u_follow_u.notif_reaction= true');
+        return $this->getFollowers($query, 'AND p_u_follow_u.notif_reaction= true');
     }
 
     /**
@@ -596,9 +596,9 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
      *
      * @return PropelObjectCollection[PUser]
      */
-    public function getNotifCommentFollowers()
+    public function getNotifCommentFollowers($query = null)
     {
-        return $this->getFollowers(null, 'AND p_u_follow_u.notif_comment = true');
+        return $this->getFollowers($query, 'AND p_u_follow_u.notif_comment = true');
     }
 
     /**
