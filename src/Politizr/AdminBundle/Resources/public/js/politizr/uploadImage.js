@@ -5,7 +5,7 @@ $(function() {
     }
 
     for (uploadZone = 1; uploadZone <= uploadZones; uploadZone++) {
-        console.log('init zone '+uploadZone);
+        // console.log('init zone '+uploadZone);
 
         $("#formUploadImage"+uploadZone).ajaxForm(options);
     }
@@ -18,7 +18,7 @@ $("body").on("click", ".uploadMessage", function() {
 
 // Upload simple
 $("body").on("change", ".fileName", function() {
-    console.log('change file name');
+    // console.log('change file name');
     $(this).closest("form").submit();
 });
 
@@ -27,39 +27,40 @@ var options = {
     // iframe: true,
     beforeSend: function() 
     {
-        console.log('*** beforeSend');
-        console.log(this);
-        $('.uploadedMessage').html('Upload en cours...');
+        // console.log('*** beforeSend');
+        // console.log(this);
+        $('.uploadMessage').html('Upload en cours...');
     },
     success: function(responseText, statusText, xhr, form)
     {
-        console.log('*** success');
-        console.log(responseText);
+        $('.uploadMessage').trigger('click');
+        // console.log('*** success');
+        // console.log(responseText);
         
         data = $.parseJSON( responseText );
-        console.log(data['html']);
+        // console.log(data['html']);
 
-        // console.log(statusText);
-        // console.log(xhr);
-        console.log(form);
+        // // console.log(statusText);
+        // // console.log(xhr);
+        // console.log(form);
 
         if ( 'success' == statusText ) {
-            console.log('status success');
+            // console.log('status success');
             $(form).prev('.uploadedImage').html(data['html']);
         }
 
     },
     error: function(data)
     {
-        console.log('*** error');
-        console.log( data );
-        $('.uploadedMessage').html('Upload en erreur!');
+        // console.log('*** error');
+        // console.log( data );
+        $('.uploadMessage').html('Upload en erreur!');
     }
 }; 
 
 // Delete image
 $('body').on('click', "[action='fileDelete']", function(e){
-    console.log('*** click file delete');
+    // console.log('*** click file delete');
 
     var xhrPath = getXhrPath(
         ADMIN_ROUTE_DELETE_IMAGE,
@@ -87,7 +88,6 @@ $('body').on('click', "[action='fileDelete']", function(e){
                 $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
                 $('#infoBoxHolder .boxError').show();
             } else {
-                $('.uploadedMessage').html('Suppression terminée');
                 $(this).closest('.photoDelete').prevAll('.uploadedImage').html('');
             }
         }
