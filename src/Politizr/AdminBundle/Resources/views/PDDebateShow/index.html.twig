@@ -1,5 +1,10 @@
 {% extends_admingenerated "PolitizrAdminBundle:PDDebateShow:index.html.twig" %}
 
+{# Image upload #}
+{% block show_column_block_file_name %}
+    {% include 'PolitizrAdminBundle:Fragment:_uploadImage.html.twig' with {'zone': 1, 'fileName': PDDebate.fileName,'subjectId': PDDebate.id, 'queryClass': 'Politizr\\Model\\PDDebateQuery', 'setter': 'setFileName', 'uploadWebPath': constant('Politizr\\Constant\\PathConstants::DEBATE_UPLOAD_WEB_PATH')} %}
+{% endblock %}
+
 {# Objets #}
 {% block show_column_block_p_user %}
     {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_USER'), PDDebate.PUserId) }}
@@ -12,12 +17,6 @@
 
 {% block show_column_description %}
     {{ PDDebate.getDescription | raw }}
-{% endblock %}
-
-
-{# Image #}
-{% block show_column_file_name %}
-    <img src="{{ asset('uploads/documents/'~PDDebate.fileName) | imagine_filter('admin_show_thumb') }}" alt="{{ PDDebate.fileName }}" />
 {% endblock %}
 
 {# Bloc réactions #}
@@ -64,4 +63,7 @@
 
     <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/politizr/tag/accentMap.js') }}"></script>    
     <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/politizr/tag/editTags.js') }}"></script>  
+
+    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/jquery.form.min.js') }}"></script>  
+    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/uploadImage.js') }}"></script>  
 {% endblock object_actions_script_container %}

@@ -1,0 +1,25 @@
+<div class="uploadZone" id="uploadZone-{{ zone }}">
+    <div class="uploadMessage"></div>
+
+    <div class="uploadedImage">
+        {% if fileName %}
+            {% include 'PolitizrAdminBundle:Fragment:_image.html.twig' with {'path': uploadWebPath ~ fileName} %}
+        {% endif %}
+    </div>
+
+    <form id="formUploadImage{{ zone }}" action="{{ path('AdminXhrGeneric', {'xhrRoute': constant('Politizr\\Constant\\XhrConstants::ADMIN_ROUTE_UPLOAD_IMAGE'), 'xhrService': 'document', 'xhrMethod': 'adminImageUpload', 'xhrType': constant('Politizr\\Constant\\XhrConstants::RETURN_HTML')}) }}" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="id" value="{{ subjectId }}">
+        <input type="hidden" name="queryClass" value="{{ queryClass }}">
+        <input type="hidden" name="setter" value="{{ setter }}">
+        <input type="hidden" name="uploadWebPath" value="{{ uploadWebPath }}">
+        <div id="uploadFileContainer">
+            <input type="file" name="fileName" class="fileName">
+        </div>
+    </form>
+
+    <div class="photoDelete">
+        <a action="fileDelete" setter="{{ setter }}" subjectId="{{ subjectId }}" queryClass="{{ queryClass }}">
+            supprimer
+        </a>
+    </div>
+</div>

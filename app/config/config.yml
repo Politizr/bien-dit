@@ -334,7 +334,7 @@ liip_imagine:
         admin_show_thumb:
             quality:              100
             filters:
-                relative_resize:  { widen: 150 }
+                relative_resize:  { widen: 250 }
         admin_organization:
             quality:              100
             filters:

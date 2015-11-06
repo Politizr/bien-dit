@@ -3,7 +3,7 @@
         <div class="comment-parentDebateTitle">Associé au document <b>{{ comment.pDocument }}</b></div>
         <hr>
     {% endif %}
-    <div class="comment-description">{{ comment.description | striptags | purify | truncate(150) }}...</div>
+    <div class="comment-description">{{ comment.description | striptags | purify | truncate(150) }}</div>
     <hr>
     <div class="comment-online">{% if comment.online %}En ligne{% else %}Hors ligne{% endif %}</div>
     <div class="comment-published">Publié le {{ comment.publishedAt | date('d/m/Y H:i') }}</div>

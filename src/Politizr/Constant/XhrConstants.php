@@ -136,6 +136,10 @@ class XhrConstants
     //                  XHR URL REWRITING (ADMIN)
     // ******************************************************** //
 
+    // UPLOAD
+    const ADMIN_ROUTE_UPLOAD_IMAGE = 'admin/upload/image';
+    const ADMIN_ROUTE_DELETE_IMAGE = 'admin/delete/image';
+
     // TAGS
     const ADMIN_ROUTE_TAG_LISTING = 'admin/tags/listing';
     const ADMIN_ROUTE_TAG_SEARCH_LISTING = 'admin/tags/search/listing';

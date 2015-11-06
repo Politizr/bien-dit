@@ -9,6 +9,10 @@ var RETURN_URL = 3;
 //                  XHR URL REWRITING (ADMIN)
 // ******************************************************** //
 
+// UPLOAD
+var ADMIN_ROUTE_UPLOAD_IMAGE = 'admin/upload/image';
+var ADMIN_ROUTE_DELETE_IMAGE = 'admin/delete/image';
+
 // TAGS
 var ADMIN_ROUTE_TAG_LISTING = 'admin/tags/listing';
 var ADMIN_ROUTE_TAG_SEARCH_LISTING = 'admin/tags/search/listing';

@@ -1,5 +1,9 @@
 {% extends_admingenerated "PolitizrAdminBundle:PDReactionShow:index.html.twig" %}
 
+{# Image upload #}
+{% block show_column_block_file_name %}
+    {% include 'PolitizrAdminBundle:Fragment:_uploadImage.html.twig' with {'zone': 1, 'fileName': PDReaction.fileName,'subjectId': PDReaction.id, 'queryClass': 'Politizr\\Model\\PDReactionQuery', 'setter': 'setFileName', 'uploadWebPath': constant('Politizr\\Constant\\PathConstants::REACTION_UPLOAD_WEB_PATH')} %}
+{% endblock %}
 
 {# Objets #}
 {% block show_column_block_p_user %}
@@ -14,11 +18,6 @@
     {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION'), PDReaction.ParentReactionId) }}
 {% endblock %}
 
-
-{# Image #}
-{% block show_column_file_name %}
-    <img src="{{ asset('uploads/documents/'~PDReaction.fileName) | imagine_filter('admin_show_thumb') }}" alt="{{ PDReaction.fileName }}" />
-{% endblock %}
 
 {# Contenus #}
 {% block show_column_summary %}
@@ -42,3 +41,8 @@
 {% block show_column_block_comments %}
     {{ adminReactionComments(PDReaction) }}
 {% endblock %}
+
+{% block object_actions_script_container %}
+    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/jquery.form.min.js') }}"></script>  
+    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/uploadImage.js') }}"></script>  
+{% endblock object_actions_script_container %}

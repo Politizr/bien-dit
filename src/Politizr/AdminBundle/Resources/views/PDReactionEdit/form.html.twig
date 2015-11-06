@@ -1,1 +1,17 @@
 {% extends_admingenerated "PolitizrAdminBundle:PDReactionEdit:form.html.twig" %}
+
+{# Image block #}
+{% block form_row_block_file_name %}
+    <div class="form-group">
+        <label class="controle-label">Image</label>
+        <div class="show-image">
+            {% if PDReaction.FileName %}
+                {% include 'PolitizrAdminBundle:Fragment:_image.html.twig' with {'path': constant('Politizr\\Constant\\PathConstants::REACTION_UPLOAD_WEB_PATH') ~ PDReaction.fileName} %}
+            {% else %}
+                Aucune image
+            {% endif %}
+        </div>
+        <i>Note: gestion de l'upload depuis l'écran "Montrer"</i>
+    </div>
+{% endblock %}
+

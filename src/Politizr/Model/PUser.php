@@ -231,95 +231,9 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
         return $slug;
     }
 
-    /* ######################################################################################################## */
-    /*                                      SIMPLE UPLOAD MANAGEMENT                                            */
-    /* ######################################################################################################## */
-
-    /**
-     *
-     * @param string $uploadedFileName
-     */
-    public function setUploadedFileName($uploadedFileName)
-    {
-        $this->uploadedFileName = $uploadedFileName;
-    }
-
-    /**
-     *
-     * @return string
-     */
-    public function getUploadedFileNameWebPath()
-    {
-        return PathConstants::USER_UPLOAD_WEB_PATH . $this->file_name;
-    }
-    
-    /**
-     *
-     * @return File
-     */
-    public function getUploadedFileName()
-    {
-        // inject file into property (if uploaded)
-        if ($this->file_name) {
-            return new File(
-                __DIR__ . PathConstants::USER_UPLOAD_PATH . $this->file_name
-            );
-        }
-
-        return null;
-    }
-
-    /**
-     *
-     * @param File $file
-     * @return string file name
-     */
-    public function upload($file = null)
-    {
-        if (null === $file) {
-              return;
-        }
-
-        // extension
-        $extension = $file->guessExtension();
-        if (!$extension) {
-              $extension = 'bin';
-        }
-
-        // file name
-        $fileName = $this->computeFileName() . '.' . $extension;
-
-        // move takes the target directory and then the target filename to move to
-        $fileUploaded = $file->move(__DIR__ . PathConstants::USER_UPLOAD_PATH, $fileName);
-
-        // file name
-        return $fileName;
-    }
-
-    /**
-     * @todo migrate physical deletion in special command instead of save
-     */
-    public function setFileName($fileName)
-    {
-        if (null !== $fileName) {
-            $this->removeUpload();
-        }
-        parent::setFileName($fileName);
-    }
-
-    /**
-     *
-     * @param $uploadedFileName
-     */
-    public function removeUpload($uploadedFileName = true)
-    {
-        if ($uploadedFileName && $this->file_name && file_exists(__DIR__ . PathConstants::USER_UPLOAD_PATH . $this->file_name)) {
-            unlink(__DIR__ . PathConstants::USER_UPLOAD_PATH . $this->file_name);
-        }
-    }
-
     /**
      * Compute a user file name
+     * @todo not used for the moment
      *
      * @return string
      */

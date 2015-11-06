@@ -136,7 +136,7 @@ builders:
             title:                              "Edition de l'utilisateur {{ PUser.firstname }} {{ PUser.name }}"
             tabs:
                 "Identité":
-                    "Civilité":                 [ [ gender ], [ firstname, name ], [ uploadedFileName ] ]
+                    "Civilité":                 [ [ block_back_file_name ], [ block_file_name ], [ gender ], [ firstname, name ] ]
                     "Contacts":                 [ [ phone, email ], [ website ], [ twitter, facebook ] ]
                 "Identifiant":
                     "Connexion":                [ username, plainPassword ]
@@ -161,6 +161,20 @@ builders:
                     "Validé":                   [ validated ]
                     "Création":                 [ [ created_at, updated_at ] ]
             fields:
+                block_back_file_name:
+                    label:                      "Image de fond"
+                    grid_class:                 "col-md-12"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+                    addFormOptions:
+                        mapped:                 false
+                block_file_name:
+                    label:                      "Image"
+                    grid_class:                 "col-md-12"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+                    addFormOptions:
+                        mapped:                 false
                 followers:
                     dbType:                     model
                     formType:                   model
@@ -258,7 +272,7 @@ builders:
             tabs:
                 "Identité":
                     "Type":                     [ qualified ]
-                    "Civilité":                 [ [ file_name, gender, firstname, name ] ]
+                    "Civilité":                 [ [ block_back_file_name ], [ block_file_name ], [ gender, firstname, name ] ]
                     "Contacts":                 [ [ phone, email ], [ website ], [ twitter, facebook ] ]
                 "Descriptif":
                     "Informations":             [ biography ]
@@ -286,6 +300,10 @@ builders:
                 "Front":
                     "Rendu":                    [ block_front ]
             fields:
+                block_back_file_name:
+                    label:                      "Image de fond"
+                block_file_name:
+                    label:                      "Image"
                 block_tags_public:
                     label:                      "Tags publiques"
                 block_tags_private:

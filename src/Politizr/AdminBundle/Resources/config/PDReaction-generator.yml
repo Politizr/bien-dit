@@ -84,7 +84,7 @@ builders:
             title:                              "Edition du contenu réaction '{{ PDReaction.getTitle }}'"
             tabs:
                 "Contenu":
-                    "Texte":                    [ uploadedFileName, title, description ]
+                    "Texte":                    [ block_file_name, title, description ]
                 "Objets":
                     "Utilisateur":              [ p_user ]
                     "Débat":                    [ p_d_debate ]
@@ -95,13 +95,13 @@ builders:
                 "Attributs":
                     "Création":                 [ [ online ], [ created_at, updated_at ] ]
             fields:
-                uploadedFileName:
+                block_file_name:
+                    label:                      "Image"
+                    grid_class:                 "col-md-12"
+                    formType:                   hidden
                     dbType:                     VARCHAR
-                    label:                      Photo
-                    formType:                   file
                     addFormOptions:
-                        # deleteable:             fileName
-                        data_class:             Symfony\Component\HttpFoundation\File\File
+                        mapped:                 false
                 p_user:
                     addFormOptions:
                         disabled:               true
@@ -134,7 +134,7 @@ builders:
             title:                              "Visualisation du contenu réaction '{{ PDReaction.getTitle }}'"
             tabs:
                 "Contenu":
-                    "Texte":                    [ file_name, title, description ]
+                    "Texte":                    [ block_file_name, title, description ]
                 "Objets":
                     "Utilisateur":              [ block_p_user ]
                     "Document":                 [ block_p_d_debate, block_parent ]
@@ -147,6 +147,8 @@ builders:
                 "Front":
                     "Rendu":                    [ block_front ]
             fields:
+                block_file_name:
+                    label:                      "Image"
                 block_p_user:
                     label:                      "Auteur"
                 block_p_d_debate:
