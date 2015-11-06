@@ -205,7 +205,7 @@ class XhrAdmin
             $this->tagManager->createDebateTag($subjectId, $tag->getId());
 
             $xhrPathDelete = $this->templating->render(
-                'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
+                'PolitizrAdminBundle:Fragment\\Xhr:_xhrPath.html.twig',
                 array(
                     'xhrRoute' => 'ADMIN_ROUTE_TAG_DEBATE_DELETE',
                     'xhrService' => 'tag',
@@ -293,7 +293,7 @@ class XhrAdmin
             $this->tagManager->createUserFollowTag($subjectId, $tag->getId());
 
             $xhrPathDelete = $this->templating->render(
-                'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
+                'PolitizrAdminBundle:Fragment\\Xhr:_xhrPath.html.twig',
                 array(
                     'xhrRoute' => 'ADMIN_ROUTE_TAG_USER_FOLLOW_DELETE',
                     'xhrService' => 'admin',
@@ -378,7 +378,7 @@ class XhrAdmin
             $this->tagManager->createUserTaggedTag($subjectId, $tag->getId());
 
             $xhrPathDelete = $this->templating->render(
-                'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
+                'PolitizrAdminBundle:Fragment\\Xhr:_xhrPath.html.twig',
                 array(
                     'xhrRoute' => 'ADMIN_ROUTE_TAG_USER_TAGGED_DELETE',
                     'xhrService' => 'admin',
