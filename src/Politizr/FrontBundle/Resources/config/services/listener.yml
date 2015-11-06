@@ -70,6 +70,9 @@ services:
 
     politizr.listener.kernel:
         class:      Politizr\FrontBundle\Listener\ExceptionListener
-        arguments:  [ @politizr.manager.monitoring, @logger ]
+        arguments:  
+            - @security.token_storage
+            - @politizr.manager.monitoring
+            - @logger
         tags:
             - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }

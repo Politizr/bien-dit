@@ -1,1 +1,6 @@
 {% extends_admingenerated "PolitizrAdminBundle:PMAppExceptionShow:index.html.twig" %}
+
+{# Objets #}
+{% block show_column_block_p_user %}
+    {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_USER'), PMAppException.PUserId) }}
+{% endblock %}

@@ -20,6 +20,7 @@ use Politizr\Model\PDDebate;
 use Politizr\Model\PDRComment;
 use Politizr\Model\PDReaction;
 use Politizr\Model\PMAbuseReporting;
+use Politizr\Model\PMAppException;
 use Politizr\Model\PMAskForUpdate;
 use Politizr\Model\PNotification;
 use Politizr\Model\POrder;
@@ -228,6 +229,10 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery leftJoinPMAbuseReporting($relationAlias = null) Adds a LEFT JOIN clause to the query using the PMAbuseReporting relation
  * @method PUserQuery rightJoinPMAbuseReporting($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PMAbuseReporting relation
  * @method PUserQuery innerJoinPMAbuseReporting($relationAlias = null) Adds a INNER JOIN clause to the query using the PMAbuseReporting relation
+ *
+ * @method PUserQuery leftJoinPMAppException($relationAlias = null) Adds a LEFT JOIN clause to the query using the PMAppException relation
+ * @method PUserQuery rightJoinPMAppException($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PMAppException relation
+ * @method PUserQuery innerJoinPMAppException($relationAlias = null) Adds a INNER JOIN clause to the query using the PMAppException relation
  *
  * @method PUserQuery leftJoinPUFollowURelatedByPUserId($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUFollowURelatedByPUserId relation
  * @method PUserQuery rightJoinPUFollowURelatedByPUserId($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUFollowURelatedByPUserId relation
@@ -3636,6 +3641,80 @@ abstract class BasePUserQuery extends ModelCriteria
         return $this
             ->joinPMAbuseReporting($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'PMAbuseReporting', '\Politizr\Model\PMAbuseReportingQuery');
+    }
+
+    /**
+     * Filter the query by a related PMAppException object
+     *
+     * @param   PMAppException|PropelObjectCollection $pMAppException  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PUserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPMAppException($pMAppException, $comparison = null)
+    {
+        if ($pMAppException instanceof PMAppException) {
+            return $this
+                ->addUsingAlias(PUserPeer::ID, $pMAppException->getPUserId(), $comparison);
+        } elseif ($pMAppException instanceof PropelObjectCollection) {
+            return $this
+                ->usePMAppExceptionQuery()
+                ->filterByPrimaryKeys($pMAppException->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPMAppException() only accepts arguments of type PMAppException or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PMAppException relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function joinPMAppException($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PMAppException');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PMAppException');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PMAppException relation PMAppException object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PMAppExceptionQuery A secondary query class using the current class as primary query
+     */
+    public function usePMAppExceptionQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinPMAppException($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PMAppException', '\Politizr\Model\PMAppExceptionQuery');
     }
 
     /**

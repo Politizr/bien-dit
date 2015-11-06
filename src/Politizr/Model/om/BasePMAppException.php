@@ -18,6 +18,8 @@ use Glorpen\Propel\PropelBundle\Events\ModelEvent;
 use Politizr\Model\PMAppException;
 use Politizr\Model\PMAppExceptionPeer;
 use Politizr\Model\PMAppExceptionQuery;
+use Politizr\Model\PUser;
+use Politizr\Model\PUserQuery;
 
 abstract class BasePMAppException extends BaseObject implements Persistent
 {
@@ -45,6 +47,12 @@ abstract class BasePMAppException extends BaseObject implements Persistent
      * @var        int
      */
     protected $id;
+
+    /**
+     * The value for the p_user_id field.
+     * @var        int
+     */
+    protected $p_user_id;
 
     /**
      * The value for the file field.
@@ -89,6 +97,11 @@ abstract class BasePMAppException extends BaseObject implements Persistent
     protected $updated_at;
 
     /**
+     * @var        PUser
+     */
+    protected $aPUser;
+
+    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      * @var        boolean
@@ -122,6 +135,17 @@ abstract class BasePMAppException extends BaseObject implements Persistent
     public function __construct(){
         parent::__construct();
         EventDispatcherProxy::trigger(array('construct','model.construct'), new ModelEvent($this));
+    }
+
+    /**
+     * Get the [p_user_id] column value.
+     *
+     * @return int
+     */
+    public function getPUserId()
+    {
+
+        return $this->p_user_id;
     }
 
     /**
@@ -279,6 +303,31 @@ abstract class BasePMAppException extends BaseObject implements Persistent
 
         return $this;
     } // setId()
+
+    /**
+     * Set the value of [p_user_id] column.
+     *
+     * @param  int $v new value
+     * @return PMAppException The current object (for fluent API support)
+     */
+    public function setPUserId($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->p_user_id !== $v) {
+            $this->p_user_id = $v;
+            $this->modifiedColumns[] = PMAppExceptionPeer::P_USER_ID;
+        }
+
+        if ($this->aPUser !== null && $this->aPUser->getId() !== $v) {
+            $this->aPUser = null;
+        }
+
+
+        return $this;
+    } // setPUserId()
 
     /**
      * Set the value of [file] column.
@@ -464,13 +513,14 @@ abstract class BasePMAppException extends BaseObject implements Persistent
         try {
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->file = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
-            $this->line = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
-            $this->code = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
-            $this->message = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-            $this->stack_trace = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->created_at = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
-            $this->updated_at = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+            $this->p_user_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
+            $this->file = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
+            $this->line = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
+            $this->code = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
+            $this->message = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->stack_trace = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->created_at = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+            $this->updated_at = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -480,7 +530,7 @@ abstract class BasePMAppException extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 8; // 8 = PMAppExceptionPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 9; // 9 = PMAppExceptionPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PMAppException object", $e);
@@ -503,6 +553,9 @@ abstract class BasePMAppException extends BaseObject implements Persistent
     public function ensureConsistency()
     {
 
+        if ($this->aPUser !== null && $this->p_user_id !== $this->aPUser->getId()) {
+            $this->aPUser = null;
+        }
     } // ensureConsistency
 
     /**
@@ -542,6 +595,7 @@ abstract class BasePMAppException extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->aPUser = null;
         } // if (deep)
     }
 
@@ -681,6 +735,18 @@ abstract class BasePMAppException extends BaseObject implements Persistent
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
 
+            // We call the save method on the following object(s) if they
+            // were passed to this object by their corresponding set
+            // method.  This object relates to these object(s) by a
+            // foreign key reference.
+
+            if ($this->aPUser !== null) {
+                if ($this->aPUser->isModified() || $this->aPUser->isNew()) {
+                    $affectedRows += $this->aPUser->save($con);
+                }
+                $this->setPUser($this->aPUser);
+            }
+
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -721,6 +787,9 @@ abstract class BasePMAppException extends BaseObject implements Persistent
         if ($this->isColumnModified(PMAppExceptionPeer::ID)) {
             $modifiedColumns[':p' . $index++]  = '`id`';
         }
+        if ($this->isColumnModified(PMAppExceptionPeer::P_USER_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`p_user_id`';
+        }
         if ($this->isColumnModified(PMAppExceptionPeer::FILE)) {
             $modifiedColumns[':p' . $index++]  = '`file`';
         }
@@ -755,6 +824,9 @@ abstract class BasePMAppException extends BaseObject implements Persistent
                 switch ($columnName) {
                     case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
+                        break;
+                    case '`p_user_id`':
+                        $stmt->bindValue($identifier, $this->p_user_id, PDO::PARAM_INT);
                         break;
                     case '`file`':
                         $stmt->bindValue($identifier, $this->file, PDO::PARAM_STR);
@@ -871,6 +943,18 @@ abstract class BasePMAppException extends BaseObject implements Persistent
             $failureMap = array();
 
 
+            // We call the validate method on the following object(s) if they
+            // were passed to this object by their corresponding set
+            // method.  This object relates to these object(s) by a
+            // foreign key reference.
+
+            if ($this->aPUser !== null) {
+                if (!$this->aPUser->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aPUser->getValidationFailures());
+                }
+            }
+
+
             if (($retval = PMAppExceptionPeer::doValidate($this, $columns)) !== true) {
                 $failureMap = array_merge($failureMap, $retval);
             }
@@ -915,24 +999,27 @@ abstract class BasePMAppException extends BaseObject implements Persistent
                 return $this->getId();
                 break;
             case 1:
-                return $this->getFile();
+                return $this->getPUserId();
                 break;
             case 2:
-                return $this->getLine();
+                return $this->getFile();
                 break;
             case 3:
-                return $this->getCode();
+                return $this->getLine();
                 break;
             case 4:
-                return $this->getMessage();
+                return $this->getCode();
                 break;
             case 5:
-                return $this->getStackTrace();
+                return $this->getMessage();
                 break;
             case 6:
-                return $this->getCreatedAt();
+                return $this->getStackTrace();
                 break;
             case 7:
+                return $this->getCreatedAt();
+                break;
+            case 8:
                 return $this->getUpdatedAt();
                 break;
             default:
@@ -952,10 +1039,11 @@ abstract class BasePMAppException extends BaseObject implements Persistent
      *                    Defaults to BasePeer::TYPE_PHPNAME.
      * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to true.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
+     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
+    public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
         if (isset($alreadyDumpedObjects['PMAppException'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
@@ -964,19 +1052,25 @@ abstract class BasePMAppException extends BaseObject implements Persistent
         $keys = PMAppExceptionPeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getFile(),
-            $keys[2] => $this->getLine(),
-            $keys[3] => $this->getCode(),
-            $keys[4] => $this->getMessage(),
-            $keys[5] => $this->getStackTrace(),
-            $keys[6] => $this->getCreatedAt(),
-            $keys[7] => $this->getUpdatedAt(),
+            $keys[1] => $this->getPUserId(),
+            $keys[2] => $this->getFile(),
+            $keys[3] => $this->getLine(),
+            $keys[4] => $this->getCode(),
+            $keys[5] => $this->getMessage(),
+            $keys[6] => $this->getStackTrace(),
+            $keys[7] => $this->getCreatedAt(),
+            $keys[8] => $this->getUpdatedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
         }
 
+        if ($includeForeignObjects) {
+            if (null !== $this->aPUser) {
+                $result['PUser'] = $this->aPUser->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+        }
 
         return $result;
     }
@@ -1014,24 +1108,27 @@ abstract class BasePMAppException extends BaseObject implements Persistent
                 $this->setId($value);
                 break;
             case 1:
-                $this->setFile($value);
+                $this->setPUserId($value);
                 break;
             case 2:
-                $this->setLine($value);
+                $this->setFile($value);
                 break;
             case 3:
-                $this->setCode($value);
+                $this->setLine($value);
                 break;
             case 4:
-                $this->setMessage($value);
+                $this->setCode($value);
                 break;
             case 5:
-                $this->setStackTrace($value);
+                $this->setMessage($value);
                 break;
             case 6:
-                $this->setCreatedAt($value);
+                $this->setStackTrace($value);
                 break;
             case 7:
+                $this->setCreatedAt($value);
+                break;
+            case 8:
                 $this->setUpdatedAt($value);
                 break;
         } // switch()
@@ -1059,13 +1156,14 @@ abstract class BasePMAppException extends BaseObject implements Persistent
         $keys = PMAppExceptionPeer::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setFile($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setLine($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setCode($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setMessage($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setStackTrace($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setCreatedAt($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setUpdatedAt($arr[$keys[7]]);
+        if (array_key_exists($keys[1], $arr)) $this->setPUserId($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setFile($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setLine($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setCode($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setMessage($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setStackTrace($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setCreatedAt($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setUpdatedAt($arr[$keys[8]]);
     }
 
     /**
@@ -1078,6 +1176,7 @@ abstract class BasePMAppException extends BaseObject implements Persistent
         $criteria = new Criteria(PMAppExceptionPeer::DATABASE_NAME);
 
         if ($this->isColumnModified(PMAppExceptionPeer::ID)) $criteria->add(PMAppExceptionPeer::ID, $this->id);
+        if ($this->isColumnModified(PMAppExceptionPeer::P_USER_ID)) $criteria->add(PMAppExceptionPeer::P_USER_ID, $this->p_user_id);
         if ($this->isColumnModified(PMAppExceptionPeer::FILE)) $criteria->add(PMAppExceptionPeer::FILE, $this->file);
         if ($this->isColumnModified(PMAppExceptionPeer::LINE)) $criteria->add(PMAppExceptionPeer::LINE, $this->line);
         if ($this->isColumnModified(PMAppExceptionPeer::CODE)) $criteria->add(PMAppExceptionPeer::CODE, $this->code);
@@ -1148,6 +1247,7 @@ abstract class BasePMAppException extends BaseObject implements Persistent
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
+        $copyObj->setPUserId($this->getPUserId());
         $copyObj->setFile($this->getFile());
         $copyObj->setLine($this->getLine());
         $copyObj->setCode($this->getCode());
@@ -1155,6 +1255,18 @@ abstract class BasePMAppException extends BaseObject implements Persistent
         $copyObj->setStackTrace($this->getStackTrace());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
+
+        if ($deepCopy && !$this->startCopy) {
+            // important: temporarily setNew(false) because this affects the behavior of
+            // the getter/setter methods for fkey referrer objects.
+            $copyObj->setNew(false);
+            // store object hash to prevent cycle
+            $this->startCopy = true;
+
+            //unflag object copy
+            $this->startCopy = false;
+        } // if ($deepCopy)
+
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
@@ -1202,11 +1314,64 @@ abstract class BasePMAppException extends BaseObject implements Persistent
     }
 
     /**
+     * Declares an association between this object and a PUser object.
+     *
+     * @param                  PUser $v
+     * @return PMAppException The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setPUser(PUser $v = null)
+    {
+        if ($v === null) {
+            $this->setPUserId(NULL);
+        } else {
+            $this->setPUserId($v->getId());
+        }
+
+        $this->aPUser = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the PUser object, it will not be re-added.
+        if ($v !== null) {
+            $v->addPMAppException($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated PUser object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return PUser The associated PUser object.
+     * @throws PropelException
+     */
+    public function getPUser(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aPUser === null && ($this->p_user_id !== null) && $doQuery) {
+            $this->aPUser = PUserQuery::create()->findPk($this->p_user_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aPUser->addPMAppExceptions($this);
+             */
+        }
+
+        return $this->aPUser;
+    }
+
+    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
     {
         $this->id = null;
+        $this->p_user_id = null;
         $this->file = null;
         $this->line = null;
         $this->code = null;
@@ -1236,10 +1401,14 @@ abstract class BasePMAppException extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
+            if ($this->aPUser instanceof Persistent) {
+              $this->aPUser->clearAllReferences($deep);
+            }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
+        $this->aPUser = null;
     }
 
     /**

@@ -5,8 +5,10 @@ namespace Politizr\Model\om;
 use \Criteria;
 use \Exception;
 use \ModelCriteria;
+use \ModelJoin;
 use \PDO;
 use \Propel;
+use \PropelCollection;
 use \PropelException;
 use \PropelObjectCollection;
 use \PropelPDO;
@@ -15,9 +17,11 @@ use Glorpen\Propel\PropelBundle\Events\QueryEvent;
 use Politizr\Model\PMAppException;
 use Politizr\Model\PMAppExceptionPeer;
 use Politizr\Model\PMAppExceptionQuery;
+use Politizr\Model\PUser;
 
 /**
  * @method PMAppExceptionQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method PMAppExceptionQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
  * @method PMAppExceptionQuery orderByFile($order = Criteria::ASC) Order by the file column
  * @method PMAppExceptionQuery orderByLine($order = Criteria::ASC) Order by the line column
  * @method PMAppExceptionQuery orderByCode($order = Criteria::ASC) Order by the code column
@@ -27,6 +31,7 @@ use Politizr\Model\PMAppExceptionQuery;
  * @method PMAppExceptionQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  *
  * @method PMAppExceptionQuery groupById() Group by the id column
+ * @method PMAppExceptionQuery groupByPUserId() Group by the p_user_id column
  * @method PMAppExceptionQuery groupByFile() Group by the file column
  * @method PMAppExceptionQuery groupByLine() Group by the line column
  * @method PMAppExceptionQuery groupByCode() Group by the code column
@@ -39,9 +44,14 @@ use Politizr\Model\PMAppExceptionQuery;
  * @method PMAppExceptionQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method PMAppExceptionQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
+ * @method PMAppExceptionQuery leftJoinPUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUser relation
+ * @method PMAppExceptionQuery rightJoinPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUser relation
+ * @method PMAppExceptionQuery innerJoinPUser($relationAlias = null) Adds a INNER JOIN clause to the query using the PUser relation
+ *
  * @method PMAppException findOne(PropelPDO $con = null) Return the first PMAppException matching the query
  * @method PMAppException findOneOrCreate(PropelPDO $con = null) Return the first PMAppException matching the query, or a new PMAppException object populated from the query conditions when no match is found
  *
+ * @method PMAppException findOneByPUserId(int $p_user_id) Return the first PMAppException filtered by the p_user_id column
  * @method PMAppException findOneByFile(string $file) Return the first PMAppException filtered by the file column
  * @method PMAppException findOneByLine(int $line) Return the first PMAppException filtered by the line column
  * @method PMAppException findOneByCode(int $code) Return the first PMAppException filtered by the code column
@@ -51,6 +61,7 @@ use Politizr\Model\PMAppExceptionQuery;
  * @method PMAppException findOneByUpdatedAt(string $updated_at) Return the first PMAppException filtered by the updated_at column
  *
  * @method array findById(int $id) Return PMAppException objects filtered by the id column
+ * @method array findByPUserId(int $p_user_id) Return PMAppException objects filtered by the p_user_id column
  * @method array findByFile(string $file) Return PMAppException objects filtered by the file column
  * @method array findByLine(int $line) Return PMAppException objects filtered by the line column
  * @method array findByCode(int $code) Return PMAppException objects filtered by the code column
@@ -164,7 +175,7 @@ abstract class BasePMAppExceptionQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `file`, `line`, `code`, `message`, `stack_trace`, `created_at`, `updated_at` FROM `p_m_app_exception` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_user_id`, `file`, `line`, `code`, `message`, `stack_trace`, `created_at`, `updated_at` FROM `p_m_app_exception` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -294,6 +305,50 @@ abstract class BasePMAppExceptionQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PMAppExceptionPeer::ID, $id, $comparison);
+    }
+
+    /**
+     * Filter the query on the p_user_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPUserId(1234); // WHERE p_user_id = 1234
+     * $query->filterByPUserId(array(12, 34)); // WHERE p_user_id IN (12, 34)
+     * $query->filterByPUserId(array('min' => 12)); // WHERE p_user_id >= 12
+     * $query->filterByPUserId(array('max' => 12)); // WHERE p_user_id <= 12
+     * </code>
+     *
+     * @see       filterByPUser()
+     *
+     * @param     mixed $pUserId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PMAppExceptionQuery The current query, for fluid interface
+     */
+    public function filterByPUserId($pUserId = null, $comparison = null)
+    {
+        if (is_array($pUserId)) {
+            $useMinMax = false;
+            if (isset($pUserId['min'])) {
+                $this->addUsingAlias(PMAppExceptionPeer::P_USER_ID, $pUserId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($pUserId['max'])) {
+                $this->addUsingAlias(PMAppExceptionPeer::P_USER_ID, $pUserId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PMAppExceptionPeer::P_USER_ID, $pUserId, $comparison);
     }
 
     /**
@@ -551,6 +606,82 @@ abstract class BasePMAppExceptionQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PMAppExceptionPeer::UPDATED_AT, $updatedAt, $comparison);
+    }
+
+    /**
+     * Filter the query by a related PUser object
+     *
+     * @param   PUser|PropelObjectCollection $pUser The related object(s) to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PMAppExceptionQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPUser($pUser, $comparison = null)
+    {
+        if ($pUser instanceof PUser) {
+            return $this
+                ->addUsingAlias(PMAppExceptionPeer::P_USER_ID, $pUser->getId(), $comparison);
+        } elseif ($pUser instanceof PropelObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(PMAppExceptionPeer::P_USER_ID, $pUser->toKeyValue('PrimaryKey', 'Id'), $comparison);
+        } else {
+            throw new PropelException('filterByPUser() only accepts arguments of type PUser or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PUser relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PMAppExceptionQuery The current query, for fluid interface
+     */
+    public function joinPUser($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PUser');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PUser');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PUser relation PUser object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PUserQuery A secondary query class using the current class as primary query
+     */
+    public function usePUserQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinPUser($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PUser', '\Politizr\Model\PUserQuery');
     }
 
     /**

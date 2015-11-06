@@ -17,6 +17,7 @@ use Politizr\Model\PDDebatePeer;
 use Politizr\Model\PDRCommentPeer;
 use Politizr\Model\PDReactionPeer;
 use Politizr\Model\PMAbuseReportingPeer;
+use Politizr\Model\PMAppExceptionPeer;
 use Politizr\Model\PMAskForUpdatePeer;
 use Politizr\Model\POrderPeer;
 use Politizr\Model\PTagPeer;
@@ -727,6 +728,9 @@ abstract class BasePUserPeer
         // Invalidate objects in PMAbuseReportingPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PMAbuseReportingPeer::clearInstancePool();
+        // Invalidate objects in PMAppExceptionPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PMAppExceptionPeer::clearInstancePool();
         // Invalidate objects in PUFollowUPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PUFollowUPeer::clearInstancePool();

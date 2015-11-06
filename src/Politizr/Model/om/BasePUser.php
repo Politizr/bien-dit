@@ -27,6 +27,8 @@ use Politizr\Model\PDReaction;
 use Politizr\Model\PDReactionQuery;
 use Politizr\Model\PMAbuseReporting;
 use Politizr\Model\PMAbuseReportingQuery;
+use Politizr\Model\PMAppException;
+use Politizr\Model\PMAppExceptionQuery;
 use Politizr\Model\PMAskForUpdate;
 use Politizr\Model\PMAskForUpdateQuery;
 use Politizr\Model\PNotification;
@@ -514,6 +516,12 @@ abstract class BasePUser extends BaseObject implements Persistent
     protected $collPMAbuseReportingsPartial;
 
     /**
+     * @var        PropelObjectCollection|PMAppException[] Collection to store aggregation of PMAppException objects.
+     */
+    protected $collPMAppExceptions;
+    protected $collPMAppExceptionsPartial;
+
+    /**
      * @var        PropelObjectCollection|PUFollowU[] Collection to store aggregation of PUFollowU objects.
      */
     protected $collPUFollowUsRelatedByPUserId;
@@ -803,6 +811,12 @@ abstract class BasePUser extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $pMAbuseReportingsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pMAppExceptionsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -2942,6 +2956,8 @@ abstract class BasePUser extends BaseObject implements Persistent
 
             $this->collPMAbuseReportings = null;
 
+            $this->collPMAppExceptions = null;
+
             $this->collPUFollowUsRelatedByPUserId = null;
 
             $this->collPUFollowUsRelatedByPUserFollowerId = null;
@@ -3773,6 +3789,24 @@ abstract class BasePUser extends BaseObject implements Persistent
                 }
             }
 
+            if ($this->pMAppExceptionsScheduledForDeletion !== null) {
+                if (!$this->pMAppExceptionsScheduledForDeletion->isEmpty()) {
+                    foreach ($this->pMAppExceptionsScheduledForDeletion as $pMAppException) {
+                        // need to save related object because we set the relation to null
+                        $pMAppException->save($con);
+                    }
+                    $this->pMAppExceptionsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPMAppExceptions !== null) {
+                foreach ($this->collPMAppExceptions as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
             if ($this->pUFollowUsRelatedByPUserIdScheduledForDeletion !== null) {
                 if (!$this->pUFollowUsRelatedByPUserIdScheduledForDeletion->isEmpty()) {
                     PUFollowUQuery::create()
@@ -4391,6 +4425,14 @@ abstract class BasePUser extends BaseObject implements Persistent
                     }
                 }
 
+                if ($this->collPMAppExceptions !== null) {
+                    foreach ($this->collPMAppExceptions as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
                 if ($this->collPUFollowUsRelatedByPUserId !== null) {
                     foreach ($this->collPUFollowUsRelatedByPUserId as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
@@ -4724,6 +4766,9 @@ abstract class BasePUser extends BaseObject implements Persistent
             }
             if (null !== $this->collPMAbuseReportings) {
                 $result['PMAbuseReportings'] = $this->collPMAbuseReportings->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collPMAppExceptions) {
+                $result['PMAppExceptions'] = $this->collPMAppExceptions->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collPUFollowUsRelatedByPUserId) {
                 $result['PUFollowUsRelatedByPUserId'] = $this->collPUFollowUsRelatedByPUserId->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -5274,6 +5319,12 @@ abstract class BasePUser extends BaseObject implements Persistent
                 }
             }
 
+            foreach ($this->getPMAppExceptions() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPMAppException($relObj->copy($deepCopy));
+                }
+            }
+
             foreach ($this->getPUFollowUsRelatedByPUserId() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addPUFollowURelatedByPUserId($relObj->copy($deepCopy));
@@ -5458,6 +5509,9 @@ abstract class BasePUser extends BaseObject implements Persistent
         }
         if ('PMAbuseReporting' == $relationName) {
             $this->initPMAbuseReportings();
+        }
+        if ('PMAppException' == $relationName) {
+            $this->initPMAppExceptions();
         }
         if ('PUFollowURelatedByPUserId' == $relationName) {
             $this->initPUFollowUsRelatedByPUserId();
@@ -10518,6 +10572,231 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collPMAppExceptions collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PUser The current object (for fluent API support)
+     * @see        addPMAppExceptions()
+     */
+    public function clearPMAppExceptions()
+    {
+        $this->collPMAppExceptions = null; // important to set this to null since that means it is uninitialized
+        $this->collPMAppExceptionsPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPMAppExceptions collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPMAppExceptions($v = true)
+    {
+        $this->collPMAppExceptionsPartial = $v;
+    }
+
+    /**
+     * Initializes the collPMAppExceptions collection.
+     *
+     * By default this just sets the collPMAppExceptions collection to an empty array (like clearcollPMAppExceptions());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPMAppExceptions($overrideExisting = true)
+    {
+        if (null !== $this->collPMAppExceptions && !$overrideExisting) {
+            return;
+        }
+        $this->collPMAppExceptions = new PropelObjectCollection();
+        $this->collPMAppExceptions->setModel('PMAppException');
+    }
+
+    /**
+     * Gets an array of PMAppException objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PUser is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PMAppException[] List of PMAppException objects
+     * @throws PropelException
+     */
+    public function getPMAppExceptions($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPMAppExceptionsPartial && !$this->isNew();
+        if (null === $this->collPMAppExceptions || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPMAppExceptions) {
+                // return empty collection
+                $this->initPMAppExceptions();
+            } else {
+                $collPMAppExceptions = PMAppExceptionQuery::create(null, $criteria)
+                    ->filterByPUser($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPMAppExceptionsPartial && count($collPMAppExceptions)) {
+                      $this->initPMAppExceptions(false);
+
+                      foreach ($collPMAppExceptions as $obj) {
+                        if (false == $this->collPMAppExceptions->contains($obj)) {
+                          $this->collPMAppExceptions->append($obj);
+                        }
+                      }
+
+                      $this->collPMAppExceptionsPartial = true;
+                    }
+
+                    $collPMAppExceptions->getInternalIterator()->rewind();
+
+                    return $collPMAppExceptions;
+                }
+
+                if ($partial && $this->collPMAppExceptions) {
+                    foreach ($this->collPMAppExceptions as $obj) {
+                        if ($obj->isNew()) {
+                            $collPMAppExceptions[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPMAppExceptions = $collPMAppExceptions;
+                $this->collPMAppExceptionsPartial = false;
+            }
+        }
+
+        return $this->collPMAppExceptions;
+    }
+
+    /**
+     * Sets a collection of PMAppException objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pMAppExceptions A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PUser The current object (for fluent API support)
+     */
+    public function setPMAppExceptions(PropelCollection $pMAppExceptions, PropelPDO $con = null)
+    {
+        $pMAppExceptionsToDelete = $this->getPMAppExceptions(new Criteria(), $con)->diff($pMAppExceptions);
+
+
+        $this->pMAppExceptionsScheduledForDeletion = $pMAppExceptionsToDelete;
+
+        foreach ($pMAppExceptionsToDelete as $pMAppExceptionRemoved) {
+            $pMAppExceptionRemoved->setPUser(null);
+        }
+
+        $this->collPMAppExceptions = null;
+        foreach ($pMAppExceptions as $pMAppException) {
+            $this->addPMAppException($pMAppException);
+        }
+
+        $this->collPMAppExceptions = $pMAppExceptions;
+        $this->collPMAppExceptionsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PMAppException objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PMAppException objects.
+     * @throws PropelException
+     */
+    public function countPMAppExceptions(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPMAppExceptionsPartial && !$this->isNew();
+        if (null === $this->collPMAppExceptions || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPMAppExceptions) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPMAppExceptions());
+            }
+            $query = PMAppExceptionQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPUser($this)
+                ->count($con);
+        }
+
+        return count($this->collPMAppExceptions);
+    }
+
+    /**
+     * Method called to associate a PMAppException object to this object
+     * through the PMAppException foreign key attribute.
+     *
+     * @param    PMAppException $l PMAppException
+     * @return PUser The current object (for fluent API support)
+     */
+    public function addPMAppException(PMAppException $l)
+    {
+        if ($this->collPMAppExceptions === null) {
+            $this->initPMAppExceptions();
+            $this->collPMAppExceptionsPartial = true;
+        }
+
+        if (!in_array($l, $this->collPMAppExceptions->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPMAppException($l);
+
+            if ($this->pMAppExceptionsScheduledForDeletion and $this->pMAppExceptionsScheduledForDeletion->contains($l)) {
+                $this->pMAppExceptionsScheduledForDeletion->remove($this->pMAppExceptionsScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PMAppException $pMAppException The pMAppException object to add.
+     */
+    protected function doAddPMAppException($pMAppException)
+    {
+        $this->collPMAppExceptions[]= $pMAppException;
+        $pMAppException->setPUser($this);
+    }
+
+    /**
+     * @param	PMAppException $pMAppException The pMAppException object to remove.
+     * @return PUser The current object (for fluent API support)
+     */
+    public function removePMAppException($pMAppException)
+    {
+        if ($this->getPMAppExceptions()->contains($pMAppException)) {
+            $this->collPMAppExceptions->remove($this->collPMAppExceptions->search($pMAppException));
+            if (null === $this->pMAppExceptionsScheduledForDeletion) {
+                $this->pMAppExceptionsScheduledForDeletion = clone $this->collPMAppExceptions;
+                $this->pMAppExceptionsScheduledForDeletion->clear();
+            }
+            $this->pMAppExceptionsScheduledForDeletion[]= $pMAppException;
+            $pMAppException->setPUser(null);
+        }
+
+        return $this;
+    }
+
+    /**
      * Clears out the collPUFollowUsRelatedByPUserId collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
@@ -13205,6 +13484,11 @@ abstract class BasePUser extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collPMAppExceptions) {
+                foreach ($this->collPMAppExceptions as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collPUFollowUsRelatedByPUserId) {
                 foreach ($this->collPUFollowUsRelatedByPUserId as $o) {
                     $o->clearAllReferences($deep);
@@ -13370,6 +13654,10 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->collPMAbuseReportings->clearIterator();
         }
         $this->collPMAbuseReportings = null;
+        if ($this->collPMAppExceptions instanceof PropelCollection) {
+            $this->collPMAppExceptions->clearIterator();
+        }
+        $this->collPMAppExceptions = null;
         if ($this->collPUFollowUsRelatedByPUserId instanceof PropelCollection) {
             $this->collPUFollowUsRelatedByPUserId->clearIterator();
         }

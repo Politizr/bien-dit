@@ -910,6 +910,7 @@
         <behavior name="timestampable" />
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_user_id" type="integer" required="false" />  
         
         <column name="file" type="varchar" size="250" />
         <column name="line" type="integer" />
@@ -918,6 +919,10 @@
         <column name="message" type="varchar" size="1500" />
 
         <column name="stack_trace" type="clob" />      
+
+        <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_user_id" foreign="id" />
+        </foreign-key>        
     </table>
 
 </database>
