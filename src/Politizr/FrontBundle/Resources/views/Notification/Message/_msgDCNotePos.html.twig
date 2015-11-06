@@ -1,1 +1,1 @@
-Votre commentaire {% include 'PolitizrFrontBundle:Notification\\Message:_screenLink.html.twig' with {'description': title | truncate(50), 'url': url } only %} a obtenu un vote positif.
+Votre commentaire {% include 'PolitizrFrontBundle:Notification\\Message:_screenLink.html.twig' with {'description': title | striptags | purify | truncate(100), 'url': url } only %} a obtenu un vote positif.
