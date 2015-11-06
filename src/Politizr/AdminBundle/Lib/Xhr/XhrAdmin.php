@@ -25,32 +25,42 @@ use Politizr\Model\PUTaggedTQuery;
 class XhrAdmin
 {
     private $securityTokenStorage;
+    private $kernel;
     private $router;
     private $templating;
     private $tagManager;
+    private $globalTools;
     private $logger;
 
     /**
      *
      * @param @security.token_storage
+     * @param @kernel
      * @param @router
      * @param @templating
      * @param @politizr.manager.tag
+     * @param @politizr.tools.global
      * @param @logger
      */
     public function __construct(
         $securityTokenStorage,
+        $kernel,
         $router,
         $templating,
         $tagManager,
+        $globalTools,
         $logger
     ) {
         $this->securityTokenStorage = $securityTokenStorage;
 
+        $this->kernel = $kernel;
+        
         $this->router = $router;
         $this->templating = $templating;
 
         $this->tagManager = $tagManager;
+
+        $this->globalTools = $globalTools;
 
         $this->logger = $logger;
     }
@@ -421,5 +431,79 @@ class XhrAdmin
         $deleted = $this->tagManager->deleteUserTaggedTag($subjectId, $tagId);
 
         return $deleted;
+    }
+
+    /* ######################################################################################################## */
+    /*                                                  IMAGE FUNCTIONS                                         */
+    /* ######################################################################################################## */
+
+    /**
+     * Admin image upload
+     */
+    public function adminImageUpload(Request $request)
+    {
+        $this->logger->info('*** adminImageUpload');
+
+        // Request arguments
+        $id = $request->get('id');
+        $this->logger->info(print_r($id, true));
+        $queryClass = $request->get('queryClass');
+        $this->logger->info(print_r($queryClass, true));
+        $setter = $request->get('setter');
+        $this->logger->info(print_r($setter, true));
+        $uploadWebPath = $request->get('uploadWebPath');
+        $this->logger->info(print_r($uploadWebPath, true));
+
+        $subject = $queryClass::create()->findPk($id);
+
+        // Chemin des images
+        $path = $this->kernel->getRootDir() . '/../web' . $uploadWebPath;
+
+        // Appel du service d'upload ajax
+        $fileName = $this->globalTools->uploadXhrImage(
+            $request,
+            'fileName',
+            $path,
+            1024,
+            1024
+        );
+
+        $subject->$setter($fileName);
+        $subject->save();
+
+        // Rendering
+        $html = $this->templating->render(
+            'PolitizrAdminBundle:Fragment:_image.html.twig',
+            array(
+                'path' => $uploadWebPath . $fileName,
+            )
+        );
+
+        return array(
+            'fileName' => $fileName,
+            'html' => $html,
+            );
+    }
+
+    /**
+     * Admin delete image upload
+     */
+    public function adminImageDelete(Request $request)
+    {
+        $this->logger->info('*** adminImageDelete');
+
+        // Request arguments
+        $id = $request->get('id');
+        $this->logger->info(print_r($id, true));
+        $queryClass = $request->get('queryClass');
+        $this->logger->info(print_r($queryClass, true));
+        $setter = $request->get('setter');
+        $this->logger->info(print_r($setter, true));
+
+        $subject = $queryClass::create()->findPk($id);
+        $subject->$setter(null);
+        $subject->save();
+
+        return true;
     }
 }

@@ -64,7 +64,7 @@ $('body').on('click', "[action='fileDelete']", function(e){
 
     var xhrPath = getXhrPath(
         ADMIN_ROUTE_DELETE_IMAGE,
-        'document',
+        'admin',
         'adminImageDelete',
         RETURN_BOOLEAN
         );

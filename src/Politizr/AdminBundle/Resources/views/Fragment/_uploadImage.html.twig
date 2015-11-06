@@ -7,7 +7,7 @@
         {% endif %}
     </div>
 
-    <form id="formUploadImage{{ zone }}" action="{{ path('AdminXhrGeneric', {'xhrRoute': constant('Politizr\\Constant\\XhrConstants::ADMIN_ROUTE_UPLOAD_IMAGE'), 'xhrService': 'document', 'xhrMethod': 'adminImageUpload', 'xhrType': constant('Politizr\\Constant\\XhrConstants::RETURN_HTML')}) }}" method="post" enctype="multipart/form-data">
+    <form id="formUploadImage{{ zone }}" action="{{ path('AdminXhrGeneric', {'xhrRoute': constant('Politizr\\Constant\\XhrConstants::ADMIN_ROUTE_UPLOAD_IMAGE'), 'xhrService': 'admin', 'xhrMethod': 'adminImageUpload', 'xhrType': constant('Politizr\\Constant\\XhrConstants::RETURN_HTML')}) }}" method="post" enctype="multipart/form-data">
         <input type="hidden" name="id" value="{{ subjectId }}">
         <input type="hidden" name="queryClass" value="{{ queryClass }}">
         <input type="hidden" name="setter" value="{{ setter }}">

@@ -18,9 +18,11 @@ services:
         class: Politizr\AdminBundle\Lib\Xhr\XhrAdmin
         arguments:
             - @security.token_storage
+            - @kernel
             - @router
             - @templating
             - @politizr.manager.tag
+            - @politizr.tools.global
             - @logger
 
 
