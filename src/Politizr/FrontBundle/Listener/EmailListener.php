@@ -110,18 +110,10 @@ class EmailListener
         $user = $event->getSubject();
         try {
             $htmlBody = $this->templating->render(
-                'PolitizrFrontBundle:Email:updatePassword.html.twig',
-                array(
-                    'username' => $user->getUsername(),
-                    'password' => $user->getPlainPassword()
-                )
+                'PolitizrFrontBundle:Email:updatePassword.html.twig'
             );
             $txtBody = $this->templating->render(
-                'PolitizrFrontBundle:Email:updatePassword.txt.twig',
-                array(
-                    'username' => $user->getUsername(),
-                    'password' => $user->getPlainPassword()
-                )
+                'PolitizrFrontBundle:Email:updatePassword.txt.twig'
             );
 
             $message = \Swift_Message::newInstance()

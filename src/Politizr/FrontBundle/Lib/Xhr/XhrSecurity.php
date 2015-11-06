@@ -104,6 +104,7 @@ class XhrSecurity
             // new random password
             $password = substr(md5(uniqid(mt_rand(), true)), 0, 6);
             $this->logger->info('password = '.$password);
+            $user->setPlainPassword($password);
             $user->setPassword($this->encoderFactory->getEncoder($user)->encodePassword($password, $user->getSalt()));
             $user->save();
 
