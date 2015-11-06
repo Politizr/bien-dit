@@ -185,9 +185,6 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface,
         } else {
             throw new \Exception('Indexation service not found');
         }
-
-        // @todo refactor to command
-        $this->removeUpload();
     }
 
     /**

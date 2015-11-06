@@ -158,9 +158,6 @@ class PDDebate extends BasePDDebate implements PDocumentInterface, ContainerAwar
         } else {
             throw new \Exception('Indexation service not found');
         }
-
-        // @todo refactor to command
-        $this->removeUpload();
     }
 
     /**

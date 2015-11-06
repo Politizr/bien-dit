@@ -161,9 +161,6 @@ class PDReaction extends BasePDReaction implements PDocumentInterface, Container
         } else {
             throw new \Exception('Indexation service not found');
         }
-
-        // @todo refactor to command
-        $this->removeUpload();
     }
 
     /**
