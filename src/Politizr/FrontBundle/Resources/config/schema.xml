@@ -439,6 +439,11 @@
 
         <column name="online" type="boolean" />
 
+        <column name="banned" type="boolean" />
+        <column name="banned_at" type="timestamp" />
+
+        <column name="abuse_level" type="integer" />
+
         <foreign-key foreignTable="p_u_status" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_u_status_id" foreign="id" />
         </foreign-key>
@@ -726,6 +731,9 @@
 
         <column name="favorite" type="boolean" />
         <column name="online" type="boolean" />
+        <column name="moderated" type="boolean" />
+        <column name="moderated_partial" type="boolean" />
+        <column name="moderated_at" type="timestamp" />
 
         <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />
@@ -767,6 +775,9 @@
 
         <column name="favorite" type="boolean" />
         <column name="online" type="boolean" />
+        <column name="moderated" type="boolean" />
+        <column name="moderated_partial" type="boolean" />
+        <column name="moderated_at" type="timestamp" />
 
         <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />
@@ -796,6 +807,9 @@
         <column name="published_by" type="varchar" size="300" />
 
         <column name="online" type="boolean" />
+        <column name="moderated" type="boolean" />
+        <column name="moderated_partial" type="boolean" />
+        <column name="moderated_at" type="timestamp" />
 
         <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />
@@ -824,6 +838,9 @@
         <column name="published_by" type="varchar" size="300" />
 
         <column name="online" type="boolean" />
+        <column name="moderated" type="boolean" />
+        <column name="moderated_partial" type="boolean" />
+        <column name="moderated_at" type="timestamp" />
 
         <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />
@@ -870,6 +887,55 @@
 
 
 
+    <table name="p_m_moderation_type">
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+        
+        <column name="id" type="integer" required="true" primaryKey="true" />
+        
+        <column name="title"  type="varchar" size="150" />  
+        <column name="message" type="longvarchar" />  
+    </table>
+
+    <table name="p_m_user_moderated" isCrossRef="true">
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_user_id" type="integer" required="true" />
+        <column name="p_m_moderation_type_id" type="integer" required="true" />
+
+        <column name="p_object_name" type="varchar" size="150" />
+        <column name="p_object_id" type="integer" />
+
+        <foreign-key foreignTable="p_user" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_user_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="p_m_moderation_type" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_m_moderation_type_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+    <table name="p_m_user_message">
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+        <behavior name="archivable" />
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_user_id" type="integer" required="false" />  
+        
+        <column name="p_object_name" type="varchar" size="150" />
+        <column name="p_object_id" type="integer" />
+
+        <column name="message" type="longvarchar" />
+        <column name="evol_reput" type="integer" />
+
+        <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_user_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+
     <table name="p_m_ask_for_update">
         <behavior name="timestampable" />
         <behavior name="query_cache" />
@@ -885,7 +951,7 @@
 
         <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />
-        </foreign-key>        
+        </foreign-key>
     </table>
 
     <table name="p_m_abuse_reporting">

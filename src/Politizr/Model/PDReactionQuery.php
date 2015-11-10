@@ -49,6 +49,8 @@ SELECT DISTINCT
     published_by,
     favorite,
     online,
+    moderated,
+    moderated_partial,
     created_at,
     updated_at,
     slug,

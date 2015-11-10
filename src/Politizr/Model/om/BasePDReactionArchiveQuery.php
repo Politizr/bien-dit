@@ -33,6 +33,9 @@ use Politizr\Model\PDReactionArchiveQuery;
  * @method PDReactionArchiveQuery orderByPublishedBy($order = Criteria::ASC) Order by the published_by column
  * @method PDReactionArchiveQuery orderByFavorite($order = Criteria::ASC) Order by the favorite column
  * @method PDReactionArchiveQuery orderByOnline($order = Criteria::ASC) Order by the online column
+ * @method PDReactionArchiveQuery orderByModerated($order = Criteria::ASC) Order by the moderated column
+ * @method PDReactionArchiveQuery orderByModeratedPartial($order = Criteria::ASC) Order by the moderated_partial column
+ * @method PDReactionArchiveQuery orderByModeratedAt($order = Criteria::ASC) Order by the moderated_at column
  * @method PDReactionArchiveQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PDReactionArchiveQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  * @method PDReactionArchiveQuery orderBySlug($order = Criteria::ASC) Order by the slug column
@@ -57,6 +60,9 @@ use Politizr\Model\PDReactionArchiveQuery;
  * @method PDReactionArchiveQuery groupByPublishedBy() Group by the published_by column
  * @method PDReactionArchiveQuery groupByFavorite() Group by the favorite column
  * @method PDReactionArchiveQuery groupByOnline() Group by the online column
+ * @method PDReactionArchiveQuery groupByModerated() Group by the moderated column
+ * @method PDReactionArchiveQuery groupByModeratedPartial() Group by the moderated_partial column
+ * @method PDReactionArchiveQuery groupByModeratedAt() Group by the moderated_at column
  * @method PDReactionArchiveQuery groupByCreatedAt() Group by the created_at column
  * @method PDReactionArchiveQuery groupByUpdatedAt() Group by the updated_at column
  * @method PDReactionArchiveQuery groupBySlug() Group by the slug column
@@ -87,6 +93,9 @@ use Politizr\Model\PDReactionArchiveQuery;
  * @method PDReactionArchive findOneByPublishedBy(string $published_by) Return the first PDReactionArchive filtered by the published_by column
  * @method PDReactionArchive findOneByFavorite(boolean $favorite) Return the first PDReactionArchive filtered by the favorite column
  * @method PDReactionArchive findOneByOnline(boolean $online) Return the first PDReactionArchive filtered by the online column
+ * @method PDReactionArchive findOneByModerated(boolean $moderated) Return the first PDReactionArchive filtered by the moderated column
+ * @method PDReactionArchive findOneByModeratedPartial(boolean $moderated_partial) Return the first PDReactionArchive filtered by the moderated_partial column
+ * @method PDReactionArchive findOneByModeratedAt(string $moderated_at) Return the first PDReactionArchive filtered by the moderated_at column
  * @method PDReactionArchive findOneByCreatedAt(string $created_at) Return the first PDReactionArchive filtered by the created_at column
  * @method PDReactionArchive findOneByUpdatedAt(string $updated_at) Return the first PDReactionArchive filtered by the updated_at column
  * @method PDReactionArchive findOneBySlug(string $slug) Return the first PDReactionArchive filtered by the slug column
@@ -111,6 +120,9 @@ use Politizr\Model\PDReactionArchiveQuery;
  * @method array findByPublishedBy(string $published_by) Return PDReactionArchive objects filtered by the published_by column
  * @method array findByFavorite(boolean $favorite) Return PDReactionArchive objects filtered by the favorite column
  * @method array findByOnline(boolean $online) Return PDReactionArchive objects filtered by the online column
+ * @method array findByModerated(boolean $moderated) Return PDReactionArchive objects filtered by the moderated column
+ * @method array findByModeratedPartial(boolean $moderated_partial) Return PDReactionArchive objects filtered by the moderated_partial column
+ * @method array findByModeratedAt(string $moderated_at) Return PDReactionArchive objects filtered by the moderated_at column
  * @method array findByCreatedAt(string $created_at) Return PDReactionArchive objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PDReactionArchive objects filtered by the updated_at column
  * @method array findBySlug(string $slug) Return PDReactionArchive objects filtered by the slug column
@@ -224,7 +236,7 @@ abstract class BasePDReactionArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_user_id`, `p_d_debate_id`, `parent_reaction_id`, `title`, `file_name`, `copyright`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `created_at`, `updated_at`, `slug`, `tree_left`, `tree_right`, `tree_level`, `archived_at` FROM `p_d_reaction_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_user_id`, `p_d_debate_id`, `parent_reaction_id`, `title`, `file_name`, `copyright`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `moderated`, `moderated_partial`, `moderated_at`, `created_at`, `updated_at`, `slug`, `tree_left`, `tree_right`, `tree_level`, `archived_at` FROM `p_d_reaction_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -875,6 +887,103 @@ abstract class BasePDReactionArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDReactionArchivePeer::ONLINE, $online, $comparison);
+    }
+
+    /**
+     * Filter the query on the moderated column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByModerated(true); // WHERE moderated = true
+     * $query->filterByModerated('yes'); // WHERE moderated = true
+     * </code>
+     *
+     * @param     boolean|string $moderated The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDReactionArchiveQuery The current query, for fluid interface
+     */
+    public function filterByModerated($moderated = null, $comparison = null)
+    {
+        if (is_string($moderated)) {
+            $moderated = in_array(strtolower($moderated), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PDReactionArchivePeer::MODERATED, $moderated, $comparison);
+    }
+
+    /**
+     * Filter the query on the moderated_partial column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByModeratedPartial(true); // WHERE moderated_partial = true
+     * $query->filterByModeratedPartial('yes'); // WHERE moderated_partial = true
+     * </code>
+     *
+     * @param     boolean|string $moderatedPartial The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDReactionArchiveQuery The current query, for fluid interface
+     */
+    public function filterByModeratedPartial($moderatedPartial = null, $comparison = null)
+    {
+        if (is_string($moderatedPartial)) {
+            $moderatedPartial = in_array(strtolower($moderatedPartial), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PDReactionArchivePeer::MODERATED_PARTIAL, $moderatedPartial, $comparison);
+    }
+
+    /**
+     * Filter the query on the moderated_at column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByModeratedAt('2011-03-14'); // WHERE moderated_at = '2011-03-14'
+     * $query->filterByModeratedAt('now'); // WHERE moderated_at = '2011-03-14'
+     * $query->filterByModeratedAt(array('max' => 'yesterday')); // WHERE moderated_at < '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $moderatedAt The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDReactionArchiveQuery The current query, for fluid interface
+     */
+    public function filterByModeratedAt($moderatedAt = null, $comparison = null)
+    {
+        if (is_array($moderatedAt)) {
+            $useMinMax = false;
+            if (isset($moderatedAt['min'])) {
+                $this->addUsingAlias(PDReactionArchivePeer::MODERATED_AT, $moderatedAt['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($moderatedAt['max'])) {
+                $this->addUsingAlias(PDReactionArchivePeer::MODERATED_AT, $moderatedAt['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PDReactionArchivePeer::MODERATED_AT, $moderatedAt, $comparison);
     }
 
     /**

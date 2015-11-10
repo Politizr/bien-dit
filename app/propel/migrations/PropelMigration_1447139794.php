@@ -2,10 +2,10 @@
 
 /**
  * Data object containing the SQL and PHP code to migrate the database
- * up to version 1446790017.
- * Generated on 2015-11-06 07:06:57 by lionel
+ * up to version 1447139794.
+ * Generated on 2015-11-10 08:16:34 by lionel
  */
-class PropelMigration_1446790017
+class PropelMigration_1447139794
 {
 
     public function preUp($manager)
@@ -42,16 +42,29 @@ class PropelMigration_1446790017
 # It "suspends judgement" for fkey relationships until are tables are set.
 SET FOREIGN_KEY_CHECKS = 0;
 
-ALTER TABLE `p_m_app_exception`
-    ADD `p_user_id` INTEGER AFTER `id`;
+ALTER TABLE `p_d_d_comment`
+    ADD `moderated_at` DATETIME AFTER `moderated_partial`;
 
-CREATE INDEX `p_m_app_exception_FI_1` ON `p_m_app_exception` (`p_user_id`);
+ALTER TABLE `p_d_d_comment_archive`
+    ADD `moderated_at` DATETIME AFTER `moderated_partial`;
 
-ALTER TABLE `p_m_app_exception` ADD CONSTRAINT `p_m_app_exception_FK_1`
-    FOREIGN KEY (`p_user_id`)
-    REFERENCES `p_user` (`id`)
-    ON UPDATE CASCADE
-    ON DELETE SET NULL;
+ALTER TABLE `p_d_debate`
+    ADD `moderated_at` DATETIME AFTER `moderated_partial`;
+
+ALTER TABLE `p_d_debate_archive`
+    ADD `moderated_at` DATETIME AFTER `moderated_partial`;
+
+ALTER TABLE `p_d_r_comment`
+    ADD `moderated_at` DATETIME AFTER `moderated_partial`;
+
+ALTER TABLE `p_d_r_comment_archive`
+    ADD `moderated_at` DATETIME AFTER `moderated_partial`;
+
+ALTER TABLE `p_d_reaction`
+    ADD `moderated_at` DATETIME AFTER `moderated_partial`;
+
+ALTER TABLE `p_d_reaction_archive`
+    ADD `moderated_at` DATETIME AFTER `moderated_partial`;
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;
@@ -73,11 +86,21 @@ SET FOREIGN_KEY_CHECKS = 1;
 # It "suspends judgement" for fkey relationships until are tables are set.
 SET FOREIGN_KEY_CHECKS = 0;
 
-ALTER TABLE `p_m_app_exception` DROP FOREIGN KEY `p_m_app_exception_FK_1`;
+ALTER TABLE `p_d_d_comment` DROP `moderated_at`;
 
-DROP INDEX `p_m_app_exception_FI_1` ON `p_m_app_exception`;
+ALTER TABLE `p_d_d_comment_archive` DROP `moderated_at`;
 
-ALTER TABLE `p_m_app_exception` DROP `p_user_id`;
+ALTER TABLE `p_d_debate` DROP `moderated_at`;
+
+ALTER TABLE `p_d_debate_archive` DROP `moderated_at`;
+
+ALTER TABLE `p_d_r_comment` DROP `moderated_at`;
+
+ALTER TABLE `p_d_r_comment_archive` DROP `moderated_at`;
+
+ALTER TABLE `p_d_reaction` DROP `moderated_at`;
+
+ALTER TABLE `p_d_reaction_archive` DROP `moderated_at`;
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

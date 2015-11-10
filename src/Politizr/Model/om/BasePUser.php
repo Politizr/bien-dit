@@ -31,6 +31,12 @@ use Politizr\Model\PMAppException;
 use Politizr\Model\PMAppExceptionQuery;
 use Politizr\Model\PMAskForUpdate;
 use Politizr\Model\PMAskForUpdateQuery;
+use Politizr\Model\PMModerationType;
+use Politizr\Model\PMModerationTypeQuery;
+use Politizr\Model\PMUserMessage;
+use Politizr\Model\PMUserMessageQuery;
+use Politizr\Model\PMUserModerated;
+use Politizr\Model\PMUserModeratedQuery;
 use Politizr\Model\PNotification;
 use Politizr\Model\PNotificationQuery;
 use Politizr\Model\POrder;
@@ -373,6 +379,24 @@ abstract class BasePUser extends BaseObject implements Persistent
     protected $online;
 
     /**
+     * The value for the banned field.
+     * @var        boolean
+     */
+    protected $banned;
+
+    /**
+     * The value for the banned_at field.
+     * @var        string
+     */
+    protected $banned_at;
+
+    /**
+     * The value for the abuse_level field.
+     * @var        int
+     */
+    protected $abuse_level;
+
+    /**
      * The value for the created_at field.
      * @var        string
      */
@@ -504,6 +528,18 @@ abstract class BasePUser extends BaseObject implements Persistent
     protected $collPDRCommentsPartial;
 
     /**
+     * @var        PropelObjectCollection|PMUserModerated[] Collection to store aggregation of PMUserModerated objects.
+     */
+    protected $collPMUserModerateds;
+    protected $collPMUserModeratedsPartial;
+
+    /**
+     * @var        PropelObjectCollection|PMUserMessage[] Collection to store aggregation of PMUserMessage objects.
+     */
+    protected $collPMUserMessages;
+    protected $collPMUserMessagesPartial;
+
+    /**
      * @var        PropelObjectCollection|PMAskForUpdate[] Collection to store aggregation of PMAskForUpdate objects.
      */
     protected $collPMAskForUpdates;
@@ -587,6 +623,11 @@ abstract class BasePUser extends BaseObject implements Persistent
      * @var        PropelObjectCollection|PNotification[] Collection to store aggregation of PNotification objects.
      */
     protected $collPUSubscribeScreenPNotifications;
+
+    /**
+     * @var        PropelObjectCollection|PMModerationType[] Collection to store aggregation of PMModerationType objects.
+     */
+    protected $collPMModerationTypes;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -696,6 +737,12 @@ abstract class BasePUser extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
+    protected $pMModerationTypesScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
     protected $pTagsScheduledForDeletion = null;
 
     /**
@@ -799,6 +846,18 @@ abstract class BasePUser extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $pDRCommentsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pMUserModeratedsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pMUserMessagesScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -1557,6 +1616,68 @@ abstract class BasePUser extends BaseObject implements Persistent
     {
 
         return $this->online;
+    }
+
+    /**
+     * Get the [banned] column value.
+     *
+     * @return boolean
+     */
+    public function getBanned()
+    {
+
+        return $this->banned;
+    }
+
+    /**
+     * Get the [optionally formatted] temporal [banned_at] column value.
+     *
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getBannedAt($format = null)
+    {
+        if ($this->banned_at === null) {
+            return null;
+        }
+
+        if ($this->banned_at === '0000-00-00 00:00:00') {
+            // while technically this is not a default value of null,
+            // this seems to be closest in meaning.
+            return null;
+        }
+
+        try {
+            $dt = new DateTime($this->banned_at);
+        } catch (Exception $x) {
+            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->banned_at, true), $x);
+        }
+
+        if ($format === null) {
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
+            return $dt;
+        }
+
+        if (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        }
+
+        return $dt->format($format);
+
+    }
+
+    /**
+     * Get the [abuse_level] column value.
+     *
+     * @return int
+     */
+    public function getAbuseLevel()
+    {
+
+        return $this->abuse_level;
     }
 
     /**
@@ -2672,6 +2793,79 @@ abstract class BasePUser extends BaseObject implements Persistent
     } // setOnline()
 
     /**
+     * Sets the value of the [banned] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return PUser The current object (for fluent API support)
+     */
+    public function setBanned($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->banned !== $v) {
+            $this->banned = $v;
+            $this->modifiedColumns[] = PUserPeer::BANNED;
+        }
+
+
+        return $this;
+    } // setBanned()
+
+    /**
+     * Sets the value of [banned_at] column to a normalized version of the date/time value specified.
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return PUser The current object (for fluent API support)
+     */
+    public function setBannedAt($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->banned_at !== null || $dt !== null) {
+            $currentDateAsString = ($this->banned_at !== null && $tmpDt = new DateTime($this->banned_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->banned_at = $newDateAsString;
+                $this->modifiedColumns[] = PUserPeer::BANNED_AT;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setBannedAt()
+
+    /**
+     * Set the value of [abuse_level] column.
+     *
+     * @param  int $v new value
+     * @return PUser The current object (for fluent API support)
+     */
+    public function setAbuseLevel($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->abuse_level !== $v) {
+            $this->abuse_level = $v;
+            $this->modifiedColumns[] = PUserPeer::ABUSE_LEVEL;
+        }
+
+
+        return $this;
+    } // setAbuseLevel()
+
+    /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
@@ -2838,9 +3032,12 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->qualified = ($row[$startcol + 40] !== null) ? (boolean) $row[$startcol + 40] : null;
             $this->validated = ($row[$startcol + 41] !== null) ? (boolean) $row[$startcol + 41] : null;
             $this->online = ($row[$startcol + 42] !== null) ? (boolean) $row[$startcol + 42] : null;
-            $this->created_at = ($row[$startcol + 43] !== null) ? (string) $row[$startcol + 43] : null;
-            $this->updated_at = ($row[$startcol + 44] !== null) ? (string) $row[$startcol + 44] : null;
-            $this->slug = ($row[$startcol + 45] !== null) ? (string) $row[$startcol + 45] : null;
+            $this->banned = ($row[$startcol + 43] !== null) ? (boolean) $row[$startcol + 43] : null;
+            $this->banned_at = ($row[$startcol + 44] !== null) ? (string) $row[$startcol + 44] : null;
+            $this->abuse_level = ($row[$startcol + 45] !== null) ? (int) $row[$startcol + 45] : null;
+            $this->created_at = ($row[$startcol + 46] !== null) ? (string) $row[$startcol + 46] : null;
+            $this->updated_at = ($row[$startcol + 47] !== null) ? (string) $row[$startcol + 47] : null;
+            $this->slug = ($row[$startcol + 48] !== null) ? (string) $row[$startcol + 48] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -2850,7 +3047,7 @@ abstract class BasePUser extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 46; // 46 = PUserPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 49; // 49 = PUserPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PUser object", $e);
@@ -2952,6 +3149,10 @@ abstract class BasePUser extends BaseObject implements Persistent
 
             $this->collPDRComments = null;
 
+            $this->collPMUserModerateds = null;
+
+            $this->collPMUserMessages = null;
+
             $this->collPMAskForUpdates = null;
 
             $this->collPMAbuseReportings = null;
@@ -2973,6 +3174,7 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->collPUNotificationPNotifications = null;
             $this->collPUSubscribeEmailPNotifications = null;
             $this->collPUSubscribeScreenPNotifications = null;
+            $this->collPMModerationTypes = null;
         } // if (deep)
     }
 
@@ -3441,6 +3643,32 @@ abstract class BasePUser extends BaseObject implements Persistent
                 }
             }
 
+            if ($this->pMModerationTypesScheduledForDeletion !== null) {
+                if (!$this->pMModerationTypesScheduledForDeletion->isEmpty()) {
+                    $pks = array();
+                    $pk = $this->getPrimaryKey();
+                    foreach ($this->pMModerationTypesScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
+                        $pks[] = array($pk, $remotePk);
+                    }
+                    PMUserModeratedQuery::create()
+                        ->filterByPrimaryKeys($pks)
+                        ->delete($con);
+                    $this->pMModerationTypesScheduledForDeletion = null;
+                }
+
+                foreach ($this->getPMModerationTypes() as $pMModerationType) {
+                    if ($pMModerationType->isModified()) {
+                        $pMModerationType->save($con);
+                    }
+                }
+            } elseif ($this->collPMModerationTypes) {
+                foreach ($this->collPMModerationTypes as $pMModerationType) {
+                    if ($pMModerationType->isModified()) {
+                        $pMModerationType->save($con);
+                    }
+                }
+            }
+
             if ($this->pTagsScheduledForDeletion !== null) {
                 if (!$this->pTagsScheduledForDeletion->isEmpty()) {
                     foreach ($this->pTagsScheduledForDeletion as $pTag) {
@@ -3753,6 +3981,41 @@ abstract class BasePUser extends BaseObject implements Persistent
                 }
             }
 
+            if ($this->pMUserModeratedsScheduledForDeletion !== null) {
+                if (!$this->pMUserModeratedsScheduledForDeletion->isEmpty()) {
+                    PMUserModeratedQuery::create()
+                        ->filterByPrimaryKeys($this->pMUserModeratedsScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->pMUserModeratedsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPMUserModerateds !== null) {
+                foreach ($this->collPMUserModerateds as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->pMUserMessagesScheduledForDeletion !== null) {
+                if (!$this->pMUserMessagesScheduledForDeletion->isEmpty()) {
+                    foreach ($this->pMUserMessagesScheduledForDeletion as $pMUserMessage) {
+                        // need to save related object because we set the relation to null
+                        $pMUserMessage->save($con);
+                    }
+                    $this->pMUserMessagesScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPMUserMessages !== null) {
+                foreach ($this->collPMUserMessages as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
             if ($this->pMAskForUpdatesScheduledForDeletion !== null) {
                 if (!$this->pMAskForUpdatesScheduledForDeletion->isEmpty()) {
                     foreach ($this->pMAskForUpdatesScheduledForDeletion as $pMAskForUpdate) {
@@ -3996,6 +4259,15 @@ abstract class BasePUser extends BaseObject implements Persistent
         if ($this->isColumnModified(PUserPeer::ONLINE)) {
             $modifiedColumns[':p' . $index++]  = '`online`';
         }
+        if ($this->isColumnModified(PUserPeer::BANNED)) {
+            $modifiedColumns[':p' . $index++]  = '`banned`';
+        }
+        if ($this->isColumnModified(PUserPeer::BANNED_AT)) {
+            $modifiedColumns[':p' . $index++]  = '`banned_at`';
+        }
+        if ($this->isColumnModified(PUserPeer::ABUSE_LEVEL)) {
+            $modifiedColumns[':p' . $index++]  = '`abuse_level`';
+        }
         if ($this->isColumnModified(PUserPeer::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`created_at`';
         }
@@ -4144,6 +4416,15 @@ abstract class BasePUser extends BaseObject implements Persistent
                         break;
                     case '`online`':
                         $stmt->bindValue($identifier, (int) $this->online, PDO::PARAM_INT);
+                        break;
+                    case '`banned`':
+                        $stmt->bindValue($identifier, (int) $this->banned, PDO::PARAM_INT);
+                        break;
+                    case '`banned_at`':
+                        $stmt->bindValue($identifier, $this->banned_at, PDO::PARAM_STR);
+                        break;
+                    case '`abuse_level`':
+                        $stmt->bindValue($identifier, $this->abuse_level, PDO::PARAM_INT);
                         break;
                     case '`created_at`':
                         $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
@@ -4409,6 +4690,22 @@ abstract class BasePUser extends BaseObject implements Persistent
                     }
                 }
 
+                if ($this->collPMUserModerateds !== null) {
+                    foreach ($this->collPMUserModerateds as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
+                if ($this->collPMUserMessages !== null) {
+                    foreach ($this->collPMUserMessages as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
                 if ($this->collPMAskForUpdates !== null) {
                     foreach ($this->collPMAskForUpdates as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
@@ -4614,12 +4911,21 @@ abstract class BasePUser extends BaseObject implements Persistent
                 return $this->getOnline();
                 break;
             case 43:
-                return $this->getCreatedAt();
+                return $this->getBanned();
                 break;
             case 44:
-                return $this->getUpdatedAt();
+                return $this->getBannedAt();
                 break;
             case 45:
+                return $this->getAbuseLevel();
+                break;
+            case 46:
+                return $this->getCreatedAt();
+                break;
+            case 47:
+                return $this->getUpdatedAt();
+                break;
+            case 48:
                 return $this->getSlug();
                 break;
             default:
@@ -4694,9 +5000,12 @@ abstract class BasePUser extends BaseObject implements Persistent
             $keys[40] => $this->getQualified(),
             $keys[41] => $this->getValidated(),
             $keys[42] => $this->getOnline(),
-            $keys[43] => $this->getCreatedAt(),
-            $keys[44] => $this->getUpdatedAt(),
-            $keys[45] => $this->getSlug(),
+            $keys[43] => $this->getBanned(),
+            $keys[44] => $this->getBannedAt(),
+            $keys[45] => $this->getAbuseLevel(),
+            $keys[46] => $this->getCreatedAt(),
+            $keys[47] => $this->getUpdatedAt(),
+            $keys[48] => $this->getSlug(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -4760,6 +5069,12 @@ abstract class BasePUser extends BaseObject implements Persistent
             }
             if (null !== $this->collPDRComments) {
                 $result['PDRComments'] = $this->collPDRComments->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collPMUserModerateds) {
+                $result['PMUserModerateds'] = $this->collPMUserModerateds->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collPMUserMessages) {
+                $result['PMUserMessages'] = $this->collPMUserMessages->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collPMAskForUpdates) {
                 $result['PMAskForUpdates'] = $this->collPMAskForUpdates->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -4948,12 +5263,21 @@ abstract class BasePUser extends BaseObject implements Persistent
                 $this->setOnline($value);
                 break;
             case 43:
-                $this->setCreatedAt($value);
+                $this->setBanned($value);
                 break;
             case 44:
-                $this->setUpdatedAt($value);
+                $this->setBannedAt($value);
                 break;
             case 45:
+                $this->setAbuseLevel($value);
+                break;
+            case 46:
+                $this->setCreatedAt($value);
+                break;
+            case 47:
+                $this->setUpdatedAt($value);
+                break;
+            case 48:
                 $this->setSlug($value);
                 break;
         } // switch()
@@ -5023,9 +5347,12 @@ abstract class BasePUser extends BaseObject implements Persistent
         if (array_key_exists($keys[40], $arr)) $this->setQualified($arr[$keys[40]]);
         if (array_key_exists($keys[41], $arr)) $this->setValidated($arr[$keys[41]]);
         if (array_key_exists($keys[42], $arr)) $this->setOnline($arr[$keys[42]]);
-        if (array_key_exists($keys[43], $arr)) $this->setCreatedAt($arr[$keys[43]]);
-        if (array_key_exists($keys[44], $arr)) $this->setUpdatedAt($arr[$keys[44]]);
-        if (array_key_exists($keys[45], $arr)) $this->setSlug($arr[$keys[45]]);
+        if (array_key_exists($keys[43], $arr)) $this->setBanned($arr[$keys[43]]);
+        if (array_key_exists($keys[44], $arr)) $this->setBannedAt($arr[$keys[44]]);
+        if (array_key_exists($keys[45], $arr)) $this->setAbuseLevel($arr[$keys[45]]);
+        if (array_key_exists($keys[46], $arr)) $this->setCreatedAt($arr[$keys[46]]);
+        if (array_key_exists($keys[47], $arr)) $this->setUpdatedAt($arr[$keys[47]]);
+        if (array_key_exists($keys[48], $arr)) $this->setSlug($arr[$keys[48]]);
     }
 
     /**
@@ -5080,6 +5407,9 @@ abstract class BasePUser extends BaseObject implements Persistent
         if ($this->isColumnModified(PUserPeer::QUALIFIED)) $criteria->add(PUserPeer::QUALIFIED, $this->qualified);
         if ($this->isColumnModified(PUserPeer::VALIDATED)) $criteria->add(PUserPeer::VALIDATED, $this->validated);
         if ($this->isColumnModified(PUserPeer::ONLINE)) $criteria->add(PUserPeer::ONLINE, $this->online);
+        if ($this->isColumnModified(PUserPeer::BANNED)) $criteria->add(PUserPeer::BANNED, $this->banned);
+        if ($this->isColumnModified(PUserPeer::BANNED_AT)) $criteria->add(PUserPeer::BANNED_AT, $this->banned_at);
+        if ($this->isColumnModified(PUserPeer::ABUSE_LEVEL)) $criteria->add(PUserPeer::ABUSE_LEVEL, $this->abuse_level);
         if ($this->isColumnModified(PUserPeer::CREATED_AT)) $criteria->add(PUserPeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(PUserPeer::UPDATED_AT)) $criteria->add(PUserPeer::UPDATED_AT, $this->updated_at);
         if ($this->isColumnModified(PUserPeer::SLUG)) $criteria->add(PUserPeer::SLUG, $this->slug);
@@ -5188,6 +5518,9 @@ abstract class BasePUser extends BaseObject implements Persistent
         $copyObj->setQualified($this->getQualified());
         $copyObj->setValidated($this->getValidated());
         $copyObj->setOnline($this->getOnline());
+        $copyObj->setBanned($this->getBanned());
+        $copyObj->setBannedAt($this->getBannedAt());
+        $copyObj->setAbuseLevel($this->getAbuseLevel());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
         $copyObj->setSlug($this->getSlug());
@@ -5304,6 +5637,18 @@ abstract class BasePUser extends BaseObject implements Persistent
             foreach ($this->getPDRComments() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addPDRComment($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getPMUserModerateds() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPMUserModerated($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getPMUserMessages() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPMUserMessage($relObj->copy($deepCopy));
                 }
             }
 
@@ -5503,6 +5848,12 @@ abstract class BasePUser extends BaseObject implements Persistent
         }
         if ('PDRComment' == $relationName) {
             $this->initPDRComments();
+        }
+        if ('PMUserModerated' == $relationName) {
+            $this->initPMUserModerateds();
+        }
+        if ('PMUserMessage' == $relationName) {
+            $this->initPMUserMessages();
         }
         if ('PMAskForUpdate' == $relationName) {
             $this->initPMAskForUpdates();
@@ -10122,6 +10473,481 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collPMUserModerateds collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PUser The current object (for fluent API support)
+     * @see        addPMUserModerateds()
+     */
+    public function clearPMUserModerateds()
+    {
+        $this->collPMUserModerateds = null; // important to set this to null since that means it is uninitialized
+        $this->collPMUserModeratedsPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPMUserModerateds collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPMUserModerateds($v = true)
+    {
+        $this->collPMUserModeratedsPartial = $v;
+    }
+
+    /**
+     * Initializes the collPMUserModerateds collection.
+     *
+     * By default this just sets the collPMUserModerateds collection to an empty array (like clearcollPMUserModerateds());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPMUserModerateds($overrideExisting = true)
+    {
+        if (null !== $this->collPMUserModerateds && !$overrideExisting) {
+            return;
+        }
+        $this->collPMUserModerateds = new PropelObjectCollection();
+        $this->collPMUserModerateds->setModel('PMUserModerated');
+    }
+
+    /**
+     * Gets an array of PMUserModerated objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PUser is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PMUserModerated[] List of PMUserModerated objects
+     * @throws PropelException
+     */
+    public function getPMUserModerateds($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPMUserModeratedsPartial && !$this->isNew();
+        if (null === $this->collPMUserModerateds || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPMUserModerateds) {
+                // return empty collection
+                $this->initPMUserModerateds();
+            } else {
+                $collPMUserModerateds = PMUserModeratedQuery::create(null, $criteria)
+                    ->filterByPUser($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPMUserModeratedsPartial && count($collPMUserModerateds)) {
+                      $this->initPMUserModerateds(false);
+
+                      foreach ($collPMUserModerateds as $obj) {
+                        if (false == $this->collPMUserModerateds->contains($obj)) {
+                          $this->collPMUserModerateds->append($obj);
+                        }
+                      }
+
+                      $this->collPMUserModeratedsPartial = true;
+                    }
+
+                    $collPMUserModerateds->getInternalIterator()->rewind();
+
+                    return $collPMUserModerateds;
+                }
+
+                if ($partial && $this->collPMUserModerateds) {
+                    foreach ($this->collPMUserModerateds as $obj) {
+                        if ($obj->isNew()) {
+                            $collPMUserModerateds[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPMUserModerateds = $collPMUserModerateds;
+                $this->collPMUserModeratedsPartial = false;
+            }
+        }
+
+        return $this->collPMUserModerateds;
+    }
+
+    /**
+     * Sets a collection of PMUserModerated objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pMUserModerateds A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PUser The current object (for fluent API support)
+     */
+    public function setPMUserModerateds(PropelCollection $pMUserModerateds, PropelPDO $con = null)
+    {
+        $pMUserModeratedsToDelete = $this->getPMUserModerateds(new Criteria(), $con)->diff($pMUserModerateds);
+
+
+        $this->pMUserModeratedsScheduledForDeletion = $pMUserModeratedsToDelete;
+
+        foreach ($pMUserModeratedsToDelete as $pMUserModeratedRemoved) {
+            $pMUserModeratedRemoved->setPUser(null);
+        }
+
+        $this->collPMUserModerateds = null;
+        foreach ($pMUserModerateds as $pMUserModerated) {
+            $this->addPMUserModerated($pMUserModerated);
+        }
+
+        $this->collPMUserModerateds = $pMUserModerateds;
+        $this->collPMUserModeratedsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PMUserModerated objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PMUserModerated objects.
+     * @throws PropelException
+     */
+    public function countPMUserModerateds(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPMUserModeratedsPartial && !$this->isNew();
+        if (null === $this->collPMUserModerateds || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPMUserModerateds) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPMUserModerateds());
+            }
+            $query = PMUserModeratedQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPUser($this)
+                ->count($con);
+        }
+
+        return count($this->collPMUserModerateds);
+    }
+
+    /**
+     * Method called to associate a PMUserModerated object to this object
+     * through the PMUserModerated foreign key attribute.
+     *
+     * @param    PMUserModerated $l PMUserModerated
+     * @return PUser The current object (for fluent API support)
+     */
+    public function addPMUserModerated(PMUserModerated $l)
+    {
+        if ($this->collPMUserModerateds === null) {
+            $this->initPMUserModerateds();
+            $this->collPMUserModeratedsPartial = true;
+        }
+
+        if (!in_array($l, $this->collPMUserModerateds->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPMUserModerated($l);
+
+            if ($this->pMUserModeratedsScheduledForDeletion and $this->pMUserModeratedsScheduledForDeletion->contains($l)) {
+                $this->pMUserModeratedsScheduledForDeletion->remove($this->pMUserModeratedsScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PMUserModerated $pMUserModerated The pMUserModerated object to add.
+     */
+    protected function doAddPMUserModerated($pMUserModerated)
+    {
+        $this->collPMUserModerateds[]= $pMUserModerated;
+        $pMUserModerated->setPUser($this);
+    }
+
+    /**
+     * @param	PMUserModerated $pMUserModerated The pMUserModerated object to remove.
+     * @return PUser The current object (for fluent API support)
+     */
+    public function removePMUserModerated($pMUserModerated)
+    {
+        if ($this->getPMUserModerateds()->contains($pMUserModerated)) {
+            $this->collPMUserModerateds->remove($this->collPMUserModerateds->search($pMUserModerated));
+            if (null === $this->pMUserModeratedsScheduledForDeletion) {
+                $this->pMUserModeratedsScheduledForDeletion = clone $this->collPMUserModerateds;
+                $this->pMUserModeratedsScheduledForDeletion->clear();
+            }
+            $this->pMUserModeratedsScheduledForDeletion[]= clone $pMUserModerated;
+            $pMUserModerated->setPUser(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PUser is new, it will return
+     * an empty collection; or if this PUser has previously
+     * been saved, it will retrieve related PMUserModerateds from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PUser.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PMUserModerated[] List of PMUserModerated objects
+     */
+    public function getPMUserModeratedsJoinPMModerationType($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PMUserModeratedQuery::create(null, $criteria);
+        $query->joinWith('PMModerationType', $join_behavior);
+
+        return $this->getPMUserModerateds($query, $con);
+    }
+
+    /**
+     * Clears out the collPMUserMessages collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PUser The current object (for fluent API support)
+     * @see        addPMUserMessages()
+     */
+    public function clearPMUserMessages()
+    {
+        $this->collPMUserMessages = null; // important to set this to null since that means it is uninitialized
+        $this->collPMUserMessagesPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPMUserMessages collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPMUserMessages($v = true)
+    {
+        $this->collPMUserMessagesPartial = $v;
+    }
+
+    /**
+     * Initializes the collPMUserMessages collection.
+     *
+     * By default this just sets the collPMUserMessages collection to an empty array (like clearcollPMUserMessages());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPMUserMessages($overrideExisting = true)
+    {
+        if (null !== $this->collPMUserMessages && !$overrideExisting) {
+            return;
+        }
+        $this->collPMUserMessages = new PropelObjectCollection();
+        $this->collPMUserMessages->setModel('PMUserMessage');
+    }
+
+    /**
+     * Gets an array of PMUserMessage objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PUser is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PMUserMessage[] List of PMUserMessage objects
+     * @throws PropelException
+     */
+    public function getPMUserMessages($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPMUserMessagesPartial && !$this->isNew();
+        if (null === $this->collPMUserMessages || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPMUserMessages) {
+                // return empty collection
+                $this->initPMUserMessages();
+            } else {
+                $collPMUserMessages = PMUserMessageQuery::create(null, $criteria)
+                    ->filterByPUser($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPMUserMessagesPartial && count($collPMUserMessages)) {
+                      $this->initPMUserMessages(false);
+
+                      foreach ($collPMUserMessages as $obj) {
+                        if (false == $this->collPMUserMessages->contains($obj)) {
+                          $this->collPMUserMessages->append($obj);
+                        }
+                      }
+
+                      $this->collPMUserMessagesPartial = true;
+                    }
+
+                    $collPMUserMessages->getInternalIterator()->rewind();
+
+                    return $collPMUserMessages;
+                }
+
+                if ($partial && $this->collPMUserMessages) {
+                    foreach ($this->collPMUserMessages as $obj) {
+                        if ($obj->isNew()) {
+                            $collPMUserMessages[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPMUserMessages = $collPMUserMessages;
+                $this->collPMUserMessagesPartial = false;
+            }
+        }
+
+        return $this->collPMUserMessages;
+    }
+
+    /**
+     * Sets a collection of PMUserMessage objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pMUserMessages A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PUser The current object (for fluent API support)
+     */
+    public function setPMUserMessages(PropelCollection $pMUserMessages, PropelPDO $con = null)
+    {
+        $pMUserMessagesToDelete = $this->getPMUserMessages(new Criteria(), $con)->diff($pMUserMessages);
+
+
+        $this->pMUserMessagesScheduledForDeletion = $pMUserMessagesToDelete;
+
+        foreach ($pMUserMessagesToDelete as $pMUserMessageRemoved) {
+            $pMUserMessageRemoved->setPUser(null);
+        }
+
+        $this->collPMUserMessages = null;
+        foreach ($pMUserMessages as $pMUserMessage) {
+            $this->addPMUserMessage($pMUserMessage);
+        }
+
+        $this->collPMUserMessages = $pMUserMessages;
+        $this->collPMUserMessagesPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PMUserMessage objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PMUserMessage objects.
+     * @throws PropelException
+     */
+    public function countPMUserMessages(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPMUserMessagesPartial && !$this->isNew();
+        if (null === $this->collPMUserMessages || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPMUserMessages) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPMUserMessages());
+            }
+            $query = PMUserMessageQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPUser($this)
+                ->count($con);
+        }
+
+        return count($this->collPMUserMessages);
+    }
+
+    /**
+     * Method called to associate a PMUserMessage object to this object
+     * through the PMUserMessage foreign key attribute.
+     *
+     * @param    PMUserMessage $l PMUserMessage
+     * @return PUser The current object (for fluent API support)
+     */
+    public function addPMUserMessage(PMUserMessage $l)
+    {
+        if ($this->collPMUserMessages === null) {
+            $this->initPMUserMessages();
+            $this->collPMUserMessagesPartial = true;
+        }
+
+        if (!in_array($l, $this->collPMUserMessages->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPMUserMessage($l);
+
+            if ($this->pMUserMessagesScheduledForDeletion and $this->pMUserMessagesScheduledForDeletion->contains($l)) {
+                $this->pMUserMessagesScheduledForDeletion->remove($this->pMUserMessagesScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PMUserMessage $pMUserMessage The pMUserMessage object to add.
+     */
+    protected function doAddPMUserMessage($pMUserMessage)
+    {
+        $this->collPMUserMessages[]= $pMUserMessage;
+        $pMUserMessage->setPUser($this);
+    }
+
+    /**
+     * @param	PMUserMessage $pMUserMessage The pMUserMessage object to remove.
+     * @return PUser The current object (for fluent API support)
+     */
+    public function removePMUserMessage($pMUserMessage)
+    {
+        if ($this->getPMUserMessages()->contains($pMUserMessage)) {
+            $this->collPMUserMessages->remove($this->collPMUserMessages->search($pMUserMessage));
+            if (null === $this->pMUserMessagesScheduledForDeletion) {
+                $this->pMUserMessagesScheduledForDeletion = clone $this->collPMUserMessages;
+                $this->pMUserMessagesScheduledForDeletion->clear();
+            }
+            $this->pMUserMessagesScheduledForDeletion[]= $pMUserMessage;
+            $pMUserMessage->setPUser(null);
+        }
+
+        return $this;
+    }
+
+    /**
      * Clears out the collPMAskForUpdates collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
@@ -13310,6 +14136,193 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collPMModerationTypes collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PUser The current object (for fluent API support)
+     * @see        addPMModerationTypes()
+     */
+    public function clearPMModerationTypes()
+    {
+        $this->collPMModerationTypes = null; // important to set this to null since that means it is uninitialized
+        $this->collPMModerationTypesPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * Initializes the collPMModerationTypes collection.
+     *
+     * By default this just sets the collPMModerationTypes collection to an empty collection (like clearPMModerationTypes());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @return void
+     */
+    public function initPMModerationTypes()
+    {
+        $this->collPMModerationTypes = new PropelObjectCollection();
+        $this->collPMModerationTypes->setModel('PMModerationType');
+    }
+
+    /**
+     * Gets a collection of PMModerationType objects related by a many-to-many relationship
+     * to the current object by way of the p_m_user_moderated cross-reference table.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PUser is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return PropelObjectCollection|PMModerationType[] List of PMModerationType objects
+     */
+    public function getPMModerationTypes($criteria = null, PropelPDO $con = null)
+    {
+        if (null === $this->collPMModerationTypes || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPMModerationTypes) {
+                // return empty collection
+                $this->initPMModerationTypes();
+            } else {
+                $collPMModerationTypes = PMModerationTypeQuery::create(null, $criteria)
+                    ->filterByPUser($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    return $collPMModerationTypes;
+                }
+                $this->collPMModerationTypes = $collPMModerationTypes;
+            }
+        }
+
+        return $this->collPMModerationTypes;
+    }
+
+    /**
+     * Sets a collection of PMModerationType objects related by a many-to-many relationship
+     * to the current object by way of the p_m_user_moderated cross-reference table.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pMModerationTypes A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PUser The current object (for fluent API support)
+     */
+    public function setPMModerationTypes(PropelCollection $pMModerationTypes, PropelPDO $con = null)
+    {
+        $this->clearPMModerationTypes();
+        $currentPMModerationTypes = $this->getPMModerationTypes(null, $con);
+
+        $this->pMModerationTypesScheduledForDeletion = $currentPMModerationTypes->diff($pMModerationTypes);
+
+        foreach ($pMModerationTypes as $pMModerationType) {
+            if (!$currentPMModerationTypes->contains($pMModerationType)) {
+                $this->doAddPMModerationType($pMModerationType);
+            }
+        }
+
+        $this->collPMModerationTypes = $pMModerationTypes;
+
+        return $this;
+    }
+
+    /**
+     * Gets the number of PMModerationType objects related by a many-to-many relationship
+     * to the current object by way of the p_m_user_moderated cross-reference table.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param boolean $distinct Set to true to force count distinct
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return int the number of related PMModerationType objects
+     */
+    public function countPMModerationTypes($criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        if (null === $this->collPMModerationTypes || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPMModerationTypes) {
+                return 0;
+            } else {
+                $query = PMModerationTypeQuery::create(null, $criteria);
+                if ($distinct) {
+                    $query->distinct();
+                }
+
+                return $query
+                    ->filterByPUser($this)
+                    ->count($con);
+            }
+        } else {
+            return count($this->collPMModerationTypes);
+        }
+    }
+
+    /**
+     * Associate a PMModerationType object to this object
+     * through the p_m_user_moderated cross reference table.
+     *
+     * @param  PMModerationType $pMModerationType The PMUserModerated object to relate
+     * @return PUser The current object (for fluent API support)
+     */
+    public function addPMModerationType(PMModerationType $pMModerationType)
+    {
+        if ($this->collPMModerationTypes === null) {
+            $this->initPMModerationTypes();
+        }
+
+        if (!$this->collPMModerationTypes->contains($pMModerationType)) { // only add it if the **same** object is not already associated
+            $this->doAddPMModerationType($pMModerationType);
+            $this->collPMModerationTypes[] = $pMModerationType;
+
+            if ($this->pMModerationTypesScheduledForDeletion and $this->pMModerationTypesScheduledForDeletion->contains($pMModerationType)) {
+                $this->pMModerationTypesScheduledForDeletion->remove($this->pMModerationTypesScheduledForDeletion->search($pMModerationType));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PMModerationType $pMModerationType The pMModerationType object to add.
+     */
+    protected function doAddPMModerationType(PMModerationType $pMModerationType)
+    {
+        // set the back reference to this object directly as using provided method either results
+        // in endless loop or in multiple relations
+        if (!$pMModerationType->getPUsers()->contains($this)) { $pMUserModerated = new PMUserModerated();
+            $pMUserModerated->setPMModerationType($pMModerationType);
+            $this->addPMUserModerated($pMUserModerated);
+
+            $foreignCollection = $pMModerationType->getPUsers();
+            $foreignCollection[] = $this;
+        }
+    }
+
+    /**
+     * Remove a PMModerationType object to this object
+     * through the p_m_user_moderated cross reference table.
+     *
+     * @param PMModerationType $pMModerationType The PMUserModerated object to relate
+     * @return PUser The current object (for fluent API support)
+     */
+    public function removePMModerationType(PMModerationType $pMModerationType)
+    {
+        if ($this->getPMModerationTypes()->contains($pMModerationType)) {
+            $this->collPMModerationTypes->remove($this->collPMModerationTypes->search($pMModerationType));
+            if (null === $this->pMModerationTypesScheduledForDeletion) {
+                $this->pMModerationTypesScheduledForDeletion = clone $this->collPMModerationTypes;
+                $this->pMModerationTypesScheduledForDeletion->clear();
+            }
+            $this->pMModerationTypesScheduledForDeletion[]= $pMModerationType;
+        }
+
+        return $this;
+    }
+
+    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
@@ -13358,6 +14371,9 @@ abstract class BasePUser extends BaseObject implements Persistent
         $this->qualified = null;
         $this->validated = null;
         $this->online = null;
+        $this->banned = null;
+        $this->banned_at = null;
+        $this->abuse_level = null;
         $this->created_at = null;
         $this->updated_at = null;
         $this->slug = null;
@@ -13474,6 +14490,16 @@ abstract class BasePUser extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collPMUserModerateds) {
+                foreach ($this->collPMUserModerateds as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collPMUserMessages) {
+                foreach ($this->collPMUserMessages as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collPMAskForUpdates) {
                 foreach ($this->collPMAskForUpdates as $o) {
                     $o->clearAllReferences($deep);
@@ -13551,6 +14577,11 @@ abstract class BasePUser extends BaseObject implements Persistent
             }
             if ($this->collPUSubscribeScreenPNotifications) {
                 foreach ($this->collPUSubscribeScreenPNotifications as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collPMModerationTypes) {
+                foreach ($this->collPMModerationTypes as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -13646,6 +14677,14 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->collPDRComments->clearIterator();
         }
         $this->collPDRComments = null;
+        if ($this->collPMUserModerateds instanceof PropelCollection) {
+            $this->collPMUserModerateds->clearIterator();
+        }
+        $this->collPMUserModerateds = null;
+        if ($this->collPMUserMessages instanceof PropelCollection) {
+            $this->collPMUserMessages->clearIterator();
+        }
+        $this->collPMUserMessages = null;
         if ($this->collPMAskForUpdates instanceof PropelCollection) {
             $this->collPMAskForUpdates->clearIterator();
         }
@@ -13710,6 +14749,10 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->collPUSubscribeScreenPNotifications->clearIterator();
         }
         $this->collPUSubscribeScreenPNotifications = null;
+        if ($this->collPMModerationTypes instanceof PropelCollection) {
+            $this->collPMModerationTypes->clearIterator();
+        }
+        $this->collPMModerationTypes = null;
         $this->aPUStatus = null;
     }
 
@@ -14012,6 +15055,9 @@ abstract class BasePUser extends BaseObject implements Persistent
         $this->setQualified($archive->getQualified());
         $this->setValidated($archive->getValidated());
         $this->setOnline($archive->getOnline());
+        $this->setBanned($archive->getBanned());
+        $this->setBannedAt($archive->getBannedAt());
+        $this->setAbuseLevel($archive->getAbuseLevel());
         $this->setCreatedAt($archive->getCreatedAt());
         $this->setUpdatedAt($archive->getUpdatedAt());
         $this->setSlug($archive->getSlug());

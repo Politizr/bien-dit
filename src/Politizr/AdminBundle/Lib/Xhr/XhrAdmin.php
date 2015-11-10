@@ -28,6 +28,7 @@ class XhrAdmin
     private $kernel;
     private $router;
     private $templating;
+    private $formFactory;
     private $tagManager;
     private $globalTools;
     private $logger;
@@ -38,6 +39,7 @@ class XhrAdmin
      * @param @kernel
      * @param @router
      * @param @templating
+     * @param @form.factory
      * @param @politizr.manager.tag
      * @param @politizr.tools.global
      * @param @logger
@@ -47,6 +49,7 @@ class XhrAdmin
         $kernel,
         $router,
         $templating,
+        $formFactory,
         $tagManager,
         $globalTools,
         $logger
@@ -57,6 +60,7 @@ class XhrAdmin
         
         $this->router = $router;
         $this->templating = $templating;
+        $this->formFactory = $formFactory;
 
         $this->tagManager = $tagManager;
 

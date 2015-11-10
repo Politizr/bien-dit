@@ -1,0 +1,82 @@
+generator:                  admingenerator.generator.propel
+params:
+    model:                  Politizr\Model\PMModerationType
+    namespace_prefix:       Politizr
+    concurrency_lock:       ~
+    bundle_name:            AdminBundle
+    pk_requirement:         ~
+    fields:
+        id:
+            label:          ID
+        title:
+            label:          Titre
+        message:
+            label:          Message
+        created_at:
+            label:          Création
+        updated_at:
+            label:          Mis à jour
+    object_actions:
+        delete:             ~
+    batch_actions:
+        delete:             ~
+builders:
+    list:
+        params:
+            title:                              Liste des types de modération
+            max_per_page:                       50
+            sort:                               [ title, ASC ]
+            display:                            [ title, message ]
+            # actions:
+            #     new:                            ~
+            object_actions:
+                show:                           ~
+                edit:                           ~
+    excel:
+        params: ~
+        filename: ~
+        filetype: ~
+    # new:
+    #     params:
+    #         title:                              "Création d'un type de modération"
+    #         display:
+    #             "Champs principaux":            [ [ title ] ]
+    #             "Champs complémentaires":       [ [ message ] ]
+    #         actions:
+    #           save:                             ~
+    #           list:                             ~
+    edit:
+        params:
+            title:                              "Edition du type de modération '{{ PMModerationType.title }}'"
+            tabs:
+                "Contenu":
+                    "Texte":                    [ [ title ], [ message ] ]
+                "Attributs":
+                    "Création":                 [ [ created_at, updated_at ] ]
+            fields:
+                created_at:
+                    addFormOptions:
+                      widget:                   single_text
+                updated_at:
+                    addFormOptions:
+                      widget:                   single_text
+            actions:
+                save: ~
+                list: ~
+    show:
+        params:
+            title:                              "Visualisation du type de modération '{{ PMModerationType.title }}'"
+            tabs:
+                "Contenu":
+                    "Texte":                    [ [ title ], [ message ] ]
+                "Attributs":
+                    "Création":                 [ [ created_at, updated_at ] ]
+            actions:
+                edit:                           ~
+                list:                           ~
+#     actions:
+#         params:
+#             object_actions:
+#                 delete: ~
+#             batch_actions:
+#                 delete: ~

@@ -8,6 +8,15 @@
     {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE'), PDDComment.PDDebateId) }}
 {% endblock %}
 
+{% block show_column_block_moderation_alert_new %}
+    {{ adminModerationAlertNew(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE_COMMENT'), PDDComment.Id, PDDComment.PUserId) }}
+{% endblock %}
+
+{% block show_column_block_moderation_alert_listing %}
+    {{ adminModerationAlertListing(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE_COMMENT'), PDDComment.Id, PDDComment.PUserId) }}
+{% endblock %}
+
+
 {# Block front link #}
 {% block show_column_block_front %}
     {% if PDDComment.online and PDDComment.PDDebateId and PDDComment.PDDebate.online and PDDComment.PDDebate.published %}

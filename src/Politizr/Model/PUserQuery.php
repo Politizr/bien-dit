@@ -80,6 +80,9 @@ SELECT DISTINCT
     qualified,
     validated,
     online,
+    banned,
+    banned_at,
+    abuse_level,
     created_at,
     updated_at,
     slug

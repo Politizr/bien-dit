@@ -32,6 +32,9 @@ use Politizr\Model\PUser;
  * @method PDRCommentQuery orderByPublishedAt($order = Criteria::ASC) Order by the published_at column
  * @method PDRCommentQuery orderByPublishedBy($order = Criteria::ASC) Order by the published_by column
  * @method PDRCommentQuery orderByOnline($order = Criteria::ASC) Order by the online column
+ * @method PDRCommentQuery orderByModerated($order = Criteria::ASC) Order by the moderated column
+ * @method PDRCommentQuery orderByModeratedPartial($order = Criteria::ASC) Order by the moderated_partial column
+ * @method PDRCommentQuery orderByModeratedAt($order = Criteria::ASC) Order by the moderated_at column
  * @method PDRCommentQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PDRCommentQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  *
@@ -45,6 +48,9 @@ use Politizr\Model\PUser;
  * @method PDRCommentQuery groupByPublishedAt() Group by the published_at column
  * @method PDRCommentQuery groupByPublishedBy() Group by the published_by column
  * @method PDRCommentQuery groupByOnline() Group by the online column
+ * @method PDRCommentQuery groupByModerated() Group by the moderated column
+ * @method PDRCommentQuery groupByModeratedPartial() Group by the moderated_partial column
+ * @method PDRCommentQuery groupByModeratedAt() Group by the moderated_at column
  * @method PDRCommentQuery groupByCreatedAt() Group by the created_at column
  * @method PDRCommentQuery groupByUpdatedAt() Group by the updated_at column
  *
@@ -72,6 +78,9 @@ use Politizr\Model\PUser;
  * @method PDRComment findOneByPublishedAt(string $published_at) Return the first PDRComment filtered by the published_at column
  * @method PDRComment findOneByPublishedBy(string $published_by) Return the first PDRComment filtered by the published_by column
  * @method PDRComment findOneByOnline(boolean $online) Return the first PDRComment filtered by the online column
+ * @method PDRComment findOneByModerated(boolean $moderated) Return the first PDRComment filtered by the moderated column
+ * @method PDRComment findOneByModeratedPartial(boolean $moderated_partial) Return the first PDRComment filtered by the moderated_partial column
+ * @method PDRComment findOneByModeratedAt(string $moderated_at) Return the first PDRComment filtered by the moderated_at column
  * @method PDRComment findOneByCreatedAt(string $created_at) Return the first PDRComment filtered by the created_at column
  * @method PDRComment findOneByUpdatedAt(string $updated_at) Return the first PDRComment filtered by the updated_at column
  *
@@ -85,6 +94,9 @@ use Politizr\Model\PUser;
  * @method array findByPublishedAt(string $published_at) Return PDRComment objects filtered by the published_at column
  * @method array findByPublishedBy(string $published_by) Return PDRComment objects filtered by the published_by column
  * @method array findByOnline(boolean $online) Return PDRComment objects filtered by the online column
+ * @method array findByModerated(boolean $moderated) Return PDRComment objects filtered by the moderated column
+ * @method array findByModeratedPartial(boolean $moderated_partial) Return PDRComment objects filtered by the moderated_partial column
+ * @method array findByModeratedAt(string $moderated_at) Return PDRComment objects filtered by the moderated_at column
  * @method array findByCreatedAt(string $created_at) Return PDRComment objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PDRComment objects filtered by the updated_at column
  */
@@ -199,7 +211,7 @@ abstract class BasePDRCommentQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_user_id`, `p_d_reaction_id`, `description`, `paragraph_no`, `note_pos`, `note_neg`, `published_at`, `published_by`, `online`, `created_at`, `updated_at` FROM `p_d_r_comment` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_user_id`, `p_d_reaction_id`, `description`, `paragraph_no`, `note_pos`, `note_neg`, `published_at`, `published_by`, `online`, `moderated`, `moderated_partial`, `moderated_at`, `created_at`, `updated_at` FROM `p_d_r_comment` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -671,6 +683,103 @@ abstract class BasePDRCommentQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDRCommentPeer::ONLINE, $online, $comparison);
+    }
+
+    /**
+     * Filter the query on the moderated column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByModerated(true); // WHERE moderated = true
+     * $query->filterByModerated('yes'); // WHERE moderated = true
+     * </code>
+     *
+     * @param     boolean|string $moderated The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDRCommentQuery The current query, for fluid interface
+     */
+    public function filterByModerated($moderated = null, $comparison = null)
+    {
+        if (is_string($moderated)) {
+            $moderated = in_array(strtolower($moderated), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PDRCommentPeer::MODERATED, $moderated, $comparison);
+    }
+
+    /**
+     * Filter the query on the moderated_partial column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByModeratedPartial(true); // WHERE moderated_partial = true
+     * $query->filterByModeratedPartial('yes'); // WHERE moderated_partial = true
+     * </code>
+     *
+     * @param     boolean|string $moderatedPartial The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDRCommentQuery The current query, for fluid interface
+     */
+    public function filterByModeratedPartial($moderatedPartial = null, $comparison = null)
+    {
+        if (is_string($moderatedPartial)) {
+            $moderatedPartial = in_array(strtolower($moderatedPartial), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PDRCommentPeer::MODERATED_PARTIAL, $moderatedPartial, $comparison);
+    }
+
+    /**
+     * Filter the query on the moderated_at column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByModeratedAt('2011-03-14'); // WHERE moderated_at = '2011-03-14'
+     * $query->filterByModeratedAt('now'); // WHERE moderated_at = '2011-03-14'
+     * $query->filterByModeratedAt(array('max' => 'yesterday')); // WHERE moderated_at < '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $moderatedAt The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDRCommentQuery The current query, for fluid interface
+     */
+    public function filterByModeratedAt($moderatedAt = null, $comparison = null)
+    {
+        if (is_array($moderatedAt)) {
+            $useMinMax = false;
+            if (isset($moderatedAt['min'])) {
+                $this->addUsingAlias(PDRCommentPeer::MODERATED_AT, $moderatedAt['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($moderatedAt['max'])) {
+                $this->addUsingAlias(PDRCommentPeer::MODERATED_AT, $moderatedAt['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PDRCommentPeer::MODERATED_AT, $moderatedAt, $comparison);
     }
 
     /**

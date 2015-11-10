@@ -32,6 +32,12 @@ params:
             label:          Auteur
         online:
             label:          En ligne
+        moderated:
+            label:          Modéré
+        moderated_partial:
+            label:          Modéré partiellement
+        moderated_at:
+            label:          Mis à jour
         created_at:
             label:          Création
         updated_at:
@@ -69,6 +75,9 @@ builders:
                 "Statut":
                     "Publication":              [ [ published_by ], [ published_at ] ]
                     "Notes":                    [ [ note_pos, note_neg ] ]
+                "Modération":
+                    "Portée":                   [ [ moderated, moderated_partial ] ]
+                    "Modéré le":                [ moderated_at ]
                 "Attributs":
                     "Création":                 [ [ online ], [ created_at, updated_at ] ]
             fields:
@@ -111,6 +120,9 @@ builders:
                 "Statut":
                     "Publication":              [ [ published_by ], [ published_at ] ]
                     "Notes":                    [ [ note_pos, note_neg ] ]
+                "Modération":
+                    "Portée":                   [ [ moderated, moderated_partial ] ]
+                    "Modéré le":                [ moderated_at ]
                 "Attributs":
                     "Création":                 [ [ online ], [ created_at, updated_at ] ]
                 "Front":

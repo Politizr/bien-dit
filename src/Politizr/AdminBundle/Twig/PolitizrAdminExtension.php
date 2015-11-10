@@ -12,6 +12,11 @@ use Politizr\Model\PDDCommentQuery;
 use Politizr\Model\PDRCommentQuery;
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PUFollowDDQuery;
+use Politizr\Model\PMUserModeratedQuery;
+
+use Politizr\Model\PMUserModerated;
+
+use Politizr\AdminBundle\Form\Type\PMUserModeratedType;
 
 /**
  * Specific admin twig extension
@@ -26,6 +31,8 @@ class PolitizrAdminExtension extends \Twig_Extension
 {
     private $logger;
 
+    private $formFactory;
+
     private $router;
     private $templating;
 
@@ -35,6 +42,8 @@ class PolitizrAdminExtension extends \Twig_Extension
     public function __construct($serviceContainer)
     {
         $this->logger = $serviceContainer->get('logger');
+
+        $this->formFactory = $serviceContainer->get('form.factory');
 
         $this->router = $serviceContainer->get('router');
         $this->templating = $serviceContainer->get('templating');
@@ -205,6 +214,20 @@ class PolitizrAdminExtension extends \Twig_Extension
             'adminCreatePath'  => new \Twig_Function_Method(
                 $this,
                 'adminCreatePath',
+                array(
+                    'is_safe' => array('html')
+                    )
+            ),
+            'adminModerationAlertNew'  => new \Twig_Function_Method(
+                $this,
+                'adminModerationAlertNew',
+                array(
+                    'is_safe' => array('html')
+                    )
+            ),
+            'adminModerationAlertListing'  => new \Twig_Function_Method(
+                $this,
+                'adminModerationAlertListing',
                 array(
                     'is_safe' => array('html')
                     )
@@ -882,7 +905,7 @@ class PolitizrAdminExtension extends \Twig_Extension
                 $subject = PDDCommentQuery::create()->findPk($objectId);
 
                 if ($subject) {
-                    $title = substr($subject->getDescription(), 0, 50);
+                    $title = substr(strip_tags($subject->getDescription()), 0, 50);
                     $url = $this->router->generate('Politizr_AdminBundle_PDDComment_show', array('pk' => $objectId));
 
                     $html = sprintf('<a href="%s">%sid-%s %s</a>', $url, $label, $objectId, $title);
@@ -896,7 +919,7 @@ class PolitizrAdminExtension extends \Twig_Extension
                 $subject = PDRCommentQuery::create()->findPk($objectId);
 
                 if ($subject) {
-                    $title = substr($subject->getDescription(), 0, 50);
+                    $title = substr(strip_tags($subject->getDescription()), 0, 50);
                     $url = $this->router->generate('Politizr_AdminBundle_PDRComment_show', array('pk' => $objectId));
 
                     $html = sprintf('<a href="%s">%sid-%s %s</a>', $url, $label, $objectId, $title);
@@ -922,6 +945,87 @@ class PolitizrAdminExtension extends \Twig_Extension
             default:
                 throw new InconsistentDataException(sprintf('Object class %s not managed.'), $objectClass);
         }
+
+        return $html;
+    }
+
+
+    /**
+     * Create moderation alert form
+     *
+     * @param string $objectClass
+     * @param int $objectId
+     * @param int $userId
+     * @return string
+     */
+    public function adminModerationAlertNew($objectClass, $objectId, $userId)
+    {
+        $this->logger->info('*** adminModerationAlertNew');
+        // $this->logger->info('$objectClass = '.print_r($objectClass, true));
+        // $this->logger->info('$objectId = '.print_r($objectId, true));
+
+        switch($objectClass) {
+            case ObjectTypeConstants::TYPE_DEBATE:
+                break;
+            case ObjectTypeConstants::TYPE_REACTION:
+                break;
+            case ObjectTypeConstants::TYPE_DEBATE_COMMENT:
+                break;
+            case ObjectTypeConstants::TYPE_REACTION_COMMENT:
+                break;
+            case ObjectTypeConstants::TYPE_USER:
+                break;
+            default:
+                throw new InconsistentDataException(sprintf('Object class %s not managed.'), $objectClass);
+        }
+
+        $userModerated = new PMUserModerated();
+
+        $userModerated->setPUserId($userId);
+        $userModerated->setPObjectId($objectId);
+        $userModerated->setPObjectName($objectClass);
+
+        $form = $this->formFactory->create(new PMUserModeratedType(), $userModerated);
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+            'PolitizrAdminBundle:Fragment\\Moderation:_new.html.twig',
+            array(
+                'form' => $form->createView(),
+            )
+        );
+
+        return $html;
+    }
+
+    /**
+     * Moderation alert listing (historic)
+     *
+     * @param string $objectClass
+     * @param int $objectId
+     * @param int $userId
+     * @return string
+     */
+    public function adminModerationAlertListing($objectClass, $objectId, $userId)
+    {
+        $this->logger->info('*** adminModerationAlertListing');
+        // $this->logger->info('$objectClass = '.print_r($objectClass, true));
+        // $this->logger->info('$objectId = '.print_r($objectId, true));
+
+        $moderations = PMUserModeratedQuery::create()
+                                ->filterByPObjectId($objectId)
+                                ->filterByPObjectName($objectClass)
+                                ->filterByPUserId($userId)
+                                ->orderByCreatedAt('desc')
+                                ->find();
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+            'PolitizrAdminBundle:Fragment\\Moderation:_listing.html.twig',
+            array(
+                'moderations' => $moderations,
+            )
+        );
 
         return $html;
     }

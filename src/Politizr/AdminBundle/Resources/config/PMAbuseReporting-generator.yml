@@ -47,8 +47,8 @@ builders:
                 "Contenu":
                     "Texte":                    [ message ]
                 "Objets":
-                    "Utilisateur":              [ [ p_user ] ]
-                    "Objet associé":            [ [ block_p_object ] ]
+                    "Utilisateur":              [ p_user ]
+                    "Objet associé":            [ block_p_object ]
                 "Attributs":
                     "Création":                 [ [ created_at, updated_at ] ]
             fields:

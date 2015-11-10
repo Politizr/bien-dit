@@ -21,6 +21,7 @@ services:
             - @kernel
             - @router
             - @templating
+            - @form.factory
             - @politizr.manager.tag
             - @politizr.tools.global
             - @logger
