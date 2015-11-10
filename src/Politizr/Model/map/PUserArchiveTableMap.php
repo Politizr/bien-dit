@@ -90,7 +90,8 @@ class PUserArchiveTableMap extends TableMap
         $this->addColumn('validated', 'Validated', 'BOOLEAN', false, 1, false);
         $this->addColumn('online', 'Online', 'BOOLEAN', false, 1, null);
         $this->addColumn('banned', 'Banned', 'BOOLEAN', false, 1, null);
-        $this->addColumn('banned_at', 'BannedAt', 'TIMESTAMP', false, null, null);
+        $this->addColumn('banned_nb_days_left', 'BannedNbDaysLeft', 'INTEGER', false, null, null);
+        $this->addColumn('banned_nb_total', 'BannedNbTotal', 'INTEGER', false, null, null);
         $this->addColumn('abuse_level', 'AbuseLevel', 'INTEGER', false, null, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);

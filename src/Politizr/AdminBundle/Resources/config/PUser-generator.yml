@@ -55,6 +55,14 @@ params:
             label:          Profil validé
         online:
             label:          En ligne
+        banned:
+            label:          Banni
+        banned_nb_days_left:
+            label:          Nombre de jours restants
+        banned_nb_total:
+            label:          Nombre total de bannissement
+        abuse_level:
+            label:          Niveau d'abus
         roles:
             label:          Liste des rôles de l'utilisateur
             formType:                   choice
@@ -152,6 +160,9 @@ builders:
                 "Abonnement":
                     "Followers":                [ followers ]
                     "Abonnements":              [ subscribers ]
+                "Modération":
+                    "Bannissement":             [ [ banned, banned_nb_days_left, banned_nb_total ] ]
+                    "Risque user":              [ abuse_level ]
                 "Statut":
                     "Actuel":                   [ p_u_status_id ]
                     "Activité":                 [ last_login, last_activity ]

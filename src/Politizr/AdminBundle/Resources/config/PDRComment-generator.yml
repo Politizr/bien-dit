@@ -76,8 +76,7 @@ builders:
                     "Publication":              [ [ published_by ], [ published_at ] ]
                     "Notes":                    [ [ note_pos, note_neg ] ]
                 "Modération":
-                    "Portée":                   [ [ moderated, moderated_partial ] ]
-                    "Modéré le":                [ moderated_at ]
+                    "Portée":                   [ [ moderated, moderated_partial, moderated_at ] ]
                 "Attributs":
                     "Création":                 [ [ online ], [ created_at, updated_at ] ]
             fields:
@@ -121,8 +120,9 @@ builders:
                     "Publication":              [ [ published_by ], [ published_at ] ]
                     "Notes":                    [ [ note_pos, note_neg ] ]
                 "Modération":
-                    "Portée":                   [ [ moderated, moderated_partial ] ]
-                    "Modéré le":                [ moderated_at ]
+                    "Portée":                   [ [ moderated, moderated_partial, moderated_at ] ]
+                    "Notification":             [ block_moderation_alert_new  ]
+                    "Précédentes notifications": [ block_moderation_alert_listing  ]
                 "Attributs":
                     "Création":                 [ [ online ], [ created_at, updated_at ] ]
                 "Front":
@@ -134,6 +134,10 @@ builders:
                     label:                      "Auteur"
                 block_p_d_reaction:
                     label:                      "Réaction"
+                block_moderation_alert_new:
+                    label:                      "Alerte"
+                block_moderation_alert_listing:
+                    label:                      "Historique de l'utilisateur"
                 block_front:
                     label:                      "Rendu front"
             actions:

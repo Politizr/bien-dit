@@ -61,7 +61,8 @@ use Politizr\Model\PUserArchiveQuery;
  * @method PUserArchiveQuery orderByValidated($order = Criteria::ASC) Order by the validated column
  * @method PUserArchiveQuery orderByOnline($order = Criteria::ASC) Order by the online column
  * @method PUserArchiveQuery orderByBanned($order = Criteria::ASC) Order by the banned column
- * @method PUserArchiveQuery orderByBannedAt($order = Criteria::ASC) Order by the banned_at column
+ * @method PUserArchiveQuery orderByBannedNbDaysLeft($order = Criteria::ASC) Order by the banned_nb_days_left column
+ * @method PUserArchiveQuery orderByBannedNbTotal($order = Criteria::ASC) Order by the banned_nb_total column
  * @method PUserArchiveQuery orderByAbuseLevel($order = Criteria::ASC) Order by the abuse_level column
  * @method PUserArchiveQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PUserArchiveQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
@@ -112,7 +113,8 @@ use Politizr\Model\PUserArchiveQuery;
  * @method PUserArchiveQuery groupByValidated() Group by the validated column
  * @method PUserArchiveQuery groupByOnline() Group by the online column
  * @method PUserArchiveQuery groupByBanned() Group by the banned column
- * @method PUserArchiveQuery groupByBannedAt() Group by the banned_at column
+ * @method PUserArchiveQuery groupByBannedNbDaysLeft() Group by the banned_nb_days_left column
+ * @method PUserArchiveQuery groupByBannedNbTotal() Group by the banned_nb_total column
  * @method PUserArchiveQuery groupByAbuseLevel() Group by the abuse_level column
  * @method PUserArchiveQuery groupByCreatedAt() Group by the created_at column
  * @method PUserArchiveQuery groupByUpdatedAt() Group by the updated_at column
@@ -169,7 +171,8 @@ use Politizr\Model\PUserArchiveQuery;
  * @method PUserArchive findOneByValidated(boolean $validated) Return the first PUserArchive filtered by the validated column
  * @method PUserArchive findOneByOnline(boolean $online) Return the first PUserArchive filtered by the online column
  * @method PUserArchive findOneByBanned(boolean $banned) Return the first PUserArchive filtered by the banned column
- * @method PUserArchive findOneByBannedAt(string $banned_at) Return the first PUserArchive filtered by the banned_at column
+ * @method PUserArchive findOneByBannedNbDaysLeft(int $banned_nb_days_left) Return the first PUserArchive filtered by the banned_nb_days_left column
+ * @method PUserArchive findOneByBannedNbTotal(int $banned_nb_total) Return the first PUserArchive filtered by the banned_nb_total column
  * @method PUserArchive findOneByAbuseLevel(int $abuse_level) Return the first PUserArchive filtered by the abuse_level column
  * @method PUserArchive findOneByCreatedAt(string $created_at) Return the first PUserArchive filtered by the created_at column
  * @method PUserArchive findOneByUpdatedAt(string $updated_at) Return the first PUserArchive filtered by the updated_at column
@@ -220,7 +223,8 @@ use Politizr\Model\PUserArchiveQuery;
  * @method array findByValidated(boolean $validated) Return PUserArchive objects filtered by the validated column
  * @method array findByOnline(boolean $online) Return PUserArchive objects filtered by the online column
  * @method array findByBanned(boolean $banned) Return PUserArchive objects filtered by the banned column
- * @method array findByBannedAt(string $banned_at) Return PUserArchive objects filtered by the banned_at column
+ * @method array findByBannedNbDaysLeft(int $banned_nb_days_left) Return PUserArchive objects filtered by the banned_nb_days_left column
+ * @method array findByBannedNbTotal(int $banned_nb_total) Return PUserArchive objects filtered by the banned_nb_total column
  * @method array findByAbuseLevel(int $abuse_level) Return PUserArchive objects filtered by the abuse_level column
  * @method array findByCreatedAt(string $created_at) Return PUserArchive objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PUserArchive objects filtered by the updated_at column
@@ -332,7 +336,7 @@ abstract class BasePUserArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `last_activity`, `p_u_status_id`, `file_name`, `back_file_name`, `copyright`, `gender`, `firstname`, `name`, `birthday`, `subtitle`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_connected_days`, `nb_views`, `qualified`, `validated`, `online`, `banned`, `banned_at`, `abuse_level`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_user_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `last_activity`, `p_u_status_id`, `file_name`, `back_file_name`, `copyright`, `gender`, `firstname`, `name`, `birthday`, `subtitle`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_connected_days`, `nb_views`, `qualified`, `validated`, `online`, `banned`, `banned_nb_days_left`, `banned_nb_total`, `abuse_level`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_user_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -1881,18 +1885,17 @@ abstract class BasePUserArchiveQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the banned_at column
+     * Filter the query on the banned_nb_days_left column
      *
      * Example usage:
      * <code>
-     * $query->filterByBannedAt('2011-03-14'); // WHERE banned_at = '2011-03-14'
-     * $query->filterByBannedAt('now'); // WHERE banned_at = '2011-03-14'
-     * $query->filterByBannedAt(array('max' => 'yesterday')); // WHERE banned_at < '2011-03-13'
+     * $query->filterByBannedNbDaysLeft(1234); // WHERE banned_nb_days_left = 1234
+     * $query->filterByBannedNbDaysLeft(array(12, 34)); // WHERE banned_nb_days_left IN (12, 34)
+     * $query->filterByBannedNbDaysLeft(array('min' => 12)); // WHERE banned_nb_days_left >= 12
+     * $query->filterByBannedNbDaysLeft(array('max' => 12)); // WHERE banned_nb_days_left <= 12
      * </code>
      *
-     * @param     mixed $bannedAt The value to use as filter.
-     *              Values can be integers (unix timestamps), DateTime objects, or strings.
-     *              Empty strings are treated as NULL.
+     * @param     mixed $bannedNbDaysLeft The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
@@ -1900,16 +1903,16 @@ abstract class BasePUserArchiveQuery extends ModelCriteria
      *
      * @return PUserArchiveQuery The current query, for fluid interface
      */
-    public function filterByBannedAt($bannedAt = null, $comparison = null)
+    public function filterByBannedNbDaysLeft($bannedNbDaysLeft = null, $comparison = null)
     {
-        if (is_array($bannedAt)) {
+        if (is_array($bannedNbDaysLeft)) {
             $useMinMax = false;
-            if (isset($bannedAt['min'])) {
-                $this->addUsingAlias(PUserArchivePeer::BANNED_AT, $bannedAt['min'], Criteria::GREATER_EQUAL);
+            if (isset($bannedNbDaysLeft['min'])) {
+                $this->addUsingAlias(PUserArchivePeer::BANNED_NB_DAYS_LEFT, $bannedNbDaysLeft['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($bannedAt['max'])) {
-                $this->addUsingAlias(PUserArchivePeer::BANNED_AT, $bannedAt['max'], Criteria::LESS_EQUAL);
+            if (isset($bannedNbDaysLeft['max'])) {
+                $this->addUsingAlias(PUserArchivePeer::BANNED_NB_DAYS_LEFT, $bannedNbDaysLeft['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -1920,7 +1923,49 @@ abstract class BasePUserArchiveQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PUserArchivePeer::BANNED_AT, $bannedAt, $comparison);
+        return $this->addUsingAlias(PUserArchivePeer::BANNED_NB_DAYS_LEFT, $bannedNbDaysLeft, $comparison);
+    }
+
+    /**
+     * Filter the query on the banned_nb_total column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByBannedNbTotal(1234); // WHERE banned_nb_total = 1234
+     * $query->filterByBannedNbTotal(array(12, 34)); // WHERE banned_nb_total IN (12, 34)
+     * $query->filterByBannedNbTotal(array('min' => 12)); // WHERE banned_nb_total >= 12
+     * $query->filterByBannedNbTotal(array('max' => 12)); // WHERE banned_nb_total <= 12
+     * </code>
+     *
+     * @param     mixed $bannedNbTotal The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserArchiveQuery The current query, for fluid interface
+     */
+    public function filterByBannedNbTotal($bannedNbTotal = null, $comparison = null)
+    {
+        if (is_array($bannedNbTotal)) {
+            $useMinMax = false;
+            if (isset($bannedNbTotal['min'])) {
+                $this->addUsingAlias(PUserArchivePeer::BANNED_NB_TOTAL, $bannedNbTotal['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($bannedNbTotal['max'])) {
+                $this->addUsingAlias(PUserArchivePeer::BANNED_NB_TOTAL, $bannedNbTotal['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PUserArchivePeer::BANNED_NB_TOTAL, $bannedNbTotal, $comparison);
     }
 
     /**

@@ -6,15 +6,22 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 use StudioEcho\Lib\StudioEchoUtils;
 
+use Politizr\Constant\ReputationConstants;
+
 use Politizr\Exception\InconsistentDataException;
 use Politizr\Exception\FormValidationException;
 
 use Politizr\Model\PTag;
+use Politizr\Model\PUReputation;
+use Politizr\Model\PMUserModerated;
 
 use Politizr\Model\PTagQuery;
 use Politizr\Model\PDDTaggedTQuery;
 use Politizr\Model\PUFollowTQuery;
 use Politizr\Model\PUTaggedTQuery;
+use Politizr\Model\PMUserModeratedQuery;
+
+use Politizr\AdminBundle\Form\Type\PMUserModeratedType;
 
 /**
  * XHR service for admin management.
@@ -435,6 +442,138 @@ class XhrAdmin
         $deleted = $this->tagManager->deleteUserTaggedTag($subjectId, $tagId);
 
         return $deleted;
+    }
+
+    /* ######################################################################################################## */
+    /*                                               REPUTATION                                                 */
+    /* ######################################################################################################## */
+
+    /**
+     * User's reputation update
+     */
+    public function userReputationUpdate(Request $request)
+    {
+        $this->logger->info('*** userReputationUpdate');
+
+        // Request arguments
+        $subjectId = $request->get('subjectId');
+        $this->logger->info('$subjectId = ' . print_r($subjectId, true));
+        $evolution = $request->get('evolution');
+        $this->logger->info('$evolution = ' . print_r($evolution, true));
+
+        // Function process
+        $user = PUserQuery::create()->findPk($subjectId);
+        if (null === $user) {
+            throw new InconsistentDataException(sprintf('User id-%s not found.', $subjectId));
+        }
+
+        // @todo notif user?
+        // Reputation evolution update
+        $con = \Propel::getConnection('default');
+
+        if ($evolution > 0) {
+            $con->beginTransaction();
+            try {
+                for ($i = 0; $i < $evolution; $i++) {
+                    $puReputation = new PUReputation();
+                    $puReputation->setPRActionId(ReputationConstants::ACTION_ID_R_ADMIN_POS);
+                    $puReputation->setPUserId($subjectId);
+                    $puReputation->save();
+                }
+
+                $con->commit();
+            } catch (\Exception $e) {
+                $con->rollback();
+                throw new InconsistentDataException(sprintf('Rollback reputation evolution user id-%s.', $subjectId));
+            }
+        } elseif ($evolution < 0) {
+            $con->beginTransaction();
+            try {
+                for ($i = 0; $i > $evolution; $i--) {
+                    $puReputation = new PUReputation();
+                    $puReputation->setPRActionId(ReputationConstants::ACTION_ID_R_ADMIN_NEG);
+                    $puReputation->setPUserId($subjectId);
+                    $puReputation->save();
+                }
+
+                $con->commit();
+            } catch (\Exception $e) {
+                $con->rollback();
+                throw new InconsistentDataException(sprintf('Rollback reputation evolution user id-%s.', $subjectId));
+            }
+        }
+
+        $newScore = $user->getReputationScore();
+
+        return array(
+            'score' => $newScore
+        );
+    }
+
+    /* ######################################################################################################## */
+    /*                                               MODERATION                                                 */
+    /* ######################################################################################################## */
+
+    /**
+     * Create new user's moderation + update reputation
+     */
+    public function userModeratedNew(Request $request)
+    {
+        $this->logger->info('*** userModeratedNew');
+
+        $form = $this->formFactory->create(new PMUserModeratedType(), new PMUserModerated());
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $userModerated = $form->getData();
+
+            $userModerated->save();
+
+            // update p_u_reputation
+            $userId = $userModerated->getPUserId();
+            $evolution = $userModerated->getScoreEvolution();
+
+            if ($evolution) {
+                $con = \Propel::getConnection('default');
+                $con->beginTransaction();
+                try {
+                    for ($i = 0; $i > $evolution; $i--) {
+                        $puReputation = new PUReputation();
+                        $puReputation->setPRActionId(ReputationConstants::ACTION_ID_R_ADMIN_NEG);
+                        $puReputation->setPUserId($userId);
+                        $puReputation->save();
+                    }
+
+                    $con->commit();
+                } catch (\Exception $e) {
+                    $con->rollback();
+                    throw new InconsistentDataException(sprintf('Rollback reputation evolution user id-%s.', $userId));
+                }
+            }
+
+            // @todo mail user
+        } else {
+            $errors = StudioEchoUtils::getAjaxFormErrors($form);
+            throw new FormValidationException($errors);
+        }
+
+        // Update historic
+        $moderations = PMUserModeratedQuery::create()
+                                ->filterByPUserId($userId)
+                                ->orderByCreatedAt('desc')
+                                ->find();
+
+        // Construction du rendu du tag
+        $listing = $this->templating->render(
+            'PolitizrAdminBundle:Fragment\\Moderation:_listing.html.twig',
+            array(
+                'moderations' => $moderations,
+            )
+        );
+
+        // Renvoi de l'ensemble des blocs HTML maj
+        return array(
+            'listing' => $listing
+            );
     }
 
     /* ######################################################################################################## */

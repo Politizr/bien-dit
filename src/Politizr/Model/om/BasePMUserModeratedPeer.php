@@ -34,13 +34,13 @@ abstract class BasePMUserModeratedPeer
     const TM_CLASS = 'Politizr\\Model\\map\\PMUserModeratedTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 7;
+    const NUM_COLUMNS = 8;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 7;
+    const NUM_HYDRATE_COLUMNS = 8;
 
     /** the column name for the id field */
     const ID = 'p_m_user_moderated.id';
@@ -56,6 +56,9 @@ abstract class BasePMUserModeratedPeer
 
     /** the column name for the p_object_id field */
     const P_OBJECT_ID = 'p_m_user_moderated.p_object_id';
+
+    /** the column name for the score_evolution field */
+    const SCORE_EVOLUTION = 'p_m_user_moderated.score_evolution';
 
     /** the column name for the created_at field */
     const CREATED_AT = 'p_m_user_moderated.created_at';
@@ -82,12 +85,12 @@ abstract class BasePMUserModeratedPeer
      * e.g. PMUserModeratedPeer::$fieldNames[PMUserModeratedPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'PUserId', 'PMModerationTypeId', 'PObjectName', 'PObjectId', 'CreatedAt', 'UpdatedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pUserId', 'pMModerationTypeId', 'pObjectName', 'pObjectId', 'createdAt', 'updatedAt', ),
-        BasePeer::TYPE_COLNAME => array (PMUserModeratedPeer::ID, PMUserModeratedPeer::P_USER_ID, PMUserModeratedPeer::P_M_MODERATION_TYPE_ID, PMUserModeratedPeer::P_OBJECT_NAME, PMUserModeratedPeer::P_OBJECT_ID, PMUserModeratedPeer::CREATED_AT, PMUserModeratedPeer::UPDATED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_USER_ID', 'P_M_MODERATION_TYPE_ID', 'P_OBJECT_NAME', 'P_OBJECT_ID', 'CREATED_AT', 'UPDATED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'p_user_id', 'p_m_moderation_type_id', 'p_object_name', 'p_object_id', 'created_at', 'updated_at', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'PUserId', 'PMModerationTypeId', 'PObjectName', 'PObjectId', 'ScoreEvolution', 'CreatedAt', 'UpdatedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pUserId', 'pMModerationTypeId', 'pObjectName', 'pObjectId', 'scoreEvolution', 'createdAt', 'updatedAt', ),
+        BasePeer::TYPE_COLNAME => array (PMUserModeratedPeer::ID, PMUserModeratedPeer::P_USER_ID, PMUserModeratedPeer::P_M_MODERATION_TYPE_ID, PMUserModeratedPeer::P_OBJECT_NAME, PMUserModeratedPeer::P_OBJECT_ID, PMUserModeratedPeer::SCORE_EVOLUTION, PMUserModeratedPeer::CREATED_AT, PMUserModeratedPeer::UPDATED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_USER_ID', 'P_M_MODERATION_TYPE_ID', 'P_OBJECT_NAME', 'P_OBJECT_ID', 'SCORE_EVOLUTION', 'CREATED_AT', 'UPDATED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'p_user_id', 'p_m_moderation_type_id', 'p_object_name', 'p_object_id', 'score_evolution', 'created_at', 'updated_at', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
     /**
@@ -97,12 +100,12 @@ abstract class BasePMUserModeratedPeer
      * e.g. PMUserModeratedPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PUserId' => 1, 'PMModerationTypeId' => 2, 'PObjectName' => 3, 'PObjectId' => 4, 'CreatedAt' => 5, 'UpdatedAt' => 6, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pUserId' => 1, 'pMModerationTypeId' => 2, 'pObjectName' => 3, 'pObjectId' => 4, 'createdAt' => 5, 'updatedAt' => 6, ),
-        BasePeer::TYPE_COLNAME => array (PMUserModeratedPeer::ID => 0, PMUserModeratedPeer::P_USER_ID => 1, PMUserModeratedPeer::P_M_MODERATION_TYPE_ID => 2, PMUserModeratedPeer::P_OBJECT_NAME => 3, PMUserModeratedPeer::P_OBJECT_ID => 4, PMUserModeratedPeer::CREATED_AT => 5, PMUserModeratedPeer::UPDATED_AT => 6, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_USER_ID' => 1, 'P_M_MODERATION_TYPE_ID' => 2, 'P_OBJECT_NAME' => 3, 'P_OBJECT_ID' => 4, 'CREATED_AT' => 5, 'UPDATED_AT' => 6, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_user_id' => 1, 'p_m_moderation_type_id' => 2, 'p_object_name' => 3, 'p_object_id' => 4, 'created_at' => 5, 'updated_at' => 6, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PUserId' => 1, 'PMModerationTypeId' => 2, 'PObjectName' => 3, 'PObjectId' => 4, 'ScoreEvolution' => 5, 'CreatedAt' => 6, 'UpdatedAt' => 7, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pUserId' => 1, 'pMModerationTypeId' => 2, 'pObjectName' => 3, 'pObjectId' => 4, 'scoreEvolution' => 5, 'createdAt' => 6, 'updatedAt' => 7, ),
+        BasePeer::TYPE_COLNAME => array (PMUserModeratedPeer::ID => 0, PMUserModeratedPeer::P_USER_ID => 1, PMUserModeratedPeer::P_M_MODERATION_TYPE_ID => 2, PMUserModeratedPeer::P_OBJECT_NAME => 3, PMUserModeratedPeer::P_OBJECT_ID => 4, PMUserModeratedPeer::SCORE_EVOLUTION => 5, PMUserModeratedPeer::CREATED_AT => 6, PMUserModeratedPeer::UPDATED_AT => 7, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_USER_ID' => 1, 'P_M_MODERATION_TYPE_ID' => 2, 'P_OBJECT_NAME' => 3, 'P_OBJECT_ID' => 4, 'SCORE_EVOLUTION' => 5, 'CREATED_AT' => 6, 'UPDATED_AT' => 7, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_user_id' => 1, 'p_m_moderation_type_id' => 2, 'p_object_name' => 3, 'p_object_id' => 4, 'score_evolution' => 5, 'created_at' => 6, 'updated_at' => 7, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
     /**
@@ -181,6 +184,7 @@ abstract class BasePMUserModeratedPeer
             $criteria->addSelectColumn(PMUserModeratedPeer::P_M_MODERATION_TYPE_ID);
             $criteria->addSelectColumn(PMUserModeratedPeer::P_OBJECT_NAME);
             $criteria->addSelectColumn(PMUserModeratedPeer::P_OBJECT_ID);
+            $criteria->addSelectColumn(PMUserModeratedPeer::SCORE_EVOLUTION);
             $criteria->addSelectColumn(PMUserModeratedPeer::CREATED_AT);
             $criteria->addSelectColumn(PMUserModeratedPeer::UPDATED_AT);
         } else {
@@ -189,6 +193,7 @@ abstract class BasePMUserModeratedPeer
             $criteria->addSelectColumn($alias . '.p_m_moderation_type_id');
             $criteria->addSelectColumn($alias . '.p_object_name');
             $criteria->addSelectColumn($alias . '.p_object_id');
+            $criteria->addSelectColumn($alias . '.score_evolution');
             $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
         }

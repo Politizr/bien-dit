@@ -440,7 +440,8 @@
         <column name="online" type="boolean" />
 
         <column name="banned" type="boolean" />
-        <column name="banned_at" type="timestamp" />
+        <column name="banned_nb_days_left" type="integer" />
+        <column name="banned_nb_total" type="integer" />
 
         <column name="abuse_level" type="integer" />
 
@@ -907,6 +908,8 @@
 
         <column name="p_object_name" type="varchar" size="150" />
         <column name="p_object_id" type="integer" />
+
+        <column name="score_evolution" type="integer" />
 
         <foreign-key foreignTable="p_user" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />

@@ -27,6 +27,7 @@ use Politizr\Model\PUser;
  * @method PMUserModeratedQuery orderByPMModerationTypeId($order = Criteria::ASC) Order by the p_m_moderation_type_id column
  * @method PMUserModeratedQuery orderByPObjectName($order = Criteria::ASC) Order by the p_object_name column
  * @method PMUserModeratedQuery orderByPObjectId($order = Criteria::ASC) Order by the p_object_id column
+ * @method PMUserModeratedQuery orderByScoreEvolution($order = Criteria::ASC) Order by the score_evolution column
  * @method PMUserModeratedQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PMUserModeratedQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  *
@@ -35,6 +36,7 @@ use Politizr\Model\PUser;
  * @method PMUserModeratedQuery groupByPMModerationTypeId() Group by the p_m_moderation_type_id column
  * @method PMUserModeratedQuery groupByPObjectName() Group by the p_object_name column
  * @method PMUserModeratedQuery groupByPObjectId() Group by the p_object_id column
+ * @method PMUserModeratedQuery groupByScoreEvolution() Group by the score_evolution column
  * @method PMUserModeratedQuery groupByCreatedAt() Group by the created_at column
  * @method PMUserModeratedQuery groupByUpdatedAt() Group by the updated_at column
  *
@@ -57,6 +59,7 @@ use Politizr\Model\PUser;
  * @method PMUserModerated findOneByPMModerationTypeId(int $p_m_moderation_type_id) Return the first PMUserModerated filtered by the p_m_moderation_type_id column
  * @method PMUserModerated findOneByPObjectName(string $p_object_name) Return the first PMUserModerated filtered by the p_object_name column
  * @method PMUserModerated findOneByPObjectId(int $p_object_id) Return the first PMUserModerated filtered by the p_object_id column
+ * @method PMUserModerated findOneByScoreEvolution(int $score_evolution) Return the first PMUserModerated filtered by the score_evolution column
  * @method PMUserModerated findOneByCreatedAt(string $created_at) Return the first PMUserModerated filtered by the created_at column
  * @method PMUserModerated findOneByUpdatedAt(string $updated_at) Return the first PMUserModerated filtered by the updated_at column
  *
@@ -65,6 +68,7 @@ use Politizr\Model\PUser;
  * @method array findByPMModerationTypeId(int $p_m_moderation_type_id) Return PMUserModerated objects filtered by the p_m_moderation_type_id column
  * @method array findByPObjectName(string $p_object_name) Return PMUserModerated objects filtered by the p_object_name column
  * @method array findByPObjectId(int $p_object_id) Return PMUserModerated objects filtered by the p_object_id column
+ * @method array findByScoreEvolution(int $score_evolution) Return PMUserModerated objects filtered by the score_evolution column
  * @method array findByCreatedAt(string $created_at) Return PMUserModerated objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PMUserModerated objects filtered by the updated_at column
  */
@@ -176,7 +180,7 @@ abstract class BasePMUserModeratedQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_user_id`, `p_m_moderation_type_id`, `p_object_name`, `p_object_id`, `created_at`, `updated_at` FROM `p_m_user_moderated` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_user_id`, `p_m_moderation_type_id`, `p_object_name`, `p_object_id`, `score_evolution`, `created_at`, `updated_at` FROM `p_m_user_moderated` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -465,6 +469,48 @@ abstract class BasePMUserModeratedQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PMUserModeratedPeer::P_OBJECT_ID, $pObjectId, $comparison);
+    }
+
+    /**
+     * Filter the query on the score_evolution column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByScoreEvolution(1234); // WHERE score_evolution = 1234
+     * $query->filterByScoreEvolution(array(12, 34)); // WHERE score_evolution IN (12, 34)
+     * $query->filterByScoreEvolution(array('min' => 12)); // WHERE score_evolution >= 12
+     * $query->filterByScoreEvolution(array('max' => 12)); // WHERE score_evolution <= 12
+     * </code>
+     *
+     * @param     mixed $scoreEvolution The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PMUserModeratedQuery The current query, for fluid interface
+     */
+    public function filterByScoreEvolution($scoreEvolution = null, $comparison = null)
+    {
+        if (is_array($scoreEvolution)) {
+            $useMinMax = false;
+            if (isset($scoreEvolution['min'])) {
+                $this->addUsingAlias(PMUserModeratedPeer::SCORE_EVOLUTION, $scoreEvolution['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($scoreEvolution['max'])) {
+                $this->addUsingAlias(PMUserModeratedPeer::SCORE_EVOLUTION, $scoreEvolution['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PMUserModeratedPeer::SCORE_EVOLUTION, $scoreEvolution, $comparison);
     }
 
     /**

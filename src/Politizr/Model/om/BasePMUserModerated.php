@@ -75,6 +75,12 @@ abstract class BasePMUserModerated extends BaseObject implements Persistent
     protected $p_object_id;
 
     /**
+     * The value for the score_evolution field.
+     * @var        int
+     */
+    protected $score_evolution;
+
+    /**
      * The value for the created_at field.
      * @var        string
      */
@@ -174,6 +180,17 @@ abstract class BasePMUserModerated extends BaseObject implements Persistent
     {
 
         return $this->p_object_id;
+    }
+
+    /**
+     * Get the [score_evolution] column value.
+     *
+     * @return int
+     */
+    public function getScoreEvolution()
+    {
+
+        return $this->score_evolution;
     }
 
     /**
@@ -370,6 +387,27 @@ abstract class BasePMUserModerated extends BaseObject implements Persistent
     } // setPObjectId()
 
     /**
+     * Set the value of [score_evolution] column.
+     *
+     * @param  int $v new value
+     * @return PMUserModerated The current object (for fluent API support)
+     */
+    public function setScoreEvolution($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->score_evolution !== $v) {
+            $this->score_evolution = $v;
+            $this->modifiedColumns[] = PMUserModeratedPeer::SCORE_EVOLUTION;
+        }
+
+
+        return $this;
+    } // setScoreEvolution()
+
+    /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
@@ -452,8 +490,9 @@ abstract class BasePMUserModerated extends BaseObject implements Persistent
             $this->p_m_moderation_type_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
             $this->p_object_name = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
             $this->p_object_id = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
-            $this->created_at = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->updated_at = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->score_evolution = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
+            $this->created_at = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->updated_at = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -463,7 +502,7 @@ abstract class BasePMUserModerated extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 7; // 7 = PMUserModeratedPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 8; // 8 = PMUserModeratedPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PMUserModerated object", $e);
@@ -743,6 +782,9 @@ abstract class BasePMUserModerated extends BaseObject implements Persistent
         if ($this->isColumnModified(PMUserModeratedPeer::P_OBJECT_ID)) {
             $modifiedColumns[':p' . $index++]  = '`p_object_id`';
         }
+        if ($this->isColumnModified(PMUserModeratedPeer::SCORE_EVOLUTION)) {
+            $modifiedColumns[':p' . $index++]  = '`score_evolution`';
+        }
         if ($this->isColumnModified(PMUserModeratedPeer::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`created_at`';
         }
@@ -774,6 +816,9 @@ abstract class BasePMUserModerated extends BaseObject implements Persistent
                         break;
                     case '`p_object_id`':
                         $stmt->bindValue($identifier, $this->p_object_id, PDO::PARAM_INT);
+                        break;
+                    case '`score_evolution`':
+                        $stmt->bindValue($identifier, $this->score_evolution, PDO::PARAM_INT);
                         break;
                     case '`created_at`':
                         $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
@@ -949,9 +994,12 @@ abstract class BasePMUserModerated extends BaseObject implements Persistent
                 return $this->getPObjectId();
                 break;
             case 5:
-                return $this->getCreatedAt();
+                return $this->getScoreEvolution();
                 break;
             case 6:
+                return $this->getCreatedAt();
+                break;
+            case 7:
                 return $this->getUpdatedAt();
                 break;
             default:
@@ -988,8 +1036,9 @@ abstract class BasePMUserModerated extends BaseObject implements Persistent
             $keys[2] => $this->getPMModerationTypeId(),
             $keys[3] => $this->getPObjectName(),
             $keys[4] => $this->getPObjectId(),
-            $keys[5] => $this->getCreatedAt(),
-            $keys[6] => $this->getUpdatedAt(),
+            $keys[5] => $this->getScoreEvolution(),
+            $keys[6] => $this->getCreatedAt(),
+            $keys[7] => $this->getUpdatedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1053,9 +1102,12 @@ abstract class BasePMUserModerated extends BaseObject implements Persistent
                 $this->setPObjectId($value);
                 break;
             case 5:
-                $this->setCreatedAt($value);
+                $this->setScoreEvolution($value);
                 break;
             case 6:
+                $this->setCreatedAt($value);
+                break;
+            case 7:
                 $this->setUpdatedAt($value);
                 break;
         } // switch()
@@ -1087,8 +1139,9 @@ abstract class BasePMUserModerated extends BaseObject implements Persistent
         if (array_key_exists($keys[2], $arr)) $this->setPMModerationTypeId($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setPObjectName($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setPObjectId($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setCreatedAt($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setUpdatedAt($arr[$keys[6]]);
+        if (array_key_exists($keys[5], $arr)) $this->setScoreEvolution($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setCreatedAt($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setUpdatedAt($arr[$keys[7]]);
     }
 
     /**
@@ -1105,6 +1158,7 @@ abstract class BasePMUserModerated extends BaseObject implements Persistent
         if ($this->isColumnModified(PMUserModeratedPeer::P_M_MODERATION_TYPE_ID)) $criteria->add(PMUserModeratedPeer::P_M_MODERATION_TYPE_ID, $this->p_m_moderation_type_id);
         if ($this->isColumnModified(PMUserModeratedPeer::P_OBJECT_NAME)) $criteria->add(PMUserModeratedPeer::P_OBJECT_NAME, $this->p_object_name);
         if ($this->isColumnModified(PMUserModeratedPeer::P_OBJECT_ID)) $criteria->add(PMUserModeratedPeer::P_OBJECT_ID, $this->p_object_id);
+        if ($this->isColumnModified(PMUserModeratedPeer::SCORE_EVOLUTION)) $criteria->add(PMUserModeratedPeer::SCORE_EVOLUTION, $this->score_evolution);
         if ($this->isColumnModified(PMUserModeratedPeer::CREATED_AT)) $criteria->add(PMUserModeratedPeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(PMUserModeratedPeer::UPDATED_AT)) $criteria->add(PMUserModeratedPeer::UPDATED_AT, $this->updated_at);
 
@@ -1174,6 +1228,7 @@ abstract class BasePMUserModerated extends BaseObject implements Persistent
         $copyObj->setPMModerationTypeId($this->getPMModerationTypeId());
         $copyObj->setPObjectName($this->getPObjectName());
         $copyObj->setPObjectId($this->getPObjectId());
+        $copyObj->setScoreEvolution($this->getScoreEvolution());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
 
@@ -1348,6 +1403,7 @@ abstract class BasePMUserModerated extends BaseObject implements Persistent
         $this->p_m_moderation_type_id = null;
         $this->p_object_name = null;
         $this->p_object_id = null;
+        $this->score_evolution = null;
         $this->created_at = null;
         $this->updated_at = null;
         $this->alreadyInSave = false;

@@ -11,6 +11,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Range;
 
 use Politizr\Model\PMModerationTypeQuery;
 
@@ -29,17 +30,6 @@ class PMUserModeratedType extends AbstractType
             'required' => true,
         ));
 
-        // Moderation type list
-        $builder->add('p_m_moderation_type_id', 'model', array(
-                'required' => true,
-                'label' => 'Type de modération',
-                'class' => 'Politizr\\Model\\PMModerationType',
-                'query' => PMModerationTypeQuery::create()->orderById('asc'),
-                'multiple' => false,
-                'expanded' => false,
-                'constraints' => new NotBlank(array('message' => 'Choix d\'un type obligatoire.')),
-            ));
-        
         $builder->add('p_object_id', 'hidden', array(
             'required' => true,
         ));
@@ -47,6 +37,28 @@ class PMUserModeratedType extends AbstractType
         $builder->add('p_object_name', 'hidden', array(
             'required' => true,
         ));
+
+        // Moderation type list
+        $builder->add('p_m_moderation_type', 'model', array(
+                'required' => true,
+                'label' => 'Type de modération',
+                'class' => 'Politizr\\Model\\PMModerationType',
+                'query' => PMModerationTypeQuery::create()->orderById('asc'),
+                'index_property' => 'id',
+                'multiple' => false,
+                'expanded' => false,
+                'constraints' => new NotBlank(array('message' => 'Choix d\'un type obligatoire.')),
+            ));
+        
+        $builder->add('score_evolution', 'text', array(
+            'required' => false,
+            'label' => 'Evolution de réputation',
+            'constraints' => array(
+                new Range(array('max' => '0', 'maxMessage' => 'Nombre négatif')),
+            ),
+            'attr' => array('placeholder' => 'Nombre négatif soustrait à la réputation, par exemple "-10"'),
+        ));
+        
     }
 
     /**

@@ -999,22 +999,18 @@ class PolitizrAdminExtension extends \Twig_Extension
     }
 
     /**
-     * Moderation alert listing (historic)
+     * Moderation alert listing (historic) for a user
      *
-     * @param string $objectClass
-     * @param int $objectId
      * @param int $userId
      * @return string
      */
-    public function adminModerationAlertListing($objectClass, $objectId, $userId)
+    public function adminModerationAlertListing($userId)
     {
         $this->logger->info('*** adminModerationAlertListing');
         // $this->logger->info('$objectClass = '.print_r($objectClass, true));
         // $this->logger->info('$objectId = '.print_r($objectId, true));
 
         $moderations = PMUserModeratedQuery::create()
-                                ->filterByPObjectId($objectId)
-                                ->filterByPObjectName($objectClass)
                                 ->filterByPUserId($userId)
                                 ->orderByCreatedAt('desc')
                                 ->find();

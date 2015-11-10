@@ -8,14 +8,17 @@
     {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE'), PDDComment.PDDebateId) }}
 {% endblock %}
 
+{# Block moderation new alert #}
 {% block show_column_block_moderation_alert_new %}
     {{ adminModerationAlertNew(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE_COMMENT'), PDDComment.Id, PDDComment.PUserId) }}
 {% endblock %}
 
+{# Block moderation alert listing #}
 {% block show_column_block_moderation_alert_listing %}
-    {{ adminModerationAlertListing(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE_COMMENT'), PDDComment.Id, PDDComment.PUserId) }}
+    <div id="moderationListing">
+        {{ adminModerationAlertListing(PDDComment.PUserId) }}
+    </div>
 {% endblock %}
-
 
 {# Block front link #}
 {% block show_column_block_front %}
@@ -25,3 +28,8 @@
         Hors ligne
     {% endif %}
 {% endblock %}
+
+{% block object_actions_script_container %}
+    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/moderation/notification.js') }}"></script>  
+{% endblock object_actions_script_container %}
+

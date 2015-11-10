@@ -1,6 +1,7 @@
 <div id="moderationNew">
     <form id="moderationAlertNew" method="post">
-        {{ form_row(form.p_m_moderation_type_id) }}
+        {{ form_row(form.p_m_moderation_type) }}
+        {{ form_row(form.score_evolution) }}
         {{ form_rest(form) }}
         <a action="moderationAlertNew">Valider</a>
     </form>

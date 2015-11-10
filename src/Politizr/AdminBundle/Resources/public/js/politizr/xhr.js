@@ -26,6 +26,9 @@ var ADMIN_ROUTE_TAG_USER_TAGGED_DELETE = 'admin/utilisateur/tagged/tag/delete';
 // REPUTATION
 var ADMIN_ROUTE_USER_REPUTATION_EVOLUTION = 'admin/utilisateur/reputation/update';
 
+// MODERATION
+var ADMIN_ROUTE_USER_MODERATION_ALERT_NEW = 'admin/utilisateur/moderation/alert/new';
+
 /**
  *
  */
@@ -40,34 +43,41 @@ function getXhrPath( xhrRoute, xhrService, xhrMethod, xhrType ) {
     return routeXhrGeneric;
 }
 
-
 /**
  *
- * @param xhr
  */
-function xhrBeforeSend( xhr ) {
+function xhrBeforeSend( ) {
+    $('#infoBoxHolder .boxSuccess').hide();
+    $('#infoBoxHolder .boxError').hide();
+    $('#infoBoxHolder.boxAlert').hide();
 }
 
 /**
  *
  */
 function xhr404( ) {
-    $('.alert-error').html('Erreur 404: cette action n\'existe pas.');
-    $('.alert-error').show();
+    $('#ajaxGlobalLoader').hide();
+    $('#infoBoxHolder .boxError .notifBoxText').html('Erreur 404: cette action n\'existe pas.');
+    $('#infoBoxHolder .boxError').show();
 }
 
 /**
  *
  */
 function xhr500( ) {
-    $('.alert-error').html('Erreur 500: merci de recharger la page.');
-    $('.alert-error').show();
+    $('#ajaxGlobalLoader').hide();
+    $('#infoBoxHolder .boxError .notifBoxText').html('Erreur 500: merci de recharger la page.');
+    $('#infoBoxHolder .boxError').show();
 }
 
 /**
  *
  */
-function xhrError(jqXHR, textStatus, errorThrown ) {
-    $('.alert-error').html('Erreur inconnue: merci de recharger la page.');
-    $('.alert-error').show();
+function xhrError( jqXHR, textStatus, errorThrown ) {
+    $('#ajaxGlobalLoader').hide();
+    $('#ajaxGlobalLoader').hide();
+    $('#infoBoxHolder .boxError .notifBoxText').html('Erreur inconnue: merci de recharger la page.');
+    $('#infoBoxHolder .boxError').show();
+    // console.log('textStatus - '+textStatus);
+    // console.log('errorThrown - '+errorThrown);
 }

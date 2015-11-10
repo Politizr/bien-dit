@@ -149,4 +149,11 @@ class XhrConstants
     const ADMIN_ROUTE_TAG_USER_FOLLOW_DELETE = 'admin/utilisateur/follow/tag/delete';
     const ADMIN_ROUTE_TAG_USER_TAGGED_CREATE = 'admin/utilisateur/tagged/tag/create';
     const ADMIN_ROUTE_TAG_USER_TAGGED_DELETE = 'admin/utilisateur/tagged/tag/delete';
+
+
+    // REPUTATION
+    const ADMIN_ROUTE_USER_REPUTATION_EVOLUTION = 'admin/utilisateur/reputation/update';
+
+    // MODERATION
+    const ADMIN_ROUTE_USER_MODERATION_ALERT_NEW = 'admin/utilisateur/moderation/alert/new';
 }

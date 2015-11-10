@@ -28,6 +28,18 @@
     {{ PDReaction.getDescription | raw }}
 {% endblock %}
 
+{# Block moderation new alert #}
+{% block show_column_block_moderation_alert_new %}
+    {{ adminModerationAlertNew(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE'), PDDebate.Id, PDDebate.PUserId) }}
+{% endblock %}
+
+{# Block moderation alert listing #}
+{% block show_column_block_moderation_alert_listing %}
+    <div id="moderationListing">
+        {{ adminModerationAlertListing(PDDebate.PUserId) }}
+    </div>
+{% endblock %}
+
 {# Block front link #}
 {% block show_column_block_front %}
     {% if PDReaction.online and PDReaction.published %}
@@ -45,4 +57,6 @@
 {% block object_actions_script_container %}
     <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/jquery.form.min.js') }}"></script>  
     <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/uploadImage.js') }}"></script>  
+
+    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/moderation/notification.js') }}"></script>  
 {% endblock object_actions_script_container %}

@@ -1,23 +1,22 @@
 // notation
-$("body").on("click", "[action='updateReputationUser']", function(e) {
-    console.log('*** click updateReputationUser');
+$("body").on("click", "[action='moderationAlertNew']", function(e) {
+    console.log('*** click moderationAlertNew');
+
+    if (!confirm('Êtes-vous sûr?')) {
+        return false;
+    }
 
     var xhrPath = getXhrPath(
-        ADMIN_ROUTE_USER_REPUTATION_EVOLUTION,
+        ADMIN_ROUTE_USER_MODERATION_ALERT_NEW,
         'admin',
-        'userReputationUpdate',
+        'userModeratedNew',
         RETURN_HTML
         );
-
-    var subjectId = $(this).attr('subjectId');
-    var evolution = $("#reputationUserEvolution").val();
-    console.log('subjectId = '+subjectId);
-    console.log('evolution = '+evolution);
 
     $.ajax({
         type: 'POST',
         url: xhrPath,
-        data: { 'subjectId': subjectId, 'evolution': evolution },
+        data: $("#moderationAlertNew").serialize(),
         dataType: 'json',
         beforeSend: function ( xhr ) { xhrBeforeSend( xhr ); },
         statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
@@ -27,8 +26,8 @@ $("body").on("click", "[action='updateReputationUser']", function(e) {
                 $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
                 $('#infoBoxHolder .boxError').show();
             } else {
-                $("#reputationUserScore").html(data['score']);
-                $("#reputationUserEvolution").val('');
+                $("#moderationListing").html(data['listing']);
+                $("#moderationAlertNew").trigger("reset");
             }
         }
     });
