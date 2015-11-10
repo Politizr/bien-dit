@@ -30,13 +30,13 @@
 
 {# Block moderation new alert #}
 {% block show_column_block_moderation_alert_new %}
-    {{ adminModerationAlertNew(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE'), PDDebate.Id, PDDebate.PUserId) }}
+    {{ adminModerationAlertNew(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION'), PDReaction.Id, PDReaction.PUserId) }}
 {% endblock %}
 
 {# Block moderation alert listing #}
 {% block show_column_block_moderation_alert_listing %}
     <div id="moderationListing">
-        {{ adminModerationAlertListing(PDDebate.PUserId) }}
+        {{ adminModerationAlertListing(PDReaction.PUserId) }}
     </div>
 {% endblock %}
 
