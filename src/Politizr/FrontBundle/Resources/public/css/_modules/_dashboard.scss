@@ -1,0 +1,61 @@
+@import "../_global/colors";
+
+.dbHeader, #dbSuggestions {
+	background-color: $lightGrey;
+	position: relative;
+	float: left;
+	width: 100%;
+}
+
+#dashboard h1 {
+    font-family: 'nerislight';
+    font-weight: normal;
+	font-size: 22px;
+	padding: 40px 0 30px 40px;
+	margin: 0;
+	color: $darkGrey;
+}
+
+.dbClose, .dbOpen {
+	top: 40px;
+	right: 38px;
+	position: absolute;
+	color: $semiGrey;
+	cursor: pointer;
+	font-size: 14px;
+}
+.dbClose:hover, .dbOpen:hover { color: $darkGrey;}
+.dbOpen {display: none; font-size: 10px;}
+
+a.dbItemShow {
+	float: left;
+	margin: 20px 0 0 40px;
+	color: $highlight;
+	font-family: nerissemibold;
+	position: relative;
+	padding-left: 17px;
+}
+a.dbItemShow i {	position: absolute;	left: -2px; }
+a.dbItemShow:hover {color: $darkGrey;}
+
+#dbTopCloseToYou {
+	background-color: $formGrey;
+	clear: both;
+}
+
+.dbItemFullWidth {
+	width: 700px;
+	display: inline-block;
+	text-align: left;
+	margin-bottom: 60px;
+	position: relative;
+}
+
+.dbItemHalfWidth {
+	width: 290px;
+	float: left;
+	text-align: left;
+	margin: 0 0 60px 40px;
+	position: relative;	
+	background: aqua;
+}

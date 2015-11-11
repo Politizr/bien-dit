@@ -260,5 +260,17 @@ body {
 
 #goUp:hover {color: $darkGrey;}
 
-.tag:after { content: ",";}
-.tag:last-child:after {	content: ".";}
+.tag {	
+	cursor: pointer; 
+    font-family: 'nerissemibold';
+    margin: 0 5px 5px 0;
+    padding: 3px 4px;
+    line-height: 100%;
+    float: left;
+    font-size: 8px;
+    color: $darkGrey;
+    background: $highlight;
+}
+.tag:hover {
+	color: #fff;
+}
