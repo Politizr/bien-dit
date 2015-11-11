@@ -11,7 +11,7 @@
     font-family: 'nerislight';
     font-weight: normal;
 	font-size: 22px;
-	padding: 40px 0 30px 40px;
+	padding: 40px 0 10px 40px;
 	margin: 0;
 	color: $darkGrey;
 }
@@ -38,16 +38,19 @@ a.dbItemShow {
 a.dbItemShow i {	position: absolute;	left: -2px; }
 a.dbItemShow:hover {color: $darkGrey;}
 
-#dbTopCloseToYou {
+#dbCloseToYou {
 	background-color: $formGrey;
 	clear: both;
+	border-top: solid 20px $lightGrey;
+	float: left;
+	width: 100%;
 }
 
 .dbItemFullWidth {
 	width: 700px;
 	display: inline-block;
 	text-align: left;
-	margin-bottom: 60px;
+	margin: 20px 0 40px 0;
 	position: relative;
 }
 
@@ -55,7 +58,7 @@ a.dbItemShow:hover {color: $darkGrey;}
 	width: 290px;
 	float: left;
 	text-align: left;
-	margin: 0 0 60px 40px;
+	margin: 20px 0 40px 40px;
 	position: relative;	
 }
 
@@ -79,6 +82,7 @@ a.dbItemShow:hover {color: $darkGrey;}
 .dbItemHalfWidth .postSummaryTitle {
 	font-size: 22px;
 	line-height: 130%;
+	height: 4.8em;
 	max-height: none;
 }
 .dbItemHalfWidth .postSummaryTitle a { color: $darkGrey;}
@@ -115,3 +119,10 @@ a.dbItemShow:hover {color: $darkGrey;}
 	-o-box-shadow: none;
 	box-shadow: none;
 }
+
+#dashboard .profilePublicTagList {
+	padding: 10px 0 0 0;
+	float: left;
+	width: 100%;
+}
+

@@ -129,37 +129,34 @@
 .profileSubtitle a { color: $highlight; }
 .profileSubtitle a:hover { color: #fff; }
 
-#profilePublicTagList {
+.profilePublicTagList {
 	padding: 40px;
 	float: left;
 	width: calc(100% - 80px);
-	font-size: 10px;
-	font-family: 'nerisblack';
-	text-transform: uppercase;
-	color: $highlight;
-	line-height: 160%;
+}
+.modal .profilePublicTagList {
+	padding: 10px 0 0 0;
+	width: 100%;
 }
 
-#profilePublicTagList span:hover {color: $darkGrey;}
-
-#profilePrivateTagList {
+.profilePrivateTagList {
 	padding: 0 40px 40px 40px;
 	float: left;
 	width: calc(100% - 80px);
-	font-size: 10px;
-	font-family: 'nerisblack';
 	text-transform: uppercase;
-	color: $darkGrey;
+	font-size: 10px;
 	line-height: 160%;
 }
-
-#profilePrivateTagList span:hover {color: $highlight;}
+.profilePrivateTagList .tag {
+	background-color: $semiGrey;
+}
 
 #privateTagTitle {
 	float: left;
 	width: 100%;
 	color: $darkGrey;
 	font-family: 'nerissemibold';
+	margin-bottom: 5px;
 }
 
 #privateTagTitle span, #privateTagTitle span:hover {
