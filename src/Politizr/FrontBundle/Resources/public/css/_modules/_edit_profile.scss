@@ -3,7 +3,7 @@
 ///// /!\ need _edit_post
 
 // big camera
-#profileHeader #bigCamera {
+.profileHeader #bigCamera {
 	position: absolute;
 	top: 70px;
 	width: 60px;
@@ -12,15 +12,15 @@
 	z-index: 1000;
 	cursor: pointer;
 }
-#profileHeader #bigCamera i.iconCamera {
+.profileHeader #bigCamera i.iconCamera {
 	font-size: 58px;
 	color: $highlight;
 	left: -11px;
 	position: relative;
 }
-#profileHeader #bigCamera i.iconCamera:hover {color: $semiGrey;}
+.profileHeader #bigCamera i.iconCamera:hover {color: $semiGrey;}
 
-#profileHeader #bigCamera i.iconNotifYes {
+.profileHeader #bigCamera i.iconNotifYes {
 	font-size: 50px;
 	color: #fff;
 	position: absolute;
@@ -30,12 +30,12 @@
 }
 
 // small camera
-#profileHeader .avatar60 {
+.profileHeader .avatar60 {
 	position: relative;
 	overflow: visible !important; // debug ie
 }
 
-#profileHeader #smallCamera {
+.profileHeader #smallCamera {
 	position: absolute;
 	top: -15px;
 	width: 30px;
@@ -44,16 +44,16 @@
 	cursor: pointer;
 }
 
-#profileHeader #smallCamera i.iconCamera {
+.profileHeader #smallCamera i.iconCamera {
 	font-size: 28px;
 	color: $highlight;
 	position: relative;
 	top: 0;
 	left: -5px;
 }
-#profileHeader #smallCamera i.iconCamera:hover {color: $semiGrey;}
+.profileHeader #smallCamera i.iconCamera:hover {color: $semiGrey;}
 
-#profileHeader #smallCamera i.iconNotifYes {
+.profileHeader #smallCamera i.iconNotifYes {
 	font-size: 25px;
 	color: #fff;
 	position: absolute;

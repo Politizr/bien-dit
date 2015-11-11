@@ -57,5 +57,61 @@ a.dbItemShow:hover {color: $darkGrey;}
 	text-align: left;
 	margin: 0 0 60px 40px;
 	position: relative;	
-	background: aqua;
+}
+
+#dbSuggestions .dbItemHalfWidth .tag { color: $lightGrey; }
+#dbSuggestions .dbItemHalfWidth .tag:hover {color: $darkGrey;}
+
+.dbItemHalfWidth .postSummaryTagList {
+	max-height: 14px;
+	overflow: hidden;
+}
+
+.halfWidthThumb {
+	float: left;
+	width: 100%;
+	margin: 10px 0;
+	height: 165px;
+}
+
+.dbItemHalfWidth .postSummaryAuthor { margin: 0 0 7px 0; }
+
+.dbItemHalfWidth .postSummaryTitle {
+	font-size: 22px;
+	line-height: 130%;
+	max-height: none;
+}
+.dbItemHalfWidth .postSummaryTitle a { color: $darkGrey;}
+.dbItemHalfWidth .postSummaryTitle a:hover { color: $highlight;}
+
+
+#dbSuggestions .dbItemHalfWidth .postSummaryAuthor .organization {
+	background-color: $highlight;
+	color: $lightGrey !important;
+}
+.dbItemHalfWidth .postSummaryAuthor a:hover { color: $darkGrey; }
+.dbItemHalfWidth .postSummaryAuthor .organization:hover { background-color: $darkGrey !important; }
+
+.dbItemHalfWidth a.dbItemShow {
+	margin: 40px 0 0 0;
+	clear: both;
+}
+
+#dashboard .dbItemHalfWidth .subscribe {
+	position: static;
+	float: right;
+	right: 0;
+	margin-top: 15px;
+	text-transform: uppercase;
+	color: #fff;
+}
+
+#dashboard .dbItemHalfWidth .subscribe .actionFollow, #dashboard .dbItemHalfWidth .subscribe .actionUnfollow {
+	width: 140px;
+	padding: 12px 0;
+	float: left;
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+	-o-box-shadow: none;
+	box-shadow: none;
 }

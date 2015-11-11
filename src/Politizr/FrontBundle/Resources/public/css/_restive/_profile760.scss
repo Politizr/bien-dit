@@ -10,21 +10,21 @@ body.css760 .listProfile {
 	padding: 0
 }
 
-body.css760 #profileHeader, 
-body.css760 #profileHeader .illustrationShadow, 
-body.css760 #profileHeader .profileHeaderIllustration { 
+body.css760 .profileHeader, 
+body.css760 .profileHeader .illustrationShadow, 
+body.css760 .profileHeader .profileHeaderIllustration { 
 	width: 100%; height: 440px;
 }
-body.css760 #profileHeader .pad40 {		
+body.css760 .profileHeader .pad40 {		
 	height: 360px;
 	width: calc(100% - 20px);
 	padding: 40px 20px;
 }
-body.css760 #profileHeader #profileSummaryFooter {bottom: 40px; width: calc(100% - 40px);}
-body.css760 #profileHeader #profileSubtitle {line-height: 140%;}
-body.css760 #profileNameHolder {width: 100%; float: left; clear: both; }
-body.css760 #profileNameBottom {position: relative; margin-top: 10px;}
-body.css760 #profileName {	font-size: 34px; max-height: 5em;}
+body.css760 .profileHeader .profileSummaryFooter {bottom: 40px; width: calc(100% - 40px);}
+body.css760 .profileHeader .profileSubtitle {line-height: 140%;}
+body.css760 .profileNameHolder {width: 100%; float: left; clear: both; }
+body.css760 .profileNameBottom {position: relative; margin-top: 10px;}
+body.css760 .profileName {	font-size: 34px; max-height: 5em;}
 
 body.css760 #profilePublicTagList { padding: 20px;}
 body.css760 #profilePrivateTagList { padding: 0 20px 20px 20px;}
