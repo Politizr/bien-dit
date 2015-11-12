@@ -3,9 +3,16 @@ services:
     # LISTENERS
     politzr_admin.listener.email:
         class:      Politizr\AdminBundle\Listener\EmailListener
-        arguments:  [ @mailer, @templating, @logger, "%contact_email%", "%support_email%" ]
+        arguments:  
+            - @mailer
+            - @templating
+            - @logger
+            - "%contact_email%"
+            - "%support_email%"
         tags:
             - { name: kernel.event_listener, event: order_email }
+            - { name: kernel.event_listener, event: moderation_notification }
+            - { name: kernel.event_listener, event: moderation_banned }
 
     politzr_admin.listener.pdf:
         class:      Politizr\AdminBundle\Listener\PDFListener
@@ -20,6 +27,7 @@ services:
             - @security.token_storage
             - @kernel
             - @router
+            - @event_dispatcher
             - @templating
             - @form.factory
             - @politizr.manager.tag

@@ -33,6 +33,7 @@ class XhrAdmin
 {
     private $securityTokenStorage;
     private $kernel;
+    private $eventDispatcher;
     private $router;
     private $templating;
     private $formFactory;
@@ -45,6 +46,7 @@ class XhrAdmin
      * @param @security.token_storage
      * @param @kernel
      * @param @router
+     * @param @event_dispatcher
      * @param @templating
      * @param @form.factory
      * @param @politizr.manager.tag
@@ -55,6 +57,7 @@ class XhrAdmin
         $securityTokenStorage,
         $kernel,
         $router,
+        $eventDispatcher,
         $templating,
         $formFactory,
         $tagManager,
@@ -64,6 +67,8 @@ class XhrAdmin
         $this->securityTokenStorage = $securityTokenStorage;
 
         $this->kernel = $kernel;
+
+        $this->eventDispatcher = $eventDispatcher;
         
         $this->router = $router;
         $this->templating = $templating;
@@ -550,7 +555,8 @@ class XhrAdmin
                 }
             }
 
-            // @todo mail user
+            // mail user
+            $dispatcher = $this->eventDispatcher->dispatch('moderation_notification', new GenericEvent($userModerated));
         } else {
             $errors = StudioEchoUtils::getAjaxFormErrors($form);
             throw new FormValidationException($errors);

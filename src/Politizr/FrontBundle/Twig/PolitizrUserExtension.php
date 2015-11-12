@@ -36,6 +36,7 @@ class PolitizrUserExtension extends \Twig_Extension
     private $templating;
     private $securityTokenStorage;
     private $securityAuthorizationChecker;
+    private $documentService;
     private $globalTools;
 
     private $user;
@@ -53,7 +54,9 @@ class PolitizrUserExtension extends \Twig_Extension
         $this->templating = $serviceContainer->get('templating');
         
         $this->securityContext = $serviceContainer->get('security.context');
-        $this->securityAuthorizationChecker =$serviceContainer->get('security.authorization_checker');
+        $this->securityAuthorizationChecker = $serviceContainer->get('security.authorization_checker');
+
+        $this->documentService = $serviceContainer->get('politizr.functional.document');
 
         $this->globalTools = $serviceContainer->get('politizr.tools.global');
 
@@ -409,77 +412,18 @@ class PolitizrUserExtension extends \Twig_Extension
             $absolute = true;
         }
 
-        // Récupération de l'objet d'interaction
-        $title = '';
-        $url = '#';
-        $document = null;
-        $documentUrl = '#';
-        switch ($notification->getPObjectName()) {
-            case ObjectTypeConstants::TYPE_DEBATE:
-                $subject = PDDebateQuery::create()->findPk($notification->getPObjectId());
+        // Update attributes depending of context
+        $attr = $this->documentService->computeDocumentContextAttributes(
+            $notification->getPObjectName(),
+            $notification->getPObjectId(),
+            $profileSuffix
+        );
 
-                if ($subject) {
-                    $title = $subject->getTitle();
-                    $url = $this->router->generate('DebateDetail'.$profileSuffix, array('slug' => $subject->getSlug()), $absolute);
-                }
-                break;
-            case ObjectTypeConstants::TYPE_REACTION:
-                $subject = PDReactionQuery::create()->findPk($notification->getPObjectId());
-                
-                if ($subject) {
-                    $title = $subject->getTitle();
-                    $url = $this->router->generate('ReactionDetail'.$profileSuffix, array('slug' => $subject->getSlug()), $absolute);
-
-                    // Document parent associée à la réaction
-                    if ($subject->getTreeLevel() > 1) {
-                        // Réaction parente
-                        $document = $subject->getParent();
-                        $documentUrl = $this->router->generate('ReactionDetail'.$profileSuffix, array('slug' => $document->getSlug()), $absolute);
-                    } else {
-                        // Débat
-                        $document = $subject->getDebate();
-                        $documentUrl = $this->router->generate('DebateDetail'.$profileSuffix, array('slug' => $document->getSlug()), $absolute);
-                    }
-                }
-
-                break;
-            case ObjectTypeConstants::TYPE_DEBATE_COMMENT:
-                $subject = PDDCommentQuery::create()->findPk($notification->getPObjectId());
-                
-                if ($subject) {
-                    $document = $subject->getPDocument();
-                    $title = $subject->getDescription();
-                    $url = $this->router->generate('DebateDetail'.$profileSuffix, array('slug' => $document->getSlug()), $absolute) . '#p-' . $subject->getParagraphNo();
-                    $documentUrl = $this->router->generate('DebateDetail'.$profileSuffix, array('slug' => $document->getSlug()), $absolute);
-                }
-                break;
-            case ObjectTypeConstants::TYPE_REACTION_COMMENT:
-                $subject = PDRCommentQuery::create()->findPk($notification->getPObjectId());
-                
-                if ($subject) {
-                    $document = $subject->getPDocument();
-                    $title = $subject->getDescription();
-                    $url = $this->router->generate('ReactionDetail'.$profileSuffix, array('slug' => $document->getSlug()), $absolute) . '#p-' . $subject->getParagraphNo();
-                    $documentUrl = $this->router->generate('ReactionDetail'.$profileSuffix, array('slug' => $document->getSlug()), $absolute);
-                }
-                break;
-            case ObjectTypeConstants::TYPE_USER:
-                $subject = PUserQuery::create()->findPk($notification->getPObjectId());
-
-                if ($subject) {
-                    $title = $subject->getFirstname().' '.$subject->getName();
-                    $url = $this->router->generate('UserDetail'.$profileSuffix, array('slug' => $subject->getSlug()), $absolute);
-                }
-                break;
-            case ObjectTypeConstants::TYPE_BADGE:
-                $subject = PRBadgeQuery::create()->findPk($notification->getPObjectId());
-
-                if ($subject) {
-                    $title = $subject->getTitle();
-                }
-                
-                break;
-        }
+        $subject = $attr['subject'];
+        $title = $attr['title'];
+        $url = $attr['url'];
+        $document = $attr['document'];
+        $documentUrl = $attr['documentUrl'];
 
         // Récupération de l'auteur de l'interaction
         $author = PUserQuery::create()->findPk($notification->getPAuthorUserId());

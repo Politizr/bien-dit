@@ -238,6 +238,7 @@ class EmailListener
             }
         } catch (\Exception $e) {
             $this->logger->err('Exception - message = '.$e->getMessage());
+
             $pmAppException = $this->monitoringManager->createAppException($e);
         }
     }

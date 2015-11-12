@@ -14,6 +14,10 @@ use Politizr\FrontBundle\Lib\Manager\DocumentManager;
 
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
+use Politizr\Model\PDDCommentQuery;
+use Politizr\Model\PDRCommentQuery;
+use Politizr\Model\PUserQuery;
+use Politizr\Model\PRBadgeQuery;
 
 /**
  * Functional service for document management.
@@ -27,6 +31,8 @@ class DocumentService
     
     private $documentManager;
 
+    private $router;
+    
     private $logger;
 
     /**
@@ -34,18 +40,22 @@ class DocumentService
      * @param @security.token_storage
      * @param @security.authorization_checker
      * @param @politizr.manager.document
+     * @param @router
      * @param @logger
      */
     public function __construct(
         $securityTokenStorage,
         $securityAuthorizationChecker,
         $documentManager,
+        $router,
         $logger
     ) {
         $this->securityTokenStorage = $securityTokenStorage;
         $this->securityAuthorizationChecker =$securityAuthorizationChecker;
 
         $this->documentManager = $documentManager;
+
+        $this->router = $router;
 
         $this->logger = $logger;
     }
@@ -211,5 +221,107 @@ class DocumentService
         $documents = $this->hydrateDocumentRows($sql);
 
         return $documents;
+    }
+
+    /* ######################################################################################################## */
+    /*                                  CONTEXT BY DOCUMENT TYPE                                                */
+    /* ######################################################################################################## */
+    
+    /**
+     * Compute various attributes depending of the document context
+     *
+     * @param string $objectName
+     * @param int $objectId
+     * @param string $profileSuffix
+     * @param boolean $absolute URL
+     * @return array [subject,title,url,document,documentUrl]
+     */
+    public function computeDocumentContextAttributes($objectName, $objectId, $profileSuffix, $absolute = true)
+    {
+        $this->logger->info('*** computeDocumentContextAttributes');
+        $this->logger->info('$objectName = '.print_r($objectName, true));
+        $this->logger->info('$objectId = '.print_r($objectId, true));
+        $this->logger->info('$profileSuffix = '.print_r($profileSuffix, true));
+        $this->logger->info('$absolute = '.print_r($absolute, true));
+
+        $subject = null;
+        $title = '';
+        $url = '#';
+        $document = null;
+        $documentUrl = '#';
+        switch ($objectName) {
+            case ObjectTypeConstants::TYPE_DEBATE:
+                $subject = PDDebateQuery::create()->findPk($objectId);
+
+                if ($subject) {
+                    $title = $subject->getTitle();
+                    $url = $this->router->generate('DebateDetail'.$profileSuffix, array('slug' => $subject->getSlug()), $absolute);
+                }
+                break;
+            case ObjectTypeConstants::TYPE_REACTION:
+                $subject = PDReactionQuery::create()->findPk($objectId);
+                
+                if ($subject) {
+                    $title = $subject->getTitle();
+                    $url = $this->router->generate('ReactionDetail'.$profileSuffix, array('slug' => $subject->getSlug()), $absolute);
+
+                    // Document parent associée à la réaction
+                    if ($subject->getTreeLevel() > 1) {
+                        // Réaction parente
+                        $document = $subject->getParent();
+                        $documentUrl = $this->router->generate('ReactionDetail'.$profileSuffix, array('slug' => $document->getSlug()), $absolute);
+                    } else {
+                        // Débat
+                        $document = $subject->getDebate();
+                        $documentUrl = $this->router->generate('DebateDetail'.$profileSuffix, array('slug' => $document->getSlug()), $absolute);
+                    }
+                }
+
+                break;
+            case ObjectTypeConstants::TYPE_DEBATE_COMMENT:
+                $subject = PDDCommentQuery::create()->findPk($objectId);
+                
+                if ($subject) {
+                    $document = $subject->getPDocument();
+                    $title = $subject->getDescription();
+                    $url = $this->router->generate('DebateDetail'.$profileSuffix, array('slug' => $document->getSlug()), $absolute) . '#p-' . $subject->getParagraphNo();
+                    $documentUrl = $this->router->generate('DebateDetail'.$profileSuffix, array('slug' => $document->getSlug()), $absolute);
+                }
+                break;
+            case ObjectTypeConstants::TYPE_REACTION_COMMENT:
+                $subject = PDRCommentQuery::create()->findPk($objectId);
+                
+                if ($subject) {
+                    $document = $subject->getPDocument();
+                    $title = $subject->getDescription();
+                    $url = $this->router->generate('ReactionDetail'.$profileSuffix, array('slug' => $document->getSlug()), $absolute) . '#p-' . $subject->getParagraphNo();
+                    $documentUrl = $this->router->generate('ReactionDetail'.$profileSuffix, array('slug' => $document->getSlug()), $absolute);
+                }
+                break;
+            case ObjectTypeConstants::TYPE_USER:
+                $subject = PUserQuery::create()->findPk($objectId);
+
+                if ($subject) {
+                    $title = $subject->getFirstname().' '.$subject->getName();
+                    $url = $this->router->generate('UserDetail'.$profileSuffix, array('slug' => $subject->getSlug()), $absolute);
+                }
+                break;
+            case ObjectTypeConstants::TYPE_BADGE:
+                $subject = PRBadgeQuery::create()->findPk($objectId);
+
+                if ($subject) {
+                    $title = $subject->getTitle();
+                }
+                
+                break;
+        }
+
+        return array(
+            'subject' => $subject,
+            'title' => $title,
+            'url' => $url,
+            'document' => $document,
+            'documentUrl' => $documentUrl,
+        );
     }
 }

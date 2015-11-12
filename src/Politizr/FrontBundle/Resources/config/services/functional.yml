@@ -5,6 +5,7 @@ services:
             - @security.token_storage
             - @security.authorization_checker
             - @politizr.manager.document
+            - @router
             - @logger
 
     politizr.functional.security:

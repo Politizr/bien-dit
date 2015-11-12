@@ -161,7 +161,7 @@ builders:
                     "Followers":                [ followers ]
                     "Abonnements":              [ subscribers ]
                 "Modération":
-                    "Bannissement":             [ [ banned, banned_nb_days_left, banned_nb_total ] ]
+                    "Bannissement":             [ [ banned, banned_nb_days_left ] ]
                     "Risque user":              [ abuse_level ]
                 "Statut":
                     "Actuel":                   [ p_u_status_id ]
@@ -308,6 +308,11 @@ builders:
                 "Statut":
                     "Actuel":                   [ [ p_u_status ] ]
                     "Connexion":                [ last_login, last_activity ]
+                "Modération":
+                    "Bannissement":             [ [ banned, banned_nb_days_left, banned_nb_total ] ]
+                    "Risque user":              [ abuse_level ]
+                    "Notification":             [ block_moderation_alert_new  ]
+                    "Précédentes notifications": [ block_moderation_alert_listing  ]
                 "Attributs":
                     "En ligne":                 [ [ online ] ]
                     "Validé":                   [ [ validated ] ]
@@ -350,6 +355,10 @@ builders:
                     label:                      "Abonnements"
                 block_affinities:
                     label:                      "Partis Politiques"
+                block_moderation_alert_new:
+                    label:                      "Alerte"
+                block_moderation_alert_listing:
+                    label:                      "Historique de l'utilisateur"
                 block_front:
                     label:                      "Rendu front"
                 last_login:

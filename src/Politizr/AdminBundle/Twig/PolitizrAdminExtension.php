@@ -33,6 +33,7 @@ class PolitizrAdminExtension extends \Twig_Extension
 
     private $formFactory;
 
+    protected $documentService;
     private $router;
     private $templating;
 
@@ -44,6 +45,8 @@ class PolitizrAdminExtension extends \Twig_Extension
         $this->logger = $serviceContainer->get('logger');
 
         $this->formFactory = $serviceContainer->get('form.factory');
+
+        $this->documentService = $serviceContainer->get('politizr.functional.document');
 
         $this->router = $serviceContainer->get('router');
         $this->templating = $serviceContainer->get('templating');
@@ -57,12 +60,12 @@ class PolitizrAdminExtension extends \Twig_Extension
     /**
      *  Renvoie la liste des filtres
      */
-//     public function getFilters()
-//     {
-//         return array(
-//             new \Twig_SimpleFilter('price', array($this, 'priceFilter')),
-//         );
-//     }
+    public function getFilters()
+    {
+        return array(
+            new \Twig_SimpleFilter('linkedModeration', array($this, 'linkedModeration')),
+        );
+    }
 
 
     /**
@@ -234,6 +237,75 @@ class PolitizrAdminExtension extends \Twig_Extension
             ),
         );
     }
+
+
+    /* ######################################################################################################## */
+    /*                                              FILTERS                                                     */
+    /* ######################################################################################################## */
+
+    // ****************************************  MODERATION ******************************************* //
+
+    /**
+     * Moderation HTML rendering
+     *
+     * @param PMUserModerated $userModerated
+     * @param string $type html or txt mail
+     * @return html
+     */
+    public function linkedModeration(PMUserModerated $userModerated, $type)
+    {
+        $this->logger->info('*** linkedModeration');
+        $this->logger->info('$userModerated = '.print_r($userModerated, true));
+        $this->logger->info('$type = '.print_r($type, true));
+
+        // User
+        $author = PUserQuery::create()->findPk($userModerated->getPUserId());
+
+        if ($author->isQualified()) {
+            $profileSuffix = 'E';
+        } else {
+            $profileSuffix = 'C';
+        }
+
+        $authorUrl = null;
+        if ($author) {
+            $authorUrl = $this->router->generate('UserDetail'.$profileSuffix, array('slug' => $author->getSlug()), true);
+        }
+
+        // Update attributes depending of context
+        $attr = $this->documentService->computeDocumentContextAttributes(
+            $userModerated->getPObjectName(),
+            $userModerated->getPObjectId(),
+            $profileSuffix
+        );
+
+        $subject = $attr['subject'];
+        $title = $attr['title'];
+        $url = $attr['url'];
+        $document = $attr['document'];
+        $documentUrl = $attr['documentUrl'];
+
+        $html = $this->templating->render(
+            'PolitizrAdminBundle:Fragment\\Moderation:_notification.html.twig',
+            array(
+                'type' => $type,
+                'userModerated' => $userModerated,
+                'subject' => $subject,
+                'title' => $title,
+                'url' => $url,
+                'author' => $author,
+                'authorUrl' => $authorUrl,
+                'document' => $document,
+                'documentUrl' => $documentUrl,
+            )
+        );
+
+        return $html;
+    }
+
+    /* ######################################################################################################## */
+    /*                                              FUNCTIONS                                                   */
+    /* ######################################################################################################## */
 
     // ****************************************  GESTION USER ******************************************* //
 
