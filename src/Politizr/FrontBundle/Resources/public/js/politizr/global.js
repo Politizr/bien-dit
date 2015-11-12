@@ -171,26 +171,6 @@ function fullImgLiquid() {
     });
 }
 
-// sticky date
-function stickyDate() {
-    // console.log('*** stickyDate');
-    
-    // sticky day for css
-    // with timelineHeader
-    if( $('body.css #timelineHeader').is(':visible') ) {
-        $("body.css .timelineDayContainer").stickySectionHeaders({stickyClass: 'timelineDay', padding: 110});
-        $("body.css .timelineDayContainer").stickySectionHeaders({stickyClass: 'stickyTimelineHeader', padding: 60});
-    } else {
-        $("body.css .timelineDayContainer").stickySectionHeaders({stickyClass: 'timelineDay', padding: 50});
-    }
-
-    // sticky timeline dates for css 1000
-    $("body.css1000 .timelineDayContainer").stickySectionHeaders({stickyClass: 'timelineDay', padding: 60});
-
-    // sticky timeline dates for css 760
-    $("body.css760 .timelineDayContainer").stickySectionHeaders({stickyClass: 'timelineDay', padding: 0});
-}
-
 /**
  * get last week date
  * @return Date
