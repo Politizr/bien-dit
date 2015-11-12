@@ -31,8 +31,18 @@ use Politizr\Model\PMAppException;
 use Politizr\Model\PMAppExceptionQuery;
 use Politizr\Model\PMAskForUpdate;
 use Politizr\Model\PMAskForUpdateQuery;
+use Politizr\Model\PMDCommentHistoric;
+use Politizr\Model\PMDCommentHistoricQuery;
+use Politizr\Model\PMDebateHistoric;
+use Politizr\Model\PMDebateHistoricQuery;
 use Politizr\Model\PMModerationType;
 use Politizr\Model\PMModerationTypeQuery;
+use Politizr\Model\PMRCommentHistoric;
+use Politizr\Model\PMRCommentHistoricQuery;
+use Politizr\Model\PMReactionHistoric;
+use Politizr\Model\PMReactionHistoricQuery;
+use Politizr\Model\PMUserHistoric;
+use Politizr\Model\PMUserHistoricQuery;
 use Politizr\Model\PMUserMessage;
 use Politizr\Model\PMUserMessageQuery;
 use Politizr\Model\PMUserModerated;
@@ -546,6 +556,36 @@ abstract class BasePUser extends BaseObject implements Persistent
     protected $collPMUserMessagesPartial;
 
     /**
+     * @var        PropelObjectCollection|PMUserHistoric[] Collection to store aggregation of PMUserHistoric objects.
+     */
+    protected $collPMUserHistorics;
+    protected $collPMUserHistoricsPartial;
+
+    /**
+     * @var        PropelObjectCollection|PMDebateHistoric[] Collection to store aggregation of PMDebateHistoric objects.
+     */
+    protected $collPMDebateHistorics;
+    protected $collPMDebateHistoricsPartial;
+
+    /**
+     * @var        PropelObjectCollection|PMReactionHistoric[] Collection to store aggregation of PMReactionHistoric objects.
+     */
+    protected $collPMReactionHistorics;
+    protected $collPMReactionHistoricsPartial;
+
+    /**
+     * @var        PropelObjectCollection|PMDCommentHistoric[] Collection to store aggregation of PMDCommentHistoric objects.
+     */
+    protected $collPMDCommentHistorics;
+    protected $collPMDCommentHistoricsPartial;
+
+    /**
+     * @var        PropelObjectCollection|PMRCommentHistoric[] Collection to store aggregation of PMRCommentHistoric objects.
+     */
+    protected $collPMRCommentHistorics;
+    protected $collPMRCommentHistoricsPartial;
+
+    /**
      * @var        PropelObjectCollection|PMAskForUpdate[] Collection to store aggregation of PMAskForUpdate objects.
      */
     protected $collPMAskForUpdates;
@@ -864,6 +904,36 @@ abstract class BasePUser extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $pMUserMessagesScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pMUserHistoricsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pMDebateHistoricsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pMReactionHistoricsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pMDCommentHistoricsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pMRCommentHistoricsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -3161,6 +3231,16 @@ abstract class BasePUser extends BaseObject implements Persistent
 
             $this->collPMUserMessages = null;
 
+            $this->collPMUserHistorics = null;
+
+            $this->collPMDebateHistorics = null;
+
+            $this->collPMReactionHistorics = null;
+
+            $this->collPMDCommentHistorics = null;
+
+            $this->collPMRCommentHistorics = null;
+
             $this->collPMAskForUpdates = null;
 
             $this->collPMAbuseReportings = null;
@@ -4024,6 +4104,96 @@ abstract class BasePUser extends BaseObject implements Persistent
                 }
             }
 
+            if ($this->pMUserHistoricsScheduledForDeletion !== null) {
+                if (!$this->pMUserHistoricsScheduledForDeletion->isEmpty()) {
+                    foreach ($this->pMUserHistoricsScheduledForDeletion as $pMUserHistoric) {
+                        // need to save related object because we set the relation to null
+                        $pMUserHistoric->save($con);
+                    }
+                    $this->pMUserHistoricsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPMUserHistorics !== null) {
+                foreach ($this->collPMUserHistorics as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->pMDebateHistoricsScheduledForDeletion !== null) {
+                if (!$this->pMDebateHistoricsScheduledForDeletion->isEmpty()) {
+                    foreach ($this->pMDebateHistoricsScheduledForDeletion as $pMDebateHistoric) {
+                        // need to save related object because we set the relation to null
+                        $pMDebateHistoric->save($con);
+                    }
+                    $this->pMDebateHistoricsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPMDebateHistorics !== null) {
+                foreach ($this->collPMDebateHistorics as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->pMReactionHistoricsScheduledForDeletion !== null) {
+                if (!$this->pMReactionHistoricsScheduledForDeletion->isEmpty()) {
+                    foreach ($this->pMReactionHistoricsScheduledForDeletion as $pMReactionHistoric) {
+                        // need to save related object because we set the relation to null
+                        $pMReactionHistoric->save($con);
+                    }
+                    $this->pMReactionHistoricsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPMReactionHistorics !== null) {
+                foreach ($this->collPMReactionHistorics as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->pMDCommentHistoricsScheduledForDeletion !== null) {
+                if (!$this->pMDCommentHistoricsScheduledForDeletion->isEmpty()) {
+                    foreach ($this->pMDCommentHistoricsScheduledForDeletion as $pMDCommentHistoric) {
+                        // need to save related object because we set the relation to null
+                        $pMDCommentHistoric->save($con);
+                    }
+                    $this->pMDCommentHistoricsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPMDCommentHistorics !== null) {
+                foreach ($this->collPMDCommentHistorics as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->pMRCommentHistoricsScheduledForDeletion !== null) {
+                if (!$this->pMRCommentHistoricsScheduledForDeletion->isEmpty()) {
+                    foreach ($this->pMRCommentHistoricsScheduledForDeletion as $pMRCommentHistoric) {
+                        // need to save related object because we set the relation to null
+                        $pMRCommentHistoric->save($con);
+                    }
+                    $this->pMRCommentHistoricsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPMRCommentHistorics !== null) {
+                foreach ($this->collPMRCommentHistorics as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
             if ($this->pMAskForUpdatesScheduledForDeletion !== null) {
                 if (!$this->pMAskForUpdatesScheduledForDeletion->isEmpty()) {
                     foreach ($this->pMAskForUpdatesScheduledForDeletion as $pMAskForUpdate) {
@@ -4720,6 +4890,46 @@ abstract class BasePUser extends BaseObject implements Persistent
                     }
                 }
 
+                if ($this->collPMUserHistorics !== null) {
+                    foreach ($this->collPMUserHistorics as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
+                if ($this->collPMDebateHistorics !== null) {
+                    foreach ($this->collPMDebateHistorics as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
+                if ($this->collPMReactionHistorics !== null) {
+                    foreach ($this->collPMReactionHistorics as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
+                if ($this->collPMDCommentHistorics !== null) {
+                    foreach ($this->collPMDCommentHistorics as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
+                if ($this->collPMRCommentHistorics !== null) {
+                    foreach ($this->collPMRCommentHistorics as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
                 if ($this->collPMAskForUpdates !== null) {
                     foreach ($this->collPMAskForUpdates as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
@@ -5093,6 +5303,21 @@ abstract class BasePUser extends BaseObject implements Persistent
             }
             if (null !== $this->collPMUserMessages) {
                 $result['PMUserMessages'] = $this->collPMUserMessages->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collPMUserHistorics) {
+                $result['PMUserHistorics'] = $this->collPMUserHistorics->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collPMDebateHistorics) {
+                $result['PMDebateHistorics'] = $this->collPMDebateHistorics->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collPMReactionHistorics) {
+                $result['PMReactionHistorics'] = $this->collPMReactionHistorics->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collPMDCommentHistorics) {
+                $result['PMDCommentHistorics'] = $this->collPMDCommentHistorics->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collPMRCommentHistorics) {
+                $result['PMRCommentHistorics'] = $this->collPMRCommentHistorics->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collPMAskForUpdates) {
                 $result['PMAskForUpdates'] = $this->collPMAskForUpdates->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -5676,6 +5901,36 @@ abstract class BasePUser extends BaseObject implements Persistent
                 }
             }
 
+            foreach ($this->getPMUserHistorics() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPMUserHistoric($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getPMDebateHistorics() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPMDebateHistoric($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getPMReactionHistorics() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPMReactionHistoric($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getPMDCommentHistorics() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPMDCommentHistoric($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getPMRCommentHistorics() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPMRCommentHistoric($relObj->copy($deepCopy));
+                }
+            }
+
             foreach ($this->getPMAskForUpdates() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addPMAskForUpdate($relObj->copy($deepCopy));
@@ -5878,6 +6133,21 @@ abstract class BasePUser extends BaseObject implements Persistent
         }
         if ('PMUserMessage' == $relationName) {
             $this->initPMUserMessages();
+        }
+        if ('PMUserHistoric' == $relationName) {
+            $this->initPMUserHistorics();
+        }
+        if ('PMDebateHistoric' == $relationName) {
+            $this->initPMDebateHistorics();
+        }
+        if ('PMReactionHistoric' == $relationName) {
+            $this->initPMReactionHistorics();
+        }
+        if ('PMDCommentHistoric' == $relationName) {
+            $this->initPMDCommentHistorics();
+        }
+        if ('PMRCommentHistoric' == $relationName) {
+            $this->initPMRCommentHistorics();
         }
         if ('PMAskForUpdate' == $relationName) {
             $this->initPMAskForUpdates();
@@ -10972,6 +11242,1231 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collPMUserHistorics collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PUser The current object (for fluent API support)
+     * @see        addPMUserHistorics()
+     */
+    public function clearPMUserHistorics()
+    {
+        $this->collPMUserHistorics = null; // important to set this to null since that means it is uninitialized
+        $this->collPMUserHistoricsPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPMUserHistorics collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPMUserHistorics($v = true)
+    {
+        $this->collPMUserHistoricsPartial = $v;
+    }
+
+    /**
+     * Initializes the collPMUserHistorics collection.
+     *
+     * By default this just sets the collPMUserHistorics collection to an empty array (like clearcollPMUserHistorics());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPMUserHistorics($overrideExisting = true)
+    {
+        if (null !== $this->collPMUserHistorics && !$overrideExisting) {
+            return;
+        }
+        $this->collPMUserHistorics = new PropelObjectCollection();
+        $this->collPMUserHistorics->setModel('PMUserHistoric');
+    }
+
+    /**
+     * Gets an array of PMUserHistoric objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PUser is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PMUserHistoric[] List of PMUserHistoric objects
+     * @throws PropelException
+     */
+    public function getPMUserHistorics($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPMUserHistoricsPartial && !$this->isNew();
+        if (null === $this->collPMUserHistorics || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPMUserHistorics) {
+                // return empty collection
+                $this->initPMUserHistorics();
+            } else {
+                $collPMUserHistorics = PMUserHistoricQuery::create(null, $criteria)
+                    ->filterByPUser($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPMUserHistoricsPartial && count($collPMUserHistorics)) {
+                      $this->initPMUserHistorics(false);
+
+                      foreach ($collPMUserHistorics as $obj) {
+                        if (false == $this->collPMUserHistorics->contains($obj)) {
+                          $this->collPMUserHistorics->append($obj);
+                        }
+                      }
+
+                      $this->collPMUserHistoricsPartial = true;
+                    }
+
+                    $collPMUserHistorics->getInternalIterator()->rewind();
+
+                    return $collPMUserHistorics;
+                }
+
+                if ($partial && $this->collPMUserHistorics) {
+                    foreach ($this->collPMUserHistorics as $obj) {
+                        if ($obj->isNew()) {
+                            $collPMUserHistorics[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPMUserHistorics = $collPMUserHistorics;
+                $this->collPMUserHistoricsPartial = false;
+            }
+        }
+
+        return $this->collPMUserHistorics;
+    }
+
+    /**
+     * Sets a collection of PMUserHistoric objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pMUserHistorics A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PUser The current object (for fluent API support)
+     */
+    public function setPMUserHistorics(PropelCollection $pMUserHistorics, PropelPDO $con = null)
+    {
+        $pMUserHistoricsToDelete = $this->getPMUserHistorics(new Criteria(), $con)->diff($pMUserHistorics);
+
+
+        $this->pMUserHistoricsScheduledForDeletion = $pMUserHistoricsToDelete;
+
+        foreach ($pMUserHistoricsToDelete as $pMUserHistoricRemoved) {
+            $pMUserHistoricRemoved->setPUser(null);
+        }
+
+        $this->collPMUserHistorics = null;
+        foreach ($pMUserHistorics as $pMUserHistoric) {
+            $this->addPMUserHistoric($pMUserHistoric);
+        }
+
+        $this->collPMUserHistorics = $pMUserHistorics;
+        $this->collPMUserHistoricsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PMUserHistoric objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PMUserHistoric objects.
+     * @throws PropelException
+     */
+    public function countPMUserHistorics(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPMUserHistoricsPartial && !$this->isNew();
+        if (null === $this->collPMUserHistorics || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPMUserHistorics) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPMUserHistorics());
+            }
+            $query = PMUserHistoricQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPUser($this)
+                ->count($con);
+        }
+
+        return count($this->collPMUserHistorics);
+    }
+
+    /**
+     * Method called to associate a PMUserHistoric object to this object
+     * through the PMUserHistoric foreign key attribute.
+     *
+     * @param    PMUserHistoric $l PMUserHistoric
+     * @return PUser The current object (for fluent API support)
+     */
+    public function addPMUserHistoric(PMUserHistoric $l)
+    {
+        if ($this->collPMUserHistorics === null) {
+            $this->initPMUserHistorics();
+            $this->collPMUserHistoricsPartial = true;
+        }
+
+        if (!in_array($l, $this->collPMUserHistorics->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPMUserHistoric($l);
+
+            if ($this->pMUserHistoricsScheduledForDeletion and $this->pMUserHistoricsScheduledForDeletion->contains($l)) {
+                $this->pMUserHistoricsScheduledForDeletion->remove($this->pMUserHistoricsScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PMUserHistoric $pMUserHistoric The pMUserHistoric object to add.
+     */
+    protected function doAddPMUserHistoric($pMUserHistoric)
+    {
+        $this->collPMUserHistorics[]= $pMUserHistoric;
+        $pMUserHistoric->setPUser($this);
+    }
+
+    /**
+     * @param	PMUserHistoric $pMUserHistoric The pMUserHistoric object to remove.
+     * @return PUser The current object (for fluent API support)
+     */
+    public function removePMUserHistoric($pMUserHistoric)
+    {
+        if ($this->getPMUserHistorics()->contains($pMUserHistoric)) {
+            $this->collPMUserHistorics->remove($this->collPMUserHistorics->search($pMUserHistoric));
+            if (null === $this->pMUserHistoricsScheduledForDeletion) {
+                $this->pMUserHistoricsScheduledForDeletion = clone $this->collPMUserHistorics;
+                $this->pMUserHistoricsScheduledForDeletion->clear();
+            }
+            $this->pMUserHistoricsScheduledForDeletion[]= $pMUserHistoric;
+            $pMUserHistoric->setPUser(null);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Clears out the collPMDebateHistorics collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PUser The current object (for fluent API support)
+     * @see        addPMDebateHistorics()
+     */
+    public function clearPMDebateHistorics()
+    {
+        $this->collPMDebateHistorics = null; // important to set this to null since that means it is uninitialized
+        $this->collPMDebateHistoricsPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPMDebateHistorics collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPMDebateHistorics($v = true)
+    {
+        $this->collPMDebateHistoricsPartial = $v;
+    }
+
+    /**
+     * Initializes the collPMDebateHistorics collection.
+     *
+     * By default this just sets the collPMDebateHistorics collection to an empty array (like clearcollPMDebateHistorics());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPMDebateHistorics($overrideExisting = true)
+    {
+        if (null !== $this->collPMDebateHistorics && !$overrideExisting) {
+            return;
+        }
+        $this->collPMDebateHistorics = new PropelObjectCollection();
+        $this->collPMDebateHistorics->setModel('PMDebateHistoric');
+    }
+
+    /**
+     * Gets an array of PMDebateHistoric objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PUser is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PMDebateHistoric[] List of PMDebateHistoric objects
+     * @throws PropelException
+     */
+    public function getPMDebateHistorics($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPMDebateHistoricsPartial && !$this->isNew();
+        if (null === $this->collPMDebateHistorics || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPMDebateHistorics) {
+                // return empty collection
+                $this->initPMDebateHistorics();
+            } else {
+                $collPMDebateHistorics = PMDebateHistoricQuery::create(null, $criteria)
+                    ->filterByPUser($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPMDebateHistoricsPartial && count($collPMDebateHistorics)) {
+                      $this->initPMDebateHistorics(false);
+
+                      foreach ($collPMDebateHistorics as $obj) {
+                        if (false == $this->collPMDebateHistorics->contains($obj)) {
+                          $this->collPMDebateHistorics->append($obj);
+                        }
+                      }
+
+                      $this->collPMDebateHistoricsPartial = true;
+                    }
+
+                    $collPMDebateHistorics->getInternalIterator()->rewind();
+
+                    return $collPMDebateHistorics;
+                }
+
+                if ($partial && $this->collPMDebateHistorics) {
+                    foreach ($this->collPMDebateHistorics as $obj) {
+                        if ($obj->isNew()) {
+                            $collPMDebateHistorics[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPMDebateHistorics = $collPMDebateHistorics;
+                $this->collPMDebateHistoricsPartial = false;
+            }
+        }
+
+        return $this->collPMDebateHistorics;
+    }
+
+    /**
+     * Sets a collection of PMDebateHistoric objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pMDebateHistorics A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PUser The current object (for fluent API support)
+     */
+    public function setPMDebateHistorics(PropelCollection $pMDebateHistorics, PropelPDO $con = null)
+    {
+        $pMDebateHistoricsToDelete = $this->getPMDebateHistorics(new Criteria(), $con)->diff($pMDebateHistorics);
+
+
+        $this->pMDebateHistoricsScheduledForDeletion = $pMDebateHistoricsToDelete;
+
+        foreach ($pMDebateHistoricsToDelete as $pMDebateHistoricRemoved) {
+            $pMDebateHistoricRemoved->setPUser(null);
+        }
+
+        $this->collPMDebateHistorics = null;
+        foreach ($pMDebateHistorics as $pMDebateHistoric) {
+            $this->addPMDebateHistoric($pMDebateHistoric);
+        }
+
+        $this->collPMDebateHistorics = $pMDebateHistorics;
+        $this->collPMDebateHistoricsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PMDebateHistoric objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PMDebateHistoric objects.
+     * @throws PropelException
+     */
+    public function countPMDebateHistorics(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPMDebateHistoricsPartial && !$this->isNew();
+        if (null === $this->collPMDebateHistorics || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPMDebateHistorics) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPMDebateHistorics());
+            }
+            $query = PMDebateHistoricQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPUser($this)
+                ->count($con);
+        }
+
+        return count($this->collPMDebateHistorics);
+    }
+
+    /**
+     * Method called to associate a PMDebateHistoric object to this object
+     * through the PMDebateHistoric foreign key attribute.
+     *
+     * @param    PMDebateHistoric $l PMDebateHistoric
+     * @return PUser The current object (for fluent API support)
+     */
+    public function addPMDebateHistoric(PMDebateHistoric $l)
+    {
+        if ($this->collPMDebateHistorics === null) {
+            $this->initPMDebateHistorics();
+            $this->collPMDebateHistoricsPartial = true;
+        }
+
+        if (!in_array($l, $this->collPMDebateHistorics->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPMDebateHistoric($l);
+
+            if ($this->pMDebateHistoricsScheduledForDeletion and $this->pMDebateHistoricsScheduledForDeletion->contains($l)) {
+                $this->pMDebateHistoricsScheduledForDeletion->remove($this->pMDebateHistoricsScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PMDebateHistoric $pMDebateHistoric The pMDebateHistoric object to add.
+     */
+    protected function doAddPMDebateHistoric($pMDebateHistoric)
+    {
+        $this->collPMDebateHistorics[]= $pMDebateHistoric;
+        $pMDebateHistoric->setPUser($this);
+    }
+
+    /**
+     * @param	PMDebateHistoric $pMDebateHistoric The pMDebateHistoric object to remove.
+     * @return PUser The current object (for fluent API support)
+     */
+    public function removePMDebateHistoric($pMDebateHistoric)
+    {
+        if ($this->getPMDebateHistorics()->contains($pMDebateHistoric)) {
+            $this->collPMDebateHistorics->remove($this->collPMDebateHistorics->search($pMDebateHistoric));
+            if (null === $this->pMDebateHistoricsScheduledForDeletion) {
+                $this->pMDebateHistoricsScheduledForDeletion = clone $this->collPMDebateHistorics;
+                $this->pMDebateHistoricsScheduledForDeletion->clear();
+            }
+            $this->pMDebateHistoricsScheduledForDeletion[]= $pMDebateHistoric;
+            $pMDebateHistoric->setPUser(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PUser is new, it will return
+     * an empty collection; or if this PUser has previously
+     * been saved, it will retrieve related PMDebateHistorics from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PUser.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PMDebateHistoric[] List of PMDebateHistoric objects
+     */
+    public function getPMDebateHistoricsJoinPDDebate($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PMDebateHistoricQuery::create(null, $criteria);
+        $query->joinWith('PDDebate', $join_behavior);
+
+        return $this->getPMDebateHistorics($query, $con);
+    }
+
+    /**
+     * Clears out the collPMReactionHistorics collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PUser The current object (for fluent API support)
+     * @see        addPMReactionHistorics()
+     */
+    public function clearPMReactionHistorics()
+    {
+        $this->collPMReactionHistorics = null; // important to set this to null since that means it is uninitialized
+        $this->collPMReactionHistoricsPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPMReactionHistorics collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPMReactionHistorics($v = true)
+    {
+        $this->collPMReactionHistoricsPartial = $v;
+    }
+
+    /**
+     * Initializes the collPMReactionHistorics collection.
+     *
+     * By default this just sets the collPMReactionHistorics collection to an empty array (like clearcollPMReactionHistorics());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPMReactionHistorics($overrideExisting = true)
+    {
+        if (null !== $this->collPMReactionHistorics && !$overrideExisting) {
+            return;
+        }
+        $this->collPMReactionHistorics = new PropelObjectCollection();
+        $this->collPMReactionHistorics->setModel('PMReactionHistoric');
+    }
+
+    /**
+     * Gets an array of PMReactionHistoric objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PUser is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PMReactionHistoric[] List of PMReactionHistoric objects
+     * @throws PropelException
+     */
+    public function getPMReactionHistorics($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPMReactionHistoricsPartial && !$this->isNew();
+        if (null === $this->collPMReactionHistorics || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPMReactionHistorics) {
+                // return empty collection
+                $this->initPMReactionHistorics();
+            } else {
+                $collPMReactionHistorics = PMReactionHistoricQuery::create(null, $criteria)
+                    ->filterByPUser($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPMReactionHistoricsPartial && count($collPMReactionHistorics)) {
+                      $this->initPMReactionHistorics(false);
+
+                      foreach ($collPMReactionHistorics as $obj) {
+                        if (false == $this->collPMReactionHistorics->contains($obj)) {
+                          $this->collPMReactionHistorics->append($obj);
+                        }
+                      }
+
+                      $this->collPMReactionHistoricsPartial = true;
+                    }
+
+                    $collPMReactionHistorics->getInternalIterator()->rewind();
+
+                    return $collPMReactionHistorics;
+                }
+
+                if ($partial && $this->collPMReactionHistorics) {
+                    foreach ($this->collPMReactionHistorics as $obj) {
+                        if ($obj->isNew()) {
+                            $collPMReactionHistorics[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPMReactionHistorics = $collPMReactionHistorics;
+                $this->collPMReactionHistoricsPartial = false;
+            }
+        }
+
+        return $this->collPMReactionHistorics;
+    }
+
+    /**
+     * Sets a collection of PMReactionHistoric objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pMReactionHistorics A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PUser The current object (for fluent API support)
+     */
+    public function setPMReactionHistorics(PropelCollection $pMReactionHistorics, PropelPDO $con = null)
+    {
+        $pMReactionHistoricsToDelete = $this->getPMReactionHistorics(new Criteria(), $con)->diff($pMReactionHistorics);
+
+
+        $this->pMReactionHistoricsScheduledForDeletion = $pMReactionHistoricsToDelete;
+
+        foreach ($pMReactionHistoricsToDelete as $pMReactionHistoricRemoved) {
+            $pMReactionHistoricRemoved->setPUser(null);
+        }
+
+        $this->collPMReactionHistorics = null;
+        foreach ($pMReactionHistorics as $pMReactionHistoric) {
+            $this->addPMReactionHistoric($pMReactionHistoric);
+        }
+
+        $this->collPMReactionHistorics = $pMReactionHistorics;
+        $this->collPMReactionHistoricsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PMReactionHistoric objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PMReactionHistoric objects.
+     * @throws PropelException
+     */
+    public function countPMReactionHistorics(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPMReactionHistoricsPartial && !$this->isNew();
+        if (null === $this->collPMReactionHistorics || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPMReactionHistorics) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPMReactionHistorics());
+            }
+            $query = PMReactionHistoricQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPUser($this)
+                ->count($con);
+        }
+
+        return count($this->collPMReactionHistorics);
+    }
+
+    /**
+     * Method called to associate a PMReactionHistoric object to this object
+     * through the PMReactionHistoric foreign key attribute.
+     *
+     * @param    PMReactionHistoric $l PMReactionHistoric
+     * @return PUser The current object (for fluent API support)
+     */
+    public function addPMReactionHistoric(PMReactionHistoric $l)
+    {
+        if ($this->collPMReactionHistorics === null) {
+            $this->initPMReactionHistorics();
+            $this->collPMReactionHistoricsPartial = true;
+        }
+
+        if (!in_array($l, $this->collPMReactionHistorics->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPMReactionHistoric($l);
+
+            if ($this->pMReactionHistoricsScheduledForDeletion and $this->pMReactionHistoricsScheduledForDeletion->contains($l)) {
+                $this->pMReactionHistoricsScheduledForDeletion->remove($this->pMReactionHistoricsScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PMReactionHistoric $pMReactionHistoric The pMReactionHistoric object to add.
+     */
+    protected function doAddPMReactionHistoric($pMReactionHistoric)
+    {
+        $this->collPMReactionHistorics[]= $pMReactionHistoric;
+        $pMReactionHistoric->setPUser($this);
+    }
+
+    /**
+     * @param	PMReactionHistoric $pMReactionHistoric The pMReactionHistoric object to remove.
+     * @return PUser The current object (for fluent API support)
+     */
+    public function removePMReactionHistoric($pMReactionHistoric)
+    {
+        if ($this->getPMReactionHistorics()->contains($pMReactionHistoric)) {
+            $this->collPMReactionHistorics->remove($this->collPMReactionHistorics->search($pMReactionHistoric));
+            if (null === $this->pMReactionHistoricsScheduledForDeletion) {
+                $this->pMReactionHistoricsScheduledForDeletion = clone $this->collPMReactionHistorics;
+                $this->pMReactionHistoricsScheduledForDeletion->clear();
+            }
+            $this->pMReactionHistoricsScheduledForDeletion[]= $pMReactionHistoric;
+            $pMReactionHistoric->setPUser(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PUser is new, it will return
+     * an empty collection; or if this PUser has previously
+     * been saved, it will retrieve related PMReactionHistorics from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PUser.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PMReactionHistoric[] List of PMReactionHistoric objects
+     */
+    public function getPMReactionHistoricsJoinPDReaction($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PMReactionHistoricQuery::create(null, $criteria);
+        $query->joinWith('PDReaction', $join_behavior);
+
+        return $this->getPMReactionHistorics($query, $con);
+    }
+
+    /**
+     * Clears out the collPMDCommentHistorics collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PUser The current object (for fluent API support)
+     * @see        addPMDCommentHistorics()
+     */
+    public function clearPMDCommentHistorics()
+    {
+        $this->collPMDCommentHistorics = null; // important to set this to null since that means it is uninitialized
+        $this->collPMDCommentHistoricsPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPMDCommentHistorics collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPMDCommentHistorics($v = true)
+    {
+        $this->collPMDCommentHistoricsPartial = $v;
+    }
+
+    /**
+     * Initializes the collPMDCommentHistorics collection.
+     *
+     * By default this just sets the collPMDCommentHistorics collection to an empty array (like clearcollPMDCommentHistorics());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPMDCommentHistorics($overrideExisting = true)
+    {
+        if (null !== $this->collPMDCommentHistorics && !$overrideExisting) {
+            return;
+        }
+        $this->collPMDCommentHistorics = new PropelObjectCollection();
+        $this->collPMDCommentHistorics->setModel('PMDCommentHistoric');
+    }
+
+    /**
+     * Gets an array of PMDCommentHistoric objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PUser is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PMDCommentHistoric[] List of PMDCommentHistoric objects
+     * @throws PropelException
+     */
+    public function getPMDCommentHistorics($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPMDCommentHistoricsPartial && !$this->isNew();
+        if (null === $this->collPMDCommentHistorics || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPMDCommentHistorics) {
+                // return empty collection
+                $this->initPMDCommentHistorics();
+            } else {
+                $collPMDCommentHistorics = PMDCommentHistoricQuery::create(null, $criteria)
+                    ->filterByPUser($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPMDCommentHistoricsPartial && count($collPMDCommentHistorics)) {
+                      $this->initPMDCommentHistorics(false);
+
+                      foreach ($collPMDCommentHistorics as $obj) {
+                        if (false == $this->collPMDCommentHistorics->contains($obj)) {
+                          $this->collPMDCommentHistorics->append($obj);
+                        }
+                      }
+
+                      $this->collPMDCommentHistoricsPartial = true;
+                    }
+
+                    $collPMDCommentHistorics->getInternalIterator()->rewind();
+
+                    return $collPMDCommentHistorics;
+                }
+
+                if ($partial && $this->collPMDCommentHistorics) {
+                    foreach ($this->collPMDCommentHistorics as $obj) {
+                        if ($obj->isNew()) {
+                            $collPMDCommentHistorics[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPMDCommentHistorics = $collPMDCommentHistorics;
+                $this->collPMDCommentHistoricsPartial = false;
+            }
+        }
+
+        return $this->collPMDCommentHistorics;
+    }
+
+    /**
+     * Sets a collection of PMDCommentHistoric objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pMDCommentHistorics A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PUser The current object (for fluent API support)
+     */
+    public function setPMDCommentHistorics(PropelCollection $pMDCommentHistorics, PropelPDO $con = null)
+    {
+        $pMDCommentHistoricsToDelete = $this->getPMDCommentHistorics(new Criteria(), $con)->diff($pMDCommentHistorics);
+
+
+        $this->pMDCommentHistoricsScheduledForDeletion = $pMDCommentHistoricsToDelete;
+
+        foreach ($pMDCommentHistoricsToDelete as $pMDCommentHistoricRemoved) {
+            $pMDCommentHistoricRemoved->setPUser(null);
+        }
+
+        $this->collPMDCommentHistorics = null;
+        foreach ($pMDCommentHistorics as $pMDCommentHistoric) {
+            $this->addPMDCommentHistoric($pMDCommentHistoric);
+        }
+
+        $this->collPMDCommentHistorics = $pMDCommentHistorics;
+        $this->collPMDCommentHistoricsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PMDCommentHistoric objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PMDCommentHistoric objects.
+     * @throws PropelException
+     */
+    public function countPMDCommentHistorics(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPMDCommentHistoricsPartial && !$this->isNew();
+        if (null === $this->collPMDCommentHistorics || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPMDCommentHistorics) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPMDCommentHistorics());
+            }
+            $query = PMDCommentHistoricQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPUser($this)
+                ->count($con);
+        }
+
+        return count($this->collPMDCommentHistorics);
+    }
+
+    /**
+     * Method called to associate a PMDCommentHistoric object to this object
+     * through the PMDCommentHistoric foreign key attribute.
+     *
+     * @param    PMDCommentHistoric $l PMDCommentHistoric
+     * @return PUser The current object (for fluent API support)
+     */
+    public function addPMDCommentHistoric(PMDCommentHistoric $l)
+    {
+        if ($this->collPMDCommentHistorics === null) {
+            $this->initPMDCommentHistorics();
+            $this->collPMDCommentHistoricsPartial = true;
+        }
+
+        if (!in_array($l, $this->collPMDCommentHistorics->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPMDCommentHistoric($l);
+
+            if ($this->pMDCommentHistoricsScheduledForDeletion and $this->pMDCommentHistoricsScheduledForDeletion->contains($l)) {
+                $this->pMDCommentHistoricsScheduledForDeletion->remove($this->pMDCommentHistoricsScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PMDCommentHistoric $pMDCommentHistoric The pMDCommentHistoric object to add.
+     */
+    protected function doAddPMDCommentHistoric($pMDCommentHistoric)
+    {
+        $this->collPMDCommentHistorics[]= $pMDCommentHistoric;
+        $pMDCommentHistoric->setPUser($this);
+    }
+
+    /**
+     * @param	PMDCommentHistoric $pMDCommentHistoric The pMDCommentHistoric object to remove.
+     * @return PUser The current object (for fluent API support)
+     */
+    public function removePMDCommentHistoric($pMDCommentHistoric)
+    {
+        if ($this->getPMDCommentHistorics()->contains($pMDCommentHistoric)) {
+            $this->collPMDCommentHistorics->remove($this->collPMDCommentHistorics->search($pMDCommentHistoric));
+            if (null === $this->pMDCommentHistoricsScheduledForDeletion) {
+                $this->pMDCommentHistoricsScheduledForDeletion = clone $this->collPMDCommentHistorics;
+                $this->pMDCommentHistoricsScheduledForDeletion->clear();
+            }
+            $this->pMDCommentHistoricsScheduledForDeletion[]= $pMDCommentHistoric;
+            $pMDCommentHistoric->setPUser(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PUser is new, it will return
+     * an empty collection; or if this PUser has previously
+     * been saved, it will retrieve related PMDCommentHistorics from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PUser.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PMDCommentHistoric[] List of PMDCommentHistoric objects
+     */
+    public function getPMDCommentHistoricsJoinPDDComment($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PMDCommentHistoricQuery::create(null, $criteria);
+        $query->joinWith('PDDComment', $join_behavior);
+
+        return $this->getPMDCommentHistorics($query, $con);
+    }
+
+    /**
+     * Clears out the collPMRCommentHistorics collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PUser The current object (for fluent API support)
+     * @see        addPMRCommentHistorics()
+     */
+    public function clearPMRCommentHistorics()
+    {
+        $this->collPMRCommentHistorics = null; // important to set this to null since that means it is uninitialized
+        $this->collPMRCommentHistoricsPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPMRCommentHistorics collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPMRCommentHistorics($v = true)
+    {
+        $this->collPMRCommentHistoricsPartial = $v;
+    }
+
+    /**
+     * Initializes the collPMRCommentHistorics collection.
+     *
+     * By default this just sets the collPMRCommentHistorics collection to an empty array (like clearcollPMRCommentHistorics());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPMRCommentHistorics($overrideExisting = true)
+    {
+        if (null !== $this->collPMRCommentHistorics && !$overrideExisting) {
+            return;
+        }
+        $this->collPMRCommentHistorics = new PropelObjectCollection();
+        $this->collPMRCommentHistorics->setModel('PMRCommentHistoric');
+    }
+
+    /**
+     * Gets an array of PMRCommentHistoric objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PUser is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PMRCommentHistoric[] List of PMRCommentHistoric objects
+     * @throws PropelException
+     */
+    public function getPMRCommentHistorics($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPMRCommentHistoricsPartial && !$this->isNew();
+        if (null === $this->collPMRCommentHistorics || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPMRCommentHistorics) {
+                // return empty collection
+                $this->initPMRCommentHistorics();
+            } else {
+                $collPMRCommentHistorics = PMRCommentHistoricQuery::create(null, $criteria)
+                    ->filterByPUser($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPMRCommentHistoricsPartial && count($collPMRCommentHistorics)) {
+                      $this->initPMRCommentHistorics(false);
+
+                      foreach ($collPMRCommentHistorics as $obj) {
+                        if (false == $this->collPMRCommentHistorics->contains($obj)) {
+                          $this->collPMRCommentHistorics->append($obj);
+                        }
+                      }
+
+                      $this->collPMRCommentHistoricsPartial = true;
+                    }
+
+                    $collPMRCommentHistorics->getInternalIterator()->rewind();
+
+                    return $collPMRCommentHistorics;
+                }
+
+                if ($partial && $this->collPMRCommentHistorics) {
+                    foreach ($this->collPMRCommentHistorics as $obj) {
+                        if ($obj->isNew()) {
+                            $collPMRCommentHistorics[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPMRCommentHistorics = $collPMRCommentHistorics;
+                $this->collPMRCommentHistoricsPartial = false;
+            }
+        }
+
+        return $this->collPMRCommentHistorics;
+    }
+
+    /**
+     * Sets a collection of PMRCommentHistoric objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pMRCommentHistorics A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PUser The current object (for fluent API support)
+     */
+    public function setPMRCommentHistorics(PropelCollection $pMRCommentHistorics, PropelPDO $con = null)
+    {
+        $pMRCommentHistoricsToDelete = $this->getPMRCommentHistorics(new Criteria(), $con)->diff($pMRCommentHistorics);
+
+
+        $this->pMRCommentHistoricsScheduledForDeletion = $pMRCommentHistoricsToDelete;
+
+        foreach ($pMRCommentHistoricsToDelete as $pMRCommentHistoricRemoved) {
+            $pMRCommentHistoricRemoved->setPUser(null);
+        }
+
+        $this->collPMRCommentHistorics = null;
+        foreach ($pMRCommentHistorics as $pMRCommentHistoric) {
+            $this->addPMRCommentHistoric($pMRCommentHistoric);
+        }
+
+        $this->collPMRCommentHistorics = $pMRCommentHistorics;
+        $this->collPMRCommentHistoricsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PMRCommentHistoric objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PMRCommentHistoric objects.
+     * @throws PropelException
+     */
+    public function countPMRCommentHistorics(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPMRCommentHistoricsPartial && !$this->isNew();
+        if (null === $this->collPMRCommentHistorics || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPMRCommentHistorics) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPMRCommentHistorics());
+            }
+            $query = PMRCommentHistoricQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPUser($this)
+                ->count($con);
+        }
+
+        return count($this->collPMRCommentHistorics);
+    }
+
+    /**
+     * Method called to associate a PMRCommentHistoric object to this object
+     * through the PMRCommentHistoric foreign key attribute.
+     *
+     * @param    PMRCommentHistoric $l PMRCommentHistoric
+     * @return PUser The current object (for fluent API support)
+     */
+    public function addPMRCommentHistoric(PMRCommentHistoric $l)
+    {
+        if ($this->collPMRCommentHistorics === null) {
+            $this->initPMRCommentHistorics();
+            $this->collPMRCommentHistoricsPartial = true;
+        }
+
+        if (!in_array($l, $this->collPMRCommentHistorics->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPMRCommentHistoric($l);
+
+            if ($this->pMRCommentHistoricsScheduledForDeletion and $this->pMRCommentHistoricsScheduledForDeletion->contains($l)) {
+                $this->pMRCommentHistoricsScheduledForDeletion->remove($this->pMRCommentHistoricsScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PMRCommentHistoric $pMRCommentHistoric The pMRCommentHistoric object to add.
+     */
+    protected function doAddPMRCommentHistoric($pMRCommentHistoric)
+    {
+        $this->collPMRCommentHistorics[]= $pMRCommentHistoric;
+        $pMRCommentHistoric->setPUser($this);
+    }
+
+    /**
+     * @param	PMRCommentHistoric $pMRCommentHistoric The pMRCommentHistoric object to remove.
+     * @return PUser The current object (for fluent API support)
+     */
+    public function removePMRCommentHistoric($pMRCommentHistoric)
+    {
+        if ($this->getPMRCommentHistorics()->contains($pMRCommentHistoric)) {
+            $this->collPMRCommentHistorics->remove($this->collPMRCommentHistorics->search($pMRCommentHistoric));
+            if (null === $this->pMRCommentHistoricsScheduledForDeletion) {
+                $this->pMRCommentHistoricsScheduledForDeletion = clone $this->collPMRCommentHistorics;
+                $this->pMRCommentHistoricsScheduledForDeletion->clear();
+            }
+            $this->pMRCommentHistoricsScheduledForDeletion[]= $pMRCommentHistoric;
+            $pMRCommentHistoric->setPUser(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PUser is new, it will return
+     * an empty collection; or if this PUser has previously
+     * been saved, it will retrieve related PMRCommentHistorics from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PUser.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PMRCommentHistoric[] List of PMRCommentHistoric objects
+     */
+    public function getPMRCommentHistoricsJoinPDRComment($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PMRCommentHistoricQuery::create(null, $criteria);
+        $query->joinWith('PDRComment', $join_behavior);
+
+        return $this->getPMRCommentHistorics($query, $con);
+    }
+
+    /**
      * Clears out the collPMAskForUpdates collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
@@ -14525,6 +16020,31 @@ abstract class BasePUser extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collPMUserHistorics) {
+                foreach ($this->collPMUserHistorics as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collPMDebateHistorics) {
+                foreach ($this->collPMDebateHistorics as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collPMReactionHistorics) {
+                foreach ($this->collPMReactionHistorics as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collPMDCommentHistorics) {
+                foreach ($this->collPMDCommentHistorics as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collPMRCommentHistorics) {
+                foreach ($this->collPMRCommentHistorics as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collPMAskForUpdates) {
                 foreach ($this->collPMAskForUpdates as $o) {
                     $o->clearAllReferences($deep);
@@ -14710,6 +16230,26 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->collPMUserMessages->clearIterator();
         }
         $this->collPMUserMessages = null;
+        if ($this->collPMUserHistorics instanceof PropelCollection) {
+            $this->collPMUserHistorics->clearIterator();
+        }
+        $this->collPMUserHistorics = null;
+        if ($this->collPMDebateHistorics instanceof PropelCollection) {
+            $this->collPMDebateHistorics->clearIterator();
+        }
+        $this->collPMDebateHistorics = null;
+        if ($this->collPMReactionHistorics instanceof PropelCollection) {
+            $this->collPMReactionHistorics->clearIterator();
+        }
+        $this->collPMReactionHistorics = null;
+        if ($this->collPMDCommentHistorics instanceof PropelCollection) {
+            $this->collPMDCommentHistorics->clearIterator();
+        }
+        $this->collPMDCommentHistorics = null;
+        if ($this->collPMRCommentHistorics instanceof PropelCollection) {
+            $this->collPMRCommentHistorics->clearIterator();
+        }
+        $this->collPMRCommentHistorics = null;
         if ($this->collPMAskForUpdates instanceof PropelCollection) {
             $this->collPMAskForUpdates->clearIterator();
         }

@@ -19,6 +19,7 @@ use Politizr\Model\PDDComment;
 use Politizr\Model\PDDCommentPeer;
 use Politizr\Model\PDDCommentQuery;
 use Politizr\Model\PDDebate;
+use Politizr\Model\PMDCommentHistoric;
 use Politizr\Model\PUser;
 
 /**
@@ -65,6 +66,10 @@ use Politizr\Model\PUser;
  * @method PDDCommentQuery leftJoinPDDebate($relationAlias = null) Adds a LEFT JOIN clause to the query using the PDDebate relation
  * @method PDDCommentQuery rightJoinPDDebate($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PDDebate relation
  * @method PDDCommentQuery innerJoinPDDebate($relationAlias = null) Adds a INNER JOIN clause to the query using the PDDebate relation
+ *
+ * @method PDDCommentQuery leftJoinPMDCommentHistoric($relationAlias = null) Adds a LEFT JOIN clause to the query using the PMDCommentHistoric relation
+ * @method PDDCommentQuery rightJoinPMDCommentHistoric($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PMDCommentHistoric relation
+ * @method PDDCommentQuery innerJoinPMDCommentHistoric($relationAlias = null) Adds a INNER JOIN clause to the query using the PMDCommentHistoric relation
  *
  * @method PDDComment findOne(PropelPDO $con = null) Return the first PDDComment matching the query
  * @method PDDComment findOneOrCreate(PropelPDO $con = null) Return the first PDDComment matching the query, or a new PDDComment object populated from the query conditions when no match is found
@@ -1018,6 +1023,80 @@ abstract class BasePDDCommentQuery extends ModelCriteria
         return $this
             ->joinPDDebate($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'PDDebate', '\Politizr\Model\PDDebateQuery');
+    }
+
+    /**
+     * Filter the query by a related PMDCommentHistoric object
+     *
+     * @param   PMDCommentHistoric|PropelObjectCollection $pMDCommentHistoric  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PDDCommentQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPMDCommentHistoric($pMDCommentHistoric, $comparison = null)
+    {
+        if ($pMDCommentHistoric instanceof PMDCommentHistoric) {
+            return $this
+                ->addUsingAlias(PDDCommentPeer::ID, $pMDCommentHistoric->getPDDCommentId(), $comparison);
+        } elseif ($pMDCommentHistoric instanceof PropelObjectCollection) {
+            return $this
+                ->usePMDCommentHistoricQuery()
+                ->filterByPrimaryKeys($pMDCommentHistoric->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPMDCommentHistoric() only accepts arguments of type PMDCommentHistoric or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PMDCommentHistoric relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PDDCommentQuery The current query, for fluid interface
+     */
+    public function joinPMDCommentHistoric($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PMDCommentHistoric');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PMDCommentHistoric');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PMDCommentHistoric relation PMDCommentHistoric object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PMDCommentHistoricQuery A secondary query class using the current class as primary query
+     */
+    public function usePMDCommentHistoricQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinPMDCommentHistoric($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PMDCommentHistoric', '\Politizr\Model\PMDCommentHistoricQuery');
     }
 
     /**

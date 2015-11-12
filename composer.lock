@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "588a5ed4380d2108dbb5f88d4ed33e60",
-    "content-hash": "a38e3edbe957c2ad4995f25ee138c63a",
+    "hash": "fde5a5a6e69ea366854dd28aa82a909c",
+    "content-hash": "9969ae33a3ab9c21a62fc51a4609fb38",
     "packages": [
         {
             "name": "craftyshadow/propel-equalnest-behavior",
@@ -457,7 +457,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Elao/WebProfilerExtraBundle/zipball/573effda12187afef888e8b5ccb66527efb8d55f",
+                "url": "https://api.github.com/repos/Elao/WebProfilerExtraBundle/zipball/31f686a63ab0f54ae9367acd20f1fe474c2204ff",
                 "reference": "573effda12187afef888e8b5ccb66527efb8d55f",
                 "shasum": ""
             },
@@ -894,7 +894,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/d5b28c367d393f9d9fbc48c4138b2a74d51c0c83",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/45d6f40178216a840885b4ca6d7de9e67068568a",
                 "reference": "d5b28c367d393f9d9fbc48c4138b2a74d51c0c83",
                 "shasum": ""
             },

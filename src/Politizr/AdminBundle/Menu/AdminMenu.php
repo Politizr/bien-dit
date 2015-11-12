@@ -156,6 +156,33 @@ class AdminMenu extends AdmingeneratorMenuBuilder
             'Politizr_AdminBundle_User_list'
         );
 
+        // Archives
+        $archive = $this->addDropdown($menu, 'Archive');
+        $this->addLinkRoute(
+            $archive,
+            'Utilisateur',
+            'Politizr_AdminBundle_PMUserHistoric_list'
+        );
+        $this->addLinkRoute(
+            $archive,
+            'Débat',
+            'Politizr_AdminBundle_PMDebateHistoric_list'
+        );
+        $this->addLinkRoute(
+            $archive,
+            'Réaction',
+            'Politizr_AdminBundle_PMReactionHistoric_list'
+        );
+        $this->addLinkRoute(
+            $archive,
+            'Commentaire débat',
+            'Politizr_AdminBundle_PMDCommentHistoric_list'
+        );
+        $this->addLinkRoute(
+            $archive,
+            'Commentaire réaction',
+            'Politizr_AdminBundle_PMRCommentHistoric_list'
+        );
         
         return $menu;
     }

@@ -29,6 +29,8 @@ use Politizr\Model\PDReactionArchive;
 use Politizr\Model\PDReactionArchiveQuery;
 use Politizr\Model\PDReactionPeer;
 use Politizr\Model\PDReactionQuery;
+use Politizr\Model\PMReactionHistoric;
+use Politizr\Model\PMReactionHistoricQuery;
 use Politizr\Model\PTag;
 use Politizr\Model\PTagQuery;
 use Politizr\Model\PUser;
@@ -230,6 +232,12 @@ abstract class BasePDReaction extends BaseObject implements Persistent
     protected $collPDRTaggedTsPartial;
 
     /**
+     * @var        PropelObjectCollection|PMReactionHistoric[] Collection to store aggregation of PMReactionHistoric objects.
+     */
+    protected $collPMReactionHistorics;
+    protected $collPMReactionHistoricsPartial;
+
+    /**
      * @var        PropelObjectCollection|PTag[] Collection to store aggregation of PTag objects.
      */
     protected $collPTags;
@@ -295,6 +303,12 @@ abstract class BasePDReaction extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $pDRTaggedTsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pMReactionHistoricsScheduledForDeletion = null;
 
     /**
      * Applies default values to this object.
@@ -1439,6 +1453,8 @@ abstract class BasePDReaction extends BaseObject implements Persistent
 
             $this->collPDRTaggedTs = null;
 
+            $this->collPMReactionHistorics = null;
+
             $this->collPTags = null;
         } // if (deep)
     }
@@ -1709,6 +1725,24 @@ abstract class BasePDReaction extends BaseObject implements Persistent
 
             if ($this->collPDRTaggedTs !== null) {
                 foreach ($this->collPDRTaggedTs as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->pMReactionHistoricsScheduledForDeletion !== null) {
+                if (!$this->pMReactionHistoricsScheduledForDeletion->isEmpty()) {
+                    foreach ($this->pMReactionHistoricsScheduledForDeletion as $pMReactionHistoric) {
+                        // need to save related object because we set the relation to null
+                        $pMReactionHistoric->save($con);
+                    }
+                    $this->pMReactionHistoricsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPMReactionHistorics !== null) {
+                foreach ($this->collPMReactionHistorics as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -2035,6 +2069,14 @@ abstract class BasePDReaction extends BaseObject implements Persistent
                     }
                 }
 
+                if ($this->collPMReactionHistorics !== null) {
+                    foreach ($this->collPMReactionHistorics as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
 
             $this->alreadyInValidation = false;
         }
@@ -2217,6 +2259,9 @@ abstract class BasePDReaction extends BaseObject implements Persistent
             }
             if (null !== $this->collPDRTaggedTs) {
                 $result['PDRTaggedTs'] = $this->collPDRTaggedTs->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collPMReactionHistorics) {
+                $result['PMReactionHistorics'] = $this->collPMReactionHistorics->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -2519,6 +2564,12 @@ abstract class BasePDReaction extends BaseObject implements Persistent
                 }
             }
 
+            foreach ($this->getPMReactionHistorics() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPMReactionHistoric($relObj->copy($deepCopy));
+                }
+            }
+
             //unflag object copy
             $this->startCopy = false;
         } // if ($deepCopy)
@@ -2689,6 +2740,9 @@ abstract class BasePDReaction extends BaseObject implements Persistent
         }
         if ('PDRTaggedT' == $relationName) {
             $this->initPDRTaggedTs();
+        }
+        if ('PMReactionHistoric' == $relationName) {
+            $this->initPMReactionHistorics();
         }
     }
 
@@ -3193,6 +3247,256 @@ abstract class BasePDReaction extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collPMReactionHistorics collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PDReaction The current object (for fluent API support)
+     * @see        addPMReactionHistorics()
+     */
+    public function clearPMReactionHistorics()
+    {
+        $this->collPMReactionHistorics = null; // important to set this to null since that means it is uninitialized
+        $this->collPMReactionHistoricsPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPMReactionHistorics collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPMReactionHistorics($v = true)
+    {
+        $this->collPMReactionHistoricsPartial = $v;
+    }
+
+    /**
+     * Initializes the collPMReactionHistorics collection.
+     *
+     * By default this just sets the collPMReactionHistorics collection to an empty array (like clearcollPMReactionHistorics());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPMReactionHistorics($overrideExisting = true)
+    {
+        if (null !== $this->collPMReactionHistorics && !$overrideExisting) {
+            return;
+        }
+        $this->collPMReactionHistorics = new PropelObjectCollection();
+        $this->collPMReactionHistorics->setModel('PMReactionHistoric');
+    }
+
+    /**
+     * Gets an array of PMReactionHistoric objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PDReaction is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PMReactionHistoric[] List of PMReactionHistoric objects
+     * @throws PropelException
+     */
+    public function getPMReactionHistorics($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPMReactionHistoricsPartial && !$this->isNew();
+        if (null === $this->collPMReactionHistorics || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPMReactionHistorics) {
+                // return empty collection
+                $this->initPMReactionHistorics();
+            } else {
+                $collPMReactionHistorics = PMReactionHistoricQuery::create(null, $criteria)
+                    ->filterByPDReaction($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPMReactionHistoricsPartial && count($collPMReactionHistorics)) {
+                      $this->initPMReactionHistorics(false);
+
+                      foreach ($collPMReactionHistorics as $obj) {
+                        if (false == $this->collPMReactionHistorics->contains($obj)) {
+                          $this->collPMReactionHistorics->append($obj);
+                        }
+                      }
+
+                      $this->collPMReactionHistoricsPartial = true;
+                    }
+
+                    $collPMReactionHistorics->getInternalIterator()->rewind();
+
+                    return $collPMReactionHistorics;
+                }
+
+                if ($partial && $this->collPMReactionHistorics) {
+                    foreach ($this->collPMReactionHistorics as $obj) {
+                        if ($obj->isNew()) {
+                            $collPMReactionHistorics[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPMReactionHistorics = $collPMReactionHistorics;
+                $this->collPMReactionHistoricsPartial = false;
+            }
+        }
+
+        return $this->collPMReactionHistorics;
+    }
+
+    /**
+     * Sets a collection of PMReactionHistoric objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pMReactionHistorics A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PDReaction The current object (for fluent API support)
+     */
+    public function setPMReactionHistorics(PropelCollection $pMReactionHistorics, PropelPDO $con = null)
+    {
+        $pMReactionHistoricsToDelete = $this->getPMReactionHistorics(new Criteria(), $con)->diff($pMReactionHistorics);
+
+
+        $this->pMReactionHistoricsScheduledForDeletion = $pMReactionHistoricsToDelete;
+
+        foreach ($pMReactionHistoricsToDelete as $pMReactionHistoricRemoved) {
+            $pMReactionHistoricRemoved->setPDReaction(null);
+        }
+
+        $this->collPMReactionHistorics = null;
+        foreach ($pMReactionHistorics as $pMReactionHistoric) {
+            $this->addPMReactionHistoric($pMReactionHistoric);
+        }
+
+        $this->collPMReactionHistorics = $pMReactionHistorics;
+        $this->collPMReactionHistoricsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PMReactionHistoric objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PMReactionHistoric objects.
+     * @throws PropelException
+     */
+    public function countPMReactionHistorics(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPMReactionHistoricsPartial && !$this->isNew();
+        if (null === $this->collPMReactionHistorics || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPMReactionHistorics) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPMReactionHistorics());
+            }
+            $query = PMReactionHistoricQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPDReaction($this)
+                ->count($con);
+        }
+
+        return count($this->collPMReactionHistorics);
+    }
+
+    /**
+     * Method called to associate a PMReactionHistoric object to this object
+     * through the PMReactionHistoric foreign key attribute.
+     *
+     * @param    PMReactionHistoric $l PMReactionHistoric
+     * @return PDReaction The current object (for fluent API support)
+     */
+    public function addPMReactionHistoric(PMReactionHistoric $l)
+    {
+        if ($this->collPMReactionHistorics === null) {
+            $this->initPMReactionHistorics();
+            $this->collPMReactionHistoricsPartial = true;
+        }
+
+        if (!in_array($l, $this->collPMReactionHistorics->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPMReactionHistoric($l);
+
+            if ($this->pMReactionHistoricsScheduledForDeletion and $this->pMReactionHistoricsScheduledForDeletion->contains($l)) {
+                $this->pMReactionHistoricsScheduledForDeletion->remove($this->pMReactionHistoricsScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PMReactionHistoric $pMReactionHistoric The pMReactionHistoric object to add.
+     */
+    protected function doAddPMReactionHistoric($pMReactionHistoric)
+    {
+        $this->collPMReactionHistorics[]= $pMReactionHistoric;
+        $pMReactionHistoric->setPDReaction($this);
+    }
+
+    /**
+     * @param	PMReactionHistoric $pMReactionHistoric The pMReactionHistoric object to remove.
+     * @return PDReaction The current object (for fluent API support)
+     */
+    public function removePMReactionHistoric($pMReactionHistoric)
+    {
+        if ($this->getPMReactionHistorics()->contains($pMReactionHistoric)) {
+            $this->collPMReactionHistorics->remove($this->collPMReactionHistorics->search($pMReactionHistoric));
+            if (null === $this->pMReactionHistoricsScheduledForDeletion) {
+                $this->pMReactionHistoricsScheduledForDeletion = clone $this->collPMReactionHistorics;
+                $this->pMReactionHistoricsScheduledForDeletion->clear();
+            }
+            $this->pMReactionHistoricsScheduledForDeletion[]= $pMReactionHistoric;
+            $pMReactionHistoric->setPDReaction(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PDReaction is new, it will return
+     * an empty collection; or if this PDReaction has previously
+     * been saved, it will retrieve related PMReactionHistorics from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PDReaction.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PMReactionHistoric[] List of PMReactionHistoric objects
+     */
+    public function getPMReactionHistoricsJoinPUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PMReactionHistoricQuery::create(null, $criteria);
+        $query->joinWith('PUser', $join_behavior);
+
+        return $this->getPMReactionHistorics($query, $con);
+    }
+
+    /**
      * Clears out the collPTags collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
@@ -3442,6 +3746,11 @@ abstract class BasePDReaction extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collPMReactionHistorics) {
+                foreach ($this->collPMReactionHistorics as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collPTags) {
                 foreach ($this->collPTags as $o) {
                     $o->clearAllReferences($deep);
@@ -3468,6 +3777,10 @@ abstract class BasePDReaction extends BaseObject implements Persistent
             $this->collPDRTaggedTs->clearIterator();
         }
         $this->collPDRTaggedTs = null;
+        if ($this->collPMReactionHistorics instanceof PropelCollection) {
+            $this->collPMReactionHistorics->clearIterator();
+        }
+        $this->collPMReactionHistorics = null;
         if ($this->collPTags instanceof PropelCollection) {
             $this->collPTags->clearIterator();
         }

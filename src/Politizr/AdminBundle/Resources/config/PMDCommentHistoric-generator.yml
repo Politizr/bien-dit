@@ -1,0 +1,66 @@
+generator:                  admingenerator.generator.propel
+params:
+    model:                  Politizr\Model\PMDCommentHistoric
+    namespace_prefix:       Politizr
+    concurrency_lock:       ~
+    bundle_name:            AdminBundle
+    pk_requirement:         ~
+    fields:
+        id:
+            label:          ID
+        p_user_id:
+            label:          ID User
+        p_d_d_comment_id:
+            label:          ID User
+        p_object_id:
+            label:          ID User
+        description:
+            label:          Description
+        created_at:
+            label:          Création
+        updated_at:
+            label:          Mis à jour
+    object_actions:
+        delete:             ~
+    batch_actions:
+        delete:             ~
+builders:
+    list:
+        params:
+            title:                              Liste des archives commentaire débat
+            max_per_page:                       50
+            sort:                               [ id, DESC ]
+            display:                            [ p_user_id, p_d_d_comment_id, title, created_at ]
+            filters:                            [ p_user_id, p_d_d_comment_id ]
+            object_actions:
+                show:                           ~
+                delete:                         ~
+    excel:
+        params: ~
+        filename: ~
+        filetype: ~
+    show:
+        params:
+            title:                              "Visualisation archive {{ PMDCommentHistoric.id }}"
+            tabs:
+                "Contenu":
+                    "Texte":                    [ title, description ]
+                "Objets":
+                    "Commentaire":              [ block_p_d_d_comment ]
+                    "Utilisateur":              [ block_p_user ]
+                "Attributs":
+                    "Création":                 [ [ created_at, updated_at ] ]
+            fields:
+                block_p_d_d_comment:
+                    label:                      "Commentaire"
+                block_p_user:
+                    label:                      "Auteur"
+            actions:
+              list:                             ~
+              delete:                           ~
+    actions:
+        params:
+            object_actions:
+                delete: ~
+            batch_actions:
+                delete: ~

@@ -134,6 +134,11 @@ builders:
                       widget:                   single_text
             actions:
                 save:                           ~
+                archive:
+                    label:                      Archiver
+                    icon:                       fa-archive
+                    params:
+                        pk:                     "{{ PDReaction.id }}"
                 show:                           ~
                 list:                           ~
                 delete:                         ~

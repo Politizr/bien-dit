@@ -15,6 +15,7 @@ use Glorpen\Propel\PropelBundle\Events\PeerEvent;
 use Politizr\Model\PDRComment;
 use Politizr\Model\PDRCommentPeer;
 use Politizr\Model\PDReactionPeer;
+use Politizr\Model\PMRCommentHistoricPeer;
 use Politizr\Model\PUserPeer;
 use Politizr\Model\map\PDRCommentTableMap;
 
@@ -435,6 +436,9 @@ abstract class BasePDRCommentPeer
      */
     public static function clearRelatedInstancePool()
     {
+        // Invalidate objects in PMRCommentHistoricPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PMRCommentHistoricPeer::clearInstancePool();
     }
 
     /**

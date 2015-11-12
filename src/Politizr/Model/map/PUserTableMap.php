@@ -125,6 +125,11 @@ class PUserTableMap extends TableMap
         $this->addRelation('PDRComment', 'Politizr\\Model\\PDRComment', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'SET NULL', 'CASCADE', 'PDRComments');
         $this->addRelation('PMUserModerated', 'Politizr\\Model\\PMUserModerated', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', 'CASCADE', 'PMUserModerateds');
         $this->addRelation('PMUserMessage', 'Politizr\\Model\\PMUserMessage', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'SET NULL', 'CASCADE', 'PMUserMessages');
+        $this->addRelation('PMUserHistoric', 'Politizr\\Model\\PMUserHistoric', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'SET NULL', 'CASCADE', 'PMUserHistorics');
+        $this->addRelation('PMDebateHistoric', 'Politizr\\Model\\PMDebateHistoric', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'SET NULL', 'CASCADE', 'PMDebateHistorics');
+        $this->addRelation('PMReactionHistoric', 'Politizr\\Model\\PMReactionHistoric', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'SET NULL', 'CASCADE', 'PMReactionHistorics');
+        $this->addRelation('PMDCommentHistoric', 'Politizr\\Model\\PMDCommentHistoric', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'SET NULL', 'CASCADE', 'PMDCommentHistorics');
+        $this->addRelation('PMRCommentHistoric', 'Politizr\\Model\\PMRCommentHistoric', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'SET NULL', 'CASCADE', 'PMRCommentHistorics');
         $this->addRelation('PMAskForUpdate', 'Politizr\\Model\\PMAskForUpdate', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'SET NULL', 'CASCADE', 'PMAskForUpdates');
         $this->addRelation('PMAbuseReporting', 'Politizr\\Model\\PMAbuseReporting', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'SET NULL', 'CASCADE', 'PMAbuseReportings');
         $this->addRelation('PMAppException', 'Politizr\\Model\\PMAppException', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'SET NULL', 'CASCADE', 'PMAppExceptions');

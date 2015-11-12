@@ -19,6 +19,11 @@ use Politizr\Model\PDReactionPeer;
 use Politizr\Model\PMAbuseReportingPeer;
 use Politizr\Model\PMAppExceptionPeer;
 use Politizr\Model\PMAskForUpdatePeer;
+use Politizr\Model\PMDCommentHistoricPeer;
+use Politizr\Model\PMDebateHistoricPeer;
+use Politizr\Model\PMRCommentHistoricPeer;
+use Politizr\Model\PMReactionHistoricPeer;
+use Politizr\Model\PMUserHistoricPeer;
 use Politizr\Model\PMUserMessagePeer;
 use Politizr\Model\PMUserModeratedPeer;
 use Politizr\Model\POrderPeer;
@@ -750,6 +755,21 @@ abstract class BasePUserPeer
         // Invalidate objects in PMUserMessagePeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PMUserMessagePeer::clearInstancePool();
+        // Invalidate objects in PMUserHistoricPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PMUserHistoricPeer::clearInstancePool();
+        // Invalidate objects in PMDebateHistoricPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PMDebateHistoricPeer::clearInstancePool();
+        // Invalidate objects in PMReactionHistoricPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PMReactionHistoricPeer::clearInstancePool();
+        // Invalidate objects in PMDCommentHistoricPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PMDCommentHistoricPeer::clearInstancePool();
+        // Invalidate objects in PMRCommentHistoricPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PMRCommentHistoricPeer::clearInstancePool();
         // Invalidate objects in PMAskForUpdatePeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PMAskForUpdatePeer::clearInstancePool();

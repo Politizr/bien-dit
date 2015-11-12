@@ -17,6 +17,7 @@ use Politizr\Model\PDRCommentPeer;
 use Politizr\Model\PDRTaggedTPeer;
 use Politizr\Model\PDReaction;
 use Politizr\Model\PDReactionPeer;
+use Politizr\Model\PMReactionHistoricPeer;
 use Politizr\Model\PUserPeer;
 use Politizr\Model\map\PDReactionTableMap;
 
@@ -515,6 +516,9 @@ abstract class BasePDReactionPeer
         // Invalidate objects in PDRTaggedTPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PDRTaggedTPeer::clearInstancePool();
+        // Invalidate objects in PMReactionHistoricPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PMReactionHistoricPeer::clearInstancePool();
     }
 
     /**

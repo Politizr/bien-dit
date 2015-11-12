@@ -22,7 +22,12 @@ use Politizr\Model\PDReaction;
 use Politizr\Model\PMAbuseReporting;
 use Politizr\Model\PMAppException;
 use Politizr\Model\PMAskForUpdate;
+use Politizr\Model\PMDCommentHistoric;
+use Politizr\Model\PMDebateHistoric;
 use Politizr\Model\PMModerationType;
+use Politizr\Model\PMRCommentHistoric;
+use Politizr\Model\PMReactionHistoric;
+use Politizr\Model\PMUserHistoric;
 use Politizr\Model\PMUserMessage;
 use Politizr\Model\PMUserModerated;
 use Politizr\Model\PNotification;
@@ -240,6 +245,26 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery leftJoinPMUserMessage($relationAlias = null) Adds a LEFT JOIN clause to the query using the PMUserMessage relation
  * @method PUserQuery rightJoinPMUserMessage($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PMUserMessage relation
  * @method PUserQuery innerJoinPMUserMessage($relationAlias = null) Adds a INNER JOIN clause to the query using the PMUserMessage relation
+ *
+ * @method PUserQuery leftJoinPMUserHistoric($relationAlias = null) Adds a LEFT JOIN clause to the query using the PMUserHistoric relation
+ * @method PUserQuery rightJoinPMUserHistoric($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PMUserHistoric relation
+ * @method PUserQuery innerJoinPMUserHistoric($relationAlias = null) Adds a INNER JOIN clause to the query using the PMUserHistoric relation
+ *
+ * @method PUserQuery leftJoinPMDebateHistoric($relationAlias = null) Adds a LEFT JOIN clause to the query using the PMDebateHistoric relation
+ * @method PUserQuery rightJoinPMDebateHistoric($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PMDebateHistoric relation
+ * @method PUserQuery innerJoinPMDebateHistoric($relationAlias = null) Adds a INNER JOIN clause to the query using the PMDebateHistoric relation
+ *
+ * @method PUserQuery leftJoinPMReactionHistoric($relationAlias = null) Adds a LEFT JOIN clause to the query using the PMReactionHistoric relation
+ * @method PUserQuery rightJoinPMReactionHistoric($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PMReactionHistoric relation
+ * @method PUserQuery innerJoinPMReactionHistoric($relationAlias = null) Adds a INNER JOIN clause to the query using the PMReactionHistoric relation
+ *
+ * @method PUserQuery leftJoinPMDCommentHistoric($relationAlias = null) Adds a LEFT JOIN clause to the query using the PMDCommentHistoric relation
+ * @method PUserQuery rightJoinPMDCommentHistoric($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PMDCommentHistoric relation
+ * @method PUserQuery innerJoinPMDCommentHistoric($relationAlias = null) Adds a INNER JOIN clause to the query using the PMDCommentHistoric relation
+ *
+ * @method PUserQuery leftJoinPMRCommentHistoric($relationAlias = null) Adds a LEFT JOIN clause to the query using the PMRCommentHistoric relation
+ * @method PUserQuery rightJoinPMRCommentHistoric($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PMRCommentHistoric relation
+ * @method PUserQuery innerJoinPMRCommentHistoric($relationAlias = null) Adds a INNER JOIN clause to the query using the PMRCommentHistoric relation
  *
  * @method PUserQuery leftJoinPMAskForUpdate($relationAlias = null) Adds a LEFT JOIN clause to the query using the PMAskForUpdate relation
  * @method PUserQuery rightJoinPMAskForUpdate($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PMAskForUpdate relation
@@ -3821,6 +3846,376 @@ abstract class BasePUserQuery extends ModelCriteria
         return $this
             ->joinPMUserMessage($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'PMUserMessage', '\Politizr\Model\PMUserMessageQuery');
+    }
+
+    /**
+     * Filter the query by a related PMUserHistoric object
+     *
+     * @param   PMUserHistoric|PropelObjectCollection $pMUserHistoric  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PUserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPMUserHistoric($pMUserHistoric, $comparison = null)
+    {
+        if ($pMUserHistoric instanceof PMUserHistoric) {
+            return $this
+                ->addUsingAlias(PUserPeer::ID, $pMUserHistoric->getPUserId(), $comparison);
+        } elseif ($pMUserHistoric instanceof PropelObjectCollection) {
+            return $this
+                ->usePMUserHistoricQuery()
+                ->filterByPrimaryKeys($pMUserHistoric->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPMUserHistoric() only accepts arguments of type PMUserHistoric or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PMUserHistoric relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function joinPMUserHistoric($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PMUserHistoric');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PMUserHistoric');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PMUserHistoric relation PMUserHistoric object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PMUserHistoricQuery A secondary query class using the current class as primary query
+     */
+    public function usePMUserHistoricQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinPMUserHistoric($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PMUserHistoric', '\Politizr\Model\PMUserHistoricQuery');
+    }
+
+    /**
+     * Filter the query by a related PMDebateHistoric object
+     *
+     * @param   PMDebateHistoric|PropelObjectCollection $pMDebateHistoric  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PUserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPMDebateHistoric($pMDebateHistoric, $comparison = null)
+    {
+        if ($pMDebateHistoric instanceof PMDebateHistoric) {
+            return $this
+                ->addUsingAlias(PUserPeer::ID, $pMDebateHistoric->getPUserId(), $comparison);
+        } elseif ($pMDebateHistoric instanceof PropelObjectCollection) {
+            return $this
+                ->usePMDebateHistoricQuery()
+                ->filterByPrimaryKeys($pMDebateHistoric->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPMDebateHistoric() only accepts arguments of type PMDebateHistoric or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PMDebateHistoric relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function joinPMDebateHistoric($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PMDebateHistoric');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PMDebateHistoric');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PMDebateHistoric relation PMDebateHistoric object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PMDebateHistoricQuery A secondary query class using the current class as primary query
+     */
+    public function usePMDebateHistoricQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinPMDebateHistoric($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PMDebateHistoric', '\Politizr\Model\PMDebateHistoricQuery');
+    }
+
+    /**
+     * Filter the query by a related PMReactionHistoric object
+     *
+     * @param   PMReactionHistoric|PropelObjectCollection $pMReactionHistoric  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PUserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPMReactionHistoric($pMReactionHistoric, $comparison = null)
+    {
+        if ($pMReactionHistoric instanceof PMReactionHistoric) {
+            return $this
+                ->addUsingAlias(PUserPeer::ID, $pMReactionHistoric->getPUserId(), $comparison);
+        } elseif ($pMReactionHistoric instanceof PropelObjectCollection) {
+            return $this
+                ->usePMReactionHistoricQuery()
+                ->filterByPrimaryKeys($pMReactionHistoric->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPMReactionHistoric() only accepts arguments of type PMReactionHistoric or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PMReactionHistoric relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function joinPMReactionHistoric($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PMReactionHistoric');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PMReactionHistoric');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PMReactionHistoric relation PMReactionHistoric object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PMReactionHistoricQuery A secondary query class using the current class as primary query
+     */
+    public function usePMReactionHistoricQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinPMReactionHistoric($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PMReactionHistoric', '\Politizr\Model\PMReactionHistoricQuery');
+    }
+
+    /**
+     * Filter the query by a related PMDCommentHistoric object
+     *
+     * @param   PMDCommentHistoric|PropelObjectCollection $pMDCommentHistoric  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PUserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPMDCommentHistoric($pMDCommentHistoric, $comparison = null)
+    {
+        if ($pMDCommentHistoric instanceof PMDCommentHistoric) {
+            return $this
+                ->addUsingAlias(PUserPeer::ID, $pMDCommentHistoric->getPUserId(), $comparison);
+        } elseif ($pMDCommentHistoric instanceof PropelObjectCollection) {
+            return $this
+                ->usePMDCommentHistoricQuery()
+                ->filterByPrimaryKeys($pMDCommentHistoric->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPMDCommentHistoric() only accepts arguments of type PMDCommentHistoric or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PMDCommentHistoric relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function joinPMDCommentHistoric($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PMDCommentHistoric');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PMDCommentHistoric');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PMDCommentHistoric relation PMDCommentHistoric object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PMDCommentHistoricQuery A secondary query class using the current class as primary query
+     */
+    public function usePMDCommentHistoricQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinPMDCommentHistoric($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PMDCommentHistoric', '\Politizr\Model\PMDCommentHistoricQuery');
+    }
+
+    /**
+     * Filter the query by a related PMRCommentHistoric object
+     *
+     * @param   PMRCommentHistoric|PropelObjectCollection $pMRCommentHistoric  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PUserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPMRCommentHistoric($pMRCommentHistoric, $comparison = null)
+    {
+        if ($pMRCommentHistoric instanceof PMRCommentHistoric) {
+            return $this
+                ->addUsingAlias(PUserPeer::ID, $pMRCommentHistoric->getPUserId(), $comparison);
+        } elseif ($pMRCommentHistoric instanceof PropelObjectCollection) {
+            return $this
+                ->usePMRCommentHistoricQuery()
+                ->filterByPrimaryKeys($pMRCommentHistoric->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPMRCommentHistoric() only accepts arguments of type PMRCommentHistoric or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PMRCommentHistoric relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function joinPMRCommentHistoric($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PMRCommentHistoric');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PMRCommentHistoric');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PMRCommentHistoric relation PMRCommentHistoric object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PMRCommentHistoricQuery A secondary query class using the current class as primary query
+     */
+    public function usePMRCommentHistoricQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinPMRCommentHistoric($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PMRCommentHistoric', '\Politizr\Model\PMRCommentHistoricQuery');
     }
 
     /**

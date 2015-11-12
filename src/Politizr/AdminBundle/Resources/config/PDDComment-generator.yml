@@ -104,6 +104,13 @@ builders:
                         widget:                 single_text
             actions:
                 save:                           ~
+                archive:
+                    label:                      Archiver
+                    icon:                       fa-archive
+                    params:
+                        pk:                     "{{ PDDComment.id }}"
+                    # options:
+                    #     title:                "Are you sure?"
                 show:                           ~
                 list:                           ~
                 delete:                         ~

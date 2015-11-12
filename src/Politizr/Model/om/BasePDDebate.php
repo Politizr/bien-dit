@@ -28,6 +28,8 @@ use Politizr\Model\PDDebatePeer;
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReaction;
 use Politizr\Model\PDReactionQuery;
+use Politizr\Model\PMDebateHistoric;
+use Politizr\Model\PMDebateHistoricQuery;
 use Politizr\Model\PTag;
 use Politizr\Model\PTagQuery;
 use Politizr\Model\PUFollowDD;
@@ -208,6 +210,12 @@ abstract class BasePDDebate extends BaseObject implements Persistent
     protected $collPDDTaggedTsPartial;
 
     /**
+     * @var        PropelObjectCollection|PMDebateHistoric[] Collection to store aggregation of PMDebateHistoric objects.
+     */
+    protected $collPMDebateHistorics;
+    protected $collPMDebateHistoricsPartial;
+
+    /**
      * @var        PropelObjectCollection|PUser[] Collection to store aggregation of PUser objects.
      */
     protected $collPuFollowDdPUsers;
@@ -275,6 +283,12 @@ abstract class BasePDDebate extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $pDDTaggedTsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pMDebateHistoricsScheduledForDeletion = null;
 
     /**
      * Applies default values to this object.
@@ -1250,6 +1264,8 @@ abstract class BasePDDebate extends BaseObject implements Persistent
 
             $this->collPDDTaggedTs = null;
 
+            $this->collPMDebateHistorics = null;
+
             $this->collPuFollowDdPUsers = null;
             $this->collPTags = null;
         } // if (deep)
@@ -1547,6 +1563,24 @@ abstract class BasePDDebate extends BaseObject implements Persistent
 
             if ($this->collPDDTaggedTs !== null) {
                 foreach ($this->collPDDTaggedTs as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->pMDebateHistoricsScheduledForDeletion !== null) {
+                if (!$this->pMDebateHistoricsScheduledForDeletion->isEmpty()) {
+                    foreach ($this->pMDebateHistoricsScheduledForDeletion as $pMDebateHistoric) {
+                        // need to save related object because we set the relation to null
+                        $pMDebateHistoric->save($con);
+                    }
+                    $this->pMDebateHistoricsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPMDebateHistorics !== null) {
+                foreach ($this->collPMDebateHistorics as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -1853,6 +1887,14 @@ abstract class BasePDDebate extends BaseObject implements Persistent
                     }
                 }
 
+                if ($this->collPMDebateHistorics !== null) {
+                    foreach ($this->collPMDebateHistorics as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
 
             $this->alreadyInValidation = false;
         }
@@ -2018,6 +2060,9 @@ abstract class BasePDDebate extends BaseObject implements Persistent
             }
             if (null !== $this->collPDDTaggedTs) {
                 $result['PDDTaggedTs'] = $this->collPDDTaggedTs->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collPMDebateHistorics) {
+                $result['PMDebateHistorics'] = $this->collPMDebateHistorics->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -2302,6 +2347,12 @@ abstract class BasePDDebate extends BaseObject implements Persistent
                 }
             }
 
+            foreach ($this->getPMDebateHistorics() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPMDebateHistoric($relObj->copy($deepCopy));
+                }
+            }
+
             //unflag object copy
             $this->startCopy = false;
         } // if ($deepCopy)
@@ -2426,6 +2477,9 @@ abstract class BasePDDebate extends BaseObject implements Persistent
         }
         if ('PDDTaggedT' == $relationName) {
             $this->initPDDTaggedTs();
+        }
+        if ('PMDebateHistoric' == $relationName) {
+            $this->initPMDebateHistorics();
         }
     }
 
@@ -3430,6 +3484,256 @@ abstract class BasePDDebate extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collPMDebateHistorics collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PDDebate The current object (for fluent API support)
+     * @see        addPMDebateHistorics()
+     */
+    public function clearPMDebateHistorics()
+    {
+        $this->collPMDebateHistorics = null; // important to set this to null since that means it is uninitialized
+        $this->collPMDebateHistoricsPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPMDebateHistorics collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPMDebateHistorics($v = true)
+    {
+        $this->collPMDebateHistoricsPartial = $v;
+    }
+
+    /**
+     * Initializes the collPMDebateHistorics collection.
+     *
+     * By default this just sets the collPMDebateHistorics collection to an empty array (like clearcollPMDebateHistorics());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPMDebateHistorics($overrideExisting = true)
+    {
+        if (null !== $this->collPMDebateHistorics && !$overrideExisting) {
+            return;
+        }
+        $this->collPMDebateHistorics = new PropelObjectCollection();
+        $this->collPMDebateHistorics->setModel('PMDebateHistoric');
+    }
+
+    /**
+     * Gets an array of PMDebateHistoric objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PDDebate is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PMDebateHistoric[] List of PMDebateHistoric objects
+     * @throws PropelException
+     */
+    public function getPMDebateHistorics($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPMDebateHistoricsPartial && !$this->isNew();
+        if (null === $this->collPMDebateHistorics || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPMDebateHistorics) {
+                // return empty collection
+                $this->initPMDebateHistorics();
+            } else {
+                $collPMDebateHistorics = PMDebateHistoricQuery::create(null, $criteria)
+                    ->filterByPDDebate($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPMDebateHistoricsPartial && count($collPMDebateHistorics)) {
+                      $this->initPMDebateHistorics(false);
+
+                      foreach ($collPMDebateHistorics as $obj) {
+                        if (false == $this->collPMDebateHistorics->contains($obj)) {
+                          $this->collPMDebateHistorics->append($obj);
+                        }
+                      }
+
+                      $this->collPMDebateHistoricsPartial = true;
+                    }
+
+                    $collPMDebateHistorics->getInternalIterator()->rewind();
+
+                    return $collPMDebateHistorics;
+                }
+
+                if ($partial && $this->collPMDebateHistorics) {
+                    foreach ($this->collPMDebateHistorics as $obj) {
+                        if ($obj->isNew()) {
+                            $collPMDebateHistorics[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPMDebateHistorics = $collPMDebateHistorics;
+                $this->collPMDebateHistoricsPartial = false;
+            }
+        }
+
+        return $this->collPMDebateHistorics;
+    }
+
+    /**
+     * Sets a collection of PMDebateHistoric objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pMDebateHistorics A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function setPMDebateHistorics(PropelCollection $pMDebateHistorics, PropelPDO $con = null)
+    {
+        $pMDebateHistoricsToDelete = $this->getPMDebateHistorics(new Criteria(), $con)->diff($pMDebateHistorics);
+
+
+        $this->pMDebateHistoricsScheduledForDeletion = $pMDebateHistoricsToDelete;
+
+        foreach ($pMDebateHistoricsToDelete as $pMDebateHistoricRemoved) {
+            $pMDebateHistoricRemoved->setPDDebate(null);
+        }
+
+        $this->collPMDebateHistorics = null;
+        foreach ($pMDebateHistorics as $pMDebateHistoric) {
+            $this->addPMDebateHistoric($pMDebateHistoric);
+        }
+
+        $this->collPMDebateHistorics = $pMDebateHistorics;
+        $this->collPMDebateHistoricsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PMDebateHistoric objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PMDebateHistoric objects.
+     * @throws PropelException
+     */
+    public function countPMDebateHistorics(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPMDebateHistoricsPartial && !$this->isNew();
+        if (null === $this->collPMDebateHistorics || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPMDebateHistorics) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPMDebateHistorics());
+            }
+            $query = PMDebateHistoricQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPDDebate($this)
+                ->count($con);
+        }
+
+        return count($this->collPMDebateHistorics);
+    }
+
+    /**
+     * Method called to associate a PMDebateHistoric object to this object
+     * through the PMDebateHistoric foreign key attribute.
+     *
+     * @param    PMDebateHistoric $l PMDebateHistoric
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function addPMDebateHistoric(PMDebateHistoric $l)
+    {
+        if ($this->collPMDebateHistorics === null) {
+            $this->initPMDebateHistorics();
+            $this->collPMDebateHistoricsPartial = true;
+        }
+
+        if (!in_array($l, $this->collPMDebateHistorics->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPMDebateHistoric($l);
+
+            if ($this->pMDebateHistoricsScheduledForDeletion and $this->pMDebateHistoricsScheduledForDeletion->contains($l)) {
+                $this->pMDebateHistoricsScheduledForDeletion->remove($this->pMDebateHistoricsScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PMDebateHistoric $pMDebateHistoric The pMDebateHistoric object to add.
+     */
+    protected function doAddPMDebateHistoric($pMDebateHistoric)
+    {
+        $this->collPMDebateHistorics[]= $pMDebateHistoric;
+        $pMDebateHistoric->setPDDebate($this);
+    }
+
+    /**
+     * @param	PMDebateHistoric $pMDebateHistoric The pMDebateHistoric object to remove.
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function removePMDebateHistoric($pMDebateHistoric)
+    {
+        if ($this->getPMDebateHistorics()->contains($pMDebateHistoric)) {
+            $this->collPMDebateHistorics->remove($this->collPMDebateHistorics->search($pMDebateHistoric));
+            if (null === $this->pMDebateHistoricsScheduledForDeletion) {
+                $this->pMDebateHistoricsScheduledForDeletion = clone $this->collPMDebateHistorics;
+                $this->pMDebateHistoricsScheduledForDeletion->clear();
+            }
+            $this->pMDebateHistoricsScheduledForDeletion[]= $pMDebateHistoric;
+            $pMDebateHistoric->setPDDebate(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PDDebate is new, it will return
+     * an empty collection; or if this PDDebate has previously
+     * been saved, it will retrieve related PMDebateHistorics from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PDDebate.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PMDebateHistoric[] List of PMDebateHistoric objects
+     */
+    public function getPMDebateHistoricsJoinPUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PMDebateHistoricQuery::create(null, $criteria);
+        $query->joinWith('PUser', $join_behavior);
+
+        return $this->getPMDebateHistorics($query, $con);
+    }
+
+    /**
      * Clears out the collPuFollowDdPUsers collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
@@ -3871,6 +4175,11 @@ abstract class BasePDDebate extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collPMDebateHistorics) {
+                foreach ($this->collPMDebateHistorics as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collPuFollowDdPUsers) {
                 foreach ($this->collPuFollowDdPUsers as $o) {
                     $o->clearAllReferences($deep);
@@ -3904,6 +4213,10 @@ abstract class BasePDDebate extends BaseObject implements Persistent
             $this->collPDDTaggedTs->clearIterator();
         }
         $this->collPDDTaggedTs = null;
+        if ($this->collPMDebateHistorics instanceof PropelCollection) {
+            $this->collPMDebateHistorics->clearIterator();
+        }
+        $this->collPMDebateHistorics = null;
         if ($this->collPuFollowDdPUsers instanceof PropelCollection) {
             $this->collPuFollowDdPUsers->clearIterator();
         }

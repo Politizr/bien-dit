@@ -128,6 +128,11 @@ builders:
                         widget:                 single_text
             actions:
                 save:                           ~
+                archive:
+                    label:                      Archiver
+                    icon:                       fa-archive
+                    params:
+                        pk:                     "{{ PDDebate.id }}"
                 show:                           ~
                 list:                           ~
                 delete:                         ~

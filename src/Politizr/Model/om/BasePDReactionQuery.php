@@ -21,6 +21,7 @@ use Politizr\Model\PDRTaggedT;
 use Politizr\Model\PDReaction;
 use Politizr\Model\PDReactionPeer;
 use Politizr\Model\PDReactionQuery;
+use Politizr\Model\PMReactionHistoric;
 use Politizr\Model\PTag;
 use Politizr\Model\PUser;
 
@@ -96,6 +97,10 @@ use Politizr\Model\PUser;
  * @method PDReactionQuery leftJoinPDRTaggedT($relationAlias = null) Adds a LEFT JOIN clause to the query using the PDRTaggedT relation
  * @method PDReactionQuery rightJoinPDRTaggedT($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PDRTaggedT relation
  * @method PDReactionQuery innerJoinPDRTaggedT($relationAlias = null) Adds a INNER JOIN clause to the query using the PDRTaggedT relation
+ *
+ * @method PDReactionQuery leftJoinPMReactionHistoric($relationAlias = null) Adds a LEFT JOIN clause to the query using the PMReactionHistoric relation
+ * @method PDReactionQuery rightJoinPMReactionHistoric($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PMReactionHistoric relation
+ * @method PDReactionQuery innerJoinPMReactionHistoric($relationAlias = null) Adds a INNER JOIN clause to the query using the PMReactionHistoric relation
  *
  * @method PDReaction findOne(PropelPDO $con = null) Return the first PDReaction matching the query
  * @method PDReaction findOneOrCreate(PropelPDO $con = null) Return the first PDReaction matching the query, or a new PDReaction object populated from the query conditions when no match is found
@@ -1555,6 +1560,80 @@ abstract class BasePDReactionQuery extends ModelCriteria
         return $this
             ->joinPDRTaggedT($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'PDRTaggedT', '\Politizr\Model\PDRTaggedTQuery');
+    }
+
+    /**
+     * Filter the query by a related PMReactionHistoric object
+     *
+     * @param   PMReactionHistoric|PropelObjectCollection $pMReactionHistoric  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PDReactionQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPMReactionHistoric($pMReactionHistoric, $comparison = null)
+    {
+        if ($pMReactionHistoric instanceof PMReactionHistoric) {
+            return $this
+                ->addUsingAlias(PDReactionPeer::ID, $pMReactionHistoric->getPDReactionId(), $comparison);
+        } elseif ($pMReactionHistoric instanceof PropelObjectCollection) {
+            return $this
+                ->usePMReactionHistoricQuery()
+                ->filterByPrimaryKeys($pMReactionHistoric->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPMReactionHistoric() only accepts arguments of type PMReactionHistoric or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PMReactionHistoric relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PDReactionQuery The current query, for fluid interface
+     */
+    public function joinPMReactionHistoric($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PMReactionHistoric');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PMReactionHistoric');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PMReactionHistoric relation PMReactionHistoric object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PMReactionHistoricQuery A secondary query class using the current class as primary query
+     */
+    public function usePMReactionHistoricQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinPMReactionHistoric($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PMReactionHistoric', '\Politizr\Model\PMReactionHistoricQuery');
     }
 
     /**

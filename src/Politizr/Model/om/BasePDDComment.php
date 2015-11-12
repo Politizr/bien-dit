@@ -10,8 +10,10 @@ use \Exception;
 use \PDO;
 use \Persistent;
 use \Propel;
+use \PropelCollection;
 use \PropelDateTime;
 use \PropelException;
+use \PropelObjectCollection;
 use \PropelPDO;
 use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
 use Glorpen\Propel\PropelBundle\Events\ModelEvent;
@@ -22,6 +24,8 @@ use Politizr\Model\PDDCommentPeer;
 use Politizr\Model\PDDCommentQuery;
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDDebateQuery;
+use Politizr\Model\PMDCommentHistoric;
+use Politizr\Model\PMDCommentHistoricQuery;
 use Politizr\Model\PUser;
 use Politizr\Model\PUserQuery;
 
@@ -149,6 +153,12 @@ abstract class BasePDDComment extends BaseObject implements Persistent
     protected $aPDDebate;
 
     /**
+     * @var        PropelObjectCollection|PMDCommentHistoric[] Collection to store aggregation of PMDCommentHistoric objects.
+     */
+    protected $collPMDCommentHistorics;
+    protected $collPMDCommentHistoricsPartial;
+
+    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      * @var        boolean
@@ -170,6 +180,12 @@ abstract class BasePDDComment extends BaseObject implements Persistent
 
     // archivable behavior
     protected $archiveOnDelete = true;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pMDCommentHistoricsScheduledForDeletion = null;
 
     /**
      * Applies default values to this object.
@@ -964,6 +980,8 @@ abstract class BasePDDComment extends BaseObject implements Persistent
 
             $this->aPUser = null;
             $this->aPDDebate = null;
+            $this->collPMDCommentHistorics = null;
+
         } // if (deep)
     }
 
@@ -1141,6 +1159,24 @@ abstract class BasePDDComment extends BaseObject implements Persistent
                 }
                 $affectedRows += 1;
                 $this->resetModified();
+            }
+
+            if ($this->pMDCommentHistoricsScheduledForDeletion !== null) {
+                if (!$this->pMDCommentHistoricsScheduledForDeletion->isEmpty()) {
+                    foreach ($this->pMDCommentHistoricsScheduledForDeletion as $pMDCommentHistoric) {
+                        // need to save related object because we set the relation to null
+                        $pMDCommentHistoric->save($con);
+                    }
+                    $this->pMDCommentHistoricsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPMDCommentHistorics !== null) {
+                foreach ($this->collPMDCommentHistorics as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
             }
 
             $this->alreadyInSave = false;
@@ -1387,6 +1423,14 @@ abstract class BasePDDComment extends BaseObject implements Persistent
             }
 
 
+                if ($this->collPMDCommentHistorics !== null) {
+                    foreach ($this->collPMDCommentHistorics as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
 
             $this->alreadyInValidation = false;
         }
@@ -1523,6 +1567,9 @@ abstract class BasePDDComment extends BaseObject implements Persistent
             }
             if (null !== $this->aPDDebate) {
                 $result['PDDebate'] = $this->aPDDebate->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->collPMDCommentHistorics) {
+                $result['PMDCommentHistorics'] = $this->collPMDCommentHistorics->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -1753,6 +1800,12 @@ abstract class BasePDDComment extends BaseObject implements Persistent
             // store object hash to prevent cycle
             $this->startCopy = true;
 
+            foreach ($this->getPMDCommentHistorics() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPMDCommentHistoric($relObj->copy($deepCopy));
+                }
+            }
+
             //unflag object copy
             $this->startCopy = false;
         } // if ($deepCopy)
@@ -1907,6 +1960,272 @@ abstract class BasePDDComment extends BaseObject implements Persistent
         return $this->aPDDebate;
     }
 
+
+    /**
+     * Initializes a collection based on the name of a relation.
+     * Avoids crafting an 'init[$relationName]s' method name
+     * that wouldn't work when StandardEnglishPluralizer is used.
+     *
+     * @param string $relationName The name of the relation to initialize
+     * @return void
+     */
+    public function initRelation($relationName)
+    {
+        if ('PMDCommentHistoric' == $relationName) {
+            $this->initPMDCommentHistorics();
+        }
+    }
+
+    /**
+     * Clears out the collPMDCommentHistorics collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PDDComment The current object (for fluent API support)
+     * @see        addPMDCommentHistorics()
+     */
+    public function clearPMDCommentHistorics()
+    {
+        $this->collPMDCommentHistorics = null; // important to set this to null since that means it is uninitialized
+        $this->collPMDCommentHistoricsPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPMDCommentHistorics collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPMDCommentHistorics($v = true)
+    {
+        $this->collPMDCommentHistoricsPartial = $v;
+    }
+
+    /**
+     * Initializes the collPMDCommentHistorics collection.
+     *
+     * By default this just sets the collPMDCommentHistorics collection to an empty array (like clearcollPMDCommentHistorics());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPMDCommentHistorics($overrideExisting = true)
+    {
+        if (null !== $this->collPMDCommentHistorics && !$overrideExisting) {
+            return;
+        }
+        $this->collPMDCommentHistorics = new PropelObjectCollection();
+        $this->collPMDCommentHistorics->setModel('PMDCommentHistoric');
+    }
+
+    /**
+     * Gets an array of PMDCommentHistoric objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PDDComment is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PMDCommentHistoric[] List of PMDCommentHistoric objects
+     * @throws PropelException
+     */
+    public function getPMDCommentHistorics($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPMDCommentHistoricsPartial && !$this->isNew();
+        if (null === $this->collPMDCommentHistorics || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPMDCommentHistorics) {
+                // return empty collection
+                $this->initPMDCommentHistorics();
+            } else {
+                $collPMDCommentHistorics = PMDCommentHistoricQuery::create(null, $criteria)
+                    ->filterByPDDComment($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPMDCommentHistoricsPartial && count($collPMDCommentHistorics)) {
+                      $this->initPMDCommentHistorics(false);
+
+                      foreach ($collPMDCommentHistorics as $obj) {
+                        if (false == $this->collPMDCommentHistorics->contains($obj)) {
+                          $this->collPMDCommentHistorics->append($obj);
+                        }
+                      }
+
+                      $this->collPMDCommentHistoricsPartial = true;
+                    }
+
+                    $collPMDCommentHistorics->getInternalIterator()->rewind();
+
+                    return $collPMDCommentHistorics;
+                }
+
+                if ($partial && $this->collPMDCommentHistorics) {
+                    foreach ($this->collPMDCommentHistorics as $obj) {
+                        if ($obj->isNew()) {
+                            $collPMDCommentHistorics[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPMDCommentHistorics = $collPMDCommentHistorics;
+                $this->collPMDCommentHistoricsPartial = false;
+            }
+        }
+
+        return $this->collPMDCommentHistorics;
+    }
+
+    /**
+     * Sets a collection of PMDCommentHistoric objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pMDCommentHistorics A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PDDComment The current object (for fluent API support)
+     */
+    public function setPMDCommentHistorics(PropelCollection $pMDCommentHistorics, PropelPDO $con = null)
+    {
+        $pMDCommentHistoricsToDelete = $this->getPMDCommentHistorics(new Criteria(), $con)->diff($pMDCommentHistorics);
+
+
+        $this->pMDCommentHistoricsScheduledForDeletion = $pMDCommentHistoricsToDelete;
+
+        foreach ($pMDCommentHistoricsToDelete as $pMDCommentHistoricRemoved) {
+            $pMDCommentHistoricRemoved->setPDDComment(null);
+        }
+
+        $this->collPMDCommentHistorics = null;
+        foreach ($pMDCommentHistorics as $pMDCommentHistoric) {
+            $this->addPMDCommentHistoric($pMDCommentHistoric);
+        }
+
+        $this->collPMDCommentHistorics = $pMDCommentHistorics;
+        $this->collPMDCommentHistoricsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PMDCommentHistoric objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PMDCommentHistoric objects.
+     * @throws PropelException
+     */
+    public function countPMDCommentHistorics(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPMDCommentHistoricsPartial && !$this->isNew();
+        if (null === $this->collPMDCommentHistorics || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPMDCommentHistorics) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPMDCommentHistorics());
+            }
+            $query = PMDCommentHistoricQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPDDComment($this)
+                ->count($con);
+        }
+
+        return count($this->collPMDCommentHistorics);
+    }
+
+    /**
+     * Method called to associate a PMDCommentHistoric object to this object
+     * through the PMDCommentHistoric foreign key attribute.
+     *
+     * @param    PMDCommentHistoric $l PMDCommentHistoric
+     * @return PDDComment The current object (for fluent API support)
+     */
+    public function addPMDCommentHistoric(PMDCommentHistoric $l)
+    {
+        if ($this->collPMDCommentHistorics === null) {
+            $this->initPMDCommentHistorics();
+            $this->collPMDCommentHistoricsPartial = true;
+        }
+
+        if (!in_array($l, $this->collPMDCommentHistorics->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPMDCommentHistoric($l);
+
+            if ($this->pMDCommentHistoricsScheduledForDeletion and $this->pMDCommentHistoricsScheduledForDeletion->contains($l)) {
+                $this->pMDCommentHistoricsScheduledForDeletion->remove($this->pMDCommentHistoricsScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PMDCommentHistoric $pMDCommentHistoric The pMDCommentHistoric object to add.
+     */
+    protected function doAddPMDCommentHistoric($pMDCommentHistoric)
+    {
+        $this->collPMDCommentHistorics[]= $pMDCommentHistoric;
+        $pMDCommentHistoric->setPDDComment($this);
+    }
+
+    /**
+     * @param	PMDCommentHistoric $pMDCommentHistoric The pMDCommentHistoric object to remove.
+     * @return PDDComment The current object (for fluent API support)
+     */
+    public function removePMDCommentHistoric($pMDCommentHistoric)
+    {
+        if ($this->getPMDCommentHistorics()->contains($pMDCommentHistoric)) {
+            $this->collPMDCommentHistorics->remove($this->collPMDCommentHistorics->search($pMDCommentHistoric));
+            if (null === $this->pMDCommentHistoricsScheduledForDeletion) {
+                $this->pMDCommentHistoricsScheduledForDeletion = clone $this->collPMDCommentHistorics;
+                $this->pMDCommentHistoricsScheduledForDeletion->clear();
+            }
+            $this->pMDCommentHistoricsScheduledForDeletion[]= $pMDCommentHistoric;
+            $pMDCommentHistoric->setPDDComment(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PDDComment is new, it will return
+     * an empty collection; or if this PDDComment has previously
+     * been saved, it will retrieve related PMDCommentHistorics from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PDDComment.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PMDCommentHistoric[] List of PMDCommentHistoric objects
+     */
+    public function getPMDCommentHistoricsJoinPUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PMDCommentHistoricQuery::create(null, $criteria);
+        $query->joinWith('PUser', $join_behavior);
+
+        return $this->getPMDCommentHistorics($query, $con);
+    }
+
     /**
      * Clears the current object and sets all attributes to their default values
      */
@@ -1950,6 +2269,11 @@ abstract class BasePDDComment extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
+            if ($this->collPMDCommentHistorics) {
+                foreach ($this->collPMDCommentHistorics as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->aPUser instanceof Persistent) {
               $this->aPUser->clearAllReferences($deep);
             }
@@ -1960,6 +2284,10 @@ abstract class BasePDDComment extends BaseObject implements Persistent
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
+        if ($this->collPMDCommentHistorics instanceof PropelCollection) {
+            $this->collPMDCommentHistorics->clearIterator();
+        }
+        $this->collPMDCommentHistorics = null;
         $this->aPUser = null;
         $this->aPDDebate = null;
     }

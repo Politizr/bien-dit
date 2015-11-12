@@ -410,7 +410,6 @@
         <column name="p_u_status_id" type="integer" required="true" />
 
         <column name="file_name" type="varchar" size="150" />
-
         <column name="back_file_name" type="varchar" size="150" />
         <column name="copyright" type="longvarchar" />
 
@@ -933,6 +932,106 @@
         <column name="message" type="longvarchar" />
         <column name="evol_reput" type="integer" />
 
+        <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_user_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+
+    <table name="p_m_user_historic">
+        <behavior name="timestampable" />
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_user_id" type="integer" required="false" />  
+        <column name="p_object_id" type="integer" />
+        
+        <column name="file_name" type="varchar" size="150" />
+        <column name="back_file_name" type="varchar" size="150" />
+
+        <column name="copyright" type="longvarchar" />
+        <column name="subtitle" type="longvarchar" />
+        <column name="biography" type="longvarchar" />
+
+        <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_user_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+    <table name="p_m_debate_historic">
+        <behavior name="timestampable" />
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_d_debate_id" type="integer" required="false" />  
+        <column name="p_user_id" type="integer" required="false" />  
+        <column name="p_object_id" type="integer" />
+        
+        <column name="file_name" type="varchar" size="150" />
+
+        <column name="title" type="varchar" size="100" />
+        <column name="description" type="clob" />
+        <column name="copyright" type="longvarchar" />
+
+        <foreign-key foreignTable="p_d_debate" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_d_debate_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_user_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+    <table name="p_m_reaction_historic">
+        <behavior name="timestampable" />
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_d_reaction_id" type="integer" required="false" />  
+        <column name="p_user_id" type="integer" required="false" />  
+        <column name="p_object_id" type="integer" />
+        
+        <column name="file_name" type="varchar" size="150" />
+
+        <column name="title" type="varchar" size="100" />
+        <column name="description" type="clob" />
+        <column name="copyright" type="longvarchar" />
+
+        <foreign-key foreignTable="p_d_reaction" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_d_reaction_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_user_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+    <table name="p_m_d_comment_historic">
+        <behavior name="timestampable" />
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_d_d_comment_id" type="integer" required="false" />  
+        <column name="p_user_id" type="integer" required="false" />  
+        <column name="p_object_id" type="integer" />
+        
+        <column name="description" type="longvarchar" />
+
+        <foreign-key foreignTable="p_d_d_comment" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_d_d_comment_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_user_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+    <table name="p_m_r_comment_historic">
+        <behavior name="timestampable" />
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_d_r_comment_id" type="integer" required="false" />  
+        <column name="p_user_id" type="integer" required="false" />  
+        <column name="p_object_id" type="integer" />
+        
+        <column name="description" type="longvarchar" />
+
+        <foreign-key foreignTable="p_d_r_comment" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_d_r_comment_id" foreign="id" />
+        </foreign-key>
         <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />
         </foreign-key>

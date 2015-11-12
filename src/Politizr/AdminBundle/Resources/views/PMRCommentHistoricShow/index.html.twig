@@ -1,0 +1,10 @@
+{% extends_admingenerated "PolitizrAdminBundle:PMRCommentHistoricShow:index.html.twig" %}
+
+{# Objets #}
+{% block show_column_block_p_d_r_comment %}
+    {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION_COMMENT'), PMRCommentHistoric.PDRCommentId) }}
+{% endblock %}
+
+{% block show_column_block_p_user %}
+    {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_USER'), PMRCommentHistoric.PUserId) }}
+{% endblock %}

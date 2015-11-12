@@ -21,6 +21,7 @@ use Politizr\Model\PDDebate;
 use Politizr\Model\PDDebatePeer;
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReaction;
+use Politizr\Model\PMDebateHistoric;
 use Politizr\Model\PTag;
 use Politizr\Model\PUFollowDD;
 use Politizr\Model\PUser;
@@ -91,6 +92,10 @@ use Politizr\Model\PUser;
  * @method PDDebateQuery leftJoinPDDTaggedT($relationAlias = null) Adds a LEFT JOIN clause to the query using the PDDTaggedT relation
  * @method PDDebateQuery rightJoinPDDTaggedT($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PDDTaggedT relation
  * @method PDDebateQuery innerJoinPDDTaggedT($relationAlias = null) Adds a INNER JOIN clause to the query using the PDDTaggedT relation
+ *
+ * @method PDDebateQuery leftJoinPMDebateHistoric($relationAlias = null) Adds a LEFT JOIN clause to the query using the PMDebateHistoric relation
+ * @method PDDebateQuery rightJoinPMDebateHistoric($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PMDebateHistoric relation
+ * @method PDDebateQuery innerJoinPMDebateHistoric($relationAlias = null) Adds a INNER JOIN clause to the query using the PMDebateHistoric relation
  *
  * @method PDDebate findOne(PropelPDO $con = null) Return the first PDDebate matching the query
  * @method PDDebate findOneOrCreate(PropelPDO $con = null) Return the first PDDebate matching the query, or a new PDDebate object populated from the query conditions when no match is found
@@ -1400,6 +1405,80 @@ abstract class BasePDDebateQuery extends ModelCriteria
         return $this
             ->joinPDDTaggedT($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'PDDTaggedT', '\Politizr\Model\PDDTaggedTQuery');
+    }
+
+    /**
+     * Filter the query by a related PMDebateHistoric object
+     *
+     * @param   PMDebateHistoric|PropelObjectCollection $pMDebateHistoric  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PDDebateQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPMDebateHistoric($pMDebateHistoric, $comparison = null)
+    {
+        if ($pMDebateHistoric instanceof PMDebateHistoric) {
+            return $this
+                ->addUsingAlias(PDDebatePeer::ID, $pMDebateHistoric->getPDDebateId(), $comparison);
+        } elseif ($pMDebateHistoric instanceof PropelObjectCollection) {
+            return $this
+                ->usePMDebateHistoricQuery()
+                ->filterByPrimaryKeys($pMDebateHistoric->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPMDebateHistoric() only accepts arguments of type PMDebateHistoric or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PMDebateHistoric relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PDDebateQuery The current query, for fluid interface
+     */
+    public function joinPMDebateHistoric($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PMDebateHistoric');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PMDebateHistoric');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PMDebateHistoric relation PMDebateHistoric object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PMDebateHistoricQuery A secondary query class using the current class as primary query
+     */
+    public function usePMDebateHistoricQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinPMDebateHistoric($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PMDebateHistoric', '\Politizr\Model\PMDebateHistoricQuery');
     }
 
     /**

@@ -67,6 +67,7 @@ class PDDCommentTableMap extends TableMap
     {
         $this->addRelation('PUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_ONE, array('p_user_id' => 'id', ), 'SET NULL', 'CASCADE');
         $this->addRelation('PDDebate', 'Politizr\\Model\\PDDebate', RelationMap::MANY_TO_ONE, array('p_d_debate_id' => 'id', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('PMDCommentHistoric', 'Politizr\\Model\\PMDCommentHistoric', RelationMap::ONE_TO_MANY, array('id' => 'p_d_d_comment_id', ), 'SET NULL', 'CASCADE', 'PMDCommentHistorics');
     } // buildRelations()
 
     /**

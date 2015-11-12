@@ -90,8 +90,8 @@ builders:
                         read_only:              true
                 description:
                     grid_class:                 "col-md-12"
-                    addFormOptions:
-                        attr:                   { class : tinymce }
+                    # addFormOptions:
+                    #     attr:                   { class : tinymce }
                 published_at:
                     # formType:                   afe_datetime_picker
                     addFormOptions:
@@ -104,6 +104,11 @@ builders:
                         widget:                 single_text
             actions:
                 save:                           ~
+                archive:
+                    label:                      Archiver
+                    icon:                       fa-archive
+                    params:
+                        pk:                     "{{ PDRComment.id }}"
                 show:                           ~
                 list:                           ~
                 delete:                         ~
