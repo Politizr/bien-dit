@@ -124,8 +124,8 @@ ORDER BY published_at ASC
         
         // Préparation requête SQL
         $sql = "
-#  Brouillons de réactions
-( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.updated_at as updated_at, 'Politizr\\\Model\\\PDReaction' as type
+#  Réactions
+( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.published_at as published_at, 'Politizr\\\Model\\\PDReaction' as type
 FROM p_d_reaction
 WHERE
     p_user_id = ".$userId."
@@ -135,8 +135,8 @@ WHERE
 
 UNION DISTINCT
 
-#  Brouillons de débats
-( SELECT p_d_debate.id as id, p_d_debate.title as title, p_d_debate.updated_at as updated_at, 'Politizr\\\Model\\\PDDebate' as type
+#  Débats
+( SELECT p_d_debate.id as id, p_d_debate.title as title, p_d_debate.published_at as published_at, 'Politizr\\\Model\\\PDDebate' as type
 FROM p_d_debate
 WHERE
     p_user_id = ".$userId."
@@ -144,7 +144,7 @@ WHERE
     AND p_d_debate.online = 1
 )
 
-ORDER BY updated_at DESC
+ORDER BY published_at DESC
 LIMIT ".$offset.", ".$count."
     ";
 
