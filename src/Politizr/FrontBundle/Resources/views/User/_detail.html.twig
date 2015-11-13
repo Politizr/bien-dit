@@ -1,5 +1,5 @@
 <div id="main">
-    <div id="profileHeader">
+    <div class="profileHeader">
         {% include 'PolitizrFrontBundle:User:_header.html.twig' with { 'user': user, 'withUrlInName': false } only %}
     </div>
     <div id="illustration_l">
@@ -11,12 +11,12 @@
 
     {% include 'PolitizrFrontBundle:Document:_copyright.html.twig' with { 'copyright': user.copyright } %}
     
-    <div id="profilePublicTagList">
+    <div class="profilePublicTagList">
         {{ user | userTags }}
     </div>
 
     {% if app.user.id == user.id %}
-        <div id="profilePrivateTagList">
+        <div class="profilePrivateTagList">
             <div id="privateTagTitle">
                 <span>mes thématiques privées</span>
                 <i class="iconInfo" action="confidentialToggle"></i>

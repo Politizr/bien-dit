@@ -39,9 +39,9 @@
 
 {% block main %}
     <div id="main">
-        <div id="profileHeader">
+        <div class="profileHeader">
             <div class="pad40">
-                <div id="profileSummaryFooter">
+                <div class="profileSummaryFooter">
                     <div class="avatar60">
                         <div id="smallCamera">
                             <form id="formUserPhoto" action="{{ path('XhrGeneric', {'xhrRoute': constant('Politizr\\Constant\\XhrConstants::ROUTE_USER_PHOTO_UPLOAD'), 'xhrService': 'user', 'xhrMethod': 'userPhotoUpload', 'xhrType': constant('Politizr\\Constant\\XhrConstants::RETURN_URL')}) }}" method="post" enctype="multipart/form-data">
@@ -59,9 +59,9 @@
                             {{ user | photo('user_60') }}
                         </div>
                     </div>
-                    <div id="profileNameHolder">
-                        <div id="profileNameBottom">
-                            <div id="profileName">
+                    <div class="profileNameHolder">
+                        <div class="profileNameBottom">
+                            <div class="profileName">
                                 {{ user }}
                             </div>
                         </div>
