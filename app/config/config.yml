@@ -766,7 +766,8 @@ fos_elastica:
 # HTMLPurifierBundle
 exercise_html_purifier:
     default:
-        Cache.SerializerPath: '%kernel.cache_dir%'
+        # Cache.SerializerPath: '%kernel.cache_dir%/htmlpurifier'
+        Cache.SerializerPath: "%kernel.root_dir%/cache/htmlpurifier"
 
 # Liip URL autoconverter
 liip_url_auto_converter:
