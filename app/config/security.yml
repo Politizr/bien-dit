@@ -4,6 +4,7 @@ jms_security_extra:
     expressions:            true
 
 security:
+    always_authenticate_before_granting:  true
     acl:
         provider:           propel.security.acl.provider
 
