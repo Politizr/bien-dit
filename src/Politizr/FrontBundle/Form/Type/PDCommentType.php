@@ -9,6 +9,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Length;
 
 /**
  * Comment type for debate & reaction
@@ -39,7 +40,10 @@ class PDCommentType extends AbstractType
         $builder->add('description', 'textarea', array(
             'required' => false,
             'label' => 'Commentaire',
-            'constraints' => new NotBlank(array('message' => 'Commentaire obligatoire.')),
+            'constraints' => array(
+                new NotBlank(array('message' => 'Commentaire obligatoire.')),
+                new Length(array('min' => 5, 'max' => 500, 'minMessage' => 'Au moins 5 caractères.', 'maxMessage' => 'Maximum de 500 caractères.')),
+            ),
             'attr' => array(
                 'placeholder' => 'Votre commentaire...',
                 )
