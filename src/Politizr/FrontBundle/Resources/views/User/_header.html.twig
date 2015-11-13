@@ -48,6 +48,11 @@
             </div>
         </div>
         <div class="profileSubtitle">{{ user.subtitle | purify }}</div>
+        {% if withPublicTags %}
+            <div class="profilePublicTagList">
+                {{ user | userTags }}
+            </div>
+        {% endif %}
     </div>
 </div>                      
 <div class="profileHeaderIllustration">
