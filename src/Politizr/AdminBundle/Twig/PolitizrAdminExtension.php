@@ -172,6 +172,13 @@ class PolitizrAdminExtension extends \Twig_Extension
                     'is_safe' => array('html')
                     )
             ),
+            'adminReactionTags'  => new \Twig_Function_Method(
+                $this,
+                'adminReactionTags',
+                array(
+                    'is_safe' => array('html')
+                    )
+            ),
             'adminDebateFollowersQ'  => new \Twig_Function_Method(
                 $this,
                 'adminDebateFollowersQ',
@@ -765,6 +772,71 @@ class PolitizrAdminExtension extends \Twig_Extension
                 'PolitizrAdminBundle:Fragment\\Tag:_list.html.twig',
                 array(
                     'tags' => $debate->getTags($tagTypeId),
+                    )
+            );
+        }
+
+        return $html;
+    }
+
+    /**
+     * Reaction's tagged tags management
+     *
+     * @param PDReaction $reaction
+     * @param int $tagTypeId
+     * @param int $zoneId CSS zone id
+     * @param boolean $newTag new tag creation authorized
+     * @param string $mode edit (default) / show
+     * @return string
+     */
+    public function adminReactionTags($reaction, $tagTypeId, $zoneId = 1, $newTag = false, $mode = 'edit')
+    {
+        $this->logger->info('*** adminReactionTags');
+        // $this->logger->info('$reaction = '.print_r($reaction, true));
+        // $this->logger->info('$tagTypeId = '.print_r($tagTypeId, true));
+        // $this->logger->info('$zoneId = '.print_r($zoneId, true));
+
+        if ('edit' === $mode) {
+            // Construction des chemins XHR
+            $xhrPathCreate = $this->templating->render(
+                'PolitizrAdminBundle:Fragment\\Xhr:_xhrPath.html.twig',
+                array(
+                    'xhrRoute' => 'ADMIN_ROUTE_TAG_DEBATE_CREATE',
+                    'xhrService' => 'admin',
+                    'xhrMethod' => 'reactionAddTag',
+                    'xhrType' => 'RETURN_HTML',
+                )
+            );
+
+            $xhrPathDelete = $this->templating->render(
+                'PolitizrAdminBundle:Fragment\\Xhr:_xhrPath.html.twig',
+                array(
+                    'xhrRoute' => 'ADMIN_ROUTE_TAG_DEBATE_DELETE',
+                    'xhrService' => 'admin',
+                    'xhrMethod' => 'reactionDeleteTag',
+                    'xhrType' => 'RETURN_BOOLEAN',
+                )
+            );
+
+            // Construction du rendu du tag
+            $html = $this->templating->render(
+                'PolitizrAdminBundle:Fragment\\Tag:_edit.html.twig',
+                array(
+                    'object' => $reaction,
+                    'tagTypeId' => $tagTypeId,
+                    'zoneId' => $zoneId,
+                    'newTag' => $newTag,
+                    'tags' => $reaction->getTags($tagTypeId),
+                    'pathCreate' => $xhrPathCreate,
+                    'pathDelete' => $xhrPathDelete,
+                )
+            );
+        } else {
+            // Construction du rendu du tag
+            $html = $this->templating->render(
+                'PolitizrAdminBundle:Fragment\\Tag:_list.html.twig',
+                array(
+                    'tags' => $reaction->getTags($tagTypeId),
                     )
             );
         }

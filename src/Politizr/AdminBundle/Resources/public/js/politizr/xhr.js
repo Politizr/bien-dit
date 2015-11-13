@@ -18,6 +18,8 @@ var ADMIN_ROUTE_TAG_LISTING = 'admin/tags/listing';
 var ADMIN_ROUTE_TAG_SEARCH_LISTING = 'admin/tags/search/listing';
 var ADMIN_ROUTE_TAG_DEBATE_CREATE = 'admin/debat/tag/create';
 var ADMIN_ROUTE_TAG_DEBATE_DELETE = 'admin/debat/tag/delete';
+var ADMIN_ROUTE_TAG_REACTION_CREATE = 'admin/reaction/tag/create';
+var ADMIN_ROUTE_TAG_REACTION_DELETE = 'admin/reaction/tag/delete';
 var ADMIN_ROUTE_TAG_USER_FOLLOW_CREATE = 'admin/utilisateur/follow/tag/create';
 var ADMIN_ROUTE_TAG_USER_FOLLOW_DELETE = 'admin/utilisateur/follow/tag/delete';
 var ADMIN_ROUTE_TAG_USER_TAGGED_CREATE = 'admin/utilisateur/tagged/tag/create';
@@ -50,6 +52,8 @@ function xhrBeforeSend( ) {
     $('#infoBoxHolder .boxSuccess').hide();
     $('#infoBoxHolder .boxError').hide();
     $('#infoBoxHolder.boxAlert').hide();
+
+    $('#ajaxGlobalLoader').show();    
 }
 
 /**

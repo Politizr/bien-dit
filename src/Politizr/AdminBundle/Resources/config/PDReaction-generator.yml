@@ -95,6 +95,8 @@ builders:
                     "Utilisateur":              [ p_user ]
                     "Débat":                    [ p_d_debate ]
                     # "Réaction parente":         [ parent ]
+                "Tags":
+                    "Tags associés":            [ block_tags ]
                 "Statut":
                     "Publication":              [ [ published, published_by, published_at ] ]
                     "Notes":                    [ [ note_pos, note_neg ] ]
@@ -118,6 +120,13 @@ builders:
                     addFormOptions:
                         disabled:               true
                         read_only:              true
+                block_tags:
+                    label:                      "Tags"
+                    grid_class:                 "col-md-12"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+                    addFormOptions:
+                        mapped:                 false
                 description:
                     grid_class:                 "col-md-12"
                     addFormOptions:
@@ -153,6 +162,8 @@ builders:
                     "Document":                 [ block_p_d_debate, block_parent ]
                 "Commentaires":
                     "Commentaires associés":    [ block_comments ]
+                "Tags":
+                    "Tags associés":            [ block_tags ]
                 "Statut":
                     "Publication":              [ [ published ], [ published_by ], [ published_at ] ]
                 "Attributs":
@@ -174,6 +185,8 @@ builders:
                     label:                      "Réaction parente"
                 block_comments:
                     label:                      "Commentaires"
+                block_tags:
+                    label:                      "Tags"
                 block_moderation_alert_new:
                     label:                      "Alerte"
                 block_moderation_alert_listing:

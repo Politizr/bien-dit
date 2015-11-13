@@ -18,7 +18,6 @@
     {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION'), PDReaction.ParentReactionId) }}
 {% endblock %}
 
-
 {# Contenus #}
 {% block show_column_summary %}
     {{ PDReaction.getSummary | raw }}
@@ -26,6 +25,11 @@
 
 {% block show_column_description %}
     {{ PDReaction.getDescription | raw }}
+{% endblock %}
+
+{# Bloc tags #}
+{% block show_column_block_tags %}
+    {{ adminReactionTags(PDReaction, null, 1, mode='show') }}
 {% endblock %}
 
 {# Block moderation new alert #}

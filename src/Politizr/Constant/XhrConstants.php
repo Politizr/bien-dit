@@ -145,6 +145,8 @@ class XhrConstants
     const ADMIN_ROUTE_TAG_SEARCH_LISTING = 'admin/tags/search/listing';
     const ADMIN_ROUTE_TAG_DEBATE_CREATE = 'admin/debat/tag/create';
     const ADMIN_ROUTE_TAG_DEBATE_DELETE = 'admin/debat/tag/delete';
+    const ADMIN_ROUTE_TAG_REACTION_CREATE = 'admin/reaction/tag/create';
+    const ADMIN_ROUTE_TAG_REACTION_DELETE = 'admin/reaction/tag/delete';
     const ADMIN_ROUTE_TAG_USER_FOLLOW_CREATE = 'admin/utilisateur/follow/tag/create';
     const ADMIN_ROUTE_TAG_USER_FOLLOW_DELETE = 'admin/utilisateur/follow/tag/delete';
     const ADMIN_ROUTE_TAG_USER_TAGGED_CREATE = 'admin/utilisateur/tagged/tag/create';
