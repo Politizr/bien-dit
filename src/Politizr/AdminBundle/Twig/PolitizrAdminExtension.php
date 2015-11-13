@@ -14,6 +14,7 @@ use Politizr\Model\PUserQuery;
 use Politizr\Model\PUFollowDDQuery;
 use Politizr\Model\PMUserModeratedQuery;
 
+use Politizr\Model\PUser;
 use Politizr\Model\PMUserModerated;
 
 use Politizr\AdminBundle\Form\Type\PMUserModeratedType;
@@ -63,7 +64,16 @@ class PolitizrAdminExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            new \Twig_SimpleFilter('linkedModeration', array($this, 'linkedModeration')),
+            new \Twig_SimpleFilter(
+                'linkedModeration',
+                array($this, 'linkedModeration'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
+                'linkedBanned',
+                array($this, 'linkedBanned'),
+                array('is_safe' => array('html'))
+            ),
         );
     }
 
@@ -253,7 +263,7 @@ class PolitizrAdminExtension extends \Twig_Extension
     // ****************************************  MODERATION ******************************************* //
 
     /**
-     * Moderation HTML rendering
+     * Moderation notification HTML rendering
      *
      * @param PMUserModerated $userModerated
      * @param string $type html or txt mail
@@ -304,6 +314,30 @@ class PolitizrAdminExtension extends \Twig_Extension
                 'authorUrl' => $authorUrl,
                 'document' => $document,
                 'documentUrl' => $documentUrl,
+            )
+        );
+
+        return $html;
+    }
+
+    /**
+     * Moderation banned HTML rendering
+     *
+     * @param PUser $user
+     * @param string $type html or txt mail
+     * @return html
+     */
+    public function linkedBanned(PUser $user, $type)
+    {
+        $this->logger->info('*** linkedBanned');
+        // $this->logger->info('$user = '.print_r($user, true));
+        // $this->logger->info('$type = '.print_r($type, true));
+
+        $html = $this->templating->render(
+            'PolitizrAdminBundle:Fragment\\Moderation:_banned.html.twig',
+            array(
+                'type' => $type,
+                'user' => $user,
             )
         );
 

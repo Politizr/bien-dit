@@ -155,7 +155,7 @@ class EmailListener
     }
 
     /**
-     * Notification email
+     * Moderation's notification email
      *
      * @param GenericEvent
      */
@@ -192,6 +192,61 @@ class EmailListener
                     ->addPart($txtBody, 'text/plain', 'utf-8')
             ;
             $message->getHeaders()->addTextHeader('X-CMail-GroupName', 'Moderation notif');
+
+            // Envoi email
+            $failedRecipients = array();
+            $send = $this->mailer->send($message, $failedRecipients);
+
+            $this->logger->info('send = '.print_r($send, true));
+            if (!$send) {
+                throw new \Exception('email non envoyé - code retour = '.$send.' - adresse(s) en échec = '.print_r($failedRecipients, true));
+            }
+        } catch (\Exception $e) {
+            if (null !== $this->logger) {
+                $this->logger->err('Exception - message = '.$e->getMessage());
+            }
+            
+            throw new SendEmailException($e->getMessage(), $e);
+        }
+    }
+
+    /**
+     * Moderation's banned email
+     *
+     * @param GenericEvent
+     */
+    public function onModerationBanned(GenericEvent $event)
+    {
+        $this->logger->info('*** onModerationBanned');
+
+        $user = $event->getSubject();
+
+        try {
+            if (!$user) {
+                throw new InconsistentDataException('User null');
+            }
+
+            $htmlBody = $this->templating->render(
+                'PolitizrAdminBundle:Email:moderationBanned.html.twig',
+                array(
+                    'user' => $user,
+                )
+            );
+            $txtBody = $this->templating->render(
+                'PolitizrAdminBundle:Email:moderationBanned.txt.twig',
+                array(
+                    'user' => $user,
+                )
+            );
+
+            $message = \Swift_Message::newInstance()
+                    ->setSubject('[ Politizr ] Bannissement')
+                    ->setFrom(array($this->contactEmail => 'Support@Politizr'))
+                    ->setTo($user->getEmail())
+                    ->setBody($htmlBody, 'text/html', 'utf-8')
+                    ->addPart($txtBody, 'text/plain', 'utf-8')
+            ;
+            $message->getHeaders()->addTextHeader('X-CMail-GroupName', 'Moderation bannissement');
 
             // Envoi email
             $failedRecipients = array();

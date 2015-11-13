@@ -30,6 +30,7 @@ var ADMIN_ROUTE_USER_REPUTATION_EVOLUTION = 'admin/utilisateur/reputation/update
 
 // MODERATION
 var ADMIN_ROUTE_USER_MODERATION_ALERT_NEW = 'admin/utilisateur/moderation/alert/new';
+var ADMIN_ROUTE_USER_MODERATION_BANNED_EMAIL = 'admin/utilisateur/moderation/banned/email';
 
 /**
  *
@@ -78,7 +79,6 @@ function xhr500( ) {
  *
  */
 function xhrError( jqXHR, textStatus, errorThrown ) {
-    $('#ajaxGlobalLoader').hide();
     $('#ajaxGlobalLoader').hide();
     $('#infoBoxHolder .boxError .notifBoxText').html('Erreur inconnue: merci de recharger la page.');
     $('#infoBoxHolder .boxError').show();

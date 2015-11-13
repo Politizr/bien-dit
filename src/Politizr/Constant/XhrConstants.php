@@ -158,4 +158,5 @@ class XhrConstants
 
     // MODERATION
     const ADMIN_ROUTE_USER_MODERATION_ALERT_NEW = 'admin/utilisateur/moderation/alert/new';
+    const ADMIN_ROUTE_USER_MODERATION_BANNED_EMAIL = 'admin/utilisateur/moderation/email/banned';
 }

@@ -15,6 +15,7 @@ use Politizr\Model\PTag;
 use Politizr\Model\PUReputation;
 use Politizr\Model\PMUserModerated;
 
+use Politizr\Model\PUserQuery;
 use Politizr\Model\PTagQuery;
 use Politizr\Model\PDDTaggedTQuery;
 use Politizr\Model\PDRTaggedTQuery;
@@ -669,6 +670,30 @@ class XhrAdmin
         return array(
             'listing' => $listing
             );
+    }
+
+    /**
+     * Banned notification management
+     */
+    public function bannedEmail(Request $request)
+    {
+        $this->logger->info('*** userModeratedNew');
+
+        // Request arguments
+        $subjectId = $request->get('subjectId');
+        $this->logger->info('$subjectId = ' . print_r($subjectId, true));
+
+        $user = PUserQuery::create()->findPk($subjectId);
+
+        if ($user->getBanned()) {
+            // mail user
+            $dispatcher = $this->eventDispatcher->dispatch('moderation_banned', new GenericEvent($user));
+
+            // @todo logout user
+            // http://stackoverflow.com/questions/27987089/invalidate-session-for-a-specific-user-in-symfony2
+        }
+
+        return true;
     }
 
     /* ######################################################################################################## */

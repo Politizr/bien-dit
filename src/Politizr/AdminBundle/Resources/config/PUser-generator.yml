@@ -309,8 +309,8 @@ builders:
                     "Actuel":                   [ [ p_u_status ] ]
                     "Connexion":                [ last_login, last_activity ]
                 "Modération":
-                    "Bannissement":             [ [ banned, banned_nb_days_left, banned_nb_total ] ]
-                    "Risque user":              [ abuse_level ]
+                    "Bannissement":             [ [ banned, banned_nb_days_left, banned_nb_total ], [ block_moderation_banned ] ]
+                    "Niveau de risque user":    [ abuse_level ]
                     "Notification":             [ block_moderation_alert_new  ]
                     "Précédentes notifications": [ block_moderation_alert_listing  ]
                 "Attributs":
@@ -338,7 +338,7 @@ builders:
                 block_badges_participation:
                     label:                      "Participation"
                 block_badges_moderation:
-                    label:                      "Modération"
+                    label:                      "Communautaire"
                 block_badges_autre:
                     label:                      "Autres"
                 block_debates:
@@ -355,8 +355,10 @@ builders:
                     label:                      "Abonnements"
                 block_affinities:
                     label:                      "Partis Politiques"
+                block_moderation_banned:
+                    label:                      "Bannissement"
                 block_moderation_alert_new:
-                    label:                      "Alerte"
+                    label:                      "Nouvelle alerte"
                 block_moderation_alert_listing:
                     label:                      "Historique de l'utilisateur"
                 block_front:

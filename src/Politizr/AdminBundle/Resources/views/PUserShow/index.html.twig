@@ -100,6 +100,15 @@
     </div>
 {% endblock %}
 
+{# Block moderation banned email #}
+{% block show_column_block_moderation_banned %}
+    {% if PUser.Banned %}
+        <a action="bannedEmail" subjectId="{{ PUser.Id }}">Alerter par email</a>
+        <br/>
+        <i>Note: envoi d'un email notifiant l'utilisateur de son bannissement.</i>
+    {% endif %}
+{% endblock %}
+
 {# Block front link #}
 {% block show_column_block_front %}
     {% if PUser.online %}
