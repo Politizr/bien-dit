@@ -51,6 +51,7 @@ SELECT DISTINCT
     online,
     moderated,
     moderated_partial,
+    moderated_at,
     created_at,
     updated_at,
     slug,
