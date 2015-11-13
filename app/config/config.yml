@@ -767,3 +767,9 @@ fos_elastica:
 exercise_html_purifier:
     default:
         Cache.SerializerPath: '%kernel.cache_dir%'
+
+# Liip URL autoconverter
+liip_url_auto_converter:
+    linkclass:
+    target: _blank
+    debugmode: false

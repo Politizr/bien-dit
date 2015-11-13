@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "fde5a5a6e69ea366854dd28aa82a909c",
-    "content-hash": "9969ae33a3ab9c21a62fc51a4609fb38",
+    "hash": "d8b39f876b7802656db11f6b30c156d6",
+    "content-hash": "55c8be6a70c6bcb4a83126f151a1fb03",
     "packages": [
         {
             "name": "craftyshadow/propel-equalnest-behavior",
@@ -2164,6 +2164,60 @@
             "time": "2015-08-27 11:27:33"
         },
         {
+            "name": "liip/url-auto-converter-bundle",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/liip/LiipUrlAutoConverterBundle.git",
+                "reference": "2404776c3cbcad67f855fab352d08d80edbfd510"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/liip/LiipUrlAutoConverterBundle/zipball/2404776c3cbcad67f855fab352d08d80edbfd510",
+                "reference": "2404776c3cbcad67f855fab352d08d80edbfd510",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.3.9|^7.0",
+                "symfony/framework-bundle": "~2.3|~3.0",
+                "twig/twig": "~1.0"
+            },
+            "require-dev": {
+                "symfony/symfony": "~2.3|~3.0"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.2.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Liip\\UrlAutoConverterBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Community contributions",
+                    "homepage": "https://github.com/liip/LiipThemeBundle/contributors"
+                },
+                {
+                    "name": "Liip AG",
+                    "homepage": "http://www.liip.ch/"
+                }
+            ],
+            "description": "This bundle adds a Twig Extension with a filter for automatically converting urls and emails in a string to html links",
+            "homepage": "http://liip.ch",
+            "keywords": [
+                "url"
+            ],
+            "time": "2015-10-30 12:05:43"
+        },
+        {
             "name": "monolog/monolog",
             "version": "1.17.2",
             "source": {
@@ -3831,7 +3885,8 @@
         "hwi/oauth-bundle": 20,
         "j7mbo/twitter-api-php": 20,
         "google/apiclient": 10,
-        "elao/web-profiler-extra-bundle": 20
+        "elao/web-profiler-extra-bundle": 20,
+        "liip/url-auto-converter-bundle": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

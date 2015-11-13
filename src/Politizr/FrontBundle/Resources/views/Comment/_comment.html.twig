@@ -12,4 +12,4 @@
         {{ comment | linkNoteComment }}
     </div>
 </div>
-<div class="commentsText">{{ comment.description | purify }}</div>
+<div class="commentsText">{{ comment.description | converturls | purify }}</div>
