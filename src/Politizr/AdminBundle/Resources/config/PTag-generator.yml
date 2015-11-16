@@ -12,6 +12,11 @@ params:
             label:          ID Type
         p_t_tag_type:
             label:          Type
+        PTagRelatedByPTParentId:
+            label:              Tag parent
+            addFormOptions:
+                empty_value:    ""
+                query:          \Politizr\Model\PTagQuery::create()->filterByPTTagTypeId(1)->where("p_tag.id > ?", 35)->where("p_tag.id < ?", 137)->orderByTitle() 
         title:
             label:          Titre
         online:
@@ -33,23 +38,23 @@ builders:
             scopes:
                 group_1: 
                     "Tous":                     ~
-                    "Zonage":
+                    "Géographique":
                         filters:
                             p_t_tag_type_id:    1
-                    "Thèmes":
+                    "Thématique":
                         default:                true
                         filters:
                             p_t_tag_type_id:    2
-            display:                            [ title, p_t_tag_type, countDebates, countTaggedTagUsers, countFollowedTagUsers, created_at, online ]
+            display:                            [ title, p_t_tag_type, PTagRelatedByPTParentId, countDebates, countTaggedTagUsers, countFollowedTagUsers, created_at, online ]
             # filtersMode:                        top
-            filters:                            [ title, p_t_tag_type_id, p_t_tag_type, online, created_at ]
+            filters:                            [ title, p_t_tag_type_id, PTagRelatedByPTParentId, p_t_tag_type, online, created_at ]
             fields:
                 countDebates:
-                    label:                      Débats associés
+                    label:                      Nb débats
                 countTaggedTagUsers:
-                    label:                      Users associé au tag
+                    label:                      Nb public
                 countFollowedTagUsers:
-                    label:                      Users suivant le tag
+                    label:                      Nb privé
             actions:
                 new:                            ~
             object_actions:
@@ -65,11 +70,14 @@ builders:
         params:
             title:                              "Création d'un tag"
             display:
-                "Champs principaux":            [ [ p_t_tag_type ], [ title ] ]
+                "Champs principaux":            [ p_t_tag_type, p_t_parent, title ]
             fields:
                 p_t_tag_type:
                     addFormOptions:
                         query:                  \Politizr\Model\PTTagTypeQuery::create()->orderByTitle() 
+                p_t_parent:
+                    addFormOptions:
+                        query:                  \Politizr\Model\PTTagQuery::create()->filterByPTTagTypeId(1)->orderByTitle() 
             actions:
               save:                             ~
               list:                             ~
@@ -80,7 +88,7 @@ builders:
                 "Contenu":
                     "Texte":                    [ [ title ] ]
                 "Attributs":
-                    "Création":                 [ [ p_t_tag_type ], [ online ], [ created_at, updated_at ] ]
+                    "Création":                 [ [ p_t_tag_type ], [ PTagRelatedByPTParentId ], [ online ], [ created_at, updated_at ] ]
             fields:
                 p_t_tag_type:
                     addFormOptions:
@@ -103,7 +111,7 @@ builders:
                 "Contenu":
                     "Texte":                    [ [ title ] ]
                 "Attributs":
-                    "Création":                 [ [ p_t_tag_type ], [ online ], [ created_at, updated_at ] ]
+                    "Création":                 [ [ p_t_tag_type ], [ PTagRelatedByPTParentId ], [ online ], [ created_at, updated_at ] ]
                 "Publication":
                     "Débats":                   [ block_debates ]
                 "Utilisateurs":

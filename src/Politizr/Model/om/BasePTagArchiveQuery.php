@@ -19,6 +19,7 @@ use Politizr\Model\PTagArchiveQuery;
 /**
  * @method PTagArchiveQuery orderById($order = Criteria::ASC) Order by the id column
  * @method PTagArchiveQuery orderByPTTagTypeId($order = Criteria::ASC) Order by the p_t_tag_type_id column
+ * @method PTagArchiveQuery orderByPTParentId($order = Criteria::ASC) Order by the p_t_parent_id column
  * @method PTagArchiveQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
  * @method PTagArchiveQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method PTagArchiveQuery orderByOnline($order = Criteria::ASC) Order by the online column
@@ -29,6 +30,7 @@ use Politizr\Model\PTagArchiveQuery;
  *
  * @method PTagArchiveQuery groupById() Group by the id column
  * @method PTagArchiveQuery groupByPTTagTypeId() Group by the p_t_tag_type_id column
+ * @method PTagArchiveQuery groupByPTParentId() Group by the p_t_parent_id column
  * @method PTagArchiveQuery groupByPUserId() Group by the p_user_id column
  * @method PTagArchiveQuery groupByTitle() Group by the title column
  * @method PTagArchiveQuery groupByOnline() Group by the online column
@@ -45,6 +47,7 @@ use Politizr\Model\PTagArchiveQuery;
  * @method PTagArchive findOneOrCreate(PropelPDO $con = null) Return the first PTagArchive matching the query, or a new PTagArchive object populated from the query conditions when no match is found
  *
  * @method PTagArchive findOneByPTTagTypeId(int $p_t_tag_type_id) Return the first PTagArchive filtered by the p_t_tag_type_id column
+ * @method PTagArchive findOneByPTParentId(int $p_t_parent_id) Return the first PTagArchive filtered by the p_t_parent_id column
  * @method PTagArchive findOneByPUserId(int $p_user_id) Return the first PTagArchive filtered by the p_user_id column
  * @method PTagArchive findOneByTitle(string $title) Return the first PTagArchive filtered by the title column
  * @method PTagArchive findOneByOnline(boolean $online) Return the first PTagArchive filtered by the online column
@@ -55,6 +58,7 @@ use Politizr\Model\PTagArchiveQuery;
  *
  * @method array findById(int $id) Return PTagArchive objects filtered by the id column
  * @method array findByPTTagTypeId(int $p_t_tag_type_id) Return PTagArchive objects filtered by the p_t_tag_type_id column
+ * @method array findByPTParentId(int $p_t_parent_id) Return PTagArchive objects filtered by the p_t_parent_id column
  * @method array findByPUserId(int $p_user_id) Return PTagArchive objects filtered by the p_user_id column
  * @method array findByTitle(string $title) Return PTagArchive objects filtered by the title column
  * @method array findByOnline(boolean $online) Return PTagArchive objects filtered by the online column
@@ -168,7 +172,7 @@ abstract class BasePTagArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_t_tag_type_id`, `p_user_id`, `title`, `online`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_tag_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_t_tag_type_id`, `p_t_parent_id`, `p_user_id`, `title`, `online`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_tag_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -340,6 +344,48 @@ abstract class BasePTagArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PTagArchivePeer::P_T_TAG_TYPE_ID, $pTTagTypeId, $comparison);
+    }
+
+    /**
+     * Filter the query on the p_t_parent_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPTParentId(1234); // WHERE p_t_parent_id = 1234
+     * $query->filterByPTParentId(array(12, 34)); // WHERE p_t_parent_id IN (12, 34)
+     * $query->filterByPTParentId(array('min' => 12)); // WHERE p_t_parent_id >= 12
+     * $query->filterByPTParentId(array('max' => 12)); // WHERE p_t_parent_id <= 12
+     * </code>
+     *
+     * @param     mixed $pTParentId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PTagArchiveQuery The current query, for fluid interface
+     */
+    public function filterByPTParentId($pTParentId = null, $comparison = null)
+    {
+        if (is_array($pTParentId)) {
+            $useMinMax = false;
+            if (isset($pTParentId['min'])) {
+                $this->addUsingAlias(PTagArchivePeer::P_T_PARENT_ID, $pTParentId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($pTParentId['max'])) {
+                $this->addUsingAlias(PTagArchivePeer::P_T_PARENT_ID, $pTParentId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PTagArchivePeer::P_T_PARENT_ID, $pTParentId, $comparison);
     }
 
     /**

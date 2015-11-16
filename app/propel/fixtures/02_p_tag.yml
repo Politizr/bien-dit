@@ -6,7 +6,7 @@ Politizr\Model\PTTagType:
             Exemples: ariège, foix, etc.
     theme:
         title:			Thème
-        description:	|
+        description:    |
             Exemples: poubelle, nucléaire, etc.
 
 
@@ -22,26 +22,32 @@ Politizr\Model\PTag:
     Afrique:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      monde
         title:              Afrique
     Europe:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      monde
         title:              Europe
     Amerique:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      monde
         title:              Amérique
     Asie:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      monde
         title:              Asie
     Oceanie:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      monde
         title:              Océanie
     Antarctique:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      monde
         title:              Antarctique
 
     # Pays
@@ -126,522 +132,721 @@ Politizr\Model\PTag:
     France:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      Europe
         title:              France
 
     # Régions
+    AlsaceChampagneArdenneLorraine:
+        online:             false
+        p_t_tag_type_id:    geo
+        p_t_parent_id:      France
+        title:              Alsace Champagne-Ardenne Lorraine
+    NordPasDeCalaisPicardie:
+        online:             false
+        p_t_tag_type_id:    geo
+        p_t_parent_id:      France
+        title:              Nord-Pas-de-Calais Picardie
+    Normandie:
+        online:             false
+        p_t_tag_type_id:    geo
+        p_t_parent_id:      France
+        title:              Normandie
+    IleDeFrance:
+        online:             false
+        p_t_tag_type_id:    geo
+        p_t_parent_id:      France
+        title:              Île-de-France
+    Bretagne:
+        online:             false
+        p_t_tag_type_id:    geo
+        p_t_parent_id:      France
+        title:              Bretagne
+    PaysDeLaLoire:
+        online:             false
+        p_t_tag_type_id:    geo
+        p_t_parent_id:      France
+        title:              Pays de la Loire
+    CentreValDeLoire:
+        online:             false
+        p_t_tag_type_id:    geo
+        p_t_parent_id:      France
+        title:              Centre Val de Loire
+    BourgogneFrancheComte:
+        online:             false
+        p_t_tag_type_id:    geo
+        p_t_parent_id:      France
+        title:              Bourgogne Franche-Comté
+    AuvergneRhoneAlpes:
+        online:             false
+        p_t_tag_type_id:    geo
+        p_t_parent_id:      France
+        title:              Auvergne-Rhône-Alpes
+    ProvenceAlpesCoteDAzur:
+        online:             false
+        p_t_tag_type_id:    geo
+        p_t_parent_id:      France
+        title:              Provence-Alpes-Côte d'Azur
+    LanguedocRoussillonMidiPyrénées:
+        online:             false
+        p_t_tag_type_id:    geo
+        p_t_parent_id:      France
+        title:              Languedoc-Roussillon Midi-Pyrénées
+    AquitaineLimousinPoitouCharentes:
+        online:             false
+        p_t_tag_type_id:    geo
+        p_t_parent_id:      France
+        title:              Aquitaine Limousin Poitou Charentes
+    Corse:
+        online:             false
+        p_t_tag_type_id:    geo
+        p_t_parent_id:      France
+        title:              Corse
+    DOMTOM:
+        online:             false
+        p_t_tag_type_id:    geo
+        p_t_parent_id:      France
+        title:              DOMTOM
     alsace:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      France
         title:              Alsace
     aquitaine:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      France
         title:              Aquitaine
     auvergne:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      France
         title:              Auvergne
     basse_normandie:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      France
         title:              Basse-Normandie
     bourgogne:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      France
         title:              Bourgogne
     bretagne:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      France
         title:              Bretagne
     centre:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      France
         title:              Centre
     champagne_ardenne:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      France
         title:              Champagne-Ardenne
     corse:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      France
         title:              Corse
     franche_comte:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      France
         title:              Franche-Comté
     guadeloupe:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      France
         title:              Guadeloupe
     guyane:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      France
         title:              Guyane
     haute_normandie:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      France
         title:              Haute-Normandie
     ile_de_france:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      France
         title:              Île-de-France
     la_reunion:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      France
         title:              La Réunion
     languedoc_roussillon:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      France
         title:              Languedoc-Roussillon
     limousin:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      France
         title:              Limousin
     lorraine:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      France
         title:              Lorraine
     martinique:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      France
         title:              Martinique
     mayotte:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      France
         title:              Mayotte
     midipyrenees:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      France
         title:              Midi-Pyrénées
     nord_pas_de_calais:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      France
         title:              Nord-Pas-de-Calais
     pays_de_la_loire:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      France
         title:              Pays de la Loire
     picardie:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      France
         title:              Picardie
     poitou_charentes:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      France
         title:              Poitou Charentes
     provence_alpes_cote_d_azur:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      France
         title:              Provence-Alpes-Côte d'Azur
     rhone_alpes:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      France
         title:              Rhône-Alpes
 
     # Départements
     Ain:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      rhone_alpes
         title:              Ain
     Aisne:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      picardie
         title:              Aisne
     Allier:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      auvergne
         title:              Allier
     Alpes-de-Haute-Provence:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      provence_alpes_cote_d_azur
         title:              Alpes-de-Haute-Provence
     Hautes-Alpes:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      provence_alpes_cote_d_azur
         title:              Hautes-Alpes
     Alpes-Maritimes:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      provence_alpes_cote_d_azur
         title:              Alpes-Maritimes
     Ardèche:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      rhone_alpes
         title:              Ardèche
     Ardennes:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      champagne_ardenne
         title:              Ardennes
     Ariège:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      midipyrenees
         title:              Ariège
     Aube:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      champagne_ardenne
         title:              Aube
     Aude:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      languedoc_roussillon
         title:              Aude
     Aveyron:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      midipyrenees
         title:              Aveyron
     Bouches-du-Rhône:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      provence_alpes_cote_d_azur
         title:              Bouches-du-Rhône
     Calvados:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      basse_normandie
         title:              Calvados
     Cantal:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      auvergne
         title:              Cantal
     Charente:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      poitou_charentes
         title:              Charente
     Charente-Maritime:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      poitou_charentes
         title:              Charente-Maritime
     Cher:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      centre
         title:              Cher
     Corrèze:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      limousin
         title:              Corrèze
     Corse-du-Sud:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      corse
         title:              Corse-du-Sud
     Haute-Corse:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      corse
         title:              Haute-Corse
     Côte-d'Or:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      bourgogne
         title:              Côte-d'Or
     Côtes-d'Armor:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      bretagne
         title:              Côtes-d'Armor
     Creuse:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      limousin
         title:              Creuse
     Dordogne:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      aquitaine
         title:              Dordogne
     Doubs:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      franche_comte
         title:              Doubs
     Drôme:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      rhone_alpes
         title:              Drôme
     Eure:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      haute_normandie
         title:              Eure
     Eure-et-Loir:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      centre
         title:              Eure-et-Loir
     Finistère:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      bretagne
         title:              Finistère
     Gard:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      languedoc_roussillon
         title:              Gard
     Haute-Garonne:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      midipyrenees
         title:              Haute-Garonne
     Gers:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      midipyrenees
         title:              Gers
     Gironde:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      aquitaine
         title:              Gironde
     Hérault:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      languedoc_roussillon
         title:              Hérault
     Ille-et-Vilaine:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      bretagne
         title:              Ille-et-Vilaine
     Indre:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      centre
         title:              Indre
     Indre-et-Loire:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      centre
         title:              Indre-et-Loire
     Isère:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      rhone_alpes
         title:              Isère
     Jura:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      franche_comte
         title:              Jura
     Landes:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      aquitaine
         title:              Landes
     Loir-et-Cher:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      centre
         title:              Loir-et-Cher
     Loire:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      rhone_alpes
         title:              Loire
     Haute-Loire:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      auvergne
         title:              Haute-Loire
     Loire-Atlantique:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      pays_de_la_loire
         title:              Loire-Atlantique
     Loiret:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      centre
         title:              Loiret
     Lot:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      midipyrenees
         title:              Lot
     Lot-et-Garonne:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      aquitaine
         title:              Lot-et-Garonne
     Lozère:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      languedoc_roussillon
         title:              Lozère
     Maine-et-Loire:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      pays_de_la_loire
         title:              Maine-et-Loire
     Manche:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      basse_normandie
         title:              Manche
     Marne:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      champagne_ardenne
         title:              Marne
     Haute-Marne:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      champagne_ardenne
         title:              Haute-Marne
     Mayenne:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      pays_de_la_loire
         title:              Mayenne
     Meurthe-et-Moselle:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      lorraine
         title:              Meurthe-et-Moselle
     Meuse:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      lorraine
         title:              Meuse
     Morbihan:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      bretagne
         title:              Morbihan
     Moselle:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      lorraine
         title:              Moselle
     Nièvre:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      bourgogne
         title:              Nièvre
     Nord:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      nord_pas_de_calais
         title:              Nord
     Oise:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      picardie
         title:              Oise
     Orne:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      basse_normandie
         title:              Orne
     Pas-de-Calais:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      nord_pas_de_calais
         title:              Pas-de-Calais
     Puy-de-Dôme:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      auvergne
         title:              Puy-de-Dôme
     Pyrénées-Atlantiques:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      aquitaine
         title:              Pyrénées-Atlantiques
     Hautes-Pyrénées:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      midipyrenees
         title:              Hautes-Pyrénées
     Pyrénées-Orientales:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      languedoc_roussillon
         title:              Pyrénées-Orientales
     Bas-Rhin:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      alsace
         title:              Bas-Rhin
     Haut-Rhin:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      alsace
         title:              Haut-Rhin
     Rhône:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      rhone_alpes
         title:              Rhône
     Haute-Saône:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      franche_comte
         title:              Haute-Saône
     Saône-et-Loire:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      bourgogne
         title:              Saône-et-Loire
     Sarthe:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      pays_de_la_loire
         title:              Sarthe
     Savoie:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      rhone_alpes
         title:              Savoie
     Haute-Savoie:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      rhone_alpes
         title:              Haute-Savoie
     Paris:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      ile_de_france
         title:              Paris
     Seine-Maritime:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      haute_normandie
         title:              Seine-Maritime
     Seine-et-Marne:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      ile_de_france
         title:              Seine-et-Marne
     Yvelines:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      ile_de_france
         title:              Yvelines
     Deux-Sèvres:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      poitou_charentes
         title:              Deux-Sèvres
     Somme:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      picardie
         title:              Somme
     Tarn:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      midipyrenees
         title:              Tarn
     Tarn-et-Garonne:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      midipyrenees
         title:              Tarn-et-Garonne
     Var:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      provence_alpes_cote_d_azur
         title:              Var
     Vaucluse:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      provence_alpes_cote_d_azur
         title:              Vaucluse
     Vendée:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      pays_de_la_loire
         title:              Vendée
     Vienne:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      poitou_charentes
         title:              Vienne
     Haute-Vienne:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      limousin
         title:              Haute-Vienne
     Vosges:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      lorraine
         title:              Vosges
     Yonne:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      bourgogne
         title:              Yonne
     Territoire-de-Belfort:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      franche_comte
         title:              Territoire de Belfort
     Essonne:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      ile_de_france
         title:              Essonne
     Hauts-de-Seine:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      ile_de_france
         title:              Hauts-de-Seine
     Seine-Saint-Denis:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      ile_de_france
         title:              Seine-Saint-Denis
     Val-de-Marne:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      ile_de_france
         title:              Val-de-Marne
     Val-d-Oise:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      ile_de_france
         title:              Val-d'Oise
     Guadeloupe:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      guadeloupe
         title:              Guadeloupe
     Martinique:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      martinique
         title:              Martinique
     Guyane:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      guyane
         title:              Guyane
     La-Réunion:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      la_reunion
         title:              La Réunion
     Mayotte:
         online:             true
         p_t_tag_type_id:    geo
+        p_t_parent_id:      mayotte
         title:              Mayotte
 
 

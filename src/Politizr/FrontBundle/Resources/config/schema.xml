@@ -11,6 +11,7 @@
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="p_t_tag_type_id" type="integer" required="true" />
+        <column name="p_t_parent_id" type="integer" required="false" />
         <column name="p_user_id" type="integer" required="false" />
         
         <column name="title" type="varchar" size="150" />
@@ -20,6 +21,9 @@
         <foreign-key foreignTable="p_t_tag_type" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_t_tag_type_id" foreign="id" />
         </foreign-key>        
+        <foreign-key foreignTable="p_tag" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_t_parent_id" foreign="id" />
+        </foreign-key>
         <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />
         </foreign-key>        
