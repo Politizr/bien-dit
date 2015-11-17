@@ -98,7 +98,6 @@ $("body").on("click", "[action='modalSearch']", function() {
     loadSearchForm();
 });
 
-
 // ***************************************** //
 //       GLOBAL MODAL LOADING FUNCTIONS
 // ***************************************** //

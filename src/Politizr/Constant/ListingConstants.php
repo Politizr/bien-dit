@@ -32,15 +32,16 @@ class ListingConstants
     const MODAL_TYPE_RANKING = 2;
     const MODAL_TYPE_SUGGESTION = 3;
     const MODAL_TYPE_TAG = 4;
-    const MODAL_TYPE_ORGANIZATION = 5;
-    const MODAL_TYPE_FOLLOWED = 6;
-    const MODAL_TYPE_FOLLOWER = 7;
+    const MODAL_TYPE_GEOTAG = 5;
+    const MODAL_TYPE_ORGANIZATION = 6;
+    const MODAL_TYPE_FOLLOWED = 7;
+    const MODAL_TYPE_FOLLOWER = 8;
 
-    const TIMELINE_TYPE = 8;
-    const TIMELINE_USER_TYPE = 9;
+    const TIMELINE_TYPE = 9;
+    const TIMELINE_USER_TYPE = 10;
     
-    const FEED_DEBATE_TYPE = 10;
+    const FEED_DEBATE_TYPE = 11;
 
-    const MY_DRAFTS_TYPE = 11;
-    const MY_PUBLICATIONS_TYPE = 12;
+    const MY_DRAFTS_TYPE = 12;
+    const MY_PUBLICATIONS_TYPE = 13;
 }

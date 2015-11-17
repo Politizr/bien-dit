@@ -1,7 +1,10 @@
 <div id="publicHeader">
     <div class="wrapper">
         <div class="headerLogo">
-            <a href="{{ path('Homepage') }}"><i class="iconPltzrLogoAlt"></i><span>politizr</span></a>
+            <a href="{{ path('Homepage') }}" title="Accueil">
+                <i class="iconPltzrLogoAlt"></i>
+                <span>politizr</span>
+            </a>
         </div>
         <div id="headerRight">
             {% if is_granted('ROLE_CITIZEN_INSCRIPTION') or is_granted('ROLE_ELECTED_INSCRIPTION') %}

@@ -21,22 +21,27 @@ class XhrModal
 {
     private $securityTokenStorage;
     private $templating;
+    private $tagService;
     private $logger;
 
     /**
      *
      * @param @security.token_storage
      * @param @templating
+     * @param @politizr.functional.tag
      * @param @logger
      */
     public function __construct(
         $securityTokenStorage,
         $templating,
+        $tagService,
         $logger
     ) {
         $this->securityTokenStorage = $securityTokenStorage;
 
         $this->templating = $templating;
+        
+        $this->tagService = $tagService;
 
         $this->logger = $logger;
     }
@@ -741,12 +746,15 @@ class XhrModal
         $offset = $queryParams[2];
         $subjectId = $queryParams[3];
 
+        // Compute relative geo tag ids
+        $tagIds = $this->tagService->computeGeotagRelativeIds($subjectId);
+
         // Function process
         $debates = PDDebateQuery::create()
                     ->distinct()
                     ->online()
                     ->usePDDTaggedTQuery()
-                        ->filterByPTagId($subjectId)
+                        ->filterByPTagId($tagIds)
                     ->endUse()
                     ->filterByKeywords($filters)
                     ->orderWithKeyword($order)
@@ -798,12 +806,15 @@ class XhrModal
         $offset = $queryParams[2];
         $subjectId = $queryParams[3];
 
+        // Compute relative geo tag ids
+        $tagIds = $this->tagService->computeGeotagRelativeIds($subjectId);
+
         // Function process
         $reactions = PDReactionQuery::create()
                     ->distinct()
                     ->online()
                     ->usePDRTaggedTQuery()
-                        ->filterByPTagId($subjectId)
+                        ->filterByPTagId($tagIds)
                     ->endUse()
                     ->filterByKeywords($filters)
                     ->orderWithKeyword($order)
@@ -855,12 +866,15 @@ class XhrModal
         $offset = $queryParams[2];
         $subjectId = $queryParams[3];
 
+        // Compute relative geo tag ids
+        $tagIds = $this->tagService->computeGeotagRelativeIds($subjectId);
+
         // Function process
         $users = PUserQuery::create()
                     ->distinct()
                     ->online()
                     ->usePuTaggedTPUserQuery()
-                        ->filterByPTagId($subjectId)
+                        ->filterByPTagId($tagIds)
                     ->endUse()
                     ->filterByKeywords($filters)
                     ->orderWithKeyword($order)

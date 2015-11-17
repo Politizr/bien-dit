@@ -77,6 +77,7 @@ CREATE TABLE `p_tag`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `p_t_tag_type_id` INTEGER NOT NULL,
+    `p_t_parent_id` INTEGER,
     `p_user_id` INTEGER,
     `title` VARCHAR(150),
     `online` TINYINT(1),
@@ -86,13 +87,19 @@ CREATE TABLE `p_tag`
     PRIMARY KEY (`id`),
     UNIQUE INDEX `p_tag_slug` (`slug`(255)),
     INDEX `p_tag_FI_1` (`p_t_tag_type_id`),
-    INDEX `p_tag_FI_2` (`p_user_id`),
+    INDEX `p_tag_FI_2` (`p_t_parent_id`),
+    INDEX `p_tag_FI_3` (`p_user_id`),
     CONSTRAINT `p_tag_FK_1`
         FOREIGN KEY (`p_t_tag_type_id`)
         REFERENCES `p_t_tag_type` (`id`)
         ON UPDATE CASCADE
         ON DELETE CASCADE,
     CONSTRAINT `p_tag_FK_2`
+        FOREIGN KEY (`p_t_parent_id`)
+        REFERENCES `p_tag` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE SET NULL,
+    CONSTRAINT `p_tag_FK_3`
         FOREIGN KEY (`p_user_id`)
         REFERENCES `p_user` (`id`)
         ON UPDATE CASCADE
@@ -193,8 +200,6 @@ CREATE TABLE `p_r_action`
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `title` VARCHAR(150),
     `description` TEXT,
-    `p_object_name` VARCHAR(150),
-    `p_object_id` INTEGER,
     `score_evolution` INTEGER,
     `online` TINYINT(1),
     `created_at` DATETIME,
@@ -583,6 +588,10 @@ CREATE TABLE `p_user`
     `qualified` TINYINT(1),
     `validated` TINYINT(1) DEFAULT 0,
     `online` TINYINT(1),
+    `banned` TINYINT(1),
+    `banned_nb_days_left` INTEGER,
+    `banned_nb_total` INTEGER,
+    `abuse_level` INTEGER,
     `created_at` DATETIME,
     `updated_at` DATETIME,
     `slug` VARCHAR(255),
@@ -1023,6 +1032,9 @@ CREATE TABLE `p_d_debate`
     `published_by` VARCHAR(300),
     `favorite` TINYINT(1),
     `online` TINYINT(1),
+    `moderated` TINYINT(1),
+    `moderated_partial` TINYINT(1),
+    `moderated_at` DATETIME,
     `created_at` DATETIME,
     `updated_at` DATETIME,
     `slug` VARCHAR(255),
@@ -1060,6 +1072,9 @@ CREATE TABLE `p_d_reaction`
     `published_by` VARCHAR(300),
     `favorite` TINYINT(1),
     `online` TINYINT(1),
+    `moderated` TINYINT(1),
+    `moderated_partial` TINYINT(1),
+    `moderated_at` DATETIME,
     `created_at` DATETIME,
     `updated_at` DATETIME,
     `slug` VARCHAR(255),
@@ -1100,6 +1115,9 @@ CREATE TABLE `p_d_d_comment`
     `published_at` DATETIME,
     `published_by` VARCHAR(300),
     `online` TINYINT(1),
+    `moderated` TINYINT(1),
+    `moderated_partial` TINYINT(1),
+    `moderated_at` DATETIME,
     `created_at` DATETIME,
     `updated_at` DATETIME,
     PRIMARY KEY (`id`),
@@ -1135,6 +1153,9 @@ CREATE TABLE `p_d_r_comment`
     `published_at` DATETIME,
     `published_by` VARCHAR(300),
     `online` TINYINT(1),
+    `moderated` TINYINT(1),
+    `moderated_partial` TINYINT(1),
+    `moderated_at` DATETIME,
     `created_at` DATETIME,
     `updated_at` DATETIME,
     PRIMARY KEY (`id`),
@@ -1181,6 +1202,283 @@ CREATE TABLE `p_d_d_tagged_t`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- p_d_r_tagged_t
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_d_r_tagged_t`;
+
+CREATE TABLE `p_d_r_tagged_t`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `p_d_reaction_id` INTEGER NOT NULL,
+    `p_tag_id` INTEGER NOT NULL,
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    PRIMARY KEY (`id`),
+    INDEX `p_d_r_tagged_t_FI_1` (`p_d_reaction_id`),
+    INDEX `p_d_r_tagged_t_FI_2` (`p_tag_id`),
+    CONSTRAINT `p_d_r_tagged_t_FK_1`
+        FOREIGN KEY (`p_d_reaction_id`)
+        REFERENCES `p_d_reaction` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `p_d_r_tagged_t_FK_2`
+        FOREIGN KEY (`p_tag_id`)
+        REFERENCES `p_tag` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_m_moderation_type
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_m_moderation_type`;
+
+CREATE TABLE `p_m_moderation_type`
+(
+    `id` INTEGER NOT NULL,
+    `title` VARCHAR(150),
+    `message` TEXT,
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_m_user_moderated
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_m_user_moderated`;
+
+CREATE TABLE `p_m_user_moderated`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `p_user_id` INTEGER NOT NULL,
+    `p_m_moderation_type_id` INTEGER NOT NULL,
+    `p_object_name` VARCHAR(150),
+    `p_object_id` INTEGER,
+    `score_evolution` INTEGER,
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    PRIMARY KEY (`id`),
+    INDEX `p_m_user_moderated_FI_1` (`p_user_id`),
+    INDEX `p_m_user_moderated_FI_2` (`p_m_moderation_type_id`),
+    CONSTRAINT `p_m_user_moderated_FK_1`
+        FOREIGN KEY (`p_user_id`)
+        REFERENCES `p_user` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `p_m_user_moderated_FK_2`
+        FOREIGN KEY (`p_m_moderation_type_id`)
+        REFERENCES `p_m_moderation_type` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_m_user_message
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_m_user_message`;
+
+CREATE TABLE `p_m_user_message`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `p_user_id` INTEGER,
+    `p_object_name` VARCHAR(150),
+    `p_object_id` INTEGER,
+    `message` TEXT,
+    `evol_reput` INTEGER,
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    PRIMARY KEY (`id`),
+    INDEX `p_m_user_message_FI_1` (`p_user_id`),
+    CONSTRAINT `p_m_user_message_FK_1`
+        FOREIGN KEY (`p_user_id`)
+        REFERENCES `p_user` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE SET NULL
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_m_user_historic
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_m_user_historic`;
+
+CREATE TABLE `p_m_user_historic`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `p_user_id` INTEGER,
+    `p_object_id` INTEGER,
+    `file_name` VARCHAR(150),
+    `back_file_name` VARCHAR(150),
+    `copyright` TEXT,
+    `subtitle` TEXT,
+    `biography` TEXT,
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    PRIMARY KEY (`id`),
+    INDEX `p_m_user_historic_FI_1` (`p_user_id`),
+    CONSTRAINT `p_m_user_historic_FK_1`
+        FOREIGN KEY (`p_user_id`)
+        REFERENCES `p_user` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE SET NULL
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_m_debate_historic
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_m_debate_historic`;
+
+CREATE TABLE `p_m_debate_historic`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `p_d_debate_id` INTEGER,
+    `p_user_id` INTEGER,
+    `p_object_id` INTEGER,
+    `file_name` VARCHAR(150),
+    `title` VARCHAR(100),
+    `description` LONGTEXT,
+    `copyright` TEXT,
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    PRIMARY KEY (`id`),
+    INDEX `p_m_debate_historic_FI_1` (`p_d_debate_id`),
+    INDEX `p_m_debate_historic_FI_2` (`p_user_id`),
+    CONSTRAINT `p_m_debate_historic_FK_1`
+        FOREIGN KEY (`p_d_debate_id`)
+        REFERENCES `p_d_debate` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE SET NULL,
+    CONSTRAINT `p_m_debate_historic_FK_2`
+        FOREIGN KEY (`p_user_id`)
+        REFERENCES `p_user` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE SET NULL
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_m_reaction_historic
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_m_reaction_historic`;
+
+CREATE TABLE `p_m_reaction_historic`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `p_d_reaction_id` INTEGER,
+    `p_user_id` INTEGER,
+    `p_object_id` INTEGER,
+    `file_name` VARCHAR(150),
+    `title` VARCHAR(100),
+    `description` LONGTEXT,
+    `copyright` TEXT,
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    PRIMARY KEY (`id`),
+    INDEX `p_m_reaction_historic_FI_1` (`p_d_reaction_id`),
+    INDEX `p_m_reaction_historic_FI_2` (`p_user_id`),
+    CONSTRAINT `p_m_reaction_historic_FK_1`
+        FOREIGN KEY (`p_d_reaction_id`)
+        REFERENCES `p_d_reaction` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE SET NULL,
+    CONSTRAINT `p_m_reaction_historic_FK_2`
+        FOREIGN KEY (`p_user_id`)
+        REFERENCES `p_user` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE SET NULL
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_m_d_comment_historic
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_m_d_comment_historic`;
+
+CREATE TABLE `p_m_d_comment_historic`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `p_d_d_comment_id` INTEGER,
+    `p_user_id` INTEGER,
+    `p_object_id` INTEGER,
+    `description` TEXT,
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    PRIMARY KEY (`id`),
+    INDEX `p_m_d_comment_historic_FI_1` (`p_d_d_comment_id`),
+    INDEX `p_m_d_comment_historic_FI_2` (`p_user_id`),
+    CONSTRAINT `p_m_d_comment_historic_FK_1`
+        FOREIGN KEY (`p_d_d_comment_id`)
+        REFERENCES `p_d_d_comment` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE SET NULL,
+    CONSTRAINT `p_m_d_comment_historic_FK_2`
+        FOREIGN KEY (`p_user_id`)
+        REFERENCES `p_user` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE SET NULL
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_m_r_comment_historic
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_m_r_comment_historic`;
+
+CREATE TABLE `p_m_r_comment_historic`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `p_d_r_comment_id` INTEGER,
+    `p_user_id` INTEGER,
+    `p_object_id` INTEGER,
+    `description` TEXT,
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    PRIMARY KEY (`id`),
+    INDEX `p_m_r_comment_historic_FI_1` (`p_d_r_comment_id`),
+    INDEX `p_m_r_comment_historic_FI_2` (`p_user_id`),
+    CONSTRAINT `p_m_r_comment_historic_FK_1`
+        FOREIGN KEY (`p_d_r_comment_id`)
+        REFERENCES `p_d_r_comment` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE SET NULL,
+    CONSTRAINT `p_m_r_comment_historic_FK_2`
+        FOREIGN KEY (`p_user_id`)
+        REFERENCES `p_user` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE SET NULL
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_m_ask_for_update
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_m_ask_for_update`;
+
+CREATE TABLE `p_m_ask_for_update`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `p_user_id` INTEGER,
+    `p_object_name` VARCHAR(150),
+    `p_object_id` INTEGER,
+    `message` TEXT,
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    PRIMARY KEY (`id`),
+    INDEX `p_m_ask_for_update_FI_1` (`p_user_id`),
+    CONSTRAINT `p_m_ask_for_update_FK_1`
+        FOREIGN KEY (`p_user_id`)
+        REFERENCES `p_user` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE SET NULL
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- p_m_abuse_reporting
 -- ---------------------------------------------------------------------
 
@@ -1213,14 +1511,21 @@ DROP TABLE IF EXISTS `p_m_app_exception`;
 CREATE TABLE `p_m_app_exception`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `p_user_id` INTEGER,
     `file` VARCHAR(250),
     `line` INTEGER,
     `code` INTEGER,
-    `message` VARCHAR(250),
+    `message` VARCHAR(1500),
     `stack_trace` LONGTEXT,
     `created_at` DATETIME,
     `updated_at` DATETIME,
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    INDEX `p_m_app_exception_FI_1` (`p_user_id`),
+    CONSTRAINT `p_m_app_exception_FK_1`
+        FOREIGN KEY (`p_user_id`)
+        REFERENCES `p_user` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE SET NULL
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -1233,6 +1538,7 @@ CREATE TABLE `p_tag_archive`
 (
     `id` INTEGER NOT NULL,
     `p_t_tag_type_id` INTEGER NOT NULL,
+    `p_t_parent_id` INTEGER,
     `p_user_id` INTEGER,
     `title` VARCHAR(150),
     `online` TINYINT(1),
@@ -1242,8 +1548,9 @@ CREATE TABLE `p_tag_archive`
     `archived_at` DATETIME,
     PRIMARY KEY (`id`),
     INDEX `p_tag_archive_I_1` (`p_t_tag_type_id`),
-    INDEX `p_tag_archive_I_2` (`p_user_id`),
-    INDEX `p_tag_archive_I_3` (`slug`(255))
+    INDEX `p_tag_archive_I_2` (`p_t_parent_id`),
+    INDEX `p_tag_archive_I_3` (`p_user_id`),
+    INDEX `p_tag_archive_I_4` (`slug`(255))
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -1400,6 +1707,10 @@ CREATE TABLE `p_user_archive`
     `qualified` TINYINT(1),
     `validated` TINYINT(1) DEFAULT 0,
     `online` TINYINT(1),
+    `banned` TINYINT(1),
+    `banned_nb_days_left` INTEGER,
+    `banned_nb_total` INTEGER,
+    `abuse_level` INTEGER,
     `created_at` DATETIME,
     `updated_at` DATETIME,
     `slug` VARCHAR(255),
@@ -1459,6 +1770,9 @@ CREATE TABLE `p_d_debate_archive`
     `published_by` VARCHAR(300),
     `favorite` TINYINT(1),
     `online` TINYINT(1),
+    `moderated` TINYINT(1),
+    `moderated_partial` TINYINT(1),
+    `moderated_at` DATETIME,
     `created_at` DATETIME,
     `updated_at` DATETIME,
     `slug` VARCHAR(255),
@@ -1492,6 +1806,9 @@ CREATE TABLE `p_d_reaction_archive`
     `published_by` VARCHAR(300),
     `favorite` TINYINT(1),
     `online` TINYINT(1),
+    `moderated` TINYINT(1),
+    `moderated_partial` TINYINT(1),
+    `moderated_at` DATETIME,
     `created_at` DATETIME,
     `updated_at` DATETIME,
     `slug` VARCHAR(255),
@@ -1523,6 +1840,9 @@ CREATE TABLE `p_d_d_comment_archive`
     `published_at` DATETIME,
     `published_by` VARCHAR(300),
     `online` TINYINT(1),
+    `moderated` TINYINT(1),
+    `moderated_partial` TINYINT(1),
+    `moderated_at` DATETIME,
     `created_at` DATETIME,
     `updated_at` DATETIME,
     `archived_at` DATETIME,
@@ -1549,6 +1869,9 @@ CREATE TABLE `p_d_r_comment_archive`
     `published_at` DATETIME,
     `published_by` VARCHAR(300),
     `online` TINYINT(1),
+    `moderated` TINYINT(1),
+    `moderated_partial` TINYINT(1),
+    `moderated_at` DATETIME,
     `created_at` DATETIME,
     `updated_at` DATETIME,
     `archived_at` DATETIME,
@@ -1574,6 +1897,66 @@ CREATE TABLE `p_d_d_tagged_t_archive`
     PRIMARY KEY (`id`),
     INDEX `p_d_d_tagged_t_archive_I_1` (`p_d_debate_id`),
     INDEX `p_d_d_tagged_t_archive_I_2` (`p_tag_id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_d_r_tagged_t_archive
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_d_r_tagged_t_archive`;
+
+CREATE TABLE `p_d_r_tagged_t_archive`
+(
+    `id` INTEGER NOT NULL,
+    `p_d_reaction_id` INTEGER NOT NULL,
+    `p_tag_id` INTEGER NOT NULL,
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    `archived_at` DATETIME,
+    PRIMARY KEY (`id`),
+    INDEX `p_d_r_tagged_t_archive_I_1` (`p_d_reaction_id`),
+    INDEX `p_d_r_tagged_t_archive_I_2` (`p_tag_id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_m_user_message_archive
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_m_user_message_archive`;
+
+CREATE TABLE `p_m_user_message_archive`
+(
+    `id` INTEGER NOT NULL,
+    `p_user_id` INTEGER,
+    `p_object_name` VARCHAR(150),
+    `p_object_id` INTEGER,
+    `message` TEXT,
+    `evol_reput` INTEGER,
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    `archived_at` DATETIME,
+    PRIMARY KEY (`id`),
+    INDEX `p_m_user_message_archive_I_1` (`p_user_id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- p_m_ask_for_update_archive
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `p_m_ask_for_update_archive`;
+
+CREATE TABLE `p_m_ask_for_update_archive`
+(
+    `id` INTEGER NOT NULL,
+    `p_user_id` INTEGER,
+    `p_object_name` VARCHAR(150),
+    `p_object_id` INTEGER,
+    `message` TEXT,
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    `archived_at` DATETIME,
+    PRIMARY KEY (`id`),
+    INDEX `p_m_ask_for_update_archive_I_1` (`p_user_id`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------

@@ -1,107 +1,126 @@
-UPDATE `p_tag` SET p_t_parent_id = 1 where id IN (2,3,4,5,6,7);
+DELETE FROM `p_tag` WHERE id < 137;
 
-UPDATE `p_tag` SET p_t_parent_id = 3 where id IN (8);
-
-UPDATE `p_tag` SET p_t_parent_id = 8 where id IN (9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35);
-
-UPDATE `p_tag` SET p_t_parent_id = 35 where id = 36;
-UPDATE `p_tag` SET p_t_parent_id = 32 where id = 37;
-UPDATE `p_tag` SET p_t_parent_id = 11 where id = 38;
-UPDATE `p_tag` SET p_t_parent_id = 34 where id = 39;
-UPDATE `p_tag` SET p_t_parent_id = 34 where id = 40;
-UPDATE `p_tag` SET p_t_parent_id = 34 where id = 41;
-UPDATE `p_tag` SET p_t_parent_id = 35 where id = 42;
-UPDATE `p_tag` SET p_t_parent_id = 16 where id = 43;
-UPDATE `p_tag` SET p_t_parent_id = 29 where id = 44;
-UPDATE `p_tag` SET p_t_parent_id = 16 where id = 45;
-UPDATE `p_tag` SET p_t_parent_id = 24 where id = 46;
-UPDATE `p_tag` SET p_t_parent_id = 29 where id = 47;
-UPDATE `p_tag` SET p_t_parent_id = 34 where id = 48;
-UPDATE `p_tag` SET p_t_parent_id = 12 where id = 49;
-UPDATE `p_tag` SET p_t_parent_id = 11 where id = 50;
-UPDATE `p_tag` SET p_t_parent_id = 33 where id = 51;
-UPDATE `p_tag` SET p_t_parent_id = 33 where id = 52;
-UPDATE `p_tag` SET p_t_parent_id = 15 where id = 53;
-UPDATE `p_tag` SET p_t_parent_id = 25 where id = 54;
-UPDATE `p_tag` SET p_t_parent_id = 17 where id = 55;
-UPDATE `p_tag` SET p_t_parent_id = 17 where id = 56;
-UPDATE `p_tag` SET p_t_parent_id = 13 where id = 57;
-UPDATE `p_tag` SET p_t_parent_id = 14 where id = 58;
-UPDATE `p_tag` SET p_t_parent_id = 25 where id = 59;
-UPDATE `p_tag` SET p_t_parent_id = 10 where id = 60;
-UPDATE `p_tag` SET p_t_parent_id = 18 where id = 61;
-UPDATE `p_tag` SET p_t_parent_id = 35 where id = 62;
-UPDATE `p_tag` SET p_t_parent_id = 21 where id = 63;
-UPDATE `p_tag` SET p_t_parent_id = 15 where id = 64;
-UPDATE `p_tag` SET p_t_parent_id = 14 where id = 65;
-UPDATE `p_tag` SET p_t_parent_id = 24 where id = 66;
-UPDATE `p_tag` SET p_t_parent_id = 29 where id = 67;
-UPDATE `p_tag` SET p_t_parent_id = 29 where id = 68;
-UPDATE `p_tag` SET p_t_parent_id = 10 where id = 69;
-UPDATE `p_tag` SET p_t_parent_id = 24 where id = 70;
-UPDATE `p_tag` SET p_t_parent_id = 14 where id = 71;
-UPDATE `p_tag` SET p_t_parent_id = 15 where id = 72;
-UPDATE `p_tag` SET p_t_parent_id = 15 where id = 73;
-UPDATE `p_tag` SET p_t_parent_id = 35 where id = 74;
-UPDATE `p_tag` SET p_t_parent_id = 18 where id = 75;
-UPDATE `p_tag` SET p_t_parent_id = 10 where id = 76;
-UPDATE `p_tag` SET p_t_parent_id = 15 where id = 77;
-UPDATE `p_tag` SET p_t_parent_id = 35 where id = 78;
-UPDATE `p_tag` SET p_t_parent_id = 11 where id = 79;
-UPDATE `p_tag` SET p_t_parent_id = 31 where id = 80;
-UPDATE `p_tag` SET p_t_parent_id = 15 where id = 81;
-UPDATE `p_tag` SET p_t_parent_id = 29 where id = 82;
-UPDATE `p_tag` SET p_t_parent_id = 10 where id = 83;
-UPDATE `p_tag` SET p_t_parent_id = 24 where id = 84;
-UPDATE `p_tag` SET p_t_parent_id = 31 where id = 85;
-UPDATE `p_tag` SET p_t_parent_id = 12 where id = 86;
-UPDATE `p_tag` SET p_t_parent_id = 16 where id = 87;
-UPDATE `p_tag` SET p_t_parent_id = 16 where id = 88;
-UPDATE `p_tag` SET p_t_parent_id = 31 where id = 89;
-UPDATE `p_tag` SET p_t_parent_id = 26 where id = 90;
-UPDATE `p_tag` SET p_t_parent_id = 26 where id = 91;
-UPDATE `p_tag` SET p_t_parent_id = 14 where id = 92;
-UPDATE `p_tag` SET p_t_parent_id = 26 where id = 93;
-UPDATE `p_tag` SET p_t_parent_id = 13 where id = 94;
-UPDATE `p_tag` SET p_t_parent_id = 30 where id = 95;
-UPDATE `p_tag` SET p_t_parent_id = 32 where id = 96;
-UPDATE `p_tag` SET p_t_parent_id = 12 where id = 97;
-UPDATE `p_tag` SET p_t_parent_id = 30 where id = 98;
-UPDATE `p_tag` SET p_t_parent_id = 11 where id = 99;
-UPDATE `p_tag` SET p_t_parent_id = 10 where id = 100;
-UPDATE `p_tag` SET p_t_parent_id = 29 where id = 101;
-UPDATE `p_tag` SET p_t_parent_id = 24 where id = 102;
-UPDATE `p_tag` SET p_t_parent_id = 9 where id = 103;
-UPDATE `p_tag` SET p_t_parent_id = 9 where id = 104;
-UPDATE `p_tag` SET p_t_parent_id = 35 where id = 105;
-UPDATE `p_tag` SET p_t_parent_id = 18 where id = 106;
-UPDATE `p_tag` SET p_t_parent_id = 13 where id = 107;
-UPDATE `p_tag` SET p_t_parent_id = 31 where id = 108;
-UPDATE `p_tag` SET p_t_parent_id = 35 where id = 109;
-UPDATE `p_tag` SET p_t_parent_id = 35 where id = 110;
-UPDATE `p_tag` SET p_t_parent_id = 22 where id = 111;
-UPDATE `p_tag` SET p_t_parent_id = 21 where id = 112;
-UPDATE `p_tag` SET p_t_parent_id = 22 where id = 113;
-UPDATE `p_tag` SET p_t_parent_id = 22 where id = 114;
-UPDATE `p_tag` SET p_t_parent_id = 33 where id = 115;
-UPDATE `p_tag` SET p_t_parent_id = 32 where id = 116;
-UPDATE `p_tag` SET p_t_parent_id = 29 where id = 117;
-UPDATE `p_tag` SET p_t_parent_id = 29 where id = 118;
-UPDATE `p_tag` SET p_t_parent_id = 34 where id = 119;
-UPDATE `p_tag` SET p_t_parent_id = 34 where id = 120;
-UPDATE `p_tag` SET p_t_parent_id = 31 where id = 121;
-UPDATE `p_tag` SET p_t_parent_id = 33 where id = 122;
-UPDATE `p_tag` SET p_t_parent_id = 25 where id = 123;
-UPDATE `p_tag` SET p_t_parent_id = 26 where id = 124;
-UPDATE `p_tag` SET p_t_parent_id = 13 where id = 125;
-UPDATE `p_tag` SET p_t_parent_id = 18 where id = 126;
-UPDATE `p_tag` SET p_t_parent_id = 22 where id = 127;
-UPDATE `p_tag` SET p_t_parent_id = 22 where id = 128;
-UPDATE `p_tag` SET p_t_parent_id = 22 where id = 139;
-UPDATE `p_tag` SET p_t_parent_id = 22 where id = 130;
-UPDATE `p_tag` SET p_t_parent_id = 22 where id = 131;
-UPDATE `p_tag` SET p_t_parent_id = 19 where id = 132;
-UPDATE `p_tag` SET p_t_parent_id = 27 where id = 133;
-UPDATE `p_tag` SET p_t_parent_id = 20 where id = 134;
-UPDATE `p_tag` SET p_t_parent_id = 23 where id = 135;
-UPDATE `p_tag` SET p_t_parent_id = 28 where id = 136;
+INSERT INTO `p_tag` (`id`, `p_t_tag_type_id`, `p_t_parent_id`, `p_user_id`, `title`, `online`, `created_at`, `updated_at`, `slug`) VALUES
+(1, 1,  NULL,   NULL,   'Monde',    1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'monde'),
+(2, 1,  1,  NULL,   'Afrique',  1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'afrique'),
+(3, 1,  1,  NULL,   'Europe',   1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'europe'),
+(4, 1,  1,  NULL,   'Amérique', 1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'amerique'),
+(5, 1,  1,  NULL,   'Asie', 1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'asie'),
+(6, 1,  1,  NULL,   'Océanie',  1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'oceanie'),
+(7, 1,  1,  NULL,   'Antarctique',  1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'antarctique'),
+(8, 1,  3,  NULL,   'France',   1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'france'),
+(9, 1,  8,  NULL,   'Alsace Champagne-Ardenne Lorraine',    1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'alsace-champagne-ardenne-lorraine'),
+(10,    1,  8,  NULL,   'Aquitaine Limousin Poitou Charentes',  1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'aquitaine-limousin-poitou-charentes'),
+(11,    1,  8,  NULL,   'Auvergne-Rhône-Alpes', 1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'auvergne-rhone-alpes'),
+(12,    1,  8,  NULL,   'Bourgogne Franche-Comté',  1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'bourgogne-franche-comte'),
+(13,    1,  8,  NULL,   'Bretagne', 1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'bretagne'),
+(14,    1,  8,  NULL,   'Centre Val de Loire',  1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'centre-val-de-loire'),
+(15,    1,  8,  NULL,   'Corse',    1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'corse'),
+(16,    1,  8,  NULL,   'Île-de-France',    1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'ile-de-france'),
+(17,    1,  8,  NULL,   'Languedoc-Roussillon Midi-Pyrénées',   1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'languedoc-roussillon-midi-pyrenees'),
+(18,    1,  8,  NULL,   'Nord-Pas-de-Calais Picardie',  1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'nord-pas-de-calais-picardie'),
+(19,    1,  8,  NULL,   'Normandie',    1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'normandie'),
+(20,    1,  8,  NULL,   'Pays de la Loire', 1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'pays-de-la-loire'),
+(21,    1,  8,  NULL,   'Provence-Alpes-Côte d\'Azur',  1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'provence-alpes-cote-d-azur'),
+(22,    1,  8,  NULL,   'France d\'Outre Mer',  1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'france-d-outre-mer'),
+(23,    1,  11, NULL,   'Ain',  1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'ain'),
+(24,    1,  18, NULL,   'Aisne',    1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'aisne'),
+(25,    1,  11, NULL,   'Allier',   1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'allier'),
+(26,    1,  21, NULL,   'Alpes-de-Haute-Provence',  1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'alpes-de-haute-provence'),
+(27,    1,  21, NULL,   'Hautes-Alpes', 1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'hautes-alpes'),
+(28,    1,  21, NULL,   'Alpes-Maritimes',  1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'alpes-maritimes'),
+(29,    1,  11, NULL,   'Ardèche',  1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'ardeche'),
+(30,    1,  9,  NULL,   'Ardennes', 1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'ardennes'),
+(31,    1,  17, NULL,   'Ariège',   1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'ariege'),
+(32,    1,  9,  NULL,   'Aube', 1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'aube'),
+(33,    1,  17, NULL,   'Aude', 1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'aude'),
+(34,    1,  17, NULL,   'Aveyron',  1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'aveyron'),
+(35,    1,  21, NULL,   'Bouches-du-Rhône', 1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'bouches-du-rhone'),
+(36,    1,  19, NULL,   'Calvados', 1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'calvados'),
+(37,    1,  11, NULL,   'Cantal',   1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'cantal'),
+(38,    1,  10, NULL,   'Charente', 1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'charente'),
+(39,    1,  10, NULL,   'Charente-Maritime',    1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'charente-maritime'),
+(40,    1,  14, NULL,   'Cher', 1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'cher'),
+(41,    1,  10, NULL,   'Corrèze',  1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'correze'),
+(42,    1,  15, NULL,   'Corse-du-Sud', 1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'corse-du-sud'),
+(43,    1,  15, NULL,   'Haute-Corse',  1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'haute-corse'),
+(44,    1,  12, NULL,   'Côte-d\'Or',   1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'cote-d-or'),
+(45,    1,  13, NULL,   'Côtes-d\'Armor',   1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'cotes-d-armor'),
+(46,    1,  10, NULL,   'Creuse',   1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'creuse'),
+(47,    1,  10, NULL,   'Dordogne', 1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'dordogne'),
+(48,    1,  12, NULL,   'Doubs',    1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'doubs'),
+(49,    1,  11, NULL,   'Drôme',    1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'drome'),
+(50,    1,  19, NULL,   'Eure', 1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'eure'),
+(51,    1,  14, NULL,   'Eure-et-Loir', 1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'eure-et-loir'),
+(52,    1,  13, NULL,   'Finistère',    1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'finistere'),
+(53,    1,  17, NULL,   'Gard', 1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'gard'),
+(54,    1,  17, NULL,   'Haute-Garonne',    1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'haute-garonne'),
+(55,    1,  17, NULL,   'Gers', 1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'gers'),
+(56,    1,  10, NULL,   'Gironde',  1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'gironde'),
+(57,    1,  17, NULL,   'Hérault',  1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'herault'),
+(58,    1,  13, NULL,   'Ille-et-Vilaine',  1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'ille-et-vilaine'),
+(59,    1,  14, NULL,   'Indre',    1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'indre'),
+(60,    1,  14, NULL,   'Indre-et-Loire',   1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'indre-et-loire'),
+(61,    1,  11, NULL,   'Isère',    1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'isere'),
+(62,    1,  12, NULL,   'Jura', 1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'jura'),
+(63,    1,  10, NULL,   'Landes',   1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'landes'),
+(64,    1,  14, NULL,   'Loir-et-Cher', 1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'loir-et-cher'),
+(65,    1,  11, NULL,   'Loire',    1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'loire'),
+(66,    1,  11, NULL,   'Haute-Loire',  1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'haute-loire'),
+(67,    1,  20, NULL,   'Loire-Atlantique', 1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'loire-atlantique'),
+(68,    1,  14, NULL,   'Loiret',   1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'loiret'),
+(69,    1,  17, NULL,   'Lot',  1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'lot'),
+(70,    1,  10, NULL,   'Lot-et-Garonne',   1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'lot-et-garonne'),
+(71,    1,  17, NULL,   'Lozère',   1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'lozere'),
+(72,    1,  20, NULL,   'Maine-et-Loire',   1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'maine-et-loire'),
+(73,    1,  19, NULL,   'Manche',   1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'manche'),
+(74,    1,  9,  NULL,   'Marne',    1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'marne'),
+(75,    1,  9,  NULL,   'Haute-Marne',  1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'haute-marne'),
+(76,    1,  20, NULL,   'Mayenne',  1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'mayenne'),
+(77,    1,  9,  NULL,   'Meurthe-et-Moselle',   1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'meurthe-et-moselle'),
+(78,    1,  9,  NULL,   'Meuse',    1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'meuse'),
+(79,    1,  13, NULL,   'Morbihan', 1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'morbihan'),
+(80,    1,  9,  NULL,   'Moselle',  1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'moselle'),
+(81,    1,  12, NULL,   'Nièvre',   1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'nievre'),
+(82,    1,  18, NULL,   'Nord', 1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'nord'),
+(83,    1,  18, NULL,   'Oise', 1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'oise'),
+(84,    1,  19, NULL,   'Orne', 1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'orne'),
+(85,    1,  18, NULL,   'Pas-de-Calais',    1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'pas-de-calais'),
+(86,    1,  11, NULL,   'Puy-de-Dôme',  1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'puy-de-dome'),
+(87,    1,  10, NULL,   'Pyrénées-Atlantiques', 1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'pyrenees-atlantiques'),
+(88,    1,  17, NULL,   'Hautes-Pyrénées',  1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'hautes-pyrenees'),
+(89,    1,  17, NULL,   'Pyrénées-Orientales',  1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'pyrenees-orientales'),
+(90,    1,  9,  NULL,   'Bas-Rhin', 1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'bas-rhin'),
+(91,    1,  9,  NULL,   'Haut-Rhin',    1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'haut-rhin'),
+(92,    1,  11, NULL,   'Rhône',    1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'rhone'),
+(93,    1,  12, NULL,   'Haute-Saône',  1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'haute-saone'),
+(94,    1,  12, NULL,   'Saône-et-Loire',   1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'saone-et-loire'),
+(95,    1,  20, NULL,   'Sarthe',   1,  '2015-11-17 15:25:11',  '2015-11-17 15:25:11',  'sarthe'),
+(96,    1,  11, NULL,   'Savoie',   1,  '2015-11-17 15:25:12',  '2015-11-17 15:25:12',  'savoie'),
+(97,    1,  11, NULL,   'Haute-Savoie', 1,  '2015-11-17 15:25:12',  '2015-11-17 15:25:12',  'haute-savoie'),
+(98,    1,  16, NULL,   'Paris',    1,  '2015-11-17 15:25:12',  '2015-11-17 15:25:12',  'paris'),
+(99,    1,  19, NULL,   'Seine-Maritime',   1,  '2015-11-17 15:25:12',  '2015-11-17 15:25:12',  'seine-maritime'),
+(100,   1,  16, NULL,   'Seine-et-Marne',   1,  '2015-11-17 15:25:12',  '2015-11-17 15:25:12',  'seine-et-marne'),
+(101,   1,  16, NULL,   'Yvelines', 1,  '2015-11-17 15:25:12',  '2015-11-17 15:25:12',  'yvelines'),
+(102,   1,  10, NULL,   'Deux-Sèvres',  1,  '2015-11-17 15:25:12',  '2015-11-17 15:25:12',  'deux-sevres'),
+(103,   1,  18, NULL,   'Somme',    1,  '2015-11-17 15:25:12',  '2015-11-17 15:25:12',  'somme'),
+(104,   1,  17, NULL,   'Tarn', 1,  '2015-11-17 15:25:12',  '2015-11-17 15:25:12',  'tarn'),
+(105,   1,  17, NULL,   'Tarn-et-Garonne',  1,  '2015-11-17 15:25:12',  '2015-11-17 15:25:12',  'tarn-et-garonne'),
+(106,   1,  21, NULL,   'Var',  1,  '2015-11-17 15:25:12',  '2015-11-17 15:25:12',  'var'),
+(107,   1,  21, NULL,   'Vaucluse', 1,  '2015-11-17 15:25:12',  '2015-11-17 15:25:12',  'vaucluse'),
+(108,   1,  20, NULL,   'Vendée',   1,  '2015-11-17 15:25:12',  '2015-11-17 15:25:12',  'vendee'),
+(109,   1,  10, NULL,   'Vienne',   1,  '2015-11-17 15:25:12',  '2015-11-17 15:25:12',  'vienne'),
+(110,   1,  10, NULL,   'Haute-Vienne', 1,  '2015-11-17 15:25:12',  '2015-11-17 15:25:12',  'haute-vienne'),
+(111,   1,  9,  NULL,   'Vosges',   1,  '2015-11-17 15:25:12',  '2015-11-17 15:25:12',  'vosges'),
+(112,   1,  12, NULL,   'Yonne',    1,  '2015-11-17 15:25:12',  '2015-11-17 15:25:12',  'yonne'),
+(113,   1,  12, NULL,   'Territoire de Belfort',    1,  '2015-11-17 15:25:12',  '2015-11-17 15:25:12',  'territoire-de-belfort'),
+(114,   1,  16, NULL,   'Essonne',  1,  '2015-11-17 15:25:12',  '2015-11-17 15:25:12',  'essonne'),
+(115,   1,  16, NULL,   'Hauts-de-Seine',   1,  '2015-11-17 15:25:12',  '2015-11-17 15:25:12',  'hauts-de-seine'),
+(116,   1,  16, NULL,   'Seine-Saint-Denis',    1,  '2015-11-17 15:25:12',  '2015-11-17 15:25:12',  'seine-saint-denis'),
+(117,   1,  16, NULL,   'Val-de-Marne', 1,  '2015-11-17 15:25:12',  '2015-11-17 15:25:12',  'val-de-marne'),
+(118,   1,  16, NULL,   'Val-d\'Oise',  1,  '2015-11-17 15:25:12',  '2015-11-17 15:25:12',  'val-d-oise'),
+(119,   1,  22, NULL,   'Guadeloupe',   1,  '2015-11-17 15:25:12',  '2015-11-17 15:25:12',  'guadeloupe'),
+(120,   1,  22, NULL,   'Martinique',   1,  '2015-11-17 15:25:12',  '2015-11-17 15:25:12',  'martinique'),
+(121,   1,  22, NULL,   'Guyane',   1,  '2015-11-17 15:25:12',  '2015-11-17 15:25:12',  'guyane'),
+(122,   1,  22, NULL,   'La Réunion',   1,  '2015-11-17 15:25:12',  '2015-11-17 15:25:12',  'la-reunion'),
+(123,   1,  22, NULL,   'Mayotte',  1,  '2015-11-17 15:25:12',  '2015-11-17 15:25:12',  'mayotte');
