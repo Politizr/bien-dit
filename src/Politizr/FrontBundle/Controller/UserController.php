@@ -61,7 +61,7 @@ class UserController extends Controller
             return $this->redirect($this->generateUrl('Login'));
         }
 
-        // return $this->redirect($this->generateUrl(sprintf('Timeline%s', $suffix)));
+        return $this->redirect($this->generateUrl(sprintf('Timeline%s', $suffix)));
         
         $regionTags = PTagQuery::create()->filterById(TagConstants::getGeoRegionIds())->find();
 

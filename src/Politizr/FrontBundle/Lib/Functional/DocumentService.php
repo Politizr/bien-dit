@@ -110,8 +110,7 @@ class DocumentService
 
             $result = $stmt->fetchAll();
 
-            // dump($result);
-
+            $i = 0;
             foreach ($result as $row) {
                 $type = $row['type'];
 
@@ -123,7 +122,9 @@ class DocumentService
                     throw new InconsistentDataException(sprintf('Object type %s unknown.', $type));
                 }
                 
-                $documents->set($document->getId(), $document);
+                // @todo pb clef / reaction vs debate identique
+                $documents->set($i, $document);
+                $i++;
             }
         }
 
