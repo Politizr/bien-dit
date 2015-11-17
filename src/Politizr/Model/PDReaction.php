@@ -19,6 +19,7 @@ use Politizr\Exception\InconsistentDataException;
 
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\PathConstants;
+use Politizr\Constant\TagConstants;
 
 use Politizr\Model\om\BasePDReaction;
 
@@ -82,10 +83,10 @@ class PDReaction extends BasePDReaction implements PDocumentInterface, Container
             ),
             'description' => array(
                 new NotBlank(['message' => 'La description ne doit pas être vide']),
-                new Length(['min' => 141, 'minMessage' => 'Le corps de la publication doit contenir {{ limit }} caractères minimum.']),
+                new Length(['min' => 140, 'minMessage' => 'Le corps de la publication doit contenir {{ limit }} caractères minimum.']),
             ),
-            'geoTags' => new Count(['min' => 1, 'minMessage' => 'Au moins {{ limit }} thématique géographique (département, région, France, Europe, Monde).']),
-            'allTags' => new Count(['min' => 3, 'minMessage' => 'Au moins {{ limit }} thématiques au total.']),
+            'geoTags' => new Count(['min' => 1, 'minMessage' => 'Saisissez au moins {{ limit }} thématique géographique parmi les départements, les régions, "France", "Europe" ou "Monde".']),
+            'allTags' => new Count(['min' => 3, 'minMessage' => 'Saisissez au moins {{ limit }} thématiques au total.']),
         ));
 
         return $collectionConstraint;
@@ -234,8 +235,26 @@ class PDReaction extends BasePDReaction implements PDocumentInterface, Container
     /* ######################################################################################################## */
 
     /**
-     * Debate's array tags
+     * Reaction's array tags / geo tags world, europe, france, regions, departments
      * - used by publish constraints
+     *
+     * @return array[string]
+     */
+    public function getWorldToDepartmentGeoArrayTags()
+    {
+        $query = PTagQuery::create()
+            ->select('Title')
+            ->filterIfTypeId(TagConstants::TAG_TYPE_GEO)
+            ->filterIfOnline(true)
+            ->where('p_tag.id <= ?', TagConstants::TAG_GEO_DEPARTMENT_LAST_ID)
+            ->orderByTitle()
+            ->setDistinct();
+
+        return parent::getPTags($query)->toArray();
+    }
+
+    /**
+     * Reaction's array tags
      * - used by elastica indexation
      *
      * @return array[string]

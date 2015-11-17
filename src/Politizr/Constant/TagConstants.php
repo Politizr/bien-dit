@@ -34,6 +34,9 @@ class TagConstants
     const TAG_GEO_REGION_ID_14 = 22;
 
 
+    const TAG_GEO_DEPARTMENT_LAST_ID = 123;
+
+
     /**
      * Return array of region ids
      *
