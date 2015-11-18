@@ -45,11 +45,6 @@ class DocumentController extends Controller
         $logger->info('*** debateDetailAction');
         $logger->info('$slug = '.print_r($slug, true));
 
-        $suffix = $this->get('politizr.tools.global')->computeProfileSuffix();
-        if (null === $suffix) {
-            return $this->redirect($this->generateUrl('Login'));
-        }
-
         $debate = PDDebateQuery::create()->filterBySlug($slug)->findOne();
         if (!$debate) {
             throw new NotFoundHttpException('Debate "'.$slug.'" not found.');

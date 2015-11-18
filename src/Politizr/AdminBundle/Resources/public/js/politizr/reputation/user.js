@@ -4,7 +4,7 @@ $("body").on("click", "[action='updateReputationUser']", function(e) {
 
     var xhrPath = getXhrPath(
         ADMIN_ROUTE_USER_REPUTATION_EVOLUTION,
-        'user',
+        'admin',
         'userReputationUpdate',
         RETURN_HTML
         );
@@ -23,9 +23,10 @@ $("body").on("click", "[action='updateReputationUser']", function(e) {
         statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
         error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown ); },
         success: function(data) {
+            $('#ajaxGlobalLoader').hide();
             if (data['error']) {
-                $('.alert-error').html(data['error']);
-                $('.alert-error').show();
+                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                $('#infoBoxHolder .boxError').show();
             } else {
                 $("#reputationUserScore").html(data['score']);
                 $("#reputationUserEvolution").val('');

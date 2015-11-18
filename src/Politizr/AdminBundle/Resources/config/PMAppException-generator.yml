@@ -8,6 +8,12 @@ params:
     fields:
         id:
             label:          ID
+        p_user_id:
+            label:          ID User
+        p_user:
+            label:          Utilisateur
+            addFormOptions:
+                query:                  \Politizr\Model\PUserQuery::create()->orderByName() 
         line:
             label:          Ligne
         file:
@@ -32,7 +38,8 @@ builders:
             title:                              Liste des exceptions
             max_per_page:                       50
             sort:                               [ id, DESC ]
-            display:                            [ message, created_at ]
+            display:                            [ p_user_id, message, created_at ]
+            filters:                            [ p_user_id ]
             object_actions:
                 show:                           ~
                 delete:                         ~
@@ -46,10 +53,15 @@ builders:
             tabs:
                 "Contenu":
                     "Texte":                    [ [ line, file ], [ code, message ] ]
+                "Objets":
+                    "Utilisateur":              [ block_p_user ]
                 "Pile":
                     "Pile exception":           [ stack_trace ]
                 "Attributs":
                     "Création":                 [ [ created_at, updated_at ] ]
+            fields:
+                block_p_user:
+                    label:                      "Utilisateur impacté"
             actions:
               list:                             ~
               delete:                           ~

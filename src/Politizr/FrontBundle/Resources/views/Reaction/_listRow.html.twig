@@ -23,7 +23,7 @@
                     {{ reaction | docTags }}
                 </div>
                 <div class="postSummaryTitle">
-                    <a href="{{ path('ReactionDetail', { 'slug': reaction.slug }) }}">
+                    <a href="{{ path('ReactionDetail'~profileSuffix(), { 'slug': reaction.slug }) }}">
                         {{ reaction.title }}
                     </a>
                 </div>
@@ -48,5 +48,5 @@
     <div class="subscribe{% if app.user.id == reaction.debate.pUserId %} noSelfSubscribe{% endif %}">
         {{ reaction.debate | linkSubscribeDebate }}
     </div>
-    <a href="{{ path('ReactionDetail', { 'slug': reaction.slug }) }}" class="modalItemShow"><i class="iconGoTo"></i>Afficher</a>
+    <a href="{{ path('ReactionDetail'~profileSuffix(), { 'slug': reaction.slug }) }}" class="modalItemShow"><i class="iconGoTo"></i>Afficher</a>
 </div>

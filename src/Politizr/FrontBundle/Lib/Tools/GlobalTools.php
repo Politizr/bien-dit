@@ -2,6 +2,7 @@
 namespace Politizr\FrontBundle\Lib\Tools;
 
 use Symfony\Component\HttpFoundation\Request;
+
 use Symfony\Component\Filesystem\Filesystem;
 
 use Politizr\Exception\InconsistentDataException;
@@ -172,6 +173,29 @@ class GlobalTools
         }
 
         return $fileName;
+    }
+
+    /**
+     * Copy a file to a destFile
+     *
+     * @param string $file folder & file name
+     * @param string $destFile folder & file name
+     * @param $force true to override if destFile already exists
+     */
+    public function copyFile($file, $force = true)
+    {
+        $fileInfo = pathinfo($file);
+        $orgDirname = $fileInfo['dirname'];
+        $orgExtension = $fileInfo['extension'];
+
+        $newFileName = uniqid();
+
+        $destFile = $orgDirname . '/' . $newFileName . '.' . $orgExtension;
+
+        $fs = new Filesystem();
+        $fs->copy($file, $destFile, $force);
+
+        return $newFileName . '.' . $orgExtension;
     }
 
     /**

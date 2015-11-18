@@ -1,14 +1,9 @@
 {# @todo refactor layout management for profile screens #}
 {% set layout = 'PolitizrFrontBundle::layoutPublic.html.twig' %}
-{% if (isGrantedE()) %}
+{% if (isGrantedE() or isGrantedC()) %}
     {% set layout = 'PolitizrFrontBundle::layoutConnected.html.twig' %}
-    {% set profileSuffix = 'E' %}
-    {% set reactionPath = 'ReactionDraftNewE' %}
-{% elseif (isGrantedC()) %}
-    {% set layout = 'PolitizrFrontBundle::layoutConnected.html.twig' %} 
-    {% set profileSuffix = 'C' %}
-    {% set reactionPath = 'ReactionDraftNewC' %}
 {% endif %}
+
 {% extends layout %}
 
 {% block title %}
@@ -41,11 +36,11 @@
             </div>
         {% endif %}
         {% if app.user and app.user | isAuthorizedToReact(debate) %}
-            <a class="actionReact" href="{{ path(reactionPath, { 'debateId': debate.id, 'parentId': reaction.id }) }}">
+            <a class="actionReact" href="{{ path('ReactionDraftNew'~profileSuffix, { 'debateId': debate.id, 'parentId': reaction.id }) }}">
                 <i class="iconReaction"></i>réagir
             </a>
         {% endif %}
-        <a class="actionGotoDebate" href="{{ path('DebateFeed', { 'slug': debate.slug }) }}">
+        <a class="actionGotoDebate" href="{{ path('DebateFeed'~profileSuffix, { 'slug': debate.slug }) }}">
             <i class="iconTimeline"></i>fil du débat
         </a>
         <div class="subscribe{% if app.user.id == reaction.pUserId %} noSelfSubscribe{% endif %}">

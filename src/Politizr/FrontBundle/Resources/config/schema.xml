@@ -11,6 +11,7 @@
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="p_t_tag_type_id" type="integer" required="true" />
+        <column name="p_t_parent_id" type="integer" required="false" />
         <column name="p_user_id" type="integer" required="false" />
         
         <column name="title" type="varchar" size="150" />
@@ -20,6 +21,9 @@
         <foreign-key foreignTable="p_t_tag_type" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_t_tag_type_id" foreign="id" />
         </foreign-key>        
+        <foreign-key foreignTable="p_tag" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_t_parent_id" foreign="id" />
+        </foreign-key>
         <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />
         </foreign-key>        
@@ -410,7 +414,6 @@
         <column name="p_u_status_id" type="integer" required="true" />
 
         <column name="file_name" type="varchar" size="150" />
-
         <column name="back_file_name" type="varchar" size="150" />
         <column name="copyright" type="longvarchar" />
 
@@ -438,6 +441,12 @@
         <column name="validated" type="boolean" defaultValue="false" />
 
         <column name="online" type="boolean" />
+
+        <column name="banned" type="boolean" />
+        <column name="banned_nb_days_left" type="integer" />
+        <column name="banned_nb_total" type="integer" />
+
+        <column name="abuse_level" type="integer" />
 
         <foreign-key foreignTable="p_u_status" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_u_status_id" foreign="id" />
@@ -726,6 +735,9 @@
 
         <column name="favorite" type="boolean" />
         <column name="online" type="boolean" />
+        <column name="moderated" type="boolean" />
+        <column name="moderated_partial" type="boolean" />
+        <column name="moderated_at" type="timestamp" />
 
         <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />
@@ -767,6 +779,9 @@
 
         <column name="favorite" type="boolean" />
         <column name="online" type="boolean" />
+        <column name="moderated" type="boolean" />
+        <column name="moderated_partial" type="boolean" />
+        <column name="moderated_at" type="timestamp" />
 
         <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />
@@ -796,6 +811,9 @@
         <column name="published_by" type="varchar" size="300" />
 
         <column name="online" type="boolean" />
+        <column name="moderated" type="boolean" />
+        <column name="moderated_partial" type="boolean" />
+        <column name="moderated_at" type="timestamp" />
 
         <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />
@@ -824,6 +842,9 @@
         <column name="published_by" type="varchar" size="300" />
 
         <column name="online" type="boolean" />
+        <column name="moderated" type="boolean" />
+        <column name="moderated_partial" type="boolean" />
+        <column name="moderated_at" type="timestamp" />
 
         <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />
@@ -870,6 +891,157 @@
 
 
 
+    <table name="p_m_moderation_type">
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+        
+        <column name="id" type="integer" required="true" primaryKey="true" />
+        
+        <column name="title"  type="varchar" size="150" />  
+        <column name="message" type="longvarchar" />  
+    </table>
+
+    <table name="p_m_user_moderated" isCrossRef="true">
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_user_id" type="integer" required="true" />
+        <column name="p_m_moderation_type_id" type="integer" required="true" />
+
+        <column name="p_object_name" type="varchar" size="150" />
+        <column name="p_object_id" type="integer" />
+
+        <column name="score_evolution" type="integer" />
+
+        <foreign-key foreignTable="p_user" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_user_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="p_m_moderation_type" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_m_moderation_type_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+    <table name="p_m_user_message">
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+        <behavior name="archivable" />
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_user_id" type="integer" required="false" />  
+        
+        <column name="p_object_name" type="varchar" size="150" />
+        <column name="p_object_id" type="integer" />
+
+        <column name="message" type="longvarchar" />
+        <column name="evol_reput" type="integer" />
+
+        <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_user_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+
+    <table name="p_m_user_historic">
+        <behavior name="timestampable" />
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_user_id" type="integer" required="false" />  
+        <column name="p_object_id" type="integer" />
+        
+        <column name="file_name" type="varchar" size="150" />
+        <column name="back_file_name" type="varchar" size="150" />
+
+        <column name="copyright" type="longvarchar" />
+        <column name="subtitle" type="longvarchar" />
+        <column name="biography" type="longvarchar" />
+
+        <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_user_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+    <table name="p_m_debate_historic">
+        <behavior name="timestampable" />
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_d_debate_id" type="integer" required="false" />  
+        <column name="p_user_id" type="integer" required="false" />  
+        <column name="p_object_id" type="integer" />
+        
+        <column name="file_name" type="varchar" size="150" />
+
+        <column name="title" type="varchar" size="100" />
+        <column name="description" type="clob" />
+        <column name="copyright" type="longvarchar" />
+
+        <foreign-key foreignTable="p_d_debate" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_d_debate_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_user_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+    <table name="p_m_reaction_historic">
+        <behavior name="timestampable" />
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_d_reaction_id" type="integer" required="false" />  
+        <column name="p_user_id" type="integer" required="false" />  
+        <column name="p_object_id" type="integer" />
+        
+        <column name="file_name" type="varchar" size="150" />
+
+        <column name="title" type="varchar" size="100" />
+        <column name="description" type="clob" />
+        <column name="copyright" type="longvarchar" />
+
+        <foreign-key foreignTable="p_d_reaction" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_d_reaction_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_user_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+    <table name="p_m_d_comment_historic">
+        <behavior name="timestampable" />
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_d_d_comment_id" type="integer" required="false" />  
+        <column name="p_user_id" type="integer" required="false" />  
+        <column name="p_object_id" type="integer" />
+        
+        <column name="description" type="longvarchar" />
+
+        <foreign-key foreignTable="p_d_d_comment" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_d_d_comment_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_user_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+    <table name="p_m_r_comment_historic">
+        <behavior name="timestampable" />
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_d_r_comment_id" type="integer" required="false" />  
+        <column name="p_user_id" type="integer" required="false" />  
+        <column name="p_object_id" type="integer" />
+        
+        <column name="description" type="longvarchar" />
+
+        <foreign-key foreignTable="p_d_r_comment" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_d_r_comment_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_user_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+
     <table name="p_m_ask_for_update">
         <behavior name="timestampable" />
         <behavior name="query_cache" />
@@ -885,7 +1057,7 @@
 
         <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />
-        </foreign-key>        
+        </foreign-key>
     </table>
 
     <table name="p_m_abuse_reporting">
@@ -910,6 +1082,7 @@
         <behavior name="timestampable" />
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_user_id" type="integer" required="false" />  
         
         <column name="file" type="varchar" size="250" />
         <column name="line" type="integer" />
@@ -918,6 +1091,10 @@
         <column name="message" type="varchar" size="1500" />
 
         <column name="stack_trace" type="clob" />      
+
+        <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_user_id" foreign="id" />
+        </foreign-key>        
     </table>
 
 </database>

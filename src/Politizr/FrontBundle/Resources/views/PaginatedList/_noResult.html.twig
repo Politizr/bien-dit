@@ -2,6 +2,8 @@
     {% if type == constant('Politizr\\Constant\\ListingConstants::MODAL_TYPE_SEARCH') %}
         {% if context == constant('Politizr\\Constant\\ListingConstants::MODAL_DEBATES') %}
             Aucun débat ne correspond à votre recherche.
+        {% elseif context == constant('Politizr\\Constant\\ListingConstants::MODAL_REACTIONS') %}
+            Aucune réaction ne correspond à votre recherche.
         {% elseif context == constant('Politizr\\Constant\\ListingConstants::MODAL_USERS') %}
             Aucun utilisateur ne correspond à votre recherche.
         {% endif %}
@@ -13,15 +15,17 @@
         {% endif %}
     {% elseif type == constant('Politizr\\Constant\\ListingConstants::MODAL_TYPE_SUGGESTION') %}
         {% if context == constant('Politizr\\Constant\\ListingConstants::MODAL_DEBATES') %}
-            Nous ne pouvons pas vous suggérer de nouveaux débats: ajoutez des thématiques à suivre depuis votre <a href="{{ path('UserDetail', { 'slug': app.user.slug }) }}">profil</a>.
+            Nous ne pouvons pas vous suggérer de nouveaux débats: ajoutez des thématiques à suivre depuis votre <a href="{{ path('UserDetail'~profileSuffix(), { 'slug': app.user.slug }) }}">profil</a>.
         {% elseif context == constant('Politizr\\Constant\\ListingConstants::MODAL_REACTIONS') %}
-            Nous ne pouvons pas vous suggérer de nouvelles réactions: ajoutez des thématiques à suivre depuis votre <a href="{{ path('UserDetail', { 'slug': app.user.slug }) }}">profil</a>.
+            Nous ne pouvons pas vous suggérer de nouvelles réactions: ajoutez des thématiques à suivre depuis votre <a href="{{ path('UserDetail'~profileSuffix(), { 'slug': app.user.slug }) }}">profil</a>.
         {% elseif context == constant('Politizr\\Constant\\ListingConstants::MODAL_USERS') %}
-            Nous ne pouvons pas vous suggérer de nouveaux utilisateurs: ajoutez des thématiques à suivre depuis votre <a href="{{ path('UserDetail', { 'slug': app.user.slug }) }}">profil</a>.
+            Nous ne pouvons pas vous suggérer de nouveaux utilisateurs: ajoutez des thématiques à suivre depuis votre <a href="{{ path('UserDetail'~profileSuffix(), { 'slug': app.user.slug }) }}">profil</a>.
         {% endif %}
     {% elseif type == constant('Politizr\\Constant\\ListingConstants::MODAL_TYPE_TAG') %}
         {% if context == constant('Politizr\\Constant\\ListingConstants::MODAL_DEBATES') %}
             Aucun débat ne correspond à cette thématique.
+        {% elseif context == constant('Politizr\\Constant\\ListingConstants::MODAL_REACTIONS') %}
+            Aucune réaction ne correspond à cette thématique.
         {% elseif context == constant('Politizr\\Constant\\ListingConstants::MODAL_USERS') %}
             Aucun utilisateur ne correspond à cette thématique.
         {% endif %}

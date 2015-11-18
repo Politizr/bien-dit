@@ -13,7 +13,7 @@
                         {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with { 'user': parentReaction.user } only %}:&nbsp;
                     </span>
                     {% if parentReaction.isDisplayed %}
-                        <a href="{{ path('ReactionDetail', { 'slug': parentReaction.slug }) }}">{{ parentReaction.title }}</a>
+                        <a href="{{ path('ReactionDetail'~profileSuffix(), { 'slug': parentReaction.slug }) }}">{{ parentReaction.title }}</a>
                     {% else %}
                         <i>{{ parentReaction.title }}</i>
                     {% endif %}
@@ -25,7 +25,7 @@
                         Au sujet du <span{% if debateIsFollowed %} class="followedDebate"{% endif %}>débat</span>:&nbsp;
                     </span>
                     {% if parentDebate.isDisplayed %}
-                        <a href="{{ path('DebateDetail', { 'slug': parentDebate.slug }) }}">{{ parentDebate.title }}</a>
+                        <a href="{{ path('DebateDetail'~profileSuffix(), { 'slug': parentDebate.slug }) }}">{{ parentDebate.title }}</a>
                     {% else %}
                         <i>{{ parentDebate.title }}</i>
                     {% endif %}
@@ -47,13 +47,13 @@
                         {{ comment.user | photo('user_40') }}
                     </div>
                         {% if (type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE_COMMENT') and parentDebate.isDisplayed) %}
-                            <a href="{{ path('DebateDetail', { 'slug': parentDebate.slug }) }}#p-{{ comment.paragraphNo }}">
+                            <a href="{{ path('DebateDetail'~profileSuffix(), { 'slug': parentDebate.slug }) }}#p-{{ comment.paragraphNo }}">
                         {% elseif (type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION_COMMENT') and parentReaction.isDisplayed) %}
-                            <a href="{{ path('ReactionDetail', { 'slug': parentReaction.slug }) }}#p-{{ comment.paragraphNo }}">
+                            <a href="{{ path('ReactionDetail'~profileSuffix(), { 'slug': parentReaction.slug }) }}#p-{{ comment.paragraphNo }}">
                         {% else %}
                             <a class="noLink">
                         {% endif %}
-                            <p>{{ comment.description }}</p>
+                            <p>{{ comment.description | purify }}</p>
                         </a>
                 </div>
                 <div class="timelineItemContentFooter">

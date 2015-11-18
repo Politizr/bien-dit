@@ -14,6 +14,7 @@ use Politizr\Exception\InconsistentDataException;
 
 use Politizr\Constant\QualificationConstants;
 use Politizr\Constant\ReputationConstants;
+use Politizr\Constant\TagConstants;
 
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PDDebateQuery;
@@ -22,6 +23,7 @@ use Politizr\Model\PNotificationQuery;
 use Politizr\Model\PNTypeQuery;
 use Politizr\Model\PUSubscribeEmailQuery;
 use Politizr\Model\PUCurrentQOQuery;
+use Politizr\Model\PTagQuery;
 
 use Politizr\Model\PUCurrentQO;
 use Politizr\Model\PUMandate;
@@ -41,6 +43,33 @@ use Politizr\FrontBundle\Form\Type\PUserBackPhotoInfoType;
  */
 class UserController extends Controller
 {
+
+    /* ######################################################################################################## */
+    /*                                                    HOMEPAGE                                              */
+    /* ######################################################################################################## */
+
+    /**
+     * Homepage
+     */
+    public function homepageAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** homepageAction');
+
+        $suffix = $this->get('politizr.tools.global')->computeProfileSuffix();
+        if (null === $suffix) {
+            return $this->redirect($this->generateUrl('Login'));
+        }
+
+        return $this->redirect($this->generateUrl(sprintf('Timeline%s', $suffix)));
+        
+        $regionTags = PTagQuery::create()->filterById(TagConstants::getGeoRegionIds())->find();
+
+        return $this->render('PolitizrFrontBundle:Dashboard:homepage.html.twig', array(
+            'profileSuffix' => $this->get('politizr.tools.global')->computeProfileSuffix(),
+            'regionTags' => $regionTags,
+        ));
+    }
 
     /* ######################################################################################################## */
     /*                                                    DISPLAY                                               */
@@ -97,22 +126,6 @@ class UserController extends Controller
     /* ######################################################################################################## */
     /*                                                    TIMELINE                                              */
     /* ######################################################################################################## */
-
-    /**
-     * Homepage
-     */
-    public function homepageAction()
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** homepageAction');
-
-        $suffix = $this->get('politizr.tools.global')->computeProfileSuffix();
-        if (null === $suffix) {
-            return $this->redirect($this->generateUrl('Login'));
-        }
-
-        return $this->redirect($this->generateUrl(sprintf('Timeline%s', $suffix)));
-    }
 
     /**
      * Timeline

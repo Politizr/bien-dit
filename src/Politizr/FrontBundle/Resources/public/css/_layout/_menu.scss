@@ -36,11 +36,12 @@
 
 #menu .pad40 a {
 	color: $darkGrey;
-	float: left;
 	clear: both;
+	float: left;
 	margin-bottom: 15px;
 	position: relative;
 	padding-left: 16px;
+	width: auto;
 }
 
 #menu .pad40 a i {

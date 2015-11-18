@@ -29,6 +29,8 @@ use Politizr\Model\PDReactionArchive;
 use Politizr\Model\PDReactionArchiveQuery;
 use Politizr\Model\PDReactionPeer;
 use Politizr\Model\PDReactionQuery;
+use Politizr\Model\PMReactionHistoric;
+use Politizr\Model\PMReactionHistoricQuery;
 use Politizr\Model\PTag;
 use Politizr\Model\PTagQuery;
 use Politizr\Model\PUser;
@@ -154,6 +156,24 @@ abstract class BasePDReaction extends BaseObject implements Persistent
     protected $online;
 
     /**
+     * The value for the moderated field.
+     * @var        boolean
+     */
+    protected $moderated;
+
+    /**
+     * The value for the moderated_partial field.
+     * @var        boolean
+     */
+    protected $moderated_partial;
+
+    /**
+     * The value for the moderated_at field.
+     * @var        string
+     */
+    protected $moderated_at;
+
+    /**
      * The value for the created_at field.
      * @var        string
      */
@@ -210,6 +230,12 @@ abstract class BasePDReaction extends BaseObject implements Persistent
      */
     protected $collPDRTaggedTs;
     protected $collPDRTaggedTsPartial;
+
+    /**
+     * @var        PropelObjectCollection|PMReactionHistoric[] Collection to store aggregation of PMReactionHistoric objects.
+     */
+    protected $collPMReactionHistorics;
+    protected $collPMReactionHistoricsPartial;
 
     /**
      * @var        PropelObjectCollection|PTag[] Collection to store aggregation of PTag objects.
@@ -277,6 +303,12 @@ abstract class BasePDReaction extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $pDRTaggedTsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pMReactionHistoricsScheduledForDeletion = null;
 
     /**
      * Applies default values to this object.
@@ -504,6 +536,68 @@ abstract class BasePDReaction extends BaseObject implements Persistent
     {
 
         return $this->online;
+    }
+
+    /**
+     * Get the [moderated] column value.
+     *
+     * @return boolean
+     */
+    public function getModerated()
+    {
+
+        return $this->moderated;
+    }
+
+    /**
+     * Get the [moderated_partial] column value.
+     *
+     * @return boolean
+     */
+    public function getModeratedPartial()
+    {
+
+        return $this->moderated_partial;
+    }
+
+    /**
+     * Get the [optionally formatted] temporal [moderated_at] column value.
+     *
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getModeratedAt($format = null)
+    {
+        if ($this->moderated_at === null) {
+            return null;
+        }
+
+        if ($this->moderated_at === '0000-00-00 00:00:00') {
+            // while technically this is not a default value of null,
+            // this seems to be closest in meaning.
+            return null;
+        }
+
+        try {
+            $dt = new DateTime($this->moderated_at);
+        } catch (Exception $x) {
+            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->moderated_at, true), $x);
+        }
+
+        if ($format === null) {
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
+            return $dt;
+        }
+
+        if (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        }
+
+        return $dt->format($format);
+
     }
 
     /**
@@ -1001,6 +1095,87 @@ abstract class BasePDReaction extends BaseObject implements Persistent
     } // setOnline()
 
     /**
+     * Sets the value of the [moderated] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return PDReaction The current object (for fluent API support)
+     */
+    public function setModerated($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->moderated !== $v) {
+            $this->moderated = $v;
+            $this->modifiedColumns[] = PDReactionPeer::MODERATED;
+        }
+
+
+        return $this;
+    } // setModerated()
+
+    /**
+     * Sets the value of the [moderated_partial] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return PDReaction The current object (for fluent API support)
+     */
+    public function setModeratedPartial($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->moderated_partial !== $v) {
+            $this->moderated_partial = $v;
+            $this->modifiedColumns[] = PDReactionPeer::MODERATED_PARTIAL;
+        }
+
+
+        return $this;
+    } // setModeratedPartial()
+
+    /**
+     * Sets the value of [moderated_at] column to a normalized version of the date/time value specified.
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return PDReaction The current object (for fluent API support)
+     */
+    public function setModeratedAt($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->moderated_at !== null || $dt !== null) {
+            $currentDateAsString = ($this->moderated_at !== null && $tmpDt = new DateTime($this->moderated_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->moderated_at = $newDateAsString;
+                $this->modifiedColumns[] = PDReactionPeer::MODERATED_AT;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setModeratedAt()
+
+    /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
@@ -1186,12 +1361,15 @@ abstract class BasePDReaction extends BaseObject implements Persistent
             $this->published_by = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
             $this->favorite = ($row[$startcol + 14] !== null) ? (boolean) $row[$startcol + 14] : null;
             $this->online = ($row[$startcol + 15] !== null) ? (boolean) $row[$startcol + 15] : null;
-            $this->created_at = ($row[$startcol + 16] !== null) ? (string) $row[$startcol + 16] : null;
-            $this->updated_at = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
-            $this->slug = ($row[$startcol + 18] !== null) ? (string) $row[$startcol + 18] : null;
-            $this->tree_left = ($row[$startcol + 19] !== null) ? (int) $row[$startcol + 19] : null;
-            $this->tree_right = ($row[$startcol + 20] !== null) ? (int) $row[$startcol + 20] : null;
-            $this->tree_level = ($row[$startcol + 21] !== null) ? (int) $row[$startcol + 21] : null;
+            $this->moderated = ($row[$startcol + 16] !== null) ? (boolean) $row[$startcol + 16] : null;
+            $this->moderated_partial = ($row[$startcol + 17] !== null) ? (boolean) $row[$startcol + 17] : null;
+            $this->moderated_at = ($row[$startcol + 18] !== null) ? (string) $row[$startcol + 18] : null;
+            $this->created_at = ($row[$startcol + 19] !== null) ? (string) $row[$startcol + 19] : null;
+            $this->updated_at = ($row[$startcol + 20] !== null) ? (string) $row[$startcol + 20] : null;
+            $this->slug = ($row[$startcol + 21] !== null) ? (string) $row[$startcol + 21] : null;
+            $this->tree_left = ($row[$startcol + 22] !== null) ? (int) $row[$startcol + 22] : null;
+            $this->tree_right = ($row[$startcol + 23] !== null) ? (int) $row[$startcol + 23] : null;
+            $this->tree_level = ($row[$startcol + 24] !== null) ? (int) $row[$startcol + 24] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -1201,7 +1379,7 @@ abstract class BasePDReaction extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 22; // 22 = PDReactionPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 25; // 25 = PDReactionPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PDReaction object", $e);
@@ -1274,6 +1452,8 @@ abstract class BasePDReaction extends BaseObject implements Persistent
             $this->collPDRComments = null;
 
             $this->collPDRTaggedTs = null;
+
+            $this->collPMReactionHistorics = null;
 
             $this->collPTags = null;
         } // if (deep)
@@ -1551,6 +1731,24 @@ abstract class BasePDReaction extends BaseObject implements Persistent
                 }
             }
 
+            if ($this->pMReactionHistoricsScheduledForDeletion !== null) {
+                if (!$this->pMReactionHistoricsScheduledForDeletion->isEmpty()) {
+                    foreach ($this->pMReactionHistoricsScheduledForDeletion as $pMReactionHistoric) {
+                        // need to save related object because we set the relation to null
+                        $pMReactionHistoric->save($con);
+                    }
+                    $this->pMReactionHistoricsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPMReactionHistorics !== null) {
+                foreach ($this->collPMReactionHistorics as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
             $this->alreadyInSave = false;
 
         }
@@ -1624,6 +1822,15 @@ abstract class BasePDReaction extends BaseObject implements Persistent
         }
         if ($this->isColumnModified(PDReactionPeer::ONLINE)) {
             $modifiedColumns[':p' . $index++]  = '`online`';
+        }
+        if ($this->isColumnModified(PDReactionPeer::MODERATED)) {
+            $modifiedColumns[':p' . $index++]  = '`moderated`';
+        }
+        if ($this->isColumnModified(PDReactionPeer::MODERATED_PARTIAL)) {
+            $modifiedColumns[':p' . $index++]  = '`moderated_partial`';
+        }
+        if ($this->isColumnModified(PDReactionPeer::MODERATED_AT)) {
+            $modifiedColumns[':p' . $index++]  = '`moderated_at`';
         }
         if ($this->isColumnModified(PDReactionPeer::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`created_at`';
@@ -1701,6 +1908,15 @@ abstract class BasePDReaction extends BaseObject implements Persistent
                         break;
                     case '`online`':
                         $stmt->bindValue($identifier, (int) $this->online, PDO::PARAM_INT);
+                        break;
+                    case '`moderated`':
+                        $stmt->bindValue($identifier, (int) $this->moderated, PDO::PARAM_INT);
+                        break;
+                    case '`moderated_partial`':
+                        $stmt->bindValue($identifier, (int) $this->moderated_partial, PDO::PARAM_INT);
+                        break;
+                    case '`moderated_at`':
+                        $stmt->bindValue($identifier, $this->moderated_at, PDO::PARAM_STR);
                         break;
                     case '`created_at`':
                         $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
@@ -1853,6 +2069,14 @@ abstract class BasePDReaction extends BaseObject implements Persistent
                     }
                 }
 
+                if ($this->collPMReactionHistorics !== null) {
+                    foreach ($this->collPMReactionHistorics as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
 
             $this->alreadyInValidation = false;
         }
@@ -1937,21 +2161,30 @@ abstract class BasePDReaction extends BaseObject implements Persistent
                 return $this->getOnline();
                 break;
             case 16:
-                return $this->getCreatedAt();
+                return $this->getModerated();
                 break;
             case 17:
-                return $this->getUpdatedAt();
+                return $this->getModeratedPartial();
                 break;
             case 18:
-                return $this->getSlug();
+                return $this->getModeratedAt();
                 break;
             case 19:
-                return $this->getTreeLeft();
+                return $this->getCreatedAt();
                 break;
             case 20:
-                return $this->getTreeRight();
+                return $this->getUpdatedAt();
                 break;
             case 21:
+                return $this->getSlug();
+                break;
+            case 22:
+                return $this->getTreeLeft();
+                break;
+            case 23:
+                return $this->getTreeRight();
+                break;
+            case 24:
                 return $this->getTreeLevel();
                 break;
             default:
@@ -1999,12 +2232,15 @@ abstract class BasePDReaction extends BaseObject implements Persistent
             $keys[13] => $this->getPublishedBy(),
             $keys[14] => $this->getFavorite(),
             $keys[15] => $this->getOnline(),
-            $keys[16] => $this->getCreatedAt(),
-            $keys[17] => $this->getUpdatedAt(),
-            $keys[18] => $this->getSlug(),
-            $keys[19] => $this->getTreeLeft(),
-            $keys[20] => $this->getTreeRight(),
-            $keys[21] => $this->getTreeLevel(),
+            $keys[16] => $this->getModerated(),
+            $keys[17] => $this->getModeratedPartial(),
+            $keys[18] => $this->getModeratedAt(),
+            $keys[19] => $this->getCreatedAt(),
+            $keys[20] => $this->getUpdatedAt(),
+            $keys[21] => $this->getSlug(),
+            $keys[22] => $this->getTreeLeft(),
+            $keys[23] => $this->getTreeRight(),
+            $keys[24] => $this->getTreeLevel(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -2023,6 +2259,9 @@ abstract class BasePDReaction extends BaseObject implements Persistent
             }
             if (null !== $this->collPDRTaggedTs) {
                 $result['PDRTaggedTs'] = $this->collPDRTaggedTs->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collPMReactionHistorics) {
+                $result['PMReactionHistorics'] = $this->collPMReactionHistorics->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -2107,21 +2346,30 @@ abstract class BasePDReaction extends BaseObject implements Persistent
                 $this->setOnline($value);
                 break;
             case 16:
-                $this->setCreatedAt($value);
+                $this->setModerated($value);
                 break;
             case 17:
-                $this->setUpdatedAt($value);
+                $this->setModeratedPartial($value);
                 break;
             case 18:
-                $this->setSlug($value);
+                $this->setModeratedAt($value);
                 break;
             case 19:
-                $this->setTreeLeft($value);
+                $this->setCreatedAt($value);
                 break;
             case 20:
-                $this->setTreeRight($value);
+                $this->setUpdatedAt($value);
                 break;
             case 21:
+                $this->setSlug($value);
+                break;
+            case 22:
+                $this->setTreeLeft($value);
+                break;
+            case 23:
+                $this->setTreeRight($value);
+                break;
+            case 24:
                 $this->setTreeLevel($value);
                 break;
         } // switch()
@@ -2164,12 +2412,15 @@ abstract class BasePDReaction extends BaseObject implements Persistent
         if (array_key_exists($keys[13], $arr)) $this->setPublishedBy($arr[$keys[13]]);
         if (array_key_exists($keys[14], $arr)) $this->setFavorite($arr[$keys[14]]);
         if (array_key_exists($keys[15], $arr)) $this->setOnline($arr[$keys[15]]);
-        if (array_key_exists($keys[16], $arr)) $this->setCreatedAt($arr[$keys[16]]);
-        if (array_key_exists($keys[17], $arr)) $this->setUpdatedAt($arr[$keys[17]]);
-        if (array_key_exists($keys[18], $arr)) $this->setSlug($arr[$keys[18]]);
-        if (array_key_exists($keys[19], $arr)) $this->setTreeLeft($arr[$keys[19]]);
-        if (array_key_exists($keys[20], $arr)) $this->setTreeRight($arr[$keys[20]]);
-        if (array_key_exists($keys[21], $arr)) $this->setTreeLevel($arr[$keys[21]]);
+        if (array_key_exists($keys[16], $arr)) $this->setModerated($arr[$keys[16]]);
+        if (array_key_exists($keys[17], $arr)) $this->setModeratedPartial($arr[$keys[17]]);
+        if (array_key_exists($keys[18], $arr)) $this->setModeratedAt($arr[$keys[18]]);
+        if (array_key_exists($keys[19], $arr)) $this->setCreatedAt($arr[$keys[19]]);
+        if (array_key_exists($keys[20], $arr)) $this->setUpdatedAt($arr[$keys[20]]);
+        if (array_key_exists($keys[21], $arr)) $this->setSlug($arr[$keys[21]]);
+        if (array_key_exists($keys[22], $arr)) $this->setTreeLeft($arr[$keys[22]]);
+        if (array_key_exists($keys[23], $arr)) $this->setTreeRight($arr[$keys[23]]);
+        if (array_key_exists($keys[24], $arr)) $this->setTreeLevel($arr[$keys[24]]);
     }
 
     /**
@@ -2197,6 +2448,9 @@ abstract class BasePDReaction extends BaseObject implements Persistent
         if ($this->isColumnModified(PDReactionPeer::PUBLISHED_BY)) $criteria->add(PDReactionPeer::PUBLISHED_BY, $this->published_by);
         if ($this->isColumnModified(PDReactionPeer::FAVORITE)) $criteria->add(PDReactionPeer::FAVORITE, $this->favorite);
         if ($this->isColumnModified(PDReactionPeer::ONLINE)) $criteria->add(PDReactionPeer::ONLINE, $this->online);
+        if ($this->isColumnModified(PDReactionPeer::MODERATED)) $criteria->add(PDReactionPeer::MODERATED, $this->moderated);
+        if ($this->isColumnModified(PDReactionPeer::MODERATED_PARTIAL)) $criteria->add(PDReactionPeer::MODERATED_PARTIAL, $this->moderated_partial);
+        if ($this->isColumnModified(PDReactionPeer::MODERATED_AT)) $criteria->add(PDReactionPeer::MODERATED_AT, $this->moderated_at);
         if ($this->isColumnModified(PDReactionPeer::CREATED_AT)) $criteria->add(PDReactionPeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(PDReactionPeer::UPDATED_AT)) $criteria->add(PDReactionPeer::UPDATED_AT, $this->updated_at);
         if ($this->isColumnModified(PDReactionPeer::SLUG)) $criteria->add(PDReactionPeer::SLUG, $this->slug);
@@ -2281,6 +2535,9 @@ abstract class BasePDReaction extends BaseObject implements Persistent
         $copyObj->setPublishedBy($this->getPublishedBy());
         $copyObj->setFavorite($this->getFavorite());
         $copyObj->setOnline($this->getOnline());
+        $copyObj->setModerated($this->getModerated());
+        $copyObj->setModeratedPartial($this->getModeratedPartial());
+        $copyObj->setModeratedAt($this->getModeratedAt());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
         $copyObj->setSlug($this->getSlug());
@@ -2304,6 +2561,12 @@ abstract class BasePDReaction extends BaseObject implements Persistent
             foreach ($this->getPDRTaggedTs() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addPDRTaggedT($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getPMReactionHistorics() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPMReactionHistoric($relObj->copy($deepCopy));
                 }
             }
 
@@ -2477,6 +2740,9 @@ abstract class BasePDReaction extends BaseObject implements Persistent
         }
         if ('PDRTaggedT' == $relationName) {
             $this->initPDRTaggedTs();
+        }
+        if ('PMReactionHistoric' == $relationName) {
+            $this->initPMReactionHistorics();
         }
     }
 
@@ -2981,6 +3247,256 @@ abstract class BasePDReaction extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collPMReactionHistorics collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PDReaction The current object (for fluent API support)
+     * @see        addPMReactionHistorics()
+     */
+    public function clearPMReactionHistorics()
+    {
+        $this->collPMReactionHistorics = null; // important to set this to null since that means it is uninitialized
+        $this->collPMReactionHistoricsPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPMReactionHistorics collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPMReactionHistorics($v = true)
+    {
+        $this->collPMReactionHistoricsPartial = $v;
+    }
+
+    /**
+     * Initializes the collPMReactionHistorics collection.
+     *
+     * By default this just sets the collPMReactionHistorics collection to an empty array (like clearcollPMReactionHistorics());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPMReactionHistorics($overrideExisting = true)
+    {
+        if (null !== $this->collPMReactionHistorics && !$overrideExisting) {
+            return;
+        }
+        $this->collPMReactionHistorics = new PropelObjectCollection();
+        $this->collPMReactionHistorics->setModel('PMReactionHistoric');
+    }
+
+    /**
+     * Gets an array of PMReactionHistoric objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PDReaction is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PMReactionHistoric[] List of PMReactionHistoric objects
+     * @throws PropelException
+     */
+    public function getPMReactionHistorics($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPMReactionHistoricsPartial && !$this->isNew();
+        if (null === $this->collPMReactionHistorics || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPMReactionHistorics) {
+                // return empty collection
+                $this->initPMReactionHistorics();
+            } else {
+                $collPMReactionHistorics = PMReactionHistoricQuery::create(null, $criteria)
+                    ->filterByPDReaction($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPMReactionHistoricsPartial && count($collPMReactionHistorics)) {
+                      $this->initPMReactionHistorics(false);
+
+                      foreach ($collPMReactionHistorics as $obj) {
+                        if (false == $this->collPMReactionHistorics->contains($obj)) {
+                          $this->collPMReactionHistorics->append($obj);
+                        }
+                      }
+
+                      $this->collPMReactionHistoricsPartial = true;
+                    }
+
+                    $collPMReactionHistorics->getInternalIterator()->rewind();
+
+                    return $collPMReactionHistorics;
+                }
+
+                if ($partial && $this->collPMReactionHistorics) {
+                    foreach ($this->collPMReactionHistorics as $obj) {
+                        if ($obj->isNew()) {
+                            $collPMReactionHistorics[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPMReactionHistorics = $collPMReactionHistorics;
+                $this->collPMReactionHistoricsPartial = false;
+            }
+        }
+
+        return $this->collPMReactionHistorics;
+    }
+
+    /**
+     * Sets a collection of PMReactionHistoric objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pMReactionHistorics A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PDReaction The current object (for fluent API support)
+     */
+    public function setPMReactionHistorics(PropelCollection $pMReactionHistorics, PropelPDO $con = null)
+    {
+        $pMReactionHistoricsToDelete = $this->getPMReactionHistorics(new Criteria(), $con)->diff($pMReactionHistorics);
+
+
+        $this->pMReactionHistoricsScheduledForDeletion = $pMReactionHistoricsToDelete;
+
+        foreach ($pMReactionHistoricsToDelete as $pMReactionHistoricRemoved) {
+            $pMReactionHistoricRemoved->setPDReaction(null);
+        }
+
+        $this->collPMReactionHistorics = null;
+        foreach ($pMReactionHistorics as $pMReactionHistoric) {
+            $this->addPMReactionHistoric($pMReactionHistoric);
+        }
+
+        $this->collPMReactionHistorics = $pMReactionHistorics;
+        $this->collPMReactionHistoricsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PMReactionHistoric objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PMReactionHistoric objects.
+     * @throws PropelException
+     */
+    public function countPMReactionHistorics(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPMReactionHistoricsPartial && !$this->isNew();
+        if (null === $this->collPMReactionHistorics || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPMReactionHistorics) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPMReactionHistorics());
+            }
+            $query = PMReactionHistoricQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPDReaction($this)
+                ->count($con);
+        }
+
+        return count($this->collPMReactionHistorics);
+    }
+
+    /**
+     * Method called to associate a PMReactionHistoric object to this object
+     * through the PMReactionHistoric foreign key attribute.
+     *
+     * @param    PMReactionHistoric $l PMReactionHistoric
+     * @return PDReaction The current object (for fluent API support)
+     */
+    public function addPMReactionHistoric(PMReactionHistoric $l)
+    {
+        if ($this->collPMReactionHistorics === null) {
+            $this->initPMReactionHistorics();
+            $this->collPMReactionHistoricsPartial = true;
+        }
+
+        if (!in_array($l, $this->collPMReactionHistorics->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPMReactionHistoric($l);
+
+            if ($this->pMReactionHistoricsScheduledForDeletion and $this->pMReactionHistoricsScheduledForDeletion->contains($l)) {
+                $this->pMReactionHistoricsScheduledForDeletion->remove($this->pMReactionHistoricsScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PMReactionHistoric $pMReactionHistoric The pMReactionHistoric object to add.
+     */
+    protected function doAddPMReactionHistoric($pMReactionHistoric)
+    {
+        $this->collPMReactionHistorics[]= $pMReactionHistoric;
+        $pMReactionHistoric->setPDReaction($this);
+    }
+
+    /**
+     * @param	PMReactionHistoric $pMReactionHistoric The pMReactionHistoric object to remove.
+     * @return PDReaction The current object (for fluent API support)
+     */
+    public function removePMReactionHistoric($pMReactionHistoric)
+    {
+        if ($this->getPMReactionHistorics()->contains($pMReactionHistoric)) {
+            $this->collPMReactionHistorics->remove($this->collPMReactionHistorics->search($pMReactionHistoric));
+            if (null === $this->pMReactionHistoricsScheduledForDeletion) {
+                $this->pMReactionHistoricsScheduledForDeletion = clone $this->collPMReactionHistorics;
+                $this->pMReactionHistoricsScheduledForDeletion->clear();
+            }
+            $this->pMReactionHistoricsScheduledForDeletion[]= $pMReactionHistoric;
+            $pMReactionHistoric->setPDReaction(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PDReaction is new, it will return
+     * an empty collection; or if this PDReaction has previously
+     * been saved, it will retrieve related PMReactionHistorics from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PDReaction.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PMReactionHistoric[] List of PMReactionHistoric objects
+     */
+    public function getPMReactionHistoricsJoinPUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PMReactionHistoricQuery::create(null, $criteria);
+        $query->joinWith('PUser', $join_behavior);
+
+        return $this->getPMReactionHistorics($query, $con);
+    }
+
+    /**
      * Clears out the collPTags collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
@@ -3188,6 +3704,9 @@ abstract class BasePDReaction extends BaseObject implements Persistent
         $this->published_by = null;
         $this->favorite = null;
         $this->online = null;
+        $this->moderated = null;
+        $this->moderated_partial = null;
+        $this->moderated_at = null;
         $this->created_at = null;
         $this->updated_at = null;
         $this->slug = null;
@@ -3227,6 +3746,11 @@ abstract class BasePDReaction extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collPMReactionHistorics) {
+                foreach ($this->collPMReactionHistorics as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collPTags) {
                 foreach ($this->collPTags as $o) {
                     $o->clearAllReferences($deep);
@@ -3253,6 +3777,10 @@ abstract class BasePDReaction extends BaseObject implements Persistent
             $this->collPDRTaggedTs->clearIterator();
         }
         $this->collPDRTaggedTs = null;
+        if ($this->collPMReactionHistorics instanceof PropelCollection) {
+            $this->collPMReactionHistorics->clearIterator();
+        }
+        $this->collPMReactionHistorics = null;
         if ($this->collPTags instanceof PropelCollection) {
             $this->collPTags->clearIterator();
         }
@@ -4433,6 +4961,9 @@ abstract class BasePDReaction extends BaseObject implements Persistent
         $this->setPublishedBy($archive->getPublishedBy());
         $this->setFavorite($archive->getFavorite());
         $this->setOnline($archive->getOnline());
+        $this->setModerated($archive->getModerated());
+        $this->setModeratedPartial($archive->getModeratedPartial());
+        $this->setModeratedAt($archive->getModeratedAt());
         $this->setCreatedAt($archive->getCreatedAt());
         $this->setUpdatedAt($archive->getUpdatedAt());
         $this->setSlug($archive->getSlug());

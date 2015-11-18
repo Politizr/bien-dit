@@ -78,57 +78,6 @@ class XhrSecurity
     /* ######################################################################################################## */
 
     /**
-     * Connection
-     */
-    public function loginCheck(Request $request)
-    {
-        $this->logger->info('*** loginCheck');
-
-        // Function process
-        $form = $this->formFactory->create(new LoginType());
-
-        $form->bind($request);
-        if ($form->isValid()) {
-            $login = $form->getData();
-
-            // get db user
-            $user = PUserQuery::create()
-                ->filterByUsername($login['username'])
-                ->findOne();
-
-            // check user exists
-            if (!$user) {
-                throw new FormValidationException('Utilisateur inconnu');
-            }
-
-            // check user/password validity
-            $password = $user->getPassword();
-            $encoder = $this->encoderFactory->getEncoder($user);
-            $encodedPassword = $this->encoderFactory->getEncoder($user)->encodePassword($login['password'], $user->getSalt());
-            if ($password  != $encodedPassword) {
-                // @todo manage a password fail counter
-                throw new FormValidationException('Mot de passe incorrect');
-            }
-
-            // connect & redirect user
-            $redirectUrl = $this->securityService->connectUser($user);
-
-            $jsonResponse = array (
-                'success' => true,
-                'redirectUrl' => $redirectUrl
-            );
-        } else {
-            $errors = StudioEchoUtils::getAjaxFormErrors($form);
-            throw new FormValidationException($errors);
-        }
-
-        // Renvoi de l'url de redirection
-        return array(
-            'redirectUrl' => $redirectUrl,
-            );
-    }
-
-    /**
      * Lost password
      */
     public function lostPasswordCheck(Request $request)
@@ -155,6 +104,7 @@ class XhrSecurity
             // new random password
             $password = substr(md5(uniqid(mt_rand(), true)), 0, 6);
             $this->logger->info('password = '.$password);
+            $user->setPlainPassword($password);
             $user->setPassword($this->encoderFactory->getEncoder($user)->encodePassword($password, $user->getSalt()));
             $user->save();
 

@@ -14,16 +14,20 @@ use Politizr\Model\PMAppException;
  */
 class ExceptionListener
 {
+    private $securityTokenStorage;
     private $monitoringManager;
     private $logger;
 
     /**
      *
+     * @param @security.token_storage
      * @param @politizr.manager.monitoring
      * @param @logger
      */
-    public function __construct($monitoringManager, $logger)
+    public function __construct($securityTokenStorage, $monitoringManager, $logger)
     {
+        $this->securityTokenStorage = $securityTokenStorage;
+
         $this->monitoringManager = $monitoringManager;
 
         $this->logger = $logger;
@@ -35,9 +39,19 @@ class ExceptionListener
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
         $exception =  $event->getException();
+        
+        // get current user / bug
+        $userId = null;
+        $token = $this->securityTokenStorage->getToken();
+        if ($token && $user = $token->getUser()) {
+            $className = 'Politizr\Model\PUser';
+            if ($user && $user instanceof $className) {
+                $userId = $user->getId();
+            }
+        }
 
         try {
-            $pmAppException = $this->monitoringManager->createAppException($exception);
+            $pmAppException = $this->monitoringManager->createAppException($exception, $userId);
         } catch (\Exception $e) {
             // @todo more?
             $this->logger->error(sprintf('Exception onKernelException %s', $e->getMessage()));

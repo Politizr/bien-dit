@@ -390,7 +390,7 @@ class XhrDocument
             array(
                 'title' => $debate->getTitle(),
                 'description' => strip_tags($debate->getDescription()),
-                'geoTags' => $debate->getArrayTags(TagConstants::TAG_TYPE_GEO),
+                'geoTags' => $debate->getWorldToDepartmentGeoArrayTags(),
                 'allTags' => $debate->getArrayTags(),
             ),
             $debate->getPublishConstraints(),
@@ -587,7 +587,7 @@ class XhrDocument
             array(
                 'title' => $reaction->getTitle(),
                 'description' => strip_tags($reaction->getDescription()),
-                'geoTags' => $reaction->getArrayTags(TagConstants::TAG_TYPE_GEO),
+                'geoTags' => $reaction->getWorldToDepartmentGeoArrayTags(),
                 'allTags' => $reaction->getArrayTags(),
             ),
             $reaction->getPublishConstraints(),
@@ -704,7 +704,7 @@ class XhrDocument
                 'path' => $uploadWebPath . $fileName,
                 'filterName' => 'debate_header',
                 'title' => $document->getTitle(),
-                'withShadow' => true
+                'withShadow' => false
             )
         );
 

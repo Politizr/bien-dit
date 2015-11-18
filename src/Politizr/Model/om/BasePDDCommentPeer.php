@@ -15,6 +15,7 @@ use Glorpen\Propel\PropelBundle\Events\PeerEvent;
 use Politizr\Model\PDDComment;
 use Politizr\Model\PDDCommentPeer;
 use Politizr\Model\PDDebatePeer;
+use Politizr\Model\PMDCommentHistoricPeer;
 use Politizr\Model\PUserPeer;
 use Politizr\Model\map\PDDCommentTableMap;
 
@@ -34,13 +35,13 @@ abstract class BasePDDCommentPeer
     const TM_CLASS = 'Politizr\\Model\\map\\PDDCommentTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 12;
+    const NUM_COLUMNS = 15;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 12;
+    const NUM_HYDRATE_COLUMNS = 15;
 
     /** the column name for the id field */
     const ID = 'p_d_d_comment.id';
@@ -72,6 +73,15 @@ abstract class BasePDDCommentPeer
     /** the column name for the online field */
     const ONLINE = 'p_d_d_comment.online';
 
+    /** the column name for the moderated field */
+    const MODERATED = 'p_d_d_comment.moderated';
+
+    /** the column name for the moderated_partial field */
+    const MODERATED_PARTIAL = 'p_d_d_comment.moderated_partial';
+
+    /** the column name for the moderated_at field */
+    const MODERATED_AT = 'p_d_d_comment.moderated_at';
+
     /** the column name for the created_at field */
     const CREATED_AT = 'p_d_d_comment.created_at';
 
@@ -97,12 +107,12 @@ abstract class BasePDDCommentPeer
      * e.g. PDDCommentPeer::$fieldNames[PDDCommentPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'PUserId', 'PDDebateId', 'Description', 'ParagraphNo', 'NotePos', 'NoteNeg', 'PublishedAt', 'PublishedBy', 'Online', 'CreatedAt', 'UpdatedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pUserId', 'pDDebateId', 'description', 'paragraphNo', 'notePos', 'noteNeg', 'publishedAt', 'publishedBy', 'online', 'createdAt', 'updatedAt', ),
-        BasePeer::TYPE_COLNAME => array (PDDCommentPeer::ID, PDDCommentPeer::P_USER_ID, PDDCommentPeer::P_D_DEBATE_ID, PDDCommentPeer::DESCRIPTION, PDDCommentPeer::PARAGRAPH_NO, PDDCommentPeer::NOTE_POS, PDDCommentPeer::NOTE_NEG, PDDCommentPeer::PUBLISHED_AT, PDDCommentPeer::PUBLISHED_BY, PDDCommentPeer::ONLINE, PDDCommentPeer::CREATED_AT, PDDCommentPeer::UPDATED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_USER_ID', 'P_D_DEBATE_ID', 'DESCRIPTION', 'PARAGRAPH_NO', 'NOTE_POS', 'NOTE_NEG', 'PUBLISHED_AT', 'PUBLISHED_BY', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'p_user_id', 'p_d_debate_id', 'description', 'paragraph_no', 'note_pos', 'note_neg', 'published_at', 'published_by', 'online', 'created_at', 'updated_at', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'PUserId', 'PDDebateId', 'Description', 'ParagraphNo', 'NotePos', 'NoteNeg', 'PublishedAt', 'PublishedBy', 'Online', 'Moderated', 'ModeratedPartial', 'ModeratedAt', 'CreatedAt', 'UpdatedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pUserId', 'pDDebateId', 'description', 'paragraphNo', 'notePos', 'noteNeg', 'publishedAt', 'publishedBy', 'online', 'moderated', 'moderatedPartial', 'moderatedAt', 'createdAt', 'updatedAt', ),
+        BasePeer::TYPE_COLNAME => array (PDDCommentPeer::ID, PDDCommentPeer::P_USER_ID, PDDCommentPeer::P_D_DEBATE_ID, PDDCommentPeer::DESCRIPTION, PDDCommentPeer::PARAGRAPH_NO, PDDCommentPeer::NOTE_POS, PDDCommentPeer::NOTE_NEG, PDDCommentPeer::PUBLISHED_AT, PDDCommentPeer::PUBLISHED_BY, PDDCommentPeer::ONLINE, PDDCommentPeer::MODERATED, PDDCommentPeer::MODERATED_PARTIAL, PDDCommentPeer::MODERATED_AT, PDDCommentPeer::CREATED_AT, PDDCommentPeer::UPDATED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_USER_ID', 'P_D_DEBATE_ID', 'DESCRIPTION', 'PARAGRAPH_NO', 'NOTE_POS', 'NOTE_NEG', 'PUBLISHED_AT', 'PUBLISHED_BY', 'ONLINE', 'MODERATED', 'MODERATED_PARTIAL', 'MODERATED_AT', 'CREATED_AT', 'UPDATED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'p_user_id', 'p_d_debate_id', 'description', 'paragraph_no', 'note_pos', 'note_neg', 'published_at', 'published_by', 'online', 'moderated', 'moderated_partial', 'moderated_at', 'created_at', 'updated_at', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, )
     );
 
     /**
@@ -112,12 +122,12 @@ abstract class BasePDDCommentPeer
      * e.g. PDDCommentPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PUserId' => 1, 'PDDebateId' => 2, 'Description' => 3, 'ParagraphNo' => 4, 'NotePos' => 5, 'NoteNeg' => 6, 'PublishedAt' => 7, 'PublishedBy' => 8, 'Online' => 9, 'CreatedAt' => 10, 'UpdatedAt' => 11, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pUserId' => 1, 'pDDebateId' => 2, 'description' => 3, 'paragraphNo' => 4, 'notePos' => 5, 'noteNeg' => 6, 'publishedAt' => 7, 'publishedBy' => 8, 'online' => 9, 'createdAt' => 10, 'updatedAt' => 11, ),
-        BasePeer::TYPE_COLNAME => array (PDDCommentPeer::ID => 0, PDDCommentPeer::P_USER_ID => 1, PDDCommentPeer::P_D_DEBATE_ID => 2, PDDCommentPeer::DESCRIPTION => 3, PDDCommentPeer::PARAGRAPH_NO => 4, PDDCommentPeer::NOTE_POS => 5, PDDCommentPeer::NOTE_NEG => 6, PDDCommentPeer::PUBLISHED_AT => 7, PDDCommentPeer::PUBLISHED_BY => 8, PDDCommentPeer::ONLINE => 9, PDDCommentPeer::CREATED_AT => 10, PDDCommentPeer::UPDATED_AT => 11, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_USER_ID' => 1, 'P_D_DEBATE_ID' => 2, 'DESCRIPTION' => 3, 'PARAGRAPH_NO' => 4, 'NOTE_POS' => 5, 'NOTE_NEG' => 6, 'PUBLISHED_AT' => 7, 'PUBLISHED_BY' => 8, 'ONLINE' => 9, 'CREATED_AT' => 10, 'UPDATED_AT' => 11, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_user_id' => 1, 'p_d_debate_id' => 2, 'description' => 3, 'paragraph_no' => 4, 'note_pos' => 5, 'note_neg' => 6, 'published_at' => 7, 'published_by' => 8, 'online' => 9, 'created_at' => 10, 'updated_at' => 11, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PUserId' => 1, 'PDDebateId' => 2, 'Description' => 3, 'ParagraphNo' => 4, 'NotePos' => 5, 'NoteNeg' => 6, 'PublishedAt' => 7, 'PublishedBy' => 8, 'Online' => 9, 'Moderated' => 10, 'ModeratedPartial' => 11, 'ModeratedAt' => 12, 'CreatedAt' => 13, 'UpdatedAt' => 14, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pUserId' => 1, 'pDDebateId' => 2, 'description' => 3, 'paragraphNo' => 4, 'notePos' => 5, 'noteNeg' => 6, 'publishedAt' => 7, 'publishedBy' => 8, 'online' => 9, 'moderated' => 10, 'moderatedPartial' => 11, 'moderatedAt' => 12, 'createdAt' => 13, 'updatedAt' => 14, ),
+        BasePeer::TYPE_COLNAME => array (PDDCommentPeer::ID => 0, PDDCommentPeer::P_USER_ID => 1, PDDCommentPeer::P_D_DEBATE_ID => 2, PDDCommentPeer::DESCRIPTION => 3, PDDCommentPeer::PARAGRAPH_NO => 4, PDDCommentPeer::NOTE_POS => 5, PDDCommentPeer::NOTE_NEG => 6, PDDCommentPeer::PUBLISHED_AT => 7, PDDCommentPeer::PUBLISHED_BY => 8, PDDCommentPeer::ONLINE => 9, PDDCommentPeer::MODERATED => 10, PDDCommentPeer::MODERATED_PARTIAL => 11, PDDCommentPeer::MODERATED_AT => 12, PDDCommentPeer::CREATED_AT => 13, PDDCommentPeer::UPDATED_AT => 14, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_USER_ID' => 1, 'P_D_DEBATE_ID' => 2, 'DESCRIPTION' => 3, 'PARAGRAPH_NO' => 4, 'NOTE_POS' => 5, 'NOTE_NEG' => 6, 'PUBLISHED_AT' => 7, 'PUBLISHED_BY' => 8, 'ONLINE' => 9, 'MODERATED' => 10, 'MODERATED_PARTIAL' => 11, 'MODERATED_AT' => 12, 'CREATED_AT' => 13, 'UPDATED_AT' => 14, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_user_id' => 1, 'p_d_debate_id' => 2, 'description' => 3, 'paragraph_no' => 4, 'note_pos' => 5, 'note_neg' => 6, 'published_at' => 7, 'published_by' => 8, 'online' => 9, 'moderated' => 10, 'moderated_partial' => 11, 'moderated_at' => 12, 'created_at' => 13, 'updated_at' => 14, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, )
     );
 
     /**
@@ -201,6 +211,9 @@ abstract class BasePDDCommentPeer
             $criteria->addSelectColumn(PDDCommentPeer::PUBLISHED_AT);
             $criteria->addSelectColumn(PDDCommentPeer::PUBLISHED_BY);
             $criteria->addSelectColumn(PDDCommentPeer::ONLINE);
+            $criteria->addSelectColumn(PDDCommentPeer::MODERATED);
+            $criteria->addSelectColumn(PDDCommentPeer::MODERATED_PARTIAL);
+            $criteria->addSelectColumn(PDDCommentPeer::MODERATED_AT);
             $criteria->addSelectColumn(PDDCommentPeer::CREATED_AT);
             $criteria->addSelectColumn(PDDCommentPeer::UPDATED_AT);
         } else {
@@ -214,6 +227,9 @@ abstract class BasePDDCommentPeer
             $criteria->addSelectColumn($alias . '.published_at');
             $criteria->addSelectColumn($alias . '.published_by');
             $criteria->addSelectColumn($alias . '.online');
+            $criteria->addSelectColumn($alias . '.moderated');
+            $criteria->addSelectColumn($alias . '.moderated_partial');
+            $criteria->addSelectColumn($alias . '.moderated_at');
             $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
         }
@@ -420,6 +436,9 @@ abstract class BasePDDCommentPeer
      */
     public static function clearRelatedInstancePool()
     {
+        // Invalidate objects in PMDCommentHistoricPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PMDCommentHistoricPeer::clearInstancePool();
     }
 
     /**

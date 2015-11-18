@@ -20,7 +20,16 @@ use Politizr\Model\PDDebate;
 use Politizr\Model\PDRComment;
 use Politizr\Model\PDReaction;
 use Politizr\Model\PMAbuseReporting;
+use Politizr\Model\PMAppException;
 use Politizr\Model\PMAskForUpdate;
+use Politizr\Model\PMDCommentHistoric;
+use Politizr\Model\PMDebateHistoric;
+use Politizr\Model\PMModerationType;
+use Politizr\Model\PMRCommentHistoric;
+use Politizr\Model\PMReactionHistoric;
+use Politizr\Model\PMUserHistoric;
+use Politizr\Model\PMUserMessage;
+use Politizr\Model\PMUserModerated;
 use Politizr\Model\PNotification;
 use Politizr\Model\POrder;
 use Politizr\Model\PQOrganization;
@@ -90,6 +99,10 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery orderByQualified($order = Criteria::ASC) Order by the qualified column
  * @method PUserQuery orderByValidated($order = Criteria::ASC) Order by the validated column
  * @method PUserQuery orderByOnline($order = Criteria::ASC) Order by the online column
+ * @method PUserQuery orderByBanned($order = Criteria::ASC) Order by the banned column
+ * @method PUserQuery orderByBannedNbDaysLeft($order = Criteria::ASC) Order by the banned_nb_days_left column
+ * @method PUserQuery orderByBannedNbTotal($order = Criteria::ASC) Order by the banned_nb_total column
+ * @method PUserQuery orderByAbuseLevel($order = Criteria::ASC) Order by the abuse_level column
  * @method PUserQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PUserQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  * @method PUserQuery orderBySlug($order = Criteria::ASC) Order by the slug column
@@ -137,6 +150,10 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery groupByQualified() Group by the qualified column
  * @method PUserQuery groupByValidated() Group by the validated column
  * @method PUserQuery groupByOnline() Group by the online column
+ * @method PUserQuery groupByBanned() Group by the banned column
+ * @method PUserQuery groupByBannedNbDaysLeft() Group by the banned_nb_days_left column
+ * @method PUserQuery groupByBannedNbTotal() Group by the banned_nb_total column
+ * @method PUserQuery groupByAbuseLevel() Group by the abuse_level column
  * @method PUserQuery groupByCreatedAt() Group by the created_at column
  * @method PUserQuery groupByUpdatedAt() Group by the updated_at column
  * @method PUserQuery groupBySlug() Group by the slug column
@@ -221,6 +238,34 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery rightJoinPDRComment($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PDRComment relation
  * @method PUserQuery innerJoinPDRComment($relationAlias = null) Adds a INNER JOIN clause to the query using the PDRComment relation
  *
+ * @method PUserQuery leftJoinPMUserModerated($relationAlias = null) Adds a LEFT JOIN clause to the query using the PMUserModerated relation
+ * @method PUserQuery rightJoinPMUserModerated($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PMUserModerated relation
+ * @method PUserQuery innerJoinPMUserModerated($relationAlias = null) Adds a INNER JOIN clause to the query using the PMUserModerated relation
+ *
+ * @method PUserQuery leftJoinPMUserMessage($relationAlias = null) Adds a LEFT JOIN clause to the query using the PMUserMessage relation
+ * @method PUserQuery rightJoinPMUserMessage($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PMUserMessage relation
+ * @method PUserQuery innerJoinPMUserMessage($relationAlias = null) Adds a INNER JOIN clause to the query using the PMUserMessage relation
+ *
+ * @method PUserQuery leftJoinPMUserHistoric($relationAlias = null) Adds a LEFT JOIN clause to the query using the PMUserHistoric relation
+ * @method PUserQuery rightJoinPMUserHistoric($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PMUserHistoric relation
+ * @method PUserQuery innerJoinPMUserHistoric($relationAlias = null) Adds a INNER JOIN clause to the query using the PMUserHistoric relation
+ *
+ * @method PUserQuery leftJoinPMDebateHistoric($relationAlias = null) Adds a LEFT JOIN clause to the query using the PMDebateHistoric relation
+ * @method PUserQuery rightJoinPMDebateHistoric($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PMDebateHistoric relation
+ * @method PUserQuery innerJoinPMDebateHistoric($relationAlias = null) Adds a INNER JOIN clause to the query using the PMDebateHistoric relation
+ *
+ * @method PUserQuery leftJoinPMReactionHistoric($relationAlias = null) Adds a LEFT JOIN clause to the query using the PMReactionHistoric relation
+ * @method PUserQuery rightJoinPMReactionHistoric($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PMReactionHistoric relation
+ * @method PUserQuery innerJoinPMReactionHistoric($relationAlias = null) Adds a INNER JOIN clause to the query using the PMReactionHistoric relation
+ *
+ * @method PUserQuery leftJoinPMDCommentHistoric($relationAlias = null) Adds a LEFT JOIN clause to the query using the PMDCommentHistoric relation
+ * @method PUserQuery rightJoinPMDCommentHistoric($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PMDCommentHistoric relation
+ * @method PUserQuery innerJoinPMDCommentHistoric($relationAlias = null) Adds a INNER JOIN clause to the query using the PMDCommentHistoric relation
+ *
+ * @method PUserQuery leftJoinPMRCommentHistoric($relationAlias = null) Adds a LEFT JOIN clause to the query using the PMRCommentHistoric relation
+ * @method PUserQuery rightJoinPMRCommentHistoric($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PMRCommentHistoric relation
+ * @method PUserQuery innerJoinPMRCommentHistoric($relationAlias = null) Adds a INNER JOIN clause to the query using the PMRCommentHistoric relation
+ *
  * @method PUserQuery leftJoinPMAskForUpdate($relationAlias = null) Adds a LEFT JOIN clause to the query using the PMAskForUpdate relation
  * @method PUserQuery rightJoinPMAskForUpdate($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PMAskForUpdate relation
  * @method PUserQuery innerJoinPMAskForUpdate($relationAlias = null) Adds a INNER JOIN clause to the query using the PMAskForUpdate relation
@@ -228,6 +273,10 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery leftJoinPMAbuseReporting($relationAlias = null) Adds a LEFT JOIN clause to the query using the PMAbuseReporting relation
  * @method PUserQuery rightJoinPMAbuseReporting($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PMAbuseReporting relation
  * @method PUserQuery innerJoinPMAbuseReporting($relationAlias = null) Adds a INNER JOIN clause to the query using the PMAbuseReporting relation
+ *
+ * @method PUserQuery leftJoinPMAppException($relationAlias = null) Adds a LEFT JOIN clause to the query using the PMAppException relation
+ * @method PUserQuery rightJoinPMAppException($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PMAppException relation
+ * @method PUserQuery innerJoinPMAppException($relationAlias = null) Adds a INNER JOIN clause to the query using the PMAppException relation
  *
  * @method PUserQuery leftJoinPUFollowURelatedByPUserId($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUFollowURelatedByPUserId relation
  * @method PUserQuery rightJoinPUFollowURelatedByPUserId($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUFollowURelatedByPUserId relation
@@ -282,6 +331,10 @@ use Politizr\Model\PUserQuery;
  * @method PUser findOneByQualified(boolean $qualified) Return the first PUser filtered by the qualified column
  * @method PUser findOneByValidated(boolean $validated) Return the first PUser filtered by the validated column
  * @method PUser findOneByOnline(boolean $online) Return the first PUser filtered by the online column
+ * @method PUser findOneByBanned(boolean $banned) Return the first PUser filtered by the banned column
+ * @method PUser findOneByBannedNbDaysLeft(int $banned_nb_days_left) Return the first PUser filtered by the banned_nb_days_left column
+ * @method PUser findOneByBannedNbTotal(int $banned_nb_total) Return the first PUser filtered by the banned_nb_total column
+ * @method PUser findOneByAbuseLevel(int $abuse_level) Return the first PUser filtered by the abuse_level column
  * @method PUser findOneByCreatedAt(string $created_at) Return the first PUser filtered by the created_at column
  * @method PUser findOneByUpdatedAt(string $updated_at) Return the first PUser filtered by the updated_at column
  * @method PUser findOneBySlug(string $slug) Return the first PUser filtered by the slug column
@@ -329,6 +382,10 @@ use Politizr\Model\PUserQuery;
  * @method array findByQualified(boolean $qualified) Return PUser objects filtered by the qualified column
  * @method array findByValidated(boolean $validated) Return PUser objects filtered by the validated column
  * @method array findByOnline(boolean $online) Return PUser objects filtered by the online column
+ * @method array findByBanned(boolean $banned) Return PUser objects filtered by the banned column
+ * @method array findByBannedNbDaysLeft(int $banned_nb_days_left) Return PUser objects filtered by the banned_nb_days_left column
+ * @method array findByBannedNbTotal(int $banned_nb_total) Return PUser objects filtered by the banned_nb_total column
+ * @method array findByAbuseLevel(int $abuse_level) Return PUser objects filtered by the abuse_level column
  * @method array findByCreatedAt(string $created_at) Return PUser objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PUser objects filtered by the updated_at column
  * @method array findBySlug(string $slug) Return PUser objects filtered by the slug column
@@ -444,7 +501,7 @@ abstract class BasePUserQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `last_activity`, `p_u_status_id`, `file_name`, `back_file_name`, `copyright`, `gender`, `firstname`, `name`, `birthday`, `subtitle`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_connected_days`, `nb_views`, `qualified`, `validated`, `online`, `created_at`, `updated_at`, `slug` FROM `p_user` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `last_activity`, `p_u_status_id`, `file_name`, `back_file_name`, `copyright`, `gender`, `firstname`, `name`, `birthday`, `subtitle`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_connected_days`, `nb_views`, `qualified`, `validated`, `online`, `banned`, `banned_nb_days_left`, `banned_nb_total`, `abuse_level`, `created_at`, `updated_at`, `slug` FROM `p_user` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -1965,6 +2022,159 @@ abstract class BasePUserQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PUserPeer::ONLINE, $online, $comparison);
+    }
+
+    /**
+     * Filter the query on the banned column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByBanned(true); // WHERE banned = true
+     * $query->filterByBanned('yes'); // WHERE banned = true
+     * </code>
+     *
+     * @param     boolean|string $banned The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function filterByBanned($banned = null, $comparison = null)
+    {
+        if (is_string($banned)) {
+            $banned = in_array(strtolower($banned), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PUserPeer::BANNED, $banned, $comparison);
+    }
+
+    /**
+     * Filter the query on the banned_nb_days_left column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByBannedNbDaysLeft(1234); // WHERE banned_nb_days_left = 1234
+     * $query->filterByBannedNbDaysLeft(array(12, 34)); // WHERE banned_nb_days_left IN (12, 34)
+     * $query->filterByBannedNbDaysLeft(array('min' => 12)); // WHERE banned_nb_days_left >= 12
+     * $query->filterByBannedNbDaysLeft(array('max' => 12)); // WHERE banned_nb_days_left <= 12
+     * </code>
+     *
+     * @param     mixed $bannedNbDaysLeft The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function filterByBannedNbDaysLeft($bannedNbDaysLeft = null, $comparison = null)
+    {
+        if (is_array($bannedNbDaysLeft)) {
+            $useMinMax = false;
+            if (isset($bannedNbDaysLeft['min'])) {
+                $this->addUsingAlias(PUserPeer::BANNED_NB_DAYS_LEFT, $bannedNbDaysLeft['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($bannedNbDaysLeft['max'])) {
+                $this->addUsingAlias(PUserPeer::BANNED_NB_DAYS_LEFT, $bannedNbDaysLeft['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PUserPeer::BANNED_NB_DAYS_LEFT, $bannedNbDaysLeft, $comparison);
+    }
+
+    /**
+     * Filter the query on the banned_nb_total column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByBannedNbTotal(1234); // WHERE banned_nb_total = 1234
+     * $query->filterByBannedNbTotal(array(12, 34)); // WHERE banned_nb_total IN (12, 34)
+     * $query->filterByBannedNbTotal(array('min' => 12)); // WHERE banned_nb_total >= 12
+     * $query->filterByBannedNbTotal(array('max' => 12)); // WHERE banned_nb_total <= 12
+     * </code>
+     *
+     * @param     mixed $bannedNbTotal The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function filterByBannedNbTotal($bannedNbTotal = null, $comparison = null)
+    {
+        if (is_array($bannedNbTotal)) {
+            $useMinMax = false;
+            if (isset($bannedNbTotal['min'])) {
+                $this->addUsingAlias(PUserPeer::BANNED_NB_TOTAL, $bannedNbTotal['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($bannedNbTotal['max'])) {
+                $this->addUsingAlias(PUserPeer::BANNED_NB_TOTAL, $bannedNbTotal['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PUserPeer::BANNED_NB_TOTAL, $bannedNbTotal, $comparison);
+    }
+
+    /**
+     * Filter the query on the abuse_level column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByAbuseLevel(1234); // WHERE abuse_level = 1234
+     * $query->filterByAbuseLevel(array(12, 34)); // WHERE abuse_level IN (12, 34)
+     * $query->filterByAbuseLevel(array('min' => 12)); // WHERE abuse_level >= 12
+     * $query->filterByAbuseLevel(array('max' => 12)); // WHERE abuse_level <= 12
+     * </code>
+     *
+     * @param     mixed $abuseLevel The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function filterByAbuseLevel($abuseLevel = null, $comparison = null)
+    {
+        if (is_array($abuseLevel)) {
+            $useMinMax = false;
+            if (isset($abuseLevel['min'])) {
+                $this->addUsingAlias(PUserPeer::ABUSE_LEVEL, $abuseLevel['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($abuseLevel['max'])) {
+                $this->addUsingAlias(PUserPeer::ABUSE_LEVEL, $abuseLevel['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PUserPeer::ABUSE_LEVEL, $abuseLevel, $comparison);
     }
 
     /**
@@ -3491,6 +3701,524 @@ abstract class BasePUserQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query by a related PMUserModerated object
+     *
+     * @param   PMUserModerated|PropelObjectCollection $pMUserModerated  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PUserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPMUserModerated($pMUserModerated, $comparison = null)
+    {
+        if ($pMUserModerated instanceof PMUserModerated) {
+            return $this
+                ->addUsingAlias(PUserPeer::ID, $pMUserModerated->getPUserId(), $comparison);
+        } elseif ($pMUserModerated instanceof PropelObjectCollection) {
+            return $this
+                ->usePMUserModeratedQuery()
+                ->filterByPrimaryKeys($pMUserModerated->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPMUserModerated() only accepts arguments of type PMUserModerated or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PMUserModerated relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function joinPMUserModerated($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PMUserModerated');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PMUserModerated');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PMUserModerated relation PMUserModerated object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PMUserModeratedQuery A secondary query class using the current class as primary query
+     */
+    public function usePMUserModeratedQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPMUserModerated($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PMUserModerated', '\Politizr\Model\PMUserModeratedQuery');
+    }
+
+    /**
+     * Filter the query by a related PMUserMessage object
+     *
+     * @param   PMUserMessage|PropelObjectCollection $pMUserMessage  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PUserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPMUserMessage($pMUserMessage, $comparison = null)
+    {
+        if ($pMUserMessage instanceof PMUserMessage) {
+            return $this
+                ->addUsingAlias(PUserPeer::ID, $pMUserMessage->getPUserId(), $comparison);
+        } elseif ($pMUserMessage instanceof PropelObjectCollection) {
+            return $this
+                ->usePMUserMessageQuery()
+                ->filterByPrimaryKeys($pMUserMessage->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPMUserMessage() only accepts arguments of type PMUserMessage or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PMUserMessage relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function joinPMUserMessage($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PMUserMessage');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PMUserMessage');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PMUserMessage relation PMUserMessage object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PMUserMessageQuery A secondary query class using the current class as primary query
+     */
+    public function usePMUserMessageQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinPMUserMessage($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PMUserMessage', '\Politizr\Model\PMUserMessageQuery');
+    }
+
+    /**
+     * Filter the query by a related PMUserHistoric object
+     *
+     * @param   PMUserHistoric|PropelObjectCollection $pMUserHistoric  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PUserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPMUserHistoric($pMUserHistoric, $comparison = null)
+    {
+        if ($pMUserHistoric instanceof PMUserHistoric) {
+            return $this
+                ->addUsingAlias(PUserPeer::ID, $pMUserHistoric->getPUserId(), $comparison);
+        } elseif ($pMUserHistoric instanceof PropelObjectCollection) {
+            return $this
+                ->usePMUserHistoricQuery()
+                ->filterByPrimaryKeys($pMUserHistoric->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPMUserHistoric() only accepts arguments of type PMUserHistoric or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PMUserHistoric relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function joinPMUserHistoric($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PMUserHistoric');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PMUserHistoric');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PMUserHistoric relation PMUserHistoric object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PMUserHistoricQuery A secondary query class using the current class as primary query
+     */
+    public function usePMUserHistoricQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinPMUserHistoric($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PMUserHistoric', '\Politizr\Model\PMUserHistoricQuery');
+    }
+
+    /**
+     * Filter the query by a related PMDebateHistoric object
+     *
+     * @param   PMDebateHistoric|PropelObjectCollection $pMDebateHistoric  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PUserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPMDebateHistoric($pMDebateHistoric, $comparison = null)
+    {
+        if ($pMDebateHistoric instanceof PMDebateHistoric) {
+            return $this
+                ->addUsingAlias(PUserPeer::ID, $pMDebateHistoric->getPUserId(), $comparison);
+        } elseif ($pMDebateHistoric instanceof PropelObjectCollection) {
+            return $this
+                ->usePMDebateHistoricQuery()
+                ->filterByPrimaryKeys($pMDebateHistoric->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPMDebateHistoric() only accepts arguments of type PMDebateHistoric or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PMDebateHistoric relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function joinPMDebateHistoric($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PMDebateHistoric');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PMDebateHistoric');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PMDebateHistoric relation PMDebateHistoric object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PMDebateHistoricQuery A secondary query class using the current class as primary query
+     */
+    public function usePMDebateHistoricQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinPMDebateHistoric($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PMDebateHistoric', '\Politizr\Model\PMDebateHistoricQuery');
+    }
+
+    /**
+     * Filter the query by a related PMReactionHistoric object
+     *
+     * @param   PMReactionHistoric|PropelObjectCollection $pMReactionHistoric  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PUserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPMReactionHistoric($pMReactionHistoric, $comparison = null)
+    {
+        if ($pMReactionHistoric instanceof PMReactionHistoric) {
+            return $this
+                ->addUsingAlias(PUserPeer::ID, $pMReactionHistoric->getPUserId(), $comparison);
+        } elseif ($pMReactionHistoric instanceof PropelObjectCollection) {
+            return $this
+                ->usePMReactionHistoricQuery()
+                ->filterByPrimaryKeys($pMReactionHistoric->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPMReactionHistoric() only accepts arguments of type PMReactionHistoric or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PMReactionHistoric relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function joinPMReactionHistoric($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PMReactionHistoric');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PMReactionHistoric');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PMReactionHistoric relation PMReactionHistoric object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PMReactionHistoricQuery A secondary query class using the current class as primary query
+     */
+    public function usePMReactionHistoricQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinPMReactionHistoric($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PMReactionHistoric', '\Politizr\Model\PMReactionHistoricQuery');
+    }
+
+    /**
+     * Filter the query by a related PMDCommentHistoric object
+     *
+     * @param   PMDCommentHistoric|PropelObjectCollection $pMDCommentHistoric  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PUserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPMDCommentHistoric($pMDCommentHistoric, $comparison = null)
+    {
+        if ($pMDCommentHistoric instanceof PMDCommentHistoric) {
+            return $this
+                ->addUsingAlias(PUserPeer::ID, $pMDCommentHistoric->getPUserId(), $comparison);
+        } elseif ($pMDCommentHistoric instanceof PropelObjectCollection) {
+            return $this
+                ->usePMDCommentHistoricQuery()
+                ->filterByPrimaryKeys($pMDCommentHistoric->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPMDCommentHistoric() only accepts arguments of type PMDCommentHistoric or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PMDCommentHistoric relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function joinPMDCommentHistoric($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PMDCommentHistoric');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PMDCommentHistoric');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PMDCommentHistoric relation PMDCommentHistoric object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PMDCommentHistoricQuery A secondary query class using the current class as primary query
+     */
+    public function usePMDCommentHistoricQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinPMDCommentHistoric($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PMDCommentHistoric', '\Politizr\Model\PMDCommentHistoricQuery');
+    }
+
+    /**
+     * Filter the query by a related PMRCommentHistoric object
+     *
+     * @param   PMRCommentHistoric|PropelObjectCollection $pMRCommentHistoric  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PUserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPMRCommentHistoric($pMRCommentHistoric, $comparison = null)
+    {
+        if ($pMRCommentHistoric instanceof PMRCommentHistoric) {
+            return $this
+                ->addUsingAlias(PUserPeer::ID, $pMRCommentHistoric->getPUserId(), $comparison);
+        } elseif ($pMRCommentHistoric instanceof PropelObjectCollection) {
+            return $this
+                ->usePMRCommentHistoricQuery()
+                ->filterByPrimaryKeys($pMRCommentHistoric->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPMRCommentHistoric() only accepts arguments of type PMRCommentHistoric or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PMRCommentHistoric relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function joinPMRCommentHistoric($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PMRCommentHistoric');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PMRCommentHistoric');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PMRCommentHistoric relation PMRCommentHistoric object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PMRCommentHistoricQuery A secondary query class using the current class as primary query
+     */
+    public function usePMRCommentHistoricQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinPMRCommentHistoric($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PMRCommentHistoric', '\Politizr\Model\PMRCommentHistoricQuery');
+    }
+
+    /**
      * Filter the query by a related PMAskForUpdate object
      *
      * @param   PMAskForUpdate|PropelObjectCollection $pMAskForUpdate  the related object to use as filter
@@ -3636,6 +4364,80 @@ abstract class BasePUserQuery extends ModelCriteria
         return $this
             ->joinPMAbuseReporting($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'PMAbuseReporting', '\Politizr\Model\PMAbuseReportingQuery');
+    }
+
+    /**
+     * Filter the query by a related PMAppException object
+     *
+     * @param   PMAppException|PropelObjectCollection $pMAppException  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PUserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPMAppException($pMAppException, $comparison = null)
+    {
+        if ($pMAppException instanceof PMAppException) {
+            return $this
+                ->addUsingAlias(PUserPeer::ID, $pMAppException->getPUserId(), $comparison);
+        } elseif ($pMAppException instanceof PropelObjectCollection) {
+            return $this
+                ->usePMAppExceptionQuery()
+                ->filterByPrimaryKeys($pMAppException->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPMAppException() only accepts arguments of type PMAppException or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PMAppException relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function joinPMAppException($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PMAppException');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PMAppException');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PMAppException relation PMAppException object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PMAppExceptionQuery A secondary query class using the current class as primary query
+     */
+    public function usePMAppExceptionQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinPMAppException($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PMAppException', '\Politizr\Model\PMAppExceptionQuery');
     }
 
     /**
@@ -3970,6 +4772,23 @@ abstract class BasePUserQuery extends ModelCriteria
         return $this
             ->usePUSubscribeScreenPUserQuery()
             ->filterByPUSubscribeScreenPNotification($pNotification, $comparison)
+            ->endUse();
+    }
+
+    /**
+     * Filter the query by a related PMModerationType object
+     * using the p_m_user_moderated table as cross reference
+     *
+     * @param   PMModerationType $pMModerationType the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return   PUserQuery The current query, for fluid interface
+     */
+    public function filterByPMModerationType($pMModerationType, $comparison = Criteria::EQUAL)
+    {
+        return $this
+            ->usePMUserModeratedQuery()
+            ->filterByPMModerationType($pMModerationType, $comparison)
             ->endUse();
     }
 

@@ -1,0 +1,42 @@
+{% extends_admingenerated "PolitizrAdminBundle:PMUserHistoricShow:index.html.twig" %}
+
+{# Images #}
+{% block show_column_block_file_name %}
+    <div class="show-image">
+        {% if PMUserHistoric.FileName %}
+            {% include 'PolitizrAdminBundle:Fragment:_image.html.twig' with {'path': constant('Politizr\\Constant\\PathConstants::USER_UPLOAD_WEB_PATH') ~ PMUserHistoric.FileName} %}
+        {% else %}
+            Aucune image
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block show_column_block_back_file_name %}
+    <div class="show-image">
+        {% if PMUserHistoric.BackFileName %}
+            {% include 'PolitizrAdminBundle:Fragment:_image.html.twig' with {'path': constant('Politizr\\Constant\\PathConstants::USER_UPLOAD_WEB_PATH') ~ PMUserHistoric.BackFileName} %}
+        {% else %}
+            Aucune image
+        {% endif %}
+    </div>
+{% endblock %}
+
+
+{# Objets #}
+{% block show_column_block_p_user %}
+    {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_USER'), PMUserHistoric.PUserId) }}
+{% endblock %}
+
+
+{# Contenus #}
+{% block show_column_subtitle %}
+    {{ PMUserHistoric.getSubtitle | raw }}
+{% endblock %}
+
+{% block show_column_biography %}
+    {{ PMUserHistoric.getBiography | raw }}
+{% endblock %}
+
+{% block show_column_copyright %}
+    {{ PMUserHistoric.getCopyright | raw }}
+{% endblock %}

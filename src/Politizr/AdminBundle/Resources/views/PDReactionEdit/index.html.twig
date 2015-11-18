@@ -6,3 +6,13 @@
     <!-- TinyMCE -->
     {% include "PolitizrAdminBundle::tinymce-full.html.twig" %}
 {% endblock %}
+
+{% block object_actions_script_container %}
+    <script>
+        var nbZones = 1;
+        var xhrRoute = ADMIN_ROUTE_TAG_LISTING;
+    </script>
+
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/politizr/tag/accentMap.js') }}"></script>    
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/politizr/tag/editTags.js') }}"></script>  
+{% endblock object_actions_script_container %}

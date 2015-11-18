@@ -5,6 +5,7 @@ services:
             - @security.token_storage
             - @security.authorization_checker
             - @politizr.manager.document
+            - @router
             - @logger
 
     politizr.functional.security:
@@ -38,3 +39,11 @@ services:
             - @politizr.manager.user
             - @politizr.manager.document
             - @logger
+
+    politizr.functional.tag:
+        class: Politizr\FrontBundle\Lib\Functional\TagService
+        arguments:
+            - @security.token_storage
+            - @security.authorization_checker
+            - @logger
+

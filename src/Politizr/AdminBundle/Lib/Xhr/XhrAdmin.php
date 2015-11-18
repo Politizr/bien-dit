@@ -6,15 +6,24 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 use StudioEcho\Lib\StudioEchoUtils;
 
+use Politizr\Constant\ReputationConstants;
+
 use Politizr\Exception\InconsistentDataException;
 use Politizr\Exception\FormValidationException;
 
 use Politizr\Model\PTag;
+use Politizr\Model\PUReputation;
+use Politizr\Model\PMUserModerated;
 
+use Politizr\Model\PUserQuery;
 use Politizr\Model\PTagQuery;
 use Politizr\Model\PDDTaggedTQuery;
+use Politizr\Model\PDRTaggedTQuery;
 use Politizr\Model\PUFollowTQuery;
 use Politizr\Model\PUTaggedTQuery;
+use Politizr\Model\PMUserModeratedQuery;
+
+use Politizr\AdminBundle\Form\Type\PMUserModeratedType;
 
 /**
  * XHR service for admin management.
@@ -25,32 +34,51 @@ use Politizr\Model\PUTaggedTQuery;
 class XhrAdmin
 {
     private $securityTokenStorage;
+    private $kernel;
+    private $eventDispatcher;
     private $router;
     private $templating;
+    private $formFactory;
     private $tagManager;
+    private $globalTools;
     private $logger;
 
     /**
      *
      * @param @security.token_storage
+     * @param @kernel
      * @param @router
+     * @param @event_dispatcher
      * @param @templating
+     * @param @form.factory
      * @param @politizr.manager.tag
+     * @param @politizr.tools.global
      * @param @logger
      */
     public function __construct(
         $securityTokenStorage,
+        $kernel,
         $router,
+        $eventDispatcher,
         $templating,
+        $formFactory,
         $tagManager,
+        $globalTools,
         $logger
     ) {
         $this->securityTokenStorage = $securityTokenStorage;
 
+        $this->kernel = $kernel;
+
+        $this->eventDispatcher = $eventDispatcher;
+        
         $this->router = $router;
         $this->templating = $templating;
+        $this->formFactory = $formFactory;
 
         $this->tagManager = $tagManager;
+
+        $this->globalTools = $globalTools;
 
         $this->logger = $logger;
     }
@@ -205,7 +233,7 @@ class XhrAdmin
             $this->tagManager->createDebateTag($subjectId, $tag->getId());
 
             $xhrPathDelete = $this->templating->render(
-                'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
+                'PolitizrAdminBundle:Fragment\\Xhr:_xhrPath.html.twig',
                 array(
                     'xhrRoute' => 'ADMIN_ROUTE_TAG_DEBATE_DELETE',
                     'xhrService' => 'tag',
@@ -245,6 +273,94 @@ class XhrAdmin
 
         // Function process
         $this->tagManager->deleteDebateTag($subjectId, $tagId);
+
+        return true;
+    }
+
+    /* ######################################################################################################## */
+    /*                                                    REACTION                                              */
+    /* ######################################################################################################## */
+
+    /**
+     * Reaction's tag creation
+     */
+    public function reactionAddTag(Request $request)
+    {
+        $this->logger->info('*** reactionAddTag');
+
+        // Request arguments
+        $tagTitle = $request->get('tagTitle');
+        $this->logger->info('$tagTitle = ' . print_r($tagTitle, true));
+        $tagId = $request->get('tagId');
+        $this->logger->info('$tagId = ' . print_r($tagId, true));
+        $tagTypeId = $request->get('tagTypeId');
+        $this->logger->info('$tagTypeId = ' . print_r($tagTypeId, true));
+        $subjectId = $request->get('subjectId');
+        $this->logger->info('$subjectId = ' . print_r($subjectId, true));
+        $newTag = $request->get('newTag');
+        $this->logger->info('$newTag = ' . print_r($newTag, true));
+
+        // Function process
+        if (empty($tagTypeId)) {
+            $tagTypeId = null;
+        }
+
+        $tag = $this->retrieveOrCreateTag($tagId, $tagTitle, $tagTypeId, null, $newTag);
+
+        // associate tag to reaction
+        $pdrTaggedT = PDRTaggedTQuery::create()
+            ->filterByPDReactionId($subjectId)
+            ->filterByPTagId($tag->getId())
+            ->findOne();
+
+        if ($pdrTaggedT) {
+            $created = false;
+            $htmlTag = null;
+        } else {
+            $created = true;
+            $this->tagManager->createReactionTag($subjectId, $tag->getId());
+
+            $xhrPathDelete = $this->templating->render(
+                'PolitizrAdminBundle:Fragment\\Xhr:_xhrPath.html.twig',
+                array(
+                    'xhrRoute' => 'ADMIN_ROUTE_TAG_REACTION_DELETE',
+                    'xhrService' => 'tag',
+                    'xhrMethod' => 'reactionDeleteTag',
+                    'xhrType' => 'RETURN_BOOLEAN',
+                )
+            );
+
+            $htmlTag = $this->templating->render(
+                'PolitizrAdminBundle:Fragment\\Tag:_detailEditable.html.twig',
+                array(
+                    'subjectId' => $subjectId,
+                    'tag' => $tag,
+                    'path' => $xhrPathDelete
+                )
+            );
+        }
+
+        return array(
+            'created' => $created,
+            'htmlTag' => $htmlTag
+            );
+    }
+
+    /**
+     * Reaction's tag deletion
+     */
+    public function reactionDeleteTag(Request $request)
+    {
+        $this->logger->info('*** reactionDeleteTag');
+        
+        // Request arguments
+        $tagId = $request->get('tagId');
+        $this->logger->info('$tagId = ' . print_r($tagId, true));
+        $subjectId = $request->get('subjectId');
+        $this->logger->info('$subjectId = ' . print_r($subjectId, true));
+
+        // Function process
+        $this->tagManager->deleteReactionTag($subjectId, $tagId);
 
         return true;
     }
@@ -293,7 +409,7 @@ class XhrAdmin
             $this->tagManager->createUserFollowTag($subjectId, $tag->getId());
 
             $xhrPathDelete = $this->templating->render(
-                'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
+                'PolitizrAdminBundle:Fragment\\Xhr:_xhrPath.html.twig',
                 array(
                     'xhrRoute' => 'ADMIN_ROUTE_TAG_USER_FOLLOW_DELETE',
                     'xhrService' => 'admin',
@@ -378,7 +494,7 @@ class XhrAdmin
             $this->tagManager->createUserTaggedTag($subjectId, $tag->getId());
 
             $xhrPathDelete = $this->templating->render(
-                'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
+                'PolitizrAdminBundle:Fragment\\Xhr:_xhrPath.html.twig',
                 array(
                     'xhrRoute' => 'ADMIN_ROUTE_TAG_USER_TAGGED_DELETE',
                     'xhrService' => 'admin',
@@ -421,5 +537,236 @@ class XhrAdmin
         $deleted = $this->tagManager->deleteUserTaggedTag($subjectId, $tagId);
 
         return $deleted;
+    }
+
+    /* ######################################################################################################## */
+    /*                                               REPUTATION                                                 */
+    /* ######################################################################################################## */
+
+    /**
+     * User's reputation update
+     */
+    public function userReputationUpdate(Request $request)
+    {
+        $this->logger->info('*** userReputationUpdate');
+
+        // Request arguments
+        $subjectId = $request->get('subjectId');
+        $this->logger->info('$subjectId = ' . print_r($subjectId, true));
+        $evolution = $request->get('evolution');
+        $this->logger->info('$evolution = ' . print_r($evolution, true));
+
+        // Function process
+        $user = PUserQuery::create()->findPk($subjectId);
+        if (null === $user) {
+            throw new InconsistentDataException(sprintf('User id-%s not found.', $subjectId));
+        }
+
+        // @todo notif user?
+        // Reputation evolution update
+        $con = \Propel::getConnection('default');
+
+        if ($evolution > 0) {
+            $con->beginTransaction();
+            try {
+                for ($i = 0; $i < $evolution; $i++) {
+                    $puReputation = new PUReputation();
+                    $puReputation->setPRActionId(ReputationConstants::ACTION_ID_R_ADMIN_POS);
+                    $puReputation->setPUserId($subjectId);
+                    $puReputation->save();
+                }
+
+                $con->commit();
+            } catch (\Exception $e) {
+                $con->rollback();
+                throw new InconsistentDataException(sprintf('Rollback reputation evolution user id-%s.', $subjectId));
+            }
+        } elseif ($evolution < 0) {
+            $con->beginTransaction();
+            try {
+                for ($i = 0; $i > $evolution; $i--) {
+                    $puReputation = new PUReputation();
+                    $puReputation->setPRActionId(ReputationConstants::ACTION_ID_R_ADMIN_NEG);
+                    $puReputation->setPUserId($subjectId);
+                    $puReputation->save();
+                }
+
+                $con->commit();
+            } catch (\Exception $e) {
+                $con->rollback();
+                throw new InconsistentDataException(sprintf('Rollback reputation evolution user id-%s.', $subjectId));
+            }
+        }
+
+        $newScore = $user->getReputationScore();
+
+        return array(
+            'score' => $newScore
+        );
+    }
+
+    /* ######################################################################################################## */
+    /*                                               MODERATION                                                 */
+    /* ######################################################################################################## */
+
+    /**
+     * Create new user's moderation + update reputation
+     */
+    public function userModeratedNew(Request $request)
+    {
+        $this->logger->info('*** userModeratedNew');
+
+        $form = $this->formFactory->create(new PMUserModeratedType(), new PMUserModerated());
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $userModerated = $form->getData();
+
+            $userModerated->save();
+
+            // update p_u_reputation
+            $userId = $userModerated->getPUserId();
+            $evolution = $userModerated->getScoreEvolution();
+
+            if ($evolution) {
+                $con = \Propel::getConnection('default');
+                $con->beginTransaction();
+                try {
+                    for ($i = 0; $i > $evolution; $i--) {
+                        $puReputation = new PUReputation();
+                        $puReputation->setPRActionId(ReputationConstants::ACTION_ID_R_ADMIN_NEG);
+                        $puReputation->setPUserId($userId);
+                        $puReputation->save();
+                    }
+
+                    $con->commit();
+                } catch (\Exception $e) {
+                    $con->rollback();
+                    throw new InconsistentDataException(sprintf('Rollback reputation evolution user id-%s.', $userId));
+                }
+            }
+
+            // mail user
+            $dispatcher = $this->eventDispatcher->dispatch('moderation_notification', new GenericEvent($userModerated));
+        } else {
+            $errors = StudioEchoUtils::getAjaxFormErrors($form);
+            throw new FormValidationException($errors);
+        }
+
+        // Update historic
+        $moderations = PMUserModeratedQuery::create()
+                                ->filterByPUserId($userId)
+                                ->orderByCreatedAt('desc')
+                                ->find();
+
+        // Construction du rendu du tag
+        $listing = $this->templating->render(
+            'PolitizrAdminBundle:Fragment\\Moderation:_listing.html.twig',
+            array(
+                'moderations' => $moderations,
+            )
+        );
+
+        // Renvoi de l'ensemble des blocs HTML maj
+        return array(
+            'listing' => $listing
+            );
+    }
+
+    /**
+     * Banned notification management
+     */
+    public function bannedEmail(Request $request)
+    {
+        $this->logger->info('*** userModeratedNew');
+
+        // Request arguments
+        $subjectId = $request->get('subjectId');
+        $this->logger->info('$subjectId = ' . print_r($subjectId, true));
+
+        $user = PUserQuery::create()->findPk($subjectId);
+
+        if ($user->getBanned()) {
+            // mail user
+            $dispatcher = $this->eventDispatcher->dispatch('moderation_banned', new GenericEvent($user));
+
+            // @todo logout user
+            // http://stackoverflow.com/questions/27987089/invalidate-session-for-a-specific-user-in-symfony2
+        }
+
+        return true;
+    }
+
+    /* ######################################################################################################## */
+    /*                                                  IMAGE FUNCTIONS                                         */
+    /* ######################################################################################################## */
+
+    /**
+     * Admin image upload
+     */
+    public function adminImageUpload(Request $request)
+    {
+        $this->logger->info('*** adminImageUpload');
+
+        // Request arguments
+        $id = $request->get('id');
+        $this->logger->info(print_r($id, true));
+        $queryClass = $request->get('queryClass');
+        $this->logger->info(print_r($queryClass, true));
+        $setter = $request->get('setter');
+        $this->logger->info(print_r($setter, true));
+        $uploadWebPath = $request->get('uploadWebPath');
+        $this->logger->info(print_r($uploadWebPath, true));
+
+        $subject = $queryClass::create()->findPk($id);
+
+        // Chemin des images
+        $path = $this->kernel->getRootDir() . '/../web' . $uploadWebPath;
+
+        // Appel du service d'upload ajax
+        $fileName = $this->globalTools->uploadXhrImage(
+            $request,
+            'fileName',
+            $path,
+            1024,
+            1024
+        );
+
+        $subject->$setter($fileName);
+        $subject->save();
+
+        // Rendering
+        $html = $this->templating->render(
+            'PolitizrAdminBundle:Fragment:_image.html.twig',
+            array(
+                'path' => $uploadWebPath . $fileName,
+            )
+        );
+
+        return array(
+            'fileName' => $fileName,
+            'html' => $html,
+            );
+    }
+
+    /**
+     * Admin delete image upload
+     */
+    public function adminImageDelete(Request $request)
+    {
+        $this->logger->info('*** adminImageDelete');
+
+        // Request arguments
+        $id = $request->get('id');
+        $this->logger->info(print_r($id, true));
+        $queryClass = $request->get('queryClass');
+        $this->logger->info(print_r($queryClass, true));
+        $setter = $request->get('setter');
+        $this->logger->info(print_r($setter, true));
+
+        $subject = $queryClass::create()->findPk($id);
+        $subject->$setter(null);
+        $subject->save();
+
+        return true;
     }
 }

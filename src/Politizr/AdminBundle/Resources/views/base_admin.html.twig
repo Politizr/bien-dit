@@ -14,12 +14,40 @@
     
     <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/jquery-ui.autocomplete.min.js') }}"></script>
 
+    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/global.js') }}"></script>
+
     <!-- XHR routing -->
     <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/xhr.js') }}"></script>
     <script type="text/javascript">
         var baseUrl = '{{ app.request.getBaseUrl }}';
     </script>
 {% endblock %}
+
+{% block body_content %}
+    {# xhr success / error / info messages box #} 
+    <div id="infoBoxHolder">
+        <div class="boxSuccess" style="display: none;">
+            <div class="notifBoxText">Un texte de notification.</div>
+            <i class="iconCross" action="closeBox"></i>
+        </div>
+        <div class="boxError" style="display: none;">
+            <div class="notifBoxText">Un texte d'erreur.</div>
+            <i class="iconCross" action="closeBox"></i>
+        </div>
+        <div class="boxAlert" style="display: none;">
+            <div class="notifBoxText">Un texte d'alerte.</div>
+            <i class="iconCross" action="closeBox"></i>
+        </div>
+    </div>
+
+    {# loader ajax global #} 
+    <div id="ajaxGlobalLoader" style="display: none">
+        Chargement en cours...
+    </div>
+
+    {{ parent() }}
+
+{% endblock body_content %}
 
 
 {% block header %}

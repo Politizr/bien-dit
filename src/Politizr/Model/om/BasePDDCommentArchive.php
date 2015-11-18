@@ -103,6 +103,24 @@ abstract class BasePDDCommentArchive extends BaseObject implements Persistent
     protected $online;
 
     /**
+     * The value for the moderated field.
+     * @var        boolean
+     */
+    protected $moderated;
+
+    /**
+     * The value for the moderated_partial field.
+     * @var        boolean
+     */
+    protected $moderated_partial;
+
+    /**
+     * The value for the moderated_at field.
+     * @var        string
+     */
+    protected $moderated_at;
+
+    /**
      * The value for the created_at field.
      * @var        string
      */
@@ -300,6 +318,68 @@ abstract class BasePDDCommentArchive extends BaseObject implements Persistent
     {
 
         return $this->online;
+    }
+
+    /**
+     * Get the [moderated] column value.
+     *
+     * @return boolean
+     */
+    public function getModerated()
+    {
+
+        return $this->moderated;
+    }
+
+    /**
+     * Get the [moderated_partial] column value.
+     *
+     * @return boolean
+     */
+    public function getModeratedPartial()
+    {
+
+        return $this->moderated_partial;
+    }
+
+    /**
+     * Get the [optionally formatted] temporal [moderated_at] column value.
+     *
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getModeratedAt($format = null)
+    {
+        if ($this->moderated_at === null) {
+            return null;
+        }
+
+        if ($this->moderated_at === '0000-00-00 00:00:00') {
+            // while technically this is not a default value of null,
+            // this seems to be closest in meaning.
+            return null;
+        }
+
+        try {
+            $dt = new DateTime($this->moderated_at);
+        } catch (Exception $x) {
+            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->moderated_at, true), $x);
+        }
+
+        if ($format === null) {
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
+            return $dt;
+        }
+
+        if (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        }
+
+        return $dt->format($format);
+
     }
 
     /**
@@ -643,6 +723,87 @@ abstract class BasePDDCommentArchive extends BaseObject implements Persistent
     } // setOnline()
 
     /**
+     * Sets the value of the [moderated] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return PDDCommentArchive The current object (for fluent API support)
+     */
+    public function setModerated($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->moderated !== $v) {
+            $this->moderated = $v;
+            $this->modifiedColumns[] = PDDCommentArchivePeer::MODERATED;
+        }
+
+
+        return $this;
+    } // setModerated()
+
+    /**
+     * Sets the value of the [moderated_partial] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return PDDCommentArchive The current object (for fluent API support)
+     */
+    public function setModeratedPartial($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->moderated_partial !== $v) {
+            $this->moderated_partial = $v;
+            $this->modifiedColumns[] = PDDCommentArchivePeer::MODERATED_PARTIAL;
+        }
+
+
+        return $this;
+    } // setModeratedPartial()
+
+    /**
+     * Sets the value of [moderated_at] column to a normalized version of the date/time value specified.
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return PDDCommentArchive The current object (for fluent API support)
+     */
+    public function setModeratedAt($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->moderated_at !== null || $dt !== null) {
+            $currentDateAsString = ($this->moderated_at !== null && $tmpDt = new DateTime($this->moderated_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->moderated_at = $newDateAsString;
+                $this->modifiedColumns[] = PDDCommentArchivePeer::MODERATED_AT;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setModeratedAt()
+
+    /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
@@ -761,9 +922,12 @@ abstract class BasePDDCommentArchive extends BaseObject implements Persistent
             $this->published_at = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
             $this->published_by = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
             $this->online = ($row[$startcol + 9] !== null) ? (boolean) $row[$startcol + 9] : null;
-            $this->created_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
-            $this->updated_at = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
-            $this->archived_at = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+            $this->moderated = ($row[$startcol + 10] !== null) ? (boolean) $row[$startcol + 10] : null;
+            $this->moderated_partial = ($row[$startcol + 11] !== null) ? (boolean) $row[$startcol + 11] : null;
+            $this->moderated_at = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+            $this->created_at = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
+            $this->updated_at = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
+            $this->archived_at = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -773,7 +937,7 @@ abstract class BasePDDCommentArchive extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 13; // 13 = PDDCommentArchivePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 16; // 16 = PDDCommentArchivePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PDDCommentArchive object", $e);
@@ -1026,6 +1190,15 @@ abstract class BasePDDCommentArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PDDCommentArchivePeer::ONLINE)) {
             $modifiedColumns[':p' . $index++]  = '`online`';
         }
+        if ($this->isColumnModified(PDDCommentArchivePeer::MODERATED)) {
+            $modifiedColumns[':p' . $index++]  = '`moderated`';
+        }
+        if ($this->isColumnModified(PDDCommentArchivePeer::MODERATED_PARTIAL)) {
+            $modifiedColumns[':p' . $index++]  = '`moderated_partial`';
+        }
+        if ($this->isColumnModified(PDDCommentArchivePeer::MODERATED_AT)) {
+            $modifiedColumns[':p' . $index++]  = '`moderated_at`';
+        }
         if ($this->isColumnModified(PDDCommentArchivePeer::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`created_at`';
         }
@@ -1075,6 +1248,15 @@ abstract class BasePDDCommentArchive extends BaseObject implements Persistent
                         break;
                     case '`online`':
                         $stmt->bindValue($identifier, (int) $this->online, PDO::PARAM_INT);
+                        break;
+                    case '`moderated`':
+                        $stmt->bindValue($identifier, (int) $this->moderated, PDO::PARAM_INT);
+                        break;
+                    case '`moderated_partial`':
+                        $stmt->bindValue($identifier, (int) $this->moderated_partial, PDO::PARAM_INT);
+                        break;
+                    case '`moderated_at`':
+                        $stmt->bindValue($identifier, $this->moderated_at, PDO::PARAM_STR);
                         break;
                     case '`created_at`':
                         $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
@@ -1243,12 +1425,21 @@ abstract class BasePDDCommentArchive extends BaseObject implements Persistent
                 return $this->getOnline();
                 break;
             case 10:
-                return $this->getCreatedAt();
+                return $this->getModerated();
                 break;
             case 11:
-                return $this->getUpdatedAt();
+                return $this->getModeratedPartial();
                 break;
             case 12:
+                return $this->getModeratedAt();
+                break;
+            case 13:
+                return $this->getCreatedAt();
+                break;
+            case 14:
+                return $this->getUpdatedAt();
+                break;
+            case 15:
                 return $this->getArchivedAt();
                 break;
             default:
@@ -1289,9 +1480,12 @@ abstract class BasePDDCommentArchive extends BaseObject implements Persistent
             $keys[7] => $this->getPublishedAt(),
             $keys[8] => $this->getPublishedBy(),
             $keys[9] => $this->getOnline(),
-            $keys[10] => $this->getCreatedAt(),
-            $keys[11] => $this->getUpdatedAt(),
-            $keys[12] => $this->getArchivedAt(),
+            $keys[10] => $this->getModerated(),
+            $keys[11] => $this->getModeratedPartial(),
+            $keys[12] => $this->getModeratedAt(),
+            $keys[13] => $this->getCreatedAt(),
+            $keys[14] => $this->getUpdatedAt(),
+            $keys[15] => $this->getArchivedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1362,12 +1556,21 @@ abstract class BasePDDCommentArchive extends BaseObject implements Persistent
                 $this->setOnline($value);
                 break;
             case 10:
-                $this->setCreatedAt($value);
+                $this->setModerated($value);
                 break;
             case 11:
-                $this->setUpdatedAt($value);
+                $this->setModeratedPartial($value);
                 break;
             case 12:
+                $this->setModeratedAt($value);
+                break;
+            case 13:
+                $this->setCreatedAt($value);
+                break;
+            case 14:
+                $this->setUpdatedAt($value);
+                break;
+            case 15:
                 $this->setArchivedAt($value);
                 break;
         } // switch()
@@ -1404,9 +1607,12 @@ abstract class BasePDDCommentArchive extends BaseObject implements Persistent
         if (array_key_exists($keys[7], $arr)) $this->setPublishedAt($arr[$keys[7]]);
         if (array_key_exists($keys[8], $arr)) $this->setPublishedBy($arr[$keys[8]]);
         if (array_key_exists($keys[9], $arr)) $this->setOnline($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setCreatedAt($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setUpdatedAt($arr[$keys[11]]);
-        if (array_key_exists($keys[12], $arr)) $this->setArchivedAt($arr[$keys[12]]);
+        if (array_key_exists($keys[10], $arr)) $this->setModerated($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setModeratedPartial($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setModeratedAt($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setCreatedAt($arr[$keys[13]]);
+        if (array_key_exists($keys[14], $arr)) $this->setUpdatedAt($arr[$keys[14]]);
+        if (array_key_exists($keys[15], $arr)) $this->setArchivedAt($arr[$keys[15]]);
     }
 
     /**
@@ -1428,6 +1634,9 @@ abstract class BasePDDCommentArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PDDCommentArchivePeer::PUBLISHED_AT)) $criteria->add(PDDCommentArchivePeer::PUBLISHED_AT, $this->published_at);
         if ($this->isColumnModified(PDDCommentArchivePeer::PUBLISHED_BY)) $criteria->add(PDDCommentArchivePeer::PUBLISHED_BY, $this->published_by);
         if ($this->isColumnModified(PDDCommentArchivePeer::ONLINE)) $criteria->add(PDDCommentArchivePeer::ONLINE, $this->online);
+        if ($this->isColumnModified(PDDCommentArchivePeer::MODERATED)) $criteria->add(PDDCommentArchivePeer::MODERATED, $this->moderated);
+        if ($this->isColumnModified(PDDCommentArchivePeer::MODERATED_PARTIAL)) $criteria->add(PDDCommentArchivePeer::MODERATED_PARTIAL, $this->moderated_partial);
+        if ($this->isColumnModified(PDDCommentArchivePeer::MODERATED_AT)) $criteria->add(PDDCommentArchivePeer::MODERATED_AT, $this->moderated_at);
         if ($this->isColumnModified(PDDCommentArchivePeer::CREATED_AT)) $criteria->add(PDDCommentArchivePeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(PDDCommentArchivePeer::UPDATED_AT)) $criteria->add(PDDCommentArchivePeer::UPDATED_AT, $this->updated_at);
         if ($this->isColumnModified(PDDCommentArchivePeer::ARCHIVED_AT)) $criteria->add(PDDCommentArchivePeer::ARCHIVED_AT, $this->archived_at);
@@ -1503,6 +1712,9 @@ abstract class BasePDDCommentArchive extends BaseObject implements Persistent
         $copyObj->setPublishedAt($this->getPublishedAt());
         $copyObj->setPublishedBy($this->getPublishedBy());
         $copyObj->setOnline($this->getOnline());
+        $copyObj->setModerated($this->getModerated());
+        $copyObj->setModeratedPartial($this->getModeratedPartial());
+        $copyObj->setModeratedAt($this->getModeratedAt());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
         $copyObj->setArchivedAt($this->getArchivedAt());
@@ -1567,6 +1779,9 @@ abstract class BasePDDCommentArchive extends BaseObject implements Persistent
         $this->published_at = null;
         $this->published_by = null;
         $this->online = null;
+        $this->moderated = null;
+        $this->moderated_partial = null;
+        $this->moderated_at = null;
         $this->created_at = null;
         $this->updated_at = null;
         $this->archived_at = null;

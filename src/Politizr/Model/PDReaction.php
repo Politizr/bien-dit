@@ -19,6 +19,7 @@ use Politizr\Exception\InconsistentDataException;
 
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\PathConstants;
+use Politizr\Constant\TagConstants;
 
 use Politizr\Model\om\BasePDReaction;
 
@@ -82,10 +83,10 @@ class PDReaction extends BasePDReaction implements PDocumentInterface, Container
             ),
             'description' => array(
                 new NotBlank(['message' => 'La description ne doit pas être vide']),
-                new Length(['min' => 141, 'minMessage' => 'Le corps de la publication doit contenir {{ limit }} caractères minimum.']),
+                new Length(['min' => 140, 'minMessage' => 'Le corps de la publication doit contenir {{ limit }} caractères minimum.']),
             ),
-            'geoTags' => new Count(['min' => 1, 'minMessage' => 'Au moins {{ limit }} thématique géographique (département, région, France, Europe, Monde).']),
-            'allTags' => new Count(['min' => 3, 'minMessage' => 'Au moins {{ limit }} thématiques au total.']),
+            'geoTags' => new Count(['min' => 1, 'minMessage' => 'Saisissez au moins {{ limit }} thématique géographique parmi les départements, les régions, "France", "Europe" ou "Monde".']),
+            'allTags' => new Count(['min' => 3, 'minMessage' => 'Saisissez au moins {{ limit }} thématiques au total.']),
         ));
 
         return $collectionConstraint;
@@ -161,9 +162,6 @@ class PDReaction extends BasePDReaction implements PDocumentInterface, Container
         } else {
             throw new \Exception('Indexation service not found');
         }
-
-        // @todo refactor to command
-        $this->removeUpload();
     }
 
     /**
@@ -205,95 +203,9 @@ class PDReaction extends BasePDReaction implements PDocumentInterface, Container
         return parent::preSave($con);
     }
 
-    /* ######################################################################################################## */
-    /*                                      SIMPLE UPLOAD MANAGEMENT                                            */
-    /* ######################################################################################################## */
-
-    /**
-     *
-     * @param string $uploadedFileName
-     */
-    public function setUploadedFileName($uploadedFileName)
-    {
-        $this->uploadedFileName = $uploadedFileName;
-    }
-
-    /**
-     *
-     * @return string
-     */
-    public function getUploadedFileNameWebPath()
-    {
-        return PathConstants::REACTION_UPLOAD_WEB_PATH . $this->file_name;
-    }
-    
-    /**
-     *
-     * @return File
-     */
-    public function getUploadedFileName()
-    {
-        // inject file into property (if uploaded)
-        if ($this->file_name) {
-            return new File(
-                __DIR__ . PathConstants::REACTION_UPLOAD_PATH . $this->file_name
-            );
-        }
-
-        return null;
-    }
-
-    /**
-     *
-     * @param File $file
-     * @return string file name
-     */
-    public function upload($file = null)
-    {
-        if (null === $file) {
-              return;
-        }
-
-        // extension
-        $extension = $file->guessExtension();
-        if (!$extension) {
-              $extension = 'bin';
-        }
-
-        // file name
-        $fileName = $this->computeFileName() . '.' . $extension;
-
-        // move takes the target directory and then the target filename to move to
-        $fileUploaded = $file->move(__DIR__ . PathConstants::REACTION_UPLOAD_PATH, $fileName);
-
-        // file name
-        return $fileName;
-    }
-
-    /**
-     * @todo migrate physical deletion in special command instead of save
-     */
-    public function setFileName($fileName)
-    {
-        if (null !== $fileName) {
-            $this->removeUpload();
-        }
-        parent::setFileName($fileName);
-    }
-
-    /**
-     *
-     * @param $uploadedFileName
-     */
-    public function removeUpload($uploadedFileName = true)
-    {
-        if ($uploadedFileName && $this->file_name && file_exists(__DIR__ . PathConstants::REACTION_UPLOAD_PATH . $this->file_name)) {
-            unlink(__DIR__ . PathConstants::REACTION_UPLOAD_PATH . $this->file_name);
-        }
-    }
-   
     /**
      * Compute a reaction file name
+     * @todo not used for the moment
      *
      * @return string
      */
@@ -323,8 +235,26 @@ class PDReaction extends BasePDReaction implements PDocumentInterface, Container
     /* ######################################################################################################## */
 
     /**
-     * Debate's array tags
+     * Reaction's array tags / geo tags world, europe, france, regions, departments
      * - used by publish constraints
+     *
+     * @return array[string]
+     */
+    public function getWorldToDepartmentGeoArrayTags()
+    {
+        $query = PTagQuery::create()
+            ->select('Title')
+            ->filterIfTypeId(TagConstants::TAG_TYPE_GEO)
+            ->filterIfOnline(true)
+            ->where('p_tag.id <= ?', TagConstants::TAG_GEO_DEPARTMENT_LAST_ID)
+            ->orderByTitle()
+            ->setDistinct();
+
+        return parent::getPTags($query)->toArray();
+    }
+
+    /**
+     * Reaction's array tags
      * - used by elastica indexation
      *
      * @return array[string]

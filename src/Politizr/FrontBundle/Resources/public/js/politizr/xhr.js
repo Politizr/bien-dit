@@ -57,12 +57,14 @@ var ROUTE_MODAL_SUGGESTION_DEBATE_LIST = 'profil/liste/suggestion/debat';
 var ROUTE_MODAL_SUGGESTION_REACTION_LIST = 'profil/liste/suggestion/reaction';
 var ROUTE_MODAL_SUGGESTION_USER_LIST = 'profil/liste/suggestion/utilisateur';
 var ROUTE_MODAL_TAG_DEBATE_LIST = 'profil/liste/tag/debat';
+var ROUTE_MODAL_TAG_REACTION_LIST = 'profil/liste/tag/reaction';
 var ROUTE_MODAL_TAG_USER_LIST = 'profil/liste/tag/utilisateur';
 var ROUTE_MODAL_FOLLOWED_DEBATE_LIST = 'profil/liste/follow/debat';
 var ROUTE_MODAL_FOLLOWED_USER_LIST = 'profil/liste/follow/utilisateur';
 var ROUTE_MODAL_ORGANIZATION_USER_LIST = 'profil/liste/org/utilisateur';
 var ROUTE_MODAL_FOLLOWERS_LIST = 'profil/abonnes';
 var ROUTE_MODAL_SEARCH_DEBATE_BY_TAGS_LIST = 'search/liste/tags/debat';
+var ROUTE_MODAL_SEARCH_REACTION_BY_TAGS_LIST = 'search/liste/tags/reaction';
 var ROUTE_MODAL_SEARCH_USER_BY_TAGS_LIST = 'search/liste/tags/utilisateur';
 var ROUTE_MODAL_REPUTATION = 'profil/ma-reputation';
 var ROUTE_MODAL_REPUTATION_EVOLUTION = 'profil/ma-reputation/evolution';
@@ -78,7 +80,6 @@ var ROUTE_SEARCH_TAG_CLEAR_SESSION = 'search/tag/session/clear';
 
 // SECURITY
 var ROUTE_SECURITY_LOGIN = 'login';
-var ROUTE_SECURITY_LOGIN_CHECK = 'login/check';
 var ROUTE_SECURITY_LOST_PASSWORD_CHECK = 'password/init';
 var ROUTE_SECURITY_PAYMENT_PROCESS = 'v/paiement';
 

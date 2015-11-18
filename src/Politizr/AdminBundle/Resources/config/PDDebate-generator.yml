@@ -32,6 +32,12 @@ params:
             label:          Auteur
         online:
             label:          En ligne
+        moderated:
+            label:          Modéré
+        moderated_partial:
+            label:          Modéré partiellement
+        moderated_at:
+            label:          Mis à jour
         created_at:
             label:          Création
         updated_at:
@@ -75,7 +81,7 @@ builders:
             title:                              "Edition du contenu débat '{{ PDDebate.title }}'"
             tabs:
                 "Contenu":
-                    "Texte":                    [ uploadedFileName, title, description ]
+                    "Texte":                    [ block_file_name, title, description ]
                 "Objets":
                     "Utilisateur":              [ p_user ]
                 "Tags":
@@ -83,16 +89,18 @@ builders:
                 "Statut":
                     "Publication":              [ [ published, published_by, published_at ] ]
                     "Notes":                    [ [ note_pos, note_neg ] ]
+                "Modération":
+                    "Portée":                   [ [ moderated, moderated_partial, moderated_at ] ]
                 "Attributs":
                     "Création":                 [ [ online ], [ created_at, updated_at ] ]
             fields:
-                uploadedFileName:
+                block_file_name:
+                    label:                      "Image"
+                    grid_class:                 "col-md-12"
+                    formType:                   hidden
                     dbType:                     VARCHAR
-                    label:                      Photo
-                    formType:                   file
                     addFormOptions:
-                        # deleteable:             fileName
-                        data_class:             Symfony\Component\HttpFoundation\File\File
+                        mapped:                 false
                 p_user:
                     addFormOptions:
                         disabled:               true
@@ -120,6 +128,11 @@ builders:
                         widget:                 single_text
             actions:
                 save:                           ~
+                archive:
+                    label:                      Archiver
+                    icon:                       fa-archive
+                    params:
+                        pk:                     "{{ PDDebate.id }}"
                 show:                           ~
                 list:                           ~
                 delete:                         ~
@@ -128,7 +141,7 @@ builders:
             title:                              "Visualisation du contenu débat '{{ PDDebate.getTitle }}'"
             tabs:
                 "Contenu":
-                    "Texte":                    [ file_name, title, description ]
+                    "Texte":                    [ block_file_name, title, description ]
                 "Objets":
                     "Utilisateur":              [ block_p_user ]
                 "Réactions":
@@ -141,11 +154,17 @@ builders:
                     "Utilisateurs":             [ block_followers_q, block_followers_c ]
                 "Statut":
                     "Publication":              [ [ published ], [ published_by ], [ published_at ] ]
+                "Modération":
+                    "Portée":                   [ [ moderated, moderated_partial, moderated_at ] ]
+                    "Notification":             [ block_moderation_alert_new  ]
+                    "Précédentes notifications": [ block_moderation_alert_listing  ]
                 "Attributs":
                     "Création":                 [ [ online ], [ created_at, updated_at ] ]
                 "Front":
                     "Rendu":                    [ block_front ]
             fields:
+                block_file_name:
+                    label:                      "Image"
                 block_p_user:
                     label:                      "Auteur"
                 block_reactions:
@@ -158,6 +177,10 @@ builders:
                     label:                      "Qualifiés"
                 block_followers_c:
                     label:                      "Citoyens"
+                block_moderation_alert_new:
+                    label:                      "Alerte"
+                block_moderation_alert_listing:
+                    label:                      "Historique de l'utilisateur"
                 block_front:
                     label:                      "Rendu front"
             actions:

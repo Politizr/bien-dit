@@ -21,17 +21,6 @@ $("body").on("click", "[action='modalUploadClose']", function() {
     $('#modalUpload').slideUp();
 });
 
-// image shadow on/off
-$("body").on("click", "[action='maskIllustrationShadow']", function() {
-    $('.maskIllustrationShadow, #currentPhoto .illustrationShadow').hide();
-    $('.showIllustrationShadow').show();
-});
-$("body").on("click", "[action='showIllustrationShadow']", function() {
-    $('.showIllustrationShadow').hide();
-    $('.maskIllustrationShadow, #currentPhoto .illustrationShadow').show();
-});
-
-
 // **************************** //
 //      LISTENERS
 // **************************** //
@@ -98,6 +87,11 @@ $('body').on('click', "[action='fileDelete']", function(e){
     // console.log('*** click file delete');
 
     $('#uploadedPhoto').html('');
+
+    // + ImgLiquid removing
+    $('#currentPhoto').removeClass();
+    $('#currentPhoto').removeAttr('style');
+
     $('#debate_photo_info_file_name, #reaction_photo_info_file_name').val(null);
 });
 

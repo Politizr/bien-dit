@@ -43,6 +43,7 @@ class PMAppExceptionTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
+        $this->addForeignKey('p_user_id', 'PUserId', 'INTEGER', 'p_user', 'id', false, null, null);
         $this->addColumn('file', 'File', 'VARCHAR', false, 250, null);
         $this->addColumn('line', 'Line', 'INTEGER', false, null, null);
         $this->addColumn('code', 'Code', 'INTEGER', false, null, null);
@@ -58,6 +59,7 @@ class PMAppExceptionTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('PUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_ONE, array('p_user_id' => 'id', ), 'SET NULL', 'CASCADE');
     } // buildRelations()
 
     /**

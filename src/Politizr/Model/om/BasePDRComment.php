@@ -10,8 +10,10 @@ use \Exception;
 use \PDO;
 use \Persistent;
 use \Propel;
+use \PropelCollection;
 use \PropelDateTime;
 use \PropelException;
+use \PropelObjectCollection;
 use \PropelPDO;
 use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
 use Glorpen\Propel\PropelBundle\Events\ModelEvent;
@@ -22,6 +24,8 @@ use Politizr\Model\PDRCommentPeer;
 use Politizr\Model\PDRCommentQuery;
 use Politizr\Model\PDReaction;
 use Politizr\Model\PDReactionQuery;
+use Politizr\Model\PMRCommentHistoric;
+use Politizr\Model\PMRCommentHistoricQuery;
 use Politizr\Model\PUser;
 use Politizr\Model\PUserQuery;
 
@@ -109,6 +113,24 @@ abstract class BasePDRComment extends BaseObject implements Persistent
     protected $online;
 
     /**
+     * The value for the moderated field.
+     * @var        boolean
+     */
+    protected $moderated;
+
+    /**
+     * The value for the moderated_partial field.
+     * @var        boolean
+     */
+    protected $moderated_partial;
+
+    /**
+     * The value for the moderated_at field.
+     * @var        string
+     */
+    protected $moderated_at;
+
+    /**
      * The value for the created_at field.
      * @var        string
      */
@@ -129,6 +151,12 @@ abstract class BasePDRComment extends BaseObject implements Persistent
      * @var        PDReaction
      */
     protected $aPDReaction;
+
+    /**
+     * @var        PropelObjectCollection|PMRCommentHistoric[] Collection to store aggregation of PMRCommentHistoric objects.
+     */
+    protected $collPMRCommentHistorics;
+    protected $collPMRCommentHistoricsPartial;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -152,6 +180,12 @@ abstract class BasePDRComment extends BaseObject implements Persistent
 
     // archivable behavior
     protected $archiveOnDelete = true;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pMRCommentHistoricsScheduledForDeletion = null;
 
     /**
      * Applies default values to this object.
@@ -313,6 +347,68 @@ abstract class BasePDRComment extends BaseObject implements Persistent
     {
 
         return $this->online;
+    }
+
+    /**
+     * Get the [moderated] column value.
+     *
+     * @return boolean
+     */
+    public function getModerated()
+    {
+
+        return $this->moderated;
+    }
+
+    /**
+     * Get the [moderated_partial] column value.
+     *
+     * @return boolean
+     */
+    public function getModeratedPartial()
+    {
+
+        return $this->moderated_partial;
+    }
+
+    /**
+     * Get the [optionally formatted] temporal [moderated_at] column value.
+     *
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getModeratedAt($format = null)
+    {
+        if ($this->moderated_at === null) {
+            return null;
+        }
+
+        if ($this->moderated_at === '0000-00-00 00:00:00') {
+            // while technically this is not a default value of null,
+            // this seems to be closest in meaning.
+            return null;
+        }
+
+        try {
+            $dt = new DateTime($this->moderated_at);
+        } catch (Exception $x) {
+            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->moderated_at, true), $x);
+        }
+
+        if ($format === null) {
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
+            return $dt;
+        }
+
+        if (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        }
+
+        return $dt->format($format);
+
     }
 
     /**
@@ -624,6 +720,87 @@ abstract class BasePDRComment extends BaseObject implements Persistent
     } // setOnline()
 
     /**
+     * Sets the value of the [moderated] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return PDRComment The current object (for fluent API support)
+     */
+    public function setModerated($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->moderated !== $v) {
+            $this->moderated = $v;
+            $this->modifiedColumns[] = PDRCommentPeer::MODERATED;
+        }
+
+
+        return $this;
+    } // setModerated()
+
+    /**
+     * Sets the value of the [moderated_partial] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return PDRComment The current object (for fluent API support)
+     */
+    public function setModeratedPartial($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->moderated_partial !== $v) {
+            $this->moderated_partial = $v;
+            $this->modifiedColumns[] = PDRCommentPeer::MODERATED_PARTIAL;
+        }
+
+
+        return $this;
+    } // setModeratedPartial()
+
+    /**
+     * Sets the value of [moderated_at] column to a normalized version of the date/time value specified.
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return PDRComment The current object (for fluent API support)
+     */
+    public function setModeratedAt($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->moderated_at !== null || $dt !== null) {
+            $currentDateAsString = ($this->moderated_at !== null && $tmpDt = new DateTime($this->moderated_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->moderated_at = $newDateAsString;
+                $this->modifiedColumns[] = PDRCommentPeer::MODERATED_AT;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setModeratedAt()
+
+    /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
@@ -719,8 +896,11 @@ abstract class BasePDRComment extends BaseObject implements Persistent
             $this->published_at = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
             $this->published_by = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
             $this->online = ($row[$startcol + 9] !== null) ? (boolean) $row[$startcol + 9] : null;
-            $this->created_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
-            $this->updated_at = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+            $this->moderated = ($row[$startcol + 10] !== null) ? (boolean) $row[$startcol + 10] : null;
+            $this->moderated_partial = ($row[$startcol + 11] !== null) ? (boolean) $row[$startcol + 11] : null;
+            $this->moderated_at = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+            $this->created_at = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
+            $this->updated_at = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -730,7 +910,7 @@ abstract class BasePDRComment extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 12; // 12 = PDRCommentPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 15; // 15 = PDRCommentPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PDRComment object", $e);
@@ -800,6 +980,8 @@ abstract class BasePDRComment extends BaseObject implements Persistent
 
             $this->aPUser = null;
             $this->aPDReaction = null;
+            $this->collPMRCommentHistorics = null;
+
         } // if (deep)
     }
 
@@ -979,6 +1161,24 @@ abstract class BasePDRComment extends BaseObject implements Persistent
                 $this->resetModified();
             }
 
+            if ($this->pMRCommentHistoricsScheduledForDeletion !== null) {
+                if (!$this->pMRCommentHistoricsScheduledForDeletion->isEmpty()) {
+                    foreach ($this->pMRCommentHistoricsScheduledForDeletion as $pMRCommentHistoric) {
+                        // need to save related object because we set the relation to null
+                        $pMRCommentHistoric->save($con);
+                    }
+                    $this->pMRCommentHistoricsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPMRCommentHistorics !== null) {
+                foreach ($this->collPMRCommentHistorics as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
             $this->alreadyInSave = false;
 
         }
@@ -1035,6 +1235,15 @@ abstract class BasePDRComment extends BaseObject implements Persistent
         if ($this->isColumnModified(PDRCommentPeer::ONLINE)) {
             $modifiedColumns[':p' . $index++]  = '`online`';
         }
+        if ($this->isColumnModified(PDRCommentPeer::MODERATED)) {
+            $modifiedColumns[':p' . $index++]  = '`moderated`';
+        }
+        if ($this->isColumnModified(PDRCommentPeer::MODERATED_PARTIAL)) {
+            $modifiedColumns[':p' . $index++]  = '`moderated_partial`';
+        }
+        if ($this->isColumnModified(PDRCommentPeer::MODERATED_AT)) {
+            $modifiedColumns[':p' . $index++]  = '`moderated_at`';
+        }
         if ($this->isColumnModified(PDRCommentPeer::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`created_at`';
         }
@@ -1081,6 +1290,15 @@ abstract class BasePDRComment extends BaseObject implements Persistent
                         break;
                     case '`online`':
                         $stmt->bindValue($identifier, (int) $this->online, PDO::PARAM_INT);
+                        break;
+                    case '`moderated`':
+                        $stmt->bindValue($identifier, (int) $this->moderated, PDO::PARAM_INT);
+                        break;
+                    case '`moderated_partial`':
+                        $stmt->bindValue($identifier, (int) $this->moderated_partial, PDO::PARAM_INT);
+                        break;
+                    case '`moderated_at`':
+                        $stmt->bindValue($identifier, $this->moderated_at, PDO::PARAM_STR);
                         break;
                     case '`created_at`':
                         $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
@@ -1205,6 +1423,14 @@ abstract class BasePDRComment extends BaseObject implements Persistent
             }
 
 
+                if ($this->collPMRCommentHistorics !== null) {
+                    foreach ($this->collPMRCommentHistorics as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
 
             $this->alreadyInValidation = false;
         }
@@ -1271,9 +1497,18 @@ abstract class BasePDRComment extends BaseObject implements Persistent
                 return $this->getOnline();
                 break;
             case 10:
-                return $this->getCreatedAt();
+                return $this->getModerated();
                 break;
             case 11:
+                return $this->getModeratedPartial();
+                break;
+            case 12:
+                return $this->getModeratedAt();
+                break;
+            case 13:
+                return $this->getCreatedAt();
+                break;
+            case 14:
                 return $this->getUpdatedAt();
                 break;
             default:
@@ -1315,8 +1550,11 @@ abstract class BasePDRComment extends BaseObject implements Persistent
             $keys[7] => $this->getPublishedAt(),
             $keys[8] => $this->getPublishedBy(),
             $keys[9] => $this->getOnline(),
-            $keys[10] => $this->getCreatedAt(),
-            $keys[11] => $this->getUpdatedAt(),
+            $keys[10] => $this->getModerated(),
+            $keys[11] => $this->getModeratedPartial(),
+            $keys[12] => $this->getModeratedAt(),
+            $keys[13] => $this->getCreatedAt(),
+            $keys[14] => $this->getUpdatedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1329,6 +1567,9 @@ abstract class BasePDRComment extends BaseObject implements Persistent
             }
             if (null !== $this->aPDReaction) {
                 $result['PDReaction'] = $this->aPDReaction->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->collPMRCommentHistorics) {
+                $result['PMRCommentHistorics'] = $this->collPMRCommentHistorics->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -1395,9 +1636,18 @@ abstract class BasePDRComment extends BaseObject implements Persistent
                 $this->setOnline($value);
                 break;
             case 10:
-                $this->setCreatedAt($value);
+                $this->setModerated($value);
                 break;
             case 11:
+                $this->setModeratedPartial($value);
+                break;
+            case 12:
+                $this->setModeratedAt($value);
+                break;
+            case 13:
+                $this->setCreatedAt($value);
+                break;
+            case 14:
                 $this->setUpdatedAt($value);
                 break;
         } // switch()
@@ -1434,8 +1684,11 @@ abstract class BasePDRComment extends BaseObject implements Persistent
         if (array_key_exists($keys[7], $arr)) $this->setPublishedAt($arr[$keys[7]]);
         if (array_key_exists($keys[8], $arr)) $this->setPublishedBy($arr[$keys[8]]);
         if (array_key_exists($keys[9], $arr)) $this->setOnline($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setCreatedAt($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setUpdatedAt($arr[$keys[11]]);
+        if (array_key_exists($keys[10], $arr)) $this->setModerated($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setModeratedPartial($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setModeratedAt($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setCreatedAt($arr[$keys[13]]);
+        if (array_key_exists($keys[14], $arr)) $this->setUpdatedAt($arr[$keys[14]]);
     }
 
     /**
@@ -1457,6 +1710,9 @@ abstract class BasePDRComment extends BaseObject implements Persistent
         if ($this->isColumnModified(PDRCommentPeer::PUBLISHED_AT)) $criteria->add(PDRCommentPeer::PUBLISHED_AT, $this->published_at);
         if ($this->isColumnModified(PDRCommentPeer::PUBLISHED_BY)) $criteria->add(PDRCommentPeer::PUBLISHED_BY, $this->published_by);
         if ($this->isColumnModified(PDRCommentPeer::ONLINE)) $criteria->add(PDRCommentPeer::ONLINE, $this->online);
+        if ($this->isColumnModified(PDRCommentPeer::MODERATED)) $criteria->add(PDRCommentPeer::MODERATED, $this->moderated);
+        if ($this->isColumnModified(PDRCommentPeer::MODERATED_PARTIAL)) $criteria->add(PDRCommentPeer::MODERATED_PARTIAL, $this->moderated_partial);
+        if ($this->isColumnModified(PDRCommentPeer::MODERATED_AT)) $criteria->add(PDRCommentPeer::MODERATED_AT, $this->moderated_at);
         if ($this->isColumnModified(PDRCommentPeer::CREATED_AT)) $criteria->add(PDRCommentPeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(PDRCommentPeer::UPDATED_AT)) $criteria->add(PDRCommentPeer::UPDATED_AT, $this->updated_at);
 
@@ -1531,6 +1787,9 @@ abstract class BasePDRComment extends BaseObject implements Persistent
         $copyObj->setPublishedAt($this->getPublishedAt());
         $copyObj->setPublishedBy($this->getPublishedBy());
         $copyObj->setOnline($this->getOnline());
+        $copyObj->setModerated($this->getModerated());
+        $copyObj->setModeratedPartial($this->getModeratedPartial());
+        $copyObj->setModeratedAt($this->getModeratedAt());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
 
@@ -1540,6 +1799,12 @@ abstract class BasePDRComment extends BaseObject implements Persistent
             $copyObj->setNew(false);
             // store object hash to prevent cycle
             $this->startCopy = true;
+
+            foreach ($this->getPMRCommentHistorics() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPMRCommentHistoric($relObj->copy($deepCopy));
+                }
+            }
 
             //unflag object copy
             $this->startCopy = false;
@@ -1695,6 +1960,272 @@ abstract class BasePDRComment extends BaseObject implements Persistent
         return $this->aPDReaction;
     }
 
+
+    /**
+     * Initializes a collection based on the name of a relation.
+     * Avoids crafting an 'init[$relationName]s' method name
+     * that wouldn't work when StandardEnglishPluralizer is used.
+     *
+     * @param string $relationName The name of the relation to initialize
+     * @return void
+     */
+    public function initRelation($relationName)
+    {
+        if ('PMRCommentHistoric' == $relationName) {
+            $this->initPMRCommentHistorics();
+        }
+    }
+
+    /**
+     * Clears out the collPMRCommentHistorics collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PDRComment The current object (for fluent API support)
+     * @see        addPMRCommentHistorics()
+     */
+    public function clearPMRCommentHistorics()
+    {
+        $this->collPMRCommentHistorics = null; // important to set this to null since that means it is uninitialized
+        $this->collPMRCommentHistoricsPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPMRCommentHistorics collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPMRCommentHistorics($v = true)
+    {
+        $this->collPMRCommentHistoricsPartial = $v;
+    }
+
+    /**
+     * Initializes the collPMRCommentHistorics collection.
+     *
+     * By default this just sets the collPMRCommentHistorics collection to an empty array (like clearcollPMRCommentHistorics());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPMRCommentHistorics($overrideExisting = true)
+    {
+        if (null !== $this->collPMRCommentHistorics && !$overrideExisting) {
+            return;
+        }
+        $this->collPMRCommentHistorics = new PropelObjectCollection();
+        $this->collPMRCommentHistorics->setModel('PMRCommentHistoric');
+    }
+
+    /**
+     * Gets an array of PMRCommentHistoric objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PDRComment is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PMRCommentHistoric[] List of PMRCommentHistoric objects
+     * @throws PropelException
+     */
+    public function getPMRCommentHistorics($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPMRCommentHistoricsPartial && !$this->isNew();
+        if (null === $this->collPMRCommentHistorics || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPMRCommentHistorics) {
+                // return empty collection
+                $this->initPMRCommentHistorics();
+            } else {
+                $collPMRCommentHistorics = PMRCommentHistoricQuery::create(null, $criteria)
+                    ->filterByPDRComment($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPMRCommentHistoricsPartial && count($collPMRCommentHistorics)) {
+                      $this->initPMRCommentHistorics(false);
+
+                      foreach ($collPMRCommentHistorics as $obj) {
+                        if (false == $this->collPMRCommentHistorics->contains($obj)) {
+                          $this->collPMRCommentHistorics->append($obj);
+                        }
+                      }
+
+                      $this->collPMRCommentHistoricsPartial = true;
+                    }
+
+                    $collPMRCommentHistorics->getInternalIterator()->rewind();
+
+                    return $collPMRCommentHistorics;
+                }
+
+                if ($partial && $this->collPMRCommentHistorics) {
+                    foreach ($this->collPMRCommentHistorics as $obj) {
+                        if ($obj->isNew()) {
+                            $collPMRCommentHistorics[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPMRCommentHistorics = $collPMRCommentHistorics;
+                $this->collPMRCommentHistoricsPartial = false;
+            }
+        }
+
+        return $this->collPMRCommentHistorics;
+    }
+
+    /**
+     * Sets a collection of PMRCommentHistoric objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pMRCommentHistorics A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PDRComment The current object (for fluent API support)
+     */
+    public function setPMRCommentHistorics(PropelCollection $pMRCommentHistorics, PropelPDO $con = null)
+    {
+        $pMRCommentHistoricsToDelete = $this->getPMRCommentHistorics(new Criteria(), $con)->diff($pMRCommentHistorics);
+
+
+        $this->pMRCommentHistoricsScheduledForDeletion = $pMRCommentHistoricsToDelete;
+
+        foreach ($pMRCommentHistoricsToDelete as $pMRCommentHistoricRemoved) {
+            $pMRCommentHistoricRemoved->setPDRComment(null);
+        }
+
+        $this->collPMRCommentHistorics = null;
+        foreach ($pMRCommentHistorics as $pMRCommentHistoric) {
+            $this->addPMRCommentHistoric($pMRCommentHistoric);
+        }
+
+        $this->collPMRCommentHistorics = $pMRCommentHistorics;
+        $this->collPMRCommentHistoricsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PMRCommentHistoric objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PMRCommentHistoric objects.
+     * @throws PropelException
+     */
+    public function countPMRCommentHistorics(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPMRCommentHistoricsPartial && !$this->isNew();
+        if (null === $this->collPMRCommentHistorics || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPMRCommentHistorics) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPMRCommentHistorics());
+            }
+            $query = PMRCommentHistoricQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPDRComment($this)
+                ->count($con);
+        }
+
+        return count($this->collPMRCommentHistorics);
+    }
+
+    /**
+     * Method called to associate a PMRCommentHistoric object to this object
+     * through the PMRCommentHistoric foreign key attribute.
+     *
+     * @param    PMRCommentHistoric $l PMRCommentHistoric
+     * @return PDRComment The current object (for fluent API support)
+     */
+    public function addPMRCommentHistoric(PMRCommentHistoric $l)
+    {
+        if ($this->collPMRCommentHistorics === null) {
+            $this->initPMRCommentHistorics();
+            $this->collPMRCommentHistoricsPartial = true;
+        }
+
+        if (!in_array($l, $this->collPMRCommentHistorics->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPMRCommentHistoric($l);
+
+            if ($this->pMRCommentHistoricsScheduledForDeletion and $this->pMRCommentHistoricsScheduledForDeletion->contains($l)) {
+                $this->pMRCommentHistoricsScheduledForDeletion->remove($this->pMRCommentHistoricsScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PMRCommentHistoric $pMRCommentHistoric The pMRCommentHistoric object to add.
+     */
+    protected function doAddPMRCommentHistoric($pMRCommentHistoric)
+    {
+        $this->collPMRCommentHistorics[]= $pMRCommentHistoric;
+        $pMRCommentHistoric->setPDRComment($this);
+    }
+
+    /**
+     * @param	PMRCommentHistoric $pMRCommentHistoric The pMRCommentHistoric object to remove.
+     * @return PDRComment The current object (for fluent API support)
+     */
+    public function removePMRCommentHistoric($pMRCommentHistoric)
+    {
+        if ($this->getPMRCommentHistorics()->contains($pMRCommentHistoric)) {
+            $this->collPMRCommentHistorics->remove($this->collPMRCommentHistorics->search($pMRCommentHistoric));
+            if (null === $this->pMRCommentHistoricsScheduledForDeletion) {
+                $this->pMRCommentHistoricsScheduledForDeletion = clone $this->collPMRCommentHistorics;
+                $this->pMRCommentHistoricsScheduledForDeletion->clear();
+            }
+            $this->pMRCommentHistoricsScheduledForDeletion[]= $pMRCommentHistoric;
+            $pMRCommentHistoric->setPDRComment(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PDRComment is new, it will return
+     * an empty collection; or if this PDRComment has previously
+     * been saved, it will retrieve related PMRCommentHistorics from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PDRComment.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PMRCommentHistoric[] List of PMRCommentHistoric objects
+     */
+    public function getPMRCommentHistoricsJoinPUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PMRCommentHistoricQuery::create(null, $criteria);
+        $query->joinWith('PUser', $join_behavior);
+
+        return $this->getPMRCommentHistorics($query, $con);
+    }
+
     /**
      * Clears the current object and sets all attributes to their default values
      */
@@ -1710,6 +2241,9 @@ abstract class BasePDRComment extends BaseObject implements Persistent
         $this->published_at = null;
         $this->published_by = null;
         $this->online = null;
+        $this->moderated = null;
+        $this->moderated_partial = null;
+        $this->moderated_at = null;
         $this->created_at = null;
         $this->updated_at = null;
         $this->alreadyInSave = false;
@@ -1735,6 +2269,11 @@ abstract class BasePDRComment extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
+            if ($this->collPMRCommentHistorics) {
+                foreach ($this->collPMRCommentHistorics as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->aPUser instanceof Persistent) {
               $this->aPUser->clearAllReferences($deep);
             }
@@ -1745,6 +2284,10 @@ abstract class BasePDRComment extends BaseObject implements Persistent
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
+        if ($this->collPMRCommentHistorics instanceof PropelCollection) {
+            $this->collPMRCommentHistorics->clearIterator();
+        }
+        $this->collPMRCommentHistorics = null;
         $this->aPUser = null;
         $this->aPDReaction = null;
     }
@@ -1874,6 +2417,9 @@ abstract class BasePDRComment extends BaseObject implements Persistent
         $this->setPublishedAt($archive->getPublishedAt());
         $this->setPublishedBy($archive->getPublishedBy());
         $this->setOnline($archive->getOnline());
+        $this->setModerated($archive->getModerated());
+        $this->setModeratedPartial($archive->getModeratedPartial());
+        $this->setModeratedAt($archive->getModeratedAt());
         $this->setCreatedAt($archive->getCreatedAt());
         $this->setUpdatedAt($archive->getUpdatedAt());
 

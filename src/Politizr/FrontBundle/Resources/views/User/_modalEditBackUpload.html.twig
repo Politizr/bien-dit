@@ -7,12 +7,10 @@
                 <div id="currentPhoto">
                     <div id="uploadedBackPhoto">
                         {% if user.backFileName %}
-                            {{ user | photoBack('user_bio_back') }}
+                            {{ user | photoBack('user_bio_back', false) }}
                         {% endif %}
                     </div>
                 </div>
-                <div class="toggleIllustrationShadow maskIllustrationShadow" action="maskIllustrationShadow"><i class="iconCheck"></i> Masquer l'ombre</div>
-                <div class="toggleIllustrationShadow showIllustrationShadow" action="showIllustrationShadow"><i class="iconCheck"></i> Afficher l'ombre</div> 
             </div>
             <form id="formUserBackPhoto" action="{{ path('XhrGeneric', {'xhrRoute': constant('Politizr\\Constant\\XhrConstants::ROUTE_USER_BACK_PHOTO_UPLOAD'), 'xhrService': 'user', 'xhrMethod': 'userBackPhotoUpload', 'xhrType': constant('Politizr\\Constant\\XhrConstants::RETURN_URL')}) }}" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="id" value="{{ user.id }}">

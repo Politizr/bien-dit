@@ -44,7 +44,7 @@
                         {{ debate | docTags }}
                     </div>
                     <div class="postSummaryTitle">
-                        <a href="{{ path('DebateDetail', { 'slug': debate.slug }) }}">{{ debate.title }}</a>
+                        <a href="{{ path('DebateDetail'~profileSuffix(), { 'slug': debate.slug }) }}">{{ debate.title }}</a>
                     </div>
                     <div class="postSummaryPublishedAt">
                         {% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'dateTimeAt': debate.publishedAt } only %},

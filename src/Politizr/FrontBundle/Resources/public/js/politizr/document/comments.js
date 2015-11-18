@@ -91,6 +91,9 @@ function openParagraph(paragraphId)
                 $(this).find('.counter').html(data['counter']);
                 fullImgLiquid();
 
+                // input text counter
+                commentTextCounter();
+
                 // scroll to comment
                 $('html, body').animate({
                     scrollTop: $(this).find('.comments').offset().top
@@ -116,6 +119,11 @@ $("body").on("click", "input[action='createComment']", function(e) {
         RETURN_HTML
         );
 
+    var textCount = $('.textCount').text();
+    if (textCount < 5 || textCount > 500) {
+        return false;
+    }
+
     $.ajax({
         type: 'POST',
         url: xhrPath,
@@ -137,6 +145,9 @@ $("body").on("click", "input[action='createComment']", function(e) {
 
                 // $("#formCommentNew").trigger("reset");
                 $("#comment_description").val("");
+
+                // input text counter
+                commentTextCounter();
             }
         }
     });

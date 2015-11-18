@@ -1,25 +1,22 @@
 @import "../_global/colors";
 
 
-#registerIntro {
+#registerIntro, #loginIntro {
     font-family: 'nerislight';
     font-size: 14px;
     line-height: 140%;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
     width: 320px;
 	display: inline-block;
 	color: $darkHighlight;
 }
 
-#registerIntro b {
+#registerIntro b, #loginIntro b {
 	font-weight: normal;
     font-family: 'nerissemibold';	
 }
 
-#registerIntro a {
-	text-decoration: underline;
-}
-
+#registerIntro a, #loginIntro a { text-decoration: underline;}
 
 // no social share on alpha
 #social {display: none;}

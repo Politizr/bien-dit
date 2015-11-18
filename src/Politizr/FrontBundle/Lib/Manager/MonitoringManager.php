@@ -52,11 +52,14 @@ class MonitoringManager
     /**
      *
      * @param \Exception $exception
+     * @param int $userId
      * @return PMAppException
      */
-    public function createAppException($exception)
+    public function createAppException($exception, $userId = null)
     {
         $pmAppException = new PMAppException();
+
+        $pmAppException->setPUserId($userId);
 
         $pmAppException->setFile($exception->getFile());
         $pmAppException->setLine($exception->getLine());

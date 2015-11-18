@@ -1,0 +1,39 @@
+{% extends_admingenerated "PolitizrAdminBundle:PMReactionHistoricShow:index.html.twig" %}
+
+{# Images #}
+{% block show_column_block_file_name %}
+    <div class="show-image">
+        {% if PMReactionHistoric.FileName %}
+            {% include 'PolitizrAdminBundle:Fragment:_image.html.twig' with {'path': constant('Politizr\\Constant\\PathConstants::REACTION_UPLOAD_WEB_PATH') ~ PMReactionHistoric.FileName} %}
+        {% else %}
+            Aucune image
+        {% endif %}
+    </div>
+{% endblock %}
+
+{# Objets #}
+{% block show_column_block_p_d_reaction %}
+    {% if PMReactionHistoric.PDReactionId %}
+        {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION'), PMReactionHistoric.PDReactionId) }}
+    {% else %}
+        <i>Objet supprimé</i><br>
+        ID-{{ PMReactionHistoric.PObjectId }}
+    {% endif %}
+{% endblock %}
+
+{% block show_column_block_p_user %}
+    {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_USER'), PMReactionHistoric.PUserId) }}
+{% endblock %}
+
+{# Contenus #}
+{% block show_column_summary %}
+    {{ PMReactionHistoric.getSummary | raw }}
+{% endblock %}
+
+{% block show_column_description %}
+    {{ PMReactionHistoric.getDescription | raw }}
+{% endblock %}
+
+{% block show_column_copyright %}
+    {{ PMReactionHistoric.getCopyright | raw }}
+{% endblock %}

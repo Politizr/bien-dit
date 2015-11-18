@@ -27,6 +27,9 @@ use Politizr\Model\PDDCommentArchiveQuery;
  * @method PDDCommentArchiveQuery orderByPublishedAt($order = Criteria::ASC) Order by the published_at column
  * @method PDDCommentArchiveQuery orderByPublishedBy($order = Criteria::ASC) Order by the published_by column
  * @method PDDCommentArchiveQuery orderByOnline($order = Criteria::ASC) Order by the online column
+ * @method PDDCommentArchiveQuery orderByModerated($order = Criteria::ASC) Order by the moderated column
+ * @method PDDCommentArchiveQuery orderByModeratedPartial($order = Criteria::ASC) Order by the moderated_partial column
+ * @method PDDCommentArchiveQuery orderByModeratedAt($order = Criteria::ASC) Order by the moderated_at column
  * @method PDDCommentArchiveQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PDDCommentArchiveQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  * @method PDDCommentArchiveQuery orderByArchivedAt($order = Criteria::ASC) Order by the archived_at column
@@ -41,6 +44,9 @@ use Politizr\Model\PDDCommentArchiveQuery;
  * @method PDDCommentArchiveQuery groupByPublishedAt() Group by the published_at column
  * @method PDDCommentArchiveQuery groupByPublishedBy() Group by the published_by column
  * @method PDDCommentArchiveQuery groupByOnline() Group by the online column
+ * @method PDDCommentArchiveQuery groupByModerated() Group by the moderated column
+ * @method PDDCommentArchiveQuery groupByModeratedPartial() Group by the moderated_partial column
+ * @method PDDCommentArchiveQuery groupByModeratedAt() Group by the moderated_at column
  * @method PDDCommentArchiveQuery groupByCreatedAt() Group by the created_at column
  * @method PDDCommentArchiveQuery groupByUpdatedAt() Group by the updated_at column
  * @method PDDCommentArchiveQuery groupByArchivedAt() Group by the archived_at column
@@ -61,6 +67,9 @@ use Politizr\Model\PDDCommentArchiveQuery;
  * @method PDDCommentArchive findOneByPublishedAt(string $published_at) Return the first PDDCommentArchive filtered by the published_at column
  * @method PDDCommentArchive findOneByPublishedBy(string $published_by) Return the first PDDCommentArchive filtered by the published_by column
  * @method PDDCommentArchive findOneByOnline(boolean $online) Return the first PDDCommentArchive filtered by the online column
+ * @method PDDCommentArchive findOneByModerated(boolean $moderated) Return the first PDDCommentArchive filtered by the moderated column
+ * @method PDDCommentArchive findOneByModeratedPartial(boolean $moderated_partial) Return the first PDDCommentArchive filtered by the moderated_partial column
+ * @method PDDCommentArchive findOneByModeratedAt(string $moderated_at) Return the first PDDCommentArchive filtered by the moderated_at column
  * @method PDDCommentArchive findOneByCreatedAt(string $created_at) Return the first PDDCommentArchive filtered by the created_at column
  * @method PDDCommentArchive findOneByUpdatedAt(string $updated_at) Return the first PDDCommentArchive filtered by the updated_at column
  * @method PDDCommentArchive findOneByArchivedAt(string $archived_at) Return the first PDDCommentArchive filtered by the archived_at column
@@ -75,6 +84,9 @@ use Politizr\Model\PDDCommentArchiveQuery;
  * @method array findByPublishedAt(string $published_at) Return PDDCommentArchive objects filtered by the published_at column
  * @method array findByPublishedBy(string $published_by) Return PDDCommentArchive objects filtered by the published_by column
  * @method array findByOnline(boolean $online) Return PDDCommentArchive objects filtered by the online column
+ * @method array findByModerated(boolean $moderated) Return PDDCommentArchive objects filtered by the moderated column
+ * @method array findByModeratedPartial(boolean $moderated_partial) Return PDDCommentArchive objects filtered by the moderated_partial column
+ * @method array findByModeratedAt(string $moderated_at) Return PDDCommentArchive objects filtered by the moderated_at column
  * @method array findByCreatedAt(string $created_at) Return PDDCommentArchive objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PDDCommentArchive objects filtered by the updated_at column
  * @method array findByArchivedAt(string $archived_at) Return PDDCommentArchive objects filtered by the archived_at column
@@ -184,7 +196,7 @@ abstract class BasePDDCommentArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_user_id`, `p_d_debate_id`, `description`, `paragraph_no`, `note_pos`, `note_neg`, `published_at`, `published_by`, `online`, `created_at`, `updated_at`, `archived_at` FROM `p_d_d_comment_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_user_id`, `p_d_debate_id`, `description`, `paragraph_no`, `note_pos`, `note_neg`, `published_at`, `published_by`, `online`, `moderated`, `moderated_partial`, `moderated_at`, `created_at`, `updated_at`, `archived_at` FROM `p_d_d_comment_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -652,6 +664,103 @@ abstract class BasePDDCommentArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDDCommentArchivePeer::ONLINE, $online, $comparison);
+    }
+
+    /**
+     * Filter the query on the moderated column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByModerated(true); // WHERE moderated = true
+     * $query->filterByModerated('yes'); // WHERE moderated = true
+     * </code>
+     *
+     * @param     boolean|string $moderated The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDDCommentArchiveQuery The current query, for fluid interface
+     */
+    public function filterByModerated($moderated = null, $comparison = null)
+    {
+        if (is_string($moderated)) {
+            $moderated = in_array(strtolower($moderated), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PDDCommentArchivePeer::MODERATED, $moderated, $comparison);
+    }
+
+    /**
+     * Filter the query on the moderated_partial column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByModeratedPartial(true); // WHERE moderated_partial = true
+     * $query->filterByModeratedPartial('yes'); // WHERE moderated_partial = true
+     * </code>
+     *
+     * @param     boolean|string $moderatedPartial The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDDCommentArchiveQuery The current query, for fluid interface
+     */
+    public function filterByModeratedPartial($moderatedPartial = null, $comparison = null)
+    {
+        if (is_string($moderatedPartial)) {
+            $moderatedPartial = in_array(strtolower($moderatedPartial), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PDDCommentArchivePeer::MODERATED_PARTIAL, $moderatedPartial, $comparison);
+    }
+
+    /**
+     * Filter the query on the moderated_at column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByModeratedAt('2011-03-14'); // WHERE moderated_at = '2011-03-14'
+     * $query->filterByModeratedAt('now'); // WHERE moderated_at = '2011-03-14'
+     * $query->filterByModeratedAt(array('max' => 'yesterday')); // WHERE moderated_at < '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $moderatedAt The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDDCommentArchiveQuery The current query, for fluid interface
+     */
+    public function filterByModeratedAt($moderatedAt = null, $comparison = null)
+    {
+        if (is_array($moderatedAt)) {
+            $useMinMax = false;
+            if (isset($moderatedAt['min'])) {
+                $this->addUsingAlias(PDDCommentArchivePeer::MODERATED_AT, $moderatedAt['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($moderatedAt['max'])) {
+                $this->addUsingAlias(PDDCommentArchivePeer::MODERATED_AT, $moderatedAt['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PDDCommentArchivePeer::MODERATED_AT, $moderatedAt, $comparison);
     }
 
     /**

@@ -10,6 +10,12 @@ UserDetail:
 ################################################################################
 #               CITIZEN
 ################################################################################
+UserDetailC:
+    pattern:  /citoyen/auteur/{slug}
+    defaults: { _controller: PolitizrFrontBundle:User:detail }
+    requirements:
+        _method:        GET
+
 HomepageC:
     pattern:  /citoyen
     defaults: { _controller: PolitizrFrontBundle:User:homepage }
@@ -42,6 +48,12 @@ EditNotificationsC:
 ################################################################################
 #               ELECTED
 ################################################################################
+UserDetailE:
+    pattern:  /elu/auteur/{slug}
+    defaults: { _controller: PolitizrFrontBundle:User:detail }
+    requirements:
+        _method:        GET
+
 HomepageE:
     pattern:  /elu
     defaults: { _controller: PolitizrFrontBundle:User:homepage }

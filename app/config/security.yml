@@ -4,6 +4,7 @@ jms_security_extra:
     expressions:            true
 
 security:
+    always_authenticate_before_granting:  true
     acl:
         provider:           propel.security.acl.provider
 
@@ -12,7 +13,7 @@ security:
             id:             fos_user.user_provider.username
         oauth:
             id:             politizr.oauth_user_provider
-        main:
+        puser:
             propel:
                 class:      Politizr\Model\PUser
                 property:   username
@@ -25,6 +26,7 @@ security:
     firewalls:
         # Firewall zone admin
         admin_area:
+            provider:                       fos_userbundle
             pattern:                        ^/
             host:                           "%host.admin%"
             form_login:     
@@ -40,6 +42,7 @@ security:
 
         # Firewall OAuth
         oauth:
+            provider:                       oauth
             pattern:                        ^/oauth/.*
             host:                           "%host.public%"
             anonymous:                      ~
@@ -49,29 +52,37 @@ security:
                     facebook:               "/oauth/login/check-facebook"
                     twitter:                "/oauth/login/check-twitter"
                     google:                 "/oauth/login/check-google"
-                login_path:                 /oauth/login
-                failure_path:               /oauth/login
+                # login_path:                 /oauth/login
+                # failure_path:               /oauth/login
+                login_path:                 /connexion
+                failure_path:               /connexion
                 check_path:                 /oauth/login_check
                 default_target_path:        /oauth/target
                 oauth_user_provider:
                     service:                politizr.oauth_user_provider
 
         # Firewall login classique
-        public:
+        user_area:
+            provider:                       puser
             pattern:                        ^/
             host:                           "%host.public%"
             form_login:
-                login_path:                 /
-                # check_path:                 /inscription/check
+                login_path:                 /connexion
+                failure_path:               /connexion
+                check_path:                 /connexion_check
+                remember_me:                true
             remember_me:
                 key:                        "%secret%"
-                lifetime:                   31536000                # 365 jours en secondes
-                path:                       /
-                domain:                     ~
+                name:                       POLITIZRME
+                secure:                     false
+                httponly:                   true
+                always_remember_me:         true
             logout:
-                path:                       /logout
+                invalidate_session:         true
+                delete_cookies:
+                    POLITIZRME:             { path: null, domain: null}
+                path:                       /deconnexion
                 target:                     /
-                invalidate_session:         false
             anonymous:                      true
 
     access_control:

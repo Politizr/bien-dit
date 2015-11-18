@@ -1,0 +1,40 @@
+{% extends_admingenerated "PolitizrAdminBundle:PMDebateHistoricShow:index.html.twig" %}
+
+{# Images #}
+{% block show_column_block_file_name %}
+    <div class="show-image">
+        {% if PMDebateHistoric.FileName %}
+            {% include 'PolitizrAdminBundle:Fragment:_image.html.twig' with {'path': constant('Politizr\\Constant\\PathConstants::DEBATE_UPLOAD_WEB_PATH') ~ PMDebateHistoric.FileName} %}
+        {% else %}
+            Aucune image
+        {% endif %}
+    </div>
+{% endblock %}
+
+{# Objets #}
+{% block show_column_block_p_d_debate %}
+    {% if PMDebateHistoric.PDDebateId %}
+        {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE'), PMDebateHistoric.PDDebateId) }}
+    {% else %}
+        <i>Objet supprimé</i><br>
+        ID-{{ PMDebateHistoric.PObjectId }}
+    {% endif %}
+{% endblock %}
+
+{% block show_column_block_p_user %}
+    {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_USER'), PMDebateHistoric.PUserId) }}
+{% endblock %}
+
+
+{# Contenus #}
+{% block show_column_summary %}
+    {{ PMDebateHistoric.getSummary | raw }}
+{% endblock %}
+
+{% block show_column_description %}
+    {{ PMDebateHistoric.getDescription | raw }}
+{% endblock %}
+
+{% block show_column_copyright %}
+    {{ PMDebateHistoric.getCopyright | raw }}
+{% endblock %}

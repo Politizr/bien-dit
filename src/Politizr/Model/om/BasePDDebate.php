@@ -28,6 +28,8 @@ use Politizr\Model\PDDebatePeer;
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReaction;
 use Politizr\Model\PDReactionQuery;
+use Politizr\Model\PMDebateHistoric;
+use Politizr\Model\PMDebateHistoricQuery;
 use Politizr\Model\PTag;
 use Politizr\Model\PTagQuery;
 use Politizr\Model\PUFollowDD;
@@ -143,6 +145,24 @@ abstract class BasePDDebate extends BaseObject implements Persistent
     protected $online;
 
     /**
+     * The value for the moderated field.
+     * @var        boolean
+     */
+    protected $moderated;
+
+    /**
+     * The value for the moderated_partial field.
+     * @var        boolean
+     */
+    protected $moderated_partial;
+
+    /**
+     * The value for the moderated_at field.
+     * @var        string
+     */
+    protected $moderated_at;
+
+    /**
      * The value for the created_at field.
      * @var        string
      */
@@ -188,6 +208,12 @@ abstract class BasePDDebate extends BaseObject implements Persistent
      */
     protected $collPDDTaggedTs;
     protected $collPDDTaggedTsPartial;
+
+    /**
+     * @var        PropelObjectCollection|PMDebateHistoric[] Collection to store aggregation of PMDebateHistoric objects.
+     */
+    protected $collPMDebateHistorics;
+    protected $collPMDebateHistoricsPartial;
 
     /**
      * @var        PropelObjectCollection|PUser[] Collection to store aggregation of PUser objects.
@@ -257,6 +283,12 @@ abstract class BasePDDebate extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $pDDTaggedTsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pMDebateHistoricsScheduledForDeletion = null;
 
     /**
      * Applies default values to this object.
@@ -462,6 +494,68 @@ abstract class BasePDDebate extends BaseObject implements Persistent
     {
 
         return $this->online;
+    }
+
+    /**
+     * Get the [moderated] column value.
+     *
+     * @return boolean
+     */
+    public function getModerated()
+    {
+
+        return $this->moderated;
+    }
+
+    /**
+     * Get the [moderated_partial] column value.
+     *
+     * @return boolean
+     */
+    public function getModeratedPartial()
+    {
+
+        return $this->moderated_partial;
+    }
+
+    /**
+     * Get the [optionally formatted] temporal [moderated_at] column value.
+     *
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getModeratedAt($format = null)
+    {
+        if ($this->moderated_at === null) {
+            return null;
+        }
+
+        if ($this->moderated_at === '0000-00-00 00:00:00') {
+            // while technically this is not a default value of null,
+            // this seems to be closest in meaning.
+            return null;
+        }
+
+        try {
+            $dt = new DateTime($this->moderated_at);
+        } catch (Exception $x) {
+            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->moderated_at, true), $x);
+        }
+
+        if ($format === null) {
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
+            return $dt;
+        }
+
+        if (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        }
+
+        return $dt->format($format);
+
     }
 
     /**
@@ -880,6 +974,87 @@ abstract class BasePDDebate extends BaseObject implements Persistent
     } // setOnline()
 
     /**
+     * Sets the value of the [moderated] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function setModerated($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->moderated !== $v) {
+            $this->moderated = $v;
+            $this->modifiedColumns[] = PDDebatePeer::MODERATED;
+        }
+
+
+        return $this;
+    } // setModerated()
+
+    /**
+     * Sets the value of the [moderated_partial] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function setModeratedPartial($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->moderated_partial !== $v) {
+            $this->moderated_partial = $v;
+            $this->modifiedColumns[] = PDDebatePeer::MODERATED_PARTIAL;
+        }
+
+
+        return $this;
+    } // setModeratedPartial()
+
+    /**
+     * Sets the value of [moderated_at] column to a normalized version of the date/time value specified.
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function setModeratedAt($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->moderated_at !== null || $dt !== null) {
+            $currentDateAsString = ($this->moderated_at !== null && $tmpDt = new DateTime($this->moderated_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->moderated_at = $newDateAsString;
+                $this->modifiedColumns[] = PDDebatePeer::MODERATED_AT;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setModeratedAt()
+
+    /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
@@ -1000,9 +1175,12 @@ abstract class BasePDDebate extends BaseObject implements Persistent
             $this->published_by = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
             $this->favorite = ($row[$startcol + 12] !== null) ? (boolean) $row[$startcol + 12] : null;
             $this->online = ($row[$startcol + 13] !== null) ? (boolean) $row[$startcol + 13] : null;
-            $this->created_at = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
-            $this->updated_at = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
-            $this->slug = ($row[$startcol + 16] !== null) ? (string) $row[$startcol + 16] : null;
+            $this->moderated = ($row[$startcol + 14] !== null) ? (boolean) $row[$startcol + 14] : null;
+            $this->moderated_partial = ($row[$startcol + 15] !== null) ? (boolean) $row[$startcol + 15] : null;
+            $this->moderated_at = ($row[$startcol + 16] !== null) ? (string) $row[$startcol + 16] : null;
+            $this->created_at = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
+            $this->updated_at = ($row[$startcol + 18] !== null) ? (string) $row[$startcol + 18] : null;
+            $this->slug = ($row[$startcol + 19] !== null) ? (string) $row[$startcol + 19] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -1012,7 +1190,7 @@ abstract class BasePDDebate extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 17; // 17 = PDDebatePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 20; // 20 = PDDebatePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PDDebate object", $e);
@@ -1085,6 +1263,8 @@ abstract class BasePDDebate extends BaseObject implements Persistent
             $this->collPDDComments = null;
 
             $this->collPDDTaggedTs = null;
+
+            $this->collPMDebateHistorics = null;
 
             $this->collPuFollowDdPUsers = null;
             $this->collPTags = null;
@@ -1389,6 +1569,24 @@ abstract class BasePDDebate extends BaseObject implements Persistent
                 }
             }
 
+            if ($this->pMDebateHistoricsScheduledForDeletion !== null) {
+                if (!$this->pMDebateHistoricsScheduledForDeletion->isEmpty()) {
+                    foreach ($this->pMDebateHistoricsScheduledForDeletion as $pMDebateHistoric) {
+                        // need to save related object because we set the relation to null
+                        $pMDebateHistoric->save($con);
+                    }
+                    $this->pMDebateHistoricsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPMDebateHistorics !== null) {
+                foreach ($this->collPMDebateHistorics as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
             $this->alreadyInSave = false;
 
         }
@@ -1457,6 +1655,15 @@ abstract class BasePDDebate extends BaseObject implements Persistent
         if ($this->isColumnModified(PDDebatePeer::ONLINE)) {
             $modifiedColumns[':p' . $index++]  = '`online`';
         }
+        if ($this->isColumnModified(PDDebatePeer::MODERATED)) {
+            $modifiedColumns[':p' . $index++]  = '`moderated`';
+        }
+        if ($this->isColumnModified(PDDebatePeer::MODERATED_PARTIAL)) {
+            $modifiedColumns[':p' . $index++]  = '`moderated_partial`';
+        }
+        if ($this->isColumnModified(PDDebatePeer::MODERATED_AT)) {
+            $modifiedColumns[':p' . $index++]  = '`moderated_at`';
+        }
         if ($this->isColumnModified(PDDebatePeer::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`created_at`';
         }
@@ -1518,6 +1725,15 @@ abstract class BasePDDebate extends BaseObject implements Persistent
                         break;
                     case '`online`':
                         $stmt->bindValue($identifier, (int) $this->online, PDO::PARAM_INT);
+                        break;
+                    case '`moderated`':
+                        $stmt->bindValue($identifier, (int) $this->moderated, PDO::PARAM_INT);
+                        break;
+                    case '`moderated_partial`':
+                        $stmt->bindValue($identifier, (int) $this->moderated_partial, PDO::PARAM_INT);
+                        break;
+                    case '`moderated_at`':
+                        $stmt->bindValue($identifier, $this->moderated_at, PDO::PARAM_STR);
                         break;
                     case '`created_at`':
                         $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
@@ -1671,6 +1887,14 @@ abstract class BasePDDebate extends BaseObject implements Persistent
                     }
                 }
 
+                if ($this->collPMDebateHistorics !== null) {
+                    foreach ($this->collPMDebateHistorics as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
 
             $this->alreadyInValidation = false;
         }
@@ -1749,12 +1973,21 @@ abstract class BasePDDebate extends BaseObject implements Persistent
                 return $this->getOnline();
                 break;
             case 14:
-                return $this->getCreatedAt();
+                return $this->getModerated();
                 break;
             case 15:
-                return $this->getUpdatedAt();
+                return $this->getModeratedPartial();
                 break;
             case 16:
+                return $this->getModeratedAt();
+                break;
+            case 17:
+                return $this->getCreatedAt();
+                break;
+            case 18:
+                return $this->getUpdatedAt();
+                break;
+            case 19:
                 return $this->getSlug();
                 break;
             default:
@@ -1800,9 +2033,12 @@ abstract class BasePDDebate extends BaseObject implements Persistent
             $keys[11] => $this->getPublishedBy(),
             $keys[12] => $this->getFavorite(),
             $keys[13] => $this->getOnline(),
-            $keys[14] => $this->getCreatedAt(),
-            $keys[15] => $this->getUpdatedAt(),
-            $keys[16] => $this->getSlug(),
+            $keys[14] => $this->getModerated(),
+            $keys[15] => $this->getModeratedPartial(),
+            $keys[16] => $this->getModeratedAt(),
+            $keys[17] => $this->getCreatedAt(),
+            $keys[18] => $this->getUpdatedAt(),
+            $keys[19] => $this->getSlug(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1824,6 +2060,9 @@ abstract class BasePDDebate extends BaseObject implements Persistent
             }
             if (null !== $this->collPDDTaggedTs) {
                 $result['PDDTaggedTs'] = $this->collPDDTaggedTs->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collPMDebateHistorics) {
+                $result['PMDebateHistorics'] = $this->collPMDebateHistorics->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -1902,12 +2141,21 @@ abstract class BasePDDebate extends BaseObject implements Persistent
                 $this->setOnline($value);
                 break;
             case 14:
-                $this->setCreatedAt($value);
+                $this->setModerated($value);
                 break;
             case 15:
-                $this->setUpdatedAt($value);
+                $this->setModeratedPartial($value);
                 break;
             case 16:
+                $this->setModeratedAt($value);
+                break;
+            case 17:
+                $this->setCreatedAt($value);
+                break;
+            case 18:
+                $this->setUpdatedAt($value);
+                break;
+            case 19:
                 $this->setSlug($value);
                 break;
         } // switch()
@@ -1948,9 +2196,12 @@ abstract class BasePDDebate extends BaseObject implements Persistent
         if (array_key_exists($keys[11], $arr)) $this->setPublishedBy($arr[$keys[11]]);
         if (array_key_exists($keys[12], $arr)) $this->setFavorite($arr[$keys[12]]);
         if (array_key_exists($keys[13], $arr)) $this->setOnline($arr[$keys[13]]);
-        if (array_key_exists($keys[14], $arr)) $this->setCreatedAt($arr[$keys[14]]);
-        if (array_key_exists($keys[15], $arr)) $this->setUpdatedAt($arr[$keys[15]]);
-        if (array_key_exists($keys[16], $arr)) $this->setSlug($arr[$keys[16]]);
+        if (array_key_exists($keys[14], $arr)) $this->setModerated($arr[$keys[14]]);
+        if (array_key_exists($keys[15], $arr)) $this->setModeratedPartial($arr[$keys[15]]);
+        if (array_key_exists($keys[16], $arr)) $this->setModeratedAt($arr[$keys[16]]);
+        if (array_key_exists($keys[17], $arr)) $this->setCreatedAt($arr[$keys[17]]);
+        if (array_key_exists($keys[18], $arr)) $this->setUpdatedAt($arr[$keys[18]]);
+        if (array_key_exists($keys[19], $arr)) $this->setSlug($arr[$keys[19]]);
     }
 
     /**
@@ -1976,6 +2227,9 @@ abstract class BasePDDebate extends BaseObject implements Persistent
         if ($this->isColumnModified(PDDebatePeer::PUBLISHED_BY)) $criteria->add(PDDebatePeer::PUBLISHED_BY, $this->published_by);
         if ($this->isColumnModified(PDDebatePeer::FAVORITE)) $criteria->add(PDDebatePeer::FAVORITE, $this->favorite);
         if ($this->isColumnModified(PDDebatePeer::ONLINE)) $criteria->add(PDDebatePeer::ONLINE, $this->online);
+        if ($this->isColumnModified(PDDebatePeer::MODERATED)) $criteria->add(PDDebatePeer::MODERATED, $this->moderated);
+        if ($this->isColumnModified(PDDebatePeer::MODERATED_PARTIAL)) $criteria->add(PDDebatePeer::MODERATED_PARTIAL, $this->moderated_partial);
+        if ($this->isColumnModified(PDDebatePeer::MODERATED_AT)) $criteria->add(PDDebatePeer::MODERATED_AT, $this->moderated_at);
         if ($this->isColumnModified(PDDebatePeer::CREATED_AT)) $criteria->add(PDDebatePeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(PDDebatePeer::UPDATED_AT)) $criteria->add(PDDebatePeer::UPDATED_AT, $this->updated_at);
         if ($this->isColumnModified(PDDebatePeer::SLUG)) $criteria->add(PDDebatePeer::SLUG, $this->slug);
@@ -2055,6 +2309,9 @@ abstract class BasePDDebate extends BaseObject implements Persistent
         $copyObj->setPublishedBy($this->getPublishedBy());
         $copyObj->setFavorite($this->getFavorite());
         $copyObj->setOnline($this->getOnline());
+        $copyObj->setModerated($this->getModerated());
+        $copyObj->setModeratedPartial($this->getModeratedPartial());
+        $copyObj->setModeratedAt($this->getModeratedAt());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
         $copyObj->setSlug($this->getSlug());
@@ -2087,6 +2344,12 @@ abstract class BasePDDebate extends BaseObject implements Persistent
             foreach ($this->getPDDTaggedTs() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addPDDTaggedT($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getPMDebateHistorics() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPMDebateHistoric($relObj->copy($deepCopy));
                 }
             }
 
@@ -2214,6 +2477,9 @@ abstract class BasePDDebate extends BaseObject implements Persistent
         }
         if ('PDDTaggedT' == $relationName) {
             $this->initPDDTaggedTs();
+        }
+        if ('PMDebateHistoric' == $relationName) {
+            $this->initPMDebateHistorics();
         }
     }
 
@@ -3218,6 +3484,256 @@ abstract class BasePDDebate extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collPMDebateHistorics collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PDDebate The current object (for fluent API support)
+     * @see        addPMDebateHistorics()
+     */
+    public function clearPMDebateHistorics()
+    {
+        $this->collPMDebateHistorics = null; // important to set this to null since that means it is uninitialized
+        $this->collPMDebateHistoricsPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPMDebateHistorics collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPMDebateHistorics($v = true)
+    {
+        $this->collPMDebateHistoricsPartial = $v;
+    }
+
+    /**
+     * Initializes the collPMDebateHistorics collection.
+     *
+     * By default this just sets the collPMDebateHistorics collection to an empty array (like clearcollPMDebateHistorics());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPMDebateHistorics($overrideExisting = true)
+    {
+        if (null !== $this->collPMDebateHistorics && !$overrideExisting) {
+            return;
+        }
+        $this->collPMDebateHistorics = new PropelObjectCollection();
+        $this->collPMDebateHistorics->setModel('PMDebateHistoric');
+    }
+
+    /**
+     * Gets an array of PMDebateHistoric objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PDDebate is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PMDebateHistoric[] List of PMDebateHistoric objects
+     * @throws PropelException
+     */
+    public function getPMDebateHistorics($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPMDebateHistoricsPartial && !$this->isNew();
+        if (null === $this->collPMDebateHistorics || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPMDebateHistorics) {
+                // return empty collection
+                $this->initPMDebateHistorics();
+            } else {
+                $collPMDebateHistorics = PMDebateHistoricQuery::create(null, $criteria)
+                    ->filterByPDDebate($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPMDebateHistoricsPartial && count($collPMDebateHistorics)) {
+                      $this->initPMDebateHistorics(false);
+
+                      foreach ($collPMDebateHistorics as $obj) {
+                        if (false == $this->collPMDebateHistorics->contains($obj)) {
+                          $this->collPMDebateHistorics->append($obj);
+                        }
+                      }
+
+                      $this->collPMDebateHistoricsPartial = true;
+                    }
+
+                    $collPMDebateHistorics->getInternalIterator()->rewind();
+
+                    return $collPMDebateHistorics;
+                }
+
+                if ($partial && $this->collPMDebateHistorics) {
+                    foreach ($this->collPMDebateHistorics as $obj) {
+                        if ($obj->isNew()) {
+                            $collPMDebateHistorics[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPMDebateHistorics = $collPMDebateHistorics;
+                $this->collPMDebateHistoricsPartial = false;
+            }
+        }
+
+        return $this->collPMDebateHistorics;
+    }
+
+    /**
+     * Sets a collection of PMDebateHistoric objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pMDebateHistorics A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function setPMDebateHistorics(PropelCollection $pMDebateHistorics, PropelPDO $con = null)
+    {
+        $pMDebateHistoricsToDelete = $this->getPMDebateHistorics(new Criteria(), $con)->diff($pMDebateHistorics);
+
+
+        $this->pMDebateHistoricsScheduledForDeletion = $pMDebateHistoricsToDelete;
+
+        foreach ($pMDebateHistoricsToDelete as $pMDebateHistoricRemoved) {
+            $pMDebateHistoricRemoved->setPDDebate(null);
+        }
+
+        $this->collPMDebateHistorics = null;
+        foreach ($pMDebateHistorics as $pMDebateHistoric) {
+            $this->addPMDebateHistoric($pMDebateHistoric);
+        }
+
+        $this->collPMDebateHistorics = $pMDebateHistorics;
+        $this->collPMDebateHistoricsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PMDebateHistoric objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PMDebateHistoric objects.
+     * @throws PropelException
+     */
+    public function countPMDebateHistorics(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPMDebateHistoricsPartial && !$this->isNew();
+        if (null === $this->collPMDebateHistorics || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPMDebateHistorics) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPMDebateHistorics());
+            }
+            $query = PMDebateHistoricQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPDDebate($this)
+                ->count($con);
+        }
+
+        return count($this->collPMDebateHistorics);
+    }
+
+    /**
+     * Method called to associate a PMDebateHistoric object to this object
+     * through the PMDebateHistoric foreign key attribute.
+     *
+     * @param    PMDebateHistoric $l PMDebateHistoric
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function addPMDebateHistoric(PMDebateHistoric $l)
+    {
+        if ($this->collPMDebateHistorics === null) {
+            $this->initPMDebateHistorics();
+            $this->collPMDebateHistoricsPartial = true;
+        }
+
+        if (!in_array($l, $this->collPMDebateHistorics->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPMDebateHistoric($l);
+
+            if ($this->pMDebateHistoricsScheduledForDeletion and $this->pMDebateHistoricsScheduledForDeletion->contains($l)) {
+                $this->pMDebateHistoricsScheduledForDeletion->remove($this->pMDebateHistoricsScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PMDebateHistoric $pMDebateHistoric The pMDebateHistoric object to add.
+     */
+    protected function doAddPMDebateHistoric($pMDebateHistoric)
+    {
+        $this->collPMDebateHistorics[]= $pMDebateHistoric;
+        $pMDebateHistoric->setPDDebate($this);
+    }
+
+    /**
+     * @param	PMDebateHistoric $pMDebateHistoric The pMDebateHistoric object to remove.
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function removePMDebateHistoric($pMDebateHistoric)
+    {
+        if ($this->getPMDebateHistorics()->contains($pMDebateHistoric)) {
+            $this->collPMDebateHistorics->remove($this->collPMDebateHistorics->search($pMDebateHistoric));
+            if (null === $this->pMDebateHistoricsScheduledForDeletion) {
+                $this->pMDebateHistoricsScheduledForDeletion = clone $this->collPMDebateHistorics;
+                $this->pMDebateHistoricsScheduledForDeletion->clear();
+            }
+            $this->pMDebateHistoricsScheduledForDeletion[]= $pMDebateHistoric;
+            $pMDebateHistoric->setPDDebate(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PDDebate is new, it will return
+     * an empty collection; or if this PDDebate has previously
+     * been saved, it will retrieve related PMDebateHistorics from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PDDebate.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PMDebateHistoric[] List of PMDebateHistoric objects
+     */
+    public function getPMDebateHistoricsJoinPUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PMDebateHistoricQuery::create(null, $criteria);
+        $query->joinWith('PUser', $join_behavior);
+
+        return $this->getPMDebateHistorics($query, $con);
+    }
+
+    /**
      * Clears out the collPuFollowDdPUsers collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
@@ -3610,6 +4126,9 @@ abstract class BasePDDebate extends BaseObject implements Persistent
         $this->published_by = null;
         $this->favorite = null;
         $this->online = null;
+        $this->moderated = null;
+        $this->moderated_partial = null;
+        $this->moderated_at = null;
         $this->created_at = null;
         $this->updated_at = null;
         $this->slug = null;
@@ -3656,6 +4175,11 @@ abstract class BasePDDebate extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collPMDebateHistorics) {
+                foreach ($this->collPMDebateHistorics as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collPuFollowDdPUsers) {
                 foreach ($this->collPuFollowDdPUsers as $o) {
                     $o->clearAllReferences($deep);
@@ -3689,6 +4213,10 @@ abstract class BasePDDebate extends BaseObject implements Persistent
             $this->collPDDTaggedTs->clearIterator();
         }
         $this->collPDDTaggedTs = null;
+        if ($this->collPMDebateHistorics instanceof PropelCollection) {
+            $this->collPMDebateHistorics->clearIterator();
+        }
+        $this->collPMDebateHistorics = null;
         if ($this->collPuFollowDdPUsers instanceof PropelCollection) {
             $this->collPuFollowDdPUsers->clearIterator();
         }
@@ -3961,6 +4489,9 @@ abstract class BasePDDebate extends BaseObject implements Persistent
         $this->setPublishedBy($archive->getPublishedBy());
         $this->setFavorite($archive->getFavorite());
         $this->setOnline($archive->getOnline());
+        $this->setModerated($archive->getModerated());
+        $this->setModeratedPartial($archive->getModeratedPartial());
+        $this->setModeratedAt($archive->getModeratedAt());
         $this->setCreatedAt($archive->getCreatedAt());
         $this->setUpdatedAt($archive->getUpdatedAt());
         $this->setSlug($archive->getSlug());

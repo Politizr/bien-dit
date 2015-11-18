@@ -159,5 +159,5 @@ function listing(init, offset) {
             }
             $('#ajaxGlobalLoader').hide();
         }
-    });
+    });    
 }

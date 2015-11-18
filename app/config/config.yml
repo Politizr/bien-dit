@@ -334,7 +334,7 @@ liip_imagine:
         admin_show_thumb:
             quality:              100
             filters:
-                relative_resize:  { widen: 150 }
+                relative_resize:  { widen: 250 }
         admin_organization:
             quality:              100
             filters:
@@ -766,4 +766,11 @@ fos_elastica:
 # HTMLPurifierBundle
 exercise_html_purifier:
     default:
-        Cache.SerializerPath: '%kernel.cache_dir%'
+        # Cache.SerializerPath: '%kernel.cache_dir%/htmlpurifier'
+        Cache.SerializerPath: "%kernel.root_dir%/cache/htmlpurifier"
+
+# Liip URL autoconverter
+liip_url_auto_converter:
+    linkclass:
+    target: _blank
+    debugmode: false

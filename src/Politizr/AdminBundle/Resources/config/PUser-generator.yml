@@ -55,6 +55,14 @@ params:
             label:          Profil validé
         online:
             label:          En ligne
+        banned:
+            label:          Banni
+        banned_nb_days_left:
+            label:          Nombre de jours restants
+        banned_nb_total:
+            label:          Nombre total de bannissement
+        abuse_level:
+            label:          Niveau d'abus
         roles:
             label:          Liste des rôles de l'utilisateur
             formType:                   choice
@@ -136,7 +144,7 @@ builders:
             title:                              "Edition de l'utilisateur {{ PUser.firstname }} {{ PUser.name }}"
             tabs:
                 "Identité":
-                    "Civilité":                 [ [ gender ], [ firstname, name ], [ uploadedFileName ] ]
+                    "Civilité":                 [ [ block_back_file_name ], [ block_file_name ], [ gender ], [ firstname, name ] ]
                     "Contacts":                 [ [ phone, email ], [ website ], [ twitter, facebook ] ]
                 "Identifiant":
                     "Connexion":                [ username, plainPassword ]
@@ -152,6 +160,9 @@ builders:
                 "Abonnement":
                     "Followers":                [ followers ]
                     "Abonnements":              [ subscribers ]
+                "Modération":
+                    "Bannissement":             [ [ banned, banned_nb_days_left ] ]
+                    "Risque user":              [ abuse_level ]
                 "Statut":
                     "Actuel":                   [ p_u_status_id ]
                     "Activité":                 [ last_login, last_activity ]
@@ -161,6 +172,20 @@ builders:
                     "Validé":                   [ validated ]
                     "Création":                 [ [ created_at, updated_at ] ]
             fields:
+                block_back_file_name:
+                    label:                      "Image de fond"
+                    grid_class:                 "col-md-12"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+                    addFormOptions:
+                        mapped:                 false
+                block_file_name:
+                    label:                      "Image"
+                    grid_class:                 "col-md-12"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+                    addFormOptions:
+                        mapped:                 false
                 followers:
                     dbType:                     model
                     formType:                   model
@@ -249,6 +274,11 @@ builders:
                         widget:                 single_text
             actions:
                 save:                           ~
+                archive:
+                    label:                      Archiver
+                    icon:                       fa-archive
+                    params:
+                        pk:                     "{{ PUser.id }}"
                 show:                           ~
                 list:                           ~
                 delete:                         ~
@@ -258,7 +288,7 @@ builders:
             tabs:
                 "Identité":
                     "Type":                     [ qualified ]
-                    "Civilité":                 [ [ file_name, gender, firstname, name ] ]
+                    "Civilité":                 [ [ block_back_file_name ], [ block_file_name ], [ gender, firstname, name ] ]
                     "Contacts":                 [ [ phone, email ], [ website ], [ twitter, facebook ] ]
                 "Descriptif":
                     "Informations":             [ biography ]
@@ -278,6 +308,11 @@ builders:
                 "Statut":
                     "Actuel":                   [ [ p_u_status ] ]
                     "Connexion":                [ last_login, last_activity ]
+                "Modération":
+                    "Bannissement":             [ [ banned, banned_nb_days_left, banned_nb_total ], [ block_moderation_banned ] ]
+                    "Niveau de risque user":    [ abuse_level ]
+                    "Notification":             [ block_moderation_alert_new  ]
+                    "Précédentes notifications": [ block_moderation_alert_listing  ]
                 "Attributs":
                     "En ligne":                 [ [ online ] ]
                     "Validé":                   [ [ validated ] ]
@@ -286,6 +321,10 @@ builders:
                 "Front":
                     "Rendu":                    [ block_front ]
             fields:
+                block_back_file_name:
+                    label:                      "Image de fond"
+                block_file_name:
+                    label:                      "Image"
                 block_tags_public:
                     label:                      "Tags publiques"
                 block_tags_private:
@@ -299,7 +338,7 @@ builders:
                 block_badges_participation:
                     label:                      "Participation"
                 block_badges_moderation:
-                    label:                      "Modération"
+                    label:                      "Communautaire"
                 block_badges_autre:
                     label:                      "Autres"
                 block_debates:
@@ -316,6 +355,12 @@ builders:
                     label:                      "Abonnements"
                 block_affinities:
                     label:                      "Partis Politiques"
+                block_moderation_banned:
+                    label:                      "Bannissement"
+                block_moderation_alert_new:
+                    label:                      "Nouvelle alerte"
+                block_moderation_alert_listing:
+                    label:                      "Historique de l'utilisateur"
                 block_front:
                     label:                      "Rendu front"
                 last_login:

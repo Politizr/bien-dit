@@ -1,5 +1,9 @@
 {% extends_admingenerated "PolitizrAdminBundle:PDReactionShow:index.html.twig" %}
 
+{# Image upload #}
+{% block show_column_block_file_name %}
+    {% include 'PolitizrAdminBundle:Fragment:_uploadImage.html.twig' with {'zone': 1, 'fileName': PDReaction.fileName,'subjectId': PDReaction.id, 'queryClass': 'Politizr\\Model\\PDReactionQuery', 'setter': 'setFileName', 'uploadWebPath': constant('Politizr\\Constant\\PathConstants::REACTION_UPLOAD_WEB_PATH')} %}
+{% endblock %}
 
 {# Objets #}
 {% block show_column_block_p_user %}
@@ -14,12 +18,6 @@
     {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION'), PDReaction.ParentReactionId) }}
 {% endblock %}
 
-
-{# Image #}
-{% block show_column_file_name %}
-    <img src="{{ asset('uploads/documents/'~PDReaction.fileName) | imagine_filter('admin_show_thumb') }}" alt="{{ PDReaction.fileName }}" />
-{% endblock %}
-
 {# Contenus #}
 {% block show_column_summary %}
     {{ PDReaction.getSummary | raw }}
@@ -27,6 +25,23 @@
 
 {% block show_column_description %}
     {{ PDReaction.getDescription | raw }}
+{% endblock %}
+
+{# Bloc tags #}
+{% block show_column_block_tags %}
+    {{ adminReactionTags(PDReaction, null, 1, mode='show') }}
+{% endblock %}
+
+{# Block moderation new alert #}
+{% block show_column_block_moderation_alert_new %}
+    {{ adminModerationAlertNew(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION'), PDReaction.Id, PDReaction.PUserId) }}
+{% endblock %}
+
+{# Block moderation alert listing #}
+{% block show_column_block_moderation_alert_listing %}
+    <div id="moderationListing">
+        {{ adminModerationAlertListing(PDReaction.PUserId) }}
+    </div>
 {% endblock %}
 
 {# Block front link #}
@@ -42,3 +57,10 @@
 {% block show_column_block_comments %}
     {{ adminReactionComments(PDReaction) }}
 {% endblock %}
+
+{% block object_actions_script_container %}
+    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/jquery.form.min.js') }}"></script>  
+    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/uploadImage.js') }}"></script>  
+
+    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/moderation/notification.js') }}"></script>  
+{% endblock object_actions_script_container %}

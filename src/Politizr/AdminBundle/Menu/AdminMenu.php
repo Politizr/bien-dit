@@ -80,60 +80,12 @@ class AdminMenu extends AdmingeneratorMenuBuilder
             'Politizr_AdminBundle_PRAction_list'
         );
 
-        // Réglages des types:  tags, badges, mode & statut paiement, statut commande
-        $types = $this->addDropdown($menu, 'Type');
-        $this->addLinkRoute(
-            $types,
-            'Tag',
-            'Politizr_AdminBundle_PTTagType_list'
-        );
-        $this->addLinkRoute(
-            $types,
-            'Badge (famille)',
-            'Politizr_AdminBundle_PRBadgeFamily_list'
-        );
-        $this->addLinkRoute(
-            $types,
-            'Badge (type)',
-            'Politizr_AdminBundle_PRBadgeType_list'
-        );
-        $this->addLinkRoute(
-            $types,
-            'Organisation',
-            'Politizr_AdminBundle_PQOrganization_list'
-        );
-        $this->addLinkRoute(
-            $types,
-            'Mandat',
-            'Politizr_AdminBundle_PQMandate_list'
-        );
-        $this->addLinkRoute(
-            $types,
-            'Formule d\'abonnement',
-            'Politizr_AdminBundle_POSubscription_list'
-        );
-        $this->addLinkRoute(
-            $types,
-            'Mode Paiement',
-            'Politizr_AdminBundle_POPaymentType_list'
-        );
-        $this->addLinkRoute(
-            $types,
-            'Statut Paiement',
-            'Politizr_AdminBundle_POPaymentState_list'
-        );
-        $this->addLinkRoute(
-            $types,
-            'Statut Commande',
-            'Politizr_AdminBundle_POOrderState_list'
-        );
-
         // Monitoring
         $monitoring = $this->addDropdown($menu, 'Suivi');
         $this->addLinkRoute(
             $monitoring,
-            'Abus',
-            'Politizr_AdminBundle_PMAbuseReporting_list'
+            'Exception',
+            'Politizr_AdminBundle_PMAppException_list'
         );
         $this->addLinkRoute(
             $monitoring,
@@ -142,19 +94,95 @@ class AdminMenu extends AdmingeneratorMenuBuilder
         );
         $this->addLinkRoute(
             $monitoring,
-            'Exception',
-            'Politizr_AdminBundle_PMAppException_list'
+            'Abus',
+            'Politizr_AdminBundle_PMAbuseReporting_list'
         );
 
-        // Régla
+        // Réglages des types:  tags, badges, mode & statut paiement, statut commande
         $regulations = $this->addDropdown($menu, 'Réglage');
+        $this->addLinkRoute(
+            $regulations,
+            'Tag',
+            'Politizr_AdminBundle_PTTagType_list'
+        );
+        $this->addLinkRoute(
+            $regulations,
+            'Badge (famille)',
+            'Politizr_AdminBundle_PRBadgeFamily_list'
+        );
+        $this->addLinkRoute(
+            $regulations,
+            'Badge (type)',
+            'Politizr_AdminBundle_PRBadgeType_list'
+        );
+        $this->addLinkRoute(
+            $regulations,
+            'Organisation',
+            'Politizr_AdminBundle_PQOrganization_list'
+        );
+        $this->addLinkRoute(
+            $regulations,
+            'Mandat',
+            'Politizr_AdminBundle_PQMandate_list'
+        );
+        $this->addLinkRoute(
+            $regulations,
+            'Modération',
+            'Politizr_AdminBundle_PMModerationType_list'
+        );
+        $this->addLinkRoute(
+            $regulations,
+            'Formule d\'abonnement',
+            'Politizr_AdminBundle_POSubscription_list'
+        );
+        $this->addLinkRoute(
+            $regulations,
+            'Mode Paiement',
+            'Politizr_AdminBundle_POPaymentType_list'
+        );
+        $this->addLinkRoute(
+            $regulations,
+            'Statut Paiement',
+            'Politizr_AdminBundle_POPaymentState_list'
+        );
+        $this->addLinkRoute(
+            $regulations,
+            'Statut Commande',
+            'Politizr_AdminBundle_POOrderState_list'
+        );
         $this->addLinkRoute(
             $regulations,
             'Administrateurs',
             'Politizr_AdminBundle_User_list'
         );
 
-
+        // Archives
+        $archive = $this->addDropdown($menu, 'Archive');
+        $this->addLinkRoute(
+            $archive,
+            'Utilisateur',
+            'Politizr_AdminBundle_PMUserHistoric_list'
+        );
+        $this->addLinkRoute(
+            $archive,
+            'Débat',
+            'Politizr_AdminBundle_PMDebateHistoric_list'
+        );
+        $this->addLinkRoute(
+            $archive,
+            'Réaction',
+            'Politizr_AdminBundle_PMReactionHistoric_list'
+        );
+        $this->addLinkRoute(
+            $archive,
+            'Commentaire débat',
+            'Politizr_AdminBundle_PMDCommentHistoric_list'
+        );
+        $this->addLinkRoute(
+            $archive,
+            'Commentaire réaction',
+            'Politizr_AdminBundle_PMRCommentHistoric_list'
+        );
         
         return $menu;
     }

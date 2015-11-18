@@ -4,14 +4,23 @@ namespace Politizr\AdminBundle\Listener;
 
 use Symfony\Component\EventDispatcher\GenericEvent;
 
+use Politizr\Exception\InconsistentDataException;
+use Politizr\Exception\SendEmailException;
+
 use Politizr\Constant\OrderConstants;
+
+use Politizr\Model\PUserQuery;
+use Politizr\Model\PDDebateQuery;
+use Politizr\Model\PDReactionQuery;
+use Politizr\Model\PDDCommentQuery;
+use Politizr\Model\PDRCommentQuery;
 
 use Politizr\Model\POEmail;
 
 /**
- *     Envoi des emails
+ * Emails
  *
- *  @author Lionel Bouzonville
+ * @author Lionel Bouzonville
  */
 class EmailListener
 {
@@ -26,9 +35,19 @@ class EmailListener
 
     /**
      *
+     * @param @mailer
+     * @param @templating
+     * @param @logger
+     * @param "%contact_email%"
+     * @param "%support_email%"
      */
-    public function __construct($mailer, $templating, $logger, $contactEmail, $supportEmail)
-    {
+    public function __construct(
+        $mailer,
+        $templating,
+        $logger,
+        $contactEmail,
+        $supportEmail
+    ) {
         $this->mailer = $mailer;
         $this->templating = $templating;
         $this->logger = $logger;
@@ -38,7 +57,7 @@ class EmailListener
     }
 
     /**
-     * Email associé à la commande
+     * Order email
      *
      * @param GenericEvent
      */
@@ -131,7 +150,118 @@ class EmailListener
                 $this->logger->err('Exception - message = '.$e->getMessage());
             }
             
-            throw $e;
+            throw new SendEmailException($e->getMessage(), $e);
+        }
+    }
+
+    /**
+     * Moderation's notification email
+     *
+     * @param GenericEvent
+     */
+    public function onModerationNotification(GenericEvent $event)
+    {
+        $this->logger->info('*** onModerationNotification');
+
+        $userModerated = $event->getSubject();
+
+        try {
+            $htmlBody = $this->templating->render(
+                'PolitizrAdminBundle:Email:moderationNotification.html.twig',
+                array(
+                    'userModerated' => $userModerated,
+                )
+            );
+            $txtBody = $this->templating->render(
+                'PolitizrAdminBundle:Email:moderationNotification.txt.twig',
+                array(
+                    'userModerated' => $userModerated,
+                )
+            );
+
+            $user = PUserQuery::create()->findPk($userModerated->getPUserId());
+            if (!$user) {
+                throw new InconsistentDataException('User null');
+            }
+
+            $message = \Swift_Message::newInstance()
+                    ->setSubject('[ Politizr ] Contenu modéré')
+                    ->setFrom(array($this->contactEmail => 'Support@Politizr'))
+                    ->setTo($user->getEmail())
+                    ->setBody($htmlBody, 'text/html', 'utf-8')
+                    ->addPart($txtBody, 'text/plain', 'utf-8')
+            ;
+            $message->getHeaders()->addTextHeader('X-CMail-GroupName', 'Moderation notif');
+
+            // Envoi email
+            $failedRecipients = array();
+            $send = $this->mailer->send($message, $failedRecipients);
+
+            $this->logger->info('send = '.print_r($send, true));
+            if (!$send) {
+                throw new \Exception('email non envoyé - code retour = '.$send.' - adresse(s) en échec = '.print_r($failedRecipients, true));
+            }
+        } catch (\Exception $e) {
+            if (null !== $this->logger) {
+                $this->logger->err('Exception - message = '.$e->getMessage());
+            }
+            
+            throw new SendEmailException($e->getMessage(), $e);
+        }
+    }
+
+    /**
+     * Moderation's banned email
+     *
+     * @param GenericEvent
+     */
+    public function onModerationBanned(GenericEvent $event)
+    {
+        $this->logger->info('*** onModerationBanned');
+
+        $user = $event->getSubject();
+
+        try {
+            if (!$user) {
+                throw new InconsistentDataException('User null');
+            }
+
+            $htmlBody = $this->templating->render(
+                'PolitizrAdminBundle:Email:moderationBanned.html.twig',
+                array(
+                    'user' => $user,
+                )
+            );
+            $txtBody = $this->templating->render(
+                'PolitizrAdminBundle:Email:moderationBanned.txt.twig',
+                array(
+                    'user' => $user,
+                )
+            );
+
+            $message = \Swift_Message::newInstance()
+                    ->setSubject('[ Politizr ] Bannissement')
+                    ->setFrom(array($this->contactEmail => 'Support@Politizr'))
+                    ->setTo($user->getEmail())
+                    ->setBody($htmlBody, 'text/html', 'utf-8')
+                    ->addPart($txtBody, 'text/plain', 'utf-8')
+            ;
+            $message->getHeaders()->addTextHeader('X-CMail-GroupName', 'Moderation bannissement');
+
+            // Envoi email
+            $failedRecipients = array();
+            $send = $this->mailer->send($message, $failedRecipients);
+
+            $this->logger->info('send = '.print_r($send, true));
+            if (!$send) {
+                throw new \Exception('email non envoyé - code retour = '.$send.' - adresse(s) en échec = '.print_r($failedRecipients, true));
+            }
+        } catch (\Exception $e) {
+            if (null !== $this->logger) {
+                $this->logger->err('Exception - message = '.$e->getMessage());
+            }
+            
+            throw new SendEmailException($e->getMessage(), $e);
         }
     }
 }

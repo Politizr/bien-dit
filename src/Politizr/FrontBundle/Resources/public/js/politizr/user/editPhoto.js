@@ -22,17 +22,6 @@ $("body").on("click", "[action='modalUploadClose']", function() {
     $('#modalUpload').slideUp();
 });
 
-// image shadow on/off
-$("body").on("click", "[action='maskIllustrationShadow']", function() {
-    $('.maskIllustrationShadow, #currentPhoto .illustrationShadow').hide();
-    $('.showIllustrationShadow').show();
-});
-$("body").on("click", "[action='showIllustrationShadow']", function() {
-    $('.showIllustrationShadow').hide();
-    $('.maskIllustrationShadow, #currentPhoto .illustrationShadow').show();
-});
-
-
 // **************************** //
 //      LISTENERS
 // **************************** //
@@ -186,6 +175,11 @@ $('body').on('click', "[action='backFileDelete']", function(e){
     // console.log('*** click back file delete');
 
     $('#uploadedBackPhoto').html('');
+
+    // + ImgLiquid removing
+    $('#currentPhoto').removeClass();
+    $('#currentPhoto').removeAttr('style');
+
     $('#user_back_photo_info_back_file_name').val(null);
 });
 

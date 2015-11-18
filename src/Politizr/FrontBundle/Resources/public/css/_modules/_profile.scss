@@ -1,6 +1,6 @@
 @import "../_global/colors";
 
-#profileHeader {
+.profileHeader {
 	width: 700px;
 	height: 360px;
 	display: inline-block;
@@ -11,7 +11,7 @@
 	background-color: $lightGrey;	
 }
 
-#profileHeader .illustrationShadow {	
+.profileHeader .illustrationShadow {	
 	width: 700px; 
 	left: 0; 
 	top: 0;
@@ -26,17 +26,17 @@
 	z-index: 1;
 }
 
-#profileHeader .pad40 {
+.profileHeader .pad40 {
 	position: relative;
 	z-index: 3;
 	width: calc(100% - 80px);
 	height: 280px;
 }
 
-#profileSummaryHeader {text-transform: uppercase; line-height: 100%;}
+.profileSummaryHeader {text-transform: uppercase; line-height: 100%;}
 
-#profileReputationCounter { font-family: 'nerissemibold'; margin-bottom: 5px; position: relative; padding-left: 20px; float: left;}
-#profileReputationCounter i {font-size: 13px; position: absolute; left: -2px; top: -4px; }
+.profileReputationCounter { font-family: 'nerissemibold'; margin-bottom: 5px; position: relative; padding-left: 20px; float: left;}
+.profileReputationCounter i {font-size: 13px; position: absolute; left: -2px; top: -4px; }
 
 .confidentialInfo {
 	font-family: 'nerissemibold_italic';
@@ -48,74 +48,76 @@
 	color: $alert;
 }
 
-#profileSummaryHeader i.iconInfo {
+.profileSummaryHeader i.iconInfo {
 	font-size: 10px;
 	float: left;
 	margin : -5px 0 0 3px;
 	cursor: pointer;
 }
-#profileSummaryHeader i.iconInfo:hover {color: $alert;}
+.profileSummaryHeader i.iconInfo:hover {color: $alert;}
 
-#profileFollowersCounter, #profileMyFollowersCounter {float: left; clear: both;}
+.profileFollowersCounter, #profileMyFollowersCounter {float: left; clear: both;}
 
-#profileReputationCounter:hover, #profileFollowersCounter:hover, #profileMyFollowersCounter:hover {color: $highlight; cursor: pointer;}
+.profileReputationCounter:hover, .profileFollowersCounter:hover, #profileMyFollowersCounter:hover {color: $highlight; cursor: pointer;}
 
-#profileSummaryFooter {
+.profileSummaryFooter {
 	position: absolute;
 	bottom: 40px;
 	width: calc(100% - 80px);
 }
 
-#profileSummaryFooter .avatar60 {
+.profileSummaryFooter .avatar60 {
 	border: solid 1px $darkGrey;
 	background-color: $darkGrey;
 	float: left;
 	margin-right: 20px;
 }
 
-#profileSummaryFooter input[type="file"] { display: none;}
+.profileSummaryFooter input[type="file"] { display: none;}
 #uploadFileContainer .iconCamera {	cursor: pointer;}
 
-#profileSummaryFooter .avatar60 .photoDelete {
+.profileSummaryFooter .avatar60 .photoDelete {
 	position: absolute;
 	left: 42px;
 	top: 16px;
 }
 
-#profileSummaryFooter .avatar60 .photoDelete i { color: $highlight;}
-#profileSummaryFooter .avatar60 .photoDelete i:hover {color: #fff;}
+.profileSummaryFooter .avatar60 .photoDelete i { color: $highlight;}
+.profileSummaryFooter .avatar60 .photoDelete i:hover {color: #fff;}
 
-#profileNameHolder {
+.profileNameHolder {
 	position: relative;
 	width: calc(100% - 80px);
 	float: right;	
 }
 
-#profileNameBottom {
+.profileNameBottom {
 	position: absolute;
 	bottom: 0;
 }
 
-#profileName {
+.profileName {
 	font-size: 50px;
 	line-height: 100%;
 	font-family: 'nerissemibold';
 	margin-top: -6px;
 	position: relative;
 }
+.profileName a { color: #fff;}
+.profileName a:hover { color: $highlight;}
 
-#profileSummaryFooter .organization { background-color: $darkGrey; position: absolute; bottom: 4px;}
-#profileSummaryFooter .organization:hover {background-color: $highlight; }
+.profileSummaryFooter .organization { background-color: $darkGrey; position: absolute; bottom: 4px;}
+.profileSummaryFooter .organization:hover {background-color: $highlight; }
 
-#profileSocialLinks {
+.profileSocialLinks {
 	font-size: 13px;
 	margin: 5px 0 0 0;	
 }
-#profileSocialLinks a {margin: 0 5px 0 -2px; color: #fff;}
-#profileSocialLinks a:hover { color: $highlight; }
-#profileSocialLinks i.iconLink {font-size: 11px;}
+.profileSocialLinks a {margin: 0 5px 0 -2px; color: #fff;}
+.profileSocialLinks a:hover { color: $highlight; }
+.profileSocialLinks i.iconLink {font-size: 11px;}
 
-#profileSubtitle {
+.profileSubtitle {
 	float: left;
 	clear: both;
 	width: 100%;
@@ -124,40 +126,37 @@
 	font-family: 'Merriweather Bold Italic';
 	color: $highlight;
 }
-#profileSubtitle a { color: $highlight; }
-#profileSubtitle a:hover { color: #fff; }
+.profileSubtitle a { color: $highlight; }
+.profileSubtitle a:hover { color: #fff; }
 
-#profilePublicTagList {
+.profilePublicTagList {
 	padding: 40px;
 	float: left;
 	width: calc(100% - 80px);
-	font-size: 10px;
-	font-family: 'nerisblack';
-	text-transform: uppercase;
-	color: $highlight;
-	line-height: 160%;
+}
+.modal .profilePublicTagList {
+	padding: 10px 0 0 0;
+	width: 100%;
 }
 
-#profilePublicTagList span:hover {color: $darkGrey;}
-
-#profilePrivateTagList {
+.profilePrivateTagList {
 	padding: 0 40px 40px 40px;
 	float: left;
 	width: calc(100% - 80px);
-	font-size: 10px;
-	font-family: 'nerisblack';
 	text-transform: uppercase;
-	color: $darkGrey;
+	font-size: 10px;
 	line-height: 160%;
 }
-
-#profilePrivateTagList span:hover {color: $highlight;}
+.profilePrivateTagList .tag {
+	background-color: $semiGrey;
+}
 
 #privateTagTitle {
 	float: left;
 	width: 100%;
 	color: $darkGrey;
 	font-family: 'nerissemibold';
+	margin-bottom: 5px;
 }
 
 #privateTagTitle span, #privateTagTitle span:hover {

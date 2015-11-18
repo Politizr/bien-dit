@@ -1,5 +1,16 @@
 {% extends_admingenerated "PolitizrAdminBundle:PUserShow:index.html.twig" %}
 
+{# Image upload #}
+{% block show_column_block_back_file_name %}
+    {% include 'PolitizrAdminBundle:Fragment:_uploadImage.html.twig' with {'zone': 1, 'fileName': PUser.backFileName,'subjectId': PUser.id, 'queryClass': 'Politizr\\Model\\PUserQuery', 'setter': 'setBackFileName', 'uploadWebPath': constant('Politizr\\Constant\\PathConstants::USER_UPLOAD_WEB_PATH')} %}
+{% endblock %}
+
+{# Image upload #}
+{% block show_column_block_file_name %}
+    {% include 'PolitizrAdminBundle:Fragment:_uploadImage.html.twig' with {'zone': 2, 'fileName': PUser.fileName,'subjectId': PUser.id, 'queryClass': 'Politizr\\Model\\PUserQuery', 'setter': 'setFileName', 'uploadWebPath': constant('Politizr\\Constant\\PathConstants::USER_UPLOAD_WEB_PATH')} %}
+{% endblock %}
+
+
 {# Contenus #}
 {% block show_column_summary %}
     {{ PUser.summary | raw }}
@@ -7,14 +18,6 @@
 
 {% block show_column_biography %}
     {{ PUser.biography | raw }}
-{% endblock %}
-
-
-{# Image #}
-{% block show_column_file_name %}
-    {% if PUser.fileName %}
-        <img src="{{ asset('uploads/users/'~PUser.fileName) | imagine_filter('admin_show_thumb') }}" alt="{{ PUser.fileName }}" />
-    {% endif %}
 {% endblock %}
 
 {# User's tag #}
@@ -85,6 +88,27 @@
     {{ adminUserAffinities(PUser) }}
 {% endblock %}
 
+{# Block moderation new alert #}
+{% block show_column_block_moderation_alert_new %}
+    {{ adminModerationAlertNew(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_USER'), PUser.Id, PUser.Id) }}
+{% endblock %}
+
+{# Block moderation alert listing #}
+{% block show_column_block_moderation_alert_listing %}
+    <div id="moderationListing">
+        {{ adminModerationAlertListing(PUser.Id) }}
+    </div>
+{% endblock %}
+
+{# Block moderation banned email #}
+{% block show_column_block_moderation_banned %}
+    {% if PUser.Banned %}
+        <a action="bannedEmail" subjectId="{{ PUser.Id }}">Alerter par email</a>
+        <br/>
+        <i>Note: envoi d'un email notifiant l'utilisateur de son bannissement.</i>
+    {% endif %}
+{% endblock %}
+
 {# Block front link #}
 {% block show_column_block_front %}
     {% if PUser.online %}
@@ -99,8 +123,16 @@
     <script>
         var nbZones = 2;
         var xhrRoute = ADMIN_ROUTE_TAG_LISTING;
+
+        var uploadZones = 2;
     </script>
 
     <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/politizr/tag/accentMap.js') }}"></script>    
     <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/politizr/tag/editTags.js') }}"></script>  
+
+    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/jquery.form.min.js') }}"></script>  
+    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/uploadImage.js') }}"></script>  
+
+
+    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/moderation/notification.js') }}"></script>
 {% endblock object_actions_script_container %}

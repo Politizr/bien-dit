@@ -508,6 +508,8 @@ a.linkToPost:hover {color: $darkGrey;}
     font-style: italic;
 	line-height: 150%;
 }
+.authorSubtitle a { color: $darkGrey;}
+.authorSubtitle a:hover { color: $highlight;}
 
 #postAuthor span {
 	display: inline-block;
@@ -555,7 +557,7 @@ a.linkToPost:hover {color: $darkGrey;}
 	display: inline-block;
 	position: relative;
 	color: #fff;
-	font-family: nerisblack;
+	font-family: 'nerisblack';
 	font-size: 10px;
 	text-transform: uppercase;
 	background-color: $lightGrey;
@@ -598,7 +600,7 @@ a.linkToPost:hover {color: $darkGrey;}
 	width: 100%;
 	text-transform: none;
 	font-size: 40px;
-	font-family: nerissemibold;
+	font-family: 'nerissemibold';
 	line-height: 110%;
 	color: $highlight;
 	max-height: 3.2em;
@@ -632,7 +634,7 @@ a.linkToPost:hover {color: $darkGrey;}
 	font-family: 'Merriweather Italic';
     font-style: italic;
 	display: inline-block;
-	margin-right: 4px;
+	margin-right: 3px;
 }
 
 .postSummaryAuthor a {
@@ -640,6 +642,7 @@ a.linkToPost:hover {color: $darkGrey;}
 	color: $highlight;
 	width: auto !important;
 	display: inline-block !important;
+	font-family: 'nerisblack';	
 }
 
 .postSummaryAuthor a:hover {color: #fff;}
@@ -660,12 +663,7 @@ a.linkToPost:hover {color: $darkGrey;}
 	float: left;
 	width: 100%;
 	clear: both;
-	margin-bottom: 5px;
-	line-height: 150%;
 }
-
-.tag {	cursor: pointer;}
-.tag:hover {color: $highlight;}
 
 .postSummaryActivity {
 	margin-top: 10px;

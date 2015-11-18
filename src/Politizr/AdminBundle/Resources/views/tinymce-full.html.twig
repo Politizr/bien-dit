@@ -8,14 +8,14 @@
           script_url : '{{ asset("bundles/politizradmin/js/tinymce_v4/tinymce.min.js") }}',
           theme : "modern",
           language : "fr_FR",
-          plugins : "autoresize,paste,table,link,code",
-          width: '100%',
-          height: 400,
-          autoresize_min_height: 400,
-          autoresize_max_height: 800,
+          width : 800,
+          height : 400,
+          plugins : "paste,table,link,code,textcolor",
           tools: "inserttable",
+          toolbar: "undo redo | styleselect | bullist numlist | bold italic | alignleft aligncenter alignright alignjustify | link | forecolor backcolor",
           paste_as_text: true,
           convert_urls: false,
+          relatives_urls: false,
        });
     });
 </script>

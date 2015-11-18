@@ -1,0 +1,16 @@
+{% if moderations|length == 0 %}
+    <div class="noResult">Aucun résultat</div>
+{% else %}
+    <table class="table">
+        <tr>
+            <th>Type</th>
+            <th>Objet associé</th>
+        </tr>
+        {% for moderation in moderations %}
+            <tr>
+                <td>{{ moderation.PMModerationType }}</td>
+                <td>{{ adminCreatePath(moderation.PObjectName, moderation.PObjectId, true) }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endif %}

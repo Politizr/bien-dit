@@ -5,6 +5,7 @@ namespace Politizr\Model;
 use Politizr\Model\om\BasePUserQuery;
 
 use Politizr\Constant\UserConstants;
+use Politizr\Constant\ReputationConstants;
 
 /**
  * User query
@@ -79,6 +80,10 @@ SELECT DISTINCT
     qualified,
     validated,
     online,
+    banned,
+    banned_nb_days_left,
+    banned_nb_total,
+    abuse_level,
     created_at,
     updated_at,
     slug
@@ -197,6 +202,8 @@ LIMIT ".$offset.", ".$count."
         return $this
             ->_if('mostFollowed' === $keyword)
                 ->orderByMostFollowed()
+            ->_elseif('mostActive' === $keyword)
+                ->orderByMostActive()
             ->_elseif('last' === $keyword)
                 ->orderByLast()
             ->_endif();
@@ -213,6 +220,20 @@ LIMIT ".$offset.", ".$count."
             ->withColumn('COUNT(PUFollowU.PUserId)', 'NbFollowers')
             ->groupBy('Id')
             ->orderBy('NbFollowers', 'desc');
+    }
+
+    /**
+     * Note: only "positives" actions are counted
+     * @return PUserQuery
+     */
+    public function orderByMostActive()
+    {
+        return $this
+            ->withColumn('COUNT(p_u_reputation.id)', 'MostActive')
+            ->join('PUReputation', \Criteria::LEFT_JOIN)
+            ->where('PUReputation.p_r_action_id IN ('.implode(',', ReputationConstants::getPositivesPRActionsId()).')')
+            ->groupBy('Id')
+            ->orderBy('MostActive', 'desc');
     }
 
     /**

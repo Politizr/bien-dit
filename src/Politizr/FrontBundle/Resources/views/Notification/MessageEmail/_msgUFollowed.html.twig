@@ -4,4 +4,4 @@
         <b>{% include 'PolitizrFrontBundle:Notification\\MessageEmail:_emailAuthorName.html.twig' with {'author': author, 'authorUrl': authorUrl} only %} suit désormais votre activité.</b>
     </td>
 </tr>
-{% include 'PolitizrFrontBundle:Notification\\MessageEmail:_emailNotificationFooter.html.twig' with {'url': url} only %}
+{% include 'PolitizrFrontBundle:Notification\\MessageEmail:_emailNotificationFooter.html.twig' with {'url': authorUrl} only %}

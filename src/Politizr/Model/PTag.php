@@ -32,6 +32,14 @@ class PTag extends BasePTag
         $slug = $this->cleanupSlugPart($toSlug);
         return $slug;
     }
+
+    /**
+     * @see parent::getPTagRelatedByPTParentId
+     */
+    public function getPTParent(\PropelPDO $con = null, $doQuery = true)
+    {
+        return parent::getPTagRelatedByPTParentId($con, $doQuery);
+    }
     
     /* ######################################################################################################## */
     /*                                                 DEBATES                                                  */

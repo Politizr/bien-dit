@@ -5,9 +5,11 @@ Login:
     pattern:  /connexion
     defaults: { _controller: PolitizrFrontBundle:Security:login }
 
+LoginCheck:
+    pattern:  /connexion_check
+
 Logout:
     pattern:  /deconnexion
-    defaults: { _controller: PolitizrFrontBundle:Security:logout }
 
 CancelInscription:
     pattern:  /annuler-inscription

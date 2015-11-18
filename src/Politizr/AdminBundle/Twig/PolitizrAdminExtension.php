@@ -12,6 +12,12 @@ use Politizr\Model\PDDCommentQuery;
 use Politizr\Model\PDRCommentQuery;
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PUFollowDDQuery;
+use Politizr\Model\PMUserModeratedQuery;
+
+use Politizr\Model\PUser;
+use Politizr\Model\PMUserModerated;
+
+use Politizr\AdminBundle\Form\Type\PMUserModeratedType;
 
 /**
  * Specific admin twig extension
@@ -26,6 +32,9 @@ class PolitizrAdminExtension extends \Twig_Extension
 {
     private $logger;
 
+    private $formFactory;
+
+    protected $documentService;
     private $router;
     private $templating;
 
@@ -35,6 +44,10 @@ class PolitizrAdminExtension extends \Twig_Extension
     public function __construct($serviceContainer)
     {
         $this->logger = $serviceContainer->get('logger');
+
+        $this->formFactory = $serviceContainer->get('form.factory');
+
+        $this->documentService = $serviceContainer->get('politizr.functional.document');
 
         $this->router = $serviceContainer->get('router');
         $this->templating = $serviceContainer->get('templating');
@@ -48,12 +61,21 @@ class PolitizrAdminExtension extends \Twig_Extension
     /**
      *  Renvoie la liste des filtres
      */
-//     public function getFilters()
-//     {
-//         return array(
-//             new \Twig_SimpleFilter('price', array($this, 'priceFilter')),
-//         );
-//     }
+    public function getFilters()
+    {
+        return array(
+            new \Twig_SimpleFilter(
+                'linkedModeration',
+                array($this, 'linkedModeration'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
+                'linkedBanned',
+                array($this, 'linkedBanned'),
+                array('is_safe' => array('html'))
+            ),
+        );
+    }
 
 
     /**
@@ -160,6 +182,13 @@ class PolitizrAdminExtension extends \Twig_Extension
                     'is_safe' => array('html')
                     )
             ),
+            'adminReactionTags'  => new \Twig_Function_Method(
+                $this,
+                'adminReactionTags',
+                array(
+                    'is_safe' => array('html')
+                    )
+            ),
             'adminDebateFollowersQ'  => new \Twig_Function_Method(
                 $this,
                 'adminDebateFollowersQ',
@@ -209,8 +238,115 @@ class PolitizrAdminExtension extends \Twig_Extension
                     'is_safe' => array('html')
                     )
             ),
+            'adminModerationAlertNew'  => new \Twig_Function_Method(
+                $this,
+                'adminModerationAlertNew',
+                array(
+                    'is_safe' => array('html')
+                    )
+            ),
+            'adminModerationAlertListing'  => new \Twig_Function_Method(
+                $this,
+                'adminModerationAlertListing',
+                array(
+                    'is_safe' => array('html')
+                    )
+            ),
         );
     }
+
+
+    /* ######################################################################################################## */
+    /*                                              FILTERS                                                     */
+    /* ######################################################################################################## */
+
+    // ****************************************  MODERATION ******************************************* //
+
+    /**
+     * Moderation notification HTML rendering
+     *
+     * @param PMUserModerated $userModerated
+     * @param string $type html or txt mail
+     * @return html
+     */
+    public function linkedModeration(PMUserModerated $userModerated, $type)
+    {
+        $this->logger->info('*** linkedModeration');
+        $this->logger->info('$userModerated = '.print_r($userModerated, true));
+        $this->logger->info('$type = '.print_r($type, true));
+
+        // User
+        $author = PUserQuery::create()->findPk($userModerated->getPUserId());
+
+        if ($author->isQualified()) {
+            $profileSuffix = 'E';
+        } else {
+            $profileSuffix = 'C';
+        }
+
+        $authorUrl = null;
+        if ($author) {
+            $authorUrl = $this->router->generate('UserDetail'.$profileSuffix, array('slug' => $author->getSlug()), true);
+        }
+
+        // Update attributes depending of context
+        $attr = $this->documentService->computeDocumentContextAttributes(
+            $userModerated->getPObjectName(),
+            $userModerated->getPObjectId(),
+            $profileSuffix
+        );
+
+        $subject = $attr['subject'];
+        $title = $attr['title'];
+        $url = $attr['url'];
+        $document = $attr['document'];
+        $documentUrl = $attr['documentUrl'];
+
+        $html = $this->templating->render(
+            'PolitizrAdminBundle:Fragment\\Moderation:_notification.html.twig',
+            array(
+                'type' => $type,
+                'userModerated' => $userModerated,
+                'subject' => $subject,
+                'title' => $title,
+                'url' => $url,
+                'author' => $author,
+                'authorUrl' => $authorUrl,
+                'document' => $document,
+                'documentUrl' => $documentUrl,
+            )
+        );
+
+        return $html;
+    }
+
+    /**
+     * Moderation banned HTML rendering
+     *
+     * @param PUser $user
+     * @param string $type html or txt mail
+     * @return html
+     */
+    public function linkedBanned(PUser $user, $type)
+    {
+        $this->logger->info('*** linkedBanned');
+        // $this->logger->info('$user = '.print_r($user, true));
+        // $this->logger->info('$type = '.print_r($type, true));
+
+        $html = $this->templating->render(
+            'PolitizrAdminBundle:Fragment\\Moderation:_banned.html.twig',
+            array(
+                'type' => $type,
+                'user' => $user,
+            )
+        );
+
+        return $html;
+    }
+
+    /* ######################################################################################################## */
+    /*                                              FUNCTIONS                                                   */
+    /* ######################################################################################################## */
 
     // ****************************************  GESTION USER ******************************************* //
 
@@ -678,6 +814,71 @@ class PolitizrAdminExtension extends \Twig_Extension
     }
 
     /**
+     * Reaction's tagged tags management
+     *
+     * @param PDReaction $reaction
+     * @param int $tagTypeId
+     * @param int $zoneId CSS zone id
+     * @param boolean $newTag new tag creation authorized
+     * @param string $mode edit (default) / show
+     * @return string
+     */
+    public function adminReactionTags($reaction, $tagTypeId, $zoneId = 1, $newTag = false, $mode = 'edit')
+    {
+        $this->logger->info('*** adminReactionTags');
+        // $this->logger->info('$reaction = '.print_r($reaction, true));
+        // $this->logger->info('$tagTypeId = '.print_r($tagTypeId, true));
+        // $this->logger->info('$zoneId = '.print_r($zoneId, true));
+
+        if ('edit' === $mode) {
+            // Construction des chemins XHR
+            $xhrPathCreate = $this->templating->render(
+                'PolitizrAdminBundle:Fragment\\Xhr:_xhrPath.html.twig',
+                array(
+                    'xhrRoute' => 'ADMIN_ROUTE_TAG_DEBATE_CREATE',
+                    'xhrService' => 'admin',
+                    'xhrMethod' => 'reactionAddTag',
+                    'xhrType' => 'RETURN_HTML',
+                )
+            );
+
+            $xhrPathDelete = $this->templating->render(
+                'PolitizrAdminBundle:Fragment\\Xhr:_xhrPath.html.twig',
+                array(
+                    'xhrRoute' => 'ADMIN_ROUTE_TAG_DEBATE_DELETE',
+                    'xhrService' => 'admin',
+                    'xhrMethod' => 'reactionDeleteTag',
+                    'xhrType' => 'RETURN_BOOLEAN',
+                )
+            );
+
+            // Construction du rendu du tag
+            $html = $this->templating->render(
+                'PolitizrAdminBundle:Fragment\\Tag:_edit.html.twig',
+                array(
+                    'object' => $reaction,
+                    'tagTypeId' => $tagTypeId,
+                    'zoneId' => $zoneId,
+                    'newTag' => $newTag,
+                    'tags' => $reaction->getTags($tagTypeId),
+                    'pathCreate' => $xhrPathCreate,
+                    'pathDelete' => $xhrPathDelete,
+                )
+            );
+        } else {
+            // Construction du rendu du tag
+            $html = $this->templating->render(
+                'PolitizrAdminBundle:Fragment\\Tag:_list.html.twig',
+                array(
+                    'tags' => $reaction->getTags($tagTypeId),
+                    )
+            );
+        }
+
+        return $html;
+    }
+
+    /**
      *  Gestion des followers qualifiés d'un débat
      *
      * @param $pdDebate     PDDebate    PDDebate
@@ -882,7 +1083,7 @@ class PolitizrAdminExtension extends \Twig_Extension
                 $subject = PDDCommentQuery::create()->findPk($objectId);
 
                 if ($subject) {
-                    $title = substr($subject->getDescription(), 0, 50);
+                    $title = substr(strip_tags($subject->getDescription()), 0, 50);
                     $url = $this->router->generate('Politizr_AdminBundle_PDDComment_show', array('pk' => $objectId));
 
                     $html = sprintf('<a href="%s">%sid-%s %s</a>', $url, $label, $objectId, $title);
@@ -896,7 +1097,7 @@ class PolitizrAdminExtension extends \Twig_Extension
                 $subject = PDRCommentQuery::create()->findPk($objectId);
 
                 if ($subject) {
-                    $title = substr($subject->getDescription(), 0, 50);
+                    $title = substr(strip_tags($subject->getDescription()), 0, 50);
                     $url = $this->router->generate('Politizr_AdminBundle_PDRComment_show', array('pk' => $objectId));
 
                     $html = sprintf('<a href="%s">%sid-%s %s</a>', $url, $label, $objectId, $title);
@@ -922,6 +1123,83 @@ class PolitizrAdminExtension extends \Twig_Extension
             default:
                 throw new InconsistentDataException(sprintf('Object class %s not managed.'), $objectClass);
         }
+
+        return $html;
+    }
+
+
+    /**
+     * Create moderation alert form
+     *
+     * @param string $objectClass
+     * @param int $objectId
+     * @param int $userId
+     * @return string
+     */
+    public function adminModerationAlertNew($objectClass, $objectId, $userId)
+    {
+        $this->logger->info('*** adminModerationAlertNew');
+        // $this->logger->info('$objectClass = '.print_r($objectClass, true));
+        // $this->logger->info('$objectId = '.print_r($objectId, true));
+
+        switch($objectClass) {
+            case ObjectTypeConstants::TYPE_DEBATE:
+                break;
+            case ObjectTypeConstants::TYPE_REACTION:
+                break;
+            case ObjectTypeConstants::TYPE_DEBATE_COMMENT:
+                break;
+            case ObjectTypeConstants::TYPE_REACTION_COMMENT:
+                break;
+            case ObjectTypeConstants::TYPE_USER:
+                break;
+            default:
+                throw new InconsistentDataException(sprintf('Object class %s not managed.'), $objectClass);
+        }
+
+        $userModerated = new PMUserModerated();
+
+        $userModerated->setPUserId($userId);
+        $userModerated->setPObjectId($objectId);
+        $userModerated->setPObjectName($objectClass);
+
+        $form = $this->formFactory->create(new PMUserModeratedType(), $userModerated);
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+            'PolitizrAdminBundle:Fragment\\Moderation:_new.html.twig',
+            array(
+                'form' => $form->createView(),
+            )
+        );
+
+        return $html;
+    }
+
+    /**
+     * Moderation alert listing (historic) for a user
+     *
+     * @param int $userId
+     * @return string
+     */
+    public function adminModerationAlertListing($userId)
+    {
+        $this->logger->info('*** adminModerationAlertListing');
+        // $this->logger->info('$objectClass = '.print_r($objectClass, true));
+        // $this->logger->info('$objectId = '.print_r($objectId, true));
+
+        $moderations = PMUserModeratedQuery::create()
+                                ->filterByPUserId($userId)
+                                ->orderByCreatedAt('desc')
+                                ->find();
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+            'PolitizrAdminBundle:Fragment\\Moderation:_listing.html.twig',
+            array(
+                'moderations' => $moderations,
+            )
+        );
 
         return $html;
     }

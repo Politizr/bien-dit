@@ -51,7 +51,6 @@ function timelineList(init, offset) {
                 }
 
                 // maj DOM onSuccess
-                stickyDate();
                 fullImgLiquid();
             }
             $('#ajaxGlobalLoader').hide();
@@ -103,7 +102,6 @@ function timelineUserList(userId, init, offset) {
                 }
 
                 // maj DOM onSuccess
-                // stickyDate();
                 fullImgLiquid();
             }
             $('#ajaxGlobalLoader').hide();

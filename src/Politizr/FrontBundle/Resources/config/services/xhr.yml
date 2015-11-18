@@ -22,6 +22,7 @@ services:
         arguments:
             - @security.token_storage
             - @templating
+            - @politizr.functional.tag
             - @logger
 
     politizr.xhr.notification:
@@ -80,9 +81,9 @@ services:
     politizr.xhr.monitoring:
         class: Politizr\FrontBundle\Lib\Xhr\XhrMonitoring
         arguments:
-        arguments:
             - @security.token_storage
             - @templating
             - @form.factory
+            - @event_dispatcher
             - @logger
 

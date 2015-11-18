@@ -44,6 +44,7 @@ class PTagArchiveTableMap extends TableMap
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addColumn('p_t_tag_type_id', 'PTTagTypeId', 'INTEGER', true, null, null);
+        $this->addColumn('p_t_parent_id', 'PTParentId', 'INTEGER', false, null, null);
         $this->addColumn('p_user_id', 'PUserId', 'INTEGER', false, null, null);
         $this->addColumn('title', 'Title', 'VARCHAR', false, 150, null);
         $this->addColumn('online', 'Online', 'BOOLEAN', false, 1, null);

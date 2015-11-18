@@ -27,7 +27,6 @@ use Politizr\FrontBundle\Form\Type\PUserContactType;
 use Politizr\FrontBundle\Form\Type\PUserElectedRegisterType;
 use Politizr\FrontBundle\Form\Type\PUserElectedMigrationType;
 
-use Politizr\FrontBundle\Form\Type\LoginType;
 use Politizr\FrontBundle\Form\Type\LostPasswordType;
 
 use Politizr\FrontBundle\Form\Type\POrderSubscriptionType;
@@ -50,31 +49,33 @@ class SecurityController extends Controller
 
     /**
      * Login
+     * http://symfony.com/doc/current/cookbook/security/form_login_setup.html
      */
     public function loginAction()
     {
         $logger = $this->get('logger');
         $logger->info('*** loginAction');
 
-        // Function process
-        $formLogin = $this->createForm(new LoginType());
+        $authenticationUtils = $this->get('security.authentication_utils');
+
+        // get the login error if there is one
+        $error = $authenticationUtils->getLastAuthenticationError();
+
+        // last username entered by the user
+        $lastUsername = $authenticationUtils->getLastUsername();
+
+        // lost password form
         $formLostPassword = $this->createForm(new LostPasswordType());
 
-        return $this->render('PolitizrFrontBundle:Security:login.html.twig', array(
-            'formLogin' => $formLogin->createView(),
-            'formLostPassword' => $formLostPassword->createView(),
-        ));
-    }
-
-    /**
-     * Logout
-     */
-    public function logoutAction()
-    {
-        $this->get('session')->clear();
-        $this->get('security.context')->setToken(null);
-
-        return $this->redirect($this->generateUrl('Homepage'));
+        return $this->render(
+            'PolitizrFrontBundle:Security:login.html.twig',
+            array(
+                // last username entered by the user
+                'last_username' => $lastUsername,
+                'error'         => $error,
+                'formLostPassword' => $formLostPassword->createView(),
+            )
+        );
     }
 
     /**

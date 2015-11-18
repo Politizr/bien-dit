@@ -38,7 +38,7 @@
                             {{ debate | docTags }}
                         </div>
                         <div class="postSummaryTitle">
-                            <a href="{{ path('DebateDetail', { 'slug': debate.slug }) }}">
+                            <a href="{{ path('DebateDetail'~profileSuffix(), { 'slug': debate.slug }) }}">
                                 {{ debate.title }}
                             </a>
                         </div>
@@ -60,6 +60,6 @@
         </div>
     {% endspaceless %}
     <div class="timelineItemFooter">
-        <a href="{{ path('DebateDetail', { 'slug': debate.slug }) }}"><i class="iconGoTo"></i>Afficher</a>
+        <a href="{{ path('DebateDetail'~profileSuffix(), { 'slug': debate.slug }) }}"><i class="iconGoTo"></i>Afficher</a>
     </div>
 </div>

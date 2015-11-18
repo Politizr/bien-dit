@@ -1,5 +1,35 @@
 {% extends_admingenerated "PolitizrAdminBundle:PUserEdit:form.html.twig" %}
 
+{# Image block #}
+{% block form_row_block_back_file_name %}
+    <div class="form-group">
+        <label class="control-label">Image de fond</label>
+        <div class="show-image">
+            {% if PUser.BackFileName %}
+                {% include 'PolitizrAdminBundle:Fragment:_image.html.twig' with {'path': constant('Politizr\\Constant\\PathConstants::USER_UPLOAD_WEB_PATH') ~ PUser.BackFileName} %}
+            {% else %}
+                Aucune image
+            {% endif %}
+        </div>
+        <i>Note: gestion de l'upload depuis l'écran "Montrer"</i>
+    </div>
+{% endblock %}
+
+{# Image block #}
+{% block form_row_block_file_name %}
+    <div class="form-group">
+        <label class="control-label">Image</label>
+        <div class="show-image">
+            {% if PUser.FileName %}
+                {% include 'PolitizrAdminBundle:Fragment:_image.html.twig' with {'path': constant('Politizr\\Constant\\PathConstants::USER_UPLOAD_WEB_PATH') ~ PUser.FileName} %}
+            {% else %}
+                Aucune image
+            {% endif %}
+        </div>
+        <i>Note: gestion de l'upload depuis l'écran "Montrer"</i>
+    </div>
+{% endblock %}
+
 {# User's tag #}
 {% block form_row_block_tags_public %}
     {{ adminUserTags(PUser, null, 1, true) }}

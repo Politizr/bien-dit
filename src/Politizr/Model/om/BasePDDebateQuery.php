@@ -21,6 +21,7 @@ use Politizr\Model\PDDebate;
 use Politizr\Model\PDDebatePeer;
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReaction;
+use Politizr\Model\PMDebateHistoric;
 use Politizr\Model\PTag;
 use Politizr\Model\PUFollowDD;
 use Politizr\Model\PUser;
@@ -40,6 +41,9 @@ use Politizr\Model\PUser;
  * @method PDDebateQuery orderByPublishedBy($order = Criteria::ASC) Order by the published_by column
  * @method PDDebateQuery orderByFavorite($order = Criteria::ASC) Order by the favorite column
  * @method PDDebateQuery orderByOnline($order = Criteria::ASC) Order by the online column
+ * @method PDDebateQuery orderByModerated($order = Criteria::ASC) Order by the moderated column
+ * @method PDDebateQuery orderByModeratedPartial($order = Criteria::ASC) Order by the moderated_partial column
+ * @method PDDebateQuery orderByModeratedAt($order = Criteria::ASC) Order by the moderated_at column
  * @method PDDebateQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PDDebateQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  * @method PDDebateQuery orderBySlug($order = Criteria::ASC) Order by the slug column
@@ -58,6 +62,9 @@ use Politizr\Model\PUser;
  * @method PDDebateQuery groupByPublishedBy() Group by the published_by column
  * @method PDDebateQuery groupByFavorite() Group by the favorite column
  * @method PDDebateQuery groupByOnline() Group by the online column
+ * @method PDDebateQuery groupByModerated() Group by the moderated column
+ * @method PDDebateQuery groupByModeratedPartial() Group by the moderated_partial column
+ * @method PDDebateQuery groupByModeratedAt() Group by the moderated_at column
  * @method PDDebateQuery groupByCreatedAt() Group by the created_at column
  * @method PDDebateQuery groupByUpdatedAt() Group by the updated_at column
  * @method PDDebateQuery groupBySlug() Group by the slug column
@@ -86,6 +93,10 @@ use Politizr\Model\PUser;
  * @method PDDebateQuery rightJoinPDDTaggedT($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PDDTaggedT relation
  * @method PDDebateQuery innerJoinPDDTaggedT($relationAlias = null) Adds a INNER JOIN clause to the query using the PDDTaggedT relation
  *
+ * @method PDDebateQuery leftJoinPMDebateHistoric($relationAlias = null) Adds a LEFT JOIN clause to the query using the PMDebateHistoric relation
+ * @method PDDebateQuery rightJoinPMDebateHistoric($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PMDebateHistoric relation
+ * @method PDDebateQuery innerJoinPMDebateHistoric($relationAlias = null) Adds a INNER JOIN clause to the query using the PMDebateHistoric relation
+ *
  * @method PDDebate findOne(PropelPDO $con = null) Return the first PDDebate matching the query
  * @method PDDebate findOneOrCreate(PropelPDO $con = null) Return the first PDDebate matching the query, or a new PDDebate object populated from the query conditions when no match is found
  *
@@ -102,6 +113,9 @@ use Politizr\Model\PUser;
  * @method PDDebate findOneByPublishedBy(string $published_by) Return the first PDDebate filtered by the published_by column
  * @method PDDebate findOneByFavorite(boolean $favorite) Return the first PDDebate filtered by the favorite column
  * @method PDDebate findOneByOnline(boolean $online) Return the first PDDebate filtered by the online column
+ * @method PDDebate findOneByModerated(boolean $moderated) Return the first PDDebate filtered by the moderated column
+ * @method PDDebate findOneByModeratedPartial(boolean $moderated_partial) Return the first PDDebate filtered by the moderated_partial column
+ * @method PDDebate findOneByModeratedAt(string $moderated_at) Return the first PDDebate filtered by the moderated_at column
  * @method PDDebate findOneByCreatedAt(string $created_at) Return the first PDDebate filtered by the created_at column
  * @method PDDebate findOneByUpdatedAt(string $updated_at) Return the first PDDebate filtered by the updated_at column
  * @method PDDebate findOneBySlug(string $slug) Return the first PDDebate filtered by the slug column
@@ -120,6 +134,9 @@ use Politizr\Model\PUser;
  * @method array findByPublishedBy(string $published_by) Return PDDebate objects filtered by the published_by column
  * @method array findByFavorite(boolean $favorite) Return PDDebate objects filtered by the favorite column
  * @method array findByOnline(boolean $online) Return PDDebate objects filtered by the online column
+ * @method array findByModerated(boolean $moderated) Return PDDebate objects filtered by the moderated column
+ * @method array findByModeratedPartial(boolean $moderated_partial) Return PDDebate objects filtered by the moderated_partial column
+ * @method array findByModeratedAt(string $moderated_at) Return PDDebate objects filtered by the moderated_at column
  * @method array findByCreatedAt(string $created_at) Return PDDebate objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PDDebate objects filtered by the updated_at column
  * @method array findBySlug(string $slug) Return PDDebate objects filtered by the slug column
@@ -235,7 +252,7 @@ abstract class BasePDDebateQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_user_id`, `title`, `file_name`, `copyright`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `created_at`, `updated_at`, `slug` FROM `p_d_debate` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_user_id`, `title`, `file_name`, `copyright`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `moderated`, `moderated_partial`, `moderated_at`, `created_at`, `updated_at`, `slug` FROM `p_d_debate` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -807,6 +824,103 @@ abstract class BasePDDebateQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the moderated column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByModerated(true); // WHERE moderated = true
+     * $query->filterByModerated('yes'); // WHERE moderated = true
+     * </code>
+     *
+     * @param     boolean|string $moderated The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDDebateQuery The current query, for fluid interface
+     */
+    public function filterByModerated($moderated = null, $comparison = null)
+    {
+        if (is_string($moderated)) {
+            $moderated = in_array(strtolower($moderated), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PDDebatePeer::MODERATED, $moderated, $comparison);
+    }
+
+    /**
+     * Filter the query on the moderated_partial column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByModeratedPartial(true); // WHERE moderated_partial = true
+     * $query->filterByModeratedPartial('yes'); // WHERE moderated_partial = true
+     * </code>
+     *
+     * @param     boolean|string $moderatedPartial The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDDebateQuery The current query, for fluid interface
+     */
+    public function filterByModeratedPartial($moderatedPartial = null, $comparison = null)
+    {
+        if (is_string($moderatedPartial)) {
+            $moderatedPartial = in_array(strtolower($moderatedPartial), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PDDebatePeer::MODERATED_PARTIAL, $moderatedPartial, $comparison);
+    }
+
+    /**
+     * Filter the query on the moderated_at column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByModeratedAt('2011-03-14'); // WHERE moderated_at = '2011-03-14'
+     * $query->filterByModeratedAt('now'); // WHERE moderated_at = '2011-03-14'
+     * $query->filterByModeratedAt(array('max' => 'yesterday')); // WHERE moderated_at < '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $moderatedAt The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDDebateQuery The current query, for fluid interface
+     */
+    public function filterByModeratedAt($moderatedAt = null, $comparison = null)
+    {
+        if (is_array($moderatedAt)) {
+            $useMinMax = false;
+            if (isset($moderatedAt['min'])) {
+                $this->addUsingAlias(PDDebatePeer::MODERATED_AT, $moderatedAt['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($moderatedAt['max'])) {
+                $this->addUsingAlias(PDDebatePeer::MODERATED_AT, $moderatedAt['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PDDebatePeer::MODERATED_AT, $moderatedAt, $comparison);
+    }
+
+    /**
      * Filter the query on the created_at column
      *
      * Example usage:
@@ -1291,6 +1405,80 @@ abstract class BasePDDebateQuery extends ModelCriteria
         return $this
             ->joinPDDTaggedT($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'PDDTaggedT', '\Politizr\Model\PDDTaggedTQuery');
+    }
+
+    /**
+     * Filter the query by a related PMDebateHistoric object
+     *
+     * @param   PMDebateHistoric|PropelObjectCollection $pMDebateHistoric  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PDDebateQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPMDebateHistoric($pMDebateHistoric, $comparison = null)
+    {
+        if ($pMDebateHistoric instanceof PMDebateHistoric) {
+            return $this
+                ->addUsingAlias(PDDebatePeer::ID, $pMDebateHistoric->getPDDebateId(), $comparison);
+        } elseif ($pMDebateHistoric instanceof PropelObjectCollection) {
+            return $this
+                ->usePMDebateHistoricQuery()
+                ->filterByPrimaryKeys($pMDebateHistoric->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPMDebateHistoric() only accepts arguments of type PMDebateHistoric or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PMDebateHistoric relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PDDebateQuery The current query, for fluid interface
+     */
+    public function joinPMDebateHistoric($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PMDebateHistoric');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PMDebateHistoric');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PMDebateHistoric relation PMDebateHistoric object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PMDebateHistoricQuery A secondary query class using the current class as primary query
+     */
+    public function usePMDebateHistoricQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinPMDebateHistoric($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PMDebateHistoric', '\Politizr\Model\PMDebateHistoricQuery');
     }
 
     /**

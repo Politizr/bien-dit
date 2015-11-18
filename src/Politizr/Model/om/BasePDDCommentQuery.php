@@ -19,6 +19,7 @@ use Politizr\Model\PDDComment;
 use Politizr\Model\PDDCommentPeer;
 use Politizr\Model\PDDCommentQuery;
 use Politizr\Model\PDDebate;
+use Politizr\Model\PMDCommentHistoric;
 use Politizr\Model\PUser;
 
 /**
@@ -32,6 +33,9 @@ use Politizr\Model\PUser;
  * @method PDDCommentQuery orderByPublishedAt($order = Criteria::ASC) Order by the published_at column
  * @method PDDCommentQuery orderByPublishedBy($order = Criteria::ASC) Order by the published_by column
  * @method PDDCommentQuery orderByOnline($order = Criteria::ASC) Order by the online column
+ * @method PDDCommentQuery orderByModerated($order = Criteria::ASC) Order by the moderated column
+ * @method PDDCommentQuery orderByModeratedPartial($order = Criteria::ASC) Order by the moderated_partial column
+ * @method PDDCommentQuery orderByModeratedAt($order = Criteria::ASC) Order by the moderated_at column
  * @method PDDCommentQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PDDCommentQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  *
@@ -45,6 +49,9 @@ use Politizr\Model\PUser;
  * @method PDDCommentQuery groupByPublishedAt() Group by the published_at column
  * @method PDDCommentQuery groupByPublishedBy() Group by the published_by column
  * @method PDDCommentQuery groupByOnline() Group by the online column
+ * @method PDDCommentQuery groupByModerated() Group by the moderated column
+ * @method PDDCommentQuery groupByModeratedPartial() Group by the moderated_partial column
+ * @method PDDCommentQuery groupByModeratedAt() Group by the moderated_at column
  * @method PDDCommentQuery groupByCreatedAt() Group by the created_at column
  * @method PDDCommentQuery groupByUpdatedAt() Group by the updated_at column
  *
@@ -60,6 +67,10 @@ use Politizr\Model\PUser;
  * @method PDDCommentQuery rightJoinPDDebate($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PDDebate relation
  * @method PDDCommentQuery innerJoinPDDebate($relationAlias = null) Adds a INNER JOIN clause to the query using the PDDebate relation
  *
+ * @method PDDCommentQuery leftJoinPMDCommentHistoric($relationAlias = null) Adds a LEFT JOIN clause to the query using the PMDCommentHistoric relation
+ * @method PDDCommentQuery rightJoinPMDCommentHistoric($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PMDCommentHistoric relation
+ * @method PDDCommentQuery innerJoinPMDCommentHistoric($relationAlias = null) Adds a INNER JOIN clause to the query using the PMDCommentHistoric relation
+ *
  * @method PDDComment findOne(PropelPDO $con = null) Return the first PDDComment matching the query
  * @method PDDComment findOneOrCreate(PropelPDO $con = null) Return the first PDDComment matching the query, or a new PDDComment object populated from the query conditions when no match is found
  *
@@ -72,6 +83,9 @@ use Politizr\Model\PUser;
  * @method PDDComment findOneByPublishedAt(string $published_at) Return the first PDDComment filtered by the published_at column
  * @method PDDComment findOneByPublishedBy(string $published_by) Return the first PDDComment filtered by the published_by column
  * @method PDDComment findOneByOnline(boolean $online) Return the first PDDComment filtered by the online column
+ * @method PDDComment findOneByModerated(boolean $moderated) Return the first PDDComment filtered by the moderated column
+ * @method PDDComment findOneByModeratedPartial(boolean $moderated_partial) Return the first PDDComment filtered by the moderated_partial column
+ * @method PDDComment findOneByModeratedAt(string $moderated_at) Return the first PDDComment filtered by the moderated_at column
  * @method PDDComment findOneByCreatedAt(string $created_at) Return the first PDDComment filtered by the created_at column
  * @method PDDComment findOneByUpdatedAt(string $updated_at) Return the first PDDComment filtered by the updated_at column
  *
@@ -85,6 +99,9 @@ use Politizr\Model\PUser;
  * @method array findByPublishedAt(string $published_at) Return PDDComment objects filtered by the published_at column
  * @method array findByPublishedBy(string $published_by) Return PDDComment objects filtered by the published_by column
  * @method array findByOnline(boolean $online) Return PDDComment objects filtered by the online column
+ * @method array findByModerated(boolean $moderated) Return PDDComment objects filtered by the moderated column
+ * @method array findByModeratedPartial(boolean $moderated_partial) Return PDDComment objects filtered by the moderated_partial column
+ * @method array findByModeratedAt(string $moderated_at) Return PDDComment objects filtered by the moderated_at column
  * @method array findByCreatedAt(string $created_at) Return PDDComment objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PDDComment objects filtered by the updated_at column
  */
@@ -199,7 +216,7 @@ abstract class BasePDDCommentQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_user_id`, `p_d_debate_id`, `description`, `paragraph_no`, `note_pos`, `note_neg`, `published_at`, `published_by`, `online`, `created_at`, `updated_at` FROM `p_d_d_comment` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_user_id`, `p_d_debate_id`, `description`, `paragraph_no`, `note_pos`, `note_neg`, `published_at`, `published_by`, `online`, `moderated`, `moderated_partial`, `moderated_at`, `created_at`, `updated_at` FROM `p_d_d_comment` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -674,6 +691,103 @@ abstract class BasePDDCommentQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the moderated column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByModerated(true); // WHERE moderated = true
+     * $query->filterByModerated('yes'); // WHERE moderated = true
+     * </code>
+     *
+     * @param     boolean|string $moderated The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDDCommentQuery The current query, for fluid interface
+     */
+    public function filterByModerated($moderated = null, $comparison = null)
+    {
+        if (is_string($moderated)) {
+            $moderated = in_array(strtolower($moderated), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PDDCommentPeer::MODERATED, $moderated, $comparison);
+    }
+
+    /**
+     * Filter the query on the moderated_partial column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByModeratedPartial(true); // WHERE moderated_partial = true
+     * $query->filterByModeratedPartial('yes'); // WHERE moderated_partial = true
+     * </code>
+     *
+     * @param     boolean|string $moderatedPartial The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDDCommentQuery The current query, for fluid interface
+     */
+    public function filterByModeratedPartial($moderatedPartial = null, $comparison = null)
+    {
+        if (is_string($moderatedPartial)) {
+            $moderatedPartial = in_array(strtolower($moderatedPartial), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PDDCommentPeer::MODERATED_PARTIAL, $moderatedPartial, $comparison);
+    }
+
+    /**
+     * Filter the query on the moderated_at column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByModeratedAt('2011-03-14'); // WHERE moderated_at = '2011-03-14'
+     * $query->filterByModeratedAt('now'); // WHERE moderated_at = '2011-03-14'
+     * $query->filterByModeratedAt(array('max' => 'yesterday')); // WHERE moderated_at < '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $moderatedAt The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDDCommentQuery The current query, for fluid interface
+     */
+    public function filterByModeratedAt($moderatedAt = null, $comparison = null)
+    {
+        if (is_array($moderatedAt)) {
+            $useMinMax = false;
+            if (isset($moderatedAt['min'])) {
+                $this->addUsingAlias(PDDCommentPeer::MODERATED_AT, $moderatedAt['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($moderatedAt['max'])) {
+                $this->addUsingAlias(PDDCommentPeer::MODERATED_AT, $moderatedAt['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PDDCommentPeer::MODERATED_AT, $moderatedAt, $comparison);
+    }
+
+    /**
      * Filter the query on the created_at column
      *
      * Example usage:
@@ -909,6 +1023,80 @@ abstract class BasePDDCommentQuery extends ModelCriteria
         return $this
             ->joinPDDebate($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'PDDebate', '\Politizr\Model\PDDebateQuery');
+    }
+
+    /**
+     * Filter the query by a related PMDCommentHistoric object
+     *
+     * @param   PMDCommentHistoric|PropelObjectCollection $pMDCommentHistoric  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PDDCommentQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPMDCommentHistoric($pMDCommentHistoric, $comparison = null)
+    {
+        if ($pMDCommentHistoric instanceof PMDCommentHistoric) {
+            return $this
+                ->addUsingAlias(PDDCommentPeer::ID, $pMDCommentHistoric->getPDDCommentId(), $comparison);
+        } elseif ($pMDCommentHistoric instanceof PropelObjectCollection) {
+            return $this
+                ->usePMDCommentHistoricQuery()
+                ->filterByPrimaryKeys($pMDCommentHistoric->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPMDCommentHistoric() only accepts arguments of type PMDCommentHistoric or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PMDCommentHistoric relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PDDCommentQuery The current query, for fluid interface
+     */
+    public function joinPMDCommentHistoric($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PMDCommentHistoric');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PMDCommentHistoric');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PMDCommentHistoric relation PMDCommentHistoric object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PMDCommentHistoricQuery A secondary query class using the current class as primary query
+     */
+    public function usePMDCommentHistoricQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinPMDCommentHistoric($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PMDCommentHistoric', '\Politizr\Model\PMDCommentHistoricQuery');
     }
 
     /**

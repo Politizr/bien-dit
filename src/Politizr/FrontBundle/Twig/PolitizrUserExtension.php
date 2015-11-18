@@ -36,6 +36,8 @@ class PolitizrUserExtension extends \Twig_Extension
     private $templating;
     private $securityTokenStorage;
     private $securityAuthorizationChecker;
+    private $documentService;
+    private $globalTools;
 
     private $user;
 
@@ -47,10 +49,16 @@ class PolitizrUserExtension extends \Twig_Extension
         $this->sc = $serviceContainer;
         
         $this->logger = $serviceContainer->get('logger');
+        
         $this->router = $serviceContainer->get('router');
         $this->templating = $serviceContainer->get('templating');
+        
         $this->securityContext = $serviceContainer->get('security.context');
-        $this->securityAuthorizationChecker =$serviceContainer->get('security.authorization_checker');
+        $this->securityAuthorizationChecker = $serviceContainer->get('security.authorization_checker');
+
+        $this->documentService = $serviceContainer->get('politizr.functional.document');
+
+        $this->globalTools = $serviceContainer->get('politizr.tools.global');
 
         // get connected user
         $token = $this->securityContext->getToken();
@@ -154,6 +162,7 @@ class PolitizrUserExtension extends \Twig_Extension
         return array(
             'isGrantedC'  => new \Twig_Function_Method($this, 'isGrantedC', array('is_safe' => array('html'))),
             'isGrantedE'  => new \Twig_Function_Method($this, 'isGrantedE', array('is_safe' => array('html'))),
+            'profileSuffix'  => new \Twig_Function_Method($this, 'profileSuffix', array('is_safe' => array('html'))),
         );
     }
 
@@ -191,6 +200,8 @@ class PolitizrUserExtension extends \Twig_Extension
         // $this->logger->info('*** photo');
         // $this->logger->info('$user = '.print_r($user, true));
 
+        $profileSuffix = $this->globalTools->computeProfileSuffix();
+
         $path = 'bundles/politizrfront/images/'.$default;
         if ($user && $fileName = $user->getFileName()) {
             $path = 'uploads/users/'.$fileName;
@@ -204,7 +215,7 @@ class PolitizrUserExtension extends \Twig_Extension
         // URL detail
         $url = null;
         if ($withLink && $user) {
-            $url = $this->router->generate('UserDetail', array('slug' => $user->getSlug()));
+            $url = $this->router->generate('UserDetail'.$profileSuffix, array('slug' => $user->getSlug()));
         }
 
         // Construction du rendu du tag
@@ -225,9 +236,11 @@ class PolitizrUserExtension extends \Twig_Extension
      * Load an <img> html tag with the back profile photo of user and apply it a filter.
      *
      * @param PUser $user
+     * @param string $filterName
+     * @param boolean $withShadow
      * @return html
      */
-    public function photoBack(PUser $user, $filterName = 'user_bio_back')
+    public function photoBack(PUser $user, $filterName = 'user_bio_back', $withShadow = true)
     {
         // $this->logger->info('*** photoBack');
         // $this->logger->info('$user = '.print_r($user, true));
@@ -244,6 +257,7 @@ class PolitizrUserExtension extends \Twig_Extension
                 'title' => $user->getFullName(),
                 'path' => $path,
                 'filterName' => $filterName,
+                'withShadow' => $withShadow,
             )
         );
 
@@ -390,90 +404,33 @@ class PolitizrUserExtension extends \Twig_Extension
         $this->logger->info('$notification = '.print_r($notification, true));
         $this->logger->info('$type = '.print_r($type, true));
 
+        $profileSuffix = $this->globalTools->computeProfileSuffix();
+
         // absolute URL for email notif
         $absolute = false;
         if (NotificationConstants::TYPE_EMAIL === $type) {
             $absolute = true;
         }
 
-        // Récupération de l'objet d'interaction
-        $title = '';
-        $url = '#';
-        $document = null;
-        $documentUrl = '#';
-        switch ($notification->getPObjectName()) {
-            case ObjectTypeConstants::TYPE_DEBATE:
-                $subject = PDDebateQuery::create()->findPk($notification->getPObjectId());
+        // Update attributes depending of context
+        $attr = $this->documentService->computeDocumentContextAttributes(
+            $notification->getPObjectName(),
+            $notification->getPObjectId(),
+            $profileSuffix
+        );
 
-                if ($subject) {
-                    $title = $subject->getTitle();
-                    $url = $this->router->generate('DebateDetail', array('slug' => $subject->getSlug()), $absolute);
-                }
-                break;
-            case ObjectTypeConstants::TYPE_REACTION:
-                $subject = PDReactionQuery::create()->findPk($notification->getPObjectId());
-                
-                if ($subject) {
-                    $title = $subject->getTitle();
-                    $url = $this->router->generate('ReactionDetail', array('slug' => $subject->getSlug()), $absolute);
-
-                    // Document parent associée à la réaction
-                    if ($subject->getTreeLevel() > 1) {
-                        // Réaction parente
-                        $document = $subject->getParent();
-                        $documentUrl = $this->router->generate('ReactionDetail', array('slug' => $document->getSlug()), $absolute);
-                    } else {
-                        // Débat
-                        $document = $subject->getDebate();
-                        $documentUrl = $this->router->generate('DebateDetail', array('slug' => $document->getSlug()), $absolute);
-                    }
-                }
-
-                break;
-            case ObjectTypeConstants::TYPE_DEBATE_COMMENT:
-                $subject = PDDCommentQuery::create()->findPk($notification->getPObjectId());
-                
-                if ($subject) {
-                    $document = $subject->getPDocument();
-                    $title = $subject->getDescription();
-                    $url = $this->router->generate('DebateDetail', array('slug' => $document->getSlug()), $absolute) . '#p-' . $subject->getParagraphNo();
-                    $documentUrl = $this->router->generate('DebateDetail', array('slug' => $document->getSlug()), $absolute);
-                }
-                break;
-            case ObjectTypeConstants::TYPE_REACTION_COMMENT:
-                $subject = PDRCommentQuery::create()->findPk($notification->getPObjectId());
-                
-                if ($subject) {
-                    $document = $subject->getPDocument();
-                    $title = $subject->getDescription();
-                    $url = $this->router->generate('ReactionDetail', array('slug' => $document->getSlug()), $absolute) . '#p-' . $subject->getParagraphNo();
-                    $documentUrl = $this->router->generate('ReactionDetail', array('slug' => $document->getSlug()), $absolute);
-                }
-                break;
-            case ObjectTypeConstants::TYPE_USER:
-                $subject = PUserQuery::create()->findPk($notification->getPObjectId());
-
-                if ($subject) {
-                    $title = $subject->getFirstname().' '.$subject->getName();
-                    $url = $this->router->generate('UserDetail', array('slug' => $subject->getSlug()), $absolute);
-                }
-                break;
-            case ObjectTypeConstants::TYPE_BADGE:
-                $subject = PRBadgeQuery::create()->findPk($notification->getPObjectId());
-
-                if ($subject) {
-                    $title = $subject->getTitle();
-                }
-                
-                break;
-        }
+        $subject = $attr['subject'];
+        $title = $attr['title'];
+        $url = $attr['url'];
+        $document = $attr['document'];
+        $documentUrl = $attr['documentUrl'];
 
         // Récupération de l'auteur de l'interaction
         $author = PUserQuery::create()->findPk($notification->getPAuthorUserId());
 
         $authorUrl = null;
         if ($author) {
-            $authorUrl = $this->router->generate('UserDetail', array('slug' => $author->getSlug()), $absolute);
+            $authorUrl = $this->router->generate('UserDetail'.$profileSuffix, array('slug' => $author->getSlug()), $absolute);
         }
 
         // Screen / Email rendering
@@ -663,11 +620,9 @@ class PolitizrUserExtension extends \Twig_Extension
     /* ######################################################################################################## */
 
     /**
-     *  Test l'autorisation d'un user citoyen et de l'état de son inscription
+     * Test current user granted ROLE_ELECTED
      *
-     * @param $user         PUser à tester
-     *
-     * @return string
+     * @return boolean
      */
     public function isGrantedC()
     {
@@ -684,11 +639,9 @@ class PolitizrUserExtension extends \Twig_Extension
 
 
     /**
-     * Test l'autorisation d'un user débatteur et de l'état de son inscription
+     * Test current user granted ROLE_ELECTED
      *
-     * @param $user         PUser à tester
-     *
-     * @return string
+     * @return boolean
      */
     public function isGrantedE()
     {
@@ -702,6 +655,18 @@ class PolitizrUserExtension extends \Twig_Extension
         }
 
         return false;
+    }
+
+    /**
+     * Get suffix profile for routing / profiles
+     *
+     * @return string
+     */
+    public function profileSuffix()
+    {
+        $this->logger->info('*** profileSuffix');
+
+        return $this->globalTools->computeProfileSuffix();
     }
 
     /**

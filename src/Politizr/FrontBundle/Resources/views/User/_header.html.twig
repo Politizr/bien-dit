@@ -1,7 +1,7 @@
 <div class="pad40">
-    <div id="profileSummaryHeader">
+    <div class="profileSummaryHeader">
         {% if app.user.id == user.id %}
-            <div id="profileReputationCounter" action="modalReputation">
+            <div class="profileReputationCounter" action="modalReputation">
                 <i class="iconCup"></i>
                 {{ user.reputationScore }} points de réputation
             </div>
@@ -9,24 +9,24 @@
                 <i class="iconInfo" action="confidentialToggle"></i><div class="confidentialInfo" style="display: none;">Cette information est privée</div>
             {% endif %}
         {% elseif not user.qualified %}
-            <div id="profileReputationCounter">
+            <div class="profileReputationCounter">
                 <i class="iconCup"></i>
                 {{ user.reputationScore }} points de réputation
             </div>
         {% endif %}
-        <div id="profileFollowersCounter" action="modalFollowers" model="PUser" slug="{{ user.slug }}">
+        <div class="profileFollowersCounter" action="modalFollowers" model="PUser" slug="{{ user.slug }}">
             {{ user.countFollowers }} abonnés
         </div>
     </div>
-    <div id="profileSummaryFooter">
+    <div class="profileSummaryFooter">
         <div class="avatar60">
             {{ user | photo('user_60') }}
         </div>
-        <div id="profileNameHolder">
-            <div id="profileNameBottom">
-                <div id="profileName">
+        <div class="profileNameHolder">
+            <div class="profileNameBottom">
+                <div class="profileName">
                     {% if withUrlInName %}
-                        <a href="{{ path('UserDetail', { 'slug': user.slug }) }}" class="modalItemShow">
+                        <a href="{{ path('UserDetail'~profileSuffix(), { 'slug': user.slug }) }}">
                             {{ user }}
                         </a>
                     {% else %}
@@ -34,7 +34,7 @@
                     {% endif %}
                     {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with { 'user': user } only %}
                 </div>
-                <div id="profileSocialLinks">
+                <div class="profileSocialLinks">
                     {% if user.facebook is not empty %}
                         <a href="{{ user.facebook }}" target="_blank"><i class="iconSocialFb"></i></a>
                     {% endif %}
@@ -47,7 +47,12 @@
                 </div>
             </div>
         </div>
-        <div id="profileSubtitle">{{ user.subtitle | purify }}</div>
+        <div class="profileSubtitle">{{ user.subtitle | purify }}</div>
+        {% if withPublicTags %}
+            <div class="profilePublicTagList">
+                {{ user | userTags }}
+            </div>
+        {% endif %}
     </div>
 </div>                      
 <div class="profileHeaderIllustration">

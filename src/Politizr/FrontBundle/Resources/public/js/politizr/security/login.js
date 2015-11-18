@@ -17,34 +17,9 @@ $("body").on("click", "[action='showLoginBox']", function(e) {
  * Connexion
  */
 $("body").on("click", "[action='login']", function(e) {
-    // console.log('*** click login');
-
-    var xhrPath = getXhrPath(
-        ROUTE_SECURITY_LOGIN_CHECK,
-        'security',
-        'loginCheck',
-        RETURN_HTML
-        );
-
-    $.ajax({
-        type: 'POST',
-        url: xhrPath,
-        data: $("#formLogin").serialize(),
-        dataType: 'json',
-        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
-        statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
-        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
-        success: function(data) {
-            if (data['error']) {
-                $('#ajaxGlobalLoader').hide();
-                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
-                $('#infoBoxHolder .boxError').show();
-            } else {
-                // redirection
-                window.location = data['redirectUrl'];
-            }
-        }
-    });
+    console.log('*** click login');
+    $('#ajaxGlobalLoader').show();
+    $("#formLogin").submit();
 });
 
 /**

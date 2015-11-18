@@ -1,15 +1,24 @@
 services:
     politzr.listener.email:
         class:      Politizr\FrontBundle\Listener\EmailListener
-        arguments:  [ @mailer, @templating, @politizr.manager.monitoring, @logger, "%contact_email%", "%support_email%" ]
+        arguments:
+            - @mailer
+            - @templating
+            - @politizr.manager.monitoring
+            - @logger
+            - "%contact_email%"
+            - "%support_email%"
         tags:
             - { name: kernel.event_listener, event: lost_password_email }
             - { name: kernel.event_listener, event: upd_password_email }
+            - { name: kernel.event_listener, event: monitoring_email }
             - { name: kernel.event_listener, event: notification_email }
 
     politzr.listener.notification:
         class:      Politizr\FrontBundle\Listener\NotificationListener
-        arguments:  [ @logger, @event_dispatcher ]
+        arguments:
+            - @event_dispatcher
+            - @logger
         tags:
             - { name: kernel.event_listener, event: n_note_pos }
             - { name: kernel.event_listener, event: n_note_neg }
@@ -61,6 +70,9 @@ services:
 
     politizr.listener.kernel:
         class:      Politizr\FrontBundle\Listener\ExceptionListener
-        arguments:  [ @politizr.manager.monitoring, @logger ]
+        arguments:  
+            - @security.token_storage
+            - @politizr.manager.monitoring
+            - @logger
         tags:
             - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }

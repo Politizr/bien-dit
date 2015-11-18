@@ -60,6 +60,26 @@ Politizr_AdminBundle_PDReaction_Comments:
     pattern:  /PDReaction/{pk}/comments
     defaults: { _controller: PolitizrAdminBundle:PDReaction/Actions:comments }
 
+# Archivage
+Politizr_AdminBundle_PDDComment_archive:
+    pattern:  /PDDComment/{pk}/archive
+    defaults: { _controller: PolitizrAdminBundle:PDDComment/Actions:archive }
+
+Politizr_AdminBundle_PDRComment_archive:
+    pattern:  /PDRComment/{pk}/archive
+    defaults: { _controller: PolitizrAdminBundle:PDRComment/Actions:archive }
+
+Politizr_AdminBundle_PDDebate_archive:
+    pattern:  /PDDebate/{pk}/archive
+    defaults: { _controller: PolitizrAdminBundle:PDDebate/Actions:archive }
+
+Politizr_AdminBundle_PDReaction_archive:
+    pattern:  /PDReaction/{pk}/archive
+    defaults: { _controller: PolitizrAdminBundle:PDReaction/Actions:archive }
+
+Politizr_AdminBundle_PUser_archive:
+    pattern:  /PUser/{pk}/archive
+    defaults: { _controller: PolitizrAdminBundle:PUser/Actions:archive }
 
 
 ################################################################################
@@ -156,6 +176,11 @@ Politizr_AdminBundle_PQMandate:
     type:     admingenerator
     prefix:   /PQMandate
 
+Politizr_AdminBundle_PMModerationType:
+    resource: "@PolitizrAdminBundle/Controller/PMModerationType/"
+    type:     admingenerator
+    prefix:   /PMModerationType
+
 Politizr_AdminBundle_POSubscription:
     resource: "@PolitizrAdminBundle/Controller/POSubscription/"
     type:     admingenerator
@@ -192,5 +217,28 @@ Politizr_AdminBundle_PMAppException:
     type:     admingenerator
     prefix:   /PMAppException
 
+# Monitoring / Archives
+Politizr_AdminBundle_PMUserHistoric:
+    resource: "@PolitizrAdminBundle/Controller/PMUserHistoric/"
+    type:     admingenerator
+    prefix:   /PMUserHistoric
 
+Politizr_AdminBundle_PMDebateHistoric:
+    resource: "@PolitizrAdminBundle/Controller/PMDebateHistoric/"
+    type:     admingenerator
+    prefix:   /PMDebateHistoric
 
+Politizr_AdminBundle_PMReactionHistoric:
+    resource: "@PolitizrAdminBundle/Controller/PMReactionHistoric/"
+    type:     admingenerator
+    prefix:   /PMReactionHistoric
+
+Politizr_AdminBundle_PMDCommentHistoric:
+    resource: "@PolitizrAdminBundle/Controller/PMDCommentHistoric/"
+    type:     admingenerator
+    prefix:   /PMDCommentHistoric
+
+Politizr_AdminBundle_PMRCommentHistoric:
+    resource: "@PolitizrAdminBundle/Controller/PMRCommentHistoric/"
+    type:     admingenerator
+    prefix:   /PMRCommentHistoric

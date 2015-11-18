@@ -1,11 +1,11 @@
 <div class="modalItem listProfile">
-    <div id="profileHeader">
-        {% include 'PolitizrFrontBundle:User:_header.html.twig' with { 'user': user, 'withUrlInName': true } only %}
+    <div class="profileHeader">
+        {% include 'PolitizrFrontBundle:User:_header.html.twig' with { 'user': user, 'withUrlInName': true, 'withPublicTags': true } only %}
     </div>
     <div class="subscribe{% if app.user.id == user.id %} noSelfSubscribe{% endif %}">
         {{ user | linkSubscribeUser }}
     </div>
-    <a href="{{ path('UserDetail', { 'slug': user.slug }) }}" class="modalItemShow">
+    <a href="{{ path('UserDetail'~profileSuffix(), { 'slug': user.slug }) }}" class="modalItemShow">
         <i class="iconGoTo"></i>Afficher
     </a>
 </div>

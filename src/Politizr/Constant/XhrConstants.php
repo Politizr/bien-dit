@@ -70,12 +70,14 @@ class XhrConstants
     const ROUTE_MODAL_SUGGESTION_REACTION_LIST = 'profil/liste/suggestion/reaction';
     const ROUTE_MODAL_SUGGESTION_USER_LIST = 'profil/liste/suggestion/utilisateur';
     const ROUTE_MODAL_TAG_DEBATE_LIST = 'profil/liste/tag/debat';
+    const ROUTE_MODAL_TAG_REACTION_LIST = 'profil/liste/tag/reaction';
     const ROUTE_MODAL_TAG_USER_LIST = 'profil/liste/tag/utilisateur';
     const ROUTE_MODAL_FOLLOWED_DEBATE_LIST = 'profil/liste/follow/debat';
     const ROUTE_MODAL_FOLLOWED_USER_LIST = 'profil/liste/follow/utilisateur';
     const ROUTE_MODAL_ORGANIZATION_USER_LIST = 'profil/liste/org/utilisateur';
     const ROUTE_MODAL_FOLLOWERS_LIST = 'profil/abonnes';
     const ROUTE_MODAL_SEARCH_DEBATE_BY_TAGS_LIST = 'search/liste/tags/debat';
+    const ROUTE_MODAL_SEARCH_REACTION_BY_TAGS_LIST = 'search/liste/tags/reaction';
     const ROUTE_MODAL_SEARCH_USER_BY_TAGS_LIST = 'search/liste/tags/utilisateur';
     const ROUTE_MODAL_REPUTATION = 'profil/ma-reputation';
     const ROUTE_MODAL_REPUTATION_EVOLUTION = 'profil/ma-reputation/evolution';
@@ -91,7 +93,6 @@ class XhrConstants
 
     // SECURITY
     const ROUTE_SECURITY_LOGIN = 'login';
-    const ROUTE_SECURITY_LOGIN_CHECK = 'login/check';
     const ROUTE_SECURITY_LOST_PASSWORD_CHECK = 'password/init';
     const ROUTE_SECURITY_PAYMENT_PROCESS = 'v/paiement';
 
@@ -135,13 +136,27 @@ class XhrConstants
     //                  XHR URL REWRITING (ADMIN)
     // ******************************************************** //
 
+    // UPLOAD
+    const ADMIN_ROUTE_UPLOAD_IMAGE = 'admin/upload/image';
+    const ADMIN_ROUTE_DELETE_IMAGE = 'admin/delete/image';
+
     // TAGS
     const ADMIN_ROUTE_TAG_LISTING = 'admin/tags/listing';
     const ADMIN_ROUTE_TAG_SEARCH_LISTING = 'admin/tags/search/listing';
     const ADMIN_ROUTE_TAG_DEBATE_CREATE = 'admin/debat/tag/create';
     const ADMIN_ROUTE_TAG_DEBATE_DELETE = 'admin/debat/tag/delete';
+    const ADMIN_ROUTE_TAG_REACTION_CREATE = 'admin/reaction/tag/create';
+    const ADMIN_ROUTE_TAG_REACTION_DELETE = 'admin/reaction/tag/delete';
     const ADMIN_ROUTE_TAG_USER_FOLLOW_CREATE = 'admin/utilisateur/follow/tag/create';
     const ADMIN_ROUTE_TAG_USER_FOLLOW_DELETE = 'admin/utilisateur/follow/tag/delete';
     const ADMIN_ROUTE_TAG_USER_TAGGED_CREATE = 'admin/utilisateur/tagged/tag/create';
     const ADMIN_ROUTE_TAG_USER_TAGGED_DELETE = 'admin/utilisateur/tagged/tag/delete';
+
+
+    // REPUTATION
+    const ADMIN_ROUTE_USER_REPUTATION_EVOLUTION = 'admin/utilisateur/reputation/update';
+
+    // MODERATION
+    const ADMIN_ROUTE_USER_MODERATION_ALERT_NEW = 'admin/utilisateur/moderation/alert/new';
+    const ADMIN_ROUTE_USER_MODERATION_BANNED_EMAIL = 'admin/utilisateur/moderation/email/banned';
 }

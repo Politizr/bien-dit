@@ -8,20 +8,39 @@ use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 
 use Politizr\Model\PUserQuery;
 
+/**
+ * Public area authentication provider
+ *
+ * @author Lionel Bouzonville
+ */
 class PUserProvider implements UserProviderInterface
 {
-    public function loadUserByUsername($username) {
+    /**
+     *
+     * @param string $username
+     */
+    public function loadUserByUsername($username)
+    {
         $user = PUserQuery::create()->filterByUsername($username)->findOne();
 
         return $user;
     }
 
-    public function loadUserByEmail($email) {
+    /**
+     *
+     * @param string $email
+     */
+    public function loadUserByEmail($email)
+    {
         $user = PUserQuery::create()->filterByEmail($email)->findOne();
 
         return $user;
     }
 
+    /**
+     *
+     * @param string $user
+     */
     public function refreshUser(UserInterface $user)
     {
         if (!$user instanceof PUser) {
@@ -31,9 +50,12 @@ class PUserProvider implements UserProviderInterface
         return $this->loadUserByUsername($user->getUsername());
     }
 
+    /**
+     *
+     * @param string $class
+     */
     public function supportsClass($class)
     {
         return $class === 'Politizr\Model\PUser';
     }
-
 }

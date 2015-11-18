@@ -1,5 +1,10 @@
 {% extends_admingenerated "PolitizrAdminBundle:PDDebateShow:index.html.twig" %}
 
+{# Image upload #}
+{% block show_column_block_file_name %}
+    {% include 'PolitizrAdminBundle:Fragment:_uploadImage.html.twig' with {'zone': 1, 'fileName': PDDebate.fileName,'subjectId': PDDebate.id, 'queryClass': 'Politizr\\Model\\PDDebateQuery', 'setter': 'setFileName', 'uploadWebPath': constant('Politizr\\Constant\\PathConstants::DEBATE_UPLOAD_WEB_PATH')} %}
+{% endblock %}
+
 {# Objets #}
 {% block show_column_block_p_user %}
     {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_USER'), PDDebate.PUserId) }}
@@ -14,12 +19,6 @@
     {{ PDDebate.getDescription | raw }}
 {% endblock %}
 
-
-{# Image #}
-{% block show_column_file_name %}
-    <img src="{{ asset('uploads/documents/'~PDDebate.fileName) | imagine_filter('admin_show_thumb') }}" alt="{{ PDDebate.fileName }}" />
-{% endblock %}
-
 {# Bloc réactions #}
 {% block show_column_block_reactions %}
     {{ adminDebateReactions(PDDebate, 'show') }}
@@ -29,7 +28,6 @@
 {% block show_column_block_comments %}
     {{ adminDebateComments(PDDebate) }}
 {% endblock %}
-
 
 {# Bloc tags #}
 {% block show_column_block_tags %}
@@ -44,6 +42,18 @@
 {# Bloc followers citoyens #}
 {% block show_column_block_followers_c %}
     {{ adminDebateFollowersC(PDDebate) }}
+{% endblock %}
+
+{# Block moderation new alert #}
+{% block show_column_block_moderation_alert_new %}
+    {{ adminModerationAlertNew(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE'), PDDebate.Id, PDDebate.PUserId) }}
+{% endblock %}
+
+{# Block moderation alert listing #}
+{% block show_column_block_moderation_alert_listing %}
+    <div id="moderationListing">
+        {{ adminModerationAlertListing(PDDebate.PUserId) }}
+    </div>
 {% endblock %}
 
 {# Block front link #}
@@ -64,4 +74,9 @@
 
     <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/politizr/tag/accentMap.js') }}"></script>    
     <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/politizr/tag/editTags.js') }}"></script>  
+
+    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/jquery.form.min.js') }}"></script>  
+    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/uploadImage.js') }}"></script>  
+
+    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/moderation/notification.js') }}"></script>
 {% endblock object_actions_script_container %}

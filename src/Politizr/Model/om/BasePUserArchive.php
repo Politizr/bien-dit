@@ -312,6 +312,30 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
     protected $online;
 
     /**
+     * The value for the banned field.
+     * @var        boolean
+     */
+    protected $banned;
+
+    /**
+     * The value for the banned_nb_days_left field.
+     * @var        int
+     */
+    protected $banned_nb_days_left;
+
+    /**
+     * The value for the banned_nb_total field.
+     * @var        int
+     */
+    protected $banned_nb_total;
+
+    /**
+     * The value for the abuse_level field.
+     * @var        int
+     */
+    protected $abuse_level;
+
+    /**
      * The value for the created_at field.
      * @var        string
      */
@@ -1082,6 +1106,50 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
     {
 
         return $this->online;
+    }
+
+    /**
+     * Get the [banned] column value.
+     *
+     * @return boolean
+     */
+    public function getBanned()
+    {
+
+        return $this->banned;
+    }
+
+    /**
+     * Get the [banned_nb_days_left] column value.
+     *
+     * @return int
+     */
+    public function getBannedNbDaysLeft()
+    {
+
+        return $this->banned_nb_days_left;
+    }
+
+    /**
+     * Get the [banned_nb_total] column value.
+     *
+     * @return int
+     */
+    public function getBannedNbTotal()
+    {
+
+        return $this->banned_nb_total;
+    }
+
+    /**
+     * Get the [abuse_level] column value.
+     *
+     * @return int
+     */
+    public function getAbuseLevel()
+    {
+
+        return $this->abuse_level;
     }
 
     /**
@@ -2233,6 +2301,98 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
     } // setOnline()
 
     /**
+     * Sets the value of the [banned] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return PUserArchive The current object (for fluent API support)
+     */
+    public function setBanned($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->banned !== $v) {
+            $this->banned = $v;
+            $this->modifiedColumns[] = PUserArchivePeer::BANNED;
+        }
+
+
+        return $this;
+    } // setBanned()
+
+    /**
+     * Set the value of [banned_nb_days_left] column.
+     *
+     * @param  int $v new value
+     * @return PUserArchive The current object (for fluent API support)
+     */
+    public function setBannedNbDaysLeft($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->banned_nb_days_left !== $v) {
+            $this->banned_nb_days_left = $v;
+            $this->modifiedColumns[] = PUserArchivePeer::BANNED_NB_DAYS_LEFT;
+        }
+
+
+        return $this;
+    } // setBannedNbDaysLeft()
+
+    /**
+     * Set the value of [banned_nb_total] column.
+     *
+     * @param  int $v new value
+     * @return PUserArchive The current object (for fluent API support)
+     */
+    public function setBannedNbTotal($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->banned_nb_total !== $v) {
+            $this->banned_nb_total = $v;
+            $this->modifiedColumns[] = PUserArchivePeer::BANNED_NB_TOTAL;
+        }
+
+
+        return $this;
+    } // setBannedNbTotal()
+
+    /**
+     * Set the value of [abuse_level] column.
+     *
+     * @param  int $v new value
+     * @return PUserArchive The current object (for fluent API support)
+     */
+    public function setAbuseLevel($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->abuse_level !== $v) {
+            $this->abuse_level = $v;
+            $this->modifiedColumns[] = PUserArchivePeer::ABUSE_LEVEL;
+        }
+
+
+        return $this;
+    } // setAbuseLevel()
+
+    /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
@@ -2422,10 +2582,14 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
             $this->qualified = ($row[$startcol + 40] !== null) ? (boolean) $row[$startcol + 40] : null;
             $this->validated = ($row[$startcol + 41] !== null) ? (boolean) $row[$startcol + 41] : null;
             $this->online = ($row[$startcol + 42] !== null) ? (boolean) $row[$startcol + 42] : null;
-            $this->created_at = ($row[$startcol + 43] !== null) ? (string) $row[$startcol + 43] : null;
-            $this->updated_at = ($row[$startcol + 44] !== null) ? (string) $row[$startcol + 44] : null;
-            $this->slug = ($row[$startcol + 45] !== null) ? (string) $row[$startcol + 45] : null;
-            $this->archived_at = ($row[$startcol + 46] !== null) ? (string) $row[$startcol + 46] : null;
+            $this->banned = ($row[$startcol + 43] !== null) ? (boolean) $row[$startcol + 43] : null;
+            $this->banned_nb_days_left = ($row[$startcol + 44] !== null) ? (int) $row[$startcol + 44] : null;
+            $this->banned_nb_total = ($row[$startcol + 45] !== null) ? (int) $row[$startcol + 45] : null;
+            $this->abuse_level = ($row[$startcol + 46] !== null) ? (int) $row[$startcol + 46] : null;
+            $this->created_at = ($row[$startcol + 47] !== null) ? (string) $row[$startcol + 47] : null;
+            $this->updated_at = ($row[$startcol + 48] !== null) ? (string) $row[$startcol + 48] : null;
+            $this->slug = ($row[$startcol + 49] !== null) ? (string) $row[$startcol + 49] : null;
+            $this->archived_at = ($row[$startcol + 50] !== null) ? (string) $row[$startcol + 50] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -2435,7 +2599,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 47; // 47 = PUserArchivePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 51; // 51 = PUserArchivePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PUserArchive object", $e);
@@ -2787,6 +2951,18 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PUserArchivePeer::ONLINE)) {
             $modifiedColumns[':p' . $index++]  = '`online`';
         }
+        if ($this->isColumnModified(PUserArchivePeer::BANNED)) {
+            $modifiedColumns[':p' . $index++]  = '`banned`';
+        }
+        if ($this->isColumnModified(PUserArchivePeer::BANNED_NB_DAYS_LEFT)) {
+            $modifiedColumns[':p' . $index++]  = '`banned_nb_days_left`';
+        }
+        if ($this->isColumnModified(PUserArchivePeer::BANNED_NB_TOTAL)) {
+            $modifiedColumns[':p' . $index++]  = '`banned_nb_total`';
+        }
+        if ($this->isColumnModified(PUserArchivePeer::ABUSE_LEVEL)) {
+            $modifiedColumns[':p' . $index++]  = '`abuse_level`';
+        }
         if ($this->isColumnModified(PUserArchivePeer::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`created_at`';
         }
@@ -2938,6 +3114,18 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
                         break;
                     case '`online`':
                         $stmt->bindValue($identifier, (int) $this->online, PDO::PARAM_INT);
+                        break;
+                    case '`banned`':
+                        $stmt->bindValue($identifier, (int) $this->banned, PDO::PARAM_INT);
+                        break;
+                    case '`banned_nb_days_left`':
+                        $stmt->bindValue($identifier, $this->banned_nb_days_left, PDO::PARAM_INT);
+                        break;
+                    case '`banned_nb_total`':
+                        $stmt->bindValue($identifier, $this->banned_nb_total, PDO::PARAM_INT);
+                        break;
+                    case '`abuse_level`':
+                        $stmt->bindValue($identifier, $this->abuse_level, PDO::PARAM_INT);
                         break;
                     case '`created_at`':
                         $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
@@ -3208,15 +3396,27 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
                 return $this->getOnline();
                 break;
             case 43:
-                return $this->getCreatedAt();
+                return $this->getBanned();
                 break;
             case 44:
-                return $this->getUpdatedAt();
+                return $this->getBannedNbDaysLeft();
                 break;
             case 45:
-                return $this->getSlug();
+                return $this->getBannedNbTotal();
                 break;
             case 46:
+                return $this->getAbuseLevel();
+                break;
+            case 47:
+                return $this->getCreatedAt();
+                break;
+            case 48:
+                return $this->getUpdatedAt();
+                break;
+            case 49:
+                return $this->getSlug();
+                break;
+            case 50:
                 return $this->getArchivedAt();
                 break;
             default:
@@ -3290,10 +3490,14 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
             $keys[40] => $this->getQualified(),
             $keys[41] => $this->getValidated(),
             $keys[42] => $this->getOnline(),
-            $keys[43] => $this->getCreatedAt(),
-            $keys[44] => $this->getUpdatedAt(),
-            $keys[45] => $this->getSlug(),
-            $keys[46] => $this->getArchivedAt(),
+            $keys[43] => $this->getBanned(),
+            $keys[44] => $this->getBannedNbDaysLeft(),
+            $keys[45] => $this->getBannedNbTotal(),
+            $keys[46] => $this->getAbuseLevel(),
+            $keys[47] => $this->getCreatedAt(),
+            $keys[48] => $this->getUpdatedAt(),
+            $keys[49] => $this->getSlug(),
+            $keys[50] => $this->getArchivedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -3471,15 +3675,27 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
                 $this->setOnline($value);
                 break;
             case 43:
-                $this->setCreatedAt($value);
+                $this->setBanned($value);
                 break;
             case 44:
-                $this->setUpdatedAt($value);
+                $this->setBannedNbDaysLeft($value);
                 break;
             case 45:
-                $this->setSlug($value);
+                $this->setBannedNbTotal($value);
                 break;
             case 46:
+                $this->setAbuseLevel($value);
+                break;
+            case 47:
+                $this->setCreatedAt($value);
+                break;
+            case 48:
+                $this->setUpdatedAt($value);
+                break;
+            case 49:
+                $this->setSlug($value);
+                break;
+            case 50:
                 $this->setArchivedAt($value);
                 break;
         } // switch()
@@ -3549,10 +3765,14 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
         if (array_key_exists($keys[40], $arr)) $this->setQualified($arr[$keys[40]]);
         if (array_key_exists($keys[41], $arr)) $this->setValidated($arr[$keys[41]]);
         if (array_key_exists($keys[42], $arr)) $this->setOnline($arr[$keys[42]]);
-        if (array_key_exists($keys[43], $arr)) $this->setCreatedAt($arr[$keys[43]]);
-        if (array_key_exists($keys[44], $arr)) $this->setUpdatedAt($arr[$keys[44]]);
-        if (array_key_exists($keys[45], $arr)) $this->setSlug($arr[$keys[45]]);
-        if (array_key_exists($keys[46], $arr)) $this->setArchivedAt($arr[$keys[46]]);
+        if (array_key_exists($keys[43], $arr)) $this->setBanned($arr[$keys[43]]);
+        if (array_key_exists($keys[44], $arr)) $this->setBannedNbDaysLeft($arr[$keys[44]]);
+        if (array_key_exists($keys[45], $arr)) $this->setBannedNbTotal($arr[$keys[45]]);
+        if (array_key_exists($keys[46], $arr)) $this->setAbuseLevel($arr[$keys[46]]);
+        if (array_key_exists($keys[47], $arr)) $this->setCreatedAt($arr[$keys[47]]);
+        if (array_key_exists($keys[48], $arr)) $this->setUpdatedAt($arr[$keys[48]]);
+        if (array_key_exists($keys[49], $arr)) $this->setSlug($arr[$keys[49]]);
+        if (array_key_exists($keys[50], $arr)) $this->setArchivedAt($arr[$keys[50]]);
     }
 
     /**
@@ -3607,6 +3827,10 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PUserArchivePeer::QUALIFIED)) $criteria->add(PUserArchivePeer::QUALIFIED, $this->qualified);
         if ($this->isColumnModified(PUserArchivePeer::VALIDATED)) $criteria->add(PUserArchivePeer::VALIDATED, $this->validated);
         if ($this->isColumnModified(PUserArchivePeer::ONLINE)) $criteria->add(PUserArchivePeer::ONLINE, $this->online);
+        if ($this->isColumnModified(PUserArchivePeer::BANNED)) $criteria->add(PUserArchivePeer::BANNED, $this->banned);
+        if ($this->isColumnModified(PUserArchivePeer::BANNED_NB_DAYS_LEFT)) $criteria->add(PUserArchivePeer::BANNED_NB_DAYS_LEFT, $this->banned_nb_days_left);
+        if ($this->isColumnModified(PUserArchivePeer::BANNED_NB_TOTAL)) $criteria->add(PUserArchivePeer::BANNED_NB_TOTAL, $this->banned_nb_total);
+        if ($this->isColumnModified(PUserArchivePeer::ABUSE_LEVEL)) $criteria->add(PUserArchivePeer::ABUSE_LEVEL, $this->abuse_level);
         if ($this->isColumnModified(PUserArchivePeer::CREATED_AT)) $criteria->add(PUserArchivePeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(PUserArchivePeer::UPDATED_AT)) $criteria->add(PUserArchivePeer::UPDATED_AT, $this->updated_at);
         if ($this->isColumnModified(PUserArchivePeer::SLUG)) $criteria->add(PUserArchivePeer::SLUG, $this->slug);
@@ -3716,6 +3940,10 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
         $copyObj->setQualified($this->getQualified());
         $copyObj->setValidated($this->getValidated());
         $copyObj->setOnline($this->getOnline());
+        $copyObj->setBanned($this->getBanned());
+        $copyObj->setBannedNbDaysLeft($this->getBannedNbDaysLeft());
+        $copyObj->setBannedNbTotal($this->getBannedNbTotal());
+        $copyObj->setAbuseLevel($this->getAbuseLevel());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
         $copyObj->setSlug($this->getSlug());
@@ -3815,6 +4043,10 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
         $this->qualified = null;
         $this->validated = null;
         $this->online = null;
+        $this->banned = null;
+        $this->banned_nb_days_left = null;
+        $this->banned_nb_total = null;
+        $this->abuse_level = null;
         $this->created_at = null;
         $this->updated_at = null;
         $this->slug = null;

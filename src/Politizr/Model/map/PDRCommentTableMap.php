@@ -52,6 +52,9 @@ class PDRCommentTableMap extends TableMap
         $this->addColumn('published_at', 'PublishedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('published_by', 'PublishedBy', 'VARCHAR', false, 300, null);
         $this->addColumn('online', 'Online', 'BOOLEAN', false, 1, null);
+        $this->addColumn('moderated', 'Moderated', 'BOOLEAN', false, 1, null);
+        $this->addColumn('moderated_partial', 'ModeratedPartial', 'BOOLEAN', false, 1, null);
+        $this->addColumn('moderated_at', 'ModeratedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
         // validators
@@ -64,6 +67,7 @@ class PDRCommentTableMap extends TableMap
     {
         $this->addRelation('PUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_ONE, array('p_user_id' => 'id', ), 'SET NULL', 'CASCADE');
         $this->addRelation('PDReaction', 'Politizr\\Model\\PDReaction', RelationMap::MANY_TO_ONE, array('p_d_reaction_id' => 'id', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('PMRCommentHistoric', 'Politizr\\Model\\PMRCommentHistoric', RelationMap::ONE_TO_MANY, array('id' => 'p_d_r_comment_id', ), 'SET NULL', 'CASCADE', 'PMRCommentHistorics');
     } // buildRelations()
 
     /**

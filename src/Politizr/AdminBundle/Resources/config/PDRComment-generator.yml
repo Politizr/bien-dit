@@ -32,6 +32,12 @@ params:
             label:          Auteur
         online:
             label:          En ligne
+        moderated:
+            label:          Modéré
+        moderated_partial:
+            label:          Modéré partiellement
+        moderated_at:
+            label:          Mis à jour
         created_at:
             label:          Création
         updated_at:
@@ -69,6 +75,8 @@ builders:
                 "Statut":
                     "Publication":              [ [ published_by ], [ published_at ] ]
                     "Notes":                    [ [ note_pos, note_neg ] ]
+                "Modération":
+                    "Portée":                   [ [ moderated, moderated_partial, moderated_at ] ]
                 "Attributs":
                     "Création":                 [ [ online ], [ created_at, updated_at ] ]
             fields:
@@ -82,8 +90,8 @@ builders:
                         read_only:              true
                 description:
                     grid_class:                 "col-md-12"
-                    addFormOptions:
-                        attr:                   { class : tinymce }
+                    # addFormOptions:
+                    #     attr:                   { class : tinymce }
                 published_at:
                     # formType:                   afe_datetime_picker
                     addFormOptions:
@@ -96,6 +104,11 @@ builders:
                         widget:                 single_text
             actions:
                 save:                           ~
+                archive:
+                    label:                      Archiver
+                    icon:                       fa-archive
+                    params:
+                        pk:                     "{{ PDRComment.id }}"
                 show:                           ~
                 list:                           ~
                 delete:                         ~
@@ -111,6 +124,10 @@ builders:
                 "Statut":
                     "Publication":              [ [ published_by ], [ published_at ] ]
                     "Notes":                    [ [ note_pos, note_neg ] ]
+                "Modération":
+                    "Portée":                   [ [ moderated, moderated_partial, moderated_at ] ]
+                    "Notification":             [ block_moderation_alert_new  ]
+                    "Précédentes notifications": [ block_moderation_alert_listing  ]
                 "Attributs":
                     "Création":                 [ [ online ], [ created_at, updated_at ] ]
                 "Front":
@@ -122,6 +139,10 @@ builders:
                     label:                      "Auteur"
                 block_p_d_reaction:
                     label:                      "Réaction"
+                block_moderation_alert_new:
+                    label:                      "Alerte"
+                block_moderation_alert_listing:
+                    label:                      "Historique de l'utilisateur"
                 block_front:
                     label:                      "Rendu front"
             actions:

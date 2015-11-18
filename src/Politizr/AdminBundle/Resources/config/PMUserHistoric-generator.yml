@@ -1,0 +1,68 @@
+generator:                  admingenerator.generator.propel
+params:
+    model:                  Politizr\Model\PMUserHistoric
+    namespace_prefix:       Politizr
+    concurrency_lock:       ~
+    bundle_name:            AdminBundle
+    pk_requirement:         ~
+    fields:
+        id:
+            label:          ID
+        p_user_id:
+            label:          ID User
+        subtitle:
+            label:          Sous-titre
+        biography:
+            label:          Biographie
+        copyright:
+            label:          Copyright
+        created_at:
+            label:          Création
+        updated_at:
+            label:          Mis à jour
+    object_actions:
+        delete:             ~
+    batch_actions:
+        delete:             ~
+builders:
+    list:
+        params:
+            title:                              Liste des archives utilisateur
+            max_per_page:                       50
+            sort:                               [ id, DESC ]
+            display:                            [ p_user_id, subtitle, created_at ]
+            filters:                            [ p_user_id ]
+            object_actions:
+                show:                           ~
+                delete:                         ~
+    excel:
+        params: ~
+        filename: ~
+        filetype: ~
+    show:
+        params:
+            title:                              "Visualisation archive {{ PMUserHistoric.id }}"
+            tabs:
+                "Contenu":
+                    "Images":                   [ block_file_name, block_back_file_name ]
+                    "Texte":                    [ subtitle, biography, copyright ]
+                "Objets":
+                    "Utilisateur":              [ block_p_user ]
+                "Attributs":
+                    "Création":                 [ [ created_at, updated_at ] ]
+            fields:
+                block_p_user:
+                    label:                      "Utilisateur"
+                block_file_name:
+                    label:                      "Image"
+                block_back_file_name:
+                    label:                      "Image de fond"
+            actions:
+              list:                             ~
+              delete:                           ~
+    actions:
+        params:
+            object_actions:
+                delete: ~
+            batch_actions:
+                delete: ~

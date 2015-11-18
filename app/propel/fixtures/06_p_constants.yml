@@ -13,6 +13,24 @@ Politizr\Model\PUStatus:
         id:             4
         title:          Archivé
 
+# MONITORING DATAS
+Politizr\Model\PMModerationType:
+    outrancier:
+        id:             1
+        title:          Langage outrancier
+        message:        |
+            Vos propos ont été modérés pour langage outrancier.
+    diffamation:
+        id:             2
+        title:          Diffamation
+        message:        |
+            Vos propos ont été modérés pour diffamation.
+    illegal:
+        id:             3
+        title:          Illégalité
+        message:        |
+            Vos propos ont été modérés car ils contreviennent à la législation française.
+
 
 # ORDER DATAS
 Politizr\Model\POOrderState:

@@ -21,22 +21,27 @@ class XhrModal
 {
     private $securityTokenStorage;
     private $templating;
+    private $tagService;
     private $logger;
 
     /**
      *
      * @param @security.token_storage
      * @param @templating
+     * @param @politizr.functional.tag
      * @param @logger
      */
     public function __construct(
         $securityTokenStorage,
         $templating,
+        $tagService,
         $logger
     ) {
         $this->securityTokenStorage = $securityTokenStorage;
 
         $this->templating = $templating;
+        
+        $this->tagService = $tagService;
 
         $this->logger = $logger;
     }
@@ -278,6 +283,73 @@ class XhrModal
     }
 
     /**
+     * Reaction search by tags listing
+     */
+    public function searchReactionList(Request $request)
+    {
+        $this->logger->info('*** searchReactionList');
+
+        // Request arguments
+        $queryParams = $this->getFiltersFromRequest($request);
+        $order = $queryParams[0];
+        $filters = $queryParams[1];
+        $offset = $queryParams[2];
+
+        // Function process
+
+        // Get tags from search session
+        $session = $request->getSession();
+        $tags = $session->get('search/tag');
+        $this->logger->info('session tags = '.print_r($tags, true));
+
+        // at least one tag
+        if (empty($tags)) {
+            $error = 'Vous devez saisir au moins un tag';
+            throw new FormValidationException($error);
+        }
+
+        // @todo http://dba.stackexchange.com/questions/45512/how-do-i-select-items-from-a-table-where-a-single-column-must-contain-two-or-mo
+        $reactions = PDReactionQuery::create()
+                    ->distinct()
+                    ->online()
+                    ->filterByTags($tags)
+                    ->filterByKeywords($filters)
+                    ->orderWithKeyword($order)
+                    ->limit(ListingConstants::MODAL_CLASSIC_PAGINATION)
+                    ->offset($offset)
+                    ->find();
+
+        $moreResults = false;
+        if (sizeof($reactions) == ListingConstants::MODAL_CLASSIC_PAGINATION) {
+            $moreResults = true;
+        }
+
+        if ($offset == 0 && count($reactions) == 0) {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_noResult.html.twig',
+                array(
+                    'type' => ListingConstants::MODAL_TYPE_SEARCH,
+                    'context' => ListingConstants::MODAL_REACTIONS,
+                )
+            );
+        } else {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_reactions.html.twig',
+                array(
+                    'reactions' => $reactions,
+                    'offset' => intval($offset) + ListingConstants::MODAL_CLASSIC_PAGINATION,
+                    'moreResults' => $moreResults,
+                    'paginateNextAction' => 'paginateSearchNext'
+                )
+            );
+        }
+
+        return array(
+            'html' => $html,
+            );
+    }
+
+    /**
      * User search by tags listing
      */
     public function searchUserList(Request $request)
@@ -458,6 +530,9 @@ class XhrModal
         $order = $queryParams[0];
         $filters = $queryParams[1];
         $offset = $queryParams[2];
+        $this->logger->info('order = '.print_r($order, true));
+        $this->logger->info('filters = '.print_r($filters, true));
+        $this->logger->info('offset = '.print_r($offset, true));
 
         // Function process
         $users = PUserQuery::create()
@@ -625,16 +700,16 @@ class XhrModal
                     break;
                 }
             }
+        }
 
-            if ($nbUsers == 0) {
-                $html = $this->templating->render(
-                    'PolitizrFrontBundle:PaginatedList:_noResult.html.twig',
-                    array(
-                        'type' => ListingConstants::MODAL_TYPE_SUGGESTION,
-                        'context' => ListingConstants::MODAL_USERS,
-                    )
-                );
-            }
+        if ($offset == 0 && $nbUsers == 0) {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_noResult.html.twig',
+                array(
+                    'type' => ListingConstants::MODAL_TYPE_SUGGESTION,
+                    'context' => ListingConstants::MODAL_USERS,
+                )
+            );
         } else {
             $html = $this->templating->render(
                 'PolitizrFrontBundle:PaginatedList:_users.html.twig',
@@ -653,6 +728,10 @@ class XhrModal
     }
 
 
+    /* ######################################################################################################## */
+    /*                                                   TAG                                                    */
+    /* ######################################################################################################## */
+
     /**
      * Tag debate listing
      */
@@ -667,12 +746,15 @@ class XhrModal
         $offset = $queryParams[2];
         $subjectId = $queryParams[3];
 
+        // Compute relative geo tag ids
+        $tagIds = $this->tagService->computeGeotagRelativeIds($subjectId);
+
         // Function process
         $debates = PDDebateQuery::create()
                     ->distinct()
                     ->online()
                     ->usePDDTaggedTQuery()
-                        ->filterByPTagId($subjectId)
+                        ->filterByPTagId($tagIds)
                     ->endUse()
                     ->filterByKeywords($filters)
                     ->orderWithKeyword($order)
@@ -711,6 +793,66 @@ class XhrModal
     }
 
     /**
+     * Tag reaction listing
+     */
+    public function tagReactionList(Request $request)
+    {
+        $this->logger->info('*** tagReactionList');
+        
+        // Request arguments
+        $queryParams = $this->getFiltersFromRequest($request);
+        $order = $queryParams[0];
+        $filters = $queryParams[1];
+        $offset = $queryParams[2];
+        $subjectId = $queryParams[3];
+
+        // Compute relative geo tag ids
+        $tagIds = $this->tagService->computeGeotagRelativeIds($subjectId);
+
+        // Function process
+        $reactions = PDReactionQuery::create()
+                    ->distinct()
+                    ->online()
+                    ->usePDRTaggedTQuery()
+                        ->filterByPTagId($tagIds)
+                    ->endUse()
+                    ->filterByKeywords($filters)
+                    ->orderWithKeyword($order)
+                    ->limit(ListingConstants::MODAL_CLASSIC_PAGINATION)
+                    ->offset($offset)
+                    ->find();
+
+        $moreResults = false;
+        if (sizeof($reactions) == ListingConstants::MODAL_CLASSIC_PAGINATION) {
+            $moreResults = true;
+        }
+
+        if ($offset == 0 && count($reactions) == 0) {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_noResult.html.twig',
+                array(
+                    'type' => ListingConstants::MODAL_TYPE_TAG,
+                    'context' => ListingConstants::MODAL_REACTIONS,
+                )
+            );
+        } else {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_reactions.html.twig',
+                array(
+                    'reactions' => $reactions,
+                    'offset' => intval($offset) + ListingConstants::MODAL_CLASSIC_PAGINATION,
+                    'moreResults' => $moreResults,
+                    'paginateNextAction' => 'paginateNext'
+                )
+            );
+        }
+
+        return array(
+            'html' => $html,
+            );
+    }
+
+    /**
      * Tag user listing
      */
     public function tagUserList(Request $request)
@@ -724,12 +866,15 @@ class XhrModal
         $offset = $queryParams[2];
         $subjectId = $queryParams[3];
 
+        // Compute relative geo tag ids
+        $tagIds = $this->tagService->computeGeotagRelativeIds($subjectId);
+
         // Function process
         $users = PUserQuery::create()
                     ->distinct()
                     ->online()
                     ->usePuTaggedTPUserQuery()
-                        ->filterByPTagId($subjectId)
+                        ->filterByPTagId($tagIds)
                     ->endUse()
                     ->filterByKeywords($filters)
                     ->orderWithKeyword($order)
@@ -766,6 +911,10 @@ class XhrModal
             'html' => $html,
             );
     }
+
+    /* ######################################################################################################## */
+    /*                                            ORGANIZATION                                                  */
+    /* ######################################################################################################## */
 
     /**
      * Organization user listing
@@ -828,6 +977,10 @@ class XhrModal
             'html' => $html,
             );
     }
+
+    /* ######################################################################################################## */
+    /*                                                FOLLOWED                                                  */
+    /* ######################################################################################################## */
 
     /**
      * Followed debates listing
@@ -944,6 +1097,10 @@ class XhrModal
             'html' => $html,
             );
     }
+
+    /* ######################################################################################################## */
+    /*                                                FOLLOWER                                                  */
+    /* ######################################################################################################## */
 
     /**
      * Follower listing

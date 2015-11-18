@@ -1,0 +1,128 @@
+@import "../_global/colors";
+
+.dbHeader, #dbSuggestions {
+	background-color: $lightGrey;
+	position: relative;
+	float: left;
+	width: 100%;
+}
+
+#dashboard h1 {
+    font-family: 'nerislight';
+    font-weight: normal;
+	font-size: 22px;
+	padding: 40px 0 10px 40px;
+	margin: 0;
+	color: $darkGrey;
+}
+
+.dbClose, .dbOpen {
+	top: 40px;
+	right: 38px;
+	position: absolute;
+	color: $semiGrey;
+	cursor: pointer;
+	font-size: 14px;
+}
+.dbClose:hover, .dbOpen:hover { color: $darkGrey;}
+.dbOpen {display: none; font-size: 10px;}
+
+a.dbItemShow {
+	float: left;
+	margin: 20px 0 0 40px;
+	color: $highlight;
+	font-family: nerissemibold;
+	position: relative;
+	padding-left: 17px;
+}
+a.dbItemShow i {	position: absolute;	left: -2px; }
+a.dbItemShow:hover {color: $darkGrey;}
+
+#dbCloseToYou {
+	background-color: $formGrey;
+	clear: both;
+	border-top: solid 20px $lightGrey;
+	float: left;
+	width: 100%;
+}
+
+.dbItemFullWidth {
+	width: 700px;
+	display: inline-block;
+	text-align: left;
+	margin: 20px 0 40px 0;
+	position: relative;
+}
+
+.dbItemHalfWidth {
+	width: 290px;
+	float: left;
+	text-align: left;
+	margin: 20px 0 40px 40px;
+	position: relative;	
+}
+
+#dbSuggestions .dbItemHalfWidth .tag { color: $lightGrey; }
+#dbSuggestions .dbItemHalfWidth .tag:hover {color: $darkGrey;}
+
+.dbItemHalfWidth .postSummaryTagList {
+	max-height: 14px;
+	overflow: hidden;
+}
+
+.halfWidthThumb {
+	float: left;
+	width: 100%;
+	margin: 10px 0;
+	height: 165px;
+}
+
+.dbItemHalfWidth .postSummaryAuthor { margin: 0 0 7px 0; }
+
+.dbItemHalfWidth .postSummaryTitle {
+	font-size: 22px;
+	line-height: 130%;
+	height: 4.8em;
+	max-height: none;
+}
+.dbItemHalfWidth .postSummaryTitle a { color: $darkGrey;}
+.dbItemHalfWidth .postSummaryTitle a:hover { color: $highlight;}
+
+
+#dbSuggestions .dbItemHalfWidth .postSummaryAuthor .organization {
+	background-color: $highlight;
+	color: $lightGrey !important;
+}
+.dbItemHalfWidth .postSummaryAuthor a:hover { color: $darkGrey; }
+.dbItemHalfWidth .postSummaryAuthor .organization:hover { background-color: $darkGrey !important; }
+
+.dbItemHalfWidth a.dbItemShow {
+	margin: 40px 0 0 0;
+	clear: both;
+}
+
+#dashboard .dbItemHalfWidth .subscribe {
+	position: static;
+	float: right;
+	right: 0;
+	margin-top: 15px;
+	text-transform: uppercase;
+	color: #fff;
+}
+
+#dashboard .dbItemHalfWidth .subscribe .actionFollow, #dashboard .dbItemHalfWidth .subscribe .actionUnfollow {
+	width: 140px;
+	padding: 12px 0;
+	float: left;
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+	-o-box-shadow: none;
+	box-shadow: none;
+}
+
+#dashboard .profilePublicTagList {
+	padding: 10px 0 0 0;
+	float: left;
+	width: 100%;
+}
+
