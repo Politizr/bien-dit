@@ -43,6 +43,7 @@ class PDRCommentArchiveTableMap extends TableMap
         $this->setUseIdGenerator(false);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
+        $this->addColumn('uuid', 'Uuid', 'VARCHAR', false, 50, null);
         $this->addColumn('p_user_id', 'PUserId', 'INTEGER', false, null, null);
         $this->addColumn('p_d_reaction_id', 'PDReactionId', 'INTEGER', true, null, null);
         $this->addColumn('description', 'Description', 'LONGVARCHAR', false, null, null);

@@ -38,16 +38,19 @@ abstract class BasePOrderPeer
     const TM_CLASS = 'Politizr\\Model\\map\\POrderTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 26;
+    const NUM_COLUMNS = 27;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 26;
+    const NUM_HYDRATE_COLUMNS = 27;
 
     /** the column name for the id field */
     const ID = 'p_order.id';
+
+    /** the column name for the uuid field */
+    const UUID = 'p_order.uuid';
 
     /** the column name for the p_user_id field */
     const P_USER_ID = 'p_order.p_user_id';
@@ -147,12 +150,12 @@ abstract class BasePOrderPeer
      * e.g. POrderPeer::$fieldNames[POrderPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'PUserId', 'POOrderStateId', 'POPaymentStateId', 'POPaymentTypeId', 'POSubscriptionId', 'SubscriptionTitle', 'SubscriptionDescription', 'SubscriptionBeginAt', 'SubscriptionEndAt', 'Information', 'Price', 'Promotion', 'Total', 'Gender', 'Name', 'Firstname', 'Phone', 'Email', 'InvoiceRef', 'InvoiceAt', 'InvoiceFilename', 'SupportingDocument', 'ElectiveMandates', 'CreatedAt', 'UpdatedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pUserId', 'pOOrderStateId', 'pOPaymentStateId', 'pOPaymentTypeId', 'pOSubscriptionId', 'subscriptionTitle', 'subscriptionDescription', 'subscriptionBeginAt', 'subscriptionEndAt', 'information', 'price', 'promotion', 'total', 'gender', 'name', 'firstname', 'phone', 'email', 'invoiceRef', 'invoiceAt', 'invoiceFilename', 'supportingDocument', 'electiveMandates', 'createdAt', 'updatedAt', ),
-        BasePeer::TYPE_COLNAME => array (POrderPeer::ID, POrderPeer::P_USER_ID, POrderPeer::P_O_ORDER_STATE_ID, POrderPeer::P_O_PAYMENT_STATE_ID, POrderPeer::P_O_PAYMENT_TYPE_ID, POrderPeer::P_O_SUBSCRIPTION_ID, POrderPeer::SUBSCRIPTION_TITLE, POrderPeer::SUBSCRIPTION_DESCRIPTION, POrderPeer::SUBSCRIPTION_BEGIN_AT, POrderPeer::SUBSCRIPTION_END_AT, POrderPeer::INFORMATION, POrderPeer::PRICE, POrderPeer::PROMOTION, POrderPeer::TOTAL, POrderPeer::GENDER, POrderPeer::NAME, POrderPeer::FIRSTNAME, POrderPeer::PHONE, POrderPeer::EMAIL, POrderPeer::INVOICE_REF, POrderPeer::INVOICE_AT, POrderPeer::INVOICE_FILENAME, POrderPeer::SUPPORTING_DOCUMENT, POrderPeer::ELECTIVE_MANDATES, POrderPeer::CREATED_AT, POrderPeer::UPDATED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_USER_ID', 'P_O_ORDER_STATE_ID', 'P_O_PAYMENT_STATE_ID', 'P_O_PAYMENT_TYPE_ID', 'P_O_SUBSCRIPTION_ID', 'SUBSCRIPTION_TITLE', 'SUBSCRIPTION_DESCRIPTION', 'SUBSCRIPTION_BEGIN_AT', 'SUBSCRIPTION_END_AT', 'INFORMATION', 'PRICE', 'PROMOTION', 'TOTAL', 'GENDER', 'NAME', 'FIRSTNAME', 'PHONE', 'EMAIL', 'INVOICE_REF', 'INVOICE_AT', 'INVOICE_FILENAME', 'SUPPORTING_DOCUMENT', 'ELECTIVE_MANDATES', 'CREATED_AT', 'UPDATED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'p_user_id', 'p_o_order_state_id', 'p_o_payment_state_id', 'p_o_payment_type_id', 'p_o_subscription_id', 'subscription_title', 'subscription_description', 'subscription_begin_at', 'subscription_end_at', 'information', 'price', 'promotion', 'total', 'gender', 'name', 'firstname', 'phone', 'email', 'invoice_ref', 'invoice_at', 'invoice_filename', 'supporting_document', 'elective_mandates', 'created_at', 'updated_at', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'PUserId', 'POOrderStateId', 'POPaymentStateId', 'POPaymentTypeId', 'POSubscriptionId', 'SubscriptionTitle', 'SubscriptionDescription', 'SubscriptionBeginAt', 'SubscriptionEndAt', 'Information', 'Price', 'Promotion', 'Total', 'Gender', 'Name', 'Firstname', 'Phone', 'Email', 'InvoiceRef', 'InvoiceAt', 'InvoiceFilename', 'SupportingDocument', 'ElectiveMandates', 'CreatedAt', 'UpdatedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'pUserId', 'pOOrderStateId', 'pOPaymentStateId', 'pOPaymentTypeId', 'pOSubscriptionId', 'subscriptionTitle', 'subscriptionDescription', 'subscriptionBeginAt', 'subscriptionEndAt', 'information', 'price', 'promotion', 'total', 'gender', 'name', 'firstname', 'phone', 'email', 'invoiceRef', 'invoiceAt', 'invoiceFilename', 'supportingDocument', 'electiveMandates', 'createdAt', 'updatedAt', ),
+        BasePeer::TYPE_COLNAME => array (POrderPeer::ID, POrderPeer::UUID, POrderPeer::P_USER_ID, POrderPeer::P_O_ORDER_STATE_ID, POrderPeer::P_O_PAYMENT_STATE_ID, POrderPeer::P_O_PAYMENT_TYPE_ID, POrderPeer::P_O_SUBSCRIPTION_ID, POrderPeer::SUBSCRIPTION_TITLE, POrderPeer::SUBSCRIPTION_DESCRIPTION, POrderPeer::SUBSCRIPTION_BEGIN_AT, POrderPeer::SUBSCRIPTION_END_AT, POrderPeer::INFORMATION, POrderPeer::PRICE, POrderPeer::PROMOTION, POrderPeer::TOTAL, POrderPeer::GENDER, POrderPeer::NAME, POrderPeer::FIRSTNAME, POrderPeer::PHONE, POrderPeer::EMAIL, POrderPeer::INVOICE_REF, POrderPeer::INVOICE_AT, POrderPeer::INVOICE_FILENAME, POrderPeer::SUPPORTING_DOCUMENT, POrderPeer::ELECTIVE_MANDATES, POrderPeer::CREATED_AT, POrderPeer::UPDATED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'P_USER_ID', 'P_O_ORDER_STATE_ID', 'P_O_PAYMENT_STATE_ID', 'P_O_PAYMENT_TYPE_ID', 'P_O_SUBSCRIPTION_ID', 'SUBSCRIPTION_TITLE', 'SUBSCRIPTION_DESCRIPTION', 'SUBSCRIPTION_BEGIN_AT', 'SUBSCRIPTION_END_AT', 'INFORMATION', 'PRICE', 'PROMOTION', 'TOTAL', 'GENDER', 'NAME', 'FIRSTNAME', 'PHONE', 'EMAIL', 'INVOICE_REF', 'INVOICE_AT', 'INVOICE_FILENAME', 'SUPPORTING_DOCUMENT', 'ELECTIVE_MANDATES', 'CREATED_AT', 'UPDATED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'p_user_id', 'p_o_order_state_id', 'p_o_payment_state_id', 'p_o_payment_type_id', 'p_o_subscription_id', 'subscription_title', 'subscription_description', 'subscription_begin_at', 'subscription_end_at', 'information', 'price', 'promotion', 'total', 'gender', 'name', 'firstname', 'phone', 'email', 'invoice_ref', 'invoice_at', 'invoice_filename', 'supporting_document', 'elective_mandates', 'created_at', 'updated_at', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, )
     );
 
     /**
@@ -162,12 +165,12 @@ abstract class BasePOrderPeer
      * e.g. POrderPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PUserId' => 1, 'POOrderStateId' => 2, 'POPaymentStateId' => 3, 'POPaymentTypeId' => 4, 'POSubscriptionId' => 5, 'SubscriptionTitle' => 6, 'SubscriptionDescription' => 7, 'SubscriptionBeginAt' => 8, 'SubscriptionEndAt' => 9, 'Information' => 10, 'Price' => 11, 'Promotion' => 12, 'Total' => 13, 'Gender' => 14, 'Name' => 15, 'Firstname' => 16, 'Phone' => 17, 'Email' => 18, 'InvoiceRef' => 19, 'InvoiceAt' => 20, 'InvoiceFilename' => 21, 'SupportingDocument' => 22, 'ElectiveMandates' => 23, 'CreatedAt' => 24, 'UpdatedAt' => 25, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pUserId' => 1, 'pOOrderStateId' => 2, 'pOPaymentStateId' => 3, 'pOPaymentTypeId' => 4, 'pOSubscriptionId' => 5, 'subscriptionTitle' => 6, 'subscriptionDescription' => 7, 'subscriptionBeginAt' => 8, 'subscriptionEndAt' => 9, 'information' => 10, 'price' => 11, 'promotion' => 12, 'total' => 13, 'gender' => 14, 'name' => 15, 'firstname' => 16, 'phone' => 17, 'email' => 18, 'invoiceRef' => 19, 'invoiceAt' => 20, 'invoiceFilename' => 21, 'supportingDocument' => 22, 'electiveMandates' => 23, 'createdAt' => 24, 'updatedAt' => 25, ),
-        BasePeer::TYPE_COLNAME => array (POrderPeer::ID => 0, POrderPeer::P_USER_ID => 1, POrderPeer::P_O_ORDER_STATE_ID => 2, POrderPeer::P_O_PAYMENT_STATE_ID => 3, POrderPeer::P_O_PAYMENT_TYPE_ID => 4, POrderPeer::P_O_SUBSCRIPTION_ID => 5, POrderPeer::SUBSCRIPTION_TITLE => 6, POrderPeer::SUBSCRIPTION_DESCRIPTION => 7, POrderPeer::SUBSCRIPTION_BEGIN_AT => 8, POrderPeer::SUBSCRIPTION_END_AT => 9, POrderPeer::INFORMATION => 10, POrderPeer::PRICE => 11, POrderPeer::PROMOTION => 12, POrderPeer::TOTAL => 13, POrderPeer::GENDER => 14, POrderPeer::NAME => 15, POrderPeer::FIRSTNAME => 16, POrderPeer::PHONE => 17, POrderPeer::EMAIL => 18, POrderPeer::INVOICE_REF => 19, POrderPeer::INVOICE_AT => 20, POrderPeer::INVOICE_FILENAME => 21, POrderPeer::SUPPORTING_DOCUMENT => 22, POrderPeer::ELECTIVE_MANDATES => 23, POrderPeer::CREATED_AT => 24, POrderPeer::UPDATED_AT => 25, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_USER_ID' => 1, 'P_O_ORDER_STATE_ID' => 2, 'P_O_PAYMENT_STATE_ID' => 3, 'P_O_PAYMENT_TYPE_ID' => 4, 'P_O_SUBSCRIPTION_ID' => 5, 'SUBSCRIPTION_TITLE' => 6, 'SUBSCRIPTION_DESCRIPTION' => 7, 'SUBSCRIPTION_BEGIN_AT' => 8, 'SUBSCRIPTION_END_AT' => 9, 'INFORMATION' => 10, 'PRICE' => 11, 'PROMOTION' => 12, 'TOTAL' => 13, 'GENDER' => 14, 'NAME' => 15, 'FIRSTNAME' => 16, 'PHONE' => 17, 'EMAIL' => 18, 'INVOICE_REF' => 19, 'INVOICE_AT' => 20, 'INVOICE_FILENAME' => 21, 'SUPPORTING_DOCUMENT' => 22, 'ELECTIVE_MANDATES' => 23, 'CREATED_AT' => 24, 'UPDATED_AT' => 25, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_user_id' => 1, 'p_o_order_state_id' => 2, 'p_o_payment_state_id' => 3, 'p_o_payment_type_id' => 4, 'p_o_subscription_id' => 5, 'subscription_title' => 6, 'subscription_description' => 7, 'subscription_begin_at' => 8, 'subscription_end_at' => 9, 'information' => 10, 'price' => 11, 'promotion' => 12, 'total' => 13, 'gender' => 14, 'name' => 15, 'firstname' => 16, 'phone' => 17, 'email' => 18, 'invoice_ref' => 19, 'invoice_at' => 20, 'invoice_filename' => 21, 'supporting_document' => 22, 'elective_mandates' => 23, 'created_at' => 24, 'updated_at' => 25, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'PUserId' => 2, 'POOrderStateId' => 3, 'POPaymentStateId' => 4, 'POPaymentTypeId' => 5, 'POSubscriptionId' => 6, 'SubscriptionTitle' => 7, 'SubscriptionDescription' => 8, 'SubscriptionBeginAt' => 9, 'SubscriptionEndAt' => 10, 'Information' => 11, 'Price' => 12, 'Promotion' => 13, 'Total' => 14, 'Gender' => 15, 'Name' => 16, 'Firstname' => 17, 'Phone' => 18, 'Email' => 19, 'InvoiceRef' => 20, 'InvoiceAt' => 21, 'InvoiceFilename' => 22, 'SupportingDocument' => 23, 'ElectiveMandates' => 24, 'CreatedAt' => 25, 'UpdatedAt' => 26, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'pUserId' => 2, 'pOOrderStateId' => 3, 'pOPaymentStateId' => 4, 'pOPaymentTypeId' => 5, 'pOSubscriptionId' => 6, 'subscriptionTitle' => 7, 'subscriptionDescription' => 8, 'subscriptionBeginAt' => 9, 'subscriptionEndAt' => 10, 'information' => 11, 'price' => 12, 'promotion' => 13, 'total' => 14, 'gender' => 15, 'name' => 16, 'firstname' => 17, 'phone' => 18, 'email' => 19, 'invoiceRef' => 20, 'invoiceAt' => 21, 'invoiceFilename' => 22, 'supportingDocument' => 23, 'electiveMandates' => 24, 'createdAt' => 25, 'updatedAt' => 26, ),
+        BasePeer::TYPE_COLNAME => array (POrderPeer::ID => 0, POrderPeer::UUID => 1, POrderPeer::P_USER_ID => 2, POrderPeer::P_O_ORDER_STATE_ID => 3, POrderPeer::P_O_PAYMENT_STATE_ID => 4, POrderPeer::P_O_PAYMENT_TYPE_ID => 5, POrderPeer::P_O_SUBSCRIPTION_ID => 6, POrderPeer::SUBSCRIPTION_TITLE => 7, POrderPeer::SUBSCRIPTION_DESCRIPTION => 8, POrderPeer::SUBSCRIPTION_BEGIN_AT => 9, POrderPeer::SUBSCRIPTION_END_AT => 10, POrderPeer::INFORMATION => 11, POrderPeer::PRICE => 12, POrderPeer::PROMOTION => 13, POrderPeer::TOTAL => 14, POrderPeer::GENDER => 15, POrderPeer::NAME => 16, POrderPeer::FIRSTNAME => 17, POrderPeer::PHONE => 18, POrderPeer::EMAIL => 19, POrderPeer::INVOICE_REF => 20, POrderPeer::INVOICE_AT => 21, POrderPeer::INVOICE_FILENAME => 22, POrderPeer::SUPPORTING_DOCUMENT => 23, POrderPeer::ELECTIVE_MANDATES => 24, POrderPeer::CREATED_AT => 25, POrderPeer::UPDATED_AT => 26, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'P_USER_ID' => 2, 'P_O_ORDER_STATE_ID' => 3, 'P_O_PAYMENT_STATE_ID' => 4, 'P_O_PAYMENT_TYPE_ID' => 5, 'P_O_SUBSCRIPTION_ID' => 6, 'SUBSCRIPTION_TITLE' => 7, 'SUBSCRIPTION_DESCRIPTION' => 8, 'SUBSCRIPTION_BEGIN_AT' => 9, 'SUBSCRIPTION_END_AT' => 10, 'INFORMATION' => 11, 'PRICE' => 12, 'PROMOTION' => 13, 'TOTAL' => 14, 'GENDER' => 15, 'NAME' => 16, 'FIRSTNAME' => 17, 'PHONE' => 18, 'EMAIL' => 19, 'INVOICE_REF' => 20, 'INVOICE_AT' => 21, 'INVOICE_FILENAME' => 22, 'SUPPORTING_DOCUMENT' => 23, 'ELECTIVE_MANDATES' => 24, 'CREATED_AT' => 25, 'UPDATED_AT' => 26, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'p_user_id' => 2, 'p_o_order_state_id' => 3, 'p_o_payment_state_id' => 4, 'p_o_payment_type_id' => 5, 'p_o_subscription_id' => 6, 'subscription_title' => 7, 'subscription_description' => 8, 'subscription_begin_at' => 9, 'subscription_end_at' => 10, 'information' => 11, 'price' => 12, 'promotion' => 13, 'total' => 14, 'gender' => 15, 'name' => 16, 'firstname' => 17, 'phone' => 18, 'email' => 19, 'invoice_ref' => 20, 'invoice_at' => 21, 'invoice_filename' => 22, 'supporting_document' => 23, 'elective_mandates' => 24, 'created_at' => 25, 'updated_at' => 26, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, )
     );
 
     /** The enumerated values for this table */
@@ -295,6 +298,7 @@ abstract class BasePOrderPeer
     {
         if (null === $alias) {
             $criteria->addSelectColumn(POrderPeer::ID);
+            $criteria->addSelectColumn(POrderPeer::UUID);
             $criteria->addSelectColumn(POrderPeer::P_USER_ID);
             $criteria->addSelectColumn(POrderPeer::P_O_ORDER_STATE_ID);
             $criteria->addSelectColumn(POrderPeer::P_O_PAYMENT_STATE_ID);
@@ -322,6 +326,7 @@ abstract class BasePOrderPeer
             $criteria->addSelectColumn(POrderPeer::UPDATED_AT);
         } else {
             $criteria->addSelectColumn($alias . '.id');
+            $criteria->addSelectColumn($alias . '.uuid');
             $criteria->addSelectColumn($alias . '.p_user_id');
             $criteria->addSelectColumn($alias . '.p_o_order_state_id');
             $criteria->addSelectColumn($alias . '.p_o_payment_state_id');

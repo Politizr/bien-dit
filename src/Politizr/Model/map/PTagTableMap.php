@@ -43,6 +43,7 @@ class PTagTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
+        $this->addColumn('uuid', 'Uuid', 'VARCHAR', false, 50, null);
         $this->addForeignKey('p_t_tag_type_id', 'PTTagTypeId', 'INTEGER', 'p_t_tag_type', 'id', true, null, null);
         $this->addForeignKey('p_t_parent_id', 'PTParentId', 'INTEGER', 'p_tag', 'id', false, null, null);
         $this->addForeignKey('p_user_id', 'PUserId', 'INTEGER', 'p_user', 'id', false, null, null);
@@ -102,6 +103,13 @@ class PTagTableMap extends TableMap
   'separator' => '-',
   'permanent' => 'false',
   'scope_column' => '',
+),
+            'uuid' =>  array (
+  'name' => 'uuid',
+  'version' => '1',
+  'permanent' => 'false',
+  'required' => 'true',
+  'unique' => 'true',
 ),
             'archivable' =>  array (
   'archive_table' => '',

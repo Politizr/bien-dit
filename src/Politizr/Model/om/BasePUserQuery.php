@@ -57,6 +57,7 @@ use Politizr\Model\PUserQuery;
 
 /**
  * @method PUserQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method PUserQuery orderByUuid($order = Criteria::ASC) Order by the uuid column
  * @method PUserQuery orderByProvider($order = Criteria::ASC) Order by the provider column
  * @method PUserQuery orderByProviderId($order = Criteria::ASC) Order by the provider_id column
  * @method PUserQuery orderByNickname($order = Criteria::ASC) Order by the nickname column
@@ -108,6 +109,7 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery orderBySlug($order = Criteria::ASC) Order by the slug column
  *
  * @method PUserQuery groupById() Group by the id column
+ * @method PUserQuery groupByUuid() Group by the uuid column
  * @method PUserQuery groupByProvider() Group by the provider column
  * @method PUserQuery groupByProviderId() Group by the provider_id column
  * @method PUserQuery groupByNickname() Group by the nickname column
@@ -289,6 +291,7 @@ use Politizr\Model\PUserQuery;
  * @method PUser findOne(PropelPDO $con = null) Return the first PUser matching the query
  * @method PUser findOneOrCreate(PropelPDO $con = null) Return the first PUser matching the query, or a new PUser object populated from the query conditions when no match is found
  *
+ * @method PUser findOneByUuid(string $uuid) Return the first PUser filtered by the uuid column
  * @method PUser findOneByProvider(string $provider) Return the first PUser filtered by the provider column
  * @method PUser findOneByProviderId(string $provider_id) Return the first PUser filtered by the provider_id column
  * @method PUser findOneByNickname(string $nickname) Return the first PUser filtered by the nickname column
@@ -340,6 +343,7 @@ use Politizr\Model\PUserQuery;
  * @method PUser findOneBySlug(string $slug) Return the first PUser filtered by the slug column
  *
  * @method array findById(int $id) Return PUser objects filtered by the id column
+ * @method array findByUuid(string $uuid) Return PUser objects filtered by the uuid column
  * @method array findByProvider(string $provider) Return PUser objects filtered by the provider column
  * @method array findByProviderId(string $provider_id) Return PUser objects filtered by the provider_id column
  * @method array findByNickname(string $nickname) Return PUser objects filtered by the nickname column
@@ -501,7 +505,7 @@ abstract class BasePUserQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `last_activity`, `p_u_status_id`, `file_name`, `back_file_name`, `copyright`, `gender`, `firstname`, `name`, `birthday`, `subtitle`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_connected_days`, `nb_views`, `qualified`, `validated`, `online`, `banned`, `banned_nb_days_left`, `banned_nb_total`, `abuse_level`, `created_at`, `updated_at`, `slug` FROM `p_user` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `last_activity`, `p_u_status_id`, `file_name`, `back_file_name`, `copyright`, `gender`, `firstname`, `name`, `birthday`, `subtitle`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_connected_days`, `nb_views`, `qualified`, `validated`, `online`, `banned`, `banned_nb_days_left`, `banned_nb_total`, `abuse_level`, `created_at`, `updated_at`, `slug` FROM `p_user` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -631,6 +635,35 @@ abstract class BasePUserQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PUserPeer::ID, $id, $comparison);
+    }
+
+    /**
+     * Filter the query on the uuid column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByUuid('fooValue');   // WHERE uuid = 'fooValue'
+     * $query->filterByUuid('%fooValue%'); // WHERE uuid LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $uuid The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function filterByUuid($uuid = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($uuid)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $uuid)) {
+                $uuid = str_replace('*', '%', $uuid);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PUserPeer::UUID, $uuid, $comparison);
     }
 
     /**

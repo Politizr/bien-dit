@@ -38,16 +38,19 @@ abstract class BasePTagPeer
     const TM_CLASS = 'Politizr\\Model\\map\\PTagTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 11;
+    const NUM_COLUMNS = 12;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 11;
+    const NUM_HYDRATE_COLUMNS = 12;
 
     /** the column name for the id field */
     const ID = 'p_tag.id';
+
+    /** the column name for the uuid field */
+    const UUID = 'p_tag.uuid';
 
     /** the column name for the p_t_tag_type_id field */
     const P_T_TAG_TYPE_ID = 'p_tag.p_t_tag_type_id';
@@ -98,12 +101,12 @@ abstract class BasePTagPeer
      * e.g. PTagPeer::$fieldNames[PTagPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'PTTagTypeId', 'PTParentId', 'PUserId', 'Title', 'Moderated', 'ModeratedAt', 'Online', 'CreatedAt', 'UpdatedAt', 'Slug', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pTTagTypeId', 'pTParentId', 'pUserId', 'title', 'moderated', 'moderatedAt', 'online', 'createdAt', 'updatedAt', 'slug', ),
-        BasePeer::TYPE_COLNAME => array (PTagPeer::ID, PTagPeer::P_T_TAG_TYPE_ID, PTagPeer::P_T_PARENT_ID, PTagPeer::P_USER_ID, PTagPeer::TITLE, PTagPeer::MODERATED, PTagPeer::MODERATED_AT, PTagPeer::ONLINE, PTagPeer::CREATED_AT, PTagPeer::UPDATED_AT, PTagPeer::SLUG, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_T_TAG_TYPE_ID', 'P_T_PARENT_ID', 'P_USER_ID', 'TITLE', 'MODERATED', 'MODERATED_AT', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', 'SLUG', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'p_t_tag_type_id', 'p_t_parent_id', 'p_user_id', 'title', 'moderated', 'moderated_at', 'online', 'created_at', 'updated_at', 'slug', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'PTTagTypeId', 'PTParentId', 'PUserId', 'Title', 'Moderated', 'ModeratedAt', 'Online', 'CreatedAt', 'UpdatedAt', 'Slug', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'pTTagTypeId', 'pTParentId', 'pUserId', 'title', 'moderated', 'moderatedAt', 'online', 'createdAt', 'updatedAt', 'slug', ),
+        BasePeer::TYPE_COLNAME => array (PTagPeer::ID, PTagPeer::UUID, PTagPeer::P_T_TAG_TYPE_ID, PTagPeer::P_T_PARENT_ID, PTagPeer::P_USER_ID, PTagPeer::TITLE, PTagPeer::MODERATED, PTagPeer::MODERATED_AT, PTagPeer::ONLINE, PTagPeer::CREATED_AT, PTagPeer::UPDATED_AT, PTagPeer::SLUG, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'P_T_TAG_TYPE_ID', 'P_T_PARENT_ID', 'P_USER_ID', 'TITLE', 'MODERATED', 'MODERATED_AT', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', 'SLUG', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'p_t_tag_type_id', 'p_t_parent_id', 'p_user_id', 'title', 'moderated', 'moderated_at', 'online', 'created_at', 'updated_at', 'slug', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, )
     );
 
     /**
@@ -113,12 +116,12 @@ abstract class BasePTagPeer
      * e.g. PTagPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PTTagTypeId' => 1, 'PTParentId' => 2, 'PUserId' => 3, 'Title' => 4, 'Moderated' => 5, 'ModeratedAt' => 6, 'Online' => 7, 'CreatedAt' => 8, 'UpdatedAt' => 9, 'Slug' => 10, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pTTagTypeId' => 1, 'pTParentId' => 2, 'pUserId' => 3, 'title' => 4, 'moderated' => 5, 'moderatedAt' => 6, 'online' => 7, 'createdAt' => 8, 'updatedAt' => 9, 'slug' => 10, ),
-        BasePeer::TYPE_COLNAME => array (PTagPeer::ID => 0, PTagPeer::P_T_TAG_TYPE_ID => 1, PTagPeer::P_T_PARENT_ID => 2, PTagPeer::P_USER_ID => 3, PTagPeer::TITLE => 4, PTagPeer::MODERATED => 5, PTagPeer::MODERATED_AT => 6, PTagPeer::ONLINE => 7, PTagPeer::CREATED_AT => 8, PTagPeer::UPDATED_AT => 9, PTagPeer::SLUG => 10, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_T_TAG_TYPE_ID' => 1, 'P_T_PARENT_ID' => 2, 'P_USER_ID' => 3, 'TITLE' => 4, 'MODERATED' => 5, 'MODERATED_AT' => 6, 'ONLINE' => 7, 'CREATED_AT' => 8, 'UPDATED_AT' => 9, 'SLUG' => 10, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_t_tag_type_id' => 1, 'p_t_parent_id' => 2, 'p_user_id' => 3, 'title' => 4, 'moderated' => 5, 'moderated_at' => 6, 'online' => 7, 'created_at' => 8, 'updated_at' => 9, 'slug' => 10, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'PTTagTypeId' => 2, 'PTParentId' => 3, 'PUserId' => 4, 'Title' => 5, 'Moderated' => 6, 'ModeratedAt' => 7, 'Online' => 8, 'CreatedAt' => 9, 'UpdatedAt' => 10, 'Slug' => 11, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'pTTagTypeId' => 2, 'pTParentId' => 3, 'pUserId' => 4, 'title' => 5, 'moderated' => 6, 'moderatedAt' => 7, 'online' => 8, 'createdAt' => 9, 'updatedAt' => 10, 'slug' => 11, ),
+        BasePeer::TYPE_COLNAME => array (PTagPeer::ID => 0, PTagPeer::UUID => 1, PTagPeer::P_T_TAG_TYPE_ID => 2, PTagPeer::P_T_PARENT_ID => 3, PTagPeer::P_USER_ID => 4, PTagPeer::TITLE => 5, PTagPeer::MODERATED => 6, PTagPeer::MODERATED_AT => 7, PTagPeer::ONLINE => 8, PTagPeer::CREATED_AT => 9, PTagPeer::UPDATED_AT => 10, PTagPeer::SLUG => 11, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'P_T_TAG_TYPE_ID' => 2, 'P_T_PARENT_ID' => 3, 'P_USER_ID' => 4, 'TITLE' => 5, 'MODERATED' => 6, 'MODERATED_AT' => 7, 'ONLINE' => 8, 'CREATED_AT' => 9, 'UPDATED_AT' => 10, 'SLUG' => 11, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'p_t_tag_type_id' => 2, 'p_t_parent_id' => 3, 'p_user_id' => 4, 'title' => 5, 'moderated' => 6, 'moderated_at' => 7, 'online' => 8, 'created_at' => 9, 'updated_at' => 10, 'slug' => 11, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, )
     );
 
     /**
@@ -193,6 +196,7 @@ abstract class BasePTagPeer
     {
         if (null === $alias) {
             $criteria->addSelectColumn(PTagPeer::ID);
+            $criteria->addSelectColumn(PTagPeer::UUID);
             $criteria->addSelectColumn(PTagPeer::P_T_TAG_TYPE_ID);
             $criteria->addSelectColumn(PTagPeer::P_T_PARENT_ID);
             $criteria->addSelectColumn(PTagPeer::P_USER_ID);
@@ -205,6 +209,7 @@ abstract class BasePTagPeer
             $criteria->addSelectColumn(PTagPeer::SLUG);
         } else {
             $criteria->addSelectColumn($alias . '.id');
+            $criteria->addSelectColumn($alias . '.uuid');
             $criteria->addSelectColumn($alias . '.p_t_tag_type_id');
             $criteria->addSelectColumn($alias . '.p_t_parent_id');
             $criteria->addSelectColumn($alias . '.p_user_id');

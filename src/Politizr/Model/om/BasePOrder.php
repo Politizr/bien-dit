@@ -63,6 +63,12 @@ abstract class BasePOrder extends BaseObject implements Persistent
     protected $id;
 
     /**
+     * The value for the uuid field.
+     * @var        string
+     */
+    protected $uuid;
+
+    /**
      * The value for the p_user_id field.
      * @var        int
      */
@@ -286,6 +292,17 @@ abstract class BasePOrder extends BaseObject implements Persistent
     public function __construct(){
         parent::__construct();
         EventDispatcherProxy::trigger(array('construct','model.construct'), new ModelEvent($this));
+    }
+
+    /**
+     * Get the [uuid] column value.
+     *
+     * @return string
+     */
+    public function getUuid()
+    {
+
+        return $this->uuid;
     }
 
     /**
@@ -736,6 +753,27 @@ abstract class BasePOrder extends BaseObject implements Persistent
 
         return $this;
     } // setId()
+
+    /**
+     * Set the value of [uuid] column.
+     *
+     * @param  string $v new value
+     * @return POrder The current object (for fluent API support)
+     */
+    public function setUuid($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->uuid !== $v) {
+            $this->uuid = $v;
+            $this->modifiedColumns[] = POrderPeer::UUID;
+        }
+
+
+        return $this;
+    } // setUuid()
 
     /**
      * Set the value of [p_user_id] column.
@@ -1330,31 +1368,32 @@ abstract class BasePOrder extends BaseObject implements Persistent
         try {
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->p_user_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
-            $this->p_o_order_state_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
-            $this->p_o_payment_state_id = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
-            $this->p_o_payment_type_id = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
-            $this->p_o_subscription_id = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
-            $this->subscription_title = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
-            $this->subscription_description = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-            $this->subscription_begin_at = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
-            $this->subscription_end_at = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
-            $this->information = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
-            $this->price = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
-            $this->promotion = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
-            $this->total = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
-            $this->gender = ($row[$startcol + 14] !== null) ? (int) $row[$startcol + 14] : null;
-            $this->name = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
-            $this->firstname = ($row[$startcol + 16] !== null) ? (string) $row[$startcol + 16] : null;
-            $this->phone = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
-            $this->email = ($row[$startcol + 18] !== null) ? (string) $row[$startcol + 18] : null;
-            $this->invoice_ref = ($row[$startcol + 19] !== null) ? (string) $row[$startcol + 19] : null;
-            $this->invoice_at = ($row[$startcol + 20] !== null) ? (string) $row[$startcol + 20] : null;
-            $this->invoice_filename = ($row[$startcol + 21] !== null) ? (string) $row[$startcol + 21] : null;
-            $this->supporting_document = ($row[$startcol + 22] !== null) ? (string) $row[$startcol + 22] : null;
-            $this->elective_mandates = ($row[$startcol + 23] !== null) ? (string) $row[$startcol + 23] : null;
-            $this->created_at = ($row[$startcol + 24] !== null) ? (string) $row[$startcol + 24] : null;
-            $this->updated_at = ($row[$startcol + 25] !== null) ? (string) $row[$startcol + 25] : null;
+            $this->uuid = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
+            $this->p_user_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+            $this->p_o_order_state_id = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
+            $this->p_o_payment_state_id = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
+            $this->p_o_payment_type_id = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
+            $this->p_o_subscription_id = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
+            $this->subscription_title = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+            $this->subscription_description = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+            $this->subscription_begin_at = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+            $this->subscription_end_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+            $this->information = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+            $this->price = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+            $this->promotion = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
+            $this->total = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
+            $this->gender = ($row[$startcol + 15] !== null) ? (int) $row[$startcol + 15] : null;
+            $this->name = ($row[$startcol + 16] !== null) ? (string) $row[$startcol + 16] : null;
+            $this->firstname = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
+            $this->phone = ($row[$startcol + 18] !== null) ? (string) $row[$startcol + 18] : null;
+            $this->email = ($row[$startcol + 19] !== null) ? (string) $row[$startcol + 19] : null;
+            $this->invoice_ref = ($row[$startcol + 20] !== null) ? (string) $row[$startcol + 20] : null;
+            $this->invoice_at = ($row[$startcol + 21] !== null) ? (string) $row[$startcol + 21] : null;
+            $this->invoice_filename = ($row[$startcol + 22] !== null) ? (string) $row[$startcol + 22] : null;
+            $this->supporting_document = ($row[$startcol + 23] !== null) ? (string) $row[$startcol + 23] : null;
+            $this->elective_mandates = ($row[$startcol + 24] !== null) ? (string) $row[$startcol + 24] : null;
+            $this->created_at = ($row[$startcol + 25] !== null) ? (string) $row[$startcol + 25] : null;
+            $this->updated_at = ($row[$startcol + 26] !== null) ? (string) $row[$startcol + 26] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -1364,7 +1403,7 @@ abstract class BasePOrder extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 26; // 26 = POrderPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 27; // 27 = POrderPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating POrder object", $e);
@@ -1694,6 +1733,9 @@ abstract class BasePOrder extends BaseObject implements Persistent
         if ($this->isColumnModified(POrderPeer::ID)) {
             $modifiedColumns[':p' . $index++]  = '`id`';
         }
+        if ($this->isColumnModified(POrderPeer::UUID)) {
+            $modifiedColumns[':p' . $index++]  = '`uuid`';
+        }
         if ($this->isColumnModified(POrderPeer::P_USER_ID)) {
             $modifiedColumns[':p' . $index++]  = '`p_user_id`';
         }
@@ -1782,6 +1824,9 @@ abstract class BasePOrder extends BaseObject implements Persistent
                 switch ($columnName) {
                     case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
+                        break;
+                    case '`uuid`':
+                        $stmt->bindValue($identifier, $this->uuid, PDO::PARAM_STR);
                         break;
                     case '`p_user_id`':
                         $stmt->bindValue($identifier, $this->p_user_id, PDO::PARAM_INT);
@@ -2040,78 +2085,81 @@ abstract class BasePOrder extends BaseObject implements Persistent
                 return $this->getId();
                 break;
             case 1:
-                return $this->getPUserId();
+                return $this->getUuid();
                 break;
             case 2:
-                return $this->getPOOrderStateId();
+                return $this->getPUserId();
                 break;
             case 3:
-                return $this->getPOPaymentStateId();
+                return $this->getPOOrderStateId();
                 break;
             case 4:
-                return $this->getPOPaymentTypeId();
+                return $this->getPOPaymentStateId();
                 break;
             case 5:
-                return $this->getPOSubscriptionId();
+                return $this->getPOPaymentTypeId();
                 break;
             case 6:
-                return $this->getSubscriptionTitle();
+                return $this->getPOSubscriptionId();
                 break;
             case 7:
-                return $this->getSubscriptionDescription();
+                return $this->getSubscriptionTitle();
                 break;
             case 8:
-                return $this->getSubscriptionBeginAt();
+                return $this->getSubscriptionDescription();
                 break;
             case 9:
-                return $this->getSubscriptionEndAt();
+                return $this->getSubscriptionBeginAt();
                 break;
             case 10:
-                return $this->getInformation();
+                return $this->getSubscriptionEndAt();
                 break;
             case 11:
-                return $this->getPrice();
+                return $this->getInformation();
                 break;
             case 12:
-                return $this->getPromotion();
+                return $this->getPrice();
                 break;
             case 13:
-                return $this->getTotal();
+                return $this->getPromotion();
                 break;
             case 14:
-                return $this->getGender();
+                return $this->getTotal();
                 break;
             case 15:
-                return $this->getName();
+                return $this->getGender();
                 break;
             case 16:
-                return $this->getFirstname();
+                return $this->getName();
                 break;
             case 17:
-                return $this->getPhone();
+                return $this->getFirstname();
                 break;
             case 18:
-                return $this->getEmail();
+                return $this->getPhone();
                 break;
             case 19:
-                return $this->getInvoiceRef();
+                return $this->getEmail();
                 break;
             case 20:
-                return $this->getInvoiceAt();
+                return $this->getInvoiceRef();
                 break;
             case 21:
-                return $this->getInvoiceFilename();
+                return $this->getInvoiceAt();
                 break;
             case 22:
-                return $this->getSupportingDocument();
+                return $this->getInvoiceFilename();
                 break;
             case 23:
-                return $this->getElectiveMandates();
+                return $this->getSupportingDocument();
                 break;
             case 24:
-                return $this->getCreatedAt();
+                return $this->getElectiveMandates();
                 break;
             case 25:
+                return $this->getCreatedAt();
+                break;
+            case 26:
                 return $this->getUpdatedAt();
                 break;
             default:
@@ -2144,31 +2192,32 @@ abstract class BasePOrder extends BaseObject implements Persistent
         $keys = POrderPeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getPUserId(),
-            $keys[2] => $this->getPOOrderStateId(),
-            $keys[3] => $this->getPOPaymentStateId(),
-            $keys[4] => $this->getPOPaymentTypeId(),
-            $keys[5] => $this->getPOSubscriptionId(),
-            $keys[6] => $this->getSubscriptionTitle(),
-            $keys[7] => $this->getSubscriptionDescription(),
-            $keys[8] => $this->getSubscriptionBeginAt(),
-            $keys[9] => $this->getSubscriptionEndAt(),
-            $keys[10] => $this->getInformation(),
-            $keys[11] => $this->getPrice(),
-            $keys[12] => $this->getPromotion(),
-            $keys[13] => $this->getTotal(),
-            $keys[14] => $this->getGender(),
-            $keys[15] => $this->getName(),
-            $keys[16] => $this->getFirstname(),
-            $keys[17] => $this->getPhone(),
-            $keys[18] => $this->getEmail(),
-            $keys[19] => $this->getInvoiceRef(),
-            $keys[20] => $this->getInvoiceAt(),
-            $keys[21] => $this->getInvoiceFilename(),
-            $keys[22] => $this->getSupportingDocument(),
-            $keys[23] => $this->getElectiveMandates(),
-            $keys[24] => $this->getCreatedAt(),
-            $keys[25] => $this->getUpdatedAt(),
+            $keys[1] => $this->getUuid(),
+            $keys[2] => $this->getPUserId(),
+            $keys[3] => $this->getPOOrderStateId(),
+            $keys[4] => $this->getPOPaymentStateId(),
+            $keys[5] => $this->getPOPaymentTypeId(),
+            $keys[6] => $this->getPOSubscriptionId(),
+            $keys[7] => $this->getSubscriptionTitle(),
+            $keys[8] => $this->getSubscriptionDescription(),
+            $keys[9] => $this->getSubscriptionBeginAt(),
+            $keys[10] => $this->getSubscriptionEndAt(),
+            $keys[11] => $this->getInformation(),
+            $keys[12] => $this->getPrice(),
+            $keys[13] => $this->getPromotion(),
+            $keys[14] => $this->getTotal(),
+            $keys[15] => $this->getGender(),
+            $keys[16] => $this->getName(),
+            $keys[17] => $this->getFirstname(),
+            $keys[18] => $this->getPhone(),
+            $keys[19] => $this->getEmail(),
+            $keys[20] => $this->getInvoiceRef(),
+            $keys[21] => $this->getInvoiceAt(),
+            $keys[22] => $this->getInvoiceFilename(),
+            $keys[23] => $this->getSupportingDocument(),
+            $keys[24] => $this->getElectiveMandates(),
+            $keys[25] => $this->getCreatedAt(),
+            $keys[26] => $this->getUpdatedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -2232,82 +2281,85 @@ abstract class BasePOrder extends BaseObject implements Persistent
                 $this->setId($value);
                 break;
             case 1:
-                $this->setPUserId($value);
+                $this->setUuid($value);
                 break;
             case 2:
-                $this->setPOOrderStateId($value);
+                $this->setPUserId($value);
                 break;
             case 3:
-                $this->setPOPaymentStateId($value);
+                $this->setPOOrderStateId($value);
                 break;
             case 4:
-                $this->setPOPaymentTypeId($value);
+                $this->setPOPaymentStateId($value);
                 break;
             case 5:
-                $this->setPOSubscriptionId($value);
+                $this->setPOPaymentTypeId($value);
                 break;
             case 6:
-                $this->setSubscriptionTitle($value);
+                $this->setPOSubscriptionId($value);
                 break;
             case 7:
-                $this->setSubscriptionDescription($value);
+                $this->setSubscriptionTitle($value);
                 break;
             case 8:
-                $this->setSubscriptionBeginAt($value);
+                $this->setSubscriptionDescription($value);
                 break;
             case 9:
-                $this->setSubscriptionEndAt($value);
+                $this->setSubscriptionBeginAt($value);
                 break;
             case 10:
-                $this->setInformation($value);
+                $this->setSubscriptionEndAt($value);
                 break;
             case 11:
-                $this->setPrice($value);
+                $this->setInformation($value);
                 break;
             case 12:
-                $this->setPromotion($value);
+                $this->setPrice($value);
                 break;
             case 13:
-                $this->setTotal($value);
+                $this->setPromotion($value);
                 break;
             case 14:
+                $this->setTotal($value);
+                break;
+            case 15:
                 $valueSet = POrderPeer::getValueSet(POrderPeer::GENDER);
                 if (isset($valueSet[$value])) {
                     $value = $valueSet[$value];
                 }
                 $this->setGender($value);
                 break;
-            case 15:
+            case 16:
                 $this->setName($value);
                 break;
-            case 16:
+            case 17:
                 $this->setFirstname($value);
                 break;
-            case 17:
+            case 18:
                 $this->setPhone($value);
                 break;
-            case 18:
+            case 19:
                 $this->setEmail($value);
                 break;
-            case 19:
+            case 20:
                 $this->setInvoiceRef($value);
                 break;
-            case 20:
+            case 21:
                 $this->setInvoiceAt($value);
                 break;
-            case 21:
+            case 22:
                 $this->setInvoiceFilename($value);
                 break;
-            case 22:
+            case 23:
                 $this->setSupportingDocument($value);
                 break;
-            case 23:
+            case 24:
                 $this->setElectiveMandates($value);
                 break;
-            case 24:
+            case 25:
                 $this->setCreatedAt($value);
                 break;
-            case 25:
+            case 26:
                 $this->setUpdatedAt($value);
                 break;
         } // switch()
@@ -2335,31 +2387,32 @@ abstract class BasePOrder extends BaseObject implements Persistent
         $keys = POrderPeer::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setPUserId($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setPOOrderStateId($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setPOPaymentStateId($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setPOPaymentTypeId($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setPOSubscriptionId($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setSubscriptionTitle($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setSubscriptionDescription($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setSubscriptionBeginAt($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setSubscriptionEndAt($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setInformation($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setPrice($arr[$keys[11]]);
-        if (array_key_exists($keys[12], $arr)) $this->setPromotion($arr[$keys[12]]);
-        if (array_key_exists($keys[13], $arr)) $this->setTotal($arr[$keys[13]]);
-        if (array_key_exists($keys[14], $arr)) $this->setGender($arr[$keys[14]]);
-        if (array_key_exists($keys[15], $arr)) $this->setName($arr[$keys[15]]);
-        if (array_key_exists($keys[16], $arr)) $this->setFirstname($arr[$keys[16]]);
-        if (array_key_exists($keys[17], $arr)) $this->setPhone($arr[$keys[17]]);
-        if (array_key_exists($keys[18], $arr)) $this->setEmail($arr[$keys[18]]);
-        if (array_key_exists($keys[19], $arr)) $this->setInvoiceRef($arr[$keys[19]]);
-        if (array_key_exists($keys[20], $arr)) $this->setInvoiceAt($arr[$keys[20]]);
-        if (array_key_exists($keys[21], $arr)) $this->setInvoiceFilename($arr[$keys[21]]);
-        if (array_key_exists($keys[22], $arr)) $this->setSupportingDocument($arr[$keys[22]]);
-        if (array_key_exists($keys[23], $arr)) $this->setElectiveMandates($arr[$keys[23]]);
-        if (array_key_exists($keys[24], $arr)) $this->setCreatedAt($arr[$keys[24]]);
-        if (array_key_exists($keys[25], $arr)) $this->setUpdatedAt($arr[$keys[25]]);
+        if (array_key_exists($keys[1], $arr)) $this->setUuid($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setPUserId($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setPOOrderStateId($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setPOPaymentStateId($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setPOPaymentTypeId($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setPOSubscriptionId($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setSubscriptionTitle($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setSubscriptionDescription($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setSubscriptionBeginAt($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setSubscriptionEndAt($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setInformation($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setPrice($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setPromotion($arr[$keys[13]]);
+        if (array_key_exists($keys[14], $arr)) $this->setTotal($arr[$keys[14]]);
+        if (array_key_exists($keys[15], $arr)) $this->setGender($arr[$keys[15]]);
+        if (array_key_exists($keys[16], $arr)) $this->setName($arr[$keys[16]]);
+        if (array_key_exists($keys[17], $arr)) $this->setFirstname($arr[$keys[17]]);
+        if (array_key_exists($keys[18], $arr)) $this->setPhone($arr[$keys[18]]);
+        if (array_key_exists($keys[19], $arr)) $this->setEmail($arr[$keys[19]]);
+        if (array_key_exists($keys[20], $arr)) $this->setInvoiceRef($arr[$keys[20]]);
+        if (array_key_exists($keys[21], $arr)) $this->setInvoiceAt($arr[$keys[21]]);
+        if (array_key_exists($keys[22], $arr)) $this->setInvoiceFilename($arr[$keys[22]]);
+        if (array_key_exists($keys[23], $arr)) $this->setSupportingDocument($arr[$keys[23]]);
+        if (array_key_exists($keys[24], $arr)) $this->setElectiveMandates($arr[$keys[24]]);
+        if (array_key_exists($keys[25], $arr)) $this->setCreatedAt($arr[$keys[25]]);
+        if (array_key_exists($keys[26], $arr)) $this->setUpdatedAt($arr[$keys[26]]);
     }
 
     /**
@@ -2372,6 +2425,7 @@ abstract class BasePOrder extends BaseObject implements Persistent
         $criteria = new Criteria(POrderPeer::DATABASE_NAME);
 
         if ($this->isColumnModified(POrderPeer::ID)) $criteria->add(POrderPeer::ID, $this->id);
+        if ($this->isColumnModified(POrderPeer::UUID)) $criteria->add(POrderPeer::UUID, $this->uuid);
         if ($this->isColumnModified(POrderPeer::P_USER_ID)) $criteria->add(POrderPeer::P_USER_ID, $this->p_user_id);
         if ($this->isColumnModified(POrderPeer::P_O_ORDER_STATE_ID)) $criteria->add(POrderPeer::P_O_ORDER_STATE_ID, $this->p_o_order_state_id);
         if ($this->isColumnModified(POrderPeer::P_O_PAYMENT_STATE_ID)) $criteria->add(POrderPeer::P_O_PAYMENT_STATE_ID, $this->p_o_payment_state_id);
@@ -2460,6 +2514,7 @@ abstract class BasePOrder extends BaseObject implements Persistent
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
+        $copyObj->setUuid($this->getUuid());
         $copyObj->setPUserId($this->getPUserId());
         $copyObj->setPOOrderStateId($this->getPOOrderStateId());
         $copyObj->setPOPaymentStateId($this->getPOPaymentStateId());
@@ -3156,6 +3211,7 @@ abstract class BasePOrder extends BaseObject implements Persistent
     public function clear()
     {
         $this->id = null;
+        $this->uuid = null;
         $this->p_user_id = null;
         $this->p_o_order_state_id = null;
         $this->p_o_payment_state_id = null;
@@ -3354,6 +3410,7 @@ abstract class BasePOrder extends BaseObject implements Persistent
         if ($populateAutoIncrementPrimaryKeys) {
             $this->setId($archive->getId());
         }
+        $this->setUuid($archive->getUuid());
         $this->setPUserId($archive->getPUserId());
         $this->setPOOrderStateId($archive->getPOOrderStateId());
         $this->setPOPaymentStateId($archive->getPOPaymentStateId());
@@ -3395,6 +3452,32 @@ abstract class BasePOrder extends BaseObject implements Persistent
         $this->archiveOnDelete = false;
 
         return $this->delete($con);
+    }
+
+    // uuid behavior
+    /**
+    * Create UUID if is NULL Uuid*/
+    public function preInsert(PropelPDO $con = NULL) {
+
+        if(is_null($this->getUuid())) {
+            $this->setUuid(\Ramsey\Uuid\Uuid::uuid1()->__toString());
+        } else {
+            $uuid = $this->getUuid();
+            if(!\Ramsey\Uuid\Uuid::isValid($uuid)) {
+                throw new \InvalidArgumentException('UUID: ' . $uuid . ' in not valid');
+                return false;
+            }
+        }
+        return true;
+    }
+    /**
+    * If permanent UUID, throw exception p_order.uuid*/
+    public function preUpdate(PropelPDO $con = NULL) {
+            $uuid = $this->getUuid();
+        if(!is_null($uuid) && !\Ramsey\Uuid\Uuid::isValid($uuid)) {
+            throw new \InvalidArgumentException("UUID: $uuid in not valid");
+        }
+            return true;
     }
 
     // event behavior

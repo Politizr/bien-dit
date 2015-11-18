@@ -43,6 +43,7 @@ class PTagArchiveTableMap extends TableMap
         $this->setUseIdGenerator(false);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
+        $this->addColumn('uuid', 'Uuid', 'VARCHAR', false, 50, null);
         $this->addColumn('p_t_tag_type_id', 'PTTagTypeId', 'INTEGER', true, null, null);
         $this->addColumn('p_t_parent_id', 'PTParentId', 'INTEGER', false, null, null);
         $this->addColumn('p_user_id', 'PUserId', 'INTEGER', false, null, null);

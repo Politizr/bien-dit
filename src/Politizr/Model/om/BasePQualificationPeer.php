@@ -34,16 +34,19 @@ abstract class BasePQualificationPeer
     const TM_CLASS = 'Politizr\\Model\\map\\PQualificationTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 8;
+    const NUM_COLUMNS = 9;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 8;
+    const NUM_HYDRATE_COLUMNS = 9;
 
     /** the column name for the id field */
     const ID = 'p_qualification.id';
+
+    /** the column name for the uuid field */
+    const UUID = 'p_qualification.uuid';
 
     /** the column name for the title field */
     const TITLE = 'p_qualification.title';
@@ -92,12 +95,12 @@ abstract class BasePQualificationPeer
      * e.g. PQualificationPeer::$fieldNames[PQualificationPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Title', 'Description', 'Online', 'CreatedAt', 'UpdatedAt', 'Slug', 'SortableRank', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'title', 'description', 'online', 'createdAt', 'updatedAt', 'slug', 'sortableRank', ),
-        BasePeer::TYPE_COLNAME => array (PQualificationPeer::ID, PQualificationPeer::TITLE, PQualificationPeer::DESCRIPTION, PQualificationPeer::ONLINE, PQualificationPeer::CREATED_AT, PQualificationPeer::UPDATED_AT, PQualificationPeer::SLUG, PQualificationPeer::SORTABLE_RANK, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'TITLE', 'DESCRIPTION', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', 'SLUG', 'SORTABLE_RANK', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'title', 'description', 'online', 'created_at', 'updated_at', 'slug', 'sortable_rank', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'Title', 'Description', 'Online', 'CreatedAt', 'UpdatedAt', 'Slug', 'SortableRank', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'title', 'description', 'online', 'createdAt', 'updatedAt', 'slug', 'sortableRank', ),
+        BasePeer::TYPE_COLNAME => array (PQualificationPeer::ID, PQualificationPeer::UUID, PQualificationPeer::TITLE, PQualificationPeer::DESCRIPTION, PQualificationPeer::ONLINE, PQualificationPeer::CREATED_AT, PQualificationPeer::UPDATED_AT, PQualificationPeer::SLUG, PQualificationPeer::SORTABLE_RANK, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'TITLE', 'DESCRIPTION', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', 'SLUG', 'SORTABLE_RANK', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'title', 'description', 'online', 'created_at', 'updated_at', 'slug', 'sortable_rank', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -107,12 +110,12 @@ abstract class BasePQualificationPeer
      * e.g. PQualificationPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Title' => 1, 'Description' => 2, 'Online' => 3, 'CreatedAt' => 4, 'UpdatedAt' => 5, 'Slug' => 6, 'SortableRank' => 7, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'title' => 1, 'description' => 2, 'online' => 3, 'createdAt' => 4, 'updatedAt' => 5, 'slug' => 6, 'sortableRank' => 7, ),
-        BasePeer::TYPE_COLNAME => array (PQualificationPeer::ID => 0, PQualificationPeer::TITLE => 1, PQualificationPeer::DESCRIPTION => 2, PQualificationPeer::ONLINE => 3, PQualificationPeer::CREATED_AT => 4, PQualificationPeer::UPDATED_AT => 5, PQualificationPeer::SLUG => 6, PQualificationPeer::SORTABLE_RANK => 7, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'TITLE' => 1, 'DESCRIPTION' => 2, 'ONLINE' => 3, 'CREATED_AT' => 4, 'UPDATED_AT' => 5, 'SLUG' => 6, 'SORTABLE_RANK' => 7, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'title' => 1, 'description' => 2, 'online' => 3, 'created_at' => 4, 'updated_at' => 5, 'slug' => 6, 'sortable_rank' => 7, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'Title' => 2, 'Description' => 3, 'Online' => 4, 'CreatedAt' => 5, 'UpdatedAt' => 6, 'Slug' => 7, 'SortableRank' => 8, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'title' => 2, 'description' => 3, 'online' => 4, 'createdAt' => 5, 'updatedAt' => 6, 'slug' => 7, 'sortableRank' => 8, ),
+        BasePeer::TYPE_COLNAME => array (PQualificationPeer::ID => 0, PQualificationPeer::UUID => 1, PQualificationPeer::TITLE => 2, PQualificationPeer::DESCRIPTION => 3, PQualificationPeer::ONLINE => 4, PQualificationPeer::CREATED_AT => 5, PQualificationPeer::UPDATED_AT => 6, PQualificationPeer::SLUG => 7, PQualificationPeer::SORTABLE_RANK => 8, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'TITLE' => 2, 'DESCRIPTION' => 3, 'ONLINE' => 4, 'CREATED_AT' => 5, 'UPDATED_AT' => 6, 'SLUG' => 7, 'SORTABLE_RANK' => 8, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'title' => 2, 'description' => 3, 'online' => 4, 'created_at' => 5, 'updated_at' => 6, 'slug' => 7, 'sortable_rank' => 8, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -187,6 +190,7 @@ abstract class BasePQualificationPeer
     {
         if (null === $alias) {
             $criteria->addSelectColumn(PQualificationPeer::ID);
+            $criteria->addSelectColumn(PQualificationPeer::UUID);
             $criteria->addSelectColumn(PQualificationPeer::TITLE);
             $criteria->addSelectColumn(PQualificationPeer::DESCRIPTION);
             $criteria->addSelectColumn(PQualificationPeer::ONLINE);
@@ -196,6 +200,7 @@ abstract class BasePQualificationPeer
             $criteria->addSelectColumn(PQualificationPeer::SORTABLE_RANK);
         } else {
             $criteria->addSelectColumn($alias . '.id');
+            $criteria->addSelectColumn($alias . '.uuid');
             $criteria->addSelectColumn($alias . '.title');
             $criteria->addSelectColumn($alias . '.description');
             $criteria->addSelectColumn($alias . '.online');

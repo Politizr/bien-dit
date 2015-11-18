@@ -29,6 +29,7 @@ use Politizr\Model\PUser;
 
 /**
  * @method PTagQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method PTagQuery orderByUuid($order = Criteria::ASC) Order by the uuid column
  * @method PTagQuery orderByPTTagTypeId($order = Criteria::ASC) Order by the p_t_tag_type_id column
  * @method PTagQuery orderByPTParentId($order = Criteria::ASC) Order by the p_t_parent_id column
  * @method PTagQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
@@ -41,6 +42,7 @@ use Politizr\Model\PUser;
  * @method PTagQuery orderBySlug($order = Criteria::ASC) Order by the slug column
  *
  * @method PTagQuery groupById() Group by the id column
+ * @method PTagQuery groupByUuid() Group by the uuid column
  * @method PTagQuery groupByPTTagTypeId() Group by the p_t_tag_type_id column
  * @method PTagQuery groupByPTParentId() Group by the p_t_parent_id column
  * @method PTagQuery groupByPUserId() Group by the p_user_id column
@@ -91,6 +93,7 @@ use Politizr\Model\PUser;
  * @method PTag findOne(PropelPDO $con = null) Return the first PTag matching the query
  * @method PTag findOneOrCreate(PropelPDO $con = null) Return the first PTag matching the query, or a new PTag object populated from the query conditions when no match is found
  *
+ * @method PTag findOneByUuid(string $uuid) Return the first PTag filtered by the uuid column
  * @method PTag findOneByPTTagTypeId(int $p_t_tag_type_id) Return the first PTag filtered by the p_t_tag_type_id column
  * @method PTag findOneByPTParentId(int $p_t_parent_id) Return the first PTag filtered by the p_t_parent_id column
  * @method PTag findOneByPUserId(int $p_user_id) Return the first PTag filtered by the p_user_id column
@@ -103,6 +106,7 @@ use Politizr\Model\PUser;
  * @method PTag findOneBySlug(string $slug) Return the first PTag filtered by the slug column
  *
  * @method array findById(int $id) Return PTag objects filtered by the id column
+ * @method array findByUuid(string $uuid) Return PTag objects filtered by the uuid column
  * @method array findByPTTagTypeId(int $p_t_tag_type_id) Return PTag objects filtered by the p_t_tag_type_id column
  * @method array findByPTParentId(int $p_t_parent_id) Return PTag objects filtered by the p_t_parent_id column
  * @method array findByPUserId(int $p_user_id) Return PTag objects filtered by the p_user_id column
@@ -225,7 +229,7 @@ abstract class BasePTagQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_t_tag_type_id`, `p_t_parent_id`, `p_user_id`, `title`, `moderated`, `moderated_at`, `online`, `created_at`, `updated_at`, `slug` FROM `p_tag` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_t_tag_type_id`, `p_t_parent_id`, `p_user_id`, `title`, `moderated`, `moderated_at`, `online`, `created_at`, `updated_at`, `slug` FROM `p_tag` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -355,6 +359,35 @@ abstract class BasePTagQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PTagPeer::ID, $id, $comparison);
+    }
+
+    /**
+     * Filter the query on the uuid column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByUuid('fooValue');   // WHERE uuid = 'fooValue'
+     * $query->filterByUuid('%fooValue%'); // WHERE uuid LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $uuid The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PTagQuery The current query, for fluid interface
+     */
+    public function filterByUuid($uuid = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($uuid)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $uuid)) {
+                $uuid = str_replace('*', '%', $uuid);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PTagPeer::UUID, $uuid, $comparison);
     }
 
     /**

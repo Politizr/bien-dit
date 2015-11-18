@@ -13,6 +13,8 @@ params:
     fields:
         id:
             label:          ID
+        uuid:
+            label:          UUID
         p_u_status_id:
             label:          Statut
         p_u_status:
@@ -170,6 +172,7 @@ builders:
                     "Type":                     [ qualified ]
                     "En ligne":                 [ online ]
                     "Validé":                   [ validated ]
+                    "Identifiants":             [ id, uuid, slug ]
                     "Création":                 [ [ created_at, updated_at ] ]
             fields:
                 block_back_file_name:
@@ -266,6 +269,12 @@ builders:
                     label:                      Date de dernière activité
                     addFormOptions:
                         widget:                 single_text
+                id:
+                    addFormOptions:
+                        read_only:              true
+                uuid:
+                    addFormOptions:
+                        read_only:              true
                 created_at:
                     addFormOptions:
                         widget:                 single_text

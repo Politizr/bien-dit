@@ -18,6 +18,7 @@ use Politizr\Model\PTagArchiveQuery;
 
 /**
  * @method PTagArchiveQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method PTagArchiveQuery orderByUuid($order = Criteria::ASC) Order by the uuid column
  * @method PTagArchiveQuery orderByPTTagTypeId($order = Criteria::ASC) Order by the p_t_tag_type_id column
  * @method PTagArchiveQuery orderByPTParentId($order = Criteria::ASC) Order by the p_t_parent_id column
  * @method PTagArchiveQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
@@ -31,6 +32,7 @@ use Politizr\Model\PTagArchiveQuery;
  * @method PTagArchiveQuery orderByArchivedAt($order = Criteria::ASC) Order by the archived_at column
  *
  * @method PTagArchiveQuery groupById() Group by the id column
+ * @method PTagArchiveQuery groupByUuid() Group by the uuid column
  * @method PTagArchiveQuery groupByPTTagTypeId() Group by the p_t_tag_type_id column
  * @method PTagArchiveQuery groupByPTParentId() Group by the p_t_parent_id column
  * @method PTagArchiveQuery groupByPUserId() Group by the p_user_id column
@@ -50,6 +52,7 @@ use Politizr\Model\PTagArchiveQuery;
  * @method PTagArchive findOne(PropelPDO $con = null) Return the first PTagArchive matching the query
  * @method PTagArchive findOneOrCreate(PropelPDO $con = null) Return the first PTagArchive matching the query, or a new PTagArchive object populated from the query conditions when no match is found
  *
+ * @method PTagArchive findOneByUuid(string $uuid) Return the first PTagArchive filtered by the uuid column
  * @method PTagArchive findOneByPTTagTypeId(int $p_t_tag_type_id) Return the first PTagArchive filtered by the p_t_tag_type_id column
  * @method PTagArchive findOneByPTParentId(int $p_t_parent_id) Return the first PTagArchive filtered by the p_t_parent_id column
  * @method PTagArchive findOneByPUserId(int $p_user_id) Return the first PTagArchive filtered by the p_user_id column
@@ -63,6 +66,7 @@ use Politizr\Model\PTagArchiveQuery;
  * @method PTagArchive findOneByArchivedAt(string $archived_at) Return the first PTagArchive filtered by the archived_at column
  *
  * @method array findById(int $id) Return PTagArchive objects filtered by the id column
+ * @method array findByUuid(string $uuid) Return PTagArchive objects filtered by the uuid column
  * @method array findByPTTagTypeId(int $p_t_tag_type_id) Return PTagArchive objects filtered by the p_t_tag_type_id column
  * @method array findByPTParentId(int $p_t_parent_id) Return PTagArchive objects filtered by the p_t_parent_id column
  * @method array findByPUserId(int $p_user_id) Return PTagArchive objects filtered by the p_user_id column
@@ -180,7 +184,7 @@ abstract class BasePTagArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_t_tag_type_id`, `p_t_parent_id`, `p_user_id`, `title`, `moderated`, `moderated_at`, `online`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_tag_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_t_tag_type_id`, `p_t_parent_id`, `p_user_id`, `title`, `moderated`, `moderated_at`, `online`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_tag_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -310,6 +314,35 @@ abstract class BasePTagArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PTagArchivePeer::ID, $id, $comparison);
+    }
+
+    /**
+     * Filter the query on the uuid column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByUuid('fooValue');   // WHERE uuid = 'fooValue'
+     * $query->filterByUuid('%fooValue%'); // WHERE uuid LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $uuid The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PTagArchiveQuery The current query, for fluid interface
+     */
+    public function filterByUuid($uuid = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($uuid)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $uuid)) {
+                $uuid = str_replace('*', '%', $uuid);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PTagArchivePeer::UUID, $uuid, $comparison);
     }
 
     /**

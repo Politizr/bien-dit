@@ -43,6 +43,7 @@ class PUserArchiveTableMap extends TableMap
         $this->setUseIdGenerator(false);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
+        $this->addColumn('uuid', 'Uuid', 'VARCHAR', false, 50, null);
         $this->addColumn('provider', 'Provider', 'VARCHAR', false, 255, null);
         $this->addColumn('provider_id', 'ProviderId', 'VARCHAR', false, 255, null);
         $this->addColumn('nickname', 'Nickname', 'VARCHAR', false, 255, null);

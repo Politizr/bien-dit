@@ -35,16 +35,19 @@ abstract class BasePRBadgePeer
     const TM_CLASS = 'Politizr\\Model\\map\\PRBadgeTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 8;
+    const NUM_COLUMNS = 9;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 8;
+    const NUM_HYDRATE_COLUMNS = 9;
 
     /** the column name for the id field */
     const ID = 'p_r_badge.id';
+
+    /** the column name for the uuid field */
+    const UUID = 'p_r_badge.uuid';
 
     /** the column name for the p_r_badge_family_id field */
     const P_R_BADGE_FAMILY_ID = 'p_r_badge.p_r_badge_family_id';
@@ -98,12 +101,12 @@ abstract class BasePRBadgePeer
      * e.g. PRBadgePeer::$fieldNames[PRBadgePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'PRBadgeFamilyId', 'Title', 'Online', 'CreatedAt', 'UpdatedAt', 'Slug', 'SortableRank', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pRBadgeFamilyId', 'title', 'online', 'createdAt', 'updatedAt', 'slug', 'sortableRank', ),
-        BasePeer::TYPE_COLNAME => array (PRBadgePeer::ID, PRBadgePeer::P_R_BADGE_FAMILY_ID, PRBadgePeer::TITLE, PRBadgePeer::ONLINE, PRBadgePeer::CREATED_AT, PRBadgePeer::UPDATED_AT, PRBadgePeer::SLUG, PRBadgePeer::SORTABLE_RANK, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_R_BADGE_FAMILY_ID', 'TITLE', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', 'SLUG', 'SORTABLE_RANK', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'p_r_badge_family_id', 'title', 'online', 'created_at', 'updated_at', 'slug', 'sortable_rank', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'PRBadgeFamilyId', 'Title', 'Online', 'CreatedAt', 'UpdatedAt', 'Slug', 'SortableRank', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'pRBadgeFamilyId', 'title', 'online', 'createdAt', 'updatedAt', 'slug', 'sortableRank', ),
+        BasePeer::TYPE_COLNAME => array (PRBadgePeer::ID, PRBadgePeer::UUID, PRBadgePeer::P_R_BADGE_FAMILY_ID, PRBadgePeer::TITLE, PRBadgePeer::ONLINE, PRBadgePeer::CREATED_AT, PRBadgePeer::UPDATED_AT, PRBadgePeer::SLUG, PRBadgePeer::SORTABLE_RANK, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'P_R_BADGE_FAMILY_ID', 'TITLE', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', 'SLUG', 'SORTABLE_RANK', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'p_r_badge_family_id', 'title', 'online', 'created_at', 'updated_at', 'slug', 'sortable_rank', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -113,12 +116,12 @@ abstract class BasePRBadgePeer
      * e.g. PRBadgePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PRBadgeFamilyId' => 1, 'Title' => 2, 'Online' => 3, 'CreatedAt' => 4, 'UpdatedAt' => 5, 'Slug' => 6, 'SortableRank' => 7, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pRBadgeFamilyId' => 1, 'title' => 2, 'online' => 3, 'createdAt' => 4, 'updatedAt' => 5, 'slug' => 6, 'sortableRank' => 7, ),
-        BasePeer::TYPE_COLNAME => array (PRBadgePeer::ID => 0, PRBadgePeer::P_R_BADGE_FAMILY_ID => 1, PRBadgePeer::TITLE => 2, PRBadgePeer::ONLINE => 3, PRBadgePeer::CREATED_AT => 4, PRBadgePeer::UPDATED_AT => 5, PRBadgePeer::SLUG => 6, PRBadgePeer::SORTABLE_RANK => 7, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_R_BADGE_FAMILY_ID' => 1, 'TITLE' => 2, 'ONLINE' => 3, 'CREATED_AT' => 4, 'UPDATED_AT' => 5, 'SLUG' => 6, 'SORTABLE_RANK' => 7, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_r_badge_family_id' => 1, 'title' => 2, 'online' => 3, 'created_at' => 4, 'updated_at' => 5, 'slug' => 6, 'sortable_rank' => 7, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'PRBadgeFamilyId' => 2, 'Title' => 3, 'Online' => 4, 'CreatedAt' => 5, 'UpdatedAt' => 6, 'Slug' => 7, 'SortableRank' => 8, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'pRBadgeFamilyId' => 2, 'title' => 3, 'online' => 4, 'createdAt' => 5, 'updatedAt' => 6, 'slug' => 7, 'sortableRank' => 8, ),
+        BasePeer::TYPE_COLNAME => array (PRBadgePeer::ID => 0, PRBadgePeer::UUID => 1, PRBadgePeer::P_R_BADGE_FAMILY_ID => 2, PRBadgePeer::TITLE => 3, PRBadgePeer::ONLINE => 4, PRBadgePeer::CREATED_AT => 5, PRBadgePeer::UPDATED_AT => 6, PRBadgePeer::SLUG => 7, PRBadgePeer::SORTABLE_RANK => 8, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'P_R_BADGE_FAMILY_ID' => 2, 'TITLE' => 3, 'ONLINE' => 4, 'CREATED_AT' => 5, 'UPDATED_AT' => 6, 'SLUG' => 7, 'SORTABLE_RANK' => 8, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'p_r_badge_family_id' => 2, 'title' => 3, 'online' => 4, 'created_at' => 5, 'updated_at' => 6, 'slug' => 7, 'sortable_rank' => 8, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -193,6 +196,7 @@ abstract class BasePRBadgePeer
     {
         if (null === $alias) {
             $criteria->addSelectColumn(PRBadgePeer::ID);
+            $criteria->addSelectColumn(PRBadgePeer::UUID);
             $criteria->addSelectColumn(PRBadgePeer::P_R_BADGE_FAMILY_ID);
             $criteria->addSelectColumn(PRBadgePeer::TITLE);
             $criteria->addSelectColumn(PRBadgePeer::ONLINE);
@@ -202,6 +206,7 @@ abstract class BasePRBadgePeer
             $criteria->addSelectColumn(PRBadgePeer::SORTABLE_RANK);
         } else {
             $criteria->addSelectColumn($alias . '.id');
+            $criteria->addSelectColumn($alias . '.uuid');
             $criteria->addSelectColumn($alias . '.p_r_badge_family_id');
             $criteria->addSelectColumn($alias . '.title');
             $criteria->addSelectColumn($alias . '.online');

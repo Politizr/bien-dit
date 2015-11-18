@@ -24,6 +24,7 @@ use Politizr\Model\PUser;
 
 /**
  * @method PDDCommentQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method PDDCommentQuery orderByUuid($order = Criteria::ASC) Order by the uuid column
  * @method PDDCommentQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
  * @method PDDCommentQuery orderByPDDebateId($order = Criteria::ASC) Order by the p_d_debate_id column
  * @method PDDCommentQuery orderByDescription($order = Criteria::ASC) Order by the description column
@@ -40,6 +41,7 @@ use Politizr\Model\PUser;
  * @method PDDCommentQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  *
  * @method PDDCommentQuery groupById() Group by the id column
+ * @method PDDCommentQuery groupByUuid() Group by the uuid column
  * @method PDDCommentQuery groupByPUserId() Group by the p_user_id column
  * @method PDDCommentQuery groupByPDDebateId() Group by the p_d_debate_id column
  * @method PDDCommentQuery groupByDescription() Group by the description column
@@ -74,6 +76,7 @@ use Politizr\Model\PUser;
  * @method PDDComment findOne(PropelPDO $con = null) Return the first PDDComment matching the query
  * @method PDDComment findOneOrCreate(PropelPDO $con = null) Return the first PDDComment matching the query, or a new PDDComment object populated from the query conditions when no match is found
  *
+ * @method PDDComment findOneByUuid(string $uuid) Return the first PDDComment filtered by the uuid column
  * @method PDDComment findOneByPUserId(int $p_user_id) Return the first PDDComment filtered by the p_user_id column
  * @method PDDComment findOneByPDDebateId(int $p_d_debate_id) Return the first PDDComment filtered by the p_d_debate_id column
  * @method PDDComment findOneByDescription(string $description) Return the first PDDComment filtered by the description column
@@ -90,6 +93,7 @@ use Politizr\Model\PUser;
  * @method PDDComment findOneByUpdatedAt(string $updated_at) Return the first PDDComment filtered by the updated_at column
  *
  * @method array findById(int $id) Return PDDComment objects filtered by the id column
+ * @method array findByUuid(string $uuid) Return PDDComment objects filtered by the uuid column
  * @method array findByPUserId(int $p_user_id) Return PDDComment objects filtered by the p_user_id column
  * @method array findByPDDebateId(int $p_d_debate_id) Return PDDComment objects filtered by the p_d_debate_id column
  * @method array findByDescription(string $description) Return PDDComment objects filtered by the description column
@@ -216,7 +220,7 @@ abstract class BasePDDCommentQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_user_id`, `p_d_debate_id`, `description`, `paragraph_no`, `note_pos`, `note_neg`, `published_at`, `published_by`, `online`, `moderated`, `moderated_partial`, `moderated_at`, `created_at`, `updated_at` FROM `p_d_d_comment` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `p_d_debate_id`, `description`, `paragraph_no`, `note_pos`, `note_neg`, `published_at`, `published_by`, `online`, `moderated`, `moderated_partial`, `moderated_at`, `created_at`, `updated_at` FROM `p_d_d_comment` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -346,6 +350,35 @@ abstract class BasePDDCommentQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDDCommentPeer::ID, $id, $comparison);
+    }
+
+    /**
+     * Filter the query on the uuid column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByUuid('fooValue');   // WHERE uuid = 'fooValue'
+     * $query->filterByUuid('%fooValue%'); // WHERE uuid LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $uuid The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDDCommentQuery The current query, for fluid interface
+     */
+    public function filterByUuid($uuid = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($uuid)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $uuid)) {
+                $uuid = str_replace('*', '%', $uuid);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PDDCommentPeer::UUID, $uuid, $comparison);
     }
 
     /**

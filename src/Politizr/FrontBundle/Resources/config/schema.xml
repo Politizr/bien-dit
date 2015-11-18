@@ -7,9 +7,14 @@
         <behavior name="sluggable">
             <parameter name="slug_pattern" value="{title}" />
         </behavior>
+        <behavior name="uuid">
+            <parameter name="version" value="1" />
+            <parameter name="permanent" value="false" />
+        </behavior>
         <behavior name="archivable" />
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="uuid" type="varchar" size="50" />
         <column name="p_t_tag_type_id" type="integer" required="true" />
         <column name="p_t_parent_id" type="integer" required="false" />
         <column name="p_user_id" type="integer" required="false" />
@@ -29,7 +34,11 @@
         </foreign-key>
         <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />
-        </foreign-key>        
+        </foreign-key>
+
+        <unique>
+            <unique-column name="uuid"/>
+        </unique>
     </table>
 
     <table name="p_t_tag_type">
@@ -50,6 +59,10 @@
         <behavior name="sluggable">
             <parameter name="slug_pattern" value="{title}" />
         </behavior>
+        <behavior name="uuid">
+            <parameter name="version" value="1" />
+            <parameter name="permanent" value="false" />
+        </behavior>
         <behavior name="sortable" >
             <parameter name="use_scope" value="true" />
             <parameter name="scope_column" value="p_r_badge_family_id" />
@@ -57,6 +70,7 @@
         <behavior name="archivable" />
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="uuid" type="varchar" size="50" />
         <column name="p_r_badge_family_id" type="integer" required="true" />
         
         <column name="title" type="varchar" size="150" />
@@ -66,6 +80,10 @@
         <foreign-key foreignTable="p_r_badge_family" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_r_badge_family_id" foreign="id" />
         </foreign-key>
+
+        <unique>
+            <unique-column name="uuid"/>
+        </unique>
     </table>
 
     <table name="p_r_badge_family">
@@ -109,8 +127,13 @@
         <behavior name="sluggable">
             <parameter name="slug_pattern" value="{title}" />
         </behavior>
+        <behavior name="uuid">
+            <parameter name="version" value="1" />
+            <parameter name="permanent" value="false" />
+        </behavior>
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="uuid" type="varchar" size="50" />
         
         <column name="title" type="varchar" size="150" />
         <column name="description" type="longvarchar" />
@@ -118,6 +141,10 @@
         <column name="score_evolution" type="integer" />
 
         <column name="online" type="boolean" />
+
+        <unique>
+            <unique-column name="uuid"/>
+        </unique>
     </table>
 
 
@@ -128,8 +155,13 @@
         <behavior name="timestampable" />
         <behavior name="query_cache" />
         <behavior name="archivable" />
+        <behavior name="uuid">
+            <parameter name="version" value="1" />
+            <parameter name="permanent" value="false" />
+        </behavior>
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="uuid" type="varchar" size="50" />
         <column name="p_user_id" type="integer" />
         <column name="p_o_order_state_id" type="integer" />
         <column name="p_o_payment_state_id" type="integer" />
@@ -174,6 +206,10 @@
         <foreign-key foreignTable="p_o_subscription" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="p_o_subscription_id" foreign="id" />
         </foreign-key>
+
+        <unique>
+            <unique-column name="uuid"/>
+        </unique>
     </table>
 
     <table name="p_o_order_state">
@@ -212,9 +248,14 @@
         <behavior name="sluggable">
             <parameter name="slug_pattern" value="{title}" />
         </behavior>
+        <behavior name="uuid">
+            <parameter name="version" value="1" />
+            <parameter name="permanent" value="false" />
+        </behavior>
         <behavior name="sortable" />
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="uuid" type="varchar" size="50" />
         
         <column name="title" type="varchar" size="150" />
         <column name="description" type="longvarchar" />
@@ -222,6 +263,10 @@
         <column name="price" type="decimal" size="10" scale="2" />
 
         <column name="online" type="boolean" />
+
+        <unique>
+            <unique-column name="uuid"/>
+        </unique>
     </table>
     
     <table name="p_o_email">
@@ -267,14 +312,23 @@
         <behavior name="sluggable">
             <parameter name="slug_pattern" value="{title}" />
         </behavior>
+        <behavior name="uuid">
+            <parameter name="version" value="1" />
+            <parameter name="permanent" value="false" />
+        </behavior>
         <behavior name="sortable" />
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="uuid" type="varchar" size="50" />
 
         <column name="title" type="varchar" size="250" />
         <column name="description" type="longvarchar" />
 
         <column name="online" type="boolean" />
+
+        <unique>
+            <unique-column name="uuid"/>
+        </unique>
     </table>
 
     <table name="p_q_type">
@@ -283,14 +337,23 @@
         <behavior name="sluggable">
             <parameter name="slug_pattern" value="{title}" />
         </behavior>
+        <behavior name="uuid">
+            <parameter name="version" value="1" />
+            <parameter name="permanent" value="false" />
+        </behavior>
         <behavior name="sortable" />
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="uuid" type="varchar" size="50" />
 
         <column name="title" type="varchar" size="250" />
         <column name="description" type="longvarchar" />
 
         <column name="online" type="boolean" />
+
+        <unique>
+            <unique-column name="uuid"/>
+        </unique>
     </table>
 
     <table name="p_q_mandate">
@@ -299,12 +362,17 @@
         <behavior name="sluggable">
             <parameter name="slug_pattern" value="{title}" />
         </behavior>
+        <behavior name="uuid">
+            <parameter name="version" value="1" />
+            <parameter name="permanent" value="false" />
+        </behavior>
         <behavior name="sortable" >
             <parameter name="use_scope" value="true" />
             <parameter name="scope_column" value="p_q_type_id" />
         </behavior>
 
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="uuid" type="varchar" size="50" />
 
         <column name="title" type="varchar" size="250" />
         <column name="select_title" type="varchar" size="250" />
@@ -314,6 +382,10 @@
         <foreign-key foreignTable="p_q_type" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_q_type_id" foreign="id" />
         </foreign-key>
+
+        <unique>
+            <unique-column name="uuid"/>
+        </unique>
     </table>
 
     <table name="p_q_organization">
@@ -322,12 +394,17 @@
         <behavior name="sluggable">
             <parameter name="slug_pattern" value="{title}" />
         </behavior>
+        <behavior name="uuid">
+            <parameter name="version" value="1" />
+            <parameter name="permanent" value="false" />
+        </behavior>
         <behavior name="sortable" >
             <parameter name="use_scope" value="true" />
             <parameter name="scope_column" value="p_q_type_id" />
         </behavior>
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="uuid" type="varchar" size="50" />
         <column name="p_q_type_id" type="integer" required="true" />
 
         <column name="title" type="varchar" size="250" />
@@ -343,6 +420,10 @@
         <foreign-key foreignTable="p_q_type" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_q_type_id" foreign="id" />
         </foreign-key>
+
+        <unique>
+            <unique-column name="uuid"/>
+        </unique>
     </table>
 
 
@@ -378,9 +459,14 @@
         <behavior name="timestampable" />
         <behavior name="query_cache" />
         <behavior name="sluggable"/>
+        <behavior name="uuid">
+            <parameter name="version" value="1" />
+            <parameter name="permanent" value="false" />
+        </behavior>
         <behavior name="archivable" />
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="uuid" type="varchar" size="50" />
 
         <column name="provider" type="varchar" size="255" />
         <column name="provider_id" type="varchar" size="255" />
@@ -389,15 +475,9 @@
 
         <column name="username" type="varchar" size="255" />
         <column name="username_canonical" type="varchar" size="255" />
-        <unique>
-            <unique-column name="username_canonical" />
-        </unique>
 
         <column name="email" type="varchar" size="255" />
         <column name="email_canonical" type="varchar" size="255" />
-        <unique>
-            <unique-column name="email_canonical" />
-        </unique>
 
         <column name="enabled" type="boolean" defaultValue="false" />
         <column name="salt" type="varchar" size="255" required="true" />
@@ -454,6 +534,16 @@
         <foreign-key foreignTable="p_u_status" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_u_status_id" foreign="id" />
         </foreign-key>
+
+        <unique>
+            <unique-column name="uuid"/>
+        </unique>
+        <unique>
+            <unique-column name="username_canonical" />
+        </unique>
+        <unique>
+            <unique-column name="email_canonical" />
+        </unique>
     </table>
 
     <table name="p_u_status">
@@ -715,9 +805,14 @@
         <behavior name="sluggable">
             <parameter name="slug_pattern" value="{title}" />
         </behavior>
+        <behavior name="uuid">
+            <parameter name="version" value="1" />
+            <parameter name="permanent" value="false" />
+        </behavior>
         <behavior name="archivable" />
 
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="uuid" type="varchar" size="50" />
         <column name="p_user_id" type="integer" required="false" />
 
         <column name="title" type="varchar" size="100" />
@@ -745,6 +840,10 @@
         <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />
         </foreign-key>
+
+        <unique>
+            <unique-column name="uuid"/>
+        </unique>
     </table>
 
     <table name="p_d_reaction">
@@ -753,6 +852,10 @@
         <behavior name="sluggable">
             <parameter name="slug_pattern" value="{title}" />
         </behavior>
+        <behavior name="uuid">
+            <parameter name="version" value="1" />
+            <parameter name="permanent" value="false" />
+        </behavior>
         <behavior name="nested_set">
             <parameter name="use_scope" value="true" />
             <parameter name="scope_column" value="p_d_debate_id" />
@@ -760,6 +863,7 @@
         <behavior name="archivable" />
 
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="uuid" type="varchar" size="50" />
         <column name="p_user_id" type="integer" required="false" />
         <column name="p_d_debate_id" type="integer" required="true" />
         <column name="parent_reaction_id" type="integer" required="false" />
@@ -793,14 +897,23 @@
         <foreign-key foreignTable="p_d_debate" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_d_debate_id" foreign="id" />
         </foreign-key>
+
+        <unique>
+            <unique-column name="uuid"/>
+        </unique>
     </table>
 
     <table name="p_d_d_comment">
         <behavior name="timestampable" />
         <behavior name="query_cache" />
         <behavior name="archivable" />
+        <behavior name="uuid">
+            <parameter name="version" value="1" />
+            <parameter name="permanent" value="false" />
+        </behavior>
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="uuid" type="varchar" size="50" />
         <column name="p_user_id" type="integer" />
         <column name="p_d_debate_id" type="integer" required="true" />
 
@@ -824,14 +937,23 @@
         <foreign-key foreignTable="p_d_debate" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_d_debate_id" foreign="id" />
         </foreign-key>
+
+        <unique>
+            <unique-column name="uuid"/>
+        </unique>
     </table>
 
     <table name="p_d_r_comment">
         <behavior name="timestampable" />
         <behavior name="query_cache" />
         <behavior name="archivable" />
+        <behavior name="uuid">
+            <parameter name="version" value="1" />
+            <parameter name="permanent" value="false" />
+        </behavior>
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="uuid" type="varchar" size="50" />
         <column name="p_user_id" type="integer" />
         <column name="p_d_reaction_id" type="integer" required="true" />
 
@@ -855,6 +977,10 @@
         <foreign-key foreignTable="p_d_reaction" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_d_reaction_id" foreign="id" />
         </foreign-key>
+
+        <unique>
+            <unique-column name="uuid"/>
+        </unique>
     </table>
 
     <table name="p_d_d_tagged_t" isCrossRef="true">

@@ -18,6 +18,7 @@ use Politizr\Model\PRBadgeArchiveQuery;
 
 /**
  * @method PRBadgeArchiveQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method PRBadgeArchiveQuery orderByUuid($order = Criteria::ASC) Order by the uuid column
  * @method PRBadgeArchiveQuery orderByPRBadgeFamilyId($order = Criteria::ASC) Order by the p_r_badge_family_id column
  * @method PRBadgeArchiveQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method PRBadgeArchiveQuery orderByOnline($order = Criteria::ASC) Order by the online column
@@ -28,6 +29,7 @@ use Politizr\Model\PRBadgeArchiveQuery;
  * @method PRBadgeArchiveQuery orderByArchivedAt($order = Criteria::ASC) Order by the archived_at column
  *
  * @method PRBadgeArchiveQuery groupById() Group by the id column
+ * @method PRBadgeArchiveQuery groupByUuid() Group by the uuid column
  * @method PRBadgeArchiveQuery groupByPRBadgeFamilyId() Group by the p_r_badge_family_id column
  * @method PRBadgeArchiveQuery groupByTitle() Group by the title column
  * @method PRBadgeArchiveQuery groupByOnline() Group by the online column
@@ -44,6 +46,7 @@ use Politizr\Model\PRBadgeArchiveQuery;
  * @method PRBadgeArchive findOne(PropelPDO $con = null) Return the first PRBadgeArchive matching the query
  * @method PRBadgeArchive findOneOrCreate(PropelPDO $con = null) Return the first PRBadgeArchive matching the query, or a new PRBadgeArchive object populated from the query conditions when no match is found
  *
+ * @method PRBadgeArchive findOneByUuid(string $uuid) Return the first PRBadgeArchive filtered by the uuid column
  * @method PRBadgeArchive findOneByPRBadgeFamilyId(int $p_r_badge_family_id) Return the first PRBadgeArchive filtered by the p_r_badge_family_id column
  * @method PRBadgeArchive findOneByTitle(string $title) Return the first PRBadgeArchive filtered by the title column
  * @method PRBadgeArchive findOneByOnline(boolean $online) Return the first PRBadgeArchive filtered by the online column
@@ -54,6 +57,7 @@ use Politizr\Model\PRBadgeArchiveQuery;
  * @method PRBadgeArchive findOneByArchivedAt(string $archived_at) Return the first PRBadgeArchive filtered by the archived_at column
  *
  * @method array findById(int $id) Return PRBadgeArchive objects filtered by the id column
+ * @method array findByUuid(string $uuid) Return PRBadgeArchive objects filtered by the uuid column
  * @method array findByPRBadgeFamilyId(int $p_r_badge_family_id) Return PRBadgeArchive objects filtered by the p_r_badge_family_id column
  * @method array findByTitle(string $title) Return PRBadgeArchive objects filtered by the title column
  * @method array findByOnline(boolean $online) Return PRBadgeArchive objects filtered by the online column
@@ -168,7 +172,7 @@ abstract class BasePRBadgeArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_r_badge_family_id`, `title`, `online`, `created_at`, `updated_at`, `slug`, `sortable_rank`, `archived_at` FROM `p_r_badge_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_r_badge_family_id`, `title`, `online`, `created_at`, `updated_at`, `slug`, `sortable_rank`, `archived_at` FROM `p_r_badge_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -298,6 +302,35 @@ abstract class BasePRBadgeArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PRBadgeArchivePeer::ID, $id, $comparison);
+    }
+
+    /**
+     * Filter the query on the uuid column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByUuid('fooValue');   // WHERE uuid = 'fooValue'
+     * $query->filterByUuid('%fooValue%'); // WHERE uuid LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $uuid The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PRBadgeArchiveQuery The current query, for fluid interface
+     */
+    public function filterByUuid($uuid = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($uuid)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $uuid)) {
+                $uuid = str_replace('*', '%', $uuid);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PRBadgeArchivePeer::UUID, $uuid, $comparison);
     }
 
     /**

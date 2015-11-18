@@ -28,6 +28,7 @@ use Politizr\Model\PUser;
 
 /**
  * @method PDDebateQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method PDDebateQuery orderByUuid($order = Criteria::ASC) Order by the uuid column
  * @method PDDebateQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
  * @method PDDebateQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method PDDebateQuery orderByFileName($order = Criteria::ASC) Order by the file_name column
@@ -49,6 +50,7 @@ use Politizr\Model\PUser;
  * @method PDDebateQuery orderBySlug($order = Criteria::ASC) Order by the slug column
  *
  * @method PDDebateQuery groupById() Group by the id column
+ * @method PDDebateQuery groupByUuid() Group by the uuid column
  * @method PDDebateQuery groupByPUserId() Group by the p_user_id column
  * @method PDDebateQuery groupByTitle() Group by the title column
  * @method PDDebateQuery groupByFileName() Group by the file_name column
@@ -100,6 +102,7 @@ use Politizr\Model\PUser;
  * @method PDDebate findOne(PropelPDO $con = null) Return the first PDDebate matching the query
  * @method PDDebate findOneOrCreate(PropelPDO $con = null) Return the first PDDebate matching the query, or a new PDDebate object populated from the query conditions when no match is found
  *
+ * @method PDDebate findOneByUuid(string $uuid) Return the first PDDebate filtered by the uuid column
  * @method PDDebate findOneByPUserId(int $p_user_id) Return the first PDDebate filtered by the p_user_id column
  * @method PDDebate findOneByTitle(string $title) Return the first PDDebate filtered by the title column
  * @method PDDebate findOneByFileName(string $file_name) Return the first PDDebate filtered by the file_name column
@@ -121,6 +124,7 @@ use Politizr\Model\PUser;
  * @method PDDebate findOneBySlug(string $slug) Return the first PDDebate filtered by the slug column
  *
  * @method array findById(int $id) Return PDDebate objects filtered by the id column
+ * @method array findByUuid(string $uuid) Return PDDebate objects filtered by the uuid column
  * @method array findByPUserId(int $p_user_id) Return PDDebate objects filtered by the p_user_id column
  * @method array findByTitle(string $title) Return PDDebate objects filtered by the title column
  * @method array findByFileName(string $file_name) Return PDDebate objects filtered by the file_name column
@@ -252,7 +256,7 @@ abstract class BasePDDebateQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_user_id`, `title`, `file_name`, `copyright`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `moderated`, `moderated_partial`, `moderated_at`, `created_at`, `updated_at`, `slug` FROM `p_d_debate` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `title`, `file_name`, `copyright`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `moderated`, `moderated_partial`, `moderated_at`, `created_at`, `updated_at`, `slug` FROM `p_d_debate` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -382,6 +386,35 @@ abstract class BasePDDebateQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDDebatePeer::ID, $id, $comparison);
+    }
+
+    /**
+     * Filter the query on the uuid column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByUuid('fooValue');   // WHERE uuid = 'fooValue'
+     * $query->filterByUuid('%fooValue%'); // WHERE uuid LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $uuid The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDDebateQuery The current query, for fluid interface
+     */
+    public function filterByUuid($uuid = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($uuid)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $uuid)) {
+                $uuid = str_replace('*', '%', $uuid);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PDDebatePeer::UUID, $uuid, $comparison);
     }
 
     /**

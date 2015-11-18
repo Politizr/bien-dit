@@ -37,16 +37,19 @@ abstract class BasePQOrganizationPeer
     const TM_CLASS = 'Politizr\\Model\\map\\PQOrganizationTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 12;
+    const NUM_COLUMNS = 13;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 12;
+    const NUM_HYDRATE_COLUMNS = 13;
 
     /** the column name for the id field */
     const ID = 'p_q_organization.id';
+
+    /** the column name for the uuid field */
+    const UUID = 'p_q_organization.uuid';
 
     /** the column name for the p_q_type_id field */
     const P_Q_TYPE_ID = 'p_q_organization.p_q_type_id';
@@ -112,12 +115,12 @@ abstract class BasePQOrganizationPeer
      * e.g. PQOrganizationPeer::$fieldNames[PQOrganizationPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'PQTypeId', 'Title', 'Initials', 'FileName', 'Description', 'Url', 'Online', 'CreatedAt', 'UpdatedAt', 'Slug', 'SortableRank', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pQTypeId', 'title', 'initials', 'fileName', 'description', 'url', 'online', 'createdAt', 'updatedAt', 'slug', 'sortableRank', ),
-        BasePeer::TYPE_COLNAME => array (PQOrganizationPeer::ID, PQOrganizationPeer::P_Q_TYPE_ID, PQOrganizationPeer::TITLE, PQOrganizationPeer::INITIALS, PQOrganizationPeer::FILE_NAME, PQOrganizationPeer::DESCRIPTION, PQOrganizationPeer::URL, PQOrganizationPeer::ONLINE, PQOrganizationPeer::CREATED_AT, PQOrganizationPeer::UPDATED_AT, PQOrganizationPeer::SLUG, PQOrganizationPeer::SORTABLE_RANK, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_Q_TYPE_ID', 'TITLE', 'INITIALS', 'FILE_NAME', 'DESCRIPTION', 'URL', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', 'SLUG', 'SORTABLE_RANK', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'p_q_type_id', 'title', 'initials', 'file_name', 'description', 'url', 'online', 'created_at', 'updated_at', 'slug', 'sortable_rank', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'PQTypeId', 'Title', 'Initials', 'FileName', 'Description', 'Url', 'Online', 'CreatedAt', 'UpdatedAt', 'Slug', 'SortableRank', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'pQTypeId', 'title', 'initials', 'fileName', 'description', 'url', 'online', 'createdAt', 'updatedAt', 'slug', 'sortableRank', ),
+        BasePeer::TYPE_COLNAME => array (PQOrganizationPeer::ID, PQOrganizationPeer::UUID, PQOrganizationPeer::P_Q_TYPE_ID, PQOrganizationPeer::TITLE, PQOrganizationPeer::INITIALS, PQOrganizationPeer::FILE_NAME, PQOrganizationPeer::DESCRIPTION, PQOrganizationPeer::URL, PQOrganizationPeer::ONLINE, PQOrganizationPeer::CREATED_AT, PQOrganizationPeer::UPDATED_AT, PQOrganizationPeer::SLUG, PQOrganizationPeer::SORTABLE_RANK, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'P_Q_TYPE_ID', 'TITLE', 'INITIALS', 'FILE_NAME', 'DESCRIPTION', 'URL', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', 'SLUG', 'SORTABLE_RANK', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'p_q_type_id', 'title', 'initials', 'file_name', 'description', 'url', 'online', 'created_at', 'updated_at', 'slug', 'sortable_rank', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
     );
 
     /**
@@ -127,12 +130,12 @@ abstract class BasePQOrganizationPeer
      * e.g. PQOrganizationPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PQTypeId' => 1, 'Title' => 2, 'Initials' => 3, 'FileName' => 4, 'Description' => 5, 'Url' => 6, 'Online' => 7, 'CreatedAt' => 8, 'UpdatedAt' => 9, 'Slug' => 10, 'SortableRank' => 11, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pQTypeId' => 1, 'title' => 2, 'initials' => 3, 'fileName' => 4, 'description' => 5, 'url' => 6, 'online' => 7, 'createdAt' => 8, 'updatedAt' => 9, 'slug' => 10, 'sortableRank' => 11, ),
-        BasePeer::TYPE_COLNAME => array (PQOrganizationPeer::ID => 0, PQOrganizationPeer::P_Q_TYPE_ID => 1, PQOrganizationPeer::TITLE => 2, PQOrganizationPeer::INITIALS => 3, PQOrganizationPeer::FILE_NAME => 4, PQOrganizationPeer::DESCRIPTION => 5, PQOrganizationPeer::URL => 6, PQOrganizationPeer::ONLINE => 7, PQOrganizationPeer::CREATED_AT => 8, PQOrganizationPeer::UPDATED_AT => 9, PQOrganizationPeer::SLUG => 10, PQOrganizationPeer::SORTABLE_RANK => 11, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_Q_TYPE_ID' => 1, 'TITLE' => 2, 'INITIALS' => 3, 'FILE_NAME' => 4, 'DESCRIPTION' => 5, 'URL' => 6, 'ONLINE' => 7, 'CREATED_AT' => 8, 'UPDATED_AT' => 9, 'SLUG' => 10, 'SORTABLE_RANK' => 11, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_q_type_id' => 1, 'title' => 2, 'initials' => 3, 'file_name' => 4, 'description' => 5, 'url' => 6, 'online' => 7, 'created_at' => 8, 'updated_at' => 9, 'slug' => 10, 'sortable_rank' => 11, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'PQTypeId' => 2, 'Title' => 3, 'Initials' => 4, 'FileName' => 5, 'Description' => 6, 'Url' => 7, 'Online' => 8, 'CreatedAt' => 9, 'UpdatedAt' => 10, 'Slug' => 11, 'SortableRank' => 12, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'pQTypeId' => 2, 'title' => 3, 'initials' => 4, 'fileName' => 5, 'description' => 6, 'url' => 7, 'online' => 8, 'createdAt' => 9, 'updatedAt' => 10, 'slug' => 11, 'sortableRank' => 12, ),
+        BasePeer::TYPE_COLNAME => array (PQOrganizationPeer::ID => 0, PQOrganizationPeer::UUID => 1, PQOrganizationPeer::P_Q_TYPE_ID => 2, PQOrganizationPeer::TITLE => 3, PQOrganizationPeer::INITIALS => 4, PQOrganizationPeer::FILE_NAME => 5, PQOrganizationPeer::DESCRIPTION => 6, PQOrganizationPeer::URL => 7, PQOrganizationPeer::ONLINE => 8, PQOrganizationPeer::CREATED_AT => 9, PQOrganizationPeer::UPDATED_AT => 10, PQOrganizationPeer::SLUG => 11, PQOrganizationPeer::SORTABLE_RANK => 12, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'P_Q_TYPE_ID' => 2, 'TITLE' => 3, 'INITIALS' => 4, 'FILE_NAME' => 5, 'DESCRIPTION' => 6, 'URL' => 7, 'ONLINE' => 8, 'CREATED_AT' => 9, 'UPDATED_AT' => 10, 'SLUG' => 11, 'SORTABLE_RANK' => 12, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'p_q_type_id' => 2, 'title' => 3, 'initials' => 4, 'file_name' => 5, 'description' => 6, 'url' => 7, 'online' => 8, 'created_at' => 9, 'updated_at' => 10, 'slug' => 11, 'sortable_rank' => 12, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
     );
 
     /**
@@ -207,6 +210,7 @@ abstract class BasePQOrganizationPeer
     {
         if (null === $alias) {
             $criteria->addSelectColumn(PQOrganizationPeer::ID);
+            $criteria->addSelectColumn(PQOrganizationPeer::UUID);
             $criteria->addSelectColumn(PQOrganizationPeer::P_Q_TYPE_ID);
             $criteria->addSelectColumn(PQOrganizationPeer::TITLE);
             $criteria->addSelectColumn(PQOrganizationPeer::INITIALS);
@@ -220,6 +224,7 @@ abstract class BasePQOrganizationPeer
             $criteria->addSelectColumn(PQOrganizationPeer::SORTABLE_RANK);
         } else {
             $criteria->addSelectColumn($alias . '.id');
+            $criteria->addSelectColumn($alias . '.uuid');
             $criteria->addSelectColumn($alias . '.p_q_type_id');
             $criteria->addSelectColumn($alias . '.title');
             $criteria->addSelectColumn($alias . '.initials');

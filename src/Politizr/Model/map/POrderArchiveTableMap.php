@@ -43,6 +43,7 @@ class POrderArchiveTableMap extends TableMap
         $this->setUseIdGenerator(false);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
+        $this->addColumn('uuid', 'Uuid', 'VARCHAR', false, 50, null);
         $this->addColumn('p_user_id', 'PUserId', 'INTEGER', false, null, null);
         $this->addColumn('p_o_order_state_id', 'POOrderStateId', 'INTEGER', false, null, null);
         $this->addColumn('p_o_payment_state_id', 'POPaymentStateId', 'INTEGER', false, null, null);

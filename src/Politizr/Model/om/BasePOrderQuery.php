@@ -27,6 +27,7 @@ use Politizr\Model\PUser;
 
 /**
  * @method POrderQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method POrderQuery orderByUuid($order = Criteria::ASC) Order by the uuid column
  * @method POrderQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
  * @method POrderQuery orderByPOOrderStateId($order = Criteria::ASC) Order by the p_o_order_state_id column
  * @method POrderQuery orderByPOPaymentStateId($order = Criteria::ASC) Order by the p_o_payment_state_id column
@@ -54,6 +55,7 @@ use Politizr\Model\PUser;
  * @method POrderQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  *
  * @method POrderQuery groupById() Group by the id column
+ * @method POrderQuery groupByUuid() Group by the uuid column
  * @method POrderQuery groupByPUserId() Group by the p_user_id column
  * @method POrderQuery groupByPOOrderStateId() Group by the p_o_order_state_id column
  * @method POrderQuery groupByPOPaymentStateId() Group by the p_o_payment_state_id column
@@ -111,6 +113,7 @@ use Politizr\Model\PUser;
  * @method POrder findOne(PropelPDO $con = null) Return the first POrder matching the query
  * @method POrder findOneOrCreate(PropelPDO $con = null) Return the first POrder matching the query, or a new POrder object populated from the query conditions when no match is found
  *
+ * @method POrder findOneByUuid(string $uuid) Return the first POrder filtered by the uuid column
  * @method POrder findOneByPUserId(int $p_user_id) Return the first POrder filtered by the p_user_id column
  * @method POrder findOneByPOOrderStateId(int $p_o_order_state_id) Return the first POrder filtered by the p_o_order_state_id column
  * @method POrder findOneByPOPaymentStateId(int $p_o_payment_state_id) Return the first POrder filtered by the p_o_payment_state_id column
@@ -138,6 +141,7 @@ use Politizr\Model\PUser;
  * @method POrder findOneByUpdatedAt(string $updated_at) Return the first POrder filtered by the updated_at column
  *
  * @method array findById(int $id) Return POrder objects filtered by the id column
+ * @method array findByUuid(string $uuid) Return POrder objects filtered by the uuid column
  * @method array findByPUserId(int $p_user_id) Return POrder objects filtered by the p_user_id column
  * @method array findByPOOrderStateId(int $p_o_order_state_id) Return POrder objects filtered by the p_o_order_state_id column
  * @method array findByPOPaymentStateId(int $p_o_payment_state_id) Return POrder objects filtered by the p_o_payment_state_id column
@@ -275,7 +279,7 @@ abstract class BasePOrderQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_user_id`, `p_o_order_state_id`, `p_o_payment_state_id`, `p_o_payment_type_id`, `p_o_subscription_id`, `subscription_title`, `subscription_description`, `subscription_begin_at`, `subscription_end_at`, `information`, `price`, `promotion`, `total`, `gender`, `name`, `firstname`, `phone`, `email`, `invoice_ref`, `invoice_at`, `invoice_filename`, `supporting_document`, `elective_mandates`, `created_at`, `updated_at` FROM `p_order` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `p_o_order_state_id`, `p_o_payment_state_id`, `p_o_payment_type_id`, `p_o_subscription_id`, `subscription_title`, `subscription_description`, `subscription_begin_at`, `subscription_end_at`, `information`, `price`, `promotion`, `total`, `gender`, `name`, `firstname`, `phone`, `email`, `invoice_ref`, `invoice_at`, `invoice_filename`, `supporting_document`, `elective_mandates`, `created_at`, `updated_at` FROM `p_order` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -405,6 +409,35 @@ abstract class BasePOrderQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(POrderPeer::ID, $id, $comparison);
+    }
+
+    /**
+     * Filter the query on the uuid column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByUuid('fooValue');   // WHERE uuid = 'fooValue'
+     * $query->filterByUuid('%fooValue%'); // WHERE uuid LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $uuid The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return POrderQuery The current query, for fluid interface
+     */
+    public function filterByUuid($uuid = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($uuid)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $uuid)) {
+                $uuid = str_replace('*', '%', $uuid);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(POrderPeer::UUID, $uuid, $comparison);
     }
 
     /**

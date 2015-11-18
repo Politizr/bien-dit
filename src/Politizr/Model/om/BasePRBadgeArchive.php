@@ -47,6 +47,12 @@ abstract class BasePRBadgeArchive extends BaseObject implements Persistent
     protected $id;
 
     /**
+     * The value for the uuid field.
+     * @var        string
+     */
+    protected $uuid;
+
+    /**
      * The value for the p_r_badge_family_id field.
      * @var        int
      */
@@ -128,6 +134,17 @@ abstract class BasePRBadgeArchive extends BaseObject implements Persistent
     public function __construct(){
         parent::__construct();
         EventDispatcherProxy::trigger(array('construct','model.construct'), new ModelEvent($this));
+    }
+
+    /**
+     * Get the [uuid] column value.
+     *
+     * @return string
+     */
+    public function getUuid()
+    {
+
+        return $this->uuid;
     }
 
     /**
@@ -325,6 +342,27 @@ abstract class BasePRBadgeArchive extends BaseObject implements Persistent
 
         return $this;
     } // setId()
+
+    /**
+     * Set the value of [uuid] column.
+     *
+     * @param  string $v new value
+     * @return PRBadgeArchive The current object (for fluent API support)
+     */
+    public function setUuid($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->uuid !== $v) {
+            $this->uuid = $v;
+            $this->modifiedColumns[] = PRBadgeArchivePeer::UUID;
+        }
+
+
+        return $this;
+    } // setUuid()
 
     /**
      * Set the value of [p_r_badge_family_id] column.
@@ -541,14 +579,15 @@ abstract class BasePRBadgeArchive extends BaseObject implements Persistent
         try {
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->p_r_badge_family_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
-            $this->title = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-            $this->online = ($row[$startcol + 3] !== null) ? (boolean) $row[$startcol + 3] : null;
-            $this->created_at = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-            $this->updated_at = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->slug = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
-            $this->sortable_rank = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
-            $this->archived_at = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+            $this->uuid = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
+            $this->p_r_badge_family_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+            $this->title = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+            $this->online = ($row[$startcol + 4] !== null) ? (boolean) $row[$startcol + 4] : null;
+            $this->created_at = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->updated_at = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->slug = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+            $this->sortable_rank = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
+            $this->archived_at = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -558,7 +597,7 @@ abstract class BasePRBadgeArchive extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 9; // 9 = PRBadgeArchivePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 10; // 10 = PRBadgeArchivePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PRBadgeArchive object", $e);
@@ -784,6 +823,9 @@ abstract class BasePRBadgeArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PRBadgeArchivePeer::ID)) {
             $modifiedColumns[':p' . $index++]  = '`id`';
         }
+        if ($this->isColumnModified(PRBadgeArchivePeer::UUID)) {
+            $modifiedColumns[':p' . $index++]  = '`uuid`';
+        }
         if ($this->isColumnModified(PRBadgeArchivePeer::P_R_BADGE_FAMILY_ID)) {
             $modifiedColumns[':p' . $index++]  = '`p_r_badge_family_id`';
         }
@@ -821,6 +863,9 @@ abstract class BasePRBadgeArchive extends BaseObject implements Persistent
                 switch ($columnName) {
                     case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
+                        break;
+                    case '`uuid`':
+                        $stmt->bindValue($identifier, $this->uuid, PDO::PARAM_STR);
                         break;
                     case '`p_r_badge_family_id`':
                         $stmt->bindValue($identifier, $this->p_r_badge_family_id, PDO::PARAM_INT);
@@ -977,27 +1022,30 @@ abstract class BasePRBadgeArchive extends BaseObject implements Persistent
                 return $this->getId();
                 break;
             case 1:
-                return $this->getPRBadgeFamilyId();
+                return $this->getUuid();
                 break;
             case 2:
-                return $this->getTitle();
+                return $this->getPRBadgeFamilyId();
                 break;
             case 3:
-                return $this->getOnline();
+                return $this->getTitle();
                 break;
             case 4:
-                return $this->getCreatedAt();
+                return $this->getOnline();
                 break;
             case 5:
-                return $this->getUpdatedAt();
+                return $this->getCreatedAt();
                 break;
             case 6:
-                return $this->getSlug();
+                return $this->getUpdatedAt();
                 break;
             case 7:
-                return $this->getSortableRank();
+                return $this->getSlug();
                 break;
             case 8:
+                return $this->getSortableRank();
+                break;
+            case 9:
                 return $this->getArchivedAt();
                 break;
             default:
@@ -1029,14 +1077,15 @@ abstract class BasePRBadgeArchive extends BaseObject implements Persistent
         $keys = PRBadgeArchivePeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getPRBadgeFamilyId(),
-            $keys[2] => $this->getTitle(),
-            $keys[3] => $this->getOnline(),
-            $keys[4] => $this->getCreatedAt(),
-            $keys[5] => $this->getUpdatedAt(),
-            $keys[6] => $this->getSlug(),
-            $keys[7] => $this->getSortableRank(),
-            $keys[8] => $this->getArchivedAt(),
+            $keys[1] => $this->getUuid(),
+            $keys[2] => $this->getPRBadgeFamilyId(),
+            $keys[3] => $this->getTitle(),
+            $keys[4] => $this->getOnline(),
+            $keys[5] => $this->getCreatedAt(),
+            $keys[6] => $this->getUpdatedAt(),
+            $keys[7] => $this->getSlug(),
+            $keys[8] => $this->getSortableRank(),
+            $keys[9] => $this->getArchivedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1080,27 +1129,30 @@ abstract class BasePRBadgeArchive extends BaseObject implements Persistent
                 $this->setId($value);
                 break;
             case 1:
-                $this->setPRBadgeFamilyId($value);
+                $this->setUuid($value);
                 break;
             case 2:
-                $this->setTitle($value);
+                $this->setPRBadgeFamilyId($value);
                 break;
             case 3:
-                $this->setOnline($value);
+                $this->setTitle($value);
                 break;
             case 4:
-                $this->setCreatedAt($value);
+                $this->setOnline($value);
                 break;
             case 5:
-                $this->setUpdatedAt($value);
+                $this->setCreatedAt($value);
                 break;
             case 6:
-                $this->setSlug($value);
+                $this->setUpdatedAt($value);
                 break;
             case 7:
-                $this->setSortableRank($value);
+                $this->setSlug($value);
                 break;
             case 8:
+                $this->setSortableRank($value);
+                break;
+            case 9:
                 $this->setArchivedAt($value);
                 break;
         } // switch()
@@ -1128,14 +1180,15 @@ abstract class BasePRBadgeArchive extends BaseObject implements Persistent
         $keys = PRBadgeArchivePeer::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setPRBadgeFamilyId($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setTitle($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setOnline($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setCreatedAt($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setUpdatedAt($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setSlug($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setSortableRank($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setArchivedAt($arr[$keys[8]]);
+        if (array_key_exists($keys[1], $arr)) $this->setUuid($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setPRBadgeFamilyId($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setTitle($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setOnline($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setCreatedAt($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setUpdatedAt($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setSlug($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setSortableRank($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setArchivedAt($arr[$keys[9]]);
     }
 
     /**
@@ -1148,6 +1201,7 @@ abstract class BasePRBadgeArchive extends BaseObject implements Persistent
         $criteria = new Criteria(PRBadgeArchivePeer::DATABASE_NAME);
 
         if ($this->isColumnModified(PRBadgeArchivePeer::ID)) $criteria->add(PRBadgeArchivePeer::ID, $this->id);
+        if ($this->isColumnModified(PRBadgeArchivePeer::UUID)) $criteria->add(PRBadgeArchivePeer::UUID, $this->uuid);
         if ($this->isColumnModified(PRBadgeArchivePeer::P_R_BADGE_FAMILY_ID)) $criteria->add(PRBadgeArchivePeer::P_R_BADGE_FAMILY_ID, $this->p_r_badge_family_id);
         if ($this->isColumnModified(PRBadgeArchivePeer::TITLE)) $criteria->add(PRBadgeArchivePeer::TITLE, $this->title);
         if ($this->isColumnModified(PRBadgeArchivePeer::ONLINE)) $criteria->add(PRBadgeArchivePeer::ONLINE, $this->online);
@@ -1219,6 +1273,7 @@ abstract class BasePRBadgeArchive extends BaseObject implements Persistent
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
+        $copyObj->setUuid($this->getUuid());
         $copyObj->setPRBadgeFamilyId($this->getPRBadgeFamilyId());
         $copyObj->setTitle($this->getTitle());
         $copyObj->setOnline($this->getOnline());
@@ -1279,6 +1334,7 @@ abstract class BasePRBadgeArchive extends BaseObject implements Persistent
     public function clear()
     {
         $this->id = null;
+        $this->uuid = null;
         $this->p_r_badge_family_id = null;
         $this->title = null;
         $this->online = null;

@@ -35,16 +35,19 @@ abstract class BasePQMandatePeer
     const TM_CLASS = 'Politizr\\Model\\map\\PQMandateTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 9;
+    const NUM_COLUMNS = 10;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 9;
+    const NUM_HYDRATE_COLUMNS = 10;
 
     /** the column name for the id field */
     const ID = 'p_q_mandate.id';
+
+    /** the column name for the uuid field */
+    const UUID = 'p_q_mandate.uuid';
 
     /** the column name for the title field */
     const TITLE = 'p_q_mandate.title';
@@ -101,12 +104,12 @@ abstract class BasePQMandatePeer
      * e.g. PQMandatePeer::$fieldNames[PQMandatePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Title', 'SelectTitle', 'Online', 'CreatedAt', 'UpdatedAt', 'Slug', 'SortableRank', 'PQTypeId', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'title', 'selectTitle', 'online', 'createdAt', 'updatedAt', 'slug', 'sortableRank', 'pQTypeId', ),
-        BasePeer::TYPE_COLNAME => array (PQMandatePeer::ID, PQMandatePeer::TITLE, PQMandatePeer::SELECT_TITLE, PQMandatePeer::ONLINE, PQMandatePeer::CREATED_AT, PQMandatePeer::UPDATED_AT, PQMandatePeer::SLUG, PQMandatePeer::SORTABLE_RANK, PQMandatePeer::P_Q_TYPE_ID, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'TITLE', 'SELECT_TITLE', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', 'SLUG', 'SORTABLE_RANK', 'P_Q_TYPE_ID', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'title', 'select_title', 'online', 'created_at', 'updated_at', 'slug', 'sortable_rank', 'p_q_type_id', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'Title', 'SelectTitle', 'Online', 'CreatedAt', 'UpdatedAt', 'Slug', 'SortableRank', 'PQTypeId', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'title', 'selectTitle', 'online', 'createdAt', 'updatedAt', 'slug', 'sortableRank', 'pQTypeId', ),
+        BasePeer::TYPE_COLNAME => array (PQMandatePeer::ID, PQMandatePeer::UUID, PQMandatePeer::TITLE, PQMandatePeer::SELECT_TITLE, PQMandatePeer::ONLINE, PQMandatePeer::CREATED_AT, PQMandatePeer::UPDATED_AT, PQMandatePeer::SLUG, PQMandatePeer::SORTABLE_RANK, PQMandatePeer::P_Q_TYPE_ID, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'TITLE', 'SELECT_TITLE', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', 'SLUG', 'SORTABLE_RANK', 'P_Q_TYPE_ID', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'title', 'select_title', 'online', 'created_at', 'updated_at', 'slug', 'sortable_rank', 'p_q_type_id', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
     );
 
     /**
@@ -116,12 +119,12 @@ abstract class BasePQMandatePeer
      * e.g. PQMandatePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Title' => 1, 'SelectTitle' => 2, 'Online' => 3, 'CreatedAt' => 4, 'UpdatedAt' => 5, 'Slug' => 6, 'SortableRank' => 7, 'PQTypeId' => 8, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'title' => 1, 'selectTitle' => 2, 'online' => 3, 'createdAt' => 4, 'updatedAt' => 5, 'slug' => 6, 'sortableRank' => 7, 'pQTypeId' => 8, ),
-        BasePeer::TYPE_COLNAME => array (PQMandatePeer::ID => 0, PQMandatePeer::TITLE => 1, PQMandatePeer::SELECT_TITLE => 2, PQMandatePeer::ONLINE => 3, PQMandatePeer::CREATED_AT => 4, PQMandatePeer::UPDATED_AT => 5, PQMandatePeer::SLUG => 6, PQMandatePeer::SORTABLE_RANK => 7, PQMandatePeer::P_Q_TYPE_ID => 8, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'TITLE' => 1, 'SELECT_TITLE' => 2, 'ONLINE' => 3, 'CREATED_AT' => 4, 'UPDATED_AT' => 5, 'SLUG' => 6, 'SORTABLE_RANK' => 7, 'P_Q_TYPE_ID' => 8, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'title' => 1, 'select_title' => 2, 'online' => 3, 'created_at' => 4, 'updated_at' => 5, 'slug' => 6, 'sortable_rank' => 7, 'p_q_type_id' => 8, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'Title' => 2, 'SelectTitle' => 3, 'Online' => 4, 'CreatedAt' => 5, 'UpdatedAt' => 6, 'Slug' => 7, 'SortableRank' => 8, 'PQTypeId' => 9, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'title' => 2, 'selectTitle' => 3, 'online' => 4, 'createdAt' => 5, 'updatedAt' => 6, 'slug' => 7, 'sortableRank' => 8, 'pQTypeId' => 9, ),
+        BasePeer::TYPE_COLNAME => array (PQMandatePeer::ID => 0, PQMandatePeer::UUID => 1, PQMandatePeer::TITLE => 2, PQMandatePeer::SELECT_TITLE => 3, PQMandatePeer::ONLINE => 4, PQMandatePeer::CREATED_AT => 5, PQMandatePeer::UPDATED_AT => 6, PQMandatePeer::SLUG => 7, PQMandatePeer::SORTABLE_RANK => 8, PQMandatePeer::P_Q_TYPE_ID => 9, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'TITLE' => 2, 'SELECT_TITLE' => 3, 'ONLINE' => 4, 'CREATED_AT' => 5, 'UPDATED_AT' => 6, 'SLUG' => 7, 'SORTABLE_RANK' => 8, 'P_Q_TYPE_ID' => 9, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'title' => 2, 'select_title' => 3, 'online' => 4, 'created_at' => 5, 'updated_at' => 6, 'slug' => 7, 'sortable_rank' => 8, 'p_q_type_id' => 9, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
     );
 
     /**
@@ -196,6 +199,7 @@ abstract class BasePQMandatePeer
     {
         if (null === $alias) {
             $criteria->addSelectColumn(PQMandatePeer::ID);
+            $criteria->addSelectColumn(PQMandatePeer::UUID);
             $criteria->addSelectColumn(PQMandatePeer::TITLE);
             $criteria->addSelectColumn(PQMandatePeer::SELECT_TITLE);
             $criteria->addSelectColumn(PQMandatePeer::ONLINE);
@@ -206,6 +210,7 @@ abstract class BasePQMandatePeer
             $criteria->addSelectColumn(PQMandatePeer::P_Q_TYPE_ID);
         } else {
             $criteria->addSelectColumn($alias . '.id');
+            $criteria->addSelectColumn($alias . '.uuid');
             $criteria->addSelectColumn($alias . '.title');
             $criteria->addSelectColumn($alias . '.select_title');
             $criteria->addSelectColumn($alias . '.online');
