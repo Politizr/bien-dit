@@ -2,10 +2,10 @@
 
 /**
  * Data object containing the SQL and PHP code to migrate the database
- * up to version 1447669558.
- * Generated on 2015-11-16 11:25:58 by lionel
+ * up to version 1447825032.
+ * Generated on 2015-11-18 06:37:12 by lionel
  */
-class PropelMigration_1447669558
+class PropelMigration_1447825032
 {
 
     public function preUp($manager)
@@ -42,35 +42,19 @@ class PropelMigration_1447669558
 # It "suspends judgement" for fkey relationships until are tables are set.
 SET FOREIGN_KEY_CHECKS = 0;
 
-ALTER TABLE `p_tag` DROP FOREIGN KEY `p_tag_FK_2`;
-
-DROP INDEX `p_tag_FI_2` ON `p_tag`;
-
 ALTER TABLE `p_tag`
-    ADD `p_t_parent_id` INTEGER AFTER `p_t_tag_type_id`;
+    ADD `moderated` TINYINT(1) AFTER `title`,
+    ADD `moderated_at` DATETIME AFTER `moderated`;
 
-CREATE INDEX `p_tag_FI_2` ON `p_tag` (`p_t_parent_id`);
-
-CREATE INDEX `p_tag_FI_3` ON `p_tag` (`p_user_id`);
-
-ALTER TABLE `p_tag` ADD CONSTRAINT `p_tag_FK_2`
-    FOREIGN KEY (`p_t_parent_id`)
-    REFERENCES `p_tag` (`id`)
+ALTER TABLE `p_tag` ADD CONSTRAINT `p_tag_FK_3`
+    FOREIGN KEY (`p_user_id`)
+    REFERENCES `p_user` (`id`)
     ON UPDATE CASCADE
     ON DELETE SET NULL;
 
-DROP INDEX `p_tag_archive_I_2` ON `p_tag_archive`;
-
-DROP INDEX `p_tag_archive_I_3` ON `p_tag_archive`;
-
 ALTER TABLE `p_tag_archive`
-    ADD `p_t_parent_id` INTEGER AFTER `p_t_tag_type_id`;
-
-CREATE INDEX `p_tag_archive_I_2` ON `p_tag_archive` (`p_t_parent_id`);
-
-CREATE INDEX `p_tag_archive_I_3` ON `p_tag_archive` (`p_user_id`);
-
-CREATE INDEX `p_tag_archive_I_4` ON `p_tag_archive` (`slug`);
+    ADD `moderated` TINYINT(1) AFTER `title`,
+    ADD `moderated_at` DATETIME AFTER `moderated`;
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;
@@ -92,33 +76,15 @@ SET FOREIGN_KEY_CHECKS = 1;
 # It "suspends judgement" for fkey relationships until are tables are set.
 SET FOREIGN_KEY_CHECKS = 0;
 
-ALTER TABLE `p_tag` DROP FOREIGN KEY `p_tag_FK_2`;
+ALTER TABLE `p_tag` DROP FOREIGN KEY `p_tag_FK_3`;
 
-DROP INDEX `p_tag_FI_3` ON `p_tag`;
+ALTER TABLE `p_tag` DROP `moderated`;
 
-DROP INDEX `p_tag_FI_2` ON `p_tag`;
+ALTER TABLE `p_tag` DROP `moderated_at`;
 
-ALTER TABLE `p_tag` DROP `p_t_parent_id`;
+ALTER TABLE `p_tag_archive` DROP `moderated`;
 
-CREATE INDEX `p_tag_FI_2` ON `p_tag` (`p_user_id`);
-
-ALTER TABLE `p_tag` ADD CONSTRAINT `p_tag_FK_2`
-    FOREIGN KEY (`p_user_id`)
-    REFERENCES `p_user` (`id`)
-    ON UPDATE CASCADE
-    ON DELETE SET NULL;
-
-DROP INDEX `p_tag_archive_I_4` ON `p_tag_archive`;
-
-DROP INDEX `p_tag_archive_I_2` ON `p_tag_archive`;
-
-DROP INDEX `p_tag_archive_I_3` ON `p_tag_archive`;
-
-ALTER TABLE `p_tag_archive` DROP `p_t_parent_id`;
-
-CREATE INDEX `p_tag_archive_I_2` ON `p_tag_archive` (`p_user_id`);
-
-CREATE INDEX `p_tag_archive_I_3` ON `p_tag_archive` (`slug`);
+ALTER TABLE `p_tag_archive` DROP `moderated_at`;
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

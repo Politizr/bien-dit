@@ -398,7 +398,7 @@ class PolitizrAdminExtension extends \Twig_Extension
                     'tagTypeId' => $tagTypeId,
                     'zoneId' => $zoneId,
                     'newTag' => $newTag,
-                    'tags' => $user->getTaggedTags($tagTypeId),
+                    'tags' => $user->getTaggedTags($tagTypeId, null),
                     'pathCreate' => $xhrPathCreate,
                     'pathDelete' => $xhrPathDelete,
                     )
@@ -408,7 +408,7 @@ class PolitizrAdminExtension extends \Twig_Extension
             $html = $this->templating->render(
                 'PolitizrAdminBundle:Fragment\\Tag:_list.html.twig',
                 array(
-                    'tags' => $user->getTaggedTags($tagTypeId),
+                    'tags' => $user->getTaggedTags($tagTypeId, null),
                     )
             );
         }
@@ -463,7 +463,7 @@ class PolitizrAdminExtension extends \Twig_Extension
                     'tagTypeId' => $tagTypeId,
                     'zoneId' => $zoneId,
                     'newTag' => $newTag,
-                    'tags' => $user->getFollowTags($tagTypeId),
+                    'tags' => $user->getFollowTags($tagTypeId, null),
                     'pathCreate' => $xhrPathCreate,
                     'pathDelete' => $xhrPathDelete,
                     )
@@ -473,7 +473,7 @@ class PolitizrAdminExtension extends \Twig_Extension
             $html = $this->templating->render(
                 'PolitizrAdminBundle:Fragment\\Tag:_list.html.twig',
                 array(
-                    'tags' => $user->getFollowTags($tagTypeId),
+                    'tags' => $user->getFollowTags($tagTypeId, null),
                     )
             );
         }
@@ -795,7 +795,7 @@ class PolitizrAdminExtension extends \Twig_Extension
                     'tagTypeId' => $tagTypeId,
                     'zoneId' => $zoneId,
                     'newTag' => $newTag,
-                    'tags' => $debate->getTags($tagTypeId),
+                    'tags' => $debate->getTags($tagTypeId, null),
                     'pathCreate' => $xhrPathCreate,
                     'pathDelete' => $xhrPathDelete,
                 )
@@ -805,7 +805,7 @@ class PolitizrAdminExtension extends \Twig_Extension
             $html = $this->templating->render(
                 'PolitizrAdminBundle:Fragment\\Tag:_list.html.twig',
                 array(
-                    'tags' => $debate->getTags($tagTypeId),
+                    'tags' => $debate->getTags($tagTypeId, null),
                     )
             );
         }
@@ -860,7 +860,7 @@ class PolitizrAdminExtension extends \Twig_Extension
                     'tagTypeId' => $tagTypeId,
                     'zoneId' => $zoneId,
                     'newTag' => $newTag,
-                    'tags' => $reaction->getTags($tagTypeId),
+                    'tags' => $reaction->getTags($tagTypeId, null),
                     'pathCreate' => $xhrPathCreate,
                     'pathDelete' => $xhrPathDelete,
                 )
@@ -870,7 +870,7 @@ class PolitizrAdminExtension extends \Twig_Extension
             $html = $this->templating->render(
                 'PolitizrAdminBundle:Fragment\\Tag:_list.html.twig',
                 array(
-                    'tags' => $reaction->getTags($tagTypeId),
+                    'tags' => $reaction->getTags($tagTypeId, null),
                     )
             );
         }

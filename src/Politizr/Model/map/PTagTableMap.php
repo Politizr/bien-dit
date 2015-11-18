@@ -47,6 +47,8 @@ class PTagTableMap extends TableMap
         $this->addForeignKey('p_t_parent_id', 'PTParentId', 'INTEGER', 'p_tag', 'id', false, null, null);
         $this->addForeignKey('p_user_id', 'PUserId', 'INTEGER', 'p_user', 'id', false, null, null);
         $this->addColumn('title', 'Title', 'VARCHAR', false, 150, null);
+        $this->addColumn('moderated', 'Moderated', 'BOOLEAN', false, 1, null);
+        $this->addColumn('moderated_at', 'ModeratedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('online', 'Online', 'BOOLEAN', false, 1, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);

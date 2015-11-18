@@ -16,6 +16,9 @@
         
         <column name="title" type="varchar" size="150" />
 
+        <column name="moderated" type="boolean" />
+        <column name="moderated_at" type="timestamp" />
+
         <column name="online" type="boolean" />
 
         <foreign-key foreignTable="p_t_tag_type" onDelete="CASCADE" onUpdate="CASCADE">

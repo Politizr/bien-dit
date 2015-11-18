@@ -19,6 +19,10 @@ params:
                 query:          \Politizr\Model\PTagQuery::create()->filterByPTTagTypeId(1)->where("p_tag.id > ?", 35)->where("p_tag.id < ?", 137)->orderByTitle() 
         title:
             label:          Titre
+        moderated:
+            label:          Modéré
+        moderated_at:
+            label:          Mis à jour
         online:
             label:          En ligne
         created_at:
@@ -87,12 +91,17 @@ builders:
             tabs:
                 "Contenu":
                     "Texte":                    [ [ title ] ]
+                "Modération":
+                    "Portée":                   [ [ moderated, moderated_at ] ]
                 "Attributs":
                     "Création":                 [ [ p_t_tag_type ], [ PTagRelatedByPTParentId ], [ online ], [ created_at, updated_at ] ]
             fields:
                 p_t_tag_type:
                     addFormOptions:
-                        query:                  \Politizr\Model\PTTagTypeQuery::create()->orderByTitle() 
+                        query:                  \Politizr\Model\PTTagTypeQuery::create()->orderByTitle()
+                PTagRelatedByPTParentId:
+                    addFormOptions:
+                        required:               false
                 created_at:
                     addFormOptions:
                       widget:                   single_text
@@ -114,6 +123,8 @@ builders:
                     "Création":                 [ [ p_t_tag_type ], [ PTagRelatedByPTParentId ], [ online ], [ created_at, updated_at ] ]
                 "Publication":
                     "Débats":                   [ block_debates ]
+                "Modération":
+                    "Portée":                   [ [ moderated, moderated_at ] ]
                 "Utilisateurs":
                     "Tags associés public":     [ block_tagged_tag_users ]
                     "Tags suivis privé":        [ block_follow_tag_users ]

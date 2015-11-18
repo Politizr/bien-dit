@@ -18,7 +18,7 @@ $(function() {
 
         var xhrPath = getXhrPath(
             xhrRoute,
-            'tag',
+            service,
             'getTags',
             RETURN_HTML
             );

@@ -38,8 +38,6 @@ class PTagQuery extends BasePTagQuery
         return $this
             ->_if(null !== $typeId)
                 ->filterByPTTagTypeId($typeId)
-            ->_else()
-                ->orderByPTTagTypeId()
             ->_endif();
     }
 }

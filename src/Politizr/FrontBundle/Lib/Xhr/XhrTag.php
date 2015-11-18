@@ -88,6 +88,14 @@ class XhrTag
                     ->findOne();
 
         if ($tag) {
+            if ($tag->getModerated()) {
+                throw new FormValidationException('Cette thématique est modérée.');
+            }
+
+            if (!$tag->getOnline()) {
+                throw new FormValidationException('Cette thématique est hors ligne.');
+            }
+
             return $tag;
         }
 

@@ -149,13 +149,13 @@ class XhrAdmin
             $tagTypeId = null;
         }
 
-        $tags = $this->tagManager->getArrayTags($tagTypeId);
+        $tags = $this->tagManager->getArrayTags($tagTypeId, false, null);
 
         // Renvoi de l'ensemble des blocs HTML maj
         return array(
             'tags' => $tags,
             'zoneId' => $zoneId
-            );
+        );
     }
 
     /* ######################################################################################################## */
