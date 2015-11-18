@@ -8,6 +8,10 @@ params:
     fields:
         id:
             label:          ID
+        uuid:
+            label:          UUID
+        slug:
+            label:          Slug
         p_q_type_id:
             label:          ID Type
         p_q_type:
@@ -90,6 +94,7 @@ builders:
                     "Texte":                    [ [ initials, title ] ]
                     "Plus informations":        [ description, url ]
                 "Attributs":
+                    "Identifiants":             [ [ id, uuid, slug ] ]
                     "Type":                     [ p_q_type ]
                     "En ligne":                 [ online ]
                     "Création":                 [ [ created_at, updated_at ] ]
@@ -104,6 +109,12 @@ builders:
                         query:                  \Politizr\Model\PQTypeQuery::create()->orderById()
                 description:
                     grid_class:                 "col-md-12"
+                id:
+                    addFormOptions:
+                        read_only:              true
+                uuid:
+                    addFormOptions:
+                        read_only:              true
                 created_at:
                     addFormOptions:
                       widget:                   single_text

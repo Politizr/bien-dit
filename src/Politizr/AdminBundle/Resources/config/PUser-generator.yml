@@ -15,6 +15,8 @@ params:
             label:          ID
         uuid:
             label:          UUID
+        slug:
+            label:          Slug
         p_u_status_id:
             label:          Statut
         p_u_status:
@@ -148,9 +150,8 @@ builders:
                 "Identité":
                     "Civilité":                 [ [ block_back_file_name ], [ block_file_name ], [ gender ], [ firstname, name ] ]
                     "Contacts":                 [ [ phone, email ], [ website ], [ twitter, facebook ] ]
-                "Identifiant":
+                "Connexion":
                     "Connexion":                [ username, plainPassword ]
-                    "Rôles":                    [ roles ]
                 "Descriptif":
                     "Informations":             [ subtitle, biography ]
                 "Tag":
@@ -168,11 +169,13 @@ builders:
                 "Statut":
                     "Actuel":                   [ p_u_status_id ]
                     "Activité":                 [ last_login, last_activity ]
+                "Rôles":
+                    "Rôles":                    [ roles ]
                 "Attributs":
+                    "Identifiants":             [ [ id, uuid, slug ] ]
                     "Type":                     [ qualified ]
                     "En ligne":                 [ online ]
                     "Validé":                   [ validated ]
-                    "Identifiants":             [ id, uuid, slug ]
                     "Création":                 [ [ created_at, updated_at ] ]
             fields:
                 block_back_file_name:
@@ -323,6 +326,7 @@ builders:
                     "Notification":             [ block_moderation_alert_new  ]
                     "Précédentes notifications": [ block_moderation_alert_listing  ]
                 "Attributs":
+                    "Identifiants":             [ [ id, uuid, slug ] ]
                     "En ligne":                 [ [ online ] ]
                     "Validé":                   [ [ validated ] ]
                     "Rôles":                    [ roles ]

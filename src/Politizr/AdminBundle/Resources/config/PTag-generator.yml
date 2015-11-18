@@ -8,6 +8,10 @@ params:
     fields:
         id:
             label:          ID
+        uuid:
+            label:          UUID
+        slug:
+            label:          Slug
         p_t_tag_type_id:
             label:          ID Type
         p_t_tag_type:
@@ -94,6 +98,7 @@ builders:
                 "Modération":
                     "Portée":                   [ [ moderated, moderated_at ] ]
                 "Attributs":
+                    "Identifiants":             [ [ id, uuid, slug ] ]
                     "Création":                 [ [ p_t_tag_type ], [ PTagRelatedByPTParentId ], [ online ], [ created_at, updated_at ] ]
             fields:
                 p_t_tag_type:
@@ -102,6 +107,12 @@ builders:
                 PTagRelatedByPTParentId:
                     addFormOptions:
                         required:               false
+                id:
+                    addFormOptions:
+                        read_only:              true
+                uuid:
+                    addFormOptions:
+                        read_only:              true
                 created_at:
                     addFormOptions:
                       widget:                   single_text
@@ -119,8 +130,6 @@ builders:
             tabs:
                 "Contenu":
                     "Texte":                    [ [ title ] ]
-                "Attributs":
-                    "Création":                 [ [ p_t_tag_type ], [ PTagRelatedByPTParentId ], [ online ], [ created_at, updated_at ] ]
                 "Publication":
                     "Débats":                   [ block_debates ]
                 "Modération":
@@ -128,6 +137,9 @@ builders:
                 "Utilisateurs":
                     "Tags associés public":     [ block_tagged_tag_users ]
                     "Tags suivis privé":        [ block_follow_tag_users ]
+                "Attributs":
+                    "Identifiants":             [ [ id, uuid, slug ] ]
+                    "Création":                 [ [ p_t_tag_type ], [ PTagRelatedByPTParentId ], [ online ], [ created_at, updated_at ] ]
             fields:
                 block_debates:
                     label:                      "Taggés"

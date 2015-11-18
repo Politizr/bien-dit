@@ -8,6 +8,10 @@ params:
     fields:
         id:
             label:          ID
+        uuid:
+            label:          UUID
+        slug:
+            label:          Slug
         title:
             label:          Titre
         price:
@@ -67,10 +71,17 @@ builders:
                 "Tarif":
                     "Prix":                     [ price ]
                 "Attributs":
+                    "Identifiants":             [ [ id, uuid, slug ] ]
                     "Création":                 [ [ online ], [ created_at, updated_at ] ]
             fields:
                 price:
                     formType:                   money
+                id:
+                    addFormOptions:
+                        read_only:              true
+                uuid:
+                    addFormOptions:
+                        read_only:              true
                 created_at:
                     addFormOptions:
                       widget:                   single_text
@@ -91,6 +102,7 @@ builders:
                 "Utilisateurs":
                     "Souscription":             [ ]
                 "Attributs":
+                    "Identifiants":             [ [ id, uuid, slug ] ]
                     "Création":                 [ [ online ], [ created_at, updated_at ] ]
             fields:
                 price:
