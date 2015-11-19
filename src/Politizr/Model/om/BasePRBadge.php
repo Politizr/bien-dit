@@ -2214,7 +2214,7 @@ abstract class BasePRBadge extends BaseObject implements Persistent
     public function preInsert(PropelPDO $con = NULL) {
 
         if(is_null($this->getUuid())) {
-            $this->setUuid(\Ramsey\Uuid\Uuid::uuid1()->__toString());
+            $this->setUuid(\Ramsey\Uuid\Uuid::uuid4()->__toString());
         } else {
             $uuid = $this->getUuid();
             if(!\Ramsey\Uuid\Uuid::isValid($uuid)) {

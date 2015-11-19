@@ -117,14 +117,14 @@ class XhrDocument
         $this->logger->info('*** follow');
         
         // Request arguments
-        $id = $request->get('subjectId');
-        $this->logger->info('$id = ' . print_r($id, true));
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
         $way = $request->get('way');
         $this->logger->info('$way = ' . print_r($way, true));
 
         // Function process
         $user = $this->securityTokenStorage->getToken()->getUser();
-        $debate = PDDebateQuery::create()->findPk($id);
+        $debate = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
         if ('follow' == $way) {
             $this->userManager->createUserFollowDebate($user->getId(), $debate->getId());
 

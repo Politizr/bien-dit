@@ -118,15 +118,15 @@ class XhrUser
         $this->logger->info('*** follow');
         
         // Request arguments
-        $id = $request->get('subjectId');
-        $this->logger->info('$id = ' . print_r($id, true));
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
         $way = $request->get('way');
         $this->logger->info('$way = ' . print_r($way, true));
 
         // Function process
         $user = $this->securityTokenStorage->getToken()->getUser();
         if ($way == 'follow') {
-            $targetUser = PUserQuery::create()->findPk($id);
+            $targetUser = PUserQuery::create()->filterByUuid($uuid)->findOne();
             $this->userManager->createUserFollowUser($user->getId(), $targetUser->getId());
 
             // Events
@@ -137,7 +137,7 @@ class XhrUser
             $event = new GenericEvent($targetUser, array('author_user_id' => $user->getId(), 'target_user_id' => $targetUser->getId()));
             $dispatcher = $this->eventDispatcher->dispatch('b_user_follow', $event);
         } elseif ($way == 'unfollow') {
-            $targetUser = PUserQuery::create()->findPk($id);
+            $targetUser = PUserQuery::create()->filterByUuid($uuid)->findOne();
             $this->userManager->deleteUserFollowUser($user->getId(), $targetUser->getId());
 
             // Events

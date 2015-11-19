@@ -8,7 +8,7 @@
             <parameter name="slug_pattern" value="{title}" />
         </behavior>
         <behavior name="uuid">
-            <parameter name="version" value="1" />
+            <parameter name="version" value="4" />
             <parameter name="permanent" value="false" />
         </behavior>
         <behavior name="archivable" />
@@ -60,7 +60,7 @@
             <parameter name="slug_pattern" value="{title}" />
         </behavior>
         <behavior name="uuid">
-            <parameter name="version" value="1" />
+            <parameter name="version" value="4" />
             <parameter name="permanent" value="false" />
         </behavior>
         <behavior name="sortable" >
@@ -128,7 +128,7 @@
             <parameter name="slug_pattern" value="{title}" />
         </behavior>
         <behavior name="uuid">
-            <parameter name="version" value="1" />
+            <parameter name="version" value="4" />
             <parameter name="permanent" value="false" />
         </behavior>
         
@@ -156,7 +156,7 @@
         <behavior name="query_cache" />
         <behavior name="archivable" />
         <behavior name="uuid">
-            <parameter name="version" value="1" />
+            <parameter name="version" value="4" />
             <parameter name="permanent" value="false" />
         </behavior>
         
@@ -249,7 +249,7 @@
             <parameter name="slug_pattern" value="{title}" />
         </behavior>
         <behavior name="uuid">
-            <parameter name="version" value="1" />
+            <parameter name="version" value="4" />
             <parameter name="permanent" value="false" />
         </behavior>
         <behavior name="sortable" />
@@ -313,7 +313,7 @@
             <parameter name="slug_pattern" value="{title}" />
         </behavior>
         <behavior name="uuid">
-            <parameter name="version" value="1" />
+            <parameter name="version" value="4" />
             <parameter name="permanent" value="false" />
         </behavior>
         <behavior name="sortable" />
@@ -338,7 +338,7 @@
             <parameter name="slug_pattern" value="{title}" />
         </behavior>
         <behavior name="uuid">
-            <parameter name="version" value="1" />
+            <parameter name="version" value="4" />
             <parameter name="permanent" value="false" />
         </behavior>
         <behavior name="sortable" />
@@ -363,7 +363,7 @@
             <parameter name="slug_pattern" value="{title}" />
         </behavior>
         <behavior name="uuid">
-            <parameter name="version" value="1" />
+            <parameter name="version" value="4" />
             <parameter name="permanent" value="false" />
         </behavior>
         <behavior name="sortable" >
@@ -395,7 +395,7 @@
             <parameter name="slug_pattern" value="{title}" />
         </behavior>
         <behavior name="uuid">
-            <parameter name="version" value="1" />
+            <parameter name="version" value="4" />
             <parameter name="permanent" value="false" />
         </behavior>
         <behavior name="sortable" >
@@ -460,7 +460,7 @@
         <behavior name="query_cache" />
         <behavior name="sluggable"/>
         <behavior name="uuid">
-            <parameter name="version" value="1" />
+            <parameter name="version" value="4" />
             <parameter name="permanent" value="false" />
         </behavior>
         <behavior name="archivable" />
@@ -806,7 +806,7 @@
             <parameter name="slug_pattern" value="{title}" />
         </behavior>
         <behavior name="uuid">
-            <parameter name="version" value="1" />
+            <parameter name="version" value="4" />
             <parameter name="permanent" value="false" />
         </behavior>
         <behavior name="archivable" />
@@ -853,7 +853,7 @@
             <parameter name="slug_pattern" value="{title}" />
         </behavior>
         <behavior name="uuid">
-            <parameter name="version" value="1" />
+            <parameter name="version" value="4" />
             <parameter name="permanent" value="false" />
         </behavior>
         <behavior name="nested_set">
@@ -908,7 +908,7 @@
         <behavior name="query_cache" />
         <behavior name="archivable" />
         <behavior name="uuid">
-            <parameter name="version" value="1" />
+            <parameter name="version" value="4" />
             <parameter name="permanent" value="false" />
         </behavior>
         
@@ -948,7 +948,7 @@
         <behavior name="query_cache" />
         <behavior name="archivable" />
         <behavior name="uuid">
-            <parameter name="version" value="1" />
+            <parameter name="version" value="4" />
             <parameter name="permanent" value="false" />
         </behavior>
         

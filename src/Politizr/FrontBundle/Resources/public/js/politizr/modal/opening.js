@@ -5,7 +5,7 @@
 // modal reputation
 $("body").on("click", "[action='modalReputation']", function() {
     // console.log('*** modalReputation');
-    $('#modalBox#modalBoxContent').removeClass().addClass('reputation');
+    $('#modalBoxContent').removeClass().addClass('reputation');
     modalLoading();
     loadReputation();
 });
@@ -13,7 +13,7 @@ $("body").on("click", "[action='modalReputation']", function() {
 // modal abuse
 $("body").on("click", "[action='modalAbuse']", function() {
     // console.log('*** modalAbuse');
-    $('#modalBox#modalBoxContent').removeClass().addClass('formAbuse');
+    $('#modalBoxContent').removeClass().addClass('formAbuse');
     modalLoading();
 
     var subjectId = $(this).attr('subjectId');
@@ -28,7 +28,7 @@ $("body").on("click", "[action='modalAbuse']", function() {
 // modal ask for update
 $("body").on("click", "[action='modalAskForUpdate']", function() {
     // console.log('*** modalAbuse');
-    $('#modalBox#modalBoxContent').removeClass().addClass('formAskForUpdate');
+    $('#modalBoxContent').removeClass().addClass('formAskForUpdate');
     modalLoading();
 
     var subjectId = $(this).attr('subjectId');
@@ -47,6 +47,7 @@ $("body").on("click", "[action='modalAskForUpdate']", function() {
 // modal ranking
 $("body").on("click", "[action='modalRanking']", function() {
     // console.log('*** modalRanking');
+    $('#modalBoxContent').removeClass().addClass('ranking');
     modalLoading();
     loadPaginatedList('_ranking.html.twig', 'true');
 });
@@ -54,6 +55,7 @@ $("body").on("click", "[action='modalRanking']", function() {
 // modal suggestions
 $("body").on("click", "[action='modalSuggestions']", function() {
     // console.log('*** modalSuggestions');
+    $('#modalBoxContent').removeClass().addClass('suggestions');
     modalLoading();
     loadPaginatedList('_suggestions.html.twig', 'false');
 });
@@ -61,6 +63,7 @@ $("body").on("click", "[action='modalSuggestions']", function() {
 // modal tag
 $("body").on("click", "[action='modalTagged']", function() {
     // console.log('*** modalTagged');
+    $('#modalBoxContent').removeClass().addClass('tagged');
     modalLoading();
 
     loadPaginatedList('_tagged.html.twig', 'true', $(this).attr('model'), $(this).attr('slug'));
@@ -69,6 +72,7 @@ $("body").on("click", "[action='modalTagged']", function() {
 // modal organisation
 $("body").on("click", "[action='modalOrganization']", function() {
     // console.log('*** modalOrganization');
+    $('#modalBoxContent').removeClass().addClass('organization');
     modalLoading();
 
     loadPaginatedList('_organization.html.twig', 'true', $(this).attr('model'), $(this).attr('slug'));
@@ -77,6 +81,7 @@ $("body").on("click", "[action='modalOrganization']", function() {
 // modal subscriptions
 $("body").on("click", "[action='modalSubscriptions']", function() {
     // console.log('*** modalSubscriptions');
+    $('#modalBoxContent').removeClass().addClass('subscriptions');
     modalLoading();
 
     loadPaginatedList('_subscriptions.html.twig', 'true');
@@ -85,6 +90,7 @@ $("body").on("click", "[action='modalSubscriptions']", function() {
 // modal followers
 $("body").on("click", "[action='modalFollowers']", function() {
     // console.log('*** modalFollowers');
+    $('#modalBoxContent').removeClass().addClass('followers');
     modalLoading();
 
     loadPaginatedList('_followers.html.twig', 'true', $(this).attr('model'), $(this).attr('slug'));
@@ -93,6 +99,7 @@ $("body").on("click", "[action='modalFollowers']", function() {
 // modal search
 $("body").on("click", "[action='modalSearch']", function() {
     // console.log('*** modalSearch');
+    $('#modalBoxContent').removeClass().addClass('search');
     modalLoading();
     updateCloseModalActions('searchModalClose');
     loadSearchForm();

@@ -21,7 +21,7 @@ class UuidsPopulateCommand extends ContainerAwareCommand
     {
         $this
             ->setName('politizr:uuids:populate')
-            ->setDescription('Populate Politizr objects with UUID if null')
+            ->setDescription('Populate Politizr objects with UUID')
         ;
     }
 
@@ -48,13 +48,13 @@ class UuidsPopulateCommand extends ContainerAwareCommand
         ;
 
         foreach ($queryClasses as $queryClass) {
-            $subjects = $queryClass::create()->filterByUuid(null)->find();
+            $subjects = $queryClass::create()->find();
             foreach ($subjects as $subject) {
-                $subject->setUuid(\Ramsey\Uuid\Uuid::uuid1()->__toString());
+                $subject->setUuid(\Ramsey\Uuid\Uuid::uuid4()->__toString());
                 $subject->save();
             }
         }
 
-        $output->writeln('<info>Populate Politizr objects with UUID if null successfully completed.</info>');
+        $output->writeln('<info>Populate Politizr objects with UUID successfully completed.</info>');
     }
 }

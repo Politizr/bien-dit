@@ -93,7 +93,7 @@ class PRActionTableMap extends TableMap
 ),
             'uuid' =>  array (
   'name' => 'uuid',
-  'version' => '1',
+  'version' => '4',
   'permanent' => 'false',
   'required' => 'true',
   'unique' => 'true',

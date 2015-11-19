@@ -11,14 +11,17 @@ $("body").on("click", "[action='followDebate']", function(e) {
         RETURN_HTML
         );
 
-    var subjectId = $(this).attr('subjectId');
+    var uuid = $(this).attr('uuid');
     var way = $(this).attr('way');
+
+    // console.log('uuid = '+uuid);
+    // console.log('way = '+way);
 
     $.ajax({
         type: 'POST',
         url: xhrPath,
         context: context,
-        data: { 'subjectId': subjectId, 'way': way },
+        data: { 'uuid': uuid, 'way': way },
         dataType: 'json',
         beforeSend: function ( xhr ) { xhrBeforeSend( xhr, localLoader ); },
         statusCode: { 404: function () { xhr404(localLoader); }, 500: function() { xhr500(localLoader); } },
@@ -32,7 +35,7 @@ $("body").on("click", "[action='followDebate']", function(e) {
                 // MAJ du bouton suivre / Se désabonner
                 $(this).html(data['html']);
 
-                $(this).trigger('postFollowDebateEvent', [ subjectId, way ]);
+                $(this).trigger('postFollowDebateEvent', [ way ]);
             }
         }
     });
@@ -55,7 +58,7 @@ $("body").on("click", "[action='followUser']", function(e) {
         type: 'POST',
         url: xhrPath,
         context: context,
-        data: { 'subjectId': $(this).attr('subjectId'), 'way': $(this).attr('way') },
+        data: { 'uuid': $(this).attr('uuid'), 'way': $(this).attr('way') },
         dataType: 'json',
         beforeSend: function ( xhr ) { xhrBeforeSend( xhr, localLoader ); },
         statusCode: { 404: function () { xhr404(localLoader); }, 500: function() { xhr500(localLoader); } },

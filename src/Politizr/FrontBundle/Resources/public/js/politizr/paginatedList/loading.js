@@ -25,7 +25,7 @@ $("body").on("click", "[action='paginateNext']", function(e) {
 });
 
 //
-$("body").on("postFollowDebateEvent", function(event, subjectId, way) {
+$("body").on("postFollowDebateEvent", function(event, way) {
     // console.log('*** postFollowDebateEvent');
     modalType = $('#modalBoxContent').attr('class');
 

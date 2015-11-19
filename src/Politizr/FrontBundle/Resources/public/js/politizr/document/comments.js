@@ -64,7 +64,6 @@ function openParagraph(paragraphId)
 
     // console.log(localLoader);
 
-
     var xhrPath = getXhrPath(
         ROUTE_COMMENTS,
         'document',
