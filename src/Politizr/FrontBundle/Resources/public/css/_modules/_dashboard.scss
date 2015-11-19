@@ -1,10 +1,7 @@
 @import "../_global/colors";
 
-.dbHeader, #dbSuggestions {
-	background-color: $lightGrey;
-	position: relative;
-	float: left;
-	width: 100%;
+#dashboard {
+    font-family: 'nerissemibold';	
 }
 
 #dashboard h1 {
@@ -16,16 +13,118 @@
 	color: $darkGrey;
 }
 
-.dbClose, .dbOpen {
-	top: 40px;
-	right: 38px;
-	position: absolute;
-	color: $semiGrey;
-	cursor: pointer;
-	font-size: 14px;
+.dbMap {
+	float: left;
+	width: 100%;
 }
-.dbClose:hover, .dbOpen:hover { color: $darkGrey;}
-.dbOpen {display: none; font-size: 10px;}
+
+.dbMapHeader {
+	margin: 10px 40px 50px 40px;
+	width: calc(100% - 80px);
+	font-size: 10px;
+	text-transform: uppercase;
+}
+
+.dbMapHeaderLeft {
+	float: left;
+	width: 80%;
+	line-height: 100%;
+}
+
+.dbMapHeaderLeft span {
+	float: left;
+	margin-right: 5px;
+	color: $highlight;
+	cursor: pointer;
+}
+.dbMapHeaderLeft span:hover {color: $darkGrey;}
+
+.dbMapHeaderLeft i {	
+	float: left;
+	margin-right: 4px;
+	font-size: 6px;
+	color: $highlight;
+}
+
+.dbMapHeaderRight {
+	float: right;
+	width: 20%;
+	text-align: right;
+}
+
+.dbMapHeaderRight span {
+	margin-left: 20px;
+	cursor: pointer;
+}
+.dbMapHeaderRight span:hover {color: $highlight;}
+
+.dbMapBox {
+	margin: 0 0 40px 0;
+	background: $formGrey;
+	width: 100%;
+	float: left;
+	height: 670px;
+}
+
+.dbMapBox iframe {
+	position: absolute;
+	top: 0;
+	left: 0;
+	border: none;
+	
+}
+
+.dbMapFilters {
+	float: right;
+	margin: 20px 20px 20px 0;
+	background-color: #fff;
+	padding: 20px;
+	width: 290px;
+	position: relative;
+	z-index: 1;
+	min-height: 590px;
+}
+
+.dbMapFilters .listCriteria.listCriteriaTabs {
+	width: 100%;
+	margin: 0 0 20px 0;
+}
+
+.dbMapFilters .listCriteria.listCriteriaTabs label { margin: 0 24px 0 0;}
+.dbMapFilters .listCriteria.listCriteriaTabs label:last-child {margin-right: 0;}
+
+.debatePodium {
+	float: left;
+	width: 100%;
+	border-bottom: solid 1px $semiGrey;
+	margin-bottom: 20px;
+	padding-bottom: 30px;
+}
+
+.podiumItem {
+	float: left;
+	width: 100%;
+	margin: 10px 0;
+	background: aqua;
+}
+
+.podiumRank {
+	float: left;
+	width: 30px;
+	margin-right: 10px;
+	text-align: center;
+	font-size: 30px; 
+	color: $highlight;
+    font-family: 'nerislight';
+    line-height: 100%;
+}
+
+.dbSuggestions {
+	background-color: $lightGrey;
+	position: relative;
+	float: left;
+	width: 100%;
+}
 
 a.dbItemShow {
 	float: left;
@@ -38,10 +137,28 @@ a.dbItemShow {
 a.dbItemShow i {	position: absolute;	left: -2px; }
 a.dbItemShow:hover {color: $darkGrey;}
 
-#dbCloseToYou {
+#dashboard .dbItemHalfWidth .subscribe {
+	position: static;
+	float: right;
+	right: 0;
+	margin-top: 15px;
+	text-transform: uppercase;
+	color: #fff;
+}
+
+#dashboard .dbItemHalfWidth .subscribe .actionFollow, #dashboard .dbItemHalfWidth .subscribe .actionUnfollow {
+	width: 140px;
+	padding: 12px 0;
+	float: left;
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+	-o-box-shadow: none;
+	box-shadow: none;
+}
+
+.dbCloseToYou {
 	background-color: $formGrey;
 	clear: both;
-	border-top: solid 20px $lightGrey;
 	float: left;
 	width: 100%;
 }
@@ -62,8 +179,8 @@ a.dbItemShow:hover {color: $darkGrey;}
 	position: relative;	
 }
 
-#dbSuggestions .dbItemHalfWidth .tag { color: $lightGrey; }
-#dbSuggestions .dbItemHalfWidth .tag:hover {color: $darkGrey;}
+.dbSuggestions .dbItemHalfWidth .tag { color: $lightGrey; }
+.dbSuggestions .dbItemHalfWidth .tag:hover {color: $darkGrey;}
 
 .dbItemHalfWidth .postSummaryTagList {
 	max-height: 14px;
@@ -101,28 +218,23 @@ a.dbItemShow:hover {color: $darkGrey;}
 	clear: both;
 }
 
-#dashboard .dbItemHalfWidth .subscribe {
-	position: static;
-	float: right;
-	right: 0;
-	margin-top: 15px;
-	text-transform: uppercase;
-	color: #fff;
-}
-
-#dashboard .dbItemHalfWidth .subscribe .actionFollow, #dashboard .dbItemHalfWidth .subscribe .actionUnfollow {
-	width: 140px;
-	padding: 12px 0;
-	float: left;
-	-moz-box-shadow: none;
-	-webkit-box-shadow: none;
-	-o-box-shadow: none;
-	box-shadow: none;
-}
-
 #dashboard .profilePublicTagList {
 	padding: 10px 0 0 0;
 	float: left;
 	width: 100%;
 }
 
+.dbItemHalfWidth .profileHeader, .dbItemHalfWidth .profileHeader .illustrationShadow, .dbItemHalfWidth .profileHeaderIllustration {
+	width: 100%;
+	height: 165px;
+}
+
+.dbItemHalfWidth .profileHeader .pad40 {
+	padding: 20px;
+	width: calc(100% - 40px);
+	height: calc(100% - 40px);
+}
+
+.dbItemHalfWidth .profileSummaryFooter {
+	bottom: 20px;
+}

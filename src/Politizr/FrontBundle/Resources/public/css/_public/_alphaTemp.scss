@@ -16,7 +16,7 @@
     font-family: 'nerissemibold';	
 }
 
-#registerIntro a, #loginIntro a { text-decoration: underline;}
+#registerIntro a, #loginIntro a { text-decoration: underline; color: $darkHighlight;}
 
 // no social share on alpha
 #social {display: none;}
