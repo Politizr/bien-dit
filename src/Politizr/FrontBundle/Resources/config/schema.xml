@@ -430,8 +430,13 @@
     <table name="p_notification">
         <behavior name="timestampable" />
         <behavior name="query_cache" />
+        <behavior name="uuid">
+            <parameter name="version" value="4" />
+            <parameter name="permanent" value="false" />
+        </behavior>
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="uuid" type="varchar" size="50" />
         <column name="p_n_type_id" type="integer" required="true" />
 
         <column name="title" type="varchar" size="250" />
@@ -442,6 +447,10 @@
         <foreign-key foreignTable="p_n_type" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_n_type_id" foreign="id" />
         </foreign-key>        
+
+        <unique>
+            <unique-column name="uuid"/>
+        </unique>
     </table>
 
     <table name="p_n_type">

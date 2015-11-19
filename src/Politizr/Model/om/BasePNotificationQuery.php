@@ -26,6 +26,7 @@ use Politizr\Model\PUser;
 
 /**
  * @method PNotificationQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method PNotificationQuery orderByUuid($order = Criteria::ASC) Order by the uuid column
  * @method PNotificationQuery orderByPNTypeId($order = Criteria::ASC) Order by the p_n_type_id column
  * @method PNotificationQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method PNotificationQuery orderByDescription($order = Criteria::ASC) Order by the description column
@@ -34,6 +35,7 @@ use Politizr\Model\PUser;
  * @method PNotificationQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  *
  * @method PNotificationQuery groupById() Group by the id column
+ * @method PNotificationQuery groupByUuid() Group by the uuid column
  * @method PNotificationQuery groupByPNTypeId() Group by the p_n_type_id column
  * @method PNotificationQuery groupByTitle() Group by the title column
  * @method PNotificationQuery groupByDescription() Group by the description column
@@ -64,6 +66,7 @@ use Politizr\Model\PUser;
  * @method PNotification findOne(PropelPDO $con = null) Return the first PNotification matching the query
  * @method PNotification findOneOrCreate(PropelPDO $con = null) Return the first PNotification matching the query, or a new PNotification object populated from the query conditions when no match is found
  *
+ * @method PNotification findOneByUuid(string $uuid) Return the first PNotification filtered by the uuid column
  * @method PNotification findOneByPNTypeId(int $p_n_type_id) Return the first PNotification filtered by the p_n_type_id column
  * @method PNotification findOneByTitle(string $title) Return the first PNotification filtered by the title column
  * @method PNotification findOneByDescription(string $description) Return the first PNotification filtered by the description column
@@ -72,6 +75,7 @@ use Politizr\Model\PUser;
  * @method PNotification findOneByUpdatedAt(string $updated_at) Return the first PNotification filtered by the updated_at column
  *
  * @method array findById(int $id) Return PNotification objects filtered by the id column
+ * @method array findByUuid(string $uuid) Return PNotification objects filtered by the uuid column
  * @method array findByPNTypeId(int $p_n_type_id) Return PNotification objects filtered by the p_n_type_id column
  * @method array findByTitle(string $title) Return PNotification objects filtered by the title column
  * @method array findByDescription(string $description) Return PNotification objects filtered by the description column
@@ -187,7 +191,7 @@ abstract class BasePNotificationQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_n_type_id`, `title`, `description`, `online`, `created_at`, `updated_at` FROM `p_notification` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_n_type_id`, `title`, `description`, `online`, `created_at`, `updated_at` FROM `p_notification` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -317,6 +321,35 @@ abstract class BasePNotificationQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PNotificationPeer::ID, $id, $comparison);
+    }
+
+    /**
+     * Filter the query on the uuid column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByUuid('fooValue');   // WHERE uuid = 'fooValue'
+     * $query->filterByUuid('%fooValue%'); // WHERE uuid LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $uuid The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PNotificationQuery The current query, for fluid interface
+     */
+    public function filterByUuid($uuid = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($uuid)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $uuid)) {
+                $uuid = str_replace('*', '%', $uuid);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PNotificationPeer::UUID, $uuid, $comparison);
     }
 
     /**

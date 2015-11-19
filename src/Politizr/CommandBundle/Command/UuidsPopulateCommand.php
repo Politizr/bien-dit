@@ -59,6 +59,7 @@ class UuidsPopulateCommand extends ContainerAwareCommand
                 'Politizr\Model\PDReactionQuery',
                 'Politizr\Model\PDDCommentQuery',
                 'Politizr\Model\PDRCommentQuery',
+                'Politizr\Model\PNotificationQuery',
                 'Politizr\Model\PUNotificationQuery',
                 ]
             ;

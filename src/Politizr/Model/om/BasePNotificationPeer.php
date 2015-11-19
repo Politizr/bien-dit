@@ -36,16 +36,19 @@ abstract class BasePNotificationPeer
     const TM_CLASS = 'Politizr\\Model\\map\\PNotificationTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 7;
+    const NUM_COLUMNS = 8;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 7;
+    const NUM_HYDRATE_COLUMNS = 8;
 
     /** the column name for the id field */
     const ID = 'p_notification.id';
+
+    /** the column name for the uuid field */
+    const UUID = 'p_notification.uuid';
 
     /** the column name for the p_n_type_id field */
     const P_N_TYPE_ID = 'p_notification.p_n_type_id';
@@ -84,12 +87,12 @@ abstract class BasePNotificationPeer
      * e.g. PNotificationPeer::$fieldNames[PNotificationPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'PNTypeId', 'Title', 'Description', 'Online', 'CreatedAt', 'UpdatedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pNTypeId', 'title', 'description', 'online', 'createdAt', 'updatedAt', ),
-        BasePeer::TYPE_COLNAME => array (PNotificationPeer::ID, PNotificationPeer::P_N_TYPE_ID, PNotificationPeer::TITLE, PNotificationPeer::DESCRIPTION, PNotificationPeer::ONLINE, PNotificationPeer::CREATED_AT, PNotificationPeer::UPDATED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_N_TYPE_ID', 'TITLE', 'DESCRIPTION', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'p_n_type_id', 'title', 'description', 'online', 'created_at', 'updated_at', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'PNTypeId', 'Title', 'Description', 'Online', 'CreatedAt', 'UpdatedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'pNTypeId', 'title', 'description', 'online', 'createdAt', 'updatedAt', ),
+        BasePeer::TYPE_COLNAME => array (PNotificationPeer::ID, PNotificationPeer::UUID, PNotificationPeer::P_N_TYPE_ID, PNotificationPeer::TITLE, PNotificationPeer::DESCRIPTION, PNotificationPeer::ONLINE, PNotificationPeer::CREATED_AT, PNotificationPeer::UPDATED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'P_N_TYPE_ID', 'TITLE', 'DESCRIPTION', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'p_n_type_id', 'title', 'description', 'online', 'created_at', 'updated_at', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
     /**
@@ -99,12 +102,12 @@ abstract class BasePNotificationPeer
      * e.g. PNotificationPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PNTypeId' => 1, 'Title' => 2, 'Description' => 3, 'Online' => 4, 'CreatedAt' => 5, 'UpdatedAt' => 6, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pNTypeId' => 1, 'title' => 2, 'description' => 3, 'online' => 4, 'createdAt' => 5, 'updatedAt' => 6, ),
-        BasePeer::TYPE_COLNAME => array (PNotificationPeer::ID => 0, PNotificationPeer::P_N_TYPE_ID => 1, PNotificationPeer::TITLE => 2, PNotificationPeer::DESCRIPTION => 3, PNotificationPeer::ONLINE => 4, PNotificationPeer::CREATED_AT => 5, PNotificationPeer::UPDATED_AT => 6, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_N_TYPE_ID' => 1, 'TITLE' => 2, 'DESCRIPTION' => 3, 'ONLINE' => 4, 'CREATED_AT' => 5, 'UPDATED_AT' => 6, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_n_type_id' => 1, 'title' => 2, 'description' => 3, 'online' => 4, 'created_at' => 5, 'updated_at' => 6, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'PNTypeId' => 2, 'Title' => 3, 'Description' => 4, 'Online' => 5, 'CreatedAt' => 6, 'UpdatedAt' => 7, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'pNTypeId' => 2, 'title' => 3, 'description' => 4, 'online' => 5, 'createdAt' => 6, 'updatedAt' => 7, ),
+        BasePeer::TYPE_COLNAME => array (PNotificationPeer::ID => 0, PNotificationPeer::UUID => 1, PNotificationPeer::P_N_TYPE_ID => 2, PNotificationPeer::TITLE => 3, PNotificationPeer::DESCRIPTION => 4, PNotificationPeer::ONLINE => 5, PNotificationPeer::CREATED_AT => 6, PNotificationPeer::UPDATED_AT => 7, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'P_N_TYPE_ID' => 2, 'TITLE' => 3, 'DESCRIPTION' => 4, 'ONLINE' => 5, 'CREATED_AT' => 6, 'UPDATED_AT' => 7, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'p_n_type_id' => 2, 'title' => 3, 'description' => 4, 'online' => 5, 'created_at' => 6, 'updated_at' => 7, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
     /**
@@ -179,6 +182,7 @@ abstract class BasePNotificationPeer
     {
         if (null === $alias) {
             $criteria->addSelectColumn(PNotificationPeer::ID);
+            $criteria->addSelectColumn(PNotificationPeer::UUID);
             $criteria->addSelectColumn(PNotificationPeer::P_N_TYPE_ID);
             $criteria->addSelectColumn(PNotificationPeer::TITLE);
             $criteria->addSelectColumn(PNotificationPeer::DESCRIPTION);
@@ -187,6 +191,7 @@ abstract class BasePNotificationPeer
             $criteria->addSelectColumn(PNotificationPeer::UPDATED_AT);
         } else {
             $criteria->addSelectColumn($alias . '.id');
+            $criteria->addSelectColumn($alias . '.uuid');
             $criteria->addSelectColumn($alias . '.p_n_type_id');
             $criteria->addSelectColumn($alias . '.title');
             $criteria->addSelectColumn($alias . '.description');

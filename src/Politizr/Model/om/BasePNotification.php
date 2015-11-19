@@ -59,6 +59,12 @@ abstract class BasePNotification extends BaseObject implements Persistent
     protected $id;
 
     /**
+     * The value for the uuid field.
+     * @var        string
+     */
+    protected $uuid;
+
+    /**
      * The value for the p_n_type_id field.
      * @var        int
      */
@@ -205,6 +211,17 @@ abstract class BasePNotification extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [uuid] column value.
+     *
+     * @return string
+     */
+    public function getUuid()
+    {
+
+        return $this->uuid;
+    }
+
+    /**
      * Get the [p_n_type_id] column value.
      *
      * @return int
@@ -348,6 +365,27 @@ abstract class BasePNotification extends BaseObject implements Persistent
 
         return $this;
     } // setId()
+
+    /**
+     * Set the value of [uuid] column.
+     *
+     * @param  string $v new value
+     * @return PNotification The current object (for fluent API support)
+     */
+    public function setUuid($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->uuid !== $v) {
+            $this->uuid = $v;
+            $this->modifiedColumns[] = PNotificationPeer::UUID;
+        }
+
+
+        return $this;
+    } // setUuid()
 
     /**
      * Set the value of [p_n_type_id] column.
@@ -524,12 +562,13 @@ abstract class BasePNotification extends BaseObject implements Persistent
         try {
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->p_n_type_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
-            $this->title = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-            $this->description = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-            $this->online = ($row[$startcol + 4] !== null) ? (boolean) $row[$startcol + 4] : null;
-            $this->created_at = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->updated_at = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->uuid = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
+            $this->p_n_type_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+            $this->title = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+            $this->description = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->online = ($row[$startcol + 5] !== null) ? (boolean) $row[$startcol + 5] : null;
+            $this->created_at = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->updated_at = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -539,7 +578,7 @@ abstract class BasePNotification extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 7; // 7 = PNotificationPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 8; // 8 = PNotificationPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PNotification object", $e);
@@ -934,6 +973,9 @@ abstract class BasePNotification extends BaseObject implements Persistent
         if ($this->isColumnModified(PNotificationPeer::ID)) {
             $modifiedColumns[':p' . $index++]  = '`id`';
         }
+        if ($this->isColumnModified(PNotificationPeer::UUID)) {
+            $modifiedColumns[':p' . $index++]  = '`uuid`';
+        }
         if ($this->isColumnModified(PNotificationPeer::P_N_TYPE_ID)) {
             $modifiedColumns[':p' . $index++]  = '`p_n_type_id`';
         }
@@ -965,6 +1007,9 @@ abstract class BasePNotification extends BaseObject implements Persistent
                 switch ($columnName) {
                     case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
+                        break;
+                    case '`uuid`':
+                        $stmt->bindValue($identifier, $this->uuid, PDO::PARAM_STR);
                         break;
                     case '`p_n_type_id`':
                         $stmt->bindValue($identifier, $this->p_n_type_id, PDO::PARAM_INT);
@@ -1158,21 +1203,24 @@ abstract class BasePNotification extends BaseObject implements Persistent
                 return $this->getId();
                 break;
             case 1:
-                return $this->getPNTypeId();
+                return $this->getUuid();
                 break;
             case 2:
-                return $this->getTitle();
+                return $this->getPNTypeId();
                 break;
             case 3:
-                return $this->getDescription();
+                return $this->getTitle();
                 break;
             case 4:
-                return $this->getOnline();
+                return $this->getDescription();
                 break;
             case 5:
-                return $this->getCreatedAt();
+                return $this->getOnline();
                 break;
             case 6:
+                return $this->getCreatedAt();
+                break;
+            case 7:
                 return $this->getUpdatedAt();
                 break;
             default:
@@ -1205,12 +1253,13 @@ abstract class BasePNotification extends BaseObject implements Persistent
         $keys = PNotificationPeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getPNTypeId(),
-            $keys[2] => $this->getTitle(),
-            $keys[3] => $this->getDescription(),
-            $keys[4] => $this->getOnline(),
-            $keys[5] => $this->getCreatedAt(),
-            $keys[6] => $this->getUpdatedAt(),
+            $keys[1] => $this->getUuid(),
+            $keys[2] => $this->getPNTypeId(),
+            $keys[3] => $this->getTitle(),
+            $keys[4] => $this->getDescription(),
+            $keys[5] => $this->getOnline(),
+            $keys[6] => $this->getCreatedAt(),
+            $keys[7] => $this->getUpdatedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1268,21 +1317,24 @@ abstract class BasePNotification extends BaseObject implements Persistent
                 $this->setId($value);
                 break;
             case 1:
-                $this->setPNTypeId($value);
+                $this->setUuid($value);
                 break;
             case 2:
-                $this->setTitle($value);
+                $this->setPNTypeId($value);
                 break;
             case 3:
-                $this->setDescription($value);
+                $this->setTitle($value);
                 break;
             case 4:
-                $this->setOnline($value);
+                $this->setDescription($value);
                 break;
             case 5:
-                $this->setCreatedAt($value);
+                $this->setOnline($value);
                 break;
             case 6:
+                $this->setCreatedAt($value);
+                break;
+            case 7:
                 $this->setUpdatedAt($value);
                 break;
         } // switch()
@@ -1310,12 +1362,13 @@ abstract class BasePNotification extends BaseObject implements Persistent
         $keys = PNotificationPeer::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setPNTypeId($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setTitle($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setDescription($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setOnline($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setCreatedAt($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setUpdatedAt($arr[$keys[6]]);
+        if (array_key_exists($keys[1], $arr)) $this->setUuid($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setPNTypeId($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setTitle($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setDescription($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setOnline($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setCreatedAt($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setUpdatedAt($arr[$keys[7]]);
     }
 
     /**
@@ -1328,6 +1381,7 @@ abstract class BasePNotification extends BaseObject implements Persistent
         $criteria = new Criteria(PNotificationPeer::DATABASE_NAME);
 
         if ($this->isColumnModified(PNotificationPeer::ID)) $criteria->add(PNotificationPeer::ID, $this->id);
+        if ($this->isColumnModified(PNotificationPeer::UUID)) $criteria->add(PNotificationPeer::UUID, $this->uuid);
         if ($this->isColumnModified(PNotificationPeer::P_N_TYPE_ID)) $criteria->add(PNotificationPeer::P_N_TYPE_ID, $this->p_n_type_id);
         if ($this->isColumnModified(PNotificationPeer::TITLE)) $criteria->add(PNotificationPeer::TITLE, $this->title);
         if ($this->isColumnModified(PNotificationPeer::DESCRIPTION)) $criteria->add(PNotificationPeer::DESCRIPTION, $this->description);
@@ -1397,6 +1451,7 @@ abstract class BasePNotification extends BaseObject implements Persistent
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
+        $copyObj->setUuid($this->getUuid());
         $copyObj->setPNTypeId($this->getPNTypeId());
         $copyObj->setTitle($this->getTitle());
         $copyObj->setDescription($this->getDescription());
@@ -2870,6 +2925,7 @@ abstract class BasePNotification extends BaseObject implements Persistent
     public function clear()
     {
         $this->id = null;
+        $this->uuid = null;
         $this->p_n_type_id = null;
         $this->title = null;
         $this->description = null;
@@ -2994,6 +3050,32 @@ abstract class BasePNotification extends BaseObject implements Persistent
         $this->modifiedColumns[] = PNotificationPeer::UPDATED_AT;
 
         return $this;
+    }
+
+    // uuid behavior
+    /**
+    * Create UUID if is NULL Uuid*/
+    public function preInsert(PropelPDO $con = NULL) {
+
+        if(is_null($this->getUuid())) {
+            $this->setUuid(\Ramsey\Uuid\Uuid::uuid4()->__toString());
+        } else {
+            $uuid = $this->getUuid();
+            if(!\Ramsey\Uuid\Uuid::isValid($uuid)) {
+                throw new \InvalidArgumentException('UUID: ' . $uuid . ' in not valid');
+                return false;
+            }
+        }
+        return true;
+    }
+    /**
+    * If permanent UUID, throw exception p_notification.uuid*/
+    public function preUpdate(PropelPDO $con = NULL) {
+            $uuid = $this->getUuid();
+        if(!is_null($uuid) && !\Ramsey\Uuid\Uuid::isValid($uuid)) {
+            throw new \InvalidArgumentException("UUID: $uuid in not valid");
+        }
+            return true;
     }
 
     // event behavior

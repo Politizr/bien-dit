@@ -20,7 +20,7 @@
                                 <div class="ajaxLoaderBg"></div>
                                 <div class="ajaxLoaderBlockClick"></div>
                             </div> 
-                            <input type="checkbox" id="notif-{{ notificationType.id }}-{{ loop.index }}" subjectId="{{ notification.id }}" action="{% if notification.id in emailNotifIds %}notifEmailUnsubscribe{% else %}notifEmailSubscribe{% endif %}" {% if notification.id in emailNotifIds %}checked{% endif %}/>
+                            <input type="checkbox" id="notif-{{ notificationType.id }}-{{ loop.index }}" uuid="{{ notification.uuid }}" action="{% if notification.id in emailNotifIds %}notifEmailUnsubscribe{% else %}notifEmailSubscribe{% endif %}" {% if notification.id in emailNotifIds %}checked{% endif %}/>
                             <label for="notif-{{ notificationType.id }}-{{ loop.index }}">
                                 <i class="iconCheckInSquare"></i>{{ notification.title }}
                             </label>

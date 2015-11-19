@@ -10,14 +10,14 @@ $("body").on("click", "[action='notifEmailSubscribe']", function(e) {
         RETURN_BOOLEAN
         );
 
-    var subjectId = $(this).attr('subjectId');
-    // console.log(subjectId);
+    var uuid = $(this).attr('uuid');
+    // console.log(uuid);
 
     $.ajax({
         type: 'POST',
         url: xhrPath,
         context: this,
-        data: { 'subjectId': subjectId },
+        data: { 'uuid': uuid },
         dataType: 'json',
         beforeSend: function ( xhr ) { xhrBeforeSend( xhr, localLoader ); },
         statusCode: { 404: function () { xhr404(localLoader); }, 500: function() { xhr500(localLoader); } },
@@ -47,14 +47,14 @@ $("body").on("click", "[action='notifEmailUnsubscribe']", function(e) {
         RETURN_BOOLEAN
         );
             
-    var subjectId = $(this).attr('subjectId');
-    // console.log(subjectId);
+    var uuid = $(this).attr('uuid');
+    // console.log(uuid);
 
     $.ajax({
         type: 'POST',
         url: xhrPath,
         context: this,
-        data: { 'subjectId': subjectId },
+        data: { 'uuid': uuid },
         dataType: 'json',
         beforeSend: function ( xhr ) { xhrBeforeSend( xhr, localLoader ); },
         statusCode: { 404: function () { xhr404(localLoader); }, 500: function() { xhr500(localLoader); } },
