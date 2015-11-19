@@ -23,6 +23,7 @@ use Politizr\Model\PUser;
 
 /**
  * @method PUNotificationQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method PUNotificationQuery orderByUuid($order = Criteria::ASC) Order by the uuid column
  * @method PUNotificationQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
  * @method PUNotificationQuery orderByPNotificationId($order = Criteria::ASC) Order by the p_notification_id column
  * @method PUNotificationQuery orderByPObjectName($order = Criteria::ASC) Order by the p_object_name column
@@ -34,6 +35,7 @@ use Politizr\Model\PUser;
  * @method PUNotificationQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  *
  * @method PUNotificationQuery groupById() Group by the id column
+ * @method PUNotificationQuery groupByUuid() Group by the uuid column
  * @method PUNotificationQuery groupByPUserId() Group by the p_user_id column
  * @method PUNotificationQuery groupByPNotificationId() Group by the p_notification_id column
  * @method PUNotificationQuery groupByPObjectName() Group by the p_object_name column
@@ -59,6 +61,7 @@ use Politizr\Model\PUser;
  * @method PUNotification findOne(PropelPDO $con = null) Return the first PUNotification matching the query
  * @method PUNotification findOneOrCreate(PropelPDO $con = null) Return the first PUNotification matching the query, or a new PUNotification object populated from the query conditions when no match is found
  *
+ * @method PUNotification findOneByUuid(string $uuid) Return the first PUNotification filtered by the uuid column
  * @method PUNotification findOneByPUserId(int $p_user_id) Return the first PUNotification filtered by the p_user_id column
  * @method PUNotification findOneByPNotificationId(int $p_notification_id) Return the first PUNotification filtered by the p_notification_id column
  * @method PUNotification findOneByPObjectName(string $p_object_name) Return the first PUNotification filtered by the p_object_name column
@@ -70,6 +73,7 @@ use Politizr\Model\PUser;
  * @method PUNotification findOneByUpdatedAt(string $updated_at) Return the first PUNotification filtered by the updated_at column
  *
  * @method array findById(int $id) Return PUNotification objects filtered by the id column
+ * @method array findByUuid(string $uuid) Return PUNotification objects filtered by the uuid column
  * @method array findByPUserId(int $p_user_id) Return PUNotification objects filtered by the p_user_id column
  * @method array findByPNotificationId(int $p_notification_id) Return PUNotification objects filtered by the p_notification_id column
  * @method array findByPObjectName(string $p_object_name) Return PUNotification objects filtered by the p_object_name column
@@ -188,7 +192,7 @@ abstract class BasePUNotificationQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_user_id`, `p_notification_id`, `p_object_name`, `p_object_id`, `p_author_user_id`, `checked`, `checked_at`, `created_at`, `updated_at` FROM `p_u_notification` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `p_notification_id`, `p_object_name`, `p_object_id`, `p_author_user_id`, `checked`, `checked_at`, `created_at`, `updated_at` FROM `p_u_notification` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -318,6 +322,35 @@ abstract class BasePUNotificationQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PUNotificationPeer::ID, $id, $comparison);
+    }
+
+    /**
+     * Filter the query on the uuid column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByUuid('fooValue');   // WHERE uuid = 'fooValue'
+     * $query->filterByUuid('%fooValue%'); // WHERE uuid LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $uuid The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUNotificationQuery The current query, for fluid interface
+     */
+    public function filterByUuid($uuid = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($uuid)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $uuid)) {
+                $uuid = str_replace('*', '%', $uuid);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PUNotificationPeer::UUID, $uuid, $comparison);
     }
 
     /**

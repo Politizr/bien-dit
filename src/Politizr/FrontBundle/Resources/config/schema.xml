@@ -743,8 +743,13 @@
     <table name="p_u_notification" isCrossRef="true">
         <behavior name="timestampable" />
         <behavior name="query_cache" />
+        <behavior name="uuid">
+            <parameter name="version" value="4" />
+            <parameter name="permanent" value="false" />
+        </behavior>
 
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="uuid" type="varchar" size="50" />
         <column name="p_user_id" type="integer" required="true" />
         <column name="p_notification_id" type="integer" required="true" />
 
@@ -762,6 +767,10 @@
         <foreign-key foreignTable="p_notification" phpName="PUNotificationPNotification" refPhpName="PUNotificationPNotification" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_notification_id" foreign="id" />
         </foreign-key>
+
+        <unique>
+            <unique-column name="uuid"/>
+        </unique>
     </table>
 
     <table name="p_u_subscribe_email" isCrossRef="true">

@@ -44,6 +44,7 @@ class PUNotificationTableMap extends TableMap
         $this->setIsCrossRef(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
+        $this->addColumn('uuid', 'Uuid', 'VARCHAR', false, 50, null);
         $this->addForeignKey('p_user_id', 'PUserId', 'INTEGER', 'p_user', 'id', true, null, null);
         $this->addForeignKey('p_notification_id', 'PNotificationId', 'INTEGER', 'p_notification', 'id', true, null, null);
         $this->addColumn('p_object_name', 'PObjectName', 'VARCHAR', false, 150, null);
@@ -82,6 +83,13 @@ class PUNotificationTableMap extends TableMap
             'query_cache' =>  array (
   'backend' => 'apc',
   'lifetime' => 3600,
+),
+            'uuid' =>  array (
+  'name' => 'uuid',
+  'version' => '4',
+  'permanent' => 'false',
+  'required' => 'true',
+  'unique' => 'true',
 ),
             'event' =>  array (
 ),

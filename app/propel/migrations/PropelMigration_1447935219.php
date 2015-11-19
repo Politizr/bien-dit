@@ -2,10 +2,10 @@
 
 /**
  * Data object containing the SQL and PHP code to migrate the database
- * up to version 1447928607.
- * Generated on 2015-11-19 11:23:27 by lionel
+ * up to version 1447935219.
+ * Generated on 2015-11-19 13:13:39 by lionel
  */
-class PropelMigration_1447928607
+class PropelMigration_1447935219
 {
 
     public function preUp($manager)
@@ -42,13 +42,10 @@ class PropelMigration_1447928607
 # It "suspends judgement" for fkey relationships until are tables are set.
 SET FOREIGN_KEY_CHECKS = 0;
 
-ALTER TABLE `p_m_abuse_reporting` CHANGE `p_object_id` `p_object_uuid` INTEGER;
+ALTER TABLE `p_u_notification`
+    ADD `uuid` VARCHAR(50) AFTER `id`;
 
-ALTER TABLE `p_m_abuse_reporting_archive` CHANGE `p_object_id` `p_object_uuid` INTEGER;
-
-ALTER TABLE `p_m_ask_for_update` CHANGE `p_object_id` `p_object_uuid` INTEGER;
-
-ALTER TABLE `p_m_ask_for_update_archive` CHANGE `p_object_id` `p_object_uuid` INTEGER;
+CREATE UNIQUE INDEX `p_u_notification_U_1` ON `p_u_notification` (`uuid`);
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;
@@ -70,13 +67,9 @@ SET FOREIGN_KEY_CHECKS = 1;
 # It "suspends judgement" for fkey relationships until are tables are set.
 SET FOREIGN_KEY_CHECKS = 0;
 
-ALTER TABLE `p_m_abuse_reporting` CHANGE `p_object_uuid` `p_object_id` INTEGER;
+DROP INDEX `p_u_notification_U_1` ON `p_u_notification`;
 
-ALTER TABLE `p_m_abuse_reporting_archive` CHANGE `p_object_uuid` `p_object_id` INTEGER;
-
-ALTER TABLE `p_m_ask_for_update` CHANGE `p_object_uuid` `p_object_id` INTEGER;
-
-ALTER TABLE `p_m_ask_for_update_archive` CHANGE `p_object_uuid` `p_object_id` INTEGER;
+ALTER TABLE `p_u_notification` DROP `uuid`;
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;
