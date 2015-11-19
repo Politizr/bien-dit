@@ -16,7 +16,7 @@ $("body").on("click", "[action='note']", function(e) {
         type: 'POST',
         url: xhrPath,
         context: $(this).closest('.notes'),
-        data: { 'subjectId': $(this).attr('subjectId'), 'type': $(this).attr('type'), 'way': $(this).attr('way') },
+        data: { 'uuid': $(this).attr('uuid'), 'type': $(this).attr('type'), 'way': $(this).attr('way') },
         dataType: 'json',
         beforeSend: function ( xhr ) { xhrBeforeSend( xhr, localLoader ); },
         statusCode: { 404: function () { xhr404(localLoader); }, 500: function() { xhr500(localLoader); } },

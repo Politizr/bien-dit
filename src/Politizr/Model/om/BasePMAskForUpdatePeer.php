@@ -50,8 +50,8 @@ abstract class BasePMAskForUpdatePeer
     /** the column name for the p_object_name field */
     const P_OBJECT_NAME = 'p_m_ask_for_update.p_object_name';
 
-    /** the column name for the p_object_id field */
-    const P_OBJECT_ID = 'p_m_ask_for_update.p_object_id';
+    /** the column name for the p_object_uuid field */
+    const P_OBJECT_UUID = 'p_m_ask_for_update.p_object_uuid';
 
     /** the column name for the message field */
     const MESSAGE = 'p_m_ask_for_update.message';
@@ -81,11 +81,11 @@ abstract class BasePMAskForUpdatePeer
      * e.g. PMAskForUpdatePeer::$fieldNames[PMAskForUpdatePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'PUserId', 'PObjectName', 'PObjectId', 'Message', 'CreatedAt', 'UpdatedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pUserId', 'pObjectName', 'pObjectId', 'message', 'createdAt', 'updatedAt', ),
-        BasePeer::TYPE_COLNAME => array (PMAskForUpdatePeer::ID, PMAskForUpdatePeer::P_USER_ID, PMAskForUpdatePeer::P_OBJECT_NAME, PMAskForUpdatePeer::P_OBJECT_ID, PMAskForUpdatePeer::MESSAGE, PMAskForUpdatePeer::CREATED_AT, PMAskForUpdatePeer::UPDATED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_USER_ID', 'P_OBJECT_NAME', 'P_OBJECT_ID', 'MESSAGE', 'CREATED_AT', 'UPDATED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'p_user_id', 'p_object_name', 'p_object_id', 'message', 'created_at', 'updated_at', ),
+        BasePeer::TYPE_PHPNAME => array ('Id', 'PUserId', 'PObjectName', 'PObjectUuid', 'Message', 'CreatedAt', 'UpdatedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pUserId', 'pObjectName', 'pObjectUuid', 'message', 'createdAt', 'updatedAt', ),
+        BasePeer::TYPE_COLNAME => array (PMAskForUpdatePeer::ID, PMAskForUpdatePeer::P_USER_ID, PMAskForUpdatePeer::P_OBJECT_NAME, PMAskForUpdatePeer::P_OBJECT_UUID, PMAskForUpdatePeer::MESSAGE, PMAskForUpdatePeer::CREATED_AT, PMAskForUpdatePeer::UPDATED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_USER_ID', 'P_OBJECT_NAME', 'P_OBJECT_UUID', 'MESSAGE', 'CREATED_AT', 'UPDATED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'p_user_id', 'p_object_name', 'p_object_uuid', 'message', 'created_at', 'updated_at', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
     );
 
@@ -96,11 +96,11 @@ abstract class BasePMAskForUpdatePeer
      * e.g. PMAskForUpdatePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PUserId' => 1, 'PObjectName' => 2, 'PObjectId' => 3, 'Message' => 4, 'CreatedAt' => 5, 'UpdatedAt' => 6, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pUserId' => 1, 'pObjectName' => 2, 'pObjectId' => 3, 'message' => 4, 'createdAt' => 5, 'updatedAt' => 6, ),
-        BasePeer::TYPE_COLNAME => array (PMAskForUpdatePeer::ID => 0, PMAskForUpdatePeer::P_USER_ID => 1, PMAskForUpdatePeer::P_OBJECT_NAME => 2, PMAskForUpdatePeer::P_OBJECT_ID => 3, PMAskForUpdatePeer::MESSAGE => 4, PMAskForUpdatePeer::CREATED_AT => 5, PMAskForUpdatePeer::UPDATED_AT => 6, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_USER_ID' => 1, 'P_OBJECT_NAME' => 2, 'P_OBJECT_ID' => 3, 'MESSAGE' => 4, 'CREATED_AT' => 5, 'UPDATED_AT' => 6, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_user_id' => 1, 'p_object_name' => 2, 'p_object_id' => 3, 'message' => 4, 'created_at' => 5, 'updated_at' => 6, ),
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PUserId' => 1, 'PObjectName' => 2, 'PObjectUuid' => 3, 'Message' => 4, 'CreatedAt' => 5, 'UpdatedAt' => 6, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pUserId' => 1, 'pObjectName' => 2, 'pObjectUuid' => 3, 'message' => 4, 'createdAt' => 5, 'updatedAt' => 6, ),
+        BasePeer::TYPE_COLNAME => array (PMAskForUpdatePeer::ID => 0, PMAskForUpdatePeer::P_USER_ID => 1, PMAskForUpdatePeer::P_OBJECT_NAME => 2, PMAskForUpdatePeer::P_OBJECT_UUID => 3, PMAskForUpdatePeer::MESSAGE => 4, PMAskForUpdatePeer::CREATED_AT => 5, PMAskForUpdatePeer::UPDATED_AT => 6, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_USER_ID' => 1, 'P_OBJECT_NAME' => 2, 'P_OBJECT_UUID' => 3, 'MESSAGE' => 4, 'CREATED_AT' => 5, 'UPDATED_AT' => 6, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_user_id' => 1, 'p_object_name' => 2, 'p_object_uuid' => 3, 'message' => 4, 'created_at' => 5, 'updated_at' => 6, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
     );
 
@@ -178,7 +178,7 @@ abstract class BasePMAskForUpdatePeer
             $criteria->addSelectColumn(PMAskForUpdatePeer::ID);
             $criteria->addSelectColumn(PMAskForUpdatePeer::P_USER_ID);
             $criteria->addSelectColumn(PMAskForUpdatePeer::P_OBJECT_NAME);
-            $criteria->addSelectColumn(PMAskForUpdatePeer::P_OBJECT_ID);
+            $criteria->addSelectColumn(PMAskForUpdatePeer::P_OBJECT_UUID);
             $criteria->addSelectColumn(PMAskForUpdatePeer::MESSAGE);
             $criteria->addSelectColumn(PMAskForUpdatePeer::CREATED_AT);
             $criteria->addSelectColumn(PMAskForUpdatePeer::UPDATED_AT);
@@ -186,7 +186,7 @@ abstract class BasePMAskForUpdatePeer
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.p_user_id');
             $criteria->addSelectColumn($alias . '.p_object_name');
-            $criteria->addSelectColumn($alias . '.p_object_id');
+            $criteria->addSelectColumn($alias . '.p_object_uuid');
             $criteria->addSelectColumn($alias . '.message');
             $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');

@@ -30,7 +30,7 @@ $("body").on("postFollowDebateEvent", function(event, way) {
     modalType = $('#modalBoxContent').attr('class');
 
     // @todo JS use constant
-    if (modalType == 'subscriptions') {
+    if (modalType == 'modalSubscriptions') {
         // console.log('modal subscriptions');
         // dynamicaly offset updating
         if ($('#moreResults').attr('offset')) {

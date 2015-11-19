@@ -11,6 +11,8 @@ use Politizr\Constant\ListingConstants;
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
 use Politizr\Model\PUserQuery;
+use Politizr\Model\PTagQuery;
+use Politizr\Model\PQOrganizationQuery;
 
 /**
  * XHR service for modal management.
@@ -55,7 +57,7 @@ class XhrModal
      *    - order,
      *    - filters,
      *    - offset,
-     *    - associated object id (option),
+     *    - associated object uuid (option),
      *
      * @return array[order,filters,offset,associatedObjectId]
      */
@@ -69,13 +71,13 @@ class XhrModal
         $this->logger->info('$filtersUserType = ' . print_r($filtersUserType, true));
         $offset = $request->get('offset');
         $this->logger->info('$offset = ' . print_r($offset, true));
-        $subjectId = $request->get('subjectId');
-        $this->logger->info('$subjectId = ' . print_r($subjectId, true));
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
 
         // regroupement des filtres
         $filters = array_merge($filtersDate, $filtersUserType);
 
-        return [ $order, $filters, $offset, $subjectId ];
+        return [ $order, $filters, $offset, $uuid ];
     }
 
     /* ######################################################################################################## */
@@ -94,15 +96,15 @@ class XhrModal
         $this->logger->info('$twigTemplate = ' . print_r($twigTemplate, true));
         $model = $request->get('model');
         $this->logger->info('$model = ' . print_r($model, true));
-        $slug = $request->get('slug');
-        $this->logger->info('$slug = ' . print_r($slug, true));
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
 
         // Function process
         $subject = null;
-        if ($model && $slug) {
+        if ($model && $uuid) {
             $queryModel = 'Politizr\Model\\' . $model . 'Query';
             $subject = $queryModel::create()
-                ->filterBySlug($slug)
+                ->filterByUuid($uuid)
                 ->findOne();
         }
 
@@ -744,10 +746,13 @@ class XhrModal
         $order = $queryParams[0];
         $filters = $queryParams[1];
         $offset = $queryParams[2];
-        $subjectId = $queryParams[3];
+        $uuid = $queryParams[3];
+
+        // Retrieve subject
+        $tag = PTagQuery::create()->filterByUuid($uuid)->findOne();
 
         // Compute relative geo tag ids
-        $tagIds = $this->tagService->computeGeotagRelativeIds($subjectId);
+        $tagIds = $this->tagService->computeGeotagRelativeIds($tag->getId());
 
         // Function process
         $debates = PDDebateQuery::create()
@@ -804,10 +809,13 @@ class XhrModal
         $order = $queryParams[0];
         $filters = $queryParams[1];
         $offset = $queryParams[2];
-        $subjectId = $queryParams[3];
+        $uuid = $queryParams[3];
+
+        // Retrieve subject
+        $tag = PTagQuery::create()->filterByUuid($uuid)->findOne();
 
         // Compute relative geo tag ids
-        $tagIds = $this->tagService->computeGeotagRelativeIds($subjectId);
+        $tagIds = $this->tagService->computeGeotagRelativeIds($tag->getId());
 
         // Function process
         $reactions = PDReactionQuery::create()
@@ -864,10 +872,13 @@ class XhrModal
         $order = $queryParams[0];
         $filters = $queryParams[1];
         $offset = $queryParams[2];
-        $subjectId = $queryParams[3];
+        $uuid = $queryParams[3];
+
+        // Retrieve subject
+        $tag = PTagQuery::create()->filterByUuid($uuid)->findOne();
 
         // Compute relative geo tag ids
-        $tagIds = $this->tagService->computeGeotagRelativeIds($subjectId);
+        $tagIds = $this->tagService->computeGeotagRelativeIds($tag->getId());
 
         // Function process
         $users = PUserQuery::create()
@@ -928,18 +939,21 @@ class XhrModal
         $order = $queryParams[0];
         $filters = $queryParams[1];
         $offset = $queryParams[2];
-        $subjectId = $queryParams[3];
+        $uuid = $queryParams[3];
+
+        // Retrieve subject
+        $organization = PQOrganizationQuery::create()->filterByUuid($uuid)->findOne();
 
         // Function process
         $users = PUserQuery::create()
                     ->distinct()
                     ->online()
                     ->usePUCurrentQOPUserQuery(null, \Criteria::LEFT_JOIN)
-                        ->filterByPQOrganizationId($subjectId)
+                        ->filterByPQOrganizationId($organization->getId())
                     ->endUse()
                     ->_or()
                     ->usePUAffinityQOPUserQuery(null, \Criteria::LEFT_JOIN)
-                        ->filterByPQOrganizationId($subjectId)
+                        ->filterByPQOrganizationId($organization->getId())
                     ->endUse()
                     ->filterByKeywords($filters)
                     ->orderWithKeyword($order)
@@ -1114,10 +1128,10 @@ class XhrModal
         $order = $queryParams[0];
         $filters = $queryParams[1];
         $offset = $queryParams[2];
-        $subjectId = $queryParams[3];
+        $uuid = $queryParams[3];
 
         // Function process
-        $user = PUserQuery::create()->findPk($subjectId);
+        $user = PUserQuery::create()->filterByUuid($uuid)->findOne();
 
         $query = PUserQuery::create()
                     ->distinct()

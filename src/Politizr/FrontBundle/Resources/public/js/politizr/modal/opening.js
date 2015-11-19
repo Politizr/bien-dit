@@ -5,7 +5,7 @@
 // modal reputation
 $("body").on("click", "[action='modalReputation']", function() {
     // console.log('*** modalReputation');
-    $('#modalBoxContent').removeClass().addClass('reputation');
+    $('#modalBoxContent').removeClass().addClass('modalReputation');
     modalLoading();
     loadReputation();
 });
@@ -13,31 +13,31 @@ $("body").on("click", "[action='modalReputation']", function() {
 // modal abuse
 $("body").on("click", "[action='modalAbuse']", function() {
     // console.log('*** modalAbuse');
-    $('#modalBoxContent').removeClass().addClass('formAbuse');
+    $('#modalBoxContent').removeClass().addClass('modalFormAbuse');
     modalLoading();
 
-    var subjectId = $(this).attr('subjectId');
+    var uuid = $(this).attr('uuid');
     var type = $(this).attr('type');
 
-    // console.log(subjectId);
+    // console.log(uuid);
     // console.log(type);
 
-    loadAbuseBox(subjectId, type);
+    loadAbuseBox(uuid, type);
 });
 
 // modal ask for update
 $("body").on("click", "[action='modalAskForUpdate']", function() {
     // console.log('*** modalAbuse');
-    $('#modalBoxContent').removeClass().addClass('formAskForUpdate');
+    $('#modalBoxContent').removeClass().addClass('modalFormAskForUpdate');
     modalLoading();
 
-    var subjectId = $(this).attr('subjectId');
+    var uuid = $(this).attr('uuid');
     var type = $(this).attr('type');
 
-    // console.log(subjectId);
+    // console.log(uuid);
     // console.log(type);
 
-    loadAskForUpdateBox(subjectId, type);
+    loadAskForUpdateBox(uuid, type);
 });
 
 // ***************************************** //
@@ -47,7 +47,7 @@ $("body").on("click", "[action='modalAskForUpdate']", function() {
 // modal ranking
 $("body").on("click", "[action='modalRanking']", function() {
     // console.log('*** modalRanking');
-    $('#modalBoxContent').removeClass().addClass('ranking');
+    $('#modalBoxContent').removeClass().addClass('modalRanking');
     modalLoading();
     loadPaginatedList('_ranking.html.twig', 'true');
 });
@@ -55,7 +55,7 @@ $("body").on("click", "[action='modalRanking']", function() {
 // modal suggestions
 $("body").on("click", "[action='modalSuggestions']", function() {
     // console.log('*** modalSuggestions');
-    $('#modalBoxContent').removeClass().addClass('suggestions');
+    $('#modalBoxContent').removeClass().addClass('modalSuggestions');
     modalLoading();
     loadPaginatedList('_suggestions.html.twig', 'false');
 });
@@ -63,25 +63,25 @@ $("body").on("click", "[action='modalSuggestions']", function() {
 // modal tag
 $("body").on("click", "[action='modalTagged']", function() {
     // console.log('*** modalTagged');
-    $('#modalBoxContent').removeClass().addClass('tagged');
+    $('#modalBoxContent').removeClass().addClass('modalTagged');
     modalLoading();
 
-    loadPaginatedList('_tagged.html.twig', 'true', $(this).attr('model'), $(this).attr('slug'));
+    loadPaginatedList('_tagged.html.twig', 'true', $(this).attr('model'), $(this).attr('uuid'));
 });
 
 // modal organisation
 $("body").on("click", "[action='modalOrganization']", function() {
     // console.log('*** modalOrganization');
-    $('#modalBoxContent').removeClass().addClass('organization');
+    $('#modalBoxContent').removeClass().addClass('modalOrganization');
     modalLoading();
 
-    loadPaginatedList('_organization.html.twig', 'true', $(this).attr('model'), $(this).attr('slug'));
+    loadPaginatedList('_organization.html.twig', 'true', $(this).attr('model'), $(this).attr('uuid'));
 });
 
 // modal subscriptions
 $("body").on("click", "[action='modalSubscriptions']", function() {
     // console.log('*** modalSubscriptions');
-    $('#modalBoxContent').removeClass().addClass('subscriptions');
+    $('#modalBoxContent').removeClass().addClass('modalSubscriptions');
     modalLoading();
 
     loadPaginatedList('_subscriptions.html.twig', 'true');
@@ -90,16 +90,16 @@ $("body").on("click", "[action='modalSubscriptions']", function() {
 // modal followers
 $("body").on("click", "[action='modalFollowers']", function() {
     // console.log('*** modalFollowers');
-    $('#modalBoxContent').removeClass().addClass('followers');
+    $('#modalBoxContent').removeClass().addClass('modalFollowers');
     modalLoading();
 
-    loadPaginatedList('_followers.html.twig', 'true', $(this).attr('model'), $(this).attr('slug'));
+    loadPaginatedList('_followers.html.twig', 'true', $(this).attr('model'), $(this).attr('uuid'));
 });
 
 // modal search
 $("body").on("click", "[action='modalSearch']", function() {
     // console.log('*** modalSearch');
-    $('#modalBoxContent').removeClass().addClass('search');
+    $('#modalBoxContent').removeClass().addClass('modalSearch');
     modalLoading();
     updateCloseModalActions('searchModalClose');
     loadSearchForm();
@@ -175,9 +175,9 @@ function loadSearchForm() {
  * @param string twigTemplate
  * @param string withFilters  true | false
  * @param string model ModelQuery to search in
- * @param string slug  ModelQuery findBySlug attribute
+ * @param string uuid  UUID attribute
  */
-function loadPaginatedList(twigTemplate, withFilters, model, slug) {
+function loadPaginatedList(twigTemplate, withFilters, model, uuid) {
     // console.log('*** loadPaginatedList');
     // console.log(twigTemplate);
 
@@ -196,7 +196,7 @@ function loadPaginatedList(twigTemplate, withFilters, model, slug) {
     $.ajax({
         type: 'POST',
         url: xhrPath,
-        data: { 'twigTemplate': twigTemplate, 'model': model, 'slug': slug },
+        data: { 'twigTemplate': twigTemplate, 'model': model, 'uuid': uuid },
         dataType: 'json',
         beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
         statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
@@ -248,12 +248,12 @@ function loadReputation() {
 /**
  * Abuse box loading
  */
-function loadAbuseBox(subjectId, type) {
+function loadAbuseBox(uuid, type) {
     // console.log('*** loadAbuseBox');
-    subjectId = (typeof subjectId === "undefined") ? null : subjectId;
+    uuid = (typeof uuid === "undefined") ? null : uuid;
     type = (typeof type === "undefined") ? null : type;
 
-    if (subjectId == null || type == null) {
+    if (uuid == null || type == null) {
         return false;
     }
 
@@ -267,7 +267,7 @@ function loadAbuseBox(subjectId, type) {
     $.ajax({
         type: 'POST',
         url: xhrPath,
-        data: { 'subjectId': subjectId, 'type': type },
+        data: { 'uuid': uuid, 'type': type },
         dataType: 'json',
         beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
         statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
@@ -287,12 +287,12 @@ function loadAbuseBox(subjectId, type) {
 /**
  * Ask for update box loading
  */
-function loadAskForUpdateBox(subjectId, type) {
+function loadAskForUpdateBox(uuid, type) {
     // console.log('*** loadAbuseBox');
-    subjectId = (typeof subjectId === "undefined") ? null : subjectId;
+    uuid = (typeof uuid === "undefined") ? null : uuid;
     type = (typeof type === "undefined") ? null : type;
 
-    if (subjectId == null || type == null) {
+    if (uuid == null || type == null) {
         return false;
     }
 
@@ -306,7 +306,7 @@ function loadAskForUpdateBox(subjectId, type) {
     $.ajax({
         type: 'POST',
         url: xhrPath,
-        data: { 'subjectId': subjectId, 'type': type },
+        data: { 'uuid': uuid, 'type': type },
         dataType: 'json',
         beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
         statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },

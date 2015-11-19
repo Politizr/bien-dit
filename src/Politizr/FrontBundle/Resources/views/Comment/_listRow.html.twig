@@ -1,5 +1,5 @@
 <div class="commentsItem {% if comment.user.id == app.user.id %}commentsPostAuthor{% elseif comment.user.qualified %}commentsOfficial{% else %}commentsUser{% endif %}">
-    {% include 'PolitizrFrontBundle:Monitoring:_abuseLink.html.twig' with { 'subjectId': comment.id, 'type': comment.type } only %}
+    {% include 'PolitizrFrontBundle:Monitoring:_abuseLink.html.twig' with { 'uuid': comment.uuid, 'type': comment.type } only %}
 
     <div class="avatar40">
         {{ comment.user | photo('user_40') }}

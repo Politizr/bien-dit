@@ -14,7 +14,7 @@
     {% if app.user and app.user | isAuthorizedToReportAbuse %}
         {% embed 'PolitizrFrontBundle:Navigation\\Header:_headerConnected.html.twig' %}
             {% block abuse %}
-                {% include 'PolitizrFrontBundle:Monitoring:_abuseLink.html.twig' with { 'subjectId': reaction.id, 'type': reaction.type } only %}
+                {% include 'PolitizrFrontBundle:Monitoring:_abuseLink.html.twig' with { 'uuid': reaction.uuid, 'type': reaction.type } only %}
             {% endblock abuse %}
         {% endembed %}
     {% else %}
@@ -32,7 +32,7 @@
     <div id="fixedActions">
         {% if app.user and app.user.id == reaction.pUserId %}
             <div class="actionAskForUpdate">
-                <a action="modalAskForUpdate" type="{{ constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION') }}" subjectId="{{ reaction.id }}"><i class="iconPublish"></i>Demande de modification</a>
+                <a action="modalAskForUpdate" type="{{ constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION') }}" uuid="{{ reaction.uuid }}"><i class="iconPublish"></i>Demande de modification</a>
             </div>
         {% endif %}
         {% if app.user and app.user | isAuthorizedToReact(debate) %}

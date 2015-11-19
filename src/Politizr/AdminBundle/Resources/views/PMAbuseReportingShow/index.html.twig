@@ -2,5 +2,5 @@
 
 
 {% block show_column_block_p_object %}
-    {{ adminCreatePath(PMAbuseReporting.PObjectName, PMAbuseReporting.PObjectId, true) }}
+    {{ adminCreatePath(PMAbuseReporting.PObjectName, PMAbuseReporting.PObjectUuid, displayWithType = true, idType = 'uuid') }}
 {% endblock %}

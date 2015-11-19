@@ -12,7 +12,7 @@
     {% if app.user and app.user | isAuthorizedToReportAbuse %}
         {% embed 'PolitizrFrontBundle:Navigation\\Header:_headerConnected.html.twig' %}
             {% block abuse %}
-                {% include 'PolitizrFrontBundle:Monitoring:_abuseLink.html.twig' with { 'subjectId': user.id, 'type': user.type } only %}
+                {% include 'PolitizrFrontBundle:Monitoring:_abuseLink.html.twig' with { 'uuid': user.uuid, 'type': user.type } only %}
             {% endblock abuse %}
         {% endembed %}
     {% else %}

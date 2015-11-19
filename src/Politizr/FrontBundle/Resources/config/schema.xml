@@ -1180,7 +1180,7 @@
         <column name="p_user_id" type="integer" required="false" />  
         
         <column name="p_object_name" type="varchar" size="150" />
-        <column name="p_object_id" type="integer" />
+        <column name="p_object_uuid" type="varchar" size="50" />
 
         <column name="message" type="longvarchar" />
 
@@ -1198,7 +1198,7 @@
         <column name="p_user_id" type="integer" required="false" />  
         
         <column name="p_object_name" type="varchar" size="150" />
-        <column name="p_object_id" type="integer" />
+        <column name="p_object_uuid" type="varchar" size="50" />
 
         <column name="message" type="longvarchar" />
 

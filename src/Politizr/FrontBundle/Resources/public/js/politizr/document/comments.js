@@ -52,13 +52,13 @@ function openParagraph(paragraphId)
         return;
     }
 
-    var subjectId = context.find('.commentsCounter').attr('subjectId');
+    var uuid = context.find('.commentsCounter').attr('uuid');
     var type = context.find('.commentsCounter').attr('type');
     var noParagraph = context.find('.commentsCounter').attr('noParagraph');
 
     var localLoader = context.find('.ajaxLoader').first();
 
-    // console.log(subjectId);
+    // console.log(uuid);
     // console.log(type);
     // console.log(noParagraph);
 
@@ -75,7 +75,7 @@ function openParagraph(paragraphId)
         type: 'POST',
         url: xhrPath,
         context: context,
-        data: { 'subjectId': subjectId, 'type': type, 'noParagraph': noParagraph },
+        data: { 'uuid': uuid, 'type': type, 'noParagraph': noParagraph },
         dataType: 'json',
         beforeSend: function ( xhr ) { xhrBeforeSend( xhr, localLoader ); },
         statusCode: { 404: function () { xhr404(localLoader); }, 500: function() { xhr500(localLoader); } },

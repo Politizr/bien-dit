@@ -21,7 +21,7 @@
                     <i class="iconAlert"></i>Ces informations ont été validées par nos services et ne peuvent être modifiées.
                 </p>
                 <div class="actionAskForUpdate">
-                    <a action="modalAskForUpdate" type="{{ constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_USER') }}" subjectId="{{ user.id }}"><i class="iconPublish"></i>Demande de modification</a>
+                    <a action="modalAskForUpdate" type="{{ constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_USER') }}" uuid="{{ user.uuid }}"><i class="iconPublish"></i>Demande de modification</a>
                 </div>
             {% endif %}
 

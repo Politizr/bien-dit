@@ -159,7 +159,7 @@ class XhrDocument
 
 
     /**
-     * Notation plus/minus of debate, comment or user
+     * Notation plus/minus of debate, reaction or comment
      * @todo refactoring
      */
     public function note(Request $request)
@@ -167,8 +167,8 @@ class XhrDocument
         $this->logger->info('*** note');
         
         // Request arguments
-        $id = $request->get('subjectId');
-        $this->logger->info('$id = ' . print_r($id, true));
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
         $type = $request->get('type');
         $this->logger->info('$type = ' . print_r($type, true));
         $way = $request->get('way');
@@ -179,16 +179,16 @@ class XhrDocument
         // Function process
         switch($type) {
             case ObjectTypeConstants::TYPE_DEBATE:
-                $object = PDDebateQuery::create()->findPk($id);
+                $object = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
                 break;
             case ObjectTypeConstants::TYPE_REACTION:
-                $object = PDReactionQuery::create()->findPk($id);
+                $object = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
                 break;
             case ObjectTypeConstants::TYPE_DEBATE_COMMENT:
-                $object = PDDCommentQuery::create()->findPk($id);
+                $object = PDDCommentQuery::create()->filterByUuid($uuid)->findOne();
                 break;
             case ObjectTypeConstants::TYPE_REACTION_COMMENT:
-                $object = PDRCommentQuery::create()->findPk($id);
+                $object = PDRCommentQuery::create()->filterByUuid($uuid)->findOne();
                 break;
         }
 
@@ -817,8 +817,8 @@ class XhrDocument
         $this->logger->info('*** comments');
         
         // Request arguments
-        $id = $request->get('subjectId');
-        $this->logger->info('$id = ' . print_r($id, true));
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
         $type = $request->get('type');
         $this->logger->info('$type = ' . print_r($type, true));
         $noParagraph = $request->get('noParagraph');
@@ -828,12 +828,12 @@ class XhrDocument
         $user = $this->securityTokenStorage->getToken()->getUser();
         switch ($type) {
             case ObjectTypeConstants::TYPE_DEBATE:
-                $document = PDDebateQuery::create()->findPk($id);
+                $document = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
                 $comment = new PDDComment();
                 $formType = new PDDCommentType();
                 break;
             case ObjectTypeConstants::TYPE_REACTION:
-                $document = PDReactionQuery::create()->findPk($id);
+                $document = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
                 $comment = new PDRComment();
                 $formType = new PDRCommentType();
                 break;

@@ -24,7 +24,7 @@ class PMAbuseReportingType extends AbstractType
             'required' => true,
         ));
 
-        $builder->add('p_object_id', 'hidden', array(
+        $builder->add('p_object_uuid', 'hidden', array(
             'required' => true,
         ));
 

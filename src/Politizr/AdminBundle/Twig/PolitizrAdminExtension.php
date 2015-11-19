@@ -1037,84 +1037,106 @@ class PolitizrAdminExtension extends \Twig_Extension
      *
      * @param string $objectClass
      * @param int $objectId
-     * @param boolean $displayType
+     * @param boolean $displayWithType
      * @param string $mode show|edit
+     * @param string $idType id|uuid
      * @return string
      */
-    public function adminCreatePath($objectClass, $objectId, $displayType = false, $mode = 'show')
+    public function adminCreatePath($objectClass, $objectId, $displayWithType = false, $mode = 'show', $idType = 'id')
     {
         $this->logger->info('*** adminCreatePath');
-        // $this->logger->info('$objectClass = '.print_r($objectClass, true));
-        // $this->logger->info('$objectId = '.print_r($objectId, true));
-        // $this->logger->info('$displayType = '.print_r($displayType, true));
-        // $this->logger->info('$mode = '.print_r($mode, true));
+        $this->logger->info('$objectClass = '.print_r($objectClass, true));
+        $this->logger->info('$objectId = '.print_r($objectId, true));
+        $this->logger->info('$displayWithType = '.print_r($displayWithType, true));
+        $this->logger->info('$mode = '.print_r($mode, true));
+        $this->logger->info('$idType = '.print_r($idType, true));
 
         switch($objectClass) {
             case ObjectTypeConstants::TYPE_DEBATE:
-                ($displayType)?$label = 'Débat ':$label = '';
-                $subject = PDDebateQuery::create()->findPk($objectId);
+                ($displayWithType)?$label = 'Débat ':$label = '';
+                if ($idType == 'id') {
+                    $subject = PDDebateQuery::create()->findPk($objectId);
+                } elseif ($idType == 'uuid') {
+                    $subject = PDDebateQuery::create()->filterByUuid($objectId)->findOne();
+                }
 
                 if ($subject) {
                     $title = $subject->getTitle();
-                    $url = $this->router->generate('Politizr_AdminBundle_PDDebate_show', array('pk' => $objectId));
+                    $url = $this->router->generate('Politizr_AdminBundle_PDDebate_show', array('pk' => $subject->getId()));
 
-                    $html = sprintf('<a href="%s">%sid-%s %s</a>', $url, $label, $objectId, $title);
+                    $html = sprintf('<a href="%s">%sid-%s %s</a>', $url, $label, $subject->getId(), $title);
                 } else {
                     // $html = sprintf('%sid-%s non trouvé', $label, $objectId);
                     $html = 'non trouvé';
                 }
                 break;
             case ObjectTypeConstants::TYPE_REACTION:
-                ($displayType)?$label = 'Réaction ':$label = '';
-                $subject = PDReactionQuery::create()->findPk($objectId);
+                ($displayWithType)?$label = 'Réaction ':$label = '';
+                if ($idType == 'id') {
+                    $subject = PDReactionQuery::create()->findPk($objectId);
+                } elseif ($idType == 'uuid') {
+                    $subject = PDReactionQuery::create()->filterByUuid($objectId)->findOne();
+                }
 
                 if ($subject) {
                     $title = $subject->getTitle();
-                    $url = $this->router->generate('Politizr_AdminBundle_PDReaction_show', array('pk' => $objectId));
+                    $url = $this->router->generate('Politizr_AdminBundle_PDReaction_show', array('pk' => $subject->getId()));
 
-                    $html = sprintf('<a href="%s">%sid-%s %s</a>', $url, $label, $objectId, $title);
+                    $html = sprintf('<a href="%s">%sid-%s %s</a>', $url, $label, $subject->getId(), $title);
                 } else {
                     // $html = sprintf('%sid-%s non trouvé', $label, $objectId);
                     $html = 'non trouvé';
                 }
                 break;
             case ObjectTypeConstants::TYPE_DEBATE_COMMENT:
-                ($displayType)?$label = 'Commentaire (débat) ':$label = '';
-                $subject = PDDCommentQuery::create()->findPk($objectId);
+                ($displayWithType)?$label = 'Commentaire (débat) ':$label = '';
+                if ($idType == 'id') {
+                    $subject = PDDCommentQuery::create()->findPk($objectId);
+                } elseif ($idType == 'uuid') {
+                    $subject = PDDCommentQuery::create()->filterByUuid($objectId)->findOne();
+                }
 
                 if ($subject) {
                     $title = substr(strip_tags($subject->getDescription()), 0, 50);
-                    $url = $this->router->generate('Politizr_AdminBundle_PDDComment_show', array('pk' => $objectId));
+                    $url = $this->router->generate('Politizr_AdminBundle_PDDComment_show', array('pk' => $subject->getId()));
 
-                    $html = sprintf('<a href="%s">%sid-%s %s</a>', $url, $label, $objectId, $title);
+                    $html = sprintf('<a href="%s">%sid-%s %s</a>', $url, $label, $subject->getId(), $title);
                 } else {
                     // $html = sprintf('%sid-%s non trouvé', $label, $objectId);
                     $html = 'non trouvé';
                 }
                 break;
             case ObjectTypeConstants::TYPE_REACTION_COMMENT:
-                ($displayType)?$label = 'Commentaire (réaction) ':$label = '';
-                $subject = PDRCommentQuery::create()->findPk($objectId);
+                ($displayWithType)?$label = 'Commentaire (réaction) ':$label = '';
+                if ($idType == 'id') {
+                    $subject = PDRCommentQuery::create()->findPk($objectId);
+                } elseif ($idType == 'uuid') {
+                    $subject = PDRCommentQuery::create()->filterByUuid($objectId)->findOne();
+                }
 
                 if ($subject) {
                     $title = substr(strip_tags($subject->getDescription()), 0, 50);
-                    $url = $this->router->generate('Politizr_AdminBundle_PDRComment_show', array('pk' => $objectId));
+                    $url = $this->router->generate('Politizr_AdminBundle_PDRComment_show', array('pk' => $subject->getId()));
 
-                    $html = sprintf('<a href="%s">%sid-%s %s</a>', $url, $label, $objectId, $title);
+                    $html = sprintf('<a href="%s">%sid-%s %s</a>', $url, $label, $subject->getId(), $title);
                 } else {
                     // $html = sprintf('%sid-%s non trouvé', $label, $objectId);
                     $html = 'non trouvé';
                 }
                 break;
             case ObjectTypeConstants::TYPE_USER:
-                ($displayType)?$label = 'Utilisateur ':$label = '';
-                $subject = PUserQuery::create()->findPk($objectId);
+                ($displayWithType)?$label = 'Utilisateur ':$label = '';
+                if ($idType == 'id') {
+                    $subject = PUserQuery::create()->findPk($objectId);
+                } elseif ($idType == 'uuid') {
+                    $subject = PUserQuery::create()->filterByUuid($objectId)->findOne();
+                }
 
                 if ($subject) {
                     $title = $subject->__toString();
-                    $url = $this->router->generate('Politizr_AdminBundle_PUser_show', array('pk' => $objectId));
+                    $url = $this->router->generate('Politizr_AdminBundle_PUser_show', array('pk' => $subject->getId()));
 
-                    $html = sprintf('<a href="%s">%sid-%s %s</a>', $url, $label, $objectId, $title);
+                    $html = sprintf('<a href="%s">%sid-%s %s</a>', $url, $label, $subject->getId(), $title);
                 } else {
                     // $html = sprintf('%sid-%s non trouvé', $label, $objectId);
                     $html = 'non trouvé';
