@@ -34,6 +34,7 @@ class PDReactionQuery extends BasePDReactionQuery
         $sql = "
 SELECT DISTINCT
     id,
+    uuid,
     p_user_id,
     p_d_debate_id,
     parent_reaction_id,

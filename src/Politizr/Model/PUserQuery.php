@@ -38,6 +38,7 @@ class PUserQuery extends BasePUserQuery
 #  Concordance des tags suivis / tags caractérisant des users
 SELECT DISTINCT
     id,
+    uuid,
     provider,
     provider_id,
     nickname,
