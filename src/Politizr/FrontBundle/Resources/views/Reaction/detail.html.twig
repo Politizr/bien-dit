@@ -36,7 +36,7 @@
             </div>
         {% endif %}
         {% if app.user and app.user | isAuthorizedToReact(debate) %}
-            <a class="actionReact" href="{{ path('ReactionDraftNew'~profileSuffix, { 'debateId': debate.id, 'parentId': reaction.id }) }}">
+            <a class="actionReact" href="{{ path('ReactionDraftNew'~profileSuffix, { 'debateUuid': debate.uuid, 'parentUuid': reaction.uuid }) }}">
                 <i class="iconReaction"></i>réagir
             </a>
         {% endif %}
