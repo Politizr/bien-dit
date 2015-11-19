@@ -91,13 +91,13 @@ class XhrNotification
         $this->logger->info('*** notificationChek');
 
         // Request arguments
-        $id = $request->get('subjectId');
-        $this->logger->info('$id = ' . print_r($id, true));
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
 
         // Function process
         $user = $this->securityTokenStorage->getToken()->getUser();
 
-        $notification = PUNotificationQuery::create()->findPk($id);
+        $notification = PUNotificationQuery::create()->filterByUuid($uuid)->findOne();
         $this->notificationManager->checkUserNotification($notification);
 
         return true;

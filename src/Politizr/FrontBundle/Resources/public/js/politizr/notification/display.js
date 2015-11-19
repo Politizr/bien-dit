@@ -68,7 +68,7 @@ $("body").on("click", "i[action='notificationCheck']", function(e) {
         dataType: 'json',
         url : xhrPath,
         context: $(this).closest('.notifItem'),
-        data: { 'subjectId': $(this).attr('subjectId') },
+        data: { 'uuid': $(this).attr('uuid') },
         beforeSend: function ( xhr ) { xhrBeforeSend( xhr, localLoader ); },
         statusCode: { 404: function () { xhr404(localLoader); }, 500: function() { xhr500(localLoader); } },
         error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown, localLoader); },
@@ -79,7 +79,12 @@ $("body").on("click", "i[action='notificationCheck']", function(e) {
             $(this).find('.iconCheck').remove();
             $(this).addClass('viewedNotif');
 
-            $('#notifCounter').html(parseInt($('#notifCounter').text()) - 1);
+            note = parseInt($('#notifCounter').text()) - 1;
+            if (note > 0) {
+                $('#notifCounter').html(note);
+            } else {
+                $('#notifCounter').html('-');
+            }
 
             $('#ajaxGlobalLoader').hide();
         }
@@ -103,7 +108,7 @@ $("body").on("click", "a[action='notificationCheck']", function(e) {
         dataType: 'json',
         url : xhrPath,
         context: this,
-        data: { 'subjectId': $(this).closest('span').attr('subjectId') },
+        data: { 'uuid': $(this).closest('span').attr('uuid') },
         beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
         statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
         error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
