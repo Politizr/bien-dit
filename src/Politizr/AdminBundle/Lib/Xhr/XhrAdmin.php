@@ -15,6 +15,8 @@ use Politizr\Model\PTag;
 use Politizr\Model\PUReputation;
 use Politizr\Model\PMUserModerated;
 
+use Politizr\Model\PDDebateQuery;
+use Politizr\Model\PDReactionQuery;
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PTagQuery;
 use Politizr\Model\PDDTaggedTQuery;
@@ -93,7 +95,7 @@ class XhrAdmin
      *
      * @todo: delete UNIQUE constraint on "slug" to manage same slug for different type => /!\ problèmes en vue sur liste déroulante multi-type
      *
-     * @param integer $tagId
+     * @param integer $tagUuid
      * @param string $tagTitle
      * @param integer $tagTypeId
      * @param integer $userId
@@ -102,10 +104,10 @@ class XhrAdmin
      * @return PTag
      * @throws FormValidationException
      */
-    private function retrieveOrCreateTag($tagId, $tagTitle, $tagTypeId, $userId, $newTag)
+    private function retrieveOrCreateTag($tagUuid, $tagTitle, $tagTypeId, $userId, $newTag)
     {
-        if ($tagId) {
-            $tag = PTagQuery::create()->findPk($tagId);
+        if ($tagUuid) {
+            $tag = PTagQuery::create()->filterByUuid($tagUuid)->findOne();
             return $tag;
         }
 
@@ -116,10 +118,22 @@ class XhrAdmin
                     ->findOne();
 
         if ($tag) {
+            if ($tag->getModerated()) {
+                throw new FormValidationException('Cette thématique est modérée.');
+            }
+
+            if (!$tag->getOnline()) {
+                throw new FormValidationException('Cette thématique est hors ligne.');
+            }
+
             return $tag;
         }
 
         if ($newTag) {
+            if (!preg_match("/^[\w\-\' ]+$/iu", $tagTitle)) {
+                throw new FormValidationException('La thématique peut être composée de lettres, chiffres et espaces uniquement.');
+            }
+
             $tag = $this->tagManager->createTag($tagTitle, $tagTypeId, $userId, true);
             return $tag;
         }
@@ -203,12 +217,12 @@ class XhrAdmin
         // Request arguments
         $tagTitle = $request->get('tagTitle');
         $this->logger->info('$tagTitle = ' . print_r($tagTitle, true));
-        $tagId = $request->get('tagId');
-        $this->logger->info('$tagId = ' . print_r($tagId, true));
+        $tagUuid = $request->get('tagUuid');
+        $this->logger->info('$tagUuid = ' . print_r($tagUuid, true));
         $tagTypeId = $request->get('tagTypeId');
         $this->logger->info('$tagTypeId = ' . print_r($tagTypeId, true));
-        $subjectId = $request->get('subjectId');
-        $this->logger->info('$subjectId = ' . print_r($subjectId, true));
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
         $newTag = $request->get('newTag');
         $this->logger->info('$newTag = ' . print_r($newTag, true));
 
@@ -217,11 +231,14 @@ class XhrAdmin
             $tagTypeId = null;
         }
 
-        $tag = $this->retrieveOrCreateTag($tagId, $tagTitle, $tagTypeId, null, $newTag);
+        // Retrieve subject
+        $subject = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
+
+        $tag = $this->retrieveOrCreateTag($tagUuid, $tagTitle, $tagTypeId, null, $newTag);
 
         // associate tag to debate
         $pddTaggedT = PDDTaggedTQuery::create()
-            ->filterByPDDebateId($subjectId)
+            ->filterByPDDebateId($subject->getId())
             ->filterByPTagId($tag->getId())
             ->findOne();
 
@@ -230,7 +247,7 @@ class XhrAdmin
             $htmlTag = null;
         } else {
             $created = true;
-            $this->tagManager->createDebateTag($subjectId, $tag->getId());
+            $this->tagManager->createDebateTag($subject->getId(), $tag->getId());
 
             $xhrPathDelete = $this->templating->render(
                 'PolitizrAdminBundle:Fragment\\Xhr:_xhrPath.html.twig',
@@ -245,7 +262,7 @@ class XhrAdmin
             $htmlTag = $this->templating->render(
                 'PolitizrAdminBundle:Fragment\\Tag:_detailEditable.html.twig',
                 array(
-                    'subjectId' => $subjectId,
+                    'uuid' => $uuid,
                     'tag' => $tag,
                     'path' => $xhrPathDelete
                 )
@@ -266,13 +283,16 @@ class XhrAdmin
         $this->logger->info('*** debateDeleteTag');
         
         // Request arguments
-        $tagId = $request->get('tagId');
-        $this->logger->info('$tagId = ' . print_r($tagId, true));
-        $subjectId = $request->get('subjectId');
-        $this->logger->info('$subjectId = ' . print_r($subjectId, true));
+        $tagUuid = $request->get('tagUuid');
+        $this->logger->info('$tagUuid = ' . print_r($tagUuid, true));
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
+
+        $tag = PTagQuery::create()->filterByUuid($tagUuid)->findOne();
+        $subject = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
 
         // Function process
-        $this->tagManager->deleteDebateTag($subjectId, $tagId);
+        $this->tagManager->deleteDebateTag($subject->getId(), $tag->getId());
 
         return true;
     }
@@ -291,12 +311,12 @@ class XhrAdmin
         // Request arguments
         $tagTitle = $request->get('tagTitle');
         $this->logger->info('$tagTitle = ' . print_r($tagTitle, true));
-        $tagId = $request->get('tagId');
-        $this->logger->info('$tagId = ' . print_r($tagId, true));
+        $tagUuid = $request->get('tagUuid');
+        $this->logger->info('$tagUuid = ' . print_r($tagUuid, true));
         $tagTypeId = $request->get('tagTypeId');
         $this->logger->info('$tagTypeId = ' . print_r($tagTypeId, true));
-        $subjectId = $request->get('subjectId');
-        $this->logger->info('$subjectId = ' . print_r($subjectId, true));
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
         $newTag = $request->get('newTag');
         $this->logger->info('$newTag = ' . print_r($newTag, true));
 
@@ -305,11 +325,14 @@ class XhrAdmin
             $tagTypeId = null;
         }
 
-        $tag = $this->retrieveOrCreateTag($tagId, $tagTitle, $tagTypeId, null, $newTag);
+        // Retrieve subject
+        $subject = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
+
+        $tag = $this->retrieveOrCreateTag($tagUuid, $tagTitle, $tagTypeId, null, $newTag);
 
         // associate tag to reaction
         $pdrTaggedT = PDRTaggedTQuery::create()
-            ->filterByPDReactionId($subjectId)
+            ->filterByPDReactionId($subject->getId())
             ->filterByPTagId($tag->getId())
             ->findOne();
 
@@ -318,7 +341,7 @@ class XhrAdmin
             $htmlTag = null;
         } else {
             $created = true;
-            $this->tagManager->createReactionTag($subjectId, $tag->getId());
+            $this->tagManager->createReactionTag($subject->getId(), $tag->getId());
 
             $xhrPathDelete = $this->templating->render(
                 'PolitizrAdminBundle:Fragment\\Xhr:_xhrPath.html.twig',
@@ -333,7 +356,7 @@ class XhrAdmin
             $htmlTag = $this->templating->render(
                 'PolitizrAdminBundle:Fragment\\Tag:_detailEditable.html.twig',
                 array(
-                    'subjectId' => $subjectId,
+                    'uuid' => $uuid,
                     'tag' => $tag,
                     'path' => $xhrPathDelete
                 )
@@ -354,13 +377,16 @@ class XhrAdmin
         $this->logger->info('*** reactionDeleteTag');
         
         // Request arguments
-        $tagId = $request->get('tagId');
-        $this->logger->info('$tagId = ' . print_r($tagId, true));
-        $subjectId = $request->get('subjectId');
-        $this->logger->info('$subjectId = ' . print_r($subjectId, true));
+        $tagUuid = $request->get('tagUuid');
+        $this->logger->info('$tagUuid = ' . print_r($tagUuid, true));
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
+
+        $tag = PTagQuery::create()->filterByUuid($tagUuid)->findOne();
+        $subject = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
 
         // Function process
-        $this->tagManager->deleteReactionTag($subjectId, $tagId);
+        $this->tagManager->deleteReactionTag($subject->getId(), $tag->getId());
 
         return true;
     }
@@ -379,12 +405,12 @@ class XhrAdmin
         // Request arguments
         $tagTitle = $request->get('tagTitle');
         $this->logger->info('$tagTitle = ' . print_r($tagTitle, true));
-        $tagId = $request->get('tagId');
-        $this->logger->info('$tagId = ' . print_r($tagId, true));
+        $tagUuid = $request->get('tagUuid');
+        $this->logger->info('$tagUuid = ' . print_r($tagUuid, true));
         $tagTypeId = $request->get('tagTypeId');
         $this->logger->info('$tagTypeId = ' . print_r($tagTypeId, true));
-        $subjectId = $request->get('subjectId');
-        $this->logger->info('$subjectId = ' . print_r($subjectId, true));
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
         $newTag = $request->get('newTag');
         $this->logger->info('$newTag = ' . print_r($newTag, true));
 
@@ -393,11 +419,14 @@ class XhrAdmin
             $tagTypeId = null;
         }
 
-        $tag = $this->retrieveOrCreateTag($tagId, $tagTitle, $tagTypeId, $subjectId, $newTag);
+        // Retrieve subject
+        $subject = PUserQuery::create()->filterByUuid($uuid)->findOne();
+
+        $tag = $this->retrieveOrCreateTag($tagUuid, $tagTitle, $tagTypeId, null, $newTag);
 
         // associate tag to user's following
         $puFollowT = PUFollowTQuery::create()
-            ->filterByPUserId($subjectId)
+            ->filterByPUserId($subject->getId())
             ->filterByPTagId($tag->getId())
             ->findOne();
 
@@ -406,7 +435,7 @@ class XhrAdmin
             $htmlTag = null;
         } else {
             $created = true;
-            $this->tagManager->createUserFollowTag($subjectId, $tag->getId());
+            $this->tagManager->createUserFollowTag($subject->getId(), $tag->getId());
 
             $xhrPathDelete = $this->templating->render(
                 'PolitizrAdminBundle:Fragment\\Xhr:_xhrPath.html.twig',
@@ -421,7 +450,7 @@ class XhrAdmin
             $htmlTag = $this->templating->render(
                 'PolitizrAdminBundle:Fragment\\Tag:_detailEditable.html.twig',
                 array(
-                    'subjectId' => $subjectId,
+                    'uuid' => $uuid,
                     'tag' => $tag,
                     'path' => $xhrPathDelete
                 )
@@ -443,13 +472,15 @@ class XhrAdmin
         $this->logger->info('*** userFollowDeleteTag');
 
         // Request arguments
-        $tagId = $request->get('tagId');
-        $this->logger->info('$tagId = ' . print_r($tagId, true));
-        $subjectId = $request->get('subjectId');
-        $this->logger->info('$subjectId = ' . print_r($subjectId, true));
+        $tagUuid = $request->get('tagUuid');
+        $this->logger->info('$tagUuid = ' . print_r($tagUuid, true));
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
 
-        // Function process
-        $deleted = $this->tagManager->deleteUserFollowTag($subjectId, $tagId);
+        $tag = PTagQuery::create()->filterByUuid($tagUuid)->findOne();
+        $subject = PUserQuery::create()->filterByUuid($uuid)->findOne();
+
+        $deleted = $this->tagManager->deleteUserFollowTag($subject->getId(), $tag->getId());
 
         return $deleted;
     }
@@ -459,17 +490,15 @@ class XhrAdmin
      */
     public function userTaggedAddTag(Request $request)
     {
-        $this->logger->info('*** userTaggedAddTag');
-
         // Request arguments
         $tagTitle = $request->get('tagTitle');
         $this->logger->info('$tagTitle = ' . print_r($tagTitle, true));
-        $tagId = $request->get('tagId');
-        $this->logger->info('$tagId = ' . print_r($tagId, true));
+        $tagUuid = $request->get('tagUuid');
+        $this->logger->info('$tagUuid = ' . print_r($tagUuid, true));
         $tagTypeId = $request->get('tagTypeId');
         $this->logger->info('$tagTypeId = ' . print_r($tagTypeId, true));
-        $subjectId = $request->get('subjectId');
-        $this->logger->info('$subjectId = ' . print_r($subjectId, true));
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
         $newTag = $request->get('newTag');
         $this->logger->info('$newTag = ' . print_r($newTag, true));
 
@@ -478,11 +507,14 @@ class XhrAdmin
             $tagTypeId = null;
         }
 
-        $tag = $this->retrieveOrCreateTag($tagId, $tagTitle, $tagTypeId, $subjectId, $newTag);
+        // Retrieve subject
+        $subject = PUserQuery::create()->filterByUuid($uuid)->findOne();
+
+        $tag = $this->retrieveOrCreateTag($tagUuid, $tagTitle, $tagTypeId, null, $newTag);
 
         // associate tag to user's tagging
         $puTaggedT = PUTaggedTQuery::create()
-            ->filterByPUserId($subjectId)
+            ->filterByPUserId($subject->getId())
             ->filterByPTagId($tag->getId())
             ->findOne();
 
@@ -491,7 +523,7 @@ class XhrAdmin
             $htmlTag = null;
         } else {
             $created = true;
-            $this->tagManager->createUserTaggedTag($subjectId, $tag->getId());
+            $this->tagManager->createUserTaggedTag($subject->getId(), $tag->getId());
 
             $xhrPathDelete = $this->templating->render(
                 'PolitizrAdminBundle:Fragment\\Xhr:_xhrPath.html.twig',
@@ -506,7 +538,7 @@ class XhrAdmin
             $htmlTag = $this->templating->render(
                 'PolitizrAdminBundle:Fragment\\Tag:_detailEditable.html.twig',
                 array(
-                    'subjectId' => $subjectId,
+                    'uuid' => $uuid,
                     'tag' => $tag,
                     'path' => $xhrPathDelete
                 )
@@ -528,13 +560,15 @@ class XhrAdmin
         $this->logger->info('*** userTaggedDeleteTag');
         
         // Request arguments
-        $tagId = $request->get('tagId');
-        $this->logger->info('$tagId = ' . print_r($tagId, true));
-        $subjectId = $request->get('subjectId');
-        $this->logger->info('$subjectId = ' . print_r($subjectId, true));
+        $tagUuid = $request->get('tagUuid');
+        $this->logger->info('$tagUuid = ' . print_r($tagUuid, true));
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
 
-        // Function process
-        $deleted = $this->tagManager->deleteUserTaggedTag($subjectId, $tagId);
+        $tag = PTagQuery::create()->filterByUuid($tagUuid)->findOne();
+        $subject = PUserQuery::create()->filterByUuid($uuid)->findOne();
+
+        $deleted = $this->tagManager->deleteUserTaggedTag($subject->getId(), $tag->getId());
 
         return $deleted;
     }

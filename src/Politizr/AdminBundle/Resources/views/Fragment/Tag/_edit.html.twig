@@ -1,8 +1,8 @@
-<div class="addTag" id="editTagZone-{{ zoneId }}" tagTypeId="{{ tagTypeId }}" subjectId="{{ object.id }}" newTag="{{ newTag }}" path="{{ pathCreate }}">
+<div class="addTag" id="editTagZone-{{ zoneId }}" tagTypeId="{{ tagTypeId }}" uuid="{{ object.uuid }}" newTag="{{ newTag }}" path="{{ pathCreate }}">
 
     <div class="editableTagList">
         {% for tag in tags %}
-            {% include 'PolitizrAdminBundle:Fragment\\Tag:_detailEditable.html.twig' with { 'subjectId': object.id, 'tag': tag, 'path': pathDelete } %}&nbsp;
+            {% include 'PolitizrAdminBundle:Fragment\\Tag:_detailEditable.html.twig' with { 'uuid': object.uuid, 'tag': tag, 'path': pathDelete } %}&nbsp;
         {% endfor %}
     </div>
 
@@ -10,6 +10,6 @@
     
     {# Sélection #}
     <input type="text" class="selectedTag" placeholder="tag" />
-    <input type="hidden" class="selectedTagID" />
+    <input type="hidden" class="selectedTagUuid" />
     <button type="button" action="addTag">Ajouter</button>
 </div>

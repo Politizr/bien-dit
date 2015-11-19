@@ -234,14 +234,21 @@ class XhrModal
 
         // Get tags from search session
         $session = $request->getSession();
-        $tags = $session->get('search/tag');
-        $this->logger->info('session tags = '.print_r($tags, true));
+        $tagUuids = $session->get('search/tag');
+        $this->logger->info('session tags = '.print_r($tagUuids, true));
 
         // at least one tag
         if (empty($tags)) {
             $error = 'Vous devez saisir au moins un tag';
             throw new FormValidationException($error);
         }
+
+        // uuids > ids
+        $tags = array();
+        foreach ($tagUuids as $tagUuid) {
+            $tags[] = PTagQuery::create()->select('Id')->filterByUuid($tagUuid)->findOne();
+        }
+        $this->logger->info('tags = '.print_r($tags, true));
 
         // @todo http://dba.stackexchange.com/questions/45512/how-do-i-select-items-from-a-table-where-a-single-column-must-contain-two-or-mo
         $debates = PDDebateQuery::create()
