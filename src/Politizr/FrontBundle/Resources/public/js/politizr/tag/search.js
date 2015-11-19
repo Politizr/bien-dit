@@ -11,7 +11,7 @@ var normalize = function( term ) {
  * Init autoloading tag on input search form field
  */
 function initInputSearchByTags() {
-    // console.log('*** initInputSearchByTags');
+    console.log('*** initInputSearchByTags');
 
     // autocomplete initialization
     var xhrPath = getXhrPath(
@@ -39,7 +39,7 @@ function initInputSearchByTags() {
                 $.each( data['tags'], function( key, val ) {
                     var item = [];
                     item['label'] = val.title;
-                    item['value'] = val.id;
+                    item['value'] = val.uiid;
 
                     availableTags.push(item);
                 });
@@ -79,8 +79,8 @@ function initInputSearchByTags() {
  * @param stsring uuid
  */
 function addSearchTag(uuid) {
-    // console.log('addSearchTag');
-    // console.log('uuid = ' + uuid);
+    console.log('addSearchTag');
+    console.log('uuid = ' + uuid);
 
     if (typeof uuid === "undefined") {
         return false;
@@ -124,13 +124,13 @@ function addSearchTag(uuid) {
  * Delete search tag
  */
 $("body").on("click", "[action='deleteSearchTag']", function() {
-    // console.log('click deleteTag');
+    console.log('click deleteTag');
 
     var tagUuid = $(this).attr('tagUuid');
     var deleteUrl = $(this).attr('path');
 
-    // console.log('tagUuid = ' + tagUuid);
-    // console.log('deleteUrl = ' + deleteUrl);
+    console.log('tagUuid = ' + tagUuid);
+    console.log('deleteUrl = ' + deleteUrl);
 
     $.ajax({
         type: 'POST',

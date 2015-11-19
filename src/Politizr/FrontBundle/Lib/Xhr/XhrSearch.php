@@ -137,7 +137,7 @@ class XhrSearch
 
         $tag = PTagQuery::create()->filterByUuid($tagUuid)->findOne();
         if (!$tag) {
-            throw new InconsistentDataException(sprintf('Tag id-%s does not exist'), $tag->getId());
+            throw new InconsistentDataException(sprintf('Tag id-%s does not exist', $tag->getId()));
         }
 
         // Put tag in search session

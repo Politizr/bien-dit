@@ -168,6 +168,7 @@ class XhrTag
         }
 
         $tags = $this->tagManager->getArrayTags($tagTypeId, true, true);
+        dump($tags);
 
         // Renvoi de l'ensemble des blocs HTML maj
         return array(
