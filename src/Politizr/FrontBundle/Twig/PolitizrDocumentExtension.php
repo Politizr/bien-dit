@@ -273,8 +273,9 @@ class PolitizrDocumentExtension extends \Twig_Extension
     public function itemContextReaction(PDReaction $reaction, $debateContext)
     {
         $parentReaction = null;
-        if ($reaction->getLevel() > 1) {
-            $parentReaction = $reaction->getParent();
+
+        if ($parentReactionId = $reaction->getParentReactionId()) {
+            $parentReaction = PDReactionQuery::create()->findPk($parentReactionId);
         }
         $parentDebate = $reaction->getDebate();
 
