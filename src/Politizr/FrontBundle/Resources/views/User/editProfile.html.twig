@@ -45,12 +45,11 @@
                     <div class="avatar60">
                         <div id="smallCamera">
                             <form id="formUserPhoto" action="{{ path('XhrGeneric', {'xhrRoute': constant('Politizr\\Constant\\XhrConstants::ROUTE_USER_PHOTO_UPLOAD'), 'xhrService': 'user', 'xhrMethod': 'userPhotoUpload', 'xhrType': constant('Politizr\\Constant\\XhrConstants::RETURN_URL')}) }}" method="post" enctype="multipart/form-data">
-                                <input type="hidden" name="id" value="{{ user.id }}">
                                 <div id="uploadFileContainer">
                                     <input type="file" name="fileName" id="fileName">
                                     <label action="fileSelect" for="fileName" tabindex="0"><i class="iconCamera"></i><i class="iconNotifYes"></i></label>
                                     <div class="photoDelete">
-                                        <a action="fileDelete" subjectId="{{ user.id }}"><i class="iconCross"></i></a>
+                                        <a action="fileDelete" uuid="{{ user.uuid }}"><i class="iconCross"></i></a>
                                     </div>
                                 </div>
                             </form>

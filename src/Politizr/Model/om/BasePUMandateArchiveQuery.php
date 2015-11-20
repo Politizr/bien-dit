@@ -18,6 +18,7 @@ use Politizr\Model\PUMandateArchiveQuery;
 
 /**
  * @method PUMandateArchiveQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method PUMandateArchiveQuery orderByUuid($order = Criteria::ASC) Order by the uuid column
  * @method PUMandateArchiveQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
  * @method PUMandateArchiveQuery orderByPQTypeId($order = Criteria::ASC) Order by the p_q_type_id column
  * @method PUMandateArchiveQuery orderByPQMandateId($order = Criteria::ASC) Order by the p_q_mandate_id column
@@ -30,6 +31,7 @@ use Politizr\Model\PUMandateArchiveQuery;
  * @method PUMandateArchiveQuery orderByArchivedAt($order = Criteria::ASC) Order by the archived_at column
  *
  * @method PUMandateArchiveQuery groupById() Group by the id column
+ * @method PUMandateArchiveQuery groupByUuid() Group by the uuid column
  * @method PUMandateArchiveQuery groupByPUserId() Group by the p_user_id column
  * @method PUMandateArchiveQuery groupByPQTypeId() Group by the p_q_type_id column
  * @method PUMandateArchiveQuery groupByPQMandateId() Group by the p_q_mandate_id column
@@ -48,6 +50,7 @@ use Politizr\Model\PUMandateArchiveQuery;
  * @method PUMandateArchive findOne(PropelPDO $con = null) Return the first PUMandateArchive matching the query
  * @method PUMandateArchive findOneOrCreate(PropelPDO $con = null) Return the first PUMandateArchive matching the query, or a new PUMandateArchive object populated from the query conditions when no match is found
  *
+ * @method PUMandateArchive findOneByUuid(string $uuid) Return the first PUMandateArchive filtered by the uuid column
  * @method PUMandateArchive findOneByPUserId(int $p_user_id) Return the first PUMandateArchive filtered by the p_user_id column
  * @method PUMandateArchive findOneByPQTypeId(int $p_q_type_id) Return the first PUMandateArchive filtered by the p_q_type_id column
  * @method PUMandateArchive findOneByPQMandateId(int $p_q_mandate_id) Return the first PUMandateArchive filtered by the p_q_mandate_id column
@@ -60,6 +63,7 @@ use Politizr\Model\PUMandateArchiveQuery;
  * @method PUMandateArchive findOneByArchivedAt(string $archived_at) Return the first PUMandateArchive filtered by the archived_at column
  *
  * @method array findById(int $id) Return PUMandateArchive objects filtered by the id column
+ * @method array findByUuid(string $uuid) Return PUMandateArchive objects filtered by the uuid column
  * @method array findByPUserId(int $p_user_id) Return PUMandateArchive objects filtered by the p_user_id column
  * @method array findByPQTypeId(int $p_q_type_id) Return PUMandateArchive objects filtered by the p_q_type_id column
  * @method array findByPQMandateId(int $p_q_mandate_id) Return PUMandateArchive objects filtered by the p_q_mandate_id column
@@ -176,7 +180,7 @@ abstract class BasePUMandateArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_user_id`, `p_q_type_id`, `p_q_mandate_id`, `p_q_organization_id`, `localization`, `begin_at`, `end_at`, `created_at`, `updated_at`, `archived_at` FROM `p_u_mandate_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `p_q_type_id`, `p_q_mandate_id`, `p_q_organization_id`, `localization`, `begin_at`, `end_at`, `created_at`, `updated_at`, `archived_at` FROM `p_u_mandate_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -306,6 +310,35 @@ abstract class BasePUMandateArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PUMandateArchivePeer::ID, $id, $comparison);
+    }
+
+    /**
+     * Filter the query on the uuid column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByUuid('fooValue');   // WHERE uuid = 'fooValue'
+     * $query->filterByUuid('%fooValue%'); // WHERE uuid LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $uuid The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUMandateArchiveQuery The current query, for fluid interface
+     */
+    public function filterByUuid($uuid = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($uuid)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $uuid)) {
+                $uuid = str_replace('*', '%', $uuid);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PUMandateArchivePeer::UUID, $uuid, $comparison);
     }
 
     /**

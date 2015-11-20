@@ -234,8 +234,8 @@ $("body").on("click", "[action='mandateDelete']", function(e) {
         'mandateProfileDelete',
         RETURN_HTML
         );
-    var subjectId = $(this).attr('subjectId');
-    // console.log('subjectId = ' + subjectId);
+    var uuid = $(this).attr('uuid');
+    // console.log('uuid = ' + uuid);
 
     var confirmMsg = "Êtes-vous sûr de vouloir supprimer ce mandat?";
     smoke.confirm(confirmMsg, function(e) {
@@ -243,7 +243,7 @@ $("body").on("click", "[action='mandateDelete']", function(e) {
             $.ajax({
                 type: 'POST',
                 url: xhrPath,
-                data: { 'id': subjectId },
+                data: { 'uuid': uuid },
                 dataType: 'json',
                 beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
                 statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },

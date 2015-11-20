@@ -419,6 +419,7 @@ class XhrUser
         $form->bind($request);
         if ($form->isValid()) {
             $puCurrentQo = $form->getData();
+            $puCurrentQo->setPUserId($user->getId());
             $puCurrentQo->save();
         } else {
             $errors = StudioEchoUtils::getAjaxFormErrors($form);
@@ -464,6 +465,7 @@ class XhrUser
         $form->bind($request);
         if ($form->isValid()) {
             $mandate = $form->getData();
+            $mandate->setPUserId($user->getId());
             $mandate->save();
         } else {
             $errors = StudioEchoUtils::getAjaxFormErrors($form);
@@ -472,7 +474,6 @@ class XhrUser
 
         // New empty form
         $mandate = new PUMandate();
-        $mandate->setPUserId($user->getId());
         $mandate->setPQTypeId(QualificationConstants::TYPE_ELECTIV);
 
         $form = $this->formFactory->create(new PUMandateType(QualificationConstants::TYPE_ELECTIV), $mandate);
@@ -510,12 +511,12 @@ class XhrUser
         $this->logger->info('*** mandateProfileCreate');
 
         // Request arguments
-        $id = $request->get('mandate')['id'];
-        $this->logger->info('$id = ' . print_r($id, true));
+        $uuid = $request->get('mandate')['uuid'];
+        $this->logger->info('uuid = ' . print_r($uuid, true));
 
         // Function process
         $user = $this->securityTokenStorage->getToken()->getUser();
-        $mandate = PUMandateQuery::create()->findPk($id);
+        $mandate = PUMandateQuery::create()->filterByUuid($uuid)->findOne();
 
         $form = $this->formFactory->create(new PUMandateType(QualificationConstants::TYPE_ELECTIV), $mandate);
         $form->bind($request);
@@ -551,12 +552,12 @@ class XhrUser
         $this->logger->info('*** mandateProfileDelete');
         
         // Request arguments
-        $id = $request->get('id');
-        $this->logger->info('$id = ' . print_r($id, true));
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
 
         // Function process
         $user = $this->securityTokenStorage->getToken()->getUser();
-        $mandate = PUMandateQuery::create()->findPk($id);
+        $mandate = PUMandateQuery::create()->filterByUuid($uuid)->findOne();
 
         // @todo valid ownership of mandate before deletion
         $this->userManager->deleteMandate($mandate);

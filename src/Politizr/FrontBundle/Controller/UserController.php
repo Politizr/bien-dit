@@ -175,7 +175,6 @@ class UserController extends Controller
 
             if (!$puCurrentQo) {
                 $puCurrentQo = new PUCurrentQO();
-                $puCurrentQo->setPUserId($user->getId());
             }
 
             // Mandates form views
@@ -183,7 +182,6 @@ class UserController extends Controller
 
             // New mandate
             $mandate = new PUMandate();
-            $mandate->setPUserId($user->getId());
             $mandate->setPQTypeId(QualificationConstants::TYPE_ELECTIV);
 
             // Current organization & new mandate forms

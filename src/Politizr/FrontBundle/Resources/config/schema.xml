@@ -686,8 +686,13 @@
         <behavior name="timestampable" />
         <behavior name="query_cache" />
         <behavior name="archivable" />
-        
+        <behavior name="uuid">
+            <parameter name="version" value="4" />
+            <parameter name="permanent" value="false" />
+        </behavior>
+
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="uuid" type="varchar" size="50" />
 
         <column name="p_user_id" type="integer" required="true" />
         <column name="p_q_type_id" type="integer" required="true" />
@@ -711,6 +716,10 @@
         <foreign-key foreignTable="p_q_organization" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="p_q_organization_id" foreign="id" />
         </foreign-key>        
+
+        <unique>
+            <unique-column name="uuid"/>
+        </unique>
     </table>
 
     <table name="p_u_affinity_q_o" isCrossRef="true">

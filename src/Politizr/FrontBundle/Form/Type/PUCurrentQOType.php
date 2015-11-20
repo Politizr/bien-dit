@@ -30,8 +30,6 @@ class PUCurrentQOType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('p_user_id', 'hidden');
-
         // Liste des organisations politiques
         $builder->add('PUCurrentQOPQOrganization', 'model', array(
                 'required' => true,
@@ -41,8 +39,6 @@ class PUCurrentQOType extends AbstractType
                 'property' => 'title',
                 'multiple' => false,
                 'expanded' => false,
-                // 'constraints' => new NotBlank(array('message' => 'Choix obligatoire.')),
-                'attr' => array('action' => 'orga-save')
             ));
 
     }
