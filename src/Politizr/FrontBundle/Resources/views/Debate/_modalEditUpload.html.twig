@@ -13,13 +13,13 @@
                 </div>
             </div>
             <form id="formDocumentPhoto" action="{{ path('XhrGeneric', {'xhrRoute': constant('Politizr\\Constant\\XhrConstants::ROUTE_DOCUMENT_PHOTO_UPLOAD'), 'xhrService': 'document', 'xhrMethod': 'documentPhotoUpload', 'xhrType': constant('Politizr\\Constant\\XhrConstants::RETURN_URL')}) }}" method="post" enctype="multipart/form-data">
-                <input type="hidden" name="id" value="{{ debate.id }}">
+                <input type="hidden" name="uuid" value="{{ debate.uuid }}">
                 <input type="hidden" name="type" value="{{ constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE') }}">
                 <div id="uploadFileContainer">
                     <input type="file" name="fileName" id="fileName">
                     <label action="fileSelect" for="fileName" tabindex="0">parcourir</label>
                     <div class="photoDelete">
-                        <a action="fileDelete" subjectId="{{ debate.id }}"><i class="iconDraft"></i>supprimer</a>
+                        <a action="fileDelete" uuid="{{ debate.uuid }}"><i class="iconDraft"></i>supprimer</a>
                     </div>
                 </div>
             </form>
@@ -36,7 +36,7 @@
                 {{ debate.copyright | purify }}
             </div>
             <div class="photoInfoSave">
-                <a action="debatePhotoInfoSave" subjectId="{{ debate.id }}">
+                <a action="debatePhotoInfoSave" uuid="{{ debate.uuid }}">
                     <i class="iconCheckInSquare"></i> Valider
                 </a>
             </div>

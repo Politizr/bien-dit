@@ -20,14 +20,10 @@ class PDDebatePhotoInfoType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('id', 'hidden', array(
+        $builder->add('uuid', 'hidden', array(
             'required' => true,
         ));
         
-        $builder->add('p_user_id', 'hidden', array(
-            'required' => true,
-        ));
-
         $builder->add('file_name', 'hidden', array(
             'required' => false,
         ));

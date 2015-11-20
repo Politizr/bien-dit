@@ -30,14 +30,14 @@
             <div class="ajaxLoaderSpinner"></div><div class="ajaxLoaderBg"></div><div class="ajaxLoaderBlockClick"></div>
         </div>
         <div class="actionSave">
-            <a action="reactionSave" subjectId="{{ reaction.id }}"><i class="iconDraft"></i>enregistrer</a>
+            <a action="reactionSave" uuid="{{ reaction.uuid }}"><i class="iconDraft"></i>enregistrer</a>
         </div>
 
-        {{ app.user | isAuthorizedToPublishReaction(reaction.id) }}
+        {{ app.user | isAuthorizedToPublishReaction(reaction.uuid) }}
 
         <div class="actionDelete">
             <!-- @todo html/css à prévoir & styler -->
-            <a action="reactionDelete" subjectId="{{ reaction.id }}"><i class="iconCross"></i>supprimer</a>
+            <a action="reactionDelete" uuid="{{ reaction.uuid }}"><i class="iconCross"></i>supprimer</a>
         </div>
     </div>
 {% endblock fixedActions %}

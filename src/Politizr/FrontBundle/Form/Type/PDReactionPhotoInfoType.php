@@ -20,18 +20,10 @@ class PDReactionPhotoInfoType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('id', 'hidden', array(
+        $builder->add('uuid', 'hidden', array(
             'required' => true,
         ));
         
-        $builder->add('p_d_debate_id', 'hidden', array(
-            'required' => true,
-        ));
-        
-        $builder->add('p_user_id', 'hidden', array(
-            'required' => true,
-        ));
-
         $builder->add('file_name', 'hidden', array(
             'required' => false,
         ));

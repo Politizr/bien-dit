@@ -555,10 +555,10 @@ class PolitizrUserExtension extends \Twig_Extension
      * Display the publish link - or not - depending of the reputation score
      *
      * @param PUser $user
-     * @param int $debateId
+     * @param string $uuid
      * @return string
      */
-    public function isAuthorizedToPublishDebate(PUser $user, $debateId)
+    public function isAuthorizedToPublishDebate(PUser $user, $uuid)
     {
         // $this->logger->info('*** isAuthorizedToPublishDebate');
         // $this->logger->info('$user = '.print_r($user, true));
@@ -568,7 +568,7 @@ class PolitizrUserExtension extends \Twig_Extension
             $html = $this->templating->render(
                 'PolitizrFrontBundle:Debate:_publishLink.html.twig',
                 array(
-                    'debateId' => $debateId,
+                    'uuid' => $uuid,
                 )
             );
         } else {
@@ -587,10 +587,10 @@ class PolitizrUserExtension extends \Twig_Extension
      * Display the publish link - or not - depending of the reputation score
      *
      * @param PUser $user
-     * @param int $reactionId
+     * @param string $uuid
      * @return string
      */
-    public function isAuthorizedToPublishReaction(PUser $user, $reactionId)
+    public function isAuthorizedToPublishReaction(PUser $user, $uuid)
     {
         // $this->logger->info('*** isAuthorizedToPublishReaction');
         // $this->logger->info('$user = '.print_r($user, true));
@@ -600,7 +600,7 @@ class PolitizrUserExtension extends \Twig_Extension
             $html = $this->templating->render(
                 'PolitizrFrontBundle:Reaction:_publishLink.html.twig',
                 array(
-                    'reactionId' => $reactionId,
+                    'uuid' => $uuid,
                 )
             );
         } else {
