@@ -325,7 +325,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
         } else {
             // Affichage par paragraphe
             if (0 === $nbComments) {
-                $html = '';
+                $html = '&nbsp;';
             } else {
                 $html = $nbComments;
             }

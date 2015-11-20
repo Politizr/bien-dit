@@ -2,5 +2,5 @@
     <div class="ajaxLoader" style="display: none;">
         <div class="ajaxLoaderSpinner"></div><div class="ajaxLoaderBg"></div><div class="ajaxLoaderBlockClick"></div>
     </div>
-    {{ document | nbComments(paragraphNo) }}<i class="iconComment"></i>
+    {{ document | nbComments(paragraphNo) | purify }}<i class="iconComment"></i>
 </div>
