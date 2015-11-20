@@ -1,12 +1,64 @@
-// Next page
-$("body").on("click", "[action='timelinePaginatedNext']", function(e) {
+// on document ready
+$(function() {
+    timelineList();
+});
+
+// Timeline's next page
+$("body").on("click", "[action='timelinePaginatedNext']", function(e, waypoint) {
+    // console.log('timelinePaginatedNext next');
+    if (waypoint) {
+        waypoint.destroy();
+    }
     timelineList(false, $(this).attr('offset'));
 });
 
-// Next page
-$("body").on("click", "[action='timelineUserPaginatedNext']", function(e) {
+// User's timeline next page
+$("body").on("click", "[action='timelineUserPaginatedNext']", function(e, waypoint) {
+    // console.log('timelinePaginatedNext next');
+    if (waypoint) {
+        waypoint.destroy();
+    }
     timelineUserList($(this).attr('userId'), false, $(this).attr('offset'));
 });
+
+
+/**
+ * Init a waypoint for paginate next
+ */
+function initTimelinePaginateNextWaypoint() {
+    // console.log('initTimelinePaginateNextWaypoint');
+
+    var waypoints = $('#moreResults').waypoint({
+        handler: function(direction) {
+            // console.log('Hit moreResults');
+            // console.log(direction);
+
+            if (direction == 'down') {
+                $("[action='timelinePaginatedNext']").trigger( "click", this );
+            }
+        },
+        offset: 'bottom-in-view'
+    });
+}
+
+/**
+ * Init a waypoint for paginate next
+ */
+function initTimelineUserPaginateNextWaypoint() {
+    // console.log('initTimelineUserPaginateNextWaypoint');
+
+    var waypoints = $('#moreResults').waypoint({
+        handler: function(direction) {
+            // console.log('Hit moreResults');
+            // console.log(direction);
+
+            if (direction == 'down') {
+                $("[action='timelineUserPaginatedNext']").trigger( "click", this );
+            }
+        },
+        offset: 'bottom-in-view'
+    });
+}
 
 /**
  * Personal user's timeline
@@ -49,6 +101,9 @@ function timelineList(init, offset) {
                 } else {
                     $('#listContent').append(data['html']);
                 }
+
+                // Waypoint for infinite scrolling 
+                initTimelinePaginateNextWaypoint();
 
                 // maj DOM onSuccess
                 fullImgLiquid();
@@ -100,6 +155,9 @@ function timelineUserList(userId, init, offset) {
                 } else {
                     $('#listContent').append(data['html']);
                 }
+
+                // Waypoint for infinite scrolling 
+                initTimelineUserPaginateNextWaypoint();
 
                 // maj DOM onSuccess
                 fullImgLiquid();

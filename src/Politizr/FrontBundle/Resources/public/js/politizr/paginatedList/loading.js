@@ -20,7 +20,11 @@ $("body").on("change", ".filter", function(e) {
 });
 
 // Page suivante
-$("body").on("click", "[action='paginateNext']", function(e) {
+$("body").on("click", "[action='paginateNext']", function(e, waypoint) {
+    // console.log('paginate next');
+    if (waypoint) {
+        waypoint.destroy();
+    }
     listing(false, $(this).attr('offset'));
 });
 
@@ -45,6 +49,27 @@ $("body").on("postFollowDebateEvent", function(event, way) {
         }
     }
 });
+
+
+/**
+ * Init a waypoint for paginate next
+ */
+function initPaginateNextWaypoint() {
+    // console.log('initPaginateNextWaypoint');
+
+    var waypoints = $('#moreResults').waypoint({
+        handler: function(direction) {
+            // console.log('Hit moreResults');
+            // console.log(direction);
+    
+            if (direction == 'down') {
+                $("[action='paginateNext']").trigger( "click", this );
+            }
+        },
+        context: '#listContent',
+        offset: 'bottom-in-view'
+    });
+}
 
 /**
  * Init filters and first listing loading
@@ -153,6 +178,9 @@ function listing(init, offset) {
                 } else {
                     $('#listContent').append(data['html']);
                 }
+
+                // Waypoint for infinite scrolling 
+                // initPaginateNextWaypoint();
 
                 // maj DOM onSuccess
                 fullImgLiquid();
