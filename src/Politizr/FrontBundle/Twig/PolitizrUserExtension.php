@@ -524,12 +524,14 @@ class PolitizrUserExtension extends \Twig_Extension
      *
      * @param PUser $user
      * @param FormView $formComment
+     * @param string $uuid Associated document's uuid
      * @return string
      */
-    public function isAuthorizedToNewComment(PUser $user, FormView $formComment)
+    public function isAuthorizedToNewComment(PUser $user, FormView $formComment, $uuid)
     {
         // $this->logger->info('*** isAuthorizedToNewComment');
         // $this->logger->info('$user = '.print_r($user, true));
+        // $this->logger->info('$uuid = '.print_r($uuid, true));
 
         $score = $user->getReputationScore();
         if ($score >= ReputationConstants::ACTION_COMMENT_WRITE) {
@@ -537,6 +539,7 @@ class PolitizrUserExtension extends \Twig_Extension
                 'PolitizrFrontBundle:Comment:_new.html.twig',
                 array(
                     'formComment' => $formComment,
+                    'uuid' => $uuid,
                 )
             );
         } else {

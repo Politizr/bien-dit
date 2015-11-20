@@ -37,14 +37,6 @@ class PDRComment extends BasePDRComment implements PDCommentInterface
     }
 
     /**
-     * @see PDComment::setPDocumentId
-     */
-    public function setPDocumentId($documentId)
-    {
-        parent::setPDReactionId($documentId);
-    }
-    
-    /**
      * @see PDComment::getParentType
      */
     public function getPDocumentType()

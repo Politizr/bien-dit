@@ -21,10 +21,6 @@ class PDDCommentType extends PDCommentType
     {
         parent::buildForm($builder, $options);
 
-        $builder->add('p_d_debate_id', 'hidden', array(
-            'required' => true,
-        ));
-
         $builder->add('type', 'hidden', array(
             'required' => true,
             'data' => ObjectTypeConstants::TYPE_DEBATE_COMMENT,

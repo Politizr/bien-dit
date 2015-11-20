@@ -21,10 +21,6 @@ class PDRCommentType extends PDCommentType
     {
         parent::buildForm($builder, $options);
 
-        $builder->add('p_d_reaction_id', 'hidden', array(
-            'required' => true,
-        ));
-
         $builder->add('type', 'hidden', array(
             'required' => true,
             'data' => ObjectTypeConstants::TYPE_REACTION_COMMENT,

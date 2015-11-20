@@ -724,17 +724,29 @@ class XhrDocument
         // Request arguments
         $type = $request->get('comment')['type'];
         $this->logger->info('$type = ' . print_r($type, true));
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
 
         // Function process
         $user = $this->securityTokenStorage->getToken()->getUser();
         switch ($type) {
             case ObjectTypeConstants::TYPE_DEBATE_COMMENT:
                 $comment = new PDDComment();
+                $document = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
+                $comment->setPDDebateId($document->getId());
+                $comment->setOnline(true);
+                $comment->setPUserId($user->getId());
+
                 $commentNew = new PDDComment();
                 $formType = new PDDCommentType();
                 break;
             case ObjectTypeConstants::TYPE_REACTION_COMMENT:
                 $comment = new PDRComment();
+                $document = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
+                $comment->setOnline(true);
+                $comment->setPUserId($user->getId());
+                $comment->setPDReactionId($document->getId());
+
                 $commentNew = new PDRComment();
                 $formType = new PDRCommentType();
                 break;
@@ -748,10 +760,6 @@ class XhrDocument
         if ($form->isValid()) {
             $this->logger->info('*** isValid');
             $comment = $form->getData();
-
-            if ($comment->getPUserId() != $user->getId()) {
-                throw new InconsistentDataException(sprintf('User id-%s tries to publish a comment for user id-%s.', $user->getId(), $comment->getPUserId()));
-            }
 
             $comment->save();
         } else {
@@ -768,8 +776,6 @@ class XhrDocument
         $comments = $document->getComments(true, $noParagraph);
 
         if ($user) {
-            $commentNew->setPUserId($user->getId());
-            $commentNew->setPDocumentId($document->getId());
             $commentNew->setParagraphNo($noParagraph);
         }
         $form = $this->formFactory->create($formType, $comment);
@@ -840,8 +846,6 @@ class XhrDocument
         $comments = $document->getComments(true, $noParagraph);
 
         if ($this->securityAuthorizationChecker->isGranted('ROLE_PROFILE_COMPLETED')) {
-            $comment->setPUserId($user->getId());
-            $comment->setPDocumentId($document->getId());
             $comment->setParagraphNo($noParagraph);
         }
         $formComment = $this->formFactory->create($formType, $comment);

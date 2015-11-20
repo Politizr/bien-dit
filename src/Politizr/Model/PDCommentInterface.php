@@ -17,13 +17,6 @@ interface PDCommentInterface
     public function getType();
 
     /**
-     * Set the associated document id
-     *
-     * @param $documentId
-     */
-    public function setPDocumentId($documentId);
-    
-    /**
      * Get associated document's type
      *
      * @return string
