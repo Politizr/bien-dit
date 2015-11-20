@@ -22,9 +22,6 @@ class PUserConnectionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         // Attributs cachés obligatoires
-        $builder->add('id', 'hidden');
-        $builder->add('qualified', 'hidden');
-        $builder->add('p_u_status_id', 'hidden');
         $builder->add('form_type_id', 'hidden', array(
             'mapped' => false,
             'data' => 3,

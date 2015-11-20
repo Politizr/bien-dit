@@ -613,7 +613,7 @@ class XhrUser
                 $user->setRealname($user->getFirstname() . ' ' . $user->getName());
                 $user->save();
             } elseif ($formTypeId == 2) {
-                $userManager->updateCanonicalFields($user);
+                $this->userManager->updateCanonicalFields($user);
                 $user->save();
             } elseif ($formTypeId == 3) {
                 $plainPassword = $user->getPlainPassword();
