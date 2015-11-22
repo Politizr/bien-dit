@@ -1,9 +1,6 @@
 @import "../_global/colors";
 
-#dashboard {
-    font-family: 'nerissemibold';	
-}
-
+#dashboard { font-family: 'nerissemibold';}
 #dashboard h1 {
     font-family: 'nerislight';
     font-weight: normal;
@@ -16,6 +13,7 @@
 .dbMap {
 	float: left;
 	width: 100%;
+	margin: 0 0 20px 0;
 }
 
 .dbMapHeader {
@@ -27,10 +25,15 @@
 
 .dbMapHeaderLeft {
 	float: left;
-	width: 80%;
+	width: 75%;
 	line-height: 100%;
 }
-
+.dbMapHeaderLeft i {	
+	float: left;
+	margin-right: 4px;
+	font-size: 6px;
+	color: $highlight;
+}
 .dbMapHeaderLeft span {
 	float: left;
 	margin-right: 5px;
@@ -39,27 +42,20 @@
 }
 .dbMapHeaderLeft span:hover {color: $darkGrey;}
 
-.dbMapHeaderLeft i {	
-	float: left;
-	margin-right: 4px;
-	font-size: 6px;
-	color: $highlight;
-}
 
 .dbMapHeaderRight {
 	float: right;
-	width: 20%;
+	width: 25%;
 	text-align: right;
 }
-
+.dbMapHeaderRight i {padding-right: 1px;}
 .dbMapHeaderRight span {
-	margin-left: 20px;
+	margin-left: 10px;
 	cursor: pointer;
 }
 .dbMapHeaderRight span:hover {color: $highlight;}
 
 .dbMapBox {
-	margin: 0 0 40px 0;
 	background: $formGrey;
 	width: 100%;
 	float: left;
@@ -71,7 +67,6 @@
 	top: 0;
 	left: 0;
 	border: none;
-	
 }
 
 .dbMapFilters {
@@ -82,16 +77,93 @@
 	width: 290px;
 	position: relative;
 	z-index: 1;
-	min-height: 590px;
+	height: 590px;
+	overflow: auto;
 }
 
-.dbMapFilters .listCriteria.listCriteriaTabs {
+.dbMapFilters .listCriteria {
 	width: 100%;
-	margin: 0 0 20px 0;
+	margin-top: 0;
+	margin-bottom: 20px;
 }
 
-.dbMapFilters .listCriteria.listCriteriaTabs label { margin: 0 24px 0 0;}
-.dbMapFilters .listCriteria.listCriteriaTabs label:last-child {margin-right: 0;}
+.dbMapFilters .listCriteria.listCriteriaTabs label:hover, .dbMapFilters .listCriteria.listCriteriaTabs input:checked+label { margin-top: -17px;}
+
+.dbMapFilters .listCriteria label { margin: 0 24px 0 0;}
+.dbMapFilters .listCriteria label:last-child {margin-right: 0;}
+
+.linkOnMap {
+	position: absolute;
+	bottom: 20px;
+	left: 20px;
+	z-index: 1;
+	text-transform: uppercase;
+	font-size: 10px;
+}
+.linkOnMap i { padding-right: 2px; }
+.linkOnMap:hover { color: $highlight; cursor: pointer; }
+
+// menu on map (dom/tom)
+
+.menuOnMap {
+	display: none;
+	position: absolute;
+	left: 20px;
+	bottom:45px;
+	z-index: 1;
+	padding: 5px 10px;
+	background: $darkGrey;
+	color: #fff;
+	font-size: 12px;
+    font-family: 'nerislight';
+    -moz-box-shadow: 0px 0px 10px 0px $darkGrey;
+	-webkit-box-shadow: 0px 0px 10px 0px $darkGrey;
+	-o-box-shadow: 0px 0px 10px 0px $darkGrey;
+	box-shadow: 0px 0px 10px 0px $darkGrey;
+}
+
+.menuOnMapGroup {
+	padding: 5px 0;
+	float: left;
+	clear: both;
+}
+
+.menuOnMapItem {
+	margin-bottom: 3px;
+	cursor: pointer;
+	float: left;
+	clear: both;
+}
+.menuOnMapItem i {font-size: 11px; margin-right: 2px;}
+.menuOnMapItem:hover { color: $highlight;}
+
+.menuOnMap i.iconArrowDown {
+	position: absolute;
+	bottom: -8px;
+	left: 5px;
+	color: $darkGrey;
+}
+
+// end menu on map
+
+// map podium
+
+.podiumRank {
+	float: left;
+	width: 20px;
+	margin-right: 10px;
+	text-align: center;
+	font-size: 30px; 
+	color: $highlight;
+    font-family: 'nerislight';
+    line-height: 100%;
+} 
+
+.podiumItem {
+	float: left;
+	width: 100%;
+	margin: 10px 0;
+}
 
 .debatePodium {
 	float: left;
@@ -101,22 +173,141 @@
 	padding-bottom: 30px;
 }
 
-.podiumItem {
-	float: left;
-	width: 100%;
-	margin: 10px 0;
-	background: aqua;
+.debatePodium .podiumItem a {
+	height: 2.4em;
+	overflow: hidden;
+	float: right;
+	width: calc(100% - 30px);
+	color: $darkGrey;
+	font-size: 18px;
+	line-height: 120%;
+}
+.debatePodium .podiumItem a:hover {color: $highlight;}
+
+.profilePodium .avatar40 { float: left;}
+
+.profilePodium .profileSummary {
+	float: right;
+	width: calc(100% - 80px);
 }
 
-.podiumRank {
+.profilePodium .profileName {
+	margin: 0;
+	font-size: 16px;
+}
+.profilePodium .profileName a {
+	color: $darkGrey;
+	line-height: 100%;
+	height: 1.1em;
+	overflow: hidden;
+}
+.profilePodium .profileName a:hover {color: $highlight;}
+
+.profilePodium .organization {
+	vertical-align: top;
+	margin-top: 2px;
+}
+
+.profilePodium .profileSubtitle {
+	height: 2.6em;
+	overflow: hidden;
+	margin-top: 3px;
+	line-height: 140%;
+}
+
+.podiumShowMore {
 	float: left;
-	width: 30px;
-	margin-right: 10px;
+	width: 100%;
 	text-align: center;
-	font-size: 30px; 
-	color: $highlight;
-    font-family: 'nerislight';
-    line-height: 100%;
+	margin-top: 15px;
+}
+
+.podiumShowMore a {
+	display: inline-block;
+	cursor: pointer;
+	padding: 5px 20px;
+	font-size: 10px; 
+	text-transform: uppercase;
+	background-color: $semiGrey;
+	color: #fff;
+}
+.podiumShowMore a:hover {background-color: $darkGrey;}
+// end map podium
+
+// popular tags
+
+.dbPopularTagList .tag {
+	font-size: 12px;
+	font-family: 'nerisblack';
+	float: left;
+	margin: 0 10px 10px 0;
+	padding: 10px;
+	border: solid 1px $AltHighlight;
+	color: $highlight;	
+	background-color: #fff;
+}
+.dbPopularTagList .tag:hover {color: $darkGrey; border-color: $semiDarkGrey;}
+
+// popular debates
+
+#dashboard .bdBox.dbPopularDebates h1 {	padding-top: 30px;}
+.bdBox.dbPopularDebates .listCriteria.listCriteriaTabs {margin-bottom: 10px;}
+ 
+.dbPopularDebates .debateList a {
+	color: $darkGrey;
+	font-size: 18px;
+	line-height: 120%;
+	display: inline-block;
+	clear: both;
+	margin-bottom: 20px;
+}
+.dbPopularDebates .debateList a:hover { color: $highlight;}
+
+// popular profiles
+
+#dashboard .bdBox.dbPopularProfiles h1 { padding-top: 0;}
+
+.profileInList {
+	float: left;
+	width: 100%;
+	margin-bottom: 20px;
+}
+.dbItemHalfWidth .profileInList:last-child { margin-bottom: 0;}
+
+.profileInList .avatar40 { float: left;}
+
+.profileInList .profileSummary {
+	float: right;
+	width: calc(100% - 50px);
+}
+
+.dbItemHalfWidth .profileInList .profileName {
+	margin: 0;
+	font-size: 16px;
+}
+.profileInList .profileName a {
+	color: $darkGrey;
+	line-height: 100%;
+	height: 1.1em;
+	overflow: hidden;
+}
+.profileInList .profileName a:hover {color: $highlight;}
+.dbItemHalfWidth .profileInList .organization {margin-top: 5px;}
+
+.dbItemHalfWidth .profileInList .profileSubtitle {
+	height: 2.6em;
+	overflow: hidden;
+	margin-top: 3px;
+	line-height: 140%;
+}
+
+// a la une en ***
+
+.dbCloseToYou {
+	background-color: $formGrey;
+	clear: both;
+	float: left;
+	width: 100%;
 }
 
 .dbSuggestions {
@@ -125,6 +316,9 @@
 	float: left;
 	width: 100%;
 }
+
+.dbSuggestions .dbItemHalfWidth .postSummaryAuthor .organization { color: $lightGrey !important;}
+.dbSuggestions .dbItemHalfWidth .tag { color: $lightGrey; }
 
 a.dbItemShow {
 	float: left;
@@ -136,6 +330,55 @@ a.dbItemShow {
 }
 a.dbItemShow i {	position: absolute;	left: -2px; }
 a.dbItemShow:hover {color: $darkGrey;}
+
+// mini profiles 
+
+.miniProfiles {
+	float: left;
+	width: 100%;
+	margin-bottom: 40px;
+}
+
+.miniProfiles .profileInList {
+	background-color: $altSemiGrey;
+	width: calc(100% - 40px);
+	padding: 20px;
+	margin-bottom: 0;
+}
+.dbCloseToYou .miniProfiles .profileInList { background-color: $altSemiGrey;}
+
+#dashboard .dbItemHalfWidth .miniProfiles a.dbItemShow {
+	margin-left: 20px;
+	margin-top: 15px;
+}
+
+#dashboard .dbItemHalfWidth .miniProfiles .subscribe {
+	margin-top: -10px;
+	margin-right: 20px;
+}
+
+.dbItemHalfWidth .miniProfiles .profileInList .profileSubtitle {
+	height: auto;
+	overflow: auto;
+}
+
+// commun structure
+
+.bdBox {
+	margin: 0 0 20px 0;
+	float: left;
+	width: 100%;
+}
+
+.bdBox .listCriteria {
+	width: calc(100% - 80px);
+	margin: 20px 40px 30px 40px;
+}
+
+.dbPopularTagList {
+	width: calc(100% - 80px);
+	margin: 0 40px;	
+}
 
 #dashboard .dbItemHalfWidth .subscribe {
 	position: static;
@@ -156,13 +399,6 @@ a.dbItemShow:hover {color: $darkGrey;}
 	box-shadow: none;
 }
 
-.dbCloseToYou {
-	background-color: $formGrey;
-	clear: both;
-	float: left;
-	width: 100%;
-}
-
 .dbItemFullWidth {
 	width: 700px;
 	display: inline-block;
@@ -179,8 +415,8 @@ a.dbItemShow:hover {color: $darkGrey;}
 	position: relative;	
 }
 
-.dbSuggestions .dbItemHalfWidth .tag { color: $lightGrey; }
-.dbSuggestions .dbItemHalfWidth .tag:hover {color: $darkGrey;}
+.dbItemHalfWidth .tag { color: #fff; }
+.dbItemHalfWidth .tag:hover {background-color: $darkGrey;}
 
 .dbItemHalfWidth .postSummaryTagList {
 	max-height: 14px;
@@ -205,10 +441,10 @@ a.dbItemShow:hover {color: $darkGrey;}
 .dbItemHalfWidth .postSummaryTitle a { color: $darkGrey;}
 .dbItemHalfWidth .postSummaryTitle a:hover { color: $highlight;}
 
-
-#dbSuggestions .dbItemHalfWidth .postSummaryAuthor .organization {
+.dbItemHalfWidth .postSummaryAuthor .organization {
 	background-color: $highlight;
-	color: $lightGrey !important;
+	color: #fff !important;
+	margin-top: 3px;
 }
 .dbItemHalfWidth .postSummaryAuthor a:hover { color: $darkGrey; }
 .dbItemHalfWidth .postSummaryAuthor .organization:hover { background-color: $darkGrey !important; }
@@ -235,6 +471,15 @@ a.dbItemShow:hover {color: $darkGrey;}
 	height: calc(100% - 40px);
 }
 
-.dbItemHalfWidth .profileSummaryFooter {
-	bottom: 20px;
+.dbItemHalfWidth .profileSummaryFooter { bottom: 20px;}
+
+.dbItemHalfWidth .profileName {
+	float: left;
+	font-size: 18px;
+	position: static;
+	margin:10px 0 0 0;
 }
+.dbItemHalfWidth .profileName a { color: $darkGrey;}
+.dbItemHalfWidth .organization {margin-top: 7px;}
+
+.dbItemHalfWidth .profileSubtitle { margin: 10px 0 0 0; }
