@@ -14,7 +14,6 @@ use Politizr\Exception\InconsistentDataException;
 
 use Politizr\Constant\QualificationConstants;
 use Politizr\Constant\ReputationConstants;
-use Politizr\Constant\TagConstants;
 
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PDDebateQuery;
@@ -61,13 +60,10 @@ class UserController extends Controller
             return $this->redirect($this->generateUrl('Login'));
         }
 
-        return $this->redirect($this->generateUrl(sprintf('Timeline%s', $suffix)));
-        
-        $regionTags = PTagQuery::create()->filterById(TagConstants::getGeoRegionIds())->find();
+        // return $this->redirect($this->generateUrl(sprintf('Timeline%s', $suffix)));
 
         return $this->render('PolitizrFrontBundle:Dashboard:homepage.html.twig', array(
             'profileSuffix' => $this->get('politizr.tools.global')->computeProfileSuffix(),
-            'regionTags' => $regionTags,
         ));
     }
 

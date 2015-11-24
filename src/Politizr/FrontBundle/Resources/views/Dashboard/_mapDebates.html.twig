@@ -1,0 +1,10 @@
+{% if debates | length > 0 %}
+    {% for debate in debates %}
+        {% include 'PolitizrFrontBundle:Debate:_dashboardMapRow.html.twig' with { 'debate': debate } %}
+    {% endfor %}
+    <div class="podiumShowMore" >
+        <a action="modalTagged" model="PTag" uuid="{{ geoTagUuid }}">suite</a>
+    </div>
+{% else %}
+    {% include 'PolitizrFrontBundle:PaginatedList:_noResult.html.twig' with {'type': constant('Politizr\\Constant\\ListingConstants::DASHBOARD_TYPE_MAP'), 'context': constant('Politizr\\Constant\\ListingConstants::DASHBOARD_DEBATES')} only %}
+{% endif %}

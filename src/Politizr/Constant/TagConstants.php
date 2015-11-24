@@ -18,6 +18,12 @@ class TagConstants
     // ************************************************************************************ //
     //                                GEO OBJECT IDS
     // ************************************************************************************ //
+    const TAG_GEO_WORLD_ID = 1;
+    
+    const TAG_GEO_EUROPE_ID = 3;
+
+    const TAG_GEO_FRANCE_ID = 8;
+
     const TAG_GEO_REGION_ID_1 = 9;
     const TAG_GEO_REGION_ID_2 = 10;
     const TAG_GEO_REGION_ID_3 = 11;

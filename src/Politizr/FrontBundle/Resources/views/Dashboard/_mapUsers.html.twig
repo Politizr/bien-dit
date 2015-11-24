@@ -1,0 +1,10 @@
+{% if users | length > 0 %}
+    {% for user in users %}
+        {% include 'PolitizrFrontBundle:User:_dashboardMapRow.html.twig' with { 'user': user } %}
+    {% endfor %}
+    <div class="podiumShowMore" >
+        <a action="modalTagged" model="PTag" uuid="{{ geoTagUuid }}">suite</a>
+    </div>
+{% else %}
+    {% include 'PolitizrFrontBundle:PaginatedList:_noResult.html.twig' with {'type': constant('Politizr\\Constant\\ListingConstants::DASHBOARD_TYPE_MAP'), 'context': constant('Politizr\\Constant\\ListingConstants::DASHBOARD_USERS')} only %}
+{% endif %}
