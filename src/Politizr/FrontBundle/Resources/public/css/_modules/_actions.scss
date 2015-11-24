@@ -20,17 +20,15 @@
 	font-family: nerissemibold;
 	position: relative;
 	cursor: pointer;
-	padding-left: 15px;
 }
 #fixedActions .actionFollow, #fixedActions .actionUnfollow {	padding-left: 0;}
 
 .actionFollow:hover, .actionUnfollow:hover {color: $darkGrey;}
 .actionFollow i, .actionUnfollow i {position: absolute; left: 0; font-size: 9px;}
 
-
 #fixedActions .subscribe a, #fixedActions .editProfile a {
 	background-color: $highlight;
-	color: #fff;	
+	color: #fff;
 }
 
 #fixedActions .subscribe a:hover, #fixedActions .editProfile a:hover {

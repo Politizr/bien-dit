@@ -27,8 +27,16 @@ bazinga_faker:
     entities:
         Politizr\Model\PUser:
             custom_formatters:
+<<<<<<< HEAD
                 BackFileName:           { method: image, parameters: [ '/var/www/politizr.alpha.letitbug.com/web/uploads/users', '1280', '600', 'city', false ] }
                 FileName:               { method: image, parameters: [ '/var/www/politizr.alpha.letitbug.com/web/uploads/users', '150', '150', 'people', false ] }
         Politizr\Model\PDDebate:
             custom_formatters:
                 FileName:               { method: image, parameters: [ '/var/www/politizr.alpha.letitbug.com/web/uploads/documents', '640', '480', 'city', false ] }
+=======
+                BackFileName:           { method: image, parameters: [ '/var/www/politizr.proto.letitbug.com/web/uploads/users', '1280', '600', 'city', false ] }
+                FileName:               { method: image, parameters: [ '/var/www/politizr.proto.letitbug.com/web/uploads/users', '150', '150', 'people', false ] }
+        Politizr\Model\PDDebate:
+            custom_formatters:
+                FileName:               { method: image, parameters: [ '/var/www/politizr.proto.letitbug.com/web/uploads/documents', '640', '480', 'city', false ] }
+>>>>>>> origin/prototype
