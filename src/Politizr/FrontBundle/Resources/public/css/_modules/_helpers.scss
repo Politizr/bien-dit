@@ -1,25 +1,23 @@
 @import "../_global/colors";
 
-.iconQuestion {
+.helperMark {
 	color: $grey;
 	cursor: pointer;
+	font-family: 'nerisblack';
+	font-size: 10px;
+	text-transform: uppercase;
 }
-.iconQuestion:hover {color: $alert;}
+.helperMark:hover {color: $alert;}
 
-.fieldsetHeader .iconQuestion {
+.fieldsetHeader .helperMark {
 	position: absolute;
 	cursor: pointer;
 	right: 0;
 	top: 60px;	
 }
 
-#modalUpload .fieldsetHeader .iconQuestion {top: 20px;}
-
-#postText .paragraph i.iconQuestion {
-	position: absolute;
-	left: 40px;
-	line-height: 200%;
-}
+#modalUpload .fieldsetHeader .helperMark {top: 20px;}
+.fieldsetHeader .helperMark i {margin-left: 2px; font-size: 12px;}
 
 // helpers sliders
 
