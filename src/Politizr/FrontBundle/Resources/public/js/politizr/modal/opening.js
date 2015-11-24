@@ -117,6 +117,7 @@ function modalLoading() {
     $('body').addClass('noscroll');
     $('html, body').scrollTop( 0 );
     $(".modalRightCol").addClass('activeMobileModal');
+    Waypoint.destroyAll();
 };
 
 /**

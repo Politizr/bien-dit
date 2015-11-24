@@ -76,7 +76,7 @@ function publicationList(init, offset) {
             $('#ajaxGlobalLoader').hide();
 
             // Waypoint for infinite scrolling
-            // initMyPublicationsPaginateNextWaypoint();
+            initMyPublicationsPaginateNextWaypoint();
 
             // maj DOM onSuccess
             fullImgLiquid();

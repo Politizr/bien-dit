@@ -1,6 +1,7 @@
 // on document ready
 $(function() {
     fullImgLiquid();
+    Waypoint.destroyAll();
     $('#ajaxGlobalLoader').hide();
 });
 

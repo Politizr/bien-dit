@@ -1,22 +1,17 @@
-// on document ready
-$(function() {
-    timelineList();
-});
-
-// Timeline's next page
-$("body").on("click", "[action='timelinePaginatedNext']", function(e, waypoint) {
+// User's timeline next page
+$("body").on("click", "[action='timelineUserPaginatedNext']", function(e, waypoint) {
     // console.log('timelinePaginatedNext next');
     if (waypoint) {
         waypoint.destroy();
     }
-    timelineList(false, $(this).attr('offset'));
+    timelineUserList($(this).attr('userId'), false, $(this).attr('offset'));
 });
 
 /**
  * Init a waypoint for paginate next
  */
-function initTimelinePaginateNextWaypoint() {
-    // console.log('initTimelinePaginateNextWaypoint');
+function initTimelineUserPaginateNextWaypoint() {
+    // console.log('initTimelineUserPaginateNextWaypoint');
 
     var waypoints = $('#moreResults').waypoint({
         handler: function(direction) {
@@ -24,7 +19,7 @@ function initTimelinePaginateNextWaypoint() {
             // console.log(direction);
 
             if (direction == 'down') {
-                $("[action='timelinePaginatedNext']").trigger( "click", this );
+                $("[action='timelineUserPaginatedNext']").trigger( "click", this );
             }
         },
         offset: 'bottom-in-view'
@@ -32,13 +27,15 @@ function initTimelinePaginateNextWaypoint() {
 }
 
 /**
- * Personal user's timeline
+ * User's timeline
  *
+ * @param integer userId
  * @param boolean init
  * @param integer offset
  */
-function timelineList(init, offset) {
-    // console.log('*** timelineList');
+function timelineUserList(userId, init, offset) {
+    // console.log('*** timelineUserList');
+    // console.log(userId);
     // console.log(init);
     // console.log(offset);
 
@@ -48,15 +45,14 @@ function timelineList(init, offset) {
     var xhrPath = getXhrPath(
         ROUTE_TIMELINE_MINE,
         'user',
-        'timelinePaginated',
+        'timelineUserPaginated',
         RETURN_HTML
         );
-    // console.log('xhrPath = '+ xhrPath);
-    
+
     $.ajax({
         type: 'POST',
         url: xhrPath,
-        data: { 'offset': offset },
+        data: { 'userId': userId, 'offset': offset },
         dataType: 'json',
         beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
         statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
@@ -74,7 +70,7 @@ function timelineList(init, offset) {
                 }
 
                 // Waypoint for infinite scrolling 
-                initTimelinePaginateNextWaypoint();
+                initTimelineUserPaginateNextWaypoint();
 
                 // maj DOM onSuccess
                 fullImgLiquid();
