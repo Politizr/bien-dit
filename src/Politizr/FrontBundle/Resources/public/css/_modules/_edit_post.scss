@@ -298,20 +298,7 @@ textarea.postSummaryTitle input:-moz-placeholder { color:$highlight; }
 	position: relative;
 }
 
-.toggleIllustrationShadow {
-	float: right;
-	font-size: 12px;
-	text-transform: none;
-    font-family: 'nerissemibold';
-    cursor: pointer;
-    position: relative;
-    padding-left: 15px;
-    cursor: pointer;
-}
-.toggleIllustrationShadow i { position: absolute; font-size: 10px; top: 0; left: 0;}
-.toggleIllustrationShadow:hover {color: $semiGrey;}
-
-#uploadFileContainer { position: relative; margin-bottom: 40px;}
+#uploadFileContainer { position: relative; margin-bottom: 10px;}
 
 #formDocumentPhoto, #formUserBackPhoto {display: inline-block; width: 100%;}
 #formDocumentPhoto input[type="file"], #formUserBackPhoto input[type="file"] { display: none;}
@@ -398,3 +385,10 @@ a.cancelModalUploadBox:hover { color: $darkGrey;}
     text-transform: none;
 } 
 
+.authorizedFiles {
+	text-transform: none;
+	margin-bottom: 40px;
+    font-family: 'nerissemibold';
+	font-size: 12px;
+	color: $semiDarkGrey;
+}
