@@ -3,13 +3,19 @@ $(function() {
     topListing();
 });
 
+// Gestion des filtres
+$("body").on("change", ".filter", function(e) {
+    console.log('*** change filter');
+
+    e.preventDefault();
+    topListing($('#listFilter').attr('uuid'));
+});
 
 $("body").on("click", "[action='mapZoom']", function() {
     console.log('*** mapZoom');
 
     topListing($(this).attr('uuid'));
 });
-
 
 /**
  * Loading of "top" listing.
@@ -24,7 +30,7 @@ function topListing(geoTagUuid) {
     
     // Récupération du form des filtres
     var filters = $('#listFilter').serializeArray();
-    // console.dir(filters);
+    console.dir(filters);
 
     // Push additional arguments
     var datas = [];

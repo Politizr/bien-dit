@@ -83,18 +83,41 @@ class XhrDashboard
         // Request arguments
         $queryParams = $this->getFiltersFromRequest($request);
         $geoTagUuid = $queryParams[0];
-        $filterDate = $queryParams[1];
+        $filters = $queryParams[1];
 
-        // Function process
+        // Retrieve subject
+        if (!$geoTagUuid) {
+            $tag = PTagQuery::create()->findPK(TagConstants::TAG_GEO_FRANCE_ID);
+            $geoTagUuid = $tag->getUuid();
+        } else {
+            $tag = PTagQuery::create()->filterByUuid($geoTagUuid)->findOne();
+        }
+
+        // Compute relative geo tag ids
+        $tagIds = $this->tagService->computeGeotagRelativeIds($tag->getId());
+
+        // 3 top debates
         $debates = PDDebateQuery::create()
                     ->distinct()
                     ->online()
+                    ->usePDDTaggedTQuery()
+                        ->filterByPTagId($tagIds)
+                    ->endUse()
+                    ->filterByKeywords($filters)
+                    ->orderWithKeyword('bestNote')
                     ->limit(ListingConstants::DASHBOARD_MAP_LIMIT)
                     ->find();
 
+
+        // 3 top users
         $users = PUserQuery::create()
                     ->distinct()
                     ->online()
+                    ->usePuTaggedTPUserQuery()
+                        ->filterByPTagId($tagIds)
+                    ->endUse()
+                    ->filterByKeywords($filters)
+                    ->orderWithKeyword('bestNote')
                     ->limit(ListingConstants::DASHBOARD_MAP_LIMIT)
                     ->find();
 
@@ -102,43 +125,24 @@ class XhrDashboard
         $worldTag = PTagQuery::create()->findPk(TagConstants::TAG_GEO_WORLD_ID);
         $europeTag = PTagQuery::create()->findPk(TagConstants::TAG_GEO_EUROPE_ID);
         
-        $regionACAL = PTagQuery::create()->findPk(TagConstants::TAG_GEO_REGION_ID_1);
-        $regionALPC = PTagQuery::create()->findPk(TagConstants::TAG_GEO_REGION_ID_2);
-        $regionARA = PTagQuery::create()->findPk(TagConstants::TAG_GEO_REGION_ID_3);
-        $regionBFC = PTagQuery::create()->findPk(TagConstants::TAG_GEO_REGION_ID_4);
-        $regionB = PTagQuery::create()->findPk(TagConstants::TAG_GEO_REGION_ID_5);
-        $regionCVL = PTagQuery::create()->findPk(TagConstants::TAG_GEO_REGION_ID_6);
-        $regionC = PTagQuery::create()->findPk(TagConstants::TAG_GEO_REGION_ID_7);
-        $regionIDF = PTagQuery::create()->findPk(TagConstants::TAG_GEO_REGION_ID_8);
-        $regionLRMP = PTagQuery::create()->findPk(TagConstants::TAG_GEO_REGION_ID_9);
-        $regionNPDCP = PTagQuery::create()->findPk(TagConstants::TAG_GEO_REGION_ID_10);
-        $regionN = PTagQuery::create()->findPk(TagConstants::TAG_GEO_REGION_ID_11);
-        $regionPDLL = PTagQuery::create()->findPk(TagConstants::TAG_GEO_REGION_ID_12);
-        $regionPACA = PTagQuery::create()->findPk(TagConstants::TAG_GEO_REGION_ID_13);
-
+        if ($tag->getId() == TagConstants::TAG_GEO_FRANCE_ID) {
+            $mapTags = $this->tagService->getRegionUuids();
+        } elseif (in_array($tag->getId(), TagConstants::getGeoRegionIds())) {
+            $mapTags = $this->tagService->getDepartmentsUuids($tag->getId());
+        } else {
+            $mapTags = [];
+        }
 
         $html = $this->templating->render(
             'PolitizrFrontBundle:Dashboard:_map.html.twig',
             array(
-                'geoTagUuid' => $geoTagUuid,
-                'filterDate' => $filterDate,
+                'tag' => $tag,
+                'filters' => $filters,
                 'debates' => $debates,
                 'users' => $users,
                 'worldTag' => $worldTag,
                 'europeTag' => $europeTag,
-                'regionACAL' => $regionACAL,
-                'regionALPC' => $regionALPC,
-                'regionARA' => $regionARA,
-                'regionBFC' => $regionBFC,
-                'regionB' => $regionB,
-                'regionCVL' => $regionCVL,
-                'regionC' => $regionC,
-                'regionIDF' => $regionIDF,
-                'regionLRMP' => $regionLRMP,
-                'regionNPDCP' => $regionNPDCP,
-                'regionN' => $regionN,
-                'regionPDLL' => $regionPDLL,
-                'regionPACA' => $regionPACA,
+                'mapTags' => $mapTags,
             )
         );
 

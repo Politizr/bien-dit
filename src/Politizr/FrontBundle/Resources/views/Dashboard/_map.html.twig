@@ -1,7 +1,7 @@
 <h1>À la une</h1>
 <div class="dbMapHeader">
     <div class="dbMapHeaderLeft">
-        {{ geoTagBreadcrumb(geoTagUuid) }}
+        {{ geoTagBreadcrumb(tag.uuid) }}
     </div>
     <div class="dbMapHeaderRight">
         <span class="dbWorld" action="modalTagged" model="PTag" uuid="{{ worldTag.uuid }}"><i class="iconGoTo"></i>monde</span>
@@ -17,18 +17,18 @@
             <div class="ajaxLoaderSpinner"></div><div class="ajaxLoaderBg"></div><div class="ajaxLoaderBlockClick"></div>
         </div> 
         <div class="listCriteria listCriteriaTabs">
-            <form id="listFilter">
-                {% include 'PolitizrFrontBundle:Dashboard:_formFilters.html.twig' with { 'filterDate': filterDate } %}
+            <form id="listFilter" uuid="{{ tag.uuid }}">
+                {% include 'PolitizrFrontBundle:Dashboard:_formFilters.html.twig' with { 'filters': filters } %}
             </form>
         </div>
         <div class="debatePodium">
-            {% include 'PolitizrFrontBundle:Dashboard:_mapDebates.html.twig' with { 'debates': debates, 'geoTagUuid': geoTagUuid } %}
+            {% include 'PolitizrFrontBundle:Dashboard:_mapDebates.html.twig' with { 'debates': debates, 'geoTagUuid': tag.uuid } %}
         </div>
         <div class="profilePodium">
-            {% include 'PolitizrFrontBundle:Dashboard:_mapUsers.html.twig' with { 'users': users, 'geoTagUuid': geoTagUuid } %}
+            {% include 'PolitizrFrontBundle:Dashboard:_mapUsers.html.twig' with { 'users': users, 'geoTagUuid': tag.uuid } %}
         </div>
-    </div>  
-    
+    </div>
+
     <div class="menuOnMap" style="display: none;">
         <div class="menuOnMapGroup">
             <div class="menuOnMapItem" action="modalOpen"><i class="iconGoTo"></i>Guadeloupe</div>
@@ -51,159 +51,68 @@
     </div>
     <div class="linkOnMap" action="toggleDomTom">France d'Outre-Mer</div>
 
-    <!-- FRANCE -->
-    {#<iframe src="{{ asset('bundles/politizrfront/images/maps/france.svg') }}" width="700" height="670"></iframe>#}
-    <div class="svg" style="width: 700px; height: 670px;">
-        {% include 'PolitizrFrontBundle:Dashboard\\mapZones:_mapFrance.svg.twig' %}
-    </div>
-    
-    <!-- REGIONS --> 
-    
-    <!-- <iframe src="images/maps/alsaceChampagneArdenneLorraine.svg" width="700" height="670"></iframe> -->
-        <!-- DEPARTEMENTS -->
-        <!-- <iframe src="images/maps/alsaceChampagneArdenneLorraine/vosges.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/alsaceChampagneArdenneLorraine/moselle.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/alsaceChampagneArdenneLorraine/meuse.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/alsaceChampagneArdenneLorraine/hautRhin.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/alsaceChampagneArdenneLorraine/meurtheEtMoselle.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/alsaceChampagneArdenneLorraine/basRhin.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/alsaceChampagneArdenneLorraine/hauteMarne.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/alsaceChampagneArdenneLorraine/aube.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/alsaceChampagneArdenneLorraine/ardennes.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/alsaceChampagneArdenneLorraine/marne.svg" width="700" height="670"></iframe> -->
-        
-        
-    <!-- <iframe src="images/maps/aquitaineLimousinPoitouCharentes.svg" width="700" height="670"></iframe> -->
-        <!-- DEPARTEMENTS -->
-        <!-- <iframe src="images/maps/aquitaineLimousinPoitouCharentes/deuxSevres.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/aquitaineLimousinPoitouCharentes/charente.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/aquitaineLimousinPoitouCharentes/vienne.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/aquitaineLimousinPoitouCharentes/hauteVienne.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/aquitaineLimousinPoitouCharentes/creuse.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/aquitaineLimousinPoitouCharentes/correze.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/aquitaineLimousinPoitouCharentes/charenteMaritime.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/aquitaineLimousinPoitouCharentes/lotEtGaronne.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/aquitaineLimousinPoitouCharentes/dordogne.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/aquitaineLimousinPoitouCharentes/gironde.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/aquitaineLimousinPoitouCharentes/landes.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/aquitaineLimousinPoitouCharentes/pyreneesAtlantiques.svg" width="700" height="670"></iframe> -->
-        
-    
-    <!-- <iframe src="images/maps/auvergneRhoneAlpes.svg" width="700" height="670"></iframe> -->
-        <!-- DEPARTEMENTS -->
-        <!-- <iframe src="images/maps/auvergneRhoneAlpes/drome.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/auvergneRhoneAlpes/ardeche.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/auvergneRhoneAlpes/savoie.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/auvergneRhoneAlpes/rhone.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/auvergneRhoneAlpes/loire.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/auvergneRhoneAlpes/hauteSavoie.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/auvergneRhoneAlpes/isere.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/auvergneRhoneAlpes/ain.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/auvergneRhoneAlpes/puyDeDome.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/auvergneRhoneAlpes/hauteLoire.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/auvergneRhoneAlpes/cantal.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/auvergneRhoneAlpes/allier.svg" width="700" height="670"></iframe> -->
-        
-        
-    <!-- <iframe src="images/maps/bourgogneFrancheComte.svg" width="700" height="670"></iframe> -->
-        <!-- DEPARTEMENTS -->
-        <!-- <iframe src="images/maps/bourgogneFrancheComte/territoireDeBelfort.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/bourgogneFrancheComte/doubs.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/bourgogneFrancheComte/jura.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/bourgogneFrancheComte/saoneEtLoire.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/bourgogneFrancheComte/nievre.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/bourgogneFrancheComte/coteDOr.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/bourgogneFrancheComte/hauteSaone.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/bourgogneFrancheComte/yonne.svg" width="700" height="670"></iframe> -->
-        
-    
-    <!-- <iframe src="images/maps/bretagne.svg" width="700" height="670"></iframe> -->
-        <!-- DEPARTEMENTS -->
-        <!-- <iframe src="images/maps/bretagne/illeEtVilaine.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/bretagne/finistere.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/bretagne/morbihan.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/bretagne/cotesDArmor.svg" width="700" height="670"></iframe> -->
-        
-        
-    <!-- <iframe src="images/maps/centre.svg" width="700" height="670"></iframe> -->
-        <!-- DEPARTEMENTS -->
-        <!-- <iframe src="images/maps/centre/cher.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/centre/loireEtCher.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/centre/indre.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/centre/loiret.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/centre/indreEtLoire.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/centre/eureEtLoir.svg" width="700" height="670"></iframe> -->
-        
-        
-    <!-- <iframe src="images/maps/corse.svg" width="700" height="670"></iframe> -->
-        <!-- DEPARTEMENTS -->
-        <!-- <iframe src="images/maps/corse/corseDuSud.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/corse/hauteCorse.svg" width="700" height="670"></iframe> -->
-        
-        
-    <!-- <iframe src="images/maps/ileDeFrance.svg" width="700" height="670"></iframe> -->
-        <!-- DEPARTEMENTS -->
-        <!-- <iframe src="images/maps/ileDeFrance/valDeMarne.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/ileDeFrance/hautsDeSeine.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/ileDeFrance/paris.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/ileDeFrance/seineSaintDenis.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/ileDeFrance/valDOise.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/ileDeFrance/yvelines.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/ileDeFrance/essonne.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/ileDeFrance/seineEtMarne.svg" width="700" height="670"></iframe> -->
-        
-        
-    <!-- <iframe src="images/maps/midiPyreneesLanguedocRoussillon.svg" width="700" height="670"></iframe> -->
-        <!-- DEPARTEMENTS -->
-        <!-- <iframe src="images/maps/midiPyreneesLanguedocRoussillon/lozere.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/midiPyreneesLanguedocRoussillon/gard.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/midiPyreneesLanguedocRoussillon/aude.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/midiPyreneesLanguedocRoussillon/herault.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/midiPyreneesLanguedocRoussillon/pyreneesOrientales.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/midiPyreneesLanguedocRoussillon/hautesPyrenees.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/midiPyreneesLanguedocRoussillon/lot.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/midiPyreneesLanguedocRoussillon/ariege.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/midiPyreneesLanguedocRoussillon/gers.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/midiPyreneesLanguedocRoussillon/hauteGaronne.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/midiPyreneesLanguedocRoussillon/tarnEtGaronne.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/midiPyreneesLanguedocRoussillon/aveyron.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/midiPyreneesLanguedocRoussillon/tarn.svg" width="700" height="670"></iframe> -->
-                                                                        
-        
-    <!-- <iframe src="images/maps/nordPasDeCalaisPicardie.svg" width="700" height="670"></iframe> -->
-        <!-- DEPARTEMENTS -->
-        <!-- <iframe src="images/maps/nordPasDeCalaisPicardie/somme.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/nordPasDeCalaisPicardie/aisne.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/nordPasDeCalaisPicardie/nord.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/nordPasDeCalaisPicardie/pasDeCalais.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/nordPasDeCalaisPicardie/oise.svg" width="700" height="670"></iframe> -->
-        
-        
-    <!-- <iframe src="images/maps/normandie.svg" width="700" height="670"></iframe> -->
-        <!-- DEPARTEMENTS -->
-        <!-- <iframe src="images/maps/normandie/eure.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/normandie/seineMaritime.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/normandie/orne.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/normandie/calvados.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/normandie/manche.svg" width="700" height="670"></iframe> -->
-        
-        
-    <!-- <iframe src="images/maps/paysDeLaLoire.svg" width="700" height="670"></iframe> -->
-        <!-- DEPARTEMENTS -->
-        <!-- <iframe src="images/maps/paysDeLaLoire/mayenne.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/paysDeLaLoire/sarthe.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/paysDeLaLoire/maineEtLoire.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/paysDeLaLoire/loireAtlantique.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/paysDeLaLoire/vendee.svg" width="700" height="670"></iframe> -->
-        
-    
-    <!-- <iframe src="images/maps/provenceAlpesCoteDAzur.svg" width="700" height="670"></iframe> -->
-        <!-- DEPARTEMENTS -->
-        <!-- <iframe src="images/maps/provenceAlpesCoteDAzur/hautesAlpes.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/provenceAlpesCoteDAzur/alpesMaritimes.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/provenceAlpesCoteDAzur/alpesDeHauteProvence.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/provenceAlpesCoteDAzur/var.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/provenceAlpesCoteDAzur/vaucluse.svg" width="700" height="670"></iframe> -->
-        <!-- <iframe src="images/maps/provenceAlpesCoteDAzur/bouchesDuRhone.svg" width="700" height="670"></iframe> -->
-        
+
+
+    <!-- FRANCE / REGIONS / DEPARTEMENTS-->
+    {% if tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_FRANCE_ID') %}
+        <div class="svg">
+            {% include 'PolitizrFrontBundle:Dashboard\\mapZones:_mapFrance.svg.twig' %}
+        </div>
+    {% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_REGION_ID_ACAL') %}
+        <div class="svg">
+            {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapACAL.svg.twig' %}
+        </div>
+    {% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_REGION_ID_ALPC') %}
+        <div class="svg">
+            {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapALPC.svg.twig' %}
+        </div>
+    {% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_REGION_ID_ARA') %}
+        <div class="svg">
+            {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapARA.svg.twig' %}
+        </div>
+    {% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_REGION_ID_BFC') %}
+        <div class="svg">
+            {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapBFC.svg.twig' %}
+        </div>
+    {% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_REGION_ID_B') %}
+        <div class="svg">
+            {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapB.svg.twig' %}
+        </div>
+    {% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_REGION_ID_CVDL') %}
+        <div class="svg">
+            {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapCVDL.svg.twig' %}
+        </div>
+    {% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_REGION_ID_C') %}
+        <div class="svg">
+            {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapC.svg.twig' %}
+        </div>
+    {% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_REGION_ID_IDF') %}
+        <div class="svg">
+            {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapIDF.svg.twig' %}
+        </div>
+    {% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_REGION_ID_LRMP') %}
+        <div class="svg">
+            {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapLRMP.svg.twig' %}
+        </div>
+    {% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_REGION_ID_NPDCP') %}
+        <div class="svg">
+            {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapMPDCP.svg.twig' %}
+        </div>
+    {% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_REGION_ID_N') %}
+        <div class="svg">
+            {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapN.svg.twig' %}
+        </div>
+    {% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_REGION_ID_PDLL') %}
+        <div class="svg">
+            {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapPDLL.svg.twig' %}
+        </div>
+    {% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_REGION_ID_PACA') %}
+        <div class="svg">
+            {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapPACA.svg.twig' %}
+        </div>
+    {% elseif tag.id == 31 %}
+        <div class="svg">
+            {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\departments:_ariege.svg.twig' %}
+        </div>
+    {% endif %}
 </div>

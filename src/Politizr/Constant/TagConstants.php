@@ -24,20 +24,20 @@ class TagConstants
 
     const TAG_GEO_FRANCE_ID = 8;
 
-    const TAG_GEO_REGION_ID_1 = 9;
-    const TAG_GEO_REGION_ID_2 = 10;
-    const TAG_GEO_REGION_ID_3 = 11;
-    const TAG_GEO_REGION_ID_4 = 12;
-    const TAG_GEO_REGION_ID_5 = 13;
-    const TAG_GEO_REGION_ID_6 = 14;
-    const TAG_GEO_REGION_ID_7 = 15;
-    const TAG_GEO_REGION_ID_8 = 16;
-    const TAG_GEO_REGION_ID_9 = 17;
-    const TAG_GEO_REGION_ID_10 = 18;
-    const TAG_GEO_REGION_ID_11 = 19;
-    const TAG_GEO_REGION_ID_12 = 20;
-    const TAG_GEO_REGION_ID_13 = 21;
-    const TAG_GEO_REGION_ID_14 = 22;
+    const TAG_GEO_REGION_ID_ACAL = 9;
+    const TAG_GEO_REGION_ID_ALPC = 10;
+    const TAG_GEO_REGION_ID_ARA = 11;
+    const TAG_GEO_REGION_ID_BFC = 12;
+    const TAG_GEO_REGION_ID_B = 13;
+    const TAG_GEO_REGION_ID_CVDL = 14;
+    const TAG_GEO_REGION_ID_C = 15;
+    const TAG_GEO_REGION_ID_IDF = 16;
+    const TAG_GEO_REGION_ID_LRMP = 17;
+    const TAG_GEO_REGION_ID_NPDCP = 18;
+    const TAG_GEO_REGION_ID_N = 19;
+    const TAG_GEO_REGION_ID_PDLL = 20;
+    const TAG_GEO_REGION_ID_PACA = 21;
+    const TAG_GEO_REGION_ID_FOM = 22;
 
 
     const TAG_GEO_DEPARTMENT_LAST_ID = 123;
@@ -51,20 +51,20 @@ class TagConstants
     public static function getGeoRegionIds()
     {
         return [
-            TagConstants::TAG_GEO_REGION_ID_1,
-            TagConstants::TAG_GEO_REGION_ID_2,
-            TagConstants::TAG_GEO_REGION_ID_3,
-            TagConstants::TAG_GEO_REGION_ID_4,
-            TagConstants::TAG_GEO_REGION_ID_5,
-            TagConstants::TAG_GEO_REGION_ID_6,
-            TagConstants::TAG_GEO_REGION_ID_7,
-            TagConstants::TAG_GEO_REGION_ID_8,
-            TagConstants::TAG_GEO_REGION_ID_9,
-            TagConstants::TAG_GEO_REGION_ID_10,
-            TagConstants::TAG_GEO_REGION_ID_11,
-            TagConstants::TAG_GEO_REGION_ID_12,
-            TagConstants::TAG_GEO_REGION_ID_13,
-            TagConstants::TAG_GEO_REGION_ID_14,
+            TagConstants::TAG_GEO_REGION_ID_ACAL,
+            TagConstants::TAG_GEO_REGION_ID_ALPC,
+            TagConstants::TAG_GEO_REGION_ID_ARA,
+            TagConstants::TAG_GEO_REGION_ID_BFC,
+            TagConstants::TAG_GEO_REGION_ID_B,
+            TagConstants::TAG_GEO_REGION_ID_CVDL,
+            TagConstants::TAG_GEO_REGION_ID_C,
+            TagConstants::TAG_GEO_REGION_ID_IDF,
+            TagConstants::TAG_GEO_REGION_ID_LRMP,
+            TagConstants::TAG_GEO_REGION_ID_NPDCP,
+            TagConstants::TAG_GEO_REGION_ID_N,
+            TagConstants::TAG_GEO_REGION_ID_PDLL,
+            TagConstants::TAG_GEO_REGION_ID_PACA,
+            TagConstants::TAG_GEO_REGION_ID_FOM,
         ];
     }
 }

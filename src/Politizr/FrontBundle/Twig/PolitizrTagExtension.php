@@ -333,32 +333,23 @@ class PolitizrTagExtension extends \Twig_Extension
     /**
      * Construct a breadcrumb from a geo tag uuid
      *
-     * @param string $geoTagId
+     * @param string $geoTagUuid
      * @return string
      */
-    public function geoTagBreadcrumb($geoTagId = null)
+    public function geoTagBreadcrumb($geoTagUuid = null)
     {
         $this->logger->info('*** geoTagBreadcrumb');
-        $this->logger->info('$geoTagId = '.print_r($geoTagId, true));
+        $this->logger->info('$geoTagUuid = '.print_r($geoTagUuid, true));
 
-        /*
-        <span action="action="mapZoom" uuid="{{ regionLRMP.uuid }}">france</span><i class="iconArrowRight"></i>
-        <span>Languedoc-Roussillon-Midi-Pyrénées</span><i class="iconArrowRight"></i>
-        ariège
-        */
-
-        if (!$geoTagId) {
-            $geoTagId = TagConstants::TAG_GEO_FRANCE_ID;
-        }
-
-        $tag = PTagQuery::create()->filterByPTTagTypeId(TagConstants::TAG_TYPE_GEO)->findPk($geoTagId);
+        $tag = PTagQuery::create()->filterByPTTagTypeId(TagConstants::TAG_TYPE_GEO)->filterByUuid($geoTagUuid)->findOne();
         if (!$tag) {
-            throw new InconsistentDataException(sprintf('Tag %s not found or not geo', $geoTagId));
+            throw new InconsistentDataException(sprintf('Tag %s not found or not geo', $geoTagUuid));
         }
         $html = $tag->getTitle();
 
+        $htmlItem = array();
         while ($tag->getId() != TagConstants::TAG_GEO_FRANCE_ID) {
-            $parentId = $tag->getPTagParentId();
+            $parentId = $tag->getPTParentId();
             if ($parentId) {
                 $tag = PTagQuery::create()->filterByPTTagTypeId(TagConstants::TAG_TYPE_GEO)->findPk($parentId);
                 if (!$tag) {
@@ -368,12 +359,16 @@ class PolitizrTagExtension extends \Twig_Extension
                 $item = $this->templating->render(
                     'PolitizrFrontBundle:Dashboard:_breadcrumbItem.html.twig',
                     array(
-                        'uuid' => $tag->getUuid(),
+                        'tag' => $tag,
                     )
                 );
 
-                $html .= $item;
+                $htmlItem[] = $item;
             }
+        }
+
+        while ($item = array_pop($htmlItem)) {
+            $html .= $item;
         }
 
         return $html;

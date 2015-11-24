@@ -108,7 +108,7 @@ $(document).on("touchstart click", function(){
 });
 
 // toggle menu dom tom
-$("body").on("click", "[action='toggleDomTom']", function() {
+$("body").on("click", "[action='toggleDomTom']", function(e) {
     e.stopPropagation();
     $('.menuOnMap').toggle();
 });

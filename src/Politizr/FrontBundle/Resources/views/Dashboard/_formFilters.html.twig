@@ -1,8 +1,8 @@
 <form id="listType">
-    <input type="radio" class="filter" name="filtersDate[]" value="lastDay" id="lastDay"/>
+    <input type="radio" class="filter" name="filtersDate[]" value="lastDay" id="lastDay" {% if filters == null or filters == 'lastDay'%}checked{% endif %}/>
     <label for="lastDay"><i class="iconNotifYes"></i>aujourd'hui</label>
-    <input type="radio" class="filter" name="filtersDate[]" value="lastWeek" id="lastWeek"/>
+    <input type="radio" class="filter" name="filtersDate[]" value="lastWeek" id="lastWeek" {% if filters == 'lastWeek'%}checked{% endif %}/>
     <label for="lastWeek"><i class="iconNotifYes"></i>cette semaine</label>
-    <input type="radio" class="filter" name="filtersDate[]" value="lastMonth" id="lastMonth"/>
+    <input type="radio" class="filter" name="filtersDate[]" value="lastMonth" id="lastMonth" {% if filters == 'lastMonth'%}checked{% endif %}/>
     <label for="lastMonth"><i class="iconNotifYes"></i>30 derniers jours</label>
 </form>
