@@ -62,11 +62,13 @@
 	height: 670px;
 }
 
-.dbMapBox iframe {
+.dbMapBox iframe, .dbMapBox .svg {
 	position: absolute;
 	top: 0;
 	left: 0;
 	border: none;
+	width: 700px;
+	height: 670px;
 }
 
 .dbMapFilters {

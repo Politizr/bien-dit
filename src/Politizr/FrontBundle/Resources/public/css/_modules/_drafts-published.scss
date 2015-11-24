@@ -2,6 +2,9 @@
 
 /// drafts 
 #publicationsList {
+	padding-bottom: 20px; 
+	float: left;
+	clear: both; 
 	width: 100%;
     font-family: 'nerissemibold';
 }
@@ -30,7 +33,7 @@
 .publicationsListItem {
 	width: calc(100% - 80px);
 	padding: 40px;
-	float: left;
+	display: inline-block;
 	clear: both;
 	margin: 30px 0;
 	background-color: $lightGrey;
