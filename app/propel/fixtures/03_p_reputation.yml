@@ -120,15 +120,15 @@ Politizr\Model\PRBadge:
     querelle:
         online:             true
         p_r_badge_family_id: publicationWithMinNbReactions
-        title:              Querellé
+        title:              Aguicheur
     controverse:
         online:             true
         p_r_badge_family_id: publicationWithMinNbReactions
-        title:              Controversé
+        title:              Provocateur
     polemique:
         online:             true
         p_r_badge_family_id: publicationWithMinNbReactions
-        title:              Polémiqué
+        title:              Agitateur
     redacteur:
         online:             true
         p_r_badge_family_id: publicationWithMinNotePlus
@@ -148,7 +148,7 @@ Politizr\Model\PRBadge:
     avant-garde:
         online:             true
         p_r_badge_family_id: reactionFirstForMinDebates
-        title:              Avant Garde
+        title:              Avant Gardiste
     guide:
         online:             true
         p_r_badge_family_id: reactionFirstForMinDebates
