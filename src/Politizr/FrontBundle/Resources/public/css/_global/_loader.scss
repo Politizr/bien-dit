@@ -176,13 +176,16 @@
 .modalList .loadMore {	margin-bottom: 60px; }
 
 #scrollNav {
+/*
 	float: left;
 	width: 100%;
 	clear: both;
 	position: relative;
 	margin-bottom: 60px;
+*/
+ background: aqua; width: 100%; float: left; height: 100px; display: inline-block !important; clear: both; 
 }
-#timelineScrollNav {text-align: center;}
+#timelineScrollNav {text-align: center;/*  background: aqua; width: 100%; float: left; height: 100px; */}
 
 a#moreResults {
 	font-family: 'nerisblack';
