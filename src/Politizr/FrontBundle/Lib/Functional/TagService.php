@@ -130,20 +130,117 @@ class TagService
 
         $mapTags = array();
 
-        if ($regionId == TagConstants::TAG_GEO_REGION_ID_LRMP) {
-            $mapTags['ariege'] = PTagQuery::create()->findPk(31)->getUuid();
-            $mapTags['aude'] = PTagQuery::create()->findPk(33)->getUuid();
-            $mapTags['aveyron'] = PTagQuery::create()->findPk(34)->getUuid();
-            $mapTags['gard'] = PTagQuery::create()->findPk(53)->getUuid();
-            $mapTags['hauteGaronne'] = PTagQuery::create()->findPk(54)->getUuid();
-            $mapTags['gers'] = PTagQuery::create()->findPk(55)->getUuid();
-            $mapTags['herault'] = PTagQuery::create()->findPk(57)->getUuid();
-            $mapTags['lot'] = PTagQuery::create()->findPk(69)->getUuid();
-            $mapTags['lozere'] = PTagQuery::create()->findPk(71)->getUuid();
-            $mapTags['hautesPyrenees'] = PTagQuery::create()->findPk(88)->getUuid();
-            $mapTags['pyreneesOrientales'] = PTagQuery::create()->findPk(89)->getUuid();
-            $mapTags['tarn'] = PTagQuery::create()->findPk(104)->getUuid();
-            $mapTags['tarnEtGaronne'] = PTagQuery::create()->findPk(105)->getUuid();
+        if ($regionId == TagConstants::TAG_GEO_REGION_ID_ACAL) {
+            $mapTags['marne'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_MARNE)->getUuid();
+            $mapTags['ardennes'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_ARDENNES)->getUuid();
+            $mapTags['aube'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_AUBE)->getUuid();
+            $mapTags['hauteMarne'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_HAUTE_MARNE)->getUuid();
+            $mapTags['basRhin'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_BAS_RHIN)->getUuid();
+            $mapTags['meurtheEtMoselle'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_MEURTHE_ET_MOSELLE)->getUuid();
+            $mapTags['hautRhin'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_HAUT_RHIN)->getUuid();
+            $mapTags['meuse'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_MEUSE)->getUuid();
+            $mapTags['moselle'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_MOSELLE)->getUuid();
+            $mapTags['vosges'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_VOSGES)->getUuid();
+        } elseif ($regionId == TagConstants::TAG_GEO_REGION_ID_ALPC) {
+            $mapTags['pyreneesAtlantiques'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_PYRENEES_ATLANTIQUES)->getUuid();
+            $mapTags['landes'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_LANDES)->getUuid();
+            $mapTags['gironde'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_GIRONDE)->getUuid();
+            $mapTags['dordogne'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_DORDOGNE)->getUuid();
+            $mapTags['lotEtGaronne'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_LOT_ET_GARONNE)->getUuid();
+            $mapTags['charenteMaritime'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_CHARENTE_MARITIME)->getUuid();
+            $mapTags['correze'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_CORREZE)->getUuid();
+            $mapTags['creuse'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_CREUSE)->getUuid();
+            $mapTags['hauteVienne'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_HAUTE_VIENNE)->getUuid();
+            $mapTags['vienne'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_VIENNE)->getUuid();
+            $mapTags['charente'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_CHARENTE)->getUuid();
+            $mapTags['deuxSevres'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_DEUX_SEVRES)->getUuid();
+        } elseif ($regionId == TagConstants::TAG_GEO_REGION_ID_ARA) {
+            $mapTags['allier'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_ALLIER)->getUuid();
+            $mapTags['cantal'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_CANTAL)->getUuid();
+            $mapTags['hauteLoire'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_HAUTE_LOIRE)->getUuid();
+            $mapTags['puyDeDome'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_PUY_DE_DOME)->getUuid();
+            $mapTags['ain'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_AIN)->getUuid();
+            $mapTags['isere'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_ISERE)->getUuid();
+            $mapTags['hauteSavoie'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_HAUTE_SAVOIE)->getUuid();
+            $mapTags['loire'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_LOIRE)->getUuid();
+            $mapTags['rhone'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_RHONE)->getUuid();
+            $mapTags['savoie'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_SAVOIE)->getUuid();
+            $mapTags['ardeche'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_ARDECHE)->getUuid();
+            $mapTags['drome'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_DROME)->getUuid();
+        } elseif ($regionId == TagConstants::TAG_GEO_REGION_ID_B) {
+            $mapTags['cotesDArmor'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_COTES_D_ARMOR)->getUuid();
+            $mapTags['morbihan'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_MORBIHAN)->getUuid();
+            $mapTags['finistere'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_FINISTERE)->getUuid();
+            $mapTags['illeEtVilaine'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_ILLE_ET_VILAINE)->getUuid();
+        } elseif ($regionId == TagConstants::TAG_GEO_REGION_ID_BFC) {
+            $mapTags['yonne'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_YONNE)->getUuid();
+            $mapTags['hauteSaone'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_HAUTE_SAONE)->getUuid();
+            $mapTags['coteDOr'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_COTE_D_OR)->getUuid();
+            $mapTags['nievre'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_NIEVRE)->getUuid();
+            $mapTags['saoneEtLoire'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_SAONE_ET_LOIRE)->getUuid();
+            $mapTags['jura'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_JURA)->getUuid();
+            $mapTags['doubs'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_DOUBS)->getUuid();
+            $mapTags['territoireDeBelfort'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_TERRITOIRE_DE_BELFORT)->getUuid();
+        } elseif ($regionId == TagConstants::TAG_GEO_REGION_ID_C) {
+            $mapTags['corseDuSud'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_CORSE_DU_SUD)->getUuid();
+            $mapTags['hauteCorse'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_HAUTE_CORSE)->getUuid();
+        } elseif ($regionId == TagConstants::TAG_GEO_REGION_ID_CVDL) {
+            $mapTags['eureEtLoir'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_EURE_ET_LOIR)->getUuid();
+            $mapTags['indreEtLoire'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_INDRE_ET_LOIRE)->getUuid();
+            $mapTags['loiret'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_LOIRET)->getUuid();
+            $mapTags['indre'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_INDRE)->getUuid();
+            $mapTags['loirEtCher'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_LOIR_ET_CHER)->getUuid();
+            $mapTags['cher'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_CHER)->getUuid();
+        } elseif ($regionId == TagConstants::TAG_GEO_REGION_ID_IDF) {
+            $mapTags['seineEtMarne'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_SEINE_ET_MARNE)->getUuid();
+            $mapTags['essonne'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_ESSONNE)->getUuid();
+            $mapTags['yvelines'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_YVELINES)->getUuid();
+            $mapTags['valDOise'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_VAL_D_OISE)->getUuid();
+            $mapTags['seineSaintDenis'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_SEINE_SAINT_DENIS)->getUuid();
+            $mapTags['paris'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_PARIS)->getUuid();
+            $mapTags['hautsDeSeine'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_HAUTS_DE_SEINE)->getUuid();
+            $mapTags['valDeMarne'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_VAL_DE_MARNE)->getUuid();
+        } elseif ($regionId == TagConstants::TAG_GEO_REGION_ID_LRMP) {
+            $mapTags['lozere'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_LOZERE)->getUuid();
+            $mapTags['gard'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_GARD)->getUuid();
+            $mapTags['aude'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_AUDE)->getUuid();
+            $mapTags['herault'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_HERAULT)->getUuid();
+            $mapTags['pyreneesOrientales'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_PYRENEES_ORIENTALES)->getUuid();
+            $mapTags['hautesPyrenees'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_HAUTES_PYRENEES)->getUuid();
+            $mapTags['lot'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_LOT)->getUuid();
+            $mapTags['ariege'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_ARIEGE)->getUuid();
+            $mapTags['gers'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_GERS)->getUuid();
+            $mapTags['hauteGaronne'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_HAUTE_GARONNE)->getUuid();
+            $mapTags['tarnEtGaronne'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_TARN_ET_GARONNE)->getUuid();
+            $mapTags['aveyron'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_AVEYRON)->getUuid();
+            $mapTags['tarn'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_TARN)->getUuid();
+        } elseif ($regionId == TagConstants::TAG_GEO_REGION_ID_N) {
+            $mapTags['manche'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_MANCHE)->getUuid();
+            $mapTags['calvados'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_CALVADOS)->getUuid();
+            $mapTags['orne'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_ORNE)->getUuid();
+            $mapTags['seineMaritime'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_SEINE_MARITIME)->getUuid();
+            $mapTags['eure'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_EURE)->getUuid();
+        } elseif ($regionId == TagConstants::TAG_GEO_REGION_ID_NPDCP) {
+            $mapTags['oise'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_OISE)->getUuid();
+            $mapTags['pasDeCalais'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_PAS_DE_CALAIS)->getUuid();
+            $mapTags['nord'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_NORD)->getUuid();
+            $mapTags['aisne'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_AISNE)->getUuid();
+            $mapTags['somme'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_SOMME)->getUuid();
+        } elseif ($regionId == TagConstants::TAG_GEO_REGION_ID_PACA) {
+            $mapTags['bouchesDuRhone'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_BOUCHES_DU_RHONE)->getUuid();
+            $mapTags['vaucluse'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_VAUCLUSE)->getUuid();
+            $mapTags['var'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_VAR)->getUuid();
+            $mapTags['alpesDeHauteProvence'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_ALPES_DE_HAUTE_PROVENCE)->getUuid();
+            $mapTags['alpesMaritimes'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_ALPES_MARITIMES)->getUuid();
+            $mapTags['hautesAlpes'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_HAUTES_ALPES)->getUuid();
+        } elseif ($regionId == TagConstants::TAG_GEO_REGION_ID_PDLL) {
+            $mapTags['vendee'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_VENDEE)->getUuid();
+            $mapTags['loireAtlantique'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_LOIRE_ATLANTIQUE)->getUuid();
+            $mapTags['maineEtLoire'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_MAINE_ET_LOIRE)->getUuid();
+            $mapTags['sarthe'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_SARTHE)->getUuid();
+            $mapTags['mayenne'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_MAYENNE)->getUuid();
+        } else {
+            throw new InconsistentDataException(sprintf('Region id %s does not match', $regionId));
         }
 
         return $mapTags;

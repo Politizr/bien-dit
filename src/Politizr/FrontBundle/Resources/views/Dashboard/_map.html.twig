@@ -28,91 +28,28 @@
             {% include 'PolitizrFrontBundle:Dashboard:_mapUsers.html.twig' with { 'users': users, 'geoTagUuid': tag.uuid } %}
         </div>
     </div>
-
     <div class="menuOnMap" style="display: none;">
         <div class="menuOnMapGroup">
-            <div class="menuOnMapItem" action="modalOpen"><i class="iconGoTo"></i>Guadeloupe</div>
-            <div class="menuOnMapItem" action="modalOpen"><i class="iconGoTo"></i>Guyane</div>
-            <div class="menuOnMapItem" action="modalOpen"><i class="iconGoTo"></i>Martinique</div>
-            <div class="menuOnMapItem" action="modalOpen"><i class="iconGoTo"></i>La Réunion</div>
-            <div class="menuOnMapItem" action="modalOpen"><i class="iconGoTo"></i>Mayotte</div>
+            <div class="menuOnMapItem" action="modalTagged" model="PTag" uuid="{{ fomTag['guadeloupe'].uuid }}"><i class="iconGoTo"></i>Guadeloupe</div>
+            <div class="menuOnMapItem" action="modalTagged" model="PTag" uuid="{{ fomTag['guyane'].uuid }}"><i class="iconGoTo"></i>Guyane</div>
+            <div class="menuOnMapItem" action="modalTagged" model="PTag" uuid="{{ fomTag['martinique'].uuid }}"><i class="iconGoTo"></i>Martinique</div>
+            <div class="menuOnMapItem" action="modalTagged" model="PTag" uuid="{{ fomTag['laReunion'].uuid }}"><i class="iconGoTo"></i>La Réunion</div>
+            <div class="menuOnMapItem" action="modalTagged" model="PTag" uuid="{{ fomTag['mayotte'].uuid }}"><i class="iconGoTo"></i>Mayotte</div>
         </div>
         <div class="menuOnMapGroup">
-            <div class="menuOnMapItem" action="modalOpen"><i class="iconGoTo"></i>Polynésie française</div>
-            <div class="menuOnMapItem" action="modalOpen"><i class="iconGoTo"></i>Saint-Barthélemy</div>
-            <div class="menuOnMapItem" action="modalOpen"><i class="iconGoTo"></i>Saint-Martin</div>
-            <div class="menuOnMapItem" action="modalOpen"><i class="iconGoTo"></i>Saint-Pierre-et-Miquelon</div>
-            <div class="menuOnMapItem" action="modalOpen"><i class="iconGoTo"></i>Wallis-et-Futuna</div>
+            <div class="menuOnMapItem" action="modalTagged" model="PTag" uuid="{{ fomTag['polynesieFrancaise'].uuid }}"><i class="iconGoTo"></i>Polynésie française</div>
+            <div class="menuOnMapItem" action="modalTagged" model="PTag" uuid="{{ fomTag['saintBarthelemy'].uuid }}"><i class="iconGoTo"></i>Saint-Barthélemy</div>
+            <div class="menuOnMapItem" action="modalTagged" model="PTag" uuid="{{ fomTag['saintMartin'].uuid }}"><i class="iconGoTo"></i>Saint-Martin</div>
+            <div class="menuOnMapItem" action="modalTagged" model="PTag" uuid="{{ fomTag['saintPierreEtMiquelon'].uuid }}"><i class="iconGoTo"></i>Saint-Pierre-et-Miquelon</div>
+            <div class="menuOnMapItem" action="modalTagged" model="PTag" uuid="{{ fomTag['wallisEtFutuma'].uuid }}"><i class="iconGoTo"></i>Wallis-et-Futuna</div>
         </div>
         <div class="menuOnMapGroup">
-            <div class="menuOnMapItem" action="modalOpen"><i class="iconGoTo"></i>Nouvelle-Calédonie</div>
+            <div class="menuOnMapItem" action="modalTagged" model="PTag" uuid="{{ fomTag['nouvelleCaledonie'].uuid }}"><i class="iconGoTo"></i>Nouvelle-Calédonie</div>
         </div>
         <i class="iconArrowDown"></i>
     </div>
     <div class="linkOnMap" action="toggleDomTom">France d'Outre-Mer</div>
 
-
-
     <!-- FRANCE / REGIONS / DEPARTEMENTS-->
-    {% if tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_FRANCE_ID') %}
-        <div class="svg">
-            {% include 'PolitizrFrontBundle:Dashboard\\mapZones:_mapFrance.svg.twig' %}
-        </div>
-    {% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_REGION_ID_ACAL') %}
-        <div class="svg">
-            {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapACAL.svg.twig' %}
-        </div>
-    {% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_REGION_ID_ALPC') %}
-        <div class="svg">
-            {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapALPC.svg.twig' %}
-        </div>
-    {% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_REGION_ID_ARA') %}
-        <div class="svg">
-            {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapARA.svg.twig' %}
-        </div>
-    {% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_REGION_ID_BFC') %}
-        <div class="svg">
-            {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapBFC.svg.twig' %}
-        </div>
-    {% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_REGION_ID_B') %}
-        <div class="svg">
-            {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapB.svg.twig' %}
-        </div>
-    {% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_REGION_ID_CVDL') %}
-        <div class="svg">
-            {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapCVDL.svg.twig' %}
-        </div>
-    {% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_REGION_ID_C') %}
-        <div class="svg">
-            {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapC.svg.twig' %}
-        </div>
-    {% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_REGION_ID_IDF') %}
-        <div class="svg">
-            {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapIDF.svg.twig' %}
-        </div>
-    {% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_REGION_ID_LRMP') %}
-        <div class="svg">
-            {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapLRMP.svg.twig' %}
-        </div>
-    {% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_REGION_ID_NPDCP') %}
-        <div class="svg">
-            {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapMPDCP.svg.twig' %}
-        </div>
-    {% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_REGION_ID_N') %}
-        <div class="svg">
-            {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapN.svg.twig' %}
-        </div>
-    {% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_REGION_ID_PDLL') %}
-        <div class="svg">
-            {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapPDLL.svg.twig' %}
-        </div>
-    {% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_REGION_ID_PACA') %}
-        <div class="svg">
-            {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapPACA.svg.twig' %}
-        </div>
-    {% elseif tag.id == 31 %}
-        <div class="svg">
-            {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\departments:_ariege.svg.twig' %}
-        </div>
-    {% endif %}
+    {% include 'PolitizrFrontBundle:Dashboard\\mapZones:_mapRouting.html.twig' %}
 </div>

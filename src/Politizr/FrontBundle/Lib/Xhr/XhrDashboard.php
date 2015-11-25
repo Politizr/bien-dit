@@ -125,10 +125,26 @@ class XhrDashboard
         $worldTag = PTagQuery::create()->findPk(TagConstants::TAG_GEO_WORLD_ID);
         $europeTag = PTagQuery::create()->findPk(TagConstants::TAG_GEO_EUROPE_ID);
         
+        // FOM ids
+        $fomTag['guadeloupe'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_GUADELOUPE);
+        $fomTag['martinique'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_MARTINIQUE);
+        $fomTag['guyane'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_GUYANE);
+        $fomTag['laReunion'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_LA_REUNION);
+        $fomTag['mayotte'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_MAYOTTE);
+        $fomTag['polynesieFrancaise'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_POLYNESIE_FRANCAISE);
+        $fomTag['saintBarthelemy'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_SAINT_BARTHELEMY);
+        $fomTag['saintMartin'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_SAINT_MARTIN);
+        $fomTag['saintPierreEtMiquelon'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_SAINT_PIERRE_ET_MIQUELON);
+        $fomTag['wallisEtFutuma'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_WALLIS_ET_FUTUMA);
+        $fomTag['nouvelleCaledonie'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_NOUVELLE_CALEDONIE);
+
         if ($tag->getId() == TagConstants::TAG_GEO_FRANCE_ID) {
             $mapTags = $this->tagService->getRegionUuids();
         } elseif (in_array($tag->getId(), TagConstants::getGeoRegionIds())) {
             $mapTags = $this->tagService->getDepartmentsUuids($tag->getId());
+        } elseif (in_array($tag->getId(), TagConstants::getGeoDepartmentMetroIds())) {
+            // parent id = region id
+            $mapTags = $this->tagService->getDepartmentsUuids($tag->getPTParentId());
         } else {
             $mapTags = [];
         }
@@ -141,6 +157,7 @@ class XhrDashboard
                 'debates' => $debates,
                 'users' => $users,
                 'worldTag' => $worldTag,
+                'fomTag' => $fomTag,
                 'europeTag' => $europeTag,
                 'mapTags' => $mapTags,
             )
