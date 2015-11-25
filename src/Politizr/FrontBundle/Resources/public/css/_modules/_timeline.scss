@@ -174,11 +174,18 @@ span.timelineItemContextHighlight {
 .timelineItemContent.timelineItemOfficial, .timelineItemContent.timelineItemAuthor {
 	padding: 10px 60px;
 	margin: 10px 0 10px -60px;
-	width: 100%;	
+	width: 100%;
 }
 
 .timelineItemContent.timelineItemOfficial {	background-color: $lightGrey;}
 .timelineItemContent.timelineItemAuthor {	background-color: $anotherLightHighlight;}
+
+.timelineItemComment .timelineItemHighlight p {
+	font-size: 13px;
+	line-height: 160%;
+	margin-top: -3px;
+}
+.timelineItemComment .timelineItemHighlight .avatar40 { margin-top: 0px;}
 
 .timelineItemObject {
 	padding: 10px 0 0 0;
@@ -227,15 +234,6 @@ span.timelineItemContextHighlight {
 }
 .timelineItemHighlight a:hover h1, .timelineItemHighlight a:hover h2 { color: $highlight;}
 .timelineItemHighlight ul {	padding-left: 20px;}
-
-/*
-.timelineItemHighlight p::before {
-	content: "—";
-	display: inline-block;
-	margin-right: 5px;
-	font-size: 13px;
-}
-*/
 
 .timelineItemIllustration {
 	float: right;
@@ -343,10 +341,6 @@ span.timelineItemContextHighlight {
 	margin: 20px 0 10px -60px;
 	z-index: 0;
 }
-
-// .timelineItem .timelineItemHolder .postSummary {
-// 	margin-left: -60px;
-// }
 
 .timelineItem .postSummary .pad40 {
 	padding: 40px 60px;
