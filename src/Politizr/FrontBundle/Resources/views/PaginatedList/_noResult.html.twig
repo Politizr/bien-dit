@@ -57,9 +57,9 @@
         Vous n'avez publié aucun débat ni aucune réaction.
     {% elseif type == constant('Politizr\\Constant\\ListingConstants::DASHBOARD_TYPE_MAP') %}
         {% if context == constant('Politizr\\Constant\\ListingConstants::DASHBOARD_DEBATES') %}
-            Aucun débat ne correspond à cette localisation.
+            Aucun débat n'a été publié durant le laps de temps recherché et associé à cette localisation.
         {% elseif context == constant('Politizr\\Constant\\ListingConstants::DASHBOARD_USERS') %}
-            Aucun utilisateur ne correspond à cette localisation.
+            Aucun utilisateur ne s'est inscrit durant le laps de temps recherché et associé à cette localisation.
         {% endif %}
     {% endif %}
 </div>

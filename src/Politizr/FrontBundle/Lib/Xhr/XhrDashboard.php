@@ -108,7 +108,6 @@ class XhrDashboard
                     ->limit(ListingConstants::DASHBOARD_MAP_LIMIT)
                     ->find();
 
-
         // 3 top users
         $users = PUserQuery::create()
                     ->distinct()

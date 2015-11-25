@@ -4,15 +4,15 @@ $(function() {
 });
 
 // Gestion des filtres
-$("body").on("change", ".filter", function(e) {
-    console.log('*** change filter');
+$("body").on("change", ".mapFilter", function(e) {
+    // console.log('*** change filter');
 
     e.preventDefault();
     topListing($('#listFilter').attr('uuid'));
 });
 
 $("body").on("click", "[action='mapZoom']", function() {
-    console.log('*** mapZoom');
+    // console.log('*** mapZoom');
 
     topListing($(this).attr('uuid'));
 });
@@ -23,20 +23,22 @@ $("body").on("click", "[action='mapZoom']", function() {
  * @param string geoTagUuid
  */
 function topListing(geoTagUuid) {
-    console.log('*** topListing');
-    console.log(geoTagUuid);
+    // console.log('*** topListing');
+    // console.log(geoTagUuid);
     
     geoTagUuid = (typeof geoTagUuid === "undefined") ? null : geoTagUuid;
     
     // Récupération du form des filtres
-    var filters = $('#listFilter').serializeArray();
-    console.dir(filters);
+    var datas = $('#listFilter').serializeArray();
+    // console.log(datas);
+    // @todo hack to fix / why the form is not well serialized at the 1st call
+    if ($.isEmptyObject(datas)) {
+        datas.push({name: 'filterDate[]', value: 'lastWeek'});
+    }
 
     // Push additional arguments
-    var datas = [];
     datas.push({name: 'geoTagUuid', value: geoTagUuid});
-
-    console.dir(datas);
+    // console.log(datas);
 
     var xhrPath = getXhrPath(
         ROUTE_DASHBOARD_MAP,
