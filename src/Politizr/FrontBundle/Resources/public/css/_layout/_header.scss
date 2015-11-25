@@ -35,7 +35,7 @@
 }
 #linkRanking { padding-left: 15px;}
 #linkSuggestions { padding-left: 8px;}
-#linkSubscriptions {padding-left: 10px; margin-right: 0;}
+
 
 #headerCenter i {
 	font-size: 7px;
@@ -49,12 +49,10 @@
 	top:-1px;
 }
 
-#linkNotifications {color: $highlight;}
-#linkRanking:hover, #linkNotifications:hover, #linkSuggestions:hover {	color: $darkGrey;}
+#linkNotifications {color: $highlight; position: relative;}
+#linkRanking:hover, #linkNotifications:hover, #linkSuggestions:hover, #linkSubscriptions:hover {	color: $darkGrey;}
 
-#linkNotifications {
-	position: relative;
-}
+#linkSubscriptions {padding-left: 10px; margin-right: 0;}
 #notifCounter {
 	position: absolute;
 	right: -7px;
@@ -69,6 +67,7 @@
 	-moz-border-radius: 2px 2px 2px 2px;
 	-webkit-border-radius: 2px 2px 2px 2px;	
 }
+#linkNotifications:hover #notifCounter { background-color: $darkGrey; }
 
 #headerCenter #logged {
 	float: right;

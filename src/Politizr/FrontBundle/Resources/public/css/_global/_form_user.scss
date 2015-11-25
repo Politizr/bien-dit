@@ -31,10 +31,23 @@ input[type="submit"]:hover {	background-color: $darkGrey;}
 textarea {margin: 0;}
 textarea:focus, input:focus { outline: 0;}
 
+.commentCountWrapper {
+    font-family: 'nerissemibold';
+    font-size: 11px;
+    color: $darkGrey;
+}
+
+.commentCountWrapper .error-text  {
+	color: $highlight;
+	display: inline-block;
+	margin-left: 20px;
+}
+
 .actionsButtons {
 	float: left; 
 	clear: both; 
 	position: relative;
+	margin-top: 20px;
 }
 
 .formIntro {
@@ -69,15 +82,15 @@ textarea:focus, input:focus { outline: 0;}
 }
 
 .comments input[type=submit], .comments input[type=button] {
-	background-color: transparent;
-	color: $highlight;
-	font-size: 13px;
 	height: auto;
-	width: auto;
-	display: inline-block;
+	width: 90px;
+	float: left;
+	line-height: 100%;
 	text-transform: none;
-	padding-left: 1px;
+	background-color: $highlight;
+	padding: 8px 0;
 }
+.comments input[type=submit]:hover, .comments input[type=button]:hover { background-color: $darkGrey;}
 
 .comments .cancel {
 	display: inline-block;
@@ -85,9 +98,10 @@ textarea:focus, input:focus { outline: 0;}
 	color: $highlight;
 	cursor: pointer;
 	margin-left: 20px;
+	margin-top: 16px;
+	font-size: 12px;
 }
-
-.comments input[type=submit]:hover, .comments input[type=button]:hover, .comments .cancel:hover {	color: $darkGrey;}
+.comments .cancel:hover {	color: $darkGrey;}
 
 //search form
 
