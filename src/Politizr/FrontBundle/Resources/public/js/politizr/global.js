@@ -201,12 +201,12 @@ function commentTextCounter() {
         counterErrorClass        : "error",                // error class appended to the countContainerElement if error occurs
         counterText              : "Caractères: ",        // counter text
         errorTextElement         : "div",                  // error text element
-        minimumErrorText         : "Minimum 5 caractères",      // error message for minimum not met,
-        maximumErrorText         : "Maximum de 500 caractères",     // error message for maximum range exceeded,
+        minimumErrorText         : "Minimum: 5 caractères",      // error message for minimum not met,
+        maximumErrorText         : "Maximum: 500 caractères",     // error message for maximum range exceeded,
         displayErrorText         : true,                   // display error text messages for minimum/maximum values
         stopInputAtMaximum       : false,                   // stop further text input if maximum reached
         countSpaces              : true,                  // count spaces as character (only for "character" type)
-        countDown                : false,                  // if the counter should deduct from maximum characters/words rather than counting up
+        countDown                : true,                  // if the counter should deduct from maximum characters/words rather than counting up
         countDownText            : "Caractères restants: ",          // count down text
         countExtendedCharacters  : false,                       // count extended UTF-8 characters as 2 bytes (such as Chinese characters)    
     });
