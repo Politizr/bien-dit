@@ -92,6 +92,13 @@
             </div>
         </div>
 
+        {% if not app.user.validated %}
+            <div class="boxInfo">
+                <i class="iconInfo"></i>
+                Si vous souhaitez modifier vos prénom/nom : ouvrez le menu préférence (<i class="iconGear"></i>) en haut à droite de la page  puis cliquez sur "Paramètres".
+            </div>
+        {% endif %}
+
         <div id="editMyPublicTags" class="tagBox">
             <div class="fieldsetHeader">
                 <div class="fieldsetHeaderTitle">mes thématiques publiques</div>
