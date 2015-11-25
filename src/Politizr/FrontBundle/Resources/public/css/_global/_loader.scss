@@ -39,7 +39,6 @@
 	z-index: 1;
 }
  
-
 #ajaxGlobalLoader .ajaxLoader .pltzrLoaderStrokes {
 	fill: none;
 	stroke-width: 7px;
@@ -62,7 +61,7 @@
 }
 
 
-// global loader //
+// loader //
 .ajaxLoader {
 	position: absolute;
 	width: 100%;
@@ -143,14 +142,9 @@
 	background-color: $lightGrey;
 }
 
-///// in comments
+///// in comments form
 
-.comments .actionsButtons .ajaxLoader {
-	width: 20px;
-	background-color: #fff;
-	left: -4px;
-}
-.comments .actionsButtons .ajaxLoaderSpinner { background-size: 19px; }
+.comments .actionsButtons .ajaxLoader { width: 90px;}
 .commentsOfficial .ajaxLoaderBg {	background-color: $lightGrey;}
 .commentsUser .ajaxLoaderBg {	background-color: #fff;}
 .commentsPostAuthor .ajaxLoaderBg {	background-color: $anotherLightHighlight;}

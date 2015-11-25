@@ -92,10 +92,20 @@
             </div>
         </div>
 
+        {% if not app.user.validated %}
+            <div class="boxInfo">
+                <i class="iconInfo"></i>
+                Si vous souhaitez modifier vos prénom/nom : ouvrez le menu préférence (<i class="iconGear"></i>) en haut à droite de la page  puis cliquez sur "Paramètres".
+            </div>
+        {% endif %}
+
         <div id="editMyPublicTags" class="tagBox">
             <div class="fieldsetHeader">
                 <div class="fieldsetHeaderTitle">mes thématiques publiques</div>
-                <i class="iconQuestion" action="toggleHelper"></i>
+                <div class="helperMark" action="toggleHelper">
+                    comment ajouter une thématique?
+                    <i class="iconQuestion" action="toggleHelper"></i>
+                </div>
                 <div class="helperSlider helperSliderRight" style="display: none;">
                     <i class="iconArrowUp"></i>
                     <i class="iconCross" action="hideHelper"></i>
@@ -109,7 +119,10 @@
         <div id="editMyPrivateTags" class="tagBox">
             <div class="fieldsetHeader">
                 <div class="fieldsetHeaderTitle">mes thématiques privées</div>
-                <i class="iconQuestion" action="toggleHelper"></i>
+                <div class="helperMark" action="toggleHelper">
+                    comment ajouter une thématique?
+                    <i class="iconQuestion" action="toggleHelper"></i>
+                </div>
                 <div class="helperSlider helperSliderRight" style="display: none;">
                     <i class="iconArrowUp"></i>
                     <i class="iconCross" action="hideHelper"></i>
@@ -124,7 +137,10 @@
             <div id="editParti" class="profileFieldset">
                 <div class="fieldsetHeader">
                     <div class="fieldsetHeaderTitle">famille politique</div>
-                    <i class="iconQuestion" action="toggleHelper"></i>
+                    <div class="helperMark" action="toggleHelper">
+                        comment sont constitués les familles politiques?
+                        <i class="iconQuestion" action="toggleHelper"></i>
+                    </div>
                     <div class="helperSlider helperSliderRight" style="display: none;">
                         <i class="iconArrowUp"></i>
                         <i class="iconCross" action="hideHelper"></i>
@@ -147,7 +163,10 @@
             <div id="editInAFewWord" class="profileFieldset">
                 <div class="fieldsetHeader">
                     <div class="fieldsetHeaderTitle">en quelques mots</div>
-                    <i class="iconQuestion" action="toggleHelper"></i>
+                    <div class="helperMark" action="toggleHelper">
+                        comment utiliser l'éditeur de texte?
+                        <i class="iconQuestion" action="toggleHelper"></i>
+                    </div>
                     <div class="helperSlider helperSliderRight" style="display: none;">
                         <i class="iconArrowUp"></i>
                         <i class="iconCross" action="hideHelper"></i>
@@ -160,7 +179,10 @@
 
             <div class="fieldsetHeader">
                 <div class="fieldsetHeaderTitle">ma biographie</div>
-                <i class="iconQuestion" action="toggleHelper"></i>
+                <div class="helperMark" action="toggleHelper">
+                    comment utiliser l'éditeur de texte?
+                    <i class="iconQuestion" action="toggleHelper"></i>
+                </div>
                 <div class="helperSlider helperSliderRight" style="display: none;">
                     <i class="iconArrowUp"></i>
                     <i class="iconCross" action="hideHelper"></i>
@@ -202,7 +224,10 @@
             <div id="myMandate" class="profileFieldset">
                 <div class="fieldsetHeader">
                     <div class="fieldsetHeaderTitle">mes mandats</div>
-                    <i class="iconQuestion" action="toggleHelper"></i>
+                    <div class="helperMark" action="toggleHelper">
+                        comment ajouter un mandat?
+                        <i class="iconQuestion" action="toggleHelper"></i>
+                    </div>
                     <div class="helperSlider helperSliderRight" style="display: none;">
                         <i class="iconArrowUp"></i>
                         <i class="iconCross" action="hideHelper"></i>

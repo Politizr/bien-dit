@@ -1,5 +1,6 @@
 // on document ready
 $(function() {
+    console.log('*** global document ready');
     fullImgLiquid();
     Waypoint.destroyAll();
     $('#ajaxGlobalLoader').hide();
@@ -74,14 +75,14 @@ $("body").on("touchstart click", "[action='menuMobileTriggerMenu']", function(e)
 // hide / show helper
 $("body").on("click", "[action='toggleHelper']", function() {
     $('.helperSlider').hide();
-    $('.iconQuestion').css("color", "#b8b9bc");
+    $('.helperMark').css("color", "#b8b9bc");i
     $(this).next('.helperSlider').toggle();
     $(this).css("color", "#079db5");
 });
 
 $("body").on("click", "[action='hideHelper']", function() {
     $('.helperSlider').hide();
-    $('.iconQuestion').css("color", "#b8b9bc");
+    $('.helperMark').css("color", "#b8b9bc");i
 });
 
 // social network sharing
@@ -210,12 +211,12 @@ function commentTextCounter() {
         counterErrorClass        : "error",                // error class appended to the countContainerElement if error occurs
         counterText              : "Caractères: ",        // counter text
         errorTextElement         : "div",                  // error text element
-        minimumErrorText         : "Minimum 5 caractères",      // error message for minimum not met,
-        maximumErrorText         : "Maximum de 500 caractères",     // error message for maximum range exceeded,
+        minimumErrorText         : "Minimum: 5 caractères",      // error message for minimum not met,
+        maximumErrorText         : "Maximum: 500 caractères",     // error message for maximum range exceeded,
         displayErrorText         : true,                   // display error text messages for minimum/maximum values
         stopInputAtMaximum       : false,                   // stop further text input if maximum reached
         countSpaces              : true,                  // count spaces as character (only for "character" type)
-        countDown                : false,                  // if the counter should deduct from maximum characters/words rather than counting up
+        countDown                : true,                  // if the counter should deduct from maximum characters/words rather than counting up
         countDownText            : "Caractères restants: ",          // count down text
         countExtendedCharacters  : false,                       // count extended UTF-8 characters as 2 bytes (such as Chinese characters)    
     });

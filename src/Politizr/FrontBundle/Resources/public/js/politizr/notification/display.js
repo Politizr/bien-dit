@@ -36,7 +36,12 @@ function notificationsLoading(){
             $('#ajaxGlobalLoader').hide();
 
             // MAJ compteur
-            $('#notifCounter').html(data['counterNotifs']);
+            note = parseInt(data['counterNotifs']);
+            if (note > 0) {
+                $('#notifCounter').html(data['counterNotifs']).show();
+            } else {
+                $('#notifCounter').html('-').hide();
+            }
 
             // MAJ listing des notifs
             $('#notifList').html(data['html']);
@@ -83,7 +88,7 @@ $("body").on("click", "i[action='notificationCheck']", function(e) {
             if (note > 0) {
                 $('#notifCounter').html(note);
             } else {
-                $('#notifCounter').html('-');
+                $('#notifCounter').html('-').hide();
             }
 
             $('#ajaxGlobalLoader').hide();
@@ -145,7 +150,7 @@ $("body").on("click", "div[action='notificationCheckAll']", function(e) {
             $('.notifItem').find('.iconCheck').remove();
 
             // MAJ du compteur
-            $('#notifCounter').html('-');
+            $('#notifCounter').html('-').hide();
 
             $('#ajaxGlobalLoader').hide();
         }

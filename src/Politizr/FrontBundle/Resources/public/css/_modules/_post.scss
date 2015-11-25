@@ -31,6 +31,8 @@
 .paragraph p {
 	font-size: 15px;
 	line-height: 200%;
+	z-index: 1;
+	position: relative;
 }
 
 .paragraph a, .paragraph.summary p, .paragraph p a, .paragraph.summary a:hover { color: $darkHighlight;}
