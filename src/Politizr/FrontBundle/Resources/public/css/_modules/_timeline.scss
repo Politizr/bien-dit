@@ -1,5 +1,12 @@
 @import "../_global/colors";
 
+#content .noResult {
+	margin: 40px;
+	font-size: 12px;
+	color: $semiDarkGrey;
+    font-family: 'nerissemibold';	
+}
+
 #timelineHeader {
 	padding: 20px 0;
 	height: 10px;
