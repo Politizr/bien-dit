@@ -75,14 +75,14 @@ $("body").on("touchstart click", "[action='menuMobileTriggerMenu']", function(e)
 // hide / show helper
 $("body").on("click", "[action='toggleHelper']", function() {
     $('.helperSlider').hide();
-    $('.iconQuestion').css("color", "#b8b9bc");
+    $('.helperMark').css("color", "#b8b9bc");i
     $(this).next('.helperSlider').toggle();
     $(this).css("color", "#079db5");
 });
 
 $("body").on("click", "[action='hideHelper']", function() {
     $('.helperSlider').hide();
-    $('.iconQuestion').css("color", "#b8b9bc");
+    $('.helperMark').css("color", "#b8b9bc");i
 });
 
 // social network sharing
