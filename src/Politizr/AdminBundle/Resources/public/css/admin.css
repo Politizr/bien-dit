@@ -54,14 +54,18 @@
 #ajaxGlobalLoader {
 	position: fixed;
 	width: 100%;
-	padding-top: 50%;
-	height: 50%;
+	height: 100%;
+	padding: 20%;
 	text-align: center;
-	font-size: 12px;
+	font-size: 14px;
 	color: #000;
 	left: 0;
 	top: 0;
-	background-color: transparent;
+	background-color: #fff;
 	z-index: 21000;
-	
+	-moz-opacity: 0.80;
+	opacity: 0.80;
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha"(Opacity=80);
+	filter: progid:DXImageTransform.Microsoft.Alpha(opacity=80);
+	filter:alpha(opacity=80);
 }
