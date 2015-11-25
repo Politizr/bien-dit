@@ -37,6 +37,9 @@ textarea:focus, input:focus { outline: 0;}
     color: $darkGrey;
 }
 
+// need update if changing max text count
+.commentCountWrapper .textCount:after { content: ' / 500';}
+
 .commentCountWrapper .error-text  {
 	color: $highlight;
 	display: inline-block;
@@ -75,7 +78,6 @@ textarea:focus, input:focus { outline: 0;}
 	font-size: 13px;
 	font-family: 'Merriweather';
     overflow: hidden;
-    min-height: 1em;
     margin-bottom: 5px;
     resize: none;
 	line-height: 180%;
