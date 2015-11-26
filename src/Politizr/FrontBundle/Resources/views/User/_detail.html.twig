@@ -40,9 +40,7 @@
     {% endif %}
 
     <div id="recentActivity">activité récente</div>
-    <div id="timeline">
-        <!-- @todo html/css bug sticky suite au reload ajax, la date reste collée en haut de l'écran -->
-        <!-- @todo html/css contenu de la timeline dans id listContent (idem my politizr) -->
+    <div id="timeline" uid="{{ user.id }}">
         <div id="listContent"></div>
     </div>
 </div>

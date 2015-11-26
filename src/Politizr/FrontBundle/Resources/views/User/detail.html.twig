@@ -59,11 +59,4 @@
         filter='uglifyjs2' %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
-
-    <script>
-        // on document ready
-        $(function() {
-            timelineUserList({{ user.id }});
-        });
-    </script>
 {% endblock javascriptFooter %}

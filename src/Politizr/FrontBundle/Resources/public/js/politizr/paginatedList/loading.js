@@ -67,7 +67,7 @@ function initPaginateNextWaypoint() {
                 $("[action='paginateNext']").trigger( "click", this );
             }
         },
-        context: '#testBoxContent',
+        context: '#listContent',
         offset: 'bottom-in-view'
     }); 
 }

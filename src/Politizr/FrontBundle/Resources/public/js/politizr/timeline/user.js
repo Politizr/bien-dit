@@ -1,3 +1,8 @@
+// on document ready
+$(function() {
+    timelineUserList($('#timeline').attr('uid'));
+});
+
 // User's timeline next page
 $("body").on("click", "[action='timelineUserPaginatedNext']", function(e, waypoint) {
     // console.log('timelinePaginatedNext next');
