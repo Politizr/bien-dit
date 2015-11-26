@@ -8,6 +8,7 @@ $("body").on("click", "[action='timelinePaginatedNext']", function(e, waypoint) 
     // console.log('timelinePaginatedNext next');
     if (waypoint) {
         waypoint.destroy();
+        // console.log('destroy waypoint instance');
     }
     timelineList(false, $(this).attr('offset'));
 });
@@ -17,6 +18,7 @@ $("body").on("click", "[action='timelinePaginatedNext']", function(e, waypoint) 
  */
 function initTimelinePaginateNextWaypoint() {
     // console.log('initTimelinePaginateNextWaypoint');
+    // console.log('create waypoint instance');
 
     var waypoints = $('#moreResults').waypoint({
         handler: function(direction) {

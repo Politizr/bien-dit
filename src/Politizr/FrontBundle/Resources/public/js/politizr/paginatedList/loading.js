@@ -21,21 +21,22 @@ $("body").on("change", ".filter", function(e) {
 
 // Page suivante
 $("body").on("click", "[action='paginateNext']", function(e, waypoint) {
-    console.log('paginate next');
+    // console.log('paginate next');
     if (waypoint) {
         waypoint.destroy();
+        // console.log('destroy waypoint instance');
     }
     listing(false, $(this).attr('offset'));
 });
 
 //
 $("body").on("postFollowDebateEvent", function(event, way) {
-    console.log('*** postFollowDebateEvent');
+    // console.log('*** postFollowDebateEvent');
     modalType = $('#modalBoxContent').attr('class');
 
     // @todo JS use constant
     if (modalType == 'modalSubscriptions') {
-        console.log('modal subscriptions');
+        // console.log('modal subscriptions');
         // dynamicaly offset updating
         if ($('#moreResults').attr('offset')) {
             var offset = parseInt($('#moreResults').attr('offset'));
@@ -44,31 +45,31 @@ $("body").on("postFollowDebateEvent", function(event, way) {
             } else {
                 offset = offset + 1;
             }
-            console.log(offset);
+            // console.log(offset);
             $('#moreResults').attr('offset', offset);
         }
     }
 });
 
-
 /**
  * Init a waypoint for paginate next
  */
 function initPaginateNextWaypoint() {
-    console.log('initPaginateNextWaypoint');
+    // console.log('initPaginateNextWaypoint');
+    // console.log('create waypoint instance');
 
     var waypoints = $('#moreResults').waypoint({
         handler: function(direction) {
-            console.log('Hit moreResults');
-            console.log(direction);
+            // console.log('Hit moreResults');
+            // console.log(direction);
     
             if (direction == 'down') {
                 $("[action='paginateNext']").trigger( "click", this );
             }
         },
-        context: '#listContent',
+        context: '#testBoxContent',
         offset: 'bottom-in-view'
-    });
+    }); 
 }
 
 /**
@@ -78,9 +79,9 @@ function initPaginateNextWaypoint() {
  * @param string withFilters  true | false
  */
 function initListing(type, withFilters) {
-    console.log('*** initListing');
-    console.log(type);
-    console.log(withFilters);
+    // console.log('*** initListing');
+    // console.log(type);
+    // console.log(withFilters);
 
     type = (typeof type === "undefined") ? 'debate' : type;
     withFilters = (typeof withFilters === "undefined") ? 'true' : withFilters;
@@ -129,9 +130,9 @@ function initListing(type, withFilters) {
  * @param string offset
  */
 function listing(init, offset) {
-    console.log('*** listing');
-    console.log(init);
-    console.log(offset);
+    // console.log('*** listing');
+    // console.log(init);
+    // console.log(offset);
 
     init = (typeof init === "undefined") ? true : init;
     offset = (typeof offset === "undefined") ? 0 : offset;
@@ -172,7 +173,7 @@ function listing(init, offset) {
                 $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
                 $('#infoBoxHolder .boxError').show();
             } else {
-                $('#timelineScrollNav').remove();
+                $('#modalScrollNav').remove();
                 if (init) {
                     $('#listContent').html(data['html']);
                 } else {
@@ -180,7 +181,7 @@ function listing(init, offset) {
                 }
 
                 // Waypoint for infinite scrolling 
-                initPaginateNextWaypoint();
+                // initPaginateNextWaypoint();
 
                 // maj DOM onSuccess
                 fullImgLiquid();
