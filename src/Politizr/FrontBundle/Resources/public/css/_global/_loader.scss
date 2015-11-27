@@ -174,14 +174,10 @@
 	width: 100%;
 	clear: both;
 	margin-bottom: 60px;
-	height: 60px; //test
-	background-color: aqua; //test
 }
 #timelineScrollNav {text-align: center;}
 
 #moreResults {
-	float: left;
-	clear: both;
 	font-family: 'nerisblack';
 	font-size: 10px;
 	color: #fff;
@@ -189,7 +185,7 @@
 	text-transform: uppercase;
 	padding: 10px 20px;
 	display: inline-block;
-	margin: 10px 0 20px 0;
+	margin: 20px 0;
 	cursor: pointer;
 }
 #moreResults:hover {background-color: $highlight;}
