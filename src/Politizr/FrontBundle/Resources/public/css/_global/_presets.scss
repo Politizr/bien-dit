@@ -240,9 +240,9 @@ body {
     color: $semiDarkGrey;
     line-height: 160%;
 }
-.boxInfo i.iconInfo {
-	margin-right: 4px;
-}
+.boxInfo i.iconInfo { margin-right: 4px;}
+.boxInfo b { font-weight: normal; font-family: 'nerisblack';}
+.fieldsetHeader .boxInfo {margin: 20px 0;}
 
 #footer {
 	padding: 60px 0 24px 0;
