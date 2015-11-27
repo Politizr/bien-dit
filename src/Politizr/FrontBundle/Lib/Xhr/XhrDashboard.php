@@ -97,9 +97,6 @@ class XhrDashboard
         $debateTagIds = $this->tagService->computePublicationGeotagRelativeIds($tag->getId());
         $userTagIds = $this->tagService->computeUserGeotagRelativeIds($tag->getId());
 
-        dump($debateTagIds);
-        dump($userTagIds);
-
         // 3 top debates
         $debates = PDDebateQuery::create()
                     ->distinct()
