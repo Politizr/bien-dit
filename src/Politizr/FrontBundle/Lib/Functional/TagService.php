@@ -58,7 +58,7 @@ class TagService
      */
     public function computePublicationGeotagRelativeIds($id)
     {
-        $this->logger->info('*** computeGeotagRelativeIds');
+        $this->logger->info('*** computePublicationGeotagRelativeIds');
 
         $ids = array();
         $tag = PTagQuery::create()->findPk($id);
@@ -89,7 +89,7 @@ class TagService
      */
     public function computeUserGeotagRelativeIds($id)
     {
-        $this->logger->info('*** computeGeotagRelativeIds');
+        $this->logger->info('*** computeUserGeotagRelativeIds');
 
         $ids = array();
         $tag = PTagQuery::create()->findPk($id);
