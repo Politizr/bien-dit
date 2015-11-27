@@ -65,6 +65,12 @@ abstract class BasePDDebate extends BaseObject implements Persistent
     protected $id;
 
     /**
+     * The value for the uuid field.
+     * @var        string
+     */
+    protected $uuid;
+
+    /**
      * The value for the p_user_id field.
      * @var        int
      */
@@ -322,6 +328,17 @@ abstract class BasePDDebate extends BaseObject implements Persistent
     {
 
         return $this->id;
+    }
+
+    /**
+     * Get the [uuid] column value.
+     *
+     * @return string
+     */
+    public function getUuid()
+    {
+
+        return $this->uuid;
     }
 
     /**
@@ -669,6 +686,27 @@ abstract class BasePDDebate extends BaseObject implements Persistent
 
         return $this;
     } // setId()
+
+    /**
+     * Set the value of [uuid] column.
+     *
+     * @param  string $v new value
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function setUuid($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->uuid !== $v) {
+            $this->uuid = $v;
+            $this->modifiedColumns[] = PDDebatePeer::UUID;
+        }
+
+
+        return $this;
+    } // setUuid()
 
     /**
      * Set the value of [p_user_id] column.
@@ -1162,25 +1200,26 @@ abstract class BasePDDebate extends BaseObject implements Persistent
         try {
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->p_user_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
-            $this->title = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-            $this->file_name = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-            $this->copyright = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-            $this->description = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->note_pos = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
-            $this->note_neg = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
-            $this->nb_views = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
-            $this->published = ($row[$startcol + 9] !== null) ? (boolean) $row[$startcol + 9] : null;
-            $this->published_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
-            $this->published_by = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
-            $this->favorite = ($row[$startcol + 12] !== null) ? (boolean) $row[$startcol + 12] : null;
-            $this->online = ($row[$startcol + 13] !== null) ? (boolean) $row[$startcol + 13] : null;
-            $this->moderated = ($row[$startcol + 14] !== null) ? (boolean) $row[$startcol + 14] : null;
-            $this->moderated_partial = ($row[$startcol + 15] !== null) ? (boolean) $row[$startcol + 15] : null;
-            $this->moderated_at = ($row[$startcol + 16] !== null) ? (string) $row[$startcol + 16] : null;
-            $this->created_at = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
-            $this->updated_at = ($row[$startcol + 18] !== null) ? (string) $row[$startcol + 18] : null;
-            $this->slug = ($row[$startcol + 19] !== null) ? (string) $row[$startcol + 19] : null;
+            $this->uuid = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
+            $this->p_user_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+            $this->title = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+            $this->file_name = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->copyright = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->description = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->note_pos = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
+            $this->note_neg = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
+            $this->nb_views = ($row[$startcol + 9] !== null) ? (int) $row[$startcol + 9] : null;
+            $this->published = ($row[$startcol + 10] !== null) ? (boolean) $row[$startcol + 10] : null;
+            $this->published_at = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+            $this->published_by = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+            $this->favorite = ($row[$startcol + 13] !== null) ? (boolean) $row[$startcol + 13] : null;
+            $this->online = ($row[$startcol + 14] !== null) ? (boolean) $row[$startcol + 14] : null;
+            $this->moderated = ($row[$startcol + 15] !== null) ? (boolean) $row[$startcol + 15] : null;
+            $this->moderated_partial = ($row[$startcol + 16] !== null) ? (boolean) $row[$startcol + 16] : null;
+            $this->moderated_at = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
+            $this->created_at = ($row[$startcol + 18] !== null) ? (string) $row[$startcol + 18] : null;
+            $this->updated_at = ($row[$startcol + 19] !== null) ? (string) $row[$startcol + 19] : null;
+            $this->slug = ($row[$startcol + 20] !== null) ? (string) $row[$startcol + 20] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -1190,7 +1229,7 @@ abstract class BasePDDebate extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 20; // 20 = PDDebatePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 21; // 21 = PDDebatePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PDDebate object", $e);
@@ -1616,6 +1655,9 @@ abstract class BasePDDebate extends BaseObject implements Persistent
         if ($this->isColumnModified(PDDebatePeer::ID)) {
             $modifiedColumns[':p' . $index++]  = '`id`';
         }
+        if ($this->isColumnModified(PDDebatePeer::UUID)) {
+            $modifiedColumns[':p' . $index++]  = '`uuid`';
+        }
         if ($this->isColumnModified(PDDebatePeer::P_USER_ID)) {
             $modifiedColumns[':p' . $index++]  = '`p_user_id`';
         }
@@ -1686,6 +1728,9 @@ abstract class BasePDDebate extends BaseObject implements Persistent
                 switch ($columnName) {
                     case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
+                        break;
+                    case '`uuid`':
+                        $stmt->bindValue($identifier, $this->uuid, PDO::PARAM_STR);
                         break;
                     case '`p_user_id`':
                         $stmt->bindValue($identifier, $this->p_user_id, PDO::PARAM_INT);
@@ -1934,60 +1979,63 @@ abstract class BasePDDebate extends BaseObject implements Persistent
                 return $this->getId();
                 break;
             case 1:
-                return $this->getPUserId();
+                return $this->getUuid();
                 break;
             case 2:
-                return $this->getTitle();
+                return $this->getPUserId();
                 break;
             case 3:
-                return $this->getFileName();
+                return $this->getTitle();
                 break;
             case 4:
-                return $this->getCopyright();
+                return $this->getFileName();
                 break;
             case 5:
-                return $this->getDescription();
+                return $this->getCopyright();
                 break;
             case 6:
-                return $this->getNotePos();
+                return $this->getDescription();
                 break;
             case 7:
-                return $this->getNoteNeg();
+                return $this->getNotePos();
                 break;
             case 8:
-                return $this->getNbViews();
+                return $this->getNoteNeg();
                 break;
             case 9:
-                return $this->getPublished();
+                return $this->getNbViews();
                 break;
             case 10:
-                return $this->getPublishedAt();
+                return $this->getPublished();
                 break;
             case 11:
-                return $this->getPublishedBy();
+                return $this->getPublishedAt();
                 break;
             case 12:
-                return $this->getFavorite();
+                return $this->getPublishedBy();
                 break;
             case 13:
-                return $this->getOnline();
+                return $this->getFavorite();
                 break;
             case 14:
-                return $this->getModerated();
+                return $this->getOnline();
                 break;
             case 15:
-                return $this->getModeratedPartial();
+                return $this->getModerated();
                 break;
             case 16:
-                return $this->getModeratedAt();
+                return $this->getModeratedPartial();
                 break;
             case 17:
-                return $this->getCreatedAt();
+                return $this->getModeratedAt();
                 break;
             case 18:
-                return $this->getUpdatedAt();
+                return $this->getCreatedAt();
                 break;
             case 19:
+                return $this->getUpdatedAt();
+                break;
+            case 20:
                 return $this->getSlug();
                 break;
             default:
@@ -2020,25 +2068,26 @@ abstract class BasePDDebate extends BaseObject implements Persistent
         $keys = PDDebatePeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getPUserId(),
-            $keys[2] => $this->getTitle(),
-            $keys[3] => $this->getFileName(),
-            $keys[4] => $this->getCopyright(),
-            $keys[5] => $this->getDescription(),
-            $keys[6] => $this->getNotePos(),
-            $keys[7] => $this->getNoteNeg(),
-            $keys[8] => $this->getNbViews(),
-            $keys[9] => $this->getPublished(),
-            $keys[10] => $this->getPublishedAt(),
-            $keys[11] => $this->getPublishedBy(),
-            $keys[12] => $this->getFavorite(),
-            $keys[13] => $this->getOnline(),
-            $keys[14] => $this->getModerated(),
-            $keys[15] => $this->getModeratedPartial(),
-            $keys[16] => $this->getModeratedAt(),
-            $keys[17] => $this->getCreatedAt(),
-            $keys[18] => $this->getUpdatedAt(),
-            $keys[19] => $this->getSlug(),
+            $keys[1] => $this->getUuid(),
+            $keys[2] => $this->getPUserId(),
+            $keys[3] => $this->getTitle(),
+            $keys[4] => $this->getFileName(),
+            $keys[5] => $this->getCopyright(),
+            $keys[6] => $this->getDescription(),
+            $keys[7] => $this->getNotePos(),
+            $keys[8] => $this->getNoteNeg(),
+            $keys[9] => $this->getNbViews(),
+            $keys[10] => $this->getPublished(),
+            $keys[11] => $this->getPublishedAt(),
+            $keys[12] => $this->getPublishedBy(),
+            $keys[13] => $this->getFavorite(),
+            $keys[14] => $this->getOnline(),
+            $keys[15] => $this->getModerated(),
+            $keys[16] => $this->getModeratedPartial(),
+            $keys[17] => $this->getModeratedAt(),
+            $keys[18] => $this->getCreatedAt(),
+            $keys[19] => $this->getUpdatedAt(),
+            $keys[20] => $this->getSlug(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -2102,60 +2151,63 @@ abstract class BasePDDebate extends BaseObject implements Persistent
                 $this->setId($value);
                 break;
             case 1:
-                $this->setPUserId($value);
+                $this->setUuid($value);
                 break;
             case 2:
-                $this->setTitle($value);
+                $this->setPUserId($value);
                 break;
             case 3:
-                $this->setFileName($value);
+                $this->setTitle($value);
                 break;
             case 4:
-                $this->setCopyright($value);
+                $this->setFileName($value);
                 break;
             case 5:
-                $this->setDescription($value);
+                $this->setCopyright($value);
                 break;
             case 6:
-                $this->setNotePos($value);
+                $this->setDescription($value);
                 break;
             case 7:
-                $this->setNoteNeg($value);
+                $this->setNotePos($value);
                 break;
             case 8:
-                $this->setNbViews($value);
+                $this->setNoteNeg($value);
                 break;
             case 9:
-                $this->setPublished($value);
+                $this->setNbViews($value);
                 break;
             case 10:
-                $this->setPublishedAt($value);
+                $this->setPublished($value);
                 break;
             case 11:
-                $this->setPublishedBy($value);
+                $this->setPublishedAt($value);
                 break;
             case 12:
-                $this->setFavorite($value);
+                $this->setPublishedBy($value);
                 break;
             case 13:
-                $this->setOnline($value);
+                $this->setFavorite($value);
                 break;
             case 14:
-                $this->setModerated($value);
+                $this->setOnline($value);
                 break;
             case 15:
-                $this->setModeratedPartial($value);
+                $this->setModerated($value);
                 break;
             case 16:
-                $this->setModeratedAt($value);
+                $this->setModeratedPartial($value);
                 break;
             case 17:
-                $this->setCreatedAt($value);
+                $this->setModeratedAt($value);
                 break;
             case 18:
-                $this->setUpdatedAt($value);
+                $this->setCreatedAt($value);
                 break;
             case 19:
+                $this->setUpdatedAt($value);
+                break;
+            case 20:
                 $this->setSlug($value);
                 break;
         } // switch()
@@ -2183,25 +2235,26 @@ abstract class BasePDDebate extends BaseObject implements Persistent
         $keys = PDDebatePeer::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setPUserId($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setTitle($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setFileName($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setCopyright($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setDescription($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setNotePos($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setNoteNeg($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setNbViews($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setPublished($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setPublishedAt($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setPublishedBy($arr[$keys[11]]);
-        if (array_key_exists($keys[12], $arr)) $this->setFavorite($arr[$keys[12]]);
-        if (array_key_exists($keys[13], $arr)) $this->setOnline($arr[$keys[13]]);
-        if (array_key_exists($keys[14], $arr)) $this->setModerated($arr[$keys[14]]);
-        if (array_key_exists($keys[15], $arr)) $this->setModeratedPartial($arr[$keys[15]]);
-        if (array_key_exists($keys[16], $arr)) $this->setModeratedAt($arr[$keys[16]]);
-        if (array_key_exists($keys[17], $arr)) $this->setCreatedAt($arr[$keys[17]]);
-        if (array_key_exists($keys[18], $arr)) $this->setUpdatedAt($arr[$keys[18]]);
-        if (array_key_exists($keys[19], $arr)) $this->setSlug($arr[$keys[19]]);
+        if (array_key_exists($keys[1], $arr)) $this->setUuid($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setPUserId($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setTitle($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setFileName($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setCopyright($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setDescription($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setNotePos($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setNoteNeg($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setNbViews($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setPublished($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setPublishedAt($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setPublishedBy($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setFavorite($arr[$keys[13]]);
+        if (array_key_exists($keys[14], $arr)) $this->setOnline($arr[$keys[14]]);
+        if (array_key_exists($keys[15], $arr)) $this->setModerated($arr[$keys[15]]);
+        if (array_key_exists($keys[16], $arr)) $this->setModeratedPartial($arr[$keys[16]]);
+        if (array_key_exists($keys[17], $arr)) $this->setModeratedAt($arr[$keys[17]]);
+        if (array_key_exists($keys[18], $arr)) $this->setCreatedAt($arr[$keys[18]]);
+        if (array_key_exists($keys[19], $arr)) $this->setUpdatedAt($arr[$keys[19]]);
+        if (array_key_exists($keys[20], $arr)) $this->setSlug($arr[$keys[20]]);
     }
 
     /**
@@ -2214,6 +2267,7 @@ abstract class BasePDDebate extends BaseObject implements Persistent
         $criteria = new Criteria(PDDebatePeer::DATABASE_NAME);
 
         if ($this->isColumnModified(PDDebatePeer::ID)) $criteria->add(PDDebatePeer::ID, $this->id);
+        if ($this->isColumnModified(PDDebatePeer::UUID)) $criteria->add(PDDebatePeer::UUID, $this->uuid);
         if ($this->isColumnModified(PDDebatePeer::P_USER_ID)) $criteria->add(PDDebatePeer::P_USER_ID, $this->p_user_id);
         if ($this->isColumnModified(PDDebatePeer::TITLE)) $criteria->add(PDDebatePeer::TITLE, $this->title);
         if ($this->isColumnModified(PDDebatePeer::FILE_NAME)) $criteria->add(PDDebatePeer::FILE_NAME, $this->file_name);
@@ -2296,6 +2350,7 @@ abstract class BasePDDebate extends BaseObject implements Persistent
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
+        $copyObj->setUuid($this->getUuid());
         $copyObj->setPUserId($this->getPUserId());
         $copyObj->setTitle($this->getTitle());
         $copyObj->setFileName($this->getFileName());
@@ -4113,6 +4168,7 @@ abstract class BasePDDebate extends BaseObject implements Persistent
     public function clear()
     {
         $this->id = null;
+        $this->uuid = null;
         $this->p_user_id = null;
         $this->title = null;
         $this->file_name = null;
@@ -4394,6 +4450,32 @@ abstract class BasePDDebate extends BaseObject implements Persistent
         return $slug2 . ($slugNum + 1);
     }
 
+    // uuid behavior
+    /**
+    * Create UUID if is NULL Uuid*/
+    public function preInsert(PropelPDO $con = NULL) {
+
+        if(is_null($this->getUuid())) {
+            $this->setUuid(\Ramsey\Uuid\Uuid::uuid4()->__toString());
+        } else {
+            $uuid = $this->getUuid();
+            if(!\Ramsey\Uuid\Uuid::isValid($uuid)) {
+                throw new \InvalidArgumentException('UUID: ' . $uuid . ' in not valid');
+                return false;
+            }
+        }
+        return true;
+    }
+    /**
+    * If permanent UUID, throw exception p_d_debate.uuid*/
+    public function preUpdate(PropelPDO $con = NULL) {
+            $uuid = $this->getUuid();
+        if(!is_null($uuid) && !\Ramsey\Uuid\Uuid::isValid($uuid)) {
+            throw new \InvalidArgumentException("UUID: $uuid in not valid");
+        }
+            return true;
+    }
+
     // archivable behavior
 
     /**
@@ -4476,6 +4558,7 @@ abstract class BasePDDebate extends BaseObject implements Persistent
         if ($populateAutoIncrementPrimaryKeys) {
             $this->setId($archive->getId());
         }
+        $this->setUuid($archive->getUuid());
         $this->setPUserId($archive->getPUserId());
         $this->setTitle($archive->getTitle());
         $this->setFileName($archive->getFileName());

@@ -11,6 +11,8 @@ use Politizr\Constant\ListingConstants;
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
 use Politizr\Model\PUserQuery;
+use Politizr\Model\PTagQuery;
+use Politizr\Model\PQOrganizationQuery;
 
 /**
  * XHR service for modal management.
@@ -55,7 +57,7 @@ class XhrModal
      *    - order,
      *    - filters,
      *    - offset,
-     *    - associated object id (option),
+     *    - associated object uuid (option),
      *
      * @return array[order,filters,offset,associatedObjectId]
      */
@@ -69,13 +71,13 @@ class XhrModal
         $this->logger->info('$filtersUserType = ' . print_r($filtersUserType, true));
         $offset = $request->get('offset');
         $this->logger->info('$offset = ' . print_r($offset, true));
-        $subjectId = $request->get('subjectId');
-        $this->logger->info('$subjectId = ' . print_r($subjectId, true));
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
 
         // regroupement des filtres
         $filters = array_merge($filtersDate, $filtersUserType);
 
-        return [ $order, $filters, $offset, $subjectId ];
+        return [ $order, $filters, $offset, $uuid ];
     }
 
     /* ######################################################################################################## */
@@ -94,22 +96,28 @@ class XhrModal
         $this->logger->info('$twigTemplate = ' . print_r($twigTemplate, true));
         $model = $request->get('model');
         $this->logger->info('$model = ' . print_r($model, true));
-        $slug = $request->get('slug');
-        $this->logger->info('$slug = ' . print_r($slug, true));
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        $defaultType = $request->get('defaultType');
+        $this->logger->info('$defaultType = ' . print_r($defaultType, true));
+        $defaultOrderFilters = $request->get('defaultOrderFilters');
+        $this->logger->info('$defaultOrderFilters = ' . print_r($defaultOrderFilters, true));
 
         // Function process
         $subject = null;
-        if ($model && $slug) {
+        if ($model && $uuid) {
             $queryModel = 'Politizr\Model\\' . $model . 'Query';
             $subject = $queryModel::create()
-                ->filterBySlug($slug)
+                ->filterByUuid($uuid)
                 ->findOne();
         }
 
         $html = $this->templating->render(
             'PolitizrFrontBundle:PaginatedList:'.$twigTemplate,
             array(
-                'subject' => $subject
+                'subject' => $subject,
+                'defaultType' => $defaultType,
+                'defaultOrderFilters' => $defaultOrderFilters,
             )
         );
 
@@ -126,29 +134,52 @@ class XhrModal
         $this->logger->info('*** filters');
         
         // Request arguments
-        $type = $request->get('type');
-        $this->logger->info('$type = ' . print_r($type, true));
+        $defaultType = $request->get('defaultType');
+        $this->logger->info('$defaultType = ' . print_r($defaultType, true));
+        $defaultOrderFilters = $request->get('defaultOrderFilters');
+        $this->logger->info('$defaultOrderFilters = ' . print_r($defaultOrderFilters, true));
 
-        if ('debate' === $type) {
+        if ('debate' === $defaultType) {
             $listOrder = $this->templating->render(
-                'PolitizrFrontBundle:PaginatedList:_formOrderByDebate.html.twig'
+                'PolitizrFrontBundle:PaginatedList:_formOrderByDebate.html.twig',
+                array(
+                    'defaultOrder' => $defaultOrderFilters[0]['value'],
+                )
             );
             $listFilter = $this->templating->render(
-                'PolitizrFrontBundle:PaginatedList:_formFiltersByDebate.html.twig'
+                'PolitizrFrontBundle:PaginatedList:_formFiltersByDebate.html.twig',
+                array(
+                    'defaultFiltersByDate' => $defaultOrderFilters[1]['value'],
+                    'defaultFiltersByUser' => $defaultOrderFilters[2]['value'],
+                )
             );
-        } elseif ('reaction' === $type) {
+        } elseif ('reaction' === $defaultType) {
             $listOrder = $this->templating->render(
-                'PolitizrFrontBundle:PaginatedList:_formOrderByReaction.html.twig'
+                'PolitizrFrontBundle:PaginatedList:_formOrderByReaction.html.twig',
+                array(
+                    'defaultOrder' => $defaultOrderFilters[0]['value'],
+                )
             );
             $listFilter = $this->templating->render(
-                'PolitizrFrontBundle:PaginatedList:_formFiltersByReaction.html.twig'
+                'PolitizrFrontBundle:PaginatedList:_formFiltersByReaction.html.twig',
+                array(
+                    'defaultFiltersByDate' => $defaultOrderFilters[1]['value'],
+                    'defaultFiltersByUser' => $defaultOrderFilters[2]['value'],
+                )
             );
-        } elseif ('user' === $type) {
+        } elseif ('user' === $defaultType) {
             $listOrder = $this->templating->render(
-                'PolitizrFrontBundle:PaginatedList:_formOrderByUser.html.twig'
+                'PolitizrFrontBundle:PaginatedList:_formOrderByUser.html.twig',
+                array(
+                    'defaultOrder' => $defaultOrderFilters[0]['value'],
+                )
             );
             $listFilter = $this->templating->render(
-                'PolitizrFrontBundle:PaginatedList:_formFiltersByUser.html.twig'
+                'PolitizrFrontBundle:PaginatedList:_formFiltersByUser.html.twig',
+                array(
+                    'defaultFiltersByDate' => $defaultOrderFilters[1]['value'],
+                    'defaultFiltersByUser' => $defaultOrderFilters[2]['value'],
+                )
             );
         }
 
@@ -232,14 +263,21 @@ class XhrModal
 
         // Get tags from search session
         $session = $request->getSession();
-        $tags = $session->get('search/tag');
-        $this->logger->info('session tags = '.print_r($tags, true));
+        $tagUuids = $session->get('search/tag');
+        $this->logger->info('session tags = '.print_r($tagUuids, true));
 
         // at least one tag
         if (empty($tags)) {
             $error = 'Vous devez saisir au moins un tag';
             throw new FormValidationException($error);
         }
+
+        // uuids > ids
+        $tags = array();
+        foreach ($tagUuids as $tagUuid) {
+            $tags[] = PTagQuery::create()->select('Id')->filterByUuid($tagUuid)->findOne();
+        }
+        $this->logger->info('tags = '.print_r($tags, true));
 
         // @todo http://dba.stackexchange.com/questions/45512/how-do-i-select-items-from-a-table-where-a-single-column-must-contain-two-or-mo
         $debates = PDDebateQuery::create()
@@ -744,10 +782,13 @@ class XhrModal
         $order = $queryParams[0];
         $filters = $queryParams[1];
         $offset = $queryParams[2];
-        $subjectId = $queryParams[3];
+        $uuid = $queryParams[3];
+
+        // Retrieve subject
+        $tag = PTagQuery::create()->filterByUuid($uuid)->findOne();
 
         // Compute relative geo tag ids
-        $tagIds = $this->tagService->computeGeotagRelativeIds($subjectId);
+        $tagIds = $this->tagService->computePublicationGeotagRelativeIds($tag->getId());
 
         // Function process
         $debates = PDDebateQuery::create()
@@ -804,10 +845,13 @@ class XhrModal
         $order = $queryParams[0];
         $filters = $queryParams[1];
         $offset = $queryParams[2];
-        $subjectId = $queryParams[3];
+        $uuid = $queryParams[3];
+
+        // Retrieve subject
+        $tag = PTagQuery::create()->filterByUuid($uuid)->findOne();
 
         // Compute relative geo tag ids
-        $tagIds = $this->tagService->computeGeotagRelativeIds($subjectId);
+        $tagIds = $this->tagService->computePublicationGeotagRelativeIds($tag->getId());
 
         // Function process
         $reactions = PDReactionQuery::create()
@@ -864,10 +908,13 @@ class XhrModal
         $order = $queryParams[0];
         $filters = $queryParams[1];
         $offset = $queryParams[2];
-        $subjectId = $queryParams[3];
+        $uuid = $queryParams[3];
+
+        // Retrieve subject
+        $tag = PTagQuery::create()->filterByUuid($uuid)->findOne();
 
         // Compute relative geo tag ids
-        $tagIds = $this->tagService->computeGeotagRelativeIds($subjectId);
+        $tagIds = $this->tagService->computeUserGeotagRelativeIds($tag->getId());
 
         // Function process
         $users = PUserQuery::create()
@@ -928,18 +975,21 @@ class XhrModal
         $order = $queryParams[0];
         $filters = $queryParams[1];
         $offset = $queryParams[2];
-        $subjectId = $queryParams[3];
+        $uuid = $queryParams[3];
+
+        // Retrieve subject
+        $organization = PQOrganizationQuery::create()->filterByUuid($uuid)->findOne();
 
         // Function process
         $users = PUserQuery::create()
                     ->distinct()
                     ->online()
                     ->usePUCurrentQOPUserQuery(null, \Criteria::LEFT_JOIN)
-                        ->filterByPQOrganizationId($subjectId)
+                        ->filterByPQOrganizationId($organization->getId())
                     ->endUse()
                     ->_or()
                     ->usePUAffinityQOPUserQuery(null, \Criteria::LEFT_JOIN)
-                        ->filterByPQOrganizationId($subjectId)
+                        ->filterByPQOrganizationId($organization->getId())
                     ->endUse()
                     ->filterByKeywords($filters)
                     ->orderWithKeyword($order)
@@ -1114,10 +1164,10 @@ class XhrModal
         $order = $queryParams[0];
         $filters = $queryParams[1];
         $offset = $queryParams[2];
-        $subjectId = $queryParams[3];
+        $uuid = $queryParams[3];
 
         // Function process
-        $user = PUserQuery::create()->findPk($subjectId);
+        $user = PUserQuery::create()->filterByUuid($uuid)->findOne();
 
         $query = PUserQuery::create()
                     ->distinct()

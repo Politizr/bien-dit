@@ -155,7 +155,7 @@ $('body').on('click', "[action='debatePublish']", function(e){
         RETURN_URL
         );
 
-    var subjectId = $(this).attr('subjectId');
+    var uuid = $(this).attr('uuid');
     var confirmMsg = "Une fois publié, vous ne pourrez plus modifier votre débat. Voulez-vous publier votre débat?";
     smoke.confirm(confirmMsg, function(e) {
         if (e) {
@@ -163,7 +163,7 @@ $('body').on('click', "[action='debatePublish']", function(e){
                 type: 'POST',
                 dataType: 'json',
                 url : xhrPath,
-                data: { 'id': subjectId },
+                data: { 'uuid': uuid },
                 dataType: 'json',
                 beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
                 statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
@@ -202,7 +202,7 @@ $('body').on('click', "[action='reactionPublish']", function(e){
         RETURN_URL
         );
     
-    var subjectId = $(this).attr('subjectId');
+    var uuid = $(this).attr('uuid');
     var confirmMsg = "Une fois publié, vous ne pourrez plus modifier votre réaction. Voulez-vous publier votre réaction?";
     smoke.confirm(confirmMsg, function(e) {
         if (e) {
@@ -210,7 +210,7 @@ $('body').on('click', "[action='reactionPublish']", function(e){
                 type: 'POST',
                 dataType: 'json',
                 url : xhrPath,
-                data: { 'id': subjectId },
+                data: { 'uuid': uuid },
                 dataType: 'json',
                 beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
                 statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
@@ -246,7 +246,7 @@ $('body').on('click', "[action='debateDelete']", function(e){
         RETURN_URL
         );
 
-    var subjectId = $('#debate_id').val();
+    var uuid = $('#debate_id').val();
     var confirmMsg = "Êtes-vous sûr de vouloir supprimer votre brouillon?";
     smoke.confirm(confirmMsg, function(e) {
         if (e) {
@@ -254,7 +254,7 @@ $('body').on('click', "[action='debateDelete']", function(e){
                 type: 'POST',
                 dataType: 'json',
                 url : xhrPath,
-                data: { 'id': subjectId },
+                data: { 'uuid': uuid },
                 dataType: 'json',
                 beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
                 statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
@@ -290,7 +290,7 @@ $('body').on('click', "[action='reactionDelete']", function(e){
         RETURN_URL
         );
 
-    var subjectId = $('#reaction_id').val();
+    var uuid = $('#reaction_id').val();
     var confirmMsg = "Êtes-vous sûr de vouloir supprimer votre brouillon?";
     smoke.confirm(confirmMsg, function(e) {
         if (e) {
@@ -298,7 +298,7 @@ $('body').on('click', "[action='reactionDelete']", function(e){
                 type: 'POST',
                 dataType: 'json',
                 url : xhrPath,
-                data: { 'id': subjectId },
+                data: { 'uuid': uuid },
                 dataType: 'json',
                 beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
                 statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },

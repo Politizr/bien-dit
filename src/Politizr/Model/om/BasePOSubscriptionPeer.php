@@ -35,16 +35,19 @@ abstract class BasePOSubscriptionPeer
     const TM_CLASS = 'Politizr\\Model\\map\\POSubscriptionTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 9;
+    const NUM_COLUMNS = 10;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 9;
+    const NUM_HYDRATE_COLUMNS = 10;
 
     /** the column name for the id field */
     const ID = 'p_o_subscription.id';
+
+    /** the column name for the uuid field */
+    const UUID = 'p_o_subscription.uuid';
 
     /** the column name for the title field */
     const TITLE = 'p_o_subscription.title';
@@ -96,12 +99,12 @@ abstract class BasePOSubscriptionPeer
      * e.g. POSubscriptionPeer::$fieldNames[POSubscriptionPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Title', 'Description', 'Price', 'Online', 'CreatedAt', 'UpdatedAt', 'Slug', 'SortableRank', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'title', 'description', 'price', 'online', 'createdAt', 'updatedAt', 'slug', 'sortableRank', ),
-        BasePeer::TYPE_COLNAME => array (POSubscriptionPeer::ID, POSubscriptionPeer::TITLE, POSubscriptionPeer::DESCRIPTION, POSubscriptionPeer::PRICE, POSubscriptionPeer::ONLINE, POSubscriptionPeer::CREATED_AT, POSubscriptionPeer::UPDATED_AT, POSubscriptionPeer::SLUG, POSubscriptionPeer::SORTABLE_RANK, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'TITLE', 'DESCRIPTION', 'PRICE', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', 'SLUG', 'SORTABLE_RANK', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'title', 'description', 'price', 'online', 'created_at', 'updated_at', 'slug', 'sortable_rank', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'Title', 'Description', 'Price', 'Online', 'CreatedAt', 'UpdatedAt', 'Slug', 'SortableRank', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'title', 'description', 'price', 'online', 'createdAt', 'updatedAt', 'slug', 'sortableRank', ),
+        BasePeer::TYPE_COLNAME => array (POSubscriptionPeer::ID, POSubscriptionPeer::UUID, POSubscriptionPeer::TITLE, POSubscriptionPeer::DESCRIPTION, POSubscriptionPeer::PRICE, POSubscriptionPeer::ONLINE, POSubscriptionPeer::CREATED_AT, POSubscriptionPeer::UPDATED_AT, POSubscriptionPeer::SLUG, POSubscriptionPeer::SORTABLE_RANK, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'TITLE', 'DESCRIPTION', 'PRICE', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', 'SLUG', 'SORTABLE_RANK', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'title', 'description', 'price', 'online', 'created_at', 'updated_at', 'slug', 'sortable_rank', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
     );
 
     /**
@@ -111,12 +114,12 @@ abstract class BasePOSubscriptionPeer
      * e.g. POSubscriptionPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Title' => 1, 'Description' => 2, 'Price' => 3, 'Online' => 4, 'CreatedAt' => 5, 'UpdatedAt' => 6, 'Slug' => 7, 'SortableRank' => 8, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'title' => 1, 'description' => 2, 'price' => 3, 'online' => 4, 'createdAt' => 5, 'updatedAt' => 6, 'slug' => 7, 'sortableRank' => 8, ),
-        BasePeer::TYPE_COLNAME => array (POSubscriptionPeer::ID => 0, POSubscriptionPeer::TITLE => 1, POSubscriptionPeer::DESCRIPTION => 2, POSubscriptionPeer::PRICE => 3, POSubscriptionPeer::ONLINE => 4, POSubscriptionPeer::CREATED_AT => 5, POSubscriptionPeer::UPDATED_AT => 6, POSubscriptionPeer::SLUG => 7, POSubscriptionPeer::SORTABLE_RANK => 8, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'TITLE' => 1, 'DESCRIPTION' => 2, 'PRICE' => 3, 'ONLINE' => 4, 'CREATED_AT' => 5, 'UPDATED_AT' => 6, 'SLUG' => 7, 'SORTABLE_RANK' => 8, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'title' => 1, 'description' => 2, 'price' => 3, 'online' => 4, 'created_at' => 5, 'updated_at' => 6, 'slug' => 7, 'sortable_rank' => 8, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'Title' => 2, 'Description' => 3, 'Price' => 4, 'Online' => 5, 'CreatedAt' => 6, 'UpdatedAt' => 7, 'Slug' => 8, 'SortableRank' => 9, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'title' => 2, 'description' => 3, 'price' => 4, 'online' => 5, 'createdAt' => 6, 'updatedAt' => 7, 'slug' => 8, 'sortableRank' => 9, ),
+        BasePeer::TYPE_COLNAME => array (POSubscriptionPeer::ID => 0, POSubscriptionPeer::UUID => 1, POSubscriptionPeer::TITLE => 2, POSubscriptionPeer::DESCRIPTION => 3, POSubscriptionPeer::PRICE => 4, POSubscriptionPeer::ONLINE => 5, POSubscriptionPeer::CREATED_AT => 6, POSubscriptionPeer::UPDATED_AT => 7, POSubscriptionPeer::SLUG => 8, POSubscriptionPeer::SORTABLE_RANK => 9, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'TITLE' => 2, 'DESCRIPTION' => 3, 'PRICE' => 4, 'ONLINE' => 5, 'CREATED_AT' => 6, 'UPDATED_AT' => 7, 'SLUG' => 8, 'SORTABLE_RANK' => 9, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'title' => 2, 'description' => 3, 'price' => 4, 'online' => 5, 'created_at' => 6, 'updated_at' => 7, 'slug' => 8, 'sortable_rank' => 9, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
     );
 
     /**
@@ -191,6 +194,7 @@ abstract class BasePOSubscriptionPeer
     {
         if (null === $alias) {
             $criteria->addSelectColumn(POSubscriptionPeer::ID);
+            $criteria->addSelectColumn(POSubscriptionPeer::UUID);
             $criteria->addSelectColumn(POSubscriptionPeer::TITLE);
             $criteria->addSelectColumn(POSubscriptionPeer::DESCRIPTION);
             $criteria->addSelectColumn(POSubscriptionPeer::PRICE);
@@ -201,6 +205,7 @@ abstract class BasePOSubscriptionPeer
             $criteria->addSelectColumn(POSubscriptionPeer::SORTABLE_RANK);
         } else {
             $criteria->addSelectColumn($alias . '.id');
+            $criteria->addSelectColumn($alias . '.uuid');
             $criteria->addSelectColumn($alias . '.title');
             $criteria->addSelectColumn($alias . '.description');
             $criteria->addSelectColumn($alias . '.price');

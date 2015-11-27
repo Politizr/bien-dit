@@ -8,6 +8,10 @@ params:
     fields:
         id:
             label:          ID
+        uuid:
+            label:          UUID
+        slug:
+            label:          Slug
         p_r_badge_family_id:
             label:          Famille
         p_r_badge_family:
@@ -64,11 +68,18 @@ builders:
                 "Contenu":
                     "Texte":                    [ [ p_r_badge_family  ], [ title ] ]
                 "Attributs":
+                    "Identifiants":             [ [ id, uuid, slug ] ]
                     "Création":                 [ [ online ], [ created_at, updated_at ] ]
             fields:
                 p_r_badge_family:
                     addFormOptions:
                         query:                  \Politizr\Model\PRBadgeFamilyQuery::create()->orderByRank() 
+                id:
+                    addFormOptions:
+                        read_only:              true
+                uuid:
+                    addFormOptions:
+                        read_only:              true
                 created_at:
                     addFormOptions:
                       widget:                   single_text

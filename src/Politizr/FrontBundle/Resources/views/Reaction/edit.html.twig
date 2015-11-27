@@ -30,14 +30,14 @@
             <div class="ajaxLoaderSpinner"></div><div class="ajaxLoaderBg"></div><div class="ajaxLoaderBlockClick"></div>
         </div>
         <div class="actionSave">
-            <a action="reactionSave" subjectId="{{ reaction.id }}"><i class="iconDraft"></i>enregistrer</a>
+            <a action="reactionSave" uuid="{{ reaction.uuid }}"><i class="iconDraft"></i>enregistrer</a>
         </div>
 
-        {{ app.user | isAuthorizedToPublishReaction(reaction.id) }}
+        {{ app.user | isAuthorizedToPublishReaction(reaction.uuid) }}
 
         <div class="actionDelete">
             <!-- @todo html/css à prévoir & styler -->
-            <a action="reactionDelete" subjectId="{{ reaction.id }}"><i class="iconCross"></i>supprimer</a>
+            <a action="reactionDelete" uuid="{{ reaction.uuid }}"><i class="iconCross"></i>supprimer</a>
         </div>
     </div>
 {% endblock fixedActions %}
@@ -87,7 +87,10 @@
             <div class="tagBox">
                 <div class="fieldsetHeader">
                     <div class="fieldsetHeaderTitle">les thématiques de la réaction</div>
-                    <i class="iconQuestion" action="toggleHelper"></i>
+                    <div class="helperMark" action="toggleHelper">
+                        comment ajouter une thématique?
+                        <i class="iconQuestion" action="toggleHelper"></i>
+                    </div>
                     <div class="helperSlider helperSliderRight" style="display: none;">
                         <i class="iconArrowUp"></i>
                         <i class="iconCross" action="hideHelper"></i>
@@ -103,15 +106,17 @@
                 <div id="swithEditionComparedEdition" action="activeIndenpendentEdition" class="swithEdition" style="display: none;"><span>Rédaction comparée<i class="iconSwitchLeft"></i></span>Rédaction autonome</div>
             </div>
                 
+            <div class="fieldsetHeader">
+                <div class="helperMark" action="toggleHelper">comment utiliser l'éditeur de texte ?<i class="iconQuestion" action="toggleHelper"></i></div>
+                <div class="helperSlider helperSliderRight" style="display: none;">
+                    <i class="iconArrowUp"></i>
+                    <i class="iconCross" action="hideHelper"></i>
+                    <h4>éditer un champ texte</h4>
+                    {% include 'PolitizrFrontBundle:Navigation\\Helper:_edition.html.twig' %}
+                </div>
+            </div>
             <div id="postText">
                 <div class="paragraph">
-                    <i class="iconQuestion" action="toggleHelper"></i>
-                    <div class="helperSlider helperSliderLeft" style="display: none;">
-                        <i class="iconArrowUp"></i>
-                        <i class="iconCross" action="hideHelper"></i>
-                        <h4>éditer un champ texte</h4>
-                        {% include 'PolitizrFrontBundle:Navigation\\Helper:_edition.html.twig' %}
-                    </div>
                     <div class="editable description">
                         {{ reaction.description | purify }}
                     </div>
@@ -147,6 +152,7 @@
 
     <script>
         var nbZones = 1;
+        var service = 'tag';
         var xhrRoute = ROUTE_TAG_LISTING;
         var xhrUrlPrefix = '/xhr';
     </script>

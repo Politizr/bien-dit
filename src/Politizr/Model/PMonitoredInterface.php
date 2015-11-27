@@ -32,7 +32,7 @@ interface PMonitoredInterface
      *
      * @return int
      */
-    public function getPObjectId();
+    public function getPObjectUuid();
 
     /**
      *

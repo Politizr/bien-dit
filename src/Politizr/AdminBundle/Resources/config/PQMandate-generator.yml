@@ -8,6 +8,10 @@ params:
     fields:
         id:
             label:          ID
+        uuid:
+            label:          UUID
+        slug:
+            label:          Slug
         p_q_type_id:
             label:          ID Type de mandat
         p_q_type:
@@ -77,6 +81,7 @@ builders:
                 "Contenu":
                     "Texte":                    [ title, select_title ]
                 "Attributs":
+                    "Identifiants":             [ [ id, uuid, slug ] ]
                     "Type":                     [ p_q_type ]
                     "En ligne":                 [ online ]
                     "Création":                 [ [ created_at, updated_at ] ]
@@ -89,6 +94,12 @@ builders:
                         required:               false
                         class:                  Politizr\Model\PQType
                         query:                  \Politizr\Model\PQTypeQuery::create()->orderById()
+                id:
+                    addFormOptions:
+                        read_only:              true
+                uuid:
+                    addFormOptions:
+                        read_only:              true
                 created_at:
                     addFormOptions:
                       widget:                   single_text

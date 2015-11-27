@@ -270,9 +270,10 @@ class PolitizrUserExtension extends \Twig_Extension
      *
      * @param PUser $user
      * @param integer $tagTypeId
+     * @param string $modalDefaultType debate|reaction|user
      * @return string
      */
-    public function followTags(PUser $user, $tagTypeId = null)
+    public function followTags(PUser $user, $tagTypeId = null, $modalDefaultType = 'user')
     {
         $this->logger->info('*** followTags');
         // $this->logger->info('$user = '.print_r($user, true));
@@ -284,7 +285,8 @@ class PolitizrUserExtension extends \Twig_Extension
         $html = $this->templating->render(
             'PolitizrFrontBundle:Tag:_list.html.twig',
             array(
-                'tags' => $tags
+                'tags' => $tags,
+                'modalDefaultType' => $modalDefaultType,
             )
         );
 
@@ -296,9 +298,10 @@ class PolitizrUserExtension extends \Twig_Extension
      *
      * @param PUser $user
      * @param integer $tagTypeId
+     * @param string $modalDefaultType debate|reaction|user
      * @return string
      */
-    public function userTags(PUser $user, $tagTypeId = null)
+    public function userTags(PUser $user, $tagTypeId = null, $modalDefaultType = 'user')
     {
         $this->logger->info('*** userTags');
         // $this->logger->info('$uiser = '.print_r($uiser, true));
@@ -310,7 +313,8 @@ class PolitizrUserExtension extends \Twig_Extension
         $html = $this->templating->render(
             'PolitizrFrontBundle:Tag:_list.html.twig',
             array(
-                'tags' => $tags
+                'tags' => $tags,
+                'modalDefaultType' => $modalDefaultType,
             )
         );
 
@@ -524,12 +528,14 @@ class PolitizrUserExtension extends \Twig_Extension
      *
      * @param PUser $user
      * @param FormView $formComment
+     * @param string $uuid Associated document's uuid
      * @return string
      */
-    public function isAuthorizedToNewComment(PUser $user, FormView $formComment)
+    public function isAuthorizedToNewComment(PUser $user, FormView $formComment, $uuid)
     {
         // $this->logger->info('*** isAuthorizedToNewComment');
         // $this->logger->info('$user = '.print_r($user, true));
+        // $this->logger->info('$uuid = '.print_r($uuid, true));
 
         $score = $user->getReputationScore();
         if ($score >= ReputationConstants::ACTION_COMMENT_WRITE) {
@@ -537,6 +543,7 @@ class PolitizrUserExtension extends \Twig_Extension
                 'PolitizrFrontBundle:Comment:_new.html.twig',
                 array(
                     'formComment' => $formComment,
+                    'uuid' => $uuid,
                 )
             );
         } else {
@@ -555,10 +562,10 @@ class PolitizrUserExtension extends \Twig_Extension
      * Display the publish link - or not - depending of the reputation score
      *
      * @param PUser $user
-     * @param int $debateId
+     * @param string $uuid
      * @return string
      */
-    public function isAuthorizedToPublishDebate(PUser $user, $debateId)
+    public function isAuthorizedToPublishDebate(PUser $user, $uuid)
     {
         // $this->logger->info('*** isAuthorizedToPublishDebate');
         // $this->logger->info('$user = '.print_r($user, true));
@@ -568,7 +575,7 @@ class PolitizrUserExtension extends \Twig_Extension
             $html = $this->templating->render(
                 'PolitizrFrontBundle:Debate:_publishLink.html.twig',
                 array(
-                    'debateId' => $debateId,
+                    'uuid' => $uuid,
                 )
             );
         } else {
@@ -587,10 +594,10 @@ class PolitizrUserExtension extends \Twig_Extension
      * Display the publish link - or not - depending of the reputation score
      *
      * @param PUser $user
-     * @param int $reactionId
+     * @param string $uuid
      * @return string
      */
-    public function isAuthorizedToPublishReaction(PUser $user, $reactionId)
+    public function isAuthorizedToPublishReaction(PUser $user, $uuid)
     {
         // $this->logger->info('*** isAuthorizedToPublishReaction');
         // $this->logger->info('$user = '.print_r($user, true));
@@ -600,7 +607,7 @@ class PolitizrUserExtension extends \Twig_Extension
             $html = $this->templating->render(
                 'PolitizrFrontBundle:Reaction:_publishLink.html.twig',
                 array(
-                    'reactionId' => $reactionId,
+                    'uuid' => $uuid,
                 )
             );
         } else {

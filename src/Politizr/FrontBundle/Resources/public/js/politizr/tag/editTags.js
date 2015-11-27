@@ -18,7 +18,7 @@ $(function() {
 
         var xhrPath = getXhrPath(
             xhrRoute,
-            'tag',
+            service,
             'getTags',
             RETURN_HTML
             );
@@ -42,7 +42,7 @@ $(function() {
                     $.each( data['tags'], function( key, val ) {
                         var item = [];
                         item['label'] = val.title;
-                        item['value'] = val.id;
+                        item['value'] = val.uuid;
 
                         availableTags.push(item);
                     });
@@ -68,7 +68,7 @@ $(function() {
 
                             // Affichage de la sélection
                             $('#editTagZone-'+zoneId).children('.selectedTag').first().val(ui.item.label);     // display the selected text
-                            $('#editTagZone-'+zoneId).children('.selectedTagID').first().val(ui.item.value);   // save selected id to hidden input
+                            $('#editTagZone-'+zoneId).children('.selectedTagUuid').first().val(ui.item.value);   // save selected id to hidden input
                         }
                     });
                 }
@@ -82,17 +82,17 @@ $("body").on("click", "button[action='addTag']", function() {
     // console.log('click addTag');
 
     var tagTitle = $(this).siblings('.selectedTag').first().val();
-    var tagId = $(this).siblings('.selectedTagID').first().val();
+    var tagUuid = $(this).siblings('.selectedTagUuid').first().val();
 
     var tagTypeId = $(this).closest('.addTag').attr('tagTypeId');
-    var subjectId = $(this).closest('.addTag').attr('subjectId');
+    var uuid = $(this).closest('.addTag').attr('uuid');
     var newTag = $(this).closest('.addTag').attr('newTag');
     var addUrl = $(this).closest('.addTag').attr('path');
 
     // console.log('title = ' + tagTitle);
-    // console.log('id = ' + tagId);
+    // console.log('tagUuid = ' + tagUuid);
     // console.log('type = ' + tagTypeId);
-    // console.log('subjectId = ' + subjectId);
+    // console.log('uuid = ' + uuid);
     // console.log('newTag = ' + newTag);
     // console.log('url = ' + addUrl);
 
@@ -105,7 +105,7 @@ $("body").on("click", "button[action='addTag']", function() {
     $.ajax({
         type: 'POST',
         url: addUrl,
-        data: { 'tagTitle': tagTitle, 'tagId': tagId, 'tagTypeId': tagTypeId, 'subjectId': subjectId, 'newTag': newTag },
+        data: { 'tagTitle': tagTitle, 'tagUuid': tagUuid, 'tagTypeId': tagTypeId, 'uuid': uuid, 'newTag': newTag },
         dataType: 'json',
         beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
         statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
@@ -126,7 +126,7 @@ $("body").on("click", "button[action='addTag']", function() {
 
                 // Init inputs tag
                 $(this).siblings('.selectedTag').first().val('');
-                $(this).siblings('.selectedTagID').first().val('');
+                $(this).siblings('.selectedTagUuid').first().val('');
             }
         }
     });
@@ -136,18 +136,18 @@ $("body").on("click", "button[action='addTag']", function() {
 $("body").on("click", "[action='deleteTag']", function() {
     // console.log('click deleteTag');
 
-    var tagId = $(this).attr('tagId');
-    var subjectId = $(this).attr('subjectId');;
+    var tagUuid = $(this).attr('tagUuid');
+    var uuid = $(this).attr('uuid');;
     var deleteUrl = $(this).attr('path');
 
-    // console.log('tagId = ' + tagId);
-    // console.log('subjectId = ' + subjectId);
+    // console.log('tagUuid = ' + tagUuid);
+    // console.log('uuid = ' + uuid);
     // console.log('deleteUrl = ' + deleteUrl);
 
     $.ajax({
         type: 'POST',
         url: deleteUrl,
-        data: { 'subjectId': subjectId, 'tagId': tagId },
+        data: { 'uuid': uuid, 'tagUuid': tagUuid },
         dataType: 'json',
         beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
         statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },

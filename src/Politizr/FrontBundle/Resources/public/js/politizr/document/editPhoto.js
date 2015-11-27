@@ -148,6 +148,8 @@ $("body").on("click", "[action='reactionPhotoInfoSave']", function(e) {
     var copyright = copyrightEditor.serialize();
     // console.log(copyright['element-0']['value']);
 
+    $('#reaction_photo_info_copyright').val(copyright['element-0']['value']);
+
     var xhrPath = getXhrPath(
         ROUTE_REACTION_PHOTO_INFO_UPDATE,
         'document',

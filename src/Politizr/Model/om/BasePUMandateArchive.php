@@ -47,6 +47,12 @@ abstract class BasePUMandateArchive extends BaseObject implements Persistent
     protected $id;
 
     /**
+     * The value for the uuid field.
+     * @var        string
+     */
+    protected $uuid;
+
+    /**
      * The value for the p_user_id field.
      * @var        int
      */
@@ -140,6 +146,17 @@ abstract class BasePUMandateArchive extends BaseObject implements Persistent
     public function __construct(){
         parent::__construct();
         EventDispatcherProxy::trigger(array('construct','model.construct'), new ModelEvent($this));
+    }
+
+    /**
+     * Get the [uuid] column value.
+     *
+     * @return string
+     */
+    public function getUuid()
+    {
+
+        return $this->uuid;
     }
 
     /**
@@ -419,6 +436,27 @@ abstract class BasePUMandateArchive extends BaseObject implements Persistent
     } // setId()
 
     /**
+     * Set the value of [uuid] column.
+     *
+     * @param  string $v new value
+     * @return PUMandateArchive The current object (for fluent API support)
+     */
+    public function setUuid($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->uuid !== $v) {
+            $this->uuid = $v;
+            $this->modifiedColumns[] = PUMandateArchivePeer::UUID;
+        }
+
+
+        return $this;
+    } // setUuid()
+
+    /**
      * Set the value of [p_user_id] column.
      *
      * @param  int $v new value
@@ -671,16 +709,17 @@ abstract class BasePUMandateArchive extends BaseObject implements Persistent
         try {
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->p_user_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
-            $this->p_q_type_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
-            $this->p_q_mandate_id = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
-            $this->p_q_organization_id = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
-            $this->localization = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->begin_at = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
-            $this->end_at = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-            $this->created_at = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
-            $this->updated_at = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
-            $this->archived_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+            $this->uuid = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
+            $this->p_user_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+            $this->p_q_type_id = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
+            $this->p_q_mandate_id = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
+            $this->p_q_organization_id = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
+            $this->localization = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->begin_at = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+            $this->end_at = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+            $this->created_at = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+            $this->updated_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+            $this->archived_at = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -690,7 +729,7 @@ abstract class BasePUMandateArchive extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 11; // 11 = PUMandateArchivePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 12; // 12 = PUMandateArchivePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PUMandateArchive object", $e);
@@ -916,6 +955,9 @@ abstract class BasePUMandateArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PUMandateArchivePeer::ID)) {
             $modifiedColumns[':p' . $index++]  = '`id`';
         }
+        if ($this->isColumnModified(PUMandateArchivePeer::UUID)) {
+            $modifiedColumns[':p' . $index++]  = '`uuid`';
+        }
         if ($this->isColumnModified(PUMandateArchivePeer::P_USER_ID)) {
             $modifiedColumns[':p' . $index++]  = '`p_user_id`';
         }
@@ -959,6 +1001,9 @@ abstract class BasePUMandateArchive extends BaseObject implements Persistent
                 switch ($columnName) {
                     case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
+                        break;
+                    case '`uuid`':
+                        $stmt->bindValue($identifier, $this->uuid, PDO::PARAM_STR);
                         break;
                     case '`p_user_id`':
                         $stmt->bindValue($identifier, $this->p_user_id, PDO::PARAM_INT);
@@ -1121,33 +1166,36 @@ abstract class BasePUMandateArchive extends BaseObject implements Persistent
                 return $this->getId();
                 break;
             case 1:
-                return $this->getPUserId();
+                return $this->getUuid();
                 break;
             case 2:
-                return $this->getPQTypeId();
+                return $this->getPUserId();
                 break;
             case 3:
-                return $this->getPQMandateId();
+                return $this->getPQTypeId();
                 break;
             case 4:
-                return $this->getPQOrganizationId();
+                return $this->getPQMandateId();
                 break;
             case 5:
-                return $this->getLocalization();
+                return $this->getPQOrganizationId();
                 break;
             case 6:
-                return $this->getBeginAt();
+                return $this->getLocalization();
                 break;
             case 7:
-                return $this->getEndAt();
+                return $this->getBeginAt();
                 break;
             case 8:
-                return $this->getCreatedAt();
+                return $this->getEndAt();
                 break;
             case 9:
-                return $this->getUpdatedAt();
+                return $this->getCreatedAt();
                 break;
             case 10:
+                return $this->getUpdatedAt();
+                break;
+            case 11:
                 return $this->getArchivedAt();
                 break;
             default:
@@ -1179,16 +1227,17 @@ abstract class BasePUMandateArchive extends BaseObject implements Persistent
         $keys = PUMandateArchivePeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getPUserId(),
-            $keys[2] => $this->getPQTypeId(),
-            $keys[3] => $this->getPQMandateId(),
-            $keys[4] => $this->getPQOrganizationId(),
-            $keys[5] => $this->getLocalization(),
-            $keys[6] => $this->getBeginAt(),
-            $keys[7] => $this->getEndAt(),
-            $keys[8] => $this->getCreatedAt(),
-            $keys[9] => $this->getUpdatedAt(),
-            $keys[10] => $this->getArchivedAt(),
+            $keys[1] => $this->getUuid(),
+            $keys[2] => $this->getPUserId(),
+            $keys[3] => $this->getPQTypeId(),
+            $keys[4] => $this->getPQMandateId(),
+            $keys[5] => $this->getPQOrganizationId(),
+            $keys[6] => $this->getLocalization(),
+            $keys[7] => $this->getBeginAt(),
+            $keys[8] => $this->getEndAt(),
+            $keys[9] => $this->getCreatedAt(),
+            $keys[10] => $this->getUpdatedAt(),
+            $keys[11] => $this->getArchivedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1232,33 +1281,36 @@ abstract class BasePUMandateArchive extends BaseObject implements Persistent
                 $this->setId($value);
                 break;
             case 1:
-                $this->setPUserId($value);
+                $this->setUuid($value);
                 break;
             case 2:
-                $this->setPQTypeId($value);
+                $this->setPUserId($value);
                 break;
             case 3:
-                $this->setPQMandateId($value);
+                $this->setPQTypeId($value);
                 break;
             case 4:
-                $this->setPQOrganizationId($value);
+                $this->setPQMandateId($value);
                 break;
             case 5:
-                $this->setLocalization($value);
+                $this->setPQOrganizationId($value);
                 break;
             case 6:
-                $this->setBeginAt($value);
+                $this->setLocalization($value);
                 break;
             case 7:
-                $this->setEndAt($value);
+                $this->setBeginAt($value);
                 break;
             case 8:
-                $this->setCreatedAt($value);
+                $this->setEndAt($value);
                 break;
             case 9:
-                $this->setUpdatedAt($value);
+                $this->setCreatedAt($value);
                 break;
             case 10:
+                $this->setUpdatedAt($value);
+                break;
+            case 11:
                 $this->setArchivedAt($value);
                 break;
         } // switch()
@@ -1286,16 +1338,17 @@ abstract class BasePUMandateArchive extends BaseObject implements Persistent
         $keys = PUMandateArchivePeer::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setPUserId($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setPQTypeId($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setPQMandateId($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setPQOrganizationId($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setLocalization($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setBeginAt($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setEndAt($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setCreatedAt($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setUpdatedAt($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setArchivedAt($arr[$keys[10]]);
+        if (array_key_exists($keys[1], $arr)) $this->setUuid($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setPUserId($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setPQTypeId($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setPQMandateId($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setPQOrganizationId($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setLocalization($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setBeginAt($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setEndAt($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setCreatedAt($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setUpdatedAt($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setArchivedAt($arr[$keys[11]]);
     }
 
     /**
@@ -1308,6 +1361,7 @@ abstract class BasePUMandateArchive extends BaseObject implements Persistent
         $criteria = new Criteria(PUMandateArchivePeer::DATABASE_NAME);
 
         if ($this->isColumnModified(PUMandateArchivePeer::ID)) $criteria->add(PUMandateArchivePeer::ID, $this->id);
+        if ($this->isColumnModified(PUMandateArchivePeer::UUID)) $criteria->add(PUMandateArchivePeer::UUID, $this->uuid);
         if ($this->isColumnModified(PUMandateArchivePeer::P_USER_ID)) $criteria->add(PUMandateArchivePeer::P_USER_ID, $this->p_user_id);
         if ($this->isColumnModified(PUMandateArchivePeer::P_Q_TYPE_ID)) $criteria->add(PUMandateArchivePeer::P_Q_TYPE_ID, $this->p_q_type_id);
         if ($this->isColumnModified(PUMandateArchivePeer::P_Q_MANDATE_ID)) $criteria->add(PUMandateArchivePeer::P_Q_MANDATE_ID, $this->p_q_mandate_id);
@@ -1381,6 +1435,7 @@ abstract class BasePUMandateArchive extends BaseObject implements Persistent
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
+        $copyObj->setUuid($this->getUuid());
         $copyObj->setPUserId($this->getPUserId());
         $copyObj->setPQTypeId($this->getPQTypeId());
         $copyObj->setPQMandateId($this->getPQMandateId());
@@ -1443,6 +1498,7 @@ abstract class BasePUMandateArchive extends BaseObject implements Persistent
     public function clear()
     {
         $this->id = null;
+        $this->uuid = null;
         $this->p_user_id = null;
         $this->p_q_type_id = null;
         $this->p_q_mandate_id = null;

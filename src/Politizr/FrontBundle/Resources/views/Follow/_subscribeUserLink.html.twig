@@ -1,12 +1,12 @@
 {% if app.user %}
     {% if app.user.id != object.id %}
         {% if follower %}
-            <a action="followUser" subjectId="{{ object.id }}" way="unfollow">
+            <a action="followUser" uuid="{{ object.uuid }}" way="unfollow">
                 <i class="iconCross"></i>
                 Se désabonner
             </a>
         {% else %}
-            <a action="followUser" subjectId="{{ object.id }}" way="follow">
+            <a action="followUser" uuid="{{ object.uuid }}" way="follow">
                 <i class="iconCheckInSquare"></i>
                 S'abonner
             </a>

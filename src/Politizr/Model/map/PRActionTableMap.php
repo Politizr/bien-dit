@@ -43,6 +43,7 @@ class PRActionTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
+        $this->addColumn('uuid', 'Uuid', 'VARCHAR', false, 50, null);
         $this->addColumn('title', 'Title', 'VARCHAR', false, 150, null);
         $this->addColumn('description', 'Description', 'LONGVARCHAR', false, null, null);
         $this->addColumn('score_evolution', 'ScoreEvolution', 'INTEGER', false, null, null);
@@ -89,6 +90,13 @@ class PRActionTableMap extends TableMap
   'separator' => '-',
   'permanent' => 'false',
   'scope_column' => '',
+),
+            'uuid' =>  array (
+  'name' => 'uuid',
+  'version' => '4',
+  'permanent' => 'false',
+  'required' => 'true',
+  'unique' => 'true',
 ),
             'event' =>  array (
 ),

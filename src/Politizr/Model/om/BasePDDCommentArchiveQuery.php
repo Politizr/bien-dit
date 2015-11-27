@@ -18,6 +18,7 @@ use Politizr\Model\PDDCommentArchiveQuery;
 
 /**
  * @method PDDCommentArchiveQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method PDDCommentArchiveQuery orderByUuid($order = Criteria::ASC) Order by the uuid column
  * @method PDDCommentArchiveQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
  * @method PDDCommentArchiveQuery orderByPDDebateId($order = Criteria::ASC) Order by the p_d_debate_id column
  * @method PDDCommentArchiveQuery orderByDescription($order = Criteria::ASC) Order by the description column
@@ -35,6 +36,7 @@ use Politizr\Model\PDDCommentArchiveQuery;
  * @method PDDCommentArchiveQuery orderByArchivedAt($order = Criteria::ASC) Order by the archived_at column
  *
  * @method PDDCommentArchiveQuery groupById() Group by the id column
+ * @method PDDCommentArchiveQuery groupByUuid() Group by the uuid column
  * @method PDDCommentArchiveQuery groupByPUserId() Group by the p_user_id column
  * @method PDDCommentArchiveQuery groupByPDDebateId() Group by the p_d_debate_id column
  * @method PDDCommentArchiveQuery groupByDescription() Group by the description column
@@ -58,6 +60,7 @@ use Politizr\Model\PDDCommentArchiveQuery;
  * @method PDDCommentArchive findOne(PropelPDO $con = null) Return the first PDDCommentArchive matching the query
  * @method PDDCommentArchive findOneOrCreate(PropelPDO $con = null) Return the first PDDCommentArchive matching the query, or a new PDDCommentArchive object populated from the query conditions when no match is found
  *
+ * @method PDDCommentArchive findOneByUuid(string $uuid) Return the first PDDCommentArchive filtered by the uuid column
  * @method PDDCommentArchive findOneByPUserId(int $p_user_id) Return the first PDDCommentArchive filtered by the p_user_id column
  * @method PDDCommentArchive findOneByPDDebateId(int $p_d_debate_id) Return the first PDDCommentArchive filtered by the p_d_debate_id column
  * @method PDDCommentArchive findOneByDescription(string $description) Return the first PDDCommentArchive filtered by the description column
@@ -75,6 +78,7 @@ use Politizr\Model\PDDCommentArchiveQuery;
  * @method PDDCommentArchive findOneByArchivedAt(string $archived_at) Return the first PDDCommentArchive filtered by the archived_at column
  *
  * @method array findById(int $id) Return PDDCommentArchive objects filtered by the id column
+ * @method array findByUuid(string $uuid) Return PDDCommentArchive objects filtered by the uuid column
  * @method array findByPUserId(int $p_user_id) Return PDDCommentArchive objects filtered by the p_user_id column
  * @method array findByPDDebateId(int $p_d_debate_id) Return PDDCommentArchive objects filtered by the p_d_debate_id column
  * @method array findByDescription(string $description) Return PDDCommentArchive objects filtered by the description column
@@ -196,7 +200,7 @@ abstract class BasePDDCommentArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_user_id`, `p_d_debate_id`, `description`, `paragraph_no`, `note_pos`, `note_neg`, `published_at`, `published_by`, `online`, `moderated`, `moderated_partial`, `moderated_at`, `created_at`, `updated_at`, `archived_at` FROM `p_d_d_comment_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `p_d_debate_id`, `description`, `paragraph_no`, `note_pos`, `note_neg`, `published_at`, `published_by`, `online`, `moderated`, `moderated_partial`, `moderated_at`, `created_at`, `updated_at`, `archived_at` FROM `p_d_d_comment_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -326,6 +330,35 @@ abstract class BasePDDCommentArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDDCommentArchivePeer::ID, $id, $comparison);
+    }
+
+    /**
+     * Filter the query on the uuid column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByUuid('fooValue');   // WHERE uuid = 'fooValue'
+     * $query->filterByUuid('%fooValue%'); // WHERE uuid LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $uuid The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDDCommentArchiveQuery The current query, for fluid interface
+     */
+    public function filterByUuid($uuid = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($uuid)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $uuid)) {
+                $uuid = str_replace('*', '%', $uuid);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PDDCommentArchivePeer::UUID, $uuid, $comparison);
     }
 
     /**

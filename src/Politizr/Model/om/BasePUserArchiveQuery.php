@@ -18,6 +18,7 @@ use Politizr\Model\PUserArchiveQuery;
 
 /**
  * @method PUserArchiveQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method PUserArchiveQuery orderByUuid($order = Criteria::ASC) Order by the uuid column
  * @method PUserArchiveQuery orderByProvider($order = Criteria::ASC) Order by the provider column
  * @method PUserArchiveQuery orderByProviderId($order = Criteria::ASC) Order by the provider_id column
  * @method PUserArchiveQuery orderByNickname($order = Criteria::ASC) Order by the nickname column
@@ -70,6 +71,7 @@ use Politizr\Model\PUserArchiveQuery;
  * @method PUserArchiveQuery orderByArchivedAt($order = Criteria::ASC) Order by the archived_at column
  *
  * @method PUserArchiveQuery groupById() Group by the id column
+ * @method PUserArchiveQuery groupByUuid() Group by the uuid column
  * @method PUserArchiveQuery groupByProvider() Group by the provider column
  * @method PUserArchiveQuery groupByProviderId() Group by the provider_id column
  * @method PUserArchiveQuery groupByNickname() Group by the nickname column
@@ -128,6 +130,7 @@ use Politizr\Model\PUserArchiveQuery;
  * @method PUserArchive findOne(PropelPDO $con = null) Return the first PUserArchive matching the query
  * @method PUserArchive findOneOrCreate(PropelPDO $con = null) Return the first PUserArchive matching the query, or a new PUserArchive object populated from the query conditions when no match is found
  *
+ * @method PUserArchive findOneByUuid(string $uuid) Return the first PUserArchive filtered by the uuid column
  * @method PUserArchive findOneByProvider(string $provider) Return the first PUserArchive filtered by the provider column
  * @method PUserArchive findOneByProviderId(string $provider_id) Return the first PUserArchive filtered by the provider_id column
  * @method PUserArchive findOneByNickname(string $nickname) Return the first PUserArchive filtered by the nickname column
@@ -180,6 +183,7 @@ use Politizr\Model\PUserArchiveQuery;
  * @method PUserArchive findOneByArchivedAt(string $archived_at) Return the first PUserArchive filtered by the archived_at column
  *
  * @method array findById(int $id) Return PUserArchive objects filtered by the id column
+ * @method array findByUuid(string $uuid) Return PUserArchive objects filtered by the uuid column
  * @method array findByProvider(string $provider) Return PUserArchive objects filtered by the provider column
  * @method array findByProviderId(string $provider_id) Return PUserArchive objects filtered by the provider_id column
  * @method array findByNickname(string $nickname) Return PUserArchive objects filtered by the nickname column
@@ -336,7 +340,7 @@ abstract class BasePUserArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `last_activity`, `p_u_status_id`, `file_name`, `back_file_name`, `copyright`, `gender`, `firstname`, `name`, `birthday`, `subtitle`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_connected_days`, `nb_views`, `qualified`, `validated`, `online`, `banned`, `banned_nb_days_left`, `banned_nb_total`, `abuse_level`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_user_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `last_activity`, `p_u_status_id`, `file_name`, `back_file_name`, `copyright`, `gender`, `firstname`, `name`, `birthday`, `subtitle`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_connected_days`, `nb_views`, `qualified`, `validated`, `online`, `banned`, `banned_nb_days_left`, `banned_nb_total`, `abuse_level`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_user_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -466,6 +470,35 @@ abstract class BasePUserArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PUserArchivePeer::ID, $id, $comparison);
+    }
+
+    /**
+     * Filter the query on the uuid column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByUuid('fooValue');   // WHERE uuid = 'fooValue'
+     * $query->filterByUuid('%fooValue%'); // WHERE uuid LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $uuid The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserArchiveQuery The current query, for fluid interface
+     */
+    public function filterByUuid($uuid = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($uuid)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $uuid)) {
+                $uuid = str_replace('*', '%', $uuid);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PUserArchivePeer::UUID, $uuid, $comparison);
     }
 
     /**

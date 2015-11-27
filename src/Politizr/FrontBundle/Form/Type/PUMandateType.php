@@ -33,8 +33,7 @@ class PUMandateType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('id', 'hidden');
-        $builder->add('p_user_id', 'hidden');
+        $builder->add('uuid', 'hidden');
         $builder->add('p_q_type_id', 'hidden');
 
         // Mandates type list

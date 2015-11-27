@@ -14,7 +14,7 @@
                 {{ form_widget(formMandate.end_at, { 'maxlength': 4, 'attr': {'placeholder': 'AAAA'}}) }}
             </div>
             <div class="mandateActions">
-                <a class="editMandateDeleteItem" action="mandateDelete" subjectId="{{ formMandate.vars.value.id }}"><i class="iconRemove"></i>Supprimer ce mandat</a>
+                <a class="editMandateDeleteItem" action="mandateDelete" uuid="{{ formMandate.vars.value.uuid }}"><i class="iconRemove"></i>Supprimer ce mandat</a>
                 <a class="editMandateCreate" action="mandateUpdate"><i class="iconCheck"></i>Enregistrer</a>
             </div>    
             {{ form_rest(formMandate) }}

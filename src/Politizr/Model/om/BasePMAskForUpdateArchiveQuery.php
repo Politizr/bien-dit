@@ -20,7 +20,7 @@ use Politizr\Model\PMAskForUpdateArchiveQuery;
  * @method PMAskForUpdateArchiveQuery orderById($order = Criteria::ASC) Order by the id column
  * @method PMAskForUpdateArchiveQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
  * @method PMAskForUpdateArchiveQuery orderByPObjectName($order = Criteria::ASC) Order by the p_object_name column
- * @method PMAskForUpdateArchiveQuery orderByPObjectId($order = Criteria::ASC) Order by the p_object_id column
+ * @method PMAskForUpdateArchiveQuery orderByPObjectUuid($order = Criteria::ASC) Order by the p_object_uuid column
  * @method PMAskForUpdateArchiveQuery orderByMessage($order = Criteria::ASC) Order by the message column
  * @method PMAskForUpdateArchiveQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PMAskForUpdateArchiveQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
@@ -29,7 +29,7 @@ use Politizr\Model\PMAskForUpdateArchiveQuery;
  * @method PMAskForUpdateArchiveQuery groupById() Group by the id column
  * @method PMAskForUpdateArchiveQuery groupByPUserId() Group by the p_user_id column
  * @method PMAskForUpdateArchiveQuery groupByPObjectName() Group by the p_object_name column
- * @method PMAskForUpdateArchiveQuery groupByPObjectId() Group by the p_object_id column
+ * @method PMAskForUpdateArchiveQuery groupByPObjectUuid() Group by the p_object_uuid column
  * @method PMAskForUpdateArchiveQuery groupByMessage() Group by the message column
  * @method PMAskForUpdateArchiveQuery groupByCreatedAt() Group by the created_at column
  * @method PMAskForUpdateArchiveQuery groupByUpdatedAt() Group by the updated_at column
@@ -44,7 +44,7 @@ use Politizr\Model\PMAskForUpdateArchiveQuery;
  *
  * @method PMAskForUpdateArchive findOneByPUserId(int $p_user_id) Return the first PMAskForUpdateArchive filtered by the p_user_id column
  * @method PMAskForUpdateArchive findOneByPObjectName(string $p_object_name) Return the first PMAskForUpdateArchive filtered by the p_object_name column
- * @method PMAskForUpdateArchive findOneByPObjectId(int $p_object_id) Return the first PMAskForUpdateArchive filtered by the p_object_id column
+ * @method PMAskForUpdateArchive findOneByPObjectUuid(string $p_object_uuid) Return the first PMAskForUpdateArchive filtered by the p_object_uuid column
  * @method PMAskForUpdateArchive findOneByMessage(string $message) Return the first PMAskForUpdateArchive filtered by the message column
  * @method PMAskForUpdateArchive findOneByCreatedAt(string $created_at) Return the first PMAskForUpdateArchive filtered by the created_at column
  * @method PMAskForUpdateArchive findOneByUpdatedAt(string $updated_at) Return the first PMAskForUpdateArchive filtered by the updated_at column
@@ -53,7 +53,7 @@ use Politizr\Model\PMAskForUpdateArchiveQuery;
  * @method array findById(int $id) Return PMAskForUpdateArchive objects filtered by the id column
  * @method array findByPUserId(int $p_user_id) Return PMAskForUpdateArchive objects filtered by the p_user_id column
  * @method array findByPObjectName(string $p_object_name) Return PMAskForUpdateArchive objects filtered by the p_object_name column
- * @method array findByPObjectId(int $p_object_id) Return PMAskForUpdateArchive objects filtered by the p_object_id column
+ * @method array findByPObjectUuid(string $p_object_uuid) Return PMAskForUpdateArchive objects filtered by the p_object_uuid column
  * @method array findByMessage(string $message) Return PMAskForUpdateArchive objects filtered by the message column
  * @method array findByCreatedAt(string $created_at) Return PMAskForUpdateArchive objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PMAskForUpdateArchive objects filtered by the updated_at column
@@ -164,7 +164,7 @@ abstract class BasePMAskForUpdateArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_user_id`, `p_object_name`, `p_object_id`, `message`, `created_at`, `updated_at`, `archived_at` FROM `p_m_ask_for_update_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_user_id`, `p_object_name`, `p_object_uuid`, `message`, `created_at`, `updated_at`, `archived_at` FROM `p_m_ask_for_update_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -368,45 +368,32 @@ abstract class BasePMAskForUpdateArchiveQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the p_object_id column
+     * Filter the query on the p_object_uuid column
      *
      * Example usage:
      * <code>
-     * $query->filterByPObjectId(1234); // WHERE p_object_id = 1234
-     * $query->filterByPObjectId(array(12, 34)); // WHERE p_object_id IN (12, 34)
-     * $query->filterByPObjectId(array('min' => 12)); // WHERE p_object_id >= 12
-     * $query->filterByPObjectId(array('max' => 12)); // WHERE p_object_id <= 12
+     * $query->filterByPObjectUuid('fooValue');   // WHERE p_object_uuid = 'fooValue'
+     * $query->filterByPObjectUuid('%fooValue%'); // WHERE p_object_uuid LIKE '%fooValue%'
      * </code>
      *
-     * @param     mixed $pObjectId The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $pObjectUuid The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return PMAskForUpdateArchiveQuery The current query, for fluid interface
      */
-    public function filterByPObjectId($pObjectId = null, $comparison = null)
+    public function filterByPObjectUuid($pObjectUuid = null, $comparison = null)
     {
-        if (is_array($pObjectId)) {
-            $useMinMax = false;
-            if (isset($pObjectId['min'])) {
-                $this->addUsingAlias(PMAskForUpdateArchivePeer::P_OBJECT_ID, $pObjectId['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($pObjectId['max'])) {
-                $this->addUsingAlias(PMAskForUpdateArchivePeer::P_OBJECT_ID, $pObjectId['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
+        if (null === $comparison) {
+            if (is_array($pObjectUuid)) {
                 $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $pObjectUuid)) {
+                $pObjectUuid = str_replace('*', '%', $pObjectUuid);
+                $comparison = Criteria::LIKE;
             }
         }
 
-        return $this->addUsingAlias(PMAskForUpdateArchivePeer::P_OBJECT_ID, $pObjectId, $comparison);
+        return $this->addUsingAlias(PMAskForUpdateArchivePeer::P_OBJECT_UUID, $pObjectUuid, $comparison);
     }
 
     /**

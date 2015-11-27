@@ -18,6 +18,7 @@ use Politizr\Model\PDDebateArchiveQuery;
 
 /**
  * @method PDDebateArchiveQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method PDDebateArchiveQuery orderByUuid($order = Criteria::ASC) Order by the uuid column
  * @method PDDebateArchiveQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
  * @method PDDebateArchiveQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method PDDebateArchiveQuery orderByFileName($order = Criteria::ASC) Order by the file_name column
@@ -40,6 +41,7 @@ use Politizr\Model\PDDebateArchiveQuery;
  * @method PDDebateArchiveQuery orderByArchivedAt($order = Criteria::ASC) Order by the archived_at column
  *
  * @method PDDebateArchiveQuery groupById() Group by the id column
+ * @method PDDebateArchiveQuery groupByUuid() Group by the uuid column
  * @method PDDebateArchiveQuery groupByPUserId() Group by the p_user_id column
  * @method PDDebateArchiveQuery groupByTitle() Group by the title column
  * @method PDDebateArchiveQuery groupByFileName() Group by the file_name column
@@ -68,6 +70,7 @@ use Politizr\Model\PDDebateArchiveQuery;
  * @method PDDebateArchive findOne(PropelPDO $con = null) Return the first PDDebateArchive matching the query
  * @method PDDebateArchive findOneOrCreate(PropelPDO $con = null) Return the first PDDebateArchive matching the query, or a new PDDebateArchive object populated from the query conditions when no match is found
  *
+ * @method PDDebateArchive findOneByUuid(string $uuid) Return the first PDDebateArchive filtered by the uuid column
  * @method PDDebateArchive findOneByPUserId(int $p_user_id) Return the first PDDebateArchive filtered by the p_user_id column
  * @method PDDebateArchive findOneByTitle(string $title) Return the first PDDebateArchive filtered by the title column
  * @method PDDebateArchive findOneByFileName(string $file_name) Return the first PDDebateArchive filtered by the file_name column
@@ -90,6 +93,7 @@ use Politizr\Model\PDDebateArchiveQuery;
  * @method PDDebateArchive findOneByArchivedAt(string $archived_at) Return the first PDDebateArchive filtered by the archived_at column
  *
  * @method array findById(int $id) Return PDDebateArchive objects filtered by the id column
+ * @method array findByUuid(string $uuid) Return PDDebateArchive objects filtered by the uuid column
  * @method array findByPUserId(int $p_user_id) Return PDDebateArchive objects filtered by the p_user_id column
  * @method array findByTitle(string $title) Return PDDebateArchive objects filtered by the title column
  * @method array findByFileName(string $file_name) Return PDDebateArchive objects filtered by the file_name column
@@ -216,7 +220,7 @@ abstract class BasePDDebateArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_user_id`, `title`, `file_name`, `copyright`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `moderated`, `moderated_partial`, `moderated_at`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_d_debate_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `title`, `file_name`, `copyright`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `moderated`, `moderated_partial`, `moderated_at`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_d_debate_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -346,6 +350,35 @@ abstract class BasePDDebateArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDDebateArchivePeer::ID, $id, $comparison);
+    }
+
+    /**
+     * Filter the query on the uuid column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByUuid('fooValue');   // WHERE uuid = 'fooValue'
+     * $query->filterByUuid('%fooValue%'); // WHERE uuid LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $uuid The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDDebateArchiveQuery The current query, for fluid interface
+     */
+    public function filterByUuid($uuid = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($uuid)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $uuid)) {
+                $uuid = str_replace('*', '%', $uuid);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PDDebateArchivePeer::UUID, $uuid, $comparison);
     }
 
     /**

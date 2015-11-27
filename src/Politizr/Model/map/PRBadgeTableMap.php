@@ -43,6 +43,7 @@ class PRBadgeTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
+        $this->addColumn('uuid', 'Uuid', 'VARCHAR', false, 50, null);
         $this->addForeignKey('p_r_badge_family_id', 'PRBadgeFamilyId', 'INTEGER', 'p_r_badge_family', 'id', true, null, null);
         $this->addColumn('title', 'Title', 'VARCHAR', false, 150, null);
         $this->addColumn('online', 'Online', 'BOOLEAN', false, 1, null);
@@ -90,6 +91,13 @@ class PRBadgeTableMap extends TableMap
   'separator' => '-',
   'permanent' => 'false',
   'scope_column' => '',
+),
+            'uuid' =>  array (
+  'name' => 'uuid',
+  'version' => '4',
+  'permanent' => 'false',
+  'required' => 'true',
+  'unique' => 'true',
 ),
             'sortable' =>  array (
   'rank_column' => 'sortable_rank',

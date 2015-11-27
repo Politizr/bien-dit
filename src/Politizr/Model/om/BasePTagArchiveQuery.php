@@ -18,10 +18,13 @@ use Politizr\Model\PTagArchiveQuery;
 
 /**
  * @method PTagArchiveQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method PTagArchiveQuery orderByUuid($order = Criteria::ASC) Order by the uuid column
  * @method PTagArchiveQuery orderByPTTagTypeId($order = Criteria::ASC) Order by the p_t_tag_type_id column
  * @method PTagArchiveQuery orderByPTParentId($order = Criteria::ASC) Order by the p_t_parent_id column
  * @method PTagArchiveQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
  * @method PTagArchiveQuery orderByTitle($order = Criteria::ASC) Order by the title column
+ * @method PTagArchiveQuery orderByModerated($order = Criteria::ASC) Order by the moderated column
+ * @method PTagArchiveQuery orderByModeratedAt($order = Criteria::ASC) Order by the moderated_at column
  * @method PTagArchiveQuery orderByOnline($order = Criteria::ASC) Order by the online column
  * @method PTagArchiveQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PTagArchiveQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
@@ -29,10 +32,13 @@ use Politizr\Model\PTagArchiveQuery;
  * @method PTagArchiveQuery orderByArchivedAt($order = Criteria::ASC) Order by the archived_at column
  *
  * @method PTagArchiveQuery groupById() Group by the id column
+ * @method PTagArchiveQuery groupByUuid() Group by the uuid column
  * @method PTagArchiveQuery groupByPTTagTypeId() Group by the p_t_tag_type_id column
  * @method PTagArchiveQuery groupByPTParentId() Group by the p_t_parent_id column
  * @method PTagArchiveQuery groupByPUserId() Group by the p_user_id column
  * @method PTagArchiveQuery groupByTitle() Group by the title column
+ * @method PTagArchiveQuery groupByModerated() Group by the moderated column
+ * @method PTagArchiveQuery groupByModeratedAt() Group by the moderated_at column
  * @method PTagArchiveQuery groupByOnline() Group by the online column
  * @method PTagArchiveQuery groupByCreatedAt() Group by the created_at column
  * @method PTagArchiveQuery groupByUpdatedAt() Group by the updated_at column
@@ -46,10 +52,13 @@ use Politizr\Model\PTagArchiveQuery;
  * @method PTagArchive findOne(PropelPDO $con = null) Return the first PTagArchive matching the query
  * @method PTagArchive findOneOrCreate(PropelPDO $con = null) Return the first PTagArchive matching the query, or a new PTagArchive object populated from the query conditions when no match is found
  *
+ * @method PTagArchive findOneByUuid(string $uuid) Return the first PTagArchive filtered by the uuid column
  * @method PTagArchive findOneByPTTagTypeId(int $p_t_tag_type_id) Return the first PTagArchive filtered by the p_t_tag_type_id column
  * @method PTagArchive findOneByPTParentId(int $p_t_parent_id) Return the first PTagArchive filtered by the p_t_parent_id column
  * @method PTagArchive findOneByPUserId(int $p_user_id) Return the first PTagArchive filtered by the p_user_id column
  * @method PTagArchive findOneByTitle(string $title) Return the first PTagArchive filtered by the title column
+ * @method PTagArchive findOneByModerated(boolean $moderated) Return the first PTagArchive filtered by the moderated column
+ * @method PTagArchive findOneByModeratedAt(string $moderated_at) Return the first PTagArchive filtered by the moderated_at column
  * @method PTagArchive findOneByOnline(boolean $online) Return the first PTagArchive filtered by the online column
  * @method PTagArchive findOneByCreatedAt(string $created_at) Return the first PTagArchive filtered by the created_at column
  * @method PTagArchive findOneByUpdatedAt(string $updated_at) Return the first PTagArchive filtered by the updated_at column
@@ -57,10 +66,13 @@ use Politizr\Model\PTagArchiveQuery;
  * @method PTagArchive findOneByArchivedAt(string $archived_at) Return the first PTagArchive filtered by the archived_at column
  *
  * @method array findById(int $id) Return PTagArchive objects filtered by the id column
+ * @method array findByUuid(string $uuid) Return PTagArchive objects filtered by the uuid column
  * @method array findByPTTagTypeId(int $p_t_tag_type_id) Return PTagArchive objects filtered by the p_t_tag_type_id column
  * @method array findByPTParentId(int $p_t_parent_id) Return PTagArchive objects filtered by the p_t_parent_id column
  * @method array findByPUserId(int $p_user_id) Return PTagArchive objects filtered by the p_user_id column
  * @method array findByTitle(string $title) Return PTagArchive objects filtered by the title column
+ * @method array findByModerated(boolean $moderated) Return PTagArchive objects filtered by the moderated column
+ * @method array findByModeratedAt(string $moderated_at) Return PTagArchive objects filtered by the moderated_at column
  * @method array findByOnline(boolean $online) Return PTagArchive objects filtered by the online column
  * @method array findByCreatedAt(string $created_at) Return PTagArchive objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PTagArchive objects filtered by the updated_at column
@@ -172,7 +184,7 @@ abstract class BasePTagArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_t_tag_type_id`, `p_t_parent_id`, `p_user_id`, `title`, `online`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_tag_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_t_tag_type_id`, `p_t_parent_id`, `p_user_id`, `title`, `moderated`, `moderated_at`, `online`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_tag_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -302,6 +314,35 @@ abstract class BasePTagArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PTagArchivePeer::ID, $id, $comparison);
+    }
+
+    /**
+     * Filter the query on the uuid column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByUuid('fooValue');   // WHERE uuid = 'fooValue'
+     * $query->filterByUuid('%fooValue%'); // WHERE uuid LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $uuid The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PTagArchiveQuery The current query, for fluid interface
+     */
+    public function filterByUuid($uuid = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($uuid)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $uuid)) {
+                $uuid = str_replace('*', '%', $uuid);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PTagArchivePeer::UUID, $uuid, $comparison);
     }
 
     /**
@@ -457,6 +498,76 @@ abstract class BasePTagArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PTagArchivePeer::TITLE, $title, $comparison);
+    }
+
+    /**
+     * Filter the query on the moderated column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByModerated(true); // WHERE moderated = true
+     * $query->filterByModerated('yes'); // WHERE moderated = true
+     * </code>
+     *
+     * @param     boolean|string $moderated The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PTagArchiveQuery The current query, for fluid interface
+     */
+    public function filterByModerated($moderated = null, $comparison = null)
+    {
+        if (is_string($moderated)) {
+            $moderated = in_array(strtolower($moderated), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PTagArchivePeer::MODERATED, $moderated, $comparison);
+    }
+
+    /**
+     * Filter the query on the moderated_at column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByModeratedAt('2011-03-14'); // WHERE moderated_at = '2011-03-14'
+     * $query->filterByModeratedAt('now'); // WHERE moderated_at = '2011-03-14'
+     * $query->filterByModeratedAt(array('max' => 'yesterday')); // WHERE moderated_at < '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $moderatedAt The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PTagArchiveQuery The current query, for fluid interface
+     */
+    public function filterByModeratedAt($moderatedAt = null, $comparison = null)
+    {
+        if (is_array($moderatedAt)) {
+            $useMinMax = false;
+            if (isset($moderatedAt['min'])) {
+                $this->addUsingAlias(PTagArchivePeer::MODERATED_AT, $moderatedAt['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($moderatedAt['max'])) {
+                $this->addUsingAlias(PTagArchivePeer::MODERATED_AT, $moderatedAt['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PTagArchivePeer::MODERATED_AT, $moderatedAt, $comparison);
     }
 
     /**

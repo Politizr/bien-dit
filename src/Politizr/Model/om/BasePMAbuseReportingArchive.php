@@ -59,10 +59,10 @@ abstract class BasePMAbuseReportingArchive extends BaseObject implements Persist
     protected $p_object_name;
 
     /**
-     * The value for the p_object_id field.
-     * @var        int
+     * The value for the p_object_uuid field.
+     * @var        string
      */
-    protected $p_object_id;
+    protected $p_object_uuid;
 
     /**
      * The value for the message field.
@@ -147,14 +147,14 @@ abstract class BasePMAbuseReportingArchive extends BaseObject implements Persist
     }
 
     /**
-     * Get the [p_object_id] column value.
+     * Get the [p_object_uuid] column value.
      *
-     * @return int
+     * @return string
      */
-    public function getPObjectId()
+    public function getPObjectUuid()
     {
 
-        return $this->p_object_id;
+        return $this->p_object_uuid;
     }
 
     /**
@@ -352,25 +352,25 @@ abstract class BasePMAbuseReportingArchive extends BaseObject implements Persist
     } // setPObjectName()
 
     /**
-     * Set the value of [p_object_id] column.
+     * Set the value of [p_object_uuid] column.
      *
-     * @param  int $v new value
+     * @param  string $v new value
      * @return PMAbuseReportingArchive The current object (for fluent API support)
      */
-    public function setPObjectId($v)
+    public function setPObjectUuid($v)
     {
-        if ($v !== null && is_numeric($v)) {
-            $v = (int) $v;
+        if ($v !== null) {
+            $v = (string) $v;
         }
 
-        if ($this->p_object_id !== $v) {
-            $this->p_object_id = $v;
-            $this->modifiedColumns[] = PMAbuseReportingArchivePeer::P_OBJECT_ID;
+        if ($this->p_object_uuid !== $v) {
+            $this->p_object_uuid = $v;
+            $this->modifiedColumns[] = PMAbuseReportingArchivePeer::P_OBJECT_UUID;
         }
 
 
         return $this;
-    } // setPObjectId()
+    } // setPObjectUuid()
 
     /**
      * Set the value of [message] column.
@@ -497,7 +497,7 @@ abstract class BasePMAbuseReportingArchive extends BaseObject implements Persist
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->p_user_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
             $this->p_object_name = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-            $this->p_object_id = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
+            $this->p_object_uuid = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
             $this->message = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
             $this->created_at = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
             $this->updated_at = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
@@ -743,8 +743,8 @@ abstract class BasePMAbuseReportingArchive extends BaseObject implements Persist
         if ($this->isColumnModified(PMAbuseReportingArchivePeer::P_OBJECT_NAME)) {
             $modifiedColumns[':p' . $index++]  = '`p_object_name`';
         }
-        if ($this->isColumnModified(PMAbuseReportingArchivePeer::P_OBJECT_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`p_object_id`';
+        if ($this->isColumnModified(PMAbuseReportingArchivePeer::P_OBJECT_UUID)) {
+            $modifiedColumns[':p' . $index++]  = '`p_object_uuid`';
         }
         if ($this->isColumnModified(PMAbuseReportingArchivePeer::MESSAGE)) {
             $modifiedColumns[':p' . $index++]  = '`message`';
@@ -778,8 +778,8 @@ abstract class BasePMAbuseReportingArchive extends BaseObject implements Persist
                     case '`p_object_name`':
                         $stmt->bindValue($identifier, $this->p_object_name, PDO::PARAM_STR);
                         break;
-                    case '`p_object_id`':
-                        $stmt->bindValue($identifier, $this->p_object_id, PDO::PARAM_INT);
+                    case '`p_object_uuid`':
+                        $stmt->bindValue($identifier, $this->p_object_uuid, PDO::PARAM_STR);
                         break;
                     case '`message`':
                         $stmt->bindValue($identifier, $this->message, PDO::PARAM_STR);
@@ -930,7 +930,7 @@ abstract class BasePMAbuseReportingArchive extends BaseObject implements Persist
                 return $this->getPObjectName();
                 break;
             case 3:
-                return $this->getPObjectId();
+                return $this->getPObjectUuid();
                 break;
             case 4:
                 return $this->getMessage();
@@ -975,7 +975,7 @@ abstract class BasePMAbuseReportingArchive extends BaseObject implements Persist
             $keys[0] => $this->getId(),
             $keys[1] => $this->getPUserId(),
             $keys[2] => $this->getPObjectName(),
-            $keys[3] => $this->getPObjectId(),
+            $keys[3] => $this->getPObjectUuid(),
             $keys[4] => $this->getMessage(),
             $keys[5] => $this->getCreatedAt(),
             $keys[6] => $this->getUpdatedAt(),
@@ -1029,7 +1029,7 @@ abstract class BasePMAbuseReportingArchive extends BaseObject implements Persist
                 $this->setPObjectName($value);
                 break;
             case 3:
-                $this->setPObjectId($value);
+                $this->setPObjectUuid($value);
                 break;
             case 4:
                 $this->setMessage($value);
@@ -1070,7 +1070,7 @@ abstract class BasePMAbuseReportingArchive extends BaseObject implements Persist
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setPUserId($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setPObjectName($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setPObjectId($arr[$keys[3]]);
+        if (array_key_exists($keys[3], $arr)) $this->setPObjectUuid($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setMessage($arr[$keys[4]]);
         if (array_key_exists($keys[5], $arr)) $this->setCreatedAt($arr[$keys[5]]);
         if (array_key_exists($keys[6], $arr)) $this->setUpdatedAt($arr[$keys[6]]);
@@ -1089,7 +1089,7 @@ abstract class BasePMAbuseReportingArchive extends BaseObject implements Persist
         if ($this->isColumnModified(PMAbuseReportingArchivePeer::ID)) $criteria->add(PMAbuseReportingArchivePeer::ID, $this->id);
         if ($this->isColumnModified(PMAbuseReportingArchivePeer::P_USER_ID)) $criteria->add(PMAbuseReportingArchivePeer::P_USER_ID, $this->p_user_id);
         if ($this->isColumnModified(PMAbuseReportingArchivePeer::P_OBJECT_NAME)) $criteria->add(PMAbuseReportingArchivePeer::P_OBJECT_NAME, $this->p_object_name);
-        if ($this->isColumnModified(PMAbuseReportingArchivePeer::P_OBJECT_ID)) $criteria->add(PMAbuseReportingArchivePeer::P_OBJECT_ID, $this->p_object_id);
+        if ($this->isColumnModified(PMAbuseReportingArchivePeer::P_OBJECT_UUID)) $criteria->add(PMAbuseReportingArchivePeer::P_OBJECT_UUID, $this->p_object_uuid);
         if ($this->isColumnModified(PMAbuseReportingArchivePeer::MESSAGE)) $criteria->add(PMAbuseReportingArchivePeer::MESSAGE, $this->message);
         if ($this->isColumnModified(PMAbuseReportingArchivePeer::CREATED_AT)) $criteria->add(PMAbuseReportingArchivePeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(PMAbuseReportingArchivePeer::UPDATED_AT)) $criteria->add(PMAbuseReportingArchivePeer::UPDATED_AT, $this->updated_at);
@@ -1159,7 +1159,7 @@ abstract class BasePMAbuseReportingArchive extends BaseObject implements Persist
     {
         $copyObj->setPUserId($this->getPUserId());
         $copyObj->setPObjectName($this->getPObjectName());
-        $copyObj->setPObjectId($this->getPObjectId());
+        $copyObj->setPObjectUuid($this->getPObjectUuid());
         $copyObj->setMessage($this->getMessage());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
@@ -1218,7 +1218,7 @@ abstract class BasePMAbuseReportingArchive extends BaseObject implements Persist
         $this->id = null;
         $this->p_user_id = null;
         $this->p_object_name = null;
-        $this->p_object_id = null;
+        $this->p_object_uuid = null;
         $this->message = null;
         $this->created_at = null;
         $this->updated_at = null;

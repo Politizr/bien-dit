@@ -186,7 +186,7 @@ class DocumentController extends Controller
         }
 
         return $this->redirect($this->generateUrl('DebateDraftEdit'.$this->get('politizr.tools.global')->computeProfileSuffix(), array(
-            'id' => $debate->getId()
+            'uuid' => $debate->getUuid()
         )));
     }
 
@@ -194,23 +194,23 @@ class DocumentController extends Controller
      * Edition d'un débat
      * @todo remove id to manage with slug > force user to set a title when he creates a new debate?
      */
-    public function debateEditAction($id)
+    public function debateEditAction($uuid)
     {
         $logger = $this->get('logger');
         $logger->info('*** debateEditAction');
-        $logger->info('$id = '.print_r($id, true));
+        $logger->info('$uuid = '.print_r($uuid, true));
 
         $user = $this->getUser();
 
-        $debate = PDDebateQuery::create()->findPk($id);
+        $debate = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
         if (!$debate) {
-            throw new InconsistentDataException('Debate n°'.$id.' not found.');
+            throw new InconsistentDataException('Debate '.$uuid.' not found.');
         }
         if (!$debate->isOwner($user->getId())) {
-            throw new InconsistentDataException('Debate n°'.$id.' is not yours.');
+            throw new InconsistentDataException('Debate '.$uuid.' is not yours.');
         }
         if ($debate->getPublished()) {
-            throw new InconsistentDataException('Debate n°'.$id.' is published and cannot be edited anymore.');
+            throw new InconsistentDataException('Debate '.$uuid.' is published and cannot be edited anymore.');
         }
         
         $form = $this->createForm(new PDDebateType(), $debate);
@@ -231,7 +231,7 @@ class DocumentController extends Controller
     /**
      * Création d'une nouvelle réaction
      */
-    public function reactionNewAction($debateId, $parentId)
+    public function reactionNewAction($debateUuid, $parentUuid)
     {
         $logger = $this->get('logger');
         $logger->info('*** reactionNewAction');
@@ -241,20 +241,37 @@ class DocumentController extends Controller
             throw new InconsistentDataException('Current user not found.');
         }
 
+        // associated objects
+        $debate = PDDebateQuery::create()->filterByUuid($debateUuid)->findOne();
+        $parent = null;
+        $parentId = null;
+        if ($parentUuid && !empty($parentUuid)) {
+            $parent = PDReactionQuery::create()->filterByUuid($parentUuid)->findOne();
+            if (!$parent) {
+                throw new InconsistentDataException('Parent\'s reaction not found.');
+            }
+            $parentId = $parent->getId();
+        }
+        if (!$debate) {
+            throw new InconsistentDataException('Debate\'s reaction not found.');
+        }
+
         // search "as new" already created reaction
         $reaction = PDReactionQuery::create()
                     ->filterByPUserId($user->getId())
-                    ->filterByPDDebateId($debateId)
-                    ->filterByParentReactionId($parentId)
+                    ->filterByPDDebateId($debate->getId())
+                    ->_if($parentId)
+                        ->filterByParentReactionId($parentId)
+                    ->_endif()
                     ->where('p_d_reaction.created_at = p_d_reaction.updated_at')
                     ->findOne();
 
         if (!$reaction) {
-            $reaction = $this->get('politizr.functional.document')->createReaction($debateId, $parentId);
+            $reaction = $this->get('politizr.functional.document')->createReaction($debate, $parent);
         }
 
         return $this->redirect($this->generateUrl('ReactionDraftEdit'.$this->get('politizr.tools.global')->computeProfileSuffix(), array(
-            'id' => $reaction->getId()
+            'uuid' => $reaction->getUuid()
         )));
     }
 
@@ -262,23 +279,23 @@ class DocumentController extends Controller
      * Edition d'une réaction
      * @todo remove id to manage with slug > force user to set a title when he creates a new debate?
      */
-    public function reactionEditAction($id)
+    public function reactionEditAction($uuid)
     {
         $logger = $this->get('logger');
         $logger->info('*** reactionEditAction');
-        $logger->info('$id = '.print_r($id, true));
+        $logger->info('$uuid = '.print_r($uuid, true));
 
         $user = $this->getUser();
 
-        $reaction = PDReactionQuery::create()->findPk($id);
+        $reaction = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
         if (!$reaction) {
-            throw new InconsistentDataException('Reaction n°'.$id.' not found.');
+            throw new InconsistentDataException('Reaction '.$uuid.' not found.');
         }
         if (!$reaction->isOwner($user->getId())) {
-            throw new InconsistentDataException('Reaction n°'.$id.' is not yours.');
+            throw new InconsistentDataException('Reaction '.$uuid.' is not yours.');
         }
         if ($reaction->getPublished()) {
-            throw new InconsistentDataException('Reaction n°'.$id.' is published and cannot be edited anymore.');
+            throw new InconsistentDataException('Reaction '.$uuid.' is published and cannot be edited anymore.');
         }
 
         // parent document for compared edition
@@ -293,7 +310,6 @@ class DocumentController extends Controller
         $paragraphs = $utilsManager->explodeParagraphs($parent->getDescription());
 
         // forms
-        $reaction = PDReactionQuery::create()->findPk($id);
         $form = $this->createForm(new PDReactionType(), $reaction);
         $formPhotoInfo = $this->createForm(new PDReactionPhotoInfoType(), $reaction);
 

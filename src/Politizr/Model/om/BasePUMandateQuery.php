@@ -25,6 +25,7 @@ use Politizr\Model\PUser;
 
 /**
  * @method PUMandateQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method PUMandateQuery orderByUuid($order = Criteria::ASC) Order by the uuid column
  * @method PUMandateQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
  * @method PUMandateQuery orderByPQTypeId($order = Criteria::ASC) Order by the p_q_type_id column
  * @method PUMandateQuery orderByPQMandateId($order = Criteria::ASC) Order by the p_q_mandate_id column
@@ -36,6 +37,7 @@ use Politizr\Model\PUser;
  * @method PUMandateQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  *
  * @method PUMandateQuery groupById() Group by the id column
+ * @method PUMandateQuery groupByUuid() Group by the uuid column
  * @method PUMandateQuery groupByPUserId() Group by the p_user_id column
  * @method PUMandateQuery groupByPQTypeId() Group by the p_q_type_id column
  * @method PUMandateQuery groupByPQMandateId() Group by the p_q_mandate_id column
@@ -69,6 +71,7 @@ use Politizr\Model\PUser;
  * @method PUMandate findOne(PropelPDO $con = null) Return the first PUMandate matching the query
  * @method PUMandate findOneOrCreate(PropelPDO $con = null) Return the first PUMandate matching the query, or a new PUMandate object populated from the query conditions when no match is found
  *
+ * @method PUMandate findOneByUuid(string $uuid) Return the first PUMandate filtered by the uuid column
  * @method PUMandate findOneByPUserId(int $p_user_id) Return the first PUMandate filtered by the p_user_id column
  * @method PUMandate findOneByPQTypeId(int $p_q_type_id) Return the first PUMandate filtered by the p_q_type_id column
  * @method PUMandate findOneByPQMandateId(int $p_q_mandate_id) Return the first PUMandate filtered by the p_q_mandate_id column
@@ -80,6 +83,7 @@ use Politizr\Model\PUser;
  * @method PUMandate findOneByUpdatedAt(string $updated_at) Return the first PUMandate filtered by the updated_at column
  *
  * @method array findById(int $id) Return PUMandate objects filtered by the id column
+ * @method array findByUuid(string $uuid) Return PUMandate objects filtered by the uuid column
  * @method array findByPUserId(int $p_user_id) Return PUMandate objects filtered by the p_user_id column
  * @method array findByPQTypeId(int $p_q_type_id) Return PUMandate objects filtered by the p_q_type_id column
  * @method array findByPQMandateId(int $p_q_mandate_id) Return PUMandate objects filtered by the p_q_mandate_id column
@@ -201,7 +205,7 @@ abstract class BasePUMandateQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_user_id`, `p_q_type_id`, `p_q_mandate_id`, `p_q_organization_id`, `localization`, `begin_at`, `end_at`, `created_at`, `updated_at` FROM `p_u_mandate` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `p_q_type_id`, `p_q_mandate_id`, `p_q_organization_id`, `localization`, `begin_at`, `end_at`, `created_at`, `updated_at` FROM `p_u_mandate` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -331,6 +335,35 @@ abstract class BasePUMandateQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PUMandatePeer::ID, $id, $comparison);
+    }
+
+    /**
+     * Filter the query on the uuid column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByUuid('fooValue');   // WHERE uuid = 'fooValue'
+     * $query->filterByUuid('%fooValue%'); // WHERE uuid LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $uuid The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUMandateQuery The current query, for fluid interface
+     */
+    public function filterByUuid($uuid = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($uuid)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $uuid)) {
+                $uuid = str_replace('*', '%', $uuid);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PUMandatePeer::UUID, $uuid, $comparison);
     }
 
     /**

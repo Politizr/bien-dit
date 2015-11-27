@@ -14,8 +14,8 @@ params:
             label:          Utilisateur
         p_object_name:
             label:          Objet associé
-        p_object_id:
-            label:          ID objet associé
+        p_object_uuid:
+            label:          UUID objet associé
         message:
             label:          Message
         created_at:

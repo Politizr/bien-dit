@@ -18,6 +18,7 @@ use Politizr\Model\PDReactionArchiveQuery;
 
 /**
  * @method PDReactionArchiveQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method PDReactionArchiveQuery orderByUuid($order = Criteria::ASC) Order by the uuid column
  * @method PDReactionArchiveQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
  * @method PDReactionArchiveQuery orderByPDDebateId($order = Criteria::ASC) Order by the p_d_debate_id column
  * @method PDReactionArchiveQuery orderByParentReactionId($order = Criteria::ASC) Order by the parent_reaction_id column
@@ -45,6 +46,7 @@ use Politizr\Model\PDReactionArchiveQuery;
  * @method PDReactionArchiveQuery orderByArchivedAt($order = Criteria::ASC) Order by the archived_at column
  *
  * @method PDReactionArchiveQuery groupById() Group by the id column
+ * @method PDReactionArchiveQuery groupByUuid() Group by the uuid column
  * @method PDReactionArchiveQuery groupByPUserId() Group by the p_user_id column
  * @method PDReactionArchiveQuery groupByPDDebateId() Group by the p_d_debate_id column
  * @method PDReactionArchiveQuery groupByParentReactionId() Group by the parent_reaction_id column
@@ -78,6 +80,7 @@ use Politizr\Model\PDReactionArchiveQuery;
  * @method PDReactionArchive findOne(PropelPDO $con = null) Return the first PDReactionArchive matching the query
  * @method PDReactionArchive findOneOrCreate(PropelPDO $con = null) Return the first PDReactionArchive matching the query, or a new PDReactionArchive object populated from the query conditions when no match is found
  *
+ * @method PDReactionArchive findOneByUuid(string $uuid) Return the first PDReactionArchive filtered by the uuid column
  * @method PDReactionArchive findOneByPUserId(int $p_user_id) Return the first PDReactionArchive filtered by the p_user_id column
  * @method PDReactionArchive findOneByPDDebateId(int $p_d_debate_id) Return the first PDReactionArchive filtered by the p_d_debate_id column
  * @method PDReactionArchive findOneByParentReactionId(int $parent_reaction_id) Return the first PDReactionArchive filtered by the parent_reaction_id column
@@ -105,6 +108,7 @@ use Politizr\Model\PDReactionArchiveQuery;
  * @method PDReactionArchive findOneByArchivedAt(string $archived_at) Return the first PDReactionArchive filtered by the archived_at column
  *
  * @method array findById(int $id) Return PDReactionArchive objects filtered by the id column
+ * @method array findByUuid(string $uuid) Return PDReactionArchive objects filtered by the uuid column
  * @method array findByPUserId(int $p_user_id) Return PDReactionArchive objects filtered by the p_user_id column
  * @method array findByPDDebateId(int $p_d_debate_id) Return PDReactionArchive objects filtered by the p_d_debate_id column
  * @method array findByParentReactionId(int $parent_reaction_id) Return PDReactionArchive objects filtered by the parent_reaction_id column
@@ -236,7 +240,7 @@ abstract class BasePDReactionArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_user_id`, `p_d_debate_id`, `parent_reaction_id`, `title`, `file_name`, `copyright`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `moderated`, `moderated_partial`, `moderated_at`, `created_at`, `updated_at`, `slug`, `tree_left`, `tree_right`, `tree_level`, `archived_at` FROM `p_d_reaction_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `p_d_debate_id`, `parent_reaction_id`, `title`, `file_name`, `copyright`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `moderated`, `moderated_partial`, `moderated_at`, `created_at`, `updated_at`, `slug`, `tree_left`, `tree_right`, `tree_level`, `archived_at` FROM `p_d_reaction_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -366,6 +370,35 @@ abstract class BasePDReactionArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDReactionArchivePeer::ID, $id, $comparison);
+    }
+
+    /**
+     * Filter the query on the uuid column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByUuid('fooValue');   // WHERE uuid = 'fooValue'
+     * $query->filterByUuid('%fooValue%'); // WHERE uuid LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $uuid The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDReactionArchiveQuery The current query, for fluid interface
+     */
+    public function filterByUuid($uuid = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($uuid)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $uuid)) {
+                $uuid = str_replace('*', '%', $uuid);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PDReactionArchivePeer::UUID, $uuid, $comparison);
     }
 
     /**

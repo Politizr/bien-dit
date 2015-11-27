@@ -2,7 +2,7 @@
 #               PUBLIC
 ################################################################################
 DebateFeed:
-    pattern:  /fil-du-debat/{slug}
+    pattern:  /debat/{slug}/fil
     defaults: { _controller: PolitizrFrontBundle:Document:debateFeed }
     requirements:
         _method:        GET
@@ -23,7 +23,7 @@ ReactionDetail:
 #               CITIZEN
 ################################################################################
 DebateFeedC:
-    pattern:  /citoyen/fil-du-debat/{slug}
+    pattern:  /citoyen/debat/{slug}/fil
     defaults: { _controller: PolitizrFrontBundle:Document:debateFeed }
     requirements:
         _method:        GET
@@ -41,30 +41,30 @@ ReactionDetailC:
         _method:        GET
 
 DebateDraftNewC:
-    pattern:  /citoyen/mes-contributions/nouveau
+    pattern:  /citoyen/mes-brouillons/debat/nouveau
     defaults: { _controller: PolitizrFrontBundle:Document:debateNew }
 
 DebateDraftEditC:
-    pattern:  /citoyen/mes-contributions/{id}/edition
+    pattern:  /citoyen/mes-brouillons/debat/{uuid}
     defaults: { _controller: PolitizrFrontBundle:Document:debateEdit }
     requirements:
         _method:        GET
-        id:             \d+
+        uuid:           ([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})
 
 ReactionDraftNewC:
-    pattern:  /citoyen/{debateId}/{parentId}/mes-reactions/nouvelle
+    pattern:  /citoyen/mes-brouillons/reaction/nouveau/{debateUuid}/{parentUuid}
     defaults: { _controller: PolitizrFrontBundle:Document:reactionNew }
     requirements:
         _method:        GET
-        debateId:       \d+
-        parentId:       \d*
+        debateUuid:     ([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})
+        parentUuid:     ([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})|()
 
 ReactionDraftEditC:
-    pattern:  /citoyen/mes-reactions/{id}/edition
+    pattern:  /citoyen/mes-brouillons/reaction/{uuid}
     defaults: { _controller: PolitizrFrontBundle:Document:reactionEdit }
     requirements:
         _method:        GET
-        id:             \d+
+        uuid:           ([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})
 
 DraftsC:
     pattern:  /citoyen/mes-brouillons
@@ -78,7 +78,7 @@ MyPublicationsC:
 #               ELECTED
 ################################################################################
 DebateFeedE:
-    pattern:  /elu/fil-du-debat/{slug}
+    pattern:  /elu/debat/{slug}/fil
     defaults: { _controller: PolitizrFrontBundle:Document:debateFeed }
     requirements:
         _method:        GET
@@ -96,33 +96,33 @@ ReactionDetailE:
         _method:        GET
 
 DebateDraftNewE:
-    pattern:  /elu/mes-contributions/nouveau
+    pattern:  /elu/mes-brouillons/debat/nouveau
     defaults: { _controller: PolitizrFrontBundle:Document:debateNew }
 
 DebateDraftEditE:
-    pattern:  /elu/mes-contributions/{id}/edition
+    pattern:  /elu/mes-brouillons/debat/{uuid}
     defaults: { _controller: PolitizrFrontBundle:Document:debateEdit }
     requirements:
         _method:        GET
-        id:             \d+
+        uuid:           ([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})
 
 ReactionDraftNewE:
-    pattern:  /elu/{debateId}/{parentId}/mes-reactions/nouvelle
+    pattern:  /elu/mes-brouillons/reaction/nouveau/{debateUuid}/{parentUuid}
     defaults: { _controller: PolitizrFrontBundle:Document:reactionNew }
     requirements:
         _method:        GET
-        debateId:       \d+
-        parentId:       \d*
+        debateUuid:     ([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})
+        parentUuid:     ([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})|()
 
 ReactionDraftEditE:
-    pattern:  /elu/mes-reactions/{id}/edition
+    pattern:  /elu/mes-brouillons/reaction/{uuid}
     defaults: { _controller: PolitizrFrontBundle:Document:reactionEdit }
     requirements:
         _method:        GET
-        id:             \d+
+        uuid:           ([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})
 
 DraftsE:
-    pattern:  /elu/mes-contributions/brouillons
+    pattern:  /elu/mes-brouillons
     defaults: { _controller: PolitizrFrontBundle:Document:drafts }
 
 MyPublicationsE:

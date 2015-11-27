@@ -24,17 +24,8 @@ class PDCommentType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('p_user_id', 'hidden', array(
-            'required' => true,
-        ));
-        
         $builder->add('paragraph_no', 'hidden', array(
             'required' => false,
-        ));
-        
-        $builder->add('online', 'hidden', array(
-            'required' => true,
-            'data' => true,
         ));
         
         $builder->add('description', 'textarea', array(

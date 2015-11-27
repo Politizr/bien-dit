@@ -4,6 +4,7 @@
 #  Concordance des tags suivis / tags caractérisant des débats
 SELECT DISTINCT
     id,
+    uuid,
     p_user_id,
     title,
     file_name,
@@ -71,6 +72,7 @@ LIMIT 0, 10
 #  Concordance des tags suivis / tags caractérisant des réactions
 SELECT DISTINCT
     id,
+    uuid,
     p_user_id,
     p_d_debate_id,
     parent_reaction_id,
@@ -125,6 +127,7 @@ LIMIT 0, 10
 #  Concordance des tags suivis / tags caractérisant des users
 SELECT DISTINCT
     id,
+    uuid,
     provider,
     provider_id,
     nickname,

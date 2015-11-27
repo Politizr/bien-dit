@@ -36,7 +36,12 @@ function notificationsLoading(){
             $('#ajaxGlobalLoader').hide();
 
             // MAJ compteur
-            $('#notifCounter').html(data['counterNotifs']);
+            note = parseInt(data['counterNotifs']);
+            if (note > 0) {
+                $('#notifCounter').html(data['counterNotifs']).show();
+            } else {
+                $('#notifCounter').html('-').hide();
+            }
 
             // MAJ listing des notifs
             $('#notifList').html(data['html']);
@@ -68,7 +73,7 @@ $("body").on("click", "i[action='notificationCheck']", function(e) {
         dataType: 'json',
         url : xhrPath,
         context: $(this).closest('.notifItem'),
-        data: { 'subjectId': $(this).attr('subjectId') },
+        data: { 'uuid': $(this).attr('uuid') },
         beforeSend: function ( xhr ) { xhrBeforeSend( xhr, localLoader ); },
         statusCode: { 404: function () { xhr404(localLoader); }, 500: function() { xhr500(localLoader); } },
         error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown, localLoader); },
@@ -79,7 +84,12 @@ $("body").on("click", "i[action='notificationCheck']", function(e) {
             $(this).find('.iconCheck').remove();
             $(this).addClass('viewedNotif');
 
-            $('#notifCounter').html(parseInt($('#notifCounter').text()) - 1);
+            note = parseInt($('#notifCounter').text()) - 1;
+            if (note > 0) {
+                $('#notifCounter').html(note);
+            } else {
+                $('#notifCounter').html('-').hide();
+            }
 
             $('#ajaxGlobalLoader').hide();
         }
@@ -103,7 +113,7 @@ $("body").on("click", "a[action='notificationCheck']", function(e) {
         dataType: 'json',
         url : xhrPath,
         context: this,
-        data: { 'subjectId': $(this).closest('span').attr('subjectId') },
+        data: { 'uuid': $(this).closest('span').attr('uuid') },
         beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
         statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
         error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
@@ -140,7 +150,7 @@ $("body").on("click", "div[action='notificationCheckAll']", function(e) {
             $('.notifItem').find('.iconCheck').remove();
 
             // MAJ du compteur
-            $('#notifCounter').html('-');
+            $('#notifCounter').html('-').hide();
 
             $('#ajaxGlobalLoader').hide();
         }

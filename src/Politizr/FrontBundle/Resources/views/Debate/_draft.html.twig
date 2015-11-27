@@ -6,11 +6,11 @@
         <span>débat</span>dernière mise à jour {% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAtTiny.html.twig' with { 'dateTimeAt': debate.updatedAt } only %}
     </div>
     <div class="publicationsListItemTitle">
-        <a href="{{ path('DebateDraftEdit'~profileSuffix, { 'id': debate.id }) }}">
+        <a href="{{ path('DebateDraftEdit'~profileSuffix, { 'uuid': debate.uuid }) }}">
             {{ debate.title }}
         </a>
     </div>
     <div class="publicationsListItemActions">
-        <a href="{{ path('DebateDraftEdit'~profileSuffix, { 'id': debate.id }) }}"><i class="iconEdit"></i>Éditer</a>
+        <a href="{{ path('DebateDraftEdit'~profileSuffix, { 'uuid': debate.uuid }) }}"><i class="iconEdit"></i>Éditer</a>
     </div>
 </div>

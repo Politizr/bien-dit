@@ -47,6 +47,12 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
     protected $id;
 
     /**
+     * The value for the uuid field.
+     * @var        string
+     */
+    protected $uuid;
+
+    /**
      * The value for the p_t_tag_type_id field.
      * @var        int
      */
@@ -69,6 +75,18 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
      * @var        string
      */
     protected $title;
+
+    /**
+     * The value for the moderated field.
+     * @var        boolean
+     */
+    protected $moderated;
+
+    /**
+     * The value for the moderated_at field.
+     * @var        string
+     */
+    protected $moderated_at;
 
     /**
      * The value for the online field.
@@ -137,6 +155,17 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [uuid] column value.
+     *
+     * @return string
+     */
+    public function getUuid()
+    {
+
+        return $this->uuid;
+    }
+
+    /**
      * Get the [p_t_tag_type_id] column value.
      *
      * @return int
@@ -178,6 +207,57 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
     {
 
         return $this->title;
+    }
+
+    /**
+     * Get the [moderated] column value.
+     *
+     * @return boolean
+     */
+    public function getModerated()
+    {
+
+        return $this->moderated;
+    }
+
+    /**
+     * Get the [optionally formatted] temporal [moderated_at] column value.
+     *
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getModeratedAt($format = null)
+    {
+        if ($this->moderated_at === null) {
+            return null;
+        }
+
+        if ($this->moderated_at === '0000-00-00 00:00:00') {
+            // while technically this is not a default value of null,
+            // this seems to be closest in meaning.
+            return null;
+        }
+
+        try {
+            $dt = new DateTime($this->moderated_at);
+        } catch (Exception $x) {
+            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->moderated_at, true), $x);
+        }
+
+        if ($format === null) {
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
+            return $dt;
+        }
+
+        if (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        }
+
+        return $dt->format($format);
+
     }
 
     /**
@@ -344,6 +424,27 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
     } // setId()
 
     /**
+     * Set the value of [uuid] column.
+     *
+     * @param  string $v new value
+     * @return PTagArchive The current object (for fluent API support)
+     */
+    public function setUuid($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->uuid !== $v) {
+            $this->uuid = $v;
+            $this->modifiedColumns[] = PTagArchivePeer::UUID;
+        }
+
+
+        return $this;
+    } // setUuid()
+
+    /**
      * Set the value of [p_t_tag_type_id] column.
      *
      * @param  int $v new value
@@ -426,6 +527,58 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
 
         return $this;
     } // setTitle()
+
+    /**
+     * Sets the value of the [moderated] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return PTagArchive The current object (for fluent API support)
+     */
+    public function setModerated($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->moderated !== $v) {
+            $this->moderated = $v;
+            $this->modifiedColumns[] = PTagArchivePeer::MODERATED;
+        }
+
+
+        return $this;
+    } // setModerated()
+
+    /**
+     * Sets the value of [moderated_at] column to a normalized version of the date/time value specified.
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return PTagArchive The current object (for fluent API support)
+     */
+    public function setModeratedAt($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->moderated_at !== null || $dt !== null) {
+            $currentDateAsString = ($this->moderated_at !== null && $tmpDt = new DateTime($this->moderated_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->moderated_at = $newDateAsString;
+                $this->modifiedColumns[] = PTagArchivePeer::MODERATED_AT;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setModeratedAt()
 
     /**
      * Sets the value of the [online] column.
@@ -579,15 +732,18 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
         try {
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->p_t_tag_type_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
-            $this->p_t_parent_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
-            $this->p_user_id = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
-            $this->title = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-            $this->online = ($row[$startcol + 5] !== null) ? (boolean) $row[$startcol + 5] : null;
-            $this->created_at = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
-            $this->updated_at = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-            $this->slug = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
-            $this->archived_at = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+            $this->uuid = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
+            $this->p_t_tag_type_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+            $this->p_t_parent_id = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
+            $this->p_user_id = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
+            $this->title = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->moderated = ($row[$startcol + 6] !== null) ? (boolean) $row[$startcol + 6] : null;
+            $this->moderated_at = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+            $this->online = ($row[$startcol + 8] !== null) ? (boolean) $row[$startcol + 8] : null;
+            $this->created_at = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+            $this->updated_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+            $this->slug = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+            $this->archived_at = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -597,7 +753,7 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 10; // 10 = PTagArchivePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 13; // 13 = PTagArchivePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PTagArchive object", $e);
@@ -823,6 +979,9 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PTagArchivePeer::ID)) {
             $modifiedColumns[':p' . $index++]  = '`id`';
         }
+        if ($this->isColumnModified(PTagArchivePeer::UUID)) {
+            $modifiedColumns[':p' . $index++]  = '`uuid`';
+        }
         if ($this->isColumnModified(PTagArchivePeer::P_T_TAG_TYPE_ID)) {
             $modifiedColumns[':p' . $index++]  = '`p_t_tag_type_id`';
         }
@@ -834,6 +993,12 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
         }
         if ($this->isColumnModified(PTagArchivePeer::TITLE)) {
             $modifiedColumns[':p' . $index++]  = '`title`';
+        }
+        if ($this->isColumnModified(PTagArchivePeer::MODERATED)) {
+            $modifiedColumns[':p' . $index++]  = '`moderated`';
+        }
+        if ($this->isColumnModified(PTagArchivePeer::MODERATED_AT)) {
+            $modifiedColumns[':p' . $index++]  = '`moderated_at`';
         }
         if ($this->isColumnModified(PTagArchivePeer::ONLINE)) {
             $modifiedColumns[':p' . $index++]  = '`online`';
@@ -864,6 +1029,9 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
                     case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
+                    case '`uuid`':
+                        $stmt->bindValue($identifier, $this->uuid, PDO::PARAM_STR);
+                        break;
                     case '`p_t_tag_type_id`':
                         $stmt->bindValue($identifier, $this->p_t_tag_type_id, PDO::PARAM_INT);
                         break;
@@ -875,6 +1043,12 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
                         break;
                     case '`title`':
                         $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
+                        break;
+                    case '`moderated`':
+                        $stmt->bindValue($identifier, (int) $this->moderated, PDO::PARAM_INT);
+                        break;
+                    case '`moderated_at`':
+                        $stmt->bindValue($identifier, $this->moderated_at, PDO::PARAM_STR);
                         break;
                     case '`online`':
                         $stmt->bindValue($identifier, (int) $this->online, PDO::PARAM_INT);
@@ -1022,30 +1196,39 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
                 return $this->getId();
                 break;
             case 1:
-                return $this->getPTTagTypeId();
+                return $this->getUuid();
                 break;
             case 2:
-                return $this->getPTParentId();
+                return $this->getPTTagTypeId();
                 break;
             case 3:
-                return $this->getPUserId();
+                return $this->getPTParentId();
                 break;
             case 4:
-                return $this->getTitle();
+                return $this->getPUserId();
                 break;
             case 5:
-                return $this->getOnline();
+                return $this->getTitle();
                 break;
             case 6:
-                return $this->getCreatedAt();
+                return $this->getModerated();
                 break;
             case 7:
-                return $this->getUpdatedAt();
+                return $this->getModeratedAt();
                 break;
             case 8:
-                return $this->getSlug();
+                return $this->getOnline();
                 break;
             case 9:
+                return $this->getCreatedAt();
+                break;
+            case 10:
+                return $this->getUpdatedAt();
+                break;
+            case 11:
+                return $this->getSlug();
+                break;
+            case 12:
                 return $this->getArchivedAt();
                 break;
             default:
@@ -1077,15 +1260,18 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
         $keys = PTagArchivePeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getPTTagTypeId(),
-            $keys[2] => $this->getPTParentId(),
-            $keys[3] => $this->getPUserId(),
-            $keys[4] => $this->getTitle(),
-            $keys[5] => $this->getOnline(),
-            $keys[6] => $this->getCreatedAt(),
-            $keys[7] => $this->getUpdatedAt(),
-            $keys[8] => $this->getSlug(),
-            $keys[9] => $this->getArchivedAt(),
+            $keys[1] => $this->getUuid(),
+            $keys[2] => $this->getPTTagTypeId(),
+            $keys[3] => $this->getPTParentId(),
+            $keys[4] => $this->getPUserId(),
+            $keys[5] => $this->getTitle(),
+            $keys[6] => $this->getModerated(),
+            $keys[7] => $this->getModeratedAt(),
+            $keys[8] => $this->getOnline(),
+            $keys[9] => $this->getCreatedAt(),
+            $keys[10] => $this->getUpdatedAt(),
+            $keys[11] => $this->getSlug(),
+            $keys[12] => $this->getArchivedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1129,30 +1315,39 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
                 $this->setId($value);
                 break;
             case 1:
-                $this->setPTTagTypeId($value);
+                $this->setUuid($value);
                 break;
             case 2:
-                $this->setPTParentId($value);
+                $this->setPTTagTypeId($value);
                 break;
             case 3:
-                $this->setPUserId($value);
+                $this->setPTParentId($value);
                 break;
             case 4:
-                $this->setTitle($value);
+                $this->setPUserId($value);
                 break;
             case 5:
-                $this->setOnline($value);
+                $this->setTitle($value);
                 break;
             case 6:
-                $this->setCreatedAt($value);
+                $this->setModerated($value);
                 break;
             case 7:
-                $this->setUpdatedAt($value);
+                $this->setModeratedAt($value);
                 break;
             case 8:
-                $this->setSlug($value);
+                $this->setOnline($value);
                 break;
             case 9:
+                $this->setCreatedAt($value);
+                break;
+            case 10:
+                $this->setUpdatedAt($value);
+                break;
+            case 11:
+                $this->setSlug($value);
+                break;
+            case 12:
                 $this->setArchivedAt($value);
                 break;
         } // switch()
@@ -1180,15 +1375,18 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
         $keys = PTagArchivePeer::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setPTTagTypeId($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setPTParentId($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setPUserId($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setTitle($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setOnline($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setCreatedAt($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setUpdatedAt($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setSlug($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setArchivedAt($arr[$keys[9]]);
+        if (array_key_exists($keys[1], $arr)) $this->setUuid($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setPTTagTypeId($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setPTParentId($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setPUserId($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setTitle($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setModerated($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setModeratedAt($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setOnline($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setCreatedAt($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setUpdatedAt($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setSlug($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setArchivedAt($arr[$keys[12]]);
     }
 
     /**
@@ -1201,10 +1399,13 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
         $criteria = new Criteria(PTagArchivePeer::DATABASE_NAME);
 
         if ($this->isColumnModified(PTagArchivePeer::ID)) $criteria->add(PTagArchivePeer::ID, $this->id);
+        if ($this->isColumnModified(PTagArchivePeer::UUID)) $criteria->add(PTagArchivePeer::UUID, $this->uuid);
         if ($this->isColumnModified(PTagArchivePeer::P_T_TAG_TYPE_ID)) $criteria->add(PTagArchivePeer::P_T_TAG_TYPE_ID, $this->p_t_tag_type_id);
         if ($this->isColumnModified(PTagArchivePeer::P_T_PARENT_ID)) $criteria->add(PTagArchivePeer::P_T_PARENT_ID, $this->p_t_parent_id);
         if ($this->isColumnModified(PTagArchivePeer::P_USER_ID)) $criteria->add(PTagArchivePeer::P_USER_ID, $this->p_user_id);
         if ($this->isColumnModified(PTagArchivePeer::TITLE)) $criteria->add(PTagArchivePeer::TITLE, $this->title);
+        if ($this->isColumnModified(PTagArchivePeer::MODERATED)) $criteria->add(PTagArchivePeer::MODERATED, $this->moderated);
+        if ($this->isColumnModified(PTagArchivePeer::MODERATED_AT)) $criteria->add(PTagArchivePeer::MODERATED_AT, $this->moderated_at);
         if ($this->isColumnModified(PTagArchivePeer::ONLINE)) $criteria->add(PTagArchivePeer::ONLINE, $this->online);
         if ($this->isColumnModified(PTagArchivePeer::CREATED_AT)) $criteria->add(PTagArchivePeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(PTagArchivePeer::UPDATED_AT)) $criteria->add(PTagArchivePeer::UPDATED_AT, $this->updated_at);
@@ -1273,10 +1474,13 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
+        $copyObj->setUuid($this->getUuid());
         $copyObj->setPTTagTypeId($this->getPTTagTypeId());
         $copyObj->setPTParentId($this->getPTParentId());
         $copyObj->setPUserId($this->getPUserId());
         $copyObj->setTitle($this->getTitle());
+        $copyObj->setModerated($this->getModerated());
+        $copyObj->setModeratedAt($this->getModeratedAt());
         $copyObj->setOnline($this->getOnline());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
@@ -1334,10 +1538,13 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
     public function clear()
     {
         $this->id = null;
+        $this->uuid = null;
         $this->p_t_tag_type_id = null;
         $this->p_t_parent_id = null;
         $this->p_user_id = null;
         $this->title = null;
+        $this->moderated = null;
+        $this->moderated_at = null;
         $this->online = null;
         $this->created_at = null;
         $this->updated_at = null;

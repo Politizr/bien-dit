@@ -23,6 +23,7 @@ use Politizr\Model\POrder;
 
 /**
  * @method POSubscriptionQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method POSubscriptionQuery orderByUuid($order = Criteria::ASC) Order by the uuid column
  * @method POSubscriptionQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method POSubscriptionQuery orderByDescription($order = Criteria::ASC) Order by the description column
  * @method POSubscriptionQuery orderByPrice($order = Criteria::ASC) Order by the price column
@@ -33,6 +34,7 @@ use Politizr\Model\POrder;
  * @method POSubscriptionQuery orderBySortableRank($order = Criteria::ASC) Order by the sortable_rank column
  *
  * @method POSubscriptionQuery groupById() Group by the id column
+ * @method POSubscriptionQuery groupByUuid() Group by the uuid column
  * @method POSubscriptionQuery groupByTitle() Group by the title column
  * @method POSubscriptionQuery groupByDescription() Group by the description column
  * @method POSubscriptionQuery groupByPrice() Group by the price column
@@ -57,6 +59,7 @@ use Politizr\Model\POrder;
  * @method POSubscription findOne(PropelPDO $con = null) Return the first POSubscription matching the query
  * @method POSubscription findOneOrCreate(PropelPDO $con = null) Return the first POSubscription matching the query, or a new POSubscription object populated from the query conditions when no match is found
  *
+ * @method POSubscription findOneByUuid(string $uuid) Return the first POSubscription filtered by the uuid column
  * @method POSubscription findOneByTitle(string $title) Return the first POSubscription filtered by the title column
  * @method POSubscription findOneByDescription(string $description) Return the first POSubscription filtered by the description column
  * @method POSubscription findOneByPrice(string $price) Return the first POSubscription filtered by the price column
@@ -67,6 +70,7 @@ use Politizr\Model\POrder;
  * @method POSubscription findOneBySortableRank(int $sortable_rank) Return the first POSubscription filtered by the sortable_rank column
  *
  * @method array findById(int $id) Return POSubscription objects filtered by the id column
+ * @method array findByUuid(string $uuid) Return POSubscription objects filtered by the uuid column
  * @method array findByTitle(string $title) Return POSubscription objects filtered by the title column
  * @method array findByDescription(string $description) Return POSubscription objects filtered by the description column
  * @method array findByPrice(string $price) Return POSubscription objects filtered by the price column
@@ -184,7 +188,7 @@ abstract class BasePOSubscriptionQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `title`, `description`, `price`, `online`, `created_at`, `updated_at`, `slug`, `sortable_rank` FROM `p_o_subscription` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `title`, `description`, `price`, `online`, `created_at`, `updated_at`, `slug`, `sortable_rank` FROM `p_o_subscription` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -314,6 +318,35 @@ abstract class BasePOSubscriptionQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(POSubscriptionPeer::ID, $id, $comparison);
+    }
+
+    /**
+     * Filter the query on the uuid column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByUuid('fooValue');   // WHERE uuid = 'fooValue'
+     * $query->filterByUuid('%fooValue%'); // WHERE uuid LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $uuid The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return POSubscriptionQuery The current query, for fluid interface
+     */
+    public function filterByUuid($uuid = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($uuid)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $uuid)) {
+                $uuid = str_replace('*', '%', $uuid);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(POSubscriptionPeer::UUID, $uuid, $comparison);
     }
 
     /**

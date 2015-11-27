@@ -8,6 +8,10 @@ params:
     fields:
         id:
             label:          ID
+        uuid:
+            label:          UUID
+        slug:
+            label:          Slug
         title:
             label:          Titre
         description:
@@ -59,8 +63,15 @@ builders:
                 "Contenu":
                     "Texte":                    [ [ title, score_evolution ], [ description ] ]
                 "Attributs":
+                    "Identifiants":             [ [ id, uuid, slug ] ]
                     "Création":                 [ [ created_at, updated_at ] ]
             fields:
+                id:
+                    addFormOptions:
+                        read_only:              true
+                uuid:
+                    addFormOptions:
+                        read_only:              true
                 created_at:
                     addFormOptions:
                       widget:                   single_text

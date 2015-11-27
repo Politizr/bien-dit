@@ -132,17 +132,17 @@ class XhrSearch
     public function addSearchTag(Request $request)
     {
         // Request arguments
-        $tagId = $request->get('tagId');
-        $this->logger->info('$tagId = ' . print_r($tagId, true));
+        $tagUuid = $request->get('tagUuid');
+        $this->logger->info('$tagUuid = ' . print_r($tagUuid, true));
 
-        $tag = PTagQuery::create()->findPk($tagId);
+        $tag = PTagQuery::create()->filterByUuid($tagUuid)->findOne();
         if (!$tag) {
-            throw new InconsistentDataException(sprintf('Tag id-%s does not exist'), $tagId);
+            throw new InconsistentDataException(sprintf('Tag id-%s does not exist', $tag->getId()));
         }
 
         // Put tag in search session
         $session = $request->getSession();
-        $session->set('search/tag/'.$tagId, $tagId);
+        $session->set('search/tag/'.$tagUuid, $tagUuid);
 
         $xhrPathDelete = $this->templating->render(
             'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
@@ -176,12 +176,12 @@ class XhrSearch
         $this->logger->info('*** deleteSearchTag');
         
         // Request arguments
-        $tagId = $request->get('tagId');
-        $this->logger->info('$tagId = ' . print_r($tagId, true));
+        $tagUuid = $request->get('tagUuid');
+        $this->logger->info('$tagUuid = ' . print_r($tagUuid, true));
 
         // Remove tag from search session
         $session = $request->getSession();
-        $session->remove('search/tag/'.$tagId);
+        $session->remove('search/tag/'.$tagUuid);
 
         return true;
     }

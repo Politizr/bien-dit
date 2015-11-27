@@ -29,20 +29,26 @@ use Politizr\Model\PUser;
 
 /**
  * @method PTagQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method PTagQuery orderByUuid($order = Criteria::ASC) Order by the uuid column
  * @method PTagQuery orderByPTTagTypeId($order = Criteria::ASC) Order by the p_t_tag_type_id column
  * @method PTagQuery orderByPTParentId($order = Criteria::ASC) Order by the p_t_parent_id column
  * @method PTagQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
  * @method PTagQuery orderByTitle($order = Criteria::ASC) Order by the title column
+ * @method PTagQuery orderByModerated($order = Criteria::ASC) Order by the moderated column
+ * @method PTagQuery orderByModeratedAt($order = Criteria::ASC) Order by the moderated_at column
  * @method PTagQuery orderByOnline($order = Criteria::ASC) Order by the online column
  * @method PTagQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PTagQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  * @method PTagQuery orderBySlug($order = Criteria::ASC) Order by the slug column
  *
  * @method PTagQuery groupById() Group by the id column
+ * @method PTagQuery groupByUuid() Group by the uuid column
  * @method PTagQuery groupByPTTagTypeId() Group by the p_t_tag_type_id column
  * @method PTagQuery groupByPTParentId() Group by the p_t_parent_id column
  * @method PTagQuery groupByPUserId() Group by the p_user_id column
  * @method PTagQuery groupByTitle() Group by the title column
+ * @method PTagQuery groupByModerated() Group by the moderated column
+ * @method PTagQuery groupByModeratedAt() Group by the moderated_at column
  * @method PTagQuery groupByOnline() Group by the online column
  * @method PTagQuery groupByCreatedAt() Group by the created_at column
  * @method PTagQuery groupByUpdatedAt() Group by the updated_at column
@@ -87,20 +93,26 @@ use Politizr\Model\PUser;
  * @method PTag findOne(PropelPDO $con = null) Return the first PTag matching the query
  * @method PTag findOneOrCreate(PropelPDO $con = null) Return the first PTag matching the query, or a new PTag object populated from the query conditions when no match is found
  *
+ * @method PTag findOneByUuid(string $uuid) Return the first PTag filtered by the uuid column
  * @method PTag findOneByPTTagTypeId(int $p_t_tag_type_id) Return the first PTag filtered by the p_t_tag_type_id column
  * @method PTag findOneByPTParentId(int $p_t_parent_id) Return the first PTag filtered by the p_t_parent_id column
  * @method PTag findOneByPUserId(int $p_user_id) Return the first PTag filtered by the p_user_id column
  * @method PTag findOneByTitle(string $title) Return the first PTag filtered by the title column
+ * @method PTag findOneByModerated(boolean $moderated) Return the first PTag filtered by the moderated column
+ * @method PTag findOneByModeratedAt(string $moderated_at) Return the first PTag filtered by the moderated_at column
  * @method PTag findOneByOnline(boolean $online) Return the first PTag filtered by the online column
  * @method PTag findOneByCreatedAt(string $created_at) Return the first PTag filtered by the created_at column
  * @method PTag findOneByUpdatedAt(string $updated_at) Return the first PTag filtered by the updated_at column
  * @method PTag findOneBySlug(string $slug) Return the first PTag filtered by the slug column
  *
  * @method array findById(int $id) Return PTag objects filtered by the id column
+ * @method array findByUuid(string $uuid) Return PTag objects filtered by the uuid column
  * @method array findByPTTagTypeId(int $p_t_tag_type_id) Return PTag objects filtered by the p_t_tag_type_id column
  * @method array findByPTParentId(int $p_t_parent_id) Return PTag objects filtered by the p_t_parent_id column
  * @method array findByPUserId(int $p_user_id) Return PTag objects filtered by the p_user_id column
  * @method array findByTitle(string $title) Return PTag objects filtered by the title column
+ * @method array findByModerated(boolean $moderated) Return PTag objects filtered by the moderated column
+ * @method array findByModeratedAt(string $moderated_at) Return PTag objects filtered by the moderated_at column
  * @method array findByOnline(boolean $online) Return PTag objects filtered by the online column
  * @method array findByCreatedAt(string $created_at) Return PTag objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PTag objects filtered by the updated_at column
@@ -217,7 +229,7 @@ abstract class BasePTagQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_t_tag_type_id`, `p_t_parent_id`, `p_user_id`, `title`, `online`, `created_at`, `updated_at`, `slug` FROM `p_tag` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_t_tag_type_id`, `p_t_parent_id`, `p_user_id`, `title`, `moderated`, `moderated_at`, `online`, `created_at`, `updated_at`, `slug` FROM `p_tag` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -347,6 +359,35 @@ abstract class BasePTagQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PTagPeer::ID, $id, $comparison);
+    }
+
+    /**
+     * Filter the query on the uuid column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByUuid('fooValue');   // WHERE uuid = 'fooValue'
+     * $query->filterByUuid('%fooValue%'); // WHERE uuid LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $uuid The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PTagQuery The current query, for fluid interface
+     */
+    public function filterByUuid($uuid = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($uuid)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $uuid)) {
+                $uuid = str_replace('*', '%', $uuid);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PTagPeer::UUID, $uuid, $comparison);
     }
 
     /**
@@ -508,6 +549,76 @@ abstract class BasePTagQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PTagPeer::TITLE, $title, $comparison);
+    }
+
+    /**
+     * Filter the query on the moderated column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByModerated(true); // WHERE moderated = true
+     * $query->filterByModerated('yes'); // WHERE moderated = true
+     * </code>
+     *
+     * @param     boolean|string $moderated The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PTagQuery The current query, for fluid interface
+     */
+    public function filterByModerated($moderated = null, $comparison = null)
+    {
+        if (is_string($moderated)) {
+            $moderated = in_array(strtolower($moderated), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PTagPeer::MODERATED, $moderated, $comparison);
+    }
+
+    /**
+     * Filter the query on the moderated_at column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByModeratedAt('2011-03-14'); // WHERE moderated_at = '2011-03-14'
+     * $query->filterByModeratedAt('now'); // WHERE moderated_at = '2011-03-14'
+     * $query->filterByModeratedAt(array('max' => 'yesterday')); // WHERE moderated_at < '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $moderatedAt The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PTagQuery The current query, for fluid interface
+     */
+    public function filterByModeratedAt($moderatedAt = null, $comparison = null)
+    {
+        if (is_array($moderatedAt)) {
+            $useMinMax = false;
+            if (isset($moderatedAt['min'])) {
+                $this->addUsingAlias(PTagPeer::MODERATED_AT, $moderatedAt['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($moderatedAt['max'])) {
+                $this->addUsingAlias(PTagPeer::MODERATED_AT, $moderatedAt['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PTagPeer::MODERATED_AT, $moderatedAt, $comparison);
     }
 
     /**

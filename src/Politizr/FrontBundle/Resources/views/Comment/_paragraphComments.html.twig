@@ -4,7 +4,7 @@
     <div class="avatar40">
         {{ app.user | photo('user_40') }}
     </div>
-    {{ app.user | isAuthorizedToNewComment(formComment) }}
+    {{ app.user | isAuthorizedToNewComment(formComment, document.uuid) }}
 </div>
 
 <div class="commentsList withLoaderInside">

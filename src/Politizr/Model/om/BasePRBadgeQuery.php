@@ -24,6 +24,7 @@ use Politizr\Model\PUser;
 
 /**
  * @method PRBadgeQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method PRBadgeQuery orderByUuid($order = Criteria::ASC) Order by the uuid column
  * @method PRBadgeQuery orderByPRBadgeFamilyId($order = Criteria::ASC) Order by the p_r_badge_family_id column
  * @method PRBadgeQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method PRBadgeQuery orderByOnline($order = Criteria::ASC) Order by the online column
@@ -33,6 +34,7 @@ use Politizr\Model\PUser;
  * @method PRBadgeQuery orderBySortableRank($order = Criteria::ASC) Order by the sortable_rank column
  *
  * @method PRBadgeQuery groupById() Group by the id column
+ * @method PRBadgeQuery groupByUuid() Group by the uuid column
  * @method PRBadgeQuery groupByPRBadgeFamilyId() Group by the p_r_badge_family_id column
  * @method PRBadgeQuery groupByTitle() Group by the title column
  * @method PRBadgeQuery groupByOnline() Group by the online column
@@ -56,6 +58,7 @@ use Politizr\Model\PUser;
  * @method PRBadge findOne(PropelPDO $con = null) Return the first PRBadge matching the query
  * @method PRBadge findOneOrCreate(PropelPDO $con = null) Return the first PRBadge matching the query, or a new PRBadge object populated from the query conditions when no match is found
  *
+ * @method PRBadge findOneByUuid(string $uuid) Return the first PRBadge filtered by the uuid column
  * @method PRBadge findOneByPRBadgeFamilyId(int $p_r_badge_family_id) Return the first PRBadge filtered by the p_r_badge_family_id column
  * @method PRBadge findOneByTitle(string $title) Return the first PRBadge filtered by the title column
  * @method PRBadge findOneByOnline(boolean $online) Return the first PRBadge filtered by the online column
@@ -65,6 +68,7 @@ use Politizr\Model\PUser;
  * @method PRBadge findOneBySortableRank(int $sortable_rank) Return the first PRBadge filtered by the sortable_rank column
  *
  * @method array findById(int $id) Return PRBadge objects filtered by the id column
+ * @method array findByUuid(string $uuid) Return PRBadge objects filtered by the uuid column
  * @method array findByPRBadgeFamilyId(int $p_r_badge_family_id) Return PRBadge objects filtered by the p_r_badge_family_id column
  * @method array findByTitle(string $title) Return PRBadge objects filtered by the title column
  * @method array findByOnline(boolean $online) Return PRBadge objects filtered by the online column
@@ -184,7 +188,7 @@ abstract class BasePRBadgeQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_r_badge_family_id`, `title`, `online`, `created_at`, `updated_at`, `slug`, `sortable_rank` FROM `p_r_badge` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_r_badge_family_id`, `title`, `online`, `created_at`, `updated_at`, `slug`, `sortable_rank` FROM `p_r_badge` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -314,6 +318,35 @@ abstract class BasePRBadgeQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PRBadgePeer::ID, $id, $comparison);
+    }
+
+    /**
+     * Filter the query on the uuid column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByUuid('fooValue');   // WHERE uuid = 'fooValue'
+     * $query->filterByUuid('%fooValue%'); // WHERE uuid LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $uuid The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PRBadgeQuery The current query, for fluid interface
+     */
+    public function filterByUuid($uuid = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($uuid)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $uuid)) {
+                $uuid = str_replace('*', '%', $uuid);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PRBadgePeer::UUID, $uuid, $comparison);
     }
 
     /**

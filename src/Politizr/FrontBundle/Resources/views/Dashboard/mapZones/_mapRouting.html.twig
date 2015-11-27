@@ -1,0 +1,463 @@
+{% if tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_FRANCE_ID') %}
+    <div class="menuOnMap" style="display: none;">
+        <div class="menuOnMapGroup">
+            <div class="menuOnMapItem" action="modalTagged" model="PTag" uuid="{{ fomTag['guadeloupe'].uuid }}"><i class="iconGoTo"></i>Guadeloupe</div>
+            <div class="menuOnMapItem" action="modalTagged" model="PTag" uuid="{{ fomTag['guyane'].uuid }}"><i class="iconGoTo"></i>Guyane</div>
+            <div class="menuOnMapItem" action="modalTagged" model="PTag" uuid="{{ fomTag['martinique'].uuid }}"><i class="iconGoTo"></i>Martinique</div>
+            <div class="menuOnMapItem" action="modalTagged" model="PTag" uuid="{{ fomTag['laReunion'].uuid }}"><i class="iconGoTo"></i>La Réunion</div>
+            <div class="menuOnMapItem" action="modalTagged" model="PTag" uuid="{{ fomTag['mayotte'].uuid }}"><i class="iconGoTo"></i>Mayotte</div>
+        </div>
+        <div class="menuOnMapGroup">
+            <div class="menuOnMapItem" action="modalTagged" model="PTag" uuid="{{ fomTag['polynesieFrancaise'].uuid }}"><i class="iconGoTo"></i>Polynésie française</div>
+            <div class="menuOnMapItem" action="modalTagged" model="PTag" uuid="{{ fomTag['saintBarthelemy'].uuid }}"><i class="iconGoTo"></i>Saint-Barthélemy</div>
+            <div class="menuOnMapItem" action="modalTagged" model="PTag" uuid="{{ fomTag['saintMartin'].uuid }}"><i class="iconGoTo"></i>Saint-Martin</div>
+            <div class="menuOnMapItem" action="modalTagged" model="PTag" uuid="{{ fomTag['saintPierreEtMiquelon'].uuid }}"><i class="iconGoTo"></i>Saint-Pierre-et-Miquelon</div>
+            <div class="menuOnMapItem" action="modalTagged" model="PTag" uuid="{{ fomTag['wallisEtFutuma'].uuid }}"><i class="iconGoTo"></i>Wallis-et-Futuna</div>
+        </div>
+        <div class="menuOnMapGroup">
+            <div class="menuOnMapItem" action="modalTagged" model="PTag" uuid="{{ fomTag['nouvelleCaledonie'].uuid }}"><i class="iconGoTo"></i>Nouvelle-Calédonie</div>
+        </div>
+        <i class="iconArrowDown"></i>
+    </div>
+    <div class="linkOnMap" action="toggleDomTom">France d'Outre-Mer</div>
+
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones:_mapFrance.svg.twig' with { 'current': null } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_REGION_ID_ACAL') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapACAL.svg.twig' with { 'current': null } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_REGION_ID_ALPC') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapALPC.svg.twig' with { 'current': null } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_REGION_ID_ARA') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapARA.svg.twig' with { 'current': null } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_REGION_ID_BFC') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapBFC.svg.twig' with { 'current': null } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_REGION_ID_B') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapB.svg.twig' with { 'current': null } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_REGION_ID_CVDL') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapCVDL.svg.twig' with { 'current': null } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_REGION_ID_C') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapC.svg.twig' with { 'current': null } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_REGION_ID_IDF') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapIDF.svg.twig' with { 'current': null } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_REGION_ID_LRMP') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapLRMP.svg.twig' with { 'current': null } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_REGION_ID_NPDCP') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapNPDCP.svg.twig' with { 'current': null } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_REGION_ID_N') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapN.svg.twig' with { 'current': null } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_REGION_ID_PDLL') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapPDLL.svg.twig' with { 'current': null } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_REGION_ID_PACA') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapPACA.svg.twig' with { 'current': null } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_AIN') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapARA.svg.twig' with { 'current': 'ain' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_AISNE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapNPDCP.svg.twig' with { 'current': 'aisne' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_ALLIER') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapARA.svg.twig' with { 'current': 'allier' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_ALPES_DE_HAUTE_PROVENCE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapPACA.svg.twig' with { 'current': 'alpesDeHautesProvence' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_HAUTES_ALPES') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapPACA.svg.twig' with { 'current': 'hautesAlpes' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_ALPES_MARITIMES') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapPACA.svg.twig' with { 'current': 'alpesMaritimes' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_ARDECHE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapARA.svg.twig' with { 'current': 'ardeche' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_ARDENNES') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapACAL.svg.twig' with { 'current': 'ardennes' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_ARIEGE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapLRMP.svg.twig' with { 'current': 'ariege' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_AUBE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapACAL.svg.twig' with { 'current': 'aube' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_AUDE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapLRMP.svg.twig' with { 'current': 'aude' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_AVEYRON') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapLRMP.svg.twig' with { 'current': 'aveyron' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_BOUCHES_DU_RHONE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapPACA.svg.twig' with { 'current': 'bouchesDuRhone' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_CALVADOS') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapN.svg.twig' with { 'current': 'calvados' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_CANTAL') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapARA.svg.twig' with { 'current': 'cantal' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_CHARENTE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapALPC.svg.twig' with { 'current': 'charente' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_CHARENTE_MARITIME') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapALPC.svg.twig' with { 'current': 'charenteMaritime' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_CHER') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapCVDL.svg.twig' with { 'current': 'cher' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_CORREZE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapALPC.svg.twig' with { 'current': 'correze' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_CORSE_DU_SUD') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapC.svg.twig' with { 'current': 'corseDuSud' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_HAUTE_CORSE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapC.svg.twig' with { 'current': 'hauteCorse' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_COTE_D_OR') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapBFC.svg.twig' with { 'current': 'coteDOr' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_COTES_D_ARMOR') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapB.svg.twig' with { 'current': 'cotesDArmor' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_CREUSE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapALPC.svg.twig' with { 'current': 'creuse' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_DORDOGNE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapALPC.svg.twig' with { 'current': 'dordogne' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_DOUBS') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapBFC.svg.twig' with { 'current': 'doubs' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_DROME') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapARA.svg.twig' with { 'current': 'drome' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_EURE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapN.svg.twig' with { 'current': 'eure' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_EURE_ET_LOIR') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapCVDL.svg.twig' with { 'current': 'eureEtLoire' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_FINISTERE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapB.svg.twig' with { 'current': 'finistere' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_GARD') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapLRMP.svg.twig' with { 'current': 'gard' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_HAUTE_GARONNE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapLRMP.svg.twig' with { 'current': 'hauteGaronne' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_GERS') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapLRMP.svg.twig' with { 'current': 'gers' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_GIRONDE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapALPC.svg.twig' with { 'current': 'gironde' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_HERAULT') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapLRMP.svg.twig' with { 'current': 'herault' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_ILLE_ET_VILAINE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapB.svg.twig' with { 'current': 'illeEtVilaine' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_INDRE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapCVDL.svg.twig' with { 'current': 'indre' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_INDRE_ET_LOIRE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapCVDL.svg.twig' with { 'current': 'indreEtLoire' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_ISERE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapARA.svg.twig' with { 'current': 'isere' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_JURA') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapBFC.svg.twig' with { 'current': 'jura' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_LANDES') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapALPC.svg.twig' with { 'current': 'landes' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_LOIR_ET_CHER') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapCVDL.svg.twig' with { 'current': 'loirEtCher' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_LOIRE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapARA.svg.twig' with { 'current': 'loire' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_HAUTE_LOIRE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapARA.svg.twig' with { 'current': 'hauteLoire' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_LOIRE_ATLANTIQUE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapPDLL.svg.twig' with { 'current': 'loireAtlantique' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_LOIRET') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapCVDL.svg.twig' with { 'current': 'loiret' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_LOT') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapLRMP.svg.twig' with { 'current': 'lot' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_LOT_ET_GARONNE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapALPC.svg.twig' with { 'current': 'lotEtGaronne' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_LOZERE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapLRMP.svg.twig' with { 'current': 'lozere' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_MAINE_ET_LOIRE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapPDLL.svg.twig' with { 'current': 'maineEtLoire' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_MANCHE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapN.svg.twig' with { 'current': 'manche' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_MARNE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapACAL.svg.twig' with { 'current': 'marne' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_HAUTE_MARNE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapACAL.svg.twig' with { 'current': 'hauteMarne' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_MAYENNE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapPDLL.svg.twig' with { 'current': 'mayenne' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_MEURTHE_ET_MOSELLE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapACAL.svg.twig' with { 'current': 'meurtheEtMoselle' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_MEUSE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapACAL.svg.twig' with { 'current': 'meuse' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_MORBIHAN') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapB.svg.twig' with { 'current': 'morbihan' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_MOSELLE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapACAL.svg.twig' with { 'current': 'moselle' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_NIEVRE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapBFC.svg.twig' with { 'current': 'nievre' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_NORD') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapNPDCP.svg.twig' with { 'current': 'nord' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_OISE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapNPDCP.svg.twig' with { 'current': 'oise' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_ORNE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapN.svg.twig' with { 'current': 'orne' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_PAS_DE_CALAIS') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapNPDCP.svg.twig' with { 'current': 'pasDeCalais' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_PUY_DE_DOME') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapARA.svg.twig' with { 'current': 'puyDeDome' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_PYRENEES_ATLANTIQUES') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapALPC.svg.twig' with { 'current': 'pyreneesAtlantiques' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_HAUTES_PYRENEES') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapLRMP.svg.twig' with { 'current': 'hautesPyrenees' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_PYRENEES_ORIENTALES') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapLRMP.svg.twig' with { 'current': 'pyreneesOrientales' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_BAS_RHIN') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapACAL.svg.twig' with { 'current': 'basRhin' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_HAUT_RHIN') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapACAL.svg.twig' with { 'current': 'hautRhin' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_RHONE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapARA.svg.twig' with { 'current': 'rhone' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_HAUTE_SAONE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapBFC.svg.twig' with { 'current': 'hauteSaone' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_SAONE_ET_LOIRE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapBFC.svg.twig' with { 'current': 'loire' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_SARTHE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapPDLL.svg.twig' with { 'current': 'sarthe' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_SAVOIE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapARA.svg.twig' with { 'current': 'savoie' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_HAUTE_SAVOIE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapARA.svg.twig' with { 'current': 'hauteSavoie' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_PARIS') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapIDF.svg.twig' with { 'current': 'paris' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_SEINE_MARITIME') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapN.svg.twig' with { 'current': 'seineMaritime' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_SEINE_ET_MARNE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapIDF.svg.twig' with { 'current': 'seineEtMarne' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_YVELINES') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapIDF.svg.twig' with { 'current': 'yvelines' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_DEUX_SEVRES') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapALPC.svg.twig' with { 'current': 'deuxSevres' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_SOMME') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapNPDCP.svg.twig' with { 'current': 'somme' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_TARN') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapLRMP.svg.twig' with { 'current': 'tarn' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_TARN_ET_GARONNE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapLRMP.svg.twig' with { 'current': 'tarnEtGaronne' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_VAR') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapPACA.svg.twig' with { 'current': 'var' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_VAUCLUSE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapPACA.svg.twig' with { 'current': 'vaucluse' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_VENDEE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapPDLL.svg.twig' with { 'current': 'vendee' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_VIENNE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapALPC.svg.twig' with { 'current': 'vienne' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_HAUTE_VIENNE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapALPC.svg.twig' with { 'current': 'hauteVienne' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_VOSGES') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapACAL.svg.twig' with { 'current': 'vosges' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_YONNE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapBFC.svg.twig' with { 'current': 'yonne' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_TERRITOIRE_DE_BELFORT') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapBFC.svg.twig' with { 'current': 'territoireDeBelfort' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_ESSONNE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapIDF.svg.twig' with { 'current': 'essonne' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_HAUTS_DE_SEINE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapIDF.svg.twig' with { 'current': 'hautsDeSeine' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_SEINE_SAINT_DENIS') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapIDF.svg.twig' with { 'current': 'seineSaintDenis' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_VAL_DE_MARNE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapIDF.svg.twig' with { 'current': 'valDeMarne' } %}
+    </div>
+{% elseif tag.id == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_VAL_D_OISE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Dashboard\\mapZones\\regions:_mapIDF.svg.twig' with { 'current': 'valDOise' } %}
+    </div>
+{% endif %}

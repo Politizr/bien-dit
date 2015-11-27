@@ -14,7 +14,7 @@
                 {{ user.reputationScore }} points de réputation
             </div>
         {% endif %}
-        <div class="profileFollowersCounter" action="modalFollowers" model="PUser" slug="{{ user.slug }}">
+        <div class="profileFollowersCounter" action="modalFollowers" model="PUser" uuid="{{ user.uuid }}">
             {{ user.countFollowers }} abonnés
         </div>
     </div>

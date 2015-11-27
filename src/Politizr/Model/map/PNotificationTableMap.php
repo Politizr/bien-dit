@@ -43,6 +43,7 @@ class PNotificationTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
+        $this->addColumn('uuid', 'Uuid', 'VARCHAR', false, 50, null);
         $this->addForeignKey('p_n_type_id', 'PNTypeId', 'INTEGER', 'p_n_type', 'id', true, null, null);
         $this->addColumn('title', 'Title', 'VARCHAR', false, 250, null);
         $this->addColumn('description', 'Description', 'LONGVARCHAR', false, null, null);
@@ -83,6 +84,13 @@ class PNotificationTableMap extends TableMap
             'query_cache' =>  array (
   'backend' => 'apc',
   'lifetime' => 3600,
+),
+            'uuid' =>  array (
+  'name' => 'uuid',
+  'version' => '4',
+  'permanent' => 'false',
+  'required' => 'true',
+  'unique' => 'true',
 ),
             'event' =>  array (
 ),

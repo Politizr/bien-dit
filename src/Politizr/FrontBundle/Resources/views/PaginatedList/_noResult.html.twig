@@ -55,5 +55,11 @@
         Vous n'avez rédigé aucun brouillon.
     {% elseif type == constant('Politizr\\Constant\\ListingConstants::MY_PUBLICATIONS_TYPE') %}
         Vous n'avez publié aucun débat ni aucune réaction.
+    {% elseif type == constant('Politizr\\Constant\\ListingConstants::DASHBOARD_TYPE_MAP') %}
+        {% if context == constant('Politizr\\Constant\\ListingConstants::DASHBOARD_DEBATES') %}
+            Aucun débat n'a été publié durant le laps de temps recherché et associé à cette localisation.
+        {% elseif context == constant('Politizr\\Constant\\ListingConstants::DASHBOARD_USERS') %}
+            Aucun utilisateur ne s'est inscrit durant le laps de temps recherché et associé à cette localisation.
+        {% endif %}
     {% endif %}
 </div>

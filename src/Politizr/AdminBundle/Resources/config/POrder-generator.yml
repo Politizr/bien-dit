@@ -8,6 +8,8 @@ params:
     fields:
         id:
             label:          ID
+        uuid:
+            label:          UUID
         p_user_id:
             label:          Utilisateur
         p_user:
@@ -151,6 +153,7 @@ builders:
                 "Statut":
                     "Actuel":                   [ [ p_o_order_state ] ]
                 "Attributs":
+                    "Identifiants":             [ id, uuid ]
                     "Création":                 [ [ created_at, updated_at ] ]
             fields:
                 uploadedSupportingDocument:
@@ -178,6 +181,12 @@ builders:
                     label:                      " "
                     formType:                   hidden
                     dbType:                     VARCHAR
+                id:
+                    addFormOptions:
+                        read_only:              true
+                uuid:
+                    addFormOptions:
+                        read_only:              true
                 created_at:
                     addFormOptions:
                         widget:                 single_text
@@ -205,6 +214,7 @@ builders:
                 "Statut":
                     "Actuel":                   [ [ p_o_order_state ] ]
                 "Attributs":
+                    "Identifiants":             [ id, uuid ]
                     "Création":                 [ [ created_at, updated_at ] ]
             fields:
                 block_p_user:

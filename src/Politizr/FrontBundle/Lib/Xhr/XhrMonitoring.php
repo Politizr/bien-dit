@@ -71,16 +71,16 @@ class XhrMonitoring
     /**
      * Compute the rendering template of the modal context
      *
-     * @param int $id   Object ID
+     * @param int $uuid   Object UUID
      * @param string $type
      * @return string
      */
-    private function getModalContext($id, $type)
+    private function getModalContext($uuid, $type)
     {
         // context
         switch ($type) {
             case ObjectTypeConstants::TYPE_USER:
-                $contextUser = PUserQuery::create()->findPk($id);
+                $contextUser = PUserQuery::create()->filterByUuid($uuid)->findOne();
                 if (null === $contextUser) {
                     throw InconsistentDataException(sprintf('Object type %s ID#%s is null.', $type, $id));
                 }
@@ -94,7 +94,7 @@ class XhrMonitoring
 
                 break;
             case ObjectTypeConstants::TYPE_DEBATE:
-                $contextDebate = PDDebateQuery::create()->findPk($id);
+                $contextDebate = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
                 if (null === $contextDebate) {
                     throw InconsistentDataException(sprintf('Object type %s ID#%s is null.', $type, $id));
                 }
@@ -108,7 +108,7 @@ class XhrMonitoring
 
                 break;
             case ObjectTypeConstants::TYPE_REACTION:
-                $contextReaction = PDReactionQuery::create()->findPk($id);
+                $contextReaction = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
                 if (null === $contextReaction) {
                     throw InconsistentDataException(sprintf('Object type %s ID#%s is null.', $type, $id));
                 }
@@ -129,7 +129,7 @@ class XhrMonitoring
                     $query = PDRCommentQuery::create();
                 }
 
-                $contextComment = $query->findPk($id);
+                $contextComment = $query->filterByUuid($uuid)->findOne();
                 if (null === $contextComment) {
                     throw InconsistentDataException(sprintf('Object type %s ID#%s is null.', $type, $id));
                 }
@@ -162,21 +162,21 @@ class XhrMonitoring
         $this->logger->info('*** abuse');
         
         // Request arguments
-        $id = $request->get('subjectId');
-        $this->logger->info('$id = ' . print_r($id, true));
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
         $type = $request->get('type');
         $this->logger->info('$type = ' . print_r($type, true));
 
         $user = $this->securityTokenStorage->getToken()->getUser();
 
         // get context rendering
-        $context = $this->getModalContext($id, $type);
+        $context = $this->getModalContext($uuid, $type);
 
         // form
         $abuseReporting = new PMAbuseReporting();
         $abuseReporting->setPUserId($user->getId());
         $abuseReporting->setPObjectName($type);
-        $abuseReporting->setPObjectId($id);
+        $abuseReporting->setPObjectUuid($uuid);
 
         $formAbuse = $this->formFactory->create(new PMAbuseReportingType(), $abuseReporting);
 
@@ -240,21 +240,21 @@ class XhrMonitoring
         $this->logger->info('*** askForUpdate');
         
         // Request arguments
-        $id = $request->get('subjectId');
-        $this->logger->info('$id = ' . print_r($id, true));
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
         $type = $request->get('type');
         $this->logger->info('$type = ' . print_r($type, true));
 
         $user = $this->securityTokenStorage->getToken()->getUser();
 
         // get context rendering
-        $context = $this->getModalContext($id, $type);
+        $context = $this->getModalContext($uuid, $type);
 
         // form
         $askForUpdate = new PMAskForUpdate();
         $askForUpdate->setPUserId($user->getId());
         $askForUpdate->setPObjectName($type);
-        $askForUpdate->setPObjectId($id);
+        $askForUpdate->setPObjectUuid($uuid);
 
         $formAskForUpdate = $this->formFactory->create(new PMAskForUpdateType(), $askForUpdate);
 

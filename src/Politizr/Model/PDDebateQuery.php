@@ -36,6 +36,7 @@ class PDDebateQuery extends BasePDDebateQuery
         $sql = "
 SELECT DISTINCT
     id,
+    uuid,
     p_user_id,
     title,
     file_name,

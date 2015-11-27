@@ -117,14 +117,14 @@ class XhrDocument
         $this->logger->info('*** follow');
         
         // Request arguments
-        $id = $request->get('subjectId');
-        $this->logger->info('$id = ' . print_r($id, true));
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
         $way = $request->get('way');
         $this->logger->info('$way = ' . print_r($way, true));
 
         // Function process
         $user = $this->securityTokenStorage->getToken()->getUser();
-        $debate = PDDebateQuery::create()->findPk($id);
+        $debate = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
         if ('follow' == $way) {
             $this->userManager->createUserFollowDebate($user->getId(), $debate->getId());
 
@@ -159,7 +159,7 @@ class XhrDocument
 
 
     /**
-     * Notation plus/minus of debate, comment or user
+     * Notation plus/minus of debate, reaction or comment
      * @todo refactoring
      */
     public function note(Request $request)
@@ -167,8 +167,8 @@ class XhrDocument
         $this->logger->info('*** note');
         
         // Request arguments
-        $id = $request->get('subjectId');
-        $this->logger->info('$id = ' . print_r($id, true));
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
         $type = $request->get('type');
         $this->logger->info('$type = ' . print_r($type, true));
         $way = $request->get('way');
@@ -179,16 +179,16 @@ class XhrDocument
         // Function process
         switch($type) {
             case ObjectTypeConstants::TYPE_DEBATE:
-                $object = PDDebateQuery::create()->findPk($id);
+                $object = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
                 break;
             case ObjectTypeConstants::TYPE_REACTION:
-                $object = PDReactionQuery::create()->findPk($id);
+                $object = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
                 break;
             case ObjectTypeConstants::TYPE_DEBATE_COMMENT:
-                $object = PDDCommentQuery::create()->findPk($id);
+                $object = PDDCommentQuery::create()->filterByUuid($uuid)->findOne();
                 break;
             case ObjectTypeConstants::TYPE_REACTION_COMMENT:
-                $object = PDRCommentQuery::create()->findPk($id);
+                $object = PDRCommentQuery::create()->filterByUuid($uuid)->findOne();
                 break;
         }
 
@@ -265,21 +265,21 @@ class XhrDocument
         $this->logger->info('*** debateUpdate');
         
         // Request arguments
-        $id = $request->get('debate')['id'];
-        $this->logger->info('$id = ' . print_r($id, true));
+        $uuid = $request->get('debate')['uuid'];
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
 
         $user = $this->securityTokenStorage->getToken()->getUser();
 
         // Function process
-        $debate = PDDebateQuery::create()->findPk($id);
+        $debate = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
         if (!$debate) {
-            throw new InconsistentDataException('Debate n°'.$id.' not found.');
+            throw new InconsistentDataException('Debate '.$uuid.' not found.');
         }
         if (!$debate->isOwner($user->getId())) {
-            throw new InconsistentDataException('Debate n°'.$id.' is not yours.');
+            throw new InconsistentDataException('Debate '.$uuid.' is not yours.');
         }
         if ($debate->getPublished()) {
-            throw new InconsistentDataException('Debate n°'.$id.' is published and cannot be edited anymore.');
+            throw new InconsistentDataException('Debate '.$uuid.' is published and cannot be edited anymore.');
         }
 
         $form = $this->formFactory->create(new PDDebateType(), $debate);
@@ -300,20 +300,20 @@ class XhrDocument
         $this->logger->info('*** debatePhotoInfoUpdate');
         
         // Request arguments
-        $id = $request->get('debate_photo_info')['id'];
-        $this->logger->info('$id = ' . print_r($id, true));
+        $uuid = $request->get('debate_photo_info')['uuid'];
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
 
         // Function process
         $user = $this->securityTokenStorage->getToken()->getUser();
-        $debate = PDDebateQuery::create()->findPk($id);
+        $debate = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
         if (!$debate) {
-            throw new InconsistentDataException('Debate n°'.$id.' not found.');
+            throw new InconsistentDataException('Debate '.$uuid.' not found.');
         }
         if (!$debate->isOwner($user->getId())) {
-            throw new InconsistentDataException('Debate n°'.$id.' is not yours.');
+            throw new InconsistentDataException('Debate '.$uuid.' is not yours.');
         }
         if ($debate->getPublished()) {
-            throw new InconsistentDataException('Debate n°'.$id.' is published and cannot be edited anymore.');
+            throw new InconsistentDataException('Debate '.$uuid.' is published and cannot be edited anymore.');
         }
 
         $form = $this->formFactory->create(new PDDebatePhotoInfoType(), $debate);
@@ -368,20 +368,20 @@ class XhrDocument
         $this->logger->info('*** debatePublish');
         
         // Request arguments
-        $id = $request->get('id');
-        $this->logger->info('$id = ' . print_r($id, true));
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
 
         // Function process
         $user = $this->securityTokenStorage->getToken()->getUser();
-        $debate = PDDebateQuery::create()->findPk($id);
+        $debate = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
         if (!$debate) {
-            throw new InconsistentDataException('Debate n°'.$id.' not found.');
+            throw new InconsistentDataException('Debate '.$uuid.' not found.');
         }
         if (!$debate->isOwner($user->getId())) {
-            throw new InconsistentDataException('Debate n°'.$id.' is not yours.');
+            throw new InconsistentDataException('Debate '.$uuid.' is not yours.');
         }
         if ($debate->getPublished()) {
-            throw new InconsistentDataException('Debate n°'.$id.' is published and cannot be edited anymore.');
+            throw new InconsistentDataException('Debate '.$uuid.' is published and cannot be edited anymore.');
         }
 
         // Validation
@@ -391,7 +391,7 @@ class XhrDocument
                 'title' => $debate->getTitle(),
                 'description' => strip_tags($debate->getDescription()),
                 'geoTags' => $debate->getWorldToDepartmentGeoArrayTags(),
-                'allTags' => $debate->getArrayTags(),
+                // 'allTags' => $debate->getArrayTags(),
             ),
             $debate->getPublishConstraints(),
             $errorString
@@ -423,20 +423,20 @@ class XhrDocument
         $this->logger->info('*** debateDelete');
         
         // Request arguments
-        $id = $request->get('id');
-        $this->logger->info('$id = ' . print_r($id, true));
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
 
         // Function process
         $user = $this->securityTokenStorage->getToken()->getUser();
-        $debate = PDDebateQuery::create()->findPk($id);
+        $debate = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
         if (!$debate) {
-            throw new InconsistentDataException('Debate n°'.$id.' not found.');
+            throw new InconsistentDataException('Debate '.$uuid.' not found.');
         }
         if ($debate->getPublished()) {
-            throw new InconsistentDataException('Debate n°'.$id.' is published and cannot be edited anymore.');
+            throw new InconsistentDataException('Debate '.$uuid.' is published and cannot be edited anymore.');
         }
         if (!$debate->isOwner($user->getId())) {
-            throw new InconsistentDataException('Debate n°'.$id.' is not yours.');
+            throw new InconsistentDataException('Debate '.$uuid.' is not yours.');
         }
 
         $this->documentManager->deleteDebate($debate);
@@ -459,32 +459,28 @@ class XhrDocument
         $this->logger->info('*** reactionUpdate');
         
         // Request arguments
-        $id = $request->get('reaction')['id'];
-        $this->logger->info('$id = ' . print_r($id, true));
+        $uuid = $request->get('reaction')['uuid'];
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
 
         // Function process
         $user = $this->securityTokenStorage->getToken()->getUser();
-        $reaction = PDReactionQuery::create()->findPk($id);
+        $reaction = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
         if (!$reaction) {
-            throw new InconsistentDataException('Reaction n°'.$id.' not found.');
+            throw new InconsistentDataException('Reaction '.$id.' not found.');
         }
         if (!$reaction->isOwner($user->getId())) {
-            throw new InconsistentDataException('Reaction n°'.$id.' is not yours.');
+            throw new InconsistentDataException('Reaction '.$id.' is not yours.');
         }
         if ($reaction->getPublished()) {
-            throw new InconsistentDataException('Reaction n°'.$id.' is published and cannot be edited anymore.');
+            throw new InconsistentDataException('Reaction '.$id.' is published and cannot be edited anymore.');
         }
 
         $form = $this->formFactory->create(new PDReactionType(), $reaction);
-
         $form->bind($request);
-        if ($form->isValid()) {
-            $reaction = $form->getData();
-            $reaction->save();
-        } else {
-            $errors = StudioEchoUtils::getAjaxFormErrors($form);
-            throw new FormValidationException($errors);
-        }
+
+        // No validator tests, always save
+        $reaction = $form->getData();
+        $reaction->save();
 
         return true;
     }
@@ -497,20 +493,20 @@ class XhrDocument
         $this->logger->info('*** reactionPhotoInfoUpdate');
         
         // Request arguments
-        $id = $request->get('reaction_photo_info')['id'];
-        $this->logger->info('$id = ' . print_r($id, true));
+        $uuid = $request->get('reaction_photo_info')['uuid'];
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
 
         // Function process
         $user = $this->securityTokenStorage->getToken()->getUser();
-        $reaction = PDReactionQuery::create()->findPk($id);
+        $reaction = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
         if (!$reaction) {
-            throw new InconsistentDataException('Reaction n°'.$id.' not found.');
+            throw new InconsistentDataException('Reaction '.$uuid.' not found.');
         }
         if (!$reaction->isOwner($user->getId())) {
-            throw new InconsistentDataException('Reaction n°'.$id.' is not yours.');
+            throw new InconsistentDataException('Reaction '.$uuid.' is not yours.');
         }
         if ($reaction->getPublished()) {
-            throw new InconsistentDataException('Reaction n°'.$id.' is published and cannot be edited anymore.');
+            throw new InconsistentDataException('Reaction '.$uuid.' is published and cannot be edited anymore.');
         }
 
         $form = $this->formFactory->create(new PDReactionPhotoInfoType(), $reaction);
@@ -565,20 +561,20 @@ class XhrDocument
         $this->logger->info('*** reactionPublish');
         
         // Request arguments
-        $id = $request->get('id');
-        $this->logger->info('$id = ' . print_r($id, true));
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
 
         // Function process
         $user = $this->securityTokenStorage->getToken()->getUser();
-        $reaction = PDReactionQuery::create()->findPk($id);
+        $reaction = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
         if (!$reaction) {
-            throw new InconsistentDataException('Reaction n°'.$id.' not found.');
+            throw new InconsistentDataException('Reaction '.$uuid.' not found.');
         }
         if (!$reaction->isOwner($user->getId())) {
-            throw new InconsistentDataException('Reaction n°'.$id.' is not yours.');
+            throw new InconsistentDataException('Reaction '.$uuid.' is not yours.');
         }
         if ($reaction->getPublished()) {
-            throw new InconsistentDataException('Reaction n°'.$id.' is published and cannot be edited anymore.');
+            throw new InconsistentDataException('Reaction '.$uuid.' is published and cannot be edited anymore.');
         }
 
         // Validation
@@ -588,7 +584,7 @@ class XhrDocument
                 'title' => $reaction->getTitle(),
                 'description' => strip_tags($reaction->getDescription()),
                 'geoTags' => $reaction->getWorldToDepartmentGeoArrayTags(),
-                'allTags' => $reaction->getArrayTags(),
+                // 'allTags' => $reaction->getArrayTags(),
             ),
             $reaction->getPublishConstraints(),
             $errorString
@@ -628,20 +624,20 @@ class XhrDocument
         $this->logger->info('*** reactionDelete');
         
         // Request arguments
-        $id = $request->get('id');
-        $this->logger->info('$id = ' . print_r($id, true));
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
 
         // Function process
         $user = $this->securityTokenStorage->getToken()->getUser();
-        $reaction = PDReactionQuery::create()->findPk($id);
+        $reaction = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
         if (!$reaction) {
-            throw new InconsistentDataException('Reaction n°'.$id.' not found.');
+            throw new InconsistentDataException('Reaction '.$uuid.' not found.');
         }
         if ($reaction->getPublished()) {
-            throw new InconsistentDataException('Reaction n°'.$id.' is published and cannot be edited anymore.');
+            throw new InconsistentDataException('Reaction '.$uuid.' is published and cannot be edited anymore.');
         }
         if (!$reaction->isOwner($user->getId())) {
-            throw new InconsistentDataException('Reaction n°'.$id.' is not yours.');
+            throw new InconsistentDataException('Reaction '.$uuid.' is not yours.');
         }
 
         $this->documentManager->deleteReaction($reaction);
@@ -665,8 +661,8 @@ class XhrDocument
         $this->logger->info('*** documentPhotoUpload');
 
         // Request arguments
-        $id = $request->get('id');
-        $this->logger->info(print_r($id, true));
+        $uuid = $request->get('uuid');
+        $this->logger->info(print_r($uuid, true));
         $type = $request->get('type');
         $this->logger->info(print_r($type, true));
 
@@ -674,11 +670,11 @@ class XhrDocument
         $user = $this->securityTokenStorage->getToken()->getUser();
         switch ($type) {
             case ObjectTypeConstants::TYPE_DEBATE:
-                $document = PDDebateQuery::create()->findPk($id);
+                $document = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
                 $uploadWebPath = PathConstants::DEBATE_UPLOAD_WEB_PATH;
                 break;
             case ObjectTypeConstants::TYPE_REACTION:
-                $document = PDReactionQuery::create()->findPk($id);
+                $document = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
                 $uploadWebPath = PathConstants::REACTION_UPLOAD_WEB_PATH;
                 break;
             default:
@@ -728,17 +724,29 @@ class XhrDocument
         // Request arguments
         $type = $request->get('comment')['type'];
         $this->logger->info('$type = ' . print_r($type, true));
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
 
         // Function process
         $user = $this->securityTokenStorage->getToken()->getUser();
         switch ($type) {
             case ObjectTypeConstants::TYPE_DEBATE_COMMENT:
                 $comment = new PDDComment();
+                $document = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
+                $comment->setPDDebateId($document->getId());
+                $comment->setOnline(true);
+                $comment->setPUserId($user->getId());
+
                 $commentNew = new PDDComment();
                 $formType = new PDDCommentType();
                 break;
             case ObjectTypeConstants::TYPE_REACTION_COMMENT:
                 $comment = new PDRComment();
+                $document = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
+                $comment->setOnline(true);
+                $comment->setPUserId($user->getId());
+                $comment->setPDReactionId($document->getId());
+
                 $commentNew = new PDRComment();
                 $formType = new PDRCommentType();
                 break;
@@ -752,10 +760,6 @@ class XhrDocument
         if ($form->isValid()) {
             $this->logger->info('*** isValid');
             $comment = $form->getData();
-
-            if ($comment->getPUserId() != $user->getId()) {
-                throw new InconsistentDataException(sprintf('User id-%s tries to publish a comment for user id-%s.', $user->getId(), $comment->getPUserId()));
-            }
 
             $comment->save();
         } else {
@@ -772,8 +776,6 @@ class XhrDocument
         $comments = $document->getComments(true, $noParagraph);
 
         if ($user) {
-            $commentNew->setPUserId($user->getId());
-            $commentNew->setPDocumentId($document->getId());
             $commentNew->setParagraphNo($noParagraph);
         }
         $form = $this->formFactory->create($formType, $comment);
@@ -817,8 +819,8 @@ class XhrDocument
         $this->logger->info('*** comments');
         
         // Request arguments
-        $id = $request->get('subjectId');
-        $this->logger->info('$id = ' . print_r($id, true));
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
         $type = $request->get('type');
         $this->logger->info('$type = ' . print_r($type, true));
         $noParagraph = $request->get('noParagraph');
@@ -828,12 +830,12 @@ class XhrDocument
         $user = $this->securityTokenStorage->getToken()->getUser();
         switch ($type) {
             case ObjectTypeConstants::TYPE_DEBATE:
-                $document = PDDebateQuery::create()->findPk($id);
+                $document = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
                 $comment = new PDDComment();
                 $formType = new PDDCommentType();
                 break;
             case ObjectTypeConstants::TYPE_REACTION:
-                $document = PDReactionQuery::create()->findPk($id);
+                $document = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
                 $comment = new PDRComment();
                 $formType = new PDRCommentType();
                 break;
@@ -844,8 +846,6 @@ class XhrDocument
         $comments = $document->getComments(true, $noParagraph);
 
         if ($this->securityAuthorizationChecker->isGranted('ROLE_PROFILE_COMPLETED')) {
-            $comment->setPUserId($user->getId());
-            $comment->setPDocumentId($document->getId());
             $comment->setParagraphNo($noParagraph);
         }
         $formComment = $this->formFactory->create($formType, $comment);

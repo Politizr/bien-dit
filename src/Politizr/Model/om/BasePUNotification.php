@@ -51,6 +51,12 @@ abstract class BasePUNotification extends BaseObject implements Persistent
     protected $id;
 
     /**
+     * The value for the uuid field.
+     * @var        string
+     */
+    protected $uuid;
+
+    /**
      * The value for the p_user_id field.
      * @var        int
      */
@@ -148,6 +154,17 @@ abstract class BasePUNotification extends BaseObject implements Persistent
     public function __construct(){
         parent::__construct();
         EventDispatcherProxy::trigger(array('construct','model.construct'), new ModelEvent($this));
+    }
+
+    /**
+     * Get the [uuid] column value.
+     *
+     * @return string
+     */
+    public function getUuid()
+    {
+
+        return $this->uuid;
     }
 
     /**
@@ -356,6 +373,27 @@ abstract class BasePUNotification extends BaseObject implements Persistent
 
         return $this;
     } // setId()
+
+    /**
+     * Set the value of [uuid] column.
+     *
+     * @param  string $v new value
+     * @return PUNotification The current object (for fluent API support)
+     */
+    public function setUuid($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->uuid !== $v) {
+            $this->uuid = $v;
+            $this->modifiedColumns[] = PUNotificationPeer::UUID;
+        }
+
+
+        return $this;
+    } // setUuid()
 
     /**
      * Set the value of [p_user_id] column.
@@ -601,15 +639,16 @@ abstract class BasePUNotification extends BaseObject implements Persistent
         try {
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->p_user_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
-            $this->p_notification_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
-            $this->p_object_name = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-            $this->p_object_id = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
-            $this->p_author_user_id = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
-            $this->checked = ($row[$startcol + 6] !== null) ? (boolean) $row[$startcol + 6] : null;
-            $this->checked_at = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-            $this->created_at = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
-            $this->updated_at = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+            $this->uuid = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
+            $this->p_user_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+            $this->p_notification_id = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
+            $this->p_object_name = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->p_object_id = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
+            $this->p_author_user_id = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
+            $this->checked = ($row[$startcol + 7] !== null) ? (boolean) $row[$startcol + 7] : null;
+            $this->checked_at = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+            $this->created_at = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+            $this->updated_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -619,7 +658,7 @@ abstract class BasePUNotification extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 10; // 10 = PUNotificationPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 11; // 11 = PUNotificationPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PUNotification object", $e);
@@ -887,6 +926,9 @@ abstract class BasePUNotification extends BaseObject implements Persistent
         if ($this->isColumnModified(PUNotificationPeer::ID)) {
             $modifiedColumns[':p' . $index++]  = '`id`';
         }
+        if ($this->isColumnModified(PUNotificationPeer::UUID)) {
+            $modifiedColumns[':p' . $index++]  = '`uuid`';
+        }
         if ($this->isColumnModified(PUNotificationPeer::P_USER_ID)) {
             $modifiedColumns[':p' . $index++]  = '`p_user_id`';
         }
@@ -927,6 +969,9 @@ abstract class BasePUNotification extends BaseObject implements Persistent
                 switch ($columnName) {
                     case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
+                        break;
+                    case '`uuid`':
+                        $stmt->bindValue($identifier, $this->uuid, PDO::PARAM_STR);
                         break;
                     case '`p_user_id`':
                         $stmt->bindValue($identifier, $this->p_user_id, PDO::PARAM_INT);
@@ -1111,30 +1156,33 @@ abstract class BasePUNotification extends BaseObject implements Persistent
                 return $this->getId();
                 break;
             case 1:
-                return $this->getPUserId();
+                return $this->getUuid();
                 break;
             case 2:
-                return $this->getPNotificationId();
+                return $this->getPUserId();
                 break;
             case 3:
-                return $this->getPObjectName();
+                return $this->getPNotificationId();
                 break;
             case 4:
-                return $this->getPObjectId();
+                return $this->getPObjectName();
                 break;
             case 5:
-                return $this->getPAuthorUserId();
+                return $this->getPObjectId();
                 break;
             case 6:
-                return $this->getChecked();
+                return $this->getPAuthorUserId();
                 break;
             case 7:
-                return $this->getCheckedAt();
+                return $this->getChecked();
                 break;
             case 8:
-                return $this->getCreatedAt();
+                return $this->getCheckedAt();
                 break;
             case 9:
+                return $this->getCreatedAt();
+                break;
+            case 10:
                 return $this->getUpdatedAt();
                 break;
             default:
@@ -1167,15 +1215,16 @@ abstract class BasePUNotification extends BaseObject implements Persistent
         $keys = PUNotificationPeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getPUserId(),
-            $keys[2] => $this->getPNotificationId(),
-            $keys[3] => $this->getPObjectName(),
-            $keys[4] => $this->getPObjectId(),
-            $keys[5] => $this->getPAuthorUserId(),
-            $keys[6] => $this->getChecked(),
-            $keys[7] => $this->getCheckedAt(),
-            $keys[8] => $this->getCreatedAt(),
-            $keys[9] => $this->getUpdatedAt(),
+            $keys[1] => $this->getUuid(),
+            $keys[2] => $this->getPUserId(),
+            $keys[3] => $this->getPNotificationId(),
+            $keys[4] => $this->getPObjectName(),
+            $keys[5] => $this->getPObjectId(),
+            $keys[6] => $this->getPAuthorUserId(),
+            $keys[7] => $this->getChecked(),
+            $keys[8] => $this->getCheckedAt(),
+            $keys[9] => $this->getCreatedAt(),
+            $keys[10] => $this->getUpdatedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1227,30 +1276,33 @@ abstract class BasePUNotification extends BaseObject implements Persistent
                 $this->setId($value);
                 break;
             case 1:
-                $this->setPUserId($value);
+                $this->setUuid($value);
                 break;
             case 2:
-                $this->setPNotificationId($value);
+                $this->setPUserId($value);
                 break;
             case 3:
-                $this->setPObjectName($value);
+                $this->setPNotificationId($value);
                 break;
             case 4:
-                $this->setPObjectId($value);
+                $this->setPObjectName($value);
                 break;
             case 5:
-                $this->setPAuthorUserId($value);
+                $this->setPObjectId($value);
                 break;
             case 6:
-                $this->setChecked($value);
+                $this->setPAuthorUserId($value);
                 break;
             case 7:
-                $this->setCheckedAt($value);
+                $this->setChecked($value);
                 break;
             case 8:
-                $this->setCreatedAt($value);
+                $this->setCheckedAt($value);
                 break;
             case 9:
+                $this->setCreatedAt($value);
+                break;
+            case 10:
                 $this->setUpdatedAt($value);
                 break;
         } // switch()
@@ -1278,15 +1330,16 @@ abstract class BasePUNotification extends BaseObject implements Persistent
         $keys = PUNotificationPeer::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setPUserId($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setPNotificationId($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setPObjectName($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setPObjectId($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setPAuthorUserId($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setChecked($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setCheckedAt($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setCreatedAt($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setUpdatedAt($arr[$keys[9]]);
+        if (array_key_exists($keys[1], $arr)) $this->setUuid($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setPUserId($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setPNotificationId($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setPObjectName($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setPObjectId($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setPAuthorUserId($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setChecked($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setCheckedAt($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setCreatedAt($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setUpdatedAt($arr[$keys[10]]);
     }
 
     /**
@@ -1299,6 +1352,7 @@ abstract class BasePUNotification extends BaseObject implements Persistent
         $criteria = new Criteria(PUNotificationPeer::DATABASE_NAME);
 
         if ($this->isColumnModified(PUNotificationPeer::ID)) $criteria->add(PUNotificationPeer::ID, $this->id);
+        if ($this->isColumnModified(PUNotificationPeer::UUID)) $criteria->add(PUNotificationPeer::UUID, $this->uuid);
         if ($this->isColumnModified(PUNotificationPeer::P_USER_ID)) $criteria->add(PUNotificationPeer::P_USER_ID, $this->p_user_id);
         if ($this->isColumnModified(PUNotificationPeer::P_NOTIFICATION_ID)) $criteria->add(PUNotificationPeer::P_NOTIFICATION_ID, $this->p_notification_id);
         if ($this->isColumnModified(PUNotificationPeer::P_OBJECT_NAME)) $criteria->add(PUNotificationPeer::P_OBJECT_NAME, $this->p_object_name);
@@ -1371,6 +1425,7 @@ abstract class BasePUNotification extends BaseObject implements Persistent
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
+        $copyObj->setUuid($this->getUuid());
         $copyObj->setPUserId($this->getPUserId());
         $copyObj->setPNotificationId($this->getPNotificationId());
         $copyObj->setPObjectName($this->getPObjectName());
@@ -1548,6 +1603,7 @@ abstract class BasePUNotification extends BaseObject implements Persistent
     public function clear()
     {
         $this->id = null;
+        $this->uuid = null;
         $this->p_user_id = null;
         $this->p_notification_id = null;
         $this->p_object_name = null;
@@ -1625,6 +1681,32 @@ abstract class BasePUNotification extends BaseObject implements Persistent
         $this->modifiedColumns[] = PUNotificationPeer::UPDATED_AT;
 
         return $this;
+    }
+
+    // uuid behavior
+    /**
+    * Create UUID if is NULL Uuid*/
+    public function preInsert(PropelPDO $con = NULL) {
+
+        if(is_null($this->getUuid())) {
+            $this->setUuid(\Ramsey\Uuid\Uuid::uuid4()->__toString());
+        } else {
+            $uuid = $this->getUuid();
+            if(!\Ramsey\Uuid\Uuid::isValid($uuid)) {
+                throw new \InvalidArgumentException('UUID: ' . $uuid . ' in not valid');
+                return false;
+            }
+        }
+        return true;
+    }
+    /**
+    * If permanent UUID, throw exception p_u_notification.uuid*/
+    public function preUpdate(PropelPDO $con = NULL) {
+            $uuid = $this->getUuid();
+        if(!is_null($uuid) && !\Ramsey\Uuid\Uuid::isValid($uuid)) {
+            throw new \InvalidArgumentException("UUID: $uuid in not valid");
+        }
+            return true;
     }
 
     // event behavior

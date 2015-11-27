@@ -23,6 +23,7 @@ use Politizr\Model\PUser;
 
 /**
  * @method PRActionQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method PRActionQuery orderByUuid($order = Criteria::ASC) Order by the uuid column
  * @method PRActionQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method PRActionQuery orderByDescription($order = Criteria::ASC) Order by the description column
  * @method PRActionQuery orderByScoreEvolution($order = Criteria::ASC) Order by the score_evolution column
@@ -32,6 +33,7 @@ use Politizr\Model\PUser;
  * @method PRActionQuery orderBySlug($order = Criteria::ASC) Order by the slug column
  *
  * @method PRActionQuery groupById() Group by the id column
+ * @method PRActionQuery groupByUuid() Group by the uuid column
  * @method PRActionQuery groupByTitle() Group by the title column
  * @method PRActionQuery groupByDescription() Group by the description column
  * @method PRActionQuery groupByScoreEvolution() Group by the score_evolution column
@@ -51,6 +53,7 @@ use Politizr\Model\PUser;
  * @method PRAction findOne(PropelPDO $con = null) Return the first PRAction matching the query
  * @method PRAction findOneOrCreate(PropelPDO $con = null) Return the first PRAction matching the query, or a new PRAction object populated from the query conditions when no match is found
  *
+ * @method PRAction findOneByUuid(string $uuid) Return the first PRAction filtered by the uuid column
  * @method PRAction findOneByTitle(string $title) Return the first PRAction filtered by the title column
  * @method PRAction findOneByDescription(string $description) Return the first PRAction filtered by the description column
  * @method PRAction findOneByScoreEvolution(int $score_evolution) Return the first PRAction filtered by the score_evolution column
@@ -60,6 +63,7 @@ use Politizr\Model\PUser;
  * @method PRAction findOneBySlug(string $slug) Return the first PRAction filtered by the slug column
  *
  * @method array findById(int $id) Return PRAction objects filtered by the id column
+ * @method array findByUuid(string $uuid) Return PRAction objects filtered by the uuid column
  * @method array findByTitle(string $title) Return PRAction objects filtered by the title column
  * @method array findByDescription(string $description) Return PRAction objects filtered by the description column
  * @method array findByScoreEvolution(int $score_evolution) Return PRAction objects filtered by the score_evolution column
@@ -176,7 +180,7 @@ abstract class BasePRActionQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `title`, `description`, `score_evolution`, `online`, `created_at`, `updated_at`, `slug` FROM `p_r_action` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `title`, `description`, `score_evolution`, `online`, `created_at`, `updated_at`, `slug` FROM `p_r_action` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -306,6 +310,35 @@ abstract class BasePRActionQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PRActionPeer::ID, $id, $comparison);
+    }
+
+    /**
+     * Filter the query on the uuid column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByUuid('fooValue');   // WHERE uuid = 'fooValue'
+     * $query->filterByUuid('%fooValue%'); // WHERE uuid LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $uuid The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PRActionQuery The current query, for fluid interface
+     */
+    public function filterByUuid($uuid = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($uuid)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $uuid)) {
+                $uuid = str_replace('*', '%', $uuid);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PRActionPeer::UUID, $uuid, $comparison);
     }
 
     /**

@@ -12,12 +12,15 @@
         {% endblock %}
 
         {% block stylesheets %}
-            <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/PltzrIconFont.css') }}">        
+            <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/PltzrIconFont.css') }}">
         {% endblock %}
 
         {% block javascriptHeader %}
             <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery-1.11.2.min.js') }}"></script>  
             <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery-ui.autocomplete.min.js') }}"></script>
+
+            <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.waypoints.min.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/waypoints.sticky.min.js') }}"></script>            
             <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/restive.min.js') }}"></script>    
             <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/imgLiquid-min.js') }}"></script>
 

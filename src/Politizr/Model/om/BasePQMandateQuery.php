@@ -23,6 +23,7 @@ use Politizr\Model\PUMandate;
 
 /**
  * @method PQMandateQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method PQMandateQuery orderByUuid($order = Criteria::ASC) Order by the uuid column
  * @method PQMandateQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method PQMandateQuery orderBySelectTitle($order = Criteria::ASC) Order by the select_title column
  * @method PQMandateQuery orderByOnline($order = Criteria::ASC) Order by the online column
@@ -33,6 +34,7 @@ use Politizr\Model\PUMandate;
  * @method PQMandateQuery orderByPQTypeId($order = Criteria::ASC) Order by the p_q_type_id column
  *
  * @method PQMandateQuery groupById() Group by the id column
+ * @method PQMandateQuery groupByUuid() Group by the uuid column
  * @method PQMandateQuery groupByTitle() Group by the title column
  * @method PQMandateQuery groupBySelectTitle() Group by the select_title column
  * @method PQMandateQuery groupByOnline() Group by the online column
@@ -57,6 +59,7 @@ use Politizr\Model\PUMandate;
  * @method PQMandate findOne(PropelPDO $con = null) Return the first PQMandate matching the query
  * @method PQMandate findOneOrCreate(PropelPDO $con = null) Return the first PQMandate matching the query, or a new PQMandate object populated from the query conditions when no match is found
  *
+ * @method PQMandate findOneByUuid(string $uuid) Return the first PQMandate filtered by the uuid column
  * @method PQMandate findOneByTitle(string $title) Return the first PQMandate filtered by the title column
  * @method PQMandate findOneBySelectTitle(string $select_title) Return the first PQMandate filtered by the select_title column
  * @method PQMandate findOneByOnline(boolean $online) Return the first PQMandate filtered by the online column
@@ -67,6 +70,7 @@ use Politizr\Model\PUMandate;
  * @method PQMandate findOneByPQTypeId(int $p_q_type_id) Return the first PQMandate filtered by the p_q_type_id column
  *
  * @method array findById(int $id) Return PQMandate objects filtered by the id column
+ * @method array findByUuid(string $uuid) Return PQMandate objects filtered by the uuid column
  * @method array findByTitle(string $title) Return PQMandate objects filtered by the title column
  * @method array findBySelectTitle(string $select_title) Return PQMandate objects filtered by the select_title column
  * @method array findByOnline(boolean $online) Return PQMandate objects filtered by the online column
@@ -184,7 +188,7 @@ abstract class BasePQMandateQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `title`, `select_title`, `online`, `created_at`, `updated_at`, `slug`, `sortable_rank`, `p_q_type_id` FROM `p_q_mandate` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `title`, `select_title`, `online`, `created_at`, `updated_at`, `slug`, `sortable_rank`, `p_q_type_id` FROM `p_q_mandate` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -314,6 +318,35 @@ abstract class BasePQMandateQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PQMandatePeer::ID, $id, $comparison);
+    }
+
+    /**
+     * Filter the query on the uuid column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByUuid('fooValue');   // WHERE uuid = 'fooValue'
+     * $query->filterByUuid('%fooValue%'); // WHERE uuid LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $uuid The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PQMandateQuery The current query, for fluid interface
+     */
+    public function filterByUuid($uuid = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($uuid)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $uuid)) {
+                $uuid = str_replace('*', '%', $uuid);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PQMandatePeer::UUID, $uuid, $comparison);
     }
 
     /**

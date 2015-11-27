@@ -13,19 +13,22 @@
                 </div>
             </div>
             <form id="formDocumentPhoto" action="{{ path('XhrGeneric', {'xhrRoute': constant('Politizr\\Constant\\XhrConstants::ROUTE_DOCUMENT_PHOTO_UPLOAD'), 'xhrService': 'document', 'xhrMethod': 'documentPhotoUpload', 'xhrType': constant('Politizr\\Constant\\XhrConstants::RETURN_URL')}) }}" method="post" enctype="multipart/form-data">
-                <input type="hidden" name="id" value="{{ reaction.id }}">
+                <input type="hidden" name="uuid" value="{{ reaction.uuid }}">
                 <input type="hidden" name="type" value="{{ constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION') }}">
                 <div id="uploadFileContainer">
                     <input type="file" name="fileName" id="fileName">
                     <label action="fileSelect" for="fileName" tabindex="0">parcourir</label>
                     <div class="photoDelete">
-                        <a action="fileDelete" subjectId="{{ reaction.id }}"><i class="iconDraft"></i>supprimer</a>
+                        <a action="fileDelete" uuid="{{ reaction.uuid }}"><i class="iconDraft"></i>supprimer</a>
                     </div>
                 </div>
             </form>
             <div class="fieldsetHeader">
                 <div class="fieldsetHeaderTitle">Crédits photos</div>
-                <i class="iconQuestion" action="toggleHelper"></i>
+                <div class="helperMark" action="toggleHelper">
+                    comment ajouter un lien?
+                    <i class="iconQuestion" action="toggleHelper"></i>
+                </div>
                 <div class="helperSlider helperSliderRight" style="display: none;">
                     <i class="iconArrowUp"></i>
                     <i class="iconCross" action="hideHelper"></i>
@@ -36,7 +39,7 @@
                 {{ reaction.copyright | purify }}
             </div>
             <div class="photoInfoSave">
-                <a action="reactionPhotoInfoSave" subjectId="{{ reaction.id }}">
+                <a action="reactionPhotoInfoSave" uuid="{{ reaction.uuid }}">
                     <i class="iconCheckInSquare"></i> Valider
                 </a>
             </div>

@@ -30,8 +30,6 @@ class PUserAffinitiesType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('id', 'hidden');
-
         // Liste des organisations politiques
         $builder->add('PUAffinityQOPQOrganizations', 'model', array(
                 'required' => false,
@@ -41,7 +39,6 @@ class PUserAffinitiesType extends AbstractType
                 'property' => 'title',
                 'multiple' => true,
                 'expanded' => true,
-                // 'constraints' => new NotBlank(array('message' => 'Choix obligatoire.')),
             ));
 
     }

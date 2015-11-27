@@ -20,7 +20,7 @@ class PUserBackPhotoInfoType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('id', 'hidden', array(
+        $builder->add('uuid', 'hidden', array(
             'required' => true,
         ));
         

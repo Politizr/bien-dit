@@ -6,6 +6,7 @@
         <div class="field_error">{{ form_errors(formComment.description) }}</div>
     {% endif %}
     
+    <input type="hidden" name="uuid" value="{{ uuid }}">
     {{ form_rest(formComment) }}
     <div class="actionsButtons withLoaderInside">
         <div class="ajaxLoader" style="display: none;">

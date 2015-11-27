@@ -4,14 +4,31 @@
     {{ parent() }} - Tableau de bord
 {% endblock title %}
 
+
+{% block javascriptHeader %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.svg.min.js') }}"></script>    
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.svgdom.min.js') }}"></script>    
+{% endblock %}
+
 {% block main %}
     <div id="main">
-        <h1>Carte de France</h1>
-        <h2>Liste des régions</h2>
-        <div>
-            {% for regionTag in regionTags %}
-                <a action="modalTagged" model="PTag" slug="{{ regionTag.slug }}">{{ regionTag.title }}</a>
-            {% endfor %}
+        <!-- dashboard -->
+        <div id="dashboard">
+            <div class="dbMap">
+            </div>
         </div>
+        <!-- end dashboard -->
+
     </div>
 {% endblock main %}
+
+{% block javascriptFooter %}
+    {{ parent() }}
+
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/user/dashboard.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock javascriptFooter %}

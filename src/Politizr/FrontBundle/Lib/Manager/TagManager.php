@@ -69,14 +69,10 @@ class TagManager
         }
 
         $tags = PTagQuery::create()
-            ->select(array('id', 'title'))
+            ->select(array('uuid', 'title'))
             ->distinct()
-            ->_if(null !== $online)
-                ->filterByOnline($online)
-            ->_endif()
-            ->_if(null !== $tagTypeId)
-                ->filterByPTTagTypeId($tagTypeId)
-            ->_endif()
+            ->filterIfOnline($online)
+            ->filterIfTypeId($tagTypeId)
             ->_if($used)
                 ->filterById($usedByDebateTagIds)
                 ->_or()

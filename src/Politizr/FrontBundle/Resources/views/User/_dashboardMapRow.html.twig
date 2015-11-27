@@ -1,0 +1,15 @@
+<div class="podiumItem">
+    <div class="podiumRank">{{ loop.index }}</div>                         
+    <div class="avatar40">
+        {{ user | photo('user_40') }}
+    </div>    
+    <div class="profileSummary">
+        <div class="profileName">
+            <a href="{{ path('UserDetail'~profileSuffix(), { 'slug': user.slug }) }}">
+                {{ user }}
+            </a>
+            {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with { 'user': user } only %}
+        </div>
+        <div class="profileSubtitle">{{ user.subtitle | purify }}</div>
+    </div>  
+</div>

@@ -43,6 +43,7 @@ class PDDCommentTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
+        $this->addColumn('uuid', 'Uuid', 'VARCHAR', false, 50, null);
         $this->addForeignKey('p_user_id', 'PUserId', 'INTEGER', 'p_user', 'id', false, null, null);
         $this->addForeignKey('p_d_debate_id', 'PDDebateId', 'INTEGER', 'p_d_debate', 'id', true, null, null);
         $this->addColumn('description', 'Description', 'LONGVARCHAR', false, null, null);
@@ -97,6 +98,13 @@ class PDDCommentTableMap extends TableMap
   'archive_on_insert' => 'false',
   'archive_on_update' => 'false',
   'archive_on_delete' => 'true',
+),
+            'uuid' =>  array (
+  'name' => 'uuid',
+  'version' => '4',
+  'permanent' => 'false',
+  'required' => 'true',
+  'unique' => 'true',
 ),
             'event' =>  array (
 ),

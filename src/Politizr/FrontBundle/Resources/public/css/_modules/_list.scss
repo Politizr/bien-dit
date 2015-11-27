@@ -1,5 +1,6 @@
 @import "../_global/colors";
 
+
 .listContainer {
 	width: 700px;
 	float: right;
@@ -75,7 +76,6 @@
 	color: $highlight;
 }
 
-
 // list
 
 .modalList {	
@@ -85,6 +85,7 @@
 	margin-right: auto;
 	width: 960px;
 	clear: both;
+	display: inline-block;
 }
 
 .modalList.withSidebar {
@@ -94,7 +95,7 @@
 	padding-top: 80px;
 }
 
-.modalList.withSidebar .modalItem {float: right;}
+#modalBoxContent #listContent {display: inline-block; position: relative;}
 
 .modalItem {
 	width: 700px;
@@ -102,6 +103,7 @@
 	text-align: left;
 	margin-bottom: 80px;
 	position: relative;
+	//float: right; // test
 }
 
 a.modalItemShow {
@@ -118,7 +120,16 @@ a.modalItemShow {
 a.modalItemShow i {	position: absolute;	left: -2px; }
 a.modalItemShow:hover {color: $darkGrey;}
 
-#modalBoxContent .subscribe, #dashboard .subscribe {
+#modalBoxContent .subscribe {
+	position: absolute;
+	z-index: 4;
+	right: 0;
+	bottom:0;
+	text-transform: uppercase;
+	color: #fff;
+}
+
+#dashboard .subscribe {
 	position: absolute;
 	z-index: 4;
 	right: 40px;
@@ -127,7 +138,7 @@ a.modalItemShow:hover {color: $darkGrey;}
 	color: #fff;
 }
 
-#modalBoxContent .subscribe .actionFollow, #modalBoxContent .subscribe .actionUnfollow, #dashboard .subscribe .actionFollow, #dashboard .subscribe .actionUnfollow {
+#modalBoxContent .subscribe .actionFollow a, #modalBoxContent .subscribe .actionUnfollow a, #dashboard .subscribe .actionFollow, #dashboard .subscribe .actionUnfollow {
 	width: 180px;
 	padding: 20px 0;
 	margin: 0;
@@ -139,6 +150,7 @@ a.modalItemShow:hover {color: $darkGrey;}
 	-o-box-shadow: 0px 0px 20px 0px $darkGrey;
 	box-shadow: 0px 0px 20px 0px $darkGrey;
 }
+
 #modalBoxContent .subscribe .actionFollow, #dashboard .subscribe .actionFollow { background-color: $highlight;}
 #modalBoxContent .subscribe .actionFollow:hover, #dashboard .subscribe .actionFollow:hover { background-color: $darkGrey;}
 

@@ -36,16 +36,19 @@ abstract class BasePUMandatePeer
     const TM_CLASS = 'Politizr\\Model\\map\\PUMandateTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 10;
+    const NUM_COLUMNS = 11;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 10;
+    const NUM_HYDRATE_COLUMNS = 11;
 
     /** the column name for the id field */
     const ID = 'p_u_mandate.id';
+
+    /** the column name for the uuid field */
+    const UUID = 'p_u_mandate.uuid';
 
     /** the column name for the p_user_id field */
     const P_USER_ID = 'p_u_mandate.p_user_id';
@@ -93,12 +96,12 @@ abstract class BasePUMandatePeer
      * e.g. PUMandatePeer::$fieldNames[PUMandatePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'PUserId', 'PQTypeId', 'PQMandateId', 'PQOrganizationId', 'Localization', 'BeginAt', 'EndAt', 'CreatedAt', 'UpdatedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pUserId', 'pQTypeId', 'pQMandateId', 'pQOrganizationId', 'localization', 'beginAt', 'endAt', 'createdAt', 'updatedAt', ),
-        BasePeer::TYPE_COLNAME => array (PUMandatePeer::ID, PUMandatePeer::P_USER_ID, PUMandatePeer::P_Q_TYPE_ID, PUMandatePeer::P_Q_MANDATE_ID, PUMandatePeer::P_Q_ORGANIZATION_ID, PUMandatePeer::LOCALIZATION, PUMandatePeer::BEGIN_AT, PUMandatePeer::END_AT, PUMandatePeer::CREATED_AT, PUMandatePeer::UPDATED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_USER_ID', 'P_Q_TYPE_ID', 'P_Q_MANDATE_ID', 'P_Q_ORGANIZATION_ID', 'LOCALIZATION', 'BEGIN_AT', 'END_AT', 'CREATED_AT', 'UPDATED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'p_user_id', 'p_q_type_id', 'p_q_mandate_id', 'p_q_organization_id', 'localization', 'begin_at', 'end_at', 'created_at', 'updated_at', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'PUserId', 'PQTypeId', 'PQMandateId', 'PQOrganizationId', 'Localization', 'BeginAt', 'EndAt', 'CreatedAt', 'UpdatedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'pUserId', 'pQTypeId', 'pQMandateId', 'pQOrganizationId', 'localization', 'beginAt', 'endAt', 'createdAt', 'updatedAt', ),
+        BasePeer::TYPE_COLNAME => array (PUMandatePeer::ID, PUMandatePeer::UUID, PUMandatePeer::P_USER_ID, PUMandatePeer::P_Q_TYPE_ID, PUMandatePeer::P_Q_MANDATE_ID, PUMandatePeer::P_Q_ORGANIZATION_ID, PUMandatePeer::LOCALIZATION, PUMandatePeer::BEGIN_AT, PUMandatePeer::END_AT, PUMandatePeer::CREATED_AT, PUMandatePeer::UPDATED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'P_USER_ID', 'P_Q_TYPE_ID', 'P_Q_MANDATE_ID', 'P_Q_ORGANIZATION_ID', 'LOCALIZATION', 'BEGIN_AT', 'END_AT', 'CREATED_AT', 'UPDATED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'p_user_id', 'p_q_type_id', 'p_q_mandate_id', 'p_q_organization_id', 'localization', 'begin_at', 'end_at', 'created_at', 'updated_at', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
     );
 
     /**
@@ -108,12 +111,12 @@ abstract class BasePUMandatePeer
      * e.g. PUMandatePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PUserId' => 1, 'PQTypeId' => 2, 'PQMandateId' => 3, 'PQOrganizationId' => 4, 'Localization' => 5, 'BeginAt' => 6, 'EndAt' => 7, 'CreatedAt' => 8, 'UpdatedAt' => 9, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pUserId' => 1, 'pQTypeId' => 2, 'pQMandateId' => 3, 'pQOrganizationId' => 4, 'localization' => 5, 'beginAt' => 6, 'endAt' => 7, 'createdAt' => 8, 'updatedAt' => 9, ),
-        BasePeer::TYPE_COLNAME => array (PUMandatePeer::ID => 0, PUMandatePeer::P_USER_ID => 1, PUMandatePeer::P_Q_TYPE_ID => 2, PUMandatePeer::P_Q_MANDATE_ID => 3, PUMandatePeer::P_Q_ORGANIZATION_ID => 4, PUMandatePeer::LOCALIZATION => 5, PUMandatePeer::BEGIN_AT => 6, PUMandatePeer::END_AT => 7, PUMandatePeer::CREATED_AT => 8, PUMandatePeer::UPDATED_AT => 9, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_USER_ID' => 1, 'P_Q_TYPE_ID' => 2, 'P_Q_MANDATE_ID' => 3, 'P_Q_ORGANIZATION_ID' => 4, 'LOCALIZATION' => 5, 'BEGIN_AT' => 6, 'END_AT' => 7, 'CREATED_AT' => 8, 'UPDATED_AT' => 9, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_user_id' => 1, 'p_q_type_id' => 2, 'p_q_mandate_id' => 3, 'p_q_organization_id' => 4, 'localization' => 5, 'begin_at' => 6, 'end_at' => 7, 'created_at' => 8, 'updated_at' => 9, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'PUserId' => 2, 'PQTypeId' => 3, 'PQMandateId' => 4, 'PQOrganizationId' => 5, 'Localization' => 6, 'BeginAt' => 7, 'EndAt' => 8, 'CreatedAt' => 9, 'UpdatedAt' => 10, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'pUserId' => 2, 'pQTypeId' => 3, 'pQMandateId' => 4, 'pQOrganizationId' => 5, 'localization' => 6, 'beginAt' => 7, 'endAt' => 8, 'createdAt' => 9, 'updatedAt' => 10, ),
+        BasePeer::TYPE_COLNAME => array (PUMandatePeer::ID => 0, PUMandatePeer::UUID => 1, PUMandatePeer::P_USER_ID => 2, PUMandatePeer::P_Q_TYPE_ID => 3, PUMandatePeer::P_Q_MANDATE_ID => 4, PUMandatePeer::P_Q_ORGANIZATION_ID => 5, PUMandatePeer::LOCALIZATION => 6, PUMandatePeer::BEGIN_AT => 7, PUMandatePeer::END_AT => 8, PUMandatePeer::CREATED_AT => 9, PUMandatePeer::UPDATED_AT => 10, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'P_USER_ID' => 2, 'P_Q_TYPE_ID' => 3, 'P_Q_MANDATE_ID' => 4, 'P_Q_ORGANIZATION_ID' => 5, 'LOCALIZATION' => 6, 'BEGIN_AT' => 7, 'END_AT' => 8, 'CREATED_AT' => 9, 'UPDATED_AT' => 10, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'p_user_id' => 2, 'p_q_type_id' => 3, 'p_q_mandate_id' => 4, 'p_q_organization_id' => 5, 'localization' => 6, 'begin_at' => 7, 'end_at' => 8, 'created_at' => 9, 'updated_at' => 10, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
     );
 
     /**
@@ -188,6 +191,7 @@ abstract class BasePUMandatePeer
     {
         if (null === $alias) {
             $criteria->addSelectColumn(PUMandatePeer::ID);
+            $criteria->addSelectColumn(PUMandatePeer::UUID);
             $criteria->addSelectColumn(PUMandatePeer::P_USER_ID);
             $criteria->addSelectColumn(PUMandatePeer::P_Q_TYPE_ID);
             $criteria->addSelectColumn(PUMandatePeer::P_Q_MANDATE_ID);
@@ -199,6 +203,7 @@ abstract class BasePUMandatePeer
             $criteria->addSelectColumn(PUMandatePeer::UPDATED_AT);
         } else {
             $criteria->addSelectColumn($alias . '.id');
+            $criteria->addSelectColumn($alias . '.uuid');
             $criteria->addSelectColumn($alias . '.p_user_id');
             $criteria->addSelectColumn($alias . '.p_q_type_id');
             $criteria->addSelectColumn($alias . '.p_q_mandate_id');

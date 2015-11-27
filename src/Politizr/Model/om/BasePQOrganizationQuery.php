@@ -26,6 +26,7 @@ use Politizr\Model\PUser;
 
 /**
  * @method PQOrganizationQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method PQOrganizationQuery orderByUuid($order = Criteria::ASC) Order by the uuid column
  * @method PQOrganizationQuery orderByPQTypeId($order = Criteria::ASC) Order by the p_q_type_id column
  * @method PQOrganizationQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method PQOrganizationQuery orderByInitials($order = Criteria::ASC) Order by the initials column
@@ -39,6 +40,7 @@ use Politizr\Model\PUser;
  * @method PQOrganizationQuery orderBySortableRank($order = Criteria::ASC) Order by the sortable_rank column
  *
  * @method PQOrganizationQuery groupById() Group by the id column
+ * @method PQOrganizationQuery groupByUuid() Group by the uuid column
  * @method PQOrganizationQuery groupByPQTypeId() Group by the p_q_type_id column
  * @method PQOrganizationQuery groupByTitle() Group by the title column
  * @method PQOrganizationQuery groupByInitials() Group by the initials column
@@ -74,6 +76,7 @@ use Politizr\Model\PUser;
  * @method PQOrganization findOne(PropelPDO $con = null) Return the first PQOrganization matching the query
  * @method PQOrganization findOneOrCreate(PropelPDO $con = null) Return the first PQOrganization matching the query, or a new PQOrganization object populated from the query conditions when no match is found
  *
+ * @method PQOrganization findOneByUuid(string $uuid) Return the first PQOrganization filtered by the uuid column
  * @method PQOrganization findOneByPQTypeId(int $p_q_type_id) Return the first PQOrganization filtered by the p_q_type_id column
  * @method PQOrganization findOneByTitle(string $title) Return the first PQOrganization filtered by the title column
  * @method PQOrganization findOneByInitials(string $initials) Return the first PQOrganization filtered by the initials column
@@ -87,6 +90,7 @@ use Politizr\Model\PUser;
  * @method PQOrganization findOneBySortableRank(int $sortable_rank) Return the first PQOrganization filtered by the sortable_rank column
  *
  * @method array findById(int $id) Return PQOrganization objects filtered by the id column
+ * @method array findByUuid(string $uuid) Return PQOrganization objects filtered by the uuid column
  * @method array findByPQTypeId(int $p_q_type_id) Return PQOrganization objects filtered by the p_q_type_id column
  * @method array findByTitle(string $title) Return PQOrganization objects filtered by the title column
  * @method array findByInitials(string $initials) Return PQOrganization objects filtered by the initials column
@@ -207,7 +211,7 @@ abstract class BasePQOrganizationQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_q_type_id`, `title`, `initials`, `file_name`, `description`, `url`, `online`, `created_at`, `updated_at`, `slug`, `sortable_rank` FROM `p_q_organization` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_q_type_id`, `title`, `initials`, `file_name`, `description`, `url`, `online`, `created_at`, `updated_at`, `slug`, `sortable_rank` FROM `p_q_organization` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -337,6 +341,35 @@ abstract class BasePQOrganizationQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PQOrganizationPeer::ID, $id, $comparison);
+    }
+
+    /**
+     * Filter the query on the uuid column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByUuid('fooValue');   // WHERE uuid = 'fooValue'
+     * $query->filterByUuid('%fooValue%'); // WHERE uuid LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $uuid The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PQOrganizationQuery The current query, for fluid interface
+     */
+    public function filterByUuid($uuid = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($uuid)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $uuid)) {
+                $uuid = str_replace('*', '%', $uuid);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PQOrganizationPeer::UUID, $uuid, $comparison);
     }
 
     /**

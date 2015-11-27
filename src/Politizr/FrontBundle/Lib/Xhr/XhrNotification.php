@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Politizr\Exception\InconsistentDataException;
 use Politizr\Exception\FormValidationException;
 
+use Politizr\Model\PNotificationQuery;
 use Politizr\Model\PUNotificationQuery;
 
 /**
@@ -91,13 +92,13 @@ class XhrNotification
         $this->logger->info('*** notificationChek');
 
         // Request arguments
-        $id = $request->get('subjectId');
-        $this->logger->info('$id = ' . print_r($id, true));
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
 
         // Function process
         $user = $this->securityTokenStorage->getToken()->getUser();
 
-        $notification = PUNotificationQuery::create()->findPk($id);
+        $notification = PUNotificationQuery::create()->filterByUuid($uuid)->findOne();
         $this->notificationManager->checkUserNotification($notification);
 
         return true;
@@ -136,17 +137,19 @@ class XhrNotification
         $this->logger->info('*** notifEmailSubscribe');
 
         // Request arguments
-        $id = $request->get('subjectId');
-        $this->logger->info('$id = ' . print_r($id, true));
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
+
+        // Retrive subject
+        $notification = PNotificationQuery::create()->filterByUuid($uuid)->findOne();
 
         // Function process
         $user = $this->securityTokenStorage->getToken()->getUser();
 
-        $this->notificationManager->createUserSubscribeEmail($user->getId(), $id);
+        $this->notificationManager->createUserSubscribeEmail($user->getId(), $notification->getId());
 
         return true;
     }
-
 
     /**
      * Notification email unsubscription
@@ -156,98 +159,16 @@ class XhrNotification
         $this->logger->info('*** notifEmailUnsubscribe');
 
         // Request arguments
-        $id = $request->get('subjectId');
-        $this->logger->info('$id = ' . print_r($id, true));
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
+
+        // Retrive subject
+        $notification = PNotificationQuery::create()->filterByUuid($uuid)->findOne();
 
         // Function process
         $user = $this->securityTokenStorage->getToken()->getUser();
 
-        $this->notificationManager->deleteUserSubscribeEmail($user->getId(), $id);
-
-        return true;
-    }
-
-    /**
-     * Contextual user notification email subscription
-     */
-    public function notifUserContextSubscribe(Request $request)
-    {
-        $this->logger->info('*** notifUserContextSubscribe');
-
-        // Request arguments
-        $id = $request->get('subjectId');
-        $this->logger->info('$id = ' . print_r($id, true));
-        $context = $request->get('context');
-        $this->logger->info('$context = ' . print_r($context, true));
-
-        // Function process
-        $user = $this->securityTokenStorage->getToken()->getUser();
-
-        $this->userManager->updateFollowUserContextEmailNotification($user->getId(), $id, true, $context);
-
-        return true;
-    }
-
-    /**
-     * Contextual user notification email unsubscription
-     */
-    public function notifUserContextUnsubscribe(Request $request)
-    {
-        $this->logger->info('*** notifUserContextUnsubscribe');
-
-        // Request arguments
-        $id = $request->get('subjectId');
-        $this->logger->info('$id = ' . print_r($id, true));
-        $context = $request->get('context');
-        $this->logger->info('$context = ' . print_r($context, true));
-
-        // Function process
-        $user = $this->securityTokenStorage->getToken()->getUser();
-
-        $this->userManager->updateFollowUserContextEmailNotification($user->getId(), $id, false, $context);
-
-        return true;
-    }
-
-    /**
-     * Contextual user's debate notification email subscription
-     */
-    public function notifDebateContextSubscribe(Request $request)
-    {
-        $this->logger->info('*** notifDebateContextSubscribe');
-
-        // Request arguments
-        $id = $request->get('subjectId');
-        $this->logger->info('$id = ' . print_r($id, true));
-        $context = $request->get('context');
-        $this->logger->info('$context = ' . print_r($context, true));
-
-        // Function process
-        $user = $this->securityTokenStorage->getToken()->getUser();
-
-        $this->userManager->updateFollowDebateContextEmailNotification($user->getId(), $id, true, $context);
-
-        return true;
-    }
-
-    /**
-     *  Désouscrit une notification contextuelle à un débat
-     *
-     */
-    public function notifDebateContextUnsubscribe(Request $request)
-    {
-        $this->logger->info('*** notifDebateContextUnsubscribe');
-
-        // Request arguments
-        $id = $request->get('subjectId');
-        $this->logger->info('$id = ' . print_r($id, true));
-        $context = $request->get('context');
-        $this->logger->info('$context = ' . print_r($context, true));
-
-        // Function process
-        $user = $this->securityTokenStorage->getToken()->getUser();
-
-        $this->userManager->updateFollowDebateContextEmailNotification($user->getId(), $id, false, $context);
+        $this->notificationManager->deleteUserSubscribeEmail($user->getId(), $notification->getId());
 
         return true;
     }

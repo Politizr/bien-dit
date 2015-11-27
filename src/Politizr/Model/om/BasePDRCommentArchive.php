@@ -47,6 +47,12 @@ abstract class BasePDRCommentArchive extends BaseObject implements Persistent
     protected $id;
 
     /**
+     * The value for the uuid field.
+     * @var        string
+     */
+    protected $uuid;
+
+    /**
      * The value for the p_user_id field.
      * @var        int
      */
@@ -190,6 +196,17 @@ abstract class BasePDRCommentArchive extends BaseObject implements Persistent
     {
 
         return $this->id;
+    }
+
+    /**
+     * Get the [uuid] column value.
+     *
+     * @return string
+     */
+    public function getUuid()
+    {
+
+        return $this->uuid;
     }
 
     /**
@@ -522,6 +539,27 @@ abstract class BasePDRCommentArchive extends BaseObject implements Persistent
 
         return $this;
     } // setId()
+
+    /**
+     * Set the value of [uuid] column.
+     *
+     * @param  string $v new value
+     * @return PDRCommentArchive The current object (for fluent API support)
+     */
+    public function setUuid($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->uuid !== $v) {
+            $this->uuid = $v;
+            $this->modifiedColumns[] = PDRCommentArchivePeer::UUID;
+        }
+
+
+        return $this;
+    } // setUuid()
 
     /**
      * Set the value of [p_user_id] column.
@@ -913,21 +951,22 @@ abstract class BasePDRCommentArchive extends BaseObject implements Persistent
         try {
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->p_user_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
-            $this->p_d_reaction_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
-            $this->description = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-            $this->paragraph_no = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
-            $this->note_pos = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
-            $this->note_neg = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
-            $this->published_at = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-            $this->published_by = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
-            $this->online = ($row[$startcol + 9] !== null) ? (boolean) $row[$startcol + 9] : null;
-            $this->moderated = ($row[$startcol + 10] !== null) ? (boolean) $row[$startcol + 10] : null;
-            $this->moderated_partial = ($row[$startcol + 11] !== null) ? (boolean) $row[$startcol + 11] : null;
-            $this->moderated_at = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
-            $this->created_at = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
-            $this->updated_at = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
-            $this->archived_at = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
+            $this->uuid = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
+            $this->p_user_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+            $this->p_d_reaction_id = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
+            $this->description = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->paragraph_no = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
+            $this->note_pos = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
+            $this->note_neg = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
+            $this->published_at = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+            $this->published_by = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+            $this->online = ($row[$startcol + 10] !== null) ? (boolean) $row[$startcol + 10] : null;
+            $this->moderated = ($row[$startcol + 11] !== null) ? (boolean) $row[$startcol + 11] : null;
+            $this->moderated_partial = ($row[$startcol + 12] !== null) ? (boolean) $row[$startcol + 12] : null;
+            $this->moderated_at = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
+            $this->created_at = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
+            $this->updated_at = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
+            $this->archived_at = ($row[$startcol + 16] !== null) ? (string) $row[$startcol + 16] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -937,7 +976,7 @@ abstract class BasePDRCommentArchive extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 16; // 16 = PDRCommentArchivePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 17; // 17 = PDRCommentArchivePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PDRCommentArchive object", $e);
@@ -1163,6 +1202,9 @@ abstract class BasePDRCommentArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PDRCommentArchivePeer::ID)) {
             $modifiedColumns[':p' . $index++]  = '`id`';
         }
+        if ($this->isColumnModified(PDRCommentArchivePeer::UUID)) {
+            $modifiedColumns[':p' . $index++]  = '`uuid`';
+        }
         if ($this->isColumnModified(PDRCommentArchivePeer::P_USER_ID)) {
             $modifiedColumns[':p' . $index++]  = '`p_user_id`';
         }
@@ -1221,6 +1263,9 @@ abstract class BasePDRCommentArchive extends BaseObject implements Persistent
                 switch ($columnName) {
                     case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
+                        break;
+                    case '`uuid`':
+                        $stmt->bindValue($identifier, $this->uuid, PDO::PARAM_STR);
                         break;
                     case '`p_user_id`':
                         $stmt->bindValue($identifier, $this->p_user_id, PDO::PARAM_INT);
@@ -1398,48 +1443,51 @@ abstract class BasePDRCommentArchive extends BaseObject implements Persistent
                 return $this->getId();
                 break;
             case 1:
-                return $this->getPUserId();
+                return $this->getUuid();
                 break;
             case 2:
-                return $this->getPDReactionId();
+                return $this->getPUserId();
                 break;
             case 3:
-                return $this->getDescription();
+                return $this->getPDReactionId();
                 break;
             case 4:
-                return $this->getParagraphNo();
+                return $this->getDescription();
                 break;
             case 5:
-                return $this->getNotePos();
+                return $this->getParagraphNo();
                 break;
             case 6:
-                return $this->getNoteNeg();
+                return $this->getNotePos();
                 break;
             case 7:
-                return $this->getPublishedAt();
+                return $this->getNoteNeg();
                 break;
             case 8:
-                return $this->getPublishedBy();
+                return $this->getPublishedAt();
                 break;
             case 9:
-                return $this->getOnline();
+                return $this->getPublishedBy();
                 break;
             case 10:
-                return $this->getModerated();
+                return $this->getOnline();
                 break;
             case 11:
-                return $this->getModeratedPartial();
+                return $this->getModerated();
                 break;
             case 12:
-                return $this->getModeratedAt();
+                return $this->getModeratedPartial();
                 break;
             case 13:
-                return $this->getCreatedAt();
+                return $this->getModeratedAt();
                 break;
             case 14:
-                return $this->getUpdatedAt();
+                return $this->getCreatedAt();
                 break;
             case 15:
+                return $this->getUpdatedAt();
+                break;
+            case 16:
                 return $this->getArchivedAt();
                 break;
             default:
@@ -1471,21 +1519,22 @@ abstract class BasePDRCommentArchive extends BaseObject implements Persistent
         $keys = PDRCommentArchivePeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getPUserId(),
-            $keys[2] => $this->getPDReactionId(),
-            $keys[3] => $this->getDescription(),
-            $keys[4] => $this->getParagraphNo(),
-            $keys[5] => $this->getNotePos(),
-            $keys[6] => $this->getNoteNeg(),
-            $keys[7] => $this->getPublishedAt(),
-            $keys[8] => $this->getPublishedBy(),
-            $keys[9] => $this->getOnline(),
-            $keys[10] => $this->getModerated(),
-            $keys[11] => $this->getModeratedPartial(),
-            $keys[12] => $this->getModeratedAt(),
-            $keys[13] => $this->getCreatedAt(),
-            $keys[14] => $this->getUpdatedAt(),
-            $keys[15] => $this->getArchivedAt(),
+            $keys[1] => $this->getUuid(),
+            $keys[2] => $this->getPUserId(),
+            $keys[3] => $this->getPDReactionId(),
+            $keys[4] => $this->getDescription(),
+            $keys[5] => $this->getParagraphNo(),
+            $keys[6] => $this->getNotePos(),
+            $keys[7] => $this->getNoteNeg(),
+            $keys[8] => $this->getPublishedAt(),
+            $keys[9] => $this->getPublishedBy(),
+            $keys[10] => $this->getOnline(),
+            $keys[11] => $this->getModerated(),
+            $keys[12] => $this->getModeratedPartial(),
+            $keys[13] => $this->getModeratedAt(),
+            $keys[14] => $this->getCreatedAt(),
+            $keys[15] => $this->getUpdatedAt(),
+            $keys[16] => $this->getArchivedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1529,48 +1578,51 @@ abstract class BasePDRCommentArchive extends BaseObject implements Persistent
                 $this->setId($value);
                 break;
             case 1:
-                $this->setPUserId($value);
+                $this->setUuid($value);
                 break;
             case 2:
-                $this->setPDReactionId($value);
+                $this->setPUserId($value);
                 break;
             case 3:
-                $this->setDescription($value);
+                $this->setPDReactionId($value);
                 break;
             case 4:
-                $this->setParagraphNo($value);
+                $this->setDescription($value);
                 break;
             case 5:
-                $this->setNotePos($value);
+                $this->setParagraphNo($value);
                 break;
             case 6:
-                $this->setNoteNeg($value);
+                $this->setNotePos($value);
                 break;
             case 7:
-                $this->setPublishedAt($value);
+                $this->setNoteNeg($value);
                 break;
             case 8:
-                $this->setPublishedBy($value);
+                $this->setPublishedAt($value);
                 break;
             case 9:
-                $this->setOnline($value);
+                $this->setPublishedBy($value);
                 break;
             case 10:
-                $this->setModerated($value);
+                $this->setOnline($value);
                 break;
             case 11:
-                $this->setModeratedPartial($value);
+                $this->setModerated($value);
                 break;
             case 12:
-                $this->setModeratedAt($value);
+                $this->setModeratedPartial($value);
                 break;
             case 13:
-                $this->setCreatedAt($value);
+                $this->setModeratedAt($value);
                 break;
             case 14:
-                $this->setUpdatedAt($value);
+                $this->setCreatedAt($value);
                 break;
             case 15:
+                $this->setUpdatedAt($value);
+                break;
+            case 16:
                 $this->setArchivedAt($value);
                 break;
         } // switch()
@@ -1598,21 +1650,22 @@ abstract class BasePDRCommentArchive extends BaseObject implements Persistent
         $keys = PDRCommentArchivePeer::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setPUserId($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setPDReactionId($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setDescription($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setParagraphNo($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setNotePos($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setNoteNeg($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setPublishedAt($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setPublishedBy($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setOnline($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setModerated($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setModeratedPartial($arr[$keys[11]]);
-        if (array_key_exists($keys[12], $arr)) $this->setModeratedAt($arr[$keys[12]]);
-        if (array_key_exists($keys[13], $arr)) $this->setCreatedAt($arr[$keys[13]]);
-        if (array_key_exists($keys[14], $arr)) $this->setUpdatedAt($arr[$keys[14]]);
-        if (array_key_exists($keys[15], $arr)) $this->setArchivedAt($arr[$keys[15]]);
+        if (array_key_exists($keys[1], $arr)) $this->setUuid($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setPUserId($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setPDReactionId($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setDescription($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setParagraphNo($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setNotePos($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setNoteNeg($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setPublishedAt($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setPublishedBy($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setOnline($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setModerated($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setModeratedPartial($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setModeratedAt($arr[$keys[13]]);
+        if (array_key_exists($keys[14], $arr)) $this->setCreatedAt($arr[$keys[14]]);
+        if (array_key_exists($keys[15], $arr)) $this->setUpdatedAt($arr[$keys[15]]);
+        if (array_key_exists($keys[16], $arr)) $this->setArchivedAt($arr[$keys[16]]);
     }
 
     /**
@@ -1625,6 +1678,7 @@ abstract class BasePDRCommentArchive extends BaseObject implements Persistent
         $criteria = new Criteria(PDRCommentArchivePeer::DATABASE_NAME);
 
         if ($this->isColumnModified(PDRCommentArchivePeer::ID)) $criteria->add(PDRCommentArchivePeer::ID, $this->id);
+        if ($this->isColumnModified(PDRCommentArchivePeer::UUID)) $criteria->add(PDRCommentArchivePeer::UUID, $this->uuid);
         if ($this->isColumnModified(PDRCommentArchivePeer::P_USER_ID)) $criteria->add(PDRCommentArchivePeer::P_USER_ID, $this->p_user_id);
         if ($this->isColumnModified(PDRCommentArchivePeer::P_D_REACTION_ID)) $criteria->add(PDRCommentArchivePeer::P_D_REACTION_ID, $this->p_d_reaction_id);
         if ($this->isColumnModified(PDRCommentArchivePeer::DESCRIPTION)) $criteria->add(PDRCommentArchivePeer::DESCRIPTION, $this->description);
@@ -1703,6 +1757,7 @@ abstract class BasePDRCommentArchive extends BaseObject implements Persistent
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
+        $copyObj->setUuid($this->getUuid());
         $copyObj->setPUserId($this->getPUserId());
         $copyObj->setPDReactionId($this->getPDReactionId());
         $copyObj->setDescription($this->getDescription());
@@ -1770,6 +1825,7 @@ abstract class BasePDRCommentArchive extends BaseObject implements Persistent
     public function clear()
     {
         $this->id = null;
+        $this->uuid = null;
         $this->p_user_id = null;
         $this->p_d_reaction_id = null;
         $this->description = null;

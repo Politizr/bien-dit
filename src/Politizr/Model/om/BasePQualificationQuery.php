@@ -23,6 +23,7 @@ use Politizr\Model\PUser;
 
 /**
  * @method PQualificationQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method PQualificationQuery orderByUuid($order = Criteria::ASC) Order by the uuid column
  * @method PQualificationQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method PQualificationQuery orderByDescription($order = Criteria::ASC) Order by the description column
  * @method PQualificationQuery orderByOnline($order = Criteria::ASC) Order by the online column
@@ -32,6 +33,7 @@ use Politizr\Model\PUser;
  * @method PQualificationQuery orderBySortableRank($order = Criteria::ASC) Order by the sortable_rank column
  *
  * @method PQualificationQuery groupById() Group by the id column
+ * @method PQualificationQuery groupByUuid() Group by the uuid column
  * @method PQualificationQuery groupByTitle() Group by the title column
  * @method PQualificationQuery groupByDescription() Group by the description column
  * @method PQualificationQuery groupByOnline() Group by the online column
@@ -51,6 +53,7 @@ use Politizr\Model\PUser;
  * @method PQualification findOne(PropelPDO $con = null) Return the first PQualification matching the query
  * @method PQualification findOneOrCreate(PropelPDO $con = null) Return the first PQualification matching the query, or a new PQualification object populated from the query conditions when no match is found
  *
+ * @method PQualification findOneByUuid(string $uuid) Return the first PQualification filtered by the uuid column
  * @method PQualification findOneByTitle(string $title) Return the first PQualification filtered by the title column
  * @method PQualification findOneByDescription(string $description) Return the first PQualification filtered by the description column
  * @method PQualification findOneByOnline(boolean $online) Return the first PQualification filtered by the online column
@@ -60,6 +63,7 @@ use Politizr\Model\PUser;
  * @method PQualification findOneBySortableRank(int $sortable_rank) Return the first PQualification filtered by the sortable_rank column
  *
  * @method array findById(int $id) Return PQualification objects filtered by the id column
+ * @method array findByUuid(string $uuid) Return PQualification objects filtered by the uuid column
  * @method array findByTitle(string $title) Return PQualification objects filtered by the title column
  * @method array findByDescription(string $description) Return PQualification objects filtered by the description column
  * @method array findByOnline(boolean $online) Return PQualification objects filtered by the online column
@@ -176,7 +180,7 @@ abstract class BasePQualificationQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `title`, `description`, `online`, `created_at`, `updated_at`, `slug`, `sortable_rank` FROM `p_qualification` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `title`, `description`, `online`, `created_at`, `updated_at`, `slug`, `sortable_rank` FROM `p_qualification` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -306,6 +310,35 @@ abstract class BasePQualificationQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PQualificationPeer::ID, $id, $comparison);
+    }
+
+    /**
+     * Filter the query on the uuid column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByUuid('fooValue');   // WHERE uuid = 'fooValue'
+     * $query->filterByUuid('%fooValue%'); // WHERE uuid LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $uuid The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PQualificationQuery The current query, for fluid interface
+     */
+    public function filterByUuid($uuid = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($uuid)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $uuid)) {
+                $uuid = str_replace('*', '%', $uuid);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PQualificationPeer::UUID, $uuid, $comparison);
     }
 
     /**

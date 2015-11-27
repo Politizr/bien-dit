@@ -8,6 +8,10 @@ params:
     fields:
         id:
             label:          ID
+        uuid:
+            label:          UUID
+        slug:
+            label:          Slug
         p_user_id:
             label:          ID Utilisateur
         p_user:
@@ -92,6 +96,7 @@ builders:
                 "Modération":
                     "Portée":                   [ [ moderated, moderated_partial, moderated_at ] ]
                 "Attributs":
+                    "Identifiants":             [ [ id, uuid, slug ] ]
                     "Création":                 [ [ online ], [ created_at, updated_at ] ]
             fields:
                 block_file_name:
@@ -120,6 +125,12 @@ builders:
                     # formType:                   afe_datetime_picker
                     addFormOptions:
                         widget:                 single_text
+                id:
+                    addFormOptions:
+                        read_only:              true
+                uuid:
+                    addFormOptions:
+                        read_only:              true
                 created_at:
                     addFormOptions:
                         widget:                 single_text
@@ -159,6 +170,7 @@ builders:
                     "Notification":             [ block_moderation_alert_new  ]
                     "Précédentes notifications": [ block_moderation_alert_listing  ]
                 "Attributs":
+                    "Identifiants":             [ [ id, uuid, slug ] ]
                     "Création":                 [ [ online ], [ created_at, updated_at ] ]
                 "Front":
                     "Rendu":                    [ block_front ]

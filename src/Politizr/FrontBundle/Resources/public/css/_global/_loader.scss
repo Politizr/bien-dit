@@ -39,7 +39,6 @@
 	z-index: 1;
 }
  
-
 #ajaxGlobalLoader .ajaxLoader .pltzrLoaderStrokes {
 	fill: none;
 	stroke-width: 7px;
@@ -62,7 +61,7 @@
 }
 
 
-// global loader //
+// loader //
 .ajaxLoader {
 	position: absolute;
 	width: 100%;
@@ -143,14 +142,9 @@
 	background-color: $lightGrey;
 }
 
-///// in comments
+///// in comments form
 
-.comments .actionsButtons .ajaxLoader {
-	width: 20px;
-	background-color: #fff;
-	left: -4px;
-}
-.comments .actionsButtons .ajaxLoaderSpinner { background-size: 19px; }
+.comments .actionsButtons .ajaxLoader { width: 90px;}
 .commentsOfficial .ajaxLoaderBg {	background-color: $lightGrey;}
 .commentsUser .ajaxLoaderBg {	background-color: #fff;}
 .commentsPostAuthor .ajaxLoaderBg {	background-color: $anotherLightHighlight;}
@@ -175,19 +169,15 @@
 }
 .modalList .loadMore {	margin-bottom: 60px; }
 
-#scrollNav {
-/*
+#scrollNav, #modalScrollNav {
 	float: left;
 	width: 100%;
 	clear: both;
-	position: relative;
 	margin-bottom: 60px;
-*/
- background: aqua; width: 100%; float: left; height: 100px; display: inline-block !important; clear: both; 
 }
-#timelineScrollNav {text-align: center;/*  background: aqua; width: 100%; float: left; height: 100px; */}
+#timelineScrollNav {text-align: center;}
 
-a#moreResults {
+#moreResults {
 	font-family: 'nerisblack';
 	font-size: 10px;
 	color: #fff;
@@ -195,10 +185,10 @@ a#moreResults {
 	text-transform: uppercase;
 	padding: 10px 20px;
 	display: inline-block;
-	margin: 10px 0 20px 0;
+	margin: 20px 0;
 	cursor: pointer;
 }
-a#moreResults:hover {background-color: $highlight;}
+#moreResults:hover {background-color: $highlight;}
 
 p.noResult { font-family: 'nerissemibold';	}
 // end load more

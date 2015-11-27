@@ -154,33 +154,30 @@ class DocumentService
     /**
      * Create new reaction
      *
-     * @param int $debateId Associated debate id
-     * @param int $parentId Associated parent reaction id
+     * @param PDDebate $debate Associated debate
+     * @param PDReaction $parent Associated parent reaction
      * @return PDReaction
      */
-    public function createReaction($debateId, $parentId)
+    public function createReaction($debate, $parent)
     {
         $this->logger->info('*** createReaction');
 
         $user = $this->securityTokenStorage->getToken()->getUser();
 
         // get reaction's associated debate
-        $debate = PDDebateQuery::create()->findPk($debateId);
         if (!$debate) {
             throw new InconsistentDataException(sprintf('Debate "%s" not found', $debateId));
         }
 
-        // get parent's reaction
-        $parent = null;
-        if ($parentId) {
-            $parent = PDReactionQuery::create()->findPk($parentId);
-            if (!$parent) {
-                throw new InconsistentDataException(sprintf('Parent reaction "%s" not found', $parentId));
-            }
+        // get ids
+        $debateId = $debate->getId();
+        $parentId = null;
+        if ($parent) {
+            $parentId = $parent->getId();
         }
 
         // Create reaction for user
-        $reaction = $this->documentManager->createReaction($user->getId(), $debate->getId(), $parentId);
+        $reaction = $this->documentManager->createReaction($user->getId(), $debateId, $parentId);
 
         // Init default reaction's tagged tags
         $this->documentManager->initReactionTaggedTags($reaction);

@@ -11,7 +11,7 @@ var normalize = function( term ) {
  * Init autoloading tag on input search form field
  */
 function initInputSearchByTags() {
-    // console.log('*** initInputSearchByTags');
+    console.log('*** initInputSearchByTags');
 
     // autocomplete initialization
     var xhrPath = getXhrPath(
@@ -39,7 +39,7 @@ function initInputSearchByTags() {
                 $.each( data['tags'], function( key, val ) {
                     var item = [];
                     item['label'] = val.title;
-                    item['value'] = val.id;
+                    item['value'] = val.uiid;
 
                     availableTags.push(item);
                 });
@@ -62,7 +62,7 @@ function initInputSearchByTags() {
 
                         // Affichage de la sélection
                         $('#searchByTag').find('.selectedTag').first().val(ui.item.label);     // display the selected text
-                        $('#searchByTag').find('.selectedTagID').first().val(ui.item.value);   // save selected id to hidden input
+                        $('#searchByTag').find('.selectedTagUuid').first().val(ui.item.value);   // save selected id to hidden input
 
                         // Auto add selected search tag
                         addSearchTag(ui.item.value);
@@ -76,13 +76,13 @@ function initInputSearchByTags() {
 /**
  * Add search tag
  *
- * @param int id
+ * @param stsring uuid
  */
-function addSearchTag(id) {
-    // console.log('addSearchTag');
-    // console.log('id = ' + id);
+function addSearchTag(uuid) {
+    console.log('addSearchTag');
+    console.log('uuid = ' + uuid);
 
-    if (typeof id === "undefined") {
+    if (typeof uuid === "undefined") {
         return false;
     }
 
@@ -96,7 +96,7 @@ function addSearchTag(id) {
     $.ajax({
         type: 'POST',
         url: xhrPath,
-        data: { 'tagId': id },
+        data: { 'tagUuid': uuid },
         dataType: 'json',
         beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
         statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
@@ -114,7 +114,7 @@ function addSearchTag(id) {
 
                 // Init inputs tag
                 $('#searchByTag').find('.selectedTag').first().val('');
-                $('#searchByTag').find('.selectedTagID').first().val('');
+                $('#searchByTag').find('.selectedTagUuid').first().val('');
             }
         }
     });
@@ -124,18 +124,18 @@ function addSearchTag(id) {
  * Delete search tag
  */
 $("body").on("click", "[action='deleteSearchTag']", function() {
-    // console.log('click deleteTag');
+    console.log('click deleteTag');
 
-    var tagId = $(this).attr('tagId');
+    var tagUuid = $(this).attr('tagUuid');
     var deleteUrl = $(this).attr('path');
 
-    // console.log('tagId = ' + tagId);
-    // console.log('deleteUrl = ' + deleteUrl);
+    console.log('tagUuid = ' + tagUuid);
+    console.log('deleteUrl = ' + deleteUrl);
 
     $.ajax({
         type: 'POST',
         url: deleteUrl,
-        data: { 'tagId': tagId },
+        data: { 'tagUuid': tagUuid },
         dataType: 'json',
         beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
         statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },

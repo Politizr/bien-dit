@@ -118,15 +118,15 @@ class XhrUser
         $this->logger->info('*** follow');
         
         // Request arguments
-        $id = $request->get('subjectId');
-        $this->logger->info('$id = ' . print_r($id, true));
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
         $way = $request->get('way');
         $this->logger->info('$way = ' . print_r($way, true));
 
         // Function process
         $user = $this->securityTokenStorage->getToken()->getUser();
         if ($way == 'follow') {
-            $targetUser = PUserQuery::create()->findPk($id);
+            $targetUser = PUserQuery::create()->filterByUuid($uuid)->findOne();
             $this->userManager->createUserFollowUser($user->getId(), $targetUser->getId());
 
             // Events
@@ -137,7 +137,7 @@ class XhrUser
             $event = new GenericEvent($targetUser, array('author_user_id' => $user->getId(), 'target_user_id' => $targetUser->getId()));
             $dispatcher = $this->eventDispatcher->dispatch('b_user_follow', $event);
         } elseif ($way == 'unfollow') {
-            $targetUser = PUserQuery::create()->findPk($id);
+            $targetUser = PUserQuery::create()->filterByUuid($uuid)->findOne();
             $this->userManager->deleteUserFollowUser($user->getId(), $targetUser->getId());
 
             // Events
@@ -419,6 +419,7 @@ class XhrUser
         $form->bind($request);
         if ($form->isValid()) {
             $puCurrentQo = $form->getData();
+            $puCurrentQo->setPUserId($user->getId());
             $puCurrentQo->save();
         } else {
             $errors = StudioEchoUtils::getAjaxFormErrors($form);
@@ -464,6 +465,7 @@ class XhrUser
         $form->bind($request);
         if ($form->isValid()) {
             $mandate = $form->getData();
+            $mandate->setPUserId($user->getId());
             $mandate->save();
         } else {
             $errors = StudioEchoUtils::getAjaxFormErrors($form);
@@ -472,7 +474,6 @@ class XhrUser
 
         // New empty form
         $mandate = new PUMandate();
-        $mandate->setPUserId($user->getId());
         $mandate->setPQTypeId(QualificationConstants::TYPE_ELECTIV);
 
         $form = $this->formFactory->create(new PUMandateType(QualificationConstants::TYPE_ELECTIV), $mandate);
@@ -510,12 +511,12 @@ class XhrUser
         $this->logger->info('*** mandateProfileCreate');
 
         // Request arguments
-        $id = $request->get('mandate')['id'];
-        $this->logger->info('$id = ' . print_r($id, true));
+        $uuid = $request->get('mandate')['uuid'];
+        $this->logger->info('uuid = ' . print_r($uuid, true));
 
         // Function process
         $user = $this->securityTokenStorage->getToken()->getUser();
-        $mandate = PUMandateQuery::create()->findPk($id);
+        $mandate = PUMandateQuery::create()->filterByUuid($uuid)->findOne();
 
         $form = $this->formFactory->create(new PUMandateType(QualificationConstants::TYPE_ELECTIV), $mandate);
         $form->bind($request);
@@ -551,12 +552,12 @@ class XhrUser
         $this->logger->info('*** mandateProfileDelete');
         
         // Request arguments
-        $id = $request->get('id');
-        $this->logger->info('$id = ' . print_r($id, true));
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
 
         // Function process
         $user = $this->securityTokenStorage->getToken()->getUser();
-        $mandate = PUMandateQuery::create()->findPk($id);
+        $mandate = PUMandateQuery::create()->filterByUuid($uuid)->findOne();
 
         // @todo valid ownership of mandate before deletion
         $this->userManager->deleteMandate($mandate);
@@ -612,7 +613,7 @@ class XhrUser
                 $user->setRealname($user->getFirstname() . ' ' . $user->getName());
                 $user->save();
             } elseif ($formTypeId == 2) {
-                $userManager->updateCanonicalFields($user);
+                $this->userManager->updateCanonicalFields($user);
                 $user->save();
             } elseif ($formTypeId == 3) {
                 $plainPassword = $user->getPlainPassword();

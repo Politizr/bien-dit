@@ -1,10 +1,12 @@
 // Gestion du type débat / user
 $("body").on("change", ".type", function(e) {
-    // maj de l'url cible de la liste
-    $('#paginatedList').attr('url', $(this).attr('url'));
-    
+    // console.log('*** change type');
+
+    defaultOrderFilters = $('#defaultOrderFilters').serializeArray();
+    // console.log(defaultOrderFilters);
+
     // réinitialisation des filtres & de la liste
-    initListing($(this).val(), $('#paginatedList').attr('withFilters'));
+    initListing($('#paginatedList').attr('withFilters'), defaultOrderFilters );
 });
 
 // Gestion de l'ordonnancement
@@ -20,17 +22,22 @@ $("body").on("change", ".filter", function(e) {
 });
 
 // Page suivante
-$("body").on("click", "[action='paginateNext']", function(e) {
+$("body").on("click", "[action='paginateNext']", function(e, waypoint) {
+    // console.log('paginate next');
+    if (waypoint) {
+        waypoint.destroy();
+        // console.log('destroy waypoint instance');
+    }
     listing(false, $(this).attr('offset'));
 });
 
 //
-$("body").on("postFollowDebateEvent", function(event, subjectId, way) {
+$("body").on("postFollowDebateEvent", function(event, way) {
     // console.log('*** postFollowDebateEvent');
     modalType = $('#modalBoxContent').attr('class');
 
     // @todo JS use constant
-    if (modalType == 'subscriptions') {
+    if (modalType == 'modalSubscriptions') {
         // console.log('modal subscriptions');
         // dynamicaly offset updating
         if ($('#moreResults').attr('offset')) {
@@ -47,17 +54,37 @@ $("body").on("postFollowDebateEvent", function(event, subjectId, way) {
 });
 
 /**
+ * Init a waypoint for paginate next
+ */
+function initPaginateNextWaypoint() {
+    // console.log('initPaginateNextWaypoint');
+    // console.log('create waypoint instance');
+
+    var waypoints = $('#moreResults').waypoint({
+        handler: function(direction) {
+            // console.log('Hit moreResults');
+            // console.log(direction);
+    
+            if (direction == 'down') {
+                $("[action='paginateNext']").trigger( "click", this );
+            }
+        },
+        context: '#listContent',
+        offset: 'bottom-in-view'
+    }); 
+}
+
+/**
  * Init filters and first listing loading
  *
- * @param string type   debate | user
  * @param string withFilters  true | false
+ * @param array defaultOrderFilters serialized array of order & filters
  */
-function initListing(type, withFilters) {
+function initListing(withFilters, defaultOrderFilters) {
     // console.log('*** initListing');
-    // console.log(type);
     // console.log(withFilters);
+    // console.log(defaultOrderFilters);
 
-    type = (typeof type === "undefined") ? 'debate' : type;
     withFilters = (typeof withFilters === "undefined") ? 'true' : withFilters;
 
     $('#listContent').html('');
@@ -66,6 +93,9 @@ function initListing(type, withFilters) {
         // initialisation de la liste
         listing();
     } else {
+        var defaultType = $('#listType input:checked').val();
+        // console.log(defaultType);
+
         var xhrPath = getXhrPath(
             ROUTE_MODAL_FILTERS,
             'modal',
@@ -77,7 +107,7 @@ function initListing(type, withFilters) {
         $.ajax({
             type: 'POST',
             url: xhrPath,
-            data: { 'type': type },
+            data: { 'defaultType': defaultType, 'defaultOrderFilters': defaultOrderFilters },
             dataType: 'json',
             beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
             statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
@@ -100,7 +130,7 @@ function initListing(type, withFilters) {
 /**
  * Paginated loading of listing.
  *
- * @param string init   key "debate" | "user"
+ * @param boolean init
  * @param string offset
  */
 function listing(init, offset) {
@@ -113,11 +143,11 @@ function listing(init, offset) {
     
     // Récupération de l'ordonnancement en cours
     var order = $('#listOrder').serializeArray();
-    // console.dir(order);
+    // console.log(order);
 
     // Récupération du form des filtres
     var filters = $('#listFilter').serializeArray();
-    // console.dir(filters);
+    // console.log(filters);
 
     // Concaténation des attributs
     var datas = $.merge(order, filters);
@@ -128,11 +158,10 @@ function listing(init, offset) {
     $.each(additionalDatas, function(index, element) {
         datas.push({name: index, value: element});
     });
-
-    // console.dir(datas);
+    // console.log(datas);
 
     // Récupération de l'URL de la liste
-    var url = $('#paginatedList').attr('url');
+    var url = $('#listType input:checked').attr('url');
 
     $.ajax({
         type: 'POST',
@@ -147,12 +176,15 @@ function listing(init, offset) {
                 $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
                 $('#infoBoxHolder .boxError').show();
             } else {
-                $('#scrollNav').remove();
+                $('#modalScrollNav').remove();
                 if (init) {
                     $('#listContent').html(data['html']);
                 } else {
                     $('#listContent').append(data['html']);
                 }
+
+                // Waypoint for infinite scrolling 
+                // initPaginateNextWaypoint();
 
                 // maj DOM onSuccess
                 fullImgLiquid();

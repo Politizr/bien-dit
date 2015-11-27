@@ -43,6 +43,7 @@ class PDReactionArchiveTableMap extends TableMap
         $this->setUseIdGenerator(false);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
+        $this->addColumn('uuid', 'Uuid', 'VARCHAR', false, 50, null);
         $this->addColumn('p_user_id', 'PUserId', 'INTEGER', false, null, null);
         $this->addColumn('p_d_debate_id', 'PDDebateId', 'INTEGER', true, null, null);
         $this->addColumn('parent_reaction_id', 'ParentReactionId', 'INTEGER', false, null, null);

@@ -32,16 +32,19 @@ abstract class BasePDRCommentArchivePeer
     const TM_CLASS = 'Politizr\\Model\\map\\PDRCommentArchiveTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 16;
+    const NUM_COLUMNS = 17;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 16;
+    const NUM_HYDRATE_COLUMNS = 17;
 
     /** the column name for the id field */
     const ID = 'p_d_r_comment_archive.id';
+
+    /** the column name for the uuid field */
+    const UUID = 'p_d_r_comment_archive.uuid';
 
     /** the column name for the p_user_id field */
     const P_USER_ID = 'p_d_r_comment_archive.p_user_id';
@@ -107,12 +110,12 @@ abstract class BasePDRCommentArchivePeer
      * e.g. PDRCommentArchivePeer::$fieldNames[PDRCommentArchivePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'PUserId', 'PDReactionId', 'Description', 'ParagraphNo', 'NotePos', 'NoteNeg', 'PublishedAt', 'PublishedBy', 'Online', 'Moderated', 'ModeratedPartial', 'ModeratedAt', 'CreatedAt', 'UpdatedAt', 'ArchivedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pUserId', 'pDReactionId', 'description', 'paragraphNo', 'notePos', 'noteNeg', 'publishedAt', 'publishedBy', 'online', 'moderated', 'moderatedPartial', 'moderatedAt', 'createdAt', 'updatedAt', 'archivedAt', ),
-        BasePeer::TYPE_COLNAME => array (PDRCommentArchivePeer::ID, PDRCommentArchivePeer::P_USER_ID, PDRCommentArchivePeer::P_D_REACTION_ID, PDRCommentArchivePeer::DESCRIPTION, PDRCommentArchivePeer::PARAGRAPH_NO, PDRCommentArchivePeer::NOTE_POS, PDRCommentArchivePeer::NOTE_NEG, PDRCommentArchivePeer::PUBLISHED_AT, PDRCommentArchivePeer::PUBLISHED_BY, PDRCommentArchivePeer::ONLINE, PDRCommentArchivePeer::MODERATED, PDRCommentArchivePeer::MODERATED_PARTIAL, PDRCommentArchivePeer::MODERATED_AT, PDRCommentArchivePeer::CREATED_AT, PDRCommentArchivePeer::UPDATED_AT, PDRCommentArchivePeer::ARCHIVED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_USER_ID', 'P_D_REACTION_ID', 'DESCRIPTION', 'PARAGRAPH_NO', 'NOTE_POS', 'NOTE_NEG', 'PUBLISHED_AT', 'PUBLISHED_BY', 'ONLINE', 'MODERATED', 'MODERATED_PARTIAL', 'MODERATED_AT', 'CREATED_AT', 'UPDATED_AT', 'ARCHIVED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'p_user_id', 'p_d_reaction_id', 'description', 'paragraph_no', 'note_pos', 'note_neg', 'published_at', 'published_by', 'online', 'moderated', 'moderated_partial', 'moderated_at', 'created_at', 'updated_at', 'archived_at', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'PUserId', 'PDReactionId', 'Description', 'ParagraphNo', 'NotePos', 'NoteNeg', 'PublishedAt', 'PublishedBy', 'Online', 'Moderated', 'ModeratedPartial', 'ModeratedAt', 'CreatedAt', 'UpdatedAt', 'ArchivedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'pUserId', 'pDReactionId', 'description', 'paragraphNo', 'notePos', 'noteNeg', 'publishedAt', 'publishedBy', 'online', 'moderated', 'moderatedPartial', 'moderatedAt', 'createdAt', 'updatedAt', 'archivedAt', ),
+        BasePeer::TYPE_COLNAME => array (PDRCommentArchivePeer::ID, PDRCommentArchivePeer::UUID, PDRCommentArchivePeer::P_USER_ID, PDRCommentArchivePeer::P_D_REACTION_ID, PDRCommentArchivePeer::DESCRIPTION, PDRCommentArchivePeer::PARAGRAPH_NO, PDRCommentArchivePeer::NOTE_POS, PDRCommentArchivePeer::NOTE_NEG, PDRCommentArchivePeer::PUBLISHED_AT, PDRCommentArchivePeer::PUBLISHED_BY, PDRCommentArchivePeer::ONLINE, PDRCommentArchivePeer::MODERATED, PDRCommentArchivePeer::MODERATED_PARTIAL, PDRCommentArchivePeer::MODERATED_AT, PDRCommentArchivePeer::CREATED_AT, PDRCommentArchivePeer::UPDATED_AT, PDRCommentArchivePeer::ARCHIVED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'P_USER_ID', 'P_D_REACTION_ID', 'DESCRIPTION', 'PARAGRAPH_NO', 'NOTE_POS', 'NOTE_NEG', 'PUBLISHED_AT', 'PUBLISHED_BY', 'ONLINE', 'MODERATED', 'MODERATED_PARTIAL', 'MODERATED_AT', 'CREATED_AT', 'UPDATED_AT', 'ARCHIVED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'p_user_id', 'p_d_reaction_id', 'description', 'paragraph_no', 'note_pos', 'note_neg', 'published_at', 'published_by', 'online', 'moderated', 'moderated_partial', 'moderated_at', 'created_at', 'updated_at', 'archived_at', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, )
     );
 
     /**
@@ -122,12 +125,12 @@ abstract class BasePDRCommentArchivePeer
      * e.g. PDRCommentArchivePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PUserId' => 1, 'PDReactionId' => 2, 'Description' => 3, 'ParagraphNo' => 4, 'NotePos' => 5, 'NoteNeg' => 6, 'PublishedAt' => 7, 'PublishedBy' => 8, 'Online' => 9, 'Moderated' => 10, 'ModeratedPartial' => 11, 'ModeratedAt' => 12, 'CreatedAt' => 13, 'UpdatedAt' => 14, 'ArchivedAt' => 15, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pUserId' => 1, 'pDReactionId' => 2, 'description' => 3, 'paragraphNo' => 4, 'notePos' => 5, 'noteNeg' => 6, 'publishedAt' => 7, 'publishedBy' => 8, 'online' => 9, 'moderated' => 10, 'moderatedPartial' => 11, 'moderatedAt' => 12, 'createdAt' => 13, 'updatedAt' => 14, 'archivedAt' => 15, ),
-        BasePeer::TYPE_COLNAME => array (PDRCommentArchivePeer::ID => 0, PDRCommentArchivePeer::P_USER_ID => 1, PDRCommentArchivePeer::P_D_REACTION_ID => 2, PDRCommentArchivePeer::DESCRIPTION => 3, PDRCommentArchivePeer::PARAGRAPH_NO => 4, PDRCommentArchivePeer::NOTE_POS => 5, PDRCommentArchivePeer::NOTE_NEG => 6, PDRCommentArchivePeer::PUBLISHED_AT => 7, PDRCommentArchivePeer::PUBLISHED_BY => 8, PDRCommentArchivePeer::ONLINE => 9, PDRCommentArchivePeer::MODERATED => 10, PDRCommentArchivePeer::MODERATED_PARTIAL => 11, PDRCommentArchivePeer::MODERATED_AT => 12, PDRCommentArchivePeer::CREATED_AT => 13, PDRCommentArchivePeer::UPDATED_AT => 14, PDRCommentArchivePeer::ARCHIVED_AT => 15, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_USER_ID' => 1, 'P_D_REACTION_ID' => 2, 'DESCRIPTION' => 3, 'PARAGRAPH_NO' => 4, 'NOTE_POS' => 5, 'NOTE_NEG' => 6, 'PUBLISHED_AT' => 7, 'PUBLISHED_BY' => 8, 'ONLINE' => 9, 'MODERATED' => 10, 'MODERATED_PARTIAL' => 11, 'MODERATED_AT' => 12, 'CREATED_AT' => 13, 'UPDATED_AT' => 14, 'ARCHIVED_AT' => 15, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_user_id' => 1, 'p_d_reaction_id' => 2, 'description' => 3, 'paragraph_no' => 4, 'note_pos' => 5, 'note_neg' => 6, 'published_at' => 7, 'published_by' => 8, 'online' => 9, 'moderated' => 10, 'moderated_partial' => 11, 'moderated_at' => 12, 'created_at' => 13, 'updated_at' => 14, 'archived_at' => 15, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'PUserId' => 2, 'PDReactionId' => 3, 'Description' => 4, 'ParagraphNo' => 5, 'NotePos' => 6, 'NoteNeg' => 7, 'PublishedAt' => 8, 'PublishedBy' => 9, 'Online' => 10, 'Moderated' => 11, 'ModeratedPartial' => 12, 'ModeratedAt' => 13, 'CreatedAt' => 14, 'UpdatedAt' => 15, 'ArchivedAt' => 16, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'pUserId' => 2, 'pDReactionId' => 3, 'description' => 4, 'paragraphNo' => 5, 'notePos' => 6, 'noteNeg' => 7, 'publishedAt' => 8, 'publishedBy' => 9, 'online' => 10, 'moderated' => 11, 'moderatedPartial' => 12, 'moderatedAt' => 13, 'createdAt' => 14, 'updatedAt' => 15, 'archivedAt' => 16, ),
+        BasePeer::TYPE_COLNAME => array (PDRCommentArchivePeer::ID => 0, PDRCommentArchivePeer::UUID => 1, PDRCommentArchivePeer::P_USER_ID => 2, PDRCommentArchivePeer::P_D_REACTION_ID => 3, PDRCommentArchivePeer::DESCRIPTION => 4, PDRCommentArchivePeer::PARAGRAPH_NO => 5, PDRCommentArchivePeer::NOTE_POS => 6, PDRCommentArchivePeer::NOTE_NEG => 7, PDRCommentArchivePeer::PUBLISHED_AT => 8, PDRCommentArchivePeer::PUBLISHED_BY => 9, PDRCommentArchivePeer::ONLINE => 10, PDRCommentArchivePeer::MODERATED => 11, PDRCommentArchivePeer::MODERATED_PARTIAL => 12, PDRCommentArchivePeer::MODERATED_AT => 13, PDRCommentArchivePeer::CREATED_AT => 14, PDRCommentArchivePeer::UPDATED_AT => 15, PDRCommentArchivePeer::ARCHIVED_AT => 16, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'P_USER_ID' => 2, 'P_D_REACTION_ID' => 3, 'DESCRIPTION' => 4, 'PARAGRAPH_NO' => 5, 'NOTE_POS' => 6, 'NOTE_NEG' => 7, 'PUBLISHED_AT' => 8, 'PUBLISHED_BY' => 9, 'ONLINE' => 10, 'MODERATED' => 11, 'MODERATED_PARTIAL' => 12, 'MODERATED_AT' => 13, 'CREATED_AT' => 14, 'UPDATED_AT' => 15, 'ARCHIVED_AT' => 16, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'p_user_id' => 2, 'p_d_reaction_id' => 3, 'description' => 4, 'paragraph_no' => 5, 'note_pos' => 6, 'note_neg' => 7, 'published_at' => 8, 'published_by' => 9, 'online' => 10, 'moderated' => 11, 'moderated_partial' => 12, 'moderated_at' => 13, 'created_at' => 14, 'updated_at' => 15, 'archived_at' => 16, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, )
     );
 
     /**
@@ -202,6 +205,7 @@ abstract class BasePDRCommentArchivePeer
     {
         if (null === $alias) {
             $criteria->addSelectColumn(PDRCommentArchivePeer::ID);
+            $criteria->addSelectColumn(PDRCommentArchivePeer::UUID);
             $criteria->addSelectColumn(PDRCommentArchivePeer::P_USER_ID);
             $criteria->addSelectColumn(PDRCommentArchivePeer::P_D_REACTION_ID);
             $criteria->addSelectColumn(PDRCommentArchivePeer::DESCRIPTION);
@@ -219,6 +223,7 @@ abstract class BasePDRCommentArchivePeer
             $criteria->addSelectColumn(PDRCommentArchivePeer::ARCHIVED_AT);
         } else {
             $criteria->addSelectColumn($alias . '.id');
+            $criteria->addSelectColumn($alias . '.uuid');
             $criteria->addSelectColumn($alias . '.p_user_id');
             $criteria->addSelectColumn($alias . '.p_d_reaction_id');
             $criteria->addSelectColumn($alias . '.description');

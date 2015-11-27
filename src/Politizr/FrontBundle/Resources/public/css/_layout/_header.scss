@@ -28,17 +28,14 @@
 	color: $semiGrey;
 }
 
-#linkRanking, #linkNotifications, #linkSuggestions {
-	margin-right: 30px;
+#linkRanking, #linkNotifications, #linkSuggestions, #linkSubscriptions {
+	margin-right: 18px;
 	display: inline-block;
-	position: relative;
-	padding-left: 10px;
-	cursor: pointer;
+	position: relative;	cursor: pointer;
 }
+#linkRanking { padding-left: 15px;}
+#linkSuggestions { padding-left: 8px;}
 
-#linkRanking {
-	padding-left: 17px;
-}
 
 #headerCenter i {
 	font-size: 7px;
@@ -48,18 +45,33 @@
 }
 
 #headerCenter i.iconRanking {
-	font-size: 14px;
+	font-size: 13px;
 	top:-1px;
 }
 
-#headerCenter .active {color: $highlight;}
-#linkRanking:hover, #linkNotifications:hover, #linkSuggestions:hover {	color: $darkGrey;}
+#linkNotifications {color: $highlight; position: relative;}
+#linkRanking:hover, #linkNotifications:hover, #linkSuggestions:hover, #linkSubscriptions:hover {	color: $darkGrey;}
 
-#notifCounter {margin-right: 2px;}
+#linkSubscriptions {padding-left: 10px; margin-right: 0;}
+#notifCounter {
+	position: absolute;
+	right: -7px;
+	top: -6px;
+	background-color: $highlight;
+	font-family: 'nerisblack';
+	color: #fff;
+	line-height: 100%;
+	padding: 2px 4px;
+	font-size: 9px;
+	border-radius: 2px 2px 2px 2px;
+	-moz-border-radius: 2px 2px 2px 2px;
+	-webkit-border-radius: 2px 2px 2px 2px;	
+}
+#linkNotifications:hover #notifCounter { background-color: $darkGrey; }
 
 #headerCenter #logged {
 	float: right;
-	width: 220px;
+	width: 210px;
 	text-align: right;
 	text-transform: none;
 	color: $darkGrey;
@@ -68,7 +80,20 @@
 }
 
 #logged a {	color:$semiGrey;}
-#logged a:hover {	color: $darkGrey;}
+#logged a:hover  {	color: $darkGrey;}
+#logged a:hover #fameCounter { background-color: $darkGrey;}
+#fameCounter {
+	background-color: $semiGrey;
+	font-family: 'nerissemibold';
+	color: #fff;
+	line-height: 100% !important;
+	margin-left: 4px;
+	padding: 1px 2px;
+	font-size: 9px;
+	border-radius: 2px 2px 2px 2px;
+	-moz-border-radius: 2px 2px 2px 2px;
+	-webkit-border-radius: 2px 2px 2px 2px;		
+}
 
 #headerCenter .avatar15 {
 	position: absolute;

@@ -43,6 +43,7 @@ class PQMandateTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
+        $this->addColumn('uuid', 'Uuid', 'VARCHAR', false, 50, null);
         $this->addColumn('title', 'Title', 'VARCHAR', false, 250, null);
         $this->addColumn('select_title', 'SelectTitle', 'VARCHAR', false, 250, null);
         $this->addColumn('online', 'Online', 'BOOLEAN', false, 1, null);
@@ -90,6 +91,13 @@ class PQMandateTableMap extends TableMap
   'separator' => '-',
   'permanent' => 'false',
   'scope_column' => '',
+),
+            'uuid' =>  array (
+  'name' => 'uuid',
+  'version' => '4',
+  'permanent' => 'false',
+  'required' => 'true',
+  'unique' => 'true',
 ),
             'sortable' =>  array (
   'rank_column' => 'sortable_rank',

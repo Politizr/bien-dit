@@ -77,7 +77,8 @@
         "liip/url-auto-converter-bundle": "dev-master",
 
         "friendsofsymfony/elastica-bundle": "~3.1",
-        "exercise/htmlpurifier-bundle": "^0.2.2"
+        "exercise/htmlpurifier-bundle": "^0.2.2",
+        "badlamer/propel-uuid-behavior": "dev-master"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"
