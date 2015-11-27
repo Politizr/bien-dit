@@ -6,8 +6,8 @@ $(function() {
 // Gestion des filtres
 $("body").on("change", ".mapFilter", function(e) {
     // console.log('*** change filter');
-
     e.preventDefault();
+
     topListing($('#listFilter').attr('uuid'));
 });
 
@@ -16,6 +16,18 @@ $("body").on("click", "[action='mapZoom']", function() {
 
     topListing($(this).attr('uuid'));
 });
+
+
+/**
+ * Update link with current filter selected attribute
+ */
+function updateSuiteLink() {
+    // console.log('*** updateSuiteLink');
+
+    // update "suite" link attributes
+    // console.log($('#listFilter input:checked').val());
+    $('#modalMoreDebates').attr('defaultFilterDate', $('#listFilter input:checked').val());    
+}
 
 /**
  * Loading of "top" listing.
@@ -62,7 +74,7 @@ function topListing(geoTagUuid) {
             } else {
                 $('.dbMap').html(data['html']);
 
-                // maj DOM onSuccess
+                updateSuiteLink();
                 fullImgLiquid();
             }
             $('#ajaxGlobalLoader').hide();

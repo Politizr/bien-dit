@@ -98,8 +98,10 @@ class XhrModal
         $this->logger->info('$model = ' . print_r($model, true));
         $uuid = $request->get('uuid');
         $this->logger->info('$uuid = ' . print_r($uuid, true));
-        $type = $request->get('type');
-        $this->logger->info('$type = ' . print_r($type, true));
+        $defaultType = $request->get('defaultType');
+        $this->logger->info('$defaultType = ' . print_r($defaultType, true));
+        $defaultOrderFilters = $request->get('defaultOrderFilters');
+        $this->logger->info('$defaultOrderFilters = ' . print_r($defaultOrderFilters, true));
 
         // Function process
         $subject = null;
@@ -114,7 +116,8 @@ class XhrModal
             'PolitizrFrontBundle:PaginatedList:'.$twigTemplate,
             array(
                 'subject' => $subject,
-                'type' => $type,
+                'defaultType' => $defaultType,
+                'defaultOrderFilters' => $defaultOrderFilters,
             )
         );
 
@@ -131,29 +134,52 @@ class XhrModal
         $this->logger->info('*** filters');
         
         // Request arguments
-        $type = $request->get('type');
-        $this->logger->info('$type = ' . print_r($type, true));
+        $defaultType = $request->get('defaultType');
+        $this->logger->info('$defaultType = ' . print_r($defaultType, true));
+        $defaultOrderFilters = $request->get('defaultOrderFilters');
+        $this->logger->info('$defaultOrderFilters = ' . print_r($defaultOrderFilters, true));
 
-        if ('debate' === $type) {
+        if ('debate' === $defaultType) {
             $listOrder = $this->templating->render(
-                'PolitizrFrontBundle:PaginatedList:_formOrderByDebate.html.twig'
+                'PolitizrFrontBundle:PaginatedList:_formOrderByDebate.html.twig',
+                array(
+                    'defaultOrder' => $defaultOrderFilters[0]['value'],
+                )
             );
             $listFilter = $this->templating->render(
-                'PolitizrFrontBundle:PaginatedList:_formFiltersByDebate.html.twig'
+                'PolitizrFrontBundle:PaginatedList:_formFiltersByDebate.html.twig',
+                array(
+                    'defaultFiltersByDate' => $defaultOrderFilters[1]['value'],
+                    'defaultFiltersByUser' => $defaultOrderFilters[2]['value'],
+                )
             );
-        } elseif ('reaction' === $type) {
+        } elseif ('reaction' === $defaultType) {
             $listOrder = $this->templating->render(
-                'PolitizrFrontBundle:PaginatedList:_formOrderByReaction.html.twig'
+                'PolitizrFrontBundle:PaginatedList:_formOrderByReaction.html.twig',
+                array(
+                    'defaultOrder' => $defaultOrderFilters[0]['value'],
+                )
             );
             $listFilter = $this->templating->render(
-                'PolitizrFrontBundle:PaginatedList:_formFiltersByReaction.html.twig'
+                'PolitizrFrontBundle:PaginatedList:_formFiltersByReaction.html.twig',
+                array(
+                    'defaultFiltersByDate' => $defaultOrderFilters[1]['value'],
+                    'defaultFiltersByUser' => $defaultOrderFilters[2]['value'],
+                )
             );
-        } elseif ('user' === $type) {
+        } elseif ('user' === $defaultType) {
             $listOrder = $this->templating->render(
-                'PolitizrFrontBundle:PaginatedList:_formOrderByUser.html.twig'
+                'PolitizrFrontBundle:PaginatedList:_formOrderByUser.html.twig',
+                array(
+                    'defaultOrder' => $defaultOrderFilters[0]['value'],
+                )
             );
             $listFilter = $this->templating->render(
-                'PolitizrFrontBundle:PaginatedList:_formFiltersByUser.html.twig'
+                'PolitizrFrontBundle:PaginatedList:_formFiltersByUser.html.twig',
+                array(
+                    'defaultFiltersByDate' => $defaultOrderFilters[1]['value'],
+                    'defaultFiltersByUser' => $defaultOrderFilters[2]['value'],
+                )
             );
         }
 

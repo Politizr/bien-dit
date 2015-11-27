@@ -28,27 +28,6 @@
             {% include 'PolitizrFrontBundle:Dashboard:_mapUsers.html.twig' with { 'users': users, 'geoTagUuid': tag.uuid } %}
         </div>
     </div>
-    <div class="menuOnMap" style="display: none;">
-        <div class="menuOnMapGroup">
-            <div class="menuOnMapItem" action="modalTagged" model="PTag" uuid="{{ fomTag['guadeloupe'].uuid }}"><i class="iconGoTo"></i>Guadeloupe</div>
-            <div class="menuOnMapItem" action="modalTagged" model="PTag" uuid="{{ fomTag['guyane'].uuid }}"><i class="iconGoTo"></i>Guyane</div>
-            <div class="menuOnMapItem" action="modalTagged" model="PTag" uuid="{{ fomTag['martinique'].uuid }}"><i class="iconGoTo"></i>Martinique</div>
-            <div class="menuOnMapItem" action="modalTagged" model="PTag" uuid="{{ fomTag['laReunion'].uuid }}"><i class="iconGoTo"></i>La Réunion</div>
-            <div class="menuOnMapItem" action="modalTagged" model="PTag" uuid="{{ fomTag['mayotte'].uuid }}"><i class="iconGoTo"></i>Mayotte</div>
-        </div>
-        <div class="menuOnMapGroup">
-            <div class="menuOnMapItem" action="modalTagged" model="PTag" uuid="{{ fomTag['polynesieFrancaise'].uuid }}"><i class="iconGoTo"></i>Polynésie française</div>
-            <div class="menuOnMapItem" action="modalTagged" model="PTag" uuid="{{ fomTag['saintBarthelemy'].uuid }}"><i class="iconGoTo"></i>Saint-Barthélemy</div>
-            <div class="menuOnMapItem" action="modalTagged" model="PTag" uuid="{{ fomTag['saintMartin'].uuid }}"><i class="iconGoTo"></i>Saint-Martin</div>
-            <div class="menuOnMapItem" action="modalTagged" model="PTag" uuid="{{ fomTag['saintPierreEtMiquelon'].uuid }}"><i class="iconGoTo"></i>Saint-Pierre-et-Miquelon</div>
-            <div class="menuOnMapItem" action="modalTagged" model="PTag" uuid="{{ fomTag['wallisEtFutuma'].uuid }}"><i class="iconGoTo"></i>Wallis-et-Futuna</div>
-        </div>
-        <div class="menuOnMapGroup">
-            <div class="menuOnMapItem" action="modalTagged" model="PTag" uuid="{{ fomTag['nouvelleCaledonie'].uuid }}"><i class="iconGoTo"></i>Nouvelle-Calédonie</div>
-        </div>
-        <i class="iconArrowDown"></i>
-    </div>
-    <div class="linkOnMap" action="toggleDomTom">France d'Outre-Mer</div>
 
     <!-- FRANCE / REGIONS / DEPARTEMENTS-->
     {% include 'PolitizrFrontBundle:Dashboard\\mapZones:_mapRouting.html.twig' %}

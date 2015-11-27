@@ -4,20 +4,21 @@
         <div class="listCriteria listCriteriaTabs">
             <form id="listType">
                 <input type="radio" class="type" name="type" id="debateType" value="debate" url="{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
-            'xhrRoute': 'ROUTE_MODAL_FOLLOWED_DEBATE_LIST',
-            'xhrService': 'modal',
-            'xhrMethod': 'followedDebateList',
-            'xhrType': 'RETURN_HTML',
-        } only %}" checked {% if type == 'debate'%}checked{% endif %}/>
+                        'xhrRoute': 'ROUTE_MODAL_FOLLOWED_DEBATE_LIST',
+                        'xhrService': 'modal',
+                        'xhrMethod': 'followedDebateList',
+                        'xhrType': 'RETURN_HTML',
+                    } only %}" {% if defaultType == 'debate'%}checked{% endif %}/>
                 <label for="debateType">débats</label>
                 <input type="radio" class="type" name="type" id="userType" value="user" url="{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
-            'xhrRoute': 'ROUTE_MODAL_FOLLOWED_USER_LIST',
-            'xhrService': 'modal',
-            'xhrMethod': 'followedUserList',
-            'xhrType': 'RETURN_HTML',
-        } only %}" {% if type == 'user'%}checked{% endif %}/>
+                        'xhrRoute': 'ROUTE_MODAL_FOLLOWED_USER_LIST',
+                        'xhrService': 'modal',
+                        'xhrMethod': 'followedUserList',
+                        'xhrType': 'RETURN_HTML',
+                    } only %}" {% if defaultType == 'user'%}checked{% endif %}/>
                 <label for="userType">profils</label>
             </form>
+            {% include 'PolitizrFrontBundle:PaginatedList:_defaultOrderFilters.html.twig' with { 'defaultOrderFilters': defaultOrderFilters } only %}
         </div>
         <div class="listCriteria criteriaSidebar">
             <form id="listOrder"></form>

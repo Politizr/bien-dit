@@ -116,7 +116,7 @@ class XhrDashboard
                         ->filterByPTagId($tagIds)
                     ->endUse()
                     ->filterByKeywords($filters)
-                    ->orderWithKeyword('bestNote')
+                    ->orderWithKeyword('mostFollowed')
                     ->limit(ListingConstants::DASHBOARD_MAP_LIMIT)
                     ->find();
 

@@ -8,9 +8,10 @@
                         'xhrService': 'modal',
                         'xhrMethod': 'followerList',
                         'xhrType': 'RETURN_HTML',
-                    } only %}" {% if type == 'user'%}checked{% endif %}/>
+                    } only %}" {% if defaultType == 'user'%}checked{% endif %}/>
                 <label for="userType">profils</label>
             </form>
+            {% include 'PolitizrFrontBundle:PaginatedList:_defaultOrderFilters.html.twig' with { 'defaultOrderFilters': defaultOrderFilters } only %}
         </div>
         <div class="listCriteria criteriaSidebar">
             <form id="listOrder"></form>
