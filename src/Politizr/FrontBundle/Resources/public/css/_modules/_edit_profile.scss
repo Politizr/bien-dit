@@ -67,11 +67,39 @@
 #postText.profileFieldset .paragraph {padding: 20px 40px; width: 620px;}
 #postText.profileFieldset {padding: 20px 0;}
 
-#editMyPrivateTags .tagLabel {color: lighten( $darkGrey, 10% ); border-color: $semilightGrey;}
+//#editMyPrivateTags .tagLabel {color: lighten( $darkGrey, 10% ); border-color: $semilightGrey;}
 
-#editMyPrivateTags.tagBox .fieldsetHeader { border-top: 1px solid $semilightGrey;}
+//#editMyPrivateTags.tagBox .fieldsetHeader { border-top: 1px solid $semilightGrey;}
 
-#editMyPrivateTags .tagLabel a:hover {color: $highlight;}
+//#editMyPrivateTags .tagLabel a:hover {color: $highlight;}
+
+#editMyPublicTags .tagLabel {
+	float: left;
+	margin: 0 10px 10px 0;
+	padding: 10px 50px 10px 10px;
+	border: solid 1px $AltHighlight;
+	color: $highlight;
+	position: relative;
+}
+#editMyPublicTags .tagLabel a:first-child {
+	font-size: 12px;
+	position: absolute;
+	right: 26px;
+	cursor: pointer;
+}
+#editMyPublicTags .tagLabel a:last-child {
+	font-size: 9px;
+	position: absolute;
+	right: 10px;
+	cursor: pointer;
+}
+#editMyPublicTags .tagLabel a:hover {color: $darkGrey;}
+
+#editMyPublicTags .tagLabel.tagInvisible  {
+	border: solid 1px $formGrey;
+	color: $semiGrey;	
+}
+
 .editableTagList .noTag {
 	text-transform: none;
 	color: $semiDarkGrey;
