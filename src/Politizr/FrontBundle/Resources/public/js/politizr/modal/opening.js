@@ -66,7 +66,7 @@ $("body").on("click", "[action='modalTagged']", function() {
     $('#modalBoxContent').removeClass().addClass('modalTagged');
     modalLoading();
 
-    loadPaginatedList('_tagged.html.twig', 'true', $(this).attr('model'), $(this).attr('uuid'));
+    loadPaginatedList('_tagged.html.twig', 'true', $(this).attr('defaultType'), $(this).attr('defaultOrder'), $(this).attr('defaultFilterDate'), $(this).attr('defaultFilterUser'), $(this).attr('model'), $(this).attr('uuid'));
 });
 
 // modal organisation
@@ -75,7 +75,7 @@ $("body").on("click", "[action='modalOrganization']", function() {
     $('#modalBoxContent').removeClass().addClass('modalOrganization');
     modalLoading();
 
-    loadPaginatedList('_organization.html.twig', 'true', $(this).attr('model'), $(this).attr('uuid'));
+    loadPaginatedList('_organization.html.twig', 'true', 'user', 'mostFollowed', null, null, $(this).attr('model'), $(this).attr('uuid'));
 });
 
 // modal subscriptions
@@ -93,7 +93,7 @@ $("body").on("click", "[action='modalFollowers']", function() {
     $('#modalBoxContent').removeClass().addClass('modalFollowers');
     modalLoading();
 
-    loadPaginatedList('_followers.html.twig', 'true', $(this).attr('model'), $(this).attr('uuid'));
+    loadPaginatedList('_followers.html.twig', 'true', 'user', 'last', null, null, $(this).attr('model'), $(this).attr('uuid'));
 });
 
 // modal search
@@ -101,8 +101,9 @@ $("body").on("click", "[action='modalSearch']", function() {
     // console.log('*** modalSearch');
     $('#modalBoxContent').removeClass().addClass('modalSearch');
     modalLoading();
+
     updateCloseModalActions('searchModalClose');
-    Waypoint.destroyAll();
+
     loadSearchForm();
 });
 
@@ -136,6 +137,73 @@ function updateCloseModalActions(action)
 }
 
 /**
+ * Load paginated list
+ *
+ * @param string twigTemplate
+ * @param string withFilters  true | false
+ * @param string defaultType debate|reaction|user default rendering checkbox listing
+ * @param string defaultOrder mostFollowed|bestNote|last|mostReactions|mostComments|mostViews|mostActive default orderby listing keyword
+ * @param array defaultFilterDate allDate|lastDay|lastWeek|lastMonth default filterby date listing keywords
+ * @param array defaultFilterUser allUsers|qualified|citizen default filterby user listing keywords
+ * @param string model ModelQuery to search in
+ * @param string uuid  UUID attribute
+ */
+function loadPaginatedList(twigTemplate, withFilters, defaultType, defaultOrder, defaultFilterDate, defaultFilterUser, model, uuid) {
+    // console.log('*** loadPaginatedList');
+    // console.log(twigTemplate);
+    // console.log(withFilters);
+    // console.log(defaultType);
+    // console.log(defaultOrder);
+    // console.log(defaultFilterDate);
+    // console.log(defaultFilterUser);
+    // console.log(model);
+    // console.log(uuid);
+
+    if (typeof twigTemplate === "undefined") {
+        return false;
+    }
+
+    withFilters = (typeof withFilters === "undefined" || withFilters === null) ? 'true' : withFilters;
+    defaultType = (typeof defaultType === "undefined" || defaultType === null) ? 'debate' : defaultType;
+    defaultOrder = (typeof defaultOrder === "undefined" || defaultOrder === null) ? 'last' : defaultOrder;
+    defaultFilterDate = (typeof defaultFilterDate === "undefined" || defaultFilterDate === null) ? 'allDate' : defaultFilterDate;
+    defaultFilterUser = (typeof defaultFilterUser === "undefined" || defaultFilterUser === null) ? 'allUsers' : defaultFilterUser;
+
+    // transform default order & filters to serialized array
+    var defaultOrderFilters = [];
+    defaultOrderFilters.push({name: 'defaultOrder', value: defaultOrder});
+    defaultOrderFilters.push({name: 'defaultFilterDate', value: defaultFilterDate});
+    defaultOrderFilters.push({name: 'defaultFilterUser', value: defaultFilterUser});
+    // console.log(defaultOrderFilters);
+
+    var xhrPath = getXhrPath(
+        ROUTE_MODAL_PAGINATED_LIST,
+        'modal',
+        'modalPaginatedList',
+        RETURN_HTML
+        );
+
+    $.ajax({
+        type: 'POST',
+        url: xhrPath,
+        data: { 'twigTemplate': twigTemplate, 'model': model, 'uuid': uuid, 'defaultType': defaultType, 'defaultOrderFilters': defaultOrderFilters },
+        dataType: 'json',
+        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
+        statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
+        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
+        success: function(data) {
+            if (data['error']) {
+                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                $('#infoBoxHolder .boxError').show();
+            } else {
+                $('#modalBoxContent').html(data['html']);
+                initListing(withFilters, defaultOrderFilters);
+            }
+        }
+    });
+}
+
+/**
  * Load search form
  *
  * @param string twigTemplate
@@ -166,50 +234,6 @@ function loadSearchForm() {
                 initInputSearchByTags();
             }
             $('#ajaxGlobalLoader').hide();
-        }
-    });
-}
-
-/**
- * Load paginated list
- *
- * @param string twigTemplate
- * @param string withFilters  true | false
- * @param string model ModelQuery to search in
- * @param string uuid  UUID attribute
- */
-function loadPaginatedList(twigTemplate, withFilters, model, uuid) {
-    // console.log('*** loadPaginatedList');
-    // console.log(twigTemplate);
-
-    if (typeof twigTemplate === "undefined") {
-        return false;
-    }
-    withFilters = (typeof withFilters === "undefined") ? 'true' : withFilters;
-
-    var xhrPath = getXhrPath(
-        ROUTE_MODAL_PAGINATED_LIST,
-        'modal',
-        'modalPaginatedList',
-        RETURN_HTML
-        );
-
-    $.ajax({
-        type: 'POST',
-        url: xhrPath,
-        data: { 'twigTemplate': twigTemplate, 'model': model, 'uuid': uuid },
-        dataType: 'json',
-        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
-        statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
-        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
-        success: function(data) {
-            if (data['error']) {
-                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
-                $('#infoBoxHolder .boxError').show();
-            } else {
-                $('#modalBoxContent').html(data['html']);
-                initListing('debate', withFilters);
-            }
         }
     });
 }

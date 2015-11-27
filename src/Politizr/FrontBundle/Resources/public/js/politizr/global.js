@@ -103,8 +103,18 @@ $(document).on("touchstart click", function(){
     if( $('.noteBubble').is(':visible')) {
         $('.noteBubble').hide();    
     }
+    if( $('.menuOnMap').is(':visible')) {
+        $('.menuOnMap').hide();    
+    }
 });
 
+// toggle menu dom tom
+$("body").on("click", "[action='toggleDomTom']", function(e) {
+    e.stopPropagation();
+    $('.menuOnMap').toggle();
+});
+
+// toggle blocked notation
 $("body").on("touchstart click", ".blockedVote", function(e) {
     e.stopPropagation();
     $(this).find('.noteBubble').toggle();

@@ -25,6 +25,15 @@ services:
             - @politizr.functional.tag
             - @logger
 
+    politizr.xhr.dashboard:
+        class: Politizr\FrontBundle\Lib\Xhr\XhrDashboard
+        arguments:
+        arguments:
+            - @security.token_storage
+            - @templating
+            - @politizr.functional.tag
+            - @logger
+
     politizr.xhr.notification:
         class: Politizr\FrontBundle\Lib\Xhr\XhrNotification
         arguments:

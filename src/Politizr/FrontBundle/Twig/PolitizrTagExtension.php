@@ -1,6 +1,12 @@
 <?php
 namespace Politizr\FrontBundle\Twig;
 
+use Politizr\Constant\TagConstants;
+
+use Politizr\Model\PTagQuery;
+
+use Politizr\Exception\InconsistentDataException;
+
 /**
  * Tag's twig extension
  *
@@ -74,6 +80,11 @@ class PolitizrTagExtension extends \Twig_Extension
                 'userTaggedTagsEdit',
                 array('is_safe' => array('html'))
             ),
+            'geoTagBreadcrumb'  => new \Twig_Function_Method(
+                $this,
+                'geoTagBreadcrumb',
+                array('is_safe' => array('html'))
+            ),
         );
     }
 
@@ -85,6 +96,11 @@ class PolitizrTagExtension extends \Twig_Extension
 
     /* ######################################################################################################## */
     /*                                              FONCTIONS                                                   */
+    /* ######################################################################################################## */
+
+
+    /* ######################################################################################################## */
+    /*                                      EDIT & DISPLAY TAGS                                                 */
     /* ######################################################################################################## */
 
 
@@ -309,6 +325,54 @@ class PolitizrTagExtension extends \Twig_Extension
     }
 
 
+    /* ######################################################################################################## */
+    /*                                          DASHBOARD TAGS                                                  */
+    /* ######################################################################################################## */
+
+
+    /**
+     * Construct a breadcrumb from a geo tag uuid
+     *
+     * @param string $geoTagUuid
+     * @return string
+     */
+    public function geoTagBreadcrumb($geoTagUuid = null)
+    {
+        $this->logger->info('*** geoTagBreadcrumb');
+        $this->logger->info('$geoTagUuid = '.print_r($geoTagUuid, true));
+
+        $tag = PTagQuery::create()->filterByPTTagTypeId(TagConstants::TAG_TYPE_GEO)->filterByUuid($geoTagUuid)->findOne();
+        if (!$tag) {
+            throw new InconsistentDataException(sprintf('Tag %s not found or not geo', $geoTagUuid));
+        }
+        $html = $tag->getTitle();
+
+        $htmlItem = array();
+        while ($tag->getId() != TagConstants::TAG_GEO_FRANCE_ID) {
+            $parentId = $tag->getPTParentId();
+            if ($parentId) {
+                $tag = PTagQuery::create()->filterByPTTagTypeId(TagConstants::TAG_TYPE_GEO)->findPk($parentId);
+                if (!$tag) {
+                    throw new InconsistentDataException(sprintf('Tag with parent %s not found or not geo', $parentId));
+                }
+                // breadcrumb's item rendering
+                $item = $this->templating->render(
+                    'PolitizrFrontBundle:Dashboard:_breadcrumbItem.html.twig',
+                    array(
+                        'tag' => $tag,
+                    )
+                );
+
+                $htmlItem[] = $item;
+            }
+        }
+
+        while ($item = array_pop($htmlItem)) {
+            $html .= $item;
+        }
+
+        return $html;
+    }
 
     public function getName()
     {

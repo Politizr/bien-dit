@@ -1,6 +1,6 @@
-<input type="radio" class="order" name="order" value="last" id="last" checked/>
+<input type="radio" class="order" name="order" value="last" id="last" {% if defaultOrder == 'last' %}checked{% endif %}/>
 <label for="last"><i class="iconNotifYes"></i>plus récents</label>
-<input type="radio" class="order" name="order" value="mostFollowed" id="mostFollowed"/>
+<input type="radio" class="order" name="order" value="mostFollowed" id="mostFollowed" {% if defaultOrder == 'mostFollowed' %}checked{% endif %}/>
 <label for="mostFollowed"><i class="iconNotifYes"></i>plus suivis</label>
-<input type="radio" class="order" name="order" value="mostActive" id="mostActive"/>
+<input type="radio" class="order" name="order" value="mostActive" id="mostActive" {% if defaultOrder == 'mostActive' %}checked{% endif %}/>
 <label for="mostActive"><i class="iconNotifYes"></i>plus actifs</label>

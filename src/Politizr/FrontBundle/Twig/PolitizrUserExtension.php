@@ -270,9 +270,10 @@ class PolitizrUserExtension extends \Twig_Extension
      *
      * @param PUser $user
      * @param integer $tagTypeId
+     * @param string $modalDefaultType debate|reaction|user
      * @return string
      */
-    public function followTags(PUser $user, $tagTypeId = null)
+    public function followTags(PUser $user, $tagTypeId = null, $modalDefaultType = 'user')
     {
         $this->logger->info('*** followTags');
         // $this->logger->info('$user = '.print_r($user, true));
@@ -284,7 +285,8 @@ class PolitizrUserExtension extends \Twig_Extension
         $html = $this->templating->render(
             'PolitizrFrontBundle:Tag:_list.html.twig',
             array(
-                'tags' => $tags
+                'tags' => $tags,
+                'modalDefaultType' => $modalDefaultType,
             )
         );
 
@@ -296,9 +298,10 @@ class PolitizrUserExtension extends \Twig_Extension
      *
      * @param PUser $user
      * @param integer $tagTypeId
+     * @param string $modalDefaultType debate|reaction|user
      * @return string
      */
-    public function userTags(PUser $user, $tagTypeId = null)
+    public function userTags(PUser $user, $tagTypeId = null, $modalDefaultType = 'user')
     {
         $this->logger->info('*** userTags');
         // $this->logger->info('$uiser = '.print_r($uiser, true));
@@ -310,7 +313,8 @@ class PolitizrUserExtension extends \Twig_Extension
         $html = $this->templating->render(
             'PolitizrFrontBundle:Tag:_list.html.twig',
             array(
-                'tags' => $tags
+                'tags' => $tags,
+                'modalDefaultType' => $modalDefaultType,
             )
         );
 

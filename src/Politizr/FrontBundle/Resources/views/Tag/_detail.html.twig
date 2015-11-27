@@ -5,4 +5,4 @@
 {% else %}
     {% set twbLabel = "default" %}
 {% endif %}
-<span class="tag {{ twbLabel }}" action="modalTagged" model="PTag" uuid="{{ tag.uuid }}">{{ tag.title }}</span>
+<span class="tag {{ twbLabel }}" action="modalTagged" defaultType="{{ modalDefaultType }}" model="PTag" uuid="{{ tag.uuid }}">{{ tag.title }}</span>

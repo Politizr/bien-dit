@@ -44,4 +44,18 @@ class ListingConstants
 
     const MY_DRAFTS_TYPE = 12;
     const MY_PUBLICATIONS_TYPE = 13;
+
+    // ************************************************************ //
+    //              Dashboard type & context constants              //
+    // ************************************************************ //
+    const DASHBOARD_TYPE_MAP = 'DASHBOARD_MAP';
+
+    const DASHBOARD_DEBATES = 'DASHBOARD_DEBATES';
+    const DASHBOARD_REACTIONS = 'DASHBOARD_REACTIONS';
+    const DASHBOARD_USERS = 'DASHBOARD_USERS';
+
+    // ************************************************************ //
+    //              Dashboard Constants                             //
+    // ************************************************************ //
+    const DASHBOARD_MAP_LIMIT = 3;
 }

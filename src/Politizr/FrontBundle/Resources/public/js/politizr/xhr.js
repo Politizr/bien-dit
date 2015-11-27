@@ -69,6 +69,9 @@ var ROUTE_MODAL_SEARCH_USER_BY_TAGS_LIST = 'search/liste/tags/utilisateur';
 var ROUTE_MODAL_REPUTATION = 'profil/ma-reputation';
 var ROUTE_MODAL_REPUTATION_EVOLUTION = 'profil/ma-reputation/evolution';
 
+// DASHBOARD
+var ROUTE_DASHBOARD_MAP = 'profil/carte';
+
 // NOTATION
 var ROUTE_NOTE = 'profil/noter';
 
