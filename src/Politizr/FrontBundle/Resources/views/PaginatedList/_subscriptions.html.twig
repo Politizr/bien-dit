@@ -8,14 +8,14 @@
             'xhrService': 'modal',
             'xhrMethod': 'followedDebateList',
             'xhrType': 'RETURN_HTML',
-        } only %}" checked/>
+        } only %}" checked {% if type == 'debate'%}checked{% endif %}/>
                 <label for="debateType">débats</label>
                 <input type="radio" class="type" name="type" id="userType" value="user" url="{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
             'xhrRoute': 'ROUTE_MODAL_FOLLOWED_USER_LIST',
             'xhrService': 'modal',
             'xhrMethod': 'followedUserList',
             'xhrType': 'RETURN_HTML',
-        } only %}" />
+        } only %}" {% if type == 'user'%}checked{% endif %}/>
                 <label for="userType">profils</label>
             </form>
         </div>
@@ -24,12 +24,7 @@
             <form id="listFilter"></form>
         </div> 
     </div>
-    <div id="paginatedList" class="listContainer" url="{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
-        'xhrRoute': 'ROUTE_MODAL_FOLLOWED_DEBATE_LIST',
-        'xhrService': 'modal',
-        'xhrMethod': 'followedDebateList',
-        'xhrType': 'RETURN_HTML',
-    } only %}" withFilters="true">
+    <div id="paginatedList" class="listContainer" withFilters="true">
         <div id="listContent" class="modalList withSidebar"></div>
     </div>
 {% endspaceless %}

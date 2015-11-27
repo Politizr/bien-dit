@@ -1,18 +1,23 @@
 {% spaceless %}
     <div class="modalSidebar">
         <h1>Abonnés</h1>
+        <div class="listCriteria listCriteriaTabs">
+            <form id="listType">
+                <input type="radio" class="type" name="type" id="userType" value="user" url="{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
+                        'xhrRoute': 'ROUTE_MODAL_FOLLOWERS_LIST',
+                        'xhrService': 'modal',
+                        'xhrMethod': 'followerList',
+                        'xhrType': 'RETURN_HTML',
+                    } only %}" {% if type == 'user'%}checked{% endif %}/>
+                <label for="userType">profils</label>
+            </form>
+        </div>
         <div class="listCriteria criteriaSidebar">
             <form id="listOrder"></form>
             <form id="listFilter"></form>
         </div>
     </div>
-    <div id="paginatedList" class="listContainer" url="{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
-        'xhrRoute': 'ROUTE_MODAL_FOLLOWERS_LIST',
-        'xhrService': 'modal',
-        'xhrMethod': 'followerList',
-        'xhrType': 'RETURN_HTML',
-    } only %}"
-    withFilters="true" data-uuid="{{ subject.uuid }}">
+    <div id="paginatedList" class="listContainer" withFilters="true" data-uuid="{{ subject.uuid }}">
         <div id="listContent" class="modalList withSidebar"></div>
     </div>
 {% endspaceless %}

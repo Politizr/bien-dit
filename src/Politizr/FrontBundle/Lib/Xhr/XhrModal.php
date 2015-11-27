@@ -98,6 +98,8 @@ class XhrModal
         $this->logger->info('$model = ' . print_r($model, true));
         $uuid = $request->get('uuid');
         $this->logger->info('$uuid = ' . print_r($uuid, true));
+        $type = $request->get('type');
+        $this->logger->info('$type = ' . print_r($type, true));
 
         // Function process
         $subject = null;
@@ -111,7 +113,8 @@ class XhrModal
         $html = $this->templating->render(
             'PolitizrFrontBundle:PaginatedList:'.$twigTemplate,
             array(
-                'subject' => $subject
+                'subject' => $subject,
+                'type' => $type,
             )
         );
 

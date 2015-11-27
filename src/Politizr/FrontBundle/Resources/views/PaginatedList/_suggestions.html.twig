@@ -33,13 +33,7 @@
             <form id="listFilter"></form>
         </div> 
     </div>
-    <div id="paginatedList" class="listContainer" url="{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
-            'xhrRoute': 'ROUTE_MODAL_SUGGESTION_DEBATE_LIST',
-            'xhrService': 'modal',
-            'xhrMethod': 'suggestionDebateList',
-            'xhrType': 'RETURN_HTML',
-        } only %}"
-        withFilters="false">
+    <div id="paginatedList" class="listContainer" withFilters="false">
         <div id="listContent" class="modalList withSidebar"></div>
     </div>
 {% endspaceless %}

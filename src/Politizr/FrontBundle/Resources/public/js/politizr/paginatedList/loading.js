@@ -1,8 +1,5 @@
 // Gestion du type débat / user
 $("body").on("change", ".type", function(e) {
-    // maj de l'url cible de la liste
-    $('#paginatedList').attr('url', $(this).attr('url'));
-    
     // réinitialisation des filtres & de la liste
     initListing($(this).val(), $('#paginatedList').attr('withFilters'));
 });
@@ -21,22 +18,22 @@ $("body").on("change", ".filter", function(e) {
 
 // Page suivante
 $("body").on("click", "[action='paginateNext']", function(e, waypoint) {
-    // console.log('paginate next');
+    console.log('paginate next');
     if (waypoint) {
         waypoint.destroy();
-        // console.log('destroy waypoint instance');
+        console.log('destroy waypoint instance');
     }
     listing(false, $(this).attr('offset'));
 });
 
 //
 $("body").on("postFollowDebateEvent", function(event, way) {
-    // console.log('*** postFollowDebateEvent');
+    console.log('*** postFollowDebateEvent');
     modalType = $('#modalBoxContent').attr('class');
 
     // @todo JS use constant
     if (modalType == 'modalSubscriptions') {
-        // console.log('modal subscriptions');
+        console.log('modal subscriptions');
         // dynamicaly offset updating
         if ($('#moreResults').attr('offset')) {
             var offset = parseInt($('#moreResults').attr('offset'));
@@ -45,7 +42,7 @@ $("body").on("postFollowDebateEvent", function(event, way) {
             } else {
                 offset = offset + 1;
             }
-            // console.log(offset);
+            console.log(offset);
             $('#moreResults').attr('offset', offset);
         }
     }
@@ -55,13 +52,13 @@ $("body").on("postFollowDebateEvent", function(event, way) {
  * Init a waypoint for paginate next
  */
 function initPaginateNextWaypoint() {
-    // console.log('initPaginateNextWaypoint');
-    // console.log('create waypoint instance');
+    console.log('initPaginateNextWaypoint');
+    console.log('create waypoint instance');
 
     var waypoints = $('#moreResults').waypoint({
         handler: function(direction) {
-            // console.log('Hit moreResults');
-            // console.log(direction);
+            console.log('Hit moreResults');
+            console.log(direction);
     
             if (direction == 'down') {
                 $("[action='paginateNext']").trigger( "click", this );
@@ -75,15 +72,12 @@ function initPaginateNextWaypoint() {
 /**
  * Init filters and first listing loading
  *
- * @param string type   debate | user
  * @param string withFilters  true | false
  */
-function initListing(type, withFilters) {
-    // console.log('*** initListing');
-    // console.log(type);
-    // console.log(withFilters);
+function initListing(withFilters) {
+    console.log('*** initListing');
+    console.log(withFilters);
 
-    type = (typeof type === "undefined") ? 'debate' : type;
     withFilters = (typeof withFilters === "undefined") ? 'true' : withFilters;
 
     $('#listContent').html('');
@@ -92,6 +86,9 @@ function initListing(type, withFilters) {
         // initialisation de la liste
         listing();
     } else {
+        var type = $('#listType input:checked').val();
+        console.log(type);
+
         var xhrPath = getXhrPath(
             ROUTE_MODAL_FILTERS,
             'modal',
@@ -126,24 +123,24 @@ function initListing(type, withFilters) {
 /**
  * Paginated loading of listing.
  *
- * @param string init   key "debate" | "user"
+ * @param boolean init
  * @param string offset
  */
 function listing(init, offset) {
-    // console.log('*** listing');
-    // console.log(init);
-    // console.log(offset);
+    console.log('*** listing');
+    console.log(init);
+    console.log(offset);
 
     init = (typeof init === "undefined") ? true : init;
     offset = (typeof offset === "undefined") ? 0 : offset;
     
     // Récupération de l'ordonnancement en cours
     var order = $('#listOrder').serializeArray();
-    // console.dir(order);
+    console.log(order);
 
     // Récupération du form des filtres
     var filters = $('#listFilter').serializeArray();
-    // console.dir(filters);
+    console.log(filters);
 
     // Concaténation des attributs
     var datas = $.merge(order, filters);
@@ -154,11 +151,10 @@ function listing(init, offset) {
     $.each(additionalDatas, function(index, element) {
         datas.push({name: index, value: element});
     });
-
-    // console.dir(datas);
+    console.log(datas);
 
     // Récupération de l'URL de la liste
-    var url = $('#paginatedList').attr('url');
+    var url = $('#listType input:checked').attr('url');
 
     $.ajax({
         type: 'POST',
