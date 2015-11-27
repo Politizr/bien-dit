@@ -51,15 +51,16 @@ class TagService
     /**
      * Depending of tag id, compute relative ids ie. ids of tags where parent_id is set to given id
      *
-     * @param $id
+     * region = region + departements
+     *
+     * @param int $id Tag ID
      * @return array
      */
-    public function computeGeotagRelativeIds($id)
+    public function computePublicationGeotagRelativeIds($id)
     {
         $this->logger->info('*** computeGeotagRelativeIds');
 
         $ids = array();
-
         $tag = PTagQuery::create()->findPk($id);
 
         // get departements under region
@@ -77,7 +78,58 @@ class TagService
         return $ids;
     }
 
-    
+    /**
+     * Depending of tag id, compute relative ids ie. ids of tags where parent_id is set to given id
+     *
+     * france = france + region + departements
+     * region = region + departements
+     *
+     * @param int $id Tag ID
+     * @return array
+     */
+    public function computeUserGeotagRelativeIds($id)
+    {
+        $this->logger->info('*** computeGeotagRelativeIds');
+
+        $ids = array();
+        $tag = PTagQuery::create()->findPk($id);
+
+        if ($tag->getPTTagTypeId() == TagConstants::TAG_TYPE_GEO
+            && $id == TagConstants::TAG_GEO_FRANCE_ID) {
+            // get regions under france
+            $regionIds = PTagQuery::create()
+                ->select('Id')
+                ->filterByPTParentId($id)
+                ->find()
+                ->toArray();
+
+            $ids = array_merge($ids, $regionIds);
+
+            foreach ($regionIds as $regionId) {
+                $departmentIds = PTagQuery::create()
+                ->select('Id')
+                ->filterByPTParentId($regionId)
+                ->find()
+                ->toArray();
+                
+                $ids = array_merge($ids, $departmentIds);
+            }
+        } elseif ($tag->getPTTagTypeId() == TagConstants::TAG_TYPE_GEO
+            && in_array($id, TagConstants::getGeoRegionIds())) {
+            // get departements under region
+            $ids = PTagQuery::create()
+                ->select('Id')
+                ->filterByPTParentId($id)
+                ->find()
+                ->toArray();
+        }
+
+        $ids[] = $id;
+
+        return $ids;
+    }
+
+  
     /**
      * Array of key indexed regions uuids
      *

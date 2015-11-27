@@ -788,7 +788,7 @@ class XhrModal
         $tag = PTagQuery::create()->filterByUuid($uuid)->findOne();
 
         // Compute relative geo tag ids
-        $tagIds = $this->tagService->computeGeotagRelativeIds($tag->getId());
+        $tagIds = $this->tagService->computePublicationGeotagRelativeIds($tag->getId());
 
         // Function process
         $debates = PDDebateQuery::create()
@@ -851,7 +851,7 @@ class XhrModal
         $tag = PTagQuery::create()->filterByUuid($uuid)->findOne();
 
         // Compute relative geo tag ids
-        $tagIds = $this->tagService->computeGeotagRelativeIds($tag->getId());
+        $tagIds = $this->tagService->computePublicationGeotagRelativeIds($tag->getId());
 
         // Function process
         $reactions = PDReactionQuery::create()
@@ -914,7 +914,7 @@ class XhrModal
         $tag = PTagQuery::create()->filterByUuid($uuid)->findOne();
 
         // Compute relative geo tag ids
-        $tagIds = $this->tagService->computeGeotagRelativeIds($tag->getId());
+        $tagIds = $this->tagService->computeUserGeotagRelativeIds($tag->getId());
 
         // Function process
         $users = PUserQuery::create()

@@ -94,14 +94,18 @@ class XhrDashboard
         }
 
         // Compute relative geo tag ids
-        $tagIds = $this->tagService->computeGeotagRelativeIds($tag->getId());
+        $debateTagIds = $this->tagService->computePublicationGeotagRelativeIds($tag->getId());
+        $userTagIds = $this->tagService->computeUserGeotagRelativeIds($tag->getId());
+
+        dump($debateTagIds);
+        dump($userTagIds);
 
         // 3 top debates
         $debates = PDDebateQuery::create()
                     ->distinct()
                     ->online()
                     ->usePDDTaggedTQuery()
-                        ->filterByPTagId($tagIds)
+                        ->filterByPTagId($debateTagIds)
                     ->endUse()
                     ->filterByKeywords($filters)
                     ->orderWithKeyword('bestNote')
@@ -113,7 +117,7 @@ class XhrDashboard
                     ->distinct()
                     ->online()
                     ->usePuTaggedTPUserQuery()
-                        ->filterByPTagId($tagIds)
+                        ->filterByPTagId($userTagIds)
                     ->endUse()
                     ->filterByKeywords($filters)
                     ->orderWithKeyword('mostFollowed')
