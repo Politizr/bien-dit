@@ -96,18 +96,7 @@
 	padding-top: 80px;
 }
 
-
-.listTab { display: inline-block; width: 100%; /* background: green;  */}
-//#modalScrollNav { background: aqua;}
-//#modalScrollNav #moreResults {	 background: red; /* position: absolute; bottom: 0; */} //test
-//#listContent {position: relative;}
-
-//#modalBoxContent {display: inline-block;}
-//#modalBoxContent #listContent {display: inline-block; background: grey; position: relative;}
-
-//.modalList.withSidebar .modalItem {float: right;}
-
-//#ajaxGlobalLoader {z-index: -1 !important;}//test
+#modalBoxContent #listContent {display: inline-block; position: relative;}
 
 .modalItem {
 	width: 700px;

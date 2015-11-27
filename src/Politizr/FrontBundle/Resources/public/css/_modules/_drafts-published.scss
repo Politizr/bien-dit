@@ -1,5 +1,23 @@
 @import "../_global/colors";
 
+/// before debug waypoint 
+/*
+#publicationsList {
+	width: 100%;
+    font-family: 'nerissemibold';
+}
+
+.publicationsListItem {
+	width: calc(100% - 80px);
+	padding: 40px;
+	float: left;
+	clear: both;
+	margin: 30px 0;
+	background-color: $lightGrey;
+}
+*/
+
+
 /// drafts 
 #publicationsList {
 	padding-bottom: 20px; 
@@ -21,6 +39,7 @@
 	float: left;
 	clear: both;
 }
+
 #noPublications {
 	width: 100%;
 	float: left;
