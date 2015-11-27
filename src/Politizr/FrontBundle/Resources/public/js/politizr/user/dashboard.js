@@ -33,7 +33,7 @@ function topListing(geoTagUuid) {
     // console.log(datas);
     // @todo hack to fix / why the form is not well serialized at the 1st call
     if ($.isEmptyObject(datas)) {
-        datas.push({name: 'filterDate[]', value: 'lastWeek'});
+        datas.push({name: 'filterDate[]', value: 'allDate'});
     }
 
     // Push additional arguments
