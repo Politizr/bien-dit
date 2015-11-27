@@ -1,5 +1,6 @@
 @import "../_global/colors";
 
+
 .listContainer {
 	width: 700px;
 	float: right;
@@ -75,7 +76,6 @@
 	color: $highlight;
 }
 
-
 // list
 
 .modalList {	
@@ -85,6 +85,7 @@
 	margin-right: auto;
 	width: 960px;
 	clear: both;
+	display: inline-block;
 }
 
 .modalList.withSidebar {
@@ -94,7 +95,8 @@
 	padding-top: 80px;
 }
 
-.modalList.withSidebar .modalItem {float: right;}
+#modalBoxContent #listContent {display: inline-block; position: relative;}
+
 
 .modalItem {
 	width: 700px;
@@ -102,6 +104,7 @@
 	text-align: left;
 	margin-bottom: 80px;
 	position: relative;
+	//float: right; // test
 }
 
 a.modalItemShow {

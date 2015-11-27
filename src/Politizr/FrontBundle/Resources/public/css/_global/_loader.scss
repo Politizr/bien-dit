@@ -169,19 +169,15 @@
 }
 .modalList .loadMore {	margin-bottom: 60px; }
 
-#scrollNav {
-/*
+#scrollNav, #modalScrollNav {
 	float: left;
 	width: 100%;
 	clear: both;
-	position: relative;
 	margin-bottom: 60px;
-*/
- background: aqua; width: 100%; float: left; height: 100px; display: inline-block !important; clear: both; 
 }
-#timelineScrollNav {text-align: center;/*  background: aqua; width: 100%; float: left; height: 100px; */}
+#timelineScrollNav {text-align: center;}
 
-a#moreResults {
+#moreResults {
 	font-family: 'nerisblack';
 	font-size: 10px;
 	color: #fff;
@@ -189,10 +185,10 @@ a#moreResults {
 	text-transform: uppercase;
 	padding: 10px 20px;
 	display: inline-block;
-	margin: 10px 0 20px 0;
+	margin: 20px 0;
 	cursor: pointer;
 }
-a#moreResults:hover {background-color: $highlight;}
+#moreResults:hover {background-color: $highlight;}
 
 p.noResult { font-family: 'nerissemibold';	}
 // end load more
