@@ -44,7 +44,7 @@ body.css760 .dbMapBox .svg {
 
 body.css760 .svg svg {
 	position: absolute;
-	top:-120px;
+	top:-130px;
 }
 
 body.css760 .dbMapFilters .listCriteria {margin-top: 0;}
@@ -53,7 +53,13 @@ body.css760 .dbMapFilters .listCriteria.listCriteriaTabs label {
 	margin-right: 2%;
 }
 
-body.css760 .linkOnMap { top : 10px; left: 10px;}
+body.css760 .linkOnMap { top : 10px; left: 10px; bottom: auto;}
+body.css760 .menuOnMap {
+	top:35px;
+	bottom: auto;
+	left: 10px;
+}
+body.css760 i.iconArrowDown {display: none;}
 
 body.css760 .dbMapBox .profileName { font-size: 16px;}
 
