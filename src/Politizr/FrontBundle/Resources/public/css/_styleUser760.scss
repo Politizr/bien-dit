@@ -6,6 +6,7 @@
 @import "_restive/modal760";
 @import "_restive/actions760";
 @import "_restive/drafts-published760";
+@import "_restive/dashboard760";
 
 //////presets
 body.css760 { overflow-x: hidden;}
@@ -159,11 +160,17 @@ body.css760 #headerCenter #linkSuggestions {
 }
 
 body.css760 #headerCenter #linkRanking, 
-body.css760 #headerCenter #linkNotifications, 
 body.css760 #headerCenter #linkSuggestions {
 	margin: 0;
 	padding: 5px 0 5px 15px;
 }
+
+body.css760 #headerCenter #linkNotifications {
+	margin: 0;
+	padding: 0 0 5px 0;	
+}
+body.css760 #headerCenter #linkNotifications:hover { color: #fff;}
+body.css760 #headerCenter #linkNotifications:hover #notifCounter { background-color: #fff; color: $darkGrey;}
 
 body.css760 #headerCenter #linkRanking i, 
 body.css760 #headerCenter #linkNotifications i, 

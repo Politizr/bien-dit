@@ -1,0 +1,30 @@
+@import "../_global/_colors";
+
+//////dashboard
+
+body.css1000 .dbMapBox .svg {
+	width: 100%;
+	overflow: hidden;
+}
+
+body.css1000 .dbMapHeaderRight {
+	float: left;
+	clear: both;
+	width: 100%;
+	text-align: left;
+	margin-top: 10px;
+}
+
+body.css1000 .dbMapHeaderRight span:first-child {margin-left: 0;}
+
+body.css1000 .dbMapFilters {
+	width: 35%;
+	padding: 10px;
+}
+
+body.css1000 .dbMapFilters .listCriteria {margin-top: 0;}
+
+body.css1000 .dbMapFilters .listCriteria.listCriteriaTabs label {
+	width: 33%;
+	margin-right: 0;
+}
