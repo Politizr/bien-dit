@@ -25,8 +25,8 @@ img {border:none;}
 a.followedMember::after {	content: "*";}
 span.followedDebate::after {	content: "*";}
 
-.reactionsCounter, .commentsCounter {
-	margin-right: 40px;
+.viewersCounter, .reactionsCounter, .commentsCounter {
+	margin-right: 30px;
 	display: inline-block;
 	position: relative;
     font-family: 'nerisblack';
@@ -34,8 +34,16 @@ span.followedDebate::after {	content: "*";}
 	text-transform: uppercase;
 }
 
-.reactionsCounter {	padding-left: 18px;}
+.viewersCounter {	padding-left: 21px;}
+.reactionsCounter {	padding-left: 19px;}
 .commentsCounter {	padding-left: 20px;}
+
+.reactionsCounter i, .viewersCounter i {
+	position: absolute;
+	left: -1px;
+	font-size: 14px;
+	top: -1px;
+}
 
 .commentsCounter i {
 	position: absolute;
@@ -43,12 +51,6 @@ span.followedDebate::after {	content: "*";}
 	font-size: 12px;
 }
 
-.reactionsCounter i {
-	position: absolute;
-	left: -1px;
-	font-size: 14px;
-	top: -1px;
-}
 
 .readingTime, .notePlus, .noteMinus { position: relative;}
 .readingTime i, .notePlus i, .noteMinus i {	position: absolute;}

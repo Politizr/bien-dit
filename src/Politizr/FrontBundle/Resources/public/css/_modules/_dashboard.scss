@@ -17,16 +17,18 @@
 }
 
 .dbMapHeader {
-	margin: 10px 40px 50px 40px;
+	margin: 10px 40px 20px 40px;
 	width: calc(100% - 80px);
 	font-size: 10px;
 	text-transform: uppercase;
+	display: inline-block;
 }
 
 .dbMapHeaderLeft {
 	float: left;
 	width: 75%;
 	line-height: 100%;
+	line-height: 140%;
 }
 .dbMapHeaderLeft i {	
 	float: left;
