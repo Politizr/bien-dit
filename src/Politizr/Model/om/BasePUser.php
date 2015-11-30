@@ -69,8 +69,6 @@ use Politizr\Model\PUCurrentQO;
 use Politizr\Model\PUCurrentQOQuery;
 use Politizr\Model\PUFollowDD;
 use Politizr\Model\PUFollowDDQuery;
-use Politizr\Model\PUFollowT;
-use Politizr\Model\PUFollowTQuery;
 use Politizr\Model\PUFollowU;
 use Politizr\Model\PUFollowUPeer;
 use Politizr\Model\PUFollowUQuery;
@@ -478,12 +476,6 @@ abstract class BasePUser extends BaseObject implements Persistent
     protected $collPuTaggedTPUsersPartial;
 
     /**
-     * @var        PropelObjectCollection|PUFollowT[] Collection to store aggregation of PUFollowT objects.
-     */
-    protected $collPuFollowTPUsers;
-    protected $collPuFollowTPUsersPartial;
-
-    /**
      * @var        PropelObjectCollection|PURoleQ[] Collection to store aggregation of PURoleQ objects.
      */
     protected $collPURoleQs;
@@ -642,11 +634,6 @@ abstract class BasePUser extends BaseObject implements Persistent
     protected $collPuTaggedTPTags;
 
     /**
-     * @var        PropelObjectCollection|PTag[] Collection to store aggregation of PTag objects.
-     */
-    protected $collPuFollowTPTags;
-
-    /**
      * @var        PropelObjectCollection|PQualification[] Collection to store aggregation of PQualification objects.
      */
     protected $collPQualifications;
@@ -747,12 +734,6 @@ abstract class BasePUser extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
-    protected $puFollowTPTagsScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
-     */
     protected $pQualificationsScheduledForDeletion = null;
 
     /**
@@ -826,12 +807,6 @@ abstract class BasePUser extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $puTaggedTPUsersScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
-     */
-    protected $puFollowTPUsersScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -3242,8 +3217,6 @@ abstract class BasePUser extends BaseObject implements Persistent
 
             $this->collPuTaggedTPUsers = null;
 
-            $this->collPuFollowTPUsers = null;
-
             $this->collPURoleQs = null;
 
             $this->collPUMandates = null;
@@ -3294,7 +3267,6 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->collPRBadges = null;
             $this->collPRActions = null;
             $this->collPuTaggedTPTags = null;
-            $this->collPuFollowTPTags = null;
             $this->collPQualifications = null;
             $this->collPUAffinityQOPQOrganizations = null;
             $this->collPUCurrentQOPQOrganizations = null;
@@ -3588,32 +3560,6 @@ abstract class BasePUser extends BaseObject implements Persistent
                 }
             }
 
-            if ($this->puFollowTPTagsScheduledForDeletion !== null) {
-                if (!$this->puFollowTPTagsScheduledForDeletion->isEmpty()) {
-                    $pks = array();
-                    $pk = $this->getPrimaryKey();
-                    foreach ($this->puFollowTPTagsScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
-                        $pks[] = array($pk, $remotePk);
-                    }
-                    PUFollowTQuery::create()
-                        ->filterByPrimaryKeys($pks)
-                        ->delete($con);
-                    $this->puFollowTPTagsScheduledForDeletion = null;
-                }
-
-                foreach ($this->getPuFollowTPTags() as $puFollowTPTag) {
-                    if ($puFollowTPTag->isModified()) {
-                        $puFollowTPTag->save($con);
-                    }
-                }
-            } elseif ($this->collPuFollowTPTags) {
-                foreach ($this->collPuFollowTPTags as $puFollowTPTag) {
-                    if ($puFollowTPTag->isModified()) {
-                        $puFollowTPTag->save($con);
-                    }
-                }
-            }
-
             if ($this->pQualificationsScheduledForDeletion !== null) {
                 if (!$this->pQualificationsScheduledForDeletion->isEmpty()) {
                     $pks = array();
@@ -3894,23 +3840,6 @@ abstract class BasePUser extends BaseObject implements Persistent
 
             if ($this->collPuTaggedTPUsers !== null) {
                 foreach ($this->collPuTaggedTPUsers as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
-            if ($this->puFollowTPUsersScheduledForDeletion !== null) {
-                if (!$this->puFollowTPUsersScheduledForDeletion->isEmpty()) {
-                    PUFollowTQuery::create()
-                        ->filterByPrimaryKeys($this->puFollowTPUsersScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->puFollowTPUsersScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collPuFollowTPUsers !== null) {
-                foreach ($this->collPuFollowTPUsers as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -4823,14 +4752,6 @@ abstract class BasePUser extends BaseObject implements Persistent
                     }
                 }
 
-                if ($this->collPuFollowTPUsers !== null) {
-                    foreach ($this->collPuFollowTPUsers as $referrerFK) {
-                        if (!$referrerFK->validate($columns)) {
-                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-                        }
-                    }
-                }
-
                 if ($this->collPURoleQs !== null) {
                     foreach ($this->collPURoleQs as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
@@ -5310,9 +5231,6 @@ abstract class BasePUser extends BaseObject implements Persistent
             }
             if (null !== $this->collPuTaggedTPUsers) {
                 $result['PuTaggedTPUsers'] = $this->collPuTaggedTPUsers->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-            if (null !== $this->collPuFollowTPUsers) {
-                $result['PuFollowTPUsers'] = $this->collPuFollowTPUsers->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collPURoleQs) {
                 $result['PURoleQs'] = $this->collPURoleQs->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -5872,12 +5790,6 @@ abstract class BasePUser extends BaseObject implements Persistent
                 }
             }
 
-            foreach ($this->getPuFollowTPUsers() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addPuFollowTPUser($relObj->copy($deepCopy));
-                }
-            }
-
             foreach ($this->getPURoleQs() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addPURoleQ($relObj->copy($deepCopy));
@@ -6146,9 +6058,6 @@ abstract class BasePUser extends BaseObject implements Persistent
         }
         if ('PuTaggedTPUser' == $relationName) {
             $this->initPuTaggedTPUsers();
-        }
-        if ('PuFollowTPUser' == $relationName) {
-            $this->initPuFollowTPUsers();
         }
         if ('PURoleQ' == $relationName) {
             $this->initPURoleQs();
@@ -7819,256 +7728,6 @@ abstract class BasePUser extends BaseObject implements Persistent
         $query->joinWith('PuTaggedTPTag', $join_behavior);
 
         return $this->getPuTaggedTPUsers($query, $con);
-    }
-
-    /**
-     * Clears out the collPuFollowTPUsers collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return PUser The current object (for fluent API support)
-     * @see        addPuFollowTPUsers()
-     */
-    public function clearPuFollowTPUsers()
-    {
-        $this->collPuFollowTPUsers = null; // important to set this to null since that means it is uninitialized
-        $this->collPuFollowTPUsersPartial = null;
-
-        return $this;
-    }
-
-    /**
-     * reset is the collPuFollowTPUsers collection loaded partially
-     *
-     * @return void
-     */
-    public function resetPartialPuFollowTPUsers($v = true)
-    {
-        $this->collPuFollowTPUsersPartial = $v;
-    }
-
-    /**
-     * Initializes the collPuFollowTPUsers collection.
-     *
-     * By default this just sets the collPuFollowTPUsers collection to an empty array (like clearcollPuFollowTPUsers());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initPuFollowTPUsers($overrideExisting = true)
-    {
-        if (null !== $this->collPuFollowTPUsers && !$overrideExisting) {
-            return;
-        }
-        $this->collPuFollowTPUsers = new PropelObjectCollection();
-        $this->collPuFollowTPUsers->setModel('PUFollowT');
-    }
-
-    /**
-     * Gets an array of PUFollowT objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this PUser is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|PUFollowT[] List of PUFollowT objects
-     * @throws PropelException
-     */
-    public function getPuFollowTPUsers($criteria = null, PropelPDO $con = null)
-    {
-        $partial = $this->collPuFollowTPUsersPartial && !$this->isNew();
-        if (null === $this->collPuFollowTPUsers || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collPuFollowTPUsers) {
-                // return empty collection
-                $this->initPuFollowTPUsers();
-            } else {
-                $collPuFollowTPUsers = PUFollowTQuery::create(null, $criteria)
-                    ->filterByPuFollowTPUser($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    if (false !== $this->collPuFollowTPUsersPartial && count($collPuFollowTPUsers)) {
-                      $this->initPuFollowTPUsers(false);
-
-                      foreach ($collPuFollowTPUsers as $obj) {
-                        if (false == $this->collPuFollowTPUsers->contains($obj)) {
-                          $this->collPuFollowTPUsers->append($obj);
-                        }
-                      }
-
-                      $this->collPuFollowTPUsersPartial = true;
-                    }
-
-                    $collPuFollowTPUsers->getInternalIterator()->rewind();
-
-                    return $collPuFollowTPUsers;
-                }
-
-                if ($partial && $this->collPuFollowTPUsers) {
-                    foreach ($this->collPuFollowTPUsers as $obj) {
-                        if ($obj->isNew()) {
-                            $collPuFollowTPUsers[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collPuFollowTPUsers = $collPuFollowTPUsers;
-                $this->collPuFollowTPUsersPartial = false;
-            }
-        }
-
-        return $this->collPuFollowTPUsers;
-    }
-
-    /**
-     * Sets a collection of PuFollowTPUser objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $puFollowTPUsers A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     * @return PUser The current object (for fluent API support)
-     */
-    public function setPuFollowTPUsers(PropelCollection $puFollowTPUsers, PropelPDO $con = null)
-    {
-        $puFollowTPUsersToDelete = $this->getPuFollowTPUsers(new Criteria(), $con)->diff($puFollowTPUsers);
-
-
-        $this->puFollowTPUsersScheduledForDeletion = $puFollowTPUsersToDelete;
-
-        foreach ($puFollowTPUsersToDelete as $puFollowTPUserRemoved) {
-            $puFollowTPUserRemoved->setPuFollowTPUser(null);
-        }
-
-        $this->collPuFollowTPUsers = null;
-        foreach ($puFollowTPUsers as $puFollowTPUser) {
-            $this->addPuFollowTPUser($puFollowTPUser);
-        }
-
-        $this->collPuFollowTPUsers = $puFollowTPUsers;
-        $this->collPuFollowTPUsersPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related PUFollowT objects.
-     *
-     * @param Criteria $criteria
-     * @param boolean $distinct
-     * @param PropelPDO $con
-     * @return int             Count of related PUFollowT objects.
-     * @throws PropelException
-     */
-    public function countPuFollowTPUsers(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        $partial = $this->collPuFollowTPUsersPartial && !$this->isNew();
-        if (null === $this->collPuFollowTPUsers || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collPuFollowTPUsers) {
-                return 0;
-            }
-
-            if ($partial && !$criteria) {
-                return count($this->getPuFollowTPUsers());
-            }
-            $query = PUFollowTQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByPuFollowTPUser($this)
-                ->count($con);
-        }
-
-        return count($this->collPuFollowTPUsers);
-    }
-
-    /**
-     * Method called to associate a PUFollowT object to this object
-     * through the PUFollowT foreign key attribute.
-     *
-     * @param    PUFollowT $l PUFollowT
-     * @return PUser The current object (for fluent API support)
-     */
-    public function addPuFollowTPUser(PUFollowT $l)
-    {
-        if ($this->collPuFollowTPUsers === null) {
-            $this->initPuFollowTPUsers();
-            $this->collPuFollowTPUsersPartial = true;
-        }
-
-        if (!in_array($l, $this->collPuFollowTPUsers->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddPuFollowTPUser($l);
-
-            if ($this->puFollowTPUsersScheduledForDeletion and $this->puFollowTPUsersScheduledForDeletion->contains($l)) {
-                $this->puFollowTPUsersScheduledForDeletion->remove($this->puFollowTPUsersScheduledForDeletion->search($l));
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param	PuFollowTPUser $puFollowTPUser The puFollowTPUser object to add.
-     */
-    protected function doAddPuFollowTPUser($puFollowTPUser)
-    {
-        $this->collPuFollowTPUsers[]= $puFollowTPUser;
-        $puFollowTPUser->setPuFollowTPUser($this);
-    }
-
-    /**
-     * @param	PuFollowTPUser $puFollowTPUser The puFollowTPUser object to remove.
-     * @return PUser The current object (for fluent API support)
-     */
-    public function removePuFollowTPUser($puFollowTPUser)
-    {
-        if ($this->getPuFollowTPUsers()->contains($puFollowTPUser)) {
-            $this->collPuFollowTPUsers->remove($this->collPuFollowTPUsers->search($puFollowTPUser));
-            if (null === $this->puFollowTPUsersScheduledForDeletion) {
-                $this->puFollowTPUsersScheduledForDeletion = clone $this->collPuFollowTPUsers;
-                $this->puFollowTPUsersScheduledForDeletion->clear();
-            }
-            $this->puFollowTPUsersScheduledForDeletion[]= clone $puFollowTPUser;
-            $puFollowTPUser->setPuFollowTPUser(null);
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this PUser is new, it will return
-     * an empty collection; or if this PUser has previously
-     * been saved, it will retrieve related PuFollowTPUsers from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in PUser.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|PUFollowT[] List of PUFollowT objects
-     */
-    public function getPuFollowTPUsersJoinPuFollowTPTag($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = PUFollowTQuery::create(null, $criteria);
-        $query->joinWith('PuFollowTPTag', $join_behavior);
-
-        return $this->getPuFollowTPUsers($query, $con);
     }
 
     /**
@@ -14426,193 +14085,6 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * Clears out the collPuFollowTPTags collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return PUser The current object (for fluent API support)
-     * @see        addPuFollowTPTags()
-     */
-    public function clearPuFollowTPTags()
-    {
-        $this->collPuFollowTPTags = null; // important to set this to null since that means it is uninitialized
-        $this->collPuFollowTPTagsPartial = null;
-
-        return $this;
-    }
-
-    /**
-     * Initializes the collPuFollowTPTags collection.
-     *
-     * By default this just sets the collPuFollowTPTags collection to an empty collection (like clearPuFollowTPTags());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @return void
-     */
-    public function initPuFollowTPTags()
-    {
-        $this->collPuFollowTPTags = new PropelObjectCollection();
-        $this->collPuFollowTPTags->setModel('PTag');
-    }
-
-    /**
-     * Gets a collection of PTag objects related by a many-to-many relationship
-     * to the current object by way of the p_u_follow_t cross-reference table.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this PUser is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria Optional query object to filter the query
-     * @param PropelPDO $con Optional connection object
-     *
-     * @return PropelObjectCollection|PTag[] List of PTag objects
-     */
-    public function getPuFollowTPTags($criteria = null, PropelPDO $con = null)
-    {
-        if (null === $this->collPuFollowTPTags || null !== $criteria) {
-            if ($this->isNew() && null === $this->collPuFollowTPTags) {
-                // return empty collection
-                $this->initPuFollowTPTags();
-            } else {
-                $collPuFollowTPTags = PTagQuery::create(null, $criteria)
-                    ->filterByPuFollowTPUser($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    return $collPuFollowTPTags;
-                }
-                $this->collPuFollowTPTags = $collPuFollowTPTags;
-            }
-        }
-
-        return $this->collPuFollowTPTags;
-    }
-
-    /**
-     * Sets a collection of PTag objects related by a many-to-many relationship
-     * to the current object by way of the p_u_follow_t cross-reference table.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $puFollowTPTags A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     * @return PUser The current object (for fluent API support)
-     */
-    public function setPuFollowTPTags(PropelCollection $puFollowTPTags, PropelPDO $con = null)
-    {
-        $this->clearPuFollowTPTags();
-        $currentPuFollowTPTags = $this->getPuFollowTPTags(null, $con);
-
-        $this->puFollowTPTagsScheduledForDeletion = $currentPuFollowTPTags->diff($puFollowTPTags);
-
-        foreach ($puFollowTPTags as $puFollowTPTag) {
-            if (!$currentPuFollowTPTags->contains($puFollowTPTag)) {
-                $this->doAddPuFollowTPTag($puFollowTPTag);
-            }
-        }
-
-        $this->collPuFollowTPTags = $puFollowTPTags;
-
-        return $this;
-    }
-
-    /**
-     * Gets the number of PTag objects related by a many-to-many relationship
-     * to the current object by way of the p_u_follow_t cross-reference table.
-     *
-     * @param Criteria $criteria Optional query object to filter the query
-     * @param boolean $distinct Set to true to force count distinct
-     * @param PropelPDO $con Optional connection object
-     *
-     * @return int the number of related PTag objects
-     */
-    public function countPuFollowTPTags($criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        if (null === $this->collPuFollowTPTags || null !== $criteria) {
-            if ($this->isNew() && null === $this->collPuFollowTPTags) {
-                return 0;
-            } else {
-                $query = PTagQuery::create(null, $criteria);
-                if ($distinct) {
-                    $query->distinct();
-                }
-
-                return $query
-                    ->filterByPuFollowTPUser($this)
-                    ->count($con);
-            }
-        } else {
-            return count($this->collPuFollowTPTags);
-        }
-    }
-
-    /**
-     * Associate a PTag object to this object
-     * through the p_u_follow_t cross reference table.
-     *
-     * @param  PTag $pTag The PUFollowT object to relate
-     * @return PUser The current object (for fluent API support)
-     */
-    public function addPuFollowTPTag(PTag $pTag)
-    {
-        if ($this->collPuFollowTPTags === null) {
-            $this->initPuFollowTPTags();
-        }
-
-        if (!$this->collPuFollowTPTags->contains($pTag)) { // only add it if the **same** object is not already associated
-            $this->doAddPuFollowTPTag($pTag);
-            $this->collPuFollowTPTags[] = $pTag;
-
-            if ($this->puFollowTPTagsScheduledForDeletion and $this->puFollowTPTagsScheduledForDeletion->contains($pTag)) {
-                $this->puFollowTPTagsScheduledForDeletion->remove($this->puFollowTPTagsScheduledForDeletion->search($pTag));
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param	PuFollowTPTag $puFollowTPTag The puFollowTPTag object to add.
-     */
-    protected function doAddPuFollowTPTag(PTag $puFollowTPTag)
-    {
-        // set the back reference to this object directly as using provided method either results
-        // in endless loop or in multiple relations
-        if (!$puFollowTPTag->getPuFollowTPUsers()->contains($this)) { $pUFollowT = new PUFollowT();
-            $pUFollowT->setPuFollowTPTag($puFollowTPTag);
-            $this->addPuFollowTPUser($pUFollowT);
-
-            $foreignCollection = $puFollowTPTag->getPuFollowTPUsers();
-            $foreignCollection[] = $this;
-        }
-    }
-
-    /**
-     * Remove a PTag object to this object
-     * through the p_u_follow_t cross reference table.
-     *
-     * @param PTag $pTag The PUFollowT object to relate
-     * @return PUser The current object (for fluent API support)
-     */
-    public function removePuFollowTPTag(PTag $pTag)
-    {
-        if ($this->getPuFollowTPTags()->contains($pTag)) {
-            $this->collPuFollowTPTags->remove($this->collPuFollowTPTags->search($pTag));
-            if (null === $this->puFollowTPTagsScheduledForDeletion) {
-                $this->puFollowTPTagsScheduledForDeletion = clone $this->collPuFollowTPTags;
-                $this->puFollowTPTagsScheduledForDeletion->clear();
-            }
-            $this->puFollowTPTagsScheduledForDeletion[]= $pTag;
-        }
-
-        return $this;
-    }
-
-    /**
      * Clears out the collPQualifications collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
@@ -16031,11 +15503,6 @@ abstract class BasePUser extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collPuFollowTPUsers) {
-                foreach ($this->collPuFollowTPUsers as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
             if ($this->collPURoleQs) {
                 foreach ($this->collPURoleQs as $o) {
                     $o->clearAllReferences($deep);
@@ -16171,11 +15638,6 @@ abstract class BasePUser extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collPuFollowTPTags) {
-                foreach ($this->collPuFollowTPTags as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
             if ($this->collPQualifications) {
                 foreach ($this->collPQualifications as $o) {
                     $o->clearAllReferences($deep);
@@ -16255,10 +15717,6 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->collPuTaggedTPUsers->clearIterator();
         }
         $this->collPuTaggedTPUsers = null;
-        if ($this->collPuFollowTPUsers instanceof PropelCollection) {
-            $this->collPuFollowTPUsers->clearIterator();
-        }
-        $this->collPuFollowTPUsers = null;
         if ($this->collPURoleQs instanceof PropelCollection) {
             $this->collPURoleQs->clearIterator();
         }
@@ -16367,10 +15825,6 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->collPuTaggedTPTags->clearIterator();
         }
         $this->collPuTaggedTPTags = null;
-        if ($this->collPuFollowTPTags instanceof PropelCollection) {
-            $this->collPuFollowTPTags->clearIterator();
-        }
-        $this->collPuFollowTPTags = null;
         if ($this->collPQualifications instanceof PropelCollection) {
             $this->collPQualifications->clearIterator();
         }

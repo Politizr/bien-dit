@@ -93,10 +93,9 @@ var ROUTE_TAG_DEBATE_CREATE = 'profil/debat/tag/create';
 var ROUTE_TAG_DEBATE_DELETE = 'profil/debat/tag/delete';
 var ROUTE_TAG_REACTION_CREATE = 'profil/reaction/tag/create';
 var ROUTE_TAG_REACTION_DELETE = 'profil/reaction/tag/delete';
-var ROUTE_TAG_USER_FOLLOW_CREATE = 'profil/utilisateur/follow/tag/create';
-var ROUTE_TAG_USER_FOLLOW_DELETE = 'profil/utilisateur/follow/tag/delete';
-var ROUTE_TAG_USER_TAGGED_CREATE = 'profil/utilisateur/tagged/tag/create';
-var ROUTE_TAG_USER_TAGGED_DELETE = 'profil/utilisateur/tagged/tag/delete';
+var ROUTE_TAG_USER_CREATE = 'profil/utilisateur/tag/create';
+var ROUTE_TAG_USER_DELETE = 'profil/utilisateur/tag/delete';
+var ROUTE_TAG_USER_HIDE = 'profil/utilisateur/tag/hide';
 
 // USER
 var ROUTE_USER_MANDATE_CREATE = 'profil/utilisateur/mandat/create';

@@ -804,41 +804,28 @@ class PUser extends BasePUser implements UserInterface, /*EquatableInterface,*/ 
     }
 
     /**
-     * User's tagged tags
+     * User's tags
      *
      * @param integer $tagTypeId
+     * @param boolean $withHidden with hidden user's tags
      * @param boolean $online
      * @return PropelCollection[PTag]
      */
-    public function getTaggedTags($tagTypeId = null, $online = true)
+    public function getTags($tagTypeId = null, $withHidden = false, $online = true)
     {
         $query = PTagQuery::create()
             ->filterIfTypeId($tagTypeId)
             ->filterIfOnline($online)
+            ->usePuTaggedTPTagQuery()
+                ->filterIfHidden($withHidden)
+            ->endUse()
+            ->withColumn('p_u_tagged_t.hidden', 'hidden')
             ->orderByTitle()
             ->setDistinct();
 
         return parent::getPuTaggedTPTags($query);
     }
-
-    /**
-     * User's following tags
-     *
-     * @param integer $tagTypeId
-     * @param boolean $online
-     * @return PropelCollection[PTag]
-     */
-    public function getFollowTags($tagTypeId = null, $online = true)
-    {
-        $query = PTagQuery::create()
-            ->filterIfTypeId($tagTypeId)
-            ->filterIfOnline($online)
-            ->orderByTitle()
-            ->setDistinct();
-
-        return parent::getPuFollowTPTags($query);
-    }
-
+    
     // ************************************************************************************ //
     //                                          DOCUMENTS
     // ************************************************************************************ //

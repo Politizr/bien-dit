@@ -68,11 +68,11 @@ FROM (
             p_d_r_tagged_t.p_tag_id IN (
                 SELECT p_tag.id
                 FROM p_tag
-                    LEFT JOIN p_u_follow_t
-                        ON p_tag.id = p_u_follow_t.p_tag_id
+                    LEFT JOIN p_u_tagged_t
+                        ON p_tag.id = p_u_tagged_t.p_tag_id
                 WHERE
                     p_tag.online = true
-                    AND p_u_follow_t.p_user_id = ".$userId."
+                    AND p_u_tagged_t.p_user_id = ".$userId."
             )
         AND p_d_reaction.online = 1
         AND p_d_reaction.published = 1

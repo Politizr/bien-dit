@@ -97,11 +97,11 @@ WHERE
     p_u_tagged_t.p_tag_id IN (
                 SELECT p_tag.id
                 FROM p_tag
-                    LEFT JOIN p_u_follow_t
-                        ON p_tag.id = p_u_follow_t.p_tag_id
+                    LEFT JOIN p_u_tagged_t
+                        ON p_tag.id = p_u_tagged_t.p_tag_id
                 WHERE
                     p_tag.online = true
-                    AND p_u_follow_t.p_user_id = ".$userId."
+                    AND p_u_tagged_t.p_user_id = ".$userId."
     )
     AND p_user.online = 1
     AND p_user.id NOT IN (SELECT p_user_id FROM p_u_follow_u WHERE p_user_follower_id = ".$userId.")

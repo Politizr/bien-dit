@@ -112,7 +112,6 @@ class PUserTableMap extends TableMap
         $this->addRelation('PUBadge', 'Politizr\\Model\\PUBadge', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', 'CASCADE', 'PUBadges');
         $this->addRelation('PUReputation', 'Politizr\\Model\\PUReputation', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', 'CASCADE', 'PUReputations');
         $this->addRelation('PuTaggedTPUser', 'Politizr\\Model\\PUTaggedT', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', 'CASCADE', 'PuTaggedTPUsers');
-        $this->addRelation('PuFollowTPUser', 'Politizr\\Model\\PUFollowT', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', 'CASCADE', 'PuFollowTPUsers');
         $this->addRelation('PURoleQ', 'Politizr\\Model\\PURoleQ', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', 'CASCADE', 'PURoleQs');
         $this->addRelation('PUMandate', 'Politizr\\Model\\PUMandate', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', 'CASCADE', 'PUMandates');
         $this->addRelation('PUAffinityQOPUser', 'Politizr\\Model\\PUAffinityQO', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', 'CASCADE', 'PUAffinityQOPUsers');
@@ -140,7 +139,6 @@ class PUserTableMap extends TableMap
         $this->addRelation('PRBadge', 'Politizr\\Model\\PRBadge', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PRBadges');
         $this->addRelation('PRAction', 'Politizr\\Model\\PRAction', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PRActions');
         $this->addRelation('PuTaggedTPTag', 'Politizr\\Model\\PTag', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PuTaggedTPTags');
-        $this->addRelation('PuFollowTPTag', 'Politizr\\Model\\PTag', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PuFollowTPTags');
         $this->addRelation('PQualification', 'Politizr\\Model\\PQualification', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PQualifications');
         $this->addRelation('PUAffinityQOPQOrganization', 'Politizr\\Model\\PQOrganization', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PUAffinityQOPQOrganizations');
         $this->addRelation('PUCurrentQOPQOrganization', 'Politizr\\Model\\PQOrganization', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PUCurrentQOPQOrganizations');

@@ -53,16 +53,14 @@ builders:
                         default:                true
                         filters:
                             p_t_tag_type_id:    2
-            display:                            [ title, p_t_tag_type, PTagRelatedByPTParentId, countDebates, countTaggedTagUsers, countFollowedTagUsers, created_at, online ]
+            display:                            [ title, p_t_tag_type, PTagRelatedByPTParentId, countDebates, countUsers, created_at, online ]
             # filtersMode:                        top
             filters:                            [ title, p_t_tag_type_id, PTagRelatedByPTParentId, p_t_tag_type, online, created_at ]
             fields:
                 countDebates:
                     label:                      Nb débats
-                countTaggedTagUsers:
-                    label:                      Nb public
-                countFollowedTagUsers:
-                    label:                      Nb privé
+                countUsers:
+                    label:                      Nb profils
             actions:
                 new:                            ~
             object_actions:
@@ -135,17 +133,14 @@ builders:
                 "Modération":
                     "Portée":                   [ [ moderated, moderated_at ] ]
                 "Utilisateurs":
-                    "Tags associés public":     [ block_tagged_tag_users ]
-                    "Tags suivis privé":        [ block_follow_tag_users ]
+                    "Profils":                  [ block_users ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
                     "Création":                 [ [ p_t_tag_type ], [ PTagRelatedByPTParentId ], [ online ], [ created_at, updated_at ] ]
             fields:
                 block_debates:
                     label:                      "Taggés"
-                block_tagged_tag_users:
-                    label:                      "Taggés"
-                block_follow_tag_users:
+                block_users:
                     label:                      "Taggés"
             actions:
                 list:                           ~

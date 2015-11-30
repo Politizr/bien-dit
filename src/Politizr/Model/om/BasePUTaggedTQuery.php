@@ -25,12 +25,14 @@ use Politizr\Model\PUser;
  * @method PUTaggedTQuery orderById($order = Criteria::ASC) Order by the id column
  * @method PUTaggedTQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
  * @method PUTaggedTQuery orderByPTagId($order = Criteria::ASC) Order by the p_tag_id column
+ * @method PUTaggedTQuery orderByHidden($order = Criteria::ASC) Order by the hidden column
  * @method PUTaggedTQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PUTaggedTQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  *
  * @method PUTaggedTQuery groupById() Group by the id column
  * @method PUTaggedTQuery groupByPUserId() Group by the p_user_id column
  * @method PUTaggedTQuery groupByPTagId() Group by the p_tag_id column
+ * @method PUTaggedTQuery groupByHidden() Group by the hidden column
  * @method PUTaggedTQuery groupByCreatedAt() Group by the created_at column
  * @method PUTaggedTQuery groupByUpdatedAt() Group by the updated_at column
  *
@@ -51,12 +53,14 @@ use Politizr\Model\PUser;
  *
  * @method PUTaggedT findOneByPUserId(int $p_user_id) Return the first PUTaggedT filtered by the p_user_id column
  * @method PUTaggedT findOneByPTagId(int $p_tag_id) Return the first PUTaggedT filtered by the p_tag_id column
+ * @method PUTaggedT findOneByHidden(boolean $hidden) Return the first PUTaggedT filtered by the hidden column
  * @method PUTaggedT findOneByCreatedAt(string $created_at) Return the first PUTaggedT filtered by the created_at column
  * @method PUTaggedT findOneByUpdatedAt(string $updated_at) Return the first PUTaggedT filtered by the updated_at column
  *
  * @method array findById(int $id) Return PUTaggedT objects filtered by the id column
  * @method array findByPUserId(int $p_user_id) Return PUTaggedT objects filtered by the p_user_id column
  * @method array findByPTagId(int $p_tag_id) Return PUTaggedT objects filtered by the p_tag_id column
+ * @method array findByHidden(boolean $hidden) Return PUTaggedT objects filtered by the hidden column
  * @method array findByCreatedAt(string $created_at) Return PUTaggedT objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PUTaggedT objects filtered by the updated_at column
  */
@@ -168,7 +172,7 @@ abstract class BasePUTaggedTQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_user_id`, `p_tag_id`, `created_at`, `updated_at` FROM `p_u_tagged_t` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_user_id`, `p_tag_id`, `hidden`, `created_at`, `updated_at` FROM `p_u_tagged_t` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -386,6 +390,33 @@ abstract class BasePUTaggedTQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PUTaggedTPeer::P_TAG_ID, $pTagId, $comparison);
+    }
+
+    /**
+     * Filter the query on the hidden column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByHidden(true); // WHERE hidden = true
+     * $query->filterByHidden('yes'); // WHERE hidden = true
+     * </code>
+     *
+     * @param     boolean|string $hidden The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUTaggedTQuery The current query, for fluid interface
+     */
+    public function filterByHidden($hidden = null, $comparison = null)
+    {
+        if (is_string($hidden)) {
+            $hidden = in_array(strtolower($hidden), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PUTaggedTPeer::HIDDEN, $hidden, $comparison);
     }
 
     /**

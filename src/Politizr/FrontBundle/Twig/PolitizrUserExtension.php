@@ -102,11 +102,6 @@ class PolitizrUserExtension extends \Twig_Extension
                 array('is_safe' => array('html'))
             ),
             new \Twig_SimpleFilter(
-                'followTags',
-                array($this, 'followTags'),
-                array('is_safe' => array('html'))
-            ),
-            new \Twig_SimpleFilter(
                 'userTags',
                 array($this, 'userTags'),
                 array('is_safe' => array('html'))
@@ -264,50 +259,22 @@ class PolitizrUserExtension extends \Twig_Extension
         return $html;
     }
 
-
-   /**
-     * Display user's following tags
-     *
-     * @param PUser $user
-     * @param integer $tagTypeId
-     * @param string $modalDefaultType debate|reaction|user
-     * @return string
-     */
-    public function followTags(PUser $user, $tagTypeId = null, $modalDefaultType = 'user')
-    {
-        $this->logger->info('*** followTags');
-        // $this->logger->info('$user = '.print_r($user, true));
-        // $this->logger->info('$pTTagType = '.print_r($pTTagType, true));
-
-        $tags = $user->getFollowTags($tagTypeId);
- 
-        // Construction du rendu du tag
-        $html = $this->templating->render(
-            'PolitizrFrontBundle:Tag:_list.html.twig',
-            array(
-                'tags' => $tags,
-                'modalDefaultType' => $modalDefaultType,
-            )
-        );
-
-        return $html;
-    }
-
    /**
      * Display user's tags
      *
      * @param PUser $user
      * @param integer $tagTypeId
+     * @param boolean $withHidden
      * @param string $modalDefaultType debate|reaction|user
      * @return string
      */
-    public function userTags(PUser $user, $tagTypeId = null, $modalDefaultType = 'user')
+    public function userTags(PUser $user, $tagTypeId = null, $withHidden = false, $modalDefaultType = 'user')
     {
         $this->logger->info('*** userTags');
         // $this->logger->info('$uiser = '.print_r($uiser, true));
         // $this->logger->info('$pTTagType = '.print_r($pTTagType, true));
 
-        $tags = $user->getTaggedTags($tagTypeId);
+        $tags = $user->getTags($tagTypeId);
 
         // Construction du rendu du tag
         $html = $this->templating->render(

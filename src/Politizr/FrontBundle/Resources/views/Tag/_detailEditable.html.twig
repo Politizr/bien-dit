@@ -1,3 +1,4 @@
+{% spaceless %}
 {% if (tag.ptTagTypeId == constant('\\Politizr\\Constant\\TagConstants::TAG_TYPE_GEO')) %}
     {% set twbLabel = "success" %}
 {% elseif (tag.ptTagTypeId == constant('\\Politizr\\Constant\\TagConstants::TAG_TYPE_THEME'))%}
@@ -6,6 +7,8 @@
     {% set twbLabel = "default" %}
 {% endif %}
 
-<div class="tagLabel {{ twbLabel }}">
-    {{ tag.title }}<a action="deleteTag" path="{{ path }}" tagUuid="{{ tag.uuid }}" uuid="{{ uuid }}"><i class="iconCrossInSquare"></i></a>
+<div class="tagLabel {{ twbLabel }}{% if tag.hasVirtualColumn('hidden') and tag.virtualColumn('hidden') %} tagInvisible{% endif %}" tagUuid="{{ tag.uuid }}" uuid="{{ uuid }}">
+{{ tag.title }}{% if withHidden %}<a action="hideTag" path="{{ pathHide }}"><i class="iconInvisible"></i></a>{% endif %}
+<a action="deleteTag" path="{{ pathDelete }}"><i class="iconCrossInSquare"></i></a>
 </div>
+{% endspaceless %}

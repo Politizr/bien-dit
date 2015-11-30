@@ -32,7 +32,6 @@ use Politizr\Model\PUAffinityQOPeer;
 use Politizr\Model\PUBadgePeer;
 use Politizr\Model\PUCurrentQOPeer;
 use Politizr\Model\PUFollowDDPeer;
-use Politizr\Model\PUFollowTPeer;
 use Politizr\Model\PUFollowUPeer;
 use Politizr\Model\PUMandatePeer;
 use Politizr\Model\PUNotificationPeer;
@@ -718,9 +717,6 @@ abstract class BasePUserPeer
         // Invalidate objects in PUTaggedTPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PUTaggedTPeer::clearInstancePool();
-        // Invalidate objects in PUFollowTPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PUFollowTPeer::clearInstancePool();
         // Invalidate objects in PURoleQPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PURoleQPeer::clearInstancePool();

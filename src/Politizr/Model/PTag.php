@@ -54,7 +54,7 @@ class PTag extends BasePTag
     }
 
     /**
-     * Debate's tags
+     * Tagged debates
      */
     public function getDebates($online = null)
     {
@@ -75,47 +75,21 @@ class PTag extends BasePTag
     /**
      * @see parent::countPuTaggedTPTags
      */
-    public function countTaggedTagUsers($query = null)
+    public function countUsers($query = null)
     {
         return parent::countPuTaggedTPTags($query);
     }
 
     /**
-     * Tagged tag's users
+     * Tagged users
      *
      * @param $online
      * @return PropelCollection[PUser]
      */
-    public function getTaggedTagUsers($online = null)
+    public function getUsers($online = null)
     {
         $users = PUserQuery::create()
             ->usePuTaggedTPUserQuery()
-                ->filterByPTagId($this->getId())
-            ->endUse()
-            ->filterIfOnline($online)
-            ->find();
-
-        return $users;
-    }
-
-    /**
-     * @see parent::countPuTaggedTPTags
-     */
-    public function countFollowedTagUsers($query = null)
-    {
-        return parent::countPuFollowTPUsers($query);
-    }
-
-    /**
-     * Follow tag's users
-     *
-     * @param $online
-     * @return PropelCollection[PUser]
-     */
-    public function getFollowTagUsers($online = null)
-    {
-        $users = PUserQuery::create()
-            ->usePuFollowTPUserQuery()
                 ->filterByPTagId($this->getId())
             ->endUse()
             ->filterIfOnline($online)

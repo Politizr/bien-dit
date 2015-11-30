@@ -41,7 +41,6 @@ use Politizr\Model\PUAffinityQO;
 use Politizr\Model\PUBadge;
 use Politizr\Model\PUCurrentQO;
 use Politizr\Model\PUFollowDD;
-use Politizr\Model\PUFollowT;
 use Politizr\Model\PUFollowU;
 use Politizr\Model\PUMandate;
 use Politizr\Model\PUNotification;
@@ -191,10 +190,6 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery leftJoinPuTaggedTPUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the PuTaggedTPUser relation
  * @method PUserQuery rightJoinPuTaggedTPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PuTaggedTPUser relation
  * @method PUserQuery innerJoinPuTaggedTPUser($relationAlias = null) Adds a INNER JOIN clause to the query using the PuTaggedTPUser relation
- *
- * @method PUserQuery leftJoinPuFollowTPUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the PuFollowTPUser relation
- * @method PUserQuery rightJoinPuFollowTPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PuFollowTPUser relation
- * @method PUserQuery innerJoinPuFollowTPUser($relationAlias = null) Adds a INNER JOIN clause to the query using the PuFollowTPUser relation
  *
  * @method PUserQuery leftJoinPURoleQ($relationAlias = null) Adds a LEFT JOIN clause to the query using the PURoleQ relation
  * @method PUserQuery rightJoinPURoleQ($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PURoleQ relation
@@ -2846,80 +2841,6 @@ abstract class BasePUserQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related PUFollowT object
-     *
-     * @param   PUFollowT|PropelObjectCollection $pUFollowT  the related object to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return                 PUserQuery The current query, for fluid interface
-     * @throws PropelException - if the provided filter is invalid.
-     */
-    public function filterByPuFollowTPUser($pUFollowT, $comparison = null)
-    {
-        if ($pUFollowT instanceof PUFollowT) {
-            return $this
-                ->addUsingAlias(PUserPeer::ID, $pUFollowT->getPUserId(), $comparison);
-        } elseif ($pUFollowT instanceof PropelObjectCollection) {
-            return $this
-                ->usePuFollowTPUserQuery()
-                ->filterByPrimaryKeys($pUFollowT->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByPuFollowTPUser() only accepts arguments of type PUFollowT or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the PuFollowTPUser relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return PUserQuery The current query, for fluid interface
-     */
-    public function joinPuFollowTPUser($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('PuFollowTPUser');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'PuFollowTPUser');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the PuFollowTPUser relation PUFollowT object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   \Politizr\Model\PUFollowTQuery A secondary query class using the current class as primary query
-     */
-    public function usePuFollowTPUserQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinPuFollowTPUser($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'PuFollowTPUser', '\Politizr\Model\PUFollowTQuery');
-    }
-
-    /**
      * Filter the query by a related PURoleQ object
      *
      * @param   PURoleQ|PropelObjectCollection $pURoleQ  the related object to use as filter
@@ -4686,23 +4607,6 @@ abstract class BasePUserQuery extends ModelCriteria
         return $this
             ->usePuTaggedTPUserQuery()
             ->filterByPuTaggedTPTag($pTag, $comparison)
-            ->endUse();
-    }
-
-    /**
-     * Filter the query by a related PTag object
-     * using the p_u_follow_t table as cross reference
-     *
-     * @param   PTag $pTag the related object to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return   PUserQuery The current query, for fluid interface
-     */
-    public function filterByPuFollowTPTag($pTag, $comparison = Criteria::EQUAL)
-    {
-        return $this
-            ->usePuFollowTPUserQuery()
-            ->filterByPuFollowTPTag($pTag, $comparison)
             ->endUse();
     }
 

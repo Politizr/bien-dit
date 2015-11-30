@@ -20,10 +20,9 @@ var ADMIN_ROUTE_TAG_DEBATE_CREATE = 'admin/debat/tag/create';
 var ADMIN_ROUTE_TAG_DEBATE_DELETE = 'admin/debat/tag/delete';
 var ADMIN_ROUTE_TAG_REACTION_CREATE = 'admin/reaction/tag/create';
 var ADMIN_ROUTE_TAG_REACTION_DELETE = 'admin/reaction/tag/delete';
-var ADMIN_ROUTE_TAG_USER_FOLLOW_CREATE = 'admin/utilisateur/follow/tag/create';
-var ADMIN_ROUTE_TAG_USER_FOLLOW_DELETE = 'admin/utilisateur/follow/tag/delete';
-var ADMIN_ROUTE_TAG_USER_TAGGED_CREATE = 'admin/utilisateur/tagged/tag/create';
-var ADMIN_ROUTE_TAG_USER_TAGGED_DELETE = 'admin/utilisateur/tagged/tag/delete';
+var ADMIN_ROUTE_TAG_USER_CREATE = 'admin/utilisateur/tag/create';
+var ADMIN_ROUTE_TAG_USER_DELETE = 'admin/utilisateur/tag/delete';
+var ADMIN_ROUTE_TAG_USER_HIDE = 'admin/utilisateur/tag/hide';
 
 // REPUTATION
 var ADMIN_ROUTE_USER_REPUTATION_EVOLUTION = 'admin/utilisateur/reputation/update';

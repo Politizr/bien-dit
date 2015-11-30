@@ -91,13 +91,6 @@ class PolitizrAdminExtension extends \Twig_Extension
                     'is_safe' => array('html')
                 )
             ),
-            'adminUserPrivateTags'  => new \Twig_Function_Method(
-                $this,
-                'adminUserPrivateTags',
-                array(
-                    'is_safe' => array('html')
-                )
-            ),
             'adminUserDebates'  => new \Twig_Function_Method(
                 $this,
                 'adminUserDebates',
@@ -217,16 +210,9 @@ class PolitizrAdminExtension extends \Twig_Extension
                     'is_safe' => array('html')
                     )
             ),
-            'adminTaggedTagUsers'  => new \Twig_Function_Method(
+            'adminTagUsers'  => new \Twig_Function_Method(
                 $this,
-                'adminTaggedTagUsers',
-                array(
-                    'is_safe' => array('html')
-                    )
-            ),
-            'adminFollowTagUsers'  => new \Twig_Function_Method(
-                $this,
-                'adminFollowTagUsers',
+                'adminTagUsers',
                 array(
                     'is_safe' => array('html')
                     )
@@ -359,13 +345,16 @@ class PolitizrAdminExtension extends \Twig_Extension
      * @param int $zoneId CSS zone id
      * @param boolean $newTag new tag creation authorized
      * @param string $mode edit (default) / show
+     * @param boolean $withHidden manage hidden tag's property
      * @return string
      */
-    public function adminUserTags($user, $tagTypeId = null, $zoneId = 1, $newTag = true, $mode = 'edit')
+    public function adminUserTags($user, $tagTypeId = null, $zoneId = 1, $newTag = true, $withHidden = true, $mode = 'edit')
     {
         $this->logger->info('*** adminUserTags');
         // $this->logger->info('$tagTypeId = '.print_r($tagTypeId, true));
         // $this->logger->info('$zoneId = '.print_r($zoneId, true));
+        // $this->logger->info('$newTag = '.print_r($newTag, true));
+        // $this->logger->info('$withHidden = '.print_r($withHidden, true));
         // $this->logger->info('$mode = '.print_r($zoneId, true));
 
         if ('edit' === $mode) {
@@ -373,19 +362,29 @@ class PolitizrAdminExtension extends \Twig_Extension
             $xhrPathCreate = $this->templating->render(
                 'PolitizrAdminBundle:Fragment\\Xhr:_xhrPath.html.twig',
                 array(
-                    'xhrRoute' => 'ADMIN_ROUTE_TAG_USER_TAGGED_CREATE',
+                    'xhrRoute' => 'ADMIN_ROUTE_TAG_USER_CREATE',
                     'xhrService' => 'admin',
-                    'xhrMethod' => 'userTaggedAddTag',
+                    'xhrMethod' => 'userAddTag',
                     'xhrType' => 'RETURN_HTML',
+                )
+            );
+
+            $xhrPathHide = $this->templating->render(
+                'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
+                array(
+                    'xhrRoute' => 'ADMIN_ROUTE_TAG_USER_HIDE',
+                    'xhrService' => 'admin',
+                    'xhrMethod' => 'userHideTag',
+                    'xhrType' => 'RETURN_BOOLEAN',
                 )
             );
 
             $xhrPathDelete = $this->templating->render(
                 'PolitizrAdminBundle:Fragment\\Xhr:_xhrPath.html.twig',
                 array(
-                    'xhrRoute' => 'ADMIN_ROUTE_TAG_USER_TAGGED_DELETE',
+                    'xhrRoute' => 'ADMIN_ROUTE_TAG_USER_DELETE',
                     'xhrService' => 'admin',
-                    'xhrMethod' => 'userTaggedDeleteTag',
+                    'xhrMethod' => 'userDeleteTag',
                     'xhrType' => 'RETURN_BOOLEAN',
                 )
             );
@@ -398,8 +397,10 @@ class PolitizrAdminExtension extends \Twig_Extension
                     'tagTypeId' => $tagTypeId,
                     'zoneId' => $zoneId,
                     'newTag' => $newTag,
-                    'tags' => $user->getTaggedTags($tagTypeId, null),
+                    'withHidden' => $withHidden,
+                    'tags' => $user->getTags($tagTypeId, $withHidden),
                     'pathCreate' => $xhrPathCreate,
+                    'pathHide' => $xhrPathHide,
                     'pathDelete' => $xhrPathDelete,
                     )
             );
@@ -408,72 +409,7 @@ class PolitizrAdminExtension extends \Twig_Extension
             $html = $this->templating->render(
                 'PolitizrAdminBundle:Fragment\\Tag:_list.html.twig',
                 array(
-                    'tags' => $user->getTaggedTags($tagTypeId, null),
-                    )
-            );
-        }
-
-        return $html;
-    }
-
-    /**
-     * User's followed tags management
-     *
-     * @param PUser $user
-     * @param int $tagTypeId
-     * @param int $zoneId CSS zone id
-     * @param boolean $newTag new tag creation authorized
-     * @param string $mode edit (default) / show
-     * @return string
-     */
-    public function adminUserPrivateTags($user, $tagTypeId = null, $zoneId = 1, $newTag = true, $mode = 'edit')
-    {
-        $this->logger->info('*** adminUserPrivateTags');
-        // $this->logger->info('$debate = '.print_r($debate, true));
-        // $this->logger->info('$tagTypeId = '.print_r($tagTypeId, true));
-        // $this->logger->info('$zoneId = '.print_r($zoneId, true));
-
-        if ('edit' === $mode) {
-            // Construction des chemins XHR
-            $xhrPathCreate = $this->templating->render(
-                'PolitizrAdminBundle:Fragment\\Xhr:_xhrPath.html.twig',
-                array(
-                    'xhrRoute' => 'ADMIN_ROUTE_TAG_USER_FOLLOW_CREATE',
-                    'xhrService' => 'admin',
-                    'xhrMethod' => 'userFollowAddTag',
-                    'xhrType' => 'RETURN_HTML',
-                )
-            );
-
-            $xhrPathDelete = $this->templating->render(
-                'PolitizrAdminBundle:Fragment\\Xhr:_xhrPath.html.twig',
-                array(
-                    'xhrRoute' => 'ADMIN_ROUTE_TAG_USER_FOLLOW_DELETE',
-                    'xhrService' => 'admin',
-                    'xhrMethod' => 'userFollowDeleteTag',
-                    'xhrType' => 'RETURN_BOOLEAN',
-                )
-            );
-
-            // Construction du rendu du tag
-            $html = $this->templating->render(
-                'PolitizrAdminBundle:Fragment\\Tag:_edit.html.twig',
-                array(
-                    'object' => $user,
-                    'tagTypeId' => $tagTypeId,
-                    'zoneId' => $zoneId,
-                    'newTag' => $newTag,
-                    'tags' => $user->getFollowTags($tagTypeId, null),
-                    'pathCreate' => $xhrPathCreate,
-                    'pathDelete' => $xhrPathDelete,
-                    )
-            );
-        } else {
-            // Construction du rendu du tag
-            $html = $this->templating->render(
-                'PolitizrAdminBundle:Fragment\\Tag:_list.html.twig',
-                array(
-                    'tags' => $user->getFollowTags($tagTypeId, null),
+                    'tags' => $user->getTags($tagTypeId, $withHidden),
                     )
             );
         }
@@ -755,15 +691,18 @@ class PolitizrAdminExtension extends \Twig_Extension
      * @param int $tagTypeId
      * @param int $zoneId CSS zone id
      * @param boolean $newTag new tag creation authorized
+     * @param boolean $withHidden manage hidden tag's property
      * @param string $mode edit (default) / show
      * @return string
      */
-    public function adminDebateTags($debate, $tagTypeId, $zoneId = 1, $newTag = false, $mode = 'edit')
+    public function adminDebateTags($debate, $tagTypeId, $zoneId = 1, $newTag = false, $withHidden = true, $mode = 'edit')
     {
         $this->logger->info('*** adminDebateTags');
         // $this->logger->info('$debate = '.print_r($debate, true));
         // $this->logger->info('$tagTypeId = '.print_r($tagTypeId, true));
         // $this->logger->info('$zoneId = '.print_r($zoneId, true));
+        // $this->logger->info('$newTag = '.print_r($newTag, true));
+        // $this->logger->info('$withHidden = '.print_r($withHidden, true));
 
         if ('edit' === $mode) {
             // Construction des chemins XHR
@@ -795,6 +734,7 @@ class PolitizrAdminExtension extends \Twig_Extension
                     'tagTypeId' => $tagTypeId,
                     'zoneId' => $zoneId,
                     'newTag' => $newTag,
+                    'withHidden' => $withHidden,
                     'tags' => $debate->getTags($tagTypeId, null),
                     'pathCreate' => $xhrPathCreate,
                     'pathDelete' => $xhrPathDelete,
@@ -820,15 +760,18 @@ class PolitizrAdminExtension extends \Twig_Extension
      * @param int $tagTypeId
      * @param int $zoneId CSS zone id
      * @param boolean $newTag new tag creation authorized
+     * @param boolean $withHidden manage hidden tag's property
      * @param string $mode edit (default) / show
      * @return string
      */
-    public function adminReactionTags($reaction, $tagTypeId, $zoneId = 1, $newTag = false, $mode = 'edit')
+    public function adminReactionTags($reaction, $tagTypeId, $zoneId = 1, $newTag = false, $withHidden = true, $mode = 'edit')
     {
         $this->logger->info('*** adminReactionTags');
         // $this->logger->info('$reaction = '.print_r($reaction, true));
         // $this->logger->info('$tagTypeId = '.print_r($tagTypeId, true));
         // $this->logger->info('$zoneId = '.print_r($zoneId, true));
+        // $this->logger->info('$newTag = '.print_r($newTag, true));
+        // $this->logger->info('$withHidden = '.print_r($withHidden, true));
 
         if ('edit' === $mode) {
             // Construction des chemins XHR
@@ -860,6 +803,7 @@ class PolitizrAdminExtension extends \Twig_Extension
                     'tagTypeId' => $tagTypeId,
                     'zoneId' => $zoneId,
                     'newTag' => $newTag,
+                    'withHidden' => $withHidden,
                     'tags' => $reaction->getTags($tagTypeId, null),
                     'pathCreate' => $xhrPathCreate,
                     'pathDelete' => $xhrPathDelete,
@@ -988,9 +932,9 @@ class PolitizrAdminExtension extends \Twig_Extension
      * @param PTag $tag
      * @return string
      */
-    public function adminTaggedTagUsers($tag)
+    public function adminTagUsers($tag)
     {
-        $this->logger->info('*** adminTaggedTagUsers');
+        $this->logger->info('*** adminTagUsers');
         // $this->logger->info('$tag = '.print_r($tag, true));
 
         // Construction du rendu du tag
@@ -998,30 +942,7 @@ class PolitizrAdminExtension extends \Twig_Extension
             'PolitizrAdminBundle:Fragment\\User:_tagUsers.html.twig',
             array(
                 'tag' => $tag,
-                'users' => $tag->getTaggedTagUsers(),
-            )
-        );
-
-        return $html;
-    }
-
-    /**
-     * Follow tag's users
-     *
-     * @param PTag $tag
-     * @return string
-     */
-    public function adminFollowTagUsers($tag)
-    {
-        $this->logger->info('*** adminFollowTagUsers');
-        // $this->logger->info('$tag = '.print_r($tag, true));
-
-        // Construction du rendu du tag
-        $html = $this->templating->render(
-            'PolitizrAdminBundle:Fragment\\User:_tagUsers.html.twig',
-            array(
-                'tag' => $tag,
-                'users' => $tag->getFollowTagUsers(),
+                'users' => $tag->getUsers(),
             )
         );
 

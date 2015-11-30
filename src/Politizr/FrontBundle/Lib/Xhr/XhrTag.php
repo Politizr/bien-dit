@@ -17,7 +17,6 @@ use Politizr\Model\PDReactionQuery;
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PDDTaggedTQuery;
 use Politizr\Model\PDRTaggedTQuery;
-use Politizr\Model\PUFollowTQuery;
 use Politizr\Model\PUTaggedTQuery;
 
 /**
@@ -239,7 +238,8 @@ class XhrTag
                 array(
                     'uuid' => $uuid,
                     'tag' => $tag,
-                    'path' => $xhrPathDelete
+                    'withHidden' => false,
+                    'pathDelete' => $xhrPathDelete
                 )
             );
         }
@@ -334,7 +334,8 @@ class XhrTag
                 array(
                     'uuid' => $uuid,
                     'tag' => $tag,
-                    'path' => $xhrPathDelete
+                    'withHidden' => false,
+                    'pathDelete' => $xhrPathDelete
                 )
             );
         }
@@ -372,11 +373,11 @@ class XhrTag
     /* ######################################################################################################## */
 
     /**
-     * User's follow tag creation
+     * User's tag creation
      */
-    public function userFollowAddTag(Request $request)
+    public function userAddTag(Request $request)
     {
-        $this->logger->info('*** userFollowAddTag');
+        $this->logger->info('*** userAddTag');
 
         // Request arguments
         $tagTitle = $request->get('tagTitle');
@@ -389,97 +390,8 @@ class XhrTag
         $this->logger->info('$uuid = ' . print_r($uuid, true));
         $newTag = $request->get('newTag');
         $this->logger->info('$newTag = ' . print_r($newTag, true));
-
-        // Function process
-        if (empty($tagTypeId)) {
-            $tagTypeId = null;
-        }
-
-        // Retrieve subject
-        $subject = PUserQuery::create()->filterByUuid($uuid)->findOne();
-
-        $user = $this->securityTokenStorage->getToken()->getUser();
-        $tag = $this->retrieveOrCreateTag($tagUuid, $tagTitle, $tagTypeId, $user->getId(), $newTag);
-
-        // associate tag to user's following
-        $puFollowT = PUFollowTQuery::create()
-            ->filterByPUserId($subject->getId())
-            ->filterByPTagId($tag->getId())
-            ->findOne();
-
-        if ($puFollowT) {
-            $created = false;
-            $htmlTag = null;
-        } else {
-            $created = true;
-            $this->tagManager->createUserFollowTag($subject->getId(), $tag->getId());
-
-            $xhrPathDelete = $this->templating->render(
-                'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
-                array(
-                    'xhrRoute' => 'ROUTE_TAG_USER_FOLLOW_DELETE',
-                    'xhrService' => 'tag',
-                    'xhrMethod' => 'userFollowDeleteTag',
-                    'xhrType' => 'RETURN_BOOLEAN',
-                )
-            );
-
-            $htmlTag = $this->templating->render(
-                'PolitizrFrontBundle:Tag:_detailEditable.html.twig',
-                array(
-                    'uuid' => $uuid,
-                    'tag' => $tag,
-                    'path' => $xhrPathDelete
-                )
-            );
-        }
-
-        // Renvoi de l'ensemble des blocs HTML maj
-        return array(
-            'created' => $created,
-            'htmlTag' => $htmlTag
-            );
-    }
-
-    /**
-     * User's follow tag deletion
-     */
-    public function userFollowDeleteTag(Request $request)
-    {
-        $this->logger->info('*** userFollowDeleteTag');
-
-        // Request arguments
-        $tagUuid = $request->get('tagUuid');
-        $this->logger->info('$tagUuid = ' . print_r($tagUuid, true));
-        $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
-
-        $tag = PTagQuery::create()->filterByUuid($tagUuid)->findOne();
-        $subject = PUserQuery::create()->filterByUuid($uuid)->findOne();
-
-        $deleted = $this->tagManager->deleteUserFollowTag($subject->getId(), $tag->getId());
-
-        return $deleted;
-    }
-
-    /**
-     * User's tagged tag creation
-     */
-    public function userTaggedAddTag(Request $request)
-    {
-        $this->logger->info('*** userTaggedAddTag');
-
-        // Request arguments
-        $tagTitle = $request->get('tagTitle');
-        $this->logger->info('$tagTitle = ' . print_r($tagTitle, true));
-        $tagUuid = $request->get('tagUuid');
-        $this->logger->info('$tagUuid = ' . print_r($tagUuid, true));
-        $tagTypeId = $request->get('tagTypeId');
-        $this->logger->info('$tagTypeId = ' . print_r($tagTypeId, true));
-        $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
-        $newTag = $request->get('newTag');
-        $this->logger->info('$newTag = ' . print_r($newTag, true));
+        $withHidden = $request->get('withHidden');
+        $this->logger->info('$withHidden = ' . print_r($withHidden, true));
 
         // Function process
         if (empty($tagTypeId)) {
@@ -503,14 +415,24 @@ class XhrTag
             $htmlTag = null;
         } else {
             $created = true;
-            $this->tagManager->createUserTaggedTag($subject->getId(), $tag->getId());
+            $this->tagManager->createUserTag($subject->getId(), $tag->getId());
 
             $xhrPathDelete = $this->templating->render(
                 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
                 array(
-                    'xhrRoute' => 'ROUTE_TAG_USER_TAGGED_DELETE',
+                    'xhrRoute' => 'ROUTE_TAG_USER_DELETE',
                     'xhrService' => 'tag',
-                    'xhrMethod' => 'userTaggedDeleteTag',
+                    'xhrMethod' => 'userDeleteTag',
+                    'xhrType' => 'RETURN_BOOLEAN',
+                )
+            );
+
+            $xhrPathHide = $this->templating->render(
+                'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
+                array(
+                    'xhrRoute' => 'ROUTE_TAG_USER_HIDE',
+                    'xhrService' => 'tag',
+                    'xhrMethod' => 'userHideTag',
                     'xhrType' => 'RETURN_BOOLEAN',
                 )
             );
@@ -520,7 +442,9 @@ class XhrTag
                 array(
                     'uuid' => $uuid,
                     'tag' => $tag,
-                    'path' => $xhrPathDelete
+                    'withHidden' => $withHidden,
+                    'pathDelete' => $xhrPathDelete,
+                    'pathHide' => $xhrPathHide,
                 )
             );
         }
@@ -533,11 +457,11 @@ class XhrTag
     }
 
     /**
-     * User's tagged tag deletion
+     * User's tag deletion
      */
-    public function userTaggedDeleteTag(Request $request)
+    public function userDeleteTag(Request $request)
     {
-        $this->logger->info('*** userTaggedDeleteTag');
+        $this->logger->info('*** userDeleteTag');
         
         // Request arguments
         $tagUuid = $request->get('tagUuid');
@@ -548,8 +472,37 @@ class XhrTag
         $tag = PTagQuery::create()->filterByUuid($tagUuid)->findOne();
         $subject = PUserQuery::create()->filterByUuid($uuid)->findOne();
 
-        $deleted = $this->tagManager->deleteUserTaggedTag($subject->getId(), $tag->getId());
+        $deleted = $this->tagManager->deleteUserTag($subject->getId(), $tag->getId());
 
         return $deleted;
+    }
+
+    /**
+     * User's tag hide / unhide
+     */
+    public function userHideTag(Request $request)
+    {
+        $this->logger->info('*** userHideTag');
+        
+        // Request arguments
+        $tagUuid = $request->get('tagUuid');
+        $this->logger->info('$tagUuid = ' . print_r($tagUuid, true));
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
+
+        $tag = PTagQuery::create()->filterByUuid($tagUuid)->findOne();
+        $subject = PUserQuery::create()->filterByUuid($uuid)->findOne();
+
+        $userTaggedTag = PUTaggedTQuery::create()
+            ->filterByPUserId($subject->getId())
+            ->filterByPTagId($tag->getId())
+            ->findOne();
+
+        $userTaggedTag->setHidden(!$userTaggedTag->getHidden());
+        $userTaggedTag->save();
+
+        $withHidden = $userTaggedTag->getHidden();
+
+        return $withHidden;
     }
 }

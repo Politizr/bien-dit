@@ -22,12 +22,7 @@
 
 {# User's tag #}
 {% block show_column_block_tags_public %}
-    {{ adminUserTags(PUser, null, 1, mode='show') }}
-{% endblock %}
-
-{# User's private tags #}
-{% block show_column_block_tags_private %}
-    {{ adminUserPrivateTags(PUser, null, 2, mode='show') }}
+    {{ adminUserTags(PUser, null, 1, true, true, 'show') }}
 {% endblock %}
 
 {# Blocs badges #}

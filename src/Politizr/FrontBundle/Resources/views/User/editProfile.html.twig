@@ -101,7 +101,7 @@
 
         <div id="editMyPublicTags" class="tagBox">
             <div class="fieldsetHeader">
-                <div class="fieldsetHeaderTitle">mes thématiques publiques</div>
+                <div class="fieldsetHeaderTitle">mes centres d'intérêt</div>
                 <div class="helperMark" action="toggleHelper">
                     comment ajouter une thématique?
                     <i class="iconQuestion" action="toggleHelper"></i>
@@ -111,26 +111,15 @@
                     <i class="iconCross" action="hideHelper"></i>
                     @todo : slider ajouter un tag
                 </div>
-            </div>
-
-            {{ userTaggedTagsEdit(user, null, 1, true) }}
-        </div>
-
-        <div id="editMyPrivateTags" class="tagBox">
-            <div class="fieldsetHeader">
-                <div class="fieldsetHeaderTitle">mes thématiques privées</div>
-                <div class="helperMark" action="toggleHelper">
-                    comment ajouter une thématique?
-                    <i class="iconQuestion" action="toggleHelper"></i>
-                </div>
-                <div class="helperSlider helperSliderRight" style="display: none;">
-                    <i class="iconArrowUp"></i>
-                    <i class="iconCross" action="hideHelper"></i>
-                    @todo : slider ajouter un tag
+                <div class="boxInfo">
+                    <i class="iconInfo"></i>
+                    Associez au moins <b>une thématique géographique (Monde, Europe, France, une région ou un département)</b> à votre profil pour nous permettre de vous suggérer des contenus pertinents.<br>
+                    <i class="iconInfo"></i>
+                    Cliquez sur <i class="iconInvisible"></i> pour que la thématique reste invisible sur votre profil public.
                 </div>
             </div>
 
-            {{ userFollowTagsEdit(user, null, 2, true) }}
+            {{ userTagsEdit(user, null, 1, true) }}
         </div>
 
         {% if formOrga %}

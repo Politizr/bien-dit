@@ -32,12 +32,7 @@
 
 {# User's tag #}
 {% block form_row_block_tags_public %}
-    {{ adminUserTags(PUser, null, 1, true) }}
-{% endblock %}
-
-{# User's private tags #}
-{% block form_row_block_tags_private %}
-    {{ adminUserPrivateTags(PUser, null, 2, true) }}
+    {{ adminUserTags(PUser, null, 1, true, true) }}
 {% endblock %}
 
 {% block form_row_block_reputation %}

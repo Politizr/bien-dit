@@ -34,13 +34,13 @@ abstract class BasePUTaggedTPeer
     const TM_CLASS = 'Politizr\\Model\\map\\PUTaggedTTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 5;
+    const NUM_COLUMNS = 6;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 5;
+    const NUM_HYDRATE_COLUMNS = 6;
 
     /** the column name for the id field */
     const ID = 'p_u_tagged_t.id';
@@ -50,6 +50,9 @@ abstract class BasePUTaggedTPeer
 
     /** the column name for the p_tag_id field */
     const P_TAG_ID = 'p_u_tagged_t.p_tag_id';
+
+    /** the column name for the hidden field */
+    const HIDDEN = 'p_u_tagged_t.hidden';
 
     /** the column name for the created_at field */
     const CREATED_AT = 'p_u_tagged_t.created_at';
@@ -76,12 +79,12 @@ abstract class BasePUTaggedTPeer
      * e.g. PUTaggedTPeer::$fieldNames[PUTaggedTPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'PUserId', 'PTagId', 'CreatedAt', 'UpdatedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pUserId', 'pTagId', 'createdAt', 'updatedAt', ),
-        BasePeer::TYPE_COLNAME => array (PUTaggedTPeer::ID, PUTaggedTPeer::P_USER_ID, PUTaggedTPeer::P_TAG_ID, PUTaggedTPeer::CREATED_AT, PUTaggedTPeer::UPDATED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_USER_ID', 'P_TAG_ID', 'CREATED_AT', 'UPDATED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'p_user_id', 'p_tag_id', 'created_at', 'updated_at', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'PUserId', 'PTagId', 'Hidden', 'CreatedAt', 'UpdatedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pUserId', 'pTagId', 'hidden', 'createdAt', 'updatedAt', ),
+        BasePeer::TYPE_COLNAME => array (PUTaggedTPeer::ID, PUTaggedTPeer::P_USER_ID, PUTaggedTPeer::P_TAG_ID, PUTaggedTPeer::HIDDEN, PUTaggedTPeer::CREATED_AT, PUTaggedTPeer::UPDATED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_USER_ID', 'P_TAG_ID', 'HIDDEN', 'CREATED_AT', 'UPDATED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'p_user_id', 'p_tag_id', 'hidden', 'created_at', 'updated_at', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
     );
 
     /**
@@ -91,12 +94,12 @@ abstract class BasePUTaggedTPeer
      * e.g. PUTaggedTPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PUserId' => 1, 'PTagId' => 2, 'CreatedAt' => 3, 'UpdatedAt' => 4, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pUserId' => 1, 'pTagId' => 2, 'createdAt' => 3, 'updatedAt' => 4, ),
-        BasePeer::TYPE_COLNAME => array (PUTaggedTPeer::ID => 0, PUTaggedTPeer::P_USER_ID => 1, PUTaggedTPeer::P_TAG_ID => 2, PUTaggedTPeer::CREATED_AT => 3, PUTaggedTPeer::UPDATED_AT => 4, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_USER_ID' => 1, 'P_TAG_ID' => 2, 'CREATED_AT' => 3, 'UPDATED_AT' => 4, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_user_id' => 1, 'p_tag_id' => 2, 'created_at' => 3, 'updated_at' => 4, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PUserId' => 1, 'PTagId' => 2, 'Hidden' => 3, 'CreatedAt' => 4, 'UpdatedAt' => 5, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pUserId' => 1, 'pTagId' => 2, 'hidden' => 3, 'createdAt' => 4, 'updatedAt' => 5, ),
+        BasePeer::TYPE_COLNAME => array (PUTaggedTPeer::ID => 0, PUTaggedTPeer::P_USER_ID => 1, PUTaggedTPeer::P_TAG_ID => 2, PUTaggedTPeer::HIDDEN => 3, PUTaggedTPeer::CREATED_AT => 4, PUTaggedTPeer::UPDATED_AT => 5, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_USER_ID' => 1, 'P_TAG_ID' => 2, 'HIDDEN' => 3, 'CREATED_AT' => 4, 'UPDATED_AT' => 5, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_user_id' => 1, 'p_tag_id' => 2, 'hidden' => 3, 'created_at' => 4, 'updated_at' => 5, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
     );
 
     /**
@@ -173,12 +176,14 @@ abstract class BasePUTaggedTPeer
             $criteria->addSelectColumn(PUTaggedTPeer::ID);
             $criteria->addSelectColumn(PUTaggedTPeer::P_USER_ID);
             $criteria->addSelectColumn(PUTaggedTPeer::P_TAG_ID);
+            $criteria->addSelectColumn(PUTaggedTPeer::HIDDEN);
             $criteria->addSelectColumn(PUTaggedTPeer::CREATED_AT);
             $criteria->addSelectColumn(PUTaggedTPeer::UPDATED_AT);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.p_user_id');
             $criteria->addSelectColumn($alias . '.p_tag_id');
+            $criteria->addSelectColumn($alias . '.hidden');
             $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
         }

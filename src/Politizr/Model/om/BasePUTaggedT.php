@@ -63,6 +63,13 @@ abstract class BasePUTaggedT extends BaseObject implements Persistent
     protected $p_tag_id;
 
     /**
+     * The value for the hidden field.
+     * Note: this column has a database default value of: false
+     * @var        boolean
+     */
+    protected $hidden;
+
+    /**
      * The value for the created_at field.
      * @var        string
      */
@@ -105,6 +112,28 @@ abstract class BasePUTaggedT extends BaseObject implements Persistent
     protected $alreadyInClearAllReferencesDeep = false;
 
     /**
+     * Applies default values to this object.
+     * This method should be called from the object's constructor (or
+     * equivalent initialization method).
+     * @see        __construct()
+     */
+    public function applyDefaultValues()
+    {
+        $this->hidden = false;
+    }
+
+    /**
+     * Initializes internal state of BasePUTaggedT object.
+     * @see        applyDefaults()
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->applyDefaultValues();
+        EventDispatcherProxy::trigger(array('construct','model.construct'), new ModelEvent($this));
+    }
+
+    /**
      * Get the [id] column value.
      *
      * @return int
@@ -113,11 +142,6 @@ abstract class BasePUTaggedT extends BaseObject implements Persistent
     {
 
         return $this->id;
-    }
-
-    public function __construct(){
-        parent::__construct();
-        EventDispatcherProxy::trigger(array('construct','model.construct'), new ModelEvent($this));
     }
 
     /**
@@ -140,6 +164,17 @@ abstract class BasePUTaggedT extends BaseObject implements Persistent
     {
 
         return $this->p_tag_id;
+    }
+
+    /**
+     * Get the [hidden] column value.
+     *
+     * @return boolean
+     */
+    public function getHidden()
+    {
+
+        return $this->hidden;
     }
 
     /**
@@ -294,6 +329,35 @@ abstract class BasePUTaggedT extends BaseObject implements Persistent
     } // setPTagId()
 
     /**
+     * Sets the value of the [hidden] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return PUTaggedT The current object (for fluent API support)
+     */
+    public function setHidden($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->hidden !== $v) {
+            $this->hidden = $v;
+            $this->modifiedColumns[] = PUTaggedTPeer::HIDDEN;
+        }
+
+
+        return $this;
+    } // setHidden()
+
+    /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
@@ -349,6 +413,10 @@ abstract class BasePUTaggedT extends BaseObject implements Persistent
      */
     public function hasOnlyDefaultValues()
     {
+            if ($this->hidden !== false) {
+                return false;
+            }
+
         // otherwise, everything was equal, so return true
         return true;
     } // hasOnlyDefaultValues()
@@ -374,8 +442,9 @@ abstract class BasePUTaggedT extends BaseObject implements Persistent
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->p_user_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
             $this->p_tag_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
-            $this->created_at = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-            $this->updated_at = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->hidden = ($row[$startcol + 3] !== null) ? (boolean) $row[$startcol + 3] : null;
+            $this->created_at = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->updated_at = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -385,7 +454,7 @@ abstract class BasePUTaggedT extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 5; // 5 = PUTaggedTPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 6; // 6 = PUTaggedTPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PUTaggedT object", $e);
@@ -659,6 +728,9 @@ abstract class BasePUTaggedT extends BaseObject implements Persistent
         if ($this->isColumnModified(PUTaggedTPeer::P_TAG_ID)) {
             $modifiedColumns[':p' . $index++]  = '`p_tag_id`';
         }
+        if ($this->isColumnModified(PUTaggedTPeer::HIDDEN)) {
+            $modifiedColumns[':p' . $index++]  = '`hidden`';
+        }
         if ($this->isColumnModified(PUTaggedTPeer::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`created_at`';
         }
@@ -684,6 +756,9 @@ abstract class BasePUTaggedT extends BaseObject implements Persistent
                         break;
                     case '`p_tag_id`':
                         $stmt->bindValue($identifier, $this->p_tag_id, PDO::PARAM_INT);
+                        break;
+                    case '`hidden`':
+                        $stmt->bindValue($identifier, (int) $this->hidden, PDO::PARAM_INT);
                         break;
                     case '`created_at`':
                         $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
@@ -853,9 +928,12 @@ abstract class BasePUTaggedT extends BaseObject implements Persistent
                 return $this->getPTagId();
                 break;
             case 3:
-                return $this->getCreatedAt();
+                return $this->getHidden();
                 break;
             case 4:
+                return $this->getCreatedAt();
+                break;
+            case 5:
                 return $this->getUpdatedAt();
                 break;
             default:
@@ -890,8 +968,9 @@ abstract class BasePUTaggedT extends BaseObject implements Persistent
             $keys[0] => $this->getId(),
             $keys[1] => $this->getPUserId(),
             $keys[2] => $this->getPTagId(),
-            $keys[3] => $this->getCreatedAt(),
-            $keys[4] => $this->getUpdatedAt(),
+            $keys[3] => $this->getHidden(),
+            $keys[4] => $this->getCreatedAt(),
+            $keys[5] => $this->getUpdatedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -949,9 +1028,12 @@ abstract class BasePUTaggedT extends BaseObject implements Persistent
                 $this->setPTagId($value);
                 break;
             case 3:
-                $this->setCreatedAt($value);
+                $this->setHidden($value);
                 break;
             case 4:
+                $this->setCreatedAt($value);
+                break;
+            case 5:
                 $this->setUpdatedAt($value);
                 break;
         } // switch()
@@ -981,8 +1063,9 @@ abstract class BasePUTaggedT extends BaseObject implements Persistent
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setPUserId($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setPTagId($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setCreatedAt($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setUpdatedAt($arr[$keys[4]]);
+        if (array_key_exists($keys[3], $arr)) $this->setHidden($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setCreatedAt($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setUpdatedAt($arr[$keys[5]]);
     }
 
     /**
@@ -997,6 +1080,7 @@ abstract class BasePUTaggedT extends BaseObject implements Persistent
         if ($this->isColumnModified(PUTaggedTPeer::ID)) $criteria->add(PUTaggedTPeer::ID, $this->id);
         if ($this->isColumnModified(PUTaggedTPeer::P_USER_ID)) $criteria->add(PUTaggedTPeer::P_USER_ID, $this->p_user_id);
         if ($this->isColumnModified(PUTaggedTPeer::P_TAG_ID)) $criteria->add(PUTaggedTPeer::P_TAG_ID, $this->p_tag_id);
+        if ($this->isColumnModified(PUTaggedTPeer::HIDDEN)) $criteria->add(PUTaggedTPeer::HIDDEN, $this->hidden);
         if ($this->isColumnModified(PUTaggedTPeer::CREATED_AT)) $criteria->add(PUTaggedTPeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(PUTaggedTPeer::UPDATED_AT)) $criteria->add(PUTaggedTPeer::UPDATED_AT, $this->updated_at);
 
@@ -1064,6 +1148,7 @@ abstract class BasePUTaggedT extends BaseObject implements Persistent
     {
         $copyObj->setPUserId($this->getPUserId());
         $copyObj->setPTagId($this->getPTagId());
+        $copyObj->setHidden($this->getHidden());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
 
@@ -1236,12 +1321,14 @@ abstract class BasePUTaggedT extends BaseObject implements Persistent
         $this->id = null;
         $this->p_user_id = null;
         $this->p_tag_id = null;
+        $this->hidden = null;
         $this->created_at = null;
         $this->updated_at = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
         $this->clearAllReferences();
+        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);

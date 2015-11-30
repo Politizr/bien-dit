@@ -155,8 +155,7 @@ builders:
                 "Descriptif":
                     "Informations":             [ subtitle, biography ]
                 "Tag":
-                    "Tags associés - public":   [ block_tags_public ]
-                    "Tags suivis - privé":      [ block_tags_private ]
+                    "Tags associés":            [ block_tags_public ]
                 "Réputation":
                     "Score":                    [ block_reputation ]
                     "Badges":                   [ badges ]
@@ -242,13 +241,6 @@ builders:
                     dbType:                     VARCHAR
                     addFormOptions:
                         mapped:                 false
-                block_tags_private:
-                    label:                      "Tags privés"
-                    grid_class:                 "col-md-12"
-                    formType:                   hidden
-                    dbType:                     VARCHAR
-                    addFormOptions:
-                        mapped:                 false
                 badges:
                     dbType:                     model
                     formType:                   model
@@ -305,8 +297,7 @@ builders:
                 "Descriptif":
                     "Informations":             [ biography ]
                 "Tag":
-                    "Tags associés - public":   [ block_tags_public ]
-                    "Tags suivis - privé":      [ block_tags_private ]
+                    "Tags associés":            [ block_tags_public ]
                 "Réputation":
                     "Score":                    [ reputationScore ]
                     "Badges":                   [ block_badges_debat, block_badges_comment, block_badges_participation, block_badges_moderation, block_badges_autre ]
@@ -340,8 +331,6 @@ builders:
                     label:                      "Image"
                 block_tags_public:
                     label:                      "Tags publiques"
-                block_tags_private:
-                    label:                      "Tags privés"
                 reputationScore:
                     label:                      "Score"
                 block_badges_debat:

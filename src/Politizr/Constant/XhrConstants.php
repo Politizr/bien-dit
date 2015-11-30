@@ -106,10 +106,9 @@ class XhrConstants
     const ROUTE_TAG_DEBATE_DELETE = 'profil/debat/tag/delete';
     const ROUTE_TAG_REACTION_CREATE = 'profil/reaction/tag/create';
     const ROUTE_TAG_REACTION_DELETE = 'profil/reaction/tag/delete';
-    const ROUTE_TAG_USER_FOLLOW_CREATE = 'profil/utilisateur/follow/tag/create';
-    const ROUTE_TAG_USER_FOLLOW_DELETE = 'profil/utilisateur/follow/tag/delete';
-    const ROUTE_TAG_USER_TAGGED_CREATE = 'profil/utilisateur/tagged/tag/create';
-    const ROUTE_TAG_USER_TAGGED_DELETE = 'profil/utilisateur/tagged/tag/delete';
+    const ROUTE_TAG_USER_CREATE = 'profil/utilisateur/tag/create';
+    const ROUTE_TAG_USER_DELETE = 'profil/utilisateur/tag/delete';
+    const ROUTE_TAG_USER_HIDE = 'profil/utilisateur/tag/hide';
 
     // USER
     const ROUTE_USER_MANDATE_CREATE = 'profil/utilisateur/mandat/create';
@@ -150,11 +149,9 @@ class XhrConstants
     const ADMIN_ROUTE_TAG_DEBATE_DELETE = 'admin/debat/tag/delete';
     const ADMIN_ROUTE_TAG_REACTION_CREATE = 'admin/reaction/tag/create';
     const ADMIN_ROUTE_TAG_REACTION_DELETE = 'admin/reaction/tag/delete';
-    const ADMIN_ROUTE_TAG_USER_FOLLOW_CREATE = 'admin/utilisateur/follow/tag/create';
-    const ADMIN_ROUTE_TAG_USER_FOLLOW_DELETE = 'admin/utilisateur/follow/tag/delete';
-    const ADMIN_ROUTE_TAG_USER_TAGGED_CREATE = 'admin/utilisateur/tagged/tag/create';
-    const ADMIN_ROUTE_TAG_USER_TAGGED_DELETE = 'admin/utilisateur/tagged/tag/delete';
-
+    const ADMIN_ROUTE_TAG_USER_CREATE = 'admin/utilisateur/tag/create';
+    const ADMIN_ROUTE_TAG_USER_DELETE = 'admin/utilisateur/tag/delete';
+    const ADMIN_ROUTE_TAG_USER_HIDE = 'admin/utilisateur/tag/hide';
 
     // REPUTATION
     const ADMIN_ROUTE_USER_REPUTATION_EVOLUTION = 'admin/utilisateur/reputation/update';

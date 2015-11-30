@@ -5,13 +5,7 @@
     {{ adminTagDebates(PTag) }}
 {% endblock %}
 
-{# Tagged tags block #}
-{% block show_column_block_tagged_tag_users %}
-    {{ adminTaggedTagUsers(PTag) }}
+{# Users tags block #}
+{% block show_column_block_users %}
+    {{ adminTagUsers(PTag) }}
 {% endblock %}
-
-{# Follow tags block #}
-{% block show_column_block_follow_tag_users %}
-    {{ adminFollowTagUsers(PTag) }}
-{% endblock %}
-

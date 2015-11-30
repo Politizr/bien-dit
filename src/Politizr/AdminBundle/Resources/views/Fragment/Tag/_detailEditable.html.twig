@@ -6,7 +6,7 @@
 {% else %}
     {% set twbLabel = "default" %}
 {% endif %}
-<span class="btn btn-{{ twbLabel }}">
-    {{ tag.title }}<a action="deleteTag" class="fa fa-close" path="{{ path }}" tagUuid="{{ tag.uuid }}" uuid="{{ uuid }}"></a>
-</span>
+<div class="tagLabel btn btn-{{ twbLabel }}{% if tag.hasVirtualColumn('hidden') and tag.virtualColumn('hidden') %} tagInvisible{% endif %}" tagUuid="{{ tag.uuid }}" uuid="{{ uuid }}">
+    {{ tag.title }}{% if withHidden %}<a action="hideTag" path="{{ pathHide }}"><i class="iconInvisible"></i></a>{% endif %}<a action="deleteTag" class="fa fa-close" path="{{ pathDelete }}"></a>
+</div>
 {% endspaceless %}

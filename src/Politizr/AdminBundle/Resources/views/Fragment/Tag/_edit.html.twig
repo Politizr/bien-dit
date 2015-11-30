@@ -1,8 +1,8 @@
-<div class="addTag" id="editTagZone-{{ zoneId }}" tagTypeId="{{ tagTypeId }}" uuid="{{ object.uuid }}" newTag="{{ newTag }}" path="{{ pathCreate }}">
+<div class="addTag" id="editTagZone-{{ zoneId }}" tagTypeId="{{ tagTypeId }}" uuid="{{ object.uuid }}" newTag="{{ newTag }}" withHidden="{{ withHidden }}" path="{{ pathCreate }}">
 
     <div class="editableTagList">
         {% for tag in tags %}
-            {% include 'PolitizrAdminBundle:Fragment\\Tag:_detailEditable.html.twig' with { 'uuid': object.uuid, 'tag': tag, 'path': pathDelete } %}&nbsp;
+            {% include 'PolitizrAdminBundle:Fragment\\Tag:_detailEditable.html.twig' with { 'uuid': object.uuid, 'tag': tag } %}
         {% endfor %}
     </div>
 

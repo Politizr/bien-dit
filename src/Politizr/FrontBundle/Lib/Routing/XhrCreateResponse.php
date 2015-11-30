@@ -80,7 +80,7 @@ class XhrCreateResponse
                 $success = $service->$methodCallback($request);
 
                 $jsonResponse = array (
-                    'success' => true
+                    'success' => $success
                 );
             } else {
                 throw new NotFoundHttpException('Not a XHR request');

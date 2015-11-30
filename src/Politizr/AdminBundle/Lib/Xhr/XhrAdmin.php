@@ -21,7 +21,6 @@ use Politizr\Model\PUserQuery;
 use Politizr\Model\PTagQuery;
 use Politizr\Model\PDDTaggedTQuery;
 use Politizr\Model\PDRTaggedTQuery;
-use Politizr\Model\PUFollowTQuery;
 use Politizr\Model\PUTaggedTQuery;
 use Politizr\Model\PMUserModeratedQuery;
 
@@ -264,7 +263,8 @@ class XhrAdmin
                 array(
                     'uuid' => $uuid,
                     'tag' => $tag,
-                    'path' => $xhrPathDelete
+                    'withHidden' => false,
+                    'pathDelete' => $xhrPathDelete
                 )
             );
         }
@@ -358,7 +358,8 @@ class XhrAdmin
                 array(
                     'uuid' => $uuid,
                     'tag' => $tag,
-                    'path' => $xhrPathDelete
+                    'withHidden' => false,
+                    'pathDelete' => $xhrPathDelete
                 )
             );
         }
@@ -396,99 +397,9 @@ class XhrAdmin
     /* ######################################################################################################## */
 
     /**
-     * User's follow tag creation
-     */
-    public function userFollowAddTag(Request $request)
-    {
-        $this->logger->info('*** userFollowAddTag');
-
-        // Request arguments
-        $tagTitle = $request->get('tagTitle');
-        $this->logger->info('$tagTitle = ' . print_r($tagTitle, true));
-        $tagUuid = $request->get('tagUuid');
-        $this->logger->info('$tagUuid = ' . print_r($tagUuid, true));
-        $tagTypeId = $request->get('tagTypeId');
-        $this->logger->info('$tagTypeId = ' . print_r($tagTypeId, true));
-        $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
-        $newTag = $request->get('newTag');
-        $this->logger->info('$newTag = ' . print_r($newTag, true));
-
-        // Function process
-        if (empty($tagTypeId)) {
-            $tagTypeId = null;
-        }
-
-        // Retrieve subject
-        $subject = PUserQuery::create()->filterByUuid($uuid)->findOne();
-
-        $tag = $this->retrieveOrCreateTag($tagUuid, $tagTitle, $tagTypeId, null, $newTag);
-
-        // associate tag to user's following
-        $puFollowT = PUFollowTQuery::create()
-            ->filterByPUserId($subject->getId())
-            ->filterByPTagId($tag->getId())
-            ->findOne();
-
-        if ($puFollowT) {
-            $created = false;
-            $htmlTag = null;
-        } else {
-            $created = true;
-            $this->tagManager->createUserFollowTag($subject->getId(), $tag->getId());
-
-            $xhrPathDelete = $this->templating->render(
-                'PolitizrAdminBundle:Fragment\\Xhr:_xhrPath.html.twig',
-                array(
-                    'xhrRoute' => 'ADMIN_ROUTE_TAG_USER_FOLLOW_DELETE',
-                    'xhrService' => 'admin',
-                    'xhrMethod' => 'userFollowDeleteTag',
-                    'xhrType' => 'RETURN_BOOLEAN',
-                )
-            );
-
-            $htmlTag = $this->templating->render(
-                'PolitizrAdminBundle:Fragment\\Tag:_detailEditable.html.twig',
-                array(
-                    'uuid' => $uuid,
-                    'tag' => $tag,
-                    'path' => $xhrPathDelete
-                )
-            );
-        }
-
-        // Renvoi de l'ensemble des blocs HTML maj
-        return array(
-            'created' => $created,
-            'htmlTag' => $htmlTag
-            );
-    }
-
-    /**
-     * User's follow tag deletion
-     */
-    public function userFollowDeleteTag(Request $request)
-    {
-        $this->logger->info('*** userFollowDeleteTag');
-
-        // Request arguments
-        $tagUuid = $request->get('tagUuid');
-        $this->logger->info('$tagUuid = ' . print_r($tagUuid, true));
-        $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
-
-        $tag = PTagQuery::create()->filterByUuid($tagUuid)->findOne();
-        $subject = PUserQuery::create()->filterByUuid($uuid)->findOne();
-
-        $deleted = $this->tagManager->deleteUserFollowTag($subject->getId(), $tag->getId());
-
-        return $deleted;
-    }
-
-    /**
      * User's tagged tag creation
      */
-    public function userTaggedAddTag(Request $request)
+    public function userAddTag(Request $request)
     {
         // Request arguments
         $tagTitle = $request->get('tagTitle');
@@ -501,6 +412,8 @@ class XhrAdmin
         $this->logger->info('$uuid = ' . print_r($uuid, true));
         $newTag = $request->get('newTag');
         $this->logger->info('$newTag = ' . print_r($newTag, true));
+        $withHidden = $request->get('withHidden');
+        $this->logger->info('$withHidden = ' . print_r($withHidden, true));
 
         // Function process
         if (empty($tagTypeId)) {
@@ -523,14 +436,24 @@ class XhrAdmin
             $htmlTag = null;
         } else {
             $created = true;
-            $this->tagManager->createUserTaggedTag($subject->getId(), $tag->getId());
+            $this->tagManager->createUserTag($subject->getId(), $tag->getId());
+
+            $xhrPathHide = $this->templating->render(
+                'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
+                array(
+                    'xhrRoute' => 'ROUTE_TAG_USER_HIDE',
+                    'xhrService' => 'tag',
+                    'xhrMethod' => 'userHideTag',
+                    'xhrType' => 'RETURN_BOOLEAN',
+                )
+            );
 
             $xhrPathDelete = $this->templating->render(
                 'PolitizrAdminBundle:Fragment\\Xhr:_xhrPath.html.twig',
                 array(
-                    'xhrRoute' => 'ADMIN_ROUTE_TAG_USER_TAGGED_DELETE',
+                    'xhrRoute' => 'ADMIN_ROUTE_TAG_USER_DELETE',
                     'xhrService' => 'admin',
-                    'xhrMethod' => 'userTaggedDeleteTag',
+                    'xhrMethod' => 'userDeleteTag',
                     'xhrType' => 'RETURN_BOOLEAN',
                 )
             );
@@ -540,7 +463,9 @@ class XhrAdmin
                 array(
                     'uuid' => $uuid,
                     'tag' => $tag,
-                    'path' => $xhrPathDelete
+                    'withHidden' => $withHidden,
+                    'pathDelete' => $xhrPathDelete,
+                    'pathHide' => $xhrPathHide,
                 )
             );
         }
@@ -555,9 +480,9 @@ class XhrAdmin
     /**
      * User's tagged tag deletion
      */
-    public function userTaggedDeleteTag(Request $request)
+    public function userDeleteTag(Request $request)
     {
-        $this->logger->info('*** userTaggedDeleteTag');
+        $this->logger->info('*** userDeleteTag');
         
         // Request arguments
         $tagUuid = $request->get('tagUuid');
@@ -568,9 +493,38 @@ class XhrAdmin
         $tag = PTagQuery::create()->filterByUuid($tagUuid)->findOne();
         $subject = PUserQuery::create()->filterByUuid($uuid)->findOne();
 
-        $deleted = $this->tagManager->deleteUserTaggedTag($subject->getId(), $tag->getId());
+        $deleted = $this->tagManager->deleteUserTag($subject->getId(), $tag->getId());
 
         return $deleted;
+    }
+
+    /**
+     * User's tag hide / unhide
+     */
+    public function userHideTag(Request $request)
+    {
+        $this->logger->info('*** userHideTag');
+        
+        // Request arguments
+        $tagUuid = $request->get('tagUuid');
+        $this->logger->info('$tagUuid = ' . print_r($tagUuid, true));
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
+
+        $tag = PTagQuery::create()->filterByUuid($tagUuid)->findOne();
+        $subject = PUserQuery::create()->filterByUuid($uuid)->findOne();
+
+        $userTaggedTag = PUTaggedTQuery::create()
+            ->filterByPUserId($subject->getId())
+            ->filterByPTagId($tag->getId())
+            ->findOne();
+
+        $userTaggedTag->setHidden(!$userTaggedTag->getHidden());
+        $userTaggedTag->save();
+
+        $withHidden = $userTaggedTag->getHidden();
+
+        return $withHidden;
     }
 
     /* ######################################################################################################## */

@@ -75,9 +75,9 @@ class PolitizrTagExtension extends \Twig_Extension
                 'userFollowTagsEdit',
                 array('is_safe' => array('html'))
             ),
-            'userTaggedTagsEdit'  => new \Twig_Function_Method(
+            'userTagsEdit'  => new \Twig_Function_Method(
                 $this,
-                'userTaggedTagsEdit',
+                'userTagsEdit',
                 array('is_safe' => array('html'))
             ),
             'geoTagBreadcrumb'  => new \Twig_Function_Method(
@@ -149,6 +149,7 @@ class PolitizrTagExtension extends \Twig_Extension
                 'tagTypeId' => $tagTypeId,
                 'zoneId' => $zoneId,
                 'newTag' => $newTag,
+                'withHidden' => false,
                 'tags' => $debate->getTags($tagTypeId),
                 'pathCreate' => $xhrPathCreate,
                 'pathDelete' => $xhrPathDelete,
@@ -203,6 +204,7 @@ class PolitizrTagExtension extends \Twig_Extension
                 'tagTypeId' => $tagTypeId,
                 'zoneId' => $zoneId,
                 'newTag' => $newTag,
+                'withHidden' => false,
                 'tags' => $reaction->getTags($tagTypeId),
                 'pathCreate' => $xhrPathCreate,
                 'pathDelete' => $xhrPathDelete,
@@ -212,102 +214,59 @@ class PolitizrTagExtension extends \Twig_Extension
         return $html;
     }
 
-
     /**
-     *  Gestion des tags suivi d'un user
+     * User's tags management
      *
-     *  @param $user        PUser      PUser
-     *  @param $tagTypeId   integer    ID type de tag
-     *  @param $zoneId      integer    ID de la zone CSS
-     *  @param $newTag      boolean     Ajout de nouveau tag possible ou pas
-     *
-     *  @return string
+     * @param PUser $user
+     * @param integer $tagTypeId
+     * @param integer $zoneId CSS zone number
+     * @param boolean $newTag create new tag
+     * @param boolean $withHidden manage hidden tag's property
+     * @return string
      */
-    public function userFollowTagsEdit($user, $tagTypeId = null, $zoneId = 1, $newTag = false)
+    public function userTagsEdit($user, $tagTypeId, $zoneId = 1, $newTag = false, $withHidden = true)
     {
-        $this->logger->info('*** userFollowTagsEdit');
-        // $this->logger->info('$debate = '.print_r($debate, true));
-        // $this->logger->info('$tagTypeId = '.print_r($tagTypeId, true));
-        // $this->logger->info('$zoneId = '.print_r($zoneId, true));
-
-        // Construction des chemins XHR
-        $xhrPathCreate = $this->templating->render(
-            'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
-            array(
-                'xhrRoute' => 'ROUTE_TAG_USER_FOLLOW_CREATE',
-                'xhrService' => 'tag',
-                'xhrMethod' => 'userFollowAddTag',
-                'xhrType' => 'RETURN_HTML',
-            )
-        );
-
-        $xhrPathDelete = $this->templating->render(
-            'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
-            array(
-                'xhrRoute' => 'ROUTE_TAG_USER_FOLLOW_DELETE',
-                'xhrService' => 'tag',
-                'xhrMethod' => 'userFollowDeleteTag',
-                'xhrType' => 'RETURN_BOOLEAN',
-            )
-        );
-
-        // Construction du rendu du tag
-        $html = $this->templating->render(
-            'PolitizrFrontBundle:Tag:_edit.html.twig',
-            array(
-                'object' => $user,
-                'tagTypeId' => $tagTypeId,
-                'zoneId' => $zoneId,
-                'newTag' => $newTag,
-                'tags' => $user->getFollowTags($tagTypeId),
-                'pathCreate' => $xhrPathCreate,
-                'pathDelete' => $xhrPathDelete,
-                )
-        );
-
-        return $html;
-    }
-
-
-    /**
-     *  Gestion des tags associé à un user
-     *
-     *  @param $user        PUser       PUser
-     *  @param $tagTypeId   integer     ID type de tag
-     *  @param $zoneId      integer     ID de la zone CSS
-     *  @param $newTag      boolean     Ajout de nouveau tag possible ou pas
-     *
-     *  @return string
-     */
-    public function userTaggedTagsEdit($user, $tagTypeId, $zoneId = 1, $newTag = false)
-    {
-        $this->logger->info('*** userTaggedTagsEdit');
+        $this->logger->info('*** userTagsEdit');
         // $this->logger->info('$debate = '.print_r($user, true));
         // $this->logger->info('$tagTypeId = '.print_r($tagTypeId, true));
         // $this->logger->info('$zoneId = '.print_r($zoneId, true));
+        // $this->logger->info('$withHidden = '.print_r($withHidden, true));
 
         // Construction des chemins XHR
         $xhrPathCreate = $this->templating->render(
             'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
             array(
-                'xhrRoute' => 'ROUTE_TAG_USER_TAGGED_CREATE',
+                'xhrRoute' => 'ROUTE_TAG_USER_CREATE',
                 'xhrService' => 'tag',
-                'xhrMethod' => 'userTaggedAddTag',
+                'xhrMethod' => 'userAddTag',
                 'xhrType' => 'RETURN_HTML',
+            )
+        );
+
+        $xhrPathHide = $this->templating->render(
+            'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
+            array(
+                'xhrRoute' => 'ROUTE_TAG_USER_HIDE',
+                'xhrService' => 'tag',
+                'xhrMethod' => 'userHideTag',
+                'xhrType' => 'RETURN_BOOLEAN',
             )
         );
 
         $xhrPathDelete = $this->templating->render(
             'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
             array(
-                'xhrRoute' => 'ROUTE_TAG_USER_TAGGED_DELETE',
+                'xhrRoute' => 'ROUTE_TAG_USER_DELETE',
                 'xhrService' => 'tag',
-                'xhrMethod' => 'userTaggedDeleteTag',
+                'xhrMethod' => 'userDeleteTag',
                 'xhrType' => 'RETURN_BOOLEAN',
             )
         );
 
         // Construction du rendu du tag
+        $tags = $user->getTags($tagTypeId, $withHidden?null:false);
+        dump($tags);
+
         $html = $this->templating->render(
             'PolitizrFrontBundle:Tag:_edit.html.twig',
             array(
@@ -315,8 +274,10 @@ class PolitizrTagExtension extends \Twig_Extension
                 'tagTypeId' => $tagTypeId,
                 'zoneId' => $zoneId,
                 'newTag' => $newTag,
-                'tags' => $user->getTaggedTags($tagTypeId),
+                'withHidden' => $withHidden,
+                'tags' => $user->getTags($tagTypeId, $withHidden?null:false),
                 'pathCreate' => $xhrPathCreate,
+                'pathHide' => $xhrPathHide,
                 'pathDelete' => $xhrPathDelete,
                 )
         );
