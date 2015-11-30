@@ -36,6 +36,10 @@
                 </div>
                 <div class="timelineItemContentFooter">
                     <div class="timelineItemContentFooterLeft">
+                        <div class="viewersCounter">
+                            <i class="iconGraph"></i>
+                            {{ reaction | nbViews }}
+                        </div>
                         <div class="reactionsCounter">
                             <i class="iconReaction"></i>
                             {{ reaction | nbReactions }}
