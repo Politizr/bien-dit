@@ -115,6 +115,11 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 array('is_safe' => array('html'))
             ),
             new \Twig_SimpleFilter(
+                'removeLinks',
+                array($this, 'removeLinks'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
                 'nbViewsFormat',
                 array($this, 'nbViewsFormat'),
                 array('is_safe' => array('html'))
@@ -416,6 +421,17 @@ class PolitizrDocumentExtension extends \Twig_Extension
         }
 
         return $html;
+    }
+
+    /**
+     * Remove <a href=""></a> from input text
+     *
+     * @param string $text
+     * @return string
+     */
+    public function removeLinks($text)
+    {
+        return preg_replace('/<a href=\"(.*?)\">(.*?)<\/a>/', "\\2", $text);
     }
 
     /**

@@ -31,7 +31,7 @@
                     </div>
                     <a href="{{ path('ReactionDetail'~profileSuffix(), { 'slug': reaction.slug }) }}">
                         <span>{{ reaction.title }}</span>
-                        {{ reaction.description | excerpt | purify }}
+                        {{ reaction.description | removeLinks | excerpt | purify }}
                     </a>                 
                 </div>
                 <div class="timelineItemContentFooter">
