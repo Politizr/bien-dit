@@ -79,12 +79,12 @@ class PDDebate extends BasePDDebate implements PDocumentInterface, ContainerAwar
                 new NotBlank(['message' => 'Le titre ne doit pas être vide']),
                 new Length(['max' => 100, 'maxMessage' => 'Le titre doit contenir {{ limit }} caractères maximum.']),
             ),
-            'description' => array(
-                new NotBlank(['message' => 'La description ne doit pas être vide']),
-                new Length(['min' => 140, 'minMessage' => 'Le corps de la publication doit contenir au moins {{ limit }} caractères.']),
-            ),
+            // 'description' => array(
+            //     new NotBlank(['message' => 'La description ne doit pas être vide']),
+            //     new Length(['min' => 140, 'minMessage' => 'Le corps de la publication doit contenir au moins {{ limit }} caractères.']),
+            // ),
             'geoTags' => new Count(['min' => 1, 'minMessage' => 'Saisissez au moins {{ limit }} thématique géographique parmi les départements, les régions, "France", "Europe" ou "Monde".']),
-            // 'allTags' => new Count(['min' => 3, 'minMessage' => 'Saisissez au moins {{ limit }} thématiques au total.']),
+            'allTags' => new Count(['max' => 10, 'maxMessage' => 'Saisissez au maximum {{ limit }} thématiques.']),
         ));
 
         return $collectionConstraint;

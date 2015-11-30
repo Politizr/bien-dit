@@ -1,0 +1,77 @@
+@import "../_global/_colors";
+
+//////dashboard
+
+body.css760 #dashboard h1 {
+	padding:15px 10px 10px 10px;
+}
+
+body.css760 .dbMapHeader {
+	margin: 5px 10px 10px 10px;
+	width: calc(100% - 20px);
+}
+
+body.css760 .dbMapHeaderLeft {width: 100%;}
+
+body.css760 .dbMapHeaderRight {
+	float: left;
+	clear: both;
+	width: 100%;
+	text-align: left;
+	margin-top: 10px;
+}
+
+body.css760 .dbMapHeaderRight span:first-child {margin-left: 0;}
+
+body.css760 .dbMapBox {
+	height: auto;
+	padding-bottom: 10px;
+}
+
+body.css760 .dbMapFilters {
+	margin: 400px 10px 0 10px;
+	padding: 20px 10px;
+	width: calc(100% - 40px);
+	float: right;
+	height: auto;
+}
+
+body.css760 .dbMapBox .svg {
+	width: 100%;
+	overflow: hidden;
+	height: 400px;
+}
+
+body.css760 .svg svg {
+	position: absolute;
+	top:-130px;
+}
+
+body.css760 .dbMapFilters .listCriteria {margin-top: 0;}
+body.css760 .dbMapFilters .listCriteria.listCriteriaTabs label {
+	width: 31%;
+	margin-right: 2%;
+}
+
+body.css760 .linkOnMap { top : 10px; left: 10px; bottom: auto;}
+body.css760 .menuOnMap {
+	top:35px;
+	bottom: auto;
+	left: 10px;
+}
+body.css760 i.iconArrowDown {display: none;}
+
+body.css760 .dbMapBox .profileName { font-size: 16px;}
+
+body.css760 .bdBox {
+	margin: 0 10px;
+	width: calc(100% - 20px);	
+	float: right;
+}
+
+body.css760 #dashboard .bdBox h1 { padding-left: 0;}
+
+body.css760 .dbPopularTagList {
+	width: 100%;
+	margin: 0;
+}

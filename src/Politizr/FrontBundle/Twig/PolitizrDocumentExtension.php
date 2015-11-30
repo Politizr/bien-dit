@@ -85,6 +85,11 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 array('is_safe' => array('html'))
             ),
             new \Twig_SimpleFilter(
+                'nbViews',
+                array($this, 'nbViews'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
                 'nbReactions',
                 array($this, 'nbReactions'),
                 array('is_safe' => array('html'))
@@ -112,6 +117,11 @@ class PolitizrDocumentExtension extends \Twig_Extension
             new \Twig_SimpleFilter(
                 'excerpt',
                 array($this, 'excerpt'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
+                'removeLinks',
+                array($this, 'removeLinks'),
                 array('is_safe' => array('html'))
             ),
             new \Twig_SimpleFilter(
@@ -228,6 +238,29 @@ class PolitizrDocumentExtension extends \Twig_Extension
         return $html;
     }
 
+    /**
+     * Document's number of views
+     *
+     * @param PDocumentInterface $document
+     * @return html
+     */
+    public function nbViews(PDocumentInterface $document)
+    {
+        // $this->logger->info('*** nbViews');
+        // $this->logger->info('$document = '.print_r($document, true));
+
+        $nbViews = $document->getNbViews();
+
+        if (0 === $nbViews) {
+            $html = 'Aucune vue';
+        } elseif (1 === $nbViews) {
+            $html = '1 vue';
+        } else {
+            $html = $nbViews.' vues';
+        }
+
+        return $html;
+    }
 
     /**
      * Document's number of reactions
@@ -416,6 +449,17 @@ class PolitizrDocumentExtension extends \Twig_Extension
         }
 
         return $html;
+    }
+
+    /**
+     * Remove <a href=""></a> from input text
+     *
+     * @param string $text
+     * @return string
+     */
+    public function removeLinks($text)
+    {
+        return preg_replace('/<a href=\"(.*?)\">(.*?)<\/a>/', "\\2", $text);
     }
 
     /**

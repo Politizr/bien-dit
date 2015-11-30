@@ -389,9 +389,9 @@ class XhrDocument
         $valid = $this->globalTools->validateConstraints(
             array(
                 'title' => $debate->getTitle(),
-                'description' => strip_tags($debate->getDescription()),
+                // 'description' => strip_tags($debate->getDescription()),
                 'geoTags' => $debate->getWorldToDepartmentGeoArrayTags(),
-                // 'allTags' => $debate->getArrayTags(),
+                'allTags' => $debate->getArrayTags(),
             ),
             $debate->getPublishConstraints(),
             $errorString
@@ -582,9 +582,9 @@ class XhrDocument
         $valid = $this->globalTools->validateConstraints(
             array(
                 'title' => $reaction->getTitle(),
-                'description' => strip_tags($reaction->getDescription()),
+                // 'description' => strip_tags($reaction->getDescription()),
                 'geoTags' => $reaction->getWorldToDepartmentGeoArrayTags(),
-                // 'allTags' => $reaction->getArrayTags(),
+                'allTags' => $reaction->getArrayTags(),
             ),
             $reaction->getPublishConstraints(),
             $errorString

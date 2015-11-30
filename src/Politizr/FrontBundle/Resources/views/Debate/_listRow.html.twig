@@ -28,6 +28,10 @@
                     {% include 'PolitizrFrontBundle:User:_authorMini.html.twig' with { 'user': debate.user } only %}
                 </div>
                 <div class="postSummaryActivity">
+                    <div class="viewersCounter">
+                        <i class="iconGraph"></i>
+                        {{ debate | nbViews }}
+                    </div>
                     <div class="reactionsCounter">
                         <i class="iconReaction"></i>
                         {{ debate | nbReactions }}
