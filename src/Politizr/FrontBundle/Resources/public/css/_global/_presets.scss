@@ -288,6 +288,5 @@ body {
     color: $darkGrey;
     background-color: $highlight;
 }
-.tag:hover {
-	color: #fff;
-}
+.tag:hover { color: #fff; }
+.tag.geo {background-color: $darkHighlight;}
