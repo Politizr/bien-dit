@@ -115,6 +115,10 @@ body.noscroll {
 	font-size: 28px;
 	color: $highlight;
 }
+.modal .modalSidebar h1.tag {
+	text-transform: uppercase;
+	background-color: transparent;
+}
 
 .modal .cosigners h1{ margin-bottom: 60px;}
 .modal .reputation h1 { margin-bottom: 40px;}
