@@ -58,4 +58,5 @@ class ListingConstants
     //              Dashboard Constants                             //
     // ************************************************************ //
     const DASHBOARD_MAP_LIMIT = 3;
+    const DASHBOARD_TAG_LIMIT = 10;
 }

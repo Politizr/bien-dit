@@ -10,6 +10,7 @@ use Politizr\Exception\FormValidationException;
 
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\TagConstants;
+use Politizr\Constant\ListingConstants;
 
 use Politizr\FrontBundle\Lib\Manager\DocumentManager;
 
@@ -25,24 +26,68 @@ class TagService
     private $securityTokenStorage;
     private $securityAuthorizationChecker;
     
+    private $tagManager;
+    
     private $logger;
 
     /**
      *
      * @param @security.token_storage
      * @param @security.authorization_checker
+     * @param @politizr.manager.tag
      * @param @logger
      */
     public function __construct(
         $securityTokenStorage,
         $securityAuthorizationChecker,
+        $tagManager,
         $logger
     ) {
         $this->securityTokenStorage = $securityTokenStorage;
         $this->securityAuthorizationChecker =$securityAuthorizationChecker;
 
+        $this->tagManager = $tagManager;
+
         $this->logger = $logger;
     }
+
+    /* ######################################################################################################## */
+    /*                                             PRIVATE FUNCTIONS                                            */
+    /* ######################################################################################################## */
+
+    /**
+     * Execute SQL and hydrate TimelineRow model
+     *
+     * @param string $sql
+     * @return array[id]
+     */
+    private function hydrateTagIdRows($sql)
+    {
+        $this->logger->info('*** hydrateTagIdRows');
+
+        $timeline = array();
+
+        if ($sql) {
+            $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
+
+            // dump($sql);
+
+            $stmt = $con->prepare($sql);
+            $stmt->execute();
+
+            $result = $stmt->fetchAll();
+
+            // dump($result);
+
+            $tagIds = [];
+            foreach ($result as $row) {
+                $tagIds[] = $row['p_tag_id'];
+            }
+        }
+
+        return $tagIds;
+    }
+
 
     /* ######################################################################################################## */
     /*                                              PUBLIC FUNCTIONS                                            */
@@ -296,5 +341,42 @@ class TagService
         }
 
         return $mapTags;
+    }
+
+    /**
+     * Get the most popular tags
+     *
+     * @param string $keywords
+     * @return array[PTag]
+     */
+    public function getMostPopularTags($keywords = null)
+    {
+        $this->logger->info('*** getMostPopularTags');
+        $this->logger->info('$keywords = '.print_r($keywords, true));
+
+        $interval = null;
+        if ($keywords && (in_array('lastDay', $keywords))) {
+            $interval = 1;
+        } elseif ($keywords && (in_array('lastWeek', $keywords))) {
+            $interval = 7;
+        } elseif ($keywords && (in_array('lastMonth', $keywords))) {
+            $interval = 30;
+        }
+
+        $sql = $this->tagManager->createMostPopularTagsRawSql($interval);
+        $tagIds = $this->hydrateTagIdRows($sql);
+
+        $tags = [];
+        $counter = 1;
+        foreach ($tagIds as $tagId) {
+            $tags[] = PTagQuery::create()->findPk($tagId);
+
+            if ($counter == ListingConstants::DASHBOARD_TAG_LIMIT) {
+                break;
+            }
+            $counter++;
+        }
+
+        return $tags;
     }
 }

@@ -61,12 +61,12 @@ class XhrDashboard
      */
     private function getFiltersFromRequest(Request $request)
     {
-        $geoTagUuid = $request->get('geoTagUuid');
-        $this->logger->info('$geoTagUuid = ' . print_r($geoTagUuid, true));
         $filterDate = $request->get('filterDate');
         $this->logger->info('$filterDate = ' . print_r($filterDate, true));
+        $geoTagUuid = $request->get('geoTagUuid');
+        $this->logger->info('$geoTagUuid = ' . print_r($geoTagUuid, true));
 
-        return [ $geoTagUuid, $filterDate ];
+        return [ $filterDate, $geoTagUuid ];
     }
 
     /* ######################################################################################################## */
@@ -82,8 +82,8 @@ class XhrDashboard
         
         // Request arguments
         $queryParams = $this->getFiltersFromRequest($request);
-        $geoTagUuid = $queryParams[0];
-        $filters = $queryParams[1];
+        $filters = $queryParams[0];
+        $geoTagUuid = $queryParams[1];
 
         // Retrieve subject
         if (!$geoTagUuid) {
@@ -160,6 +160,37 @@ class XhrDashboard
                 'fomTag' => $fomTag,
                 'europeTag' => $europeTag,
                 'mapTags' => $mapTags,
+            )
+        );
+
+        return array(
+            'html' => $html,
+            );
+    }
+
+    /* ######################################################################################################## */
+    /*                                   DASHBOARD TAG LOADING                                                  */
+    /* ######################################################################################################## */
+
+    /**
+     *
+     */
+    public function tag(Request $request)
+    {
+        $this->logger->info('*** tag');
+        
+        // Request arguments
+        $queryParams = $this->getFiltersFromRequest($request);
+        $filters = $queryParams[0];
+
+        // top 10 tag
+        $tags = $this->tagService->getMostPopularTags($filters);
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Dashboard:_tag.html.twig',
+            array(
+                'tags' => $tags,
+                'filters' => $filters,
             )
         );
 
