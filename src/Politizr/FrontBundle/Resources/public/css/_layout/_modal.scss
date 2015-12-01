@@ -123,6 +123,25 @@ body.noscroll {
 .modal .cosigners h1{ margin-bottom: 60px;}
 .modal .reputation h1 { margin-bottom: 40px;}
 
+#userTagAssociateZone {
+	float: left;
+	width: 100%;
+	margin: 10px 0 0 0;
+    font-family: 'nerissemibold';
+    font-size: 11px;
+    color: $anotherGrey;
+}
+#userTagAssociateZone a {color: $darkGrey; cursor: pointer;}
+#userTagAssociateZone a:hover {color: $highlight;}
+
+#userTagAssociateZone a.userAddAssociateTag {
+    padding: 2px 4px;
+    background-color: $highlight;
+    color: #fff;
+}
+#userTagAssociateZone a.userAddAssociateTag:hover { background-color: $darkGrey; }
+
+
 
 // no results
 
