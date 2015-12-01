@@ -117,7 +117,7 @@ $("body").on("click", "[action='modalSearch']", function() {
 function modalLoading() {
     $('#modalBox').fadeIn('fast');
     $('body').addClass('noscroll');
-    $('html, body').scrollTop( 0 );
+    // $('html, body').scrollTop( 0 );
     $(".modalRightCol").addClass('activeMobileModal');
 };
 
