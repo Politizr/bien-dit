@@ -1,6 +1,12 @@
 {% spaceless %}
     <div class="modalSidebar">
         <h1>{{ subject.title }}</h1>
+        <div id="userTagAssociateZone" class="withLoaderInside">
+            <div class="ajaxLoader" style="display: none;">
+                <div class="ajaxLoaderSpinner"></div><div class="ajaxLoaderBg"></div><div class="ajaxLoaderBlockClick"></div>
+            </div>
+            {{ subject | userTagAssociate }}
+        </div>
         <div class="listCriteria listCriteriaTabs">
             <form id="listType">
                 <input type="radio" class="type" name="type" id="debateType" value="debate" url="{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {

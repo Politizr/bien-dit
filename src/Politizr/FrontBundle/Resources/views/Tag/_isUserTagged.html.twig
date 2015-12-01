@@ -1,0 +1,6 @@
+{% if isGrantedE() %}
+    {% set suffix = 'E' %}
+{% elseif isGrantedC() %}
+    {% set suffix = 'C' %}
+{% endif %}
+Ce thème est associé à vos <a href="{{ path('Profile'~suffix) }}">centres d'intérêt</a>

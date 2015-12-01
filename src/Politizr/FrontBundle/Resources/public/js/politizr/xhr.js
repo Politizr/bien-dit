@@ -96,6 +96,7 @@ var ROUTE_TAG_REACTION_DELETE = 'profil/reaction/tag/delete';
 var ROUTE_TAG_USER_CREATE = 'profil/utilisateur/tag/create';
 var ROUTE_TAG_USER_DELETE = 'profil/utilisateur/tag/delete';
 var ROUTE_TAG_USER_HIDE = 'profil/utilisateur/tag/hide';
+var ROUTE_TAG_USER_ASSOCIATE = 'profil/utilisateur/tag/associate';
 
 // USER
 var ROUTE_USER_MANDATE_CREATE = 'profil/utilisateur/mandat/create';

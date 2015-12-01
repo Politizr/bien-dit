@@ -825,6 +825,26 @@ class PUser extends BasePUser implements UserInterface, /*EquatableInterface,*/ 
 
         return parent::getPuTaggedTPTags($query);
     }
+
+    /**
+     * Check if user is tagged with tagId
+     *
+     * @param int $tagId
+     * @return boolean
+     */
+    public function isTagged($tagId)
+    {
+        $nb = PUTaggedTQuery::create()
+            ->filterByPUserId($this->getId())
+            ->filterByPTagId($tagId)
+            ->count();
+
+        if ($nb > 0) {
+            return true;
+        }
+
+        return false;
+    }
     
     // ************************************************************************************ //
     //                                          DOCUMENTS

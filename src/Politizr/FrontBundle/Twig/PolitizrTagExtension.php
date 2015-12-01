@@ -3,6 +3,8 @@ namespace Politizr\FrontBundle\Twig;
 
 use Politizr\Constant\TagConstants;
 
+use Politizr\Model\PTag;
+
 use Politizr\Model\PTagQuery;
 
 use Politizr\Exception\InconsistentDataException;
@@ -55,6 +57,20 @@ class PolitizrTagExtension extends \Twig_Extension
     /* ######################################################################################################## */
 
     /**
+     *  Renvoie la liste des filtres
+     */
+    public function getFilters()
+    {
+        return array(
+            new \Twig_SimpleFilter(
+                'userTagAssociate',
+                array($this, 'userTagAssociate'),
+                array('is_safe' => array('html'))
+            ),
+        );
+    }
+
+    /**
      *  Renvoie la liste des fonctions
      */
     public function getFunctions()
@@ -92,6 +108,38 @@ class PolitizrTagExtension extends \Twig_Extension
     /* ######################################################################################################## */
     /*                                             FILTRES                                                      */
     /* ######################################################################################################## */
+
+    /**
+     * Display possibility to add a tag to user's tag list
+     *
+     * @param PTag $tag
+     * @return html
+     */
+    public function userTagAssociate(PTag $tag)
+    {
+        // $this->logger->info('*** addUserTag');
+        // $this->logger->info('$tag = '.print_r($tag, true));
+
+        $html = '';
+
+        if ($this->user) {
+            // Test if user has already associated this tag
+            if ($this->user->isTagged($tag->getId())) {
+                $html = $this->templating->render(
+                    'PolitizrFrontBundle:Tag:_isUserTagged.html.twig'
+                );
+            } else {
+                $html = $this->templating->render(
+                    'PolitizrFrontBundle:Tag:_addUserTagged.html.twig',
+                    array(
+                        'tag' => $tag,
+                    )
+                );
+            }
+        }
+
+        return $html;
+    }
 
 
     /* ######################################################################################################## */

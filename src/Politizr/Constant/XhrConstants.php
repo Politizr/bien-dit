@@ -109,6 +109,7 @@ class XhrConstants
     const ROUTE_TAG_USER_CREATE = 'profil/utilisateur/tag/create';
     const ROUTE_TAG_USER_DELETE = 'profil/utilisateur/tag/delete';
     const ROUTE_TAG_USER_HIDE = 'profil/utilisateur/tag/hide';
+    const ROUTE_TAG_USER_ASSOCIATE = 'profil/utilisateur/tag/associate';
 
     // USER
     const ROUTE_USER_MANDATE_CREATE = 'profil/utilisateur/mandat/create';

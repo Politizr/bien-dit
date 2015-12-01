@@ -505,4 +505,36 @@ class XhrTag
 
         return $withHidden;
     }
+
+    /**
+     * User's tag association
+     */
+    public function userAssociateTag(Request $request)
+    {
+        $this->logger->info('*** userAssociateTag');
+
+        // Request arguments
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
+
+        $tag = PTagQuery::create()
+                    ->filterByUuid($uuid)
+                    ->findOne();
+        if (!$tag) {
+            throw new InconsistentDataException(sprintf('Tag %s does not exist', $uuid));
+        }
+
+        $user = $this->securityTokenStorage->getToken()->getUser();
+
+        // associate tag to user's tagging
+        $this->tagManager->createUserTag($user->getId(), $tag->getId());
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Tag:_isUserTagged.html.twig'
+        );
+
+        return array(
+            'html' => $html,
+        );
+    }
 }
