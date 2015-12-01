@@ -672,3 +672,132 @@ a.linkToPost:hover {color: $darkGrey;}
 	float: left;
 	clear: both;
 }
+
+// post summary card
+
+.postSummaryCard {
+	float: left;
+	width: calc(100% + 120px);
+	margin: 20px 0 0 -60px;	
+}
+
+.postSummaryCardHolder {
+	float: left;
+	width: 100%;
+	background: $lightGrey;
+}
+
+.postSummaryCardAuthor {
+	padding: 40px 60px;
+}
+
+.postSummaryCardAuthor .profileSummary {
+	width: calc(100% - 50px);
+	float: right;
+}
+
+.postSummaryCardAuthor .profileName {
+	margin: 2px 0 0 0;
+	font-size: 16px;
+}
+.postSummaryCardAuthor .profileName a {color: $darkGrey;}
+.postSummaryCardAuthor .profileName .organization { vertical-align: top; margin-top: 2px;}
+
+.postSummaryCardAuthor .profileSubtitle { margin-top: 7px;}
+
+.postSummaryCardIllustration {
+	overflow: hidden;
+	width: 100%;
+	height: 360px;
+}
+
+.postSummaryCardContent {
+	padding: 40px 60px;
+	display: inline-block;
+}
+
+.postSummaryCardContent .postSummaryTagList { margin-bottom: 5px; }
+.postSummaryCardContent .postSummaryTagList .tag {color: $lightGrey;}
+.postSummaryCardContent .postSummaryTagList .tag:hover {background-color: $darkGrey;}
+
+.postSummaryCardGotoParent {
+	float: left;
+	width: 100%;
+	margin: 10px 0 5px 0;
+	font-family: nerissemibold;
+	text-transform: uppercase;
+	font-size: 13px;
+	line-height: 150%;
+}
+.postSummaryCardGotoParent a {color: $highlight;}
+.postSummaryCardGotoParent a:hover {color: $darkGrey;}
+
+.postSummaryCardTitle {
+	float: left;
+	width: 100%;
+
+}
+.postSummaryCardTitle a { color: $highlight; }
+.postSummaryCardTitle a:hover {color: $darkGrey;}
+.postSummaryCardTitle span {
+	font-family: nerissemibold;
+	font-size: 40px;
+	float: left;
+	width: 100%;
+	line-height: 100%;
+	margin-bottom: 15px;
+}
+.postSummaryCardTitle a:hover {color: $darkGrey;}
+.postSummaryCardTitle p {
+	float: left;
+	width: 100%;
+	font-size: 15px;
+	line-height: 200%;
+	color: $darkGrey;
+	margin-bottom: 15px;
+}
+
+.postSummaryCardFooter {
+	float: left;
+	width: 100%;
+	color: $anotherGrey;
+	margin: 10px 0 0 0;
+}
+
+.postSummaryCardFooterLeft {
+	float: left;
+	width: 85%;
+}
+
+.postSummaryCardFooter .readingTime { display: inline-block;}
+
+.postSummaryCardFooter .postNote, .postSummaryCardtFooter .commentsNote {
+	float: right;
+	width: 15%;
+	margin: 0;
+	text-align: right;
+	clear: none;
+    font-family: 'nerisblack';
+    font-style: normal;
+	font-size: 10px;
+}
+.postSummaryCardFooter .commentsNote {color: $anotherGrey;}
+
+.postSummaryCardFooter .postNote .noteMinus, .postSummaryCardFooter .postNote .notePlus, .postSummaryCardFooter .commentsNote .noteMinus, .postSummaryCardFooter .commentsNote .notePlus {
+	display: inline-block;
+	float: none;
+}
+
+.postSummaryCardFooter .commentsNote .notePlus, .postSummaryCardFooter .commentsNote .noteMinus { cursor: default ;}
+.postSummaryCardFooter .commentsNote .notePlus:hover, .postSummaryCardFooter .commentsNote .noteMinus:hover { color: inherit;}
+
+.postSummaryCardPublishInfos {
+	float: left;
+	clear: both;
+	margin-top: 20px;
+	font-style: italic;
+	font-family: 'Merriweather Italic';
+	color: $anotherGrey;
+	font-size: 12px;
+}
+

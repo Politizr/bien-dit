@@ -622,14 +622,18 @@ body {	overflow-x: hidden;}
 #homeLive .itemInfo .postNote .notePlus, #homeLive .itemInfo .postNote .noteMinus { line-height: 8px;}
 
 #homeLive .liveItem .postSummaryTagList {
+	margin: 10px 0 0 0;
+	
+/*
 	font-size: 10px;
 	font-weight: normal;
     font-family: 'nerissemibold';
     text-transform: uppercase;
     color: $darkHighlight;
+*/
 }
-
-#homeLive .liveItem .postSummaryTagList .tag:hover {color: $darkGrey;}
+#homeLive .liveItem .postSummaryTagList .tag {float: none; display: inline-block; color: #f4eadf; background-color: $darkHighlight;}
+#homeLive .liveItem .postSummaryTagList .tag:hover {background-color: $darkGrey;}
 
 #homeLive .liveItemLeft, .liveItemRight {
 	width: 46.5%;

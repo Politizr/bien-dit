@@ -217,7 +217,6 @@
 	height: 2.6em;
 	overflow: hidden;
 	margin-top: 3px;
-	line-height: 140%;
 }
 
 .podiumShowMore {
@@ -255,8 +254,8 @@
 
 // popular debates
 
-#dashboard .bdBox.dbPopularDebates h1 {	padding-top: 30px;}
-.bdBox.dbPopularDebates .listCriteria.listCriteriaTabs {margin-bottom: 10px;}
+#dashboard .dbBox.dbPopularDebates h1 {	padding-top: 30px;}
+.dbBox.dbPopularDebates .listCriteria.listCriteriaTabs {margin-bottom: 10px;}
  
 .dbPopularDebates .debateList a {
 	color: $darkGrey;
@@ -270,7 +269,7 @@
 
 // popular profiles
 
-#dashboard .bdBox.dbPopularProfiles h1 { padding-top: 0;}
+#dashboard .dbBox.dbPopularProfiles h1 { padding-top: 0;}
 
 .profileInList {
 	float: left;
@@ -369,13 +368,13 @@ a.dbItemShow:hover {color: $darkGrey;}
 
 // commun structure
 
-.bdBox {
+.dbBox {
 	margin: 0 0 20px 0;
 	float: left;
 	width: 100%;
 }
 
-.bdBox .listCriteria {
+.dbBox .listCriteria {
 	width: calc(100% - 80px);
 	margin: 20px 40px 30px 40px;
 }
