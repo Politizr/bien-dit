@@ -370,7 +370,7 @@ class PolitizrAdminExtension extends \Twig_Extension
             );
 
             $xhrPathHide = $this->templating->render(
-                'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
+                'PolitizrAdminBundle:Fragment\\Xhr:_xhrPath.html.twig',
                 array(
                     'xhrRoute' => 'ADMIN_ROUTE_TAG_USER_HIDE',
                     'xhrService' => 'admin',
@@ -398,7 +398,7 @@ class PolitizrAdminExtension extends \Twig_Extension
                     'zoneId' => $zoneId,
                     'newTag' => $newTag,
                     'withHidden' => $withHidden,
-                    'tags' => $user->getTags($tagTypeId, $withHidden),
+                    'tags' => $user->getTags($tagTypeId, $withHidden?null:true),
                     'pathCreate' => $xhrPathCreate,
                     'pathHide' => $xhrPathHide,
                     'pathDelete' => $xhrPathDelete,
@@ -409,7 +409,7 @@ class PolitizrAdminExtension extends \Twig_Extension
             $html = $this->templating->render(
                 'PolitizrAdminBundle:Fragment\\Tag:_list.html.twig',
                 array(
-                    'tags' => $user->getTags($tagTypeId, $withHidden),
+                    'tags' => $user->getTags($tagTypeId, $withHidden?null:true),
                     )
             );
         }
@@ -691,18 +691,16 @@ class PolitizrAdminExtension extends \Twig_Extension
      * @param int $tagTypeId
      * @param int $zoneId CSS zone id
      * @param boolean $newTag new tag creation authorized
-     * @param boolean $withHidden manage hidden tag's property
      * @param string $mode edit (default) / show
      * @return string
      */
-    public function adminDebateTags($debate, $tagTypeId, $zoneId = 1, $newTag = false, $withHidden = true, $mode = 'edit')
+    public function adminDebateTags($debate, $tagTypeId, $zoneId = 1, $newTag = false, $mode = 'edit')
     {
         $this->logger->info('*** adminDebateTags');
         // $this->logger->info('$debate = '.print_r($debate, true));
         // $this->logger->info('$tagTypeId = '.print_r($tagTypeId, true));
         // $this->logger->info('$zoneId = '.print_r($zoneId, true));
         // $this->logger->info('$newTag = '.print_r($newTag, true));
-        // $this->logger->info('$withHidden = '.print_r($withHidden, true));
 
         if ('edit' === $mode) {
             // Construction des chemins XHR
@@ -734,7 +732,7 @@ class PolitizrAdminExtension extends \Twig_Extension
                     'tagTypeId' => $tagTypeId,
                     'zoneId' => $zoneId,
                     'newTag' => $newTag,
-                    'withHidden' => $withHidden,
+                    'withHidden' => false,
                     'tags' => $debate->getTags($tagTypeId, null),
                     'pathCreate' => $xhrPathCreate,
                     'pathDelete' => $xhrPathDelete,
@@ -760,18 +758,16 @@ class PolitizrAdminExtension extends \Twig_Extension
      * @param int $tagTypeId
      * @param int $zoneId CSS zone id
      * @param boolean $newTag new tag creation authorized
-     * @param boolean $withHidden manage hidden tag's property
      * @param string $mode edit (default) / show
      * @return string
      */
-    public function adminReactionTags($reaction, $tagTypeId, $zoneId = 1, $newTag = false, $withHidden = true, $mode = 'edit')
+    public function adminReactionTags($reaction, $tagTypeId, $zoneId = 1, $newTag = false, $mode = 'edit')
     {
         $this->logger->info('*** adminReactionTags');
         // $this->logger->info('$reaction = '.print_r($reaction, true));
         // $this->logger->info('$tagTypeId = '.print_r($tagTypeId, true));
         // $this->logger->info('$zoneId = '.print_r($zoneId, true));
         // $this->logger->info('$newTag = '.print_r($newTag, true));
-        // $this->logger->info('$withHidden = '.print_r($withHidden, true));
 
         if ('edit' === $mode) {
             // Construction des chemins XHR
@@ -803,7 +799,7 @@ class PolitizrAdminExtension extends \Twig_Extension
                     'tagTypeId' => $tagTypeId,
                     'zoneId' => $zoneId,
                     'newTag' => $newTag,
-                    'withHidden' => $withHidden,
+                    'withHidden' => false,
                     'tags' => $reaction->getTags($tagTypeId, null),
                     'pathCreate' => $xhrPathCreate,
                     'pathDelete' => $xhrPathDelete,

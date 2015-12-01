@@ -439,10 +439,10 @@ class XhrAdmin
             $this->tagManager->createUserTag($subject->getId(), $tag->getId());
 
             $xhrPathHide = $this->templating->render(
-                'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
+                'PolitizrAdminBundle:Fragment\\Xhr:_xhrPath.html.twig',
                 array(
                     'xhrRoute' => 'ROUTE_TAG_USER_HIDE',
-                    'xhrService' => 'tag',
+                    'xhrService' => 'admin',
                     'xhrMethod' => 'userHideTag',
                     'xhrType' => 'RETURN_BOOLEAN',
                 )

@@ -265,7 +265,6 @@ class PolitizrTagExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $tags = $user->getTags($tagTypeId, $withHidden?null:false);
-        dump($tags);
 
         $html = $this->templating->render(
             'PolitizrFrontBundle:Tag:_edit.html.twig',
