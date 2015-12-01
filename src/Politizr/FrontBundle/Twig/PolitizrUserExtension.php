@@ -264,17 +264,21 @@ class PolitizrUserExtension extends \Twig_Extension
      *
      * @param PUser $user
      * @param integer $tagTypeId
-     * @param boolean $withHidden
      * @param string $modalDefaultType debate|reaction|user
      * @return string
      */
-    public function userTags(PUser $user, $tagTypeId = null, $withHidden = false, $modalDefaultType = 'user')
+    public function userTags(PUser $user, $tagTypeId = null, $modalDefaultType = 'user')
     {
         $this->logger->info('*** userTags');
-        // $this->logger->info('$uiser = '.print_r($uiser, true));
+        // $this->logger->info('$uiser = '.print_r($user, true));
         // $this->logger->info('$pTTagType = '.print_r($pTTagType, true));
 
-        $tags = $user->getTags($tagTypeId);
+        // get hidden tags for current user only
+        if ($user->getId() == $this->user->getId()) {
+            $tags = $user->getTags($tagTypeId, null);
+        } else {
+            $tags = $user->getTags($tagTypeId);
+        }
 
         // Construction du rendu du tag
         $html = $this->templating->render(

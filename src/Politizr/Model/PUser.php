@@ -811,13 +811,13 @@ class PUser extends BasePUser implements UserInterface, /*EquatableInterface,*/ 
      * @param boolean $online
      * @return PropelCollection[PTag]
      */
-    public function getTags($tagTypeId = null, $withHidden = false, $online = true)
+    public function getTags($tagTypeId = null, $hidden = false, $online = true)
     {
         $query = PTagQuery::create()
             ->filterIfTypeId($tagTypeId)
             ->filterIfOnline($online)
             ->usePuTaggedTPTagQuery()
-                ->filterIfHidden($withHidden)
+                ->filterIfHidden($hidden)
             ->endUse()
             ->withColumn('p_u_tagged_t.hidden', 'hidden')
             ->orderByTitle()

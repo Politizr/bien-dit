@@ -12,11 +12,7 @@
     {% include 'PolitizrFrontBundle:Document:_copyright.html.twig' with { 'copyright': user.copyright } %}
     
     <div class="profilePublicTagList">
-        {% if app.user.id == user.id %}
-            {{ user | userTags(withHidden = true) }}
-        {% else %}
-            {{ user | userTags }}
-        {% endif %}
+        {{ user | userTags }}
     </div>
 
     <div id="profileBio">

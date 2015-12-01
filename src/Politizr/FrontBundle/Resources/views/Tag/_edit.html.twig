@@ -1,5 +1,8 @@
 {% spaceless %}
-<div class="addTag" id="editTagZone-{{ zoneId }}" tagTypeId="{{ tagTypeId }}" uuid="{{ object.uuid }}" newTag="{{ newTag }}" withHidden="{{ withHidden }}" path="{{ pathCreate }}">
+<div class="addTag withLoaderInside" id="editTagZone-{{ zoneId }}" tagTypeId="{{ tagTypeId }}" uuid="{{ object.uuid }}" newTag="{{ newTag }}" withHidden="{{ withHidden }}" path="{{ pathCreate }}">
+    <div class="ajaxLoader" style="display: none;">
+        <div class="ajaxLoaderSpinner"></div><div class="ajaxLoaderBg"></div><div class="ajaxLoaderBlockClick"></div>
+    </div>
     <div class="editableTagList">
         {% for tag in tags %}
             {% include 'PolitizrFrontBundle:Tag:_detailEditable.html.twig' with { 'uuid': object.uuid, 'tag': tag } %}

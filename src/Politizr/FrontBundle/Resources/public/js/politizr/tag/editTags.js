@@ -10,11 +10,11 @@ var normalize = function( term ) {
 // on document ready
 $(function() {
     // autocomplete initialization
-    console.log('nbZones = '+nbZones);
+    // console.log('nbZones = '+nbZones);
 
     for (i = 1; i <= nbZones; i++ ) {
         var tagTypeId = $('#editTagZone-'+i).attr('tagTypeId');
-        console.log('tagTypeId = '+tagTypeId);
+        // console.log('tagTypeId = '+tagTypeId);
 
         var xhrPath = getXhrPath(
             xhrRoute,
@@ -28,7 +28,6 @@ $(function() {
             url: xhrPath,
             data: { 'tagTypeId': tagTypeId, 'zoneId': i },
             dataType: 'json',
-            // context: $('#editTagZone-'+i),
             beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
             statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
             error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
@@ -79,7 +78,7 @@ $(function() {
 
 // clic ajout nouveau tag
 $("body").on("click", "button[action='addTag']", function() {
-    console.log('click addTag');
+    // console.log('click addTag');
 
     var tagTitle = $(this).siblings('.selectedTag').first().val();
     var tagUuid = $(this).siblings('.selectedTagUuid').first().val();
@@ -90,18 +89,20 @@ $("body").on("click", "button[action='addTag']", function() {
     var withHidden = $(this).closest('.addTag').attr('withHidden');
     var addUrl = $(this).closest('.addTag').attr('path');
 
-    console.log('title = ' + tagTitle);
-    console.log('tagUuid = ' + tagUuid);
-    console.log('type = ' + tagTypeId);
-    console.log('uuid = ' + uuid);
-    console.log('newTag = ' + newTag);
-    console.log('withHidden = ' + withHidden);
-    console.log('url = ' + addUrl);
+    // console.log('title = ' + tagTitle);
+    // console.log('tagUuid = ' + tagUuid);
+    // console.log('type = ' + tagTypeId);
+    // console.log('uuid = ' + uuid);
+    // console.log('newTag = ' + newTag);
+    // console.log('withHidden = ' + withHidden);
+    // console.log('url = ' + addUrl);
 
     tag = tagTitle.trim();
     if (tag === '') {
         return false;
     }
+
+    var localLoader = $(this).siblings('.ajaxLoader').first();
 
     // Ajout du nouveau tag
     $.ajax({
@@ -109,18 +110,16 @@ $("body").on("click", "button[action='addTag']", function() {
         url: addUrl,
         data: { 'tagTitle': tagTitle, 'tagUuid': tagUuid, 'tagTypeId': tagTypeId, 'uuid': uuid, 'newTag': newTag, 'withHidden': withHidden },
         dataType: 'json',
-        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
-        statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
-        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
         context: this,
+        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, localLoader ); },
+        statusCode: { 404: function () { xhr404(localLoader); }, 500: function() { xhr500(localLoader); } },
+        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown, localLoader); },
         success: function(data) {
-            $('#ajaxGlobalLoader').hide();
+            localLoader.hide();
             if (data['error']) {
                 $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
                 $('#infoBoxHolder .boxError').show();
             } else {
-                $('#ajaxLoader').hide();
-
                 if (data['created']) {
                     // Association du nouveau tag aux tags suivis
                     $(this).siblings('.editableTagList').first().append(data['htmlTag']);
@@ -136,15 +135,17 @@ $("body").on("click", "button[action='addTag']", function() {
 
 // clic suppression tag
 $("body").on("click", "[action='deleteTag']", function() {
-    console.log('click deleteTag');
+    // console.log('click deleteTag');
 
     var tagUuid = $(this).closest('.tagLabel').attr('tagUuid');
     var uuid = $(this).closest('.tagLabel').attr('uuid');;
     var deleteUrl = $(this).attr('path');
 
-    console.log('tagUuid = ' + tagUuid);
-    console.log('uuid = ' + uuid);
-    console.log('deleteUrl = ' + deleteUrl);
+    // console.log('tagUuid = ' + tagUuid);
+    // console.log('uuid = ' + uuid);
+    // console.log('deleteUrl = ' + deleteUrl);
+
+    var localLoader = $(this).closest('.editableTagList').siblings('.ajaxLoader').first();
 
     $.ajax({
         type: 'POST',
@@ -152,18 +153,16 @@ $("body").on("click", "[action='deleteTag']", function() {
         context: this,
         data: { 'uuid': uuid, 'tagUuid': tagUuid },
         dataType: 'json',
-        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
-        statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
-        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
         context: $(this).parent(),
+        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, localLoader ); },
+        statusCode: { 404: function () { xhr404(localLoader); }, 500: function() { xhr500(localLoader); } },
+        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown, localLoader); },
         success: function(data) {
-            $('#ajaxGlobalLoader').hide();
+            localLoader.hide();
             if (data['error']) {
                 $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
                 $('#infoBoxHolder .boxError').show();
             } else {
-                $('#ajaxLoader').hide();
-
                 $(this).closest('.tagLabel').remove();
             }
         }
@@ -172,15 +171,17 @@ $("body").on("click", "[action='deleteTag']", function() {
 
 // clic suppression tag
 $("body").on("click", "[action='hideTag']", function() {
-    console.log('click hideTag');
+    // console.log('click hideTag');
 
     var tagUuid = $(this).closest('.tagLabel').attr('tagUuid');
     var uuid = $(this).closest('.tagLabel').attr('uuid');;
     var hideUrl = $(this).attr('path');
 
-    console.log('tagUuid = ' + tagUuid);
-    console.log('uuid = ' + uuid);
-    console.log('hideUrl = ' + hideUrl);
+    // console.log('tagUuid = ' + tagUuid);
+    // console.log('uuid = ' + uuid);
+    // console.log('hideUrl = ' + hideUrl);
+
+    var localLoader = $(this).closest('.editableTagList').siblings('.ajaxLoader').first();
 
     $.ajax({
         type: 'POST',
@@ -188,20 +189,16 @@ $("body").on("click", "[action='hideTag']", function() {
         context: this,
         data: { 'uuid': uuid, 'tagUuid': tagUuid },
         dataType: 'json',
-        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
-        statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
-        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
         context: $(this).parent(),
+        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, localLoader ); },
+        statusCode: { 404: function () { xhr404(localLoader); }, 500: function() { xhr500(localLoader); } },
+        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown, localLoader); },
         success: function(data) {
-            $('#ajaxGlobalLoader').hide();
+            localLoader.hide();
             if (data['error']) {
                 $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
                 $('#infoBoxHolder .boxError').show();
             } else {
-                $('#ajaxLoader').hide();
-
-                console.log(data);
-
                 if (data['success'] == true) {
                     $(this).closest('.tagLabel').addClass( "tagInvisible" );
                 } else {
