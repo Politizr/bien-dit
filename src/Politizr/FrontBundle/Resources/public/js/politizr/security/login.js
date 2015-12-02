@@ -17,7 +17,7 @@ $("body").on("click", "[action='showLoginBox']", function(e) {
  * Connexion
  */
 $("body").on("click", "[action='login']", function(e) {
-    console.log('*** click login');
+    // console.log('*** click login');
     $('#ajaxGlobalLoader').show();
     $("#formLogin").submit();
 });
