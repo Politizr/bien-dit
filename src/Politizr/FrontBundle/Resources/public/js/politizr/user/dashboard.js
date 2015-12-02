@@ -12,21 +12,21 @@ $(function() {
 
 // Map filter change
 $("body").on("change", ".mapFilter", function(e) {
-    console.log('*** change mapFilter');
+    // console.log('*** change mapFilter');
     e.preventDefault();
 
     topListing($('#mapFilter').attr('uuid'));
 });
 
 $("body").on("click", "[action='mapZoom']", function() {
-    console.log('*** mapZoom');
+    // console.log('*** mapZoom');
 
     topListing($(this).attr('uuid'));
 });
 
 // Tag filter change
 $("body").on("change", ".tagFilter", function(e) {
-    console.log('*** change tagFilter');
+    // console.log('*** change tagFilter');
     e.preventDefault();
 
     tagListing();
@@ -34,7 +34,7 @@ $("body").on("change", ".tagFilter", function(e) {
 
 // Debate filter change
 $("body").on("change", ".debateFilter", function(e) {
-    console.log('*** change debateFilter');
+    // console.log('*** change debateFilter');
     e.preventDefault();
 
     debateListing();
@@ -42,7 +42,7 @@ $("body").on("change", ".debateFilter", function(e) {
 
 // User filter change
 $("body").on("change", ".userFilter", function(e) {
-    console.log('*** change userFilter');
+    // console.log('*** change userFilter');
     e.preventDefault();
 
     userListing();
@@ -52,10 +52,10 @@ $("body").on("change", ".userFilter", function(e) {
  * Update map "suite" link with current filter selected attribute
  */
 function updateSuiteLink() {
-    console.log('*** updateSuiteLink');
+    // console.log('*** updateSuiteLink');
 
     // update "suite" link attributes
-    console.log($('#mapFilter input:checked').val());
+    // console.log($('#mapFilter input:checked').val());
     $('#modalMoreDebates').attr('defaultFilterDate', $('#mapFilter input:checked').val());    
 }
 
@@ -65,14 +65,14 @@ function updateSuiteLink() {
  * @param string geoTagUuid
  */
 function topListing(geoTagUuid) {
-    console.log('*** topListing');
-    console.log(geoTagUuid);
+    // console.log('*** topListing');
+    // console.log(geoTagUuid);
     
     geoTagUuid = (typeof geoTagUuid === "undefined") ? null : geoTagUuid;
     
     // Récupération du form des filtres
     var datas = $('#mapFilter').serializeArray();
-    console.log(datas);
+    // console.log(datas);
     // @todo hack to fix / why the form is not well serialized at the 1st call
     if ($.isEmptyObject(datas)) {
         datas.push({name: 'mapFilterDate[]', value: 'allDate'});
@@ -80,7 +80,7 @@ function topListing(geoTagUuid) {
 
     // Push additional arguments
     datas.push({name: 'geoTagUuid', value: geoTagUuid});
-    console.log(datas);
+    // console.log(datas);
 
     var xhrPath = getXhrPath(
         ROUTE_DASHBOARD_MAP,
@@ -117,16 +117,16 @@ function topListing(geoTagUuid) {
  * Loading of "tag" listing.
  */
 function tagListing() {
-    console.log('*** tagListing');
+    // console.log('*** tagListing');
     
     // Récupération du form des filtres
     var datas = $('#tagFilter').serializeArray();
-    console.log(datas);
+    // console.log(datas);
     // @todo hack to fix / why the form is not well serialized at the 1st call
     if ($.isEmptyObject(datas)) {
         datas.push({name: 'tagFilterDate[]', value: 'allDate'});
     }
-    console.log(datas);
+    // console.log(datas);
 
     var xhrPath = getXhrPath(
         ROUTE_DASHBOARD_TAG,
@@ -160,16 +160,16 @@ function tagListing() {
  * Loading of "debate" listing.
  */
 function debateListing() {
-    console.log('*** debateListing');
+    // console.log('*** debateListing');
     
     // Récupération du form des filtres
     var datas = $('#debateFilter').serializeArray();
-    console.log(datas);
+    // console.log(datas);
     // @todo hack to fix / why the form is not well serialized at the 1st call
     if ($.isEmptyObject(datas)) {
         datas.push({name: 'debateFilterDate[]', value: 'allDate'});
     }
-    console.log(datas);
+    // console.log(datas);
 
     var xhrPath = getXhrPath(
         ROUTE_DASHBOARD_TOP_DEBATES,
@@ -204,16 +204,16 @@ function debateListing() {
  * Loading of "user" listing.
  */
 function userListing() {
-    console.log('*** userListing');
+    // console.log('*** userListing');
     
     // Récupération du form des filtres
     var datas = $('#userFilter').serializeArray();
-    console.log(datas);
+    // console.log(datas);
     // @todo hack to fix / why the form is not well serialized at the 1st call
     if ($.isEmptyObject(datas)) {
         datas.push({name: 'userFilterDate[]', value: 'allDate'});
     }
-    console.log(datas);
+    // console.log(datas);
 
     var xhrPath = getXhrPath(
         ROUTE_DASHBOARD_TOP_USERS,
@@ -248,7 +248,7 @@ function userListing() {
  * Loading of "geo tagged user" listing.
  */
 function geoListing() {
-    console.log('*** geoListing');
+    // console.log('*** geoListing');
     
     var xhrPath = getXhrPath(
         ROUTE_DASHBOARD_GEO,
@@ -280,7 +280,7 @@ function geoListing() {
  * Loading of "suggestion" listing.
  */
 function suggestionListing() {
-    console.log('*** suggestionListing');
+    // console.log('*** suggestionListing');
     
     var xhrPath = getXhrPath(
         ROUTE_DASHBOARD_SUGGESTION,
