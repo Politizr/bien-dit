@@ -1,5 +1,5 @@
 <div class="dbGeo">
-    <h1>À la une en {{ tag.title }}</h1>
+    <h1>À la une {{ tag.title }}</h1>
     {% set debate = debates.shift() %}
     {% if not debate %}
         {% include 'PolitizrFrontBundle:PaginatedList:_noResult.html.twig' with {'type': constant('Politizr\\Constant\\ListingConstants::DASHBOARD_TYPE_GEO_DEBATES')} only %}
