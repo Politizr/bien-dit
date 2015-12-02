@@ -31,7 +31,7 @@ class PublicController extends Controller
 
         // redirect if connected
         if ($profileSuffix = $this->get('politizr.tools.global')->computeProfileSuffix()) {
-            return $this->redirect($this->generateUrl(sprintf('Timeline%s', $profileSuffix)));
+            return $this->redirect($this->generateUrl(sprintf('Homepage%s', $profileSuffix)));
         }
 
         // @todo most "active" debate today

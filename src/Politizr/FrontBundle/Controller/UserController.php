@@ -60,8 +60,6 @@ class UserController extends Controller
             return $this->redirect($this->generateUrl('Login'));
         }
 
-        // return $this->redirect($this->generateUrl(sprintf('Timeline%s', $suffix)));
-
         return $this->render('PolitizrFrontBundle:Dashboard:homepage.html.twig', array(
             'profileSuffix' => $this->get('politizr.tools.global')->computeProfileSuffix(),
         ));
