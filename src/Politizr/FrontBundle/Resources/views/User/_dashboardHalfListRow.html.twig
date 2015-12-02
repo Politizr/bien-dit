@@ -10,3 +10,11 @@
         <div class="profileSubtitle">{{ user.subtitle | purify }}</div>
     </div>      
 </div>
+{% if miniProfile %}
+    <a href="{{ path('UserDetail'~profileSuffix(), { 'slug': user.slug }) }}" class="modalItemShow">
+        <i class="iconGoTo"></i>Afficher
+    </a>
+    <div class="subscribe{% if app.user.id == user.id %} noSelfSubscribe{% endif %}">
+        {{ user | linkSubscribeUser }}
+    </div>
+{% endif %}

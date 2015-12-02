@@ -7,14 +7,14 @@
         {% include 'PolitizrFrontBundle:Dashboard\\formFilters:_debateFormFilters.html.twig' with { 'filters': filters } %}
     </form>
 </div>
-<div class="dbItemHalfWidth">
-    {% set topDebate = debates.shift() %}
-    {% if topDebate %}
-        {% include 'PolitizrFrontBundle:Debate:_dashboardHalfRow.html.twig' with {'debate': topDebate} only %}
-    {% else %}
-        {% include 'PolitizrFrontBundle:PaginatedList:_noResult.html.twig' with {'type': constant('Politizr\\Constant\\ListingConstants::DASHBOARD_TYPE_TOP_DEBATES')} only %}
-    {% endif %}
-</div>
+
+{% set topDebate = debates.shift() %}
+{% if topDebate %}
+    {% include 'PolitizrFrontBundle:Debate:_dashboardHalfItemRow.html.twig' with {'debate': topDebate} only %}
+{% else %}
+    {% include 'PolitizrFrontBundle:PaginatedList:_noResult.html.twig' with {'type': constant('Politizr\\Constant\\ListingConstants::DASHBOARD_TYPE_TOP_DEBATES')} only %}
+{% endif %}
+
 <div class="dbItemHalfWidth">
     <div class="debateList">
         {% for debate in debates %}

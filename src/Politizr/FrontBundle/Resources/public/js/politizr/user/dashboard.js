@@ -6,6 +6,7 @@ $(function() {
     tagListing();
     debateListing();
     userListing();
+    geoListing();
 });
 
 // Map filter change
@@ -195,7 +196,7 @@ function debateListing() {
             }
             localLoader.hide();
         }
-    });    
+    });
 }
 
 /**
@@ -238,9 +239,42 @@ function userListing() {
                 fullImgLiquid();
             }
             localLoader.hide();
+        }
+    });
+}
+
+
+/**
+ * Loading of "geo tagged user" listing.
+ */
+function geoListing() {
+    console.log('*** geoListing');
+    
+    var xhrPath = getXhrPath(
+        ROUTE_DASHBOARD_GEO,
+        'dashboard',
+        'geoTaggedUser',
+        RETURN_HTML
+        );
+
+    $.ajax({
+        type: 'POST',
+        url: xhrPath,
+        dataType: 'json',
+        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
+        statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
+        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
+        success: function(data) {
+            if (data['error']) {
+                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                $('#infoBoxHolder .boxError').show();
+            } else {
+                $('.dbCloseToYou').html(data['html']);
+                fullImgLiquid();
+            }
 
             // last ajax call hide global loader
             $('#ajaxGlobalLoader').hide();
         }
-    });    
+    });
 }

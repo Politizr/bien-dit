@@ -247,4 +247,54 @@ class XhrDashboard
             'html' => $html,
         );
     }
+
+    /**
+     * Geo tagged user news
+     */
+    public function geoTaggedUser(Request $request)
+    {
+        $this->logger->info('*** geoTaggedUser');
+
+        // current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+
+        // user's geo tags
+        $tags = $user->getTags(TagConstants::TAG_TYPE_GEO, null);
+
+        $html = null;
+        foreach ($tags as $tag) {
+            $debates = PDDebateQuery::create()
+                        ->distinct()
+                        ->online()
+                        ->usePDDTaggedTQuery()
+                            ->filterByPTagId($tag->getId())
+                        ->endUse()
+                        ->orderWithKeyword('last')
+                        ->limit(ListingConstants::DASHBOARD_GEO_DEBATES_LIMIT)
+                        ->find();
+
+            $users = PUserQuery::create()
+                        ->distinct()
+                        ->online()
+                        ->usePuTaggedTPUserQuery()
+                            ->filterByPTagId($tag->getId())
+                        ->endUse()
+                        ->orderWithKeyword('last')
+                        ->limit(ListingConstants::DASHBOARD_GEO_USERS_LIMIT)
+                        ->find();
+
+            $html .= $this->templating->render(
+                'PolitizrFrontBundle:Dashboard:_geoTaggedUser.html.twig',
+                array(
+                    'tag' => $tag,
+                    'debates' => $debates,
+                    'users' => $users,
+                )
+            );
+        }
+
+        return array(
+            'html' => $html,
+        );
+    }
 }

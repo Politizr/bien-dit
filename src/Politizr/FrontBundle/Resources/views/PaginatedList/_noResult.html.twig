@@ -64,6 +64,10 @@
     {% elseif type == constant('Politizr\\Constant\\ListingConstants::DASHBOARD_TYPE_TOP_DEBATES') %}
         Aucun débat n'a été publié durant le laps de temps recherché.
     {% elseif type == constant('Politizr\\Constant\\ListingConstants::DASHBOARD_TYPE_TOP_USERS') %}
-        Aucun profil n'a été créé durant le laps de temps recherché.
+        Aucun utilisateur n'a été créé durant le laps de temps recherché.
+    {% elseif type == constant('Politizr\\Constant\\ListingConstants::DASHBOARD_TYPE_GEO_DEBATES') %}
+        Aucun débat n'a été publié sur cette zone géographique.
+    {% elseif type == constant('Politizr\\Constant\\ListingConstants::DASHBOARD_TYPE_GEO_USERS') %}
+        Aucun utilisateur ne s'est inscrit avec cette zone géographique en centre d'intéret.
     {% endif %}
 </div>

@@ -8,17 +8,15 @@
     </form>
 </div>
 
-<div class="dbItemHalfWidth">
-    {% set topUser = users.shift() %}
-    {% if topUser %}
-        {% include 'PolitizrFrontBundle:User:_dashboardHalfRow.html.twig' with {'user': topUser} only %}
-    {% else %}
-        {% include 'PolitizrFrontBundle:PaginatedList:_noResult.html.twig' with {'type': constant('Politizr\\Constant\\ListingConstants::DASHBOARD_TYPE_TOP_USERS')} only %}
-    {% endif %}
-</div>
+{% set topUser = users.shift() %}
+{% if topUser %}
+    {% include 'PolitizrFrontBundle:User:_dashboardHalfItemRow.html.twig' with {'user': topUser, 'miniProfile': false} only %}
+{% else %}
+    {% include 'PolitizrFrontBundle:PaginatedList:_noResult.html.twig' with {'type': constant('Politizr\\Constant\\ListingConstants::DASHBOARD_TYPE_TOP_USERS')} only %}
+{% endif %}
 
 <div class="dbItemHalfWidth">
     {% for user in users %}
-        {% include 'PolitizrFrontBundle:User:_dashboardHalfListRow.html.twig' with {'user': user} only %}
+        {% include 'PolitizrFrontBundle:User:_dashboardHalfListRow.html.twig' with {'user': user, 'miniProfile': false} only %}
     {% endfor %}
 </div>
