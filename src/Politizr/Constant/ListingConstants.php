@@ -49,6 +49,7 @@ class ListingConstants
     //              Dashboard type & context constants              //
     // ************************************************************ //
     const DASHBOARD_TYPE_MAP = 'DASHBOARD_MAP';
+    const DASHBOARD_TYPE_TOP_DEBATES = 'DASHBOARD_TOP_DEBATES';
 
     const DASHBOARD_DEBATES = 'DASHBOARD_DEBATES';
     const DASHBOARD_REACTIONS = 'DASHBOARD_REACTIONS';
@@ -58,5 +59,6 @@ class ListingConstants
     //              Dashboard Constants                             //
     // ************************************************************ //
     const DASHBOARD_MAP_LIMIT = 3;
-    const DASHBOARD_TAG_LIMIT = 10;
+    const DASHBOARD_TOP_TAGS_LIMIT = 10;
+    const DASHBOARD_TOP_DEBATES_LIMIT = 6;
 }

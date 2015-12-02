@@ -1,0 +1,19 @@
+<div class="postSummaryTagList">
+    {{ debate | docTags }}
+</div>
+<div class="halfWidthThumb">
+    {{ debate | image('debate_half_header', false) }}
+</div>
+<div class="postSummaryAuthor">
+    {% include 'PolitizrFrontBundle:User:_authorMini.html.twig' with { 'user': debate.user } only %}
+</div>
+<div class="postSummaryTitle">
+    <a href="{{ path('DebateDetail'~profileSuffix(), { 'slug': debate.slug }) }}">
+        {{ debate.title }}
+    </a>
+</div>
+
+<a href="{{ path('DebateDetail'~profileSuffix(), { 'slug': debate.slug }) }}" class="dbItemShow"><i class="iconGoTo"></i>Afficher</a>
+<div class="subscribe{% if app.user.id == debate.pUserId %} noSelfSubscribe{% endif %}">
+    {{ debate | linkSubscribeDebate }}
+</div>

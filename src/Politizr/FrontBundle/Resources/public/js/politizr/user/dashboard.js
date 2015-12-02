@@ -4,6 +4,7 @@ $(function() {
 
     topListing();
     tagListing();
+    debateListing();
 
     $('#ajaxGlobalLoader').hide();
 });
@@ -30,6 +31,13 @@ $("body").on("change", ".tagFilter", function(e) {
     tagListing();
 });
 
+// Debate filter change
+$("body").on("change", ".debateFilter", function(e) {
+    console.log('*** change debateFilter');
+    e.preventDefault();
+
+    debateListing();
+});
 
 /**
  * Update link with current filter selected attribute
@@ -58,7 +66,7 @@ function topListing(geoTagUuid) {
     console.log(datas);
     // @todo hack to fix / why the form is not well serialized at the 1st call
     if ($.isEmptyObject(datas)) {
-        datas.push({name: 'filterDate[]', value: 'allDate'});
+        datas.push({name: 'mapFilterDate[]', value: 'allDate'});
     }
 
     // Push additional arguments
@@ -107,13 +115,14 @@ function tagListing() {
     console.log(datas);
     // @todo hack to fix / why the form is not well serialized at the 1st call
     if ($.isEmptyObject(datas)) {
-        datas.push({name: 'filterDate[]', value: 'allDate'});
+        datas.push({name: 'tagFilterDate[]', value: 'allDate'});
     }
+    console.log(datas);
 
     var xhrPath = getXhrPath(
         ROUTE_DASHBOARD_TAG,
         'dashboard',
-        'tag',
+        'topTags',
         RETURN_HTML
         );
 
@@ -132,6 +141,49 @@ function tagListing() {
                 $('#infoBoxHolder .boxError').show();
             } else {
                 $('.dbPopularTag').html(data['html']);
+            }
+            localLoader.hide();
+        }
+    });    
+}
+
+/**
+ * Loading of "debate" listing.
+ */
+function debateListing() {
+    console.log('*** debateListing');
+    
+    // Récupération du form des filtres
+    var datas = $('#debateFilter').serializeArray();
+    console.log(datas);
+    // @todo hack to fix / why the form is not well serialized at the 1st call
+    if ($.isEmptyObject(datas)) {
+        datas.push({name: 'debateFilterDate[]', value: 'allDate'});
+    }
+    console.log(datas);
+
+    var xhrPath = getXhrPath(
+        ROUTE_DASHBOARD_TAG,
+        'dashboard',
+        'topDebates',
+        RETURN_HTML
+        );
+
+    var localLoader = $('.dbPopularDebates').children('.ajaxLoader').first();
+    $.ajax({
+        type: 'POST',
+        url: xhrPath,
+        data: datas,
+        dataType: 'json',
+        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, localLoader ); },
+        statusCode: { 404: function () { xhr404(localLoader); }, 500: function() { xhr500(localLoader); } },
+        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown, localLoader); },
+        success: function(data) {
+            if (data['error']) {
+                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                $('#infoBoxHolder .boxError').show();
+            } else {
+                $('.dbPopularDebates').html(data['html']);
             }
             localLoader.hide();
         }

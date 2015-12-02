@@ -352,6 +352,11 @@ liip_imagine:
             filters:
                 relative_resize:  { widen: 700 }
 
+        debate_half_header:
+            quality:              100
+            filters:
+                relative_resize:  { widen: 300 }
+
         debate_list:
             quality:              100
             filters:

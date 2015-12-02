@@ -1,0 +1,8 @@
+<form id="listType">
+    <input type="radio" class="debateFilter" name="debateFilterDate[]" value="allDate" id="debateAllDate" {% if filters == null or 'allDate' in filters%}checked{% endif %}/>
+    <label for="debateAllDate">tous</label>
+    <input type="radio" class="debateFilter" name="debateFilterDate[]" value="lastMonth" id="debateLastMonth" {% if 'lastMonth' in filters%}checked{% endif %}/>
+    <label for="debateLastMonth">depuis 1 mois</label>
+    <input type="radio" class="debateFilter" name="debateFilterDate[]" value="lastWeek" id="debateLastWeek" {% if 'lastWeek' in filters %}checked{% endif %}/>
+    <label for="debateLastWeek">depuis 1 semaine</label>
+</form>

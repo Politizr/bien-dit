@@ -58,7 +58,7 @@ class XhrDashboard
     /* ######################################################################################################## */
 
     /**
-     *
+     * Map navigation
      */
     public function map(Request $request)
     {
@@ -158,11 +158,11 @@ class XhrDashboard
     /* ######################################################################################################## */
 
     /**
-     *
+     * Most popular tags
      */
-    public function tag(Request $request)
+    public function topTags(Request $request)
     {
-        $this->logger->info('*** tag');
+        $this->logger->info('*** topTags');
         
         // Request arguments
         $filters = $request->get('tagFilterDate');
@@ -172,9 +172,41 @@ class XhrDashboard
         $tags = $this->tagService->getMostPopularTags($filters);
 
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Dashboard:_tag.html.twig',
+            'PolitizrFrontBundle:Dashboard:_tags.html.twig',
             array(
                 'tags' => $tags,
+                'filters' => $filters,
+            )
+        );
+
+        return array(
+            'html' => $html,
+        );
+    }
+
+    /**
+     * Most popular debates
+     */
+    public function topDebates(Request $request)
+    {
+        $this->logger->info('*** topDebates');
+        
+        // Request arguments
+        $filters = $request->get('debateFilterDate');
+        $this->logger->info('$filters = ' . print_r($filters, true));
+
+        $debates = PDDebateQuery::create()
+                    ->distinct()
+                    ->online()
+                    ->filterByKeywords($filters)
+                    ->orderWithKeyword('bestNote')
+                    ->limit(ListingConstants::DASHBOARD_TOP_DEBATES_LIMIT)
+                    ->find();
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Dashboard:_debates.html.twig',
+            array(
+                'debates' => $debates,
                 'filters' => $filters,
             )
         );

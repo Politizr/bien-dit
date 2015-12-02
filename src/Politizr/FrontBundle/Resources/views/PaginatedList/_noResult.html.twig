@@ -61,5 +61,7 @@
         {% elseif context == constant('Politizr\\Constant\\ListingConstants::DASHBOARD_USERS') %}
             Aucun utilisateur ne s'est inscrit durant le laps de temps recherché et associé à cette localisation.
         {% endif %}
+    {% elseif type == constant('Politizr\\Constant\\ListingConstants::DASHBOARD_TYPE_TOP_DEBATES') %}
+        Aucun débat n'a été publié durant le laps de temps recherché.
     {% endif %}
 </div>
