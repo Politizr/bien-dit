@@ -7,6 +7,7 @@ $(function() {
     debateListing();
     userListing();
     geoListing();
+    suggestionListing();
 });
 
 // Map filter change
@@ -243,7 +244,6 @@ function userListing() {
     });
 }
 
-
 /**
  * Loading of "geo tagged user" listing.
  */
@@ -270,6 +270,38 @@ function geoListing() {
                 $('#infoBoxHolder .boxError').show();
             } else {
                 $('.dbCloseToYou').html(data['html']);
+                fullImgLiquid();
+            }
+        }
+    });
+}
+
+/**
+ * Loading of "suggestion" listing.
+ */
+function suggestionListing() {
+    console.log('*** suggestionListing');
+    
+    var xhrPath = getXhrPath(
+        ROUTE_DASHBOARD_SUGGESTION,
+        'dashboard',
+        'suggestion',
+        RETURN_HTML
+        );
+
+    $.ajax({
+        type: 'POST',
+        url: xhrPath,
+        dataType: 'json',
+        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
+        statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
+        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
+        success: function(data) {
+            if (data['error']) {
+                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                $('#infoBoxHolder .boxError').show();
+            } else {
+                $('.dbSuggestions').html(data['html']);
                 fullImgLiquid();
             }
 

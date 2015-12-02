@@ -1,0 +1,36 @@
+<h1>Suggestions</h1>
+{% set debate = debates.shift() %}
+{% if not debate %}
+    {% include 'PolitizrFrontBundle:PaginatedList:_noResult.html.twig' with {'type': constant('Politizr\\Constant\\ListingConstants::DASHBOARD_TYPE_SUGGESTION_DEBATES')} only %}
+{% else %}
+    {% include 'PolitizrFrontBundle:Debate:_dashboardFullRow.html.twig' with {'debate': debate} only %}
+{% endif %}
+
+{% for debate in debates %}
+    {% include 'PolitizrFrontBundle:Debate:_dashboardHalfItemRow.html.twig' with {'debate': debate} only %}
+{% endfor %}
+
+{% set user = users.shift() %}
+{# @todo /!\ test user to hack suggestion query which return 1 empty element #}
+{% if not(user and user.slug) %}
+    {% set user = users.shift() %}
+{% endif %}
+
+{% if not user %}
+    {% include 'PolitizrFrontBundle:PaginatedList:_noResult.html.twig' with {'type': constant('Politizr\\Constant\\ListingConstants::DASHBOARD_TYPE_SUGGESTION_USERS')} only %}
+{% else %}
+    {% include 'PolitizrFrontBundle:User:_dashboardFullRow.html.twig' with {'user': user} only %}
+{% endif %}
+
+{% set user = users.shift() %}
+{% if user %}
+    {% include 'PolitizrFrontBundle:User:_dashboardHalfItemRow.html.twig' with {'user': user} only %}
+
+    <div class="dbItemHalfWidth">
+        {% for user in users %}
+            <div class="miniProfiles">
+                {% include 'PolitizrFrontBundle:User:_dashboardHalfListRow.html.twig' with {'user': user, 'miniProfile': true} only %}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}

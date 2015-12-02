@@ -1,5 +1,6 @@
 <div class="listTab profileTab">
     {% for user in users %}
+        {# @todo /!\ test user to hack suggestion query which return 1 empty element #}
         {% if user and user.slug %}
             {% include 'PolitizrFrontBundle:User:_listRow.html.twig' with { 'user': user } %}
         {% endif %}

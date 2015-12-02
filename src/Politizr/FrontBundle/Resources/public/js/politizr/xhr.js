@@ -75,6 +75,7 @@ var ROUTE_DASHBOARD_TAG = 'profil/tableau/tags';
 var ROUTE_DASHBOARD_TOP_DEBATES = 'profil/tableau/debats';
 var ROUTE_DASHBOARD_TOP_USERS = 'profil/tableau/debats';
 var ROUTE_DASHBOARD_GEO = 'profil/tableau/geo';
+var ROUTE_DASHBOARD_SUGGESTION = 'profil/tableau/suggestion';
 
 // NOTATION
 var ROUTE_NOTE = 'profil/noter';

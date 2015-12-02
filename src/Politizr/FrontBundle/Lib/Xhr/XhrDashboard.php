@@ -297,4 +297,33 @@ class XhrDashboard
             'html' => $html,
         );
     }
+
+    /**
+     * Suggestion
+     */
+    public function suggestion(Request $request)
+    {
+        $this->logger->info('*** suggestion');
+
+        // current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+
+        // user's debates suggestion
+        $debates = PDDebateQuery::create()->findBySuggestion($user->getId(), 0, ListingConstants::DASHBOARD_SUGGESTION_DEBATES_LIMIT);
+
+        // user's profiles suggestion
+        $users = PUserQuery::create()->findBySuggestion($user->getId(), 0, ListingConstants::DASHBOARD_SUGGESTION_USERS_LIMIT);
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Dashboard:_suggestion.html.twig',
+            array(
+                'debates' => $debates,
+                'users' => $users,
+            )
+        );
+
+        return array(
+            'html' => $html,
+        );
+    }
 }
