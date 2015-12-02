@@ -85,7 +85,8 @@ class XhrConstants
     // DASHBOARD
     const ROUTE_DASHBOARD_MAP = 'profil/tableau/carte';
     const ROUTE_DASHBOARD_TAG = 'profil/tableau/tags';
-    const ROUTE_DASHBOARD_DEBATES = 'profil/tableau/debats';
+    const ROUTE_DASHBOARD_TOP_DEBATES = 'profil/tableau/debats';
+    const ROUTE_DASHBOARD_TOP_USERS = 'profil/tableau/debats';
 
     // NOTATION
     const ROUTE_NOTE = 'profil/noter';

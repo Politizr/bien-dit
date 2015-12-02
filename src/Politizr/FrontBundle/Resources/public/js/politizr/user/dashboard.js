@@ -5,8 +5,7 @@ $(function() {
     topListing();
     tagListing();
     debateListing();
-
-    $('#ajaxGlobalLoader').hide();
+    userListing();
 });
 
 // Map filter change
@@ -39,8 +38,16 @@ $("body").on("change", ".debateFilter", function(e) {
     debateListing();
 });
 
+// User filter change
+$("body").on("change", ".userFilter", function(e) {
+    console.log('*** change userFilter');
+    e.preventDefault();
+
+    userListing();
+});
+
 /**
- * Update link with current filter selected attribute
+ * Update map "suite" link with current filter selected attribute
  */
 function updateSuiteLink() {
     console.log('*** updateSuiteLink');
@@ -163,7 +170,7 @@ function debateListing() {
     console.log(datas);
 
     var xhrPath = getXhrPath(
-        ROUTE_DASHBOARD_TAG,
+        ROUTE_DASHBOARD_TOP_DEBATES,
         'dashboard',
         'topDebates',
         RETURN_HTML
@@ -187,6 +194,53 @@ function debateListing() {
                 fullImgLiquid();
             }
             localLoader.hide();
+        }
+    });    
+}
+
+/**
+ * Loading of "user" listing.
+ */
+function userListing() {
+    console.log('*** userListing');
+    
+    // Récupération du form des filtres
+    var datas = $('#userFilter').serializeArray();
+    console.log(datas);
+    // @todo hack to fix / why the form is not well serialized at the 1st call
+    if ($.isEmptyObject(datas)) {
+        datas.push({name: 'userFilterDate[]', value: 'allDate'});
+    }
+    console.log(datas);
+
+    var xhrPath = getXhrPath(
+        ROUTE_DASHBOARD_TOP_USERS,
+        'dashboard',
+        'topUsers',
+        RETURN_HTML
+        );
+
+    var localLoader = $('.dbPopularProfiles').children('.ajaxLoader').first();
+    $.ajax({
+        type: 'POST',
+        url: xhrPath,
+        data: datas,
+        dataType: 'json',
+        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, localLoader ); },
+        statusCode: { 404: function () { xhr404(localLoader); }, 500: function() { xhr500(localLoader); } },
+        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown, localLoader); },
+        success: function(data) {
+            if (data['error']) {
+                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                $('#infoBoxHolder .boxError').show();
+            } else {
+                $('.dbPopularProfiles').html(data['html']);
+                fullImgLiquid();
+            }
+            localLoader.hide();
+
+            // last ajax call hide global loader
+            $('#ajaxGlobalLoader').hide();
         }
     });    
 }

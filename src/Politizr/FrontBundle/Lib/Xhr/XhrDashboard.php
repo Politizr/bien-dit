@@ -215,4 +215,36 @@ class XhrDashboard
             'html' => $html,
         );
     }
+
+    /**
+     * Most popular users
+     */
+    public function topUsers(Request $request)
+    {
+        $this->logger->info('*** topUsers');
+        
+        // Request arguments
+        $filters = $request->get('userFilterDate');
+        $this->logger->info('$filters = ' . print_r($filters, true));
+
+        $users = PUserQuery::create()
+                    ->distinct()
+                    ->online()
+                    ->filterByKeywords($filters)
+                    ->orderWithKeyword('mostFollowed')
+                    ->limit(ListingConstants::DASHBOARD_TOP_USERS_LIMIT)
+                    ->find();
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Dashboard:_users.html.twig',
+            array(
+                'users' => $users,
+                'filters' => $filters,
+            )
+        );
+
+        return array(
+            'html' => $html,
+        );
+    }
 }

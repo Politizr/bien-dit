@@ -50,6 +50,7 @@ class ListingConstants
     // ************************************************************ //
     const DASHBOARD_TYPE_MAP = 'DASHBOARD_MAP';
     const DASHBOARD_TYPE_TOP_DEBATES = 'DASHBOARD_TOP_DEBATES';
+    const DASHBOARD_TYPE_TOP_USERS = 'DASHBOARD_TOP_USERS';
 
     const DASHBOARD_DEBATES = 'DASHBOARD_DEBATES';
     const DASHBOARD_REACTIONS = 'DASHBOARD_REACTIONS';
@@ -61,4 +62,5 @@ class ListingConstants
     const DASHBOARD_MAP_LIMIT = 3;
     const DASHBOARD_TOP_TAGS_LIMIT = 10;
     const DASHBOARD_TOP_DEBATES_LIMIT = 6;
+    const DASHBOARD_TOP_USERS_LIMIT = 6;
 }
