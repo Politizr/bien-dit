@@ -111,7 +111,7 @@ function tagListing() {
     }
 
     var xhrPath = getXhrPath(
-        ROUTE_DASHBOARD_MAP,
+        ROUTE_DASHBOARD_TAG,
         'dashboard',
         'tag',
         RETURN_HTML

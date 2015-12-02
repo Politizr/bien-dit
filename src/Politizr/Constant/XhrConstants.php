@@ -83,7 +83,8 @@ class XhrConstants
     const ROUTE_MODAL_REPUTATION_EVOLUTION = 'profil/ma-reputation/evolution';
 
     // DASHBOARD
-    const ROUTE_DASHBOARD_MAP = 'profil/carte';
+    const ROUTE_DASHBOARD_MAP = 'profil/dashboard/carte';
+    const ROUTE_DASHBOARD_TAG = 'profil/dashboard/tag';
 
     // NOTATION
     const ROUTE_NOTE = 'profil/noter';

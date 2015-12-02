@@ -4,7 +4,7 @@
 <h1>Thématiques populaires</h1>
 <div class="listCriteria listCriteriaTabs">
     <form id="tagFilter">
-        {% include 'PolitizrFrontBundle:Dashboard:_formFilters.html.twig' with { 'filters': filters, 'radioClassName': 'tagFilter' } %}
+        {% include 'PolitizrFrontBundle:Dashboard\\formFilters:_tagFormFilters.html.twig' with { 'filters': filters } %}
     </form>
 </div>
 

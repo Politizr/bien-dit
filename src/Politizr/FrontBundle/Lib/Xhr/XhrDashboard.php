@@ -53,22 +53,6 @@ class XhrDashboard
     /*                                         PRIVATE FUNCTIONS                                                */
     /* ######################################################################################################## */
 
-    /**
-     * Return an array with request listing information:
-     *    - filters,
-     *
-     * @return array[order,filters,offset,associatedObjectId]
-     */
-    private function getFiltersFromRequest(Request $request)
-    {
-        $filterDate = $request->get('filterDate');
-        $this->logger->info('$filterDate = ' . print_r($filterDate, true));
-        $geoTagUuid = $request->get('geoTagUuid');
-        $this->logger->info('$geoTagUuid = ' . print_r($geoTagUuid, true));
-
-        return [ $filterDate, $geoTagUuid ];
-    }
-
     /* ######################################################################################################## */
     /*                                   DASHBOARD MAP LOADING                                                  */
     /* ######################################################################################################## */
@@ -81,9 +65,10 @@ class XhrDashboard
         $this->logger->info('*** map');
         
         // Request arguments
-        $queryParams = $this->getFiltersFromRequest($request);
-        $filters = $queryParams[0];
-        $geoTagUuid = $queryParams[1];
+        $filters = $request->get('mapFilterDate');
+        $this->logger->info('$filters = ' . print_r($filters, true));
+        $geoTagUuid = $request->get('geoTagUuid');
+        $this->logger->info('$geoTagUuid = ' . print_r($geoTagUuid, true));
 
         // Retrieve subject
         if (!$geoTagUuid) {
@@ -180,8 +165,8 @@ class XhrDashboard
         $this->logger->info('*** tag');
         
         // Request arguments
-        $queryParams = $this->getFiltersFromRequest($request);
-        $filters = $queryParams[0];
+        $filters = $request->get('tagFilterDate');
+        $this->logger->info('$filters = ' . print_r($filters, true));
 
         // top 10 tag
         $tags = $this->tagService->getMostPopularTags($filters);
@@ -196,6 +181,6 @@ class XhrDashboard
 
         return array(
             'html' => $html,
-            );
+        );
     }
 }

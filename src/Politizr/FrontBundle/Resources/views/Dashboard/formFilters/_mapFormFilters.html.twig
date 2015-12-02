@@ -1,0 +1,8 @@
+<form id="listType">
+    <input type="radio" class="mapFilter" name="mapFilterDate[]" value="allDate" id="mapAllDate" {% if filters == null or 'allDate' in filters%}checked{% endif %}/>
+    <label for="mapAllDate">tous</label>
+    <input type="radio" class="mapFilter" name="mapFilterDate[]" value="lastMonth" id="mapLastMonth" {% if 'lastMonth' in filters%}checked{% endif %}/>
+    <label for="mapLastMonth">depuis 1 mois</label>
+    <input type="radio" class="mapFilter" name="mapFilterDate[]" value="lastWeek" id="mapLastWeek" {% if 'lastWeek' in filters %}checked{% endif %}/>
+    <label for="mapLastWeek">depuis 1 semaine</label>
+</form>

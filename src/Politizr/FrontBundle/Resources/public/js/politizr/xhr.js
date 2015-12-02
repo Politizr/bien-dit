@@ -70,7 +70,8 @@ var ROUTE_MODAL_REPUTATION = 'profil/ma-reputation';
 var ROUTE_MODAL_REPUTATION_EVOLUTION = 'profil/ma-reputation/evolution';
 
 // DASHBOARD
-var ROUTE_DASHBOARD_MAP = 'profil/carte';
+var ROUTE_DASHBOARD_MAP = 'profil/dashboard/carte';
+var ROUTE_DASHBOARD_TAG = 'profil/dashboard/tag';
 
 // NOTATION
 var ROUTE_NOTE = 'profil/noter';

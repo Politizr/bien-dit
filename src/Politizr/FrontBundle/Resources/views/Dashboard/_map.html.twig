@@ -15,7 +15,7 @@
     <div class="dbMapFilters">
         <div class="listCriteria listCriteriaTabs">
             <form id="mapFilter" uuid="{{ tag.uuid }}">
-                {% include 'PolitizrFrontBundle:Dashboard:_formFilters.html.twig' with { 'filters': filters, 'radioClassName': 'mapFilter' } %}
+                {% include 'PolitizrFrontBundle:Dashboard\\formFilters:_mapFormFilters.html.twig' with { 'filters': filters } %}
             </form>
         </div>
         <div class="debatePodium">
