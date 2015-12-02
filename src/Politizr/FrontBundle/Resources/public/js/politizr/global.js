@@ -161,6 +161,13 @@ function fullImgLiquid() {
         verticalAlign: "center"
     });
 
+    // dashboard popular debate 
+    $(".halfWidthThumb").imgLiquid({
+        fill: true,
+        horizontalAlign: "center",
+        verticalAlign: "center"
+    });
+
     // avatars
     $(".avatar15, .avatar40, .avatar60").imgLiquid({
         fill: true,

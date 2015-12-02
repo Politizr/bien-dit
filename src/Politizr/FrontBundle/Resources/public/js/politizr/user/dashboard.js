@@ -184,6 +184,7 @@ function debateListing() {
                 $('#infoBoxHolder .boxError').show();
             } else {
                 $('.dbPopularDebates').html(data['html']);
+                fullImgLiquid();
             }
             localLoader.hide();
         }
