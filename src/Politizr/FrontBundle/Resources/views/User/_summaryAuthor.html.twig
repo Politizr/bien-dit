@@ -1,0 +1,17 @@
+<div class="postSummaryCardAuthor">
+    {% if user %}
+        <div class="avatar40">
+            {{ user | photo('user_40') }}
+        </div>
+        <div class="profileSummary">
+            <div class="profileName">
+                {% include 'PolitizrFrontBundle:User:_authorName.html.twig' with { 'user': user } only %}
+                {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with { 'user': user } only %}
+            </div>
+            <div class="profileSubtitle">{{ user.subtitle | purify }}</div>
+        </div>
+    {% else %}
+        <i>utilisateur supprimé</i>
+    {% endif %}
+</div>
+
