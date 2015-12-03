@@ -1,6 +1,6 @@
 // on document ready
 $(function() {
-    timelineUserList($('#timeline').attr('uid'));
+    timelineUserList($('#timeline').attr('uuid'));
 });
 
 // User's timeline next page
@@ -9,7 +9,7 @@ $("body").on("click", "[action='timelineUserPaginatedNext']", function(e, waypoi
     if (waypoint) {
         waypoint.destroy();
     }
-    timelineUserList($(this).attr('userId'), false, $(this).attr('offset'));
+    timelineUserList($(this).attr('uuid'), false, $(this).attr('offset'));
 });
 
 /**
@@ -34,13 +34,13 @@ function initTimelineUserPaginateNextWaypoint() {
 /**
  * User's timeline
  *
- * @param integer userId
+ * @param string uuid
  * @param boolean init
  * @param integer offset
  */
-function timelineUserList(userId, init, offset) {
+function timelineUserList(uuid, init, offset) {
     // console.log('*** timelineUserList');
-    // console.log(userId);
+    // console.log(uuid);
     // console.log(init);
     // console.log(offset);
 
@@ -57,7 +57,7 @@ function timelineUserList(userId, init, offset) {
     $.ajax({
         type: 'POST',
         url: xhrPath,
-        data: { 'userId': userId, 'offset': offset },
+        data: { 'uuid': uuid, 'offset': offset },
         dataType: 'json',
         beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
         statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },

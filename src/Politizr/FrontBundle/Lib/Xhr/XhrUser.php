@@ -817,10 +817,15 @@ class XhrUser
         // Request arguments
         $offset = $request->get('offset');
         $this->logger->info('$offset = ' . print_r($offset, true));
-        $userId = $request->get('userId');
-        $this->logger->info('$userId = ' . print_r($userId, true));
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
 
-        $timeline = $this->timelineService->generateUserDetailTimeline($userId, $offset);
+        $user = PUserQuery::create()->filterByUuid($uuid)->findOne();
+        if (!$user) {
+            throw new InconsistentDataException(sprintf('User %s not found', $uuid));
+        }
+
+        $timeline = $this->timelineService->generateUserDetailTimeline($user->getId(), $offset);
 
         // @todo use constant for "limit"
         $moreResults = false;
@@ -843,7 +848,7 @@ class XhrUser
                 array(
                     'timelineDateKey' => $timelineDateKey,
                     'offset' => intval($offset) + 10,
-                    'userId' => $userId,
+                    'uuid' => $uuid,
                     'moreResults' => $moreResults,
                 )
             );
