@@ -36,6 +36,9 @@ $("body").on("click", "[action='followDebate']", function(e) {
                 $(this).html(data['html']);
 
                 $(this).trigger('postFollowDebateEvent', [ way ]);
+
+                // update reputation counter
+                scoreCounter();
             }
         }
     });
@@ -71,6 +74,9 @@ $("body").on("click", "[action='followUser']", function(e) {
             } else {
                 // MAJ du bouton suivre / Se désabonner
                 $(this).html(data['html']);
+
+                // update reputation counter
+                scoreCounter();
             }
         }
     });

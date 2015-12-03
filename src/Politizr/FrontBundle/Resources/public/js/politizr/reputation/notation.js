@@ -28,6 +28,9 @@ $("body").on("click", "[action='note']", function(e) {
                 $('#infoBoxHolder .boxError').show();
             } else {
                 $(this).html(data['html']);
+
+                // update reputation counter
+                scoreCounter();
             }
         }
     });
