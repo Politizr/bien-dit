@@ -45,6 +45,9 @@ var ROUTE_NOTIF_CONTEXT_DEBATE_UNSUBSCRIBE = 'profil/notif/debat/contexte/desact
 var ROUTE_NOTIF_CONTEXT_USER_SUBSCRIBE = 'profil/notif/utilisateur/contexte/activer';
 var ROUTE_NOTIF_CONTEXT_USER_UNSUBSCRIBE = 'profil/notif/utilisateur/contexte/desactiver';
 
+// REPUTATION COUNTER
+var ROUTE_SCORE_COUNTER = 'profil/reputation/score';
+
 // MODAL
 var ROUTE_MODAL_PAGINATED_LIST = 'liste';
 var ROUTE_MODAL_FILTERS = 'filtres';
@@ -66,8 +69,8 @@ var ROUTE_MODAL_FOLLOWERS_LIST = 'profil/abonnes';
 var ROUTE_MODAL_SEARCH_DEBATE_BY_TAGS_LIST = 'search/liste/tags/debat';
 var ROUTE_MODAL_SEARCH_REACTION_BY_TAGS_LIST = 'search/liste/tags/reaction';
 var ROUTE_MODAL_SEARCH_USER_BY_TAGS_LIST = 'search/liste/tags/utilisateur';
-var ROUTE_MODAL_REPUTATION = 'profil/ma-reputation';
-var ROUTE_MODAL_REPUTATION_EVOLUTION = 'profil/ma-reputation/evolution';
+var ROUTE_MODAL_REPUTATION = 'profil/reputation';
+var ROUTE_MODAL_REPUTATION_EVOLUTION = 'profil/reputation/evolution';
 
 // DASHBOARD
 var ROUTE_DASHBOARD_MAP = 'profil/tableau/carte';

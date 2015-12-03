@@ -638,7 +638,26 @@ class XhrUser
     /* ######################################################################################################## */
 
     /**
-     * User's reputation listing
+     * Reputation score
+     */
+    public function reputationScore(Request $request)
+    {
+        $this->logger->info('*** reputationScore');
+
+        // Function process
+        $user = $this->securityTokenStorage->getToken()->getUser();
+
+        // score de réputation
+        $reputationScore = $user->getReputationScore();
+
+        return array(
+            'html' => $reputationScore,
+        );
+    }
+
+
+    /**
+     * User's reputation detail & stats
      */
     public function reputation(Request $request)
     {

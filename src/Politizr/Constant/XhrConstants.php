@@ -58,6 +58,9 @@ class XhrConstants
     const ROUTE_NOTIF_CONTEXT_USER_SUBSCRIBE = 'profil/notif/utilisateur/contexte/activer';
     const ROUTE_NOTIF_CONTEXT_USER_UNSUBSCRIBE = 'profil/notif/utilisateur/contexte/desactiver';
 
+    // REPUTATION COUNTER
+    const ROUTE_SCORE_COUNTER = 'profil/reputation/score';
+
     // MODAL
     const ROUTE_MODAL_PAGINATED_LIST = 'liste';
     const ROUTE_MODAL_FILTERS = 'filtres';
@@ -79,8 +82,8 @@ class XhrConstants
     const ROUTE_MODAL_SEARCH_DEBATE_BY_TAGS_LIST = 'search/liste/tags/debat';
     const ROUTE_MODAL_SEARCH_REACTION_BY_TAGS_LIST = 'search/liste/tags/reaction';
     const ROUTE_MODAL_SEARCH_USER_BY_TAGS_LIST = 'search/liste/tags/utilisateur';
-    const ROUTE_MODAL_REPUTATION = 'profil/ma-reputation';
-    const ROUTE_MODAL_REPUTATION_EVOLUTION = 'profil/ma-reputation/evolution';
+    const ROUTE_MODAL_REPUTATION = 'profil/reputation';
+    const ROUTE_MODAL_REPUTATION_EVOLUTION = 'profil/reputation/evolution';
 
     // DASHBOARD
     const ROUTE_DASHBOARD_MAP = 'profil/tableau/carte';
