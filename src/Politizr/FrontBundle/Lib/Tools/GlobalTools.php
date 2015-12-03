@@ -204,9 +204,10 @@ class GlobalTools
      * http://stackoverflow.com/questions/7509774/php-explode-string-by-html-tag
      *
      * @param string $htmlText
+     * @param boolean $onlyP Extract only <p></p> elements
      * @return array
      */
-    public function explodeParagraphs($htmlText)
+    public function explodeParagraphs($htmlText, $onlyP = false)
     {
         // $htmlText = str_replace('</p>', '', $htmlText);
         // $paragraphs = explode('<p>', $htmlText);
@@ -230,8 +231,15 @@ class GlobalTools
 
         $paragraphs = array();
         $count = preg_match_all('/<p[^>]*>(.*?)<\/p>|<h\d[^>]*>(.*?)<\/h\d>|<ul[^>]*>(.*?)<\/ul>|<blockquote[^>]*>(.*?)<\/blockquote>/is', $htmlText, $matches);
+        dump($matches);
         for ($i = 0; $i < $count; ++$i) {
-            $paragraphs[] = $matches[0][$i];
+            if (!$onlyP) {
+                $paragraphs[] = $matches[0][$i];
+            } else {
+                if (!empty($matches[1][$i])) {
+                    $paragraphs[] = '<p>'.$matches[1][$i].'</p>';
+                }
+            }
         }
 
         return $paragraphs;

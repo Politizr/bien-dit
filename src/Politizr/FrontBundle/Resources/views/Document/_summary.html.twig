@@ -24,9 +24,9 @@
                 </div>
             {% endif %}
             <div class="postSummaryCardTitle">
-                <a href="user_post.html">
+                <a href="{{ detailPath }}">
                     <span>{{ document.title }}</span>
-                    {{ document.description | removeLinks | excerpt | purify }}
+                    {{ document.description | removeLinks | excerpt(1, true) | purify }}
                 </a>
             </div>
             <div class="postSummaryCardFooter">

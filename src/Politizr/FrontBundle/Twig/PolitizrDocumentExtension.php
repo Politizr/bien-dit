@@ -428,16 +428,18 @@ class PolitizrDocumentExtension extends \Twig_Extension
      *
      * @param string $text
      * @param integer $nbParagraph
+     * @param boolean $onlyP Extract only <p></p> elements
      * @return string
      */
-    public function excerpt($text, $nbParagraph = 1)
+    public function excerpt($text, $nbParagraph = 1, $onlyP = false)
     {
         // $this->logger->info('*** excerpt');
         // $this->logger->info('$document = '.print_r($text, true));
         // $this->logger->info('$nbParagraph = '.print_r($nbParagraph, true));
+        // $this->logger->info('$onlyP = '.print_r($onlyP, true));
 
         // Paragraphs explode
-        $paragraphs = $this->globalTools->explodeParagraphs($text);
+        $paragraphs = $this->globalTools->explodeParagraphs($text, $onlyP);
 
         // Extract the first nbParagrpah
         $paragraphs = array_slice($paragraphs, 0, $nbParagraph);
