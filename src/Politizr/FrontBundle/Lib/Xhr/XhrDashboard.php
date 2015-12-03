@@ -90,7 +90,7 @@ class XhrDashboard
                         ->filterByPTagId($debateTagIds)
                     ->endUse()
                     ->filterByKeywords($filters)
-                    ->orderWithKeyword('bestNote')
+                    ->orderWithKeyword(ListingConstants::ORDER_BY_KEYWORD_BEST_NOTE)
                     ->limit(ListingConstants::DASHBOARD_MAP_LIMIT)
                     ->find();
 
@@ -102,7 +102,7 @@ class XhrDashboard
                         ->filterByPTagId($userTagIds)
                     ->endUse()
                     ->filterByKeywords($filters)
-                    ->orderWithKeyword('mostFollowed')
+                    ->orderWithKeyword(ListingConstants::ORDER_BY_KEYWORD_MOST_FOLLOWED)
                     ->limit(ListingConstants::DASHBOARD_MAP_LIMIT)
                     ->find();
 
@@ -199,7 +199,7 @@ class XhrDashboard
                     ->distinct()
                     ->online()
                     ->filterByKeywords($filters)
-                    ->orderWithKeyword('bestNote')
+                    ->orderWithKeyword(ListingConstants::ORDER_BY_KEYWORD_BEST_NOTE)
                     ->limit(ListingConstants::DASHBOARD_TOP_DEBATES_LIMIT)
                     ->find();
 
@@ -231,7 +231,7 @@ class XhrDashboard
                     ->distinct()
                     ->online()
                     ->filterByKeywords($filters)
-                    ->orderWithKeyword('mostFollowed')
+                    ->orderWithKeyword(ListingConstants::ORDER_BY_KEYWORD_MOST_FOLLOWED)
                     ->limit(ListingConstants::DASHBOARD_TOP_USERS_LIMIT)
                     ->find();
 
@@ -269,7 +269,7 @@ class XhrDashboard
                         ->usePDDTaggedTQuery()
                             ->filterByPTagId($tag->getId())
                         ->endUse()
-                        ->orderWithKeyword('last')
+                        ->orderWithKeyword(ListingConstants::ORDER_BY_KEYWORD_LAST)
                         ->limit(ListingConstants::DASHBOARD_GEO_DEBATES_LIMIT)
                         ->find();
 
@@ -279,7 +279,7 @@ class XhrDashboard
                         ->usePuTaggedTPUserQuery()
                             ->filterByPTagId($tag->getId())
                         ->endUse()
-                        ->orderWithKeyword('last')
+                        ->orderWithKeyword(ListingConstants::ORDER_BY_KEYWORD_LAST)
                         ->limit(ListingConstants::DASHBOARD_GEO_USERS_LIMIT)
                         ->find();
 

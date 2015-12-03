@@ -4,6 +4,8 @@ namespace Politizr\Model;
 
 use Politizr\Model\om\BasePDDebateQuery;
 
+use Politizr\Constant\ListingConstants;
+
 use Geocoder\Result\Geocoded;
 
 /**
@@ -173,20 +175,20 @@ LIMIT ".$offset.", ".$limit."
      * @param string $keyword
      * @return PDDebateQuery
      */
-    public function orderWithKeyword($keyword = 'last')
+    public function orderWithKeyword($keyword = ListingConstants::ORDER_BY_KEYWORD_LAST)
     {
         return $this
-            ->_if('mostFollowed' === $keyword)
+            ->_if(ListingConstants::ORDER_BY_KEYWORD_MOST_FOLLOWED === $keyword)
                 ->orderByMostFollowed()
-            ->_elseif('bestNote' === $keyword)
+            ->_elseif(ListingConstants::ORDER_BY_KEYWORD_BEST_NOTE === $keyword)
                 ->orderByNote()
-            ->_elseif('last' === $keyword)
+            ->_elseif(ListingConstants::ORDER_BY_KEYWORD_LAST === $keyword)
                 ->orderByLast()
-            ->_elseif('mostReactions' === $keyword)
+            ->_elseif(ListingConstants::ORDER_BY_KEYWORD_MOST_REACTIONS === $keyword)
                 ->orderByMostReactions()
-            ->_elseif('mostComments' === $keyword)
+            ->_elseif(ListingConstants::ORDER_BY_KEYWORD_MOST_COMMENTS === $keyword)
                 ->orderByMostComments()
-            ->_elseif('mostViews' === $keyword)
+            ->_elseif(ListingConstants::ORDER_BY_KEYWORD_MOST_VIEWS === $keyword)
                 ->orderByMostViews()
             ->_endif();
     }
@@ -276,19 +278,19 @@ LIMIT ".$offset.", ".$limit."
     public function filterByKeywords($keywords = null)
     {
         return $this
-            ->_if($keywords && (in_array('lastDay', $keywords)))
+            ->_if($keywords && (in_array(ListingConstants::FILTER_KEYWORD_LAST_DAY, $keywords)))
                 ->filterByLastDay()
             ->_endif()
-            ->_if($keywords && (in_array('lastWeek', $keywords)))
+            ->_if($keywords && (in_array(ListingConstants::FILTER_KEYWORD_LAST_WEEK, $keywords)))
                 ->filterByLastWeek()
             ->_endif()
-            ->_if($keywords && (in_array('lastMonth', $keywords)))
+            ->_if($keywords && (in_array(ListingConstants::FILTER_KEYWORD_LAST_MONTH, $keywords)))
                 ->filterByLastMonth()
             ->_endif()
-            ->_if($keywords && in_array('qualified', $keywords))
+            ->_if($keywords && in_array(ListingConstants::FILTER_KEYWORD_QUALIFIED, $keywords))
                 ->filterByQualified()
             ->_endif()
-            ->_if($keywords && in_array('citizen', $keywords))
+            ->_if($keywords && in_array(ListingConstants::FILTER_KEYWORD_CITIZEN, $keywords))
                 ->filterByCitizen()
             ->_endif();
     }

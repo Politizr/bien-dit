@@ -1,8 +1,8 @@
 <form id="listType">
-    <input type="radio" class="userFilter" name="userFilterDate[]" value="allDate" id="userAllDate" {% if filters == null or 'allDate' in filters%}checked{% endif %}/>
+    <input type="radio" class="userFilter" name="userFilterDate[]" value="{{ constant('Politizr\\Constant\\ListingConstants::FILTER_KEYWORD_ALL_DATE') }}" id="userAllDate" {% if filters == null or 'allDate' in filters%}checked{% endif %}/>
     <label for="userAllDate">tous</label>
-    <input type="radio" class="userFilter" name="userFilterDate[]" value="lastMonth" id="userLastMonth" {% if 'lastMonth' in filters%}checked{% endif %}/>
+    <input type="radio" class="userFilter" name="userFilterDate[]" value="{{ constant('Politizr\\Constant\\ListingConstants::FILTER_KEYWORD_LAST_MONTH') }}" id="userLastMonth" {% if 'lastMonth' in filters%}checked{% endif %}/>
     <label for="userLastMonth">depuis 1 mois</label>
-    <input type="radio" class="userFilter" name="userFilterDate[]" value="lastWeek" id="userLastWeek" {% if 'lastWeek' in filters %}checked{% endif %}/>
+    <input type="radio" class="userFilter" name="userFilterDate[]" value="{{ constant('Politizr\\Constant\\ListingConstants::FILTER_KEYWORD_LAST_WEEK') }}" id="userLastWeek" {% if 'lastWeek' in filters %}checked{% endif %}/>
     <label for="userLastWeek">depuis 1 semaine</label>
 </form>

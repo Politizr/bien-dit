@@ -4,6 +4,8 @@ namespace Politizr\Model;
 
 use Politizr\Model\om\BasePDReactionQuery;
 
+use Politizr\Constant\ListingConstants;
+
 /**
  * Reaction query
  *
@@ -154,20 +156,20 @@ LIMIT ".$offset.", ".$limit."
      * @todo refactor keyword to constant
      *
      * @param string $keyword
-     * @return PDDebateQuery
+     * @return PDReactionQuery
      */
-    public function orderWithKeyword($keyword = 'last')
+    public function orderWithKeyword($keyword = ListingConstants::ORDER_BY_KEYWORD_LAST)
     {
         return $this
-            ->_if('bestNote' === $keyword)
+            ->_if(ListingConstants::ORDER_BY_KEYWORD_BEST_NOTE === $keyword)
                 ->orderByNote()
-            ->_elseif('last' === $keyword)
+            ->_elseif(ListingConstants::ORDER_BY_KEYWORD_LAST === $keyword)
                 ->orderByLast()
-            ->_elseif('mostReactions' === $keyword)
+            ->_elseif(ListingConstants::ORDER_BY_KEYWORD_MOST_REACTIONS === $keyword)
                 ->orderByMostReactions()
-            ->_elseif('mostComments' === $keyword)
+            ->_elseif(ListingConstants::ORDER_BY_KEYWORD_MOST_COMMENTS === $keyword)
                 ->orderByMostComments()
-            ->_elseif('mostViews' === $keyword)
+            ->_elseif(ListingConstants::ORDER_BY_KEYWORD_MOST_VIEWS === $keyword)
                 ->orderByMostViews()
             ->_endif();
     }
@@ -175,7 +177,7 @@ LIMIT ".$offset.", ".$limit."
     /**
      * Order by note pos
      *
-     * @return PDDebateQuery
+     * @return PDReactionQuery
      */
     public function orderByNote()
     {
@@ -185,7 +187,7 @@ LIMIT ".$offset.", ".$limit."
     /**
      * Order by number of reactions
      *
-     * @return PDDebateQuery
+     * @return PDReactionQuery
      */
     public function orderByMostReactions()
     {
@@ -198,7 +200,7 @@ LIMIT ".$offset.", ".$limit."
     /**
      * Order by number of comments
      *
-     * @return PDDebateQuery
+     * @return PDReactionQuery
      */
     public function orderByMostComments()
     {
@@ -213,7 +215,7 @@ LIMIT ".$offset.", ".$limit."
     /**
      * Order by number of views
      *
-     * @return PDDebateQuery
+     * @return PDReactionQuery
      */
     public function orderByMostViews()
     {
@@ -224,7 +226,7 @@ LIMIT ".$offset.", ".$limit."
     /**
      * Order by last published
      *
-     * @return PDDebateQuery
+     * @return PDReactionQuery
      */
     public function orderByLast()
     {
@@ -235,24 +237,24 @@ LIMIT ".$offset.", ".$limit."
      * Filter by keyword
      *
      * @param array[string] $keywords
-     * @return PDDebateQuery
+     * @return PDReactionQuery
      */
     public function filterByKeywords($keywords = null)
     {
         return $this
-            ->_if($keywords && (in_array('lastDay', $keywords)))
+            ->_if($keywords && (in_array(ListingConstants::FILTER_KEYWORD_LAST_DAY, $keywords)))
                 ->filterByLastDay()
             ->_endif()
-            ->_if($keywords && (in_array('lastWeek', $keywords)))
+            ->_if($keywords && (in_array(ListingConstants::FILTER_KEYWORD_LAST_WEEK, $keywords)))
                 ->filterByLastWeek()
             ->_endif()
-            ->_if($keywords && (in_array('lastMonth', $keywords)))
+            ->_if($keywords && (in_array(ListingConstants::FILTER_KEYWORD_LAST_MONTH, $keywords)))
                 ->filterByLastMonth()
             ->_endif()
-            ->_if($keywords && in_array('qualified', $keywords))
+            ->_if($keywords && in_array(ListingConstants::FILTER_KEYWORD_QUALIFIED, $keywords))
                 ->filterByQualified()
             ->_endif()
-            ->_if($keywords && in_array('citizen', $keywords))
+            ->_if($keywords && in_array(ListingConstants::FILTER_KEYWORD_CITIZEN, $keywords))
                 ->filterByCitizen()
             ->_endif();
     }
@@ -260,7 +262,7 @@ LIMIT ".$offset.", ".$limit."
     /**
      * Filter by published during last 24h
      *
-     * @return PDDebateQuery
+     * @return PDReactionQuery
      */
     public function filterByLastDay()
     {
@@ -275,7 +277,7 @@ LIMIT ".$offset.", ".$limit."
     /**
      * Filter by published during last week
      *
-     * @return PDDebateQuery
+     * @return PDReactionQuery
      */
     public function filterByLastWeek()
     {
@@ -290,7 +292,7 @@ LIMIT ".$offset.", ".$limit."
     /**
      * Filter by published during last month
      *
-     * @return PDDebateQuery
+     * @return PDReactionQuery
      */
     public function filterByLastMonth()
     {
@@ -305,7 +307,7 @@ LIMIT ".$offset.", ".$limit."
     /**
      * Filter by qualified
      *
-     * @return PDDebateQuery
+     * @return PDReactionQuery
      */
     public function filterByQualified()
     {
@@ -318,7 +320,7 @@ LIMIT ".$offset.", ".$limit."
     /**
      * Filter by not qualified
      *
-     * @return PDDebateQuery
+     * @return PDReactionQuery
      */
     public function filterByCitizen()
     {
@@ -332,7 +334,7 @@ LIMIT ".$offset.", ".$limit."
      * Filter by array of tags id
      *
      * @param array[int]
-     * @return PDDebateQuery
+     * @return PDReactionQuery
      */
     public function filterByTags($tagIds)
     {
@@ -346,7 +348,7 @@ LIMIT ".$offset.", ".$limit."
      * Filter by geolocalization
      *
      * @param Geocoded $geocoded
-     * @return PDDebateQuery
+     * @return PDReactionQuery
      */
     public function filterByGeolocalization(Geocoded $geocoded)
     {

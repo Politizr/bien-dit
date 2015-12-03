@@ -1,10 +1,10 @@
-<input type="radio" class="order" name="order" value="last" id="last" {% if defaultOrder == 'last' %}checked{% endif %}/>
+<input type="radio" class="order" name="order" value="{{ constant('Politizr\\Constant\\ListingConstants::ORDER_BY_KEYWORD_LAST') }}" id="last" {% if defaultOrder == 'last' %}checked{% endif %}/>
 <label for="last"><i class="iconNotifYes"></i>plus récents</label>
-<input type="radio" class="order" name="order" value="bestNote" id="bestNote" {% if defaultOrder == 'bestNote' %}checked{% endif %}/>
+<input type="radio" class="order" name="order" value="{{ constant('Politizr\\Constant\\ListingConstants::ORDER_BY_KEYWORD_BEST_NOTE') }}" id="bestNote" {% if defaultOrder == 'bestNote' %}checked{% endif %}/>
 <label for="bestNote"><i class="iconNotifYes"></i>meilleures notes</label>
-<input type="radio" class="order" name="order" value="mostViews" id="mostViews" {% if defaultOrder == 'mostViews' %}checked{% endif %}/>
+<input type="radio" class="order" name="order" value="{{ constant('Politizr\\Constant\\ListingConstants::ORDER_BY_KEYWORD_MOST_VIEWS') }}" id="mostViews" {% if defaultOrder == 'mostViews' %}checked{% endif %}/>
 <label for="mostViews"><i class="iconNotifYes"></i>plus vus</label>
-<input type="radio" class="order" name="order" value="mostReactions" id="mostReactions" {% if defaultOrder == 'mostReactions' %}checked{% endif %}/>
+<input type="radio" class="order" name="order" value="{{ constant('Politizr\\Constant\\ListingConstants::ORDER_BY_KEYWORD_MOST_REACTIONS') }}" id="mostReactions" {% if defaultOrder == 'mostReactions' %}checked{% endif %}/>
 <label for="mostReactions"><i class="iconNotifYes"></i>plus de réactions</label>
-<input type="radio" class="order" name="order" value="mostComments" id="mostComments" {% if defaultOrder == 'mostComments' %}checked{% endif %}/>
+<input type="radio" class="order" name="order" value="{{ constant('Politizr\\Constant\\ListingConstants::ORDER_BY_KEYWORD_MOST_COMMENTS') }}" id="mostComments" {% if defaultOrder == 'mostComments' %}checked{% endif %}/>
 <label for="mostComments"><i class="iconNotifYes"></i>plus de commentaires</label>

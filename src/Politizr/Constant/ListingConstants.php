@@ -70,5 +70,25 @@ class ListingConstants
     const DASHBOARD_GEO_DEBATES_LIMIT = 2;
     const DASHBOARD_GEO_USERS_LIMIT = 2;
     const DASHBOARD_SUGGESTION_DEBATES_LIMIT = 3;
-    const DASHBOARD_SUGGESTION_USERS_LIMIT = 5; // +1 to hack suggestion user query which return 1 first null element
+    const DASHBOARD_SUGGESTION_USERS_LIMIT = 5; // @todo /!\ hack > +1 to hack suggestion user query which return 1 first null element
+
+    // ************************************************************ //
+    //            Filters & Order keyword constants                 //
+    // ************************************************************ //
+
+    const ORDER_BY_KEYWORD_MOST_FOLLOWED = 'mostFollowed';
+    const ORDER_BY_KEYWORD_MOST_ACTIVE = 'mostActive';
+    const ORDER_BY_KEYWORD_BEST_NOTE = 'bestNote';
+    const ORDER_BY_KEYWORD_LAST = 'last';
+    const ORDER_BY_KEYWORD_MOST_REACTIONS = 'mostReactions';
+    const ORDER_BY_KEYWORD_MOST_COMMENTS = 'mostComments';
+    const ORDER_BY_KEYWORD_MOST_VIEWS = 'mostViews';
+
+    const FILTER_KEYWORD_ALL_DATE = 'allDate';
+    const FILTER_KEYWORD_ALL_USERS = 'allUsers';
+    const FILTER_KEYWORD_LAST_DAY = 'lastDay';
+    const FILTER_KEYWORD_LAST_WEEK = 'lastWeek';
+    const FILTER_KEYWORD_LAST_MONTH = 'lastMonth';
+    const FILTER_KEYWORD_QUALIFIED = 'qualified';
+    const FILTER_KEYWORD_CITIZEN = 'citizen';
 }
