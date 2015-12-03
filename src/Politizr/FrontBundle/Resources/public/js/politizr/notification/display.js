@@ -17,6 +17,8 @@ $("body").on("click", ".notifClose", function() {
 
 // Regular function with arguments
 function notificationsLoading(){
+    // console.log('*** notificationsLoading');
+
     var xhrPath = getXhrPath(
         ROUTE_NOTIF_LOADING,
         'notification',
@@ -48,10 +50,10 @@ function notificationsLoading(){
         }
     });
 
-    // Rappel toutes les 60 secondes
-    setTimeout(function(){
-        notificationsLoading();
-    }, 60000);
+    // // Autoloading every 60 secondes
+    // setTimeout(function(){
+    //     notificationsLoading();
+    // }, 60000);
 }
 
 // check notification
