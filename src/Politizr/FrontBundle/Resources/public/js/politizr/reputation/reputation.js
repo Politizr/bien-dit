@@ -1,3 +1,5 @@
+// cf http://www.chartjs.org/docs/#line-chart
+
 // Useful to destroy previous one before creating new chart
 var globalChartInstance;
 
@@ -120,7 +122,8 @@ function loadReputationDataCharts(lineChartData) {
         scaleGridLineColor : "#dbdcdd",
         scaleLineColor: "#dbdcdd",
         datasetStrokeWidth : 2,
-        pointHitDetectionRadius : 5
+        pointHitDetectionRadius : 5,
+        scaleBeginAtZero: true
     });
 
     return myChart;
