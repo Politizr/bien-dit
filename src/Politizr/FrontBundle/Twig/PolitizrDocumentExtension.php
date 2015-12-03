@@ -125,6 +125,11 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 array('is_safe' => array('html'))
             ),
             new \Twig_SimpleFilter(
+                'removeSpans',
+                array($this, 'removeSpans'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
                 'nbViewsFormat',
                 array($this, 'nbViewsFormat'),
                 array('is_safe' => array('html'))
@@ -461,7 +466,20 @@ class PolitizrDocumentExtension extends \Twig_Extension
      */
     public function removeLinks($text)
     {
-        return preg_replace('/<a href=\"(.*?)\">(.*?)<\/a>/', "\\2", $text);
+        $text = preg_replace('/<a href=\"(.*?)\">(.*?)<\/a>/', "\\2", $text);
+        return $text;
+    }
+
+    /**
+     * Remove <span ...></span> from input text
+     *
+     * @param string $text
+     * @return string
+     */
+    public function removeSpans($text)
+    {
+        $text = preg_replace('#</?span[^>]*>#is', '', $text);
+        return $text;
     }
 
     /**

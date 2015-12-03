@@ -26,7 +26,7 @@
             <div class="postSummaryCardTitle">
                 <a href="{{ detailPath }}">
                     <span>{{ document.title }}</span>
-                    {{ document.description | removeLinks | excerpt(1, true) | purify }}
+                    {{ document.description | removeLinks | removeSpans | excerpt(1, true) | purify }}
                 </a>
             </div>
             <div class="postSummaryCardFooter">
