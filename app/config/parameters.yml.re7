@@ -2,15 +2,9 @@ parameters:
     database_driver: mysql
     database_host: localhost
     database_port: null
-<<<<<<< HEAD
     database_name: ***
     database_user: ***
     database_password: ***
-=======
-    database_name: politizr_proto
-    database_user: politizr
-    database_password: vSttHajC77QLSJFK
->>>>>>> origin/prototype
     mailer_auth_mode:  login
     mailer_port:       25
     mailer_transport:  mail
