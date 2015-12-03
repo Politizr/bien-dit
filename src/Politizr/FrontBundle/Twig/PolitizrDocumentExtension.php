@@ -168,19 +168,18 @@ class PolitizrDocumentExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'linkNote'  => new \Twig_Function_Method(
-                $this,
+            'linkNote'  => new \Twig_SimpleFunction(
                 'linkNote',
+                array($this, 'linkNote'),
                 array('is_safe' => array('html'))
             ),
-            'timelineRow'  => new \Twig_Function_Method(
-                $this,
+            'timelineRow'  => new \Twig_SimpleFunction(
                 'timelineRow',
+                array($this, 'timelineRow'),
                 array('is_safe' => array('html'))
             ),
         );
     }
-
 
     /* ######################################################################################################## */
     /*                                             FILTERS                                                      */

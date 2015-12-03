@@ -155,9 +155,21 @@ class PolitizrUserExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'isGrantedC'  => new \Twig_Function_Method($this, 'isGrantedC', array('is_safe' => array('html'))),
-            'isGrantedE'  => new \Twig_Function_Method($this, 'isGrantedE', array('is_safe' => array('html'))),
-            'profileSuffix'  => new \Twig_Function_Method($this, 'profileSuffix', array('is_safe' => array('html'))),
+            'isGrantedC'  => new \Twig_SimpleFunction(
+                'isGrantedC',
+                array($this, 'isGrantedC'),
+                array('is_safe' => array('html'))
+            ),
+            'isGrantedE'  => new \Twig_SimpleFunction(
+                'isGrantedE',
+                array($this, 'isGrantedE'),
+                array('is_safe' => array('html'))
+            ),
+            'profileSuffix'  => new \Twig_SimpleFunction(
+                'profileSuffix',
+                array($this, 'profileSuffix'),
+                array('is_safe' => array('html'))
+            ),
         );
     }
 

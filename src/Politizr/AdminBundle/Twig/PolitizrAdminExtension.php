@@ -84,156 +84,156 @@ class PolitizrAdminExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'adminUserTags'  => new \Twig_Function_Method(
-                $this,
+            'adminUserTags'  => new \Twig_SimpleFunction(
                 'adminUserTags',
+                array($this, 'adminUserTags'),
                 array(
                     'is_safe' => array('html')
                 )
             ),
-            'adminUserDebates'  => new \Twig_Function_Method(
-                $this,
+            'adminUserDebates'  => new \Twig_SimpleFunction(
                 'adminUserDebates',
+                array($this, 'adminUserDebates'),
                 array(
                     'is_safe' => array('html')
                     )
             ),
-            'adminUserReactions'  => new \Twig_Function_Method(
-                $this,
+            'adminUserReactions'  => new \Twig_SimpleFunction(
                 'adminUserReactions',
+                array($this, 'adminUserReactions'),
                 array(
                     'is_safe' => array('html')
                     )
             ),
-            'adminUserDComments'  => new \Twig_Function_Method(
-                $this,
+            'adminUserDComments'  => new \Twig_SimpleFunction(
                 'adminUserDComments',
+                array($this, 'adminUserDComments'),
                 array(
                     'is_safe' => array('html')
                     )
             ),
-            'adminUserRComments'  => new \Twig_Function_Method(
-                $this,
+            'adminUserRComments'  => new \Twig_SimpleFunction(
                 'adminUserRComments',
+                array($this, 'adminUserRComments'),
                 array(
                     'is_safe' => array('html')
                     )
             ),
-            'adminUserFollowers'  => new \Twig_Function_Method(
-                $this,
+            'adminUserFollowers'  => new \Twig_SimpleFunction(
                 'adminUserFollowers',
+                array($this, 'adminUserFollowers'),
                 array(
                     'is_safe' => array('html')
                     )
             ),
-            'adminUserSubscribers'  => new \Twig_Function_Method(
-                $this,
+            'adminUserSubscribers'  => new \Twig_SimpleFunction(
                 'adminUserSubscribers',
+                array($this, 'adminUserSubscribers'),
                 array(
                     'is_safe' => array('html')
                     )
             ),
-            'adminUserBadges'  => new \Twig_Function_Method(
-                $this,
+            'adminUserBadges'  => new \Twig_SimpleFunction(
                 'adminUserBadges',
+                array($this, 'adminUserBadges'),
                 array(
                     'is_safe' => array('html')
                     )
             ),
-            'adminUserAffinities'  => new \Twig_Function_Method(
-                $this,
+            'adminUserAffinities'  => new \Twig_SimpleFunction(
                 'adminUserAffinities',
+                array($this, 'adminUserAffinities'),
                 array(
                     'is_safe' => array('html')
                     )
             ),
-            'adminUserReputation'  => new \Twig_Function_Method(
-                $this,
+            'adminUserReputation'  => new \Twig_SimpleFunction(
                 'adminUserReputation',
+                array($this, 'adminUserReputation'),
                 array(
                     'is_safe' => array('html')
                     )
             ),
-            'adminDebateReactions'  => new \Twig_Function_Method(
-                $this,
+            'adminDebateReactions'  => new \Twig_SimpleFunction(
                 'adminDebateReactions',
+                array($this, 'adminDebateReactions'),
                 array(
                     'is_safe' => array('html')
                     )
             ),
-            'adminDebateComments'  => new \Twig_Function_Method(
-                $this,
+            'adminDebateComments'  => new \Twig_SimpleFunction(
                 'adminDebateComments',
+                array($this, 'adminDebateComments'),
                 array(
                     'is_safe' => array('html')
                     )
             ),
-            'adminDebateTags'  => new \Twig_Function_Method(
-                $this,
+            'adminDebateTags'  => new \Twig_SimpleFunction(
                 'adminDebateTags',
+                array($this, 'adminDebateTags'),
                 array(
                     'is_safe' => array('html')
                     )
             ),
-            'adminReactionTags'  => new \Twig_Function_Method(
-                $this,
+            'adminReactionTags'  => new \Twig_SimpleFunction(
                 'adminReactionTags',
+                array($this, 'adminReactionTags'),
                 array(
                     'is_safe' => array('html')
                     )
             ),
-            'adminDebateFollowersQ'  => new \Twig_Function_Method(
-                $this,
+            'adminDebateFollowersQ'  => new \Twig_SimpleFunction(
                 'adminDebateFollowersQ',
+                array($this, 'adminDebateFollowersQ'),
                 array(
                     'is_safe' => array('html')
                     )
             ),
-            'adminDebateFollowersC'  => new \Twig_Function_Method(
-                $this,
+            'adminDebateFollowersC'  => new \Twig_SimpleFunction(
                 'adminDebateFollowersC',
+                array($this, 'adminDebateFollowersC'),
                 array(
                     'is_safe' => array('html')
                     )
             ),
-            'adminReactionComments'  => new \Twig_Function_Method(
-                $this,
+            'adminReactionComments'  => new \Twig_SimpleFunction(
                 'adminReactionComments',
+                array($this, 'adminReactionComments'),
                 array(
                     'is_safe' => array('html')
                     )
             ),
-            'adminTagDebates'  => new \Twig_Function_Method(
-                $this,
+            'adminTagDebates'  => new \Twig_SimpleFunction(
                 'adminTagDebates',
+                array($this, 'adminTagDebates'),
                 array(
                     'is_safe' => array('html')
                     )
             ),
-            'adminTagUsers'  => new \Twig_Function_Method(
-                $this,
+            'adminTagUsers'  => new \Twig_SimpleFunction(
                 'adminTagUsers',
+                array($this, 'adminTagUsers'),
                 array(
                     'is_safe' => array('html')
                     )
             ),
-            'adminCreatePath'  => new \Twig_Function_Method(
-                $this,
+            'adminCreatePath'  => new \Twig_SimpleFunction(
                 'adminCreatePath',
+                array($this, 'adminCreatePath'),
                 array(
                     'is_safe' => array('html')
                     )
             ),
-            'adminModerationAlertNew'  => new \Twig_Function_Method(
-                $this,
+            'adminModerationAlertNew'  => new \Twig_SimpleFunction(
                 'adminModerationAlertNew',
+                array($this, 'adminModerationAlertNew'),
                 array(
                     'is_safe' => array('html')
                     )
             ),
-            'adminModerationAlertListing'  => new \Twig_Function_Method(
-                $this,
+            'adminModerationAlertListing'  => new \Twig_SimpleFunction(
                 'adminModerationAlertListing',
+                array($this, 'adminModerationAlertListing'),
                 array(
                     'is_safe' => array('html')
                     )

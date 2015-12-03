@@ -76,29 +76,29 @@ class PolitizrTagExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'debateTagsEdit'  => new \Twig_Function_Method(
-                $this,
+            'debateTagsEdit'  => new \Twig_SimpleFunction(
                 'debateTagsEdit',
+                array($this, 'debateTagsEdit'),
                 array('is_safe' => array('html'))
             ),
-            'reactionTagsEdit'  => new \Twig_Function_Method(
-                $this,
+            'reactionTagsEdit'  => new \Twig_SimpleFunction(
                 'reactionTagsEdit',
+                array($this, 'reactionTagsEdit'),
                 array('is_safe' => array('html'))
             ),
-            'userFollowTagsEdit'  => new \Twig_Function_Method(
-                $this,
+            'userFollowTagsEdit'  => new \Twig_SimpleFunction(
                 'userFollowTagsEdit',
+                array($this, 'userFollowTagsEdit'),
                 array('is_safe' => array('html'))
             ),
-            'userTagsEdit'  => new \Twig_Function_Method(
-                $this,
+            'userTagsEdit'  => new \Twig_SimpleFunction(
                 'userTagsEdit',
+                array($this, 'userTagsEdit'),
                 array('is_safe' => array('html'))
             ),
-            'geoTagBreadcrumb'  => new \Twig_Function_Method(
-                $this,
+            'geoTagBreadcrumb'  => new \Twig_SimpleFunction(
                 'geoTagBreadcrumb',
+                array($this, 'geoTagBreadcrumb'),
                 array('is_safe' => array('html'))
             ),
         );
