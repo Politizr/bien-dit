@@ -67,6 +67,21 @@
 .actionAskForUpdate a:hover {color: $highlight;}
 
 
+/// auto save
+#fixedActions .actionSave.saved i {display: none;}
+#fixedActions .actionSave.saved a {
+	color: $success;
+	background-color: $darkGrey;
+	cursor: default;
+}
+#fixedActions .actionSave.saved a:hover {	color: $success; background-color: $darkGrey;}
+#fixedActions .actionSave.saved a:before {
+	font-family: 'fontello';
+	content: "\e82c";
+	color: $success;
+	padding-right: 4px;
+}
+
 /// got to update under
 
 #fixedActions .actionSave,
