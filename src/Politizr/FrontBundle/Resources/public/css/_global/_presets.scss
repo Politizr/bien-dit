@@ -289,4 +289,16 @@ body {
     background-color: $highlight;
 }
 .tag:hover { color: #fff; }
-.tag.geo {background-color: $darkHighlight;}
+.tag.geo {
+	padding-left: 13px;
+	position: relative;
+}
+.tag.geo:before {
+	font-family: 'fontello';
+	content: "\e83a";
+	padding-right: 2px;
+	position: absolute;
+	left: 4px;
+	top:3px;
+	font-size: 10px;
+}
