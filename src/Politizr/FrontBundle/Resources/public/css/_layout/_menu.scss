@@ -56,9 +56,11 @@
 	padding-left: 0;
 }
 
-#menu .pad40 a.miniLink, #menu a.linkMyPolitizr {	color: $highlight;}
+#menu .pad40 a.miniLink, #menu a.linkDashboard, #menu a.linkMyPolitizr {	color: $highlight;}
 #menu .pad40 a:hover {	cursor: pointer; color: $highlight;}
-#menu .pad40 a.miniLink:hover, #menu a.linkMyPolitizr:hover {	color: $darkGrey;}
+#menu .pad40 a.miniLink:hover, #menu a.linkMyPolitizr:hover, #menu a.linkDashboard:hover {	color: $darkGrey;}
+
+#menu a.linkDashboard { font-size: 10px;}
 
 //menu préférences
 

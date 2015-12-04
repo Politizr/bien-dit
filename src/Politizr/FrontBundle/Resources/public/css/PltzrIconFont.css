@@ -111,3 +111,5 @@
 .iconMenu:before { content: '\e835'; } /* '' */
 .iconInvisible:before { content: '\e837'; } /* '' */
 .iconGraph:before { content: '\e838'; } /* '' */
+.iconDashboard:before { content: '\e839'; } /* '' */
+.iconLocation:before { content: '\e83a'; } /* '' */

@@ -261,7 +261,7 @@
 // popular debates
 
 #dashboard .dbBox.dbPopularDebates h1 {	padding-top: 30px;}
-.dbBox.dbPopularDebates .listCriteria.listCriteriaTabs {margin-bottom: 10px;}
+.dbBox.dbPopularDebates .listCriteria.listCriteriaTabs, .dbBox.dbPopularProfiles .listCriteria.listCriteriaTabs {margin-bottom: 10px;}
  
 .dbPopularDebates .debateList a {
 	color: $darkGrey;
