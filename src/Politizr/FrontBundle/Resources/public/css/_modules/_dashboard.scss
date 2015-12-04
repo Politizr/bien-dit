@@ -255,8 +255,21 @@
 	border: solid 1px $AltHighlight;
 	color: $highlight;	
 	background-color: #fff;
+	position: relative;
 }
 .dbPopularTagList .tag:hover {color: $darkGrey; border-color: $semiDarkGrey;}
+.dbPopularTagList .tag.geo {
+	padding: 10px 10px 10px 22px;	
+}
+.dbPopularTagList .tag.geo:before {
+	font-family: 'fontello';
+	content: "\e83a";
+	padding-right: 2px;
+	position: absolute;
+	left: 10px;
+	top:10px;
+	font-size: 14px;
+}
 
 // popular debates
 

@@ -741,13 +741,13 @@ a.linkToPost:hover {color: $darkGrey;}
 }
 .postSummaryCardTitle a { color: $highlight; }
 .postSummaryCardTitle a:hover {color: $darkGrey;}
-.postSummaryCardTitle span {
+.postSummaryCardTitle span, .postSummaryCardTitle span.title {
 	font-family: nerissemibold;
 	font-size: 40px;
 	float: left;
 	width: 100%;
-	line-height: 100%;
-	margin-bottom: 15px;
+	line-height: 120%;
+	margin-bottom: 5px;
 }
 .postSummaryCardTitle a:hover {color: $darkGrey;}
 .postSummaryCardTitle p {
@@ -802,6 +802,7 @@ a.linkToPost:hover {color: $darkGrey;}
 	color: $anotherGrey;
 	font-size: 12px;
 }
+.postSummaryCardPublishInfos span {margin-right: 5px;}
 
 .postSummaryCard .subscribe {
 	position: absolute;
