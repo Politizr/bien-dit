@@ -168,7 +168,7 @@ class XhrDashboard
         $filters = $request->get('tagFilterDate');
         $this->logger->info('$filters = ' . print_r($filters, true));
 
-        // top 10 tag
+        // top tags
         $tags = $this->tagService->getMostPopularTags($filters);
 
         $html = $this->templating->render(
