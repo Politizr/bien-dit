@@ -137,22 +137,20 @@ class TimelineService
     /**
      * User's "My Politizr" timeline
      *
+     * @param integer $userId
      * @param integer $offset
      * @param integer $count
      * @return string
      */
-    private function generateTimelineRawSql($offset, $count = 10)
+    private function generateTimelineRawSql($userId, $offset, $count = 10)
     {
         $this->logger->info('*** generateTimelineRawSql');
-        
-        $user = $this->securityTokenStorage->getToken()->getUser();
-
-        // Récupération user
-        $userId = $user->getId();
         $this->logger->info('userId = '.print_r($userId, true));
-
+        $this->logger->info('offset = '.print_r($offset, true));
+        $this->logger->info('count = '.print_r($count, true));
+        
         // Récupération d'un tableau des ids des débats suivis
-        $debateIds = $this->getFollowedDebatesIdsArray($user->getId());
+        $debateIds = $this->getFollowedDebatesIdsArray($userId);
         $inQueryDebateIds = implode(',', $debateIds);
         if (empty($inQueryDebateIds)) {
             $inQueryDebateIds = 0;
@@ -160,7 +158,7 @@ class TimelineService
         $this->logger->info('inQueryDebateIds = '.print_r($inQueryDebateIds, true));
 
         // Récupération d'un tableau des ids des users suivis
-        $userIds = $this->getFollowedUsersIdsArray($user->getId());
+        $userIds = $this->getFollowedUsersIdsArray($userId);
         $inQueryUserIds = implode(',', $userIds);
         if (empty($inQueryUserIds)) {
             $inQueryUserIds = 0;
@@ -168,7 +166,7 @@ class TimelineService
         $this->logger->info('inQueryUserIds = '.print_r($inQueryUserIds, true));
 
         // Récupération d'un tableau des ids de mes débats
-        $myDebateIds = $this->getMyDebateIdsArray($user->getId());
+        $myDebateIds = $this->getMyDebateIdsArray($userId);
         $inQueryMyDebateIds = implode(',', $myDebateIds);
         if (empty($inQueryMyDebateIds)) {
             $inQueryMyDebateIds = 0;
@@ -176,7 +174,7 @@ class TimelineService
         $this->logger->info('inQueryMyDebateIds = '.print_r($inQueryMyDebateIds, true));
 
         // Récupération d'un tableau des ids de mes réactions
-        $myReactionIds = $this->getMyReactionIdsArray($user->getId());
+        $myReactionIds = $this->getMyReactionIdsArray($userId);
         $inQueryMyReactionIds = implode(',', $myReactionIds);
         if (empty($inQueryMyReactionIds)) {
             $inQueryMyReactionIds = 0;
@@ -333,14 +331,15 @@ class TimelineService
     /**
      * Get the "My Politizr" timeline
      *
+     * @param integer $userId
      * @param integer $offset
      * @return array[TimelineRow]
      */
-    public function generateMyPolitizrTimeline($offset = 0)
+    public function generateMyPolitizrTimeline($userId, $offset = 0)
     {
         $this->logger->info('*** generateMyPolitizrTimeline');
         
-        $sql = $this->generateTimelineRawSql($offset);
+        $sql = $this->generateTimelineRawSql($userId, $offset);
         $timeline = $this->hydrateTimelineRows($sql);
 
         return $timeline;

@@ -123,8 +123,10 @@ class XhrUser
         $way = $request->get('way');
         $this->logger->info('$way = ' . print_r($way, true));
 
-        // Function process
+        // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
+
+        // Function process
         if ($way == 'follow') {
             $targetUser = PUserQuery::create()->filterByUuid($uuid)->findOne();
             $this->userManager->createUserFollowUser($user->getId(), $targetUser->getId());
@@ -170,9 +172,11 @@ class XhrUser
     public function userProfileUpdate(Request $request)
     {
         $this->logger->info('*** userProfileUpdate');
+
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
         
         // Function process
-        $user = $this->securityTokenStorage->getToken()->getUser();
         $form = $this->formFactory->create(new PUserBiographyType($user), $user);
         $form->bind($request);
         if ($form->isValid()) {
@@ -193,9 +197,10 @@ class XhrUser
     {
         $this->logger->info('*** userBackPhotoInfoUpdate');
         
-        // Function process
+        // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
-
+        
+        // Function process
         $form = $this->formFactory->create(new PUserBackPhotoInfoType(), $user);
 
         // Retrieve actual file name
@@ -248,8 +253,10 @@ class XhrUser
     {
         $this->logger->info('*** userPhotoUpload');
         
-        // Function process
+        // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
+        
+        // Function process
         $path = $this->kernel->getRootDir() . '/../web' . PathConstants::USER_UPLOAD_WEB_PATH;
 
         // XHR upload
@@ -300,8 +307,10 @@ class XhrUser
     {
         $this->logger->info('*** userPhotoDelete');
         
-        // Function process
+        // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
+        
+        // Function process
         $path = $this->kernel->getRootDir() . '/../web' . PathConstants::USER_UPLOAD_WEB_PATH;
 
         // Suppression photo déjà uploadée
@@ -342,8 +351,10 @@ class XhrUser
         $id = $request->get('id');
         $this->logger->info(print_r($id, true));
 
-        // get current user & args
+        // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
+        
+        // get current user & args
         $uploadWebPath = PathConstants::USER_UPLOAD_WEB_PATH;
 
         // Chemin des images
@@ -382,8 +393,10 @@ class XhrUser
     {
         $this->logger->info('*** userPhotoDelete');
         
-        // Function process
+        // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
+        
+        // Function process
         $path = $this->kernel->getRootDir() . '/../web' . PathConstants::USER_UPLOAD_WEB_PATH;
 
         // Suppression photo déjà uploadée
@@ -406,9 +419,9 @@ class XhrUser
     {
         $this->logger->info('*** orgaProfileUpdate');
 
-        // Function process
+        // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
-
+        
         // get current linked user's organization
         $puCurrentQo = $user->getPUCurrentQO();
         if (!$puCurrentQo) {
@@ -436,8 +449,10 @@ class XhrUser
     {
         $this->logger->info('*** affinitiesProfile');
 
-        // Function process
+        // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
+        
+        // Function process
         $form = $this->formFactory->create(new PUserAffinitiesType(QualificationConstants::TYPE_ELECTIV), $user);
         $form->bind($request);
         if ($form->isValid()) {
@@ -458,9 +473,10 @@ class XhrUser
     {
         $this->logger->info('*** mandateProfileCreate');
 
-        // Function process
+        // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
-
+        
+        // Function process
         $form = $this->formFactory->create(new PUMandateType(QualificationConstants::TYPE_ELECTIV), new PUMandate());
         $form->bind($request);
         if ($form->isValid()) {
@@ -514,9 +530,15 @@ class XhrUser
         $uuid = $request->get('mandate')['uuid'];
         $this->logger->info('uuid = ' . print_r($uuid, true));
 
-        // Function process
+        // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
+        
+        // Function process
         $mandate = PUMandateQuery::create()->filterByUuid($uuid)->findOne();
+
+        if ($mandate->getPUserId() != $user->getId()) {
+            throw new InconsistentDataException(sprintf('User id-%s tries to update PUMandate uuid-%s', $user->getId(), $uuid));
+        }
 
         $form = $this->formFactory->create(new PUMandateType(QualificationConstants::TYPE_ELECTIV), $mandate);
         $form->bind($request);
@@ -555,9 +577,15 @@ class XhrUser
         $uuid = $request->get('uuid');
         $this->logger->info('$uuid = ' . print_r($uuid, true));
 
-        // Function process
+        // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
+        
+        // Function process
         $mandate = PUMandateQuery::create()->filterByUuid($uuid)->findOne();
+
+        if ($mandate->getPUserId() != $user->getId()) {
+            throw new InconsistentDataException(sprintf('User id-%s tries to delete PUMandate uuid-%s', $user->getId(), $uuid));
+        }
 
         // @todo valid ownership of mandate before deletion
         $this->userManager->deleteMandate($mandate);
@@ -589,9 +617,9 @@ class XhrUser
         $formTypeId = $request->get('user')['form_type_id'];
         $this->logger->info('$formTypeId = '.print_r($formTypeId, true));
 
-        // Function process
+        // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
-
+        
         // @todo use form type constant
         if ($formTypeId == 1) {
             $form = $this->formFactory->create(new PUserIdentityType($user), $user);
@@ -644,9 +672,9 @@ class XhrUser
     {
         $this->logger->info('*** reputationScore');
 
-        // Function process
+        // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
-
+        
         // score de réputation
         $reputationScore = $user->getReputationScore();
 
@@ -663,9 +691,9 @@ class XhrUser
     {
         $this->logger->info('*** reputation');
 
-        // Récupération user courant
+        // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
-
+        
         // score de réputation
         $reputationScore = $user->getReputationScore();
 
@@ -710,12 +738,14 @@ class XhrUser
         $jsStartAt = $request->get('startAt');
         $this->logger->info('$jsStartAt = ' . print_r($jsStartAt, true));
 
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        
         // First & last day of month
         $startAt = new \DateTime($jsStartAt);
         $endAt = new \DateTime($jsStartAt);
         $endAt->modify('+1 month');
 
-        $user = $this->securityTokenStorage->getToken()->getUser();
         $reputationByDates = $this->reputationManager->getReputationByDates($user->getId(), $startAt, $endAt);
 
         // Score evolution by date
@@ -771,10 +801,10 @@ class XhrUser
         $offset = $request->get('offset');
         $this->logger->info('$offset = ' . print_r($offset, true));
 
-        // Function process
+        // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
         
-        $timeline = $this->timelineService->generateMyPolitizrTimeline($offset);
+        $timeline = $this->timelineService->generateMyPolitizrTimeline($user->getId(), $offset);
 
         // @todo use constant for "limit"
         $moreResults = false;
