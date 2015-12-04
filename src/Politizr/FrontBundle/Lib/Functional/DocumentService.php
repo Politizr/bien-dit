@@ -69,19 +69,17 @@ class DocumentService
    /**
      * My documents listing
      *
+     * @param integer $userId
      * @param integer $offset
      * @param integer $count
      * @return string
      */
-    private function generateMyDocumentsListingRawSql($published, $offset, $count = 10)
+    private function generateMyDocumentsListingRawSql($userId, $published, $offset, $count = 10)
     {
         $this->logger->info('*** getSql');
 
-        // Function process
-        $user = $this->securityTokenStorage->getToken()->getUser();
-
         $sql = $this->documentManager->createMyDocumentsRawSql(
-            $user->getId(),
+            $userId,
             $published,
             $offset,
             $count
@@ -194,14 +192,15 @@ class DocumentService
     /**
      * Get the drafts paginated listing of documents (debate + reaction)
      *
+     * @param integer $userId
      * @param integer $offset
      * @return PropelCollection[PDDebate|PDReaction]
      */
-    public function generateDraftsListing($offset = 0)
+    public function generateDraftsListing($userId, $offset = 0)
     {
         $this->logger->info('*** generateDraftsPaginatedListing');
         
-        $sql = $this->generateMyDocumentsListingRawSql(false, $offset);
+        $sql = $this->generateMyDocumentsListingRawSql($userId, false, $offset);
         $documents = $this->hydrateDocumentRows($sql);
 
         return $documents;
@@ -210,14 +209,15 @@ class DocumentService
     /**
      * Get the publication paginated listing of documents (debate + reaction)
      *
+     * @param integer $userId
      * @param integer $offset
      * @return PropelCollection[PDDebate|PDReaction]
      */
-    public function generatePublicationsListing($offset = 0)
+    public function generatePublicationsListing($userId, $offset = 0)
     {
         $this->logger->info('*** generatePublicationsListing');
         
-        $sql = $this->generateMyDocumentsListingRawSql(true, $offset);
+        $sql = $this->generateMyDocumentsListingRawSql($userId, true, $offset);
         $documents = $this->hydrateDocumentRows($sql);
 
         return $documents;

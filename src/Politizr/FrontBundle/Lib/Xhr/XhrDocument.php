@@ -122,8 +122,9 @@ class XhrDocument
         $way = $request->get('way');
         $this->logger->info('$way = ' . print_r($way, true));
 
-        // Function process
+        // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
+        
         $debate = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
         if ('follow' == $way) {
             $this->userManager->createUserFollowDebate($user->getId(), $debate->getId());
@@ -156,7 +157,6 @@ class XhrDocument
             'html' => $html,
             );
     }
-
 
     /**
      * Notation plus/minus of debate, reaction or comment
@@ -276,9 +276,9 @@ class XhrDocument
         $uuid = $request->get('debate')['uuid'];
         $this->logger->info('$uuid = ' . print_r($uuid, true));
 
+        // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
-
-        // Function process
+        
         $debate = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
         if (!$debate) {
             throw new InconsistentDataException('Debate '.$uuid.' not found.');
@@ -311,8 +311,9 @@ class XhrDocument
         $uuid = $request->get('debate_photo_info')['uuid'];
         $this->logger->info('$uuid = ' . print_r($uuid, true));
 
-        // Function process
+        // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
+        
         $debate = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
         if (!$debate) {
             throw new InconsistentDataException('Debate '.$uuid.' not found.');
@@ -379,8 +380,9 @@ class XhrDocument
         $uuid = $request->get('uuid');
         $this->logger->info('$uuid = ' . print_r($uuid, true));
 
-        // Function process
+        // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
+        
         $debate = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
         if (!$debate) {
             throw new InconsistentDataException('Debate '.$uuid.' not found.');
@@ -434,8 +436,9 @@ class XhrDocument
         $uuid = $request->get('uuid');
         $this->logger->info('$uuid = ' . print_r($uuid, true));
 
-        // Function process
+        // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
+        
         $debate = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
         if (!$debate) {
             throw new InconsistentDataException('Debate '.$uuid.' not found.');
@@ -470,8 +473,9 @@ class XhrDocument
         $uuid = $request->get('reaction')['uuid'];
         $this->logger->info('$uuid = ' . print_r($uuid, true));
 
-        // Function process
+        // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
+        
         $reaction = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
         if (!$reaction) {
             throw new InconsistentDataException('Reaction '.$id.' not found.');
@@ -504,8 +508,9 @@ class XhrDocument
         $uuid = $request->get('reaction_photo_info')['uuid'];
         $this->logger->info('$uuid = ' . print_r($uuid, true));
 
-        // Function process
+        // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
+        
         $reaction = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
         if (!$reaction) {
             throw new InconsistentDataException('Reaction '.$uuid.' not found.');
@@ -572,8 +577,9 @@ class XhrDocument
         $uuid = $request->get('uuid');
         $this->logger->info('$uuid = ' . print_r($uuid, true));
 
-        // Function process
+        // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
+        
         $reaction = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
         if (!$reaction) {
             throw new InconsistentDataException('Reaction '.$uuid.' not found.');
@@ -635,8 +641,9 @@ class XhrDocument
         $uuid = $request->get('uuid');
         $this->logger->info('$uuid = ' . print_r($uuid, true));
 
-        // Function process
+        // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
+        
         $reaction = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
         if (!$reaction) {
             throw new InconsistentDataException('Reaction '.$uuid.' not found.');
@@ -674,8 +681,9 @@ class XhrDocument
         $type = $request->get('type');
         $this->logger->info(print_r($type, true));
 
-        // Récupération débat courant
+        // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
+        
         switch ($type) {
             case ObjectTypeConstants::TYPE_DEBATE:
                 $document = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
@@ -687,6 +695,10 @@ class XhrDocument
                 break;
             default:
                 throw new InconsistentDataException('Object type not managed');
+        }
+
+        if (!$document->isOwner($user->getId())) {
+            throw new InconsistentDataException('Document '.$uuid.' is not yours.');
         }
 
         // Chemin des images
@@ -735,8 +747,9 @@ class XhrDocument
         $uuid = $request->get('uuid');
         $this->logger->info('$uuid = ' . print_r($uuid, true));
 
-        // Function process
+        // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
+        
         switch ($type) {
             case ObjectTypeConstants::TYPE_DEBATE_COMMENT:
                 $comment = new PDDComment();
@@ -834,8 +847,9 @@ class XhrDocument
         $noParagraph = $request->get('noParagraph');
         $this->logger->info('$noParagraph = ' . print_r($noParagraph, true));
 
-        // Function process
+        // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
+        
         switch ($type) {
             case ObjectTypeConstants::TYPE_DEBATE:
                 $document = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
@@ -896,8 +910,10 @@ class XhrDocument
         $offset = $request->get('offset');
         $this->logger->info('$offset = ' . print_r($offset, true));
 
-        // Function process
-        $documents = $this->documentService->generateDraftsListing($offset);
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        
+        $documents = $this->documentService->generateDraftsListing($user->getId(), $offset);
 
         $moreResults = false;
         if (sizeof($documents) == ListingConstants::MODAL_CLASSIC_PAGINATION) {
@@ -943,8 +959,10 @@ class XhrDocument
         $offset = $request->get('offset');
         $this->logger->info('$offset = ' . print_r($offset, true));
 
-        // Function process
-        $documents = $this->documentService->generatePublicationsListing($offset);
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        
+        $documents = $this->documentService->generatePublicationsListing($user->getId(), $offset);
 
         $moreResults = false;
         if (sizeof($documents) == ListingConstants::MODAL_CLASSIC_PAGINATION) {
