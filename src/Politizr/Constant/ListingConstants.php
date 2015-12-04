@@ -64,7 +64,7 @@ class ListingConstants
     //              Dashboard Constants                             //
     // ************************************************************ //
     const DASHBOARD_MAP_LIMIT = 3;
-    const DASHBOARD_TOP_TAGS_LIMIT = 10;
+    const DASHBOARD_TOP_TAGS_LIMIT = 20;
     const DASHBOARD_TOP_DEBATES_LIMIT = 6;
     const DASHBOARD_TOP_USERS_LIMIT = 6;
     const DASHBOARD_GEO_DEBATES_LIMIT = 2;
