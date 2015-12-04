@@ -8,6 +8,7 @@ use Politizr\Constant\ObjectTypeConstants;
 
 class PMAbuseReporting extends BasePMAbuseReporting implements PMonitoredInterface
 {
+
     /**
      * @see PMonitoredInterface::getType()
      */

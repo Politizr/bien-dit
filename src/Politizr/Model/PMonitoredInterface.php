@@ -24,13 +24,7 @@ interface PMonitoredInterface
 
     /**
      *
-     * @return int
-     */
-    public function getPUserId();
-
-    /**
-     *
-     * @return int
+     * @return string
      */
     public function getPObjectUuid();
 

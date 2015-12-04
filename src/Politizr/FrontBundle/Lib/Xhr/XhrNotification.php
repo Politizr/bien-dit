@@ -95,7 +95,7 @@ class XhrNotification
         $uuid = $request->get('uuid');
         $this->logger->info('$uuid = ' . print_r($uuid, true));
 
-        // Function process
+        // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
 
         $notification = PUNotificationQuery::create()->filterByUuid($uuid)->findOne();
@@ -115,7 +115,7 @@ class XhrNotification
     {
         $this->logger->info('*** notificationsLoad');
         
-        // Function process
+        // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
 
         $notifs = PUNotificationQuery::create()
@@ -144,7 +144,7 @@ class XhrNotification
         $uuid = $request->get('uuid');
         $this->logger->info('$uuid = ' . print_r($uuid, true));
 
-        // Function process
+        // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
 
         // Retrieve subject
@@ -166,7 +166,7 @@ class XhrNotification
         $uuid = $request->get('uuid');
         $this->logger->info('$uuid = ' . print_r($uuid, true));
 
-        // Function process
+        // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
 
         // Retrieve subject

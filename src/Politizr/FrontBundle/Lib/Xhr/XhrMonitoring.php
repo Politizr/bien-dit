@@ -167,6 +167,7 @@ class XhrMonitoring
         $type = $request->get('type');
         $this->logger->info('$type = ' . print_r($type, true));
 
+        // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
 
         // get context rendering
@@ -174,7 +175,6 @@ class XhrMonitoring
 
         // form
         $abuseReporting = new PMAbuseReporting();
-        $abuseReporting->setPUserId($user->getId());
         $abuseReporting->setPObjectName($type);
         $abuseReporting->setPObjectUuid($uuid);
 
@@ -202,6 +202,7 @@ class XhrMonitoring
     {
         $this->logger->info('*** abuseCreate');
 
+        // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
 
         // Function process
@@ -210,11 +211,7 @@ class XhrMonitoring
         $formAbuse->bind($request);
         if ($formAbuse->isValid()) {
             $abuse = $formAbuse->getData();
-
-            if ($abuse->getPUserId() != $user->getId()) {
-                throw new InconsistentDataException(sprintf('User id-%s tries to post a abuse for user id-%s.', $user->getId(), $abuse->getPUserId()));
-            }
-
+            $abuse->setPUserId($user->getId());
             $abuse->save();
 
             // email
@@ -252,7 +249,6 @@ class XhrMonitoring
 
         // form
         $askForUpdate = new PMAskForUpdate();
-        $askForUpdate->setPUserId($user->getId());
         $askForUpdate->setPObjectName($type);
         $askForUpdate->setPObjectUuid($uuid);
 
@@ -280,6 +276,7 @@ class XhrMonitoring
     {
         $this->logger->info('*** askForUpdateCreate');
 
+        // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
         
         // Function process
@@ -288,11 +285,7 @@ class XhrMonitoring
         $formAskForUpdate->bind($request);
         if ($formAskForUpdate->isValid()) {
             $askForUpdate = $formAskForUpdate->getData();
-
-            if ($askForUpdate->getPUserId() != $user->getId()) {
-                throw new InconsistentDataException(sprintf('User id-%s tries to post an ask for update for user id-%s.', $user->getId(), $askForUpdate->getPUserId()));
-            }
-
+            $askForUpdate->setPUserId($user->getId());
             $askForUpdate->save();
 
             // email
