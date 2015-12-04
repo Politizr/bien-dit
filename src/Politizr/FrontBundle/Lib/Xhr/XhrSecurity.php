@@ -110,10 +110,6 @@ class XhrSecurity
 
             // Event
             $dispatcher = $this->eventDispatcher->dispatch('lost_password_email', new GenericEvent($user));
-
-            $jsonResponse = array (
-                'success' => true
-            );
         } else {
             $errors = StudioEchoUtils::getAjaxFormErrors($form);
             throw new FormValidationException($errors);
