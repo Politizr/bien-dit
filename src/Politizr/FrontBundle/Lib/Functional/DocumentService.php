@@ -9,6 +9,7 @@ use Politizr\Exception\InconsistentDataException;
 use Politizr\Exception\FormValidationException;
 
 use Politizr\Constant\ObjectTypeConstants;
+use Politizr\Constant\ReputationConstants;
 
 use Politizr\FrontBundle\Lib\Manager\DocumentManager;
 
@@ -18,6 +19,7 @@ use Politizr\Model\PDDCommentQuery;
 use Politizr\Model\PDRCommentQuery;
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PRBadgeQuery;
+use Politizr\Model\PUReputationQuery;
 
 /**
  * Functional service for document management.
@@ -219,6 +221,55 @@ class DocumentService
         $documents = $this->hydrateDocumentRows($sql);
 
         return $documents;
+    }
+
+    /* ######################################################################################################## */
+    /*                                      SECURITY CONTROLS                                                   */
+    /* ######################################################################################################## */
+    
+    /**
+     * Controle if user can note document:
+     *  - not his document
+     *  - not already notate
+     *  - has reputation to note down
+     *
+     * @param PUser $user
+     * @param PDDebate|PDReaction|PDDComment|PDRComment $object
+     * @param string up|down
+     * @return boolean
+     */
+    public function canUserNoteDocument($user, $object, $way)
+    {
+        $this->logger->info('*** canUserNoteDocument');
+        // $this->logger->info('$user = '.print_r($user, true));
+        // $this->logger->info('$object = '.print_r($object, true));
+        // $this->logger->info('$way = '.print_r($way, true));
+
+        // check if current user is not author
+        if ($object->getPUserId() == $user->getId()) {
+            return false;
+        }
+
+        // check if user has already notate
+        $query = PUReputationQuery::create()
+                    ->filterByPObjectId($object->getId())
+                    ->filterByPRActionId(
+                        ReputationConstants::getNotationPRActionsId()
+                    );
+        $nb = $user->countPUReputations($query);
+        if ($nb > 0) {
+            return false;
+        }
+
+        // check if user can note down
+        if ($way == 'down') {
+            $score = $user->getReputationScore();
+            if ($score < ReputationConstants::ACTION_DEBATE_NOTE_NEG) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /* ######################################################################################################## */

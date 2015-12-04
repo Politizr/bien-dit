@@ -190,9 +190,17 @@ class XhrDocument
             case ObjectTypeConstants::TYPE_REACTION_COMMENT:
                 $object = PDRCommentQuery::create()->filterByUuid($uuid)->findOne();
                 break;
+            default:
+                throw new InconsistentDataException(sprintf('Note on type %s not allowed', $type));
         }
 
-        // MAJ note
+        // related to issue #178 > control user <> object
+        $canUserNoteDocument = $this->documentService->canUserNoteDocument($user, $object, $way);
+        if (!$canUserNoteDocument) {
+            throw new InconsistentDataException('You can\'t note this publication.');
+        }
+
+        // update note
         if ('up' == $way) {
             $object->setNotePos($object->getNotePos() + 1);
             $object->save();

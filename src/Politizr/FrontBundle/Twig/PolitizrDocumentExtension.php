@@ -561,6 +561,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
     /**
      * Affiche & active / désactive les Note + / Note -
+     * @todo to refactor check w. DocumentService->canUserNoteDocument
      *
      * @param PDDebate $debate
      * @return html

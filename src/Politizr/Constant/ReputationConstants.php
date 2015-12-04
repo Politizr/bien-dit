@@ -218,4 +218,27 @@ class ReputationConstants
             ReputationConstants::ACTION_ID_U_AUTHOR_USER_FOLLOW,
         ];
     }
+
+    /**
+     * Return notation ids
+     *
+     * @return array
+     */
+    public static function getNotationPRActionsId()
+    {
+        return [
+            ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_NOTE_POS,
+            ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_NOTE_NEG,
+            ReputationConstants::ACTION_ID_D_AUTHOR_REACTION_NOTE_POS,
+            ReputationConstants::ACTION_ID_D_AUTHOR_REACTION_NOTE_NEG,
+            ReputationConstants::ACTION_ID_D_AUTHOR_COMMENT_NOTE_POS,
+            ReputationConstants::ACTION_ID_D_AUTHOR_COMMENT_NOTE_NEG,
+            ReputationConstants::ACTION_ID_D_TARGET_DEBATE_NOTE_POS,
+            ReputationConstants::ACTION_ID_D_TARGET_DEBATE_NOTE_NEG,
+            ReputationConstants::ACTION_ID_D_TARGET_REACTION_NOTE_POS,
+            ReputationConstants::ACTION_ID_D_TARGET_REACTION_NOTE_NEG,
+            ReputationConstants::ACTION_ID_D_TARGET_COMMENT_NOTE_POS,
+            ReputationConstants::ACTION_ID_D_TARGET_COMMENT_NOTE_NEG,
+        ];
+    }
 }
