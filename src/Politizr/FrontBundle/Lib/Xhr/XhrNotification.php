@@ -58,9 +58,9 @@ class XhrNotification
     {
         $this->logger->info('*** notificationsLoad');
 
-        // Function process
+        // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
-
+        
         // UC session out > manage this case to avoid multiple useless exceptions
         if ($user == null) {
             $notifs = [];
@@ -99,6 +99,10 @@ class XhrNotification
         $user = $this->securityTokenStorage->getToken()->getUser();
 
         $notification = PUNotificationQuery::create()->filterByUuid($uuid)->findOne();
+        if ($notification->getPUserId() != $user->getId()) {
+            throw new InconsistentDataException(sprintf('User id-%s tries to check PUNotification id-%s', $user->getId(), $notification->getId()));
+        }
+
         $this->notificationManager->checkUserNotification($notification);
 
         return true;
@@ -140,11 +144,11 @@ class XhrNotification
         $uuid = $request->get('uuid');
         $this->logger->info('$uuid = ' . print_r($uuid, true));
 
-        // Retrive subject
-        $notification = PNotificationQuery::create()->filterByUuid($uuid)->findOne();
-
         // Function process
         $user = $this->securityTokenStorage->getToken()->getUser();
+
+        // Retrieve subject
+        $notification = PNotificationQuery::create()->filterByUuid($uuid)->findOne();
 
         $this->notificationManager->createUserSubscribeEmail($user->getId(), $notification->getId());
 
@@ -162,11 +166,11 @@ class XhrNotification
         $uuid = $request->get('uuid');
         $this->logger->info('$uuid = ' . print_r($uuid, true));
 
-        // Retrive subject
-        $notification = PNotificationQuery::create()->filterByUuid($uuid)->findOne();
-
         // Function process
         $user = $this->securityTokenStorage->getToken()->getUser();
+
+        // Retrieve subject
+        $notification = PNotificationQuery::create()->filterByUuid($uuid)->findOne();
 
         $this->notificationManager->deleteUserSubscribeEmail($user->getId(), $notification->getId());
 
