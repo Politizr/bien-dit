@@ -199,6 +199,9 @@ class XhrTag
         $newTag = $request->get('newTag');
         $this->logger->info('$newTag = ' . print_r($newTag, true));
 
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        
         // Function process
         if (empty($tagTypeId)) {
             $tagTypeId = null;
@@ -206,8 +209,10 @@ class XhrTag
 
         // Retrieve subject
         $subject = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
+        if ($subject->getPUserId() != $user->getId()) {
+            throw new InconsistentDataException(sprintf('User id-%s tries to add tag to PDDebate id-%s', $user->getId(), $subject->getId()));
+        }
 
-        $user = $this->securityTokenStorage->getToken()->getUser();
         $tag = $this->retrieveOrCreateTag($tagUuid, $tagTitle, $tagTypeId, $user->getId(), $newTag);
 
         // associate tag to debate
@@ -263,8 +268,14 @@ class XhrTag
         $uuid = $request->get('uuid');
         $this->logger->info('$uuid = ' . print_r($uuid, true));
 
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        
         $tag = PTagQuery::create()->filterByUuid($tagUuid)->findOne();
         $subject = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
+        if ($subject->getPUserId() != $user->getId()) {
+            throw new InconsistentDataException(sprintf('User id-%s tries to delete tag to PDDebate id-%s', $user->getId(), $subject->getId()));
+        }
 
         // Function process
         $this->tagManager->deleteDebateTag($subject->getId(), $tag->getId());
@@ -295,6 +306,9 @@ class XhrTag
         $newTag = $request->get('newTag');
         $this->logger->info('$newTag = ' . print_r($newTag, true));
 
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        
         // Function process
         if (empty($tagTypeId)) {
             $tagTypeId = null;
@@ -302,8 +316,10 @@ class XhrTag
 
         // Retrieve subject
         $subject = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
+        if ($subject->getPUserId() != $user->getId()) {
+            throw new InconsistentDataException(sprintf('User id-%s tries to add tag to PDDebate id-%s', $user->getId(), $subject->getId()));
+        }
 
-        $user = $this->securityTokenStorage->getToken()->getUser();
         $tag = $this->retrieveOrCreateTag($tagUuid, $tagTitle, $tagTypeId, $user->getId(), $newTag);
 
         // associate tag to reaction
@@ -359,8 +375,14 @@ class XhrTag
         $uuid = $request->get('uuid');
         $this->logger->info('$uuid = ' . print_r($uuid, true));
 
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        
         $tag = PTagQuery::create()->filterByUuid($tagUuid)->findOne();
         $subject = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
+        if ($subject->getPUserId() != $user->getId()) {
+            throw new InconsistentDataException(sprintf('User id-%s tries to delete tag to PDDebate id-%s', $user->getId(), $subject->getId()));
+        }
 
         // Function process
         $this->tagManager->deleteReactionTag($subject->getId(), $tag->getId());
@@ -393,6 +415,9 @@ class XhrTag
         $withHidden = $request->get('withHidden');
         $this->logger->info('$withHidden = ' . print_r($withHidden, true));
 
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        
         // Function process
         if (empty($tagTypeId)) {
             $tagTypeId = null;
@@ -400,8 +425,10 @@ class XhrTag
 
         // Retrieve subject
         $subject = PUserQuery::create()->filterByUuid($uuid)->findOne();
+        if ($subject->getId() != $user->getId()) {
+            throw new InconsistentDataException(sprintf('User id-%s tries to add tag to PUser id-%s', $user->getId(), $subject->getId()));
+        }
 
-        $user = $this->securityTokenStorage->getToken()->getUser();
         $tag = $this->retrieveOrCreateTag($tagUuid, $tagTitle, $tagTypeId, $user->getId(), $newTag);
 
         // associate tag to user's tagging
@@ -469,8 +496,14 @@ class XhrTag
         $uuid = $request->get('uuid');
         $this->logger->info('$uuid = ' . print_r($uuid, true));
 
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        
         $tag = PTagQuery::create()->filterByUuid($tagUuid)->findOne();
         $subject = PUserQuery::create()->filterByUuid($uuid)->findOne();
+        if ($subject->getId() != $user->getId()) {
+            throw new InconsistentDataException(sprintf('User id-%s tries to delete tag to PUser id-%s', $user->getId(), $subject->getId()));
+        }
 
         $deleted = $this->tagManager->deleteUserTag($subject->getId(), $tag->getId());
 
@@ -490,8 +523,14 @@ class XhrTag
         $uuid = $request->get('uuid');
         $this->logger->info('$uuid = ' . print_r($uuid, true));
 
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        
         $tag = PTagQuery::create()->filterByUuid($tagUuid)->findOne();
         $subject = PUserQuery::create()->filterByUuid($uuid)->findOne();
+        if ($subject->getId() != $user->getId()) {
+            throw new InconsistentDataException(sprintf('User id-%s tries to hide tag to PUser id-%s', $user->getId(), $subject->getId()));
+        }
 
         $userTaggedTag = PUTaggedTQuery::create()
             ->filterByPUserId($subject->getId())
@@ -517,14 +556,15 @@ class XhrTag
         $uuid = $request->get('uuid');
         $this->logger->info('$uuid = ' . print_r($uuid, true));
 
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        
         $tag = PTagQuery::create()
                     ->filterByUuid($uuid)
                     ->findOne();
         if (!$tag) {
             throw new InconsistentDataException(sprintf('Tag %s does not exist', $uuid));
         }
-
-        $user = $this->securityTokenStorage->getToken()->getUser();
 
         // associate tag to user's tagging
         $this->tagManager->createUserTag($user->getId(), $tag->getId());
