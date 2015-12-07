@@ -252,7 +252,7 @@ class XhrAdmin
                 'PolitizrAdminBundle:Fragment\\Xhr:_xhrPath.html.twig',
                 array(
                     'xhrRoute' => 'ADMIN_ROUTE_TAG_DEBATE_DELETE',
-                    'xhrService' => 'tag',
+                    'xhrService' => 'admin',
                     'xhrMethod' => 'debateDeleteTag',
                     'xhrType' => 'RETURN_BOOLEAN',
                 )
@@ -347,7 +347,7 @@ class XhrAdmin
                 'PolitizrAdminBundle:Fragment\\Xhr:_xhrPath.html.twig',
                 array(
                     'xhrRoute' => 'ADMIN_ROUTE_TAG_REACTION_DELETE',
-                    'xhrService' => 'tag',
+                    'xhrService' => 'admin',
                     'xhrMethod' => 'reactionDeleteTag',
                     'xhrType' => 'RETURN_BOOLEAN',
                 )
