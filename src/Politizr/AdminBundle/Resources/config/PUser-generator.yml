@@ -23,6 +23,8 @@ params:
             label:          Statut
         file_name:
             label:          Image
+        copyright:
+            label:          Copyright
         gender:
             label:          Genre
         firstname:
@@ -148,7 +150,7 @@ builders:
             title:                              "Edition de l'utilisateur {{ PUser.firstname }} {{ PUser.name }}"
             tabs:
                 "Identité":
-                    "Civilité":                 [ [ block_back_file_name ], [ block_file_name ], [ gender ], [ firstname, name ] ]
+                    "Civilité":                 [ [ block_back_file_name ], [ copyright ], [ block_file_name ], [ gender ], [ firstname, name ] ]
                     "Contacts":                 [ [ phone, email ], [ website ], [ twitter, facebook ] ]
                 "Connexion":
                     "Connexion":                [ username, plainPassword ]
@@ -184,6 +186,10 @@ builders:
                     dbType:                     VARCHAR
                     addFormOptions:
                         mapped:                 false
+                copyright:
+                    grid_class:                 "col-md-12"
+                    addFormOptions:
+                        attr:                   { class : tinymce }
                 block_file_name:
                     label:                      "Image"
                     grid_class:                 "col-md-12"
@@ -292,7 +298,7 @@ builders:
             tabs:
                 "Identité":
                     "Type":                     [ qualified ]
-                    "Civilité":                 [ [ block_back_file_name ], [ block_file_name ], [ gender, firstname, name ] ]
+                    "Civilité":                 [ [ block_back_file_name ], [ copyright ], [ block_file_name ], [ gender, firstname, name ] ]
                     "Contacts":                 [ [ phone, email ], [ website ], [ twitter, facebook ] ]
                 "Descriptif":
                     "Informations":             [ biography ]

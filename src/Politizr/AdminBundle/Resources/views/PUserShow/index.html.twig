@@ -5,6 +5,11 @@
     {% include 'PolitizrAdminBundle:Fragment:_uploadImage.html.twig' with {'zone': 1, 'fileName': PUser.backFileName,'subjectId': PUser.id, 'queryClass': 'Politizr\\Model\\PUserQuery', 'setter': 'setBackFileName', 'uploadWebPath': constant('Politizr\\Constant\\PathConstants::USER_UPLOAD_WEB_PATH')} %}
 {% endblock %}
 
+{% block show_column_copyright %}
+    {{ PUser.getCopyright | raw }}
+{% endblock %}
+
+
 {# Image upload #}
 {% block show_column_block_file_name %}
     {% include 'PolitizrAdminBundle:Fragment:_uploadImage.html.twig' with {'zone': 2, 'fileName': PUser.fileName,'subjectId': PUser.id, 'queryClass': 'Politizr\\Model\\PUserQuery', 'setter': 'setFileName', 'uploadWebPath': constant('Politizr\\Constant\\PathConstants::USER_UPLOAD_WEB_PATH')} %}

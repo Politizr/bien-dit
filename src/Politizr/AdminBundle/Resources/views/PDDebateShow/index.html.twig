@@ -5,6 +5,11 @@
     {% include 'PolitizrAdminBundle:Fragment:_uploadImage.html.twig' with {'zone': 1, 'fileName': PDDebate.fileName,'subjectId': PDDebate.id, 'queryClass': 'Politizr\\Model\\PDDebateQuery', 'setter': 'setFileName', 'uploadWebPath': constant('Politizr\\Constant\\PathConstants::DEBATE_UPLOAD_WEB_PATH')} %}
 {% endblock %}
 
+{% block show_column_copyright %}
+    {{ PDDebate.getCopyright | raw }}
+{% endblock %}
+
+
 {# Objets #}
 {% block show_column_block_p_user %}
     {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_USER'), PDDebate.PUserId) }}

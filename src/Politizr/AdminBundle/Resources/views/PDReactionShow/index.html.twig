@@ -5,6 +5,10 @@
     {% include 'PolitizrAdminBundle:Fragment:_uploadImage.html.twig' with {'zone': 1, 'fileName': PDReaction.fileName,'subjectId': PDReaction.id, 'queryClass': 'Politizr\\Model\\PDReactionQuery', 'setter': 'setFileName', 'uploadWebPath': constant('Politizr\\Constant\\PathConstants::REACTION_UPLOAD_WEB_PATH')} %}
 {% endblock %}
 
+{% block show_column_copyright %}
+    {{ PDReaction.getCopyright | raw }}
+{% endblock %}
+
 {# Objets #}
 {% block show_column_block_p_user %}
     {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_USER'), PDReaction.PUserId) }}

@@ -20,6 +20,8 @@ params:
                 query:                  \Politizr\Model\PUserQuery::create()->orderByName() 
         file_name:
             label:          Image
+        copyright:
+            label:          Copyright
         title:
             label:          Titre
         description:
@@ -85,7 +87,7 @@ builders:
             title:                              "Edition du contenu débat '{{ PDDebate.title }}'"
             tabs:
                 "Contenu":
-                    "Texte":                    [ block_file_name, title, description ]
+                    "Texte":                    [ block_file_name, copyright, title, description ]
                 "Objets":
                     "Utilisateur":              [ p_user ]
                 "Tags":
@@ -106,6 +108,10 @@ builders:
                     dbType:                     VARCHAR
                     addFormOptions:
                         mapped:                 false
+                copyright:
+                    grid_class:                 "col-md-12"
+                    addFormOptions:
+                        attr:                   { class : tinymce }
                 p_user:
                     addFormOptions:
                         disabled:               true
@@ -152,7 +158,7 @@ builders:
             title:                              "Visualisation du contenu débat '{{ PDDebate.getTitle }}'"
             tabs:
                 "Contenu":
-                    "Texte":                    [ block_file_name, title, description ]
+                    "Texte":                    [ block_file_name, copyright, title, description ]
                 "Objets":
                     "Utilisateur":              [ block_p_user ]
                 "Réactions":

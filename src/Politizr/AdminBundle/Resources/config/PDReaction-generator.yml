@@ -32,6 +32,8 @@ params:
             label:          Réaction associée
         file_name:
             label:          Image
+        copyright:
+            label:          Copyright
         title:
             label:          Titre
         description:
@@ -94,7 +96,7 @@ builders:
             title:                              "Edition du contenu réaction '{{ PDReaction.getTitle }}'"
             tabs:
                 "Contenu":
-                    "Texte":                    [ block_file_name, title, description ]
+                    "Texte":                    [ block_file_name, copyright, title, description ]
                 "Objets":
                     "Utilisateur":              [ p_user ]
                     "Débat":                    [ p_d_debate ]
@@ -136,6 +138,10 @@ builders:
                     grid_class:                 "col-md-12"
                     addFormOptions:
                         attr:                   { class : tinymce }
+                copyright:
+                    grid_class:                 "col-md-12"
+                    addFormOptions:
+                        attr:                   { class : tinymce }
                 published_at:
                     # formType:                   afe_datetime_picker
                     addFormOptions:
@@ -167,7 +173,7 @@ builders:
             title:                              "Visualisation du contenu réaction '{{ PDReaction.getTitle }}'"
             tabs:
                 "Contenu":
-                    "Texte":                    [ block_file_name, title, description ]
+                    "Texte":                    [ block_file_name, copyright, title, description ]
                 "Objets":
                     "Utilisateur":              [ block_p_user ]
                     "Document":                 [ block_p_d_debate, block_parent ]
