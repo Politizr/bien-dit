@@ -57,6 +57,7 @@ function updateSuiteLink() {
     // update "suite" link attributes
     // console.log($('#mapFilter input:checked').val());
     $('#modalMoreDebates').attr('defaultFilterDate', $('#mapFilter input:checked').val());    
+    $('#modalMoreUsers').attr('defaultFilterDate', $('#mapFilter input:checked').val());    
 }
 
 /**
