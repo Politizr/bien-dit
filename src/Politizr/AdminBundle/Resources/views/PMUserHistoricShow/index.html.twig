@@ -30,13 +30,13 @@
 
 {# Contenus #}
 {% block show_column_subtitle %}
-    {{ PMUserHistoric.getSubtitle | raw }}
+    {{ PMUserHistoric.getSubtitle | purify }}
 {% endblock %}
 
 {% block show_column_biography %}
-    {{ PMUserHistoric.getBiography | raw }}
+    {{ PMUserHistoric.getBiography | purify }}
 {% endblock %}
 
 {% block show_column_copyright %}
-    {{ PMUserHistoric.getCopyright | raw }}
+    {{ PMUserHistoric.getCopyright | purify }}
 {% endblock %}

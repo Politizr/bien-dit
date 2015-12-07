@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block show_column_copyright %}
-    {{ PDDebate.getCopyright | raw }}
+    {{ PDDebate.getCopyright | purify }}
 {% endblock %}
 
 
@@ -17,11 +17,11 @@
 
 {# Contenus #}
 {% block show_column_summary %}
-    {{ PDDebate.getSummary | raw }}
+    {{ PDDebate.getSummary | purify }}
 {% endblock %}
 
 {% block show_column_description %}
-    {{ PDDebate.getDescription | raw }}
+    {{ PDDebate.getDescription | purify }}
 {% endblock %}
 
 {# Bloc réactions #}

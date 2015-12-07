@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block show_column_copyright %}
-    {{ PUser.getCopyright | raw }}
+    {{ PUser.getCopyright | purify }}
 {% endblock %}
 
 
@@ -18,11 +18,11 @@
 
 {# Contenus #}
 {% block show_column_summary %}
-    {{ PUser.summary | raw }}
+    {{ PUser.summary | purify }}
 {% endblock %}
 
 {% block show_column_biography %}
-    {{ PUser.biography | raw }}
+    {{ PUser.biography | purify }}
 {% endblock %}
 
 {# User's tag #}

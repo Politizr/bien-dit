@@ -27,13 +27,13 @@
 
 {# Contenus #}
 {% block show_column_summary %}
-    {{ PMReactionHistoric.getSummary | raw }}
+    {{ PMReactionHistoric.getSummary | purify }}
 {% endblock %}
 
 {% block show_column_description %}
-    {{ PMReactionHistoric.getDescription | raw }}
+    {{ PMReactionHistoric.getDescription | purify }}
 {% endblock %}
 
 {% block show_column_copyright %}
-    {{ PMReactionHistoric.getCopyright | raw }}
+    {{ PMReactionHistoric.getCopyright | purify }}
 {% endblock %}

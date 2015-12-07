@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block show_column_copyright %}
-    {{ PDReaction.getCopyright | raw }}
+    {{ PDReaction.getCopyright | purify }}
 {% endblock %}
 
 {# Objets #}
@@ -24,11 +24,11 @@
 
 {# Contenus #}
 {% block show_column_summary %}
-    {{ PDReaction.getSummary | raw }}
+    {{ PDReaction.getSummary | purify }}
 {% endblock %}
 
 {% block show_column_description %}
-    {{ PDReaction.getDescription | raw }}
+    {{ PDReaction.getDescription | purify }}
 {% endblock %}
 
 {# Bloc tags #}
