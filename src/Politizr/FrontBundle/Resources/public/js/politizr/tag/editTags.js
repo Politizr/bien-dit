@@ -116,6 +116,7 @@ $("body").on("click", "button[action='addTag']", function() {
         error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown, localLoader); },
         success: function(data) {
             localLoader.hide();
+            $('#ajaxGlobalLoader').hide();
             if (data['error']) {
                 $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
                 $('#infoBoxHolder .boxError').show();
@@ -159,6 +160,7 @@ $("body").on("click", "[action='deleteTag']", function() {
         error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown, localLoader); },
         success: function(data) {
             localLoader.hide();
+            $('#ajaxGlobalLoader').hide();
             if (data['error']) {
                 $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
                 $('#infoBoxHolder .boxError').show();
@@ -195,6 +197,7 @@ $("body").on("click", "[action='hideTag']", function() {
         error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown, localLoader); },
         success: function(data) {
             localLoader.hide();
+            $('#ajaxGlobalLoader').hide();
             if (data['error']) {
                 $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
                 $('#infoBoxHolder .boxError').show();
