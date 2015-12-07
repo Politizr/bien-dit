@@ -109,6 +109,9 @@ function topListing(geoTagUuid) {
                 fullImgLiquid();
             }
             localLoader.hide();
+
+            // 1st call
+            $('#ajaxGlobalLoader').hide();
         }
     });    
 }
@@ -304,9 +307,6 @@ function suggestionListing() {
                 $('.dbSuggestions').html(data['html']);
                 fullImgLiquid();
             }
-
-            // last ajax call hide global loader
-            $('#ajaxGlobalLoader').hide();
         }
     });
 }
