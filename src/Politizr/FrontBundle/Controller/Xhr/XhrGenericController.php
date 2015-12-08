@@ -34,7 +34,7 @@ class XhrGenericController extends Controller
         $logger->info('xhrMethod = '.print_r($xhrMethod, true));
         $logger->info('xhrType = '.print_r($xhrType, true));
 
-        switch($xhrType) {
+        switch ($xhrType) {
             case XhrConstants::RETURN_BOOLEAN:
                 $jsonResponseMethod = 'createJsonResponse';
                 break;
@@ -44,6 +44,8 @@ class XhrGenericController extends Controller
             case XhrConstants::RETURN_URL:
                 $jsonResponseMethod = 'createJsonRedirectResponse';
                 break;
+            default:
+                throw InconsistentDataException(sprintf('XHR type %s is not managed.', $xhrType));
         }
 
         $jsonResponse = $this->get('politizr.routing.xhr')->$jsonResponseMethod(

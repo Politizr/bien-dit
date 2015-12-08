@@ -1,6 +1,8 @@
 <?php
 namespace Politizr\FrontBundle\Twig;
 
+use Politizr\Exception\InconsistentDataException;
+
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\PathConstants;
 use Politizr\Constant\ReputationConstants;
@@ -18,8 +20,6 @@ use Politizr\Model\PUReputationQuery;
 use Politizr\Model\PUFollowDDQuery;
 
 use Politizr\FrontBundle\Lib\TimelineRow;
-
-use Politizr\Exception\InconsistentDataException;
 
 /**
  * Document's twig extension
@@ -221,6 +221,8 @@ class PolitizrDocumentExtension extends \Twig_Extension
                     $path = PathConstants::REACTION_DEFAULT_PATH . 'default_reaction.jpg';
                 }
                 break;
+            default:
+                throw new InconsistentDataException(sprintf('Object type %s not managed', $document->getType()));
         }
 
         $template= '_imageHeader.html.twig';
@@ -287,6 +289,8 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 // $nbReactions = $document->countChildrenReactions(true, true);
                 $nbReactions = $document->countDescendantsReactions(true, true);
                 break;
+            default:
+                throw new InconsistentDataException(sprintf('Object type %s not managed', $document->getType()));
         }
 
         if (0 === $nbReactions) {
@@ -760,7 +764,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
                     $query = PDRCommentQuery::create();
                     break;
                 default:
-                    throw new InconsistentDataException('Object type not managed');
+                    throw new InconsistentDataException(sprintf('Object type %s not managed', $comment->getType()));
             }
             $document = $query
                 ->filterByPUserId($this->user->getId())
@@ -924,20 +928,18 @@ class PolitizrDocumentExtension extends \Twig_Extension
         switch ($timelineRow->getType()) {
             case ObjectTypeConstants::TYPE_DEBATE:
                 $html = $this->timelineService->generateRenderingItemDebate($timelineRow->getId(), $debateContext);
-
                 break;
             case ObjectTypeConstants::TYPE_REACTION:
                 $html = $this->timelineService->generateRenderingItemReaction($timelineRow->getId(), $debateContext);
-
                 break;
             case ObjectTypeConstants::TYPE_DEBATE_COMMENT:
                 $html = $this->timelineService->generateRenderingItemDebateComment($timelineRow->getId(), $debateContext);
-
                 break;
             case ObjectTypeConstants::TYPE_REACTION_COMMENT:
                 $html = $this->timelineService->generateRenderingItemReactionComment($timelineRow->getId(), $debateContext);
-
                 break;
+            default:
+                throw new InconsistentDataException(sprintf('Object type %s not managed', $timelineRow->getType()));
         }
 
         return $html;

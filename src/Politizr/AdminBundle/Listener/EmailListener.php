@@ -95,6 +95,8 @@ class EmailListener
                 $pj = null;
                 $pj = $order->getInvoiceFilename();
                 break;
+            default:
+                throw InconsistentDataException(sprintf('Order type %s is not defined.', $order->getPOOrderStateId()));
         }
 
         try {

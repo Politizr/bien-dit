@@ -964,7 +964,7 @@ class PolitizrAdminExtension extends \Twig_Extension
         $this->logger->info('$mode = '.print_r($mode, true));
         $this->logger->info('$idType = '.print_r($idType, true));
 
-        switch($objectClass) {
+        switch ($objectClass) {
             case ObjectTypeConstants::TYPE_DEBATE:
                 ($displayWithType)?$label = 'Débat ':$label = '';
                 if ($idType == 'id') {
@@ -1077,7 +1077,7 @@ class PolitizrAdminExtension extends \Twig_Extension
         // $this->logger->info('$objectClass = '.print_r($objectClass, true));
         // $this->logger->info('$objectId = '.print_r($objectId, true));
 
-        switch($objectClass) {
+        switch ($objectClass) {
             case ObjectTypeConstants::TYPE_DEBATE:
                 break;
             case ObjectTypeConstants::TYPE_REACTION:

@@ -4,6 +4,8 @@ namespace Politizr\FrontBundle\Listener;
 
 use Symfony\Component\EventDispatcher\GenericEvent;
 
+use Politizr\Exception\InconsistentDataException;
+
 use Politizr\Constant\NotificationConstants;
 
 use Politizr\Model\PUNotification;
@@ -66,6 +68,8 @@ class NotificationListener
             case 'Politizr\Model\PDRComment':
                 $pNotificationId = NotificationConstants::ID_D_C_NOTE_POS;
                 break;
+            default:
+                throw new InconsistentDataException(sprintf('Object name %s not managed', $objectName));
         }
 
         $puNotification = $this->insertPUNotification($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
@@ -96,7 +100,7 @@ class NotificationListener
         // Document associé
         $targetUserId = $subject->getPUserId();
 
-        switch($objectName) {
+        switch ($objectName) {
             case 'Politizr\Model\PDDebate':
             case 'Politizr\Model\PDReaction':
                 $pNotificationId = NotificationConstants::ID_D_NOTE_NEG;
@@ -105,6 +109,8 @@ class NotificationListener
             case 'Politizr\Model\PDRComment':
                 $pNotificationId = NotificationConstants::ID_D_C_NOTE_NEG;
                 break;
+            default:
+                throw new InconsistentDataException(sprintf('Object name %s not managed', $objectName));
         }
 
         $puNotification = $this->insertPUNotification($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId);

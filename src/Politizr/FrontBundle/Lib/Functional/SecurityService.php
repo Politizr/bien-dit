@@ -532,7 +532,7 @@ class SecurityService
                     // $this->manageGoogleApiExtraData($providerId, $accessToken, $refreshToken, $expiresIn, $user);
                     break;
                 default:
-                    break;
+                    throw new InconsistentDataException(sprintf('OAuth Provider %s not managed.'), $provider);
             }
 
             // save user
@@ -674,7 +674,7 @@ class SecurityService
                 // management via asynchronous apis response
                 break;
             default:
-                break;
+                throw new InconsistentDataException(sprintf('Order payment type id %s not managed.'), $order->getPOPaymentTypeId());
         }
     }
 

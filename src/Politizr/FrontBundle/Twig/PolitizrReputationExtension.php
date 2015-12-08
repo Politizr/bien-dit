@@ -1,6 +1,8 @@
 <?php
 namespace Politizr\FrontBundle\Twig;
 
+use Politizr\Exception\InconsistentDataException;
+
 use Politizr\Model\PDocumentQuery;
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
@@ -165,6 +167,8 @@ class PolitizrReputationExtension extends \Twig_Extension
                     $url = '#';
                 }
                 break;
+            default:
+                throw new InconsistentDataException(sprintf('Object name %s not managed', $reputation->getPObjectName()));
         }
 
         // Construction du rendu du tag

@@ -362,6 +362,8 @@ class DocumentService
                 }
                 
                 break;
+            default:
+                throw new InconsistentDataException(sprintf('Object name %s not managed.'), $objectName);
         }
 
         return array(

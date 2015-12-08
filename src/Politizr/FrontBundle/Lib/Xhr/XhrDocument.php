@@ -694,7 +694,7 @@ class XhrDocument
                 $uploadWebPath = PathConstants::REACTION_UPLOAD_WEB_PATH;
                 break;
             default:
-                throw new InconsistentDataException('Object type not managed');
+                throw new InconsistentDataException(sprintf('Object type %s not managed', $type));
         }
 
         if (!$document->isOwner($user->getId())) {
@@ -772,7 +772,7 @@ class XhrDocument
                 $formType = new PDRCommentType();
                 break;
             default:
-                throw new InconsistentDataException('Object type not managed');
+                throw new InconsistentDataException(sprintf('Object type %s not managed', $type));
         }
 
         $form = $this->formFactory->create($formType, $comment);
@@ -862,7 +862,7 @@ class XhrDocument
                 $formType = new PDRCommentType();
                 break;
             default:
-                throw new InconsistentDataException('Object type not managed');
+                throw new InconsistentDataException(sprintf('Object type %s not managed', $type));
         }
 
         $comments = $document->getComments(true, $noParagraph);

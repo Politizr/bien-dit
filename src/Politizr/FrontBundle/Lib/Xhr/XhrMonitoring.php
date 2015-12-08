@@ -143,7 +143,6 @@ class XhrMonitoring
 
                 break;
             default:
-                // @todo case default > throw IDException in all switch/case code
                 throw InconsistentDataException(sprintf('Object type %s is not defined.', $type));
         }
 

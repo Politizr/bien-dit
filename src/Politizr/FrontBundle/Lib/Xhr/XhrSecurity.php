@@ -164,7 +164,7 @@ class XhrSecurity
         $this->session->set('p_order_id', $order->getId());
 
         // payment type rendering
-        switch($paymentTypeId) {
+        switch ($paymentTypeId) {
             case OrderConstants::PAYMENT_TYPE_BANK_TRANSFER:
                 $htmlForm = '';
                 $redirectUrl = $this->router->generate('InscriptionElectedPaymentFinished');
@@ -198,7 +198,7 @@ class XhrSecurity
 
                 break;
             default:
-                break;
+                throw new InconsistentDataException(sprintf('Payment type id %s not managed', $paymentTypeId));
         }
 
         return array(

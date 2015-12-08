@@ -12,9 +12,6 @@ use Politizr\Exception\BoxErrorException;
 /**
  * Encapsulate the call of an XHR request: manage exception and call the service associated with the xhr request.
  *
- * @todo
- * - manage different actions depending of sort of throwned exceptions
- *
  * @author Lionel Bouzonville
  */
 class XhrCreateResponse

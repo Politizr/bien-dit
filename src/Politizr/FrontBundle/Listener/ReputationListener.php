@@ -4,6 +4,8 @@ namespace Politizr\FrontBundle\Listener;
 
 use Symfony\Component\EventDispatcher\GenericEvent;
 
+use Politizr\Exception\InconsistentDataException;
+
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\ReputationConstants;
 
@@ -124,6 +126,8 @@ class ReputationListener
                 $prActionId = ReputationConstants::ACTION_ID_D_TARGET_REACTION_COMMENT_PUBLISH;
                 $this->insertPUReputation($targetUserId, $prActionId, $objectName, $objectId);
                 break;
+            default:
+                throw new InconsistentDataException(sprintf('Object type %s not managed', $document->getType()));
         }
     }
 
@@ -143,7 +147,7 @@ class ReputationListener
         $objectName = get_class($subject);
         $objectId = $subject->getId();
 
-        switch($objectName) {
+        switch ($objectName) {
             case 'Politizr\Model\PDDebate':
                 $prActionId = ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_NOTE_POS;
 
@@ -178,6 +182,8 @@ class ReputationListener
                 $this->insertPUReputation($userIdAuthor, $prActionIdAuthor, $objectName, $objectId);
 
                 break;
+            default:
+                throw new InconsistentDataException(sprintf('Object name %s not managed', $objectName));
         }
     }
 
@@ -196,7 +202,7 @@ class ReputationListener
         $objectName = get_class($subject);
         $objectId = $subject->getId();
 
-        switch(get_class($subject)) {
+        switch (get_class($subject)) {
             case 'Politizr\Model\PDDebate':
                 $prActionId = ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_NOTE_NEG;
 
@@ -231,6 +237,8 @@ class ReputationListener
                 $this->insertPUReputation($userIdAuthor, $prActionIdAuthor, $objectName, $objectId);
 
                 break;
+            default:
+                throw new InconsistentDataException(sprintf('Object type %s not managed', get_class($subject)));
         }
     }
 
