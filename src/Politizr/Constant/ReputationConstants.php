@@ -233,12 +233,6 @@ class ReputationConstants
             ReputationConstants::ACTION_ID_D_AUTHOR_REACTION_NOTE_NEG,
             ReputationConstants::ACTION_ID_D_AUTHOR_COMMENT_NOTE_POS,
             ReputationConstants::ACTION_ID_D_AUTHOR_COMMENT_NOTE_NEG,
-            ReputationConstants::ACTION_ID_D_TARGET_DEBATE_NOTE_POS,
-            ReputationConstants::ACTION_ID_D_TARGET_DEBATE_NOTE_NEG,
-            ReputationConstants::ACTION_ID_D_TARGET_REACTION_NOTE_POS,
-            ReputationConstants::ACTION_ID_D_TARGET_REACTION_NOTE_NEG,
-            ReputationConstants::ACTION_ID_D_TARGET_COMMENT_NOTE_POS,
-            ReputationConstants::ACTION_ID_D_TARGET_COMMENT_NOTE_NEG,
         ];
     }
 }
