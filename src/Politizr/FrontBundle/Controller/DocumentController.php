@@ -191,8 +191,9 @@ class DocumentController extends Controller
     }
 
     /**
-     * Edition d'un débat
-     * @todo remove id to manage with slug > force user to set a title when he creates a new debate?
+     * Debate edition
+     *
+     * @param $uuid
      */
     public function debateEditAction($uuid)
     {
@@ -276,8 +277,9 @@ class DocumentController extends Controller
     }
 
     /**
-     * Edition d'une réaction
-     * @todo remove id to manage with slug > force user to set a title when he creates a new debate?
+     * Reaction edition
+     *
+     * @param $uuid
      */
     public function reactionEditAction($uuid)
     {

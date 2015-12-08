@@ -7,7 +7,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use StudioEcho\Lib\StudioEchoUtils;
 
 use Politizr\Exception\InconsistentDataException;
-use Politizr\Exception\FormValidationException;
+use Politizr\Exception\BoxErrorException;
 
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\PathConstants;
@@ -345,7 +345,7 @@ class XhrDocument
             }
         } else {
             $errors = StudioEchoUtils::getAjaxFormErrors($form);
-            throw new FormValidationException($errors);
+            throw new BoxErrorException($errors);
         }
 
         // Rendering
@@ -407,7 +407,7 @@ class XhrDocument
             $errorString
         );
         if (!$valid) {
-            throw new FormValidationException($errorString);
+            throw new BoxErrorException($errorString);
         }
 
         // Publication
@@ -542,7 +542,7 @@ class XhrDocument
             }
         } else {
             $errors = StudioEchoUtils::getAjaxFormErrors($form);
-            throw new FormValidationException($errors);
+            throw new BoxErrorException($errors);
         }
 
         // Rendering
@@ -604,7 +604,7 @@ class XhrDocument
             $errorString
         );
         if (!$valid) {
-            throw new FormValidationException($errorString);
+            throw new BoxErrorException($errorString);
         }
 
         // Publication
@@ -786,7 +786,7 @@ class XhrDocument
         } else {
             $this->logger->info('*** not valid');
             $errors = StudioEchoUtils::getAjaxFormErrors($form);
-            throw new FormValidationException($errors);
+            throw new BoxErrorException($errors);
         }
 
         // Get associated object

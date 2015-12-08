@@ -8,7 +8,7 @@
                         'xhrService': 'modal',
                         'xhrMethod': 'rankingDebateList',
                         'xhrType': 'RETURN_HTML',
-                    } only %}" {% if defaultType == 'debate'%}checked{% endif %}/>
+                    } only %}" {% if defaultType == constant('Politizr\\Constant\\ObjectTypeConstants::CONTEXT_DEBATE')%}checked{% endif %}/>
                 <label for="debateType">débats</label>
 
                 <input type="radio" class="type" name="type" id="reactionType" value="reaction" url="{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
@@ -16,7 +16,7 @@
                         'xhrService': 'modal',
                         'xhrMethod': 'rankingReactionList',
                         'xhrType': 'RETURN_HTML',
-                    } only %}" {% if defaultType == 'reaction'%}checked{% endif %}/>
+                    } only %}" {% if defaultType == constant('Politizr\\Constant\\ObjectTypeConstants::CONTEXT_REACTION')%}checked{% endif %}/>
                 <label for="reactionType">réactions</label>
 
                 <input type="radio" class="type" name="type" id="userType" value="user" url="{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig' with {
@@ -24,7 +24,7 @@
                         'xhrService': 'modal',
                         'xhrMethod': 'rankingUserList',
                         'xhrType': 'RETURN_HTML',
-                    } only %}" {% if defaultType == 'user'%}checked{% endif %}/>
+                    } only %}" {% if defaultType == constant('Politizr\\Constant\\ObjectTypeConstants::CONTEXT_USER')%}checked{% endif %}/>
                 <label for="userType">profils</label>
             </form>
             {% include 'PolitizrFrontBundle:PaginatedList:_defaultOrderFilters.html.twig' with { 'defaultOrderFilters': defaultOrderFilters } only %}

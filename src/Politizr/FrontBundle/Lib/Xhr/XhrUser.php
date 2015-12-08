@@ -7,7 +7,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use StudioEcho\Lib\StudioEchoUtils;
 
 use Politizr\Exception\InconsistentDataException;
-use Politizr\Exception\FormValidationException;
+use Politizr\Exception\BoxErrorException;
 
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\QualificationConstants;
@@ -184,7 +184,7 @@ class XhrUser
             $userProfile->save();
         } else {
             $errors = StudioEchoUtils::getAjaxFormErrors($form);
-            throw new FormValidationException($errors);
+            throw new BoxErrorException($errors);
         }
 
         return true;
@@ -221,7 +221,7 @@ class XhrUser
             }
         } else {
             $errors = StudioEchoUtils::getAjaxFormErrors($form);
-            throw new FormValidationException($errors);
+            throw new BoxErrorException($errors);
         }
 
         // Rendering
@@ -436,7 +436,7 @@ class XhrUser
             $puCurrentQo->save();
         } else {
             $errors = StudioEchoUtils::getAjaxFormErrors($form);
-            throw new FormValidationException($errors);
+            throw new BoxErrorException($errors);
         }
 
         return true;
@@ -460,7 +460,7 @@ class XhrUser
             $user->save();
         } else {
             $errors = StudioEchoUtils::getAjaxFormErrors($form);
-            throw new FormValidationException($errors);
+            throw new BoxErrorException($errors);
         }
 
         return true;
@@ -485,7 +485,7 @@ class XhrUser
             $mandate->save();
         } else {
             $errors = StudioEchoUtils::getAjaxFormErrors($form);
-            throw new FormValidationException($errors);
+            throw new BoxErrorException($errors);
         }
 
         // New empty form
@@ -547,7 +547,7 @@ class XhrUser
             $mandate->save();
         } else {
             $errors = StudioEchoUtils::getAjaxFormErrors($form);
-            throw new FormValidationException($errors);
+            throw new BoxErrorException($errors);
         }
 
         // @todo to refactor
@@ -655,7 +655,7 @@ class XhrUser
             }
         } else {
             $errors = StudioEchoUtils::getAjaxFormErrors($form);
-            throw new FormValidationException($errors);
+            throw new BoxErrorException($errors);
         }
 
         return true;

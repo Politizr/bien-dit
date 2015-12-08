@@ -8,7 +8,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use StudioEcho\Lib\StudioEchoUtils;
 
 use Politizr\Exception\InconsistentDataException;
-use Politizr\Exception\FormValidationException;
+use Politizr\Exception\BoxErrorException;
 
 use Politizr\Constant\ObjectTypeConstants;
 
@@ -219,7 +219,7 @@ class XhrMonitoring
             $dispatcher =  $this->eventDispatcher->dispatch('monitoring_email', $event);
         } else {
             $errors = StudioEchoUtils::getAjaxFormErrors($formAbuse);
-            throw new FormValidationException($errors);
+            throw new BoxErrorException($errors);
         }
 
         return true;
@@ -293,7 +293,7 @@ class XhrMonitoring
             $dispatcher =  $this->eventDispatcher->dispatch('monitoring_email', $event);
         } else {
             $errors = StudioEchoUtils::getAjaxFormErrors($formAskForUpdate);
-            throw new FormValidationException($errors);
+            throw new BoxErrorException($errors);
         }
 
         return true;

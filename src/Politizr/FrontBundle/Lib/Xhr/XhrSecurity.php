@@ -5,7 +5,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 use Politizr\Exception\InconsistentDataException;
-use Politizr\Exception\FormValidationException;
+use Politizr\Exception\BoxErrorException;
 
 use StudioEcho\Lib\StudioEchoUtils;
 
@@ -98,7 +98,7 @@ class XhrSecurity
 
             // check user exists
             if (!$user) {
-                throw new FormValidationException('Utilisateur inconnu');
+                throw new BoxErrorException('Utilisateur inconnu');
             }
 
             // new random password
@@ -112,7 +112,7 @@ class XhrSecurity
             $dispatcher = $this->eventDispatcher->dispatch('lost_password_email', new GenericEvent($user));
         } else {
             $errors = StudioEchoUtils::getAjaxFormErrors($form);
-            throw new FormValidationException($errors);
+            throw new BoxErrorException($errors);
         }
 
         return true;

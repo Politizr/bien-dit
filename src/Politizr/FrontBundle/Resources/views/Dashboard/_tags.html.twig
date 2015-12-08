@@ -10,6 +10,6 @@
 
 <div class="dbPopularTagList">
     {% for tag in tags %}
-        {% include 'PolitizrFrontBundle:Tag:_detail.html.twig' with { 'tag': tag, 'modalDefaultType': 'debate' } %}
+        {% include 'PolitizrFrontBundle:Tag:_detail.html.twig' with { 'tag': tag, 'modalDefaultType': constant('Politizr\\Constant\\ObjectTypeConstants::CONTEXT_DEBATE') } %}
     {% endfor %}
 </div>

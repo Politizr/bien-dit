@@ -6,7 +6,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
 use Politizr\Exception\InconsistentDataException;
-use Politizr\Exception\FormValidationException;
+use Politizr\Exception\BoxErrorException;
 
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\TagConstants;

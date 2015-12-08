@@ -4,7 +4,7 @@ namespace Politizr\FrontBundle\Lib\Xhr;
 use Symfony\Component\HttpFoundation\Request;
 
 use Politizr\Exception\InconsistentDataException;
-use Politizr\Exception\FormValidationException;
+use Politizr\Exception\BoxErrorException;
 
 use Politizr\Constant\ListingConstants;
 use Politizr\Constant\TagConstants;

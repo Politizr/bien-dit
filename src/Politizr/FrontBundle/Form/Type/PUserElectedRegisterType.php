@@ -103,7 +103,6 @@ class PUserElectedRegisterType extends AbstractType
             'attr' => array('placeholder' => 'Identifiant')
         ));
         
-        // @todo contraintes en plus mot de passe "fort"
         $builder->add('plainPassword', 'repeated', array(
             'required' => true,
             'first_options' =>   array(

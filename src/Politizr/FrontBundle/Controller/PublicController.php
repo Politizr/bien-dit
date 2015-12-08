@@ -34,9 +34,10 @@ class PublicController extends Controller
             return $this->redirect($this->generateUrl(sprintf('Homepage%s', $profileSuffix)));
         }
 
-        // @todo most "active" debate today
+        // most "active" debate today
         $activeDebate = PDDebateQuery::create()
             ->online()
+            ->orderByMostViews()
             ->orderByLast()
             ->findOne();
 

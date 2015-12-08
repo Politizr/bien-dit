@@ -991,21 +991,21 @@ class PUser extends BasePUser implements UserInterface, /*EquatableInterface,*/ 
      * Check if follower $userId wants to be notified of user update in the scope of $context
      *
      * @param integer $userId
-     * @param string $context   @todo refactor migrate constant
+     * @param string $context
      * @return boolean
      */
-    public function isNotified($userId, $context = 'reaction')
+    public function isNotified($userId, $context = ObjectTypeConstants::CONTEXT_REACTION)
     {
         $puFollowU = PUFollowUQuery::create()
             ->filterByPUserId($userId)
             ->filterByPUserFollowerId($this->getId())
             ->findOne();
 
-        if ($context == 'debate' && $puFollowU && $puFollowU->getNotifDebate()) {
+        if ($context == ObjectTypeConstants::CONTEXT_DEBATE && $puFollowU && $puFollowU->getNotifDebate()) {
             return true;
-        } elseif ($context == 'reaction' && $puFollowU && $puFollowU->getNotifReaction()) {
+        } elseif ($context == ObjectTypeConstants::CONTEXT_REACTION && $puFollowU && $puFollowU->getNotifReaction()) {
             return true;
-        } elseif ($context == 'comment' && $puFollowU && $puFollowU->getNotifComment()) {
+        } elseif ($context == ObjectTypeConstants::CONTEXT_COMMENT && $puFollowU && $puFollowU->getNotifComment()) {
             return true;
         }
 

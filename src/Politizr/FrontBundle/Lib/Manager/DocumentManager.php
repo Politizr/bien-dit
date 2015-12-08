@@ -43,10 +43,6 @@ class DocumentManager
      *
      * @see app/sql/debateFeed.sql
      *
-     * @todo:
-     *   > + réactions sur les débats / réactions rédigés par le user courant
-     *   > + commentaires sur les débats / réactions rédigés par le user courant
-     *
      * @param integer $debateId
      * @param array $inQueryUserIds
      * @return string
@@ -103,10 +99,6 @@ ORDER BY published_at ASC
      * My documents (drafts / publications)
      *
      * @see app/sql/myDocuments.sql
-     *
-     * @todo:
-     *   > + réactions sur les débats / réactions rédigés par le user courant
-     *   > + commentaires sur les débats / réactions rédigés par le user courant
      *
      * @param integer $userId
      * @param boolean $published

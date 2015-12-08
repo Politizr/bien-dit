@@ -70,7 +70,7 @@ class ListingConstants
     const DASHBOARD_GEO_DEBATES_LIMIT = 2;
     const DASHBOARD_GEO_USERS_LIMIT = 2;
     const DASHBOARD_SUGGESTION_DEBATES_LIMIT = 3;
-    const DASHBOARD_SUGGESTION_USERS_LIMIT = 5; // @todo /!\ hack > +1 to hack suggestion user query which return 1 first null element
+    const DASHBOARD_SUGGESTION_USERS_LIMIT = 5; // @warning /!\ hack > +1 to hack suggestion user query which return 1 first null element
 
     // ************************************************************ //
     //            Filters & Order keyword constants                 //

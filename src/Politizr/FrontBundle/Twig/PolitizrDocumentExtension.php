@@ -408,7 +408,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
      * @param string $modalDefaultType debate|reaction|user
      * @return string
      */
-    public function docTags(PDocumentInterface $document, $tagTypeId = null, $withHidden = false, $modalDefaultType = 'debate')
+    public function docTags(PDocumentInterface $document, $tagTypeId = null, $withHidden = false, $modalDefaultType = ObjectTypeConstants::CONTEXT_DEBATE)
     {
         // $this->logger->info('*** doctags');
         // $this->logger->info('$document = '.print_r($document, true));

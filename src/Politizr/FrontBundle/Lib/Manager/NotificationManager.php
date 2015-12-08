@@ -2,7 +2,7 @@
 namespace Politizr\FrontBundle\Lib\Manager;
 
 use Politizr\Exception\InconsistentDataException;
-use Politizr\Exception\FormValidationException;
+use Politizr\Exception\BoxErrorException;
 
 use Politizr\Constant\NotificationConstants;
 

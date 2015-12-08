@@ -22,10 +22,6 @@ use Politizr\AdminBundle\Form\Type\PMUserModeratedType;
 /**
  * Specific admin twig extension
  *
- * @todo
- * - split extension in several: PolitizrAdminDocumentExtension, PolitizrAdminUserExtension, etc.
- * - delete duplicate function from front
- *
  * @author Lionel Bouzonville
  */
 class PolitizrAdminExtension extends \Twig_Extension

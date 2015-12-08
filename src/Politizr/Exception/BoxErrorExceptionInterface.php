@@ -7,6 +7,6 @@ namespace Politizr\Exception;
  *
  * @author Lionel Bouzonville
  */
-interface FormValidationExceptionInterface
+interface BoxErrorExceptionInterface
 {
 }

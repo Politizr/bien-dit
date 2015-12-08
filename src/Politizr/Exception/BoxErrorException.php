@@ -3,11 +3,11 @@
 namespace Politizr\Exception;
 
 /**
- * @todo refactoring rename to ~ BoxErrorException
+ * Throw to display front box error message
  *
  * @author Lionel Bouzonville
  */
-class FormValidationException extends \Exception implements FormValidationExceptionInterface
+class BoxErrorException extends \Exception implements BoxErrorExceptionInterface
 {
     public function __construct($message = null, \Exception $previous = null, $code = 0)
     {

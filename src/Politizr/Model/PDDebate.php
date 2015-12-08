@@ -363,14 +363,14 @@ class PDDebate extends BasePDDebate implements PDocumentInterface, ContainerAwar
      * @param string $context   @todo refactor migrate constant
      * @return boolean
      */
-    public function isNotified($userId, $context = 'reaction')
+    public function isNotified($userId, $context = ObjectTypeConstants::CONTEXT_REACTION)
     {
         $puFollowDD = PUFollowDDQuery::create()
             ->filterByPUserId($userId)
             ->filterByPDDebateId($this->getId())
             ->findOne();
 
-        if ($context == 'reaction' && $puFollowDD && $puFollowDD->getNotifReaction()) {
+        if ($context == ObjectTypeConstants::CONTEXT_REACTION && $puFollowDD && $puFollowDD->getNotifReaction()) {
             return true;
         }
 

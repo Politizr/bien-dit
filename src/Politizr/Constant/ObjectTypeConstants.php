@@ -17,4 +17,9 @@ class ObjectTypeConstants
     const TYPE_BADGE = 'Politizr\Model\PRBadge';
     const TYPE_ABUSE = 'Politizr\Model\PMAbuseReporting';
     const TYPE_ASK_FOR_UPDATE = 'Politizr\Model\PMAskForUpdate';
+
+    const CONTEXT_DEBATE = 'debate';
+    const CONTEXT_REACTION = 'reaction';
+    const CONTEXT_COMMENT = 'comment';
+    const CONTEXT_USER = 'user';
 }

@@ -6,7 +6,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
 use Politizr\Exception\InconsistentDataException;
-use Politizr\Exception\FormValidationException;
+use Politizr\Exception\BoxErrorException;
 
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\ReputationConstants;
@@ -122,7 +122,6 @@ class DocumentService
                     throw new InconsistentDataException(sprintf('Object type %s unknown.', $type));
                 }
                 
-                // @todo pb clef / reaction vs debate identique
                 $documents->set($i, $document);
                 $i++;
             }

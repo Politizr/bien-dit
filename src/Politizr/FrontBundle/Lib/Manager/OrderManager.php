@@ -68,7 +68,6 @@ class OrderManager
         $order->setElectiveMandates($electiveMandates);
         $order->setSupportingDocument($supportingDocument);
 
-        // @todo promo
         $order->setPrice($subscription->getPrice());
         $order->setPromotion(0);
         $order->setTotal($subscription->getPrice());

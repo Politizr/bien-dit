@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Filesystem\Filesystem;
 
 use Politizr\Exception\InconsistentDataException;
-use Politizr\Exception\FormValidationException;
+use Politizr\Exception\BoxErrorException;
 
 use GuzzleHttp;
 
@@ -137,15 +137,15 @@ class GlobalTools
 
         $myRequestedFile = $request->files->get($inputName);
         if ($myRequestedFile == null) {
-            throw new FormValidationException('Fichier non existant.');
+            throw new BoxErrorException('Fichier non existant.');
         } else if ($myRequestedFile->getError() > 0) {
-            throw new FormValidationException('Erreur upload n°'.$myRequestedFile->getError());
+            throw new BoxErrorException('Erreur upload n°'.$myRequestedFile->getError());
         } else {
             // Contrôle extension
             // $allowedExtensions = array('jpg', 'jpeg', 'png');
             $ext = $myRequestedFile->guessExtension();
             if ($allowedExtensions && !in_array(strtolower($ext), $allowedExtensions)) {
-                throw new FormValidationException('Type de fichier non autorisé.');
+                throw new BoxErrorException('Type de fichier non autorisé.');
             }
 
             // Construction du nom du fichier

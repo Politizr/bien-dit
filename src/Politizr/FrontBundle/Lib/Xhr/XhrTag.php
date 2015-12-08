@@ -7,7 +7,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use StudioEcho\Lib\StudioEchoUtils;
 
 use Politizr\Exception\InconsistentDataException;
-use Politizr\Exception\FormValidationException;
+use Politizr\Exception\BoxErrorException;
 
 use Politizr\Model\PTag;
 
@@ -74,7 +74,7 @@ class XhrTag
      * @param boolean $newTag
      * @param TagManager $tagManager
      * @return PTag
-     * @throws FormValidationException
+     * @throws BoxErrorException
      */
     private function retrieveOrCreateTag($tagUuid, $tagTitle, $tagTypeId, $userId, $newTag)
     {
@@ -91,11 +91,11 @@ class XhrTag
 
         if ($tag) {
             if ($tag->getModerated()) {
-                throw new FormValidationException('Cette thématique est modérée.');
+                throw new BoxErrorException('Cette thématique est modérée.');
             }
 
             if (!$tag->getOnline()) {
-                throw new FormValidationException('Cette thématique est hors ligne.');
+                throw new BoxErrorException('Cette thématique est hors ligne.');
             }
 
             return $tag;
@@ -103,14 +103,14 @@ class XhrTag
 
         if ($newTag) {
             if (!preg_match("/^[\w\-\' ]+$/iu", $tagTitle)) {
-                throw new FormValidationException('La thématique peut être composée de lettres, chiffres et espaces uniquement.');
+                throw new BoxErrorException('La thématique peut être composée de lettres, chiffres et espaces uniquement.');
             }
 
             $tag = $this->tagManager->createTag($tagTitle, $tagTypeId, $userId, true);
             return $tag;
         }
 
-        throw new FormValidationException('Création de nouveaux tags non autorisés, merci d\'en choisir un depuis la liste contextuelle proposée.');
+        throw new BoxErrorException('Création de nouveaux tags non autorisés, merci d\'en choisir un depuis la liste contextuelle proposée.');
     }
 
     /* ######################################################################################################## */

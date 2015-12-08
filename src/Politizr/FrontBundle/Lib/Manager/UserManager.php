@@ -6,6 +6,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Politizr\Exception\InconsistentDataException;
 use Politizr\Exception\BoxErrorException;
 
+use Politizr\Constant\ObjectTypeConstants;
+
 use Politizr\Model\PUFollowDD;
 use Politizr\Model\PUFollowU;
 use Politizr\Model\PUMandate;
@@ -52,9 +54,6 @@ class UserManager
      * User's "My Politizr" timeline
      *
      * @see app/sql/timeline.sql
-     *
-     * @todo:
-     *   > + commentaires sur les débats / réactions rédigés par le user courant
      *
      * @param integer $userId
      * @param array $inQueryDebateIds
@@ -208,9 +207,6 @@ LIMIT ".$offset.", ".$count."
      * User's "My Politizr" timeline
      *
      * @see app/sql/userDetail.sql
-     *
-     * @todo:
-     *   > interactions si user connecté?
      *
      * @param integer $userId
      * @param integer $offset
@@ -517,14 +513,13 @@ LIMIT ".$offset.", ".$count."
             ->filterByPUserId($targetId)
             ->findOne();
 
-        // @todo refactor constant management
-        if ($puFollowU && $context == 'debate') {
+        if ($puFollowU && $context == ObjectTypeConstants::CONTEXT_DEBATE) {
             $puFollowU->setNotifDebate($isNotif);
             $puFollowU->save();
-        } elseif ($puFollowU && $context == 'reaction') {
+        } elseif ($puFollowU && $context == ObjectTypeConstants::CONTEXT_REACTION) {
             $puFollowU->setNotifReaction($isNotif);
             $puFollowU->save();
-        } elseif ($puFollowU && $context == 'comment') {
+        } elseif ($puFollowU && $context == ObjectTypeConstants::CONTEXT_COMMENT) {
             $puFollowU->setNotifComment($isNotif);
             $puFollowU->save();
         }
@@ -548,7 +543,7 @@ LIMIT ".$offset.", ".$count."
             ->filterByPDDebateId($debateId)
             ->findOne();
 
-        if ($puFollowDD && $context == 'reaction') {
+        if ($puFollowDD && $context == ObjectTypeConstants::CONTEXT_REACTION) {
             $puFollowDD->setNotifReaction($isNotif);
             $puFollowDD->save();
         }

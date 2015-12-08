@@ -4,8 +4,9 @@ namespace Politizr\FrontBundle\Lib\Xhr;
 use Symfony\Component\HttpFoundation\Request;
 
 use Politizr\Exception\InconsistentDataException;
-use Politizr\Exception\FormValidationException;
+use Politizr\Exception\BoxErrorException;
 
+use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\ListingConstants;
 
 use Politizr\Model\PDDebateQuery;
@@ -139,7 +140,7 @@ class XhrModal
         $defaultOrderFilters = $request->get('defaultOrderFilters');
         $this->logger->info('$defaultOrderFilters = ' . print_r($defaultOrderFilters, true));
 
-        if ('debate' === $defaultType) {
+        if (ObjectTypeConstants::CONTEXT_DEBATE === $defaultType) {
             $listOrder = $this->templating->render(
                 'PolitizrFrontBundle:PaginatedList:_formOrderByDebate.html.twig',
                 array(
@@ -153,7 +154,7 @@ class XhrModal
                     'defaultFiltersByUser' => $defaultOrderFilters[2]['value'],
                 )
             );
-        } elseif ('reaction' === $defaultType) {
+        } elseif (ObjectTypeConstants::CONTEXT_REACTION === $defaultType) {
             $listOrder = $this->templating->render(
                 'PolitizrFrontBundle:PaginatedList:_formOrderByReaction.html.twig',
                 array(
@@ -167,7 +168,7 @@ class XhrModal
                     'defaultFiltersByUser' => $defaultOrderFilters[2]['value'],
                 )
             );
-        } elseif ('user' === $defaultType) {
+        } elseif (ObjectTypeConstants::CONTEXT_USER === $defaultType) {
             $listOrder = $this->templating->render(
                 'PolitizrFrontBundle:PaginatedList:_formOrderByUser.html.twig',
                 array(

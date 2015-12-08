@@ -279,7 +279,7 @@ class PolitizrUserExtension extends \Twig_Extension
      * @param string $modalDefaultType debate|reaction|user
      * @return string
      */
-    public function userTags(PUser $user, $tagTypeId = null, $modalDefaultType = 'user')
+    public function userTags(PUser $user, $tagTypeId = null, $modalDefaultType = ObjectTypeConstants::CONTEXT_USER)
     {
         $this->logger->info('*** userTags');
         // $this->logger->info('$uiser = '.print_r($user, true));

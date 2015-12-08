@@ -174,7 +174,6 @@ class SecurityController extends Controller
         if ($form->isValid()) {
             $user = $form->getData();
 
-            // @todo refactor migrate to postSubmit event
             // Canonicalization email
             $canonicalizeEmail = $this->get('fos_user.util.email_canonicalizer');
             $user->setEmailCanonical($canonicalizeEmail->canonicalize($user->getEmail()));

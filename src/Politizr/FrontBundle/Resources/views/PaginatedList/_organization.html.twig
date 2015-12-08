@@ -14,7 +14,7 @@
                         'xhrService': 'modal',
                         'xhrMethod': 'organizationUserList',
                         'xhrType': 'RETURN_HTML',
-                    } only %}" {% if defaultType == 'user'%}checked{% endif %}/>
+                    } only %}" {% if defaultType == constant('Politizr\\Constant\\ObjectTypeConstants::CONTEXT_USER')%}checked{% endif %}/>
                 <label for="userType">profils</label>
             </form>
             {% include 'PolitizrFrontBundle:PaginatedList:_defaultOrderFilters.html.twig' with { 'defaultOrderFilters': defaultOrderFilters } only %}

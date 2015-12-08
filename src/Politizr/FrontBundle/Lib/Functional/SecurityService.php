@@ -211,7 +211,6 @@ class SecurityService
     /**
      * Retrieve Facebook API data to update user object.
      * https://developers.facebook.com/docs/php/gettingstarted/5.0.0
-     * @todo how to get the facebook page url?
      *
      * @param integer $providerId
      * @param string $accessToken
@@ -246,6 +245,8 @@ class SecurityService
         }
 
         $graphUser = $response->getGraphUser();
+
+        // @todo / how to get the facebook page url?
 
         $gender = $graphUser->getField('gender');
         $firstName = $graphUser->getField('first_name');
@@ -300,7 +301,6 @@ class SecurityService
     /**
      * Retrieve Twitter API data to update user object.
      * https://dev.twitter.com/rest/reference/get/users/show
-     * @todo how to get the twitter page url?
      *
      * @param integer $providerId
      * @param string $accessToken
@@ -333,6 +333,8 @@ class SecurityService
             $this->logger->error(sprintf('Exception - msg = %s', $e->getMessage()));
             return false;
         }
+
+        // @todo / how to get the twitter page url?
 
         // dump($twitterResult);
         if (isset($twitterResult->error)) {
@@ -369,8 +371,6 @@ class SecurityService
      * https://github.com/google/google-api-php-client
      * https://developers.google.com/api-client-library/php/
      * https://developers.google.com/+/api/latest/people/get
-     *
-     * @todo how to get the twitter page url?
      *
      * @param integer $providerId
      * @param string $accessToken

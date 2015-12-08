@@ -9,7 +9,7 @@ use StudioEcho\Lib\StudioEchoUtils;
 use Politizr\Constant\ReputationConstants;
 
 use Politizr\Exception\InconsistentDataException;
-use Politizr\Exception\FormValidationException;
+use Politizr\Exception\BoxErrorException;
 
 use Politizr\Model\PTag;
 use Politizr\Model\PUReputation;
@@ -28,7 +28,6 @@ use Politizr\AdminBundle\Form\Type\PMUserModeratedType;
 
 /**
  * XHR service for admin management.
- * @todo /!\ check for duplicate code from XhrTag
  *
  * @author Lionel Bouzonville
  */
@@ -83,8 +82,6 @@ class XhrAdmin
     /**
      * Useful method which manage differents scenarios for retrieving or creating a tag.
      *
-     * @todo: delete UNIQUE constraint on "slug" to manage same slug for different type => /!\ problèmes en vue sur liste déroulante multi-type
-     *
      * @param integer $tagUuid
      * @param string $tagTitle
      * @param integer $tagTypeId
@@ -92,7 +89,7 @@ class XhrAdmin
      * @param boolean $newTag
      * @param TagManager $tagManager
      * @return PTag
-     * @throws FormValidationException
+     * @throws BoxErrorException
      */
     private function retrieveOrCreateTag($tagUuid, $tagTitle, $tagTypeId, $userId, $newTag)
     {
@@ -109,11 +106,11 @@ class XhrAdmin
 
         if ($tag) {
             if ($tag->getModerated()) {
-                throw new FormValidationException('Cette thématique est modérée.');
+                throw new BoxErrorException('Cette thématique est modérée.');
             }
 
             if (!$tag->getOnline()) {
-                throw new FormValidationException('Cette thématique est hors ligne.');
+                throw new BoxErrorException('Cette thématique est hors ligne.');
             }
 
             return $tag;
@@ -121,14 +118,14 @@ class XhrAdmin
 
         if ($newTag) {
             if (!preg_match("/^[\w\-\' ]+$/iu", $tagTitle)) {
-                throw new FormValidationException('La thématique peut être composée de lettres, chiffres et espaces uniquement.');
+                throw new BoxErrorException('La thématique peut être composée de lettres, chiffres et espaces uniquement.');
             }
 
             $tag = $this->tagManager->createTag($tagTitle, $tagTypeId, $userId, true);
             return $tag;
         }
 
-        throw new FormValidationException('Création de nouveaux tags non autorisés, merci d\'en choisir un depuis la liste contextuelle proposée.');
+        throw new BoxErrorException('Création de nouveaux tags non autorisés, merci d\'en choisir un depuis la liste contextuelle proposée.');
     }
 
     /* ######################################################################################################## */
@@ -541,7 +538,6 @@ class XhrAdmin
             throw new InconsistentDataException(sprintf('User id-%s not found.', $subjectId));
         }
 
-        // @todo notif user?
         // Reputation evolution update
         $con = \Propel::getConnection('default');
 
@@ -628,7 +624,7 @@ class XhrAdmin
             $this->eventDispatcher->dispatch('moderation_notification', new GenericEvent($userModerated));
         } else {
             $errors = StudioEchoUtils::getAjaxFormErrors($form);
-            throw new FormValidationException($errors);
+            throw new BoxErrorException($errors);
         }
 
         // Update historic
@@ -667,9 +663,6 @@ class XhrAdmin
         if ($user->getBanned()) {
             // mail user
             $this->eventDispatcher->dispatch('moderation_banned', new GenericEvent($user));
-
-            // @todo logout user
-            // http://stackoverflow.com/questions/27987089/invalidate-session-for-a-specific-user-in-symfony2
         }
 
         return true;

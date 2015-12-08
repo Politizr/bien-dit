@@ -42,7 +42,6 @@ class PUMandateType extends AbstractType
                 'label' => 'Type de mandat',
                 'class' => 'Politizr\\Model\\PQMandate',
                 'query' => PQMandateQuery::create()->filterByPQTypeId($this->pqTypeId)->filterByOnline(true)->orderByRank(),
-                // @todo Fix group_by property
                 // https://github.com/propelorm/PropelBundle/issues/358
                 // http://stackoverflow.com/questions/32602183/propel-form-type-model-w-group-by-is-rendered-without-property-display
                 // 'group_by' => 'selectTitle',
