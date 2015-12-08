@@ -12,6 +12,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use Politizr\Exception\InconsistentDataException;
 
+use Politizr\Model\PDocumentInterface;
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
 use Politizr\Model\PUserQuery;
@@ -31,6 +32,48 @@ use Politizr\FrontBundle\Form\Type\PDReactionPhotoInfoType;
  */
 class DocumentController extends Controller
 {
+    /**
+     * Common document "check" validity
+     *
+     * @param PDocument
+     * @param boolean $online
+     * @param boolean $published
+     * @param boolean
+     */
+    private function checkDocument(PDocumentInterface $document, $online = true, $published = true)
+    {
+        if (!$document) {
+            throw new NotFoundHttpException(sprintf('Document not found.'));
+        }
+        if ($online && !$document->getOnline()) {
+            throw new NotFoundHttpException(sprintf('Document not online.'));
+        }
+        if ($published && !$document->getPublished()) {
+            throw new NotFoundHttpException(sprintf('Document not published.'));
+        }
+
+        return true;
+    }
+
+    /**
+     * Common document edit "check" validity
+     *
+     * @param PDocument
+     * @param integer $userId
+     * @param boolean
+     */
+    private function checkDocumentEditable(PDocumentInterface $document, $userId)
+    {
+        if (!$document) {
+            throw new NotFoundHttpException(sprintf('Document not found.'));
+        }
+        if (!$document->isOwner($userId)) {
+            throw new InconsistentDataException(sprintf('Document not found.'));
+        }
+        if ($document->getPublished()) {
+            throw new InconsistentDataException(sprintf('Document already published.'));
+        }
+    }
 
     /* ######################################################################################################## */
     /*                                        AFFICHAGE DÉBAT & RÉACTION                                        */
@@ -46,15 +89,7 @@ class DocumentController extends Controller
         $logger->info('$slug = '.print_r($slug, true));
 
         $debate = PDDebateQuery::create()->filterBySlug($slug)->findOne();
-        if (!$debate) {
-            throw new NotFoundHttpException('Debate "'.$slug.'" not found.');
-        }
-        if (!$debate->getOnline()) {
-            throw new NotFoundHttpException('Debate "'.$slug.'" not online.');
-        }
-        if (!$debate->getPublished()) {
-            throw new NotFoundHttpException('Debate "'.$slug.'" not published.');
-        }
+        $this->checkDocument($debate);
 
         $debate->setNbViews($debate->getNbViews() + 1);
         $debate->save();
@@ -86,20 +121,10 @@ class DocumentController extends Controller
         }
 
         $reaction = PDReactionQuery::create()->filterBySlug($slug)->findOne();
-        if (!$reaction) {
-            throw new NotFoundHttpException('Reaction "'.$slug.'" not found.');
-        }
-        if (!$reaction->getOnline()) {
-            throw new NotFoundHttpException('Reaction "'.$slug.'" not online.');
-        }
+        $this->checkDocument($reaction);
 
         $debate = $reaction ->getDebate();
-        if (!$debate) {
-            throw new NotFoundHttpException('Debate of reaction "'.$slug.'" not found.');
-        }
-        if (!$debate->getOnline()) {
-            throw new NotFoundHttpException('Debate of reaction "'.$slug.'" not online.');
-        }
+        $this->checkDocument($debate, false, false);
 
         $reaction->setNbViews($reaction->getNbViews() + 1);
         $reaction->save();
@@ -131,12 +156,7 @@ class DocumentController extends Controller
         }
 
         $debate = PDDebateQuery::create()->filterBySlug($slug)->findOne();
-        if (!$debate) {
-            throw new NotFoundHttpException('Debate "'.$slug.'" not found.');
-        }
-        if (!$debate->getOnline()) {
-            throw new NotFoundHttpException('Debate "'.$slug.'" not online.');
-        }
+        $this->checkDocument($debate);
 
         // get debate feed
         $timelineService = $this->get('politizr.functional.timeline');
@@ -204,15 +224,7 @@ class DocumentController extends Controller
         $user = $this->getUser();
 
         $debate = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
-        if (!$debate) {
-            throw new InconsistentDataException('Debate '.$uuid.' not found.');
-        }
-        if (!$debate->isOwner($user->getId())) {
-            throw new InconsistentDataException('Debate '.$uuid.' is not yours.');
-        }
-        if ($debate->getPublished()) {
-            throw new InconsistentDataException('Debate '.$uuid.' is published and cannot be edited anymore.');
-        }
+        $this->checkDocumentEditable($debate, $user->getId());
         
         $form = $this->createForm(new PDDebateType(), $debate);
         $formPhotoInfo = $this->createForm(new PDDebatePhotoInfoType(), $debate);
@@ -290,15 +302,7 @@ class DocumentController extends Controller
         $user = $this->getUser();
 
         $reaction = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
-        if (!$reaction) {
-            throw new InconsistentDataException('Reaction '.$uuid.' not found.');
-        }
-        if (!$reaction->isOwner($user->getId())) {
-            throw new InconsistentDataException('Reaction '.$uuid.' is not yours.');
-        }
-        if ($reaction->getPublished()) {
-            throw new InconsistentDataException('Reaction '.$uuid.' is published and cannot be edited anymore.');
-        }
+        $this->checkDocumentEditable($reaction, $user->getId());
 
         // parent document for compared edition
         if (null == $reaction->getParentReactionId()) {
