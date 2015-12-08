@@ -64,7 +64,7 @@
 
         "hwi/oauth-bundle": "0.4.*@dev",
         "facebook/php-sdk-v4": "~5.0",
-        "j7mbo/twitter-api-php": "dev-master",
+        "j7mbo/twitter-api-php": "~1.0",
         "google/apiclient": "1.0.*@beta",
         
         "white-october/pagerfanta-bundle": "~1.0",

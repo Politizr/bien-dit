@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "dcc9c34abaa14d148da8fb0fde57f11a",
-    "content-hash": "814dbf675ec33bab40e74b4b1413931f",
+    "hash": "f0565437a68d0d6933311a4c2fe3bb7a",
+    "content-hash": "b1c1450225dfce6e6722c9d368894730",
     "packages": [
         {
             "name": "badlamer/propel-uuid-behavior",
@@ -1466,7 +1466,7 @@
         },
         {
             "name": "j7mbo/twitter-api-php",
-            "version": "dev-master",
+            "version": "1.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/J7mbo/twitter-api-php.git",
@@ -3886,7 +3886,6 @@
         "fzaninotto/faker": 20,
         "willdurand/faker-bundle": 0,
         "hwi/oauth-bundle": 20,
-        "j7mbo/twitter-api-php": 20,
         "google/apiclient": 10,
         "elao/web-profiler-extra-bundle": 20,
         "liip/url-auto-converter-bundle": 20,
