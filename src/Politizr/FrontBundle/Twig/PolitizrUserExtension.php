@@ -379,7 +379,6 @@ class PolitizrUserExtension extends \Twig_Extension
 
     /**
      * Notification HTML rendering
-     * @todo add test on returning objects + throw InconsistentDataException (InconsistentDataEventException?)
      *
      * @param PUNotification $notification
      * @param int $type NotificationConstants

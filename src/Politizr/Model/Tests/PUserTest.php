@@ -8,26 +8,21 @@ use Politizr\Constant\UserConstants;
 use Politizr\Model\PUser;
 
 /**
- *     Classe de test de PUser
- *  DOC:
- *       http://symfony.com/fr/doc/2.3/book/testing.html
- *       http://propelorm.org/Propel/cookbook/symfony2/testing.html
- *       http://symfony.com/fr/doc/current/cookbook/testing/database.html
- *       https://phpunit.de/manual/4.2/en/writing-tests-for-phpunit.html
- *       http://keiruaprod.fr/symblog-fr/docs/tests-unitaires-et-fonctionels-phpunit.html
- *       + mockery
+ * PUser test class
  *
- *  @todo:
- *        - test de l'upload
- *        - init / purge de la bdd?
+ * - http://symfony.com/fr/doc/2.3/book/testing.html
+ * - http://propelorm.org/Propel/cookbook/symfony2/testing.html
+ * - http://symfony.com/fr/doc/current/cookbook/testing/database.html
+ * - https://phpunit.de/manual/4.2/en/writing-tests-for-phpunit.html
+ * - http://keiruaprod.fr/symblog-fr/docs/tests-unitaires-et-fonctionels-phpunit.html
+ * - + mockery
  *
- *    @author     Lionel Bouzonville / Studio Echo
+ * @author Lionel Bouzonville
  */
 class PUserTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * This is run before each unit test
-     * @todo: it populates the database?
      */
     protected function setUp()
     {
@@ -36,7 +31,6 @@ class PUserTest extends \PHPUnit_Framework_TestCase
 
     /**
      * This is run after each unit test
-     * @todo: it empties the database?
      */
     protected function tearDown()
     {

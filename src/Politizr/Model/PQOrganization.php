@@ -36,17 +36,6 @@ class PQOrganization extends BasePQOrganization
         return $slug;
     }
 
-    /**
-     * @todo: gestion d'une exception spécifique à ES
-     *
-     */
-    public function postDelete(\PropelPDO $con = null)
-    {
-        // @todo refactor to command
-        $this->removeUpload();
-    }
-
-
     /* ######################################################################################################## */
     /*                                      SIMPLE UPLOAD MANAGEMENT                                            */
     /* ######################################################################################################## */
@@ -113,7 +102,8 @@ class PQOrganization extends BasePQOrganization
     }
 
     /**
-     * @todo migrate physical deletion in special command instead of save
+     *
+     * @param string $fileName
      */
     public function setFileName($fileName)
     {

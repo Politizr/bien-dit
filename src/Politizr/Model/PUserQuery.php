@@ -24,9 +24,6 @@ class PUserQuery extends BasePUserQuery
      *
      * @see app/sql/suggestions.sql
      *
-     * @todo:
-     *   > + suggestions depuis les users déjà suivis
-     *
      * @param  integer     $userId
      * @param  integer     $offset
      * @param  integer     $count

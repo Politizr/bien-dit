@@ -18,6 +18,7 @@ use Politizr\Exception\InconsistentDataException;
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\PathConstants;
 use Politizr\Constant\TagConstants;
+use Politizr\Constant\LabelConstants;
 
 use Politizr\Model\om\BasePDReaction;
 
@@ -115,8 +116,7 @@ class PDReaction extends BasePDReaction implements PDocumentInterface, Container
         if ($publisher) {
             $this->setPublishedBy($publisher->getFullName());
         } else {
-            // @todo label in constant
-            $this->setPublishedBy('Auteur inconnu');
+            $this->setPublishedBy(LabelConstants::USER_UNKNOWN);
         }
 
         return parent::preSave($con);

@@ -24,7 +24,6 @@
 
 
 {% block fixedActions %}
-    <!-- @todo html/css loader ajax sur l'ensemble des boutons d'actions et pas action par action -->
     <div id="fixedActions">
         <div class="ajaxLoader" style="display: none;">
             <div class="ajaxLoaderSpinner"></div><div class="ajaxLoaderBg"></div><div class="ajaxLoaderBlockClick"></div>
@@ -36,7 +35,6 @@
         {{ app.user | isAuthorizedToPublishReaction(reaction.uuid) }}
 
         <div class="actionDelete">
-            <!-- @todo html/css à prévoir & styler -->
             <a action="reactionDelete" uuid="{{ reaction.uuid }}"><i class="iconCross"></i>supprimer</a>
         </div>
     </div>
@@ -48,7 +46,6 @@
             <div class="postSummary">
                 <div class="pad40">
                     <div class="postSummaryFooter">
-                        <!-- @todo fonctionnel > est-ce bien raisonnable de disposer d'un lien "normal" au niveau d'un écran d'édition? -->
                         <div class="postSummaryGotoParent">
                             {{ reaction | linkParentReaction(true) }}
                         </div>

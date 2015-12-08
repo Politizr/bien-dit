@@ -76,14 +76,8 @@
         <div id="illustration_r">
             {{ debate | image('debate_header') }}
         </div>
-        <div id="copyrightHolder">
-            {# @todo maj bdd > nouveaux champs copyright_text + copyright_url #}
-            <i class="iconCopyright" action="showCopyright"></i>
-            <div id="copyright" style="display: none;" action="showCopyright">
-                <i class="iconArrowUp"></i>
-                Nom prénom, <a href="" target="_blank">lien</a>
-            </div>
-        </div>
+
+        {% include 'PolitizrFrontBundle:Document:_copyright.html.twig' with { 'copyright': debate.copyright } %}
 
         <div id="timeline">
             {% if noResult %}

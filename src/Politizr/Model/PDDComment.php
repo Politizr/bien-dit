@@ -4,6 +4,7 @@ namespace Politizr\Model;
 
 use Politizr\Model\om\BasePDDComment;
 
+use Politizr\Constant\LabelConstants;
 use Politizr\Constant\ObjectTypeConstants;
 
 /**
@@ -25,8 +26,7 @@ class PDDComment extends BasePDDComment implements PDCommentInterface
         if ($publisher) {
             $this->setPublishedBy($publisher->getFullName());
         } else {
-            // @todo label in constant
-            $this->setPublishedBy('Auteur inconnu');
+            $this->setPublishedBy(LabelConstants::USER_UNKNOWN);
         }
 
         return parent::preInsert($con);

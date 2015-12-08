@@ -16,6 +16,7 @@ use Politizr\Model\om\BasePDDebate;
 
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\TagConstants;
+use Politizr\Constant\LabelConstants;
 
 /**
  * Debate model object
@@ -111,8 +112,7 @@ class PDDebate extends BasePDDebate implements PDocumentInterface, ContainerAwar
         if ($publisher) {
             $this->setPublishedBy($publisher->getFullName());
         } else {
-            // @todo label in constant
-            $this->setPublishedBy('Auteur inconnu');
+            $this->setPublishedBy(LabelConstants::USER_UNKNOWN);
         }
 
         return parent::preSave($con);

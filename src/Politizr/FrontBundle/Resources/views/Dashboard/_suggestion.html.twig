@@ -11,7 +11,7 @@
 {% endfor %}
 
 {% set user = users.shift() %}
-{# @todo /!\ test user to hack suggestion query which return 1 empty element #}
+{# @warning /!\ test user to hack suggestion query which return 1 empty element #}
 {% if not(user and user.slug) %}
     {% set user = users.shift() %}
 {% endif %}

@@ -18,14 +18,6 @@ class POrder extends BasePOrder
     // simple upload management
     public $uploadedSupportingDocument;
 
-    /**
-     * @todo migrate physical deletion in special command instead of save
-     */
-    public function postDelete(\PropelPDO $con = null)
-    {
-        $this->removeUpload();
-    }
-
     /* ######################################################################################################## */
     /*                                      SIMPLE UPLOAD MANAGEMENT                                            */
     /* ######################################################################################################## */
@@ -93,7 +85,8 @@ class POrder extends BasePOrder
 
 
     /**
-     * @todo migrate physical deletion in special command instead of save
+     *
+     * @param string $fileName
      */
     public function setSupportingDocument($fileName)
     {

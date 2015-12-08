@@ -1,9 +1,7 @@
-{# @todo refactor layout management for profile screens #}
 {% set layout = 'PolitizrFrontBundle::layoutPublic.html.twig' %}
 {% if (isGrantedE() or isGrantedC()) %}
     {% set layout = 'PolitizrFrontBundle::layoutConnected.html.twig' %}
 {% endif %}
-
 {% extends layout %}
 
 {% block title %}

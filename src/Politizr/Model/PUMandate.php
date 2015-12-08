@@ -4,6 +4,8 @@ namespace Politizr\Model;
 
 use Politizr\Model\om\BasePUMandate;
 
+use Politizr\Constant\LabelConstants;
+
 /**
  * User's mandate object model
  *
@@ -60,7 +62,6 @@ class PUMandate extends BasePUMandate
     }
 
     /**
-     * @todo dead code?
      *
      * @return string
      */
@@ -68,8 +69,7 @@ class PUMandate extends BasePUMandate
     {
         $pqOrganization = $this->getPQOrganization();
 
-        // @todo label constant
-        $initials = "Non défini";
+        $initials = LabelConstants::UNDEFINED;
         if ($pqOrganization) {
             $initials = $pqOrganization->getInitials();
         }
@@ -78,7 +78,6 @@ class PUMandate extends BasePUMandate
     }
 
     /**
-     * @todo dead code?
      *
      * @return string
      */
@@ -86,8 +85,7 @@ class PUMandate extends BasePUMandate
     {
         $pqOrganization = $this->getPQOrganization();
 
-        // @todo label constant
-        $title = "Non défini";
+        $title = LabelConstants::UNDEFINED;
         if ($pqOrganization) {
             $title = $pqOrganization->getTitle();
         }
@@ -113,7 +111,6 @@ class PUMandate extends BasePUMandate
     }
 
     /**
-     * @todo dead code?
      *
      * @return string
      */
@@ -130,7 +127,6 @@ class PUMandate extends BasePUMandate
     }
 
     /**
-     * @todo dead code?
      *
      * @return string
      */
@@ -158,8 +154,7 @@ class PUMandate extends BasePUMandate
     {
         $pqMandate = $this->getPQMandate();
 
-        // @todo label constant
-        $title = "Non défini";
+        $title = LabelConstants::UNDEFINED;
         if ($pqMandate) {
             $title = $pqMandate->getTitle();
         }

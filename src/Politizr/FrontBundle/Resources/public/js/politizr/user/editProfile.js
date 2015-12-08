@@ -117,7 +117,7 @@ $("body").on("change", "select[action='organizationUpdate']", function(e) {
 });
 
 // MAJ des affinités politiques
-// @todo dead code / relancer rossier sur le sujet
+// @warning dead code / relancer rossier sur le sujet
 $("body").on("click", "[action='affinities-update']", function(e) {
     // console.log('*** click affinities-update');
 

@@ -65,8 +65,6 @@ class XhrTag
     /**
      * Useful method which manage differents scenarios for retrieving or creating a tag.
      *
-     * @todo: delete UNIQUE constraint on "slug" to manage same slug for different type => /!\ problèmes en vue sur liste déroulante multi-type
-     *
      * @param integer $tagUuid
      * @param string $tagTitle
      * @param integer $tagTypeId

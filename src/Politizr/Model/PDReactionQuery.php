@@ -18,12 +18,9 @@ class PDReactionQuery extends BasePDReactionQuery
     /* ######################################################################################################## */
     
     /**
-     * Debates' suggestion for user.
+     * Reactions' suggestion for user.
      *
      * @see app/sql/suggestions.sql
-     *
-     * @todo:
-     *   > + suggestions depuis les tags des débats déjà suivis
      *
      * @param  integer     $userId
      * @param  integer     $offset
@@ -153,7 +150,6 @@ LIMIT ".$offset.", ".$limit."
     
     /**
      * Order by keyword
-     * @todo refactor keyword to constant
      *
      * @param string $keyword
      * @return PDReactionQuery

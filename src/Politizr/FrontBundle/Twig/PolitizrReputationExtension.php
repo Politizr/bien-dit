@@ -79,11 +79,6 @@ class PolitizrReputationExtension extends \Twig_Extension
                 array('is_safe' => array('html'))
             ),
             new \Twig_SimpleFilter(
-                'scoreEvolution',
-                array($this, 'scoreEvolution'),
-                array('is_safe' => array('html'))
-            ),
-            new \Twig_SimpleFilter(
                 'howToReach',
                 array($this, 'howToReach'),
                 array('is_safe' => array('html'))
@@ -176,36 +171,6 @@ class PolitizrReputationExtension extends \Twig_Extension
 
         return $html;
     }
-
-    /**
-     *  Renvoie l'évolution du score de réputation formatté.
-     * @todo dead code
-     *
-     *  @param PUReputation $reputation
-     *  @return html
-     */
-    public function scoreEvolution(PUReputation $reputation)
-    {
-        // $this->logger->info('*** scoreEvolution');
-        // $this->logger->info('$reputation = '.print_r($reputation, true));
-
-        $action = $reputation->getPRAction();
-        if (null === $action) {
-            throw new \Politizr\Exception\InconsistentDataException(sprintf('PUReputation id-%s has no associated PRAction', $reputation->getId()));
-        } else {
-            $score = $action->getScoreEvolution();
-
-            // Construction du rendu du tag
-            if ($score > 0) {
-                $html = '<strong>+' . $score . '</strong>';
-            } else {
-                $html = '<strong>' . $score . '</strong>';
-            }
-        }
-
-        return $html;
-    }
-
 
     /**
      * Return explanation about how to reach a badge

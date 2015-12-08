@@ -258,9 +258,6 @@ class PUser extends BasePUser implements UserInterface, /*EquatableInterface,*/ 
      */
     public static function loadValidatorMetadata(ClassMetadata $metadata)
     {
-        // @todo /!\ inscription citoyen step 1 > si un enregistrement en bdd sans email existe, déclenche l'erreur "email existe deja"
-
-        // @todo label constant
         $metadata->addConstraint(new UniqueObject(array(
             'fields'  => 'email',
             'message' => 'Cet email est déjà utilisé.',

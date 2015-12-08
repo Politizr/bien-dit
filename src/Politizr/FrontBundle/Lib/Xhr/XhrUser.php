@@ -494,7 +494,6 @@ class XhrUser
 
         $form = $this->formFactory->create(new PUMandateType(QualificationConstants::TYPE_ELECTIV), $mandate);
 
-        // @todo to refactor
         $formMandateViews = $this->globalTools->getFormMandateViews($user->getId());
 
         // Rendering
@@ -550,7 +549,6 @@ class XhrUser
             throw new BoxErrorException($errors);
         }
 
-        // @todo to refactor
         $formMandateViews = $this->globalTools->getFormMandateViews($user->getId());
 
         // Rendering
@@ -587,10 +585,8 @@ class XhrUser
             throw new InconsistentDataException(sprintf('User id-%s tries to delete PUMandate uuid-%s', $user->getId(), $uuid));
         }
 
-        // @todo valid ownership of mandate before deletion
         $this->userManager->deleteMandate($mandate);
 
-        // @todo to refactor
         $formMandateViews = $this->globalTools->getFormMandateViews($user->getId());
 
         // Rendering
@@ -728,7 +724,6 @@ class XhrUser
     /**
      * User's reputation evolution datas for chart JS
      * Display the max last 30 actions
-     * @todo smart management of startAt argument?
      */
     public function reputationEvolution(Request $request)
     {
@@ -806,9 +801,8 @@ class XhrUser
         
         $timeline = $this->timelineService->generateMyPolitizrTimeline($user->getId(), $offset);
 
-        // @todo use constant for "limit"
         $moreResults = false;
-        if (sizeof($timeline) == 10) {
+        if (sizeof($timeline) == ListingConstants::TIMELINE_CLASSIC_PAGINATION) {
             $moreResults = true;
         }
 
@@ -826,7 +820,7 @@ class XhrUser
                 'PolitizrFrontBundle:Timeline:_paginatedTimeline.html.twig',
                 array(
                     'timelineDateKey' => $timelineDateKey,
-                    'offset' => intval($offset) + 10,
+                    'offset' => intval($offset) + ListingConstants::TIMELINE_CLASSIC_PAGINATION,
                     'moreResults' => $moreResults,
                 )
             );
@@ -857,9 +851,8 @@ class XhrUser
 
         $timeline = $this->timelineService->generateUserDetailTimeline($user->getId(), $offset);
 
-        // @todo use constant for "limit"
         $moreResults = false;
-        if (sizeof($timeline) == 10) {
+        if (sizeof($timeline) == ListingConstants::TIMELINE_USER_CLASSIC_PAGINATION) {
             $moreResults = true;
         }
 
@@ -877,7 +870,7 @@ class XhrUser
                 'PolitizrFrontBundle:Timeline:_paginatedUserTimeline.html.twig',
                 array(
                     'timelineDateKey' => $timelineDateKey,
-                    'offset' => intval($offset) + 10,
+                    'offset' => intval($offset) + ListingConstants::TIMELINE_USER_CLASSIC_PAGINATION,
                     'uuid' => $uuid,
                     'moreResults' => $moreResults,
                 )

@@ -53,7 +53,6 @@ class ExceptionListener
         try {
             $pmAppException = $this->monitoringManager->createAppException($exception, $userId);
         } catch (\Exception $e) {
-            // @todo more?
             $this->logger->error(sprintf('Exception onKernelException %s', $e->getMessage()));
         }
     }

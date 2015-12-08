@@ -18,7 +18,7 @@
 			var ff = document.createElement('div');
 					ff.setAttribute('id','smoke-out-'+id);
 					ff.className = 'smoke-base';
-					// @todo hack special z-index overwriting
+					// @warning hack special z-index overwriting
 					// ff.style.zIndex = smoke.zindex;
 					smoke.zindex++;
 					document.body.appendChild(ff);
