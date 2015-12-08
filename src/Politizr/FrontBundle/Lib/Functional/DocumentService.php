@@ -253,6 +253,7 @@ class DocumentService
         // check if user has already notate
         $query = PUReputationQuery::create()
                     ->filterByPObjectId($object->getId())
+                    ->filterByPObjectName($object->getType())
                     ->filterByPRActionId(
                         ReputationConstants::getNotationPRActionsId()
                     );
