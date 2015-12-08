@@ -15,10 +15,6 @@ Security:
 Public:
     resource: "./routing/Public.yml"
 
-# RECHERCHE
-Search:
-    resource: "./routing/Search.yml"
-
 # DOCUMENT
 Document:
     resource: "./routing/Document.yml"

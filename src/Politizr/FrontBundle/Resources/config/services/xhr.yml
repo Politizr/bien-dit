@@ -43,12 +43,6 @@ services:
             - @politizr.manager.notification
             - @logger
 
-    politizr.xhr.search:
-        class: Politizr\FrontBundle\Lib\Xhr\XhrSearch
-        arguments:
-            - @templating
-            - @logger
-
     politizr.xhr.security:
         class: Politizr\FrontBundle\Lib\Xhr\XhrSecurity
         arguments:

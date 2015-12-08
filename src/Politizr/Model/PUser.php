@@ -9,8 +9,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 
-use FOS\ElasticaBundle\Transformer\HighlightableModelInterface;
-
 use StudioEcho\Lib\StudioEchoUtils;
 
 use Politizr\Constant\ObjectTypeConstants;
@@ -30,14 +28,10 @@ use Propel\PropelBundle\Validator\Constraints\UniqueObject;
  *
  * @author Lionel Bouzonville
  */
-class PUser extends BasePUser implements UserInterface, /*EquatableInterface,*/ ContainerAwareInterface, HighlightableModelInterface
+class PUser extends BasePUser implements UserInterface, /*EquatableInterface,*/ ContainerAwareInterface
 {
     // simple upload management
     public $uploadedFileName;
-
-    // elastica search
-    private $elasticaPersister;
-    private $highlights;
 
     // security
     protected $plainPassword;
@@ -62,28 +56,6 @@ class PUser extends BasePUser implements UserInterface, /*EquatableInterface,*/ 
     {
         return $this->getFullName();
     }
-
-    /**
-     * Useful to check the roles if admin changes them
-     * @not used > set always_authenticate_before_granting:  true in security.yml
-     *
-     * @param UserInterface $user
-     */
-    // public function isEqualTo(UserInterface $user)
-    // {
-    //     if ($user instanceof PUser) {
-    //         // Check that the roles are the same, in any order
-    //         $isEqual = count($this->getRoles()) == count($user->getRoles());
-    //         if ($isEqual) {
-    //             foreach ($this->getRoles() as $role) {
-    //                 $isEqual = $isEqual && in_array($role, $user->getRoles());
-    //             }
-    //         }
-    //         return $isEqual;
-    //     }
-    //
-    //     return false;
-    // }
 
     /**
      *
@@ -144,89 +116,6 @@ class PUser extends BasePUser implements UserInterface, /*EquatableInterface,*/ 
      */
     public function setContainer(ContainerInterface $container = null)
     {
-        if ($container) {
-            $this->elasticaPersister = $container->get('fos_elastica.object_persister.politizr.p_user');
-        }
-    }
-
-    /**
-     *
-      */
-    public function getHighlights()
-    {
-        return $this->highlights;
-    }
-
-    /**
-     * Set ElasticSearch highlight data.
-     *
-     * @param array $highlights array of highlight strings
-     */
-    public function setElasticHighlights(array $highlights)
-    {
-        $this->highlights = $highlights;
-    }
-
-    /**
-     * @todo: gestion d'une exception spécifique à ES
-     *
-     */
-    public function postInsert(\PropelPDO $con = null)
-    {
-        if ($this->elasticaPersister) {
-            if ($this->isIndexable()) {
-                // $this->elasticaPersister->insertOne($this);
-            }
-        } else {
-            throw new \Exception('Indexation service not found');
-        }
-    }
-
-    /**
-     * @todo: gestion d'une exception spécifique à ES
-     *
-     */
-    public function postUpdate(\PropelPDO $con = null)
-    {
-        if ($this->elasticaPersister) {
-            if ($this->isIndexable()) {
-                // $this->elasticaPersister->insertOne($this);
-            }
-        } else {
-            throw new \Exception('Indexation service not found');
-        }
-    }
-
-    /**
-     * @todo: gestion d'une exception spécifique à ES
-     *
-     */
-    public function postDelete(\PropelPDO $con = null)
-    {
-        if ($this->elasticaPersister) {
-            // $this->elasticaPersister->deleteOne($this);
-        } else {
-            throw new \Exception('Indexation service not found');
-        }
-    }
-
-    /**
-     * Indexation process call to know if object is indexable
-     *
-     * @return boolean
-     */
-    public function isIndexable()
-    {
-        $statusId = $this->getPUStatusId();
-        if ($statusId == UserConstants::STATUS_ACTIVED or $statusId == UserConstants::STATUS_VALIDATION_PROCESS) {
-            $status = true;
-        } else {
-            $status = false;
-        }
-
-        return  $this->getOnline()
-                && $status
-                ;
     }
 
     /**

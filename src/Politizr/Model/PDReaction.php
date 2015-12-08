@@ -11,8 +11,6 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Count;
 
-use FOS\ElasticaBundle\Transformer\HighlightableModelInterface;
-
 use StudioEcho\Lib\StudioEchoUtils;
 
 use Politizr\Exception\InconsistentDataException;
@@ -28,14 +26,10 @@ use Politizr\Model\om\BasePDReaction;
  *
  * @author Lionel Bouzonville
  */
-class PDReaction extends BasePDReaction implements PDocumentInterface, ContainerAwareInterface, HighlightableModelInterface
+class PDReaction extends BasePDReaction implements PDocumentInterface, ContainerAwareInterface
 {
     // simple upload management
     public $uploadedFileName;
-
-    // elastica search
-    private $elasticaPersister;
-    private $highlights;
 
     /**
      *
@@ -97,81 +91,6 @@ class PDReaction extends BasePDReaction implements PDocumentInterface, Container
      */
     public function setContainer(ContainerInterface $container = null)
     {
-        if ($container) {
-            $this->elasticaPersister = $container->get('fos_elastica.object_persister.politizr.p_d_reaction');
-        }
-    }
-
-    /**
-     *
-     */
-    public function getHighlights()
-    {
-        return $this->highlights;
-    }
-
-    /**
-     * Set ElasticSearch highlight data.
-     *
-     * @param array $highlights array of highlight strings
-     */
-    public function setElasticHighlights(array $highlights)
-    {
-        $this->highlights = $highlights;
-    }
-
-
-    /**
-     * @todo: gestion d'une exception spécifique à ES
-     *
-     */
-    public function postInsert(\PropelPDO $con = null)
-    {
-        if ($this->elasticaPersister) {
-            if ($this->isIndexable()) {
-                // $this->elasticaPersister->insertOne($this);
-            }
-        } else {
-            throw new \Exception('Indexation service not found');
-        }
-    }
-
-    /**
-     * @todo: gestion d'une exception spécifique à ES
-     *
-     */
-    public function postUpdate(\PropelPDO $con = null)
-    {
-        if ($this->elasticaPersister) {
-            if ($this->isIndexable()) {
-                // $this->elasticaPersister->insertOne($this);
-            }
-        } else {
-            throw new \Exception('Indexation service not found');
-        }
-    }
-
-    /**
-     * @todo: gestion d'une exception spécifique à ES
-     *
-     */
-    public function postDelete(\PropelPDO $con = null)
-    {
-        if ($this->elasticaPersister) {
-            // $this->elasticaPersister->deleteOne($this);
-        } else {
-            throw new \Exception('Indexation service not found');
-        }
-    }
-
-    /**
-     * Indexation process call to know if object is indexable
-     *
-     * @return boolean
-     */
-    public function isIndexable()
-    {
-        return $this->getOnline() && $this->getPublished();
     }
 
     /**

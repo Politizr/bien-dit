@@ -46,9 +46,6 @@ class AppKernel extends Kernel
             // Géolocalisation
             new Bazinga\Bundle\GeocoderBundle\BazingaGeocoderBundle(),
 
-            // FOSElastica
-            new FOS\ElasticaBundle\FOSElasticaBundle(),
-
             // HTML Purifier
             new Exercise\HTMLPurifierBundle\ExerciseHTMLPurifierBundle(),
 

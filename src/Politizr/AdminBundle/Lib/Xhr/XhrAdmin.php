@@ -34,10 +34,8 @@ use Politizr\AdminBundle\Form\Type\PMUserModeratedType;
  */
 class XhrAdmin
 {
-    private $securityTokenStorage;
     private $kernel;
     private $eventDispatcher;
-    private $router;
     private $templating;
     private $formFactory;
     private $tagManager;
@@ -46,9 +44,7 @@ class XhrAdmin
 
     /**
      *
-     * @param @security.token_storage
      * @param @kernel
-     * @param @router
      * @param @event_dispatcher
      * @param @templating
      * @param @form.factory
@@ -57,9 +53,7 @@ class XhrAdmin
      * @param @logger
      */
     public function __construct(
-        $securityTokenStorage,
         $kernel,
-        $router,
         $eventDispatcher,
         $templating,
         $formFactory,
@@ -67,13 +61,10 @@ class XhrAdmin
         $globalTools,
         $logger
     ) {
-        $this->securityTokenStorage = $securityTokenStorage;
-
         $this->kernel = $kernel;
 
         $this->eventDispatcher = $eventDispatcher;
         
-        $this->router = $router;
         $this->templating = $templating;
         $this->formFactory = $formFactory;
 
@@ -634,7 +625,7 @@ class XhrAdmin
             }
 
             // mail user
-            $dispatcher = $this->eventDispatcher->dispatch('moderation_notification', new GenericEvent($userModerated));
+            $this->eventDispatcher->dispatch('moderation_notification', new GenericEvent($userModerated));
         } else {
             $errors = StudioEchoUtils::getAjaxFormErrors($form);
             throw new FormValidationException($errors);
@@ -675,7 +666,7 @@ class XhrAdmin
 
         if ($user->getBanned()) {
             // mail user
-            $dispatcher = $this->eventDispatcher->dispatch('moderation_banned', new GenericEvent($user));
+            $this->eventDispatcher->dispatch('moderation_banned', new GenericEvent($user));
 
             // @todo logout user
             // http://stackoverflow.com/questions/27987089/invalidate-session-for-a-specific-user-in-symfony2

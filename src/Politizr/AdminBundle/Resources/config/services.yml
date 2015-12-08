@@ -24,9 +24,7 @@ services:
     politizr.xhr.admin:
         class: Politizr\AdminBundle\Lib\Xhr\XhrAdmin
         arguments:
-            - @security.token_storage
             - @kernel
-            - @router
             - @event_dispatcher
             - @templating
             - @form.factory

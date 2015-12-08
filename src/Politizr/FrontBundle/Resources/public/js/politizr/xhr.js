@@ -51,7 +51,6 @@ var ROUTE_SCORE_COUNTER = 'profil/reputation/score';
 // MODAL
 var ROUTE_MODAL_PAGINATED_LIST = 'liste';
 var ROUTE_MODAL_FILTERS = 'filtres';
-var ROUTE_MODAL_SEARCH_INIT_FILTERS_LIST = 'filtres-liste/recherche';
 var ROUTE_MODAL_LIST_ACTIONS = 'profil/liste/historique';
 var ROUTE_MODAL_RANKING_DEBATE_LIST = 'profil/liste/classement/debat';
 var ROUTE_MODAL_RANKING_REACTION_LIST = 'profil/liste/classement/reaction';
@@ -66,9 +65,6 @@ var ROUTE_MODAL_FOLLOWED_DEBATE_LIST = 'profil/liste/follow/debat';
 var ROUTE_MODAL_FOLLOWED_USER_LIST = 'profil/liste/follow/utilisateur';
 var ROUTE_MODAL_ORGANIZATION_USER_LIST = 'profil/liste/org/utilisateur';
 var ROUTE_MODAL_FOLLOWERS_LIST = 'profil/abonnes';
-var ROUTE_MODAL_SEARCH_DEBATE_BY_TAGS_LIST = 'search/liste/tags/debat';
-var ROUTE_MODAL_SEARCH_REACTION_BY_TAGS_LIST = 'search/liste/tags/reaction';
-var ROUTE_MODAL_SEARCH_USER_BY_TAGS_LIST = 'search/liste/tags/utilisateur';
 var ROUTE_MODAL_REPUTATION = 'profil/reputation';
 var ROUTE_MODAL_REPUTATION_EVOLUTION = 'profil/reputation/evolution';
 
@@ -83,12 +79,6 @@ var ROUTE_DASHBOARD_SUGGESTION = 'profil/tableau/suggestion';
 // NOTATION
 var ROUTE_NOTE = 'profil/noter';
 
-// RECHERCHE
-var ROUTE_SEARCH = 'recherche';
-var ROUTE_SEARCH_TAG_ADD = 'search/tag/add';
-var ROUTE_SEARCH_TAG_DELETE = 'search/tag/delete';
-var ROUTE_SEARCH_TAG_CLEAR_SESSION = 'search/tag/session/clear';
-
 // SECURITY
 var ROUTE_SECURITY_LOGIN = 'login';
 var ROUTE_SECURITY_LOST_PASSWORD_CHECK = 'password/init';
@@ -96,7 +86,6 @@ var ROUTE_SECURITY_PAYMENT_PROCESS = 'v/paiement';
 
 // TAGS
 var ROUTE_TAG_LISTING = 'tags/listing';
-var ROUTE_TAG_SEARCH_LISTING = 'tags/search/listing';
 var ROUTE_TAG_DEBATE_CREATE = 'profil/debat/tag/create';
 var ROUTE_TAG_DEBATE_DELETE = 'profil/debat/tag/delete';
 var ROUTE_TAG_REACTION_CREATE = 'profil/reaction/tag/create';
