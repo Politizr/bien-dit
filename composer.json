@@ -47,9 +47,10 @@
         "propel/propel-bundle": "1.4.*",
         "willdurand/propel-typehintable-behavior": "1.0.4",
         "craftyshadow/propel-equalnest-behavior": "~1.2",
-        "glorpen/propel-bundle": "@dev",
+        "glorpen/propel-bundle": "~1.2",
+        "badlamer/propel-uuid-behavior": "~0.2",
 
-        "guzzlehttp/guzzle": "~5.3",
+        "guzzlehttp/guzzle": "5.2.*",
 
         "willdurand/geocoder-bundle": "3.0.*",
 
@@ -59,13 +60,13 @@
 
         "symfony2admingenerator/generator-bundle": "^2.0@beta",
         
-        "fzaninotto/faker": "1.4.*@dev",
+        "fzaninotto/faker": "1.5.*",
         "willdurand/faker-bundle": "@stable",
 
-        "hwi/oauth-bundle": "0.4.*@dev",
+        "hwi/oauth-bundle": "~0.4",
         "facebook/php-sdk-v4": "~5.0",
         "j7mbo/twitter-api-php": "~1.0",
-        "google/apiclient": "1.0.*@beta",
+        "google/apiclient": "^2.0.0@RC",
         
         "white-october/pagerfanta-bundle": "~1.0",
         
@@ -74,10 +75,9 @@
         "elao/web-profiler-extra-bundle" : "~2.3@dev",
 
         "liip/imagine-bundle": "~1.3",
-        "liip/url-auto-converter-bundle": "dev-master",
+        "liip/url-auto-converter-bundle": "~1.2",
 
-        "exercise/htmlpurifier-bundle": "^0.2.2",
-        "badlamer/propel-uuid-behavior": "dev-master"
+        "exercise/htmlpurifier-bundle": "^0.2.2"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"
