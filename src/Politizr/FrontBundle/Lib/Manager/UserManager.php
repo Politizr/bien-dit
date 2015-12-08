@@ -4,7 +4,7 @@ namespace Politizr\FrontBundle\Lib\Manager;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 use Politizr\Exception\InconsistentDataException;
-use Politizr\Exception\FormValidationException;
+use Politizr\Exception\BoxErrorException;
 
 use Politizr\Model\PUFollowDD;
 use Politizr\Model\PUFollowU;
@@ -54,7 +54,6 @@ class UserManager
      * @see app/sql/timeline.sql
      *
      * @todo:
-     *   > + réactions sur les débats / réactions rédigés par le user courant
      *   > + commentaires sur les débats / réactions rédigés par le user courant
      *
      * @param integer $userId
@@ -149,6 +148,22 @@ WHERE
     AND p_d_reaction.tree_left < my_reaction.tree_right
     AND p_d_reaction.tree_level > my_reaction.tree_level
     AND p_d_reaction.tree_level > 1 )
+
+UNION DISTINCT
+
+( SELECT p_d_d_comment.id as id, \"commentaire\" as title, p_d_d_comment.published_at as published_at, 'Politizr\\\Model\\\PDDComment' as type
+FROM p_d_d_comment
+WHERE
+    p_d_d_comment.online = 1
+    AND p_d_d_comment.p_user_id = ".$userId." )
+
+UNION DISTINCT
+
+( SELECT p_d_r_comment.id as id, \"commentaire\" as title, p_d_r_comment.published_at as published_at, 'Politizr\\\Model\\\PDRComment' as type
+FROM p_d_r_comment
+WHERE
+    p_d_r_comment.online = 1
+    AND p_d_r_comment.p_user_id = ".$userId." )
 
 UNION DISTINCT
 

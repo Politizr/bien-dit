@@ -89,6 +89,24 @@ WHERE
 
 UNION DISTINCT
 
+# Commentaires débats publiés
+( SELECT p_d_d_comment.id as id, "commentaire" as title, p_d_d_comment.published_at as published_at, 'Politizr\\Model\\PDDComment' as type
+FROM p_d_d_comment
+WHERE
+    p_d_d_comment.online = 1
+    AND p_d_d_comment.p_user_id = 1 )
+
+UNION DISTINCT
+
+# Commentaires réactions publiés
+( SELECT p_d_r_comment.id as id, "commentaire" as title, p_d_r_comment.published_at as published_at, 'Politizr\\Model\\PDRComment' as type
+FROM p_d_r_comment
+WHERE
+    p_d_r_comment.online = 1
+    AND p_d_r_comment.p_user_id = 1 )
+
+UNION DISTINCT
+
 # Commentaires débats des users suivis
 ( SELECT p_d_d_comment.id as id, "commentaire" as title, p_d_d_comment.published_at as published_at, 'Politizr\\Model\\PDDComment' as type
 FROM p_d_d_comment
