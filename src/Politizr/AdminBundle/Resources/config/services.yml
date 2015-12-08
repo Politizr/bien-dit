@@ -41,3 +41,9 @@ services:
         arguments: [ @service_container ]
         tags:
             - { name: twig.extension }
+
+    # FORM TYPE
+    app.form.type.date_range:
+        class: Politizr\AdminBundle\Form\Type\DateRangeType
+        tags:
+            - { name: form.type, alias: date_range }

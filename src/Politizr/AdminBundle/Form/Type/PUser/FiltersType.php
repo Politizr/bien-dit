@@ -9,4 +9,5 @@ use Admingenerated\PolitizrAdminBundle\Form\BasePUserType\FiltersType as BaseFil
  */
 class FiltersType extends BaseFiltersType
 {
+
 }
