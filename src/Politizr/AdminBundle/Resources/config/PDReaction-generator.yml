@@ -81,7 +81,7 @@ builders:
                         filters:
                             published:          0
             display:                            [ id, p_user_id, p_d_debate_id, parent_reaction_id, tree_level, title, online, published, published_at, created_at ]
-            # filtersMode:                        top
+            filtersMode:                        top
             filters:                            [ id, p_user_id, p_d_debate_id, parent_reaction_id, tree_level, title, online, published, published_at, created_at ]
             object_actions:
                 show:                           ~

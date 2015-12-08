@@ -69,7 +69,7 @@ builders:
                         filters:
                             published:          0
             display:                            [ file_name, id, p_user_id, title, count_reactions, online, published, published_at, created_at ]
-            # filtersMode:                        top
+            filtersMode:                        top
             filters:                            [ id, p_user_id, title, online, published, published_at, created_at ]
             fields:
                 count_reactions:

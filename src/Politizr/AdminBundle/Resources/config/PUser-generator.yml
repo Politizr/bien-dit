@@ -95,7 +95,7 @@ builders:
         params:
             title:                              Liste des utilisateurs
             max_per_page:                       50
-            sort:                               [ created_at, DESC ]
+            sort:                               [ last_activity, DESC ]
             scopes:
                 group_1: 
                     "Tous":                     ~
@@ -106,12 +106,12 @@ builders:
                     "Citoyens":
                         filters: 
                             qualified:          0
-            display:                            [ file_name, name, firstname, qualified, p_u_status, reputation_score, online, last_activity ]
+            display:                            [ file_name, name, firstname, qualified, p_u_status, reputation_score, online, last_activity, created_at ]
             fields:
                 reputation_score:
                     label:                      Score
-            # filtersMode:                        top
-            filters:                            [ id, email, name, firstname, qualified, p_u_status, online, last_activity ]
+            filtersMode:                        top
+            filters:                            [ id, email, name, firstname, qualified, p_u_status, online, last_activity, created_at ]
             actions:
                 new:                            ~
             object_actions:
