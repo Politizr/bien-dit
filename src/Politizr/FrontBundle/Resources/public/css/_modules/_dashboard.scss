@@ -14,6 +14,8 @@
 
 .dbMap {
 	margin: 0 0 20px 0;
+	float: left;
+	width: 100%;
 }
 
 .dbGeo {
@@ -185,8 +187,6 @@
 }
 
 .debatePodium .podiumItem a {
-	height: 2.4em;
-	overflow: hidden;
 	float: right;
 	width: calc(100% - 30px);
 	color: $darkGrey;
