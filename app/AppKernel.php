@@ -34,6 +34,8 @@ class AppKernel extends Kernel
             new Ensepar\Html2pdfBundle\EnseparHtml2pdfBundle(),
             
             // Admin Generator & dependencies
+            new Admingenerator\FormBundle\AdmingeneratorFormBundle(),
+            new Admingenerator\FormExtensionsBundle\AdmingeneratorFormExtensionsBundle(),
             new Admingenerator\GeneratorBundle\AdmingeneratorGeneratorBundle(),
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
@@ -68,6 +70,6 @@ class AppKernel extends Kernel
 
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
-        $loader->load(__DIR__.'/config/config_'.$this->getEnvironment().'.yml');
+        $loader->load($this->getRootDir().'/config/config_'.$this->getEnvironment().'.yml');
     }
 }

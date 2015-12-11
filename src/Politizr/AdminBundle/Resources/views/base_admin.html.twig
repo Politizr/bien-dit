@@ -5,6 +5,11 @@
 {% block stylesheets %}
     {{ parent() }}
 
+    {% include 'AdmingeneratorFormExtensionsBundle::stylesheets.html.twig' %}
+    {% if form is defined and form is not empty %}
+        {{ form_css(form) }}
+    {% endif %}
+
     <link rel="stylesheet" href="{{ asset('bundles/politizradmin/css/ui-lightness/jquery-ui-1.10.4.custom.css') }}">
     <link rel="stylesheet" href="{{ asset('bundles/politizradmin/css/font-awesome/css/font-awesome.min.css') }}" type="text/css" media="all" />
 
@@ -13,6 +18,11 @@
 
 {% block javascripts_head %}
     {{ parent() }}
+
+    {% include 'AdmingeneratorFormExtensionsBundle::javascripts.html.twig' %}
+    {% if form is defined and form is not empty %}
+        {{ form_js(form) }}
+    {% endif %}
     
     <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/jquery-ui.autocomplete.min.js') }}"></script>
 

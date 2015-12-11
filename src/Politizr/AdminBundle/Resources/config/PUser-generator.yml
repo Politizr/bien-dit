@@ -83,7 +83,8 @@ params:
                     ROLE_ELECTED:               'Débatteur'
                     ROLE_PROFILE_COMPLETED:     'Inscription terminée'
         created_at:
-            label:          Création
+            label:      Création
+            # addFilterOptions:
         updated_at:
             label:          Mis à jour
     object_actions:
@@ -150,7 +151,7 @@ builders:
             title:                              "Edition de l'utilisateur {{ PUser.firstname }} {{ PUser.name }}"
             tabs:
                 "Identité":
-                    "Civilité":                 [ [ block_back_file_name ], [ copyright ], [ block_file_name ], [ gender ], [ firstname, name ] ]
+                    "Civilité":                 [ [ block_back_file_name ], [ copyright ], [ block_file_name ], [ gender ], [ firstname, name ] ]
                     "Contacts":                 [ [ phone, email ], [ website ], [ twitter, facebook ] ]
                 "Connexion":
                     "Connexion":                [ username, plainPassword ]

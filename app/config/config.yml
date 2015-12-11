@@ -46,6 +46,12 @@ framework:
             admingenerator_js:
                 version: 1.0
                 version_format: "%%1$s?v%%2$s"
+            formextensions_css:
+                version: 1.0
+                version_format: "%%1$s?v%%2$s"
+            formextensions_js:
+                version: 1.0
+                version_format: "%%1$s?v%%2$s"
 
 # Twig Configuration
 twig:
@@ -86,13 +92,13 @@ assetic:
 swiftmailer:
     transport: "%mailer_transport%"
     auth_mode: "%mailer_auth_mode%"
-    host:      "%mailer_host%"
-    port:      "%mailer_port%"
-    username:  "%mailer_user%"
-    password:  "%mailer_password%"
+    host: "%mailer_host%"
+    port: "%mailer_port%"
+    username: "%mailer_user%"
+    password: "%mailer_password%"
     encryption: "%mailer_encryption%"
 
-    spool:     { type: memory }
+    spool: { type: memory }
 
 # Security Configuration
 security:
@@ -171,45 +177,6 @@ admingenerator_generator:
     stylesheets: [] # array of {path: path_to_stylesheet, media: all}
     javascripts: [] # array of {path: path_to_javascript, route: route_name, routeparams: [value1, value2]}
     form_types:
-        doctrine_orm:
-            datetime:     datetime 
-            vardatetime:  datetime 
-            datetimetz:   datetime 
-            date:         datetime 
-            time:         time 
-            decimal:      number 
-            float:        number 
-            integer:      integer 
-            bigint:       integer 
-            smallint:     integer 
-            string:       text 
-            text:         textarea
-            entity:       entity 
-            collection:   collection 
-            array:        collection 
-            boolean:      checkbox 
-        doctrine_odm:
-            datetime:     datetime 
-            timestamp:    datetime 
-            vardatetime:  datetime 
-            datetimetz:   datetime 
-            date:         datetime 
-            time:         time 
-            decimal:      number 
-            float:        number 
-            int:          integer 
-            integer:      integer 
-            int_id:       integer 
-            bigint:       integer 
-            smallint:     integer 
-            id:           text 
-            custom_id:    text 
-            string:       text 
-            text:         textarea 
-            document:     document 
-            collection:   collection 
-            hash:         collection 
-            boolean:      checkbox 
         propel:
             TIMESTAMP:    datetime 
             BU_TIMESTAMP: datetime 
@@ -238,49 +205,11 @@ admingenerator_generator:
             BOOLEAN:      checkbox 
             BOOLEAN_EMU:  checkbox 
     filter_types:
-        doctrine_orm:
-            datetime:      datetime
-            vardatetime:   datetime
-            datetimetz:    datetime
-            date:          date
-            time:          time
-            decimal:       number
-            float:         number
-            integer:       number
-            bigint:        number
-            smallint:      number
-            string:        text
-            entity:        model
-            collection:    collection
-            array:         text
-            boolean:       choice
-        doctrine_odm:
-            datetime:      datetime
-            timestamp:     datetime
-            vardatetime:   datetime
-            datetimetz:    datetime
-            date:          date
-            time:          time
-            decimal:       number
-            float:         number
-            int:           number
-            integer:       number
-            int_id:        number
-            bigint:        number
-            smallint:      number
-            id:            text
-            custom_id:     text
-            string:        text
-            text:          text
-            document:      model
-            collection:    collection
-            hash:          text
-            boolean:       choice
         propel:
-            TIMESTAMP:     datetime
-            BU_TIMESTAMP:  datetime
-            DATE:          date
-            BU_DATE:       date
+            DATE:          s2a_daterange_picker
+            BU_DATE:       s2a_daterange_picker
+            TIMESTAMP:     s2a_daterange_picker 
+            BU_TIMESTAMP:  s2a_daterange_picker 
             TIME:          time
             FLOAT:         number
             REAL:          number
@@ -303,6 +232,25 @@ admingenerator_generator:
             ENUM:          text
             BOOLEAN:       choice
             BOOLEAN_EMU:   choice
+
+# Default bundle configuration
+admingenerator_form_extensions:
+    upload_manager:           ~
+    image_manipulator:        ~
+    twig:
+        use_form_resources:     true
+    collection_upload:
+        async_listener_enabled: false
+        async_route_name:       ~
+        file_storage:           admingenerator.form.file_storage.local
+    # you need these JS assets for some form types
+    # if you set it to true, the bundle will include them for you
+    # otherwise you have to do it manually
+    include_jquery:           false
+    include_jqueryui:         false
+    include_momentjs:         true
+    include_blueimp:          false 
+    include_gmaps:            false
 
 # Liip Imagine Configuration
 liip_imagine:

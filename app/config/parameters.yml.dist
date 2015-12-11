@@ -1,7 +1,6 @@
 parameters:
     database_driver: mysql
     database_host: localhost
-    database_port: null
     database_name: 123
     database_user: 123
     database_password: 123
@@ -20,8 +19,8 @@ parameters:
     support_email: support@politizr.com
 
     # Hosts
-    host.admin: *
-    host.public: *
+    host.admin: politizr.alpha.admin
+    host.public: politizr.alpha
 
     # OAuth parameters
     # Facebook

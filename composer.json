@@ -1,29 +1,10 @@
 {
-    "name": "studioecho-sf2/politizr",
-    "license": "(c) Studio Echo",
+    "name": "politizr/politizr",
+    "license": "(c) Politizr",
     "type": "project",
-    "description": "Studio Echo SF2 / Politizr",
+    "description": "Politizr web app",
     "autoload": {
-        "psr-4": { "": "src/", "SymfonyStandard\\": "app/" }
-    },
-    "repositories": {
-        "phing": {
-            "type": "pear",
-            "url": "http://pear.phing.info"
-        },
-        "phingGit": {
-            "type": "package",
-            "package": {
-                "name": "phing/phing",
-                "type": "component",
-                "version": "master",
-                "source": {
-                    "url": "git://github.com/Xosofox/phing.git",
-                    "type": "git",
-                    "reference": "master"
-                }                
-            }
-        }
+        "psr-4": { "": "src/" }
     },
     "require": {
         "php": ">=5.3.9",
@@ -37,8 +18,8 @@
         "symfony/monolog-bundle": "~2.4",
         "symfony/filesystem": "^2.7",
                 
-        "sensio/distribution-bundle": "~3.0,>=3.0.12",
-        "sensio/framework-extra-bundle": "~3.0,>=3.0.2",
+        "sensio/distribution-bundle": "~4.0",
+        "sensio/framework-extra-bundle": "^3.0.2",
         "incenteev/composer-parameter-handler": "~2.0",
         
         "jms/security-extra-bundle": "1.5.*",
@@ -54,11 +35,10 @@
 
         "willdurand/geocoder-bundle": "3.0.*",
 
-        "phing/phing": "2.*",
-
         "friendsofsymfony/user-bundle": "~2.0@dev",
 
         "symfony2admingenerator/generator-bundle": "^2.0@beta",
+        "symfony2admingenerator/form-extensions-bundle": "dev-master",
         
         "fzaninotto/faker": "1.5.*",
         "willdurand/faker-bundle": "@stable",
@@ -80,19 +60,16 @@
         "exercise/htmlpurifier-bundle": "^0.2.2"
     },
     "require-dev": {
-        "sensio/generator-bundle": "~2.3"
-    },    
+        "sensio/generator-bundle": "~2.3",
+        "symfony/phpunit-bridge": "~2.7"
+    },
     "scripts": {
-        "post-root-package-install": [
-            "SymfonyStandard\\Composer::hookRootPackageInstall"
-        ],
         "post-install-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::removeSymfonyStandardFiles",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
         ],
         "post-update-cmd": [
@@ -101,13 +78,11 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::removeSymfonyStandardFiles",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
         ]
     },
     "config": {
-        "bin-dir": "bin",
-        "component-dir": "web/components"
+        "bin-dir": "bin"
     },
     "extra": {
         "symfony-app-dir": "app",
