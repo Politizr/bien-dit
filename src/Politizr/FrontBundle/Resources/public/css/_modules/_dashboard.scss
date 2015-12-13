@@ -21,7 +21,7 @@
 .dbGeo {
 	float: left;
 	width: 100%;
-	border-bottom: solid 40px #fff;
+	margin-bottom: 40px;
 }
 #dashboard .dbGeo h1 {
 	position: relative;
@@ -341,11 +341,14 @@
 // a la une en ***
 
 .dbCloseToYou {
-	background-color: $lightGrey;
 	clear: both;
 	float: left;
 	width: 100%;
 	margin-top: 10px;
+}
+
+.dbCloseToYou .dbGeo {
+	background-color: $lightGrey;	
 }
 
 .dbSuggestions {
@@ -399,6 +402,7 @@ a.dbItemShow:hover {color: $darkGrey;}
 	width: calc(100% - 40px);
 	padding: 20px;
 	margin-bottom: 0;
+	border-bottom: none;
 }
 .dbCloseToYou .miniProfiles .profileInList { background-color: $altSemiGrey;}
 
@@ -438,7 +442,8 @@ a.dbItemShow:hover {color: $darkGrey;}
 
 .dbPopularTagList {
 	width: calc(100% - 80px);
-	margin: 0 40px;	
+	margin: 0 40px;
+	float: left;
 }
 
 #dashboard .dbItemHalfWidth .subscribe {
