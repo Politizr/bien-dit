@@ -36,7 +36,6 @@
 #linkRanking { padding-left: 15px;}
 #linkSuggestions { padding-left: 8px;}
 
-
 #headerCenter i {
 	font-size: 7px;
 	position: absolute;
@@ -81,10 +80,10 @@
 
 #logged a {	color:$semiGrey;}
 #logged a:hover  {	color: $darkGrey;}
-#logged a:hover #fameCounter { background-color: $darkGrey;}
-#fameCounter {
+
+#logged #fameCounter {
 	background-color: $semiGrey;
-	font-family: 'nerissemibold';
+	font-family: 'nerisblack';
 	color: #fff;
 	line-height: 100% !important;
 	margin-left: 4px;
@@ -94,6 +93,7 @@
 	-moz-border-radius: 2px 2px 2px 2px;
 	-webkit-border-radius: 2px 2px 2px 2px;		
 }
+#logged #fameCounter:hover { background-color: $darkGrey; cursor: pointer; color: #fff !important;}
 
 #headerCenter .avatar15 {
 	position: absolute;
