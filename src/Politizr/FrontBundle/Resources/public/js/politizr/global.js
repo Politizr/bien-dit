@@ -169,7 +169,7 @@ function fullImgLiquid() {
     });
 
     // debate summary 
-    $(".postSummary").imgLiquid({
+    $(".postSummary, .postSummaryCardIllustration").imgLiquid({
         fill: true,
         horizontalAlign: "center",
         verticalAlign: "center"
