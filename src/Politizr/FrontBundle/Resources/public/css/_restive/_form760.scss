@@ -5,16 +5,23 @@
 //form abuse
 body.css760 .formAbuse.modal h1,
 body.css760 .formIntro,
-body.css760 .formAbuse form { 
+body.css760 .formAbuse form,
+body.css760 .abuseContext,
+body.css760 form#formAbuseReporting, 
+body.css760 form#formAskForUpdate { 
 	width: calc(100% - 40px); 
 	padding: 0 20px;	
 }
 
-body.css760 .formAbuse form textarea {width: calc(100% - 40px);}
+body.css760  form#formAbuseReporting textarea, body.css760 form#formAskForUpdate textarea {width: calc(100% - 40px);}
 
 body.css760 .formAbuse .listProfile {
 	width: calc(100% - 40px);
 	margin: 50px 20px 50px 20px;
+}
+
+body.css760 .contextTitle .publicationTitle {
+	font-size: 20px;
 }
 
 //search form
