@@ -91,7 +91,34 @@ body.css760 .postSummaryActivity .reactionsCounter, body.css760 .postSummaryActi
 	margin-right: 0;
 }
 
-body.css760 .postSummaryActivity .reactionsCounter, body.css760 .postSummaryActivity .commentsCounter { margin-bottom: 8px;}
+body.css760 .postSummaryActivity .viewersCounter, body.css760 .postSummaryActivity .reactionsCounter, body.css760 .postSummaryActivity .commentsCounter { margin-bottom: 8px;}
+
+body.css760 .postSummaryCardAuthor { padding: 20px 20px 0 20px; }
+
+body.css760 .postSummaryCardIllustration { margin-top: 20px; }
+
+body.css760 .postSummaryCardContent {padding: 20px;}
+
+body.css760 .postSummaryCardHolder {margin-bottom: 10px; }
+
+body.css760 .postSummaryCard {
+	width: calc(100% + 80px);
+	margin: 20px 0 10px -40px;
+
+}
+
+body.css760 .postSummaryCardAuthor .profileName { font-size: 16px;}
+body.css760 .postSummaryCardTitle span, body.css760 .postSummaryCardTitle span.title { font-size: 30px;}
+body.css760 .postSummaryCardTitle { -webkit-text-size-adjust: 70%;}
+
+body.css760 .postSummaryCardFooterLeft {
+	line-height: 140%;
+	width: 75%;
+}
+
+body.css760 .postNote {
+	width: 25%;
+}
 
 body.css760 .reactionsToPostItemContent { 
 	border-left-width: 3px;

@@ -38,7 +38,7 @@ body.css760 h1 {
 ////// edit
 // no "new debate" or "draft" link in menu
 body.css760 #menu .pad40 a {display: none;}
-body.css760 #menu .pad40 a.linkMyPolitizr, body.css760 #menu .pad40 a.miniLink {display: block;}
+body.css760 #menu .pad40 a.linkDashboard, body.css760 #menu .pad40 a.linkMyPolitizr, body.css760 #menu .pad40 a.miniLink {display: block;}
 
 // no help
 body.css760 i.iconQuestion {display: none;}
@@ -153,14 +153,16 @@ body.css760 #headerCenter {
 
 body.css760 #headerCenter #linkRanking, 
 body.css760 #headerCenter #linkNotifications, 
-body.css760 #headerCenter #linkSuggestions {
+body.css760 #headerCenter #linkSuggestions,
+body.css760 #headerCenter #linkSubscriptions {
 	float: left;
 	clear: both;
 	margin-right: 0;
 }
 
 body.css760 #headerCenter #linkRanking, 
-body.css760 #headerCenter #linkSuggestions {
+body.css760 #headerCenter #linkSuggestions,
+body.css760 #headerCenter #linkSubscriptions {
 	margin: 0;
 	padding: 5px 0 5px 15px;
 }
@@ -169,24 +171,22 @@ body.css760 #headerCenter #linkNotifications {
 	margin: 0;
 	padding: 0 0 5px 0;	
 }
-body.css760 #headerCenter #linkNotifications:hover { color: #fff;}
+body.css760 #headerCenter #linkNotifications:hover, body.css760 #headerCenter #linkSubscriptions:hover { color: #fff;}
 body.css760 #headerCenter #linkNotifications:hover #notifCounter { background-color: #fff; color: $darkGrey;}
 
 body.css760 #headerCenter #linkRanking i, 
 body.css760 #headerCenter #linkNotifications i, 
-body.css760 #headerCenter #linkSuggestions i { top: 5px;}
-
-body.css760 #headerCenter #linkRanking i {left: -6px;}
+body.css760 #headerCenter #linkSuggestions i,
+body.css760 #headerCenter #linkSubscriptions i { top: 5px;}
 
 body.css760 #headerCenter #linkNotifications i, 
-body.css760 #headerCenter #linkSuggestions i {	left: 0px;}
+body.css760 #headerCenter #linkSuggestions i,
+body.css760 #headerCenter #linkSubscriptions i {	left: 0px;}
+body.css760 #headerCenter #linkRanking i {left: -4px;}
 
 body.css760 #headerCenter #linkRanking:hover, 
 body.css760 #headerCenter #linkNotifications:hover, 
 body.css760 #headerCenter #linkSuggestions:hover { color: #fff;}
-
-body.css760 #headerCenter #linkNotifications.notifYes:hover, 
-body.css760 #headerCenter #linkSuggestions.notifYes:hover { color: $highlight; }
 
 body.css760 #logged {display: none;}
 
@@ -205,11 +205,12 @@ body.css760 #menu {
 	background-color: $darkGrey;
 }
 
-body.css760 #menu .pad40 {	padding: 30px;}
+body.css760 #menu .pad40 {	padding: 30px; margin-top: 20px;}
 body.css760 #menu a {color: $semiGrey;}
 body.css760 #menu a.linkMyPolitizr {color: $highlight;}
 body.css760 #menu a.miniLink:hover,
 body.css760 #menu .openSearch:hover, 
+body.css760 #menu .linkDashboard:hover, 
 body.css760 #menu a.linkMyPolitizr:hover {color: #fff;}
 
 body.css760 #headerCenter, body.css760 #menu {	display: none;}

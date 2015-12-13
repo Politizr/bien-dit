@@ -27,6 +27,7 @@ span.followedDebate::after {	content: "*";}
 
 .viewersCounter, .reactionsCounter, .commentsCounter {
 	margin-right: 30px;
+	float: left;
 	display: inline-block;
 	position: relative;
     font-family: 'nerisblack';
@@ -50,7 +51,6 @@ span.followedDebate::after {	content: "*";}
 	left: 0px;
 	font-size: 12px;
 }
-
 
 .readingTime, .notePlus, .noteMinus { position: relative;}
 .readingTime i, .notePlus i, .noteMinus i {	position: absolute;}

@@ -1,5 +1,18 @@
 @import "../_global/_colors";
 
+body.css760 #modalBoxContent .subscribe .actionFollow a, body.css760 #modalBoxContent .subscribe .actionUnfollow a, body.css760 #dashboard .subscribe .actionFollow, body.css760 #dashboard .subscribe .actionUnfollow, body.css760 #dashboard .subscribe .actionFollow, body.css760 #dashboard .subscribe .actionUnfollow {
+	width: 140px;
+}
+
+body.css760 .postSummaryCard .subscribe .actionFollow a, body.css760 .postSummaryCard .subscribe .actionUnfollow a {
+	width: 140px;
+}
+
+body.css760 .actionFollow, body.css760 .actionUnfollow {
+	margin-right: 0;
+	width: 140px;
+}
+
 //////actions
 
 body.css760 #fixedActions {	

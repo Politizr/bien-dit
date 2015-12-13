@@ -690,6 +690,7 @@ a.linkToPost:hover {color: $darkGrey;}
 
 .postSummaryCardAuthor {
 	padding: 40px 60px 0 60px;
+	float: left;
 }
 
 .postSummaryCardAuthor .profileSummary {
@@ -711,6 +712,7 @@ a.linkToPost:hover {color: $darkGrey;}
 	width: 100%;
 	height: 360px;
 	margin-top: 40px;
+	float: left;
 }
 
 .postSummaryCardContent {
