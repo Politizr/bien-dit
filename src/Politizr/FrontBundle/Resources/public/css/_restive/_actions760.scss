@@ -13,6 +13,8 @@ body.css760 .actionFollow, body.css760 .actionUnfollow {
 	width: 140px;
 }
 
+body.css760 .actionAskForUpdate { margin-left: 20px;}
+
 //////actions
 
 body.css760 #fixedActions {	
@@ -20,7 +22,7 @@ body.css760 #fixedActions {
 	left: 40px;
 	bottom: 0;
 	width: calc(100% - 40px);
-	padding: 0;
+	padding: 0 0 10px 0;
 	z-index: 9000;
 	-moz-box-shadow: -10px 5px 20px #000000;
 	-webkit-box-shadow: -10px 5px 20px #000000;
@@ -28,26 +30,16 @@ body.css760 #fixedActions {
 	box-shadow: -10px 5px 20px #000000;
 }
 
-
-body.css760 #fixedActions a, 
-body.css760 #fixedActions .actionFollow a, 
-body.css760 #fixedActions .actionUnfollow a, 
-body.css760 #fixedActions .actionCosign {
-	width: 50%;
-	margin: 0;
+body.css760 #fixedActions a {
+	width: calc(100% - 20px);
+	margin: 10px 10px 0 10px;
 	padding: 17px 0;
 	cursor: pointer;
 	font-size: 11px;
 	float: left;
-	clear: none;
+	clear: none;	
 }
 
-body.css760  #fixedActions a.actionReact, 
-body.css760  #fixedActions .actionCosign  {	
-	width: 100%; margin-bottom: 0;
-}
-
-body.css760 .subscribe {
-	float: right;
-	margin-top: 20px;
+body.css760 #fixedActions div {
+	margin-top: 0;
 }

@@ -7,16 +7,16 @@ body.css760 #postText {		padding: 20px 0;}
 body.css760 .listContainer, body.css760 .postSummary { 	width: 100%;}
 
 body.css760 .postSummary .pad40 { 
-	height: 360px;
+	height: 400px;
 	width: calc(100% - 20px);
-	padding: 40px 20px;
+	padding: 20px;
 }
 
 body.css760 .postSummary, body.css760 .illustrationShadow {	height: 440px;}
 body.css760 .postSummaryTitle {	font-size: 34px; max-height: 5.2em; }
 
 body.css760 .postSummary .illustrationShadow {	height: 440px; width: 100%;}
-body.css760 .postSummaryFooter { width: calc(100% - 40px); bottom: 40px;}
+body.css760 .postSummaryFooter { width: calc(100% - 40px); bottom: 20px;}
 body.css760 .postSummaryGotoParent {	font-size: 11px;}
 
 body.css760 #lateralHolder {
@@ -107,9 +107,9 @@ body.css760 .postSummaryCard {
 
 }
 
-body.css760 .postSummaryCardAuthor .profileName { font-size: 16px;}
-body.css760 .postSummaryCardTitle span, body.css760 .postSummaryCardTitle span.title { font-size: 30px;}
-body.css760 .postSummaryCardTitle { -webkit-text-size-adjust: 70%;}
+body.css760 .postSummaryCardAuthor .profileName { font-size: 18px;}
+body.css760 .postSummaryCardTitle span, body.css760 .postSummaryCardTitle span.title { font-size: 28px;}
+body.css760 .postSummaryCardTitle { -webkit-text-size-adjust: 70%; }
 
 body.css760 .postSummaryCardFooterLeft {
 	line-height: 140%;

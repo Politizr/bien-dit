@@ -72,6 +72,20 @@ $("body").on("touchstart click", "[action='menuMobileTriggerMenu']", function(e)
     }
 });
 
+// mobile : toggle fixed actions
+$("body").on("touchstart click", "[action='menuMobileTriggerActions']", function(e) {
+    if(e.type == "touchstart") { // if touchstart start toggle
+        $('#fixedActions').toggle();
+        $('#headerCenter, #menu, #menuPreferences, #notifications').hide();
+        e.stopPropagation();
+        e.preventDefault(); // stop touchstart 
+        return false;
+    } else if(e.type == "click") { // if click : do the same, but don't trigger touchstart
+        $('#fixedActions').toggle();
+        $('#headerCenter, #menu, #menuPreferences, #notifications').hide();     
+    }                   
+});
+
 // hide / show helper
 $("body").on("click", "[action='toggleHelper']", function() {
     $('.helperSlider').hide();
