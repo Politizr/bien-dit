@@ -61,7 +61,7 @@ body.css760 .menuOnMap {
 }
 body.css760 i.iconArrowDown {display: none;}
 
-body.css760 .dbMapBox .profileName { font-size: 16px;}
+body.css760 .dbMapBox .profileName, body.css760 .dbBox .profileName, body.css760 .dbSuggestions .profileName { font-size: 18px;}
 
 body.css760 .dbBox {
 	margin: 0 10px;
@@ -75,3 +75,38 @@ body.css760 .dbPopularTagList {
 	width: 100%;
 	margin: 0;
 }
+
+body.css760 .dbItemHalfWidth {
+	width: 100%;
+	margin: 20px 0;
+}
+
+body.css760 .dbItemHalfWidth .postSummaryTitle { font-size: 22px; max-height: auto; }
+
+body.css760 .dbBox .profileHeader, body.css760 .dbBox .profileHeaderIllustration, body.css760 .dbItemHalfWidth .profileHeader, body.css760 .dbItemHalfWidth .profileHeaderIllustration, body.css760 .dbItemHalfWidth .illustrationShadow { height: 165px;}
+
+body.css760 .dbBox .profileHeader .pad40, body.css760 .dbItemHalfWidth .profileHeader .pad40 {
+	height: 125px;
+	padding: 20px;
+}
+
+body.css760 .dbBox .profileHeader .profileSummaryFooter, body.css760 .dbItemHalfWidth .profileHeader .profileSummaryFooter {bottom: 20px;}
+body.css760 .dbItemFullWidth {width: 100%; }
+
+body.css760 #dashboard .dbGeo h1, body.css760 #dashboard .dbSuggestions h1 { padding: 20px 10px 10px 40px; }
+
+body.css760 .dbGeo h1:before, body.css760 .dbSuggestions h1:before {
+	left: 20px;
+	top: 21px;
+}
+
+body.css760 .dbCloseToYou { width: 100%;}
+body.css760 .dbSuggestions, body.css760 .dbCloseToYou .dbGeo {
+	padding: 0 10px;
+	width: calc(100% - 20px);
+	float: right;
+}
+
+body.css760 .dbItemFullWidth a.dbItemShow { margin: 20px 0 0 20px;}
+
+body.css760 #dashboard .dbItemFullWidth .subscribe { right: 20px;}
