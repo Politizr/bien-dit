@@ -188,9 +188,9 @@ function loadPaginatedList(twigTemplate, withFilters, defaultType, defaultOrder,
         url: xhrPath,
         data: { 'twigTemplate': twigTemplate, 'model': model, 'uuid': uuid, 'defaultType': defaultType, 'defaultOrderFilters': defaultOrderFilters },
         dataType: 'json',
-        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
-        statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
-        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
+        // beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
+        // statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
+        // error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
         success: function(data) {
             if (data['error']) {
                 $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
