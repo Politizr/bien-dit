@@ -145,157 +145,36 @@
 // reaction to post
 
 #reactionsToPost {
-	padding: 40px 40px 20px 40px;
+	padding: 40px 0 20px 0;
 	float: left;
-	width: calc(100% - 80px);
+	//width: calc(100% - 80px);
+	width: 100%;
 	clear: both;
 }
 
 #reactionsToPost h1 {
 	font-weight: normal;
-	font-size: 13px;
-	padding: 0 0 20px 0;
+	font-size: 12px;
+	padding: 20px 0 20px 40px;
 	margin: 0;
     font-family: 'nerisblack';
     text-transform: uppercase;
-    color: $highlight;
+    color: $darkGrey;
 }
 
-.reactionsToPostItem {
+#reactionsToPost .postSummaryCard {
 	float: left;
 	width: 100%;
-	clear: both;
-	padding: 20px 0;
-	border-bottom: solid 1px $semiDarkGrey;
+	margin: 20px 0 60px 0;
 }
 
-.reactionsToPostItem:last-child {border: none;}
-
-.reactionsToPostItemHeader {
-	float: left;
-	width: 100%;
-	padding: 0 0 5px 20px;
-	font-size: 12px;
-	font-family: 'Merriweather Italic';
-    font-style: italic;
+#reactionsToPost .postSummaryCardAuthor {
+	padding: 40px 40px 0 40px;
 }
 
-.reactionsToPostItemSummary {
-	float: left;
-	width: 100%;
-	clear: both;
-	position: relative;
-	line-height: 200%;
-	font-size: 13px;
-    font-family: 'nerisblack';
-    font-style: normal;
+#reactionsToPost .postSummaryCardContent {
+	padding: 40px;
 }
-
-.reactionsToPostItemSummary i {
-	font-size: 8px;
-	position: absolute;
-	left: -20px;
-}
-
-.reactionsToPostItemSummary a, .reactionsToPostItemPostTitle a {color: $darkGrey;}
-.reactionsToPostItemSummary a:hover, .reactionsToPostItemPostTitle a:hover {color: $highlight;}
-
-.reactionsToPostItemContent {
-	float: right;
-	width: calc(100% - 20px);
-	border-left: solid 4px $highlight;
-	padding-left: 14px;
-}
-
-.reactionsToPostItemContent span {
-	display: block;
-	width: 100%;
-	font-size: 30px;
-	line-height: 120%;
-	margin-bottom: 10px;
-	margin-top: -3px;
-	font-family: 'nerissemibold';
-}
-
-.reactionsToPostItemIllustration {
-	float: right;
-	width: 600px;
-	height: 200px;
-	margin-bottom: 20px;
-}
-
-.reactionsToPostItemPostTitle {
-	float: right;
-	width: calc(100% - 50px);
-	font-size: 15px;
-	line-height: 200%;
-	margin-top: -6px;
-	color: $darkGrey;
-}
-.reactionsToPostItemPostTitle:hover { color: $highlight;}
-
-.reactionsToPostItemPostTitle a {display: block; }
-
-.reactionsToPostItemPostTitle blockquote { margin: 0;}
-#reactionsToPost .reactionsToPostItemPostTitle h1, #reactionsToPost .reactionsToPostItemPostTitle h2 { 
-	text-transform: none;
-	font-family: Merriweather;
-	font-size: 15px;
-	color: $darkGrey;
-	padding: 0;
-	font-weight: normal;
-	font-style: normal;
-}
-#reactionsToPost .reactionsToPostItemPostTitle:hover h1, #reactionsToPost .reactionsToPostItemPostTitle:hover h2 { color: $highlight;}
-#reactionsToPost .reactionsToPostItemPostTitle ul {	padding-left: 20px;}
-
-.reactionsToPostItemFooter {
-	float: left;
-	width: calc(100% - 20px);
-	padding: 20px 0 0 20px;
-    font-family: 'nerisblack';
-	font-size: 10px;
-	text-transform: uppercase;
-	color: $anotherGrey;
-	cursor: default;
-}
-
-.reactionsToPostItemFooter .postSummaryActivity {
-	float: left;
-	width: 85%;
-	margin: 0;
-}
-
-.reactionsToPostItemFooter .postSummaryActivity .readingTime {
-	width: auto;
-	float: none;
-	clear: none;
-	display: inline-block;
-}
-
-.reactionsToPostItemFooter .postNote {
-	float: right;
-	clear: none;
-	margin: 0;
-}
-
-.reactionsToPostItemFooter .postNote .notePlus, .reactionsToPostItemFooter .postNote .noteMinus { cursor: default;}
-.reactionsToPostItemFooter .postNote .notePlus:hover, .reactionsToPostItemFooter .postNote .noteMinus:hover { color: $anotherGrey;}
-	
-a.linkToPost {
-	float: left;
-	clear: both;
-	margin: 20px 0 0 0;
-	color: $highlight;
-	font-family: nerissemibold;
-	position: relative;
-	padding-left: 17px;
-	text-transform: none;
-	font-size: 13px;
-}
-
-a.linkToPost i {	position: absolute;	left: -2px; }
-a.linkToPost:hover {color: $darkGrey;}
 
 // comments
 
@@ -691,6 +570,7 @@ a.linkToPost:hover {color: $darkGrey;}
 .postSummaryCardAuthor {
 	padding: 40px 60px 0 60px;
 	float: left;
+	width: 100%;
 }
 
 .postSummaryCardAuthor .profileSummary {

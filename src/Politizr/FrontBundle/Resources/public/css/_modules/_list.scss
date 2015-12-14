@@ -133,17 +133,7 @@ a.modalItemShow:hover {color: $darkGrey;}
 	text-transform: uppercase;
 	color: #fff;
 }
-
-#dashboard .subscribe {
-	position: absolute;
-	z-index: 4;
-	right: 40px;
-	bottom:0;
-	text-transform: uppercase;
-	color: #fff;
-}
-
-#modalBoxContent .subscribe .actionFollow a, #modalBoxContent .subscribe .actionUnfollow a, #dashboard .subscribe .actionFollow, #dashboard .subscribe .actionUnfollow, #dashboard .subscribe .actionFollow, #dashboard .subscribe .actionUnfollow {
+#modalBoxContent .subscribe .actionFollow a, #modalBoxContent .subscribe .actionUnfollow a {
 	width: 180px;
 	padding: 20px 0;
 	margin: 0;
@@ -162,20 +152,6 @@ a.modalItemShow:hover {color: $darkGrey;}
 #modalBoxContent .subscribe .actionUnfollow, #dashboard .subscribe .actionUnfollow { background-color: $darkGrey;}
 #modalBoxContent .subscribe .actionUnfollow:hover, #dashboard .subscribe .actionUnfollow:hover { background-color: $highlight;}
 
-#dashboard .subscribe .actionFollow, #dashboard .subscribe .actionUnfollow, #dashboard .subscribe .actionFollow, #dashboard .subscribe .actionUnfollow { font-size: 12px; }
-
-#modalBoxContent .subscribe i, #dashboard .subscribe i {
-	position: relative;
-	left: auto;
-	font-size: 12px;
-	padding-right: 3px;
-	font-size: 11px;
-	top: -1px;
-}
-#dashboard .subscribe .actionUnfollow i {
-	font-size: 10px;
-	padding-right: 3px;
-}
 
 .noSelfSubscribe { display: none;}
 
