@@ -20,7 +20,9 @@ params:
             label:              Tag parent
             addFormOptions:
                 empty_value:    ""
-                query:          \Politizr\Model\PTagQuery::create()->filterByPTTagTypeId(1)->where("p_tag.id > ?", 35)->where("p_tag.id < ?", 137)->orderByTitle() 
+                query:          \Politizr\Model\PTagQuery::create()->filterByPTTagTypeId(1)->where("p_tag.id > ?", 22)->where("p_tag.id < ?", 129)->orderById() 
+                # group_by:       p_t_parent_id
+                # property:       title
         title:
             label:          Titre
         moderated:
@@ -76,14 +78,11 @@ builders:
         params:
             title:                              "Création d'un tag"
             display:
-                "Champs principaux":            [ p_t_tag_type, p_t_parent, title ]
+                "Champs principaux":            [ p_t_tag_type, PTagRelatedByPTParentId, title ]
             fields:
                 p_t_tag_type:
                     addFormOptions:
                         query:                  \Politizr\Model\PTTagTypeQuery::create()->orderByTitle() 
-                p_t_parent:
-                    addFormOptions:
-                        query:                  \Politizr\Model\PTTagQuery::create()->filterByPTTagTypeId(1)->orderByTitle() 
             actions:
               save:                             ~
               list:                             ~
