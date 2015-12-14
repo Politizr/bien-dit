@@ -65,7 +65,6 @@
 }
 .dbMapHeaderLeft span:hover {color: $darkGrey;}
 
-
 .dbMapHeaderRight {
 	float: right;
 	width: 25%;
@@ -446,6 +445,16 @@ a.dbItemShow:hover {color: $darkGrey;}
 	float: left;
 }
 
+
+#dashboard .subscribe {
+	position: absolute;
+	z-index: 4;
+	right: 40px;
+	bottom:0;
+	text-transform: uppercase;
+	color: #fff;
+}
+
 #dashboard .dbItemHalfWidth .subscribe {
 	position: static;
 	float: right;
@@ -455,15 +464,56 @@ a.dbItemShow:hover {color: $darkGrey;}
 	color: #fff;
 }
 
-#dashboard .dbItemHalfWidth .subscribe .actionFollow, #dashboard .dbItemHalfWidth .subscribe .actionUnfollow {
+#dashboard .subscribe .actionFollow, #dashboard .subscribe .actionUnfollow, #dashboard .subscribe .actionFollow, #dashboard .subscribe .actionUnfollow { font-size: 12px; }
+
+#dashboard .dbItemHalfWidth .subscribe .actionFollow, #dashboard .dbItemHalfWidth .subscribe .actionUnfollow,  {
 	width: 140px;
-	padding: 12px 0;
-	float: left;
+	margin-top: 0;
+	margin-right: 0;
+	float: right;
 	-moz-box-shadow: none;
 	-webkit-box-shadow: none;
 	-o-box-shadow: none;
 	box-shadow: none;
 }
+#dashboard .dbItemHalfWidth .subscribe .actionFollow a, #dashboard .dbItemHalfWidth .subscribe .actionUnfollow a {
+	padding: 12px 0;
+	width: 140px;
+}
+
+#dashboard .subscribe .actionFollow, #dashboard .subscribe .actionUnfollow, #dashboard .subscribe .actionFollow, #dashboard .subscribe .actionUnfollow {
+	text-align: center;
+	color: #fff;
+	-moz-box-shadow: 0px 0px 20px 0px $darkGrey;
+	-webkit-box-shadow: 0px 0px 20px 0px $darkGrey;
+	-o-box-shadow: 0px 0px 20px 0px $darkGrey;
+	box-shadow: 0px 0px 20px 0px $darkGrey;
+}
+#dashboard .subscribe .actionFollow a, #dashboard .subscribe .actionUnfollow a {
+	width: 180px;
+	padding: 20px 0;
+	margin: 0;
+	float: left;	
+}
+
+#modalBoxContent .subscribe i, #dashboard .subscribe i {
+	position: relative;
+	left: auto;
+	font-size: 12px;
+	padding-right: 3px;
+	font-size: 11px;
+	top: -1px;
+}
+#dashboard .subscribe .actionUnfollow i {
+	font-size: 10px;
+	padding-right: 3px;
+}
+
+
+
+
+
+
 
 .dbItemFullWidth {
 	width: 700px;
