@@ -11,7 +11,8 @@ reload-bdd.sh
 /app/sessions/*
 /app/config/parameters.yml
 /app/config/parameters.yml.dev
-/app/config/parameters.yml.dist
+
+/vendor
 
 /web/.htaccess
 /web/robots.txt

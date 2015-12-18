@@ -30,6 +30,8 @@ reload-bdd.sh
 /app/config/config_test.yml
 /app/config/rsync_exclude_re7
 
+/vendor
+
 /web/.htaccess
 /web/app.php
 /web/app_stage.php
