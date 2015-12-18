@@ -1,6 +1,6 @@
 {
     "name": "politizr/politizr",
-    "license": "(c) Politizr",
+    "license": "proprietary",
     "type": "project",
     "description": "Politizr web app",
     "autoload": {
