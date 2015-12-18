@@ -1,7 +1,5 @@
 <?php
-
 namespace Politizr\FrontBundle\Lib;
-
 
 /*
  * File: SimpleImage.php
@@ -22,30 +20,31 @@ namespace Politizr\FrontBundle\Lib;
  * http://www.gnu.org/licenses/gpl.html
  *
  */
+class SimpleImage
+{
+    private $image;
+    private $imageType;
 
-class SimpleImage {
-
-    var $image;
-    var $image_type;
-
-    function load($filename) {
+    public function load($filename)
+    {
         $image_info = getimagesize($filename);
-        $this->image_type = $image_info[2];
-        if ($this->image_type == IMAGETYPE_JPEG) {
+        $this->imageType = $image_info[2];
+        if ($this->imageType == IMAGETYPE_JPEG) {
             $this->image = imagecreatefromjpeg($filename);
-        } elseif ($this->image_type == IMAGETYPE_GIF) {
+        } elseif ($this->imageType == IMAGETYPE_GIF) {
             $this->image = imagecreatefromgif($filename);
-        } elseif ($this->image_type == IMAGETYPE_PNG) {
+        } elseif ($this->imageType == IMAGETYPE_PNG) {
             $this->image = imagecreatefrompng($filename);
         }
     }
 
-    function save($filename, $image_type=IMAGETYPE_JPEG, $compression=90, $permissions=null) {
-        if ($image_type == IMAGETYPE_JPEG) {
+    public function save($filename, $imageType = IMAGETYPE_JPEG, $compression = 90, $permissions = null)
+    {
+        if ($imageType == IMAGETYPE_JPEG) {
             imagejpeg($this->image, $filename, $compression);
-        } elseif ($image_type == IMAGETYPE_GIF) {
+        } elseif ($imageType == IMAGETYPE_GIF) {
             imagegif($this->image, $filename);
-        } elseif ($image_type == IMAGETYPE_PNG) {           
+        } elseif ($imageType == IMAGETYPE_PNG) {
             imagepng($this->image, $filename);
         }
         if ($permissions != null) {
@@ -53,12 +52,13 @@ class SimpleImage {
         }
     }
     
-    function save_with_default_imagetype($filename, $compression=90, $permissions=null) {
-        if ($this->image_type == IMAGETYPE_JPEG) {
+    public function saveWithDefaultImagetype($filename, $compression = 90, $permissions = null)
+    {
+        if ($this->imageType == IMAGETYPE_JPEG) {
             imagejpeg($this->image, $filename, $compression);
-        } elseif ($this->image_type == IMAGETYPE_GIF) {
+        } elseif ($this->imageType == IMAGETYPE_GIF) {
             imagegif($this->image, $filename);
-        } elseif ($this->image_type == IMAGETYPE_PNG) {           
+        } elseif ($this->imageType == IMAGETYPE_PNG) {
             imagepng($this->image, $filename);
         }
         if ($permissions != null) {
@@ -66,25 +66,29 @@ class SimpleImage {
         }
     }
     
-    function output($image_type=IMAGETYPE_JPEG) {
-        if ($image_type == IMAGETYPE_JPEG) {
+    public function output($imageType = IMAGETYPE_JPEG)
+    {
+        if ($imageType == IMAGETYPE_JPEG) {
             imagejpeg($this->image);
-        } elseif ($image_type == IMAGETYPE_GIF) {
+        } elseif ($imageType == IMAGETYPE_GIF) {
             imagegif($this->image);
-        } elseif ($image_type == IMAGETYPE_PNG) {
+        } elseif ($imageType == IMAGETYPE_PNG) {
             imagepng($this->image);
         }
     }
 
-    function getWidth() {
+    public function getWidth()
+    {
         return imagesx($this->image);
     }
 
-    function getHeight() {
+    public function getHeight()
+    {
         return imagesy($this->image);
     }
 
-    function resizeToHeight($height, $upscale = false) {
+    public function resizeToHeight($height, $upscale = false)
+    {
         if ($height > $this->getHeight() && $upscale == false) {
             return array('w' => $this->getWidth(), 'h' => $this->getHeight());
         }
@@ -94,8 +98,9 @@ class SimpleImage {
         return array('w' => $width, 'h' => $height);
     }
 
-    function resizeToWidth($width, $upscale = false) {
-        //no resize 
+    public function resizeToWidth($width, $upscale = false)
+    {
+        //no resize
         if ($width > $this->getWidth() && $upscale == false) {
             return array('w' => $this->getWidth(), 'h' => $this->getHeight());
         }
@@ -105,27 +110,32 @@ class SimpleImage {
         return array('w' => $width, 'h' => $height);
     }
 
-    function resizeToFit($maxwidth, $maxheight) {
+    public function resizeToFit($maxwidth, $maxheight)
+    {
         if ($this->getWidth() > $this->getHeight()) {
             $this->resizeToWidth($maxwidth);
-        }else
+        } else {
             $this->resizeToHeight($maxheight);
+        }
     }
 
-    function scale($scale) {
+    public function scale($scale)
+    {
         $width = $this->getWidth() * $scale / 100;
         $height = $this->getheight() * $scale / 100;
         $this->resize($width, $height);
     }
 
-    function crop($x, $y, $w, $h) {
+    public function crop($x, $y, $w, $h)
+    {
         $new_image = imagecreatetruecolor($w, $h);
         //echo $this->getHeight();
         imagecopyresampled($new_image, $this->image, 0, 0, $x, $y, $w, $h, $w, $h);
         $this->image = $new_image;
     }
 
-    function resizeToWidth_WaterMark($width) {
+    public function resizeToWidthWaterMark($width)
+    {
         $list_watermark = array('w1.png', 'w2.png', 'w3.png');
         $index = rand(1, count($list_watermark));
         $watermark = App::$config['template'] . "static/images/watermark/" . $list_watermark[$index - 1];
@@ -134,7 +144,8 @@ class SimpleImage {
         $this->resizeAndAddWaterMark($this->image, $watermark, $width, $height);
     }
 
-    function resizeAndAddWaterMark($sourcefile, $insertfile, $new_width, $new_height, $transition=100) {
+    public function resizeAndAddWaterMark($sourcefile, $insertfile, $new_width, $new_height, $transition = 100)
+    {
         $new_image_resized = imagecreatetruecolor($new_width, $new_height);
         imagecopyresampled($new_image_resized, $sourcefile, 0, 0, 0, 0, $new_width, $new_height, $this->getWidth(), $this->getHeight());
 
@@ -151,13 +162,14 @@ class SimpleImage {
         $this->image = $final_image;
     }
 
-    /* function resize($width, $height) {
+    /* public function resize($width, $height) {
       $new_image = imagecreatetruecolor($width, $height);
       imagecopyresampled($new_image, $this->image, 0, 0, 0, 0, $width, $height, $this->getWidth(), $this->getHeight());
       $this->image = $new_image;
       } */
 
-    function resize($width, $height, $forcesize='n') {
+    public function resize($width, $height, $forcesize = 'n')
+    {
 
         /* optional. if file is smaller, do not resize. */
         if ($forcesize == 'n') {
@@ -168,14 +180,14 @@ class SimpleImage {
         }
 
         $new_image = imagecreatetruecolor($width, $height);
-        if ($this->image_type == IMAGETYPE_GIF || $this->image_type == IMAGETYPE_PNG) {
+        if ($this->imageType == IMAGETYPE_GIF || $this->imageType == IMAGETYPE_PNG) {
             $current_transparent = imagecolortransparent($this->image);
             if ($current_transparent != -1) {
                 $transparent_color = imagecolorsforindex($this->image, $current_transparent);
                 $current_transparent = imagecolorallocate($new_image, $transparent_color['red'], $transparent_color['green'], $transparent_color['blue']);
                 imagefill($new_image, 0, 0, $current_transparent);
                 imagecolortransparent($new_image, $current_transparent);
-            } elseif ($this->image_type == IMAGETYPE_PNG) {
+            } elseif ($this->imageType == IMAGETYPE_PNG) {
                 imagealphablending($new_image, false);
                 $color = imagecolorallocatealpha($new_image, 0, 0, 0, 127);
                 imagefill($new_image, 0, 0, $color);
@@ -186,7 +198,8 @@ class SimpleImage {
         $this->image = $new_image;
     }
 
-    function resizeToThumb($thumbw, $thumbh, $align ="center") {
+    public function resizeToThumb($thumbw, $thumbh, $align = "center")
+    {
         $w = $this->getWidth();
         $h = $this->getHeight();
         $nw = $nh = 0;
@@ -201,7 +214,8 @@ class SimpleImage {
         return array('w' => $thumbw, 'h' => $thumbh);
     }
 
-    function resizeToThumbVertical($thumbw, $thumbh, $align = "center") {
+    public function resizeToThumbVertical($thumbw, $thumbh, $align = "center")
+    {
         $nw = $this->getWidth();
         $nh = intval(($thumbh * $nw) / $thumbw);
         if ($align == "center") {
@@ -211,7 +225,7 @@ class SimpleImage {
         }
         $new_image = imagecreatetruecolor($thumbw, $thumbh);
         /* Check if this image is PNG or GIF, then set if Transparent */
-        if (($this->image_type == IMAGETYPE_GIF) || ($this->image_type == IMAGETYPE_PNG)) {
+        if (($this->imageType == IMAGETYPE_GIF) || ($this->imageType == IMAGETYPE_PNG)) {
             imagealphablending($new_image, false);
             imagesavealpha($new_image, true);
             $transparent = imagecolorallocatealpha($new_image, 255, 255, 255, 127);
@@ -221,7 +235,8 @@ class SimpleImage {
         $this->image = $new_image;
     }
 
-    function resizeToThumbHorizontal($thumbw, $thumbh, $align= "center") {
+    public function resizeToThumbHorizontal($thumbw, $thumbh, $align = "center")
+    {
         $nh = $this->getHeight();
         $nw = floor(($thumbw * $nh) / $thumbh);
         if ($align == "center") {
@@ -231,7 +246,7 @@ class SimpleImage {
         }
         $new_image = imagecreatetruecolor($thumbw, $thumbh);
         /* Check if this image is PNG or GIF, then set if Transparent */
-        if (($this->image_type == IMAGETYPE_GIF) || ($this->image_type == IMAGETYPE_PNG)) {
+        if (($this->imageType == IMAGETYPE_GIF) || ($this->imageType == IMAGETYPE_PNG)) {
             imagealphablending($new_image, false);
             imagesavealpha($new_image, true);
             $transparent = imagecolorallocatealpha($new_image, 255, 255, 255, 127);
@@ -241,7 +256,8 @@ class SimpleImage {
         $this->image = $new_image;
     }
 
-    function addWaterMark($fileWaterMark) {
+    public function addWaterMark($fileWaterMark)
+    {
         //$new_image_resized = imagecreatetruecolor($new_width, $new_height);
         //imagecopyresampled($new_image_resized,$sourcefile , 0, 0, 0, 0, $new_width, $new_height, $this->getWidth(), $this->getHeight());
 
@@ -256,5 +272,4 @@ class SimpleImage {
         imagecopy($final_image, $water_mark_file, 0, $final_image_height - $water_mark_file_height, 0, 0, $water_mark_file_width, $water_mark_file_height);
         $this->image = $final_image;
     }
-
 }
