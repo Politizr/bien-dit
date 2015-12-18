@@ -31,7 +31,8 @@ class PDFListener
     /**
      *
      */
-    public function __construct($kernel, $mailer, $templating, $html2pdf, $logger) {
+    public function __construct($kernel, $mailer, $templating, $html2pdf, $logger)
+    {
         $this->kernel = $kernel;
         $this->mailer = $mailer;
         $this->templating = $templating;
@@ -40,10 +41,11 @@ class PDFListener
     }
 
     /**
-     * 
+     *
      * @param GenericEvent
      */
-    public function onOrderPdf(GenericEvent $event) {
+    public function onOrderPdf(GenericEvent $event)
+    {
         $this->logger->info('*** onOrderPdf');
 
         $order = $event->getSubject();
@@ -56,12 +58,12 @@ class PDFListener
 
         // construct the html rendering
         $htmlInvoice = $this->templating->render(
-                                    'PolitizrAdminBundle:POrderEdit:invoice.html.twig', 
-                                    array(
-                                        'order' => $order, 
-                                        'nowAt' => $nowAt
-                                        )
-                            );
+            'PolitizrAdminBundle:POrderEdit:invoice.html.twig',
+            array(
+                'order' => $order,
+                'nowAt' => $nowAt
+            )
+        );
 
         // $this->logger->info('$htmlInvoice = '.print_r($htmlInvoice, true));
         $html2pdf = $this->html2pdf->get();
@@ -85,6 +87,6 @@ class PDFListener
         // MAJ de l'objet commande
         $order->setInvoiceAt($nowAt);
         $order->setInvoiceFilename($invoiceFilename);
-        $order->save();   
+        $order->save();
     }
 }
