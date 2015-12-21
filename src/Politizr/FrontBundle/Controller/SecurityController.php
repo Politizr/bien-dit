@@ -5,17 +5,6 @@ namespace Politizr\FrontBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
-use Symfony\Component\Security\Core\AuthenticationEvents;
-use Symfony\Component\Security\Core\Event\AuthenticationEvent;
-
-use Politizr\Exception\InconsistentDataException;
 
 use Politizr\Model\PUser;
 use Politizr\Model\POrderQuery;

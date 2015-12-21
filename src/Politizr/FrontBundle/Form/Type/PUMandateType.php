@@ -13,7 +13,6 @@ use Politizr\FrontBundle\Form\DataTransformer\YearToDateTransformer;
 
 use Politizr\Constant\QualificationConstants;
 
-use Politizr\Model\PQOrganizationQuery;
 use Politizr\Model\PQMandateQuery;
 
 /**

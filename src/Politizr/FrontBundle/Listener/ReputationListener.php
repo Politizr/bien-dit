@@ -9,7 +9,6 @@ use Politizr\Exception\InconsistentDataException;
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\ReputationConstants;
 
-use Politizr\Model\PRBadge;
 use Politizr\Model\PUReputation;
 
 /**

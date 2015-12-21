@@ -12,19 +12,15 @@ use Politizr\Exception\BoxErrorException;
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\QualificationConstants;
 use Politizr\Constant\PathConstants;
-use Politizr\Constant\ReputationConstants;
 use Politizr\Constant\ListingConstants;
 
 use Politizr\Model\PUser;
 use Politizr\Model\PUCurrentQO;
 use Politizr\Model\PUMandate;
-use Politizr\Model\PUReputation;
 
-use Politizr\Model\PRBadgeQuery;
 use Politizr\Model\PUBadgeQuery;
 use Politizr\Model\PRBadgeTypeQuery;
 use Politizr\Model\PUserQuery;
-use Politizr\Model\PUReputationQuery;
 use Politizr\Model\PUMandateQuery;
 
 use Politizr\FrontBundle\Form\Type\PUserIdentityType;

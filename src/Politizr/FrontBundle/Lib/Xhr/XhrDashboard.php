@@ -3,17 +3,12 @@ namespace Politizr\FrontBundle\Lib\Xhr;
 
 use Symfony\Component\HttpFoundation\Request;
 
-use Politizr\Exception\InconsistentDataException;
-use Politizr\Exception\BoxErrorException;
-
 use Politizr\Constant\ListingConstants;
 use Politizr\Constant\TagConstants;
 
 use Politizr\Model\PDDebateQuery;
-use Politizr\Model\PDReactionQuery;
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PTagQuery;
-use Politizr\Model\PQOrganizationQuery;
 
 /**
  * XHR service for dashboard management.

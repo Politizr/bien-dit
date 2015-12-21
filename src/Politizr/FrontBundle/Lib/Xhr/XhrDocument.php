@@ -11,7 +11,6 @@ use Politizr\Exception\BoxErrorException;
 
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\PathConstants;
-use Politizr\Constant\TagConstants;
 use Politizr\Constant\ListingConstants;
 
 use Politizr\Model\PDDebate;

@@ -6,19 +6,15 @@ use Politizr\Model\om\BasePUser;
 
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\Security\Core\User\EquatableInterface;
+// use Symfony\Component\Security\Core\User\EquatableInterface;
 
 use StudioEcho\Lib\StudioEchoUtils;
 
 use Politizr\Constant\ObjectTypeConstants;
-use Politizr\Constant\PathConstants;
 use Politizr\Constant\QualificationConstants;
-use Politizr\Constant\UserConstants;
 use Politizr\Constant\ListingConstants;
 
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 use Propel\PropelBundle\Validator\Constraints\UniqueObject;

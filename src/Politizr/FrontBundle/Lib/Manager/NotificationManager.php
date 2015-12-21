@@ -1,12 +1,7 @@
 <?php
 namespace Politizr\FrontBundle\Lib\Manager;
 
-use Politizr\Exception\InconsistentDataException;
-use Politizr\Exception\BoxErrorException;
-
 use Politizr\Constant\NotificationConstants;
-
-use Politizr\FrontBundle\Lib\Notification;
 
 use Politizr\Model\PUNotification;
 use Politizr\Model\PUSubscribeEmail;

@@ -12,7 +12,7 @@ use Facebook\Exceptions\FacebookResponseException;
 use Facebook\Exceptions\FacebookSDKException;
 use TwitterAPIExchange;
 use Google_Client;
-use Google_Service_Plus;
+// use Google_Service_Plus;
 use Google_Service_Oauth2;
 
 use Politizr\Exception\InconsistentDataException;
@@ -22,7 +22,6 @@ use Politizr\Constant\UserConstants;
 use Politizr\Constant\PathConstants;
 
 use Politizr\Model\PUser;
-use Politizr\Model\POPaymentType;
 
 use Politizr\Model\POrderQuery;
 use Politizr\Model\PUserQuery;

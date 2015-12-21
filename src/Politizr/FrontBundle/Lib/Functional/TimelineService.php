@@ -1,11 +1,6 @@
 <?php
 namespace Politizr\FrontBundle\Lib\Functional;
 
-use StudioEcho\Lib\StudioEchoUtils;
-
-use Politizr\Exception\InconsistentDataException;
-use Politizr\Exception\BoxErrorException;
-
 use Politizr\Constant\ObjectTypeConstants;
 
 use Politizr\Model\PDDebateQuery;

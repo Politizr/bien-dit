@@ -14,7 +14,6 @@ use Politizr\Constant\OrderConstants;
 use Politizr\Model\PUserQuery;
 use Politizr\Model\POSubscriptionQuery;
 
-use Politizr\FrontBundle\Form\Type\LoginType;
 use Politizr\FrontBundle\Form\Type\LostPasswordType;
 
 /**

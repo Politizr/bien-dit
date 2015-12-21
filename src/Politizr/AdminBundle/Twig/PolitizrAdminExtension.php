@@ -3,7 +3,6 @@ namespace Politizr\AdminBundle\Twig;
 
 use Politizr\Exception\InconsistentDataException;
 
-use Politizr\Constant\ReputationConstants;
 use Politizr\Constant\ObjectTypeConstants;
 
 use Politizr\Model\PDDebateQuery;
@@ -11,7 +10,6 @@ use Politizr\Model\PDReactionQuery;
 use Politizr\Model\PDDCommentQuery;
 use Politizr\Model\PDRCommentQuery;
 use Politizr\Model\PUserQuery;
-use Politizr\Model\PUFollowDDQuery;
 use Politizr\Model\PMUserModeratedQuery;
 
 use Politizr\Model\PUser;

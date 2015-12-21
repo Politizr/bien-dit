@@ -2,7 +2,6 @@
 namespace Politizr\FrontBundle\Lib\Xhr;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\EventDispatcher\GenericEvent;
 
 use StudioEcho\Lib\StudioEchoUtils;
 

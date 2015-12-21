@@ -10,16 +10,10 @@ use Politizr\Constant\UserConstants;
 use Politizr\Constant\PathConstants;
 
 use Politizr\Model\PDDebate;
-use Politizr\Model\PNotification;
 use Politizr\Model\PUNotification;
 use Politizr\Model\PUser;
 
 use Politizr\Model\PUFollowUQuery;
-use Politizr\Model\PRBadgeQuery;
-use Politizr\Model\PDDebateQuery;
-use Politizr\Model\PDReactionQuery;
-use Politizr\Model\PDDCommentQuery;
-use Politizr\Model\PDRCommentQuery;
 use Politizr\Model\PUserQuery;
 
 /**

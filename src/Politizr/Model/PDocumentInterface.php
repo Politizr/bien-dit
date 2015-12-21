@@ -2,13 +2,6 @@
 
 namespace Politizr\Model;
 
-use Politizr\Model\om\BasePDocument;
-
-use Politizr\Model\PDDebateQuery;
-use Politizr\Model\PDReactionQuery;
-
-use Politizr\Exception\InconsistentDataException;
-
 /**
  * Interface for managing document: debate, reaction
  *

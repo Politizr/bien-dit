@@ -6,14 +6,9 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Email;
-
-use Propel\PropelBundle\Validator\Constraints\UniqueObject;
+// use Symfony\Component\Validator\Constraints\Email;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-
-use Politizr\Model\PUser;
-use Politizr\Model\PUStatus;
 
 /**
  * Formulaire associée à la migration d'un compte citoyen vers débatteur

@@ -4,7 +4,6 @@ namespace Politizr\FrontBundle\Lib\Xhr;
 use Symfony\Component\HttpFoundation\Request;
 
 use Politizr\Exception\InconsistentDataException;
-use Politizr\Exception\BoxErrorException;
 
 use Politizr\Model\PNotificationQuery;
 use Politizr\Model\PUNotificationQuery;

@@ -4,10 +4,6 @@ namespace Politizr\FrontBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use Politizr\Exception\InconsistentDataException;
@@ -15,10 +11,6 @@ use Politizr\Exception\InconsistentDataException;
 use Politizr\Model\PDocumentInterface;
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
-use Politizr\Model\PUserQuery;
-use Politizr\Model\PQOrganizationQuery;
-use Politizr\Model\PTagQuery;
-
 
 use Politizr\FrontBundle\Form\Type\PDDebateType;
 use Politizr\FrontBundle\Form\Type\PDDebatePhotoInfoType;

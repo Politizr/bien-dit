@@ -3,9 +3,6 @@ namespace Politizr\FrontBundle\Lib\Xhr;
 
 use Symfony\Component\HttpFoundation\Request;
 
-use Politizr\Exception\InconsistentDataException;
-use Politizr\Exception\BoxErrorException;
-
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\ListingConstants;
 

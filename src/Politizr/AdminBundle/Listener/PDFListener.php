@@ -3,14 +3,6 @@ namespace Politizr\AdminBundle\Listener;
 
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-use Politizr\Model\POrder;
-use Politizr\Model\POPDF;
-
-use Politizr\Model\POPaymentType;
-use Politizr\Model\POPaymentState;
-use Politizr\Model\POOrderState;
-use Politizr\Model\POSubscription;
-
 use Politizr\Exception\InconsistentDataException;
 
 /**

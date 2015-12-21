@@ -1,11 +1,6 @@
 <?php
 namespace Politizr\FrontBundle\Lib\Manager;
 
-use Politizr\Exception\InconsistentDataException;
-use Politizr\Exception\BoxErrorException;
-
-use Politizr\Model\PUReputationQuery;
-
 /**
  * DB manager service for reputation.
  *

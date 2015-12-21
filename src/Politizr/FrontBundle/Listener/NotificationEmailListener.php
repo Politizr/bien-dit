@@ -7,11 +7,9 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use Politizr\Exception\InconsistentDataException;
 
 use Politizr\Model\PUser;
-use Politizr\Model\PNotification;
 use Politizr\Model\PUNotification;
 
 use Politizr\Model\PUserQuery;
-use Politizr\Model\PRBadgeQuery;
 use Politizr\Model\PUSubscribeEmailQuery;
 
 /**

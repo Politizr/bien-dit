@@ -3,9 +3,6 @@ namespace Politizr\FrontBundle\Lib\Manager;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 
-use Politizr\Exception\InconsistentDataException;
-use Politizr\Exception\BoxErrorException;
-
 use Politizr\Constant\ObjectTypeConstants;
 
 use Politizr\Model\PUser;

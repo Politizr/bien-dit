@@ -8,7 +8,6 @@ use Politizr\Constant\OrderConstants;
 use Politizr\Model\PUser;
 use Politizr\Model\POSubscription;
 use Politizr\Model\POrder;
-use Politizr\Model\POPaymentType;
 
 /**
  * DB manager service for order.

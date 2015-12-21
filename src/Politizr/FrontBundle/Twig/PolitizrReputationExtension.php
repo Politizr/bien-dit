@@ -3,7 +3,6 @@ namespace Politizr\FrontBundle\Twig;
 
 use Politizr\Exception\InconsistentDataException;
 
-use Politizr\Model\PDocumentQuery;
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
 use Politizr\Model\PDDCommentQuery;

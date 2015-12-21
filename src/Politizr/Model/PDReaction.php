@@ -4,7 +4,6 @@ namespace Politizr\Model;
 
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\File\File;
 
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -13,10 +12,7 @@ use Symfony\Component\Validator\Constraints\Count;
 
 use StudioEcho\Lib\StudioEchoUtils;
 
-use Politizr\Exception\InconsistentDataException;
-
 use Politizr\Constant\ObjectTypeConstants;
-use Politizr\Constant\PathConstants;
 use Politizr\Constant\TagConstants;
 use Politizr\Constant\LabelConstants;
 

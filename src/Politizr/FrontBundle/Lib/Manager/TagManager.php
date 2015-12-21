@@ -1,9 +1,6 @@
 <?php
 namespace Politizr\FrontBundle\Lib\Manager;
 
-use Politizr\Exception\InconsistentDataException;
-use Politizr\Exception\BoxErrorException;
-
 use StudioEcho\Lib\StudioEchoUtils;
 
 use Politizr\Constant\TagConstants;

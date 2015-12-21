@@ -8,7 +8,6 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 use HWI\Bundle\OAuthBundle\Security\Core\User\OAuthAwareUserProviderInterface;
 use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
 
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 
 use Politizr\Security\User\Model\OAuthUser;

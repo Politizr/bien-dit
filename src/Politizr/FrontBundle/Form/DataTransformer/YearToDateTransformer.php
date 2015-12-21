@@ -2,8 +2,8 @@
 
 namespace Politizr\FrontBundle\Form\DataTransformer;
 
+// use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\DataTransformerInterface;
-use Symfony\Component\Form\Exception\TransformationFailedException;
 
 /**
  *

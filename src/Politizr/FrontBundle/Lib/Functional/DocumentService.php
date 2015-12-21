@@ -1,17 +1,10 @@
 <?php
 namespace Politizr\FrontBundle\Lib\Functional;
 
-use Symfony\Component\EventDispatcher\GenericEvent;
-
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
-
 use Politizr\Exception\InconsistentDataException;
-use Politizr\Exception\BoxErrorException;
 
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\ReputationConstants;
-
-use Politizr\FrontBundle\Lib\Manager\DocumentManager;
 
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDReaction;

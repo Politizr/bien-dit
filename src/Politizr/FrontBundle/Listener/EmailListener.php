@@ -6,8 +6,6 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 use Politizr\Exception\SendEmailException;
 
-use Politizr\Model\PMonitoredInterface;
-
 /**
  *  Envoi des emails
  *

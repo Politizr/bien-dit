@@ -4,25 +4,14 @@ namespace Politizr\FrontBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-use Politizr\Exception\InconsistentDataException;
-
 use Politizr\Constant\QualificationConstants;
-use Politizr\Constant\ReputationConstants;
 
 use Politizr\Model\PUserQuery;
-use Politizr\Model\PDDebateQuery;
-use Politizr\Model\PDReactionQuery;
-use Politizr\Model\PNotificationQuery;
 use Politizr\Model\PNTypeQuery;
 use Politizr\Model\PUSubscribeEmailQuery;
 use Politizr\Model\PUCurrentQOQuery;
-use Politizr\Model\PTagQuery;
 
 use Politizr\Model\PUCurrentQO;
 use Politizr\Model\PUMandate;

@@ -10,10 +10,6 @@ use Politizr\Exception\SendEmailException;
 use Politizr\Constant\OrderConstants;
 
 use Politizr\Model\PUserQuery;
-use Politizr\Model\PDDebateQuery;
-use Politizr\Model\PDReactionQuery;
-use Politizr\Model\PDDCommentQuery;
-use Politizr\Model\PDRCommentQuery;
 
 use Politizr\Model\POEmail;
 

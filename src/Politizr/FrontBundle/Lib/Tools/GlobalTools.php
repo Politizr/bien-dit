@@ -5,18 +5,16 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Component\Filesystem\Filesystem;
 
-use Politizr\Exception\InconsistentDataException;
-use Politizr\Exception\BoxErrorException;
-
 use GuzzleHttp;
 
+use Politizr\Exception\BoxErrorException;
+
 use Politizr\FrontBundle\Lib\SimpleImage;
+use Politizr\FrontBundle\Form\Type\PUMandateType;
 
 use Politizr\Constant\QualificationConstants;
 
 use Politizr\Model\PUMandateQuery;
-
-use Politizr\FrontBundle\Form\Type\PUMandateType;
 
 /**
  * Various tools methods

@@ -2,12 +2,10 @@
 
 namespace Politizr\FrontBundle\Listener;
 
-// use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 use Politizr\Constant\ReputationConstants;
 
-use Politizr\Model\PRBadge;
 use Politizr\Model\PUBadge;
 use Politizr\Model\PDReaction;
 
