@@ -11,12 +11,13 @@ function dataRequest() {
     $('[action="'+documentSave+'"]').trigger('click', 'silence');
 }
 function delayRequest(ev) {
+    // console.log('*** delayRequest');
+    $('.actionSave').removeClass('saved');
+
     if(delayRequest.timeout) {
         clearTimeout(delayRequest.timeout);
     }
-
     var target = this;
-
     delayRequest.timeout = setTimeout(function() {
         dataRequest.call(target, ev);
     }, 2000); // 2s
@@ -69,30 +70,25 @@ $("body").on("click", "[action='debateSave']", function(e, mode) {
 
     $('#debate_description').val(description['element-0']['value']);
 
-    if (mode === 'silence') {
-        // sauvegarde silencieuse
-        $.ajax({type: 'POST', url: xhrPath, data: $("#formDebateUpdate").serialize() });
-    } else {
-        $.ajax({
-            type: 'POST',
-            dataType: 'json',
-            url : xhrPath,
-            data: $("#formDebateUpdate").serialize(),
-            beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
-            statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
-            error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
-            success: function(data) {
-                $('#ajaxGlobalLoader').hide();
-                if (data['error']) {
-                    $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
-                    $('#infoBoxHolder .boxError').show();
-                } else {
-                    $('#infoBoxHolder .boxSuccess .notifBoxText').html('Document bien enregistré');
-                    $('#infoBoxHolder .boxSuccess').show();
-                }
+    var localLoader = $('.actionSave').find('.ajaxLoader').first();
+    $.ajax({
+        type: 'POST',
+        dataType: 'json',
+        url : xhrPath,
+        data: $("#formDebateUpdate").serialize(),
+        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, localLoader ); },
+        statusCode: { 404: function () { xhr404(localLoader); }, 500: function() { xhr500(localLoader); } },
+        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
+        success: function(data) {
+            localLoader.hide();
+            if (data['error']) {
+                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                $('#infoBoxHolder .boxError').show();
+            } else {
+                $('.actionSave').addClass('saved');
             }
-        });
-    }
+        }
+    });
 
     return false;
 });
@@ -113,31 +109,26 @@ $("body").on("click", "[action='reactionSave']", function(e, mode) {
 
     $('#reaction_description').val(description['element-0']['value']);
  
-    if (mode === 'silence') {
-        // sauvegarde silencieuse
-        $.ajax({type: 'POST', url: xhrPath, data: $("#formReactionUpdate").serialize() });
-    } else {
-        $.ajax({
-            type: 'POST',
-            dataType: 'json',
-            url : xhrPath,
-            data: $("#formReactionUpdate").serialize(),
-            beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
-            statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
-            error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
-            success: function(data) {
-                $('#ajaxGlobalLoader').hide();
-                if (data['error']) {
-                    $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
-                    $('#infoBoxHolder .boxError').show();
-                } else {
-                    $('#infoBoxHolder .boxSuccess .notifBoxText').html('Document bien enregistré');
-                    $('#infoBoxHolder .boxSuccess').show();
-                }
+    var localLoader = $('.actionSave').find('.ajaxLoader').first();
+    $.ajax({
+        type: 'POST',
+        dataType: 'json',
+        url : xhrPath,
+        data: $("#formReactionUpdate").serialize(),
+        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, localLoader ); },
+        statusCode: { 404: function () { xhr404(localLoader); }, 500: function() { xhr500(localLoader); } },
+        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
+        success: function(data) {
+            localLoader.hide();
+            if (data['error']) {
+                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                $('#infoBoxHolder .boxError').show();
+            } else {
+                $('.actionSave').addClass('saved');
             }
-        });
-    }
-
+        }
+    });
+    
     return false;
 });
 

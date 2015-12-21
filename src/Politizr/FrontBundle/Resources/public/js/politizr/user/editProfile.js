@@ -8,17 +8,18 @@ $(function() {
  * Event = keyup + 2sec
  * http://stackoverflow.com/questions/9966394/can-i-delay-the-keyup-event-for-jquery
  */
-var autosave = $('.editable.subtitle, .editable.biography').on('keyup', delayRequest);
+var autosave = $('.editable.subtitle, .editable.biography, .profileTwitter, .profileFacebook, .profileWebsite').on('keyup', delayRequest);
 function dataRequest() {
     $('[action="userProfileUpdate"]').trigger('click', 'silence');
 }
 function delayRequest(ev) {
+    // console.log('*** delayRequest');
+    $('.actionSave').removeClass('saved');
+
     if(delayRequest.timeout) {
         clearTimeout(delayRequest.timeout);
     }
-
     var target = this;
-
     delayRequest.timeout = setTimeout(function() {
         dataRequest.call(target, ev);
     }, 2000); // 2s
@@ -55,30 +56,26 @@ $("body").on("click", "[action='userProfileUpdate']", function(e, mode) {
         RETURN_BOOLEAN
         );
 
-    if (mode === 'silence') {
-        // sauvegarde silencieuse
-        $.ajax({type: 'POST', url : xhrPath, data: $("#formUserProfileUpdate").serialize() });
-    } else {
-        $.ajax({
-            type: 'POST',
-            dataType: 'json',
-            url : xhrPath,
-            data: $("#formUserProfileUpdate").serialize(),
-            beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
-            statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
-            error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
-            success: function(data) {
-                $('#ajaxGlobalLoader').hide();
-                if (data['error']) {
-                    $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
-                    $('#infoBoxHolder .boxError').show();
-                } else {
-                    $('#infoBoxHolder .boxSuccess .notifBoxText').html('Objet bien enregistré!');
-                    $('#infoBoxHolder .boxSuccess').show();
-                }
+ 
+    var localLoader = $('.actionSave').find('.ajaxLoader').first();
+    $.ajax({
+        type: 'POST',
+        dataType: 'json',
+        url : xhrPath,
+        data: $("#formUserProfileUpdate").serialize(),
+        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, localLoader ); },
+        statusCode: { 404: function () { xhr404(localLoader); }, 500: function() { xhr500(localLoader); } },
+        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
+        success: function(data) {
+            localLoader.hide();
+            if (data['error']) {
+                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                $('#infoBoxHolder .boxError').show();
+            } else {
+                $('.actionSave').addClass('saved');
             }
-        });
-    }
+        }
+    });
 
     return false;
 });

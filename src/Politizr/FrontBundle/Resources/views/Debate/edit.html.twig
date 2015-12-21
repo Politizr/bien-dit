@@ -28,7 +28,11 @@
         <div class="ajaxLoader" style="display: none;">
             <div class="ajaxLoaderSpinner"></div><div class="ajaxLoaderBg"></div><div class="ajaxLoaderBlockClick"></div>
         </div>
-        <div class="actionSave">
+
+        <div class="actionSave withLoaderInside saved">
+            <div class="ajaxLoader" style="display: none;">
+                <div class="ajaxLoaderSpinner"></div><div class="ajaxLoaderBg"></div><div class="ajaxLoaderBlockClick"></div>
+            </div>
             <a action="debateSave" uuid="{{ debate.uuid }}"><i class="iconDraft"></i>enregistrer</a>
         </div>
 
