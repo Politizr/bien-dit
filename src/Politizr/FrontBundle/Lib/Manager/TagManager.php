@@ -1,8 +1,6 @@
 <?php
 namespace Politizr\FrontBundle\Lib\Manager;
 
-use StudioEcho\Lib\StudioEchoUtils;
-
 use Politizr\Constant\TagConstants;
 
 use Politizr\Model\PTag;
