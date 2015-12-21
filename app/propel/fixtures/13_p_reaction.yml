@@ -247,4 +247,3 @@ Politizr\Model\PDReaction:
 
         note_pos:       <?php $faker('numberBetween', 2, 50) ?>
         note_neg:       <?php $faker('numberBetween', 2, 50) ?>
-
