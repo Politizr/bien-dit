@@ -62,7 +62,7 @@ class XhrNotification
         $user = $this->securityTokenStorage->getToken()->getUser();
         
         // UC session out > manage this case to avoid multiple useless exceptions
-        if ($user == null) {
+        if ($user === null) {
             $notifs = [];
             $counterNotifs = 0;
         } else {

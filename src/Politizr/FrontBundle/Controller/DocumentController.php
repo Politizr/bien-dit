@@ -305,7 +305,7 @@ class DocumentController extends Controller
         $this->checkDocumentEditable($reaction, $user->getId());
 
         // parent document for compared edition
-        if (null == $reaction->getParentReactionId()) {
+        if (null === $reaction->getParentReactionId()) {
             $parent = $reaction->getDebate();
         } else {
             $parent = PDReactionQuery::create()->findPk($reaction->getParentReactionId());

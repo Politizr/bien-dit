@@ -533,7 +533,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
         $profileSuffix = $this->globalTools->computeProfileSuffix();
 
         if ($edit) {
-            if (null == $reaction->getParentReactionId()) {
+            if (null === $reaction->getParentReactionId()) {
                 $parent = $reaction->getDebate();
                 $url = $this->router->generate('DebateDetail'.$profileSuffix, array('slug' => $parent->getSlug()));
             } else {

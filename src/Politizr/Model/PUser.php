@@ -953,7 +953,7 @@ class PUser extends BasePUser implements UserInterface, /*EquatableInterface,*/ 
         $result = $stmt->fetchAll();
 
         $score = $result[0]['score'];
-        if ($score == null) {
+        if ($score === null) {
             $score = 0;
         }
 

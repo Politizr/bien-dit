@@ -136,7 +136,7 @@ class GlobalTools
         $this->logger->info('*** uploadXhrImage');
 
         $myRequestedFile = $request->files->get($inputName);
-        if ($myRequestedFile == null) {
+        if ($myRequestedFile === null) {
             throw new BoxErrorException('Fichier non existant.');
         } else if ($myRequestedFile->getError() > 0) {
             throw new BoxErrorException('Erreur upload n°'.$myRequestedFile->getError());

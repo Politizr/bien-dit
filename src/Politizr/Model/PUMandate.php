@@ -39,7 +39,7 @@ class PUMandate extends BasePUMandate
     {
         $now = new \DateTime('now');
 
-        if ($this->getEndAt() == null || $this->getEndAt() > $now) {
+        if ($this->getEndAt() === null || $this->getEndAt() > $now) {
             return true;
         }
 

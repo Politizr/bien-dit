@@ -47,7 +47,7 @@ class SimpleImage
         } elseif ($imageType == IMAGETYPE_PNG) {
             imagepng($this->image, $filename);
         }
-        if ($permissions != null) {
+        if ($permissions !== null) {
             chmod($filename, $permissions);
         }
     }
@@ -61,7 +61,7 @@ class SimpleImage
         } elseif ($this->imageType == IMAGETYPE_PNG) {
             imagepng($this->image, $filename);
         }
-        if ($permissions != null) {
+        if ($permissions !== null) {
             chmod($filename, $permissions);
         }
     }
@@ -89,7 +89,7 @@ class SimpleImage
 
     public function resizeToHeight($height, $upscale = false)
     {
-        if ($height > $this->getHeight() && $upscale == false) {
+        if ($height > $this->getHeight() && $upscale === false) {
             return array('w' => $this->getWidth(), 'h' => $this->getHeight());
         }
         $ratio = $height / $this->getHeight();
@@ -101,7 +101,7 @@ class SimpleImage
     public function resizeToWidth($width, $upscale = false)
     {
         //no resize
-        if ($width > $this->getWidth() && $upscale == false) {
+        if ($width > $this->getWidth() && $upscale === false) {
             return array('w' => $this->getWidth(), 'h' => $this->getHeight());
         }
         $ratio = $width / $this->getWidth();
