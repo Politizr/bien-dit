@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ab30147efdd72af12b185ce6dc16ff6f",
+    "hash": "31db4ffb9488547f7015ca9ca32909e7",
     "content-hash": "db028f9ba9e86149daa246687fee0070",
     "packages": [
         {
@@ -170,16 +170,16 @@
         },
         {
             "name": "doctrine/cache",
-            "version": "v1.5.2",
+            "version": "v1.5.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/cache.git",
-                "reference": "47c7128262da274f590ae6f86eb137a7a64e82af"
+                "reference": "47cdc76ceb95cc591d9c79a36dc3794975b5d136"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/cache/zipball/47c7128262da274f590ae6f86eb137a7a64e82af",
-                "reference": "47c7128262da274f590ae6f86eb137a7a64e82af",
+                "url": "https://api.github.com/repos/doctrine/cache/zipball/47cdc76ceb95cc591d9c79a36dc3794975b5d136",
+                "reference": "47cdc76ceb95cc591d9c79a36dc3794975b5d136",
                 "shasum": ""
             },
             "require": {
@@ -236,7 +236,7 @@
                 "cache",
                 "caching"
             ],
-            "time": "2015-12-03 10:50:37"
+            "time": "2015-12-19 05:03:47"
         },
         {
             "name": "doctrine/collections",
@@ -3106,16 +3106,16 @@
         },
         {
             "name": "sensio/framework-extra-bundle",
-            "version": "v3.0.11",
+            "version": "v3.0.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioFrameworkExtraBundle.git",
-                "reference": "a79e205737b58d557c05caef6dfa8f94d8084bca"
+                "reference": "3e8936fe13aa4086644977d334d8fcd275f50357"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/a79e205737b58d557c05caef6dfa8f94d8084bca",
-                "reference": "a79e205737b58d557c05caef6dfa8f94d8084bca",
+                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/3e8936fe13aa4086644977d334d8fcd275f50357",
+                "reference": "3e8936fe13aa4086644977d334d8fcd275f50357",
                 "shasum": ""
             },
             "require": {
@@ -3157,7 +3157,7 @@
                 "annotations",
                 "controllers"
             ],
-            "time": "2015-10-28 15:47:04"
+            "time": "2015-12-18 17:39:27"
         },
         {
             "name": "sensio/generator-bundle",
@@ -3780,27 +3780,27 @@
         },
         {
             "name": "symfony2admingenerator/generator-bundle",
-            "version": "v2.0-beta41",
+            "version": "v2.0-beta42",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony2admingenerator/GeneratorBundle.git",
-                "reference": "68491d490a19d22ec3ea721f492e6ce5ebde0620"
+                "reference": "1ca35d9c3a98384b89f85704da3e8007175d15c3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony2admingenerator/GeneratorBundle/zipball/68491d490a19d22ec3ea721f492e6ce5ebde0620",
-                "reference": "68491d490a19d22ec3ea721f492e6ce5ebde0620",
+                "url": "https://api.github.com/repos/symfony2admingenerator/GeneratorBundle/zipball/1ca35d9c3a98384b89f85704da3e8007175d15c3",
+                "reference": "1ca35d9c3a98384b89f85704da3e8007175d15c3",
                 "shasum": ""
             },
             "require": {
                 "doctrine/common": "~2.2",
                 "jms/security-extra-bundle": ">= 1.5.0",
-                "knplabs/knp-menu-bundle": ">1.0,<2.1",
-                "sensio/generator-bundle": "~2.5",
+                "knplabs/knp-menu-bundle": ">1.0,<2.2",
+                "sensio/generator-bundle": "~2.5|~3.0",
                 "symfony/symfony": "~2.7",
                 "symfony2admingenerator/twig-generator": "~1.1",
                 "twig/extensions": "~1.0",
-                "twig/twig": ">= 1.9.0",
+                "twig/twig": ">= 1.12.0",
                 "white-october/pagerfanta-bundle": "~1.0"
             },
             "require-dev": {
@@ -3845,7 +3845,7 @@
                 "generator",
                 "yaml"
             ],
-            "time": "2015-09-28 15:02:03"
+            "time": "2015-12-21 12:00:04"
         },
         {
             "name": "symfony2admingenerator/twig-generator",
