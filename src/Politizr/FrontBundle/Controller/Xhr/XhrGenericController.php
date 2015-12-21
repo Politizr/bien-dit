@@ -26,14 +26,6 @@ class XhrGenericController extends Controller
      */
     public function xhrAction(Request $request, $xhrRoute, $xhrService, $xhrMethod, $xhrType)
     {
-        $logger = $this->get('logger');
-        $logger->info('*** xhrAction');
-
-        $logger->info('xhrRoute = '.print_r($xhrRoute, true));
-        $logger->info('xhrService = '.print_r($xhrService, true));
-        $logger->info('xhrMethod = '.print_r($xhrMethod, true));
-        $logger->info('xhrType = '.print_r($xhrType, true));
-
         switch ($xhrType) {
             case XhrConstants::RETURN_BOOLEAN:
                 $jsonResponseMethod = 'createJsonResponse';
