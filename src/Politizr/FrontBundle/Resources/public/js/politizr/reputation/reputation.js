@@ -25,7 +25,7 @@ function reputationCharts(startAt) {
         var startAt = new Date();
         var startAt = new Date(startAt.getFullYear(), startAt.getMonth(), 1);
         var startAt  = moment(startAt).format('YYYY-MM-DD');
-        console.log('startAt = '+startAt);
+        // console.log('startAt = '+startAt);
     }
 
     var xhrPath = getXhrPath(
