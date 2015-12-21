@@ -16,8 +16,6 @@ use Politizr\Exception\InconsistentDataException;
  */
 class PolitizrTagExtension extends \Twig_Extension
 {
-    private $sc;
-
     private $logger;
     private $router;
     private $templating;
@@ -30,8 +28,6 @@ class PolitizrTagExtension extends \Twig_Extension
      */
     public function __construct($serviceContainer)
     {
-        $this->sc = $serviceContainer;
-        
         $this->logger = $serviceContainer->get('logger');
         $this->router = $serviceContainer->get('router');
         $this->templating = $serviceContainer->get('templating');
@@ -322,7 +318,7 @@ class PolitizrTagExtension extends \Twig_Extension
                 'zoneId' => $zoneId,
                 'newTag' => $newTag,
                 'withHidden' => $withHidden,
-                'tags' => $user->getTags($tagTypeId, $withHidden?null:false),
+                'tags' => $tags,
                 'pathCreate' => $xhrPathCreate,
                 'pathHide' => $xhrPathHide,
                 'pathDelete' => $xhrPathDelete,

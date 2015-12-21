@@ -88,7 +88,7 @@ class SocialController extends Controller
         $logger->info('*** getFacebookImageUrl');
 
         // Resize de la photo pour partage FB
-        $imagemanagerResponse = $this->container->get('liip_imagine.controller')->filterAction(
+        $this->container->get('liip_imagine.controller')->filterAction(
             $this->getRequest(),
             'uploads/'.$fileName,
             'facebook_share'

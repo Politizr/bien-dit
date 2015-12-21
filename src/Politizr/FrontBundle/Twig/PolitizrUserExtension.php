@@ -23,8 +23,6 @@ use Politizr\Model\PUserQuery;
  */
 class PolitizrUserExtension extends \Twig_Extension
 {
-    private $sc;
-
     private $logger;
     private $router;
     private $templating;
@@ -40,8 +38,6 @@ class PolitizrUserExtension extends \Twig_Extension
      */
     public function __construct($serviceContainer)
     {
-        $this->sc = $serviceContainer;
-        
         $this->logger = $serviceContainer->get('logger');
         
         $this->router = $serviceContainer->get('router');

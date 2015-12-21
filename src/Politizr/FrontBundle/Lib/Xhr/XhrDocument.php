@@ -846,9 +846,6 @@ class XhrDocument
         $noParagraph = $request->get('noParagraph');
         $this->logger->info('$noParagraph = ' . print_r($noParagraph, true));
 
-        // get current user
-        $user = $this->securityTokenStorage->getToken()->getUser();
-        
         switch ($type) {
             case ObjectTypeConstants::TYPE_DEBATE:
                 $document = PDDebateQuery::create()->filterByUuid($uuid)->findOne();

@@ -3,7 +3,7 @@
 namespace Politizr\Model;
 
 /**
- * Minified version of PUNotification object used to select distinct results from PUNotification.
+ * "Minified" version of PUNotification object used to select distinct results from PUNotification.
  *
  * @author Lionel Bouzonville
  */
@@ -11,7 +11,7 @@ class Notification
 {
     private $pObjectName;
     private $pObjectId;
-    private $pAuthorUserId;
+    private $pAuthorId;
 
     /**
      *

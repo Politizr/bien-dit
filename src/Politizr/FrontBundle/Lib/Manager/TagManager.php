@@ -162,8 +162,6 @@ ORDER BY nb_tagged_objects desc
      */
     public function createTag($title = '', $typeId = null, $userId = null, $online = true)
     {
-        $slug = StudioEchoUtils::generateSlug($title);
-
         $tag = new PTag();
         if (null === $typeId) {
             $typeId = TagConstants::TAG_TYPE_THEME;

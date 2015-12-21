@@ -238,14 +238,6 @@ class TimelineService
     {
         $this->logger->info('*** getSql');
 
-        if ($this->securityAuthorizationChecker->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-            $user = $this->securityTokenStorage->getToken()->getUser();
-            $currentUserId = $user->getId();
-            $this->logger->info('currentUserId = '.print_r($currentUserId, true));
-        } else {
-            $inQueryUserIds = 0;
-        }
-
         $sql = $this->userManager->createUserDetailTimelineRawSql(
             $userId,
             $offset,

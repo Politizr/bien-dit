@@ -138,7 +138,7 @@ LIMIT ".$offset.", ".$count."
      */
     private function hydrateFromSql($sql)
     {
-        $timeline = array();
+        $collection = new \PropelCollection();
 
         if ($sql) {
             // Exécution de la requête brute
@@ -148,7 +148,6 @@ LIMIT ".$offset.", ".$count."
 
             $result = $stmt->fetchAll();
 
-            $collection = new \PropelCollection();
             foreach ($result as $row) {
                 $user = new PUser();
                 $user->hydrate($row);
@@ -275,8 +274,6 @@ LIMIT ".$offset.", ".$count."
      */
     public function filterByLastDay()
     {
-        // Dates début / fin
-        $now = new \DateTime();
         $fromAt = new \DateTime();
         $fromAt->modify('-1 day');
 
@@ -289,8 +286,6 @@ LIMIT ".$offset.", ".$count."
      */
     public function filterByLastWeek()
     {
-        // Dates début / fin
-        $now = new \DateTime();
         $fromAt = new \DateTime();
         $fromAt->modify('-1 week');
 

@@ -55,23 +55,16 @@ class TagService
      */
     private function hydrateTagIdRows($sql)
     {
-        $this->logger->info('*** hydrateTagIdRows');
-
-        $timeline = array();
+        $tagIds = array();
 
         if ($sql) {
             $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
-
-            // dump($sql);
 
             $stmt = $con->prepare($sql);
             $stmt->execute();
 
             $result = $stmt->fetchAll();
 
-            // dump($result);
-
-            $tagIds = [];
             foreach ($result as $row) {
                 $tagIds[] = $row['p_tag_id'];
             }

@@ -748,11 +748,9 @@ class XhrUser
         $interval = \DateInterval::createFromDateString('1 day');
         $period = new \DatePeriod($startAt, $interval, $endAt);
         foreach ($period as $day) {
-            $find = false;
             foreach ($reputationByDates as $reputationByDate) {
                 if ($day->format('Y-m-d') == $reputationByDate['created_at']) {
                     $score += $reputationByDate['sum_score'];
-                    $find = true;
                     break;
                 }
             }

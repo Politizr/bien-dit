@@ -28,8 +28,6 @@ use Politizr\FrontBundle\Lib\TimelineRow;
  */
 class PolitizrDocumentExtension extends \Twig_Extension
 {
-    private $sc;
-
     private $logger;
     private $router;
     private $templating;
@@ -44,8 +42,6 @@ class PolitizrDocumentExtension extends \Twig_Extension
      */
     public function __construct($serviceContainer)
     {
-        $this->sc = $serviceContainer;
-        
         $this->logger = $serviceContainer->get('logger');
         $this->router = $serviceContainer->get('router');
         $this->templating = $serviceContainer->get('templating');

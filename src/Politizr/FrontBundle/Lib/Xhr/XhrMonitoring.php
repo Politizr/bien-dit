@@ -166,9 +166,6 @@ class XhrMonitoring
         $type = $request->get('type');
         $this->logger->info('$type = ' . print_r($type, true));
 
-        // get current user
-        $user = $this->securityTokenStorage->getToken()->getUser();
-
         // get context rendering
         $context = $this->getModalContext($uuid, $type);
 
@@ -240,8 +237,6 @@ class XhrMonitoring
         $this->logger->info('$uuid = ' . print_r($uuid, true));
         $type = $request->get('type');
         $this->logger->info('$type = ' . print_r($type, true));
-
-        $user = $this->securityTokenStorage->getToken()->getUser();
 
         // get context rendering
         $context = $this->getModalContext($uuid, $type);
