@@ -6,6 +6,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 use Politizr\Exception\InconsistentDataException;
 
+use Politizr\Model\PUser;
 use Politizr\Model\PNotification;
 use Politizr\Model\PUNotification;
 
@@ -72,7 +73,7 @@ class NotificationEmailListener
      *
      * @return PUser
      */
-    private function getDestPUser($puNotification)
+    private function getDestPUser(PUNotification $puNotification)
     {
         // Récupération du user destinataire de l'email
         $user = PUserQuery::create()->findPk($puNotification->getPUserId());
@@ -86,9 +87,10 @@ class NotificationEmailListener
     /**
      * Renvoit si l'utilisateur courant est connecté
      *
+     * @param PUser $user
      * @return boolean
      */
-    private function isOnline($user)
+    private function isOnline(PUser $user)
     {
         return $user->isActiveNow();
     }
@@ -96,12 +98,11 @@ class NotificationEmailListener
     /**
      * Renvoit si l'utilisateur courant est abonné à cette notification.
      *
-     * @param  PUNotification      $puNotifications
-     * @param  PUser                $user
-     *
+     * @param  PUNotification $puNotifications
+     * @param  PUser $user
      * @return boolean
      */
-    private function isSubscriber($puNotification, $user)
+    private function isSubscriber(PUNotification $puNotification, PUser $user)
     {
         $isSubscriber = PUSubscribeEmailQuery::create()
             ->filterByPNotificationId($puNotification->getPNotificationId())

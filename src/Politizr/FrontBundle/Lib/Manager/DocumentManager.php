@@ -239,7 +239,7 @@ LIMIT ".$offset.", ".$count."
      * @param PDReaction $reaction
      * @return PDReaction
      */
-    public function initReactionTaggedTags($reaction)
+    public function initReactionTaggedTags(PDReaction $reaction)
     {
         $parentReactionId = $reaction->getParentReactionId();
         if ($parentReactionId) {

@@ -9,6 +9,7 @@ use Politizr\Constant\ReputationConstants;
 
 use Politizr\Model\PRBadge;
 use Politizr\Model\PUBadge;
+use Politizr\Model\PDReaction;
 
 use Politizr\Model\PUBadgeQuery;
 use Politizr\Model\PUReputationQuery;
@@ -327,7 +328,7 @@ GROUP BY child.p_d_debate_id
      *  @param  $badgeId    integer     ID badge
      *  @param  $nbDebates  integer     Nombre de débats
      */
-    private function checkEclaireur($reaction, $userId, $badgeId, $nbDebates)
+    private function checkEclaireur(PDReaction $reaction, $userId, $badgeId, $nbDebates)
     {
         if ($reaction->getTreeLevel() === 1 && $reaction->getTreeLeft() === 2 && !$this->hasBadge($userId, $badgeId)) {
             $sql = "

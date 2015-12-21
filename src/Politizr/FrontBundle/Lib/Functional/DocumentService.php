@@ -13,6 +13,10 @@ use Politizr\Constant\ReputationConstants;
 
 use Politizr\FrontBundle\Lib\Manager\DocumentManager;
 
+use Politizr\Model\PDDebate;
+use Politizr\Model\PDReaction;
+use Politizr\Model\PUser;
+
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
 use Politizr\Model\PDDCommentQuery;
@@ -157,7 +161,7 @@ class DocumentService
      * @param PDReaction $parent Associated parent reaction
      * @return PDReaction
      */
-    public function createReaction($debate, $parent)
+    public function createReaction(PDDebate $debate, PDReaction $parent)
     {
         $this->logger->info('*** createReaction');
 
@@ -237,7 +241,7 @@ class DocumentService
      * @param string up|down
      * @return boolean
      */
-    public function canUserNoteDocument($user, $object, $way)
+    public function canUserNoteDocument(PUser $user, $object, $way)
     {
         $this->logger->info('*** canUserNoteDocument');
         // $this->logger->info('$user = '.print_r($user, true));

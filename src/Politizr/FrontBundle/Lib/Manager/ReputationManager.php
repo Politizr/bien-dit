@@ -101,7 +101,7 @@ GROUP BY DATE(p_u_reputation.created_at)
      * @param DateTime $endAt
      * @return array
      */
-    public function getReputationByDates($userId, $startAt, $endAt)
+    public function getReputationByDates($userId, \DateTime $startAt, \DateTime $endAt)
     {
         $sql = $this->createReputationByDatesRawSql($userId, $startAt->format('Y-m-d H:i:s'), $endAt->format('Y-m-d H:i:s'));
         $reputationEvolution = $this->hydrateReputationByDatesRows($sql);

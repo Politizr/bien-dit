@@ -139,7 +139,7 @@ class SecurityService
      *
      * @param PUser $user
      */
-    private function doPublicConnection($user)
+    private function doPublicConnection(PUser $user)
     {
         $providerKey = 'public';
 
@@ -154,7 +154,7 @@ class SecurityService
      * @param PUser $user
      * @return string
      */
-    private function computeRedirectUrl($user)
+    private function computeRedirectUrl(PUser $user)
     {
         $redirectUrl = null;
         if ($user->hasRole('ROLE_PROFILE_COMPLETED')) {
@@ -186,7 +186,7 @@ class SecurityService
      * @param string $oAuthFileUrl
      * @return boolean
      */
-    private function manageOAuthProfilePhoto($user, $oAuthFileUrl)
+    private function manageOAuthProfilePhoto(PUser $user, $oAuthFileUrl)
     {
         if ($oAuthFileUrl) {
             $lastDotPos = strrpos($oAuthFileUrl, '.');
@@ -217,7 +217,7 @@ class SecurityService
      * @param PUser $user
      * @return boolean
      */
-    private function manageFacebookApiExtraData($providerId, $accessToken, $user)
+    private function manageFacebookApiExtraData($providerId, $accessToken, PUser $user)
     {
         $facebookClient = new Facebook\Facebook([
           'app_id' => $this->facebookClientId,
@@ -308,7 +308,7 @@ class SecurityService
      * @param PUser $user
      * @return boolean
      */
-    private function manageTwitterApiExtraData($providerId, $accessToken, $tokenSecret, $user)
+    private function manageTwitterApiExtraData($providerId, $accessToken, $tokenSecret, PUser $user)
     {
         https://api.twitter.com/1.1/users/show.json?screen_name=lionel09
 

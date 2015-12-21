@@ -8,6 +8,7 @@ use Politizr\Exception\BoxErrorException;
 
 use Politizr\Constant\ObjectTypeConstants;
 
+use Politizr\Model\PUser;
 use Politizr\Model\PUFollowDD;
 use Politizr\Model\PUFollowU;
 use Politizr\Model\PUMandate;
@@ -329,7 +330,7 @@ LIMIT ".$offset.", ".$count."
      * @param string $encodedPassword
      * @return $user
      */
-    public function updateForInscriptionStart($user, $roles, $canonicalUsername, $encodedPassword)
+    public function updateForInscriptionStart(PUser $user, $roles, $canonicalUsername, $encodedPassword)
     {
         if ($user) {
             foreach ($roles as $role) {
@@ -353,7 +354,7 @@ LIMIT ".$offset.", ".$count."
      * @param boolean $isQualified
      * @return $user
      */
-    public function updateForInscriptionFinish($user, $roles, $statusId, $isQualified)
+    public function updateForInscriptionFinish(PUser $user, $roles, $statusId, $isQualified)
     {
         if ($user) {
             foreach ($roles as $role) {
@@ -379,7 +380,7 @@ LIMIT ".$offset.", ".$count."
      * @param array|string[] $oAuthData
      * @return PUser
      */
-    public function updateOAuthData($user, $oAuthData)
+    public function updateOAuthData(PUser $user, $oAuthData)
     {
         if ($user) {
             if (isset($oAuthData['provider'])) {
