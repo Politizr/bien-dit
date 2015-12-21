@@ -154,7 +154,7 @@ class DocumentService
      * @param PDReaction $parent Associated parent reaction
      * @return PDReaction
      */
-    public function createReaction(PDDebate $debate, PDReaction $parent)
+    public function createReaction(PDDebate $debate, PDReaction $parent = null)
     {
         $this->logger->info('*** createReaction');
 
