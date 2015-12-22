@@ -1,64 +1,6 @@
 <div id="reactionsToPost">
     <h1>les réactions à cette publication</h1>
     {% for reaction in document.childrenReactions(true, true) %}
-        <div class="reactionsToPostItem">
-            <div class="reactionsToPostItemHeader">
-                {% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'dateTimeAt': reaction.publishedAt } only %}
-                <div class="reactionsToPostItemSummary">
-                    <i class="iconNotifYes"></i>
-                    {% spaceless %}
-                        {% include 'PolitizrFrontBundle:User:_authorName.html.twig' with { 'user': reaction.user } only %}
-                        {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with { 'user': reaction.user } only %}
-                        a réagi :
-                    {% endspaceless %}
-                </div>
-            </div>
-            <div class="reactionsToPostItemContent">
-                <div class="reactionsToPostItemIllustration">
-                    {{ reaction | image('debate_header', false) }}
-                </div>
-                <div class="avatar40">
-                    {{ reaction.user | photo('user_40') }}
-                </div>
-                <div class="reactionsToPostItemPostTitle">
-                    <a href="{{ path('ReactionDetail'~profileSuffix(), { 'slug': reaction.slug }) }}">
-                        <span>{{ reaction.title }}</span>
-                        {{ reaction.description | excerpt | purify }}
-                    </a>
-                </div>
-            </div>
-            <div class="reactionsToPostItemFooter">
-                <div class="postSummaryActivity">
-                    <div class="viewersCounter">
-                        <i class="iconGraph"></i>
-                        {{ reaction | nbViews }}
-                    </div>
-                    <div class="reactionsCounter">
-                        <i class="iconReaction"></i>
-                        {{ reaction | nbReactions }}
-                    </div>
-                    <div class="commentsCounter" action="paragraphCommentsCounter">
-                        <i class="iconComment"></i>
-                        {{ reaction | nbComments }}
-                    </div>
-                    <div class="readingTime">
-                        <i class="iconTime"></i>
-                        {{ reaction | readingTime }}
-                    </div>
-                </div>
-                <div class="postNote">
-                    <div class="notePlus">
-                        {{ reaction.notePos }}<i class="iconNoteLightPlus"></i>
-                    </div>
-                    <div class="noteMinus">
-                        <i class="iconNoteLightMinus"></i>{{ reaction.noteNeg }}
-                    </div>
-                </div>
-                <a href="{{ path('ReactionDetail'~profileSuffix(), { 'slug': reaction.slug }) }}" class="linkToPost">
-                    <i class="iconGoTo"></i>
-                    Afficher
-                </a>
-            </div>
-        </div>
+        {% include 'PolitizrFrontBundle:Document:_summary.html.twig' with { 'document': reaction, 'withSubscribe': false } only %}        
     {% endfor %}
 </div>

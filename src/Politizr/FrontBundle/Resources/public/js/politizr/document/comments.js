@@ -119,7 +119,9 @@ $("body").on("click", "input[action='createComment']", function(e) {
         );
 
     var textCount = $('.textCount').text();
-    if (textCount < 5 || textCount > 500) {
+    // console.log(textCount);
+
+    if (textCount > 495 || textCount < 0) {
         return false;
     }
 

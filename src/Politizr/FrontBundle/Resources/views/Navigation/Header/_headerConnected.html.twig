@@ -23,11 +23,13 @@
             <div id="logged">
                 <a href="{{ path('Profile'~profileSuffix) }}">
                     {{ app.user.firstname }} {{ app.user.name }}
+                </a>
+                <span id="fameCounter" action="modalReputation">-</span>
+                <a href="{{ path('Profile'~profileSuffix) }}">
                     <span class="avatar15">
                         {{ app.user | icon }}
                     </span>
                 </a>
-                <span id="fameCounter" action="modalReputation">-</span>
             </div>
         {% endspaceless %}
     </div>

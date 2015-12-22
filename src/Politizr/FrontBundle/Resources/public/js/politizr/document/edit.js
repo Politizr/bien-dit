@@ -237,7 +237,7 @@ $('body').on('click', "[action='debateDelete']", function(e){
         RETURN_URL
         );
 
-    var uuid = $('#debate_id').val();
+    var uuid = $(this).attr('uuid');
     var confirmMsg = "Êtes-vous sûr de vouloir supprimer votre brouillon?";
     smoke.confirm(confirmMsg, function(e) {
         if (e) {
@@ -281,7 +281,7 @@ $('body').on('click', "[action='reactionDelete']", function(e){
         RETURN_URL
         );
 
-    var uuid = $('#reaction_id').val();
+    var uuid = $(this).attr('uuid');
     var confirmMsg = "Êtes-vous sûr de vouloir supprimer votre brouillon?";
     smoke.confirm(confirmMsg, function(e) {
         if (e) {

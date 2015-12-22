@@ -76,7 +76,7 @@ function topListing(geoTagUuid) {
     // console.log(datas);
     // @todo hack to fix / why the form is not well serialized at the 1st call
     if ($.isEmptyObject(datas)) {
-        datas.push({name: 'mapFilterDate[]', value: 'allDate'});
+        datas.push({name: 'mapFilterDate[]', value: 'lastMonth'});
     }
 
     // Push additional arguments
@@ -128,7 +128,7 @@ function tagListing() {
     // console.log(datas);
     // @todo hack to fix / why the form is not well serialized at the 1st call
     if ($.isEmptyObject(datas)) {
-        datas.push({name: 'tagFilterDate[]', value: 'allDate'});
+        datas.push({name: 'tagFilterDate[]', value: 'lastMonth'});
     }
     // console.log(datas);
 
@@ -171,7 +171,7 @@ function debateListing() {
     // console.log(datas);
     // @todo hack to fix / why the form is not well serialized at the 1st call
     if ($.isEmptyObject(datas)) {
-        datas.push({name: 'debateFilterDate[]', value: 'allDate'});
+        datas.push({name: 'debateFilterDate[]', value: 'lastMonth'});
     }
     // console.log(datas);
 
@@ -215,7 +215,7 @@ function userListing() {
     // console.log(datas);
     // @todo hack to fix / why the form is not well serialized at the 1st call
     if ($.isEmptyObject(datas)) {
-        datas.push({name: 'userFilterDate[]', value: 'allDate'});
+        datas.push({name: 'userFilterDate[]', value: 'lastMonth'});
     }
     // console.log(datas);
 
