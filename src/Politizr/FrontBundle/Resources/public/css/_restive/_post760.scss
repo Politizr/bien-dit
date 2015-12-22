@@ -8,7 +8,7 @@ body.css760 .listContainer, body.css760 .postSummary { 	width: 100%;}
 
 body.css760 .postSummary .pad40 { 
 	height: 400px;
-	width: calc(100% - 20px);
+	width: calc(100% - 40px);
 	padding: 20px;
 }
 
@@ -17,7 +17,8 @@ body.css760 .postSummaryTitle {	font-size: 34px; max-height: 5.2em; }
 
 body.css760 .postSummary .illustrationShadow {	height: 440px; width: 100%;}
 body.css760 .postSummaryFooter { width: calc(100% - 40px); bottom: 20px;}
-body.css760 .postSummaryGotoParent {	font-size: 11px;}
+body.css760 .postSummaryGotoParent { font-size: 11px;}
+body.css760 .postSummaryGotoParent a {display: inline-block;}
 
 body.css760 #lateralHolder {
 	position: relative;
@@ -55,10 +56,12 @@ body.css760 #postAuthor .authorSubtitle {
 
 body.css760 #postInfos { padding-top: 20px;}
 
+body.css760 #copyrightHolder {display: none;}
+
 body.css760 .paragraph {	
 	padding: 10px 20px 10px 40px;
 	width: calc(100% - 60px);	
-	-webkit-text-size-adjust: 80%;
+	-webkit-text-size-adjust: 90%;
 	font-size: 13px;
 }
 
@@ -78,33 +81,39 @@ body.css760 .paragraph h2 {
 	width: calc(100% - 10px);
 }
 
+body.css760 #giveNote .notePlus {
+	margin-bottom: 5px; 
+}
+
 body.css760 #reactionsToPost {
 	padding: 40px 40px 20px 40px;
 	width: calc(100% - 80px);
 }
 
+body.css760 #reactionsToPost h1 { padding-left: 0; margin-left: -20px;}
+
 body.css760 .reactionsToPostItemIllustration { 	height: 160px;	width: 100%;}
 
-body.css760 .postSummaryActivity .reactionsCounter, body.css760 .postSummaryActivity .commentsCounter, body.css760 .postSummaryActivity .readingTime {
-	clear: both;
-	float: left;
-	margin-right: 0;
+body.css760 .postSummaryActivity .viewersCounter, body.css760 .postSummaryActivity .reactionsCounter, body.css760 .postSummaryActivity .commentsCounter, body.css760 .postSummaryActivity .readingTime {
+	clear: none;
+	margin-right: 20px;
+	margin-top: 2px;
 }
-
-body.css760 .postSummaryActivity .viewersCounter, body.css760 .postSummaryActivity .reactionsCounter, body.css760 .postSummaryActivity .commentsCounter { margin-bottom: 8px;}
-
-body.css760 .postSummaryCardAuthor { padding: 20px 20px 0 20px; }
 
 body.css760 .postSummaryCardIllustration { margin-top: 20px; }
 
-body.css760 .postSummaryCardContent {padding: 20px;}
+body.css760 .postSummaryCardContent, body.css760 #reactionsToPost .postSummaryCardContent {padding: 20px;}
 
 body.css760 .postSummaryCardHolder {margin-bottom: 10px; }
 
 body.css760 .postSummaryCard {
 	width: calc(100% + 80px);
 	margin: 20px 0 10px -40px;
+}
 
+body.css760 #reactionsToPost .postSummaryCard {
+	width: calc(100% + 80px);
+	margin: 20px 0 10px -40px;
 }
 
 body.css760 .postSummaryCardAuthor .profileName { font-size: 18px;}
@@ -114,6 +123,21 @@ body.css760 .postSummaryCardTitle { -webkit-text-size-adjust: 70%; }
 body.css760 .postSummaryCardFooterLeft {
 	line-height: 140%;
 	width: 75%;
+}
+
+body.css760 .viewersCounter,
+body.css760 .reactionsCounter, 
+body.css760 .commentsCounter,
+body.css760 .readingTime {
+	clear: both;
+	float: left;
+	margin-bottom: 5px;
+}
+body.css760 .readingTime {margin-left: 3px;}
+
+body.css760 .postSummaryCardAuthor, body.css760 #reactionsToPost .postSummaryCardAuthor { 
+	padding: 20px 20px 0 20px; 
+	width: calc(100% - 40px);
 }
 
 body.css760 .postNote {

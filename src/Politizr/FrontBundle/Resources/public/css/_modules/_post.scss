@@ -147,7 +147,6 @@
 #reactionsToPost {
 	padding: 40px 0 20px 0;
 	float: left;
-	//width: calc(100% - 80px);
 	width: 100%;
 	clear: both;
 }
@@ -168,13 +167,12 @@
 	margin: 20px 0 60px 0;
 }
 
-#reactionsToPost .postSummaryCardAuthor {
+#reactionsToPost .postSummaryCardAuthor { 
 	padding: 40px 40px 0 40px;
+	width: calc(100% - 80px);
 }
 
-#reactionsToPost .postSummaryCardContent {
-	padding: 40px;
-}
+#reactionsToPost .postSummaryCardContent { padding: 40px; }
 
 // comments
 
@@ -619,10 +617,9 @@
 .postSummaryCardTitle {
 	float: left;
 	width: 100%;
-
 }
 .postSummaryCardTitle a { color: $highlight; }
-.postSummaryCardTitle a:hover {color: $darkGrey;}
+.postSummaryCardTitle a span:hover {color: $darkGrey;}
 .postSummaryCardTitle span, .postSummaryCardTitle span.title {
 	font-family: nerissemibold;
 	font-size: 40px;
@@ -631,7 +628,6 @@
 	line-height: 120%;
 	margin-bottom: 5px;
 }
-.postSummaryCardTitle a:hover {color: $darkGrey;}
 .postSummaryCardTitle p {
 	float: left;
 	width: 100%;

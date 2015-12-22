@@ -56,21 +56,13 @@ body.css760 .timelineItem .postSummary {
 
 body.css760 .timelineItemHighlight { -webkit-text-size-adjust: 70%;	}
 
-.timelineItemContentFooter {
-	width: calc(100% + 20px);
-	margin-left: -20px;
+body.css760 .timelineItemContentFooter {
+	width: 100%;
 }
-
-body.css760 .timelineItemContentFooter .reactionsCounter, 
-body.css760 .timelineItemContentFooter .commentsCounter,
-body.css760 .timelineItemContentFooter .readingTime {
-	clear: both;
-	float: left;
-}
-
-body.css760 .timelineItemContentFooter .reactionsCounter, 
-body.css760 .timelineItemContentFooter .commentsCounter {
-	margin-bottom: 5px;
+body.css760 .timelineItemContentFooterLeft {
+	width: 75%;
+	padding-left: 0;
+	line-height: 140%;
 }
 
 body.css760 .timelineActions {
