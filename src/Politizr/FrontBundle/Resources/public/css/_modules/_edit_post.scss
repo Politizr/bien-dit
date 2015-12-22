@@ -150,17 +150,23 @@ textarea.postSummaryTitle input:-moz-placeholder { color:$highlight; }
 
 #switchEditionMode {
 	display: inline-block;
-	padding: 40px 0;
-	width: 100%;	
+	margin: 0 40px -30px 40px;
+	padding: 20px 0;
+	width: calc(100% - 80px);	
 	font-size: 10px;
     font-family: 'nerisblack';
     text-transform: uppercase;
     color: $grey;
     line-height: 100%;
+    border-top: solid 4px $semilightGrey;
+    border-bottom: solid 1px $semilightGrey;
+    background-color: #fff;
+    z-index: 1;
+   position: relative;
 }
 
 #switchEditionMode span {
-	color: $semiDarkGrey;
+	color: $highlight;
 	display: inline-block;
 }
 #switchEditionMode span i {
@@ -228,7 +234,7 @@ textarea.postSummaryTitle input:-moz-placeholder { color:$highlight; }
 //// edit post text
 
 .editable:focus {    outline: 0;}
-.paragraph .editable { min-height: 30px;}
+.paragraph .editable { min-height: 30px; line-height: 200%; font-size: 15px;}
 .paragraph .editable p, .paragraph .editable blockquote, .paragraph .editable ul, , .paragraph .editable ol {margin: 0 0 40px 0; clear: both;}
 .paragraph .editable p:last-child, .paragraph .editable h1:last-child, .paragraph .editable h2:last-child, .paragraph .editable blockquote:last-child, .paragraph .editable ul:last-child, .paragraph .editable ol:last-child {margin-bottom: 0;}
 
