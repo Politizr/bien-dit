@@ -81,11 +81,11 @@ body {	overflow-x: hidden;}
 	width: 100%;
 	height: 100%;
 	background-color: $darkHighlight;	
-	-moz-opacity: 0.53;
-	opacity: 0.53;
-	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha"(Opacity=53);
-	filter: progid:DXImageTransform.Microsoft.Alpha(opacity=53);
-	filter:alpha(opacity=53);
+	-moz-opacity: 0.7;
+	opacity: 0.7;
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha"(Opacity=70);
+	filter: progid:DXImageTransform.Microsoft.Alpha(opacity=70);
+	filter:alpha(opacity=70);
 }
 
 #homeClaim {
