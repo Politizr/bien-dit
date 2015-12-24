@@ -142,6 +142,7 @@ $("body").on("click", "input[action='createComment']", function(e) {
             } else {
                 $(this).find('.comments').html(data['html']).slideDown();
                 $(this).find('.counter').html(data['counter']);
+                $(this).find('.counter').addClass('withComment');
                 fullImgLiquid();
 
                 // $("#formCommentNew").trigger("reset");
