@@ -38,17 +38,6 @@
 .paragraph a, .paragraph.summary p, .paragraph p a, .paragraph.summary a:hover { color: $darkHighlight;}
 .paragraph a:hover, .paragraph p a:hover, .paragraph.summary a {color: $darkGrey;}
 
-/*
-.paragraph.summary p::before, .paragraph.summary .editable.summary p:first-child::before {
-	content: "—";
-	display: inline-block;
-	line-height: 200%;
-	margin-top: 2px;
-	margin-right: 5px;
-	color: $darkHighlight;
-}
-.paragraph.summary .editable.summary p::before  {display: none;}
-*/
 .paragraph.summary .editable.summary { border: none;}
 
 .paragraph h1 {
@@ -206,7 +195,11 @@
 	left: auto;
 }
 
-.paragraph .commentsCounter:hover, .commentsClose:hover {color: $darkGrey;}
+.paragraph .commentsCounter:hover, .paragraph .commentsCounter.withComment:hover, .commentsClose:hover {color: $darkGrey;}
+
+.paragraph .commentsCounter.withComment {
+	color: $highlight;
+}
 
 .commentsClose {
 	color: $semiGrey;
