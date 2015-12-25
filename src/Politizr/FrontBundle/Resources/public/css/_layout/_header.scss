@@ -10,8 +10,9 @@
 	color: $semiGrey;
 	float: right;
 	margin: 0 20px 0 0;
+	position: relative;
 }
-.headerLogo i.iconPltzrLogo {	font-size: 24px;}
+.headerLogo i.iconPltzrLogo {	font-size: 24px; position: absolute; right: -5px;}
 .headerLogo i.iconPltzrLogo:hover {	color: $darkGrey}
 
 #headerCenter {
@@ -22,7 +23,7 @@
 	border-left: solid 1px $semiGrey;
 	border-right: solid 1px $semiGrey;
 	height: 30px;
-	font-family: nerissemibold;
+	font-family: 'nerissemibold';
 	font-size: 10px;
 	text-transform: uppercase;
 	color: $semiGrey;

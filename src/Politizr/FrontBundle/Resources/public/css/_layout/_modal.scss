@@ -50,7 +50,7 @@ body.noscroll {
 	color: $semiGrey;
 	top: 15px;
 	width: 960px;
-	padding: 10px 0 20px 0;
+	padding: 15px 0 20px 0;
 	background-color: #fff;
 	z-index: 10000;
 }
@@ -58,9 +58,12 @@ body.noscroll {
 .modalHeader .headerLogo {
 	width: auto; 
 	float: left;
-	margin: 0 0 0 -5px;
+	margin: 0 0 0 0;
 	cursor: pointer;
+	border: none; //for public
+	height: auto; //for public
 }
+.modalHeader .headerLogo i { left: -5px; }
 
 .modalClose {
 	float: right;

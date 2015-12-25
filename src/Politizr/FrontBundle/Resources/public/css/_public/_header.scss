@@ -1,0 +1,145 @@
+@import "../_global/colors";
+
+#homeHeader {
+	display:inline-block;
+	width: 100%;
+	height: 60px;
+	overflow: hidden;
+	left: 0;
+	top: 0;
+	color: $darkGrey;
+	background-color: #fff;
+    text-transform: uppercase;
+    font-family: 'nerissemibold';
+    font-size: 10px;
+}
+
+.headerLogo {
+	float: left;
+	width: 200px;
+	margin-top: 22px;
+	border-right: solid 1px $semiGrey;
+	height: 38px;
+}
+.headerLogo a {	
+	color: $semiGrey;
+	float: right;
+	margin: 0 20px 0 0;
+	position: relative;
+}
+.headerLogo a:hover {	color: $darkHighlight;}
+.headerLogo i.iconPltzrLogo {	font-size: 24px; color: $semiGrey; position: absolute; right: -5px;}
+.headerLogo i.iconPltzrLogo:hover {	color: $darkGrey;}
+
+#homeHeader .headerLogo {
+	float: left;
+	width: 200px;
+	margin-top: 18px;
+	border: none;
+}
+#homeHeader .headerLogo a {	
+	float: left;
+	margin: 0 0 0 60px;
+	color: $darkGrey;
+	position: relative;
+}
+#homeHeader .headerLogo i.iconPltzrLogoAlt {	font-size: 27px;}
+#homeHeader .headerLogo a span {
+	position: absolute;
+	left: 38px;
+	top: 7px;
+}
+
+#headerRight {
+    font-family: 'nerissemibold';
+    font-weight: 200;
+    text-transform: uppercase;
+    font-size: 10px;
+   	width: calc(100% - 61px);
+	margin: 22px 0 0 0;
+	padding: 0 0 12px 0;
+	border-right: solid 1px $semiGrey;
+	height: 26px;
+	text-align: right;
+}
+#homeHeader #headerRight {
+	width: auto;
+	height: auto;
+	float: right;
+	padding: 0;
+    border: none;
+}
+
+#headerRight a {
+	color: $darkGrey;
+	display: inline-block;
+}
+#headerRight a:hover {color: $darkHighlight;}
+
+#headerRight a:last-child {
+	color: #fff;
+	background-color: $darkHighlight;
+	padding: 5px 8px; 
+	margin: 0 20px 0 20px;
+}
+#homeHeader #headerRight a:last-child { margin: 0 60px 0 20px; }
+#headerRight a:last-child:hover { background-color: $darkGrey;}
+
+.getYourAccount {
+	margin: 40px 0 0 20px;
+	padding: 0 10px;
+	width: 140px;
+    font-family: 'nerissemibold';   
+	position: relative;
+	float: left;
+}
+.xsGYA { height: 160px; background-image: url(../images/f_xsGYA.jpg);}
+.xlGYA { height: 290px; background-image: url(../images/f_xlGYA.jpg);}
+
+.gyaCTA {
+	position: absolute;
+	bottom: 20px;
+	width: 140px;
+}
+
+.getYourAccount h1 {
+	font-weight: normal;
+    font-family: 'nerisblack';
+    line-height: 110%;  
+	text-transform: uppercase;
+	color: #fff;
+}
+.getYourAccount.xsGYA h1 {
+	margin: 20px 0 0 0;
+	font-size: 18px;
+}
+.getYourAccount.xlGYA h1 {
+	margin: 70px 0 0 0;
+	font-size: 21px;
+}
+
+.getYourAccount a.gyaInscription {
+	font-size: 13px;
+	display: inline-block;
+	width: 100%;
+	background-color: #fff;
+	text-transform: uppercase;
+	color: $highlight;
+	text-align: center;
+	padding: 13px 0;
+	margin-bottom: 5px;
+}
+.getYourAccount a.gyaInscription:hover {
+	background-color: $darkGrey;
+	color: #fff;
+}
+
+.getYourAccount span {
+	display: block;
+	width: 100%;
+	text-align: center;
+	font-size: 11px;
+	color: #fff;
+}
+.getYourAccount span a { color: #fff;}
+.getYourAccount span a:hover { text-decoration: underline;}
