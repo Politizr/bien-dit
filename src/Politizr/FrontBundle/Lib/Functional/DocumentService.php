@@ -71,13 +71,14 @@ class DocumentService
      * @param integer $count
      * @return string
      */
-    private function generateMyDocumentsListingRawSql($userId, $published, $offset, $count = 10)
+    private function generateMyDocumentsListingRawSql($userId, $published, $orderBy = 'published_at', $offset = 0, $count = 10)
     {
         $this->logger->info('*** getSql');
 
         $sql = $this->documentManager->createMyDocumentsRawSql(
             $userId,
             $published,
+            $orderBy,
             $offset,
             $count
         );
@@ -196,7 +197,7 @@ class DocumentService
     {
         $this->logger->info('*** generateDraftsPaginatedListing');
         
-        $sql = $this->generateMyDocumentsListingRawSql($userId, false, $offset);
+        $sql = $this->generateMyDocumentsListingRawSql($userId, false, 'updated_at', $offset);
         $documents = $this->hydrateDocumentRows($sql);
 
         return $documents;
@@ -213,7 +214,7 @@ class DocumentService
     {
         $this->logger->info('*** generatePublicationsListing');
         
-        $sql = $this->generateMyDocumentsListingRawSql($userId, true, $offset);
+        $sql = $this->generateMyDocumentsListingRawSql($userId, true, 'published_at', $offset);
         $documents = $this->hydrateDocumentRows($sql);
 
         return $documents;

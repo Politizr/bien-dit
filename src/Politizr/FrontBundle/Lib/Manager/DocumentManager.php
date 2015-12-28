@@ -102,11 +102,12 @@ ORDER BY published_at ASC
      *
      * @param integer $userId
      * @param boolean $published
+     * @param string $orderBy
      * @param integer $offset
      * @param integer $count
      * @return string
      */
-    public function createMyDocumentsRawSql($userId, $published, $offset, $count = 10)
+    public function createMyDocumentsRawSql($userId, $published, $orderBy = 'published_at', $offset = 0, $count = 10)
     {
         if ($published) {
             $published = 1;
@@ -117,7 +118,7 @@ ORDER BY published_at ASC
         // Préparation requête SQL
         $sql = "
 #  Réactions
-( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.published_at as published_at, 'Politizr\\\Model\\\PDReaction' as type
+( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.published_at as published_at, p_d_reaction.updated_at as updated_at, 'Politizr\\\Model\\\PDReaction' as type
 FROM p_d_reaction
 WHERE
     p_user_id = ".$userId."
@@ -128,7 +129,7 @@ WHERE
 UNION DISTINCT
 
 #  Débats
-( SELECT p_d_debate.id as id, p_d_debate.title as title, p_d_debate.published_at as published_at, 'Politizr\\\Model\\\PDDebate' as type
+( SELECT p_d_debate.id as id, p_d_debate.title as title, p_d_debate.published_at as published_at, p_d_debate.updated_at as updated_at, 'Politizr\\\Model\\\PDDebate' as type
 FROM p_d_debate
 WHERE
     p_user_id = ".$userId."
@@ -136,7 +137,7 @@ WHERE
     AND p_d_debate.online = 1
 )
 
-ORDER BY published_at DESC
+ORDER BY ".$orderBy." DESC
 LIMIT ".$offset.", ".$count."
     ";
 
