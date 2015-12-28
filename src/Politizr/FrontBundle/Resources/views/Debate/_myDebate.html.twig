@@ -41,5 +41,9 @@
     <div class="publicationsListItemActions">
         <a href="{{ path('DebateDetail'~profileSuffix(), { 'slug': debate.slug }) }}"><i class="iconGoTo"></i>Afficher</a>
     </div>
-    <div class="publicationStats noPublicationStatsYet"><i class="iconStat"></i>Statistiques</div>
+    {% if debate | statsAvailable %}
+        <div class="publicationStats" action="modalDocumentStats" uuid="{{ debate.uuid }}" type="{{ constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE') }}"><i class="iconStat"></i>Statistiques</div>
+    {% else %}
+        <div class="publicationStats noPublicationStatsYet"><i class="iconStat"></i>Statistiques</div>
+    {% endif %}
 </div>

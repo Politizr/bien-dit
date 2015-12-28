@@ -47,5 +47,9 @@
             <i class="iconGoTo"></i>Afficher
         </a>
     </div>
-    <div class="publicationStats noPublicationStatsYet"><i class="iconStat"></i>Statistiques</div>
+    {% if reaction | statsAvailable %}
+        <div class="publicationStats" action="modalDocumentStats" uuid="{{ reaction.uuid }}" type="{{ constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION') }}"><i class="iconStat"></i>Statistiques</div>
+    {% else %}
+        <div class="publicationStats noPublicationStatsYet"><i class="iconStat"></i>Statistiques</div>
+    {% endif %}
 </div>

@@ -106,6 +106,11 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 array('is_safe' => array('html'))
             ),
             new \Twig_SimpleFilter(
+                'statsAvailable',
+                array($this, 'statsAvailable'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
                 'docTags',
                 array($this, 'docTags'),
                 array('is_safe' => array('html'))
@@ -402,6 +407,27 @@ class PolitizrDocumentExtension extends \Twig_Extension
         }
 
         return $html;
+    }
+
+    /**
+     * Stats available - or not - for a document
+     *
+     * @param PDocumentInterface $document
+     * @return boolean
+     */
+    public function statsAvailable(PDocumentInterface $document)
+    {
+        // $this->logger->info('*** statsAvailable');
+        // $this->logger->info('$document = '.print_r($document, true));
+
+        $publishedAt = $document->getPublishedAt();
+        $today = new \DateTime();
+        $publishedAt->modify('+1 week');
+        if ($publishedAt > $today) {
+            return false;
+        }
+
+        return true;
     }
 
     /**

@@ -988,4 +988,135 @@ class XhrDocument
             'html' => $html,
         );
     }
+
+    /* ######################################################################################################## */
+    /*                                            STATS                                                         */
+    /* ######################################################################################################## */
+
+    /**
+     * Retrieve document by request's uuid and type + valid if published & current user is owner
+     *
+     * @return PDocument
+     */
+    private function getAndCheckUserDocument(Request $request)
+    {
+        // Request arguments
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        $type = $request->get('type');
+        $this->logger->info('$type = ' . print_r($type, true));
+
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+
+        // Function process
+        switch($type) {
+            case ObjectTypeConstants::TYPE_DEBATE:
+                $document = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
+                break;
+            case ObjectTypeConstants::TYPE_REACTION:
+                $document = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
+                break;
+            default:
+                throw new InconsistentDataException(sprintf('Stats on type %s not allowed', $type));
+        }
+        
+        if (!$document) {
+            throw new InconsistentDataException('Document '.$uuid.' not found.');
+        }
+        if (!$document->isOwner($user->getId())) {
+            throw new InconsistentDataException('Document '.$uuid.' is not yours.');
+        }
+
+        $jsStartAt = $request->get('startAt');
+        $this->logger->info('$jsStartAt = ' . print_r($jsStartAt, true));
+
+        // First & last day of month
+        $publishedAt = $document->getPublishedAt();
+        $today = new \DateTime();
+        $publishedAt->modify('+1 week');
+        if ($publishedAt > $today) {
+            throw new InconsistentDataException('Document '.$uuid.' has to be published for more than 1 week.');
+        }
+
+        return $document;
+    }
+
+    /**
+     * Document's stats
+     */
+    public function stats(Request $request)
+    {
+        $this->logger->info('*** stats');
+
+        $document = $this->getAndCheckUserDocument($request);
+
+        // Rendering
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Document:_stats.html.twig',
+            array(
+                'document' => $document,
+            )
+        );
+
+        return array(
+            'html' => $html,
+            );
+    }
+
+    /**
+     * Document's notes evolution datas for chart JS
+     */
+    public function statsNotesEvolution(Request $request)
+    {
+        $this->logger->info('*** statsNotesEvolution');
+
+        // Request arguments
+        $jsStartAt = $request->get('startAt');
+        $this->logger->info('$jsStartAt = ' . print_r($jsStartAt, true));
+
+        $document = $this->getAndCheckUserDocument($request);
+
+        // First & last day of month
+        $startAt = new \DateTime($jsStartAt);
+        $endAt = new \DateTime($jsStartAt);
+        $endAt->modify('+1 month');
+
+        $statsNotesByDates = $this->documentManager->getStatsNotesByDates($document->getId(), $document->getType(), $startAt, $endAt);
+
+        // Sum of notes at startAt date
+        $sumOfNotes = $this->documentManager->getSumOfNotes($document->getId(), $document->getType(), $startAt);
+
+        $labels = [];
+        $data = [];
+        
+        $interval = \DateInterval::createFromDateString('1 day');
+        $period = new \DatePeriod($startAt, $interval, $endAt);
+        foreach ($period as $day) {
+            foreach ($statsNotesByDates as $statsNotesByDate) {
+                if ($day->format('Y-m-d') == $statsNotesByDate['created_at']) {
+                    $sumOfNotes += $statsNotesByDate['sum_notes'];
+                    break;
+                }
+            }
+            $data[] = $sumOfNotes;
+            $labels[] = $day->format('d/m/Y');
+        }
+
+        // delete first / last labels for pagination
+        $labels[0] = "";
+        $labels[sizeof($labels) -1] = "";
+
+        // next / prev
+        $nextMonth = $endAt;
+        $prevMonth = new \DateTime($jsStartAt);
+        $prevMonth->modify('-1 month');
+
+        return array(
+            'labels' => $labels,
+            'data' => $data,
+            'datePrev' => $prevMonth->format('Y-m-d'),
+            'dateNext' => $nextMonth->format('Y-m-d'),
+        );
+    }
 }

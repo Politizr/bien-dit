@@ -719,7 +719,6 @@ class XhrUser
 
     /**
      * User's reputation evolution datas for chart JS
-     * Display the max last 30 actions
      */
     public function reputationEvolution(Request $request)
     {

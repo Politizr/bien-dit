@@ -10,6 +10,21 @@ $("body").on("click", "[action='modalReputation']", function() {
     loadReputation();
 });
 
+// modal document's stats
+$("body").on("click", "[action='modalDocumentStats']", function() {
+    // console.log('*** modalDocumentStats');
+    $('#modalBoxContent').removeClass().addClass('postStats');
+    modalLoading();
+
+    var uuid = $(this).attr('uuid');
+    var type = $(this).attr('type');
+
+    // console.log(uuid);
+    // console.log(type);
+
+    loadDocumentStats(uuid, type);
+});
+
 // modal abuse
 $("body").on("click", "[action='modalAbuse']", function() {
     // console.log('*** modalAbuse');
@@ -265,6 +280,46 @@ function loadReputation() {
             } else {
                 $('#modalBoxContent').html(data['html']);
                 reputationCharts();
+            }
+        }
+    });
+}
+
+/**
+ * Document's stats modal loading
+ */
+function loadDocumentStats(uuid, type) {
+    // console.log('*** loadDocumentStats');
+    uuid = (typeof uuid === "undefined") ? null : uuid;
+    type = (typeof type === "undefined") ? null : type;
+
+    if (uuid == null || type == null) {
+        return false;
+    }
+
+    var xhrPath = getXhrPath(
+        ROUTE_MODAL_DOCUMENT_STATS,
+        'document',
+        'stats',
+        RETURN_HTML
+        );
+
+    $.ajax({
+        type: 'POST',
+        url: xhrPath,
+        data: { 'uuid': uuid, 'type': type },
+        dataType: 'json',
+        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
+        statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
+        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
+        success: function(data) {
+            if (data['error']) {
+                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                $('#infoBoxHolder .boxError').show();
+            } else {
+                $('#modalBoxContent').html(data['html']);
+                documentCharts(uuid, type);
+                $('#ajaxGlobalLoader').hide();
             }
         }
     });

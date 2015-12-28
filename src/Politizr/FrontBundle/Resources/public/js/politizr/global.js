@@ -242,3 +242,47 @@ function commentTextCounter() {
         countExtendedCharacters  : false,                       // count extended UTF-8 characters as 2 bytes (such as Chinese characters)    
     });
 };
+
+/**
+ * Init charts with data
+ * @param string ID element name
+ * @param array data
+ * @return chart instance
+ */
+function loadDataCharts(elementId, lineChartData) {
+    // console.log('*** loadReputationDataCharts');
+    // console.log(lineChartData);
+
+    if (lineChartData === "undefined") {
+        return false;
+    }
+
+    var ctx = document.getElementById(elementId).getContext("2d");
+    var myChart = new Chart(ctx).Line(lineChartData, {
+        responsive: true,
+        animation: false,
+        bezierCurve : false,
+        scaleFontFamily: "'nerissemibold'",
+        scaleFontSize: 8,
+        scaleFontColor: "#a9a9a9",
+        tooltipTemplate: "<%= value %> POINTS",
+        tooltipFontFamily: "'nerisblack'",
+        tooltipFontSize: 10,
+        tooltipFillColor: "#2d2d2d",
+        tooltipFontColor: "#fff",
+        tooltipCornerRadius : 3,
+        tooltipYPadding: 10,
+        tooltipXPadding: 10,
+        tooltipCaretSize: 4,
+        pointDotRadius : 4,
+        pointDotStrokeWidth : 2,
+        scaleShowGridLines : false,
+        scaleGridLineColor : "#dbdcdd",
+        scaleLineColor: "#dbdcdd",
+        datasetStrokeWidth : 2,
+        pointHitDetectionRadius : 5,
+        scaleBeginAtZero: false
+    });
+
+    return myChart;
+}

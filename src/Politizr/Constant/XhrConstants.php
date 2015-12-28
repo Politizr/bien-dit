@@ -80,6 +80,10 @@ class XhrConstants
     const ROUTE_MODAL_FOLLOWERS_LIST = 'profil/abonnes';
     const ROUTE_MODAL_REPUTATION = 'profil/reputation';
     const ROUTE_MODAL_REPUTATION_EVOLUTION = 'profil/reputation/evolution';
+    const ROUTE_MODAL_DOCUMENT_STATS = 'profil/document/stats';
+    const ROUTE_MODAL_DOCUMENT_STATS_NOTES_EVOLUTION = 'profil/document/stats/notes/evolution';
+    const ROUTE_MODAL_DOCUMENT_STATS_REACTIONS_EVOLUTION = 'profil/document/stats/reactions/evolution';
+    const ROUTE_MODAL_DOCUMENT_STATS_COMMENTS_EVOLUTION = 'profil/document/stats/comments/evolution';
 
     // DASHBOARD
     const ROUTE_DASHBOARD_MAP = 'profil/tableau/carte';

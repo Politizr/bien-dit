@@ -67,6 +67,10 @@ var ROUTE_MODAL_ORGANIZATION_USER_LIST = 'profil/liste/org/utilisateur';
 var ROUTE_MODAL_FOLLOWERS_LIST = 'profil/abonnes';
 var ROUTE_MODAL_REPUTATION = 'profil/reputation';
 var ROUTE_MODAL_REPUTATION_EVOLUTION = 'profil/reputation/evolution';
+var ROUTE_MODAL_DOCUMENT_STATS = 'profil/document/stats';
+var ROUTE_MODAL_DOCUMENT_STATS_NOTES_EVOLUTION = 'profil/document/stats/notes/evolution';
+var ROUTE_MODAL_DOCUMENT_STATS_REACTIONS_EVOLUTION = 'profil/document/stats/reactions/evolution';
+var ROUTE_MODAL_DOCUMENT_STATS_COMMENTS_EVOLUTION = 'profil/document/stats/comments/evolution';
 
 // DASHBOARD
 var ROUTE_DASHBOARD_MAP = 'profil/tableau/carte';

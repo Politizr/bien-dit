@@ -916,9 +916,9 @@ class PUser extends BasePUser implements UserInterface, /*EquatableInterface,*/ 
     /**
      * Sum user's "score_evolution" in PUReputation
      *
-     * @param int $untilId
      * @param \DateTime $untilAt
      * @param \DateTime $fromAt
+     * @param int $untilId
      * @return integer
      */
     public function getReputationScore($untilAt = null, $fromAt = null, $untilId = null)
