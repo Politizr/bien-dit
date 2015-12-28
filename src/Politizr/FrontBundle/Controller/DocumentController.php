@@ -32,7 +32,7 @@ class DocumentController extends Controller
      * @param boolean $published
      * @param boolean
      */
-    private function checkDocument(PDocumentInterface $document, $online = true, $published = true)
+    private function checkDocument(PDocumentInterface $document = null, $online = true, $published = true)
     {
         if (!$document) {
             throw new NotFoundHttpException(sprintf('Document not found.'));
@@ -54,7 +54,7 @@ class DocumentController extends Controller
      * @param integer $userId
      * @param boolean
      */
-    private function checkDocumentEditable(PDocumentInterface $document, $userId)
+    private function checkDocumentEditable(PDocumentInterface $document = null, $userId)
     {
         if (!$document) {
             throw new NotFoundHttpException(sprintf('Document not found.'));
