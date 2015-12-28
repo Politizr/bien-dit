@@ -34,8 +34,28 @@ services:
 
 
     # EXTENSIONS TWIG
-    politzr_admin.twig.admin_ajax_extension:
+    politzr_admin.twig.generic:
         class: Politizr\AdminBundle\Twig\PolitizrAdminExtension
+        arguments: [ @service_container ]
+        tags:
+            - { name: twig.extension }
+    politzr_admin.twig.tag:
+        class: Politizr\AdminBundle\Twig\PolitizrAdminTagExtension
+        arguments: [ @service_container ]
+        tags:
+            - { name: twig.extension }
+    politzr_admin.twig.document:
+        class: Politizr\AdminBundle\Twig\PolitizrAdminDocumentExtension
+        arguments: [ @service_container ]
+        tags:
+            - { name: twig.extension }
+    politzr_admin.twig.user:
+        class: Politizr\AdminBundle\Twig\PolitizrAdminUserExtension
+        arguments: [ @service_container ]
+        tags:
+            - { name: twig.extension }
+    politzr_admin.twig.moderation:
+        class: Politizr\AdminBundle\Twig\PolitizrAdminModerationExtension
         arguments: [ @service_container ]
         tags:
             - { name: twig.extension }
