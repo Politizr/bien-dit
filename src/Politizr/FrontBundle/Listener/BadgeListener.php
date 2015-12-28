@@ -238,12 +238,13 @@ class BadgeListener
     // ***************************  FONCTIONS LOGIQUES ASSOCIEES A LA CREATION DES BADGES ********************************* //
 
     /**
-     *  Badges Querellé / Controversé / Polémiqué
-     *  Être l’auteur de contenus "débat" ou "réaction" ayant obtenu au moins X réactions
+     * Badges Querellé / Controversé / Polémiqué
+     * Être l’auteur de contenus "débat" ou "réaction" ayant obtenu au moins X réactions
+     * cf sql/badges.sql
      *
-     *  @param  $userId     integer     ID user
-     *  @param  $badgeId    integer     ID badge
-     *  @param  $nbReactions  integer   Nombre de réactions
+     * @param  $userId     integer     ID user
+     * @param  $badgeId    integer     ID badge
+     * @param  $nbReactions  integer   Nombre de réactions
      */
     private function checkQuerelle($userId, $badgeId, $nbReactions)
     {
@@ -257,6 +258,7 @@ SELECT child.id
 FROM p_d_reaction parent, p_d_reaction child
 WHERE
     parent.p_user_id = ".$userId."
+    AND child.p_user_id <> ".$userId."
     AND child.p_d_debate_id = parent.p_d_debate_id
     AND child.tree_level = parent.tree_level + 1
     AND child.tree_left > parent.tree_left
@@ -270,6 +272,7 @@ SELECT child.id
 FROM p_d_debate parent, p_d_reaction child
 WHERE
     parent.p_user_id = ".$userId."
+    AND child.p_user_id <> ".$userId."
     AND child.p_d_debate_id = parent.id
     AND child.tree_level = 1
 GROUP BY child.p_d_debate_id
