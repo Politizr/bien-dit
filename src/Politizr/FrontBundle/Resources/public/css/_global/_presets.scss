@@ -175,7 +175,31 @@ body {
 	width: 60px;
 	min-height: 360px;
 	background-color: #fff;
+	color: $semiGrey; 
+	text-align: center;
 }
+
+#social .pad40 {	padding: 40px 20px;}
+
+#social a {
+	display: inline-block;
+	clear: both;
+	margin-bottom: 15px;
+	color: $semiGrey;
+	font-size: 14px;
+}
+
+#social a i.iconSocialTw { font-size: 17px;}
+
+.signalAbuse {
+	display: inline-block;
+	clear: both;
+	margin-top: 20px;
+	font-size: 18px;
+	cursor: pointer;
+}
+
+#social a:hover, .signalAbuse:hover {color: $darkGrey;}
 
 #content {
 	width: 700px;

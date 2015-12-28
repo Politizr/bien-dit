@@ -68,9 +68,11 @@
 
 
 /// auto save
+
 #fixedActions .actionSave.saved i {display: none;}
 #fixedActions .actionSave.saved a {
 	cursor: default;
+	color: $semiDarkGrey;
 }
 #fixedActions .actionSave.saved a:hover {	color: $darkGrey; background-color: $semilightGrey;}
 #fixedActions .actionSave.saved a:before {
@@ -78,6 +80,8 @@
 	content: "\e82c";
 	padding-right: 4px;
 }
+
+#fixedActions .actionSave.saved .ajaxLoaderBg { background-color: $semilightGrey; }
 
 /// got to update under
 

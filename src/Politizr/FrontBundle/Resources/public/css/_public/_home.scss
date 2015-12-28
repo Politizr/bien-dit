@@ -4,78 +4,6 @@ body {	overflow-x: hidden;}
 
 .homeWrapper {position: relative;}
 
-#publicHeader {
-	display:inline-block;
-	width: 100%;
-	height: 60px;
-	overflow: hidden;
-	left: 0;
-	top: 0;
-	color: $darkGrey;
-	background-color: #fff;
-    text-transform: uppercase;
-    font-family: 'nerissemibold';
-    font-size: 10px;
-}
-
-.headerLogo {
-	float: left;
-	width: 200px;
-	margin-top: 18px;
-}
-
-.headerLogo a {	
-	float: left;
-	margin: 0 0 0 60px;
-	color: $darkGrey;
-	position: relative;
-}
-.headerLogo a:hover {	color: $darkHighlight;}
-.headerLogo i.iconPltzrLogoAlt {	font-size: 27px;}
-.headerLogo i.iconPltzrLogo {	font-size: 24px; color: $semiGrey;}
-.headerLogo i.iconPltzrLogo:hover {	color: $darkGrey;}
-.headerLogo a span {
-	position: absolute;
-	left: 38px;
-	top: 7px;
-}
-
-#headerRight {
-	float: right;
-	margin-top: 20px;
-    font-family: 'nerissemibold';
-    font-weight: 200;
-    text-transform: uppercase;
-    font-size: 10px;
-}
-
-#modalHeaderRight {
-	float: none;
-	display: inline-block;
-	width: 850px;
-	margin-top: 19px;
-	text-align: right;
-    font-family: 'nerissemibold';
-    font-weight: 200;
-    text-transform: uppercase;
-    font-size: 10px;
-}
-
-#headerRight a, #modalHeaderRight a {
-	color: $darkGrey;
-	display: inline-block;
-}
-#headerRight a:hover, #modalHeaderRight a:hover {color: $darkHighlight;}
-
-#headerRight a:last-child, #modalHeaderRight a:last-child {
-	color: #fff;
-	background-color: $darkHighlight;
-	padding: 5px 8px; 
-	margin: 0 60px 0 20px;
-}
-#modalHeaderRight a:last-child {margin-right: 0;}
-#headerRight a:last-child:hover, #modalHeaderRight a:last-child:hover { background-color: $darkGrey;}
-
 .highlightOverlay {
 	position: absolute;
 	width: 100%;
@@ -665,3 +593,59 @@ body {	overflow-x: hidden;}
 }
 
 ////// end home extraits
+
+////// footer
+
+#homeFooter {
+	width: 100%;
+	float: left;
+	clear: both;
+	padding: 80px 0 140px 0;
+	background-color: $darkGrey;
+	color: #525252;
+}
+
+#homeFooter .wrapper {text-align: center;}
+
+#homeFooter #footerLinks a { 
+	color: #fff;
+	font-family: 'Merriweather Italic';
+	font-style: italic;
+	font-size: 12px;
+	margin: 0 20px; 
+	color: $semiGrey;
+}
+
+#homeFooter #footerSocial {
+	margin: 20px 0 50px 0;
+}
+
+#homeFooter #footerSocial a {
+	color: #fff;
+	margin: 0 5px;
+	font-size: 16px;
+	color: $semiGrey;
+}
+
+#homeFooter #footerLinks a:hover, #homeFooter #footerSocial a:hover { color: $darkHighlight;}
+
+#homeFooter #footerMentions {
+    font-family: 'nerislight_italic';
+    font-size: 12px;
+    line-height: 180%;
+    margin-bottom: 10px;
+}
+
+#homeFooter #footerMentions img {margin-left: 7px;}
+
+#homeFooter #footerMentions span { font-size: 10px;}
+
+#homeFooter #footerFbShare {
+	-moz-opacity: 0.50;
+	opacity: 0.50;
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha"(Opacity=50);
+	filter: progid:DXImageTransform.Microsoft.Alpha(opacity=50);
+	filter:alpha(opacity=50);
+}
+
+////// end footer
