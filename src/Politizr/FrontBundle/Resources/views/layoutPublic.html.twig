@@ -20,7 +20,7 @@
 {% block wrapper %}
     <div class="wrapper">
         {% block header %}
-            {% include 'PolitizrFrontBundle:Navigation\\Header:_header.html.twig' %}
+            {% include 'PolitizrFrontBundle:Navigation\\Header:_headerPublic.html.twig' %}
         {% endblock %}
 
         {% block inscriptionSteps %}
@@ -43,7 +43,7 @@
                 {% endblock main %}
 
                 {% block footer %}
-                    {% include 'PolitizrFrontBundle:Navigation\\Footer:_footer.html.twig' %}
+                    {% include 'PolitizrFrontBundle:Navigation\\Footer:_footerPublic.html.twig' %}
                 {% endblock %}
             </div>
         {% endblock content %}
