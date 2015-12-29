@@ -107,11 +107,6 @@ class DocumentController extends Controller
         $logger->info('*** reactionDetailAction');
         $logger->info('$slug = '.print_r($slug, true));
 
-        $suffix = $this->get('politizr.tools.global')->computeProfileSuffix();
-        if (null === $suffix) {
-            return $this->redirect($this->generateUrl('Login'));
-        }
-
         $reaction = PDReactionQuery::create()->filterBySlug($slug)->findOne();
         $this->checkDocument($reaction);
 
@@ -141,11 +136,6 @@ class DocumentController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** debateFeedAction');
         $logger->info('$slug = '.print_r($slug, true));
-
-        $suffix = $this->get('politizr.tools.global')->computeProfileSuffix();
-        if (null === $suffix) {
-            return $this->redirect($this->generateUrl('Login'));
-        }
 
         $debate = PDDebateQuery::create()->filterBySlug($slug)->findOne();
         $this->checkDocument($debate);

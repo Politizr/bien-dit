@@ -6,7 +6,6 @@ use Politizr\Model\om\BasePUser;
 
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-// use Symfony\Component\Security\Core\User\EquatableInterface;
 
 use StudioEcho\Lib\StudioEchoUtils;
 
@@ -24,7 +23,7 @@ use Propel\PropelBundle\Validator\Constraints\UniqueObject;
  *
  * @author Lionel Bouzonville
  */
-class PUser extends BasePUser implements UserInterface, /*EquatableInterface,*/ ContainerAwareInterface
+class PUser extends BasePUser implements UserInterface, ContainerAwareInterface
 {
     // simple upload management
     public $uploadedFileName;
