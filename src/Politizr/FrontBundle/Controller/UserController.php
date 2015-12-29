@@ -44,11 +44,6 @@ class UserController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** homepageAction');
 
-        $suffix = $this->get('politizr.tools.global')->computeProfileSuffix();
-        if (null === $suffix) {
-            return $this->redirect($this->generateUrl('Login'));
-        }
-
         return $this->render('PolitizrFrontBundle:Dashboard:homepage.html.twig', array(
             'profileSuffix' => $this->get('politizr.tools.global')->computeProfileSuffix(),
         ));
@@ -66,12 +61,6 @@ class UserController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** detailAction');
         $logger->info('$slug = '.print_r($slug, true));
-
-        $suffix = $this->get('politizr.tools.global')->computeProfileSuffix();
-        if (null === $suffix) {
-            return $this->redirect($this->generateUrl('Login'));
-        }
-
 
         $user = PUserQuery::create()->filterBySlug($slug)->findOne();
         if (!$user) {
