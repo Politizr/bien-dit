@@ -420,14 +420,17 @@ class PolitizrDocumentExtension extends \Twig_Extension
         // $this->logger->info('*** statsAvailable');
         // $this->logger->info('$document = '.print_r($document, true));
 
-        $publishedAt = $document->getPublishedAt();
         $today = new \DateTime();
-        $publishedAt->modify('+1 week');
-        if ($publishedAt > $today) {
+        if ($publishedAt = $document->getPublishedAt()) {
+            $publishedAt->modify('+1 week');
+            if ($publishedAt > $today) {
+                return false;
+            }
+            return true;
+        } else {
             return false;
         }
 
-        return true;
     }
 
     /**

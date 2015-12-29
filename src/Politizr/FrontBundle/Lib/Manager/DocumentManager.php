@@ -103,45 +103,32 @@ ORDER BY published_at ASC
      *
      * @see app/sql/myDocuments.sql
      *
-     * @param integer $userId
-     * @param boolean $published
      * @param string $orderBy
-     * @param integer $offset
-     * @param integer $count
      * @return string
      */
-    public function createMyDocumentsRawSql($userId, $published, $orderBy = 'published_at', $offset = 0, $count = 10)
+    private function getMyDocumentsRawSql($orderBy = 'published_at')
     {
-        if ($published) {
-            $published = 1;
-        } else {
-            $published = 0;
-        }
-        
-        // Préparation requête SQL
         $sql = "
-#  Réactions
 ( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.published_at as published_at, p_d_reaction.updated_at as updated_at, 'Politizr\\\Model\\\PDReaction' as type
 FROM p_d_reaction
 WHERE
-    p_user_id = ".$userId."
-    AND p_d_reaction.published = ".$published."
+    p_user_id = :p_user_id
+    AND p_d_reaction.published = :published
     AND p_d_reaction.online = 1
 )
 
 UNION DISTINCT
 
-#  Débats
 ( SELECT p_d_debate.id as id, p_d_debate.title as title, p_d_debate.published_at as published_at, p_d_debate.updated_at as updated_at, 'Politizr\\\Model\\\PDDebate' as type
 FROM p_d_debate
 WHERE
-    p_user_id = ".$userId."
-    AND p_d_debate.published = ".$published."
+    p_user_id = :p_user_id2
+    AND p_d_debate.published = :published2
     AND p_d_debate.online = 1
 )
 
-ORDER BY ".$orderBy." DESC
-LIMIT ".$offset.", ".$count."
+ORDER BY $orderBy DESC
+LIMIT :offset, :count
     ";
 
         return $sql;
@@ -276,6 +263,63 @@ AND p_u_reputation.created_at < '".$untilAt."'
     /*                                            RAW SQL OPERATIONS                                            */
     /* ######################################################################################################## */
 
+    /**
+     * My documents listing
+     *
+     * @param integer $userId
+     * @param integer $offset
+     * @param integer $count
+     * @return string
+     */
+    public function getMyDocumentsListing($userId, $published, $orderBy = 'published_at', $offset = 0, $count = 10)
+    {
+        $this->logger->info('*** getMyDocumentsListing');
+
+        $sql = $this->getMyDocumentsRawSql($orderBy);
+
+        $documents = new \PropelCollection();
+
+        if ($sql) {
+            $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
+
+            // dump($sql);
+
+            $stmt = $con->prepare($sql);
+
+            $stmt->bindValue(':p_user_id', $userId, \PDO::PARAM_INT);
+            $stmt->bindValue(':published', $published, \PDO::PARAM_INT);
+            $stmt->bindValue(':p_user_id2', $userId, \PDO::PARAM_INT);
+            $stmt->bindValue(':published2', $published, \PDO::PARAM_INT);
+            $stmt->bindValue(':offset', $offset, \PDO::PARAM_INT);
+            $stmt->bindValue(':count', $count, \PDO::PARAM_INT);
+
+            $stmt->execute();
+
+            $result = $stmt->fetchAll();
+
+            $i = 0;
+            foreach ($result as $row) {
+                $type = $row['type'];
+
+                if ($type == ObjectTypeConstants::TYPE_DEBATE) {
+                    $document = PDDebateQuery::create()->findPk($row['id']);
+                } elseif ($type == ObjectTypeConstants::TYPE_REACTION) {
+                    $document = PDReactionQuery::create()->findPk($row['id']);
+                } else {
+                    throw new InconsistentDataException(sprintf('Object type %s unknown.', $type));
+                }
+                
+                $documents->set($i, $document);
+                $i++;
+            }
+        }
+
+        return $documents;
+
+
+        return $sql;
+    }
+    
     /**
      * Get document's notes evolution as array of (created_at, nb_note_pos, nb_note_neg)
      *

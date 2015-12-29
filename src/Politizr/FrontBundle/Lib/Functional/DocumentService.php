@@ -60,76 +60,6 @@ class DocumentService
     }
 
     /* ######################################################################################################## */
-    /*                                               PRIVATE FUNCTIONS                                          */
-    /* ######################################################################################################## */
-
-   /**
-     * My documents listing
-     *
-     * @param integer $userId
-     * @param integer $offset
-     * @param integer $count
-     * @return string
-     */
-    private function generateMyDocumentsListingRawSql($userId, $published, $orderBy = 'published_at', $offset = 0, $count = 10)
-    {
-        $this->logger->info('*** getSql');
-
-        $sql = $this->documentManager->createMyDocumentsRawSql(
-            $userId,
-            $published,
-            $orderBy,
-            $offset,
-            $count
-        );
-
-        return $sql;
-    }
-
-    /*
-     * Execute SQL and hydrate PDDebate|PDReaction model
-     *
-     * @param string $sql
-     * @return PropelCollection[PDDebate|PDReaction]
-     */
-    private function hydrateDocumentRows($sql)
-    {
-        $this->logger->info('*** hydrateDocumentRows');
-
-        $documents = new \PropelCollection();
-
-        if ($sql) {
-            $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
-
-            // dump($sql);
-
-            $stmt = $con->prepare($sql);
-            $stmt->execute();
-
-            $result = $stmt->fetchAll();
-
-            $i = 0;
-            foreach ($result as $row) {
-                $type = $row['type'];
-
-                if ($type == ObjectTypeConstants::TYPE_DEBATE) {
-                    $document = PDDebateQuery::create()->findPk($row['id']);
-                } elseif ($type == ObjectTypeConstants::TYPE_REACTION) {
-                    $document = PDReactionQuery::create()->findPk($row['id']);
-                } else {
-                    throw new InconsistentDataException(sprintf('Object type %s unknown.', $type));
-                }
-                
-                $documents->set($i, $document);
-                $i++;
-            }
-        }
-
-        return $documents;
-    }
-
-
-    /* ######################################################################################################## */
     /*                                              CRUD OPERATIONS                                             */
     /* ######################################################################################################## */
     
@@ -180,44 +110,6 @@ class DocumentService
         $this->documentManager->initReactionTaggedTags($reaction);
 
         return $reaction;
-    }
-
-    /* ######################################################################################################## */
-    /*                                              DOCUMENTS LISTING                                           */
-    /* ######################################################################################################## */
-    
-    /**
-     * Get the drafts paginated listing of documents (debate + reaction)
-     *
-     * @param integer $userId
-     * @param integer $offset
-     * @return PropelCollection[PDDebate|PDReaction]
-     */
-    public function generateDraftsListing($userId, $offset = 0)
-    {
-        $this->logger->info('*** generateDraftsPaginatedListing');
-        
-        $sql = $this->generateMyDocumentsListingRawSql($userId, false, 'updated_at', $offset);
-        $documents = $this->hydrateDocumentRows($sql);
-
-        return $documents;
-    }
-    
-    /**
-     * Get the publication paginated listing of documents (debate + reaction)
-     *
-     * @param integer $userId
-     * @param integer $offset
-     * @return PropelCollection[PDDebate|PDReaction]
-     */
-    public function generatePublicationsListing($userId, $offset = 0)
-    {
-        $this->logger->info('*** generatePublicationsListing');
-        
-        $sql = $this->generateMyDocumentsListingRawSql($userId, true, 'published_at', $offset);
-        $documents = $this->hydrateDocumentRows($sql);
-
-        return $documents;
     }
 
     /* ######################################################################################################## */
