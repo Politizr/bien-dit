@@ -51,6 +51,9 @@ class AppKernel extends Kernel
             // HTML Purifier
             new Exercise\HTMLPurifierBundle\ExerciseHTMLPurifierBundle(),
 
+            // Strength Password
+            new Rollerworks\Bundle\PasswordStrengthBundle\RollerworksPasswordStrengthBundle(),
+
             // Project Bundle,
             new Politizr\FrontBundle\PolitizrFrontBundle(),
             new Politizr\AdminBundle\PolitizrAdminBundle(),

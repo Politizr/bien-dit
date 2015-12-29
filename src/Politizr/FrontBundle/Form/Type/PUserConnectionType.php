@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
 // use Symfony\Component\Validator\Constraints\Email;
+use Rollerworks\Bundle\PasswordStrengthBundle\Validator\Constraints\PasswordStrength;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -35,14 +36,23 @@ class PUserConnectionType extends AbstractType
         # TODO > contraintes en plus mot de passe "fort"
         $builder->add('plainPassword', 'repeated', array(
             // 'required' => true,
-            'first_options' =>   array(
+            'first_options' => array(
                 'label' => 'Mot de passe',
                 ),
             'second_options' =>   array(
                 'label' => 'Confirmation',
                 ),
             'type' => 'password',
-            // 'constraints' => new NotBlank(array('message' => 'Mot de passe obligatoire.'))
+            'constraints' => array(
+                // new NotBlank(array('message' => 'Mot de passe obligatoire.')),
+                new PasswordStrength(
+                    array(
+                        'message' => 'Le mot de passe doit contenir au moins 8 caractères',
+                        'minLength' => 8,
+                        'minStrength' => 1
+                    )
+                ),
+            )
         ));
     }
 

@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "31db4ffb9488547f7015ca9ca32909e7",
-    "content-hash": "db028f9ba9e86149daa246687fee0070",
+    "hash": "c0c18b8ebbed1c1ba67d5973810bd101",
+    "content-hash": "ab2db87fa23e1da8b2edbb29fb43464e",
     "packages": [
         {
             "name": "badlamer/propel-uuid-behavior",
@@ -3048,6 +3048,67 @@
             ],
             "description": "A lightweight implementation of CommonJS Promises/A for PHP",
             "time": "2015-07-03 13:48:55"
+        },
+        {
+            "name": "rollerworks/password-strength-bundle",
+            "version": "v1.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rollerworks/PasswordStrengthBundle.git",
+                "reference": "3b58b4f6537cde978162ce52db8fb0dd646de8fc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rollerworks/PasswordStrengthBundle/zipball/3b58b4f6537cde978162ce52db8fb0dd646de8fc",
+                "reference": "3b58b4f6537cde978162ce52db8fb0dd646de8fc",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "symfony/console": "^2.3.3|^3.0",
+                "symfony/framework-bundle": "^2.3.3|^3.0",
+                "symfony/validator": "^2.3.20|^3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.4"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.4-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Rollerworks\\Bundle\\PasswordStrengthBundle\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastiaan Stok",
+                    "email": "s.stok@rollercapes.net"
+                },
+                {
+                    "name": "Luis Cordova",
+                    "email": "cordoval@gmail.com"
+                },
+                {
+                    "name": "Community contributions",
+                    "homepage": "https://github.com/rollerworks/PasswordStrengthBundle/contributors"
+                }
+            ],
+            "description": "Password-strength validator bundle for Symfony",
+            "keywords": [
+                "bundle",
+                "password",
+                "symfony",
+                "validator"
+            ],
+            "time": "2015-12-02 15:40:49"
         },
         {
             "name": "sensio/distribution-bundle",
