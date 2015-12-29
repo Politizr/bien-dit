@@ -9,7 +9,7 @@
     "require": {
         "php": ">=5.3.9",
         
-        "symfony/symfony": "2.7.*",
+        "symfony/symfony": "2.7.7",
         
         "twig/extensions": "1.2.*",
         
