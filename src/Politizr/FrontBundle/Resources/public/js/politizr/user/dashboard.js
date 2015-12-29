@@ -1,7 +1,5 @@
 // on document ready
 $(function() {
-    $('#ajaxGlobalLoader').show();
-
     topListing();
     tagListing();
     debateListing();
@@ -90,7 +88,7 @@ function topListing(geoTagUuid) {
         RETURN_HTML
         );
 
-    var localLoader = $('.dbMap').children('.ajaxLoader').first();
+    var localLoader = $('.dbMap').find('.ajaxLoader').first();
     $.ajax({
         type: 'POST',
         url: xhrPath,
@@ -110,9 +108,6 @@ function topListing(geoTagUuid) {
                 fullImgLiquid();
             }
             localLoader.hide();
-
-            // 1st call
-            $('#ajaxGlobalLoader').hide();
         }
     });    
 }
@@ -139,7 +134,7 @@ function tagListing() {
         RETURN_HTML
         );
 
-    var localLoader = $('.dbPopularTag').children('.ajaxLoader').first();
+    var localLoader = $('.dbPopularTag').find('.ajaxLoader').first();
     $.ajax({
         type: 'POST',
         url: xhrPath,
@@ -182,7 +177,7 @@ function debateListing() {
         RETURN_HTML
         );
 
-    var localLoader = $('.dbPopularDebates').children('.ajaxLoader').first();
+    var localLoader = $('.dbPopularDebates').find('.ajaxLoader').first();
     $.ajax({
         type: 'POST',
         url: xhrPath,
@@ -226,7 +221,7 @@ function userListing() {
         RETURN_HTML
         );
 
-    var localLoader = $('.dbPopularProfiles').children('.ajaxLoader').first();
+    var localLoader = $('.dbPopularProfiles').find('.ajaxLoader').first();
     $.ajax({
         type: 'POST',
         url: xhrPath,
@@ -261,13 +256,14 @@ function geoListing() {
         RETURN_HTML
         );
 
+    var localLoader = $('.dbCloseToYou').find('.ajaxLoader').first();
     $.ajax({
         type: 'POST',
         url: xhrPath,
         dataType: 'json',
-        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
-        statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
-        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
+        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, localLoader ); },
+        statusCode: { 404: function () { xhr404(localLoader); }, 500: function() { xhr500(localLoader); } },
+        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown, localLoader); },
         success: function(data) {
             if (data['error']) {
                 $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
@@ -276,6 +272,7 @@ function geoListing() {
                 $('.dbCloseToYou').html(data['html']);
                 fullImgLiquid();
             }
+            localLoader.hide();
         }
     });
 }
@@ -293,13 +290,14 @@ function suggestionListing() {
         RETURN_HTML
         );
 
+    var localLoader = $('.dbSuggestions').find('.ajaxLoader').first();
     $.ajax({
         type: 'POST',
         url: xhrPath,
         dataType: 'json',
-        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
-        statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
-        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
+        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, localLoader ); },
+        statusCode: { 404: function () { xhr404(localLoader); }, 500: function() { xhr500(localLoader); } },
+        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown, localLoader); },
         success: function(data) {
             if (data['error']) {
                 $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
@@ -308,6 +306,7 @@ function suggestionListing() {
                 $('.dbSuggestions').html(data['html']);
                 fullImgLiquid();
             }
+            localLoader.hide();
         }
     });
 }
