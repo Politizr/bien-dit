@@ -13,6 +13,7 @@ services:
             - @politizr.manager.user
             - @politizr.manager.document
             - @politizr.functional.document
+            - @politizr.functional.reputation
             - @politizr.tools.global
             - @logger
 
@@ -78,6 +79,7 @@ services:
             - @politizr.manager.user
             - @politizr.manager.reputation
             - @politizr.functional.timeline
+            - @politizr.functional.reputation
             - @politizr.tools.global
             - @logger
 

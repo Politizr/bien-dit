@@ -131,33 +131,28 @@ LIMIT :offset, :count
     }
 
     /**
-     * Document's notes stats
+     * Document's notes evolution group by date
      *
      * @see app/sql/stats.sql
      *
-     * @param int $id document id
-     * @param string $sqlDocType document "SQL Formatted" type
-     * @param int $notePosReputationId ID of reputation's note pos for doc type
-     * @param int $noteNegReputationId ID of reputation's note neg for doc type
-     * @param string $startAt
-     * @param string $endAt
+     * @return string
      */
-    private function createStatsNotesRawSql($id, $sqlDocType, $notePosReputationId, $noteNegReputationId, $startAt, $endAt)
+    private function createNotesByDateRawSql()
     {
         $sql = "
 SELECT
     DATE(p_u_reputation.id) as ID,
     p_u_reputation.id,
     DATE(p_u_reputation.created_at) as DATE,
-    COUNT(CASE WHEN p_u_reputation.p_r_action_id = ".$notePosReputationId." THEN 1 END) AS COUNT_NOTE_POS,
-    COUNT(CASE WHEN p_u_reputation.p_r_action_id = ".$noteNegReputationId." THEN 1 END) AS COUNT_NOTE_NEG
+    COUNT(CASE WHEN p_u_reputation.p_r_action_id = :notePosReputationId THEN 1 END) AS COUNT_NOTE_POS,
+    COUNT(CASE WHEN p_u_reputation.p_r_action_id = :noteNegReputationId THEN 1 END) AS COUNT_NOTE_NEG
 FROM `p_u_reputation` LEFT JOIN `p_r_action` ON p_u_reputation.p_r_action_id = p_r_action.id
 WHERE
-p_u_reputation.p_object_name = '".$sqlDocType."'
-AND p_u_reputation.p_object_id = ".$id."
-AND (p_u_reputation.p_r_action_id = ".$notePosReputationId." OR p_u_reputation.p_r_action_id = ".$noteNegReputationId.")
-AND p_u_reputation.created_at >= '".$startAt."'
-AND p_u_reputation.created_at < '".$endAt."'
+p_u_reputation.p_object_name = :documentType
+AND p_u_reputation.p_object_id = :documentId
+AND (p_u_reputation.p_r_action_id = :notePosReputationId2 OR p_u_reputation.p_r_action_id = :noteNegReputationId2)
+AND p_u_reputation.created_at >= :startAt
+AND p_u_reputation.created_at < :endAt
 GROUP BY DATE(p_u_reputation.created_at)
         ";
 
@@ -165,95 +160,28 @@ GROUP BY DATE(p_u_reputation.created_at)
     }
 
     /**
-     * Execute SQL and hydrate an array
-     *
-     * @param string $sql
-     * @return array
-     */
-    private function hydrateStatsNotesByDatesRows($sql)
-    {
-        $this->logger->info('*** hydrateStatsNotesByDatesRows');
-
-        $statsNotesEvolution = array();
-
-        if ($sql) {
-            $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
-
-            $stmt = $con->prepare($sql);
-            $stmt->execute();
-
-            $result = $stmt->fetchAll();
-
-            foreach ($result as $row) {
-                $notesByDates = array();
-
-                $notesByDates['id'] = $row['id'];
-                $notesByDates['created_at'] = $row['DATE'];
-                $notesByDates['sum_notes'] = $row['COUNT_NOTE_POS'] - $row['COUNT_NOTE_NEG'];
-
-                $statsNotesEvolution[] = $notesByDates;
-            }
-        }
-
-        return $statsNotesEvolution;
-    }
-
-    /**
      * Document's notes sum until date
      *
      * @see app/sql/stats.sql
      *
-     * @param int $id document id
-     * @param string $sqlDocType document "SQL Formatted" type
-     * @param int $notePosReputationId ID of reputation's note pos for doc type
-     * @param int $noteNegReputationId ID of reputation's note neg for doc type
-     * @param string $untilAt
+     * @return string
      */
-    private function createSumOfNotesRawSql($id, $sqlDocType, $notePosReputationId, $noteNegReputationId, $untilAt)
+    private function createSumOfNotesRawSql()
     {
         $sql = "
 SELECT
-    COUNT(CASE WHEN p_u_reputation.p_r_action_id = ".$notePosReputationId." THEN 1 END) AS COUNT_NOTE_POS,
-    COUNT(CASE WHEN p_u_reputation.p_r_action_id = ".$noteNegReputationId." THEN 1 END) AS COUNT_NOTE_NEG
+    COUNT(CASE WHEN p_u_reputation.p_r_action_id = :notePosReputationId THEN 1 END) AS COUNT_NOTE_POS,
+    COUNT(CASE WHEN p_u_reputation.p_r_action_id = :noteNegReputationId THEN 1 END) AS COUNT_NOTE_NEG
 FROM `p_u_reputation` LEFT JOIN `p_r_action` ON p_u_reputation.p_r_action_id = p_r_action.id
 WHERE
-p_u_reputation.p_object_name = '".$sqlDocType."'
-AND p_u_reputation.p_object_id = ".$id."
-AND (p_u_reputation.p_r_action_id = ".$notePosReputationId." OR p_u_reputation.p_r_action_id = ".$noteNegReputationId.")
-AND p_u_reputation.created_at < '".$untilAt."'
+p_u_reputation.p_object_name = :documentType
+AND p_u_reputation.p_object_id = :documentId
+AND (p_u_reputation.p_r_action_id = :notePosReputationId2 OR p_u_reputation.p_r_action_id = :noteNegReputationId2)
+AND p_u_reputation.created_at < :untilAt
         ";
 
         return $sql;
     }
-
-    /**
-     * Execute SQL and return result
-     *
-     * @param string $sql
-     * @return int
-     */
-    private function hydrateSumOfNotesRows($sql)
-    {
-        $this->logger->info('*** hydrateSumOfNotesRows');
-
-        $sumOfNotes = 0;
-
-        if ($sql) {
-            $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
-
-            $stmt = $con->prepare($sql);
-            $stmt->execute();
-
-            $result = $stmt->fetchAll();
-
-            if (isset($result[0])) {
-                $sumOfNotes = $result[0]['COUNT_NOTE_POS'] - $result[0]['COUNT_NOTE_NEG'];
-            }
-        }
-
-        return $sumOfNotes;
-    }
-
 
     /* ######################################################################################################## */
     /*                                            RAW SQL OPERATIONS                                            */
@@ -347,31 +275,48 @@ AND p_u_reputation.created_at < '".$untilAt."'
      * Get document's notes evolution as array of (created_at, nb_note_pos, nb_note_neg)
      *
      * @param int $documentId
-     * @param string $type
-     * @param DateTime $startAt
-     * @param DateTime $endAt
+     * @param string $documentType
+     * @param int $notePosReputationId
+     * @param int $noteNegReputationId
+     * @param string $startAt
+     * @param string $endAt
      * @return array
      */
-    public function getStatsNotesByDates($documentId, $type, \DateTime $startAt, \DateTime $endAt)
+    public function generateNotesByDate($documentId, $documentType, $notePosReputationId, $noteNegReputationId, $startAt, $endAt)
     {
-        // Function process
-        switch($type) {
-            case ObjectTypeConstants::TYPE_DEBATE:
-                $sqlDocType = 'Politizr\\\Model\\\PDDebate';
-                $notePosReputationId = ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_NOTE_POS;
-                $noteNegReputationId = ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_NOTE_NEG;
-                break;
-            case ObjectTypeConstants::TYPE_REACTION:
-                $sqlDocType = 'Politizr\\\Model\\\PDReaction';
-                $notePosReputationId = ReputationConstants::ACTION_ID_D_AUTHOR_REACTION_NOTE_POS;
-                $noteNegReputationId = ReputationConstants::ACTION_ID_D_AUTHOR_REACTION_NOTE_NEG;
-                break;
-            default:
-                throw new InconsistentDataException(sprintf('Invalid document type %s', $type));
-        }
+        $this->logger->info('*** generateNotesByDate');
+        $this->logger->info('$documentId = ' . print_r($documentId, true));
+        $this->logger->info('$documentType = ' . print_r($documentType, true));
+        $this->logger->info('$notePosReputationId = ' . print_r($notePosReputationId, true));
+        $this->logger->info('$noteNegReputationId = ' . print_r($noteNegReputationId, true));
+        $this->logger->info('$startAt = ' . print_r($startAt, true));
+        $this->logger->info('$endAt = ' . print_r($endAt, true));
 
-        $sql = $this->createStatsNotesRawSql($documentId, $sqlDocType, $notePosReputationId, $noteNegReputationId, $startAt->format('Y-m-d H:i:s'), $endAt->format('Y-m-d H:i:s'));
-        $statsNotesEvolution = $this->hydrateStatsNotesByDatesRows($sql);
+        $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
+        $stmt = $con->prepare($this->createNotesByDateRawSql());
+
+        $stmt->bindValue(':notePosReputationId', $notePosReputationId, \PDO::PARAM_INT);
+        $stmt->bindValue(':notePosReputationId2', $notePosReputationId, \PDO::PARAM_INT);
+        $stmt->bindValue(':noteNegReputationId', $noteNegReputationId, \PDO::PARAM_INT);
+        $stmt->bindValue(':noteNegReputationId2', $noteNegReputationId, \PDO::PARAM_INT);
+        $stmt->bindValue(':documentType', $documentType, \PDO::PARAM_STR);
+        $stmt->bindValue(':documentId', $documentId, \PDO::PARAM_INT);
+        $stmt->bindValue(':startAt', $startAt, \PDO::PARAM_STR);
+        $stmt->bindValue(':endAt', $endAt, \PDO::PARAM_STR);
+
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+
+        $statsNotesEvolution = array();
+        foreach ($result as $row) {
+            $notesByDates = array();
+
+            $notesByDates['id'] = $row['id'];
+            $notesByDates['created_at'] = $row['DATE'];
+            $notesByDates['sum_notes'] = $row['COUNT_NOTE_POS'] - $row['COUNT_NOTE_NEG'];
+
+            $statsNotesEvolution[] = $notesByDates;
+        }
 
         return $statsNotesEvolution;
     }
@@ -380,30 +325,39 @@ AND p_u_reputation.created_at < '".$untilAt."'
      * Get document's sum of positive - negative notes until a date
      *
      * @param int $documentId
-     * @param string $type
-     * @param DateTime $untilAt
-     * @return array
+     * @param string $documentType
+     * @param int $notePosReputationId
+     * @param int $noteNegReputationId
+     * @param string $untilAt
+     * @return int
      */
-    public function getSumOfNotes($documentId, $type, \DateTime $untilAt)
+    public function generateSumOfNotes($documentId, $documentType, $notePosReputationId, $noteNegReputationId, $untilAt)
     {
-        // Function process
-        switch($type) {
-            case ObjectTypeConstants::TYPE_DEBATE:
-                $sqlDocType = 'Politizr\\\Model\\\PDDebate';
-                $notePosReputationId = ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_NOTE_POS;
-                $noteNegReputationId = ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_NOTE_NEG;
-                break;
-            case ObjectTypeConstants::TYPE_REACTION:
-                $sqlDocType = 'Politizr\\\Model\\\PDReaction';
-                $notePosReputationId = ReputationConstants::ACTION_ID_D_AUTHOR_REACTION_NOTE_POS;
-                $noteNegReputationId = ReputationConstants::ACTION_ID_D_AUTHOR_REACTION_NOTE_NEG;
-                break;
-            default:
-                throw new InconsistentDataException(sprintf('Invalid document type %s', $type));
-        }
+        $this->logger->info('*** generateSumOfNotes');
+        $this->logger->info('$documentId = ' . print_r($documentId, true));
+        $this->logger->info('$documentType = ' . print_r($documentType, true));
+        $this->logger->info('$notePosReputationId = ' . print_r($notePosReputationId, true));
+        $this->logger->info('$noteNegReputationId = ' . print_r($noteNegReputationId, true));
+        $this->logger->info('$untilAt = ' . print_r($untilAt, true));
 
-        $sql = $this->createSumOfNotesRawSql($documentId, $sqlDocType, $notePosReputationId, $noteNegReputationId, $untilAt->format('Y-m-d H:i:s'));
-        $sumOfNotes = $this->hydrateSumOfNotesRows($sql);
+        $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
+        $stmt = $con->prepare($this->createSumOfNotesRawSql());
+
+        $stmt->bindValue(':notePosReputationId', $notePosReputationId, \PDO::PARAM_INT);
+        $stmt->bindValue(':notePosReputationId2', $notePosReputationId, \PDO::PARAM_INT);
+        $stmt->bindValue(':noteNegReputationId', $noteNegReputationId, \PDO::PARAM_INT);
+        $stmt->bindValue(':noteNegReputationId2', $noteNegReputationId, \PDO::PARAM_INT);
+        $stmt->bindValue(':documentType', $documentType, \PDO::PARAM_STR);
+        $stmt->bindValue(':documentId', $documentId, \PDO::PARAM_INT);
+        $stmt->bindValue(':untilAt', $untilAt, \PDO::PARAM_STR);
+
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+
+        $sumOfNotes = 0;
+        if (isset($result[0])) {
+            $sumOfNotes = $result[0]['COUNT_NOTE_POS'] - $result[0]['COUNT_NOTE_NEG'];
+        }
 
         return $sumOfNotes;
     }

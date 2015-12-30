@@ -48,6 +48,7 @@ class XhrDocument
     private $userManager;
     private $documentManager;
     private $documentService;
+    private $reputationService;
     private $globalTools;
     private $logger;
 
@@ -64,6 +65,7 @@ class XhrDocument
      * @param @politizr.manager.user
      * @param @politizr.manager.document
      * @param @politizr.functional.document
+     * @param @politizr.functional.reputation
      * @param @politizr.tools.global
      * @param @logger
      */
@@ -79,6 +81,7 @@ class XhrDocument
         $userManager,
         $documentManager,
         $documentService,
+        $reputationService,
         $globalTools,
         $logger
     ) {
@@ -96,7 +99,9 @@ class XhrDocument
 
         $this->userManager = $userManager;
         $this->documentManager = $documentManager;
+
         $this->documentService = $documentService;
+        $this->reputationService = $reputationService;
 
         $this->globalTools = $globalTools;
 
@@ -1084,10 +1089,10 @@ class XhrDocument
         $endAt = new \DateTime($jsStartAt);
         $endAt->modify('+1 month');
 
-        $statsNotesByDates = $this->documentManager->getStatsNotesByDates($document->getId(), $document->getType(), $startAt, $endAt);
+        $notesByDate = $this->reputationService->getNotesByDate($document->getId(), $document->getType(), $startAt, $endAt);
 
         // Sum of notes at startAt date
-        $sumOfNotes = $this->documentManager->getSumOfNotes($document->getId(), $document->getType(), $startAt);
+        $sumOfNotes = $this->reputationService->getSumOfNotes($document->getId(), $document->getType(), $startAt);
 
         $labels = [];
         $data = [];
@@ -1095,9 +1100,9 @@ class XhrDocument
         $interval = \DateInterval::createFromDateString('1 day');
         $period = new \DatePeriod($startAt, $interval, $endAt);
         foreach ($period as $day) {
-            foreach ($statsNotesByDates as $statsNotesByDate) {
-                if ($day->format('Y-m-d') == $statsNotesByDate['created_at']) {
-                    $sumOfNotes += $statsNotesByDate['sum_notes'];
+            foreach ($notesByDate as $noteByDate) {
+                if ($day->format('Y-m-d') == $noteByDate['created_at']) {
+                    $sumOfNotes += $noteByDate['sum_notes'];
                     break;
                 }
             }

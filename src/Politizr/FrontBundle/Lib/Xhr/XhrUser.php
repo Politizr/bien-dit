@@ -49,6 +49,7 @@ class XhrUser
     private $userManager;
     private $reputationManager;
     private $timelineService;
+    private $reputationService;
     private $globalTools;
     private $logger;
 
@@ -64,6 +65,7 @@ class XhrUser
      * @param @politizr.manager.user
      * @param @politizr.manager.reputation
      * @param @politizr.functional.timeline
+     * @param @politizr.functional.reputation
      * @param @politizr.tools.global
      * @param @logger
      */
@@ -78,6 +80,7 @@ class XhrUser
         $userManager,
         $reputationManager,
         $timelineService,
+        $reputationService,
         $globalTools,
         $logger
     ) {
@@ -96,6 +99,7 @@ class XhrUser
         $this->userManager = $userManager;
         $this->reputationManager = $reputationManager;
         $this->timelineService = $timelineService;
+        $this->reputationService = $reputationService;
 
         $this->globalTools = $globalTools;
 
