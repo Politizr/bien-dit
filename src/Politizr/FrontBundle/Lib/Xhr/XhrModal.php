@@ -21,6 +21,8 @@ class XhrModal
 {
     private $securityTokenStorage;
     private $templating;
+    private $documentService;
+    private $userService;
     private $tagService;
     private $logger;
 
@@ -28,12 +30,16 @@ class XhrModal
      *
      * @param @security.token_storage
      * @param @templating
+     * @param @politizr.functional.document
+     * @param @politizr.functional.user
      * @param @politizr.functional.tag
      * @param @logger
      */
     public function __construct(
         $securityTokenStorage,
         $templating,
+        $documentService,
+        $userService,
         $tagService,
         $logger
     ) {
@@ -41,6 +47,8 @@ class XhrModal
 
         $this->templating = $templating;
         
+        $this->documentService = $documentService;
+        $this->userService = $userService;
         $this->tagService = $tagService;
 
         $this->logger = $logger;
@@ -372,7 +380,7 @@ class XhrModal
         // Function process
         $user = $this->securityTokenStorage->getToken()->getUser();
 
-        $debates = PDDebateQuery::create()->findBySuggestion($user->getId(), $offset, ListingConstants::MODAL_CLASSIC_PAGINATION);
+        $debates = $this->documentService->getUserSuggestedDebatesPaginatedListing($user->getId(), $offset, ListingConstants::MODAL_CLASSIC_PAGINATION);
         
         $moreResults = false;
         if (sizeof($debates) == ListingConstants::MODAL_CLASSIC_PAGINATION) {
@@ -418,7 +426,7 @@ class XhrModal
         // Function process
         $user = $this->securityTokenStorage->getToken()->getUser();
 
-        $reactions = PDReactionQuery::create()->findBySuggestion($user->getId(), $offset, ListingConstants::MODAL_CLASSIC_PAGINATION);
+        $reactions = $this->documentService->getUserSuggestedReactionsPaginatedListing($user->getId(), $offset, ListingConstants::MODAL_CLASSIC_PAGINATION);
         
         $moreResults = false;
         if (sizeof($reactions) == ListingConstants::MODAL_CLASSIC_PAGINATION) {
@@ -464,7 +472,7 @@ class XhrModal
         // Function process
         $user = $this->securityTokenStorage->getToken()->getUser();
 
-        $users = PUserQuery::create()->findBySuggestion($user->getId(), $offset, ListingConstants::MODAL_CLASSIC_PAGINATION);
+        $users = $this->userService->getUserSuggestedUsersPaginatedListing($user->getId(), $offset, ListingConstants::MODAL_CLASSIC_PAGINATION);
         
         $moreResults = false;
         if (sizeof($users) == ListingConstants::MODAL_CLASSIC_PAGINATION) {

@@ -1,4 +1,10 @@
 services:
+    politizr.functional.user:
+        class: Politizr\FrontBundle\Lib\Functional\UserService
+        arguments:
+            - @politizr.manager.user
+            - @logger
+
     politizr.functional.document:
         class: Politizr\FrontBundle\Lib\Functional\DocumentService
         arguments:

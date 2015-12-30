@@ -19,6 +19,8 @@ class XhrDashboard
 {
     private $securityTokenStorage;
     private $templating;
+    private $documentService;
+    private $userService;
     private $tagService;
     private $logger;
 
@@ -26,12 +28,16 @@ class XhrDashboard
      *
      * @param @security.token_storage
      * @param @templating
+     * @param @politizr.functional.document
+     * @param @politizr.functional.user
      * @param @politizr.functional.tag
      * @param @logger
      */
     public function __construct(
         $securityTokenStorage,
         $templating,
+        $documentService,
+        $userService,
         $tagService,
         $logger
     ) {
@@ -39,6 +45,8 @@ class XhrDashboard
 
         $this->templating = $templating;
         
+        $this->documentService = $documentService;
+        $this->userService = $userService;
         $this->tagService = $tagService;
 
         $this->logger = $logger;
@@ -304,10 +312,10 @@ class XhrDashboard
         $user = $this->securityTokenStorage->getToken()->getUser();
 
         // user's debates suggestion
-        $debates = PDDebateQuery::create()->findBySuggestion($user->getId(), 0, ListingConstants::DASHBOARD_SUGGESTION_DEBATES_LIMIT);
+        $debates = $this->documentService->getUserSuggestedDebatesPaginatedListing($user->getId(), 0, ListingConstants::DASHBOARD_SUGGESTION_DEBATES_LIMIT);
 
         // user's profiles suggestion
-        $users = PUserQuery::create()->findBySuggestion($user->getId(), 0, ListingConstants::DASHBOARD_SUGGESTION_USERS_LIMIT);
+        $users = $this->userService->getUserSuggestedUsersPaginatedListing($user->getId(), 0, ListingConstants::DASHBOARD_SUGGESTION_USERS_LIMIT);
 
         $html = $this->templating->render(
             'PolitizrFrontBundle:Dashboard:_suggestion.html.twig',

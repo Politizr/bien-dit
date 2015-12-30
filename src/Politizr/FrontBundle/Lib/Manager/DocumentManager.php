@@ -39,6 +39,150 @@ class DocumentManager
     /* ######################################################################################################## */
     /*                                                  RAW SQL                                                 */
     /* ######################################################################################################## */
+    
+    /**
+     * Debates' suggestion for user.
+     *
+     * @see app/sql/suggestions.sql
+     *
+     * @return string
+     */
+    private function createUserSuggestedDebatesRawSql()
+    {
+        // Requête SQL
+        $sql = "
+SELECT DISTINCT
+    id,
+    uuid,
+    p_user_id,
+    title,
+    file_name,
+    copyright,
+    description,
+    note_pos,
+    note_neg,
+    nb_views,
+    published,
+    published_at,
+    published_by,
+    favorite,
+    online,
+    moderated,
+    moderated_partial,
+    moderated_at,
+    created_at,
+    updated_at,
+    slug
+FROM (
+( SELECT DISTINCT p_d_debate.*, 0 as nb_users, 1 as unionsorting
+FROM p_d_debate
+    LEFT JOIN p_d_d_tagged_t
+        ON p_d_debate.id = p_d_d_tagged_t.p_d_debate_id
+WHERE
+    p_d_d_tagged_t.p_tag_id IN (
+                SELECT p_tag.id
+                FROM p_tag
+                    LEFT JOIN p_u_tagged_t
+                        ON p_tag.id = p_u_tagged_t.p_tag_id
+                WHERE
+                    p_tag.online = true
+                    AND p_u_tagged_t.p_user_id = :p_user_id
+    )
+    AND p_d_debate.online = 1
+    AND p_d_debate.published = 1
+    AND p_d_debate.id NOT IN (SELECT p_d_debate_id FROM p_u_follow_d_d WHERE p_user_id = :p_user_id2)
+    AND p_d_debate.p_user_id <> :p_user_id3
+)
+
+UNION DISTINCT
+
+( SELECT DISTINCT p_d_debate.*, COUNT(p_u_follow_d_d.p_d_debate_id) as nb_users, 2 as unionsorting
+FROM p_d_debate
+    LEFT JOIN p_u_follow_d_d
+        ON p_d_debate.id = p_u_follow_d_d.p_d_debate_id
+WHERE
+    p_d_debate.online = 1
+    AND p_d_debate.published = 1
+    AND p_d_debate.id NOT IN (SELECT p_d_debate_id FROM p_u_follow_d_d WHERE p_user_id = :p_user_id4)
+    AND p_d_debate.p_user_id <> :p_user_id5
+GROUP BY p_d_debate.id
+ORDER BY nb_users DESC
+)
+
+ORDER BY unionsorting ASC
+) unionsorting
+
+LIMIT :offset, :limit
+";
+
+        return $sql;
+    }
+
+    /**
+     * Reactions' suggestion for user.
+     *
+     * @see app/sql/suggestions.sql
+     *
+     * @return string
+     */
+    private function createUserSuggestedReactionsRawSql()
+    {
+        // Requête SQL
+        $sql = "
+SELECT DISTINCT
+    id,
+    uuid,
+    p_user_id,
+    p_d_debate_id,
+    parent_reaction_id,
+    title,
+    file_name,
+    copyright,
+    description,
+    note_pos,
+    note_neg,
+    nb_views,
+    published,
+    published_at,
+    published_by,
+    favorite,
+    online,
+    moderated,
+    moderated_partial,
+    moderated_at,
+    created_at,
+    updated_at,
+    slug,
+    tree_left,
+    tree_right,
+    tree_level
+FROM (
+    ( SELECT DISTINCT p_d_reaction.*, 0 as nb_users, 1 as unionsorting
+        FROM p_d_reaction
+            LEFT JOIN p_d_r_tagged_t
+                ON p_d_reaction.id = p_d_r_tagged_t.p_d_reaction_id
+        WHERE
+            p_d_r_tagged_t.p_tag_id IN (
+                SELECT p_tag.id
+                FROM p_tag
+                    LEFT JOIN p_u_tagged_t
+                        ON p_tag.id = p_u_tagged_t.p_tag_id
+                WHERE
+                    p_tag.online = true
+                    AND p_u_tagged_t.p_user_id = :p_user_id
+            )
+        AND p_d_reaction.online = 1
+        AND p_d_reaction.published = 1
+        AND p_d_reaction.id NOT IN (SELECT p_d_reaction_id FROM p_u_follow_d_d WHERE p_user_id = :p_user_id2)
+        AND p_d_reaction.p_user_id <> :p_user_id3
+    )
+) unionsorting
+
+LIMIT :offset, :limit
+";
+
+        return $sql;
+    }
 
    /**
      * Debate feed timeline
@@ -124,7 +268,7 @@ WHERE
 )
 
 ORDER BY $orderBy DESC
-LIMIT :offset, :count
+LIMIT :offset, :limit
     ";
 
         return $sql;
@@ -135,23 +279,103 @@ LIMIT :offset, :count
     /* ######################################################################################################## */
 
     /**
+     * User's debates' suggestions paginated listing
+     *
+     * @param integer $userId
+     * @param integer $offset
+     * @param integer $limit
+     * @return PropelCollection[PDDebate]
+     */
+    public function generateUserSuggestedDebatesPaginatedListing($userId, $offset, $limit)
+    {
+        $this->logger->info('*** generateUserSuggestedDebatesPaginatedListing');
+        $this->logger->info('$userId = ' . print_r($userId, true));
+        $this->logger->info('$offset = ' . print_r($offset, true));
+        $this->logger->info('$limit = ' . print_r($limit, true));
+
+        $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
+        $stmt = $con->prepare($this->createUserSuggestedDebatesRawSql());
+
+        $stmt->bindValue(':p_user_id', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_user_id2', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_user_id3', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_user_id4', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_user_id5', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, \PDO::PARAM_INT);
+        $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        $result = $stmt->fetchAll();
+
+        $documents = new \PropelCollection();
+        foreach ($result as $row) {
+            $debate = new PDDebate();
+            $debate->hydrate($row);
+
+            $documents->append($debate);
+        }
+
+        return $documents;
+    }
+    
+    /**
+     * User's reactions' suggestions paginated listing
+     *
+     * @param integer $userId
+     * @param integer $offset
+     * @param integer $limit
+     * @return PropelCollection[PDReaction]
+     */
+    public function generateUserSuggestedReactionsPaginatedListing($userId, $offset, $limit)
+    {
+        $this->logger->info('*** generateUserSuggestedReactionsPaginatedListing');
+        $this->logger->info('$userId = ' . print_r($userId, true));
+        $this->logger->info('$offset = ' . print_r($offset, true));
+        $this->logger->info('$limit = ' . print_r($limit, true));
+
+        $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
+        $stmt = $con->prepare($this->createUserSuggestedReactionsRawSql());
+
+        $stmt->bindValue(':p_user_id', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_user_id2', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_user_id3', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, \PDO::PARAM_INT);
+        $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        $result = $stmt->fetchAll();
+
+        $documents = new \PropelCollection();
+        foreach ($result as $row) {
+            $reaction = new PDReaction();
+            $reaction->hydrate($row);
+
+            $documents->append($reaction);
+        }
+
+        return $documents;
+    }
+    
+    /**
      * My documents paginated listing
      *
      * @param integer $userId
      * @param integer $published
      * @param string $orderBy
      * @param integer $offset
-     * @param integer $count
-     * @return string
+     * @param integer $limit
+     * @return PropelCollection
      */
-    public function generateMyDocumentsPaginatedListing($userId, $published, $orderBy, $offset, $count)
+    public function generateMyDocumentsPaginatedListing($userId, $published, $orderBy, $offset, $limit)
     {
         $this->logger->info('*** generateMyDocumentsPaginatedListing');
         $this->logger->info('$userId = ' . print_r($userId, true));
         $this->logger->info('$published = ' . print_r($published, true));
         $this->logger->info('$orderBy = ' . print_r($orderBy, true));
         $this->logger->info('$offset = ' . print_r($offset, true));
-        $this->logger->info('$count = ' . print_r($count, true));
+        $this->logger->info('$limit = ' . print_r($limit, true));
 
         $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
         $stmt = $con->prepare($this->createMyDocumentsRawSql($orderBy));
@@ -161,7 +385,7 @@ LIMIT :offset, :count
         $stmt->bindValue(':published', $published, \PDO::PARAM_INT);
         $stmt->bindValue(':published2', $published, \PDO::PARAM_INT);
         $stmt->bindValue(':offset', $offset, \PDO::PARAM_INT);
-        $stmt->bindValue(':count', $count, \PDO::PARAM_INT);
+        $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
 
         $stmt->execute();
 
@@ -190,10 +414,9 @@ LIMIT :offset, :count
     /**
      * My documents listing
      *
-     * @param integer $userId
-     * @param integer $offset
-     * @param integer $count
-     * @return string
+     * @param integer $debateId
+     * @param array $inQueryUserIds
+     * @return array
      */
     public function generateDebateFeedTimeline($debateId, $inQueryUserIds)
     {

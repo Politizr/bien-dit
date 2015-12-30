@@ -252,6 +252,114 @@ LIMIT :offset, :count
         return $sql;
     }
 
+    /**
+     * Users' suggestion for user.
+     *
+     * @see app/sql/suggestions.sql
+     *
+     * @return string
+     */
+    private function createUserSuggestedUsersRawSql()
+    {
+        // Requête SQL
+        $sql = "
+#  Concordance des tags suivis / tags caractérisant des users
+SELECT DISTINCT
+    id,
+    uuid,
+    provider,
+    provider_id,
+    nickname,
+    realname,
+    username,
+    username_canonical,
+    email,
+    email_canonical,
+    enabled,
+    salt,
+    password,
+    last_login,
+    locked,
+    expired,
+    expires_at,
+    confirmation_token,
+    password_requested_at,
+    credentials_expired,
+    credentials_expire_at,
+    roles,
+    last_activity,
+    p_u_status_id,
+    file_name,
+    back_file_name,
+    copyright,
+    gender,
+    firstname,
+    name,
+    birthday,
+    subtitle,
+    biography,
+    website,
+    twitter,
+    facebook,
+    phone,
+    newsletter,
+    last_connect,
+    nb_connected_days,
+    nb_views,
+    qualified,
+    validated,
+    online,
+    banned,
+    banned_nb_days_left,
+    banned_nb_total,
+    abuse_level,
+    created_at,
+    updated_at,
+    slug
+FROM (
+( SELECT p_user.*, COUNT(p_user.id) as nb_users, 1 as unionsorting
+FROM p_user
+    LEFT JOIN p_u_tagged_t
+        ON p_user.id = p_u_tagged_t.p_user_id
+WHERE
+    p_u_tagged_t.p_tag_id IN (
+                SELECT p_tag.id
+                FROM p_tag
+                    LEFT JOIN p_u_tagged_t
+                        ON p_tag.id = p_u_tagged_t.p_tag_id
+                WHERE
+                    p_tag.online = true
+                    AND p_u_tagged_t.p_user_id = :p_user_id
+    )
+    AND p_user.online = 1
+    AND p_user.id NOT IN (SELECT p_user_id FROM p_u_follow_u WHERE p_user_follower_id = :p_user_id2)
+    AND p_user.id <> :p_user_id3
+)
+
+UNION DISTINCT
+
+#  Users les plus populaires
+( SELECT p_user.*, COUNT(p_u_follow_u.p_user_id) as nb_users, 2 as unionsorting
+FROM p_user
+    LEFT JOIN p_u_follow_u
+        ON p_user.id = p_u_follow_u.p_user_id
+WHERE
+    p_user.online = 1
+    AND p_user.id NOT IN (SELECT p_user_id FROM p_u_follow_u WHERE p_user_follower_id = :p_user_id4)
+    AND p_user.id <> :p_user_id5
+GROUP BY p_user.id
+ORDER BY nb_users DESC
+)
+
+ORDER BY unionsorting ASC
+) unionsorting
+
+LIMIT :offset, :limit
+        ";
+
+        return $sql;
+    }
+
     /* ######################################################################################################## */
     /*                                            RAW SQL OPERATIONS                                            */
     /* ######################################################################################################## */
@@ -342,6 +450,47 @@ LIMIT :offset, :count
         return $timeline;
     }
 
+    /**
+     * User's users' suggestions paginated listing
+     *
+     * @param integer $userId
+     * @param integer $offset
+     * @param integer $limit
+     * @return PropelCollection[PUser]
+     */
+    public function generateUserSuggestedUsersPaginatedListing($userId, $offset, $limit)
+    {
+        $this->logger->info('*** generateUserSuggestedUsersPaginatedListing');
+        $this->logger->info('$userId = ' . print_r($userId, true));
+        $this->logger->info('$offset = ' . print_r($offset, true));
+        $this->logger->info('$limit = ' . print_r($limit, true));
+
+        $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
+        $stmt = $con->prepare($this->createUserSuggestedUsersRawSql());
+
+        $stmt->bindValue(':p_user_id', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_user_id2', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_user_id3', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_user_id4', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_user_id5', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, \PDO::PARAM_INT);
+        $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        $result = $stmt->fetchAll();
+
+        $users = new \PropelCollection();
+        foreach ($result as $row) {
+            $user = new PUser();
+            $user->hydrate($row);
+
+            $users->append($user);
+        }
+
+        return $users;
+    }
+    
     /* ######################################################################################################## */
     /*                                        SECURITY OPERATIONS                                               */
     /* ######################################################################################################## */

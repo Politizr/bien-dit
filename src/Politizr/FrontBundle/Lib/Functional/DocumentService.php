@@ -64,6 +64,36 @@ class DocumentService
     /* ######################################################################################################## */
     /*                                              SPECIFIC LISTING                                            */
     /* ######################################################################################################## */
+
+    /**
+     * Get user's debates' suggestions paginated listing
+     *
+     * @param int $userId
+     * @param int $offset
+     * @param int $count
+     * @return PropelCollection PDocument
+     */
+    public function getUserSuggestedDebatesPaginatedListing($userId, $offset = 0, $count = ListingConstants::MODAL_CLASSIC_PAGINATION)
+    {
+        $documents = $this->documentManager->generateUserSuggestedDebatesPaginatedListing($userId, $offset, $count);
+
+        return $documents;
+    }
+    
+    /**
+     * Get user's reactions' suggestions paginated listing
+     *
+     * @param int $userId
+     * @param int $offset
+     * @param int $count
+     * @return PropelCollection PDocument
+     */
+    public function getUserSuggestedReactionsPaginatedListing($userId, $offset = 0, $count = ListingConstants::MODAL_CLASSIC_PAGINATION)
+    {
+        $documents = $this->documentManager->generateUserSuggestedReactionsPaginatedListing($userId, $offset, $count);
+
+        return $documents;
+    }
     
     /**
      * Get "my publications" paginated listing

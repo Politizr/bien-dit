@@ -23,6 +23,8 @@ services:
         arguments:
             - @security.token_storage
             - @templating
+            - @politizr.functional.document
+            - @politizr.functional.user
             - @politizr.functional.tag
             - @logger
 
@@ -32,6 +34,8 @@ services:
         arguments:
             - @security.token_storage
             - @templating
+            - @politizr.functional.document
+            - @politizr.functional.user
             - @politizr.functional.tag
             - @logger
 
