@@ -10,6 +10,7 @@ use GuzzleHttp;
 use Politizr\Exception\BoxErrorException;
 
 use Politizr\FrontBundle\Lib\SimpleImage;
+use Politizr\FrontBundle\Lib\TimelineRow;
 use Politizr\FrontBundle\Form\Type\PUMandateType;
 
 use Politizr\Constant\QualificationConstants;
@@ -383,5 +384,32 @@ class GlobalTools
         }
 
         return true;
+    }
+
+    /**
+     * Hydrate "TimelineRow" objects from raw sql results
+     *
+     * @param array|false $result
+     * @return array[TimelineRow]
+     */
+    public function hydrateTimelineRows($result)
+    {
+        $this->logger->info('*** hydrateTimelineRows');
+
+        $timeline = array();
+        if ($result) {
+            foreach ($result as $row) {
+                $timelineRow = new TimelineRow();
+
+                $timelineRow->setId($row['id']);
+                $timelineRow->setTitle($row['title']);
+                $timelineRow->setPublishedAt($row['published_at']);
+                $timelineRow->setType($row['type']);
+
+                $timeline[] = $timelineRow;
+            }
+        }
+
+        return $timeline;
     }
 }

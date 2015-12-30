@@ -2,6 +2,7 @@
 namespace Politizr\FrontBundle\Lib\Functional;
 
 use Politizr\Constant\ObjectTypeConstants;
+use Politizr\Constant\ListingConstants;
 
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
@@ -129,167 +130,10 @@ class TimelineService
         return $myReactionIds;
     }
 
-    /**
-     * User's "My Politizr" timeline
-     *
-     * @param integer $userId
-     * @param integer $offset
-     * @param integer $count
-     * @return string
-     */
-    private function generateTimelineRawSql($userId, $offset, $count = 10)
-    {
-        $this->logger->info('*** generateTimelineRawSql');
-        $this->logger->info('userId = '.print_r($userId, true));
-        $this->logger->info('offset = '.print_r($offset, true));
-        $this->logger->info('count = '.print_r($count, true));
-        
-        // Récupération d'un tableau des ids des débats suivis
-        $debateIds = $this->getFollowedDebatesIdsArray($userId);
-        $inQueryDebateIds = implode(',', $debateIds);
-        if (empty($inQueryDebateIds)) {
-            $inQueryDebateIds = 0;
-        }
-        $this->logger->info('inQueryDebateIds = '.print_r($inQueryDebateIds, true));
-
-        // Récupération d'un tableau des ids des users suivis
-        $userIds = $this->getFollowedUsersIdsArray($userId);
-        $inQueryUserIds = implode(',', $userIds);
-        if (empty($inQueryUserIds)) {
-            $inQueryUserIds = 0;
-        }
-        $this->logger->info('inQueryUserIds = '.print_r($inQueryUserIds, true));
-
-        // Récupération d'un tableau des ids de mes débats
-        $myDebateIds = $this->getMyDebateIdsArray($userId);
-        $inQueryMyDebateIds = implode(',', $myDebateIds);
-        if (empty($inQueryMyDebateIds)) {
-            $inQueryMyDebateIds = 0;
-        }
-        $this->logger->info('inQueryMyDebateIds = '.print_r($inQueryMyDebateIds, true));
-
-        // Récupération d'un tableau des ids de mes réactions
-        $myReactionIds = $this->getMyReactionIdsArray($userId);
-        $inQueryMyReactionIds = implode(',', $myReactionIds);
-        if (empty($inQueryMyReactionIds)) {
-            $inQueryMyReactionIds = 0;
-        }
-        $this->logger->info('inQueryMyReactionIds = '.print_r($inQueryMyReactionIds, true));
-
-        $sql = $this->userManager->createTimelineRawSql(
-            $userId,
-            $inQueryDebateIds,
-            $inQueryUserIds,
-            $inQueryMyDebateIds,
-            $inQueryMyReactionIds,
-            $offset,
-            $count
-        );
-
-        return $sql;
-    }
-
-   /**
-     * Debate feed timeline
-     *
-     * @param integer $debateId
-     * @return string
-     */
-    private function generateDebateFeedRawSql($debateId)
-    {
-        $this->logger->info('*** getSql');
-
-        if ($this->securityAuthorizationChecker->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-            $user = $this->securityTokenStorage->getToken()->getUser();
-            $userId = $user->getId();
-            $this->logger->info('userId = '.print_r($userId, true));
-
-            // Récupération d'un tableau des ids des users suivis
-            $userIds = $this->getFollowedUsersIdsArray($user->getId());
-
-            $inQueryUserIds = implode(',', $userIds);
-            if (empty($inQueryUserIds)) {
-                $inQueryUserIds = $userId;
-            } else {
-                $inQueryUserIds .= ',' . $userId;
-            }
-        } else {
-            $inQueryUserIds = 0;
-        }
-
-        $this->logger->info('inQueryUserIds = '.print_r($inQueryUserIds, true));
-        $sql = $this->documentManager->createDebateFeedRawSql(
-            $debateId,
-            $inQueryUserIds
-        );
-
-        return $sql;
-    }
-
-   /**
-     * User's detail timeline
-     *
-     * @param integer $userId
-     * @param integer $offset
-     * @param integer $count
-     * @return string
-     */
-    private function generateUserDetailTimelineRawSql($userId, $offset, $count = 10)
-    {
-        $this->logger->info('*** getSql');
-
-        $sql = $this->userManager->createUserDetailTimelineRawSql(
-            $userId,
-            $offset,
-            $count
-        );
-
-        return $sql;
-    }
-
-    /**
-     * Execute SQL and hydrate TimelineRow model
-     *
-     * @param string $sql
-     * @return array[TimelineRow]
-     */
-    private function hydrateTimelineRows($sql)
-    {
-        $this->logger->info('*** hydrateTimelineRows');
-
-        $timeline = array();
-
-        if ($sql) {
-            $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
-
-            // dump($sql);
-
-            $stmt = $con->prepare($sql);
-            $stmt->execute();
-
-            $result = $stmt->fetchAll();
-
-            // dump($result);
-
-            foreach ($result as $row) {
-                $timelineRow = new TimelineRow();
-
-                $timelineRow->setId($row['id']);
-                $timelineRow->setTitle($row['title']);
-                $timelineRow->setPublishedAt($row['published_at']);
-                $timelineRow->setType($row['type']);
-
-                $timeline[] = $timelineRow;
-            }
-        }
-
-        return $timeline;
-    }
-
     /* ######################################################################################################## */
-    /*                                              GENERIC TIMELINE                                            */
+    /*                                        USEFUL GENERIC FUNCTIONS                                          */
     /* ######################################################################################################## */
-
+    
     /**
      * Add a date key to TimelineRow array for indexing the associated published TimelineRow elements.
      *
@@ -316,18 +160,57 @@ class TimelineService
     /* ######################################################################################################## */
     
     /**
-     * Get the "My Politizr" timeline
+     * Get the "My Politizr" paginated timeline
      *
      * @param integer $userId
      * @param integer $offset
+     * @param integer $count
      * @return array[TimelineRow]
      */
-    public function generateMyPolitizrTimeline($userId, $offset = 0)
+    public function getMyTimelinePaginatedListing($userId, $offset = 0, $count = ListingConstants::TIMELINE_CLASSIC_PAGINATION)
     {
-        $this->logger->info('*** generateMyPolitizrTimeline');
+        $this->logger->info('*** getMyTimelineDateKeyPaginatedListing');
+        $this->logger->info('userId = '.print_r($userId, true));
+        $this->logger->info('offset = '.print_r($offset, true));
+        $this->logger->info('count = '.print_r($count, true));
         
-        $sql = $this->generateTimelineRawSql($userId, $offset);
-        $timeline = $this->hydrateTimelineRows($sql);
+        // Récupération d'un tableau des ids des débats suivis
+        $debateIds = $this->getFollowedDebatesIdsArray($userId);
+        $inQueryDebateIds = implode(',', $debateIds);
+        if (empty($inQueryDebateIds)) {
+            $inQueryDebateIds = 0;
+        }
+
+        // Récupération d'un tableau des ids des users suivis
+        $userIds = $this->getFollowedUsersIdsArray($userId);
+        $inQueryUserIds = implode(',', $userIds);
+        if (empty($inQueryUserIds)) {
+            $inQueryUserIds = 0;
+        }
+
+        // Récupération d'un tableau des ids de mes débats
+        $myDebateIds = $this->getMyDebateIdsArray($userId);
+        $inQueryMyDebateIds = implode(',', $myDebateIds);
+        if (empty($inQueryMyDebateIds)) {
+            $inQueryMyDebateIds = 0;
+        }
+
+        // Récupération d'un tableau des ids de mes réactions
+        $myReactionIds = $this->getMyReactionIdsArray($userId);
+        $inQueryMyReactionIds = implode(',', $myReactionIds);
+        if (empty($inQueryMyReactionIds)) {
+            $inQueryMyReactionIds = 0;
+        }
+
+        $timeline = $this->userManager->generateMyTimelinePaginatedListing(
+            $userId,
+            $inQueryDebateIds,
+            $inQueryUserIds,
+            $inQueryMyDebateIds,
+            $inQueryMyReactionIds,
+            $offset,
+            $count
+        );
 
         return $timeline;
     }
@@ -337,20 +220,41 @@ class TimelineService
     /* ######################################################################################################## */
 
     /**
-     * Get the debate feed timeline
+     * Get the debate feed timeline indexed by date key
      *
      * @param integer $debateId
      * @return array[TimelineRow]
      */
-    public function generateDebateFeedTimeline($debateId)
+    public function getDebateFeedTimeline($debateId)
     {
-        $this->logger->info('*** generateDebateFeedTimeline');
+        $this->logger->info('*** getDebateFeedTimeline');
+        $this->logger->info('$debateId = ' . print_r($debateId, true));
         
-        $sql = $this->generateDebateFeedRawSql($debateId);
-        $timeline = $this->hydrateTimelineRows($sql);
+        if ($this->securityAuthorizationChecker->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            $user = $this->securityTokenStorage->getToken()->getUser();
+            $userId = $user->getId();
+
+            // Récupération d'un tableau des ids des users suivis
+            $userIds = $this->getFollowedUsersIdsArray($user->getId());
+
+            $inQueryUserIds = implode(',', $userIds);
+            if (empty($inQueryUserIds)) {
+                $inQueryUserIds = $userId;
+            } else {
+                $inQueryUserIds .= ',' . $userId;
+            }
+        } else {
+            $inQueryUserIds = 0;
+        }
+
+        $timeline = $this->documentManager->generateDebateFeedTimeline(
+            $debateId,
+            $inQueryUserIds
+        );
 
         return $timeline;
     }
+
 
     /* ######################################################################################################## */
     /*                                            USER DETAIL TIMELINE                                          */
@@ -363,12 +267,14 @@ class TimelineService
      * @param integer $offset
      * @return array[TimelineRow]
      */
-    public function generateUserDetailTimeline($userId, $offset = 0)
+    public function getUserDetailTimelinePaginatedListing($userId, $offset = 0, $count = ListingConstants::TIMELINE_USER_CLASSIC_PAGINATION)
     {
-        $this->logger->info('*** generateUserDetailTimeline');
-        
-        $sql = $this->generateUserDetailTimelineRawSql($userId, $offset);
-        $timeline = $this->hydrateTimelineRows($sql);
+        $this->logger->info('*** getUserDetailTimelinePaginatedListing');
+        $this->logger->info('userId = '.print_r($userId, true));
+        $this->logger->info('offset = '.print_r($offset, true));
+        $this->logger->info('count = '.print_r($count, true));
+
+        $timeline = $this->userManager->generateUserDetailTimelinePaginatedListing($userId, $offset, $count);
 
         return $timeline;
     }

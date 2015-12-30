@@ -141,10 +141,8 @@ class DocumentController extends Controller
         $this->checkDocument($debate);
 
         // get debate feed
-        $timelineService = $this->get('politizr.functional.timeline');
-
-        $timeline = $timelineService->generateDebateFeedTimeline($debate->getId());
-        $timelineDateKey = $timelineService->generateTimelineDateKey($timeline);
+        $timeline = $this->get('politizr.functional.timeline')->getDebateFeedTimeline($debate->getId());
+        $timelineDateKey = $this->get('politizr.functional.timeline')->generateTimelineDateKey($timeline);
 
         $noResult = false;
         if (count($timeline) == 0) {

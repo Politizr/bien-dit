@@ -22,9 +22,10 @@ use Politizr\Model\PNotificationQuery;
  */
 class UserManager
 {
-    protected $encoderFactory;
-    protected $usernameCanonicalizer;
-    protected $emailCanonicalizer;
+    private $encoderFactory;
+    private $usernameCanonicalizer;
+    private $emailCanonicalizer;
+    private $globalTools;
 
     private $logger;
 
@@ -33,13 +34,16 @@ class UserManager
      * @param @security.encoder_factory
      * @param @fos_user.util.username_canonicalizer
      * @param @fos_user.util.email_canonicalizer
+     * @param @politizr.tools.global
      * @param @logger
      */
-    public function __construct($encoderFactory, $usernameCanonicalizer, $emailCanonicalizer, $logger)
+    public function __construct($encoderFactory, $usernameCanonicalizer, $emailCanonicalizer, $globalTools, $logger)
     {
         $this->encoderFactory = $encoderFactory;
         $this->usernameCanonicalizer = $usernameCanonicalizer;
         $this->emailCanonicalizer = $emailCanonicalizer;
+
+        $this->globalTools = $globalTools;
 
         $this->logger = $logger;
     }
@@ -52,17 +56,9 @@ class UserManager
      * User's "My Politizr" timeline
      *
      * @see app/sql/timeline.sql
-     *
-     * @param integer $userId
-     * @param array $inQueryDebateIds
-     * @param array $inQueryUserIds
-     * @param array $inQueryMyDebateIds
-     * @param array $inQueryMyReactionIds
-     * @param integer $offset
-     * @param integer $count
      * @return string
      */
-    public function createTimelineRawSql($userId, $inQueryDebateIds, $inQueryUserIds, $inQueryMyDebateIds, $inQueryMyReactionIds, $offset, $count = 10)
+    public function createMyTimelineRawSql()
     {
         $sql = "
 ( SELECT p_d_debate.id as id, p_d_debate.title as title, p_d_debate.published_at as published_at, 'Politizr\\\Model\\\PDDebate' as type
@@ -70,7 +66,7 @@ FROM p_d_debate
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1
-    AND p_d_debate.p_user_id = ".$userId." )
+    AND p_d_debate.p_user_id = :p_user_id )
 
 UNION DISTINCT
 
@@ -79,7 +75,7 @@ FROM p_d_reaction
 WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
-    AND p_d_reaction.p_user_id = ".$userId."
+    AND p_d_reaction.p_user_id = :p_user_id2
     AND p_d_reaction.tree_level > 0 )
 
 UNION DISTINCT
@@ -89,7 +85,7 @@ FROM p_d_debate
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1
-    AND p_d_debate.id IN (".$inQueryDebateIds.") )
+    AND p_d_debate.id IN (:inQueryDebateIds) )
 
 UNION DISTINCT
 
@@ -98,7 +94,7 @@ FROM p_d_reaction
 WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
-    AND p_d_reaction.p_d_debate_id IN (".$inQueryDebateIds.")
+    AND p_d_reaction.p_d_debate_id IN (:inQueryDebateIds2)
     AND p_d_reaction.tree_level > 0 )
 
 UNION DISTINCT
@@ -108,7 +104,7 @@ FROM p_d_debate
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1
-    AND p_d_debate.p_user_id IN (".$inQueryUserIds.") )
+    AND p_d_debate.p_user_id IN (:inQueryUserIds) )
 
 UNION DISTINCT
 
@@ -117,7 +113,7 @@ FROM p_d_reaction
 WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
-    AND p_d_reaction.p_user_id IN (".$inQueryUserIds.") )
+    AND p_d_reaction.p_user_id IN (:inQueryUserIds2) )
 
 UNION DISTINCT
 
@@ -128,7 +124,7 @@ FROM p_d_reaction
 WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
-    AND p_d_debate.p_user_id = ".$userId."
+    AND p_d_debate.p_user_id = :p_user_id3
     AND p_d_reaction.tree_level > 0 )
 
 UNION DISTINCT
@@ -140,7 +136,7 @@ FROM p_d_reaction as p_d_reaction
 WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
-    AND my_reaction.id IN (".$inQueryMyReactionIds.")
+    AND my_reaction.id IN (:inQueryMyReactionIds)
     AND p_d_reaction.tree_left > my_reaction.tree_left
     AND p_d_reaction.tree_left < my_reaction.tree_right
     AND p_d_reaction.tree_level > my_reaction.tree_level
@@ -152,7 +148,7 @@ UNION DISTINCT
 FROM p_d_d_comment
 WHERE
     p_d_d_comment.online = 1
-    AND p_d_d_comment.p_user_id = ".$userId." )
+    AND p_d_d_comment.p_user_id = :p_user_id4 )
 
 UNION DISTINCT
 
@@ -160,7 +156,7 @@ UNION DISTINCT
 FROM p_d_r_comment
 WHERE
     p_d_r_comment.online = 1
-    AND p_d_r_comment.p_user_id = ".$userId." )
+    AND p_d_r_comment.p_user_id = :p_user_id5 )
 
 UNION DISTINCT
 
@@ -168,7 +164,7 @@ UNION DISTINCT
 FROM p_d_d_comment
 WHERE
     p_d_d_comment.online = 1
-    AND p_d_d_comment.p_user_id IN (".$inQueryUserIds.") )
+    AND p_d_d_comment.p_user_id IN (:inQueryUserIds3) )
 
 UNION DISTINCT
 
@@ -176,7 +172,7 @@ UNION DISTINCT
 FROM p_d_r_comment
 WHERE
     p_d_r_comment.online = 1
-    AND p_d_r_comment.p_user_id IN (".$inQueryUserIds.") )
+    AND p_d_r_comment.p_user_id IN (:inQueryUserIds4) )
 
 UNION DISTINCT
 
@@ -184,7 +180,7 @@ UNION DISTINCT
 FROM p_d_d_comment
 WHERE
     p_d_d_comment.online = 1
-    AND p_d_d_comment.p_d_debate_id IN (".$inQueryMyDebateIds.") )
+    AND p_d_d_comment.p_d_debate_id IN (:inQueryMyDebateIds) )
 
 UNION DISTINCT
 
@@ -192,26 +188,23 @@ UNION DISTINCT
 FROM p_d_r_comment
 WHERE
     p_d_r_comment.online = 1
-    AND p_d_r_comment.p_d_reaction_id IN (".$inQueryMyReactionIds.") )
+    AND p_d_r_comment.p_d_reaction_id IN (:inQueryMyReactionIds2) )
 
 ORDER BY published_at DESC
-LIMIT ".$offset.", ".$count."
+LIMIT :offset, :count
         ";
 
         return $sql;
     }
 
     /**
-     * User's "My Politizr" timeline
+     * User's detail timeline
      *
      * @see app/sql/userDetail.sql
      *
-     * @param integer $userId
-     * @param integer $offset
-     * @param integer $count
      * @return string
      */
-    public function createUserDetailTimelineRawSql($userId, $offset, $count = 10)
+    public function createUserDetailTimelineRawSql()
     {
         $sql = "
 # Débats rédigés
@@ -220,7 +213,7 @@ FROM p_d_debate
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1
-    AND p_d_debate.p_user_id = ".$userId." )
+    AND p_d_debate.p_user_id = :p_user_id )
 
 UNION DISTINCT
 
@@ -231,7 +224,7 @@ WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
     AND p_d_reaction.tree_level > 0
-    AND p_d_reaction.p_user_id = ".$userId." )
+    AND p_d_reaction.p_user_id = :p_user_id2 )
 
 UNION DISTINCT
 
@@ -240,7 +233,7 @@ UNION DISTINCT
 FROM p_d_d_comment
 WHERE
     p_d_d_comment.online = 1
-    AND p_d_d_comment.p_user_id = ".$userId." )
+    AND p_d_d_comment.p_user_id = :p_user_id3 )
 
 UNION DISTINCT
 
@@ -249,14 +242,104 @@ UNION DISTINCT
 FROM p_d_r_comment
 WHERE
     p_d_r_comment.online = 1
-    AND p_d_r_comment.p_user_id = ".$userId." )
+    AND p_d_r_comment.p_user_id = :p_user_id4 )
 
 ORDER BY published_at DESC
 
-LIMIT ".$offset.", ".$count."
+LIMIT :offset, :count
         ";
 
         return $sql;
+    }
+
+    /* ######################################################################################################## */
+    /*                                            RAW SQL OPERATIONS                                            */
+    /* ######################################################################################################## */
+
+    /**
+     * My timeline paginated listing
+     *
+     * @param integer $userId
+     * @param string $inQueryDebateIds
+     * @param string $inQueryUserIds
+     * @param string $inQueryMyDebateIds
+     * @param string $inQueryMyReactionIds
+     * @param integer $offset
+     * @param integer $count
+     * @return string
+     */
+    public function generateMyTimelinePaginatedListing($userId, $inQueryDebateIds, $inQueryUserIds, $inQueryMyDebateIds, $inQueryMyReactionIds, $offset, $count)
+    {
+        $this->logger->info('*** generateMyTimelinePaginatedListing');
+        $this->logger->info('$userId = ' . print_r($userId, true));
+        $this->logger->info('$inQueryDebateIds = ' . print_r($inQueryDebateIds, true));
+        $this->logger->info('$inQueryUserIds = ' . print_r($inQueryUserIds, true));
+        $this->logger->info('$inQueryMyDebateIds = ' . print_r($inQueryMyDebateIds, true));
+        $this->logger->info('$inQueryMyReactionIds = ' . print_r($inQueryMyReactionIds, true));
+        $this->logger->info('$offset = ' . print_r($offset, true));
+        $this->logger->info('$count = ' . print_r($count, true));
+
+        $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
+        $stmt = $con->prepare($this->createMyTimelineRawSql());
+
+        $stmt->bindValue(':p_user_id', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_user_id2', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_user_id3', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_user_id4', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_user_id5', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':inQueryDebateIds', $inQueryDebateIds, \PDO::PARAM_STR);
+        $stmt->bindValue(':inQueryDebateIds2', $inQueryDebateIds, \PDO::PARAM_STR);
+        $stmt->bindValue(':inQueryUserIds', $inQueryUserIds, \PDO::PARAM_STR);
+        $stmt->bindValue(':inQueryUserIds2', $inQueryUserIds, \PDO::PARAM_STR);
+        $stmt->bindValue(':inQueryUserIds3', $inQueryUserIds, \PDO::PARAM_STR);
+        $stmt->bindValue(':inQueryUserIds4', $inQueryUserIds, \PDO::PARAM_STR);
+        $stmt->bindValue(':inQueryMyDebateIds', $inQueryMyDebateIds, \PDO::PARAM_STR);
+        $stmt->bindValue(':inQueryMyReactionIds', $inQueryMyReactionIds, \PDO::PARAM_STR);
+        $stmt->bindValue(':inQueryMyReactionIds2', $inQueryMyReactionIds, \PDO::PARAM_STR);
+        $stmt->bindValue(':offset', $offset, \PDO::PARAM_INT);
+        $stmt->bindValue(':count', $count, \PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        $result = $stmt->fetchAll();
+
+        $timeline = $this->globalTools->hydrateTimelineRows($result);
+
+        return $timeline;
+    }
+
+    /**
+     * User's detail timeline paginated listing
+     *
+     * @param integer $userId
+     * @param integer $offset
+     * @param integer $count
+     * @return string
+     */
+    public function generateUserDetailTimelinePaginatedListing($userId, $offset, $count)
+    {
+        $this->logger->info('*** generateUserDetailTimelinePaginatedListing');
+        $this->logger->info('$userId = ' . print_r($userId, true));
+        $this->logger->info('$offset = ' . print_r($offset, true));
+        $this->logger->info('$count = ' . print_r($count, true));
+
+        $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
+        $stmt = $con->prepare($this->createUserDetailTimelineRawSql());
+
+        $stmt->bindValue(':p_user_id', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_user_id2', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_user_id3', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_user_id4', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, \PDO::PARAM_INT);
+        $stmt->bindValue(':count', $count, \PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        $result = $stmt->fetchAll();
+
+        $timeline = $this->globalTools->hydrateTimelineRows($result);
+
+        return $timeline;
     }
 
     /* ######################################################################################################## */

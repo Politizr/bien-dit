@@ -792,8 +792,7 @@ class XhrUser
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
         
-        $timeline = $this->timelineService->generateMyPolitizrTimeline($user->getId(), $offset);
-
+        $timeline = $this->timelineService->getMyTimelinePaginatedListing($user->getId(), $offset, ListingConstants::TIMELINE_CLASSIC_PAGINATION);
         $moreResults = false;
         if (sizeof($timeline) == ListingConstants::TIMELINE_CLASSIC_PAGINATION) {
             $moreResults = true;
@@ -842,7 +841,7 @@ class XhrUser
             throw new InconsistentDataException(sprintf('User %s not found', $uuid));
         }
 
-        $timeline = $this->timelineService->generateUserDetailTimeline($user->getId(), $offset);
+        $timeline = $this->timelineService->getUserDetailTimelinePaginatedListing($user->getId(), $offset, ListingConstants::TIMELINE_CLASSIC_PAGINATION);
 
         $moreResults = false;
         if (sizeof($timeline) == ListingConstants::TIMELINE_USER_CLASSIC_PAGINATION) {

@@ -910,7 +910,7 @@ class XhrDocument
         $user = $this->securityTokenStorage->getToken()->getUser();
 
         // get drafts
-        $documents = $this->documentManager->getMyDocumentsListing($user->getId(), 0, 'updated_at', $offset, ListingConstants::MODAL_CLASSIC_PAGINATION);
+        $documents = $this->documentService->getMyDraftsPaginatedListing($user->getId(), $offset, ListingConstants::MODAL_CLASSIC_PAGINATION);
 
         $moreResults = false;
         if (sizeof($documents) == ListingConstants::MODAL_CLASSIC_PAGINATION) {
@@ -960,7 +960,7 @@ class XhrDocument
         $user = $this->securityTokenStorage->getToken()->getUser();
         
         // get publications
-        $documents = $this->documentManager->getMyDocumentsListing($user->getId(), 1, 'published_at', $offset, ListingConstants::MODAL_CLASSIC_PAGINATION);
+        $documents = $this->documentService->getMyPublicationsPaginatedListing($user->getId(), $offset, ListingConstants::MODAL_CLASSIC_PAGINATION);
 
         $moreResults = false;
         if (sizeof($documents) == ListingConstants::MODAL_CLASSIC_PAGINATION) {

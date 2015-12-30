@@ -5,6 +5,7 @@ use Politizr\Exception\InconsistentDataException;
 
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\ReputationConstants;
+use Politizr\Constant\ListingConstants;
 
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDReaction;
@@ -57,6 +58,41 @@ class DocumentService
         $this->router = $router;
 
         $this->logger = $logger;
+    }
+
+
+    /* ######################################################################################################## */
+    /*                                              SPECIFIC LISTING                                            */
+    /* ######################################################################################################## */
+    
+    /**
+     * Get "my publications" paginated listing
+     *
+     * @param int $userId
+     * @param int $offset
+     * @param int $count
+     * @return PropelCollection PDocument
+     */
+    public function getMyPublicationsPaginatedListing($userId, $offset = 0, $count = ListingConstants::MODAL_CLASSIC_PAGINATION)
+    {
+        $documents = $this->documentManager->generateMyDocumentsPaginatedListing($userId, 1, 'published_at', $offset, $count);
+
+        return $documents;
+    }
+
+    /**
+     * Get "my drafts" paginated listing
+     *
+     * @param int $userId
+     * @param int $offset
+     * @param int $count
+     * @return PropelCollection PDocument
+     */
+    public function getMyDraftsPaginatedListing($userId, $offset = 0, $count = ListingConstants::MODAL_CLASSIC_PAGINATION)
+    {
+        $documents = $this->documentManager->generateMyDocumentsPaginatedListing($userId, 0, 'updated_at', $offset, $count);
+
+        return $documents;
     }
 
     /* ######################################################################################################## */

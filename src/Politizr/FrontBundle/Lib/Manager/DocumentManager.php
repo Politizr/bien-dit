@@ -26,7 +26,7 @@ class DocumentManager
 
     /**
      *
-     * @param politizr.tools.global
+     * @param @politizr.tools.global
      * @param @logger
      */
     public function __construct($globalTools, $logger)
@@ -36,7 +36,6 @@ class DocumentManager
         $this->logger = $logger;
     }
 
-
     /* ######################################################################################################## */
     /*                                                  RAW SQL                                                 */
     /* ######################################################################################################## */
@@ -45,12 +44,9 @@ class DocumentManager
      * Debate feed timeline
      *
      * @see app/sql/debateFeed.sql
-     *
-     * @param integer $debateId
-     * @param array $inQueryUserIds
      * @return string
      */
-    public function createDebateFeedRawSql($debateId, $inQueryUserIds)
+    public function createDebateFeedRawSql()
     {
         // Préparation requête SQL
         $sql = "
@@ -59,7 +55,7 @@ FROM p_d_reaction
 WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
-    AND p_d_reaction.p_d_debate_id = ".$debateId."
+    AND p_d_reaction.p_d_debate_id = :p_d_debate_id
     AND p_d_reaction.tree_level > 0
 )
 
@@ -69,8 +65,8 @@ UNION DISTINCT
 FROM p_d_d_comment
 WHERE
     p_d_d_comment.online = 1
-    AND p_d_d_comment.p_d_debate_id = ".$debateId."
-    AND p_d_d_comment.p_user_id IN (".$inQueryUserIds.")
+    AND p_d_d_comment.p_d_debate_id = :p_d_debate_id2
+    AND p_d_d_comment.p_user_id IN (:inQueryUserIds)
 )
 
 UNION DISTINCT
@@ -86,10 +82,10 @@ WHERE
         WHERE
             p_d_reaction.published = 1
             AND p_d_reaction.online = 1
-            AND p_d_reaction.p_d_debate_id = ".$debateId."
+            AND p_d_reaction.p_d_debate_id = :p_d_debate_id3
             AND p_d_reaction.tree_level > 0
             )
-            AND p_d_r_comment.p_user_id IN (".$inQueryUserIds.")
+            AND p_d_r_comment.p_user_id IN (:inQueryUserIds2)
     )
 
 ORDER BY published_at ASC
@@ -106,7 +102,7 @@ ORDER BY published_at ASC
      * @param string $orderBy
      * @return string
      */
-    private function getMyDocumentsRawSql($orderBy = 'published_at')
+    private function createMyDocumentsRawSql($orderBy = 'published_at')
     {
         $sql = "
 ( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.published_at as published_at, p_d_reaction.updated_at as updated_at, 'Politizr\\\Model\\\PDReaction' as type
@@ -264,6 +260,59 @@ AND p_u_reputation.created_at < '".$untilAt."'
     /* ######################################################################################################## */
 
     /**
+     * My documents paginated listing
+     *
+     * @param integer $userId
+     * @param integer $published
+     * @param string $orderBy
+     * @param integer $offset
+     * @param integer $count
+     * @return string
+     */
+    public function generateMyDocumentsPaginatedListing($userId, $published, $orderBy, $offset, $count)
+    {
+        $this->logger->info('*** generateMyDocumentsPaginatedListing');
+        $this->logger->info('$userId = ' . print_r($userId, true));
+        $this->logger->info('$published = ' . print_r($published, true));
+        $this->logger->info('$orderBy = ' . print_r($orderBy, true));
+        $this->logger->info('$offset = ' . print_r($offset, true));
+        $this->logger->info('$count = ' . print_r($count, true));
+
+        $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
+        $stmt = $con->prepare($this->createMyDocumentsRawSql($orderBy));
+
+        $stmt->bindValue(':p_user_id', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_user_id2', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':published', $published, \PDO::PARAM_INT);
+        $stmt->bindValue(':published2', $published, \PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, \PDO::PARAM_INT);
+        $stmt->bindValue(':count', $count, \PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        $result = $stmt->fetchAll();
+
+        $documents = new \PropelCollection();
+        $i = 0;
+        foreach ($result as $row) {
+            $type = $row['type'];
+
+            if ($type == ObjectTypeConstants::TYPE_DEBATE) {
+                $document = PDDebateQuery::create()->findPk($row['id']);
+            } elseif ($type == ObjectTypeConstants::TYPE_REACTION) {
+                $document = PDReactionQuery::create()->findPk($row['id']);
+            } else {
+                throw new InconsistentDataException(sprintf('Object type %s unknown.', $type));
+            }
+            
+            $documents->set($i, $document);
+            $i++;
+        }
+
+        return $documents;
+    }
+    
+    /**
      * My documents listing
      *
      * @param integer $userId
@@ -271,53 +320,27 @@ AND p_u_reputation.created_at < '".$untilAt."'
      * @param integer $count
      * @return string
      */
-    public function getMyDocumentsListing($userId, $published, $orderBy = 'published_at', $offset = 0, $count = 10)
+    public function generateDebateFeedTimeline($debateId, $inQueryUserIds)
     {
-        $this->logger->info('*** getMyDocumentsListing');
+        $this->logger->info('*** generateDebateFeedTimeline');
+        $this->logger->info('$debateId = ' . print_r($debateId, true));
+        $this->logger->info('$inQueryUserIds = ' . print_r($inQueryUserIds, true));
 
-        $sql = $this->getMyDocumentsRawSql($orderBy);
+        $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
+        $stmt = $con->prepare($this->createDebateFeedRawSql());
 
-        $documents = new \PropelCollection();
+        $stmt->bindValue(':p_d_debate_id', $debateId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_d_debate_id2', $debateId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_d_debate_id3', $debateId, \PDO::PARAM_INT);
+        $stmt->bindValue(':inQueryUserIds', $inQueryUserIds, \PDO::PARAM_STR);
+        $stmt->bindValue(':inQueryUserIds2', $inQueryUserIds, \PDO::PARAM_STR);
 
-        if ($sql) {
-            $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
+        $stmt->execute();
+        $result = $stmt->fetchAll();
 
-            // dump($sql);
+        $timeline = $this->globalTools->hydrateTimelineRows($result);
 
-            $stmt = $con->prepare($sql);
-
-            $stmt->bindValue(':p_user_id', $userId, \PDO::PARAM_INT);
-            $stmt->bindValue(':published', $published, \PDO::PARAM_INT);
-            $stmt->bindValue(':p_user_id2', $userId, \PDO::PARAM_INT);
-            $stmt->bindValue(':published2', $published, \PDO::PARAM_INT);
-            $stmt->bindValue(':offset', $offset, \PDO::PARAM_INT);
-            $stmt->bindValue(':count', $count, \PDO::PARAM_INT);
-
-            $stmt->execute();
-
-            $result = $stmt->fetchAll();
-
-            $i = 0;
-            foreach ($result as $row) {
-                $type = $row['type'];
-
-                if ($type == ObjectTypeConstants::TYPE_DEBATE) {
-                    $document = PDDebateQuery::create()->findPk($row['id']);
-                } elseif ($type == ObjectTypeConstants::TYPE_REACTION) {
-                    $document = PDReactionQuery::create()->findPk($row['id']);
-                } else {
-                    throw new InconsistentDataException(sprintf('Object type %s unknown.', $type));
-                }
-                
-                $documents->set($i, $document);
-                $i++;
-            }
-        }
-
-        return $documents;
-
-
-        return $sql;
+        return $timeline;
     }
     
     /**
