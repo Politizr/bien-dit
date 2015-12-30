@@ -274,6 +274,68 @@ LIMIT :offset, :limit
         return $sql;
     }
 
+    /**
+     * Return number of 1st level reactions for user publications
+     *
+     * cf sql/badges.sql
+     *
+     * @return string
+     */
+    private function createNbUserDocumentReactionsLevel1RawSql()
+    {
+        $sql = "
+SELECT COUNT(*) as nb
+FROM
+(
+# Liste des réactions filles de 1er niveau pour les réactions d un user
+SELECT child.id
+FROM p_d_reaction parent, p_d_reaction child
+WHERE
+    parent.p_user_id = :p_user_id
+    AND child.p_user_id <> :p_user_id2
+    AND child.p_d_debate_id = parent.p_d_debate_id
+    AND child.tree_level = parent.tree_level + 1
+    AND child.tree_left > parent.tree_left
+    AND child.tree_right < parent.tree_right
+GROUP BY child.p_d_debate_id
+
+UNION
+
+# Liste des réactions filles de 1er niveau pour les débats d un user
+SELECT child.id
+FROM p_d_debate parent, p_d_reaction child
+WHERE
+    parent.p_user_id = :p_user_id3
+    AND child.p_user_id <> :p_user_id4
+    AND child.p_d_debate_id = parent.id
+    AND child.tree_level = 1
+GROUP BY child.p_d_debate_id
+) x
+";
+
+        return $sql;
+    }
+
+    /**
+     * Return number of 1st level reactions for user publications
+     *
+     * @return string
+     */
+    public function createNbUserDebateFirstReaction()
+    {
+        $sql = "
+SELECT id
+FROM p_d_reaction 
+WHERE 
+    p_user_id = :p_user_id
+    AND tree_level = 1
+    AND tree_left = 2
+GROUP BY p_d_debate_id
+";
+
+        return $sql;
+    }
+
     /* ######################################################################################################## */
     /*                                            RAW SQL OPERATIONS                                            */
     /* ######################################################################################################## */
@@ -439,6 +501,60 @@ LIMIT :offset, :limit
         $timeline = $this->globalTools->hydrateTimelineRows($result);
 
         return $timeline;
+    }
+    
+    /**
+     * Return number of 1st level reactions for user publications
+     *
+     * @param int $userId
+     * @return int
+     */
+    public function generateNbUserDocumentReactionsLevel1($userId)
+    {
+        $this->logger->info('*** generateNbUserDocumentReactionsLevel1');
+        $this->logger->info('$userId = ' . print_r($userId, true));
+
+        $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
+        $stmt = $con->prepare($this->createNbUserDocumentReactionsLevel1RawSql());
+
+        $stmt->bindValue(':p_user_id', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_user_id2', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_user_id3', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_user_id4', $userId, \PDO::PARAM_INT);
+
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+
+        $count = 0;
+        if (isset($result[0]['nb'])) {
+            $count = $result[0]['nb'];
+        }
+
+        return $count;
+    }
+
+    /**
+     * Return number of debates' reactions written first by userId
+     *
+     * @param int $userId
+     * @return int
+     */
+    public function generateNbUserDebateFirstReaction($userId)
+    {
+        $this->logger->info('*** generateNbUserDebateFirstReaction');
+        $this->logger->info('$userId = ' . print_r($userId, true));
+
+        $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
+        $stmt = $con->prepare($this->createNbUserDebateFirstReaction());
+
+        $stmt->bindValue(':p_user_id', $userId, \PDO::PARAM_INT);
+
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+
+        $count = count($result);
+
+        return $count;
     }
     
     /* ######################################################################################################## */

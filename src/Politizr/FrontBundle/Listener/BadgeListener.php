@@ -18,22 +18,32 @@ use Politizr\Model\PDRCommentQuery;
 use Politizr\Model\PUFollowUQuery;
 
 /**
- *  Gestion des badges
+ * Badge listener management
  *
- *  @author Lionel Bouzonville
+ * @author Lionel Bouzonville
  */
 class BadgeListener
 {
-
-    protected $logger;
+    private $documentService;
+    private $eventDispatcher;
+    private $logger;
 
     /**
      *
+     * @param @politizr.functional.user
+     * @param @event_dispatcher
+     * @param @logger
      */
-    public function __construct($logger, $eventDispatcher)
-    {
-        $this->logger = $logger;
+    public function __construct(
+        $documentService,
+        $eventDispatcher,
+        $logger
+    ) {
+        $this->documentService = $documentService;
+        
         $this->eventDispatcher = $eventDispatcher;
+
+        $this->logger = $logger;
     }
 
 
@@ -240,52 +250,17 @@ class BadgeListener
     /**
      * Badges Querellé / Controversé / Polémiqué
      * Être l’auteur de contenus "débat" ou "réaction" ayant obtenu au moins X réactions
-     * cf sql/badges.sql
      *
-     * @param  $userId     integer     ID user
-     * @param  $badgeId    integer     ID badge
-     * @param  $nbReactions  integer   Nombre de réactions
+     * @param int $userId
+     * @param int $badgeId
+     * @param int $nbReactions
      */
     private function checkQuerelle($userId, $badgeId, $nbReactions)
     {
         if (!$this->hasBadge($userId, $badgeId)) {
-            $sql = "
-SELECT COUNT(*) as nb
-FROM
-(
-# Liste des réactions filles de 1er niveau pour les réactions d un user
-SELECT child.id
-FROM p_d_reaction parent, p_d_reaction child
-WHERE
-    parent.p_user_id = ".$userId."
-    AND child.p_user_id <> ".$userId."
-    AND child.p_d_debate_id = parent.p_d_debate_id
-    AND child.tree_level = parent.tree_level + 1
-    AND child.tree_left > parent.tree_left
-    AND child.tree_right < parent.tree_right
-GROUP BY child.p_d_debate_id
+            $nb =  $this->documentService->countNbUserDocumentReactionsLevel1($userId);
 
-UNION
-
-# Liste des réactions filles de 1er niveau pour les débats d un user
-SELECT child.id
-FROM p_d_debate parent, p_d_reaction child
-WHERE
-    parent.p_user_id = ".$userId."
-    AND child.p_user_id <> ".$userId."
-    AND child.p_d_debate_id = parent.id
-    AND child.tree_level = 1
-GROUP BY child.p_d_debate_id
-) x
-";
-
-            // Exécution de la requête
-            $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
-            $stmt = $con->prepare($sql);
-            $stmt->execute();
-            $result = $stmt->fetchAll();
-
-            if ($result[0]['nb'] >= $nbReactions) {
+            if ($nb >= $nbReactions) {
                 $this->addUserBadge($userId, $badgeId);
             }
         }
@@ -321,39 +296,24 @@ GROUP BY child.p_d_debate_id
     }
 
     /**
-     *  Badges Eclaireur / Avant Garde / Guide
-     *  Être l’auteur de la 1ère réaction sur X débats
+     * Badges Eclaireur / Avant Garde / Guide
+     * Être l’auteur de la 1ère réaction sur X débats
      *
-     *  @param  $reaction   PDReaction
-     *  @param  $userId     integer     ID user
-     *  @param  $badgeId    integer     ID badge
-     *  @param  $nbDebates  integer     Nombre de débats
+     * @param PDReaction $reaction
+     * @param int $userId
+     * @param int $badgeId
+     * @param int $nbDebates
      */
     private function checkEclaireur(PDReaction $reaction, $userId, $badgeId, $nbDebates)
     {
         if ($reaction->getTreeLevel() === 1 && $reaction->getTreeLeft() === 2 && !$this->hasBadge($userId, $badgeId)) {
-            $sql = "
-SELECT id
-FROM p_d_reaction 
-WHERE 
-    p_user_id = ".$userId."
-    AND tree_level = 1
-    AND tree_left = 2
-GROUP BY p_d_debate_id
-";
+            $nb =  $this->documentService->countNbUserDebateFirstReaction($userId);
 
-            // Exécution de la requête
-            $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
-            $stmt = $con->prepare($sql);
-            $stmt->execute();
-            $result = $stmt->fetchAll();
-
-            if (count($result) >= $nbDebates) {
+            if ($nb >= $nbDebates) {
                 $this->addUserBadge($userId, $badgeId);
             }
         }
     }
-
 
     /**
      *  Badges Annotateur / Glossateur / Commentateur

@@ -51,7 +51,10 @@ services:
 
     politzr.listener.badge:
         class:      Politizr\FrontBundle\Listener\BadgeListener
-        arguments:  [ @logger, @event_dispatcher ]
+        arguments:
+            - @politizr.functional.document
+            - @event_dispatcher
+            - @logger
         tags:
             - { name: kernel.event_listener, event: b_reaction_publish }
             - { name: kernel.event_listener, event: b_document_note_pos }

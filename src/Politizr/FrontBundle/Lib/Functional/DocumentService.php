@@ -86,7 +86,7 @@ class DocumentService
      * @param int $userId
      * @param int $offset
      * @param int $count
-     * @return PropelCollection PDocument
+     * @return PropelCollection[PDocument]
      */
     public function getUserSuggestedReactionsPaginatedListing($userId, $offset = 0, $count = ListingConstants::MODAL_CLASSIC_PAGINATION)
     {
@@ -101,7 +101,7 @@ class DocumentService
      * @param int $userId
      * @param int $offset
      * @param int $count
-     * @return PropelCollection PDocument
+     * @return PropelCollection[PDocument]
      */
     public function getMyPublicationsPaginatedListing($userId, $offset = 0, $count = ListingConstants::MODAL_CLASSIC_PAGINATION)
     {
@@ -116,13 +116,39 @@ class DocumentService
      * @param int $userId
      * @param int $offset
      * @param int $count
-     * @return PropelCollection PDocument
+     * @return PropelCollection[PDocument]
      */
     public function getMyDraftsPaginatedListing($userId, $offset = 0, $count = ListingConstants::MODAL_CLASSIC_PAGINATION)
     {
         $documents = $this->documentManager->generateMyDocumentsPaginatedListing($userId, 0, 'updated_at', $offset, $count);
 
         return $documents;
+    }
+
+    /**
+     * Return number of 1st level reactions for user publications
+     *
+     * @param int $userId
+     * @return int
+     */
+    public function countNbUserDocumentReactionsLevel1($userId)
+    {
+        $count = $this->documentManager->generateNbUserDocumentReactionsLevel1($userId);
+
+        return $count;
+    }
+
+    /**
+     * Return number of debates' reactions written first by userId
+     *
+     * @param int $userId
+     * @return int
+     */
+    public function countNbUserDebateFirstReaction($userId)
+    {
+        $count = $this->documentManager->generateNbUserDebateFirstReaction($userId);
+
+        return $count;
     }
 
     /* ######################################################################################################## */
