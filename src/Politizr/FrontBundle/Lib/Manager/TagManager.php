@@ -44,16 +44,16 @@ class TagManager
      * @param integer $interval
      * @return string
      */
-    public function createMostPopularTagsRawSql($interval = null)
+    public function createMostPopularTagIdsRawSql($interval = null)
     {
         $intervalDebateSql = '';
         $intervalReactionSql = '';
         $intervalUserSql = '';
 
         if ($interval) {
-            $intervalDebateSql = sprintf("AND p_d_debate.published_at BETWEEN DATE_SUB(NOW(), INTERVAL %d DAY) AND NOW()", $interval);
-            $intervalReactionSql = sprintf("AND p_d_reaction.published_at BETWEEN DATE_SUB(NOW(), INTERVAL %d DAY) AND NOW()", $interval);
-            $intervalUserSql = sprintf("AND p_user.created_at BETWEEN DATE_SUB(NOW(), INTERVAL %d DAY) AND NOW()", $interval);
+            $intervalDebateSql = "AND p_d_debate.published_at BETWEEN DATE_SUB(NOW(), INTERVAL :interval DAY) AND NOW()";
+            $intervalReactionSql = "AND p_d_reaction.published_at BETWEEN DATE_SUB(NOW(), INTERVAL :interval2 DAY) AND NOW()";
+            $intervalUserSql = "AND p_user.created_at BETWEEN DATE_SUB(NOW(), INTERVAL :interval3 DAY) AND NOW()";
         }
 
         // Préparation requête SQL
@@ -66,7 +66,7 @@ FROM p_d_d_tagged_t
 LEFT JOIN p_d_debate ON p_d_d_tagged_t.p_d_debate_id = p_d_debate.id
 WHERE p_d_debate.online = 1
 AND p_d_debate.published = 1
-".$intervalDebateSql."
+$intervalDebateSql
 
 UNION ALL
 
@@ -75,7 +75,7 @@ FROM p_d_r_tagged_t
 LEFT JOIN p_d_reaction ON p_d_r_tagged_t.p_d_reaction_id = p_d_reaction.id
 WHERE p_d_reaction.online = 1
 AND p_d_reaction.published = 1
-".$intervalReactionSql."
+$intervalReactionSql
 
 UNION ALL
 
@@ -84,7 +84,7 @@ FROM p_u_tagged_t
 LEFT JOIN p_user ON p_u_tagged_t.p_user_id = p_user.id
 WHERE p_user.online = 1
 AND p_user.p_u_status_id = 1
-".$intervalUserSql."
+$intervalUserSql
 
 ) tables
 
@@ -93,6 +93,41 @@ ORDER BY nb_tagged_objects desc
     ";
 
         return $sql;
+    }
+
+    /* ######################################################################################################## */
+    /*                                            RAW SQL OPERATIONS                                            */
+    /* ######################################################################################################## */
+
+    /**
+     * Get user's scores evolution as array of (id, created_at, sum_notes)
+     *
+     * @param int $interval
+     * @return array
+     */
+    public function generateMostPopularTagIds($interval)
+    {
+        $this->logger->info('*** generateMostPopularTagIds');
+        $this->logger->info('$userIdinterval = ' . print_r($interval, true));
+
+        $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
+        $stmt = $con->prepare($this->createMostPopularTagIdsRawSql($interval));
+
+        if ($interval) {
+            $stmt->bindValue(':interval', $interval, \PDO::PARAM_INT);
+            $stmt->bindValue(':interval2', $interval, \PDO::PARAM_INT);
+            $stmt->bindValue(':interval3', $interval, \PDO::PARAM_INT);
+        }
+
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+
+        $tagIds = array();
+        foreach ($result as $row) {
+            $tagIds[] = $row['p_tag_id'];
+        }
+
+        return $tagIds;
     }
 
     /* ######################################################################################################## */

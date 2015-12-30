@@ -44,37 +44,6 @@ class TagService
     }
 
     /* ######################################################################################################## */
-    /*                                             PRIVATE FUNCTIONS                                            */
-    /* ######################################################################################################## */
-
-    /**
-     * Execute SQL and hydrate TimelineRow model
-     *
-     * @param string $sql
-     * @return array[id]
-     */
-    private function hydrateTagIdRows($sql)
-    {
-        $tagIds = array();
-
-        if ($sql) {
-            $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
-
-            $stmt = $con->prepare($sql);
-            $stmt->execute();
-
-            $result = $stmt->fetchAll();
-
-            foreach ($result as $row) {
-                $tagIds[] = $row['p_tag_id'];
-            }
-        }
-
-        return $tagIds;
-    }
-
-
-    /* ######################################################################################################## */
     /*                                              PUBLIC FUNCTIONS                                            */
     /* ######################################################################################################## */
     
@@ -340,16 +309,15 @@ class TagService
         $this->logger->info('$keywords = '.print_r($keywords, true));
 
         $interval = null;
-        if ($keywords && (in_array('lastDay', $keywords))) {
+        if ($keywords && (in_array(ListingConstants::FILTER_KEYWORD_LAST_DAY, $keywords))) {
             $interval = 1;
-        } elseif ($keywords && (in_array('lastWeek', $keywords))) {
+        } elseif ($keywords && (in_array(ListingConstants::FILTER_KEYWORD_LAST_WEEK, $keywords))) {
             $interval = 7;
-        } elseif ($keywords && (in_array('lastMonth', $keywords))) {
+        } elseif ($keywords && (in_array(ListingConstants::FILTER_KEYWORD_LAST_MONTH, $keywords))) {
             $interval = 30;
         }
 
-        $sql = $this->tagManager->createMostPopularTagsRawSql($interval);
-        $tagIds = $this->hydrateTagIdRows($sql);
+        $tagIds = $this->tagManager->generateMostPopularTagIds($interval);
 
         // @todo 1 query with "ORDER BY FIELD(id, 3, 11, 7, 1)"
         // cf. http://stackoverflow.com/questions/34036279/propel-orm-order-by-field

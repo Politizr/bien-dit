@@ -19,9 +19,9 @@ class ReputationManager
         $this->logger = $logger;
     }
 
-    // **************************************************************************** //
-    //                             PRIVATE FUNCTIONS                                //
-    // **************************************************************************** //
+    /* ######################################################################################################## */
+    /*                                            RAW SQL FUNCTIONS                                             */
+    /* ######################################################################################################## */
 
     /**
      * User's scores evolution groupe by date
@@ -30,7 +30,7 @@ class ReputationManager
      *
      * @return string
      */
-    public function createUserScoresByDateRawSql()
+    private function createUserScoresByDateRawSql()
     {
         $sql = "
 SELECT DATE(p_u_reputation.created_at) as DATE, p_u_reputation.id, SUM(p_r_action.score_evolution) as SUM_SCORE
