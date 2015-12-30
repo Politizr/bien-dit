@@ -1089,10 +1089,10 @@ class XhrDocument
         $endAt = new \DateTime($jsStartAt);
         $endAt->modify('+1 month');
 
-        $notesByDate = $this->reputationService->getNotesByDate($document->getId(), $document->getType(), $startAt, $endAt);
+        $notesByDate = $this->reputationService->getDocumentNotesByDate($document->getId(), $document->getType(), $startAt, $endAt);
 
         // Sum of notes at startAt date
-        $sumOfNotes = $this->reputationService->getSumOfNotes($document->getId(), $document->getType(), $startAt);
+        $sumOfNotes = $this->reputationService->getDocumentSumOfNotes($document->getId(), $document->getType(), $startAt);
 
         $labels = [];
         $data = [];

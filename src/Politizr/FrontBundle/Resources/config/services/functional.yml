@@ -11,7 +11,7 @@ services:
     politizr.functional.reputation:
         class: Politizr\FrontBundle\Lib\Functional\ReputationService
         arguments:
-            - @politizr.manager.document
+            - @politizr.manager.reputation
             - @logger
 
     politizr.functional.security:

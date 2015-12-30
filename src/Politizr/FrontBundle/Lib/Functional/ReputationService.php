@@ -13,24 +13,42 @@ use Politizr\Constant\ObjectTypeConstants;
  */
 class ReputationService
 {
-    private $documentManager;
+    private $reputationManager;
 
     private $logger;
 
     /**
      *
-     * @param @politizr.manager.document
+     * @param @politizr.manager.reputation
      * @param @logger
      */
     public function __construct(
-        $documentManager,
+        $reputationManager,
         $logger
     ) {
-        $this->documentManager = $documentManager;
+        $this->reputationManager = $reputationManager;
 
         $this->logger = $logger;
     }
 
+
+    /* ######################################################################################################## */
+    /*                                                USERS STATS                                               */
+    /* ######################################################################################################## */
+    
+    /**
+     * Get user score evolution indexed by date
+     *
+     * @param int $userId
+     * @param DateTime $startAt
+     * @param DateTime $endAt
+     * @return array
+     */
+    public function getUserScoresByDate($userId, \DateTime $startAt, \DateTime $endAt)
+    {
+        $scoresByDate = $this->reputationManager->generateUserScoresByDate($userId, $startAt->format('Y-m-d H:i:s'), $endAt->format('Y-m-d H:i:s'));
+        return $scoresByDate;
+    }
 
     /* ######################################################################################################## */
     /*                                              DOCUMENTS STATS                                             */
@@ -45,7 +63,7 @@ class ReputationService
      * @param DateTime $endAt
      * @return array
      */
-    public function getNotesByDate($documentId, $documentType, \DateTime $startAt, \DateTime $endAt)
+    public function getDocumentNotesByDate($documentId, $documentType, \DateTime $startAt, \DateTime $endAt)
     {
         // Function process
         switch($documentType) {
@@ -61,7 +79,7 @@ class ReputationService
                 throw new InconsistentDataException(sprintf('Invalid document type %s', $documentType));
         }
 
-        $notesByDate = $this->documentManager->generateNotesByDate($documentId, $documentType, $notePosReputationId, $noteNegReputationId, $startAt->format('Y-m-d H:i:s'), $endAt->format('Y-m-d H:i:s'));
+        $notesByDate = $this->reputationManager->generateDocumentNotesByDate($documentId, $documentType, $notePosReputationId, $noteNegReputationId, $startAt->format('Y-m-d H:i:s'), $endAt->format('Y-m-d H:i:s'));
         return $notesByDate;
     }
 
@@ -73,7 +91,7 @@ class ReputationService
      * @param DateTime $untilAt
      * @return array
      */
-    public function getSumOfNotes($documentId, $documentType, \DateTime $untilAt)
+    public function getDocumentSumOfNotes($documentId, $documentType, \DateTime $untilAt)
     {
         // Function process
         switch($documentType) {
@@ -89,7 +107,7 @@ class ReputationService
                 throw new InconsistentDataException(sprintf('Invalid document type %s', $documentType));
         }
 
-        $sumOfNotes = $this->documentManager->generateSumOfNotes($documentId, $documentType, $notePosReputationId, $noteNegReputationId, $untilAt->format('Y-m-d H:i:s'));
+        $sumOfNotes = $this->reputationManager->generateDocumentSumOfNotes($documentId, $documentType, $notePosReputationId, $noteNegReputationId, $untilAt->format('Y-m-d H:i:s'));
 
         return $sumOfNotes;
     }

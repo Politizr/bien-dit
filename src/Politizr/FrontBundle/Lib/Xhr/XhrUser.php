@@ -740,7 +740,7 @@ class XhrUser
         $endAt = new \DateTime($jsStartAt);
         $endAt->modify('+1 month');
 
-        $reputationByDates = $this->reputationManager->getReputationByDates($user->getId(), $startAt, $endAt);
+        $scoresByDate = $this->reputationService->getUserScoresByDate($user->getId(), $startAt, $endAt);
 
         // Score evolution by date
         $score = $user->getReputationScore($startAt);
@@ -751,9 +751,9 @@ class XhrUser
         $interval = \DateInterval::createFromDateString('1 day');
         $period = new \DatePeriod($startAt, $interval, $endAt);
         foreach ($period as $day) {
-            foreach ($reputationByDates as $reputationByDate) {
-                if ($day->format('Y-m-d') == $reputationByDate['created_at']) {
-                    $score += $reputationByDate['sum_score'];
+            foreach ($scoresByDate as $scoreByDate) {
+                if ($day->format('Y-m-d') == $scoreByDate['created_at']) {
+                    $score += $scoreByDate['sum_score'];
                     break;
                 }
             }
