@@ -72,6 +72,10 @@ var options = {
             fullImgLiquid();
 
             $('#debate_photo_info_file_name, #reaction_photo_info_file_name').val(data['fileName']);
+        } else if (data['error']) {
+            // functional error
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
         }
     },
     error: function(data)

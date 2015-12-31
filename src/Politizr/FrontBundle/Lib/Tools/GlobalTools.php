@@ -5,6 +5,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Component\Filesystem\Filesystem;
 
+use Symfony\Component\Validator\Constraints\Image;
+
 use GuzzleHttp;
 
 use Politizr\Exception\BoxErrorException;
@@ -16,6 +18,8 @@ use Politizr\FrontBundle\Form\Type\PUMandateType;
 use Politizr\Constant\QualificationConstants;
 
 use Politizr\Model\PUMandateQuery;
+
+use StudioEcho\Lib\StudioEchoUtils;
 
 /**
  * Various tools methods
@@ -118,7 +122,6 @@ class GlobalTools
         return $extensions[$mimeType];
     }
 
-
     /**
      * Upload XHR d'une image
      *
@@ -140,19 +143,36 @@ class GlobalTools
         } else if ($myRequestedFile->getError() > 0) {
             throw new BoxErrorException('Erreur upload n°'.$myRequestedFile->getError());
         } else {
-            // Contrôle extension
-            // $allowedExtensions = array('jpg', 'jpeg', 'png');
-            $ext = $myRequestedFile->guessExtension();
-            if ($allowedExtensions && !in_array(strtolower($ext), $allowedExtensions)) {
-                throw new BoxErrorException('Type de fichier non autorisé.');
+            // // Contrôle extension
+            // // $allowedExtensions = array('jpg', 'jpeg', 'png');
+            // $ext = $myRequestedFile->guessExtension();
+            // if ($allowedExtensions && !in_array(strtolower($ext), $allowedExtensions)) {
+            //     throw new BoxErrorException('Type de fichier non autorisé.');
+            // }
+
+            // Contrôle SF2 Image
+            $imageConstraint = new Image();
+            $errors = $this->validator->validateValue(
+                $myRequestedFile,
+                $imageConstraint
+            );
+
+            $msgErrors = array();
+            foreach ($errors as $error) {
+                $msgErrors['error'] = $error->getMessage();
             }
 
-            // Construction du nom du fichier
+            if (!empty($msgErrors)) {
+                throw new BoxErrorException(StudioEchoUtils::multiImplode($msgErrors, ' <br/> '));
+            }
+
+            // Construct file name
+            $ext = $myRequestedFile->guessExtension();
             $fileName = md5(uniqid()) . '.' . $ext;
 
             //move the uploaded file to uploads folder;
             $movedFile = $myRequestedFile->move($destPath, $fileName);
-            // $logger->info('$movedFile = '.print_r($movedFile, true));
+            $this->logger->info('$movedFile = '.print_r($movedFile, true));
         }
 
         // Resize de la photo

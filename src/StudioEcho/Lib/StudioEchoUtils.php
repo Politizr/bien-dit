@@ -242,7 +242,7 @@ class StudioEchoUtils
         $errors = array();
 
         foreach ($form->getErrors() as $key => $error) {
-                $errors['error'] = $error->getMessage();
+            $errors['error'] = $error->getMessage();
         }
 
         foreach ($form->all() as $child) {

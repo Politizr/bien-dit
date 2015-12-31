@@ -86,6 +86,10 @@ var photoOptions = {
             // update & imgLiquid uploaded photo
             $('#uploadedPhoto').html(data['html']);
             fullImgLiquid();
+        } else if (data['error']) {
+            // functional error
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
         }
     },
     error: function(data)
@@ -127,6 +131,10 @@ var backPhotoOptions = {
             fullImgLiquid();
 
             $('#user_back_photo_info_back_file_name, #reaction_photo_info_file_name').val(data['fileName']);
+        } else if (data['error']) {
+            // functional error
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
         }
     },
     error: function(data)
