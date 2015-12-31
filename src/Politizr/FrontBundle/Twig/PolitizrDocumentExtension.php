@@ -263,7 +263,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
         $nbViews = $document->getNbViews();
 
-        if (0 === $nbViews) {
+        if (!$nbViews) {
             $html = 'Aucune vue';
         } elseif (1 === $nbViews) {
             $html = '1 vue';
