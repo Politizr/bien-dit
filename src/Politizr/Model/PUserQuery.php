@@ -101,10 +101,10 @@ class PUserQuery extends BasePUserQuery
                 ->filterByLastMonth()
             ->_endif()
             ->_if($keywords && in_array(ListingConstants::FILTER_KEYWORD_QUALIFIED, $keywords))
-                ->filterByQualified()
+                ->filterByQualified(true)
             ->_endif()
             ->_if($keywords && in_array(ListingConstants::FILTER_KEYWORD_CITIZEN, $keywords))
-                ->filterByCitizen()
+                ->filterByQualified(false)
             ->_endif();
     }
 
