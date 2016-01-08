@@ -266,11 +266,18 @@ class XhrDashboard
 
         $html = null;
         foreach ($tags as $tag) {
+            // get departments ids if region id
+            $tagIds = $tag->getId();
+            if (in_array($tag->getId(), TagConstants::getGeoRegionIds())) {
+                $tagIds = $this->tagService->getDepartmentsIds($tag->getId());
+                $tagIds[] = $tag->getId();
+            }
+
             $debates = PDDebateQuery::create()
                         ->distinct()
                         ->online()
                         ->usePDDTaggedTQuery()
-                            ->filterByPTagId($tag->getId())
+                            ->filterByPTagId($tagIds)
                         ->endUse()
                         ->orderWithKeyword(ListingConstants::ORDER_BY_KEYWORD_LAST)
                         ->limit(ListingConstants::DASHBOARD_GEO_DEBATES_LIMIT)
@@ -280,7 +287,7 @@ class XhrDashboard
                         ->distinct()
                         ->online()
                         ->usePuTaggedTPUserQuery()
-                            ->filterByPTagId($tag->getId())
+                            ->filterByPTagId($tagIds)
                         ->endUse()
                         ->orderWithKeyword(ListingConstants::ORDER_BY_KEYWORD_LAST)
                         ->limit(ListingConstants::DASHBOARD_GEO_USERS_LIMIT)

@@ -168,7 +168,135 @@ class TagService
             'regionPACA' => $regionPACA->getUuid(),
         ];
     }
-    
+
+    /**
+     * Array departments ids by region id
+     *
+     * @param $id
+     * @return array
+     */
+    public function getDepartmentsIds($regionId)
+    {
+        $this->logger->info('*** getDepartmentsIds');
+
+        $departmentIds = array();
+
+        if ($regionId == TagConstants::TAG_GEO_REGION_ID_ACAL) {
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_MARNE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_ARDENNES;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_AUBE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_HAUTE_MARNE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_BAS_RHIN;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_MEURTHE_ET_MOSELLE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_HAUT_RHIN;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_MEUSE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_MOSELLE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_VOSGES;
+        } elseif ($regionId == TagConstants::TAG_GEO_REGION_ID_ALPC) {
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_PYRENEES_ATLANTIQUES;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_LANDES;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_GIRONDE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_DORDOGNE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_LOT_ET_GARONNE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_CHARENTE_MARITIME;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_CORREZE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_CREUSE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_HAUTE_VIENNE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_VIENNE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_CHARENTE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_DEUX_SEVRES;
+        } elseif ($regionId == TagConstants::TAG_GEO_REGION_ID_ARA) {
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_ALLIER;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_CANTAL;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_HAUTE_LOIRE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_PUY_DE_DOME;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_AIN;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_ISERE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_HAUTE_SAVOIE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_LOIRE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_RHONE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_SAVOIE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_ARDECHE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_DROME;
+        } elseif ($regionId == TagConstants::TAG_GEO_REGION_ID_B) {
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_COTES_D_ARMOR;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_MORBIHAN;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_FINISTERE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_ILLE_ET_VILAINE;
+        } elseif ($regionId == TagConstants::TAG_GEO_REGION_ID_BFC) {
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_YONNE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_HAUTE_SAONE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_COTE_D_OR;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_NIEVRE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_SAONE_ET_LOIRE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_JURA;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_DOUBS;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_TERRITOIRE_DE_BELFORT;
+        } elseif ($regionId == TagConstants::TAG_GEO_REGION_ID_C) {
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_CORSE_DU_SUD;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_HAUTE_CORSE;
+        } elseif ($regionId == TagConstants::TAG_GEO_REGION_ID_CVDL) {
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_EURE_ET_LOIR;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_INDRE_ET_LOIRE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_LOIRET;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_INDRE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_LOIR_ET_CHER;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_CHER;
+        } elseif ($regionId == TagConstants::TAG_GEO_REGION_ID_IDF) {
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_SEINE_ET_MARNE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_ESSONNE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_YVELINES;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_VAL_D_OISE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_SEINE_SAINT_DENIS;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_PARIS;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_HAUTS_DE_SEINE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_VAL_DE_MARNE;
+        } elseif ($regionId == TagConstants::TAG_GEO_REGION_ID_LRMP) {
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_LOZERE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_GARD;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_AUDE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_HERAULT;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_PYRENEES_ORIENTALES;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_HAUTES_PYRENEES;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_LOT;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_ARIEGE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_GERS;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_HAUTE_GARONNE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_TARN_ET_GARONNE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_AVEYRON;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_TARN;
+        } elseif ($regionId == TagConstants::TAG_GEO_REGION_ID_N) {
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_MANCHE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_CALVADOS;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_ORNE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_SEINE_MARITIME;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_EURE;
+        } elseif ($regionId == TagConstants::TAG_GEO_REGION_ID_NPDCP) {
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_OISE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_PAS_DE_CALAIS;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_NORD;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_AISNE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_SOMME;
+        } elseif ($regionId == TagConstants::TAG_GEO_REGION_ID_PACA) {
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_BOUCHES_DU_RHONE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_VAUCLUSE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_VAR;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_ALPES_DE_HAUTE_PROVENCE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_ALPES_MARITIMES;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_HAUTES_ALPES;
+        } elseif ($regionId == TagConstants::TAG_GEO_REGION_ID_PDLL) {
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_VENDEE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_LOIRE_ATLANTIQUE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_MAINE_ET_LOIRE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_SARTHE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_MAYENNE;
+        } else {
+            throw new InconsistentDataException(sprintf('Region id %s does not match', $regionId));
+        }
+
+        return $departmentIds;
+    }
+
     /**
      * Array of key indexed departments uuids
      *
