@@ -188,9 +188,11 @@ LIMIT :offset, :limit
      * Debate feed timeline
      *
      * @see app/sql/debateFeed.sql
+     *
+     * @param array $inQueryUserIds IN stmt values
      * @return string
      */
-    public function createDebateFeedRawSql()
+    public function createDebateFeedRawSql($inQueryUserIds)
     {
         // Préparation requête SQL
         $sql = "
@@ -210,7 +212,7 @@ FROM p_d_d_comment
 WHERE
     p_d_d_comment.online = 1
     AND p_d_d_comment.p_d_debate_id = :p_d_debate_id2
-    AND p_d_d_comment.p_user_id IN (:inQueryUserIds)
+    AND p_d_d_comment.p_user_id IN ($inQueryUserIds)
 )
 
 UNION DISTINCT
@@ -229,7 +231,7 @@ WHERE
             AND p_d_reaction.p_d_debate_id = :p_d_debate_id3
             AND p_d_reaction.tree_level > 0
             )
-            AND p_d_r_comment.p_user_id IN (:inQueryUserIds2)
+            AND p_d_r_comment.p_user_id IN ($inQueryUserIds)
     )
 
 ORDER BY published_at ASC
@@ -487,13 +489,11 @@ GROUP BY p_d_debate_id
         $this->logger->info('$inQueryUserIds = ' . print_r($inQueryUserIds, true));
 
         $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
-        $stmt = $con->prepare($this->createDebateFeedRawSql());
+        $stmt = $con->prepare($this->createDebateFeedRawSql($inQueryUserIds));
 
         $stmt->bindValue(':p_d_debate_id', $debateId, \PDO::PARAM_INT);
         $stmt->bindValue(':p_d_debate_id2', $debateId, \PDO::PARAM_INT);
         $stmt->bindValue(':p_d_debate_id3', $debateId, \PDO::PARAM_INT);
-        $stmt->bindValue(':inQueryUserIds', $inQueryUserIds, \PDO::PARAM_STR);
-        $stmt->bindValue(':inQueryUserIds2', $inQueryUserIds, \PDO::PARAM_STR);
 
         $stmt->execute();
         $result = $stmt->fetchAll();
