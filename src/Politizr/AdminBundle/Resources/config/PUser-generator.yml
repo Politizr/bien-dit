@@ -78,9 +78,9 @@ params:
                 choices:                
                     ROLE_OAUTH_USER:            'Connexion OpenID'
                     ROLE_CITIZEN_INSCRIPTION:   'Inscription Citoyen en cours'
-                    ROLE_ELECTED_INSCRIPTION:   'Inscription Débatteur en cours'
+                    ROLE_ELECTED_INSCRIPTION:   'Inscription Élu en cours'
                     ROLE_CITIZEN:               'Citoyen'
-                    ROLE_ELECTED:               'Débatteur'
+                    ROLE_ELECTED:               'Élu'
                     ROLE_PROFILE_COMPLETED:     'Inscription terminée'
         created_at:
             label:      Création

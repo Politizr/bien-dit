@@ -185,7 +185,7 @@ class SecurityController extends Controller
     /* ######################################################################################################## */
 
     /**
-     * Page d'inscription débatteur  / Etape 1 / Inscription
+     * Page d'inscription élu  / Etape 1 / Inscription
      */
     public function inscriptionElectedAction()
     {
@@ -201,7 +201,7 @@ class SecurityController extends Controller
     }
 
     /**
-     * Page d'inscription débatteur  / Etape 1 / Validation inscription
+     * Page d'inscription élu  / Etape 1 / Validation inscription
      */
     public function inscriptionElectedCheckAction(Request $request)
     {
@@ -215,7 +215,7 @@ class SecurityController extends Controller
         if ($form->isValid()) {
             $user = $form->getData();
 
-            // Service associé au démarrage de l'inscription débatteur
+            // Service associé au démarrage de l'inscription élu
             $this->get('politizr.functional.security')->inscriptionElectedStart($user);
 
             // gestion upload pièce ID
@@ -239,7 +239,7 @@ class SecurityController extends Controller
 
 
     /**
-     * Page d'inscription débatteur  / Etape 1 / Migration de compte
+     * Page d'inscription élu  / Etape 1 / Migration de compte
      */
     public function migrationElectedAction()
     {
@@ -267,7 +267,7 @@ class SecurityController extends Controller
 
 
     /**
-     * Page d'inscription débatteur  / Etape 1 / Validation migration de compte
+     * Page d'inscription élu  / Etape 1 / Validation migration de compte
      */
     public function migrationElectedCheckAction(Request $request)
     {
@@ -281,7 +281,7 @@ class SecurityController extends Controller
         if ($form->isValid()) {
             $user = $form->getData();
 
-            // Service associé au démarrage de la migration vers un compte débatteur
+            // Service associé au démarrage de la migration vers un compte élu
             $this->get('politizr.functional.security')->migrationElectedStart($user);
 
             // gestion upload pièce ID
@@ -305,7 +305,7 @@ class SecurityController extends Controller
 
 
     /**
-     * Page d'inscription débatteur / Etape 2 / Choix de la formule
+     * Page d'inscription élu / Etape 2 / Choix de la formule
      */
     public function inscriptionElectedOrderAction(Request $request)
     {
@@ -329,7 +329,7 @@ class SecurityController extends Controller
 
 
     /**
-     * Page d'inscription débatteur / Etape 2 / Validation choix de la formule
+     * Page d'inscription élu / Etape 2 / Validation choix de la formule
      */
     public function inscriptionElectedOrderCheckAction(Request $request)
     {
@@ -364,7 +364,7 @@ class SecurityController extends Controller
 
 
     /**
-     * Page d'inscription débatteur / Etape 3 / Paiement
+     * Page d'inscription élu / Etape 3 / Paiement
      */
     public function inscriptionElectedPaymentAction()
     {
@@ -389,7 +389,7 @@ class SecurityController extends Controller
     }
 
     /**
-     * Page d'inscription débatteur / Etape 3 / Paiement terminé
+     * Page d'inscription élu / Etape 3 / Paiement terminé
      */
     public function inscriptionElectedPaymentFinishedAction(Request $request)
     {
@@ -403,7 +403,7 @@ class SecurityController extends Controller
     }
 
     /**
-     * Page d'inscription débatteur / Etape 3 / Annulation paiement
+     * Page d'inscription élu / Etape 3 / Annulation paiement
      */
     public function inscriptionElectedPaymentCanceledAction(Request $request)
     {
@@ -421,7 +421,7 @@ class SecurityController extends Controller
     }
 
     /**
-     * Page d'inscription débatteur / Etape 4 / Remerciement
+     * Page d'inscription élu / Etape 4 / Remerciement
      */
     public function inscriptionElectedThankingAction(Request $request)
     {
@@ -442,7 +442,7 @@ class SecurityController extends Controller
         $this->get('session')->remove('p_o_subscription_id');
         $this->get('session')->remove('p_order_id');
         
-        // Finalisation du process d'inscription débatteur
+        // Finalisation du process d'inscription élu
         $this->get('politizr.functional.security')->inscriptionFinishElected($user);
 
         // Cas migration formule > MAJ du layout

@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * Formulaire associée à la migration d'un compte citoyen vers débatteur
+ * Formulaire associée à la migration d'un compte citoyen vers élu
  *
  * @author Lionel Bouzonville
  */

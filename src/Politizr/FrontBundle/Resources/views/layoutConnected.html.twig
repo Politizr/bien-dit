@@ -3,7 +3,7 @@
 
 {% block title %}
     {% if (isGrantedE()) %}
-        Politizr - Débatteur {{ app.user }}
+        Politizr - Élu {{ app.user }}
     {% elseif (isGrantedC()) %}
         Politizr - Citoyen {{ app.user }}
     {% endif %}
@@ -11,7 +11,7 @@
 
 {% block description %}
     {% if (isGrantedE()) %}
-        Politizr débatteur
+        Politizr élu
     {% elseif (isGrantedC()) %}
         Politizr citoyen
     {% endif %}

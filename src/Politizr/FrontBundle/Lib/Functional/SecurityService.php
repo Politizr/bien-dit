@@ -697,7 +697,7 @@ class SecurityService
     }
 
     /**
-     *  Finalisation du process d'inscription débatteur
+     *  Finalisation du process d'inscription élu
      *
      */
     public function inscriptionFinishElected(PUser $user)

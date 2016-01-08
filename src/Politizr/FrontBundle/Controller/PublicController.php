@@ -103,7 +103,7 @@ class PublicController extends Controller
             }
         }
 
-        // profil débatteur le plus populaire
+        // most popular elected profile
         $electedUser = PUserQuery::create()
             ->online()
             ->filterByLastDay()
