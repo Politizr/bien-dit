@@ -1,4 +1,4 @@
-{% if user %}
+{% if user and user.isQualified %}
     {% set organizations = user.currentOrganizations %}
     {% for organization in organizations %}
         <div class="organization" action="modalOrganization" model="PQOrganization" uuid="{{ organization.uuid }}">{{ organization.initials }}</div>
