@@ -1,3 +1,6 @@
 {% spaceless %}
-<a href="{{ authorUrl }}" style="color: #2D2D2D; text-decoration: none;"><span style="color: #2D2D2D">{{ author }}</span></a>{% set organizations = author.currentOrganizations %}{% for organization in organizations %} [{{ organization.initials }}]{% endfor %}
+<a href="{{ authorUrl }}" style="color: #2D2D2D; text-decoration: none;"><span style="color: #2D2D2D">{{ author }}</span></a>
+{% if author and author.isQualified %}
+    {% set organizations = author.currentOrganizations %}{% for organization in organizations %} [{{ organization.initials }}]{% endfor %}
+{% endif %}
 {% endspaceless %}

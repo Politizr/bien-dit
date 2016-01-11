@@ -1,4 +1,6 @@
 {% spaceless %}
 {{ author }} ({{ authorUrl }})
-{% set organizations = author.currentOrganizations %}{% for organization in organizations %}{{ organization.initials }}{% endfor %}
+{% if author and author.isQualified %}
+    {% set organizations = author.currentOrganizations %}{% for organization in organizations %} [{{ organization.initials }}]{% endfor %}
+{% endif %}
 {% endspaceless %}
