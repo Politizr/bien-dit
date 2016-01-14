@@ -1,7 +1,7 @@
 {% if document.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE') %}
-    {% set detailPath = path('DebateDetail'~profileSuffix(), { 'slug': document.slug }) %}
+    {% set detailPath = path('DebateDetail', { 'slug': document.slug }) %}
 {% elseif document.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION') %}
-    {% set detailPath = path('ReactionDetail'~profileSuffix(), { 'slug': document.slug }) %}
+    {% set detailPath = path('ReactionDetail', { 'slug': document.slug }) %}
 {% endif %}
 <div class="postSummaryCard">
     <div class="postSummaryCardHolder">

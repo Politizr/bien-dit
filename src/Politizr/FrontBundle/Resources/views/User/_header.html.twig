@@ -26,7 +26,7 @@
             <div class="profileNameBottom">
                 <div class="profileName">
                     {% if withUrlInName %}
-                        <a href="{{ path('UserDetail'~profileSuffix(), { 'slug': user.slug }) }}">
+                        <a href="{{ path('UserDetail', { 'slug': user.slug }) }}">
                             {{ user }}
                         </a>
                     {% else %}

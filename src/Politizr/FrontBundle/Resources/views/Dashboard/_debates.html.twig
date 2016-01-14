@@ -18,7 +18,7 @@
 <div class="dbItemHalfWidth">
     <div class="debateList">
         {% for debate in debates %}
-            <a href="{{ path('DebateDetail'~profileSuffix(), { 'slug': debate.slug }) }}">
+            <a href="{{ path('DebateDetail', { 'slug': debate.slug }) }}">
                 {{ debate.title }}
             </a>
         {% endfor %}

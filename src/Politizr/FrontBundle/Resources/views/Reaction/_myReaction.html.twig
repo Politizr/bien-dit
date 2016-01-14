@@ -6,7 +6,7 @@
         <span>réaction</span>publiée {% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAtTiny.html.twig' with { 'dateTimeAt': reaction.publishedAt } only %}
     </div>
     <div class="publicationsListItemTitle">
-        <a href="{{ path('ReactionDetail'~profileSuffix(), { 'slug': reaction.slug }) }}">
+        <a href="{{ path('ReactionDetail', { 'slug': reaction.slug }) }}">
             {{ reaction.title }}
         </a>
     </div>
@@ -43,7 +43,7 @@
         </div>
     </div>
     <div class="publicationsListItemActions">
-        <a href="{{ path('ReactionDetail'~profileSuffix(), { 'slug': reaction.slug }) }}">
+        <a href="{{ path('ReactionDetail', { 'slug': reaction.slug }) }}">
             <i class="iconGoTo"></i>Afficher
         </a>
     </div>

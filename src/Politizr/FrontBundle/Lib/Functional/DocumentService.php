@@ -263,16 +263,14 @@ class DocumentService
      *
      * @param string $objectName
      * @param int $objectId
-     * @param string $profileSuffix
      * @param boolean $absolute URL
      * @return array [subject,title,url,document,documentUrl]
      */
-    public function computeDocumentContextAttributes($objectName, $objectId, $profileSuffix, $absolute = true)
+    public function computeDocumentContextAttributes($objectName, $objectId, $absolute = true)
     {
         $this->logger->info('*** computeDocumentContextAttributes');
         $this->logger->info('$objectName = '.print_r($objectName, true));
         $this->logger->info('$objectId = '.print_r($objectId, true));
-        $this->logger->info('$profileSuffix = '.print_r($profileSuffix, true));
         $this->logger->info('$absolute = '.print_r($absolute, true));
 
         $subject = null;
@@ -286,7 +284,7 @@ class DocumentService
 
                 if ($subject) {
                     $title = $subject->getTitle();
-                    $url = $this->router->generate('DebateDetail'.$profileSuffix, array('slug' => $subject->getSlug()), $absolute);
+                    $url = $this->router->generate('DebateDetail', array('slug' => $subject->getSlug()), $absolute);
                 }
                 break;
             case ObjectTypeConstants::TYPE_REACTION:
@@ -294,17 +292,17 @@ class DocumentService
                 
                 if ($subject) {
                     $title = $subject->getTitle();
-                    $url = $this->router->generate('ReactionDetail'.$profileSuffix, array('slug' => $subject->getSlug()), $absolute);
+                    $url = $this->router->generate('ReactionDetail', array('slug' => $subject->getSlug()), $absolute);
 
                     // Document parent associée à la réaction
                     if ($subject->getTreeLevel() > 1) {
                         // Réaction parente
                         $document = $subject->getParent();
-                        $documentUrl = $this->router->generate('ReactionDetail'.$profileSuffix, array('slug' => $document->getSlug()), $absolute);
+                        $documentUrl = $this->router->generate('ReactionDetail', array('slug' => $document->getSlug()), $absolute);
                     } else {
                         // Débat
                         $document = $subject->getDebate();
-                        $documentUrl = $this->router->generate('DebateDetail'.$profileSuffix, array('slug' => $document->getSlug()), $absolute);
+                        $documentUrl = $this->router->generate('DebateDetail', array('slug' => $document->getSlug()), $absolute);
                     }
                 }
 
@@ -315,8 +313,8 @@ class DocumentService
                 if ($subject) {
                     $document = $subject->getPDocument();
                     $title = $subject->getDescription();
-                    $url = $this->router->generate('DebateDetail'.$profileSuffix, array('slug' => $document->getSlug()), $absolute) . '#p-' . $subject->getParagraphNo();
-                    $documentUrl = $this->router->generate('DebateDetail'.$profileSuffix, array('slug' => $document->getSlug()), $absolute);
+                    $url = $this->router->generate('DebateDetail', array('slug' => $document->getSlug()), $absolute) . '#p-' . $subject->getParagraphNo();
+                    $documentUrl = $this->router->generate('DebateDetail', array('slug' => $document->getSlug()), $absolute);
                 }
                 break;
             case ObjectTypeConstants::TYPE_REACTION_COMMENT:
@@ -325,8 +323,8 @@ class DocumentService
                 if ($subject) {
                     $document = $subject->getPDocument();
                     $title = $subject->getDescription();
-                    $url = $this->router->generate('ReactionDetail'.$profileSuffix, array('slug' => $document->getSlug()), $absolute) . '#p-' . $subject->getParagraphNo();
-                    $documentUrl = $this->router->generate('ReactionDetail'.$profileSuffix, array('slug' => $document->getSlug()), $absolute);
+                    $url = $this->router->generate('ReactionDetail', array('slug' => $document->getSlug()), $absolute) . '#p-' . $subject->getParagraphNo();
+                    $documentUrl = $this->router->generate('ReactionDetail', array('slug' => $document->getSlug()), $absolute);
                 }
                 break;
             case ObjectTypeConstants::TYPE_USER:
@@ -334,7 +332,7 @@ class DocumentService
 
                 if ($subject) {
                     $title = $subject->getFirstname().' '.$subject->getName();
-                    $url = $this->router->generate('UserDetail'.$profileSuffix, array('slug' => $subject->getSlug()), $absolute);
+                    $url = $this->router->generate('UserDetail', array('slug' => $subject->getSlug()), $absolute);
                 }
                 break;
             case ObjectTypeConstants::TYPE_BADGE:

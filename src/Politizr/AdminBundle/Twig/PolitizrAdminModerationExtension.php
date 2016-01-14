@@ -120,14 +120,13 @@ class PolitizrAdminModerationExtension extends \Twig_Extension
 
         $authorUrl = null;
         if ($author) {
-            $authorUrl = $this->router->generate('UserDetail'.$profileSuffix, array('slug' => $author->getSlug()), true);
+            $authorUrl = $this->router->generate('UserDetail', array('slug' => $author->getSlug()), true);
         }
 
         // Update attributes depending of context
         $attr = $this->documentService->computeDocumentContextAttributes(
             $userModerated->getPObjectName(),
-            $userModerated->getPObjectId(),
-            $profileSuffix
+            $userModerated->getPObjectId()
         );
 
         $subject = $attr['subject'];

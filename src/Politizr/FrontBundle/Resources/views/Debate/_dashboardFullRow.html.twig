@@ -20,7 +20,7 @@
                     {{ debate | docTags }}
                 </div>
                 <div class="postSummaryTitle">
-                    <a href="{{ path('DebateDetail'~profileSuffix(), { 'slug': debate.slug }) }}">
+                    <a href="{{ path('DebateDetail', { 'slug': debate.slug }) }}">
                         {{ debate.title }}
                     </a>
                 </div>
@@ -49,5 +49,5 @@
     <div class="subscribe{% if app.user.id == debate.pUserId %} noSelfSubscribe{% endif %}">
         {{ debate | linkSubscribeDebate }}
     </div>
-    <a href="{{ path('DebateDetail'~profileSuffix(), { 'slug': debate.slug }) }}" class="modalItemShow"><i class="iconGoTo"></i>Afficher</a>
+    <a href="{{ path('DebateDetail', { 'slug': debate.slug }) }}" class="modalItemShow"><i class="iconGoTo"></i>Afficher</a>
 </div>

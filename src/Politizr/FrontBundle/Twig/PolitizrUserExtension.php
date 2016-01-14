@@ -197,8 +197,6 @@ class PolitizrUserExtension extends \Twig_Extension
         // $this->logger->info('*** photo');
         // $this->logger->info('$user = '.print_r($user, true));
 
-        $profileSuffix = $this->globalTools->computeProfileSuffix();
-
         $path = 'bundles/politizrfront/images/'.$default;
         if ($user && $fileName = $user->getFileName()) {
             $path = 'uploads/users/'.$fileName;
@@ -212,7 +210,7 @@ class PolitizrUserExtension extends \Twig_Extension
         // URL detail
         $url = null;
         if ($withLink && $user) {
-            $url = $this->router->generate('UserDetail'.$profileSuffix, array('slug' => $user->getSlug()));
+            $url = $this->router->generate('UserDetail', array('slug' => $user->getSlug()));
         }
 
         // Construction du rendu du tag
@@ -380,8 +378,6 @@ class PolitizrUserExtension extends \Twig_Extension
         $this->logger->info('$notification = '.print_r($notification, true));
         $this->logger->info('$type = '.print_r($type, true));
 
-        $profileSuffix = $this->globalTools->computeProfileSuffix();
-
         // absolute URL for email notif
         $absolute = false;
         if (NotificationConstants::TYPE_EMAIL === $type) {
@@ -391,8 +387,7 @@ class PolitizrUserExtension extends \Twig_Extension
         // Update attributes depending of context
         $attr = $this->documentService->computeDocumentContextAttributes(
             $notification->getPObjectName(),
-            $notification->getPObjectId(),
-            $profileSuffix
+            $notification->getPObjectId()
         );
 
         $subject = $attr['subject'];
@@ -406,7 +401,7 @@ class PolitizrUserExtension extends \Twig_Extension
 
         $authorUrl = null;
         if ($author) {
-            $authorUrl = $this->router->generate('UserDetail'.$profileSuffix, array('slug' => $author->getSlug()), $absolute);
+            $authorUrl = $this->router->generate('UserDetail', array('slug' => $author->getSlug()), $absolute);
         }
 
         // Screen / Email rendering

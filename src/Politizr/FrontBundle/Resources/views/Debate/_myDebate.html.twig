@@ -6,7 +6,7 @@
         <span>débat</span>publié {% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAtTiny.html.twig' with { 'dateTimeAt': debate.publishedAt } only %}
     </div>
     <div class="publicationsListItemTitle">
-        <a href="{{ path('DebateDetail'~profileSuffix(), { 'slug': debate.slug }) }}">
+        <a href="{{ path('DebateDetail', { 'slug': debate.slug }) }}">
             {{ debate.title }}
         </a>
     </div>
@@ -39,7 +39,7 @@
         </div>
     </div>
     <div class="publicationsListItemActions">
-        <a href="{{ path('DebateDetail'~profileSuffix(), { 'slug': debate.slug }) }}"><i class="iconGoTo"></i>Afficher</a>
+        <a href="{{ path('DebateDetail', { 'slug': debate.slug }) }}"><i class="iconGoTo"></i>Afficher</a>
     </div>
     {% if debate | statsAvailable %}
         <div class="publicationStats" action="modalDocumentStats" uuid="{{ debate.uuid }}" type="{{ constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE') }}"><i class="iconStat"></i>Statistiques</div>

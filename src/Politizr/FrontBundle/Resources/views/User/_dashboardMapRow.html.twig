@@ -5,7 +5,7 @@
     </div>    
     <div class="profileSummary">
         <div class="profileName">
-            <a href="{{ path('UserDetail'~profileSuffix(), { 'slug': user.slug }) }}">
+            <a href="{{ path('UserDetail', { 'slug': user.slug }) }}">
                 {{ user }}
             </a>
             {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with { 'user': user } only %}

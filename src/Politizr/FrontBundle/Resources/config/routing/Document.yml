@@ -22,24 +22,6 @@ ReactionDetail:
 ################################################################################
 #               CITIZEN
 ################################################################################
-DebateFeedC:
-    pattern:  /citoyen/debat/{slug}/fil
-    defaults: { _controller: PolitizrFrontBundle:Document:debateFeed }
-    requirements:
-        _method:        GET
-
-DebateDetailC:
-    pattern:  /citoyen/debat/{slug}
-    defaults: { _controller: PolitizrFrontBundle:Document:debateDetail }
-    requirements:
-        _method:        GET
-
-ReactionDetailC:
-    pattern:  /citoyen/reaction/{slug}
-    defaults: { _controller: PolitizrFrontBundle:Document:reactionDetail }
-    requirements:
-        _method:        GET
-
 DebateDraftNewC:
     pattern:  /citoyen/mes-brouillons/debat/nouveau
     defaults: { _controller: PolitizrFrontBundle:Document:debateNew }
@@ -77,24 +59,6 @@ MyPublicationsC:
 ################################################################################
 #               ELECTED
 ################################################################################
-DebateFeedE:
-    pattern:  /elu/debat/{slug}/fil
-    defaults: { _controller: PolitizrFrontBundle:Document:debateFeed }
-    requirements:
-        _method:        GET
-
-DebateDetailE:
-    pattern:  /elu/debat/{slug}
-    defaults: { _controller: PolitizrFrontBundle:Document:debateDetail }
-    requirements:
-        _method:        GET
-
-ReactionDetailE:
-    pattern:  /elu/reaction/{slug}
-    defaults: { _controller: PolitizrFrontBundle:Document:reactionDetail }
-    requirements:
-        _method:        GET
-
 DebateDraftNewE:
     pattern:  /elu/mes-brouillons/debat/nouveau
     defaults: { _controller: PolitizrFrontBundle:Document:debateNew }

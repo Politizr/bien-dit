@@ -97,8 +97,6 @@ class PolitizrReputationExtension extends \Twig_Extension
         // $this->logger->info('*** linkedReputation');
         // $this->logger->info('$reputation = '.print_r($reputation, true));
 
-        $profileSuffix = $this->globalTools->computeProfileSuffix();
-
         $url = '#';
         $title = 'Action inconnue';
 
@@ -107,7 +105,7 @@ class PolitizrReputationExtension extends \Twig_Extension
                 $subject = PDDebateQuery::create()->findPk($reputation->getPObjectId());
                 if ($subject) {
                     $title = $subject->getTitle();
-                    $url = $this->router->generate('DebateDetail'.$profileSuffix, array('slug' => $subject->getSlug()));
+                    $url = $this->router->generate('DebateDetail', array('slug' => $subject->getSlug()));
                 } else {
                     $title = 'Débat supprimé';
                     $url = '#';
@@ -117,7 +115,7 @@ class PolitizrReputationExtension extends \Twig_Extension
                 $subject = PDReactionQuery::create()->findPk($reputation->getPObjectId());
                 if ($subject) {
                     $title = $subject->getTitle();
-                    $url = $this->router->generate('ReactionDetail'.$profileSuffix, array('slug' => $subject->getSlug()));
+                    $url = $this->router->generate('ReactionDetail', array('slug' => $subject->getSlug()));
                 } else {
                     $title = 'Réaction supprimée';
                     $url = '#';
@@ -129,7 +127,7 @@ class PolitizrReputationExtension extends \Twig_Extension
                 if ($subject) {
                     $title = $subject->getDescription();
                     $document = $subject->getPDocument();
-                    $url = $this->router->generate('DebateDetail'.$profileSuffix, array('slug' => $document->getSlug()));
+                    $url = $this->router->generate('DebateDetail', array('slug' => $document->getSlug()));
                 } else {
                     $title = 'Commentaire supprimé';
                     $url = '#';
@@ -141,7 +139,7 @@ class PolitizrReputationExtension extends \Twig_Extension
                 if ($subject) {
                     $title = $subject->getDescription();
                     $document = $subject->getPDocument();
-                    $url = $this->router->generate('ReactionDetail'.$profileSuffix, array('slug' => $document->getSlug()));
+                    $url = $this->router->generate('ReactionDetail', array('slug' => $document->getSlug()));
                 } else {
                     $title = 'Commentaire supprimé';
                     $url = '#';
@@ -151,7 +149,7 @@ class PolitizrReputationExtension extends \Twig_Extension
                 $subject = PUserQuery::create()->findPk($reputation->getPObjectId());
                 if ($subject) {
                     $title = $subject->getFirstname().' '.$subject->getName();
-                    $url = $this->router->generate('UserDetail'.$profileSuffix, array('slug' => $subject->getSlug()));
+                    $url = $this->router->generate('UserDetail', array('slug' => $subject->getSlug()));
                 } else {
                     $title = 'Utilisateur supprimé';
                     $url = '#';

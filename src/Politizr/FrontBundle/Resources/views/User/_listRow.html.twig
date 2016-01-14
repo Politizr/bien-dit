@@ -5,7 +5,7 @@
     <div class="subscribe{% if app.user.id == user.id %} noSelfSubscribe{% endif %}">
         {{ user | linkSubscribeUser }}
     </div>
-    <a href="{{ path('UserDetail'~profileSuffix(), { 'slug': user.slug }) }}" class="modalItemShow">
+    <a href="{{ path('UserDetail', { 'slug': user.slug }) }}" class="modalItemShow">
         <i class="iconGoTo"></i>Afficher
     </a>
 </div>

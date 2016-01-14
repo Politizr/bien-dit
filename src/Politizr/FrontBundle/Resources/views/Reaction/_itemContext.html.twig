@@ -17,7 +17,7 @@
         Au sujet du <span{% if debateIsFollowed %} class="followedDebate"{% endif %}>débat</span>:&nbsp;
     </span>
     {% if parentDebate.isDisplayed %}
-        <a href="{{ path('DebateDetail'~profileSuffix(), { 'slug': reaction.debate.slug }) }}">{{ parentDebate.title }}</a>
+        <a href="{{ path('DebateDetail', { 'slug': reaction.debate.slug }) }}">{{ parentDebate.title }}</a>
     {% else %}
         <i>{{ parentDebate.title }}</i>
     {% endif %}
