@@ -1,11 +1,19 @@
 <div id="displayCommentsZone">
-    {% if comments | length > 0 %}
-        <b>{{ comments | length }} commentaires ont été rédigés par {{ user }}</b>
-    {% else %}
-        <b>Aucun commentaire rédigé par {{ user }}</b>
+    {% set pathString = 'Politizr_AdminBundle_PDDComment_list' %}
+    {% if type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION_COMMENT') %}
+        {% set pathString = 'Politizr_AdminBundle_PDRComment_list' %}
     {% endif %}
+    <a href="{{ path(pathString) }}filter?p_user_id={{ user.id }}">
+        {% if comments | length > 0 %}
+            <b>{{ comments | length }} commentaire(s)</b>
+        {% else %}
+            <b>Aucun commentaire</b>
+        {% endif %}
+    </a>
+    {#
     <hr>
     {% for comment in comments %}
         {% include 'PolitizrAdminBundle:Fragment\\Comment:_comment.html.twig' with { 'comment': comment, 'withDocContext': true } %}
     {% endfor %}
+    #}
 </div>

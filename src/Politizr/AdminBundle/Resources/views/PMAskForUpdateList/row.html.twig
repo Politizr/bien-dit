@@ -1,1 +1,5 @@
 {% extends_admingenerated "PolitizrAdminBundle:PMAskForUpdateList:row.html.twig" %}
+
+{% block list_td_column_p_user_id %}
+    {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_USER'), PMAskForUpdate.PUserId) }}
+{% endblock %}

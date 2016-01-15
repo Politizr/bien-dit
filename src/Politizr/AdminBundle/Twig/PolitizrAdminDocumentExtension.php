@@ -184,6 +184,7 @@ class PolitizrAdminDocumentExtension extends \Twig_Extension
             array(
                 'user' => $user,
                 'comments' => $user->getDComments(),
+                'type' => ObjectTypeConstants::TYPE_DEBATE_COMMENT,
             )
         );
 
@@ -208,6 +209,7 @@ class PolitizrAdminDocumentExtension extends \Twig_Extension
             array(
                 'user' => $user,
                 'comments' => $user->getRComments(),
+                'type' => ObjectTypeConstants::TYPE_REACTION_COMMENT,
             )
         );
 
@@ -264,7 +266,7 @@ class PolitizrAdminDocumentExtension extends \Twig_Extension
     }
 
     /**
-     *  Gestion des followers qualifiés d'un débat
+     *  Gestion des followers élus d'un débat
      *
      * @param $pdDebate     PDDebate    PDDebate
      *

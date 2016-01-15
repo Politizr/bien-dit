@@ -13,7 +13,7 @@ params:
         slug:
             label:          Slug
         tree_level:
-            label:          Arbre / Niveau
+            label:          Niveau
         tree_left:
             label:          Arbre / Gauche
         tree_right:
@@ -72,17 +72,18 @@ builders:
             sort:                               [ published_at, DESC ]
             scopes:
                 group_1: 
-                    "Tous":                     ~
                     "Publiés":
                         default:                1
                         filters:
+                            # left_value:         1
                             published:          1
                     "Brouillons":
                         filters:
+                            # left_value:         1
                             published:          0
             display:                            [ id, p_user_id, p_d_debate_id, parent_reaction_id, tree_level, title, online, published, published_at, created_at ]
-            filtersMode:                        top
-            filters:                            [ id, p_user_id, p_d_debate_id, parent_reaction_id, tree_level, title, online, published, published_at, created_at ]
+            filtersMode:                        modal
+            filters:                            [ id, uuid, p_user_id, p_d_debate_id, parent_reaction_id, tree_level, title, online, published, published_at, created_at ]
             object_actions:
                 show:                           ~
                 edit:                           ~

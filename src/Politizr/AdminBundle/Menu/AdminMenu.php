@@ -97,6 +97,11 @@ class AdminMenu extends AdmingeneratorMenuBuilder
             'Abus',
             'Politizr_AdminBundle_PMAbuseReporting_list'
         );
+        $this->addLinkRoute(
+            $monitoring,
+            'Textes légaux',
+            'Politizr_AdminBundle_PMLegalContent_list'
+        );
 
         // Réglages des types:  tags, badges, mode & statut paiement, statut commande
         $regulations = $this->addDropdown($menu, 'Réglage');

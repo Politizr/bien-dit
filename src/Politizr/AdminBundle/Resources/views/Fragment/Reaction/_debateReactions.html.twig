@@ -1,11 +1,15 @@
 <div id="displayReactionsZone">
-    {% if reactions | length > 0 %}
-        <b>{{ reactions | length }} réactions ont été rédigés pour ce débat.</b>
-    {% else %}
-        <b>Aucune réaction pour ce débat.</b>
-    {% endif %}
+    <a href="{{ path('Politizr_AdminBundle_PDReaction_list') }}filter?p_d_debate_id={{ debate.id }}&published=1">
+        {% if reactions | length > 0 %}
+            <b>{{ reactions | length }} réaction(s)</b>
+        {% else %}
+            <b>Aucune réaction</b>
+        {% endif %}
+    </a>
+    {#
     <hr>
     {% for reaction in reactions %}
         {% include 'PolitizrAdminBundle:Fragment\\Reaction:_reaction.html.twig' with { 'reaction': reaction } %}
     {% endfor %}
+    #}
 </div>

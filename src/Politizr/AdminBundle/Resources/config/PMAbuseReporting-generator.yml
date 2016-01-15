@@ -32,7 +32,7 @@ builders:
             title:                              Liste des reports des abus
             max_per_page:                       50
             sort:                               [ id, DESC ]
-            display:                            [ p_user, message, created_at ]
+            display:                            [ p_user_id, message, created_at ]
             object_actions:
                 show:                           ~
                 delete:                         ~

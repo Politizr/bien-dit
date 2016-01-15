@@ -178,10 +178,10 @@ admingenerator_generator:
     javascripts: [] # array of {path: path_to_javascript, route: route_name, routeparams: [value1, value2]}
     form_types:
         propel:
-            TIMESTAMP:    datetime 
-            BU_TIMESTAMP: datetime 
-            DATE:         date 
-            BU_DATE:      date 
+            TIMESTAMP:    s2a_datetime_picker 
+            BU_TIMESTAMP: s2a_datetime_picker 
+            DATE:         s2a_daterange_picker
+            BU_DATE:      s2a_date_picker
             TIME:         time 
             FLOAT:        number 
             REAL:         number 

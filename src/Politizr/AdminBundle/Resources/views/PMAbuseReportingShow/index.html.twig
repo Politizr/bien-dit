@@ -1,6 +1,9 @@
 {% extends_admingenerated "PolitizrAdminBundle:PMAbuseReportingShow:index.html.twig" %}
 
-
 {% block show_column_block_p_object %}
     {{ adminCreatePath(PMAbuseReporting.PObjectName, PMAbuseReporting.PObjectUuid, displayWithType = true, idType = 'uuid') }}
+{% endblock %}
+
+{% block show_column_p_user %}
+    {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_USER'), PMAbuseReporting.PUserId) }}
 {% endblock %}

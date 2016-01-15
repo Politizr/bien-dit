@@ -56,7 +56,7 @@ params:
         p_r_badges:
             label:          Badges
         qualified:
-            label:          Profil qualifié
+            label:          Profil élu
         validated:
             label:          Profil validé
         online:
@@ -100,19 +100,19 @@ builders:
             scopes:
                 group_1: 
                     "Tous":                     ~
-                    "Qualifiés":
+                    "Élus":
                         default:                1
                         filters: 
                             qualified:          1
                     "Citoyens":
                         filters: 
                             qualified:          0
-            display:                            [ file_name, name, firstname, qualified, p_u_status, reputation_score, online, last_activity, created_at ]
+            display:                            [ file_name, gender, name, firstname, qualified, p_u_status, reputation_score, online, last_activity, created_at ]
             fields:
                 reputation_score:
                     label:                      Score
-            filtersMode:                        top
-            filters:                            [ id, email, name, firstname, qualified, p_u_status, online, last_activity, created_at ]
+            filtersMode:                        modal
+            filters:                            [ id, uuid, email, name, qualified, p_u_status, online, last_activity, created_at ]
             actions:
                 new:                            ~
             object_actions:

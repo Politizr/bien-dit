@@ -55,8 +55,8 @@ builders:
             max_per_page:                       50
             sort:                               [ created_at, DESC ]
             display:                            [ id, p_user_id, p_d_debate_id, description, paragraph_no, published_at ]
-            # filtersMode:                        top
-            filters:                            [ id, p_user_id, p_d_debate_id, moderated, moderated_partial, published_at ]
+            filtersMode:                        modal
+            filters:                            [ id, uuid, p_user_id, p_d_debate_id, moderated, moderated_partial, published_at ]
             object_actions:
                 show:                           ~
                 edit:                           ~

@@ -60,7 +60,6 @@ builders:
             sort:                               [ published_at, DESC ]
             scopes:
                 group_1: 
-                    "Tous":                     ~
                     "Publiés":
                         default:                1
                         filters:
@@ -69,8 +68,8 @@ builders:
                         filters:
                             published:          0
             display:                            [ file_name, id, p_user_id, title, count_reactions, online, published, published_at, created_at ]
-            filtersMode:                        top
-            filters:                            [ id, p_user_id, title, online, published, published_at, created_at ]
+            filtersMode:                        modal
+            filters:                            [ id, uuid, p_user_id, title, online, published, published_at, created_at ]
             fields:
                 count_reactions:
                     label:                      Réactions
@@ -192,7 +191,7 @@ builders:
                 block_tags:
                     label:                      "Tags"
                 block_followers_q:
-                    label:                      "Qualifiés"
+                    label:                      "élus"
                 block_followers_c:
                     label:                      "Citoyens"
                 block_moderation_alert_new:

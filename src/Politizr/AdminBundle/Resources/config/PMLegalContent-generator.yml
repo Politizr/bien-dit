@@ -1,0 +1,104 @@
+generator:                  admingenerator.generator.propel
+params:
+    model:                  Politizr\Model\PMLegalContent
+    namespace_prefix:       Politizr
+    concurrency_lock:       ~
+    bundle_name:            AdminBundle
+    pk_requirement:         ~
+    fields:
+        id:
+            label:          ID
+        title:
+            label:          Titre
+        summary:
+            label:          Résumé
+        description:
+            label:          Description
+        online:
+            label:          En ligne
+        created_at:
+            label:          Création
+        updated_at:
+            label:          Mis à jour
+    object_actions:
+        delete:             ~
+    batch_actions:
+        delete:             ~
+builders:
+    list:
+        params:
+            title:                              Liste des contenus légaux
+            max_per_page:                       50
+            sort:                               [ id, ASC ]
+            display:                            [ title, online ]
+            # filtersMode:                        top
+            filters:                            [ ]
+            actions:                            [ ]
+            object_actions:
+                show:                           ~
+                edit:                           ~
+    excel:
+        params: ~
+        filename: ~
+        filetype: ~
+    new:
+        params:
+            title:                              "Création d'un contenu légal"
+            display:
+                "Champs principaux":            [ id, title ]
+            actions:
+              save:                             ~
+              list:                             ~
+    edit:
+        params:
+            title:                              "Edition du contenu légal '{{ PMLegalContent.title }}'"
+            tabs:
+                "Résumé":
+                    "Général":                  [ [ title  ], [ summary ] ]
+                "Contenu":
+                    "Texte":                    [ description ]
+                "Attributs":
+                    "Identifiants":             [ id ]
+                    "Création":                 [ [ online ], [ created_at, updated_at ] ]
+            fields:
+                id:
+                    addFormOptions:
+                        read_only:              true
+                summary:
+                    grid_class:                 "col-md-12"
+                    addFormOptions:
+                        attr:                   { class : tinymce }
+                description:
+                    grid_class:                 "col-md-12"
+                    addFormOptions:
+                        attr:                   { class : tinymce }
+                created_at:
+                    addFormOptions:
+                      widget:                   single_text
+                updated_at:
+                    addFormOptions:
+                      widget:                   single_text
+            actions:
+                save: ~
+                list: ~
+    show:
+        params:
+            title:                              "Visualisation du contenu légal '{{ PMLegalContent.title }}'"
+            tabs:
+                "Résumé":
+                    "Général":                  [ [ title  ], [ summary ] ]
+                "Contenu":
+                    "Texte":                    [ description ]
+                "Attributs":
+                    "Identifiants":             [ id ]
+                    "Création":                 [ [ online ], [ created_at, updated_at ] ]
+            actions:
+              list:                             ~
+              edit:                             ~
+              delete:                           ~
+    actions:
+        params:
+            object_actions:
+                delete: ~
+            batch_actions:
+                delete: ~
