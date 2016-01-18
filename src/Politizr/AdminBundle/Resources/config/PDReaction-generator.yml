@@ -75,12 +75,11 @@ builders:
                     "Publiés":
                         default:                1
                         filters:
-                            # left_value:         1
                             published:          1
                     "Brouillons":
-                        filters:
+                        filters:                [ notPublished ]
                             # left_value:         1
-                            published:          0
+                            # published:          0
             display:                            [ id, p_user_id, p_d_debate_id, parent_reaction_id, tree_level, title, online, published, published_at, created_at ]
             filtersMode:                        modal
             filters:                            [ id, uuid, p_user_id, p_d_debate_id, parent_reaction_id, tree_level, title, online, published, published_at, created_at ]

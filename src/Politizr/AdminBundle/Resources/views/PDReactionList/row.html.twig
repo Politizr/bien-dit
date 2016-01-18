@@ -8,3 +8,7 @@
     {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE'), PDReaction.PDDebateId) }}
 {% endblock %}
 
+{% block list_td_column_parent_reaction_id %}
+    {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION'), PDReaction.ParentReactionId) }}
+{% endblock %}
+

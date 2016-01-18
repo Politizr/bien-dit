@@ -9,5 +9,11 @@ use Admingenerated\PolitizrAdminBundle\BasePDReactionController\ListController a
  */
 class ListController extends BaseListController
 {
-
+    /**
+     *
+     */
+    protected function scopeNotPublished($queryFilter)
+    {
+        $queryFilter->getQuery()->filterByTreeLeft(1, \Criteria::NOT_EQUAL);
+    }
 }
