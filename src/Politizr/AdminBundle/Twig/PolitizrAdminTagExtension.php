@@ -78,6 +78,13 @@ class PolitizrAdminTagExtension extends \Twig_Extension
                     'is_safe' => array('html')
                     )
             ),
+            'adminTagReactions'  => new \Twig_SimpleFunction(
+                'adminTagReactions',
+                array($this, 'adminTagReactions'),
+                array(
+                    'is_safe' => array('html')
+                    )
+            ),
             'adminTagUsers'  => new \Twig_SimpleFunction(
                 'adminTagUsers',
                 array($this, 'adminTagUsers'),
@@ -326,6 +333,29 @@ class PolitizrAdminTagExtension extends \Twig_Extension
             array(
                 'tag' => $tag,
                 'debates' => $tag->getDebates(),
+            )
+        );
+
+        return $html;
+    }
+
+    /**
+     * Tag's reactions
+     *
+     * @param PTag $tag
+     * @return string
+     */
+    public function adminTagReactions(PTag $tag)
+    {
+        $this->logger->info('*** adminTagReactions');
+        // $this->logger->info('$tag = '.print_r($tag, true));
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+            'PolitizrAdminBundle:Fragment\\Reaction:_tagReactions.html.twig',
+            array(
+                'tag' => $tag,
+                'reactions' => $tag->getReactions(),
             )
         );
 

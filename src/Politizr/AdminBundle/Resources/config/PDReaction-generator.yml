@@ -82,7 +82,17 @@ builders:
                             # published:          0
             display:                            [ id, p_user_id, p_d_debate_id, parent_reaction_id, tree_level, title, online, published, published_at, created_at ]
             filtersMode:                        modal
-            filters:                            [ id, uuid, p_user_id, p_d_debate_id, parent_reaction_id, tree_level, title, online, published, published_at, created_at ]
+            filters:                            [ id, uuid, p_user_id, p_d_debate_id, parent_reaction_id, tree_level, PTags, title, online, published, published_at, created_at ]
+            fields:
+                PDRTaggedT:
+                    dbType:                     model
+                    formType:                   model
+                    label:                      Tags associés
+                    addFormOptions:
+                        multiple:               true
+                        required:               false
+                        class:                  Politizr\Model\PTag
+                        query:                  \Politizr\Model\PTagQuery::create()->filterByOnline(1)->orderByTitle()
             object_actions:
                 show:                           ~
                 edit:                           ~

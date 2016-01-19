@@ -5,6 +5,11 @@
     {{ adminTagDebates(PTag) }}
 {% endblock %}
 
+{# Reactions tags block #}
+{% block show_column_block_reactions %}
+    {{ adminTagReactions(PTag) }}
+{% endblock %}
+
 {# Users tags block #}
 {% block show_column_block_users %}
     {{ adminTagUsers(PTag) }}

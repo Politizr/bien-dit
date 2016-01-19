@@ -69,6 +69,33 @@ class PTag extends BasePTag
     }
     
     /* ######################################################################################################## */
+    /*                                               REACTIONS                                                  */
+    /* ######################################################################################################## */
+    
+    /**
+     * @see parent::countPDDTaggedTs
+     */
+    public function countReactions($query = null)
+    {
+        return parent::countPDRTaggedTs($query);
+    }
+
+    /**
+     * Tagged reactions
+     */
+    public function getReactions($online = null)
+    {
+        $reactions = PDReactionQuery::create()
+            ->usePDRTaggedTQuery()
+                ->filterByPTagId($this->getId())
+            ->endUse()
+            ->filterIfOnline($online)
+            ->find();
+
+        return $reactions;
+    }
+    
+    /* ######################################################################################################## */
     /*                                                   USERS                                                  */
     /* ######################################################################################################## */
     

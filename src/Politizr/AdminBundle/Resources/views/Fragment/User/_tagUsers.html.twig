@@ -1,11 +1,15 @@
 <div id="displayDebatesZone">
-    {% if users | length > 0 %}
-        <b>{{ users | length }} utilisateurs ont été taggés avec {{ tag }}</b>
-    {% else %}
-        <b>Aucun utilisateur taggé avec {{ tag }}</b>
-    {% endif %}
+    <a href="{{ path('Politizr_AdminBundle_PUser_list') }}filter?">
+        {% if users | length > 0 %}
+            <b>{{ users | length }} utilisateur(s)</b>
+        {% else %}
+            <b>Aucun utilisateur taggé</b>
+        {% endif %}
+    </a>
+    {#
     <hr>
     {% for user in users %}
         {% include 'PolitizrAdminBundle:Fragment\\User:_user.html.twig' with { 'user': user } %}
     {% endfor %}
+    #}
 </div>

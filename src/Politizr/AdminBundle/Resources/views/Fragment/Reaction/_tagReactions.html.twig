@@ -1,0 +1,15 @@
+<div id="displayReactionsZone">
+    <a href="{{ path('Politizr_AdminBundle_PDReaction_list') }}filter?PDRTaggedT[]={{ tag.id }}&published=1">
+        {% if reactions | length > 0 %}
+            <b>{{ reactions | length }} réaction(s)</b>
+        {% else %}
+            <b>Aucun réaction</b>
+        {% endif %}
+    </a>
+    {#
+    <hr>
+    {% for debate in reactions %}
+        {% include 'PolitizrAdminBundle:Fragment\\Reaction:_debate.html.twig' with { 'debate': debate } %}
+    {% endfor %}
+    #}
+</div>

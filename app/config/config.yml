@@ -227,7 +227,7 @@ admingenerator_generator:
             CLOB:          text
             CLOB_EMU:      text
             model:         model
-            collection:    collection
+            collection:    model
             PHP_ARRAY:     text
             ENUM:          text
             BOOLEAN:       choice

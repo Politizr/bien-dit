@@ -1,11 +1,15 @@
 <div id="displayDebatesZone">
-    {% if debates | length > 0 %}
-        <b>{{ debates | length }} débats ont été taggés avec {{ tag }}</b>
-    {% else %}
-        <b>Aucun débat taggé avec {{ tag }}</b>
-    {% endif %}
+    <a href="{{ path('Politizr_AdminBundle_PDDebate_list') }}filter?PDDTaggedT[]={{ tag.id }}&published=1">
+        {% if debates | length > 0 %}
+            <b>{{ debates | length }} débat(s)</b>
+        {% else %}
+            <b>Aucun débat</b>
+        {% endif %}
+    </a>
+    {#
     <hr>
     {% for debate in debates %}
         {% include 'PolitizrAdminBundle:Fragment\\Debate:_debate.html.twig' with { 'debate': debate } %}
     {% endfor %}
+    #}
 </div>

@@ -47,7 +47,6 @@ builders:
             sort:                               [ created_at, DESC ]
             scopes:
                 group_1: 
-                    "Tous":                     ~
                     "Géographique":
                         filters:
                             p_t_tag_type_id:    1
@@ -55,14 +54,16 @@ builders:
                         default:                true
                         filters:
                             p_t_tag_type_id:    2
-            display:                            [ title, p_t_tag_type, PTagRelatedByPTParentId, countDebates, countUsers, created_at, online ]
-            # filtersMode:                        top
+            display:                            [ title, p_t_tag_type, PTagRelatedByPTParentId, countDebates, countReactions, countUsers, created_at, online ]
+            filtersMode:                        modal
             filters:                            [ title, p_t_tag_type_id, PTagRelatedByPTParentId, p_t_tag_type, online, created_at ]
             fields:
                 countDebates:
-                    label:                      Nb débats
+                    label:                      Débats
+                countReactions:
+                    label:                      Réactions
                 countUsers:
-                    label:                      Nb profils
+                    label:                      Profils
             actions:
                 new:                            ~
             object_actions:
@@ -129,6 +130,7 @@ builders:
                     "Texte":                    [ [ title ] ]
                 "Publication":
                     "Débats":                   [ block_debates ]
+                    "Réactions":                [ block_reactions ]
                 "Modération":
                     "Portée":                   [ [ moderated, moderated_at ] ]
                 "Utilisateurs":
@@ -138,6 +140,8 @@ builders:
                     "Création":                 [ [ p_t_tag_type ], [ PTagRelatedByPTParentId ], [ online ], [ created_at, updated_at ] ]
             fields:
                 block_debates:
+                    label:                      "Taggés"
+                block_reactions:
                     label:                      "Taggés"
                 block_users:
                     label:                      "Taggés"

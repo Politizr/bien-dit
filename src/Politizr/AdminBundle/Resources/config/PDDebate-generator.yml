@@ -73,6 +73,15 @@ builders:
             fields:
                 count_reactions:
                     label:                      Réactions
+                PDDTaggedT:
+                    dbType:                     model
+                    formType:                   model
+                    label:                      Tags associés
+                    addFormOptions:
+                        multiple:               true
+                        required:               false
+                        class:                  Politizr\Model\PTag
+                        query:                  \Politizr\Model\PTagQuery::create()->filterByOnline(1)->orderByTitle()
             object_actions:
                 show:                           ~
                 edit:                           ~
