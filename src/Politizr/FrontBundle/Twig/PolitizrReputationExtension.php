@@ -22,38 +22,41 @@ use Politizr\Constant\ReputationConstants;
  */
 class PolitizrReputationExtension extends \Twig_Extension
 {
-    private $logger;
+    private $securityTokenStorage;
+    private $securityAuthorizationChecker;
+
     private $router;
     private $templating;
-    private $securityTokenStorage;
+
     private $globalTools;
 
-    private $user;
+    private $logger;
 
     /**
-     *
+     * @security.token_storage
+     * @security.authorization_checker
+     * @router
+     * @templating
+     * @politizr.tools.global
+     * @logger
      */
-    public function __construct($serviceContainer)
-    {
-        $this->logger = $serviceContainer->get('logger');
-        $this->router = $serviceContainer->get('router');
-        $this->templating = $serviceContainer->get('templating');
-        $this->securityContext = $serviceContainer->get('security.context');
-        $this->globalTools = $serviceContainer->get('politizr.tools.global');
+    public function __construct(
+        $securityTokenStorage,
+        $securityAuthorizationChecker,
+        $router,
+        $templating,
+        $globalTools,
+        $logger
+    ) {
+        $this->securityTokenStorage = $securityTokenStorage;
+        $this->securityAuthorizationChecker =$securityAuthorizationChecker;
 
-        // get connected user
-        $token = $this->securityContext->getToken();
-        if ($token && $user = $token->getUser()) {
-            $className = 'Politizr\Model\PUser';
-            if ($user && $user instanceof $className) {
-                $this->user = $user;
-            } else {
-                $this->user = null;
-            }
-        } else {
-            $this->user = null;
-        }
+        $this->router = $router;
+        $this->templating = $templating;
 
+        $this->globalTools = $globalTools;
+
+        $this->logger = $logger;
     }
 
     /* ######################################################################################################## */

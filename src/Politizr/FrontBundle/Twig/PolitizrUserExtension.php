@@ -23,46 +23,45 @@ use Politizr\Model\PUserQuery;
  */
 class PolitizrUserExtension extends \Twig_Extension
 {
-    private $logger;
-    private $router;
-    private $templating;
     private $securityTokenStorage;
     private $securityAuthorizationChecker;
+
+    private $router;
+    private $templating;
+
     private $documentService;
     private $globalTools;
 
-    private $user;
+    private $logger;
 
     /**
-     *
+     * @security.token_storage
+     * @security.authorization_checker
+     * @router
+     * @templating
+     * @politizr.functional.document
+     * @politizr.tools.global
+     * @logger
      */
-    public function __construct($serviceContainer)
-    {
-        $this->logger = $serviceContainer->get('logger');
-        
-        $this->router = $serviceContainer->get('router');
-        $this->templating = $serviceContainer->get('templating');
-        
-        $this->securityContext = $serviceContainer->get('security.context');
-        $this->securityAuthorizationChecker = $serviceContainer->get('security.authorization_checker');
+    public function __construct(
+        $securityTokenStorage,
+        $securityAuthorizationChecker,
+        $router,
+        $templating,
+        $documentService,
+        $globalTools,
+        $logger
+    ) {
+        $this->securityTokenStorage = $securityTokenStorage;
+        $this->securityAuthorizationChecker =$securityAuthorizationChecker;
 
-        $this->documentService = $serviceContainer->get('politizr.functional.document');
+        $this->router = $router;
+        $this->templating = $templating;
 
-        $this->globalTools = $serviceContainer->get('politizr.tools.global');
+        $this->documentService = $documentService;
+        $this->globalTools = $globalTools;
 
-        // get connected user
-        $token = $this->securityContext->getToken();
-        if ($token && $user = $token->getUser()) {
-            $className = 'Politizr\Model\PUser';
-            if ($user && $user instanceof $className) {
-                $this->user = $user;
-            } else {
-                $this->user = null;
-            }
-        } else {
-            $this->user = null;
-        }
-
+        $this->logger = $logger;
     }
 
     /* ######################################################################################################## */
@@ -273,8 +272,11 @@ class PolitizrUserExtension extends \Twig_Extension
         // $this->logger->info('$uiser = '.print_r($user, true));
         // $this->logger->info('$pTTagType = '.print_r($pTTagType, true));
 
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        
         // get hidden tags for current user only
-        if ($user && $user->getId() == $this->user->getId()) {
+        if ($user && $user->getId() == $user->getId()) {
             $tags = $user->getTags($tagTypeId, null);
         } else {
             $tags = $user->getTags($tagTypeId);
@@ -304,10 +306,13 @@ class PolitizrUserExtension extends \Twig_Extension
         // $this->logger->info('*** linkSubscribeUser');
         // $this->logger->info('$debate = '.print_r($user, true));
 
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        
         $follower = false;
-        if ($this->user) {
+        if ($user) {
             $follow = PUFollowUQuery::create()
-                ->filterByPUserFollowerId($this->user->getId())
+                ->filterByPUserFollowerId($user->getId())
                 ->filterByPUserId($user->getId())
                 ->findOne();
             
@@ -602,9 +607,12 @@ class PolitizrUserExtension extends \Twig_Extension
     {
         $this->logger->info('*** isGrantedC');
 
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        
         if ($this->securityAuthorizationChecker->isGranted('ROLE_CITIZEN') &&
-            $this->user &&
-            $this->user->getOnline()) {
+            $user &&
+            $user->getOnline()) {
             return true;
         }
 
@@ -621,10 +629,13 @@ class PolitizrUserExtension extends \Twig_Extension
     {
         $this->logger->info('*** isGrantedE');
 
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        
         if ($this->securityAuthorizationChecker->isGranted('ROLE_ELECTED') &&
-            $this->user &&
-            $this->user->getPUStatusId() == UserConstants::STATUS_ACTIVED &&
-            $this->user->getOnline()) {
+            $user &&
+            $user->getPUStatusId() == UserConstants::STATUS_ACTIVED &&
+            $user->getOnline()) {
             return true;
         }
 

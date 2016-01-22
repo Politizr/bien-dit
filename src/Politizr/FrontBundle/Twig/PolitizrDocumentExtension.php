@@ -28,40 +28,45 @@ use Politizr\FrontBundle\Lib\TimelineRow;
  */
 class PolitizrDocumentExtension extends \Twig_Extension
 {
-    private $logger;
+    private $securityTokenStorage;
+    private $securityAuthorizationChecker;
+
     private $router;
     private $templating;
-    private $securityTokenStorage;
+
     private $timelineService;
     private $globalTools;
 
-    private $user;
+    private $logger;
 
     /**
-     *
+     * @security.token_storage
+     * @security.authorization_checker
+     * @router
+     * @templating
+     * @politizr.functional.timeline
+     * @politizr.tools.global
+     * @logger
      */
-    public function __construct($serviceContainer)
-    {
-        $this->logger = $serviceContainer->get('logger');
-        $this->router = $serviceContainer->get('router');
-        $this->templating = $serviceContainer->get('templating');
-        $this->securityContext = $serviceContainer->get('security.context');
-        $this->timelineService = $serviceContainer->get('politizr.functional.timeline');
-        $this->globalTools = $serviceContainer->get('politizr.tools.global');
+    public function __construct(
+        $securityTokenStorage,
+        $securityAuthorizationChecker,
+        $router,
+        $templating,
+        $timelineService,
+        $globalTools,
+        $logger
+    ) {
+        $this->securityTokenStorage = $securityTokenStorage;
+        $this->securityAuthorizationChecker =$securityAuthorizationChecker;
 
-        // get connected user
-        $token = $this->securityContext->getToken();
-        if ($token && $user = $token->getUser()) {
-            $className = 'Politizr\Model\PUser';
-            if ($user && $user instanceof $className) {
-                $this->user = $user;
-            } else {
-                $this->user = null;
-            }
-        } else {
-            $this->user = null;
-        }
+        $this->router = $router;
+        $this->templating = $templating;
 
+        $this->timelineService = $timelineService;
+        $this->globalTools = $globalTools;
+
+        $this->logger = $logger;
     }
 
     /* ######################################################################################################## */
@@ -321,14 +326,17 @@ class PolitizrDocumentExtension extends \Twig_Extension
     {
         $parentReaction = null;
 
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        
         if ($parentReactionId = $reaction->getParentReactionId()) {
             $parentReaction = PDReactionQuery::create()->findPk($parentReactionId);
         }
         $parentDebate = $reaction->getDebate();
 
         $debateIsFollowed = false;
-        if ($this->user) {
-            $debateIsFollowed = $parentDebate->isFollowedBy($this->user->getId());
+        if ($user) {
+            $debateIsFollowed = $parentDebate->isFollowedBy($user->getId());
         }
 
         // Construction du rendu du tag
@@ -603,6 +611,9 @@ class PolitizrDocumentExtension extends \Twig_Extension
         // $this->logger->info('*** linkNoteDebate');
         // $this->logger->info('$debate = '.print_r($debate, true));
 
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+
         $pos = false;
         $neg = false;
 
@@ -612,9 +623,9 @@ class PolitizrDocumentExtension extends \Twig_Extension
         $hasAlreadyNotePos = false;
         $hasAlreadyNoteNeg = false;
 
-        if ($this->user) {
+        if ($user) {
             $ownDebate = PDDebateQuery::create()
-                ->filterByPUserId($this->user->getId())
+                ->filterByPUserId($user->getId())
                 ->filterById($debate->getId())
                 ->findOne();
 
@@ -631,7 +642,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
                     ->filterByPRActionId(ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_NOTE_NEG)
                     ->filterByPObjectName('Politizr\Model\PDDebate');
 
-                $notePos = $queryPos->filterByPUserId($this->user->getId())
+                $notePos = $queryPos->filterByPUserId($user->getId())
                     ->filterByPObjectId($debate->getId())
                     ->findOne();
                 if ($notePos) {
@@ -639,7 +650,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
                     $hasAlreadyNotePos = true;
                 }
 
-                $noteNeg = $queryNeg->filterByPUserId($this->user->getId())
+                $noteNeg = $queryNeg->filterByPUserId($user->getId())
                     ->filterByPObjectId($debate->getId())
                     ->findOne();
                 if ($noteNeg) {
@@ -648,7 +659,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 }
 
                 // min score management
-                $score = $this->user->getReputationScore();
+                $score = $user->getReputationScore();
                 if ($score >= ReputationConstants::ACTION_DEBATE_NOTE_NEG) {
                     $isAuthorizedToNotateNeg = true;
                 }
@@ -687,6 +698,9 @@ class PolitizrDocumentExtension extends \Twig_Extension
         // $this->logger->info('*** linkNoteReaction');
         // $this->logger->info('$reaction = '.print_r($reaction, true));
 
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+
         $pos = false;
         $neg = false;
 
@@ -696,9 +710,9 @@ class PolitizrDocumentExtension extends \Twig_Extension
         $hasAlreadyNotePos = false;
         $hasAlreadyNoteNeg = false;
 
-        if ($this->user) {
+        if ($user) {
             $ownReaction = PDReactionQuery::create()
-                ->filterByPUserId($this->user->getId())
+                ->filterByPUserId($user->getId())
                 ->filterById($reaction->getId())
                 ->findOne();
 
@@ -715,7 +729,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
                     ->filterByPRActionId(ReputationConstants::ACTION_ID_D_AUTHOR_REACTION_NOTE_NEG)
                     ->filterByPObjectName('Politizr\Model\PDReaction');
 
-                $notePos = $queryPos->filterByPUserId($this->user->getId())
+                $notePos = $queryPos->filterByPUserId($user->getId())
                     ->filterByPObjectId($reaction->getId())
                     ->findOne();
                 if ($notePos) {
@@ -723,7 +737,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
                     $hasAlreadyNotePos = true;
                 }
 
-                $noteNeg = $queryNeg->filterByPUserId($this->user->getId())
+                $noteNeg = $queryNeg->filterByPUserId($user->getId())
                     ->filterByPObjectId($reaction->getId())
                     ->findOne();
                 if ($noteNeg) {
@@ -732,7 +746,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 }
 
                 // min score management
-                $score = $this->user->getReputationScore();
+                $score = $user->getReputationScore();
                 if ($score >= ReputationConstants::ACTION_REACTION_NOTE_NEG) {
                     $isAuthorizedToNotateNeg = true;
                 }
@@ -772,6 +786,9 @@ class PolitizrDocumentExtension extends \Twig_Extension
         // $this->logger->info('*** linkNoteComment');
         // $this->logger->info('$comment = '.print_r($comment, true));
 
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+
         $pos = false;
         $neg = false;
 
@@ -781,7 +798,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
         $hasAlreadyNotePos = false;
         $hasAlreadyNoteNeg = false;
 
-        if ($this->user) {
+        if ($user) {
             switch ($comment->getType()) {
                 case ObjectTypeConstants::TYPE_DEBATE_COMMENT:
                     $type = ObjectTypeConstants::TYPE_DEBATE_COMMENT;
@@ -795,7 +812,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
                     throw new InconsistentDataException(sprintf('Object type %s not managed', $comment->getType()));
             }
             $document = $query
-                ->filterByPUserId($this->user->getId())
+                ->filterByPUserId($user->getId())
                 ->filterById($comment->getId())
                 ->findOne();
 
@@ -812,7 +829,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
                     ->filterByPRActionId(ReputationConstants::ACTION_ID_D_AUTHOR_COMMENT_NOTE_NEG)
                     ->filterByPObjectName($comment->getType());
 
-                $notePos = $queryPos->filterByPUserId($this->user->getId())
+                $notePos = $queryPos->filterByPUserId($user->getId())
                     ->filterByPObjectId($comment->getId())
                     ->findOne();
                 if ($notePos) {
@@ -820,7 +837,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
                     $hasAlreadyNotePos = true;
                 }
 
-                $noteNeg = $queryNeg->filterByPUserId($this->user->getId())
+                $noteNeg = $queryNeg->filterByPUserId($user->getId())
                     ->filterByPObjectId($comment->getId())
                     ->findOne();
                 if ($noteNeg) {
@@ -829,7 +846,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 }
 
                 // min score management
-                $score = $this->user->getReputationScore();
+                $score = $user->getReputationScore();
                 if ($score >= ReputationConstants::ACTION_COMMENT_NOTE_NEG) {
                     $isAuthorizedToNotateNeg = true;
                 }
@@ -868,14 +885,17 @@ class PolitizrDocumentExtension extends \Twig_Extension
         // $this->logger->info('*** linkSubscribeDebate');
         // $this->logger->info('$debate = '.print_r($debate, true));
 
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+
         $owner = false;
         $follower = false;
-        if ($this->user) {
-            if ($debate->isOwner($this->user->getId())) {
+        if ($user) {
+            if ($debate->isOwner($user->getId())) {
                 $owner = true;
             } else {
                 $follow = PUFollowDDQuery::create()
-                    ->filterByPUserId($this->user->getId())
+                    ->filterByPUserId($user->getId())
                     ->filterByPDDebateId($debate->getId())
                     ->findOne();
                 

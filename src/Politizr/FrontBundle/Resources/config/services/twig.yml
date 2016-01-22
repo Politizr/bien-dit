@@ -2,7 +2,7 @@ services:
     twig.extension.text:
        class:           Twig_Extensions_Extension_Text
        tags:
-                        - { name: twig.extension }
+            - { name: twig.extension }
 
     politzr.twig.tag:
         class:          Politizr\FrontBundle\Twig\PolitizrTagExtension
@@ -13,22 +13,42 @@ services:
             - @templating
             - @logger
         tags:
-                        - { name: twig.extension }
+            - { name: twig.extension }
 
     politzr.twig.document:
         class:          Politizr\FrontBundle\Twig\PolitizrDocumentExtension
-        arguments:      [ @service_container ]
+        arguments:
+            - @security.token_storage
+            - @security.authorization_checker
+            - @router
+            - @templating
+            - @politizr.functional.timeline
+            - @politizr.tools.global
+            - @logger
         tags:
-                        - { name: twig.extension }
+            - { name: twig.extension }
 
     politzr.twig.user:
         class:          Politizr\FrontBundle\Twig\PolitizrUserExtension
-        arguments:      [ @service_container ]
+        arguments:
+            - @security.token_storage
+            - @security.authorization_checker
+            - @router
+            - @templating
+            - @politizr.functional.document
+            - @politizr.tools.global
+            - @logger
         tags:
-                        - { name: twig.extension }
+            - { name: twig.extension }
 
     politzr.twig.reputation:
         class:          Politizr\FrontBundle\Twig\PolitizrReputationExtension
-        arguments:      [ @service_container ]
+        arguments:
+            - @security.token_storage
+            - @security.authorization_checker
+            - @router
+            - @templating
+            - @politizr.tools.global
+            - @logger
         tags:
-                        - { name: twig.extension }
+            - { name: twig.extension }

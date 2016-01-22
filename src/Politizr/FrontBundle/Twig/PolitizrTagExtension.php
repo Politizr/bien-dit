@@ -16,36 +16,35 @@ use Politizr\Exception\InconsistentDataException;
  */
 class PolitizrTagExtension extends \Twig_Extension
 {
-    private $logger;
+    private $securityTokenStorage;
+    private $securityAuthorizationChecker;
+
     private $router;
     private $templating;
-    private $securityTokenStorage;
 
-    private $user;
+    private $logger;
 
     /**
-     *
+     * @security.token_storage
+     * @security.authorization_checker
+     * @router
+     * @templating
+     * @logger
      */
-    public function __construct($serviceContainer)
-    {
-        $this->logger = $serviceContainer->get('logger');
-        $this->router = $serviceContainer->get('router');
-        $this->templating = $serviceContainer->get('templating');
-        $this->securityContext = $serviceContainer->get('security.context');
+    public function __construct(
+        $securityTokenStorage,
+        $securityAuthorizationChecker,
+        $router,
+        $templating,
+        $logger
+    ) {
+        $this->securityTokenStorage = $securityTokenStorage;
+        $this->securityAuthorizationChecker =$securityAuthorizationChecker;
 
-        // get connected user
-        $token = $this->securityContext->getToken();
-        if ($token && $user = $token->getUser()) {
-            $className = 'Politizr\Model\PUser';
-            if ($user && $user instanceof $className) {
-                $this->user = $user;
-            } else {
-                $this->user = null;
-            }
-        } else {
-            $this->user = null;
-        }
+        $this->router = $router;
+        $this->templating = $templating;
 
+        $this->logger = $logger;
     }
 
     /* ######################################################################################################## */
@@ -118,9 +117,12 @@ class PolitizrTagExtension extends \Twig_Extension
 
         $html = '';
 
-        if ($this->user) {
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        
+        if ($user) {
             // Test if user has already associated this tag
-            if ($this->user->isTagged($tag->getId())) {
+            if ($user->isTagged($tag->getId())) {
                 $html = $this->templating->render(
                     'PolitizrFrontBundle:Tag:_isUserTagged.html.twig'
                 );
