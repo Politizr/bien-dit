@@ -9,9 +9,6 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
-use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
-use Glorpen\Propel\PropelBundle\Events\DetectOMClassEvent;
-use Glorpen\Propel\PropelBundle\Events\PeerEvent;
 use Politizr\Model\PTagPeer;
 use Politizr\Model\PUTaggedT;
 use Politizr\Model\PUTaggedTPeer;
@@ -477,7 +474,7 @@ abstract class BasePUTaggedTPeer
             // $obj->hydrate($row, $startcol, true); // rehydrate
             $col = $startcol + PUTaggedTPeer::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = PUTaggedTPeer::getOMClass($row, $startcol);
+            $cls = PUTaggedTPeer::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $startcol);
             PUTaggedTPeer::addInstanceToPool($obj, $key);
@@ -1148,13 +1145,6 @@ abstract class BasePUTaggedTPeer
      */
     public static function getOMClass($row = 0, $colnum = 0)
     {
-
-        $event = new DetectOMClassEvent(PUTaggedTPeer::OM_CLASS, $row, $colnum);
-        EventDispatcherProxy::trigger('om.detect', $event);
-        if($event->isDetected()){
-            return $event->getDetectedClass();
-        }
-
         return PUTaggedTPeer::OM_CLASS;
     }
 
@@ -1427,4 +1417,3 @@ abstract class BasePUTaggedTPeer
 //
 BasePUTaggedTPeer::buildTableMap();
 
-EventDispatcherProxy::trigger(array('construct','peer.construct'), new PeerEvent('Politizr\Model\om\BasePUTaggedTPeer'));

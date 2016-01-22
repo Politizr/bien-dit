@@ -4,10 +4,11 @@ namespace Politizr\FrontBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
-
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Politizr\FrontBundle\Form\DataTransformer\YearToDateTransformer;
 
@@ -50,6 +51,12 @@ class PUMandateType extends AbstractType
                 'expanded' => false,
                 'constraints' => new NotBlank(array('message' => 'Choix d\'un mandat obligatoire.')),
             ));
+
+
+        // $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
+        //     $form = $event->getForm();
+        //     dump($form);
+        // });
 
         // Localization
         $builder->add('localization', 'text', array(

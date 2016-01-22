@@ -9,9 +9,6 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
-use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
-use Glorpen\Propel\PropelBundle\Events\DetectOMClassEvent;
-use Glorpen\Propel\PropelBundle\Events\PeerEvent;
 use Politizr\Model\PMUserHistoric;
 use Politizr\Model\PMUserHistoricPeer;
 use Politizr\Model\PUserPeer;
@@ -496,7 +493,7 @@ abstract class BasePMUserHistoricPeer
             // $obj->hydrate($row, $startcol, true); // rehydrate
             $col = $startcol + PMUserHistoricPeer::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = PMUserHistoricPeer::getOMClass($row, $startcol);
+            $cls = PMUserHistoricPeer::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $startcol);
             PMUserHistoricPeer::addInstanceToPool($obj, $key);
@@ -774,13 +771,6 @@ abstract class BasePMUserHistoricPeer
      */
     public static function getOMClass($row = 0, $colnum = 0)
     {
-
-        $event = new DetectOMClassEvent(PMUserHistoricPeer::OM_CLASS, $row, $colnum);
-        EventDispatcherProxy::trigger('om.detect', $event);
-        if($event->isDetected()){
-            return $event->getDetectedClass();
-        }
-
         return PMUserHistoricPeer::OM_CLASS;
     }
 
@@ -1053,4 +1043,3 @@ abstract class BasePMUserHistoricPeer
 //
 BasePMUserHistoricPeer::buildTableMap();
 
-EventDispatcherProxy::trigger(array('construct','peer.construct'), new PeerEvent('Politizr\Model\om\BasePMUserHistoricPeer'));

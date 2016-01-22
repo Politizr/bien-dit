@@ -9,9 +9,6 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
-use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
-use Glorpen\Propel\PropelBundle\Events\DetectOMClassEvent;
-use Glorpen\Propel\PropelBundle\Events\PeerEvent;
 use Politizr\Model\PMUserMessageArchive;
 use Politizr\Model\PMUserMessageArchivePeer;
 use Politizr\Model\map\PMUserMessageArchiveTableMap;
@@ -490,7 +487,7 @@ abstract class BasePMUserMessageArchivePeer
             // $obj->hydrate($row, $startcol, true); // rehydrate
             $col = $startcol + PMUserMessageArchivePeer::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = PMUserMessageArchivePeer::getOMClass($row, $startcol);
+            $cls = PMUserMessageArchivePeer::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $startcol);
             PMUserMessageArchivePeer::addInstanceToPool($obj, $key);
@@ -530,13 +527,6 @@ abstract class BasePMUserMessageArchivePeer
      */
     public static function getOMClass($row = 0, $colnum = 0)
     {
-
-        $event = new DetectOMClassEvent(PMUserMessageArchivePeer::OM_CLASS, $row, $colnum);
-        EventDispatcherProxy::trigger('om.detect', $event);
-        if($event->isDetected()){
-            return $event->getDetectedClass();
-        }
-
         return PMUserMessageArchivePeer::OM_CLASS;
     }
 
@@ -805,4 +795,3 @@ abstract class BasePMUserMessageArchivePeer
 //
 BasePMUserMessageArchivePeer::buildTableMap();
 
-EventDispatcherProxy::trigger(array('construct','peer.construct'), new PeerEvent('Politizr\Model\om\BasePMUserMessageArchivePeer'));

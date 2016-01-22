@@ -9,9 +9,6 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
-use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
-use Glorpen\Propel\PropelBundle\Events\DetectOMClassEvent;
-use Glorpen\Propel\PropelBundle\Events\PeerEvent;
 use Politizr\Model\PMAskForUpdate;
 use Politizr\Model\PMAskForUpdatePeer;
 use Politizr\Model\PUserPeer;
@@ -481,7 +478,7 @@ abstract class BasePMAskForUpdatePeer
             // $obj->hydrate($row, $startcol, true); // rehydrate
             $col = $startcol + PMAskForUpdatePeer::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = PMAskForUpdatePeer::getOMClass($row, $startcol);
+            $cls = PMAskForUpdatePeer::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $startcol);
             PMAskForUpdatePeer::addInstanceToPool($obj, $key);
@@ -759,13 +756,6 @@ abstract class BasePMAskForUpdatePeer
      */
     public static function getOMClass($row = 0, $colnum = 0)
     {
-
-        $event = new DetectOMClassEvent(PMAskForUpdatePeer::OM_CLASS, $row, $colnum);
-        EventDispatcherProxy::trigger('om.detect', $event);
-        if($event->isDetected()){
-            return $event->getDetectedClass();
-        }
-
         return PMAskForUpdatePeer::OM_CLASS;
     }
 
@@ -1038,4 +1028,3 @@ abstract class BasePMAskForUpdatePeer
 //
 BasePMAskForUpdatePeer::buildTableMap();
 
-EventDispatcherProxy::trigger(array('construct','peer.construct'), new PeerEvent('Politizr\Model\om\BasePMAskForUpdatePeer'));

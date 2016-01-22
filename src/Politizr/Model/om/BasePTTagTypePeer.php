@@ -9,9 +9,6 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
-use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
-use Glorpen\Propel\PropelBundle\Events\DetectOMClassEvent;
-use Glorpen\Propel\PropelBundle\Events\PeerEvent;
 use Politizr\Model\PTTagType;
 use Politizr\Model\PTTagTypePeer;
 use Politizr\Model\PTagPeer;
@@ -474,7 +471,7 @@ abstract class BasePTTagTypePeer
             // $obj->hydrate($row, $startcol, true); // rehydrate
             $col = $startcol + PTTagTypePeer::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = PTTagTypePeer::getOMClass($row, $startcol);
+            $cls = PTTagTypePeer::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $startcol);
             PTTagTypePeer::addInstanceToPool($obj, $key);
@@ -514,13 +511,6 @@ abstract class BasePTTagTypePeer
      */
     public static function getOMClass($row = 0, $colnum = 0)
     {
-
-        $event = new DetectOMClassEvent(PTTagTypePeer::OM_CLASS, $row, $colnum);
-        EventDispatcherProxy::trigger('om.detect', $event);
-        if($event->isDetected()){
-            return $event->getDetectedClass();
-        }
-
         return PTTagTypePeer::OM_CLASS;
     }
 
@@ -793,4 +783,3 @@ abstract class BasePTTagTypePeer
 //
 BasePTTagTypePeer::buildTableMap();
 
-EventDispatcherProxy::trigger(array('construct','peer.construct'), new PeerEvent('Politizr\Model\om\BasePTTagTypePeer'));

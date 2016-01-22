@@ -9,9 +9,6 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
-use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
-use Glorpen\Propel\PropelBundle\Events\DetectOMClassEvent;
-use Glorpen\Propel\PropelBundle\Events\PeerEvent;
 use Politizr\Model\PDRTaggedT;
 use Politizr\Model\PDRTaggedTPeer;
 use Politizr\Model\PDReactionPeer;
@@ -472,7 +469,7 @@ abstract class BasePDRTaggedTPeer
             // $obj->hydrate($row, $startcol, true); // rehydrate
             $col = $startcol + PDRTaggedTPeer::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = PDRTaggedTPeer::getOMClass($row, $startcol);
+            $cls = PDRTaggedTPeer::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $startcol);
             PDRTaggedTPeer::addInstanceToPool($obj, $key);
@@ -1143,13 +1140,6 @@ abstract class BasePDRTaggedTPeer
      */
     public static function getOMClass($row = 0, $colnum = 0)
     {
-
-        $event = new DetectOMClassEvent(PDRTaggedTPeer::OM_CLASS, $row, $colnum);
-        EventDispatcherProxy::trigger('om.detect', $event);
-        if($event->isDetected()){
-            return $event->getDetectedClass();
-        }
-
         return PDRTaggedTPeer::OM_CLASS;
     }
 
@@ -1422,4 +1412,3 @@ abstract class BasePDRTaggedTPeer
 //
 BasePDRTaggedTPeer::buildTableMap();
 
-EventDispatcherProxy::trigger(array('construct','peer.construct'), new PeerEvent('Politizr\Model\om\BasePDRTaggedTPeer'));

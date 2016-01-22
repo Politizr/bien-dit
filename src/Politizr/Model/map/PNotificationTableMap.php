@@ -92,10 +92,6 @@ class PNotificationTableMap extends TableMap
   'required' => 'true',
   'unique' => 'true',
 ),
-            'event' =>  array (
-),
-            'extend' =>  array (
-),
         );
     } // getBehaviors()
 

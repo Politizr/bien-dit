@@ -9,9 +9,6 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
-use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
-use Glorpen\Propel\PropelBundle\Events\DetectOMClassEvent;
-use Glorpen\Propel\PropelBundle\Events\PeerEvent;
 use Politizr\Model\PNotificationPeer;
 use Politizr\Model\PUSubscribeEmail;
 use Politizr\Model\PUSubscribeEmailPeer;
@@ -472,7 +469,7 @@ abstract class BasePUSubscribeEmailPeer
             // $obj->hydrate($row, $startcol, true); // rehydrate
             $col = $startcol + PUSubscribeEmailPeer::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = PUSubscribeEmailPeer::getOMClass($row, $startcol);
+            $cls = PUSubscribeEmailPeer::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $startcol);
             PUSubscribeEmailPeer::addInstanceToPool($obj, $key);
@@ -1143,13 +1140,6 @@ abstract class BasePUSubscribeEmailPeer
      */
     public static function getOMClass($row = 0, $colnum = 0)
     {
-
-        $event = new DetectOMClassEvent(PUSubscribeEmailPeer::OM_CLASS, $row, $colnum);
-        EventDispatcherProxy::trigger('om.detect', $event);
-        if($event->isDetected()){
-            return $event->getDetectedClass();
-        }
-
         return PUSubscribeEmailPeer::OM_CLASS;
     }
 
@@ -1422,4 +1412,3 @@ abstract class BasePUSubscribeEmailPeer
 //
 BasePUSubscribeEmailPeer::buildTableMap();
 
-EventDispatcherProxy::trigger(array('construct','peer.construct'), new PeerEvent('Politizr\Model\om\BasePUSubscribeEmailPeer'));

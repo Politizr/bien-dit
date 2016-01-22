@@ -9,9 +9,6 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
-use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
-use Glorpen\Propel\PropelBundle\Events\DetectOMClassEvent;
-use Glorpen\Propel\PropelBundle\Events\PeerEvent;
 use Politizr\Model\PDRTaggedTArchive;
 use Politizr\Model\PDRTaggedTArchivePeer;
 use Politizr\Model\map\PDRTaggedTArchiveTableMap;
@@ -475,7 +472,7 @@ abstract class BasePDRTaggedTArchivePeer
             // $obj->hydrate($row, $startcol, true); // rehydrate
             $col = $startcol + PDRTaggedTArchivePeer::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = PDRTaggedTArchivePeer::getOMClass($row, $startcol);
+            $cls = PDRTaggedTArchivePeer::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $startcol);
             PDRTaggedTArchivePeer::addInstanceToPool($obj, $key);
@@ -515,13 +512,6 @@ abstract class BasePDRTaggedTArchivePeer
      */
     public static function getOMClass($row = 0, $colnum = 0)
     {
-
-        $event = new DetectOMClassEvent(PDRTaggedTArchivePeer::OM_CLASS, $row, $colnum);
-        EventDispatcherProxy::trigger('om.detect', $event);
-        if($event->isDetected()){
-            return $event->getDetectedClass();
-        }
-
         return PDRTaggedTArchivePeer::OM_CLASS;
     }
 
@@ -790,4 +780,3 @@ abstract class BasePDRTaggedTArchivePeer
 //
 BasePDRTaggedTArchivePeer::buildTableMap();
 
-EventDispatcherProxy::trigger(array('construct','peer.construct'), new PeerEvent('Politizr\Model\om\BasePDRTaggedTArchivePeer'));

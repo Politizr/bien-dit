@@ -9,9 +9,6 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
-use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
-use Glorpen\Propel\PropelBundle\Events\DetectOMClassEvent;
-use Glorpen\Propel\PropelBundle\Events\PeerEvent;
 use Politizr\Model\PMAbuseReporting;
 use Politizr\Model\PMAbuseReportingPeer;
 use Politizr\Model\PUserPeer;
@@ -481,7 +478,7 @@ abstract class BasePMAbuseReportingPeer
             // $obj->hydrate($row, $startcol, true); // rehydrate
             $col = $startcol + PMAbuseReportingPeer::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = PMAbuseReportingPeer::getOMClass($row, $startcol);
+            $cls = PMAbuseReportingPeer::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $startcol);
             PMAbuseReportingPeer::addInstanceToPool($obj, $key);
@@ -759,13 +756,6 @@ abstract class BasePMAbuseReportingPeer
      */
     public static function getOMClass($row = 0, $colnum = 0)
     {
-
-        $event = new DetectOMClassEvent(PMAbuseReportingPeer::OM_CLASS, $row, $colnum);
-        EventDispatcherProxy::trigger('om.detect', $event);
-        if($event->isDetected()){
-            return $event->getDetectedClass();
-        }
-
         return PMAbuseReportingPeer::OM_CLASS;
     }
 
@@ -1038,4 +1028,3 @@ abstract class BasePMAbuseReportingPeer
 //
 BasePMAbuseReportingPeer::buildTableMap();
 
-EventDispatcherProxy::trigger(array('construct','peer.construct'), new PeerEvent('Politizr\Model\om\BasePMAbuseReportingPeer'));

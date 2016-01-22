@@ -9,9 +9,6 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
-use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
-use Glorpen\Propel\PropelBundle\Events\DetectOMClassEvent;
-use Glorpen\Propel\PropelBundle\Events\PeerEvent;
 use Politizr\Model\PRBadgePeer;
 use Politizr\Model\PUBadge;
 use Politizr\Model\PUBadgePeer;
@@ -472,7 +469,7 @@ abstract class BasePUBadgePeer
             // $obj->hydrate($row, $startcol, true); // rehydrate
             $col = $startcol + PUBadgePeer::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = PUBadgePeer::getOMClass($row, $startcol);
+            $cls = PUBadgePeer::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $startcol);
             PUBadgePeer::addInstanceToPool($obj, $key);
@@ -1143,13 +1140,6 @@ abstract class BasePUBadgePeer
      */
     public static function getOMClass($row = 0, $colnum = 0)
     {
-
-        $event = new DetectOMClassEvent(PUBadgePeer::OM_CLASS, $row, $colnum);
-        EventDispatcherProxy::trigger('om.detect', $event);
-        if($event->isDetected()){
-            return $event->getDetectedClass();
-        }
-
         return PUBadgePeer::OM_CLASS;
     }
 
@@ -1422,4 +1412,3 @@ abstract class BasePUBadgePeer
 //
 BasePUBadgePeer::buildTableMap();
 
-EventDispatcherProxy::trigger(array('construct','peer.construct'), new PeerEvent('Politizr\Model\om\BasePUBadgePeer'));

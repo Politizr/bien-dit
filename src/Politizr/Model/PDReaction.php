@@ -2,9 +2,6 @@
 
 namespace Politizr\Model;
 
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
@@ -23,7 +20,7 @@ use Politizr\Model\om\BasePDReaction;
  *
  * @author Lionel Bouzonville
  */
-class PDReaction extends BasePDReaction implements PDocumentInterface, ContainerAwareInterface
+class PDReaction extends BasePDReaction implements PDocumentInterface
 {
     // simple upload management
     public $uploadedFileName;
@@ -81,13 +78,6 @@ class PDReaction extends BasePDReaction implements PDocumentInterface, Container
         ));
 
         return $collectionConstraint;
-    }
-
-    /**
-     * @param ContainerInterface $container
-     */
-    public function setContainer(ContainerInterface $container = null)
-    {
     }
 
     /**

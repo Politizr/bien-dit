@@ -9,7 +9,7 @@
     "require": {
         "php": ">=5.3.9",
         
-        "symfony/symfony": "2.7.7",
+        "symfony/symfony": "2.8.*",
         
         "twig/extensions": "1.2.*",
         
@@ -28,7 +28,6 @@
         "propel/propel-bundle": "1.4.*",
         "willdurand/propel-typehintable-behavior": "1.0.4",
         "craftyshadow/propel-equalnest-behavior": "~1.2",
-        "glorpen/propel-bundle": "~1.2",
         "badlamer/propel-uuid-behavior": "~0.2",
 
         "guzzlehttp/guzzle": "5.2.*",
@@ -38,6 +37,7 @@
         "friendsofsymfony/user-bundle": "~2.0@dev",
 
         "symfony2admingenerator/generator-bundle": "^2.0@beta",
+        "symfony2admingenerator/form-bundle": "@stable",
         "symfony2admingenerator/form-extensions-bundle": "dev-master",
         
         "fzaninotto/faker": "1.5.*",
@@ -61,7 +61,7 @@
         "rollerworks/password-strength-bundle": "^1.4"
     },
     "require-dev": {
-        "sensio/generator-bundle": "~2.3",
+        "sensio/generator-bundle": "~2.5",
         "symfony/phpunit-bridge": "~2.7"
     },
     "scripts": {
@@ -93,7 +93,7 @@
             "file": "app/config/parameters.yml"
         },
         "branch-alias": {
-            "dev-master": "2.7-dev"
+            "dev-master": "2.8-dev"
         }
     }
 }

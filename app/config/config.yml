@@ -2,7 +2,6 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
-    - { resource: @GlorpenPropelBundle/Resources/config/config.yml }
 
 parameters:
     session.attribute_bag.class: Symfony\Component\HttpFoundation\Session\Attribute\NamespacedAttributeBag
@@ -178,10 +177,10 @@ admingenerator_generator:
     javascripts: [] # array of {path: path_to_javascript, route: route_name, routeparams: [value1, value2]}
     form_types:
         propel:
-            TIMESTAMP:    s2a_datetime_picker 
-            BU_TIMESTAMP: s2a_datetime_picker 
-            DATE:         s2a_daterange_picker
-            BU_DATE:      s2a_date_picker
+            TIMESTAMP:    \Admingenerator\FormExtensionsBundle\Form\Type\DateTimePickerType
+            BU_TIMESTAMP: \Admingenerator\FormExtensionsBundle\Form\Type\DateTimePickerType
+            DATE:         \Admingenerator\FormExtensionsBundle\Form\Type\DateRangePickerType
+            BU_DATE:      \Admingenerator\FormExtensionsBundle\Form\Type\DatePickerType
             TIME:         time 
             FLOAT:        number 
             REAL:         number 
@@ -206,10 +205,10 @@ admingenerator_generator:
             BOOLEAN_EMU:  checkbox 
     filter_types:
         propel:
-            DATE:          s2a_daterange_picker
-            BU_DATE:       s2a_daterange_picker
-            TIMESTAMP:     s2a_daterange_picker 
-            BU_TIMESTAMP:  s2a_daterange_picker 
+            DATE:          Admingenerator\FormExtensionsBundle\Form\Type\DateRangePickerType
+            BU_DATE:       Admingenerator\FormExtensionsBundle\Form\Type\DateRangePickerType
+            TIMESTAMP:     Admingenerator\FormExtensionsBundle\Form\Type\DateRangePickerType
+            BU_TIMESTAMP:  Admingenerator\FormExtensionsBundle\Form\Type\DateRangePickerType
             TIME:          time
             FLOAT:         number
             REAL:          number
@@ -239,10 +238,10 @@ admingenerator_form_extensions:
     image_manipulator:        ~
     twig:
         use_form_resources:     true
-    collection_upload:
-        async_listener_enabled: false
-        async_route_name:       ~
-        file_storage:           admingenerator.form.file_storage.local
+    # collection_upload:
+    #     async_listener_enabled: false
+    #     async_route_name:       ~
+    #     file_storage:           admingenerator.form.file_storage.local
     # you need these JS assets for some form types
     # if you set it to true, the bundle will include them for you
     # otherwise you have to do it manually

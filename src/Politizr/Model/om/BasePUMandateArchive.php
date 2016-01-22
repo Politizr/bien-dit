@@ -13,8 +13,6 @@ use \Propel;
 use \PropelDateTime;
 use \PropelException;
 use \PropelPDO;
-use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
-use Glorpen\Propel\PropelBundle\Events\ModelEvent;
 use Politizr\Model\PUMandateArchive;
 use Politizr\Model\PUMandateArchivePeer;
 use Politizr\Model\PUMandateArchiveQuery;
@@ -141,11 +139,6 @@ abstract class BasePUMandateArchive extends BaseObject implements Persistent
     {
 
         return $this->id;
-    }
-
-    public function __construct(){
-        parent::__construct();
-        EventDispatcherProxy::trigger(array('construct','model.construct'), new ModelEvent($this));
     }
 
     /**
@@ -816,15 +809,12 @@ abstract class BasePUMandateArchive extends BaseObject implements Persistent
 
         $con->beginTransaction();
         try {
-            EventDispatcherProxy::trigger(array('delete.pre','model.delete.pre'), new ModelEvent($this));
             $deleteQuery = PUMandateArchiveQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
                 $deleteQuery->delete($con);
                 $this->postDelete($con);
-                // event behavior
-                EventDispatcherProxy::trigger(array('delete.post', 'model.delete.post'), new ModelEvent($this));
                 $con->commit();
                 $this->setDeleted(true);
             } else {
@@ -864,31 +854,19 @@ abstract class BasePUMandateArchive extends BaseObject implements Persistent
         $isInsert = $this->isNew();
         try {
             $ret = $this->preSave($con);
-            // event behavior
-            EventDispatcherProxy::trigger('model.save.pre', new ModelEvent($this));
             if ($isInsert) {
                 $ret = $ret && $this->preInsert($con);
-                // event behavior
-                EventDispatcherProxy::trigger('model.insert.pre', new ModelEvent($this));
             } else {
                 $ret = $ret && $this->preUpdate($con);
-                // event behavior
-                EventDispatcherProxy::trigger(array('update.pre', 'model.update.pre'), new ModelEvent($this));
             }
             if ($ret) {
                 $affectedRows = $this->doSave($con);
                 if ($isInsert) {
                     $this->postInsert($con);
-                    // event behavior
-                    EventDispatcherProxy::trigger('model.insert.post', new ModelEvent($this));
                 } else {
                     $this->postUpdate($con);
-                    // event behavior
-                    EventDispatcherProxy::trigger(array('update.post', 'model.update.post'), new ModelEvent($this));
                 }
                 $this->postSave($con);
-                // event behavior
-                EventDispatcherProxy::trigger('model.save.post', new ModelEvent($this));
                 PUMandateArchivePeer::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
@@ -1556,17 +1534,5 @@ abstract class BasePUMandateArchive extends BaseObject implements Persistent
     {
         return $this->alreadyInSave;
     }
-
-    // event behavior
-    public function preCommit(\PropelPDO $con = null){}
-    public function preCommitSave(\PropelPDO $con = null){}
-    public function preCommitDelete(\PropelPDO $con = null){}
-    public function preCommitUpdate(\PropelPDO $con = null){}
-    public function preCommitInsert(\PropelPDO $con = null){}
-    public function preRollback(\PropelPDO $con = null){}
-    public function preRollbackSave(\PropelPDO $con = null){}
-    public function preRollbackDelete(\PropelPDO $con = null){}
-    public function preRollbackUpdate(\PropelPDO $con = null){}
-    public function preRollbackInsert(\PropelPDO $con = null){}
 
 }

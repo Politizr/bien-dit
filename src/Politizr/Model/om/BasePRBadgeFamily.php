@@ -15,8 +15,6 @@ use \PropelDateTime;
 use \PropelException;
 use \PropelObjectCollection;
 use \PropelPDO;
-use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
-use Glorpen\Propel\PropelBundle\Events\ModelEvent;
 use Politizr\Model\PRBadge;
 use Politizr\Model\PRBadgeFamily;
 use Politizr\Model\PRBadgeFamilyArchive;
@@ -153,11 +151,6 @@ abstract class BasePRBadgeFamily extends BaseObject implements Persistent
     {
 
         return $this->p_r_badge_type_id;
-    }
-
-    public function __construct(){
-        parent::__construct();
-        EventDispatcherProxy::trigger(array('construct','model.construct'), new ModelEvent($this));
     }
 
     /**
@@ -583,7 +576,6 @@ abstract class BasePRBadgeFamily extends BaseObject implements Persistent
 
         $con->beginTransaction();
         try {
-            EventDispatcherProxy::trigger(array('delete.pre','model.delete.pre'), new ModelEvent($this));
             $deleteQuery = PRBadgeFamilyQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
@@ -605,8 +597,6 @@ abstract class BasePRBadgeFamily extends BaseObject implements Persistent
             if ($ret) {
                 $deleteQuery->delete($con);
                 $this->postDelete($con);
-                // event behavior
-                EventDispatcherProxy::trigger(array('delete.post', 'model.delete.post'), new ModelEvent($this));
                 $con->commit();
                 $this->setDeleted(true);
             } else {
@@ -648,8 +638,6 @@ abstract class BasePRBadgeFamily extends BaseObject implements Persistent
             $ret = $this->preSave($con);
             // sortable behavior
             $this->processSortableQueries($con);
-            // event behavior
-            EventDispatcherProxy::trigger('model.save.pre', new ModelEvent($this));
             if ($isInsert) {
                 $ret = $ret && $this->preInsert($con);
                 // timestampable behavior
@@ -664,8 +652,6 @@ abstract class BasePRBadgeFamily extends BaseObject implements Persistent
                     $this->setSortableRank(PRBadgeFamilyQuery::create()->getMaxRankArray($this->getScopeValue(), $con) + 1);
                 }
 
-                // event behavior
-                EventDispatcherProxy::trigger('model.insert.pre', new ModelEvent($this));
             } else {
                 $ret = $ret && $this->preUpdate($con);
                 // timestampable behavior
@@ -679,23 +665,15 @@ abstract class BasePRBadgeFamily extends BaseObject implements Persistent
                     $this->insertAtBottom($con);
                 }
 
-                // event behavior
-                EventDispatcherProxy::trigger(array('update.pre', 'model.update.pre'), new ModelEvent($this));
             }
             if ($ret) {
                 $affectedRows = $this->doSave($con);
                 if ($isInsert) {
                     $this->postInsert($con);
-                    // event behavior
-                    EventDispatcherProxy::trigger('model.insert.post', new ModelEvent($this));
                 } else {
                     $this->postUpdate($con);
-                    // event behavior
-                    EventDispatcherProxy::trigger(array('update.post', 'model.update.post'), new ModelEvent($this));
                 }
                 $this->postSave($con);
-                // event behavior
-                EventDispatcherProxy::trigger('model.save.post', new ModelEvent($this));
                 PRBadgeFamilyPeer::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
@@ -2183,17 +2161,5 @@ abstract class BasePRBadgeFamily extends BaseObject implements Persistent
 
         return $this->delete($con);
     }
-
-    // event behavior
-    public function preCommit(\PropelPDO $con = null){}
-    public function preCommitSave(\PropelPDO $con = null){}
-    public function preCommitDelete(\PropelPDO $con = null){}
-    public function preCommitUpdate(\PropelPDO $con = null){}
-    public function preCommitInsert(\PropelPDO $con = null){}
-    public function preRollback(\PropelPDO $con = null){}
-    public function preRollbackSave(\PropelPDO $con = null){}
-    public function preRollbackDelete(\PropelPDO $con = null){}
-    public function preRollbackUpdate(\PropelPDO $con = null){}
-    public function preRollbackInsert(\PropelPDO $con = null){}
 
 }

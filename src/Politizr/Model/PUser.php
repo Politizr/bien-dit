@@ -4,9 +4,6 @@ namespace Politizr\Model;
 
 use Politizr\Model\om\BasePUser;
 
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
 use StudioEcho\Lib\StudioEchoUtils;
 
 use Politizr\Constant\ObjectTypeConstants;
@@ -23,7 +20,7 @@ use Propel\PropelBundle\Validator\Constraints\UniqueObject;
  *
  * @author Lionel Bouzonville
  */
-class PUser extends BasePUser implements UserInterface, ContainerAwareInterface
+class PUser extends BasePUser implements UserInterface
 {
     // simple upload management
     public $uploadedFileName;
@@ -104,13 +101,6 @@ class PUser extends BasePUser implements UserInterface, ContainerAwareInterface
         }
 
         return false;
-    }
-
-    /**
-     * @param ContainerInterface $container
-     */
-    public function setContainer(ContainerInterface $container = null)
-    {
     }
 
     /**

@@ -9,9 +9,6 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
-use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
-use Glorpen\Propel\PropelBundle\Events\DetectOMClassEvent;
-use Glorpen\Propel\PropelBundle\Events\PeerEvent;
 use Politizr\Model\PNotificationPeer;
 use Politizr\Model\PUSubscribeScreen;
 use Politizr\Model\PUSubscribeScreenPeer;
@@ -472,7 +469,7 @@ abstract class BasePUSubscribeScreenPeer
             // $obj->hydrate($row, $startcol, true); // rehydrate
             $col = $startcol + PUSubscribeScreenPeer::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = PUSubscribeScreenPeer::getOMClass($row, $startcol);
+            $cls = PUSubscribeScreenPeer::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $startcol);
             PUSubscribeScreenPeer::addInstanceToPool($obj, $key);
@@ -1143,13 +1140,6 @@ abstract class BasePUSubscribeScreenPeer
      */
     public static function getOMClass($row = 0, $colnum = 0)
     {
-
-        $event = new DetectOMClassEvent(PUSubscribeScreenPeer::OM_CLASS, $row, $colnum);
-        EventDispatcherProxy::trigger('om.detect', $event);
-        if($event->isDetected()){
-            return $event->getDetectedClass();
-        }
-
         return PUSubscribeScreenPeer::OM_CLASS;
     }
 
@@ -1422,4 +1412,3 @@ abstract class BasePUSubscribeScreenPeer
 //
 BasePUSubscribeScreenPeer::buildTableMap();
 
-EventDispatcherProxy::trigger(array('construct','peer.construct'), new PeerEvent('Politizr\Model\om\BasePUSubscribeScreenPeer'));

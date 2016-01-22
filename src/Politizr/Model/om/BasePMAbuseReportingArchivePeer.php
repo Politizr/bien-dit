@@ -9,9 +9,6 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
-use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
-use Glorpen\Propel\PropelBundle\Events\DetectOMClassEvent;
-use Glorpen\Propel\PropelBundle\Events\PeerEvent;
 use Politizr\Model\PMAbuseReportingArchive;
 use Politizr\Model\PMAbuseReportingArchivePeer;
 use Politizr\Model\map\PMAbuseReportingArchiveTableMap;
@@ -485,7 +482,7 @@ abstract class BasePMAbuseReportingArchivePeer
             // $obj->hydrate($row, $startcol, true); // rehydrate
             $col = $startcol + PMAbuseReportingArchivePeer::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = PMAbuseReportingArchivePeer::getOMClass($row, $startcol);
+            $cls = PMAbuseReportingArchivePeer::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $startcol);
             PMAbuseReportingArchivePeer::addInstanceToPool($obj, $key);
@@ -525,13 +522,6 @@ abstract class BasePMAbuseReportingArchivePeer
      */
     public static function getOMClass($row = 0, $colnum = 0)
     {
-
-        $event = new DetectOMClassEvent(PMAbuseReportingArchivePeer::OM_CLASS, $row, $colnum);
-        EventDispatcherProxy::trigger('om.detect', $event);
-        if($event->isDetected()){
-            return $event->getDetectedClass();
-        }
-
         return PMAbuseReportingArchivePeer::OM_CLASS;
     }
 
@@ -800,4 +790,3 @@ abstract class BasePMAbuseReportingArchivePeer
 //
 BasePMAbuseReportingArchivePeer::buildTableMap();
 
-EventDispatcherProxy::trigger(array('construct','peer.construct'), new PeerEvent('Politizr\Model\om\BasePMAbuseReportingArchivePeer'));

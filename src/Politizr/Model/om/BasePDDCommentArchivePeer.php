@@ -9,9 +9,6 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
-use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
-use Glorpen\Propel\PropelBundle\Events\DetectOMClassEvent;
-use Glorpen\Propel\PropelBundle\Events\PeerEvent;
 use Politizr\Model\PDDCommentArchive;
 use Politizr\Model\PDDCommentArchivePeer;
 use Politizr\Model\map\PDDCommentArchiveTableMap;
@@ -530,7 +527,7 @@ abstract class BasePDDCommentArchivePeer
             // $obj->hydrate($row, $startcol, true); // rehydrate
             $col = $startcol + PDDCommentArchivePeer::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = PDDCommentArchivePeer::getOMClass($row, $startcol);
+            $cls = PDDCommentArchivePeer::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $startcol);
             PDDCommentArchivePeer::addInstanceToPool($obj, $key);
@@ -570,13 +567,6 @@ abstract class BasePDDCommentArchivePeer
      */
     public static function getOMClass($row = 0, $colnum = 0)
     {
-
-        $event = new DetectOMClassEvent(PDDCommentArchivePeer::OM_CLASS, $row, $colnum);
-        EventDispatcherProxy::trigger('om.detect', $event);
-        if($event->isDetected()){
-            return $event->getDetectedClass();
-        }
-
         return PDDCommentArchivePeer::OM_CLASS;
     }
 
@@ -845,4 +835,3 @@ abstract class BasePDDCommentArchivePeer
 //
 BasePDDCommentArchivePeer::buildTableMap();
 
-EventDispatcherProxy::trigger(array('construct','peer.construct'), new PeerEvent('Politizr\Model\om\BasePDDCommentArchivePeer'));

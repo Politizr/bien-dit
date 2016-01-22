@@ -126,10 +126,6 @@ class PDDebateTableMap extends TableMap
   'archive_on_update' => 'false',
   'archive_on_delete' => 'true',
 ),
-            'event' =>  array (
-),
-            'extend' =>  array (
-),
         );
     } // getBehaviors()
 

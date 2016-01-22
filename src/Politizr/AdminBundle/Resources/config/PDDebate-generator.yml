@@ -73,7 +73,7 @@ builders:
             fields:
                 count_reactions:
                     label:                      Réactions
-                PDDTaggedT:
+                PDDebate.PDDTaggedT:
                     dbType:                     model
                     formType:                   model
                     label:                      Tags associés

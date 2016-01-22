@@ -9,9 +9,6 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
-use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
-use Glorpen\Propel\PropelBundle\Events\DetectOMClassEvent;
-use Glorpen\Propel\PropelBundle\Events\PeerEvent;
 use Politizr\Model\PRActionPeer;
 use Politizr\Model\PUReputation;
 use Politizr\Model\PUReputationPeer;
@@ -482,7 +479,7 @@ abstract class BasePUReputationPeer
             // $obj->hydrate($row, $startcol, true); // rehydrate
             $col = $startcol + PUReputationPeer::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = PUReputationPeer::getOMClass($row, $startcol);
+            $cls = PUReputationPeer::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $startcol);
             PUReputationPeer::addInstanceToPool($obj, $key);
@@ -1153,13 +1150,6 @@ abstract class BasePUReputationPeer
      */
     public static function getOMClass($row = 0, $colnum = 0)
     {
-
-        $event = new DetectOMClassEvent(PUReputationPeer::OM_CLASS, $row, $colnum);
-        EventDispatcherProxy::trigger('om.detect', $event);
-        if($event->isDetected()){
-            return $event->getDetectedClass();
-        }
-
         return PUReputationPeer::OM_CLASS;
     }
 
@@ -1432,4 +1422,3 @@ abstract class BasePUReputationPeer
 //
 BasePUReputationPeer::buildTableMap();
 
-EventDispatcherProxy::trigger(array('construct','peer.construct'), new PeerEvent('Politizr\Model\om\BasePUReputationPeer'));

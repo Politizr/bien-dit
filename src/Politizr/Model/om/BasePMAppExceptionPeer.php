@@ -9,9 +9,6 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
-use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
-use Glorpen\Propel\PropelBundle\Events\DetectOMClassEvent;
-use Glorpen\Propel\PropelBundle\Events\PeerEvent;
 use Politizr\Model\PMAppException;
 use Politizr\Model\PMAppExceptionPeer;
 use Politizr\Model\PUserPeer;
@@ -491,7 +488,7 @@ abstract class BasePMAppExceptionPeer
             // $obj->hydrate($row, $startcol, true); // rehydrate
             $col = $startcol + PMAppExceptionPeer::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = PMAppExceptionPeer::getOMClass($row, $startcol);
+            $cls = PMAppExceptionPeer::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $startcol);
             PMAppExceptionPeer::addInstanceToPool($obj, $key);
@@ -769,13 +766,6 @@ abstract class BasePMAppExceptionPeer
      */
     public static function getOMClass($row = 0, $colnum = 0)
     {
-
-        $event = new DetectOMClassEvent(PMAppExceptionPeer::OM_CLASS, $row, $colnum);
-        EventDispatcherProxy::trigger('om.detect', $event);
-        if($event->isDetected()){
-            return $event->getDetectedClass();
-        }
-
         return PMAppExceptionPeer::OM_CLASS;
     }
 
@@ -1048,4 +1038,3 @@ abstract class BasePMAppExceptionPeer
 //
 BasePMAppExceptionPeer::buildTableMap();
 
-EventDispatcherProxy::trigger(array('construct','peer.construct'), new PeerEvent('Politizr\Model\om\BasePMAppExceptionPeer'));

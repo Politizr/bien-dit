@@ -78,10 +78,6 @@ class PUBadgeTableMap extends TableMap
   'backend' => 'apc',
   'lifetime' => 3600,
 ),
-            'event' =>  array (
-),
-            'extend' =>  array (
-),
         );
     } // getBehaviors()
 

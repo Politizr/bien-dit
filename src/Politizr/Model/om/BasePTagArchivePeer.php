@@ -9,9 +9,6 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
-use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
-use Glorpen\Propel\PropelBundle\Events\DetectOMClassEvent;
-use Glorpen\Propel\PropelBundle\Events\PeerEvent;
 use Politizr\Model\PTagArchive;
 use Politizr\Model\PTagArchivePeer;
 use Politizr\Model\map\PTagArchiveTableMap;
@@ -510,7 +507,7 @@ abstract class BasePTagArchivePeer
             // $obj->hydrate($row, $startcol, true); // rehydrate
             $col = $startcol + PTagArchivePeer::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = PTagArchivePeer::getOMClass($row, $startcol);
+            $cls = PTagArchivePeer::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $startcol);
             PTagArchivePeer::addInstanceToPool($obj, $key);
@@ -550,13 +547,6 @@ abstract class BasePTagArchivePeer
      */
     public static function getOMClass($row = 0, $colnum = 0)
     {
-
-        $event = new DetectOMClassEvent(PTagArchivePeer::OM_CLASS, $row, $colnum);
-        EventDispatcherProxy::trigger('om.detect', $event);
-        if($event->isDetected()){
-            return $event->getDetectedClass();
-        }
-
         return PTagArchivePeer::OM_CLASS;
     }
 
@@ -825,4 +815,3 @@ abstract class BasePTagArchivePeer
 //
 BasePTagArchivePeer::buildTableMap();
 
-EventDispatcherProxy::trigger(array('construct','peer.construct'), new PeerEvent('Politizr\Model\om\BasePTagArchivePeer'));

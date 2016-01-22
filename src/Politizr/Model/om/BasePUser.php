@@ -15,8 +15,6 @@ use \PropelDateTime;
 use \PropelException;
 use \PropelObjectCollection;
 use \PropelPDO;
-use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
-use Glorpen\Propel\PropelBundle\Events\ModelEvent;
 use Politizr\Model\PDDComment;
 use Politizr\Model\PDDCommentQuery;
 use Politizr\Model\PDDebate;
@@ -970,7 +968,6 @@ abstract class BasePUser extends BaseObject implements Persistent
     {
         parent::__construct();
         $this->applyDefaultValues();
-        EventDispatcherProxy::trigger(array('construct','model.construct'), new ModelEvent($this));
     }
 
     /**
@@ -3299,7 +3296,6 @@ abstract class BasePUser extends BaseObject implements Persistent
 
         $con->beginTransaction();
         try {
-            EventDispatcherProxy::trigger(array('delete.pre','model.delete.pre'), new ModelEvent($this));
             $deleteQuery = PUserQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
@@ -3316,8 +3312,6 @@ abstract class BasePUser extends BaseObject implements Persistent
             if ($ret) {
                 $deleteQuery->delete($con);
                 $this->postDelete($con);
-                // event behavior
-                EventDispatcherProxy::trigger(array('delete.post', 'model.delete.post'), new ModelEvent($this));
                 $con->commit();
                 $this->setDeleted(true);
             } else {
@@ -3364,8 +3358,6 @@ abstract class BasePUser extends BaseObject implements Persistent
             } else {
                 $this->setSlug($this->createSlug());
             }
-            // event behavior
-            EventDispatcherProxy::trigger('model.save.pre', new ModelEvent($this));
             if ($isInsert) {
                 $ret = $ret && $this->preInsert($con);
                 // timestampable behavior
@@ -3375,31 +3367,21 @@ abstract class BasePUser extends BaseObject implements Persistent
                 if (!$this->isColumnModified(PUserPeer::UPDATED_AT)) {
                     $this->setUpdatedAt(time());
                 }
-                // event behavior
-                EventDispatcherProxy::trigger('model.insert.pre', new ModelEvent($this));
             } else {
                 $ret = $ret && $this->preUpdate($con);
                 // timestampable behavior
                 if ($this->isModified() && !$this->isColumnModified(PUserPeer::UPDATED_AT)) {
                     $this->setUpdatedAt(time());
                 }
-                // event behavior
-                EventDispatcherProxy::trigger(array('update.pre', 'model.update.pre'), new ModelEvent($this));
             }
             if ($ret) {
                 $affectedRows = $this->doSave($con);
                 if ($isInsert) {
                     $this->postInsert($con);
-                    // event behavior
-                    EventDispatcherProxy::trigger('model.insert.post', new ModelEvent($this));
                 } else {
                     $this->postUpdate($con);
-                    // event behavior
-                    EventDispatcherProxy::trigger(array('update.post', 'model.update.post'), new ModelEvent($this));
                 }
                 $this->postSave($con);
-                // event behavior
-                EventDispatcherProxy::trigger('model.save.post', new ModelEvent($this));
                 // equal_nest_parent behavior
                 $this->processEqualNestQueries($con);
 
@@ -16206,18 +16188,6 @@ abstract class BasePUser extends BaseObject implements Persistent
 
         return $this->delete($con);
     }
-
-    // event behavior
-    public function preCommit(\PropelPDO $con = null){}
-    public function preCommitSave(\PropelPDO $con = null){}
-    public function preCommitDelete(\PropelPDO $con = null){}
-    public function preCommitUpdate(\PropelPDO $con = null){}
-    public function preCommitInsert(\PropelPDO $con = null){}
-    public function preRollback(\PropelPDO $con = null){}
-    public function preRollbackSave(\PropelPDO $con = null){}
-    public function preRollbackDelete(\PropelPDO $con = null){}
-    public function preRollbackUpdate(\PropelPDO $con = null){}
-    public function preRollbackInsert(\PropelPDO $con = null){}
 
     // equal_nest_parent behavior
 

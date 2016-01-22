@@ -9,9 +9,6 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
-use Glorpen\Propel\PropelBundle\Dispatcher\EventDispatcherProxy;
-use Glorpen\Propel\PropelBundle\Events\DetectOMClassEvent;
-use Glorpen\Propel\PropelBundle\Events\PeerEvent;
 use Politizr\Model\PMAskForUpdateArchive;
 use Politizr\Model\PMAskForUpdateArchivePeer;
 use Politizr\Model\map\PMAskForUpdateArchiveTableMap;
@@ -485,7 +482,7 @@ abstract class BasePMAskForUpdateArchivePeer
             // $obj->hydrate($row, $startcol, true); // rehydrate
             $col = $startcol + PMAskForUpdateArchivePeer::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = PMAskForUpdateArchivePeer::getOMClass($row, $startcol);
+            $cls = PMAskForUpdateArchivePeer::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $startcol);
             PMAskForUpdateArchivePeer::addInstanceToPool($obj, $key);
@@ -525,13 +522,6 @@ abstract class BasePMAskForUpdateArchivePeer
      */
     public static function getOMClass($row = 0, $colnum = 0)
     {
-
-        $event = new DetectOMClassEvent(PMAskForUpdateArchivePeer::OM_CLASS, $row, $colnum);
-        EventDispatcherProxy::trigger('om.detect', $event);
-        if($event->isDetected()){
-            return $event->getDetectedClass();
-        }
-
         return PMAskForUpdateArchivePeer::OM_CLASS;
     }
 
@@ -800,4 +790,3 @@ abstract class BasePMAskForUpdateArchivePeer
 //
 BasePMAskForUpdateArchivePeer::buildTableMap();
 
-EventDispatcherProxy::trigger(array('construct','peer.construct'), new PeerEvent('Politizr\Model\om\BasePMAskForUpdateArchivePeer'));

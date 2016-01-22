@@ -84,10 +84,6 @@ class PUFollowUTableMap extends TableMap
   'reference_column_1' => 'p_user_id',
   'reference_column_2' => 'p_user_follower_id',
 ),
-            'event' =>  array (
-),
-            'extend' =>  array (
-),
         );
     } // getBehaviors()
 
