@@ -53,6 +53,9 @@ class AppKernel extends Kernel
             // Strength Password
             new Rollerworks\Bundle\PasswordStrengthBundle\RollerworksPasswordStrengthBundle(),
 
+            // Lexik maintenance
+            new Lexik\Bundle\MaintenanceBundle\LexikMaintenanceBundle(),
+
             // Project Bundle,
             new Politizr\FrontBundle\PolitizrFrontBundle(),
             new Politizr\AdminBundle\PolitizrAdminBundle(),

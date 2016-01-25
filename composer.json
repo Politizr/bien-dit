@@ -58,7 +58,8 @@
         "liip/url-auto-converter-bundle": "~1.2",
 
         "exercise/htmlpurifier-bundle": "^0.2.2",
-        "rollerworks/password-strength-bundle": "^1.4"
+        "rollerworks/password-strength-bundle": "^1.4",
+        "lexik/maintenance-bundle": "^2.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.5",
@@ -85,7 +86,7 @@
     "config": {
         "bin-dir": "bin",
         "platform": {
-            "php": "7.5.9"
+            "php": "5.6.10"
         }
     },
     "extra": {

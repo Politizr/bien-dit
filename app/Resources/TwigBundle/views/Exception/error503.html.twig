@@ -11,8 +11,8 @@
             height: 100%; 
             z-index: -1; 
             background-size: cover; 
-            background-position: center bottom;
-            background-image: url('/bundles/politizrfront/images/404.jpg');
+            background-position: center top;
+            background-image: url('/bundles/politizrfront/images/maintenance.jpg');
         }
     </style>
 {% endblock %}
@@ -20,12 +20,8 @@
 {% block wrapper %}
     <center>
         <i class="iconPltzrLogoAlt"></i><br>
-        <span>Erreur 503</span><br>
-        <h1>Patch en cours de livraison, rechargez la page!</h1>
-        <p>
-            <a href="{{ path('Homepage') }}"><i class="iconEdit"></i>Accéder à la page d'accueil du site</a>
-        </p>
-    </center>
-
+        <span>Serveur en travaux, merci de repasser plus tard</span><br>
+        <h1>Site en cours de maintenance</h1>
+    </center>        
     <div id="bg"></div>
 {% endblock wrapper %}
