@@ -273,10 +273,10 @@ class PolitizrUserExtension extends \Twig_Extension
         // $this->logger->info('$pTTagType = '.print_r($pTTagType, true));
 
         // get current user
-        $user = $this->securityTokenStorage->getToken()->getUser();
+        $currentUser = $this->securityTokenStorage->getToken()->getUser();
         
         // get hidden tags for current user only
-        if ($user && $user->getId() == $user->getId()) {
+        if ($currentUser && $currentUser->getId() == $user->getId()) {
             $tags = $user->getTags($tagTypeId, null);
         } else {
             $tags = $user->getTags($tagTypeId);
