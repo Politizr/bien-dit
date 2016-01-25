@@ -83,7 +83,10 @@
         ]
     },
     "config": {
-        "bin-dir": "bin"
+        "bin-dir": "bin",
+        "platform": {
+            "php": "7.5.9"
+        }
     },
     "extra": {
         "symfony-app-dir": "app",
