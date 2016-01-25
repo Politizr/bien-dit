@@ -15,8 +15,6 @@
                 {% include 'PolitizrFrontBundle:Monitoring:_abuseLink.html.twig' with { 'uuid': debate.uuid, 'type': debate.type } only %}
             {% endblock abuse %}
         {% endembed %}
-    {% else %}
-        {{ parent() }}
     {% endif %}
 {% endblock %}
 
