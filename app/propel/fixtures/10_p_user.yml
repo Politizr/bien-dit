@@ -1,12 +1,12 @@
 Politizr\Model\PUser:
-    # LISTE DES DEPUTES > http://www.assemblee-nationale.fr/qui/xml/liste_alpha.asp?legislature=14
+    # LISTE DES DEPUTES > http://www.assemblee-nationale.fr/qui/xml/liste_beta.asp?legislature=14
     depute1:
         p_u_status_id:          activ
 
-        back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 1280, 600, 'city', false) ?>
+        back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.beta/web/uploads/users', 1280, 600, 'city', false) ?>
         copyright:              <p>&copy; Politizr</p>
 
-        file_name:              <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 150, 150, 'people', false) ?>
+        file_name:              <?php $faker('image', '/home/lionel/www/politizr.beta/web/uploads/users', 150, 150, 'people', false) ?>
 
         gender:                 Monsieur
         firstname:              Damien
@@ -31,10 +31,10 @@ Politizr\Model\PUser:
     depute2:
         p_u_status_id:          activ
 
-        back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 1280, 600, 'city', false) ?>
+        back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.beta/web/uploads/users', 1280, 600, 'city', false) ?>
         copyright:              <p>&copy; Politizr</p>
 
-        file_name:              <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 150, 150, 'people', false) ?>
+        file_name:              <?php $faker('image', '/home/lionel/www/politizr.beta/web/uploads/users', 150, 150, 'people', false) ?>
 
         gender:                 Madame
         firstname:              Laurence
@@ -59,10 +59,10 @@ Politizr\Model\PUser:
     depute3:
         p_u_status_id:          activ
 
-        back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 1280, 600, 'city', false) ?>
+        back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.beta/web/uploads/users', 1280, 600, 'city', false) ?>
         copyright:              <p>&copy; Politizr</p>
 
-        file_name:              <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 150, 150, 'people', false) ?>
+        file_name:              <?php $faker('image', '/home/lionel/www/politizr.beta/web/uploads/users', 150, 150, 'people', false) ?>
 
         gender:                 Monsieur
         firstname:              Ibrahim
@@ -87,10 +87,10 @@ Politizr\Model\PUser:
     depute4:
         p_u_status_id:          activ
 
-        back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 1280, 600, 'city', false) ?>
+        back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.beta/web/uploads/users', 1280, 600, 'city', false) ?>
         copyright:              <p>&copy; Politizr</p>
 
-        file_name:              <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 150, 150, 'people', false) ?>
+        file_name:              <?php $faker('image', '/home/lionel/www/politizr.beta/web/uploads/users', 150, 150, 'people', false) ?>
 
         gender:                 Monsieur
         firstname:              Elie
@@ -115,10 +115,10 @@ Politizr\Model\PUser:
     depute5:
         p_u_status_id:          activ
 
-        back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 1280, 600, 'city', false) ?>
+        back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.beta/web/uploads/users', 1280, 600, 'city', false) ?>
         copyright:              <p>&copy; Politizr</p>
 
-        file_name:              <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 150, 150, 'people', false) ?>
+        file_name:              <?php $faker('image', '/home/lionel/www/politizr.beta/web/uploads/users', 150, 150, 'people', false) ?>
 
         gender:                 Monsieur
         firstname:              Bernard
@@ -143,10 +143,10 @@ Politizr\Model\PUser:
     depute6:
         p_u_status_id:          activ
 
-        back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 1280, 600, 'city', false) ?>
+        back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.beta/web/uploads/users', 1280, 600, 'city', false) ?>
         copyright:              <p>&copy; Politizr</p>
 
-        file_name:              <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 150, 150, 'people', false) ?>
+        file_name:              <?php $faker('image', '/home/lionel/www/politizr.beta/web/uploads/users', 150, 150, 'people', false) ?>
 
         gender:                 Madame
         firstname:              Patricia
@@ -194,10 +194,10 @@ Politizr\Model\PUser:
     depute8:
         p_u_status_id:          activ
 
-        back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 1280, 600, 'city', false) ?>
+        back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.beta/web/uploads/users', 1280, 600, 'city', false) ?>
         copyright:              <p>&copy; Politizr</p>
 
-        file_name:              <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 150, 150, 'people', false) ?>
+        file_name:              <?php $faker('image', '/home/lionel/www/politizr.beta/web/uploads/users', 150, 150, 'people', false) ?>
 
         gender:                 Monsieur
         firstname:              Eric
@@ -222,10 +222,10 @@ Politizr\Model\PUser:
     depute9:
         p_u_status_id:          activ
 
-        back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 1280, 600, 'city', false) ?>
+        back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.beta/web/uploads/users', 1280, 600, 'city', false) ?>
         copyright:              <p>&copy; Politizr</p>
 
-        file_name:              <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 150, 150, 'people', false) ?>
+        file_name:              <?php $faker('image', '/home/lionel/www/politizr.beta/web/uploads/users', 150, 150, 'people', false) ?>
 
         gender:                 Monsieur
         firstname:              Yves
@@ -250,10 +250,10 @@ Politizr\Model\PUser:
     depute10:
         p_u_status_id:          activ
 
-        back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 1280, 600, 'city', false) ?>
+        back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.beta/web/uploads/users', 1280, 600, 'city', false) ?>
         copyright:              <p>&copy; Politizr</p>
 
-        file_name:              <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 150, 150, 'people', false) ?>
+        file_name:              <?php $faker('image', '/home/lionel/www/politizr.beta/web/uploads/users', 150, 150, 'people', false) ?>
 
         gender:                 Madame
         firstname:              Brigitte
@@ -277,10 +277,10 @@ Politizr\Model\PUser:
     depute11:
         p_u_status_id:          activ
 
-        back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 1280, 600, 'city', false) ?>
+        back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.beta/web/uploads/users', 1280, 600, 'city', false) ?>
         copyright:              <p>&copy; Politizr</p>
 
-        file_name:              <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 150, 150, 'people', false) ?>
+        file_name:              <?php $faker('image', '/home/lionel/www/politizr.beta/web/uploads/users', 150, 150, 'people', false) ?>
 
         gender:                 Monsieur
         firstname:              Jean-Pierre
@@ -304,10 +304,10 @@ Politizr\Model\PUser:
     depute12:
         p_u_status_id:          activ
 
-        back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 1280, 600, 'city', false) ?>
+        back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.beta/web/uploads/users', 1280, 600, 'city', false) ?>
         copyright:              <p>&copy; Politizr</p>
 
-        file_name:              <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 150, 150, 'people', false) ?>
+        file_name:              <?php $faker('image', '/home/lionel/www/politizr.beta/web/uploads/users', 150, 150, 'people', false) ?>
 
         gender:                 Madame
         firstname:              Nicole
@@ -331,10 +331,10 @@ Politizr\Model\PUser:
     depute13:
         p_u_status_id:          activ
 
-        back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 1280, 600, 'city', false) ?>
+        back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.beta/web/uploads/users', 1280, 600, 'city', false) ?>
         copyright:              <p>&copy; Politizr</p>
 
-        file_name:              <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 150, 150, 'people', false) ?>
+        file_name:              <?php $faker('image', '/home/lionel/www/politizr.beta/web/uploads/users', 150, 150, 'people', false) ?>
 
         gender:                 Monsieur
         firstname:              Pouria
@@ -358,10 +358,10 @@ Politizr\Model\PUser:
     depute14:
         p_u_status_id:          activ
 
-        back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 1280, 600, 'city', false) ?>
+        back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.beta/web/uploads/users', 1280, 600, 'city', false) ?>
         copyright:              <p>&copy; Politizr</p>
 
-        file_name:              <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 150, 150, 'people', false) ?>
+        file_name:              <?php $faker('image', '/home/lionel/www/politizr.beta/web/uploads/users', 150, 150, 'people', false) ?>
 
         gender:                 Monsieur
         firstname:              François
@@ -385,10 +385,10 @@ Politizr\Model\PUser:
     depute15:
         p_u_status_id:          activ
 
-        back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 1280, 600, 'city', false) ?>
+        back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.beta/web/uploads/users', 1280, 600, 'city', false) ?>
         copyright:              <p>&copy; Politizr</p>
 
-        file_name:              <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 150, 150, 'people', false) ?>
+        file_name:              <?php $faker('image', '/home/lionel/www/politizr.beta/web/uploads/users', 150, 150, 'people', false) ?>
 
         gender:                 Madame
         firstname:              Sylvie
@@ -412,10 +412,10 @@ Politizr\Model\PUser:
     depute16:
         p_u_status_id:          activ
 
-        back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 1280, 600, 'city', false) ?>
+        back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.beta/web/uploads/users', 1280, 600, 'city', false) ?>
         copyright:              <p>&copy; Politizr</p>
 
-        file_name:              <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 150, 150, 'people', false) ?>
+        file_name:              <?php $faker('image', '/home/lionel/www/politizr.beta/web/uploads/users', 150, 150, 'people', false) ?>
 
         gender:                 Monsieur
         firstname:              Benoist
@@ -439,10 +439,10 @@ Politizr\Model\PUser:
     depute17:
         p_u_status_id:          activ
 
-        back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 1280, 600, 'city', false) ?>
+        back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.beta/web/uploads/users', 1280, 600, 'city', false) ?>
         copyright:              <p>&copy; Politizr</p>
 
-        file_name:              <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 150, 150, 'people', false) ?>
+        file_name:              <?php $faker('image', '/home/lionel/www/politizr.beta/web/uploads/users', 150, 150, 'people', false) ?>
 
         gender:                 Monsieur
         firstname:              Nathalie
@@ -466,10 +466,10 @@ Politizr\Model\PUser:
     depute18:
         p_u_status_id:          activ
 
-        back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 1280, 600, 'city', false) ?>
+        back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.beta/web/uploads/users', 1280, 600, 'city', false) ?>
         copyright:              <p>&copy; Politizr</p>
 
-        file_name:              <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 150, 150, 'people', false) ?>
+        file_name:              <?php $faker('image', '/home/lionel/www/politizr.beta/web/uploads/users', 150, 150, 'people', false) ?>
 
         gender:                 Madame
         firstname:              Laurence
@@ -493,10 +493,10 @@ Politizr\Model\PUser:
     depute19:
         p_u_status_id:          activ
 
-        back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 1280, 600, 'city', false) ?>
+        back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.beta/web/uploads/users', 1280, 600, 'city', false) ?>
         copyright:              <p>&copy; Politizr</p>
 
-        file_name:              <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 150, 150, 'people', false) ?>
+        file_name:              <?php $faker('image', '/home/lionel/www/politizr.beta/web/uploads/users', 150, 150, 'people', false) ?>
 
         gender:                 Monsieur
         firstname:              François
@@ -520,10 +520,10 @@ Politizr\Model\PUser:
     depute20:
         p_u_status_id:          activ
 
-        back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 1280, 600, 'city', false) ?>
+        back_file_name:         <?php $faker('image', '/home/lionel/www/politizr.beta/web/uploads/users', 1280, 600, 'city', false) ?>
         copyright:              <p>&copy; Politizr</p>
 
-        file_name:              <?php $faker('image', '/home/lionel/www/politizr.alpha/web/uploads/users', 150, 150, 'people', false) ?>
+        file_name:              <?php $faker('image', '/home/lionel/www/politizr.beta/web/uploads/users', 150, 150, 'people', false) ?>
 
         gender:                 Monsieur
         firstname:              Christian

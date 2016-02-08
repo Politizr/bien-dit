@@ -19,8 +19,8 @@ parameters:
     support_email: support@politizr.com
 
     # Hosts
-    host.admin: politizr.alpha.admin
-    host.public: politizr.alpha
+    host.admin: politizr.beta.admin
+    host.public: politizr.beta
 
     # OAuth parameters
     # Facebook
