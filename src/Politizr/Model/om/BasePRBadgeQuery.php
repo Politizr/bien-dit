@@ -17,12 +17,14 @@ use Politizr\Model\PRBadge;
 use Politizr\Model\PRBadgeFamily;
 use Politizr\Model\PRBadgePeer;
 use Politizr\Model\PRBadgeQuery;
+use Politizr\Model\PRMetalType;
 use Politizr\Model\PUBadge;
 use Politizr\Model\PUser;
 
 /**
  * @method PRBadgeQuery orderById($order = Criteria::ASC) Order by the id column
  * @method PRBadgeQuery orderByUuid($order = Criteria::ASC) Order by the uuid column
+ * @method PRBadgeQuery orderByPRMetalTypeId($order = Criteria::ASC) Order by the p_r_metal_type_id column
  * @method PRBadgeQuery orderByPRBadgeFamilyId($order = Criteria::ASC) Order by the p_r_badge_family_id column
  * @method PRBadgeQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method PRBadgeQuery orderByOnline($order = Criteria::ASC) Order by the online column
@@ -33,6 +35,7 @@ use Politizr\Model\PUser;
  *
  * @method PRBadgeQuery groupById() Group by the id column
  * @method PRBadgeQuery groupByUuid() Group by the uuid column
+ * @method PRBadgeQuery groupByPRMetalTypeId() Group by the p_r_metal_type_id column
  * @method PRBadgeQuery groupByPRBadgeFamilyId() Group by the p_r_badge_family_id column
  * @method PRBadgeQuery groupByTitle() Group by the title column
  * @method PRBadgeQuery groupByOnline() Group by the online column
@@ -44,6 +47,10 @@ use Politizr\Model\PUser;
  * @method PRBadgeQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method PRBadgeQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method PRBadgeQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ *
+ * @method PRBadgeQuery leftJoinPRMetalType($relationAlias = null) Adds a LEFT JOIN clause to the query using the PRMetalType relation
+ * @method PRBadgeQuery rightJoinPRMetalType($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PRMetalType relation
+ * @method PRBadgeQuery innerJoinPRMetalType($relationAlias = null) Adds a INNER JOIN clause to the query using the PRMetalType relation
  *
  * @method PRBadgeQuery leftJoinPRBadgeFamily($relationAlias = null) Adds a LEFT JOIN clause to the query using the PRBadgeFamily relation
  * @method PRBadgeQuery rightJoinPRBadgeFamily($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PRBadgeFamily relation
@@ -57,6 +64,7 @@ use Politizr\Model\PUser;
  * @method PRBadge findOneOrCreate(PropelPDO $con = null) Return the first PRBadge matching the query, or a new PRBadge object populated from the query conditions when no match is found
  *
  * @method PRBadge findOneByUuid(string $uuid) Return the first PRBadge filtered by the uuid column
+ * @method PRBadge findOneByPRMetalTypeId(int $p_r_metal_type_id) Return the first PRBadge filtered by the p_r_metal_type_id column
  * @method PRBadge findOneByPRBadgeFamilyId(int $p_r_badge_family_id) Return the first PRBadge filtered by the p_r_badge_family_id column
  * @method PRBadge findOneByTitle(string $title) Return the first PRBadge filtered by the title column
  * @method PRBadge findOneByOnline(boolean $online) Return the first PRBadge filtered by the online column
@@ -67,6 +75,7 @@ use Politizr\Model\PUser;
  *
  * @method array findById(int $id) Return PRBadge objects filtered by the id column
  * @method array findByUuid(string $uuid) Return PRBadge objects filtered by the uuid column
+ * @method array findByPRMetalTypeId(int $p_r_metal_type_id) Return PRBadge objects filtered by the p_r_metal_type_id column
  * @method array findByPRBadgeFamilyId(int $p_r_badge_family_id) Return PRBadge objects filtered by the p_r_badge_family_id column
  * @method array findByTitle(string $title) Return PRBadge objects filtered by the title column
  * @method array findByOnline(boolean $online) Return PRBadge objects filtered by the online column
@@ -185,7 +194,7 @@ abstract class BasePRBadgeQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `p_r_badge_family_id`, `title`, `online`, `created_at`, `updated_at`, `slug`, `sortable_rank` FROM `p_r_badge` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_r_metal_type_id`, `p_r_badge_family_id`, `title`, `online`, `created_at`, `updated_at`, `slug`, `sortable_rank` FROM `p_r_badge` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -343,6 +352,50 @@ abstract class BasePRBadgeQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PRBadgePeer::UUID, $uuid, $comparison);
+    }
+
+    /**
+     * Filter the query on the p_r_metal_type_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPRMetalTypeId(1234); // WHERE p_r_metal_type_id = 1234
+     * $query->filterByPRMetalTypeId(array(12, 34)); // WHERE p_r_metal_type_id IN (12, 34)
+     * $query->filterByPRMetalTypeId(array('min' => 12)); // WHERE p_r_metal_type_id >= 12
+     * $query->filterByPRMetalTypeId(array('max' => 12)); // WHERE p_r_metal_type_id <= 12
+     * </code>
+     *
+     * @see       filterByPRMetalType()
+     *
+     * @param     mixed $pRMetalTypeId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PRBadgeQuery The current query, for fluid interface
+     */
+    public function filterByPRMetalTypeId($pRMetalTypeId = null, $comparison = null)
+    {
+        if (is_array($pRMetalTypeId)) {
+            $useMinMax = false;
+            if (isset($pRMetalTypeId['min'])) {
+                $this->addUsingAlias(PRBadgePeer::P_R_METAL_TYPE_ID, $pRMetalTypeId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($pRMetalTypeId['max'])) {
+                $this->addUsingAlias(PRBadgePeer::P_R_METAL_TYPE_ID, $pRMetalTypeId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PRBadgePeer::P_R_METAL_TYPE_ID, $pRMetalTypeId, $comparison);
     }
 
     /**
@@ -600,6 +653,82 @@ abstract class BasePRBadgeQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PRBadgePeer::SORTABLE_RANK, $sortableRank, $comparison);
+    }
+
+    /**
+     * Filter the query by a related PRMetalType object
+     *
+     * @param   PRMetalType|PropelObjectCollection $pRMetalType The related object(s) to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PRBadgeQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPRMetalType($pRMetalType, $comparison = null)
+    {
+        if ($pRMetalType instanceof PRMetalType) {
+            return $this
+                ->addUsingAlias(PRBadgePeer::P_R_METAL_TYPE_ID, $pRMetalType->getId(), $comparison);
+        } elseif ($pRMetalType instanceof PropelObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(PRBadgePeer::P_R_METAL_TYPE_ID, $pRMetalType->toKeyValue('PrimaryKey', 'Id'), $comparison);
+        } else {
+            throw new PropelException('filterByPRMetalType() only accepts arguments of type PRMetalType or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PRMetalType relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PRBadgeQuery The current query, for fluid interface
+     */
+    public function joinPRMetalType($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PRMetalType');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PRMetalType');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PRMetalType relation PRMetalType object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PRMetalTypeQuery A secondary query class using the current class as primary query
+     */
+    public function usePRMetalTypeQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPRMetalType($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PRMetalType', '\Politizr\Model\PRMetalTypeQuery');
     }
 
     /**

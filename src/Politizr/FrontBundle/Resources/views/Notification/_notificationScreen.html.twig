@@ -1,8 +1,11 @@
+{% if author %}
+    {% include 'PolitizrFrontBundle:Notification\\Message:_screenUserPhoto.html.twig' with {'user': author} only %}
+{% endif %}
 <div class="notifItemHeader">
     <i class="{% include 'PolitizrFrontBundle:Notification:_notificationIcon.html.twig' %}"></i>
     {{ notification.createdAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM à HH'h'mm" ) | capitalize }}
     {% if not notification.checked %}
-        <i action="notificationCheck" class="iconCheck" uuid="{{ notification.uuid }}"></i>
+        <i action="notificationCheck" class="icon-check-incircle" uuid="{{ notification.uuid }}"></i>
     {% endif %}
 </div>
 <div class="notifItemContent">

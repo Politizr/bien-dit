@@ -13,6 +13,7 @@ use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\QualificationConstants;
 use Politizr\Constant\PathConstants;
 use Politizr\Constant\ListingConstants;
+use Politizr\Constant\ReputationConstants;
 
 use Politizr\Model\PUser;
 use Politizr\Model\PUCurrentQO;
@@ -679,6 +680,27 @@ class XhrUser
         );
     }
 
+    /**
+     * Badges score
+     */
+    public function badgesScore(Request $request)
+    {
+        $this->logger->info('*** badgesScore');
+
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        
+        // bronze / silver / gold badges
+        $nbBronze = $user->countBadges(null, ReputationConstants::METAL_TYPE_BRONZE);
+        $nbSilver = $user->countBadges(null, ReputationConstants::METAL_TYPE_SILVER);
+        $nbGold = $user->countBadges(null, ReputationConstants::METAL_TYPE_GOLD);
+
+        return array(
+            'nbBronze' => $nbBronze,
+            'nbSilver' => $nbSilver,
+            'nbGold' => $nbGold,
+        );
+    }
 
     /**
      * User's reputation detail & stats

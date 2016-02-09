@@ -41,4 +41,17 @@ class PRBadgeQuery extends BasePRBadgeQuery
                 ->endUse()
             ->_endif();
     }
+
+    /**
+     *
+     * @param boolean $metalTypeId
+     * @return PRBadgeQuery
+     */
+    public function filterIfMetalTypeId($metalTypeId = null)
+    {
+        return $this
+            ->_if(null !== $metalTypeId)
+                ->filterByPRMetalTypeId($metalTypeId)
+            ->_endif();
+    }
 }

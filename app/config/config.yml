@@ -334,6 +334,11 @@ liip_imagine:
             filters:
                 relative_resize:  { widen: 15 }
 
+        user_30:
+            quality:              100
+            filters:
+                relative_resize:  { widen: 30 }
+
         user_40:
             quality:              100
             filters:

@@ -60,6 +60,7 @@ class XhrConstants
 
     // REPUTATION COUNTER
     const ROUTE_SCORE_COUNTER = 'profil/reputation/score';
+    const ROUTE_BADGES_COUNTER = 'profil/reputation/badges';
 
     // MODAL
     const ROUTE_MODAL_PAGINATED_LIST = 'liste';

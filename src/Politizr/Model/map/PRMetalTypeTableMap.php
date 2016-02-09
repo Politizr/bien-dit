@@ -7,7 +7,7 @@ use \TableMap;
 
 
 /**
- * This class defines the structure of the 'p_r_badge_archive' table.
+ * This class defines the structure of the 'p_r_metal_type' table.
  *
  *
  *
@@ -18,13 +18,13 @@ use \TableMap;
  *
  * @package    propel.generator.src.Politizr.Model.map
  */
-class PRBadgeArchiveTableMap extends TableMap
+class PRMetalTypeTableMap extends TableMap
 {
 
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'src.Politizr.Model.map.PRBadgeArchiveTableMap';
+    const CLASS_NAME = 'src.Politizr.Model.map.PRMetalTypeTableMap';
 
     /**
      * Initialize the table attributes, columns and validators
@@ -36,23 +36,16 @@ class PRBadgeArchiveTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('p_r_badge_archive');
-        $this->setPhpName('PRBadgeArchive');
-        $this->setClassname('Politizr\\Model\\PRBadgeArchive');
+        $this->setName('p_r_metal_type');
+        $this->setPhpName('PRMetalType');
+        $this->setClassname('Politizr\\Model\\PRMetalType');
         $this->setPackage('src.Politizr.Model');
         $this->setUseIdGenerator(false);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('uuid', 'Uuid', 'VARCHAR', false, 50, null);
-        $this->addColumn('p_r_metal_type_id', 'PRMetalTypeId', 'INTEGER', true, null, null);
-        $this->addColumn('p_r_badge_family_id', 'PRBadgeFamilyId', 'INTEGER', true, null, null);
         $this->addColumn('title', 'Title', 'VARCHAR', false, 150, null);
-        $this->addColumn('online', 'Online', 'BOOLEAN', false, 1, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
-        $this->addColumn('slug', 'Slug', 'VARCHAR', false, 255, null);
-        $this->addColumn('sortable_rank', 'SortableRank', 'INTEGER', false, null, null);
-        $this->addColumn('archived_at', 'ArchivedAt', 'TIMESTAMP', false, null, null);
         // validators
     } // initialize()
 
@@ -61,6 +54,24 @@ class PRBadgeArchiveTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('PRBadge', 'Politizr\\Model\\PRBadge', RelationMap::ONE_TO_MANY, array('id' => 'p_r_metal_type_id', ), 'CASCADE', 'CASCADE', 'PRBadges');
     } // buildRelations()
 
-} // PRBadgeArchiveTableMap
+    /**
+     *
+     * Gets the list of behaviors registered for this table
+     *
+     * @return array Associative array (name => parameters) of behaviors
+     */
+    public function getBehaviors()
+    {
+        return array(
+            'timestampable' =>  array (
+  'create_column' => 'created_at',
+  'update_column' => 'updated_at',
+  'disable_updated_at' => 'false',
+),
+        );
+    } // getBehaviors()
+
+} // PRMetalTypeTableMap

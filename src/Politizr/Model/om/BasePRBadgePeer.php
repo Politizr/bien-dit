@@ -13,6 +13,7 @@ use Politizr\Model\PRBadge;
 use Politizr\Model\PRBadgeFamilyPeer;
 use Politizr\Model\PRBadgePeer;
 use Politizr\Model\PRBadgeQuery;
+use Politizr\Model\PRMetalTypePeer;
 use Politizr\Model\PUBadgePeer;
 use Politizr\Model\map\PRBadgeTableMap;
 
@@ -32,19 +33,22 @@ abstract class BasePRBadgePeer
     const TM_CLASS = 'Politizr\\Model\\map\\PRBadgeTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 9;
+    const NUM_COLUMNS = 10;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 9;
+    const NUM_HYDRATE_COLUMNS = 10;
 
     /** the column name for the id field */
     const ID = 'p_r_badge.id';
 
     /** the column name for the uuid field */
     const UUID = 'p_r_badge.uuid';
+
+    /** the column name for the p_r_metal_type_id field */
+    const P_R_METAL_TYPE_ID = 'p_r_badge.p_r_metal_type_id';
 
     /** the column name for the p_r_badge_family_id field */
     const P_R_BADGE_FAMILY_ID = 'p_r_badge.p_r_badge_family_id';
@@ -98,12 +102,12 @@ abstract class BasePRBadgePeer
      * e.g. PRBadgePeer::$fieldNames[PRBadgePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'PRBadgeFamilyId', 'Title', 'Online', 'CreatedAt', 'UpdatedAt', 'Slug', 'SortableRank', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'pRBadgeFamilyId', 'title', 'online', 'createdAt', 'updatedAt', 'slug', 'sortableRank', ),
-        BasePeer::TYPE_COLNAME => array (PRBadgePeer::ID, PRBadgePeer::UUID, PRBadgePeer::P_R_BADGE_FAMILY_ID, PRBadgePeer::TITLE, PRBadgePeer::ONLINE, PRBadgePeer::CREATED_AT, PRBadgePeer::UPDATED_AT, PRBadgePeer::SLUG, PRBadgePeer::SORTABLE_RANK, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'P_R_BADGE_FAMILY_ID', 'TITLE', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', 'SLUG', 'SORTABLE_RANK', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'p_r_badge_family_id', 'title', 'online', 'created_at', 'updated_at', 'slug', 'sortable_rank', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'PRMetalTypeId', 'PRBadgeFamilyId', 'Title', 'Online', 'CreatedAt', 'UpdatedAt', 'Slug', 'SortableRank', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'pRMetalTypeId', 'pRBadgeFamilyId', 'title', 'online', 'createdAt', 'updatedAt', 'slug', 'sortableRank', ),
+        BasePeer::TYPE_COLNAME => array (PRBadgePeer::ID, PRBadgePeer::UUID, PRBadgePeer::P_R_METAL_TYPE_ID, PRBadgePeer::P_R_BADGE_FAMILY_ID, PRBadgePeer::TITLE, PRBadgePeer::ONLINE, PRBadgePeer::CREATED_AT, PRBadgePeer::UPDATED_AT, PRBadgePeer::SLUG, PRBadgePeer::SORTABLE_RANK, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'P_R_METAL_TYPE_ID', 'P_R_BADGE_FAMILY_ID', 'TITLE', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', 'SLUG', 'SORTABLE_RANK', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'p_r_metal_type_id', 'p_r_badge_family_id', 'title', 'online', 'created_at', 'updated_at', 'slug', 'sortable_rank', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
     );
 
     /**
@@ -113,12 +117,12 @@ abstract class BasePRBadgePeer
      * e.g. PRBadgePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'PRBadgeFamilyId' => 2, 'Title' => 3, 'Online' => 4, 'CreatedAt' => 5, 'UpdatedAt' => 6, 'Slug' => 7, 'SortableRank' => 8, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'pRBadgeFamilyId' => 2, 'title' => 3, 'online' => 4, 'createdAt' => 5, 'updatedAt' => 6, 'slug' => 7, 'sortableRank' => 8, ),
-        BasePeer::TYPE_COLNAME => array (PRBadgePeer::ID => 0, PRBadgePeer::UUID => 1, PRBadgePeer::P_R_BADGE_FAMILY_ID => 2, PRBadgePeer::TITLE => 3, PRBadgePeer::ONLINE => 4, PRBadgePeer::CREATED_AT => 5, PRBadgePeer::UPDATED_AT => 6, PRBadgePeer::SLUG => 7, PRBadgePeer::SORTABLE_RANK => 8, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'P_R_BADGE_FAMILY_ID' => 2, 'TITLE' => 3, 'ONLINE' => 4, 'CREATED_AT' => 5, 'UPDATED_AT' => 6, 'SLUG' => 7, 'SORTABLE_RANK' => 8, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'p_r_badge_family_id' => 2, 'title' => 3, 'online' => 4, 'created_at' => 5, 'updated_at' => 6, 'slug' => 7, 'sortable_rank' => 8, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'PRMetalTypeId' => 2, 'PRBadgeFamilyId' => 3, 'Title' => 4, 'Online' => 5, 'CreatedAt' => 6, 'UpdatedAt' => 7, 'Slug' => 8, 'SortableRank' => 9, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'pRMetalTypeId' => 2, 'pRBadgeFamilyId' => 3, 'title' => 4, 'online' => 5, 'createdAt' => 6, 'updatedAt' => 7, 'slug' => 8, 'sortableRank' => 9, ),
+        BasePeer::TYPE_COLNAME => array (PRBadgePeer::ID => 0, PRBadgePeer::UUID => 1, PRBadgePeer::P_R_METAL_TYPE_ID => 2, PRBadgePeer::P_R_BADGE_FAMILY_ID => 3, PRBadgePeer::TITLE => 4, PRBadgePeer::ONLINE => 5, PRBadgePeer::CREATED_AT => 6, PRBadgePeer::UPDATED_AT => 7, PRBadgePeer::SLUG => 8, PRBadgePeer::SORTABLE_RANK => 9, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'P_R_METAL_TYPE_ID' => 2, 'P_R_BADGE_FAMILY_ID' => 3, 'TITLE' => 4, 'ONLINE' => 5, 'CREATED_AT' => 6, 'UPDATED_AT' => 7, 'SLUG' => 8, 'SORTABLE_RANK' => 9, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'p_r_metal_type_id' => 2, 'p_r_badge_family_id' => 3, 'title' => 4, 'online' => 5, 'created_at' => 6, 'updated_at' => 7, 'slug' => 8, 'sortable_rank' => 9, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
     );
 
     /**
@@ -194,6 +198,7 @@ abstract class BasePRBadgePeer
         if (null === $alias) {
             $criteria->addSelectColumn(PRBadgePeer::ID);
             $criteria->addSelectColumn(PRBadgePeer::UUID);
+            $criteria->addSelectColumn(PRBadgePeer::P_R_METAL_TYPE_ID);
             $criteria->addSelectColumn(PRBadgePeer::P_R_BADGE_FAMILY_ID);
             $criteria->addSelectColumn(PRBadgePeer::TITLE);
             $criteria->addSelectColumn(PRBadgePeer::ONLINE);
@@ -204,6 +209,7 @@ abstract class BasePRBadgePeer
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.uuid');
+            $criteria->addSelectColumn($alias . '.p_r_metal_type_id');
             $criteria->addSelectColumn($alias . '.p_r_badge_family_id');
             $criteria->addSelectColumn($alias . '.title');
             $criteria->addSelectColumn($alias . '.online');
@@ -516,6 +522,57 @@ abstract class BasePRBadgePeer
 
 
     /**
+     * Returns the number of rows matching criteria, joining the related PRMetalType table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinPRMetalType(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(PRBadgePeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            PRBadgePeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+
+        // Set the correct dbName
+        $criteria->setDbName(PRBadgePeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(PRBadgePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(PRBadgePeer::P_R_METAL_TYPE_ID, PRMetalTypePeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
      * Returns the number of rows matching criteria, joining the related PRBadgeFamily table
      *
      * @param      Criteria $criteria
@@ -563,6 +620,73 @@ abstract class BasePRBadgePeer
         $stmt->closeCursor();
 
         return $count;
+    }
+
+
+    /**
+     * Selects a collection of PRBadge objects pre-filled with their PRMetalType objects.
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of PRBadge objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinPRMetalType(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(PRBadgePeer::DATABASE_NAME);
+        }
+
+        PRBadgePeer::addSelectColumns($criteria);
+        $startcol = PRBadgePeer::NUM_HYDRATE_COLUMNS;
+        PRMetalTypePeer::addSelectColumns($criteria);
+
+        $criteria->addJoin(PRBadgePeer::P_R_METAL_TYPE_ID, PRMetalTypePeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = PRBadgePeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PRBadgePeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+
+                $cls = PRBadgePeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                PRBadgePeer::addInstanceToPool($obj1, $key1);
+            } // if $obj1 already loaded
+
+            $key2 = PRMetalTypePeer::getPrimaryKeyHashFromRow($row, $startcol);
+            if ($key2 !== null) {
+                $obj2 = PRMetalTypePeer::getInstanceFromPool($key2);
+                if (!$obj2) {
+
+                    $cls = PRMetalTypePeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol);
+                    PRMetalTypePeer::addInstanceToPool($obj2, $key2);
+                } // if obj2 already loaded
+
+                // Add the $obj1 (PRBadge) to $obj2 (PRMetalType)
+                $obj2->addPRBadge($obj1);
+
+            } // if joined row was not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
     }
 
 
@@ -669,6 +793,8 @@ abstract class BasePRBadgePeer
             $con = Propel::getConnection(PRBadgePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
+        $criteria->addJoin(PRBadgePeer::P_R_METAL_TYPE_ID, PRMetalTypePeer::ID, $join_behavior);
+
         $criteria->addJoin(PRBadgePeer::P_R_BADGE_FAMILY_ID, PRBadgeFamilyPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
@@ -705,8 +831,13 @@ abstract class BasePRBadgePeer
         PRBadgePeer::addSelectColumns($criteria);
         $startcol2 = PRBadgePeer::NUM_HYDRATE_COLUMNS;
 
+        PRMetalTypePeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + PRMetalTypePeer::NUM_HYDRATE_COLUMNS;
+
         PRBadgeFamilyPeer::addSelectColumns($criteria);
-        $startcol3 = $startcol2 + PRBadgeFamilyPeer::NUM_HYDRATE_COLUMNS;
+        $startcol4 = $startcol3 + PRBadgeFamilyPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(PRBadgePeer::P_R_METAL_TYPE_ID, PRMetalTypePeer::ID, $join_behavior);
 
         $criteria->addJoin(PRBadgePeer::P_R_BADGE_FAMILY_ID, PRBadgeFamilyPeer::ID, $join_behavior);
 
@@ -727,23 +858,291 @@ abstract class BasePRBadgePeer
                 PRBadgePeer::addInstanceToPool($obj1, $key1);
             } // if obj1 already loaded
 
-            // Add objects for joined PRBadgeFamily rows
+            // Add objects for joined PRMetalType rows
 
-            $key2 = PRBadgeFamilyPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+            $key2 = PRMetalTypePeer::getPrimaryKeyHashFromRow($row, $startcol2);
             if ($key2 !== null) {
-                $obj2 = PRBadgeFamilyPeer::getInstanceFromPool($key2);
+                $obj2 = PRMetalTypePeer::getInstanceFromPool($key2);
                 if (!$obj2) {
 
+                    $cls = PRMetalTypePeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol2);
+                    PRMetalTypePeer::addInstanceToPool($obj2, $key2);
+                } // if obj2 loaded
+
+                // Add the $obj1 (PRBadge) to the collection in $obj2 (PRMetalType)
+                $obj2->addPRBadge($obj1);
+            } // if joined row not null
+
+            // Add objects for joined PRBadgeFamily rows
+
+            $key3 = PRBadgeFamilyPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+            if ($key3 !== null) {
+                $obj3 = PRBadgeFamilyPeer::getInstanceFromPool($key3);
+                if (!$obj3) {
+
                     $cls = PRBadgeFamilyPeer::getOMClass();
+
+                    $obj3 = new $cls();
+                    $obj3->hydrate($row, $startcol3);
+                    PRBadgeFamilyPeer::addInstanceToPool($obj3, $key3);
+                } // if obj3 loaded
+
+                // Add the $obj1 (PRBadge) to the collection in $obj3 (PRBadgeFamily)
+                $obj3->addPRBadge($obj1);
+            } // if joined row not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining the related PRMetalType table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinAllExceptPRMetalType(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(PRBadgePeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            PRBadgePeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY should not affect count
+
+        // Set the correct dbName
+        $criteria->setDbName(PRBadgePeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(PRBadgePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(PRBadgePeer::P_R_BADGE_FAMILY_ID, PRBadgeFamilyPeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining the related PRBadgeFamily table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinAllExceptPRBadgeFamily(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(PRBadgePeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            PRBadgePeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY should not affect count
+
+        // Set the correct dbName
+        $criteria->setDbName(PRBadgePeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(PRBadgePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(PRBadgePeer::P_R_METAL_TYPE_ID, PRMetalTypePeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
+     * Selects a collection of PRBadge objects pre-filled with all related objects except PRMetalType.
+     *
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of PRBadge objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinAllExceptPRMetalType(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        // $criteria->getDbName() will return the same object if not set to another value
+        // so == check is okay and faster
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(PRBadgePeer::DATABASE_NAME);
+        }
+
+        PRBadgePeer::addSelectColumns($criteria);
+        $startcol2 = PRBadgePeer::NUM_HYDRATE_COLUMNS;
+
+        PRBadgeFamilyPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + PRBadgeFamilyPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(PRBadgePeer::P_R_BADGE_FAMILY_ID, PRBadgeFamilyPeer::ID, $join_behavior);
+
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = PRBadgePeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PRBadgePeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+                $cls = PRBadgePeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                PRBadgePeer::addInstanceToPool($obj1, $key1);
+            } // if obj1 already loaded
+
+                // Add objects for joined PRBadgeFamily rows
+
+                $key2 = PRBadgeFamilyPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+                if ($key2 !== null) {
+                    $obj2 = PRBadgeFamilyPeer::getInstanceFromPool($key2);
+                    if (!$obj2) {
+
+                        $cls = PRBadgeFamilyPeer::getOMClass();
 
                     $obj2 = new $cls();
                     $obj2->hydrate($row, $startcol2);
                     PRBadgeFamilyPeer::addInstanceToPool($obj2, $key2);
-                } // if obj2 loaded
+                } // if $obj2 already loaded
 
                 // Add the $obj1 (PRBadge) to the collection in $obj2 (PRBadgeFamily)
                 $obj2->addPRBadge($obj1);
-            } // if joined row not null
+
+            } // if joined row is not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Selects a collection of PRBadge objects pre-filled with all related objects except PRBadgeFamily.
+     *
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of PRBadge objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinAllExceptPRBadgeFamily(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        // $criteria->getDbName() will return the same object if not set to another value
+        // so == check is okay and faster
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(PRBadgePeer::DATABASE_NAME);
+        }
+
+        PRBadgePeer::addSelectColumns($criteria);
+        $startcol2 = PRBadgePeer::NUM_HYDRATE_COLUMNS;
+
+        PRMetalTypePeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + PRMetalTypePeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(PRBadgePeer::P_R_METAL_TYPE_ID, PRMetalTypePeer::ID, $join_behavior);
+
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = PRBadgePeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PRBadgePeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+                $cls = PRBadgePeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                PRBadgePeer::addInstanceToPool($obj1, $key1);
+            } // if obj1 already loaded
+
+                // Add objects for joined PRMetalType rows
+
+                $key2 = PRMetalTypePeer::getPrimaryKeyHashFromRow($row, $startcol2);
+                if ($key2 !== null) {
+                    $obj2 = PRMetalTypePeer::getInstanceFromPool($key2);
+                    if (!$obj2) {
+
+                        $cls = PRMetalTypePeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol2);
+                    PRMetalTypePeer::addInstanceToPool($obj2, $key2);
+                } // if $obj2 already loaded
+
+                // Add the $obj1 (PRBadge) to the collection in $obj2 (PRMetalType)
+                $obj2->addPRBadge($obj1);
+
+            } // if joined row is not null
 
             $results[] = $obj1;
         }

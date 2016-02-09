@@ -17,19 +17,16 @@
     <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/stylePublic.css') }}">
 {% endblock %}
 
-{% block wrapper %}
-    {% block header %}
-        {% include 'PolitizrFrontBundle:Navigation\\Header:_headerHomepage.html.twig' %}
-    {% endblock %}
+{% block header %}
+    {% include 'PolitizrFrontBundle:Navigation\\Header:_headerHomepage.html.twig' %}
+{% endblock %}
 
-    {% block content %}
-    {% endblock content %}
+{% block main %}
+{% endblock main %}
 
-    {% block footer %}
-        {% include 'PolitizrFrontBundle:Navigation\\Footer:_footerHomepage.html.twig' %}
-    {% endblock %}
-{% endblock wrapper %}
-
+{% block footer %}
+    {% include 'PolitizrFrontBundle:Navigation\\Footer:_footerHomepage.html.twig' %}
+{% endblock %}
 
 {% block javascriptFooter %}
     {{ parent() }}

@@ -4,7 +4,7 @@
         <title>{% block title %}{% endblock title %}</title>
         {% include 'PolitizrFrontBundle:Navigation\\Social:_favicon.html.twig' %}
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
 
         <meta name="description" content="{% block description %}{% endblock description %}">
 
@@ -12,7 +12,7 @@
         {% endblock %}
 
         {% block stylesheets %}
-            <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/PltzrIconFont.css') }}">
+            <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/pltzriconfont.css') }}">
         {% endblock %}
 
         {% block javascriptHeader %}
@@ -78,13 +78,14 @@
 
             {% endblock genericBoxes %}
 
-            {% block modalBox %}
-                {% include 'PolitizrFrontBundle:Navigation\\Modal:_modalBox.html.twig' %}
-                {% include 'PolitizrFrontBundle:Navigation\\Modal:_modalBoxClassic.html.twig' %}
-            {% endblock modalBox %}
-            
-            {% block wrapper %}
-            {% endblock wrapper %}
+            {% block header %}
+            {% endblock header %}
+
+            {% block main %}
+            {% endblock main %}
+
+            {% block footer %}
+            {% endblock footer %}
 
             {% block javascriptFooter %}
                 <script type="text/javascript">

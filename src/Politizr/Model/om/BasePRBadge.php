@@ -22,6 +22,8 @@ use Politizr\Model\PRBadgeFamily;
 use Politizr\Model\PRBadgeFamilyQuery;
 use Politizr\Model\PRBadgePeer;
 use Politizr\Model\PRBadgeQuery;
+use Politizr\Model\PRMetalType;
+use Politizr\Model\PRMetalTypeQuery;
 use Politizr\Model\PUBadge;
 use Politizr\Model\PUBadgeQuery;
 use Politizr\Model\PUser;
@@ -59,6 +61,12 @@ abstract class BasePRBadge extends BaseObject implements Persistent
      * @var        string
      */
     protected $uuid;
+
+    /**
+     * The value for the p_r_metal_type_id field.
+     * @var        int
+     */
+    protected $p_r_metal_type_id;
 
     /**
      * The value for the p_r_badge_family_id field.
@@ -101,6 +109,11 @@ abstract class BasePRBadge extends BaseObject implements Persistent
      * @var        int
      */
     protected $sortable_rank;
+
+    /**
+     * @var        PRMetalType
+     */
+    protected $aPRMetalType;
 
     /**
      * @var        PRBadgeFamily
@@ -187,6 +200,17 @@ abstract class BasePRBadge extends BaseObject implements Persistent
     {
 
         return $this->uuid;
+    }
+
+    /**
+     * Get the [p_r_metal_type_id] column value.
+     *
+     * @return int
+     */
+    public function getPRMetalTypeId()
+    {
+
+        return $this->p_r_metal_type_id;
     }
 
     /**
@@ -365,6 +389,31 @@ abstract class BasePRBadge extends BaseObject implements Persistent
 
         return $this;
     } // setUuid()
+
+    /**
+     * Set the value of [p_r_metal_type_id] column.
+     *
+     * @param  int $v new value
+     * @return PRBadge The current object (for fluent API support)
+     */
+    public function setPRMetalTypeId($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->p_r_metal_type_id !== $v) {
+            $this->p_r_metal_type_id = $v;
+            $this->modifiedColumns[] = PRBadgePeer::P_R_METAL_TYPE_ID;
+        }
+
+        if ($this->aPRMetalType !== null && $this->aPRMetalType->getId() !== $v) {
+            $this->aPRMetalType = null;
+        }
+
+
+        return $this;
+    } // setPRMetalTypeId()
 
     /**
      * Set the value of [p_r_badge_family_id] column.
@@ -566,13 +615,14 @@ abstract class BasePRBadge extends BaseObject implements Persistent
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->uuid = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
-            $this->p_r_badge_family_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
-            $this->title = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-            $this->online = ($row[$startcol + 4] !== null) ? (boolean) $row[$startcol + 4] : null;
-            $this->created_at = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->updated_at = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
-            $this->slug = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-            $this->sortable_rank = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
+            $this->p_r_metal_type_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+            $this->p_r_badge_family_id = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
+            $this->title = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->online = ($row[$startcol + 5] !== null) ? (boolean) $row[$startcol + 5] : null;
+            $this->created_at = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->updated_at = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+            $this->slug = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+            $this->sortable_rank = ($row[$startcol + 9] !== null) ? (int) $row[$startcol + 9] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -582,7 +632,7 @@ abstract class BasePRBadge extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 9; // 9 = PRBadgePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 10; // 10 = PRBadgePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PRBadge object", $e);
@@ -605,6 +655,9 @@ abstract class BasePRBadge extends BaseObject implements Persistent
     public function ensureConsistency()
     {
 
+        if ($this->aPRMetalType !== null && $this->p_r_metal_type_id !== $this->aPRMetalType->getId()) {
+            $this->aPRMetalType = null;
+        }
         if ($this->aPRBadgeFamily !== null && $this->p_r_badge_family_id !== $this->aPRBadgeFamily->getId()) {
             $this->aPRBadgeFamily = null;
         }
@@ -647,6 +700,7 @@ abstract class BasePRBadge extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->aPRMetalType = null;
             $this->aPRBadgeFamily = null;
             $this->collPUBadges = null;
 
@@ -818,6 +872,13 @@ abstract class BasePRBadge extends BaseObject implements Persistent
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
+            if ($this->aPRMetalType !== null) {
+                if ($this->aPRMetalType->isModified() || $this->aPRMetalType->isNew()) {
+                    $affectedRows += $this->aPRMetalType->save($con);
+                }
+                $this->setPRMetalType($this->aPRMetalType);
+            }
+
             if ($this->aPRBadgeFamily !== null) {
                 if ($this->aPRBadgeFamily->isModified() || $this->aPRBadgeFamily->isNew()) {
                     $affectedRows += $this->aPRBadgeFamily->save($con);
@@ -911,6 +972,9 @@ abstract class BasePRBadge extends BaseObject implements Persistent
         if ($this->isColumnModified(PRBadgePeer::UUID)) {
             $modifiedColumns[':p' . $index++]  = '`uuid`';
         }
+        if ($this->isColumnModified(PRBadgePeer::P_R_METAL_TYPE_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`p_r_metal_type_id`';
+        }
         if ($this->isColumnModified(PRBadgePeer::P_R_BADGE_FAMILY_ID)) {
             $modifiedColumns[':p' . $index++]  = '`p_r_badge_family_id`';
         }
@@ -948,6 +1012,9 @@ abstract class BasePRBadge extends BaseObject implements Persistent
                         break;
                     case '`uuid`':
                         $stmt->bindValue($identifier, $this->uuid, PDO::PARAM_STR);
+                        break;
+                    case '`p_r_metal_type_id`':
+                        $stmt->bindValue($identifier, $this->p_r_metal_type_id, PDO::PARAM_INT);
                         break;
                     case '`p_r_badge_family_id`':
                         $stmt->bindValue($identifier, $this->p_r_badge_family_id, PDO::PARAM_INT);
@@ -1069,6 +1136,12 @@ abstract class BasePRBadge extends BaseObject implements Persistent
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
+            if ($this->aPRMetalType !== null) {
+                if (!$this->aPRMetalType->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aPRMetalType->getValidationFailures());
+                }
+            }
+
             if ($this->aPRBadgeFamily !== null) {
                 if (!$this->aPRBadgeFamily->validate($columns)) {
                     $failureMap = array_merge($failureMap, $this->aPRBadgeFamily->getValidationFailures());
@@ -1131,24 +1204,27 @@ abstract class BasePRBadge extends BaseObject implements Persistent
                 return $this->getUuid();
                 break;
             case 2:
-                return $this->getPRBadgeFamilyId();
+                return $this->getPRMetalTypeId();
                 break;
             case 3:
-                return $this->getTitle();
+                return $this->getPRBadgeFamilyId();
                 break;
             case 4:
-                return $this->getOnline();
+                return $this->getTitle();
                 break;
             case 5:
-                return $this->getCreatedAt();
+                return $this->getOnline();
                 break;
             case 6:
-                return $this->getUpdatedAt();
+                return $this->getCreatedAt();
                 break;
             case 7:
-                return $this->getSlug();
+                return $this->getUpdatedAt();
                 break;
             case 8:
+                return $this->getSlug();
+                break;
+            case 9:
                 return $this->getSortableRank();
                 break;
             default:
@@ -1182,13 +1258,14 @@ abstract class BasePRBadge extends BaseObject implements Persistent
         $result = array(
             $keys[0] => $this->getId(),
             $keys[1] => $this->getUuid(),
-            $keys[2] => $this->getPRBadgeFamilyId(),
-            $keys[3] => $this->getTitle(),
-            $keys[4] => $this->getOnline(),
-            $keys[5] => $this->getCreatedAt(),
-            $keys[6] => $this->getUpdatedAt(),
-            $keys[7] => $this->getSlug(),
-            $keys[8] => $this->getSortableRank(),
+            $keys[2] => $this->getPRMetalTypeId(),
+            $keys[3] => $this->getPRBadgeFamilyId(),
+            $keys[4] => $this->getTitle(),
+            $keys[5] => $this->getOnline(),
+            $keys[6] => $this->getCreatedAt(),
+            $keys[7] => $this->getUpdatedAt(),
+            $keys[8] => $this->getSlug(),
+            $keys[9] => $this->getSortableRank(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1196,6 +1273,9 @@ abstract class BasePRBadge extends BaseObject implements Persistent
         }
 
         if ($includeForeignObjects) {
+            if (null !== $this->aPRMetalType) {
+                $result['PRMetalType'] = $this->aPRMetalType->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
             if (null !== $this->aPRBadgeFamily) {
                 $result['PRBadgeFamily'] = $this->aPRBadgeFamily->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
@@ -1243,24 +1323,27 @@ abstract class BasePRBadge extends BaseObject implements Persistent
                 $this->setUuid($value);
                 break;
             case 2:
-                $this->setPRBadgeFamilyId($value);
+                $this->setPRMetalTypeId($value);
                 break;
             case 3:
-                $this->setTitle($value);
+                $this->setPRBadgeFamilyId($value);
                 break;
             case 4:
-                $this->setOnline($value);
+                $this->setTitle($value);
                 break;
             case 5:
-                $this->setCreatedAt($value);
+                $this->setOnline($value);
                 break;
             case 6:
-                $this->setUpdatedAt($value);
+                $this->setCreatedAt($value);
                 break;
             case 7:
-                $this->setSlug($value);
+                $this->setUpdatedAt($value);
                 break;
             case 8:
+                $this->setSlug($value);
+                break;
+            case 9:
                 $this->setSortableRank($value);
                 break;
         } // switch()
@@ -1289,13 +1372,14 @@ abstract class BasePRBadge extends BaseObject implements Persistent
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setUuid($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setPRBadgeFamilyId($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setTitle($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setOnline($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setCreatedAt($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setUpdatedAt($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setSlug($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setSortableRank($arr[$keys[8]]);
+        if (array_key_exists($keys[2], $arr)) $this->setPRMetalTypeId($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setPRBadgeFamilyId($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setTitle($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setOnline($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setCreatedAt($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setUpdatedAt($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setSlug($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setSortableRank($arr[$keys[9]]);
     }
 
     /**
@@ -1309,6 +1393,7 @@ abstract class BasePRBadge extends BaseObject implements Persistent
 
         if ($this->isColumnModified(PRBadgePeer::ID)) $criteria->add(PRBadgePeer::ID, $this->id);
         if ($this->isColumnModified(PRBadgePeer::UUID)) $criteria->add(PRBadgePeer::UUID, $this->uuid);
+        if ($this->isColumnModified(PRBadgePeer::P_R_METAL_TYPE_ID)) $criteria->add(PRBadgePeer::P_R_METAL_TYPE_ID, $this->p_r_metal_type_id);
         if ($this->isColumnModified(PRBadgePeer::P_R_BADGE_FAMILY_ID)) $criteria->add(PRBadgePeer::P_R_BADGE_FAMILY_ID, $this->p_r_badge_family_id);
         if ($this->isColumnModified(PRBadgePeer::TITLE)) $criteria->add(PRBadgePeer::TITLE, $this->title);
         if ($this->isColumnModified(PRBadgePeer::ONLINE)) $criteria->add(PRBadgePeer::ONLINE, $this->online);
@@ -1380,6 +1465,7 @@ abstract class BasePRBadge extends BaseObject implements Persistent
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
         $copyObj->setUuid($this->getUuid());
+        $copyObj->setPRMetalTypeId($this->getPRMetalTypeId());
         $copyObj->setPRBadgeFamilyId($this->getPRBadgeFamilyId());
         $copyObj->setTitle($this->getTitle());
         $copyObj->setOnline($this->getOnline());
@@ -1449,6 +1535,58 @@ abstract class BasePRBadge extends BaseObject implements Persistent
         }
 
         return self::$peer;
+    }
+
+    /**
+     * Declares an association between this object and a PRMetalType object.
+     *
+     * @param                  PRMetalType $v
+     * @return PRBadge The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setPRMetalType(PRMetalType $v = null)
+    {
+        if ($v === null) {
+            $this->setPRMetalTypeId(NULL);
+        } else {
+            $this->setPRMetalTypeId($v->getId());
+        }
+
+        $this->aPRMetalType = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the PRMetalType object, it will not be re-added.
+        if ($v !== null) {
+            $v->addPRBadge($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated PRMetalType object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return PRMetalType The associated PRMetalType object.
+     * @throws PropelException
+     */
+    public function getPRMetalType(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aPRMetalType === null && ($this->p_r_metal_type_id !== null) && $doQuery) {
+            $this->aPRMetalType = PRMetalTypeQuery::create()->findPk($this->p_r_metal_type_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aPRMetalType->addPRBadges($this);
+             */
+        }
+
+        return $this->aPRMetalType;
     }
 
     /**
@@ -1963,6 +2101,7 @@ abstract class BasePRBadge extends BaseObject implements Persistent
     {
         $this->id = null;
         $this->uuid = null;
+        $this->p_r_metal_type_id = null;
         $this->p_r_badge_family_id = null;
         $this->title = null;
         $this->online = null;
@@ -2002,6 +2141,9 @@ abstract class BasePRBadge extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->aPRMetalType instanceof Persistent) {
+              $this->aPRMetalType->clearAllReferences($deep);
+            }
             if ($this->aPRBadgeFamily instanceof Persistent) {
               $this->aPRBadgeFamily->clearAllReferences($deep);
             }
@@ -2017,6 +2159,7 @@ abstract class BasePRBadge extends BaseObject implements Persistent
             $this->collPUsers->clearIterator();
         }
         $this->collPUsers = null;
+        $this->aPRMetalType = null;
         $this->aPRBadgeFamily = null;
     }
 
@@ -2687,6 +2830,7 @@ abstract class BasePRBadge extends BaseObject implements Persistent
             $this->setId($archive->getId());
         }
         $this->setUuid($archive->getUuid());
+        $this->setPRMetalTypeId($archive->getPRMetalTypeId());
         $this->setPRBadgeFamilyId($archive->getPRBadgeFamilyId());
         $this->setTitle($archive->getTitle());
         $this->setOnline($archive->getOnline());

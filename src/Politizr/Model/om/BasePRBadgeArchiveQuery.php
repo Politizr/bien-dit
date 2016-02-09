@@ -17,6 +17,7 @@ use Politizr\Model\PRBadgeArchiveQuery;
 /**
  * @method PRBadgeArchiveQuery orderById($order = Criteria::ASC) Order by the id column
  * @method PRBadgeArchiveQuery orderByUuid($order = Criteria::ASC) Order by the uuid column
+ * @method PRBadgeArchiveQuery orderByPRMetalTypeId($order = Criteria::ASC) Order by the p_r_metal_type_id column
  * @method PRBadgeArchiveQuery orderByPRBadgeFamilyId($order = Criteria::ASC) Order by the p_r_badge_family_id column
  * @method PRBadgeArchiveQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method PRBadgeArchiveQuery orderByOnline($order = Criteria::ASC) Order by the online column
@@ -28,6 +29,7 @@ use Politizr\Model\PRBadgeArchiveQuery;
  *
  * @method PRBadgeArchiveQuery groupById() Group by the id column
  * @method PRBadgeArchiveQuery groupByUuid() Group by the uuid column
+ * @method PRBadgeArchiveQuery groupByPRMetalTypeId() Group by the p_r_metal_type_id column
  * @method PRBadgeArchiveQuery groupByPRBadgeFamilyId() Group by the p_r_badge_family_id column
  * @method PRBadgeArchiveQuery groupByTitle() Group by the title column
  * @method PRBadgeArchiveQuery groupByOnline() Group by the online column
@@ -45,6 +47,7 @@ use Politizr\Model\PRBadgeArchiveQuery;
  * @method PRBadgeArchive findOneOrCreate(PropelPDO $con = null) Return the first PRBadgeArchive matching the query, or a new PRBadgeArchive object populated from the query conditions when no match is found
  *
  * @method PRBadgeArchive findOneByUuid(string $uuid) Return the first PRBadgeArchive filtered by the uuid column
+ * @method PRBadgeArchive findOneByPRMetalTypeId(int $p_r_metal_type_id) Return the first PRBadgeArchive filtered by the p_r_metal_type_id column
  * @method PRBadgeArchive findOneByPRBadgeFamilyId(int $p_r_badge_family_id) Return the first PRBadgeArchive filtered by the p_r_badge_family_id column
  * @method PRBadgeArchive findOneByTitle(string $title) Return the first PRBadgeArchive filtered by the title column
  * @method PRBadgeArchive findOneByOnline(boolean $online) Return the first PRBadgeArchive filtered by the online column
@@ -56,6 +59,7 @@ use Politizr\Model\PRBadgeArchiveQuery;
  *
  * @method array findById(int $id) Return PRBadgeArchive objects filtered by the id column
  * @method array findByUuid(string $uuid) Return PRBadgeArchive objects filtered by the uuid column
+ * @method array findByPRMetalTypeId(int $p_r_metal_type_id) Return PRBadgeArchive objects filtered by the p_r_metal_type_id column
  * @method array findByPRBadgeFamilyId(int $p_r_badge_family_id) Return PRBadgeArchive objects filtered by the p_r_badge_family_id column
  * @method array findByTitle(string $title) Return PRBadgeArchive objects filtered by the title column
  * @method array findByOnline(boolean $online) Return PRBadgeArchive objects filtered by the online column
@@ -169,7 +173,7 @@ abstract class BasePRBadgeArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `p_r_badge_family_id`, `title`, `online`, `created_at`, `updated_at`, `slug`, `sortable_rank`, `archived_at` FROM `p_r_badge_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_r_metal_type_id`, `p_r_badge_family_id`, `title`, `online`, `created_at`, `updated_at`, `slug`, `sortable_rank`, `archived_at` FROM `p_r_badge_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -327,6 +331,48 @@ abstract class BasePRBadgeArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PRBadgeArchivePeer::UUID, $uuid, $comparison);
+    }
+
+    /**
+     * Filter the query on the p_r_metal_type_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPRMetalTypeId(1234); // WHERE p_r_metal_type_id = 1234
+     * $query->filterByPRMetalTypeId(array(12, 34)); // WHERE p_r_metal_type_id IN (12, 34)
+     * $query->filterByPRMetalTypeId(array('min' => 12)); // WHERE p_r_metal_type_id >= 12
+     * $query->filterByPRMetalTypeId(array('max' => 12)); // WHERE p_r_metal_type_id <= 12
+     * </code>
+     *
+     * @param     mixed $pRMetalTypeId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PRBadgeArchiveQuery The current query, for fluid interface
+     */
+    public function filterByPRMetalTypeId($pRMetalTypeId = null, $comparison = null)
+    {
+        if (is_array($pRMetalTypeId)) {
+            $useMinMax = false;
+            if (isset($pRMetalTypeId['min'])) {
+                $this->addUsingAlias(PRBadgeArchivePeer::P_R_METAL_TYPE_ID, $pRMetalTypeId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($pRMetalTypeId['max'])) {
+                $this->addUsingAlias(PRBadgeArchivePeer::P_R_METAL_TYPE_ID, $pRMetalTypeId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PRBadgeArchivePeer::P_R_METAL_TYPE_ID, $pRMetalTypeId, $comparison);
     }
 
     /**

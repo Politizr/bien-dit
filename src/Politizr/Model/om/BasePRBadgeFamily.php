@@ -1577,6 +1577,31 @@ abstract class BasePRBadgeFamily extends BaseObject implements Persistent
         return $this;
     }
 
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PRBadgeFamily is new, it will return
+     * an empty collection; or if this PRBadgeFamily has previously
+     * been saved, it will retrieve related PRBadges from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PRBadgeFamily.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PRBadge[] List of PRBadge objects
+     */
+    public function getPRBadgesJoinPRMetalType($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PRBadgeQuery::create(null, $criteria);
+        $query->joinWith('PRMetalType', $join_behavior);
+
+        return $this->getPRBadges($query, $con);
+    }
+
     /**
      * Clears the current object and sets all attributes to their default values
      */

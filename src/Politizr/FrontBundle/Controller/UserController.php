@@ -33,23 +33,6 @@ class UserController extends Controller
 {
 
     /* ######################################################################################################## */
-    /*                                                    HOMEPAGE                                              */
-    /* ######################################################################################################## */
-
-    /**
-     * Homepage
-     */
-    public function homepageAction()
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** homepageAction');
-
-        return $this->render('PolitizrFrontBundle:Dashboard:homepage.html.twig', array(
-            'profileSuffix' => $this->get('politizr.tools.global')->computeProfileSuffix(),
-        ));
-    }
-
-    /* ######################################################################################################## */
     /*                                                    DISPLAY                                               */
     /* ######################################################################################################## */
 

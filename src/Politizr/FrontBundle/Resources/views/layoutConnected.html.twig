@@ -37,37 +37,19 @@
     <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/chart.min.js') }}"></script>
 {% endblock %}
 
-{% block wrapper %}
-    <div class="wrapper">
-        {% block header %}
-            {% include 'PolitizrFrontBundle:Navigation\\Header:_headerConnected.html.twig' %}
-        {% endblock %}
-
-        {% block content %}
-            {% block fixedActions %}
-                <div id="fixedActions">
-                </div>
-            {% endblock fixedActions %}
-            {% block goUp %}
-                <div id="goUpHolder">
-                    <div id="goUp" action="goUp"><i class="iconArrowUp"></i></div>
-                </div>
-            {% endblock goUp %}
-            <div id="content">
-                {% block notifications %}
-                    {% include 'PolitizrFrontBundle:Notification:_notifications.html.twig' %}
-                {% endblock notifications %}
-
-                {% block main %}
-                {% endblock main %}
-
-                {% block footer %}
-                    {% include 'PolitizrFrontBundle:Navigation\\Footer:_footerConnected.html.twig' %}
-                {% endblock %}
-            </div>
-        {% endblock content %}
+{% block header %}
+    <div id="header">
+        {% include 'PolitizrFrontBundle:Navigation\\Header:_headerConnected.html.twig' %}
     </div>
-{% endblock wrapper %}
+    <div id="headerTrigger"></div>
+{% endblock header %}
+
+{% block main %}
+{% endblock main %}
+
+{% block footer %}
+    {% include 'PolitizrFrontBundle:Navigation\\Footer:_footerConnected.html.twig' %}
+{% endblock %}
 
 {% block javascriptFooter %}
     {{ parent() }}

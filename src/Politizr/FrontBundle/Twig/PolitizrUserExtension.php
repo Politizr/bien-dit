@@ -178,7 +178,7 @@ class PolitizrUserExtension extends \Twig_Extension
         // $this->logger->info('*** photo');
         // $this->logger->info('$user = '.print_r($user, true));
 
-        return $this->photo($user, 'user_15', false, false, 'profil15_default.png');
+        return $this->photo($user, 'user_30', false, false, 'default_avatar.jpg');
     }
 
     /**
@@ -191,7 +191,7 @@ class PolitizrUserExtension extends \Twig_Extension
      * @param string $default
      * @return html
      */
-    public function photo(PUser $user, $filterName = 'user_bio', $withLink = true, $email = false, $default = 'profil_default.png')
+    public function photo(PUser $user, $filterName = 'user_bio', $withLink = true, $email = false, $default = 'default_avatar.jpg')
     {
         // $this->logger->info('*** photo');
         // $this->logger->info('$user = '.print_r($user, true));
@@ -428,7 +428,7 @@ class PolitizrUserExtension extends \Twig_Extension
             );
         } else {
             $html = $this->templating->render(
-                'PolitizrFrontBundle:Notification:_notification.html.twig',
+                'PolitizrFrontBundle:Notification:_notificationScreen.html.twig',
                 array(
                     'notification' => $notification,
                     'notificationId' => $notification->getPNotificationId(),

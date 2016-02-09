@@ -12,6 +12,10 @@ params:
             label:          UUID
         slug:
             label:          Slug
+        p_r_metal_type_id:
+            label:          Métal
+        p_r_metal_type:
+            label:          Métal
         p_r_badge_family_id:
             label:          Famille
         p_r_badge_family:
@@ -34,9 +38,9 @@ builders:
             title:                              Liste des badges
             max_per_page:                       50
             sort:                               [ id, ASC ]
-            display:                            [ title, p_r_badge_family, nb_users, online ]
+            display:                            [ title, p_r_badge_family, p_r_metal_type, nb_users, online ]
             # filtersMode:                        top
-            filters:                            [ title, p_r_badge_family, online, created_at ]
+            filters:                            [ title, p_r_badge_family, p_r_metal_type, online, created_at ]
             actions:
                 new:                            ~
             object_actions:
@@ -53,7 +57,7 @@ builders:
         params:
             title:                              "Création d'un badge"
             display:
-                "Champs principaux":            [ [ p_r_badge_family ], [ title ] ]
+                "Champs principaux":            [ [ p_r_badge_family, p_r_metal_type ], [ title ] ]
             fields:
                 p_r_badge_family:
                     addFormOptions:
@@ -66,7 +70,7 @@ builders:
             title:                              "Edition du badge '{{ PRBadge.title }}'"
             tabs:
                 "Contenu":
-                    "Texte":                    [ [ p_r_badge_family  ], [ title ] ]
+                    "Texte":                    [ [ p_r_badge_family, p_r_metal_type  ], [ title ] ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
                     "Création":                 [ [ online ], [ created_at, updated_at ] ]

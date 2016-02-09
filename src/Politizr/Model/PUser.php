@@ -889,17 +889,38 @@ class PUser extends BasePUser implements UserInterface
      * User's badges
      *
      * @param integer $badgeTypeId
+     * @param integer $metalTypeId
      * @param boolean $online
      * @return PropelCollection[PRBadge]
      */
-    public function getBadges($badgeTypeId = null, $online = true)
+    public function getBadges($badgeTypeId = null, $metalTypeId = null, $online = true)
     {
         $query = PRBadgeQuery::create()
-            ->filterIfOnline($online)
             ->filterIfTypeId($badgeTypeId)
+            ->filterIfMetalTypeId($metalTypeId)
+            ->filterIfOnline($online)
             ->orderByTitle();
 
         return parent::getPRBadges($query);
+    }
+
+    /**
+     * User's nb badges
+     *
+     * @param integer $badgeTypeId
+     * @param integer $metalTypeId
+     * @param boolean $online
+     * @return int
+     */
+    public function countBadges($badgeTypeId = null, $metalTypeId = null, $online = true)
+    {
+        $query = PRBadgeQuery::create()
+            ->filterIfTypeId($badgeTypeId)
+            ->filterIfMetalTypeId($metalTypeId)
+            ->filterIfOnline($online)
+            ->orderByTitle();
+
+        return parent::countPRBadges($query);
     }
 
     /**

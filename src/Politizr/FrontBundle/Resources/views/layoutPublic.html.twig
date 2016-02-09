@@ -17,39 +17,16 @@
     <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/stylePublic.css') }}">
 {% endblock %}
 
-{% block wrapper %}
-    <div class="wrapper">
-        {% block header %}
-            {% include 'PolitizrFrontBundle:Navigation\\Header:_headerPublic.html.twig' %}
-        {% endblock %}
+{% block header %}
+    {% include 'PolitizrFrontBundle:Navigation\\Header:_headerPublic.html.twig' %}
+{% endblock %}
 
-        {% block inscriptionSteps %}
-        {% endblock inscriptionSteps %}
+{% block main %}
+{% endblock main %}
 
-        {% block fixedActions %}
-            <div id="fixedActions">
-            </div>
-        {% endblock fixedActions %}
-
-        {% block goUp %}
-            <div id="goUpHolder">
-                <div id="goUp" action="goUp"><i class="iconArrowUp"></i></div>
-            </div>
-        {% endblock goUp %}
-
-        {% block content %}
-            <div id="content">
-                {% block main %}
-                {% endblock main %}
-
-                {% block footer %}
-                    {% include 'PolitizrFrontBundle:Navigation\\Footer:_footerPublic.html.twig' %}
-                {% endblock %}
-            </div>
-        {% endblock content %}
-
-    </div>
-{% endblock wrapper %}
+{% block footer %}
+    {% include 'PolitizrFrontBundle:Navigation\\Footer:_footerPublic.html.twig' %}
+{% endblock %}
 
 {% block javascriptFooter %}
     {{ parent() }}

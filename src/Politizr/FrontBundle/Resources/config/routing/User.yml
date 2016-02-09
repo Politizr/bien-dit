@@ -12,10 +12,6 @@ UserDetail:
 ################################################################################
 HomepageC:
     pattern:  /citoyen
-    defaults: { _controller: PolitizrFrontBundle:User:homepage }
-
-TimelineC:
-    pattern:  /citoyen/timeline
     defaults: { _controller: PolitizrFrontBundle:User:timeline }
 
 ReputationC:
@@ -44,10 +40,6 @@ EditNotificationsC:
 ################################################################################
 HomepageE:
     pattern:  /elu
-    defaults: { _controller: PolitizrFrontBundle:User:homepage }
-
-TimelineE:
-    pattern:  /elu/timeline
     defaults: { _controller: PolitizrFrontBundle:User:timeline }
 
 ReputationE:

@@ -19,6 +19,13 @@ class ReputationConstants
     const BADGE_TYPE_OTHER = 5;
 
     // ******************************************************** //
+    //            PRMETALTYPE OBJECT ID CONSTANTS
+    // ******************************************************** //
+    const METAL_TYPE_BRONZE = 1;
+    const METAL_TYPE_SILVER = 2;
+    const METAL_TYPE_GOLD = 3;
+
+    // ******************************************************** //
     //            PRACTION OBJECT ID CONSTANTS
     // ******************************************************** //
 

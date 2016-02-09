@@ -71,12 +71,16 @@
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="uuid" type="varchar" size="50" />
+        <column name="p_r_metal_type_id" type="integer" required="true" />
         <column name="p_r_badge_family_id" type="integer" required="true" />
         
         <column name="title" type="varchar" size="150" />
 
         <column name="online" type="boolean" />
 
+        <foreign-key foreignTable="p_r_metal_type" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_r_metal_type_id" foreign="id" />
+        </foreign-key>
         <foreign-key foreignTable="p_r_badge_family" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_r_badge_family_id" foreign="id" />
         </foreign-key>
@@ -84,6 +88,14 @@
         <unique>
             <unique-column name="uuid"/>
         </unique>
+    </table>
+
+    <table name="p_r_metal_type">
+        <behavior name="timestampable" />
+        
+        <column name="id" type="integer" required="true" primaryKey="true" />
+        
+        <column name="title" type="varchar" size="150" />
     </table>
 
     <table name="p_r_badge_family">
