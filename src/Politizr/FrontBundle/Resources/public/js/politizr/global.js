@@ -12,17 +12,17 @@ $('body').on('click', "[action='closeBox']", function(e){
     $(this).closest('div').hide();
 });
 
-// Fermeture d'une modal
-$("body").on("click", "[action='modalClose']", function() {
-    $('body').removeClass('noscroll');
-    $('#modalBoxContent').html('');
-    $(this).closest('.modal').hide();
-    $(".modalLeftCol, .modalRightCol").removeClass('activeMobileModal'); /* for mobile purpose */ 
-});
-
-// Cancel in modal
-$("body").on("click", "[action='cancelModal']", function() {
-    $("[action='modalClose']").trigger("click");
+// main menu
+$(document).mousedown(function (e) {
+    var container = $("#menu");
+    if (!container.is(e.target) // if the target of the click isn't the container...
+        && container.has(e.target).length === 0) // ... nor a descendant of the container
+    {
+        container.hide();
+        $("body").on("click", "[action='toggleMenu']", function() {
+            $('#menu').toggle();
+        });
+    }
 });
 
 // Scroll haut de page
@@ -40,50 +40,6 @@ $("body").on("click", "[action='reloadPage']", function() {
 // Copyright sur l'image des contenus
 $("body").on("click", "[action='showCopyright']", function() {
     $('#copyrightBox').toggle();       
-});
-
-// hide / show menu preferences	
-$("body").on("click", "[action='openMenuPreferences']", function() {
-    $('body.css #menuPreferences, body.css1000 #menuPreferences').show();
-    $('body.css #hideMenuPreferences, body.css1000 #hideMenuPreferences').show();
-    $('body.css #openMenuPreferences, body.css1000 #openMenuPreferences').hide();
-    
-    $('body.css760 #menuPreferences').toggle();
-	$('body.css760 #headerCenter, body.css760 #menu, body.css760 #fixedActions').hide();
-});
-
-$("body").on("click", "[action='hideMenuPreferences']", function() {
-    $('body.css #menuPreferences, body.css1000 #menuPreferences').hide();
-    $('body.css #hideMenuPreferences, body.css1000 #hideMenuPreferences').hide();
-    $('body.css #openMenuPreferences, body.css1000 #openMenuPreferences').show();
-});
-
-// mobile : toggle menu mobile 
-$("body").on("touchstart click", "[action='menuMobileTriggerMenu']", function(e) {
-    if(e.type == "touchstart") { // if touchstart start toggle
-        $('#headerCenter, #menu').toggle();
-        $('#menuPreferences, #fixedActions').hide();
-        e.stopPropagation();
-        e.preventDefault(); // stop touchstart 
-        return false;
-    } else if(e.type == "click") { // if click : do the same, but don't trigger touchstart
-        $('#headerCenter, #menu').toggle();
-        $('#menuPreferences, #fixedActions').hide();
-    }
-});
-
-// mobile : toggle fixed actions
-$("body").on("touchstart click", "[action='menuMobileTriggerActions']", function(e) {
-    if(e.type == "touchstart") { // if touchstart start toggle
-        $('#fixedActions').toggle();
-        $('#headerCenter, #menu, #menuPreferences, #notifications').hide();
-        e.stopPropagation();
-        e.preventDefault(); // stop touchstart 
-        return false;
-    } else if(e.type == "click") { // if click : do the same, but don't trigger touchstart
-        $('#fixedActions').toggle();
-        $('#headerCenter, #menu, #menuPreferences, #notifications').hide();     
-    }                   
 });
 
 // hide / show helper

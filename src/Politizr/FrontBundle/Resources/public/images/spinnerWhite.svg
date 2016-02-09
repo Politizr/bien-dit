@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+<rect fill="none" width="32" height="32"/>
+<rect x="15.04" y="4.8" fill="#FFFFFF" width="1.92" height="5.76">
+<animate  fill="remove" restart="always" calcMode="linear" to="0" from="1" additive="replace" dur="1s" accumulate="none" attributeName="opacity" begin="0s" repeatCount="indefinite">
+	</animate>
+</rect>
+<rect x="18.907" y="5.753" transform="matrix(-0.8853 -0.465 0.465 -0.8853 33.4399 25.5145)" fill="#FFFFFF" width="1.919" height="5.76">
+<animate  fill="remove" restart="always" calcMode="linear" to="0" from="1" additive="replace" dur="1s" accumulate="none" attributeName="opacity" begin="0.07692307692307693s" repeatCount="indefinite">
+	</animate>
+</rect>
+<rect x="21.887" y="8.394" transform="matrix(-0.5681 -0.8229 0.8229 -0.5681 26.5496 36.4804)" fill="#FFFFFF" width="1.92" height="5.76">
+<animate  fill="remove" restart="always" calcMode="linear" to="0" from="1" additive="replace" dur="1s" accumulate="none" attributeName="opacity" begin="0.15384615384615385s" repeatCount="indefinite">
+	</animate>
+</rect>
+<rect x="23.299" y="12.117" transform="matrix(-0.121 -0.9926 0.9926 -0.121 12.308 40.8926)" fill="#FFFFFF" width="1.92" height="5.761">
+<animate  fill="remove" restart="always" calcMode="linear" to="0" from="1" additive="replace" dur="1s" accumulate="none" attributeName="opacity" begin="0.23076923076923078s" repeatCount="indefinite">
+	</animate>
+</rect>
+<rect x="22.819" y="16.07" transform="matrix(0.3546 -0.935 0.935 0.3546 -2.3712 34.4652)" fill="#FFFFFF" width="1.92" height="5.76">
+<animate  fill="remove" restart="always" calcMode="linear" to="0" from="1" additive="replace" dur="1s" accumulate="none" attributeName="opacity" begin="0.3076923076923077s" repeatCount="indefinite">
+	</animate>
+</rect>
+<rect x="20.557" y="19.348" transform="matrix(0.7483 -0.6634 0.6634 0.7483 -9.329 19.8679)" fill="#FFFFFF" width="1.92" height="5.76">
+<animate  fill="remove" restart="always" calcMode="linear" to="0" from="1" additive="replace" dur="1s" accumulate="none" attributeName="opacity" begin="0.38461538461538464s" repeatCount="indefinite">
+	</animate>
+</rect>
+<rect x="17.031" y="21.198" transform="matrix(0.9709 -0.2395 0.2395 0.9709 -5.2439 5.0106)" fill="#FFFFFF" width="1.92" height="5.76">
+<animate  fill="remove" restart="always" calcMode="linear" to="0" from="1" additive="replace" dur="1s" accumulate="none" attributeName="opacity" begin="0.46153846153846156s" repeatCount="indefinite">
+	</animate>
+</rect>
+<rect x="13.049" y="21.199" transform="matrix(0.9709 0.2395 -0.2395 0.9709 6.1757 -2.6547)" fill="#FFFFFF" width="1.92" height="5.759">
+<animate  fill="remove" restart="always" calcMode="linear" to="0" from="1" additive="replace" dur="1s" accumulate="none" attributeName="opacity" begin="0.5384615384615384s" repeatCount="indefinite">
+	</animate>
+</rect>
+<rect x="9.523" y="19.348" transform="matrix(0.7484 0.6632 -0.6632 0.7484 17.3791 -1.3603)" fill="#FFFFFF" width="1.92" height="5.759">
+<animate  fill="remove" restart="always" calcMode="linear" to="0" from="1" additive="replace" dur="1s" accumulate="none" attributeName="opacity" begin="0.6153846153846154s" repeatCount="indefinite">
+	</animate>
+</rect>
+<rect x="7.261" y="16.07" transform="matrix(0.3546 0.935 -0.935 0.3546 23.0248 4.5443)" fill="#FFFFFF" width="1.92" height="5.76">
+<animate  fill="remove" restart="always" calcMode="linear" to="0" from="1" additive="replace" dur="1s" accumulate="none" attributeName="opacity" begin="0.6923076923076923s" repeatCount="indefinite">
+	</animate>
+</rect>
+<rect x="6.781" y="12.117" transform="matrix(-0.1206 0.9927 -0.9927 -0.1206 23.5616 9.1208)" fill="#FFFFFF" width="1.92" height="5.76">
+<animate  fill="remove" restart="always" calcMode="linear" to="0" from="1" additive="replace" dur="1s" accumulate="none" attributeName="opacity" begin="0.7692307692307693s" repeatCount="indefinite">
+	</animate>
+</rect>
+<rect x="8.193" y="8.394" transform="matrix(-0.5681 0.8229 -0.8229 -0.5681 23.6304 10.1463)" fill="#FFFFFF" width="1.92" height="5.76">
+<animate  fill="remove" restart="always" calcMode="linear" to="0" from="1" additive="replace" dur="1s" accumulate="none" attributeName="opacity" begin="0.8461538461538461s" repeatCount="indefinite">
+	</animate>
+</rect>
+<rect x="11.173" y="5.753" transform="matrix(-0.8854 0.4648 -0.4648 -0.8854 26.889 10.6369)" fill="#FFFFFF" width="1.92" height="5.76">
+<animate  fill="remove" restart="always" calcMode="linear" to="0" from="1" additive="replace" dur="1s" accumulate="none" attributeName="opacity" begin="0.9230769230769231s" repeatCount="indefinite">
+	</animate>
+</rect>
+</svg>

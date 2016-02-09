@@ -1,6 +1,7 @@
 // on document ready
 $(function() {
     scoreCounter();
+    badgesCounter();
 })
 
 /**
@@ -21,7 +22,32 @@ function scoreCounter(){
         dataType: 'json',
         url : xhrPath,
         success: function(data) {
-            $('#fameCounter').html(data['html']);
+            $('.reputPoints').html(data['html']);
+        }
+    });
+}
+
+/**
+ * Load badges score
+ */
+function badgesCounter(){
+    // console.log('*** badgesCounter');
+
+    var xhrPath = getXhrPath(
+        ROUTE_BADGES_COUNTER,
+        'user',
+        'badgesScore',
+        RETURN_HTML
+        );
+
+    $.ajax({
+        type: 'POST',
+        dataType: 'json',
+        url : xhrPath,
+        success: function(data) {
+            $('.badgesCounterBronze').html(data['nbBronze']);
+            $('.badgesCounterSilver').html(data['nbSilver']);
+            $('.badgesCounterGold').html(data['nbGold']);
         }
     });
 }

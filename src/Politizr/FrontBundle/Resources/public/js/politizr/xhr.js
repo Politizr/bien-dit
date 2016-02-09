@@ -47,6 +47,7 @@ var ROUTE_NOTIF_CONTEXT_USER_UNSUBSCRIBE = 'profil/notif/utilisateur/contexte/de
 
 // REPUTATION COUNTER
 var ROUTE_SCORE_COUNTER = 'profil/reputation/score';
+var ROUTE_BADGES_COUNTER = 'profil/reputation/badges';
 
 // MODAL
 var ROUTE_MODAL_PAGINATED_LIST = 'liste';

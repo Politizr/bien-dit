@@ -3,16 +3,16 @@ $(function() {
     notificationsLoading();
 })
 
-
-// ouverture/fermeture box notifications
-$("body").on("click", "[action='linkNotifications']", function() {
-    $('#notifications').slideToggle();
-    $('body.css760 #headerCenter, body.css760 #menu').hide(); 
-});
-
-// close notif
-$("body").on("click", ".notifClose", function() {
-    $('#notifications').slideUp('fast');
+$(document).mousedown(function (e) {
+    var container = $("#notifBox");
+    if (!container.is(e.target) // if the target of the click isn't the container...
+        && container.has(e.target).length === 0) // ... nor a descendant of the container
+    {
+        container.hide();
+        $("body").on("click", "[action='toggleNotifBox']", function() {
+            $('#notifBox').toggle();
+        });
+    }
 });
 
 // Regular function with arguments
@@ -30,30 +30,21 @@ function notificationsLoading(){
         type: 'POST',
         dataType: 'json',
         url : xhrPath,
-        // Fix #77
-        // beforeSend: function ( xhr ) { xhrBeforeSend( xhr ); },
-        // statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
-        // error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
         success: function(data) {
             $('#ajaxGlobalLoader').hide();
 
             // MAJ compteur
             note = parseInt(data['counterNotifs']);
             if (note > 0) {
-                $('#notifCounter').html(data['counterNotifs']).show();
+                $('#notifCounterNew').html(data['counterNotifs']).show();
             } else {
-                $('#notifCounter').html('-').hide();
+                $('#notifCounterNew').html('-').hide();
             }
 
             // MAJ listing des notifs
-            $('#notifList').html(data['html']);
+            $('#notifBox').html(data['html']);
         }
     });
-
-    // // Autoloading every 60 secondes
-    // setTimeout(function(){
-    //     notificationsLoading();
-    // }, 60000);
 }
 
 // check notification
@@ -83,17 +74,15 @@ $("body").on("click", "i[action='notificationCheck']", function(e) {
             localLoader.hide();
 
             $(this).find('.notifHighlight').removeClass();
-            $(this).find('.iconCheck').remove();
+            $(this).find('.icon-check-incircle').remove();
             $(this).addClass('viewedNotif');
 
-            note = parseInt($('#notifCounter').text()) - 1;
+            note = parseInt($('#notifCounterNew').text()) - 1;
             if (note > 0) {
-                $('#notifCounter').html(note);
+                $('#notifCounterNew').html(note);
             } else {
-                $('#notifCounter').html('-').hide();
+                $('#notifCounterNew').html('-').hide();
             }
-
-            $('#ajaxGlobalLoader').hide();
         }
     });
 
@@ -137,24 +126,25 @@ $("body").on("click", "div[action='notificationCheckAll']", function(e) {
         RETURN_BOOLEAN
         );
 
+    var localLoader = $(this).closest('#notifBox').find('.ajaxLoader').first();
     $.ajax({
         type: 'POST',
         dataType: 'json',
         url : xhrPath,
         context: $(this).closest('table'),
-        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
-        statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
-        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
+        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, localLoader ); },
+        statusCode: { 404: function () { xhr404(localLoader); }, 500: function() { xhr500(localLoader); } },
+        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown, localLoader); },
         success: function(data) {
+            localLoader.hide();
+
             // MAJ du style
             $('.notifItem').addClass('viewedNotif');
             $('.notifItem').find('.notifHighlight').removeClass();
-            $('.notifItem').find('.iconCheck').remove();
+            $('.notifItem').find('.icon-check-incircle').remove();
 
             // MAJ du compteur
-            $('#notifCounter').html('-').hide();
-
-            $('#ajaxGlobalLoader').hide();
+            $('#notifCounterNew').html('-').hide();
         }
     });
 
