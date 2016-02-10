@@ -1,0 +1,6 @@
+<div class="postBreadcrumb">
+    {% if parentReaction is not null %}
+        En réponse à <a href="{{ path('ReactionDetail', { 'slug': parentReaction.slug }) }}">{{ parentReaction.title }}</a>
+    {% endif %}
+    <span><a href="{{ path('DebateDetail', { 'slug': parentDebate.slug }) }}">{{ parentDebate.title }}</a></span>
+</div>

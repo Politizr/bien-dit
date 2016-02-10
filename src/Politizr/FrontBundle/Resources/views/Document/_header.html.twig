@@ -1,0 +1,22 @@
+{% if document.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE') %}
+    {% set detailPath = path('DebateDetail', { 'slug': document.slug }) %}
+    {% set spanClass = 'subject' %}
+{% elseif document.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION') %}
+    {% set detailPath = path('ReactionDetail', { 'slug': document.slug }) %}
+    {% set spanClass = '' %}
+{% endif %}
+
+{% if document.fileName %}
+    <div class="postImg">
+        <a href="{{ detailPath }}">
+            {{ document | image('debate_header', false) }}
+        </a>
+    </div>
+{% else %}
+    <div class="postImg noImg"></div>
+{% endif %}
+
+<a href="{{ detailPath }}">
+    <span class="postTitle {{ spanClass }}">{{ document.title }}</span>
+    {{ document.description | removeLinks | removeSpans | excerpt(1, true) | purify }}
+</a>

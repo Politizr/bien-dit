@@ -112,7 +112,7 @@ ORDER BY nb_users DESC
 ORDER BY unionsorting ASC
 ) unionsorting
 
-LIMIT :offset, :limit
+LIMIT :limit
 ";
 
         return $sql;
@@ -346,15 +346,13 @@ GROUP BY p_d_debate_id
      * User's debates' suggestions paginated listing
      *
      * @param integer $userId
-     * @param integer $offset
-     * @param integer $limit
+     * @param int $limit
      * @return PropelCollection[PDDebate]
      */
-    public function generateUserSuggestedDebatesPaginatedListing($userId, $offset, $limit)
+    public function generateUserDocumentsSuggestion($userId, $limit)
     {
         $this->logger->info('*** generateUserSuggestedDebatesPaginatedListing');
         $this->logger->info('$userId = ' . print_r($userId, true));
-        $this->logger->info('$offset = ' . print_r($offset, true));
         $this->logger->info('$limit = ' . print_r($limit, true));
 
         $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
@@ -365,7 +363,6 @@ GROUP BY p_d_debate_id
         $stmt->bindValue(':p_user_id3', $userId, \PDO::PARAM_INT);
         $stmt->bindValue(':p_user_id4', $userId, \PDO::PARAM_INT);
         $stmt->bindValue(':p_user_id5', $userId, \PDO::PARAM_INT);
-        $stmt->bindValue(':offset', $offset, \PDO::PARAM_INT);
         $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
 
         $stmt->execute();

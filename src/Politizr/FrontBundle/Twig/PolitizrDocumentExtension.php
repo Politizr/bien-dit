@@ -101,6 +101,11 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 array('is_safe' => array('html'))
             ),
             new \Twig_SimpleFilter(
+                'itemContextComment',
+                array($this, 'itemContextComment'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
                 'nbComments',
                 array($this, 'nbComments'),
                 array('is_safe' => array('html'))
@@ -143,6 +148,11 @@ class PolitizrDocumentExtension extends \Twig_Extension
             new \Twig_SimpleFilter(
                 'linkParentReaction',
                 array($this, 'linkParentReaction'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
+                'linkParentDocument',
+                array($this, 'linkParentDocument'),
                 array('is_safe' => array('html'))
             ),
             new \Twig_SimpleFilter(
@@ -305,11 +315,11 @@ class PolitizrDocumentExtension extends \Twig_Extension
         }
 
         if (0 === $nbReactions) {
-            $html = 'Aucune réaction';
+            $html = 'Aucune réaction d\'élu-e';
         } elseif (1 === $nbReactions) {
-            $html = '1 réaction';
+            $html = '1 réaction d\'élu-e';
         } else {
-            $html = $nbReactions.' réactions';
+            $html = $nbReactions.' réactions d\'élu-e-s';
         }
 
         return $html;
@@ -322,31 +332,58 @@ class PolitizrDocumentExtension extends \Twig_Extension
      * @param boolean $debateContext
      * @return string
      */
-    public function itemContextReaction(PDReaction $reaction, $debateContext)
+    public function itemContextReaction(PDReaction $reaction, $debateContext = false)
     {
         $parentReaction = null;
 
-        // get current user
-        $user = $this->securityTokenStorage->getToken()->getUser();
-        
         if ($parentReactionId = $reaction->getParentReactionId()) {
             $parentReaction = PDReactionQuery::create()->findPk($parentReactionId);
         }
         $parentDebate = $reaction->getDebate();
 
-        $debateIsFollowed = false;
-        if ($user) {
-            $debateIsFollowed = $parentDebate->isFollowedBy($user->getId());
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Document:_itemContext.html.twig',
+            array(
+                'parentReaction' => $parentReaction,
+                'parentDebate' => $parentDebate,
+                'debateContext' => $debateContext
+            )
+        );
+
+        return $html;
+    }
+
+    /**
+     * Render the item comment context
+     *
+     * @param PDCommentInterface $comment
+     * @param boolean $debateContext
+     * @return string
+     */
+    public function itemContextComment(PDCommentInterface $comment, $debateContext = false)
+    {
+        $parentReaction = null;
+
+        switch ($comment->getPDocumentType()) {
+            case ObjectTypeConstants::TYPE_DEBATE:
+                $parentDebate = $comment->getPDocument();
+                $parentReaction = null;
+                break;
+            case ObjectTypeConstants::TYPE_REACTION:
+                $parentReaction = $comment->getPDocument();
+                $parentDebate = $parentReaction->getDebate();
+                break;
+            default:
+                throw new InconsistentDataException(sprintf('Object type %s not managed', $comment->getPDocumentType()));
         }
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Reaction:_itemContext.html.twig',
+            'PolitizrFrontBundle:Document:_itemContext.html.twig',
             array(
-                'reaction' => $reaction,
                 'parentReaction' => $parentReaction,
                 'parentDebate' => $parentDebate,
-                'debateIsFollowed' => $debateIsFollowed,
                 'debateContext' => $debateContext
             )
         );
@@ -566,7 +603,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
     public function linkParentReaction(PDReaction $reaction, $edit = false)
     {
         // $this->logger->info('*** linkParentReaction');
-        // $this->logger->info('$debate = '.print_r($reaction, true));
+        // $this->logger->info('$reaction = '.print_r($reaction, true));
 
         if ($edit) {
             if (null === $reaction->getParentReactionId()) {
@@ -597,6 +634,46 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
         return $html;
 
+    }
+
+    /**
+     * Generate a link to the related comment's document
+     *
+     * @param PDCommentInterface $comment
+     * @return string
+     */
+    public function linkParentDocument(PDCommentInterface $comment)
+    {
+        // $this->logger->info('*** linkParentDocument');
+        // $this->logger->info('$comment = '.print_r($comment, true));
+
+        switch ($comment->getPDocumentType()) {
+            case ObjectTypeConstants::TYPE_DEBATE:
+                $parentDebate = $comment->getPDocument();
+                $url = $this->router->generate('DebateDetail', array('slug' => $parentDebate->getSlug()));
+                break;
+            case ObjectTypeConstants::TYPE_REACTION:
+                $parentReaction = $comment->getPDocument();
+                $url = $this->router->generate('ReactionDetail', array('slug' => $parentReaction->getSlug()));
+                break;
+            default:
+                throw new InconsistentDataException(sprintf('Object type %s not managed', $comment->getPDocumentType()));
+        }
+
+        if ($paragraphNo = $comment->getParagraphNo()) {
+            $url .= '#p-'.$paragraphNo;
+        }
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Comment:_linkParentDocument.html.twig',
+            array(
+                'comment' => $comment,
+                'url' => $url,
+            )
+        );
+
+        return $html;
     }
 
     /**
@@ -907,7 +984,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Follow:_subscribeDebate.html.twig',
+            'PolitizrFrontBundle:Follow:_subscribeDebateLink.html.twig',
             array(
                 'object' => $debate,
                 'owner' => $owner,

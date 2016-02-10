@@ -1,0 +1,16 @@
+<div class="card">
+    {% include 'PolitizrFrontBundle:User:_summaryAuthor.html.twig' with { 'user': comment.user } only %}
+    <div class="commentInCard">
+        {{ comment | linkParentDocument }}
+    </div>
+    <div class="actionsBox">
+        <div class="notation withLoaderInside">
+            {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+            {% include 'PolitizrFrontBundle:Reputation:_noteAction.html.twig' with { 'subject': comment } only %}
+        </div>
+    </div>
+    <div class="coloredBg">
+        <h5>{% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': comment } only %}</h5>
+        {{ comment | itemContextComment() }}
+    </div>
+</div>

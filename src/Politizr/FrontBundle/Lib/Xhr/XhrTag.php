@@ -28,6 +28,7 @@ class XhrTag
     private $securityTokenStorage;
     private $router;
     private $templating;
+    private $tagService;
     private $tagManager;
     private $logger;
 
@@ -36,6 +37,7 @@ class XhrTag
      * @param @security.token_storage
      * @param @router
      * @param @templating
+     * @param @politizr.functional.tag
      * @param @politizr.manager.tag
      * @param @logger
      */
@@ -43,6 +45,7 @@ class XhrTag
         $securityTokenStorage,
         $router,
         $templating,
+        $tagService,
         $tagManager,
         $logger
     ) {
@@ -51,6 +54,7 @@ class XhrTag
         $this->router = $router;
         $this->templating = $templating;
 
+        $this->tagService = $tagService;
         $this->tagManager = $tagManager;
 
         $this->logger = $logger;
@@ -568,6 +572,61 @@ class XhrTag
 
         $html = $this->templating->render(
             'PolitizrFrontBundle:Tag:_isUserTagged.html.twig'
+        );
+
+        return array(
+            'html' => $html,
+        );
+    }
+
+    /* ######################################################################################################## */
+    /*                                                     LISTING                                              */
+    /* ######################################################################################################## */
+
+    /**
+     * Most popular tags
+     */
+    public function topTags(Request $request)
+    {
+        $this->logger->info('*** topTags');
+        
+        // Request arguments
+        $filters = $request->get('tagFilterDate');
+        $this->logger->info('$filters = ' . print_r($filters, true));
+
+        // top tags
+        $tags = $this->tagService->getMostPopularTags($filters);
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Tag:_list.html.twig',
+            array(
+                'tags' => $tags,
+            )
+        );
+
+        return array(
+            'html' => $html,
+        );
+    }
+
+    /**
+     * User followed tags
+     */
+    public function userTags(Request $request)
+    {
+        $this->logger->info('*** userTags');
+        
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        
+        // user tags
+        $tags = $user->getTags(null, null, true);
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Tag:_list.html.twig',
+            array(
+                'tags' => $tags,
+            )
         );
 
         return array(

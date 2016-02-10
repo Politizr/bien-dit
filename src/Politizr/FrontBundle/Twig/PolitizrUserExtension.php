@@ -266,7 +266,7 @@ class PolitizrUserExtension extends \Twig_Extension
      * @param string $modalDefaultType debate|reaction|user
      * @return string
      */
-    public function userTags(PUser $user, $tagTypeId = null, $modalDefaultType = ObjectTypeConstants::CONTEXT_USER)
+    public function userTags(PUser $user, $tagTypeId = null)
     {
         $this->logger->info('*** userTags');
         // $this->logger->info('$uiser = '.print_r($user, true));
@@ -287,7 +287,6 @@ class PolitizrUserExtension extends \Twig_Extension
             'PolitizrFrontBundle:Tag:_list.html.twig',
             array(
                 'tags' => $tags,
-                'modalDefaultType' => $modalDefaultType,
             )
         );
 
@@ -323,7 +322,7 @@ class PolitizrUserExtension extends \Twig_Extension
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Follow:_subscribeUser.html.twig',
+            'PolitizrFrontBundle:Follow:_subscribeUserLink.html.twig',
             array(
                 'object' => $user,
                 'follower' => $follower

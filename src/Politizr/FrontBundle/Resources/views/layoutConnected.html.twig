@@ -45,11 +45,27 @@
 {% endblock header %}
 
 {% block main %}
+    {% block preContent %}
+    {% endblock %}
+    <div id="main">
+        <div class="center">
+            {% block content %}
+                <div id="content"></div>
+            {% endblock content %}
+            {% block sidebar %}
+                <div id="sidebar">
+                    {% block sidebarContent %}
+                    {% endblock %}
+                    {% block sidebarFooter %}
+                        {% include 'PolitizrFrontBundle:Navigation\\Footer:_footerConnected.html.twig' %}
+                    {% endblock %}
+                </div>
+            {% endblock sidebar %}
+        </div>
+    </div>
+    {% block postContent %}
+    {% endblock %}
 {% endblock main %}
-
-{% block footer %}
-    {% include 'PolitizrFrontBundle:Navigation\\Footer:_footerConnected.html.twig' %}
-{% endblock %}
 
 {% block javascriptFooter %}
     {{ parent() }}
@@ -67,6 +83,7 @@
         '@PolitizrFrontBundle/Resources/public/js/politizr/monitoring/askForUpdate.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/reputation/score.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/reputation/reputation.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/reputation/notation.js'
         filter='uglifyjs2' %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}

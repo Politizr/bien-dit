@@ -1,17 +1,23 @@
-<div class="postSummaryCardAuthor">
+<div class="miniProfile">
     {% if user %}
-        <div class="avatar40">
-            {{ user | photo('user_40') }}
-        </div>
-        <div class="profileSummary">
+        <div class="avatar40">{{ user | photo('user_40') }}</div>
+        <div class="profilenInfo">
             <div class="profileName">
-                {% include 'PolitizrFrontBundle:User:_authorName.html.twig' with { 'user': user } only %}
-                {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with { 'user': user } only %}
+                <div class="profileNameHolder">
+                    <a href="{{ path('UserDetail', { 'slug': user.slug }) }}" class="{% if isFollowed is defined and isFollowed %}followedMember{% endif %}">
+                        {{ user }}
+                    </a>
+                </div>
+                {% if user.isQualified %}
+                    {% set organizations = user.currentOrganizations %}
+                    {% for organization in organizations %}
+                        <div class="org"><a href="#">{{ organization.initials }}</a></div>
+                    {% endfor %}
+                {% endif %}
             </div>
-            <div class="profileSubtitle">{{ user.subtitle | purify }}</div>
+            <div class="profileBio">{{ user.subtitle | purify }}</div>
         </div>
     {% else %}
         <i>utilisateur supprimé</i>
     {% endif %}
 </div>
-

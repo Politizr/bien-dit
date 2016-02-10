@@ -1,12 +1,11 @@
 <div id="footer">
-    <div id="footerLeft">
-        {#
-        <a href="#">À propos</a>
-        <a href="#">Conditions</a>
-        #}
-        <a href="{{ path('Help') }}">Aide</a>
+    <div id="goUp" action="goUp">
+        <i class="icon-arrow-up"></i>Retour en haut de page
     </div>
-    <div id="footerRight">
-        <div class="fbLike" data-href="https://www.facebook.com/Politizr" data-layout="button_count" data-action="like" data-show-faces="false" data-share="true"></div>
+    <div id="footerLinks">
+        <a href="{{ path('Help') }}">Aide</a>
+        <a href="#">Conditions générales</a>
+        <a href="#">Contacts</a>
+        <a href="#">À propos</a>
     </div>
 </div>

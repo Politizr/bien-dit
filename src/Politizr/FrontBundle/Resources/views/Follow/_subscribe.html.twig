@@ -1,5 +1,0 @@
-{% if type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE') %} 
-    {{ object | linkSubscribeDebate }}
-{% elseif type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_USER') %} 
-    {{ object | linkSubscribeUser }}
-{% endif %}

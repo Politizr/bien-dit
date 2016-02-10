@@ -4,7 +4,7 @@ $("body").on("click", "[action='note']", function(e) {
     
     e.preventDefault();
 
-    var localLoader = $(this).closest('.notes').find('.ajaxLoader').first();
+    var localLoader = $(this).closest('.notation').find('.ajaxLoader').first();
     var xhrPath = getXhrPath(
         ROUTE_NOTE,
         'document',
@@ -15,7 +15,7 @@ $("body").on("click", "[action='note']", function(e) {
     $.ajax({
         type: 'POST',
         url: xhrPath,
-        context: $(this).closest('.notes'),
+        context: $(this).closest('.notation'),
         data: { 'uuid': $(this).attr('uuid'), 'type': $(this).attr('type'), 'way': $(this).attr('way') },
         dataType: 'json',
         beforeSend: function ( xhr ) { xhrBeforeSend( xhr, localLoader ); },
@@ -31,6 +31,7 @@ $("body").on("click", "[action='note']", function(e) {
 
                 // update reputation counter
                 scoreCounter();
+                badgesCounter();
             }
         }
     });

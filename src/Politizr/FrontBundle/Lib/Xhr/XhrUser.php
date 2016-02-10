@@ -150,10 +150,9 @@ class XhrUser
 
         // Rendering
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Follow:_subscribe.html.twig',
+            'PolitizrFrontBundle:Follow:_subscribeAction.html.twig',
             array(
-                'object' => $targetUser,
-                'type' => ObjectTypeConstants::TYPE_USER
+                'subject' => $targetUser,
             )
         );
 

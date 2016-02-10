@@ -1,8 +1,3 @@
-// on document ready
-$(function() {
-    timelineList();
-});
-
 // Timeline's next page
 $("body").on("click", "[action='timelinePaginatedNext']", function(e, waypoint) {
     // console.log('timelinePaginatedNext next');
@@ -55,14 +50,16 @@ function timelineList(init, offset) {
         );
     // console.log('xhrPath = '+ xhrPath);
     
+    localLoader = $('.myfeed').find('.ajaxLoader').first();
+    
     $.ajax({
         type: 'POST',
         url: xhrPath,
         data: { 'offset': offset },
         dataType: 'json',
-        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
-        statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
-        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
+        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, localLoader ); },
+        statusCode: { 404: function () { xhr404(localLoader); }, 500: function() { xhr500(localLoader); } },
+        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown, localLoader); },
         success: function(data) {
             if (data['error']) {
                 $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
@@ -81,7 +78,7 @@ function timelineList(init, offset) {
                 // maj DOM onSuccess
                 fullImgLiquid();
             }
-            $('#ajaxGlobalLoader').hide();
+            localLoader.hide();
         }
     });
 }

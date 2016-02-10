@@ -1,0 +1,27 @@
+<div class="card {% if app.user.id == document.PUserId %}myactivity{% endif %}">
+    {% include 'PolitizrFrontBundle:User:_summaryAuthor.html.twig' with { 'user': document.user } only %}
+    <div class="newPost">
+        {% include 'PolitizrFrontBundle:Document:_header.html.twig' with { 'document': document } only %}
+    </div>
+    <div class="actionsBox">
+        <div class="miniActions">
+            {% include 'PolitizrFrontBundle:Reaction:_actionNew.html.twig' with { 'document': document } only %}
+        </div>
+        <div class="notation withLoaderInside">
+            {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+            {% include 'PolitizrFrontBundle:Reputation:_noteAction.html.twig' with { 'subject': document } only %}
+        </div>
+    </div>
+    <div class="coloredBg">
+        {% if document.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION') %}
+            {{ document | itemContextReaction() }}
+        {% endif %}
+        <div class="postStats">
+            {% include 'PolitizrFrontBundle:Document:_statsMini.html.twig' with { 'document': document } only %}
+        </div>
+
+        {% include 'PolitizrFrontBundle:Reaction:_nbReactions.html.twig' with { 'document': document } only %}
+
+        <h5>{% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': document } only %}</h5>
+    </div>    
+</div>

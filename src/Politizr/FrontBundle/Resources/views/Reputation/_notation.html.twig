@@ -1,27 +1,31 @@
 {% if app.user %}
     {% if not pos and not neg %}
-        <div class="notePlus" action="note" uuid="{{ object.uuid }}" type="{{ type }}" way="up">
-            {{ object.notePos }}<i class="iconNotePlus"></i>
+        <div class="like">
+            <div class="likeButton"><i class="icon-like-yes" action="note" uuid="{{ object.uuid }}" type="{{ type }}" way="up"></i></div>
+            {{ object.notePos }}
         </div>
-        <div class="noteMinus" action="note" uuid="{{ object.uuid }}" type="{{ type }}" way="down">
-            <i class="iconNoteMinus"></i>{{ object.noteNeg }}
+        <div class="dislike">
+            {{ object.noteNeg }}
+            <div class="dislikeButton"><i class="icon-like-no" action="note" uuid="{{ object.uuid }}" type="{{ type }}" way="down"></i></div>
         </div>
     {% else %}
-        <div class="notePlus blockedVote">
-            {{ object.notePos }}<i class="iconNotePlus"></i>
-            {% include 'PolitizrFrontBundle:Reputation:_cannotNotate.html.twig' with { 'isOwnDocument': isOwnDocument, 'hasAlreadyNotePos': hasAlreadyNotePos, 'hasAlreadyNoteNeg': hasAlreadyNoteNeg } only %}
+        <div class="like myvote">
+            <div class="likeButton"><i class="icon-like-yes"></i></div>
+            {{ object.notePos }}
         </div>
-        <div class="noteMinus blockedVote">
-            <i class="iconNoteMinus"></i>{{ object.noteNeg }}
-            {% include 'PolitizrFrontBundle:Reputation:_cannotNotate.html.twig' with { 'isOwnDocument': isOwnDocument, 'hasAlreadyNotePos': hasAlreadyNotePos, 'hasAlreadyNoteNeg': hasAlreadyNoteNeg } only %}
+        <div class="dislike myvote">
+            {{ object.noteNeg }}
+            <div class="dislikeButton"><i class="icon-like-no"></i></div>
         </div>
     {% endif %}
 {% else %}
-    <div class="notePlus">
-        {{ object.notePos }}<i class="iconNotePlus"></i>
+    <div class="like">
+        <div class="likeButton"><i class="icon-like-yes"></i></div>
+        {{ object.notePos }}
     </div>
-    <div class="noteMinus">
-        <i class="iconNoteMinus"></i>{{ object.noteNeg }}
+    <div class="dislike">
+        {{ object.noteNeg }}
+        <div class="dislikeButton"><i class="icon-like-no"></i></div>
     </div>
     <a href="{{ path('Inscription') }}">M'inscrire pour noter</a>
 {% endif %}

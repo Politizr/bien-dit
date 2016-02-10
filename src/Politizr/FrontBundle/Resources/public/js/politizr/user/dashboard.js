@@ -113,49 +113,6 @@ function topListing(geoTagUuid) {
 }
 
 /**
- * Loading of "tag" listing.
- */
-function tagListing() {
-    // console.log('*** tagListing');
-    
-    // Récupération du form des filtres
-    var datas = $('#tagFilter').serializeArray();
-    // console.log(datas);
-    // @todo hack to fix / why the form is not well serialized at the 1st call
-    if ($.isEmptyObject(datas)) {
-        datas.push({name: 'tagFilterDate[]', value: 'lastMonth'});
-    }
-    // console.log(datas);
-
-    var xhrPath = getXhrPath(
-        ROUTE_DASHBOARD_TAG,
-        'dashboard',
-        'topTags',
-        RETURN_HTML
-        );
-
-    var localLoader = $('.dbPopularTag').find('.ajaxLoader').first();
-    $.ajax({
-        type: 'POST',
-        url: xhrPath,
-        data: datas,
-        dataType: 'json',
-        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, localLoader ); },
-        statusCode: { 404: function () { xhr404(localLoader); }, 500: function() { xhr500(localLoader); } },
-        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown, localLoader); },
-        success: function(data) {
-            if (data['error']) {
-                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
-                $('#infoBoxHolder .boxError').show();
-            } else {
-                $('.dbPopularTag').html(data['html']);
-            }
-            localLoader.hide();
-        }
-    });    
-}
-
-/**
  * Loading of "debate" listing.
  */
 function debateListing() {

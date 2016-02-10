@@ -1,10 +1,10 @@
-{# Gestion Twig des notations #}
-{% if type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE') %} 
-    {{ object | linkNoteDebate }}
-{% elseif type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION') %} 
-    {{ object | linkNoteReaction }}
-{% elseif type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE_COMMENT') %} 
-    {{ object | linkNoteComment }}
-{% elseif type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION_COMMENT') %} 
-    {{ object | linkNoteComment }}
+{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+{% if subject.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE') %} 
+    {{ subject | linkNoteDebate }}
+{% elseif subject.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION') %} 
+    {{ subject | linkNoteReaction }}
+{% elseif subject.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE_COMMENT') %} 
+    {{ subject | linkNoteComment }}
+{% elseif subject.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION_COMMENT') %} 
+    {{ subject | linkNoteComment }}
 {% endif %}

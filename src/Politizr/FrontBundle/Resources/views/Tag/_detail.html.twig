@@ -1,8 +1,3 @@
-{% if (tag.ptTagTypeId == constant('\\Politizr\\Constant\\TagConstants::TAG_TYPE_GEO')) %}
-    {% set twbLabel = "geo" %}
-{% elseif (tag.ptTagTypeId == constant('\\Politizr\\Constant\\TagConstants::TAG_TYPE_THEME'))%}
-    {% set twbLabel = "theme" %}
-{% else %}
-    {% set twbLabel = "default" %}
-{% endif %}
-<span class="tag {{ twbLabel }}{% if tag.hasVirtualColumn('hidden') and tag.virtualColumn('hidden') %} tagInvisible{% endif %}" action="modalTagged" defaultType="{{ modalDefaultType }}" model="PTag" uuid="{{ tag.uuid }}">{{ tag.title }}</span>
+<div class="tag" uuid="{{ tag.uuid }}">    
+    <a href="#">{{ tag.title }}</a>
+</div>

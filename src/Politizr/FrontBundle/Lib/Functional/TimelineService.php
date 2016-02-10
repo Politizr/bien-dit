@@ -293,31 +293,12 @@ class TimelineService
      */
     public function generateRenderingItemDebate($debateId, $debateContext)
     {
-        $user = $this->securityTokenStorage->getToken()->getUser();
         $debate = PDDebateQuery::create()->findPk($debateId);
 
-        $authorIsMe = false;
-        $authorIsFollowed = false;
-        $debateIsFollowed = false;
-        if ($user) {
-            $authorIsMe = ($debate->getPUserId() === $user->getId());
-            if ($authorIsMe) {
-                $author = $debate->getUser();
-                if ($author) {
-                    $authorIsFollowed = $author->isFollowedBy($author->getId());
-                }
-                $debateIsFollowed = $debate->isFollowedBy($user->getId());
-            }
-        }
-
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Timeline:_itemDebate.html.twig',
+            'PolitizrFrontBundle:Document:_card.html.twig',
             array(
-                'debate' => $debate,
-                'debateContext' => $debateContext,
-                'authorIsMe' => $authorIsMe,
-                'authorIsFollowed' => $authorIsFollowed,
-                'debateIsFollowed' => $debateIsFollowed,
+                'document' => $debate
             )
         );
 
@@ -333,39 +314,12 @@ class TimelineService
      */
     public function generateRenderingItemReaction($reactionId, $debateContext)
     {
-        $user = $this->securityTokenStorage->getToken()->getUser();
         $reaction = PDReactionQuery::create()->findPk($reactionId);
 
-        $parentReaction = null;
-        if ($reaction->getLevel() > 1) {
-            $parentReaction = $reaction->getParent();
-        }
-        $parentDebate = $reaction->getDebate();
-
-        $authorIsMe = false;
-        $authorIsFollowed = false;
-        $debateIsFollowed = false;
-        if ($user) {
-            $debateIsFollowed = $parentDebate->isFollowedBy($user->getId());
-            $authorIsMe = ($reaction->getPUserId() === $user->getId());
-            if (!$authorIsMe) {
-                $author = $reaction->getUser();
-                if ($author) {
-                    $authorIsFollowed = $author->isFollowedBy($user->getId());
-                }
-            }
-        }
-
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Timeline:_itemReaction.html.twig',
+            'PolitizrFrontBundle:Document:_card.html.twig',
             array(
-                'reaction' => $reaction,
-                'debateContext' => $debateContext,
-                'parentDebate' => $parentDebate,
-                'parentReaction' => $parentReaction,
-                'authorIsMe' => $authorIsMe,
-                'authorIsFollowed' => $authorIsFollowed,
-                'debateIsFollowed' => $debateIsFollowed,
+                'document' => $reaction
             )
         );
 
@@ -400,7 +354,7 @@ class TimelineService
         }
 
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Timeline:_itemComment.html.twig',
+            'PolitizrFrontBundle:Comment:_card.html.twig',
             array(
                 'type' => ObjectTypeConstants::TYPE_DEBATE_COMMENT,
                 'comment' => $comment,
@@ -445,7 +399,7 @@ class TimelineService
         }
 
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Timeline:_itemComment.html.twig',
+            'PolitizrFrontBundle:Comment:_card.html.twig',
             array(
                 'type' => ObjectTypeConstants::TYPE_REACTION_COMMENT,
                 'comment' => $comment,

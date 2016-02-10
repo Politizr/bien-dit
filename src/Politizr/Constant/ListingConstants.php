@@ -66,13 +66,17 @@ class ListingConstants
     //              Dashboard Constants                             //
     // ************************************************************ //
     const DASHBOARD_MAP_LIMIT = 3;
-    const DASHBOARD_TOP_TAGS_LIMIT = 20;
-    const DASHBOARD_TOP_DEBATES_LIMIT = 6;
     const DASHBOARD_TOP_USERS_LIMIT = 6;
     const DASHBOARD_GEO_DEBATES_LIMIT = 2;
     const DASHBOARD_GEO_USERS_LIMIT = 2;
-    const DASHBOARD_SUGGESTION_DEBATES_LIMIT = 3;
     const DASHBOARD_SUGGESTION_USERS_LIMIT = 5; // @warning /!\ hack > +1 to hack suggestion user query which return 1 first null element
+
+    // ************************************************************ //
+    //                  Top Constants                               //
+    // ************************************************************ //
+    const LISTING_TOP_TAGS_LIMIT = 10;
+    const LISTING_TOP_DOCUMENTS_LIMIT = 5;
+    const LISTING_SUGGESTION_DOCUMENTS_LIMIT = 10;
 
     // ************************************************************ //
     //            Filters & Order keyword constants                 //

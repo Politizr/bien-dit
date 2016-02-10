@@ -158,6 +158,13 @@ function fullImgLiquid() {
         horizontalAlign: "center",
         verticalAlign: "center"
     });
+
+    // full size image in suggestions + minipost + new post
+    $(".suggItemImg, .miniPostImg, .postImg").imgLiquid({
+        fill: true,
+        horizontalAlign: "center",
+        verticalAlign: "center"
+    });     
 }
 
 /**

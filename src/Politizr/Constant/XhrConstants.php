@@ -30,10 +30,13 @@ class XhrConstants
     const ROUTE_COMMENTS = 'commentaires';
     const ROUTE_COMMENT_CREATE = 'profil/commentaire/nouveau';
 
-    // DEBATES + REACTIONS
+    // DOCUMENTS
     const ROUTE_DOCUMENT_PHOTO_UPLOAD = 'profil/photo/upload';
     const ROUTE_DOCUMENT_DRAFTS = 'profil/contributions/mes-brouillons';
     const ROUTE_DEBATE_MY_PUBLICATIONS = 'profil/contributions/mes-publications';
+
+    const ROUTE_DOCUMENT_LISTING_TOP = 'documents/top';
+    const ROUTE_DOCUMENT_LISTING_SUGGESTION = '/profil/documents/suggestions';
 
     // DEBATES
     const ROUTE_DEBATE_UPDATE = 'profil/debat/update';
@@ -88,7 +91,6 @@ class XhrConstants
 
     // DASHBOARD
     const ROUTE_DASHBOARD_MAP = 'profil/tableau/carte';
-    const ROUTE_DASHBOARD_TAG = 'profil/tableau/tags';
     const ROUTE_DASHBOARD_TOP_DEBATES = 'profil/tableau/debats';
     const ROUTE_DASHBOARD_TOP_USERS = 'profil/tableau/debats';
     const ROUTE_DASHBOARD_GEO = 'profil/tableau/geo';
@@ -111,6 +113,9 @@ class XhrConstants
     const ROUTE_TAG_USER_DELETE = 'profil/utilisateur/tag/delete';
     const ROUTE_TAG_USER_HIDE = 'profil/utilisateur/tag/hide';
     const ROUTE_TAG_USER_ASSOCIATE = 'profil/utilisateur/tag/associate';
+
+    const ROUTE_TAG_LISTING_TOP = 'tags/top';
+    const ROUTE_TAG_LISTING_USER = 'profil/tags/user';
 
     // USER
     const ROUTE_USER_MANDATE_CREATE = 'profil/utilisateur/mandat/create';

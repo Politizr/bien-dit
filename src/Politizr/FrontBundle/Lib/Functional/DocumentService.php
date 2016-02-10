@@ -69,13 +69,12 @@ class DocumentService
      * Get user's debates' suggestions paginated listing
      *
      * @param int $userId
-     * @param int $offset
      * @param int $count
      * @return PropelCollection PDocument
      */
-    public function getUserSuggestedDebatesPaginatedListing($userId, $offset = 0, $count = ListingConstants::MODAL_CLASSIC_PAGINATION)
+    public function getUserDocumentsSuggestion($userId, $count = ListingConstants::LISTING_SUGGESTION_DOCUMENTS_LIMIT)
     {
-        $documents = $this->documentManager->generateUserSuggestedDebatesPaginatedListing($userId, $offset, $count);
+        $documents = $this->documentManager->generateUserDocumentsSuggestion($userId, $count);
 
         return $documents;
     }

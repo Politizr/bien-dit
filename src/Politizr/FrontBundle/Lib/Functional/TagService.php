@@ -459,7 +459,7 @@ class TagService
         foreach ($tagIds as $tagId) {
             $tags[] = PTagQuery::create()->findPk($tagId);
         
-            if ($counter == ListingConstants::DASHBOARD_TOP_TAGS_LIMIT) {
+            if ($counter == ListingConstants::LISTING_TOP_TAGS_LIMIT) {
                 break;
             }
             $counter++;

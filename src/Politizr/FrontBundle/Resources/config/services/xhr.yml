@@ -36,7 +36,6 @@ services:
             - @templating
             - @politizr.functional.document
             - @politizr.functional.user
-            - @politizr.functional.tag
             - @logger
 
     politizr.xhr.notification:
@@ -67,6 +66,7 @@ services:
             - @security.token_storage
             - @router
             - @templating
+            - @politizr.functional.tag
             - @politizr.manager.tag
             - @logger
 

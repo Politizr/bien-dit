@@ -1,0 +1,8 @@
+{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+<div id="suggSlide" class="cycle-slideshow" data-cycle-fx=scrollHorz data-cycle-timeout=0 data-cycle-slides="> div.suggItem" data-cycle-prev="#suggPrev" data-cycle-next="#suggNext">
+    {% for document in documents %}
+        {% include 'PolitizrFrontBundle:Document:_sliderItem.html.twig' with { 'document': document } %}
+    {% endfor %}
+</div>
+<div id="suggPrev"><i class="icon-goleft"></i></div>
+<div id="suggNext"><i class="icon-goright"></i></div>

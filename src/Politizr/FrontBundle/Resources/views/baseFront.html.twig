@@ -20,7 +20,9 @@
             <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery-ui.autocomplete.min.js') }}"></script>
 
             <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.waypoints.min.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/waypoints.sticky.min.js') }}"></script>            
+            <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/waypoints.sticky.min.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.sticky-kit.min.js') }}"></script>
+
             <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/restive.min.js') }}"></script>    
             <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/imgLiquid-min.js') }}"></script>
 
@@ -69,7 +71,7 @@
                 {# loader ajax global #} 
                 <div id="ajaxGlobalLoader" class="modal">
                     <div class="ajaxLoader">
-                        <i class="iconPltzrLogoAlt"></i>
+                        <i class="icon-pltzr-logo"></i>
                         <div class="iconLoaderBg"></div>
                         <svg width="44" height="44" viewbox="0 0 40 40" ><polygon points="0 0 0 40 40 40 40 0" class="pltzrLoaderStrokes" /></svg>
                         <div class="ajaxLoaderBg"></div><div class="ajaxLoaderBlockClick"></div>
@@ -79,13 +81,13 @@
             {% endblock genericBoxes %}
 
             {% block header %}
-            {% endblock header %}
+            {% endblock %}
 
             {% block main %}
-            {% endblock main %}
+            {% endblock %}
 
             {% block footer %}
-            {% endblock footer %}
+            {% endblock %}
 
             {% block javascriptFooter %}
                 <script type="text/javascript">
@@ -112,5 +114,4 @@
             {% endblock %}
         </body>
     {% endblock body %}
-
 </html>

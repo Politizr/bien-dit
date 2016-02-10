@@ -150,16 +150,15 @@ class XhrDocument
 
         // Rendering
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Follow:_subscribe.html.twig',
+            'PolitizrFrontBundle:Follow:_subscribeAction.html.twig',
             array(
-                'object' => $debate,
-                'type' => ObjectTypeConstants::TYPE_DEBATE
+                'subject' => $debate,
             )
         );
 
         return array(
             'html' => $html,
-            );
+        );
     }
 
     /**
@@ -183,67 +182,67 @@ class XhrDocument
         // Function process
         switch($type) {
             case ObjectTypeConstants::TYPE_DEBATE:
-                $object = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
+                $subject = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
                 break;
             case ObjectTypeConstants::TYPE_REACTION:
-                $object = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
+                $subject = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
                 break;
             case ObjectTypeConstants::TYPE_DEBATE_COMMENT:
-                $object = PDDCommentQuery::create()->filterByUuid($uuid)->findOne();
+                $subject = PDDCommentQuery::create()->filterByUuid($uuid)->findOne();
                 break;
             case ObjectTypeConstants::TYPE_REACTION_COMMENT:
-                $object = PDRCommentQuery::create()->filterByUuid($uuid)->findOne();
+                $subject = PDRCommentQuery::create()->filterByUuid($uuid)->findOne();
                 break;
             default:
                 throw new InconsistentDataException(sprintf('Note on type %s not allowed', $type));
         }
 
-        // related to issue #178 > control user <> object
-        $canUserNoteDocument = $this->documentService->canUserNoteDocument($user, $object, $way);
+        // related to issue #178 > control user <> subject
+        $canUserNoteDocument = $this->documentService->canUserNoteDocument($user, $subject, $way);
         if (!$canUserNoteDocument) {
             throw new InconsistentDataException('You can\'t note this publication.');
         }
 
         // update note
         if ('up' == $way) {
-            $object->setNotePos($object->getNotePos() + 1);
-            $object->save();
+            $subject->setNotePos($subject->getNotePos() + 1);
+            $subject->save();
 
             // Events
-            $event = new GenericEvent($object, array('user_id' => $user->getId(),));
+            $event = new GenericEvent($subject, array('user_id' => $user->getId(),));
             $dispatcher = $this->eventDispatcher->dispatch('r_note_pos', $event);
-            $event = new GenericEvent($object, array('author_user_id' => $user->getId(),));
+            $event = new GenericEvent($subject, array('author_user_id' => $user->getId(),));
             $dispatcher = $this->eventDispatcher->dispatch('n_note_pos', $event);
             switch($type) {
                 case ObjectTypeConstants::TYPE_DEBATE:
                 case ObjectTypeConstants::TYPE_REACTION:
-                    $event = new GenericEvent($object, array('author_user_id' => $user->getId(), 'target_user_id' => $object->getPUserId()));
+                    $event = new GenericEvent($subject, array('author_user_id' => $user->getId(), 'target_user_id' => $subject->getPUserId()));
                     $dispatcher = $this->eventDispatcher->dispatch('b_document_note_pos', $event);
                     break;
                 case ObjectTypeConstants::TYPE_DEBATE_COMMENT:
                 case ObjectTypeConstants::TYPE_REACTION_COMMENT:
-                    $event = new GenericEvent($object, array('author_user_id' => $user->getId(), 'target_user_id' => $object->getPUserId()));
+                    $event = new GenericEvent($subject, array('author_user_id' => $user->getId(), 'target_user_id' => $subject->getPUserId()));
                     $dispatcher = $this->eventDispatcher->dispatch('b_comment_note_pos', $event);
                     break;
             }
         } elseif ('down' == $way) {
-            $object->setNoteNeg($object->getNoteNeg() + 1);
-            $object->save();
+            $subject->setNoteNeg($subject->getNoteNeg() + 1);
+            $subject->save();
 
             // Events
-            $event = new GenericEvent($object, array('user_id' => $user->getId(),));
+            $event = new GenericEvent($subject, array('user_id' => $user->getId(),));
             $dispatcher = $this->eventDispatcher->dispatch('r_note_neg', $event);
-            $event = new GenericEvent($object, array('author_user_id' => $user->getId(),));
+            $event = new GenericEvent($subject, array('author_user_id' => $user->getId(),));
             $dispatcher = $this->eventDispatcher->dispatch('n_note_neg', $event);
             switch($type) {
                 case ObjectTypeConstants::TYPE_DEBATE:
                 case ObjectTypeConstants::TYPE_REACTION:
-                    $event = new GenericEvent($object, array('author_user_id' => $user->getId(), 'target_user_id' => $object->getPUserId()));
+                    $event = new GenericEvent($subject, array('author_user_id' => $user->getId(), 'target_user_id' => $subject->getPUserId()));
                     $dispatcher = $this->eventDispatcher->dispatch('b_document_note_neg', $event);
                     break;
                 case ObjectTypeConstants::TYPE_DEBATE_COMMENT:
                 case ObjectTypeConstants::TYPE_REACTION_COMMENT:
-                    $event = new GenericEvent($object, array('author_user_id' => $user->getId(), 'target_user_id' => $object->getPUserId()));
+                    $event = new GenericEvent($subject, array('author_user_id' => $user->getId(), 'target_user_id' => $subject->getPUserId()));
                     $dispatcher = $this->eventDispatcher->dispatch('b_comment_note_neg', $event);
                     break;
             }
@@ -255,8 +254,7 @@ class XhrDocument
         $html = $this->templating->render(
             'PolitizrFrontBundle:Reputation:_noteAction.html.twig',
             array(
-                'object' => $object,
-                'type' => $type,
+                'subject' => $subject
             )
         );
 
@@ -1124,6 +1122,66 @@ class XhrDocument
             'data' => $data,
             'datePrev' => $prevMonth->format('Y-m-d'),
             'dateNext' => $nextMonth->format('Y-m-d'),
+        );
+    }
+
+    /* ######################################################################################################## */
+    /*                                          LISTING                                                         */
+    /* ######################################################################################################## */
+
+    /**
+     * Most popular documents
+     */
+    public function topDocuments(Request $request)
+    {
+        $this->logger->info('*** topDocuments');
+        
+        // Request arguments
+        $filters = $request->get('documentFilterDate');
+        $this->logger->info('$filters = ' . print_r($filters, true));
+
+        // @todo debates > documents
+        $debates = PDDebateQuery::create()
+                    ->distinct()
+                    ->online()
+                    ->filterByKeywords($filters)
+                    ->orderWithKeyword(ListingConstants::ORDER_BY_KEYWORD_BEST_NOTE)
+                    ->limit(ListingConstants::LISTING_TOP_DOCUMENTS_LIMIT)
+                    ->find();
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Document:_sidebarList.html.twig',
+            array(
+                'documents' => $debates
+            )
+        );
+
+        return array(
+            'html' => $html,
+        );
+    }
+
+    /**
+     * Suggestion documents
+     */
+    public function suggestionDocuments(Request $request)
+    {
+        $this->logger->info('*** suggestionDocuments');
+        
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        
+        $debates = $this->documentService->getUserDocumentsSuggestion($user->getId(), ListingConstants::LISTING_SUGGESTION_DOCUMENTS_LIMIT);
+        
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Document:_sliderSuggestions.html.twig',
+            array(
+                'documents' => $debates
+            )
+        );
+
+        return array(
+            'html' => $html,
         );
     }
 }

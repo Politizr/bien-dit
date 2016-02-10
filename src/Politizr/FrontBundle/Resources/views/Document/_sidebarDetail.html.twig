@@ -1,0 +1,23 @@
+{% if document.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE') %}
+    {% set detailPath = path('DebateDetail', { 'slug': document.slug }) %}
+    {% set spanClass = 'subject' %}
+{% elseif document.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION') %}
+    {% set detailPath = path('ReactionDetail', { 'slug': document.slug }) %}
+    {% set spanClass = '' %}
+{% endif %}
+
+<div class="sidebarTopPostsItem">
+    <div class="sidebarTopPostsCounter">{{ loop.index }}</div>
+    <a href="{{ detailPath }}">
+        <span class="postTitle {{ spanClass }}">{{ document.title }}</span>
+    </a>
+    <div class="profileName">
+        <div class="profileNameHolder">
+            {% if document.user %}
+                <a href="{{ path('UserDetail', { 'slug': document.user.slug }) }}">{{ document.user }}</a>
+            {% else %}
+                <i>utilisateur supprimé</i>
+            {% endif %}
+        </div>
+    </div>
+</div>

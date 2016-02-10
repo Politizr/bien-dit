@@ -17,10 +17,13 @@ var ROUTE_FOLLOW_USER = 'profil/suivre/utilisateur';
 var ROUTE_COMMENTS = 'commentaires';
 var ROUTE_COMMENT_CREATE = 'profil/commentaire/nouveau';
 
-// DEBATES + REACTIONS
+// DOCUMENTS
 var ROUTE_DOCUMENT_PHOTO_UPLOAD = 'profil/photo/upload';
 var ROUTE_DOCUMENT_DRAFTS = 'profil/contributions/mes-brouillons';
 var ROUTE_DEBATE_MY_PUBLICATIONS = 'profil/contributions/mes-publications';
+
+var ROUTE_DOCUMENT_LISTING_TOP = 'documents/top';
+var ROUTE_DOCUMENT_LISTING_SUGGESTION = '/profil/documents/suggestions';
 
 // DEBATES
 var ROUTE_DEBATE_UPDATE = 'profil/debat/update';
@@ -75,7 +78,6 @@ var ROUTE_MODAL_DOCUMENT_STATS_COMMENTS_EVOLUTION = 'profil/document/stats/comme
 
 // DASHBOARD
 var ROUTE_DASHBOARD_MAP = 'profil/tableau/carte';
-var ROUTE_DASHBOARD_TAG = 'profil/tableau/tags';
 var ROUTE_DASHBOARD_TOP_DEBATES = 'profil/tableau/debats';
 var ROUTE_DASHBOARD_TOP_USERS = 'profil/tableau/debats';
 var ROUTE_DASHBOARD_GEO = 'profil/tableau/geo';
@@ -99,6 +101,9 @@ var ROUTE_TAG_USER_CREATE = 'profil/utilisateur/tag/create';
 var ROUTE_TAG_USER_DELETE = 'profil/utilisateur/tag/delete';
 var ROUTE_TAG_USER_HIDE = 'profil/utilisateur/tag/hide';
 var ROUTE_TAG_USER_ASSOCIATE = 'profil/utilisateur/tag/associate';
+
+var ROUTE_TAG_LISTING_TOP = 'tags/top';
+var ROUTE_TAG_LISTING_USER = 'profil/tags/user';
 
 // USER
 var ROUTE_USER_MANDATE_CREATE = 'profil/utilisateur/mandat/create';

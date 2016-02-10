@@ -4,22 +4,46 @@
     {{ parent() }} - Mon fil d'actualités
 {% endblock title %}
 
-{% block main %}
-    <div id="timeline">
-        <div id="timelineHeader" class="stickyTimelineHeader" style="display: none">
-            <div class="timelineMore">
-                Abonnez-vous à des <span action="modalSuggestions">débats</span> et des <span action="modalSuggestions">profils</span> et <span action="reloadPage">rechargez</span> votre politizr!
-            </div>
+{% block javascriptHeader %}
+    {{ parent() }}
+
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.cycle2.min.js') }}"></script>
+{% endblock %}
+
+{% block preContent %}
+    <div id="suggestions">
+        <div class="center">
+            <div id="suggTitle">Sélection de nouvelles publications — d'après <a href="{{ path('Profile'~profileSuffix()) }}">les thématiques que vous suivez</a>.</div>
+            <div class="documentList withLoaderInside"></div>
         </div>
-        <div id="listContent"></div>
+        <div id="suggBg"></div>
     </div>
-{% endblock main %}
+{% endblock preContent %}
+
+{% block content %}
+    <div id="content">
+        <div class="myfeed withLoaderInside">
+            {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+            <h4><span>Mon fil d’actualité :</span></h4>
+            <div id="listContent"></div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block sidebarContent %}
+    {% include 'PolitizrFrontBundle:Tag:_sidebarFollowedTags.html.twig' %}
+    {% include 'PolitizrFrontBundle:Tag:_sidebarTopTags.html.twig' %}
+    {% include 'PolitizrFrontBundle:Document:_sidebarTopDocuments.html.twig' %}
+{% endblock sidebarContent %}
 
 {% block javascriptFooter %}
     {{ parent() }}
 
     {% javascripts
         '@PolitizrFrontBundle/Resources/public/js/politizr/timeline/timeline.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/tag/listing.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/document/listing.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/pages/timeline.js'
         filter='uglifyjs2' %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}

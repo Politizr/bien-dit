@@ -21,7 +21,6 @@ class XhrDashboard
     private $templating;
     private $documentService;
     private $userService;
-    private $tagService;
     private $logger;
 
     /**
@@ -30,7 +29,6 @@ class XhrDashboard
      * @param @templating
      * @param @politizr.functional.document
      * @param @politizr.functional.user
-     * @param @politizr.functional.tag
      * @param @logger
      */
     public function __construct(
@@ -38,7 +36,6 @@ class XhrDashboard
         $templating,
         $documentService,
         $userService,
-        $tagService,
         $logger
     ) {
         $this->securityTokenStorage = $securityTokenStorage;
@@ -47,7 +44,6 @@ class XhrDashboard
         
         $this->documentService = $documentService;
         $this->userService = $userService;
-        $this->tagService = $tagService;
 
         $this->logger = $logger;
     }
@@ -159,65 +155,6 @@ class XhrDashboard
     /* ######################################################################################################## */
     /*                                   DASHBOARD TAG LOADING                                                  */
     /* ######################################################################################################## */
-
-    /**
-     * Most popular tags
-     */
-    public function topTags(Request $request)
-    {
-        $this->logger->info('*** topTags');
-        
-        // Request arguments
-        $filters = $request->get('tagFilterDate');
-        $this->logger->info('$filters = ' . print_r($filters, true));
-
-        // top tags
-        $tags = $this->tagService->getMostPopularTags($filters);
-
-        $html = $this->templating->render(
-            'PolitizrFrontBundle:Dashboard:_tags.html.twig',
-            array(
-                'tags' => $tags,
-                'filters' => $filters,
-            )
-        );
-
-        return array(
-            'html' => $html,
-        );
-    }
-
-    /**
-     * Most popular debates
-     */
-    public function topDebates(Request $request)
-    {
-        $this->logger->info('*** topDebates');
-        
-        // Request arguments
-        $filters = $request->get('debateFilterDate');
-        $this->logger->info('$filters = ' . print_r($filters, true));
-
-        $debates = PDDebateQuery::create()
-                    ->distinct()
-                    ->online()
-                    ->filterByKeywords($filters)
-                    ->orderWithKeyword(ListingConstants::ORDER_BY_KEYWORD_BEST_NOTE)
-                    ->limit(ListingConstants::DASHBOARD_TOP_DEBATES_LIMIT)
-                    ->find();
-
-        $html = $this->templating->render(
-            'PolitizrFrontBundle:Dashboard:_debates.html.twig',
-            array(
-                'debates' => $debates,
-                'filters' => $filters,
-            )
-        );
-
-        return array(
-            'html' => $html,
-        );
-    }
 
     /**
      * Most popular users
