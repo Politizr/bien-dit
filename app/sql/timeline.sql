@@ -1,5 +1,5 @@
 #  Débats publiés
-( SELECT p_d_debate.id as id, p_d_debate.title as title, p_d_debate.published_at as published_at, 'Politizr\\Model\\PDDebate' as type
+( SELECT p_d_debate.id as id, 'null' as target_id, 'null' as target_user_id, 'null' as target_object_name, p_d_debate.title as title, p_d_debate.published_at as published_at, 'Politizr\\Model\\PDDebate' as type
 FROM p_d_debate
 WHERE
     p_d_debate.published = 1
@@ -9,7 +9,7 @@ WHERE
 UNION DISTINCT
 
 #  Réactions publiés
-( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.published_at as published_at, 'Politizr\\Model\\PDReaction' as type
+( SELECT p_d_reaction.id as id, 'null' as target_id, 'null' as target_user_id, 'null' as target_object_name, p_d_reaction.title as title, p_d_reaction.published_at as published_at, 'Politizr\\Model\\PDReaction' as type
 FROM p_d_reaction
 WHERE
     p_d_reaction.published = 1
@@ -20,7 +20,7 @@ WHERE
 UNION DISTINCT
 
 #  Débats suivis
-( SELECT p_d_debate.id as id, p_d_debate.title as title, p_d_debate.published_at as published_at, 'Politizr\\Model\\PDDebate' as type
+( SELECT p_d_debate.id as id, 'null' as target_id, 'null' as target_user_id, 'null' as target_object_name, p_d_debate.title as title, p_d_debate.published_at as published_at, 'Politizr\\Model\\PDDebate' as type
 FROM p_d_debate
 WHERE
     p_d_debate.published = 1
@@ -30,7 +30,7 @@ WHERE
 UNION DISTINCT
 
 #  Réactions aux débats suivis
-( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.published_at as published_at, 'Politizr\\Model\\PDReaction' as type
+( SELECT p_d_reaction.id as id, 'null' as target_id, 'null' as target_user_id, 'null' as target_object_name, p_d_reaction.title as title, p_d_reaction.published_at as published_at, 'Politizr\\Model\\PDReaction' as type
 FROM p_d_reaction
 WHERE
 	p_d_reaction.published = 1
@@ -41,7 +41,7 @@ WHERE
 UNION DISTINCT
 
 # Débats des users suivis
-( SELECT p_d_debate.id as id, p_d_debate.title as title, p_d_debate.published_at as published_at, 'Politizr\\Model\\PDDebate' as type
+( SELECT p_d_debate.id as id, 'null' as target_id, 'null' as target_user_id, 'null' as target_object_name, p_d_debate.title as title, p_d_debate.published_at as published_at, 'Politizr\\Model\\PDDebate' as type
 FROM p_d_debate
 WHERE
 	p_d_debate.published = 1
@@ -51,7 +51,7 @@ WHERE
 UNION DISTINCT
 
 # Réactions des users suivis
-( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.published_at as published_at, 'Politizr\\Model\\PDReaction' as type
+( SELECT p_d_reaction.id as id, 'null' as target_id, 'null' as target_user_id, 'null' as target_object_name, p_d_reaction.title as title, p_d_reaction.published_at as published_at, 'Politizr\\Model\\PDReaction' as type
 FROM p_d_reaction
 WHERE
     p_d_reaction.published = 1
@@ -61,7 +61,7 @@ WHERE
 UNION DISTINCT
 
 # Réactions sur mes débats
-( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.published_at as published_at, 'Politizr\\Model\\PDReaction' as type
+( SELECT p_d_reaction.id as id, 'null' as target_id, 'null' as target_user_id, 'null' as target_object_name, p_d_reaction.title as title, p_d_reaction.published_at as published_at, 'Politizr\\Model\\PDReaction' as type
 FROM p_d_reaction
     LEFT JOIN p_d_debate
         ON p_d_reaction.p_d_debate_id = p_d_debate.id
@@ -74,7 +74,7 @@ WHERE
 UNION DISTINCT
 
 # Réactions sur mes réactions
-( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.published_at as published_at, 'Politizr\\Model\\PDReaction' as type
+( SELECT p_d_reaction.id as id, 'null' as target_id, 'null' as target_user_id, 'null' as target_object_name, p_d_reaction.title as title, p_d_reaction.published_at as published_at, 'Politizr\\Model\\PDReaction' as type
 FROM p_d_reaction as p_d_reaction
     LEFT JOIN p_d_reaction as my_reaction
         ON p_d_reaction.p_d_debate_id = my_reaction.p_d_debate_id
@@ -90,7 +90,7 @@ WHERE
 UNION DISTINCT
 
 # Commentaires débats publiés
-( SELECT p_d_d_comment.id as id, "commentaire" as title, p_d_d_comment.published_at as published_at, 'Politizr\\Model\\PDDComment' as type
+( SELECT p_d_d_comment.id as id, 'null' as target_id, 'null' as target_user_id, 'null' as target_object_name, "commentaire" as title, p_d_d_comment.published_at as published_at, 'Politizr\\Model\\PDDComment' as type
 FROM p_d_d_comment
 WHERE
     p_d_d_comment.online = 1
@@ -99,7 +99,7 @@ WHERE
 UNION DISTINCT
 
 # Commentaires réactions publiés
-( SELECT p_d_r_comment.id as id, "commentaire" as title, p_d_r_comment.published_at as published_at, 'Politizr\\Model\\PDRComment' as type
+( SELECT p_d_r_comment.id as id, 'null' as target_id, 'null' as target_user_id, 'null' as target_object_name, "commentaire" as title, p_d_r_comment.published_at as published_at, 'Politizr\\Model\\PDRComment' as type
 FROM p_d_r_comment
 WHERE
     p_d_r_comment.online = 1
@@ -108,7 +108,7 @@ WHERE
 UNION DISTINCT
 
 # Commentaires débats des users suivis
-( SELECT p_d_d_comment.id as id, "commentaire" as title, p_d_d_comment.published_at as published_at, 'Politizr\\Model\\PDDComment' as type
+( SELECT p_d_d_comment.id as id, 'null' as target_id, 'null' as target_user_id, 'null' as target_object_name, "commentaire" as title, p_d_d_comment.published_at as published_at, 'Politizr\\Model\\PDDComment' as type
 FROM p_d_d_comment
 WHERE
     p_d_d_comment.online = 1
@@ -117,7 +117,7 @@ WHERE
 UNION DISTINCT
 
 # Commentaires réactions des users suivis
-( SELECT p_d_r_comment.id as id, "commentaire" as title, p_d_r_comment.published_at as published_at, 'Politizr\\Model\\PDRComment' as type
+( SELECT p_d_r_comment.id as id, 'null' as target_id, 'null' as target_user_id, 'null' as target_object_name, "commentaire" as title, p_d_r_comment.published_at as published_at, 'Politizr\\Model\\PDRComment' as type
 FROM p_d_r_comment
 WHERE
     p_d_r_comment.online = 1
@@ -126,7 +126,7 @@ WHERE
 UNION DISTINCT
 
 # Commentaires sur mes débats
-( SELECT p_d_d_comment.id as id, "commentaire" as title, p_d_d_comment.published_at as published_at, 'Politizr\\Model\\PDDComment' as type
+( SELECT p_d_d_comment.id as id, 'null' as target_id, 'null' as target_user_id, 'null' as target_object_name, "commentaire" as title, p_d_d_comment.published_at as published_at, 'Politizr\\Model\\PDDComment' as type
 FROM p_d_d_comment
 WHERE
 	p_d_d_comment.online = 1
@@ -135,10 +135,49 @@ WHERE
 UNION DISTINCT
 
 # Commentaires sur mes réactions
-( SELECT p_d_r_comment.id as id, "commentaire" as title, p_d_r_comment.published_at as published_at, 'Politizr\\Model\\PDRComment' as type
+( SELECT p_d_r_comment.id as id, 'null' as target_id, 'null' as target_user_id, 'null' as target_object_name, "commentaire" as title, p_d_r_comment.published_at as published_at, 'Politizr\\Model\\PDRComment' as type
 FROM p_d_r_comment
 WHERE
     p_d_r_comment.online = 1
     AND p_d_r_comment.p_d_reaction_id IN (1, 12, 16) )
+
+UNION DISTINCT
+
+#  Actions réputation: note +/- comment / sujet / reponse, suivre un utilisateur, être suivi par un utilisateur
+# RAF:
+# 22, 23 => suivre un sujet, ne plus suivre un sujet
+( SELECT p_u_reputation.p_r_action_id as id, p_u_reputation.p_object_id as target_id, 'null' as target_user_id, p_u_reputation.p_object_name as target_object_name, p_r_action.title as title, p_u_reputation.created_at as published_at, 'Politizr\\Model\\PRAction' as type
+FROM p_r_action
+    LEFT JOIN p_u_reputation
+        ON p_r_action.id = p_u_reputation.p_r_action_id
+
+WHERE
+    p_u_reputation.p_user_id = 1
+    AND p_r_action.id IN (10, 11, 12, 13, 14, 15, 24, 25, 28)
+)
+
+UNION DISTINCT
+
+#  Actions réputation: un utilisateur suit un débat publié par l'utilisateur courant
+( SELECT p_u_reputation.p_r_action_id as id, p_u_reputation.p_object_id as target_id, p_u_reputation.p_user_id as target_user_id, p_u_reputation.p_object_name as target_object_name, p_r_action.title as title, p_u_reputation.created_at as published_at, 'Politizr\\Model\\PRAction' as type
+FROM p_r_action
+    LEFT JOIN p_u_reputation
+        ON p_r_action.id = p_u_reputation.p_r_action_id
+
+WHERE
+   p_u_reputation.p_object_id IN (
+        ( SELECT p_d_debate.id as id
+        FROM p_d_debate
+        WHERE
+            p_d_debate.published = 1
+            AND p_d_debate.online = 1
+            AND p_d_debate.p_user_id = 1 )
+    )
+    AND p_r_action.id = 22
+)
+
+# RAF:
+# 16, 18, 20 => recevoir note + comment / sujet / reponse
+
 
 ORDER BY published_at DESC

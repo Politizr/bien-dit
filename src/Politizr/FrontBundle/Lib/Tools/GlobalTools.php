@@ -422,6 +422,9 @@ class GlobalTools
                 $timelineRow = new TimelineRow();
 
                 $timelineRow->setId($row['id']);
+                $timelineRow->setTargetId($row['target_id']);
+                $timelineRow->setTargetUserId($row['target_user_id']);
+                $timelineRow->setTargetObjectName($row['target_object_name']);
                 $timelineRow->setTitle($row['title']);
                 $timelineRow->setPublishedAt($row['published_at']);
                 $timelineRow->setType($row['type']);

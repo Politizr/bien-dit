@@ -1049,8 +1049,34 @@ class PolitizrDocumentExtension extends \Twig_Extension
         $this->logger->info('$timelineRow = '.print_r($timelineRow, true));
 
         $html = '';
-
         switch ($timelineRow->getType()) {
+            case ObjectTypeConstants::TYPE_ACTION:
+                switch($actionId = $timelineRow->getId()) {
+                    case ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_NOTE_POS:
+                    case ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_NOTE_NEG:
+                    case ReputationConstants::ACTION_ID_D_AUTHOR_REACTION_NOTE_POS:
+                    case ReputationConstants::ACTION_ID_D_AUTHOR_REACTION_NOTE_NEG:
+                        $html = $this->timelineService->generateRenderingItemActionNoteDocument($timelineRow, $debateContext);
+                        break;
+                    case ReputationConstants::ACTION_ID_D_AUTHOR_COMMENT_NOTE_POS:
+                    case ReputationConstants::ACTION_ID_D_AUTHOR_COMMENT_NOTE_NEG:
+                        $html = $this->timelineService->generateRenderingItemActionNoteComment($timelineRow, $debateContext);
+                        break;
+                    case ReputationConstants::ACTION_ID_U_AUTHOR_USER_FOLLOW:
+                    case ReputationConstants::ACTION_ID_U_AUTHOR_USER_UNFOLLOW:
+                        $html = $this->timelineService->generateRenderingItemActionFollowUser($timelineRow, $debateContext);
+                        break;
+                    case ReputationConstants::ACTION_ID_U_TARGET_USER_FOLLOW:
+                        $html = $this->timelineService->generateRenderingItemActionSubscribeMe($timelineRow, $debateContext);
+                        break;
+                    case ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_FOLLOW:
+                        $html = $this->timelineService->generateRenderingItemActionSubscribeMyDebate($timelineRow, $debateContext);
+                        break;
+                    default:
+                        throw new InconsistentDataException(sprintf('Timeline action id %s not managed', $timelineRow->getId()));
+                }
+
+                break;
             case ObjectTypeConstants::TYPE_DEBATE:
                 $html = $this->timelineService->generateRenderingItemDebate($timelineRow->getId(), $debateContext);
                 break;

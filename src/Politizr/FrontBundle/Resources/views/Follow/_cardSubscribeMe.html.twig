@@ -1,0 +1,8 @@
+<div class="card myactivity">
+    {% include 'PolitizrFrontBundle:User:_summaryAuthor.html.twig' with { 'user': user } only %}
+    <div class="coloredBg">
+        <div class="activity cardFollowing">Félicitations, vous êtes suivi par {{ subscriberUser }}!</div>
+        <h5>{% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': timelineRow } only %}</h5>
+        {% include 'PolitizrFrontBundle:User:_summaryAuthor.html.twig' with { 'user': subscriberUser } only %}
+    </div>
+</div>

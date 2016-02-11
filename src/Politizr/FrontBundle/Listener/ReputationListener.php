@@ -280,17 +280,16 @@ class ReputationListener
         $subject = $event->getSubject();
         $userId = $event->getArgument('user_id');
         $prActionId = ReputationConstants::ACTION_ID_U_AUTHOR_USER_FOLLOW;
-        
+
         $objectName = get_class($subject);
         $objectId = $subject->getId();
 
         $this->insertPUReputation($userId, $prActionId, $objectName, $objectId);
 
         // User suivi
-        $userId = $subject->getId();
         $prActionId = ReputationConstants::ACTION_ID_U_TARGET_USER_FOLLOW;
 
-        $this->insertPUReputation($userId, $prActionId, $objectName, $objectId);
+        $this->insertPUReputation($objectId, $prActionId, $objectName, $userId);
     }
 
     /**

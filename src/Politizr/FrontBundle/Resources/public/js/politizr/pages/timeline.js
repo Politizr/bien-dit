@@ -29,5 +29,8 @@ $(function() {
     timelineList();
 
     // sticky sidebar
-    $("#sidebar").stick_in_parent({parent:"#main"});
+    var sticky = new Waypoint.Sticky({
+        element: $('#sidebar'),
+        offset: 'bottom-in-view'
+    })
 });

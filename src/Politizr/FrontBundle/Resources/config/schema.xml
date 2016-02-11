@@ -637,6 +637,10 @@
         <column name="p_object_name" type="varchar" size="150" />
         <column name="p_object_id" type="integer" />
 
+        <index>
+            <index-column name="p_object_id" />
+        </index>
+
         <foreign-key foreignTable="p_user" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />
         </foreign-key>

@@ -11,6 +11,9 @@ class TimelineRow
 {
 
     protected $id;
+    protected $targetId;
+    protected $targetUserId;
+    protected $targetObjectName;
     protected $title;
     protected $publishedAt;
     protected $type;
@@ -29,6 +32,54 @@ class TimelineRow
     public function setId($val)
     {
         $this->id = $val;
+    }
+
+    /**
+     *
+     */
+    public function getTargetId()
+    {
+        return $this->targetId;
+    }
+
+    /**
+     *
+     */
+    public function setTargetId($val)
+    {
+        $this->targetId = $val;
+    }
+
+    /**
+     *
+     */
+    public function getTargetUserId()
+    {
+        return $this->targetUserId;
+    }
+
+    /**
+     *
+     */
+    public function setTargetUserId($val)
+    {
+        $this->targetUserId = $val;
+    }
+
+    /**
+     *
+     */
+    public function getTargetObjectName()
+    {
+        return $this->targetObjectName;
+    }
+
+    /**
+     *
+     */
+    public function setTargetObjectName($val)
+    {
+        $this->targetObjectName = $val;
     }
 
     /**

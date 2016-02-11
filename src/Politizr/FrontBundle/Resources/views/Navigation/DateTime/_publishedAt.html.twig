@@ -7,6 +7,8 @@
     {% set type = 'Commentaire publié' %}
 {% elseif subject.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION_COMMENT') %} 
     {% set type = 'Commentaire publié' %}
+{% elseif subject.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_ACTION') %} 
+    {% set type = 'Action réalisée' %}
 {% endif %}
 
 {{ type }} le {{ subject.publishedAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "d MMMM yyyy" ) | capitalize }} à {{ subject.publishedAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "HH'h'mm" ) }}

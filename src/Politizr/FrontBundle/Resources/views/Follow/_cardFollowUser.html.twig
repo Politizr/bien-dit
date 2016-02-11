@@ -1,0 +1,14 @@
+<div class="card myactivity">
+    {% include 'PolitizrFrontBundle:User:_summaryAuthor.html.twig' with { 'user': user } only %}
+    <div class="coloredBg">
+        <div class="activity cardFollowing">
+            {% if way == 'up' %}
+                Vous suivez {{ followUser }} : ses publications s’affichent dans votre fil d’actualité.
+            {% else %}
+                Vous ne suivez plus {{ followUser }} : ses publications ne s’affichent plus dans votre fil d’actualité.
+            {% endif %}
+            </div>
+        <h5>{% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': timelineRow } only %}</h5>
+        {% include 'PolitizrFrontBundle:User:_summaryAuthor.html.twig' with { 'user': followUser } only %}
+    </div>
+</div>

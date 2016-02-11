@@ -1,0 +1,11 @@
+<div class="card">
+    {% include 'PolitizrFrontBundle:User:_summaryAuthor.html.twig' with { 'user': subscriberUser } only %}
+    <div class="coloredBg">
+        <div class="activity cardFollowing">Félicitations, {{ subscriberUser }} suit votre sujet de discussion!</div>
+        <h5>{% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': timelineRow } only %}</h5>
+        <div class="miniPost">
+            {% include 'PolitizrFrontBundle:Document:_header.html.twig' with { 'document': debate, 'mini': true } only %}
+            <h5>{% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': debate } only %}</h5>
+        </div>
+    </div>
+</div>

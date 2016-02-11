@@ -1,7 +1,7 @@
 <div class="card {% if app.user.id == document.PUserId %}myactivity{% endif %}">
     {% include 'PolitizrFrontBundle:User:_summaryAuthor.html.twig' with { 'user': document.user } only %}
     <div class="newPost">
-        {% include 'PolitizrFrontBundle:Document:_header.html.twig' with { 'document': document } only %}
+        {% include 'PolitizrFrontBundle:Document:_header.html.twig' with { 'document': document, 'mini': false } only %}
     </div>
     <div class="actionsBox">
         <div class="miniActions">

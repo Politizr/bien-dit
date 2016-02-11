@@ -1,0 +1,17 @@
+<div class="card myactivity">
+    {% include 'PolitizrFrontBundle:User:_summaryAuthor.html.twig' with { 'user': user } only %}
+    <div class="coloredBg">
+        {% if (way == 'up') %}
+            <div class="activity cardLike">Vous aimez cette publication.</div>
+        {% else %}
+            <div class="activity cardDislike">Vous n'aimez pas cette publication.</div>
+        {% endif %}
+        <h5>{% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': timelineRow } only %}</h5>
+
+        <div class="miniPost">
+            {% include 'PolitizrFrontBundle:User:_summaryAuthor.html.twig' with { 'user': author } only %}
+            {% include 'PolitizrFrontBundle:Document:_header.html.twig' with { 'document': document, 'mini': true } only %}
+            <h5>{% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': document } only %}</h5>
+        </div>
+    </div>
+</div>

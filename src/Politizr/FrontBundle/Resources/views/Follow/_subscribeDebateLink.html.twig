@@ -2,13 +2,13 @@
     {% if not owner %}
         {% if follower %}
             <div class="stopFollowing" action="followDebate" uuid="{{ object.uuid }}" way="unfollow">
-                <i class="iconCross"></i>
-                Supprimer&nbsp;de&nbsp;mon&nbsp;fil&nbsp;d'actualité
+                <div class="actionText">Supprimer&nbsp;de&nbsp;mon&nbsp;fil&nbsp;d'actualité</div>
+                <i class="icon-remove"></i>
             </div>
         {% else %}
             <div class="startFollowing" action="followDebate" uuid="{{ object.uuid }}" way="follow">
-                <i class="iconCheckInSquare"></i>
-                &nbsp;Ajouter&nbsp;à&nbsp;mon&nbsp;fil&nbsp;d'actualité
+                <div class="actionText">&nbsp;Ajouter&nbsp;à&nbsp;mon&nbsp;fil&nbsp;d'actualité</div>
+                <i class="icon-add"></i>
             </div>
         {% endif %}
     {% endif %}    

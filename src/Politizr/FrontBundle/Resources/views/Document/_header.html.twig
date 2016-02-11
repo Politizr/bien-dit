@@ -6,17 +6,25 @@
     {% set spanClass = '' %}
 {% endif %}
 
+{% if mini %}
+    {% set imgClass = 'miniPostImg' %}
+{% else %}
+    {% set imgClass = 'postImg' %}
+{% endif %}
+
 {% if document.fileName %}
-    <div class="postImg">
+    <div class="{{ imgClass }}">
         <a href="{{ detailPath }}">
             {{ document | image('debate_header', false) }}
         </a>
     </div>
 {% else %}
-    <div class="postImg noImg"></div>
+    <div class="{{ imgClass }} noImg"></div>
 {% endif %}
 
 <a href="{{ detailPath }}">
     <span class="postTitle {{ spanClass }}">{{ document.title }}</span>
-    {{ document.description | removeLinks | removeSpans | excerpt(1, true) | purify }}
+    {% if not mini %}
+        {{ document.description | removeLinks | removeSpans | excerpt(1, true) | purify }}
+    {% endif %}
 </a>

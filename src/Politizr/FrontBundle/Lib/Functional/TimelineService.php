@@ -1,7 +1,10 @@
 <?php
 namespace Politizr\FrontBundle\Lib\Functional;
 
+use Politizr\Exception\InconsistentDataException;
+
 use Politizr\Constant\ObjectTypeConstants;
+use Politizr\Constant\ReputationConstants;
 use Politizr\Constant\ListingConstants;
 
 use Politizr\Model\PDDebateQuery;
@@ -10,6 +13,7 @@ use Politizr\Model\PDDCommentQuery;
 use Politizr\Model\PDRCommentQuery;
 use Politizr\Model\PUFollowDDQuery;
 use Politizr\Model\PUFollowUQuery;
+use Politizr\Model\PUserQuery;
 
 use Politizr\FrontBundle\Lib\TimelineRow;
 
@@ -202,12 +206,19 @@ class TimelineService
             $inQueryMyReactionIds = 0;
         }
 
+        $reputationIds = ReputationConstants::getTimelineReputationIds();
+        $inQueryReputationIds = implode(',', $reputationIds);
+        if (empty($inQueryReputationIds)) {
+            $inQueryReputationIds = 0;
+        }
+
         $timeline = $this->userManager->generateMyTimelinePaginatedListing(
             $userId,
             $inQueryDebateIds,
             $inQueryUserIds,
             $inQueryMyDebateIds,
             $inQueryMyReactionIds,
+            $inQueryReputationIds,
             $offset,
             $count
         );
@@ -283,6 +294,199 @@ class TimelineService
     /* ######################################################################################################## */
     /*                                             RENDERING FUNCTIONS                                          */
     /* ######################################################################################################## */
+
+    /**
+     * Generate the rendering of an item action "note document" timeline row
+     *
+     * @param TimelineRow $timelineRow
+     * @param boolean $debateContext
+     * @return string
+     */
+    public function generateRenderingItemActionNoteDocument($timelineRow, $debateContext)
+    {
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+
+        $actionId = $timelineRow->getId();
+        $documentId = $timelineRow->getTargetId();
+
+        $document = null;
+        $author = null;
+
+        if ($actionId == ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_NOTE_POS || $actionId == ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_NOTE_NEG) {
+            $document = PDDebateQuery::create()->findPk($documentId);
+        } else {
+            $document = PDReactionQuery::create()->findPk($documentId);
+        }
+        if ($document) {
+            $author = PUserQuery::create()->findPk($document->getPUserId());
+        }
+
+        $way = 'down';
+        if ($actionId == ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_NOTE_POS) {
+            $way = 'up';
+        }
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Reputation:_cardNoteDocument.html.twig',
+            array(
+                'timelineRow' => $timelineRow,
+                'user' => $user,
+                'document' => $document,
+                'author' => $author,
+                'way' => $way,
+            )
+        );
+
+        return $html;
+    }
+
+    /**
+     * Generate the rendering of an item action "note comment" timeline row
+     *
+     * @param TimelineRow $timelineRow
+     * @param boolean $debateContext
+     * @return string
+     */
+    public function generateRenderingItemActionNoteComment($timelineRow, $debateContext)
+    {
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+
+        $actionId = $timelineRow->getId();
+        $commentId = $timelineRow->getTargetId();
+        $objectName = $timelineRow->getTargetObjectName();
+
+        $comment = null;
+        $author = null;
+
+        if ($objectName == ObjectTypeConstants::TYPE_DEBATE_COMMENT) {
+            $comment = PDDCommentQuery::create()->findPk($commentId);
+        } else {
+            $comment = PDRCommentQuery::create()->findPk($commentId);
+        }
+        if ($comment) {
+            $author = PUserQuery::create()->findPk($comment->getPUserId());
+        }
+
+        $way = 'down';
+        if ($actionId == ReputationConstants::ACTION_ID_D_AUTHOR_COMMENT_NOTE_POS) {
+            $way = 'up';
+        }
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Reputation:_cardNoteComment.html.twig',
+            array(
+                'timelineRow' => $timelineRow,
+                'user' => $user,
+                'comment' => $comment,
+                'author' => $author,
+                'way' => $way,
+            )
+        );
+
+        return $html;
+    }
+
+    /**
+     * Generate the rendering of an item action "follow user" timeline row
+     *
+     * @param TimelineRow $timelineRow
+     * @param boolean $debateContext
+     * @return string
+     */
+    public function generateRenderingItemActionFollowUser($timelineRow, $debateContext)
+    {
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+
+        $actionId = $timelineRow->getId();
+        $followId = $timelineRow->getTargetId();
+
+        $followUser = null;
+        $followUser = PUserQuery::create()->findPk($followId);
+
+        $way = 'down';
+        if ($actionId == ReputationConstants::ACTION_ID_U_AUTHOR_USER_FOLLOW) {
+            $way = 'up';
+        }
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Follow:_cardFollowUser.html.twig',
+            array(
+                'timelineRow' => $timelineRow,
+                'user' => $user,
+                'followUser' => $followUser,
+                'way' => $way,
+            )
+        );
+
+        return $html;
+    }
+    /**
+     * Generate the rendering of an item action "followed by user" timeline row
+     *
+     * @param TimelineRow $timelineRow
+     * @param boolean $debateContext
+     * @return string
+     */
+    public function generateRenderingItemActionSubscribeMe($timelineRow, $debateContext)
+    {
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+
+        $actionId = $timelineRow->getId();
+        $subscriberId = $timelineRow->getTargetId();
+
+        $subscriberUser = null;
+        $subscriberUser = PUserQuery::create()->findPk($subscriberId);
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Follow:_cardSubscribeMe.html.twig',
+            array(
+                'timelineRow' => $timelineRow,
+                'user' => $user,
+                'subscriberUser' => $subscriberUser,
+            )
+        );
+
+        return $html;
+    }
+
+    /**
+     * Generate the rendering of an item action "follow debate" timeline row
+     *
+     * @param TimelineRow $timelineRow
+     * @param boolean $debateContext
+     * @return string
+     */
+    public function generateRenderingItemActionSubscribeMyDebate($timelineRow, $debateContext)
+    {
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+
+        $actionId = $timelineRow->getId();
+        $debateId = $timelineRow->getTargetId();
+        $subscriberId = $timelineRow->getTargetUserId();
+
+        $debate = null;
+        $debate = PDDebateQuery::create()->findPk($debateId);
+
+        $subscriberUser = null;
+        $subscriberUser = PUserQuery::create()->findPk($subscriberId);
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Follow:_cardSubscribeMyDebate.html.twig',
+            array(
+                'timelineRow' => $timelineRow,
+                'user' => $user,
+                'debate' => $debate,
+                'subscriberUser' => $subscriberUser,
+            )
+        );
+
+        return $html;
+    }
 
     /**
      * Generate the rendering of an item debate timeline row
