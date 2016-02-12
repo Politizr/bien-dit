@@ -14,6 +14,7 @@ use Politizr\Model\PDRCommentQuery;
 use Politizr\Model\PUFollowDDQuery;
 use Politizr\Model\PUFollowUQuery;
 use Politizr\Model\PUserQuery;
+use Politizr\Model\PRBadgeQuery;
 
 use Politizr\FrontBundle\Lib\TimelineRow;
 
@@ -620,6 +621,33 @@ class TimelineService
                 'user' => $user,
                 'comment' => $comment,
                 'noteUser' => $noteUser,
+            )
+        );
+
+        return $html;
+    }
+
+    /**
+     * Generate the rendering of an item badge timeline row
+     *
+     * @param TimelineRow $timelineRow
+     * @param boolean $debateContext
+     * @return string
+     */
+    public function generateRenderingItemBadge($timelineRow, $debateContext)
+    {
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+
+        $badgeId = $timelineRow->getId();
+        $badge = PRBadgeQuery::create()->findPk($badgeId);
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Reputation:_cardBadge.html.twig',
+            array(
+                'timelineRow' => $timelineRow,
+                'user' => $user,
+                'badge' => $badge,
             )
         );
 

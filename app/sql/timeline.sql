@@ -260,4 +260,16 @@ WHERE
     AND p_r_action.id IN (14)
 )
 
+UNION DISTINCT
+
+# Badges
+( SELECT p_u_badge.p_r_badge_id as id, 'null' as target_id, 'null' as target_user_id, 'null' as target_object_name, p_r_badge.title as title, p_u_badge.created_at as published_at, 'Politizr\\Model\\PRBadge' as type
+FROM p_r_badge
+    LEFT JOIN p_u_badge
+        ON p_r_badge.id = p_u_badge.p_r_badge_id
+
+WHERE
+    p_u_badge.p_user_id = 1
+)
+
 ORDER BY published_at DESC

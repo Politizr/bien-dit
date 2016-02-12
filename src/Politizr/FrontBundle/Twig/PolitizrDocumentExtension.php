@@ -1100,6 +1100,9 @@ class PolitizrDocumentExtension extends \Twig_Extension
             case ObjectTypeConstants::TYPE_REACTION_COMMENT:
                 $html = $this->timelineService->generateRenderingItemReactionComment($timelineRow->getId(), $debateContext);
                 break;
+            case ObjectTypeConstants::TYPE_BADGE:
+                $html = $this->timelineService->generateRenderingItemBadge($timelineRow, $debateContext);
+                break;
             default:
                 throw new InconsistentDataException(sprintf('Object type %s not managed', $timelineRow->getType()));
         }
