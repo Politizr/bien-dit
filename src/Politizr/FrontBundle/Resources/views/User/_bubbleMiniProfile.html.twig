@@ -4,10 +4,9 @@
         <div class="profilenInfo">
             <div class="profileName">
                 <div class="profileNameHolder">
-                    <a href="{{ path('UserDetail', { 'slug': user.slug }) }}" class="{% if isFollowed is defined and isFollowed %}followedMember{% endif %}" action="bubbleProfile" uuid="{{ user.uuid }}">
+                    <a href="{{ path('UserDetail', { 'slug': user.slug }) }}" class="{% if isFollowed is defined and isFollowed %}followedMember{% endif %}">
                         {{ user }}
                     </a>
-                    {% include 'PolitizrFrontBundle:User:_bubbleUser.html.twig' with { 'user': user } only %}
                 </div>
                 {% if user.isQualified %}
                     {% set organizations = user.currentOrganizations %}

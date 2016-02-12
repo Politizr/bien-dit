@@ -38,6 +38,14 @@ services:
             - @politizr.functional.user
             - @logger
 
+    politizr.xhr.bubble:
+        class: Politizr\FrontBundle\Lib\Xhr\XhrBubble
+        arguments:
+        arguments:
+            - @security.token_storage
+            - @templating
+            - @logger
+
     politizr.xhr.notification:
         class: Politizr\FrontBundle\Lib\Xhr\XhrNotification
         arguments:

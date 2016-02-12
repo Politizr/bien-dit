@@ -141,6 +141,9 @@ class XhrConstants
     const ROUTE_MONITORING_ASK_FOR_UPDATE = 'profil/modifier-mes-donnees';
     const ROUTE_MONITORING_ASK_FOR_UPDATE_CHECK = 'profil/modifier-mes-donnees/check';
 
+    // BUBBLES
+    const ROUTE_BUBBLE_USER = 'bubble/user';
+
     // ******************************************************** //
     //                  XHR URL REWRITING (ADMIN)
     // ******************************************************** //

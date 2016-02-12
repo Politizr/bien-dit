@@ -129,6 +129,10 @@ var ROUTE_MONITORING_ABUSE_CHECK = 'profil/signaler-un-abus/check';
 var ROUTE_MONITORING_ASK_FOR_UPDATE = 'profil/modifier-mes-donnees';
 var ROUTE_MONITORING_ASK_FOR_UPDATE_CHECK = 'profil/modifier-mes-donnees/check';
 
+// BUBBLES
+var ROUTE_BUBBLE_USER = 'bubble/user';
+
+
 // ******************************************************** //
 //                  XHR URL REWRITING (ADMIN)
 // ******************************************************** //
