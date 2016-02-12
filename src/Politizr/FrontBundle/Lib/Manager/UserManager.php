@@ -225,6 +225,7 @@ UNION DISTINCT
 ( SELECT 
     CASE p_u_reputation.p_r_action_id
     WHEN :id_author_debate_note_pos THEN :id_target_debate_note_pos
+    WHEN :id_author_debate_note_neg THEN :id_target_debate_note_neg
     WHEN :id_author_debate_follow THEN :id_author_target_follow
     ELSE p_u_reputation.p_r_action_id
     END as id,
@@ -250,6 +251,7 @@ UNION DISTINCT
 ( SELECT 
     CASE p_u_reputation.p_r_action_id
     WHEN :id_author_reaction_note_pos THEN :id_target_reaction_note_pos
+    WHEN :id_author_reaction_note_neg THEN :id_target_reaction_note_neg
     ELSE p_u_reputation.p_r_action_id
     END as id,
     p_u_reputation.p_object_id as target_id, p_u_reputation.p_user_id as target_user_id, p_u_reputation.p_object_name as target_object_name, p_r_action.title as title, p_u_reputation.created_at as published_at, 'Politizr\\\Model\\\PRAction' as type
@@ -275,6 +277,7 @@ UNION DISTINCT
 ( SELECT 
     CASE p_u_reputation.p_r_action_id
     WHEN :id_author_comment_note_pos THEN :id_target_comment_note_pos
+    WHEN :id_author_comment_note_neg THEN :id_target_comment_note_neg
     ELSE p_u_reputation.p_r_action_id
     END as id,
     p_u_reputation.p_object_id as target_id, p_u_reputation.p_user_id as target_user_id, p_u_reputation.p_object_name as target_object_name, p_r_action.title as title, p_u_reputation.created_at as published_at, 'Politizr\\\Model\\\PRAction' as type
@@ -300,6 +303,7 @@ UNION DISTINCT
 ( SELECT 
     CASE p_u_reputation.p_r_action_id
     WHEN :id_author_comment_note_pos2 THEN :id_target_comment_note_pos2
+    WHEN :id_author_comment_note_neg2 THEN :id_target_comment_note_neg2
     ELSE p_u_reputation.p_r_action_id
     END as id,
     p_u_reputation.p_object_id as target_id, p_u_reputation.p_user_id as target_user_id, p_u_reputation.p_object_name as target_object_name, p_r_action.title as title, p_u_reputation.created_at as published_at, 'Politizr\\\Model\\\PRAction' as type
@@ -329,6 +333,14 @@ FROM p_r_badge
 
 WHERE
     p_u_badge.p_user_id = :p_user_id11
+)
+
+UNION DISTINCT
+
+( SELECT p_user.id as id, 'null' as target_id, 'null' as target_user_id, 'null' as target_object_name, p_user.name as title, p_user.created_at as published_at, 'Politizr\\\Model\\\PUser' as type
+FROM p_user
+WHERE
+    p_user.id = :p_user_id12
 )
 
 ORDER BY published_at DESC
@@ -570,17 +582,26 @@ LIMIT :offset, :limit
         $stmt->bindValue(':p_user_id9', $userId, \PDO::PARAM_INT);
         $stmt->bindValue(':p_user_id10', $userId, \PDO::PARAM_INT);
         $stmt->bindValue(':p_user_id11', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_user_id12', $userId, \PDO::PARAM_INT);
 
         $stmt->bindValue(':id_author_debate_note_pos', ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_NOTE_POS, \PDO::PARAM_INT);
         $stmt->bindValue(':id_target_debate_note_pos', ReputationConstants::ACTION_ID_D_TARGET_DEBATE_NOTE_POS, \PDO::PARAM_INT);
+        $stmt->bindValue(':id_author_debate_note_neg', ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_NOTE_NEG, \PDO::PARAM_INT);
+        $stmt->bindValue(':id_target_debate_note_neg', ReputationConstants::ACTION_ID_D_TARGET_DEBATE_NOTE_NEG, \PDO::PARAM_INT);
         $stmt->bindValue(':id_author_debate_follow', ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_FOLLOW, \PDO::PARAM_INT);
         $stmt->bindValue(':id_author_target_follow', ReputationConstants::ACTION_ID_D_TARGET_DEBATE_FOLLOW, \PDO::PARAM_INT);
         $stmt->bindValue(':id_author_reaction_note_pos', ReputationConstants::ACTION_ID_D_AUTHOR_REACTION_NOTE_POS, \PDO::PARAM_INT);
         $stmt->bindValue(':id_target_reaction_note_pos', ReputationConstants::ACTION_ID_D_TARGET_REACTION_NOTE_POS, \PDO::PARAM_INT);
+        $stmt->bindValue(':id_author_reaction_note_neg', ReputationConstants::ACTION_ID_D_AUTHOR_REACTION_NOTE_NEG, \PDO::PARAM_INT);
+        $stmt->bindValue(':id_target_reaction_note_neg', ReputationConstants::ACTION_ID_D_TARGET_REACTION_NOTE_NEG, \PDO::PARAM_INT);
         $stmt->bindValue(':id_author_comment_note_pos', ReputationConstants::ACTION_ID_D_AUTHOR_COMMENT_NOTE_POS, \PDO::PARAM_INT);
         $stmt->bindValue(':id_target_comment_note_pos', ReputationConstants::ACTION_ID_D_TARGET_COMMENT_NOTE_POS, \PDO::PARAM_INT);
+        $stmt->bindValue(':id_author_comment_note_neg', ReputationConstants::ACTION_ID_D_AUTHOR_COMMENT_NOTE_NEG, \PDO::PARAM_INT);
+        $stmt->bindValue(':id_target_comment_note_neg', ReputationConstants::ACTION_ID_D_TARGET_COMMENT_NOTE_NEG, \PDO::PARAM_INT);
         $stmt->bindValue(':id_author_comment_note_pos2', ReputationConstants::ACTION_ID_D_AUTHOR_COMMENT_NOTE_POS, \PDO::PARAM_INT);
         $stmt->bindValue(':id_target_comment_note_pos2', ReputationConstants::ACTION_ID_D_TARGET_COMMENT_NOTE_POS, \PDO::PARAM_INT);
+        $stmt->bindValue(':id_author_comment_note_neg2', ReputationConstants::ACTION_ID_D_AUTHOR_COMMENT_NOTE_NEG, \PDO::PARAM_INT);
+        $stmt->bindValue(':id_target_comment_note_neg2', ReputationConstants::ACTION_ID_D_TARGET_COMMENT_NOTE_NEG, \PDO::PARAM_INT);
 
         $stmt->bindValue(':offset', $offset, \PDO::PARAM_INT);
         $stmt->bindValue(':count', $count, \PDO::PARAM_INT);

@@ -564,7 +564,7 @@ class TimelineService
         $noteUserId = $timelineRow->getTargetUserId();
 
         $document = null;
-        if ($actionId == ReputationConstants::ACTION_ID_D_TARGET_DEBATE_NOTE_POS) {
+        if ($actionId == ReputationConstants::ACTION_ID_D_TARGET_DEBATE_NOTE_POS || $actionId == ReputationConstants::ACTION_ID_D_TARGET_DEBATE_NOTE_NEG) {
             $document = PDDebateQuery::create()->findPk($documentId);
         } else {
             $document = PDReactionQuery::create()->findPk($documentId);
@@ -573,6 +573,11 @@ class TimelineService
         $noteUser = null;
         $noteUser = PUserQuery::create()->findPk($noteUserId);
 
+        $way = 'down';
+        if ($actionId == ReputationConstants::ACTION_ID_D_TARGET_DEBATE_NOTE_POS || $actionId == ReputationConstants::ACTION_ID_D_TARGET_REACTION_NOTE_POS) {
+            $way = 'up';
+        }
+
         $html = $this->templating->render(
             'PolitizrFrontBundle:Reputation:_cardNoteMyDocument.html.twig',
             array(
@@ -580,6 +585,7 @@ class TimelineService
                 'user' => $user,
                 'document' => $document,
                 'noteUser' => $noteUser,
+                'way' => $way,
             )
         );
 
@@ -614,6 +620,11 @@ class TimelineService
         $noteUser = null;
         $noteUser = PUserQuery::create()->findPk($noteUserId);
 
+        $way = 'down';
+        if ($actionId == ReputationConstants::ACTION_ID_D_TARGET_COMMENT_NOTE_POS) {
+            $way = 'up';
+        }
+
         $html = $this->templating->render(
             'PolitizrFrontBundle:Reputation:_cardNoteMyComment.html.twig',
             array(
@@ -621,6 +632,7 @@ class TimelineService
                 'user' => $user,
                 'comment' => $comment,
                 'noteUser' => $noteUser,
+                'way' => $way,
             )
         );
 
@@ -631,10 +643,9 @@ class TimelineService
      * Generate the rendering of an item badge timeline row
      *
      * @param TimelineRow $timelineRow
-     * @param boolean $debateContext
      * @return string
      */
-    public function generateRenderingItemBadge($timelineRow, $debateContext)
+    public function generateRenderingItemBadge($timelineRow)
     {
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -648,6 +659,26 @@ class TimelineService
                 'timelineRow' => $timelineRow,
                 'user' => $user,
                 'badge' => $badge,
+            )
+        );
+
+        return $html;
+    }
+
+    /**
+     * Generate the rendering of an item badge timeline row
+     *
+     * @param integer $userId
+     * @return string
+     */
+    public function generateRenderingItemUser($userId)
+    {
+        $user = PUserQuery::create()->findPk($userId);
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:User:_cardUser.html.twig',
+            array(
+                'user' => $user,
             )
         );
 

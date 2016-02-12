@@ -1,9 +1,15 @@
 <div class="card">
-    <div class="miniProfile">
-        {% include 'PolitizrFrontBundle:User:_summaryAuthor.html.twig' with { 'user': noteUser } only %}
-    </div>
+    {% if way == 'up' %}
+        <div class="miniProfile">
+            {% include 'PolitizrFrontBundle:User:_summaryAuthor.html.twig' with { 'user': noteUser } only %}
+        </div>
+    {% endif %}
     <div class="coloredBg">
-        <div class="activity cardLike">Félicitations, {{ noteUser }} aime votre commentaire!</div>
+        {% if way == 'up' %}
+            <div class="activity cardLike">Félicitations, {{ noteUser }} aime votre commentaire!</div>
+        {% else %}
+            <div class="activity cardDislike">Un utilisateur n'a pas aimé votre commentaire...</div>
+        {% endif %}
         <h5>{% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': timelineRow } only %}</h5>
         <div class="commentInCard">
             {{ comment | linkParentDocument }}

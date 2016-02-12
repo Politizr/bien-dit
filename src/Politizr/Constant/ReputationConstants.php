@@ -274,6 +274,7 @@ class ReputationConstants
     {
         return [
             ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_NOTE_POS,
+            ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_NOTE_NEG,
             ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_FOLLOW,
         ];
     }
@@ -287,6 +288,7 @@ class ReputationConstants
     {
         return [
             ReputationConstants::ACTION_ID_D_AUTHOR_REACTION_NOTE_POS,
+            ReputationConstants::ACTION_ID_D_AUTHOR_REACTION_NOTE_NEG,
         ];
     }
 
@@ -299,6 +301,7 @@ class ReputationConstants
     {
         return [
             ReputationConstants::ACTION_ID_D_AUTHOR_COMMENT_NOTE_POS,
+            ReputationConstants::ACTION_ID_D_AUTHOR_COMMENT_NOTE_NEG,
         ];
     }
 }

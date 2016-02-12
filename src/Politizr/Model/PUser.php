@@ -59,6 +59,15 @@ class PUser extends BasePUser implements UserInterface
     }
 
     /**
+     *
+     * @return DateTime
+     */
+    public function getPublishedAt()
+    {
+        return $this->getCreatedAt();
+    }
+
+    /**
      * Check if profile is qualified
      *
      * @return boolean

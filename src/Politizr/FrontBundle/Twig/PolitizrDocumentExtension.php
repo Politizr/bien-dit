@@ -1077,10 +1077,12 @@ class PolitizrDocumentExtension extends \Twig_Extension
                         $html = $this->timelineService->generateRenderingItemActionSubscribeMyDebate($timelineRow, $debateContext);
                         break;
                     case ReputationConstants::ACTION_ID_D_TARGET_DEBATE_NOTE_POS:
+                    case ReputationConstants::ACTION_ID_D_TARGET_DEBATE_NOTE_NEG:
                     case ReputationConstants::ACTION_ID_D_TARGET_REACTION_NOTE_POS:
                         $html = $this->timelineService->generateRenderingItemActionNoteMyDocument($timelineRow, $debateContext);
                         break;
                     case ReputationConstants::ACTION_ID_D_TARGET_COMMENT_NOTE_POS:
+                    case ReputationConstants::ACTION_ID_D_TARGET_COMMENT_NOTE_NEG:
                         $html = $this->timelineService->generateRenderingItemActionNoteMyComment($timelineRow, $debateContext);
                         break;
                     default:
@@ -1101,7 +1103,10 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 $html = $this->timelineService->generateRenderingItemReactionComment($timelineRow->getId(), $debateContext);
                 break;
             case ObjectTypeConstants::TYPE_BADGE:
-                $html = $this->timelineService->generateRenderingItemBadge($timelineRow, $debateContext);
+                $html = $this->timelineService->generateRenderingItemBadge($timelineRow);
+                break;
+            case ObjectTypeConstants::TYPE_USER:
+                $html = $this->timelineService->generateRenderingItemUser($timelineRow->getId());
                 break;
             default:
                 throw new InconsistentDataException(sprintf('Object type %s not managed', $timelineRow->getType()));

@@ -156,11 +156,14 @@ WHERE
 
 UNION DISTINCT
 
-# Actions réputation: recevoir une note + pour son débat, être suivi sur son débat
+# @todo remonter les notes +/- par palier pour les publications ayant reçu bcp de notes +/-
+
+# Actions réputation: recevoir une note +/- pour son débat, être suivi sur son débat
 # /!\ Réaffectation des ids des actions vers les actions "target"
 ( SELECT 
     CASE p_u_reputation.p_r_action_id
     WHEN 10 THEN 16
+    WHEN 11 THEN 17
     WHEN 22 THEN 26
     ELSE p_u_reputation.p_r_action_id
     END as id,
@@ -178,16 +181,17 @@ WHERE
             AND p_d_debate.online = 1
             AND p_d_debate.p_user_id = 1 )
     )
-    AND p_r_action.id IN (10, 22)
+    AND p_r_action.id IN (10, 11, 22)
 )
 
 UNION DISTINCT
 
-# Actions réputation: recevoir une note + sur sa réaction
+# Actions réputation: recevoir une note +/- sur sa réaction
 # /!\ Réaffectation des ids des actions vers les actions "target"
 ( SELECT 
     CASE p_u_reputation.p_r_action_id
     WHEN 12 THEN 18
+    WHEN 13 THEN 19
     ELSE p_u_reputation.p_r_action_id
     END as id,
     p_u_reputation.p_object_id as target_id, p_u_reputation.p_user_id as target_user_id, p_u_reputation.p_object_name as target_object_name, p_r_action.title as title, p_u_reputation.created_at as published_at, 'Politizr\\Model\\PRAction' as type
@@ -205,16 +209,17 @@ WHERE
             AND p_d_reaction.p_user_id = 1
             AND p_d_reaction.tree_level > 0 )
     )
-    AND p_r_action.id IN (12)
+    AND p_r_action.id IN (12, 13)
 )
 
 UNION DISTINCT
 
-# Actions réputation: recevoir une note + sur son commentaire de débat
+# Actions réputation: recevoir une note +/- sur son commentaire de débat
 # /!\ Réaffectation des ids des actions vers les actions "target"
 ( SELECT 
     CASE p_u_reputation.p_r_action_id
     WHEN 14 THEN 20
+    WHEN 15 THEN 21
     ELSE p_u_reputation.p_r_action_id
     END as id,
     p_u_reputation.p_object_id as target_id, p_u_reputation.p_user_id as target_user_id, p_u_reputation.p_object_name as target_object_name, p_r_action.title as title, p_u_reputation.created_at as published_at, 'Politizr\\Model\\PRAction' as type
@@ -232,7 +237,7 @@ WHERE
         )
     )
     AND p_u_reputation.p_object_name = 'Politizr\\Model\\PDDComment'
-    AND p_r_action.id IN (14)
+    AND p_r_action.id IN (14, 15)
 )
 
 UNION DISTINCT
@@ -240,6 +245,7 @@ UNION DISTINCT
 ( SELECT 
     CASE p_u_reputation.p_r_action_id
     WHEN 14 THEN 20
+    WHEN 15 THEN 21
     ELSE p_u_reputation.p_r_action_id
     END as id,
     p_u_reputation.p_object_id as target_id, p_u_reputation.p_user_id as target_user_id, p_u_reputation.p_object_name as target_object_name, p_r_action.title as title, p_u_reputation.created_at as published_at, 'Politizr\\Model\\PRAction' as type
@@ -257,7 +263,7 @@ WHERE
         )
     )
     AND p_u_reputation.p_object_name = 'Politizr\\Model\\PDRComment'
-    AND p_r_action.id IN (14)
+    AND p_r_action.id IN (14, 15)
 )
 
 UNION DISTINCT
@@ -270,6 +276,15 @@ FROM p_r_badge
 
 WHERE
     p_u_badge.p_user_id = 1
+)
+
+UNION DISTINCT
+
+# Création profil
+( SELECT p_user.id as id, 'null' as target_id, 'null' as target_user_id, 'null' as target_object_name, p_user.name as title, p_user.created_at as published_at, 'Politizr\\Model\\PUser' as type
+FROM p_user
+WHERE
+    p_user.id = 1
 )
 
 ORDER BY published_at DESC

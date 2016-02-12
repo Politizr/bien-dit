@@ -1,0 +1,16 @@
+<!-- welcome -->
+<div class="card">
+    <div class="miniProfile">
+        {% include 'PolitizrFrontBundle:User:_summaryAuthor.html.twig' with { 'user': user } only %}
+    </div>
+    <div class="coloredBg">
+        <div class="activity">Vous avez rejoint Politizr. Merci et bienvenu-e parmi nous !</div>
+        <h5>{% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': user } only %}</h5>
+        <div class="cardInfo">
+            N’hésitez pas à consulter la page <a href="{{ path('Help') }}">Premier Pas sur Politizr</a> pour vous familiariser avec la plate-forme.<br>
+            Le <a href="mailto: support@politizr.com">support</a> est à votre disposition pour toutes questions ou remarques.<br>
+            Au plaisir de vous lire,<br>
+            — L’équipe Politizr
+        </div>
+    </div>
+</div>
