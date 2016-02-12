@@ -1066,11 +1066,22 @@ class PolitizrDocumentExtension extends \Twig_Extension
                     case ReputationConstants::ACTION_ID_U_AUTHOR_USER_UNFOLLOW:
                         $html = $this->timelineService->generateRenderingItemActionFollowUser($timelineRow, $debateContext);
                         break;
+                    case ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_FOLLOW:
+                    case ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_UNFOLLOW:
+                        $html = $this->timelineService->generateRenderingItemActionFollowDebate($timelineRow, $debateContext);
+                        break;
                     case ReputationConstants::ACTION_ID_U_TARGET_USER_FOLLOW:
                         $html = $this->timelineService->generateRenderingItemActionSubscribeMe($timelineRow, $debateContext);
                         break;
-                    case ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_FOLLOW:
+                    case ReputationConstants::ACTION_ID_D_TARGET_DEBATE_FOLLOW:
                         $html = $this->timelineService->generateRenderingItemActionSubscribeMyDebate($timelineRow, $debateContext);
+                        break;
+                    case ReputationConstants::ACTION_ID_D_TARGET_DEBATE_NOTE_POS:
+                    case ReputationConstants::ACTION_ID_D_TARGET_REACTION_NOTE_POS:
+                        $html = $this->timelineService->generateRenderingItemActionNoteMyDocument($timelineRow, $debateContext);
+                        break;
+                    case ReputationConstants::ACTION_ID_D_TARGET_COMMENT_NOTE_POS:
+                        $html = $this->timelineService->generateRenderingItemActionNoteMyComment($timelineRow, $debateContext);
                         break;
                     default:
                         throw new InconsistentDataException(sprintf('Timeline action id %s not managed', $timelineRow->getId()));

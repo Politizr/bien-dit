@@ -1,0 +1,21 @@
+<div class="card myactivity">
+    <div class="miniProfile">
+        {% include 'PolitizrFrontBundle:User:_summaryAuthor.html.twig' with { 'user': user } only %}
+    </div>
+    <div class="coloredBg">
+        <div class="activity cardFollowing">
+            {% if way == 'up' %}
+                Vous avez ajouté ce sujet de discussion à votre fil d’actualité.
+            {% else %}
+                Vous avez retiré ce sujet de discussion de votre fil d’actualité.
+            {% endif %}
+        </div>
+        <h5>{% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': timelineRow } only %}</h5>
+        
+        <div class="miniPost">
+            {% include 'PolitizrFrontBundle:User:_summaryAuthor.html.twig' with { 'user': followDebate.user } only %}
+            {% include 'PolitizrFrontBundle:Document:_header.html.twig' with { 'document': followDebate, 'mini': true } only %}
+            <h5>{% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': followDebate } only %}</h5>
+        </div>
+    </div>
+</div>

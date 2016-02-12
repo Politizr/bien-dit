@@ -1,0 +1,14 @@
+<div class="card">
+    <div class="miniProfile">
+        {% include 'PolitizrFrontBundle:User:_summaryAuthor.html.twig' with { 'user': noteUser } only %}
+    </div>
+    <div class="coloredBg">
+        <div class="activity cardLike">Félicitations, {{ noteUser }} aime votre commentaire!</div>
+        <h5>{% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': timelineRow } only %}</h5>
+        <div class="commentInCard">
+            {{ comment | linkParentDocument }}
+        </div>
+        <h5>{% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': comment } only %}</h5>
+        {{ comment | itemContextComment }}
+    </div>
+</div>

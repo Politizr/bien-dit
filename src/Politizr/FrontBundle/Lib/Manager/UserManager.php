@@ -63,10 +63,21 @@ class UserManager
      * @param array $inQueryMyDebateIds IN stmt values
      * @param array $inQueryMyReactionIds IN stmt values
      * @param array $inQueryReputationIds IN stmt values
+     * @param array $inQueryReputationIds2 IN stmt values
+     * @param array $inQueryReputationIds3 IN stmt values
+     * @param array $inQueryReputationIds4 IN stmt values
      * @return string
      */
-    public function createMyTimelineRawSql($inQueryDebateIds, $inQueryUserIds, $inQueryMyDebateIds, $inQueryMyReactionIds, $inQueryReputationIds)
-    {
+    public function createMyTimelineRawSql(
+        $inQueryDebateIds,
+        $inQueryUserIds,
+        $inQueryMyDebateIds,
+        $inQueryMyReactionIds,
+        $inQueryReputationIds,
+        $inQueryReputationIds2,
+        $inQueryReputationIds3,
+        $inQueryReputationIds4
+    ) {
         $sql = "
 ( SELECT p_d_debate.id as id, 'null' as target_id, 'null' as target_user_id, 'null' as target_object_name, p_d_debate.title as title, p_d_debate.published_at as published_at, 'Politizr\\\Model\\\PDDebate' as type
 FROM p_d_debate
@@ -211,7 +222,13 @@ WHERE
 
 UNION DISTINCT
 
-( SELECT p_u_reputation.p_r_action_id as id, p_u_reputation.p_object_id as target_id, p_u_reputation.p_user_id as target_user_id, p_u_reputation.p_object_name as target_object_name, p_r_action.title as title, p_u_reputation.created_at as published_at, 'Politizr\\\Model\\\PRAction' as type
+( SELECT 
+    CASE p_u_reputation.p_r_action_id
+    WHEN :id_author_debate_note_pos THEN :id_target_debate_note_pos
+    WHEN :id_author_debate_follow THEN :id_author_target_follow
+    ELSE p_u_reputation.p_r_action_id
+    END as id,
+    p_u_reputation.p_object_id as target_id, p_u_reputation.p_user_id as target_user_id, p_u_reputation.p_object_name as target_object_name, p_r_action.title as title, p_u_reputation.created_at as published_at, 'Politizr\\\Model\\\PRAction' as type
 FROM p_r_action
     LEFT JOIN p_u_reputation
         ON p_r_action.id = p_u_reputation.p_r_action_id
@@ -225,7 +242,82 @@ WHERE
             AND p_d_debate.online = 1
             AND p_d_debate.p_user_id = :p_user_id7 )
     )
-    AND p_r_action.id = :p_r_action_id
+    AND p_r_action.id IN ($inQueryReputationIds2)
+)
+
+UNION DISTINCT
+
+( SELECT 
+    CASE p_u_reputation.p_r_action_id
+    WHEN :id_author_reaction_note_pos THEN :id_target_reaction_note_pos
+    ELSE p_u_reputation.p_r_action_id
+    END as id,
+    p_u_reputation.p_object_id as target_id, p_u_reputation.p_user_id as target_user_id, p_u_reputation.p_object_name as target_object_name, p_r_action.title as title, p_u_reputation.created_at as published_at, 'Politizr\\\Model\\\PRAction' as type
+FROM p_r_action
+    LEFT JOIN p_u_reputation
+        ON p_r_action.id = p_u_reputation.p_r_action_id
+
+WHERE
+   p_u_reputation.p_object_id IN (
+        ( SELECT p_d_reaction.id as id
+        FROM p_d_reaction
+        WHERE
+            p_d_reaction.published = 1
+            AND p_d_reaction.online = 1
+            AND p_d_reaction.p_user_id = :p_user_id8
+            AND p_d_reaction.tree_level > 0 )
+    )
+    AND p_r_action.id IN ($inQueryReputationIds3)
+)
+
+UNION DISTINCT
+
+( SELECT 
+    CASE p_u_reputation.p_r_action_id
+    WHEN :id_author_comment_note_pos THEN :id_target_comment_note_pos
+    ELSE p_u_reputation.p_r_action_id
+    END as id,
+    p_u_reputation.p_object_id as target_id, p_u_reputation.p_user_id as target_user_id, p_u_reputation.p_object_name as target_object_name, p_r_action.title as title, p_u_reputation.created_at as published_at, 'Politizr\\\Model\\\PRAction' as type
+FROM p_r_action
+    LEFT JOIN p_u_reputation
+        ON p_r_action.id = p_u_reputation.p_r_action_id
+
+WHERE
+   p_u_reputation.p_object_id IN (
+        ( SELECT p_d_d_comment.id as id
+        FROM p_d_d_comment
+        WHERE
+            p_d_d_comment.online = 1
+            AND p_d_d_comment.p_user_id = :p_user_id9
+        )
+    )
+    AND p_u_reputation.p_object_name = 'Politizr\\\Model\\\PDDComment'
+    AND p_r_action.id IN ($inQueryReputationIds4)
+)
+
+UNION DISTINCT
+
+( SELECT 
+    CASE p_u_reputation.p_r_action_id
+    WHEN :id_author_comment_note_pos2 THEN :id_target_comment_note_pos2
+    ELSE p_u_reputation.p_r_action_id
+    END as id,
+    p_u_reputation.p_object_id as target_id, p_u_reputation.p_user_id as target_user_id, p_u_reputation.p_object_name as target_object_name, p_r_action.title as title, p_u_reputation.created_at as published_at, 'Politizr\\\Model\\\PRAction' as type
+FROM p_r_action
+    LEFT JOIN p_u_reputation
+        ON p_r_action.id = p_u_reputation.p_r_action_id
+
+WHERE
+   p_u_reputation.p_object_id IN (
+        ( SELECT p_d_r_comment.id as id
+        FROM p_d_r_comment
+        WHERE
+            p_d_r_comment.online = 1
+            AND p_d_r_comment.p_user_id = :p_user_id10
+        )
+    )
+    AND p_u_reputation.p_object_name = 'Politizr\\\Model\\\PDRComment'
+    AND p_r_action.id IN ($inQueryReputationIds4)
 )
 
 ORDER BY published_at DESC
@@ -411,12 +503,26 @@ LIMIT :offset, :limit
      * @param string $inQueryMyDebateIds
      * @param string $inQueryMyReactionIds
      * @param string $inQueryReputationIds
+     * @param string $inQueryReputationIds2
+     * @param string $inQueryReputationIds3
+     * @param string $inQueryReputationIds4
      * @param integer $offset
      * @param integer $count
      * @return string
      */
-    public function generateMyTimelinePaginatedListing($userId, $inQueryDebateIds, $inQueryUserIds, $inQueryMyDebateIds, $inQueryMyReactionIds, $inQueryReputationIds, $offset, $count)
-    {
+    public function generateMyTimelinePaginatedListing(
+        $userId,
+        $inQueryDebateIds,
+        $inQueryUserIds,
+        $inQueryMyDebateIds,
+        $inQueryMyReactionIds,
+        $inQueryReputationIds,
+        $inQueryReputationIds2,
+        $inQueryReputationIds3,
+        $inQueryReputationIds4,
+        $offset,
+        $count
+    ) {
         $this->logger->info('*** generateMyTimelinePaginatedListing');
         $this->logger->info('$userId = ' . print_r($userId, true));
         $this->logger->info('$inQueryDebateIds = ' . print_r($inQueryDebateIds, true));
@@ -424,11 +530,23 @@ LIMIT :offset, :limit
         $this->logger->info('$inQueryMyDebateIds = ' . print_r($inQueryMyDebateIds, true));
         $this->logger->info('$inQueryMyReactionIds = ' . print_r($inQueryMyReactionIds, true));
         $this->logger->info('$inQueryReputationIds = ' . print_r($inQueryReputationIds, true));
+        $this->logger->info('$inQueryReputationIds2 = ' . print_r($inQueryReputationIds2, true));
+        $this->logger->info('$inQueryReputationIds3 = ' . print_r($inQueryReputationIds3, true));
+        $this->logger->info('$inQueryReputationIds4 = ' . print_r($inQueryReputationIds4, true));
         $this->logger->info('$offset = ' . print_r($offset, true));
         $this->logger->info('$count = ' . print_r($count, true));
 
         $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
-        $stmt = $con->prepare($this->createMyTimelineRawSql($inQueryDebateIds, $inQueryUserIds, $inQueryMyDebateIds, $inQueryMyReactionIds, $inQueryReputationIds));
+        $stmt = $con->prepare($this->createMyTimelineRawSql(
+            $inQueryDebateIds,
+            $inQueryUserIds,
+            $inQueryMyDebateIds,
+            $inQueryMyReactionIds,
+            $inQueryReputationIds,
+            $inQueryReputationIds2,
+            $inQueryReputationIds3,
+            $inQueryReputationIds4
+        ));
 
         $stmt->bindValue(':p_user_id', $userId, \PDO::PARAM_INT);
         $stmt->bindValue(':p_user_id2', $userId, \PDO::PARAM_INT);
@@ -437,8 +555,21 @@ LIMIT :offset, :limit
         $stmt->bindValue(':p_user_id5', $userId, \PDO::PARAM_INT);
         $stmt->bindValue(':p_user_id6', $userId, \PDO::PARAM_INT);
         $stmt->bindValue(':p_user_id7', $userId, \PDO::PARAM_INT);
-        $stmt->bindValue(':p_r_action_id', ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_FOLLOW, \PDO::PARAM_INT);
-        
+        $stmt->bindValue(':p_user_id8', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_user_id9', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_user_id10', $userId, \PDO::PARAM_INT);
+
+        $stmt->bindValue(':id_author_debate_note_pos', ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_NOTE_POS, \PDO::PARAM_INT);
+        $stmt->bindValue(':id_target_debate_note_pos', ReputationConstants::ACTION_ID_D_TARGET_DEBATE_NOTE_POS, \PDO::PARAM_INT);
+        $stmt->bindValue(':id_author_debate_follow', ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_FOLLOW, \PDO::PARAM_INT);
+        $stmt->bindValue(':id_author_target_follow', ReputationConstants::ACTION_ID_D_TARGET_DEBATE_FOLLOW, \PDO::PARAM_INT);
+        $stmt->bindValue(':id_author_reaction_note_pos', ReputationConstants::ACTION_ID_D_AUTHOR_REACTION_NOTE_POS, \PDO::PARAM_INT);
+        $stmt->bindValue(':id_target_reaction_note_pos', ReputationConstants::ACTION_ID_D_TARGET_REACTION_NOTE_POS, \PDO::PARAM_INT);
+        $stmt->bindValue(':id_author_comment_note_pos', ReputationConstants::ACTION_ID_D_AUTHOR_COMMENT_NOTE_POS, \PDO::PARAM_INT);
+        $stmt->bindValue(':id_target_comment_note_pos', ReputationConstants::ACTION_ID_D_TARGET_COMMENT_NOTE_POS, \PDO::PARAM_INT);
+        $stmt->bindValue(':id_author_comment_note_pos2', ReputationConstants::ACTION_ID_D_AUTHOR_COMMENT_NOTE_POS, \PDO::PARAM_INT);
+        $stmt->bindValue(':id_target_comment_note_pos2', ReputationConstants::ACTION_ID_D_TARGET_COMMENT_NOTE_POS, \PDO::PARAM_INT);
+
         $stmt->bindValue(':offset', $offset, \PDO::PARAM_INT);
         $stmt->bindValue(':count', $count, \PDO::PARAM_INT);
 

@@ -14,7 +14,7 @@ class ListingConstants
     // ************************************************************ //
 
     const MODAL_CLASSIC_PAGINATION = 10;
-    const TIMELINE_CLASSIC_PAGINATION = 10;
+    const TIMELINE_CLASSIC_PAGINATION = 20;
     const TIMELINE_USER_CLASSIC_PAGINATION = 10;
     const REPUTATION_CHARTS_PAGINATION = 20;
 
