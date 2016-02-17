@@ -66,6 +66,19 @@ class DocumentService
     /* ######################################################################################################## */
 
     /**
+     * Get top documents best notes
+     *
+     * @param înteger $count
+     * @return PropelCollection PDocument
+     */
+    public function getTopDocumentsBestNote($count = ListingConstants::LISTING_TOP_DOCUMENTS_LIMIT)
+    {
+        $documents = $this->documentManager->generateTopDocumentsBestNote($count);
+
+        return $documents;
+    }
+
+    /**
      * Get user's debates' suggestions paginated listing
      *
      * @param int $userId

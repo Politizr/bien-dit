@@ -1140,19 +1140,15 @@ class XhrDocument
         $filters = $request->get('documentFilterDate');
         $this->logger->info('$filters = ' . print_r($filters, true));
 
-        // @todo debates > documents
-        $debates = PDDebateQuery::create()
-                    ->distinct()
-                    ->online()
-                    ->filterByKeywords($filters)
-                    ->orderWithKeyword(ListingConstants::ORDER_BY_KEYWORD_BEST_NOTE)
-                    ->limit(ListingConstants::LISTING_TOP_DOCUMENTS_LIMIT)
-                    ->find();
+        // @todo filters implementation
+        $documents = $this->documentService->getTopDocumentsBestNote(
+            ListingConstants::LISTING_TOP_DOCUMENTS_LIMIT
+        );
 
         $html = $this->templating->render(
             'PolitizrFrontBundle:Document:_sidebarList.html.twig',
             array(
-                'documents' => $debates
+                'documents' => $documents
             )
         );
 
