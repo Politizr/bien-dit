@@ -22,6 +22,8 @@ class PolitizrTagExtension extends \Twig_Extension
     private $router;
     private $templating;
 
+    private $globalTools;
+
     private $logger;
 
     /**
@@ -29,6 +31,7 @@ class PolitizrTagExtension extends \Twig_Extension
      * @security.authorization_checker
      * @router
      * @templating
+     * @politizr.tools.global
      * @logger
      */
     public function __construct(
@@ -36,6 +39,7 @@ class PolitizrTagExtension extends \Twig_Extension
         $securityAuthorizationChecker,
         $router,
         $templating,
+        $globalTools,
         $logger
     ) {
         $this->securityTokenStorage = $securityTokenStorage;
@@ -43,6 +47,8 @@ class PolitizrTagExtension extends \Twig_Extension
 
         $this->router = $router;
         $this->templating = $templating;
+
+        $this->globalTools = $globalTools;
 
         $this->logger = $logger;
     }
@@ -58,8 +64,18 @@ class PolitizrTagExtension extends \Twig_Extension
     {
         return array(
             new \Twig_SimpleFilter(
-                'userTagAssociate',
-                array($this, 'userTagAssociate'),
+                'nbUsers',
+                array($this, 'nbUsers'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
+                'nbDocuments',
+                array($this, 'nbDocuments'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
+                'linkSubscribeTag',
+                array($this, 'linkSubscribeTag'),
                 array('is_safe' => array('html'))
             ),
         );
@@ -81,11 +97,6 @@ class PolitizrTagExtension extends \Twig_Extension
                 array($this, 'reactionTagsEdit'),
                 array('is_safe' => array('html'))
             ),
-            'userFollowTagsEdit'  => new \Twig_SimpleFunction(
-                'userFollowTagsEdit',
-                array($this, 'userFollowTagsEdit'),
-                array('is_safe' => array('html'))
-            ),
             'userTagsEdit'  => new \Twig_SimpleFunction(
                 'userTagsEdit',
                 array($this, 'userTagsEdit'),
@@ -105,45 +116,91 @@ class PolitizrTagExtension extends \Twig_Extension
     /* ######################################################################################################## */
 
     /**
-     * Display possibility to add a tag to user's tag list
+     * Tag's number of associated users
      *
      * @param PTag $tag
      * @return html
      */
-    public function userTagAssociate(PTag $tag)
+    public function nbUsers(PTag $tag)
     {
-        // $this->logger->info('*** addUserTag');
+        // $this->logger->info('*** nbUsers');
         // $this->logger->info('$tag = '.print_r($tag, true));
 
-        $html = '';
+        $nbUsers = $tag->countUsers();
 
-        // get current user
-        $user = $this->securityTokenStorage->getToken()->getUser();
-        
-        if ($user) {
-            // Test if user has already associated this tag
-            if ($user->isTagged($tag->getId())) {
-                $html = $this->templating->render(
-                    'PolitizrFrontBundle:Tag:_isUserTagged.html.twig'
-                );
-            } else {
-                $html = $this->templating->render(
-                    'PolitizrFrontBundle:Tag:_addUserTagged.html.twig',
-                    array(
-                        'tag' => $tag,
-                    )
-                );
-            }
+        if (0 === $nbUsers) {
+            $html = 'Suivi par personne';
+        } elseif (1 === $nbUsers) {
+            $html = sprintf('Suivi par 1 personne', $nbUsers);
+        } else {
+            $html = sprintf('Suivi par %s personnes', $this->globalTools->readeableNumber($nbUsers));
         }
 
         return $html;
     }
 
+    /**
+     * Tag's number of associated documents
+     *
+     * @param PTag $tag
+     * @return html
+     */
+    public function nbDocuments(PTag $tag)
+    {
+        // $this->logger->info('*** nbUsers');
+        // $this->logger->info('$tag = '.print_r($tag, true));
+
+        $nbDocuments = $tag->countDocuments();
+
+        if (0 === $nbDocuments) {
+            $html = 'Aucune publication n\'aborde cette thématique';
+        } elseif (1 === $nbDocuments) {
+            $html = sprintf('1 publication aborde cette thématique', $nbDocuments);
+        } else {
+            $html = sprintf('%s publications abordent cette thématique', $this->globalTools->readeableNumber($nbDocuments));
+        }
+
+        return $html;
+    }
+
+    /**
+     * Follow / unfollow tag
+     *
+     * @param PDDebate $tag
+     * @return string
+     */
+    public function linkSubscribeTag(PTag $tag)
+    {
+        // $this->logger->info('*** linkSubscribeTag');
+        // $this->logger->info('$tag = '.print_r($tag, true));
+
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+
+        if ($user) {
+            // Test if user has already associated this tag
+            if ($user->isTagged($tag->getId())) {
+                $follower = true;
+            } else {
+                $follower = false;
+            }
+        }
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Follow:_subscribeTagLink.html.twig',
+            array(
+                'object' => $tag,
+                'follower' => $follower
+            )
+        );
+
+        return $html;
+    }
 
     /* ######################################################################################################## */
     /*                                              FONCTIONS                                                   */
     /* ######################################################################################################## */
-
 
     /* ######################################################################################################## */
     /*                                      EDIT & DISPLAY TAGS                                                 */

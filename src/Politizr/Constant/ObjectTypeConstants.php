@@ -14,6 +14,7 @@ class ObjectTypeConstants
     const TYPE_DEBATE_COMMENT = 'Politizr\Model\PDDComment';
     const TYPE_REACTION_COMMENT = 'Politizr\Model\PDRComment';
     const TYPE_USER = 'Politizr\Model\PUser';
+    const TYPE_TAG = 'Politizr\Model\PTag';
     const TYPE_BADGE = 'Politizr\Model\PRBadge';
     const TYPE_ABUSE = 'Politizr\Model\PMAbuseReporting';
     const TYPE_ASK_FOR_UPDATE = 'Politizr\Model\PMAskForUpdate';

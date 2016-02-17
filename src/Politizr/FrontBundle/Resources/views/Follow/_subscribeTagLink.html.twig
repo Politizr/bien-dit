@@ -1,0 +1,15 @@
+{% if app.user %}
+    {% if follower %}
+        <div class="stopFollowing" action="followTag" uuid="{{ object.uuid }}" way="unfollow">
+            <div class="actionText">Supprimer&nbsp;des&nbsp;thématiques&nbsp;suivies</div>
+            <i class="icon-remove"></i>
+        </div>
+    {% else %}
+        <div class="startFollowing" action="followTag" uuid="{{ object.uuid }}" way="follow">
+            <div class="actionText">Ajouter&nbsp;aux&nbsp;thématiques&nbsp;suivies</div>
+            <i class="icon-add"></i>
+        </div>
+    {% endif %}
+{% else %}
+    <a href="{{ path('Inscription') }}">Inscription</a>
+{% endif %}

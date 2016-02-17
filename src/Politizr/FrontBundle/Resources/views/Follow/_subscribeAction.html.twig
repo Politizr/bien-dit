@@ -3,4 +3,6 @@
     {{ subject | linkSubscribeDebate }}
 {% elseif subject.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_USER') %} 
     {{ subject | linkSubscribeUser }}
+{% elseif subject.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_TAG') %} 
+    {{ subject | linkSubscribeTag }}
 {% endif %}

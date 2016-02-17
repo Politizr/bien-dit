@@ -1,0 +1,12 @@
+<div class="bubbTop">
+    {{ tag | nbUsers }}
+    <div class="miniActions">
+        <div class="actionFollow withLoaderInside">
+            {% include 'PolitizrFrontBundle:Follow:_subscribeAction.html.twig' with { 'subject': tag } only %}
+        </div>
+    </div>
+</div>
+<div class="bubbBottom">
+    {{ tag | nbDocuments }}
+</div>
+<div class="bubbArrow"><i class="icon-arrow-down"></i></div>

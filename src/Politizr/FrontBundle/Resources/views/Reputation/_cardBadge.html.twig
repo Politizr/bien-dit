@@ -1,7 +1,5 @@
 <div class="card">
-    <div class="miniProfile">
-        {% include 'PolitizrFrontBundle:User:_summaryAuthor.html.twig' with { 'user': user } only %}
-    </div>
+    {% include 'PolitizrFrontBundle:User:_summaryAuthor.html.twig' with { 'user': user } only %}
     <div class="coloredBg">
         <div class="activity cardBadge">Félicitations! Vous avez obtenu le badge "{{ badge }}".</div>
         <h5>{% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': timelineRow } only %}</h5>

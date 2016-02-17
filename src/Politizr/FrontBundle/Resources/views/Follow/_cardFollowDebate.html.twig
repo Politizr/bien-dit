@@ -1,7 +1,5 @@
 <div class="card myactivity">
-    <div class="miniProfile">
-        {% include 'PolitizrFrontBundle:User:_summaryAuthor.html.twig' with { 'user': user } only %}
-    </div>
+    {% include 'PolitizrFrontBundle:User:_summaryAuthor.html.twig' with { 'user': user } only %}
     <div class="coloredBg">
         <div class="activity cardFollowing">
             {% if way == 'up' %}

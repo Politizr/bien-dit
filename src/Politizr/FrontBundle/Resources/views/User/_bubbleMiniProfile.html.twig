@@ -3,11 +3,9 @@
         <div class="avatar40">{{ user | photo('user_40') }}</div>
         <div class="profilenInfo">
             <div class="profileName">
-                <div class="profileName">
-                    <a href="{{ path('UserDetail', { 'slug': user.slug }) }}" class="{% if isFollowed is defined and isFollowed %}followedMember{% endif %}">
-                        {{ user }}
-                    </a>
-                </div>
+                <a href="{{ path('UserDetail', { 'slug': user.slug }) }}" class="{% if isFollowed is defined and isFollowed %}followedMember{% endif %}">
+                    {{ user }}
+                </a>
                 {% if user.isQualified %}
                     {% set organizations = user.currentOrganizations %}
                     {% for organization in organizations %}

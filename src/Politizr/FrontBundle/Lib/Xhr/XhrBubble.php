@@ -4,9 +4,10 @@ namespace Politizr\FrontBundle\Lib\Xhr;
 use Symfony\Component\HttpFoundation\Request;
 
 use Politizr\Model\PUserQuery;
+use Politizr\Model\PTagQuery;
 
 /**
- * XHR service for dashboard management.
+ * XHR service for bubble management.
  *
  * @author Lionel Bouzonville
  */
@@ -43,7 +44,7 @@ class XhrBubble
     /* ######################################################################################################## */
 
     /**
-     * Map navigation
+     * User's bubble
      */
     public function user(Request $request)
     {
@@ -60,6 +61,32 @@ class XhrBubble
             'PolitizrFrontBundle:User:_bubbleUserContent.html.twig',
             array(
                 'user' => $user,
+            )
+        );
+
+        return array(
+            'html' => $html,
+            );
+    }
+
+    /**
+     * Tag's bubble
+     */
+    public function tag(Request $request)
+    {
+        $this->logger->info('*** tag');
+        
+        // Request arguments
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
+
+        // get tag
+        $tag = PTagQuery::create()->filterByUuid($uuid)->findOne();
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Tag:_bubbleTagContent.html.twig',
+            array(
+                'tag' => $tag,
             )
         );
 

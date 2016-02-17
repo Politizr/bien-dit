@@ -396,6 +396,52 @@ class XhrTag
     /* ######################################################################################################## */
 
     /**
+     * User's tag association ("user follow tag")
+     */
+    public function follow(Request $request)
+    {
+        $this->logger->info('*** follow');
+
+        // Request arguments
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        $way = $request->get('way');
+        $this->logger->info('$way = ' . print_r($way, true));
+
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+
+        // get tag
+        $tag = PTagQuery::create()
+                    ->filterByUuid($uuid)
+                    ->findOne();
+        if (!$tag) {
+            throw new InconsistentDataException(sprintf('Tag %s does not exist', $uuid));
+        }
+
+        if ($way == 'follow') {
+            $this->tagManager->createUserTag($user->getId(), $tag->getId());
+        } elseif ($way == 'unfollow') {
+            $deleted = $this->tagManager->deleteUserTag($user->getId(), $tag->getId());
+        } else {
+            throw new InconsistentDataException(sprintf('Follow\'s way %s not managed', $way));
+        }
+
+        // Rendering
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Follow:_subscribeAction.html.twig',
+            array(
+                'subject' => $tag,
+            )
+        );
+
+        return array(
+            'html' => $html,
+        );
+    }
+
+
+    /**
      * User's tag creation
      */
     public function userAddTag(Request $request)
@@ -485,33 +531,6 @@ class XhrTag
     }
 
     /**
-     * User's tag deletion
-     */
-    public function userDeleteTag(Request $request)
-    {
-        $this->logger->info('*** userDeleteTag');
-        
-        // Request arguments
-        $tagUuid = $request->get('tagUuid');
-        $this->logger->info('$tagUuid = ' . print_r($tagUuid, true));
-        $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
-
-        // get current user
-        $user = $this->securityTokenStorage->getToken()->getUser();
-        
-        $tag = PTagQuery::create()->filterByUuid($tagUuid)->findOne();
-        $subject = PUserQuery::create()->filterByUuid($uuid)->findOne();
-        if ($subject->getId() != $user->getId()) {
-            throw new InconsistentDataException(sprintf('User id-%s tries to delete tag to PUser id-%s', $user->getId(), $subject->getId()));
-        }
-
-        $deleted = $this->tagManager->deleteUserTag($subject->getId(), $tag->getId());
-
-        return $deleted;
-    }
-
-    /**
      * User's tag hide / unhide
      */
     public function userHideTag(Request $request)
@@ -544,39 +563,6 @@ class XhrTag
         $withHidden = $userTaggedTag->getHidden();
 
         return $withHidden;
-    }
-
-    /**
-     * User's tag association
-     */
-    public function userAssociateTag(Request $request)
-    {
-        $this->logger->info('*** userAssociateTag');
-
-        // Request arguments
-        $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
-
-        // get current user
-        $user = $this->securityTokenStorage->getToken()->getUser();
-        
-        $tag = PTagQuery::create()
-                    ->filterByUuid($uuid)
-                    ->findOne();
-        if (!$tag) {
-            throw new InconsistentDataException(sprintf('Tag %s does not exist', $uuid));
-        }
-
-        // associate tag to user's tagging
-        $this->tagManager->createUserTag($user->getId(), $tag->getId());
-
-        $html = $this->templating->render(
-            'PolitizrFrontBundle:Tag:_isUserTagged.html.twig'
-        );
-
-        return array(
-            'html' => $html,
-        );
     }
 
     /* ######################################################################################################## */

@@ -20,5 +20,11 @@
                 <i>utilisateur supprimé</i>
             {% endif %}
         </div>
+        {% if document.user and document.user.isQualified %}
+            {% set organizations = document.user.currentOrganizations %}
+            {% for organization in organizations %}
+                <div class="org"><a href="#">{{ organization.initials }}</a></div>
+            {% endfor %}
+        {% endif %}
     </div>
 </div>

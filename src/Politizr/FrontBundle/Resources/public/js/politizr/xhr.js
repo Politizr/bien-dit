@@ -12,6 +12,7 @@ var RETURN_URL = 3;
 // FOLLOW
 var ROUTE_FOLLOW_DEBATE = 'profil/suivre/debat';
 var ROUTE_FOLLOW_USER = 'profil/suivre/utilisateur';
+var ROUTE_FOLLOW_TAG = 'profil/suivre/thematique';
 
 // COMMENTS
 var ROUTE_COMMENTS = 'commentaires';
@@ -131,6 +132,7 @@ var ROUTE_MONITORING_ASK_FOR_UPDATE_CHECK = 'profil/modifier-mes-donnees/check';
 
 // BUBBLES
 var ROUTE_BUBBLE_USER = 'bubble/user';
+var ROUTE_BUBBLE_TAG = 'bubble/tag';
 
 
 // ******************************************************** //

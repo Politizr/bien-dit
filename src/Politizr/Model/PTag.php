@@ -4,6 +4,8 @@ namespace Politizr\Model;
 
 use Politizr\Model\om\BasePTag;
 
+use Politizr\Constant\ObjectTypeConstants;
+
 use StudioEcho\Lib\StudioEchoUtils;
 
 /**
@@ -40,7 +42,33 @@ class PTag extends BasePTag
     {
         return parent::getPTagRelatedByPTParentId($con, $doQuery);
     }
+
+    /**
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return ObjectTypeConstants::TYPE_TAG;
+    }
     
+    /* ######################################################################################################## */
+    /*                                               DOCUMENTS                                                  */
+    /* ######################################################################################################## */
+    
+    /**
+     * Sum of count debates & reactions
+     *
+     * @param $queryDebate
+     * @param $queryReaction
+     * @return integer
+     */
+    public function countDocuments($queryDebate = null, $queryReaction = null)
+    {
+        return $this->countDebates($queryDebate) + $this->countReactions($queryReaction);
+    }
+
+
     /* ######################################################################################################## */
     /*                                                 DEBATES                                                  */
     /* ######################################################################################################## */

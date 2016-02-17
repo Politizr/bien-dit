@@ -11,6 +11,7 @@ services:
             - @security.authorization_checker
             - @router
             - @templating
+            - @politizr.tools.global
             - @logger
         tags:
             - { name: twig.extension }

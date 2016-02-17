@@ -146,6 +146,8 @@ class XhrUser
             // Events
             $event = new GenericEvent($targetUser, array('user_id' => $user->getId(),));
             $dispatcher = $this->eventDispatcher->dispatch('r_user_unfollow', $event);
+        } else {
+            throw new InconsistentDataException(sprintf('Follow\'s way %s not managed', $way));
         }
 
         // Rendering

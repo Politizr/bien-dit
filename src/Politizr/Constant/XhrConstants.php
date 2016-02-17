@@ -25,6 +25,7 @@ class XhrConstants
     // FOLLOW
     const ROUTE_FOLLOW_DEBATE = 'profil/suivre/debat';
     const ROUTE_FOLLOW_USER = 'profil/suivre/utilisateur';
+    const ROUTE_FOLLOW_TAG = 'profil/suivre/thematique';
 
     // COMMENTS
     const ROUTE_COMMENTS = 'commentaires';
@@ -143,6 +144,7 @@ class XhrConstants
 
     // BUBBLES
     const ROUTE_BUBBLE_USER = 'bubble/user';
+    const ROUTE_BUBBLE_TAG = 'bubble/tag';
 
     // ******************************************************** //
     //                  XHR URL REWRITING (ADMIN)
