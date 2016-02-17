@@ -287,11 +287,11 @@ class PolitizrUserExtension extends \Twig_Extension
         $nbFollowers = $user->countFollowers();
 
         if (0 === $nbFollowers) {
-            $html = 'Aucun abonné-e';
+            $html = 'Aucun abonné';
         } elseif (1 === $nbFollowers) {
-            $html = '1 abonné-e';
+            $html = '1 abonné';
         } else {
-            $html = $this->globalTools->readeableNumber($nbFollowers).' abonné-e-s';
+            $html = $this->globalTools->readeableNumber($nbFollowers).' abonnés';
         }
 
         return $html;
