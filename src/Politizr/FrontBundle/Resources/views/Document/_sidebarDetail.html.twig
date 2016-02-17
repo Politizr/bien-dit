@@ -14,7 +14,8 @@
     <div class="profileName">
         <div class="profileNameHolder">
             {% if document.user %}
-                <a href="{{ path('UserDetail', { 'slug': document.user.slug }) }}">{{ document.user }}</a>
+                <a href="{{ path('UserDetail', { 'slug': document.user.slug }) }}" action="bubbleProfile" uuid="{{ document.user.uuid }}">{{ document.user }}</a>
+                {% include 'PolitizrFrontBundle:User:_bubbleUser.html.twig' with { 'user': document.user } only %}
             {% else %}
                 <i>utilisateur supprimé</i>
             {% endif %}
