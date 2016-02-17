@@ -340,9 +340,12 @@ class TimelineService
         } else {
             $document = PDReactionQuery::create()->findPk($documentId);
         }
-        if ($document) {
-            $author = PUserQuery::create()->findPk($document->getPUserId());
+
+        if ($document === null) {
+            return;
         }
+
+        $author = PUserQuery::create()->findPk($document->getPUserId());
 
         $way = 'down';
         if ($actionId == ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_NOTE_POS || $actionId == ReputationConstants::ACTION_ID_D_AUTHOR_REACTION_NOTE_POS) {
@@ -387,9 +390,12 @@ class TimelineService
         } else {
             $comment = PDRCommentQuery::create()->findPk($commentId);
         }
-        if ($comment) {
-            $author = PUserQuery::create()->findPk($comment->getPUserId());
+
+        if ($comment === null) {
+            return;
         }
+
+        $author = $comment->getPUser();
 
         $way = 'down';
         if ($actionId == ReputationConstants::ACTION_ID_D_AUTHOR_COMMENT_NOTE_POS) {
@@ -428,6 +434,10 @@ class TimelineService
         $followUser = null;
         $followUser = PUserQuery::create()->findPk($followId);
 
+        if ($followUser === null) {
+            return;
+        }
+
         $way = 'down';
         if ($actionId == ReputationConstants::ACTION_ID_U_AUTHOR_USER_FOLLOW) {
             $way = 'up';
@@ -463,6 +473,9 @@ class TimelineService
 
         $followDebate = null;
         $followDebate = PDDebateQuery::create()->findPk($followId);
+        if ($followDebate === null) {
+            return;
+        }
 
         $way = 'down';
         if ($actionId == ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_FOLLOW) {
@@ -500,6 +513,10 @@ class TimelineService
         $subscriberUser = null;
         $subscriberUser = PUserQuery::create()->findPk($subscriberId);
 
+        if ($subscriberUser === null) {
+            return;
+        }
+
         $html = $this->templating->render(
             'PolitizrFrontBundle:Follow:_cardSubscribeMe.html.twig',
             array(
@@ -530,6 +547,10 @@ class TimelineService
 
         $debate = null;
         $debate = PDDebateQuery::create()->findPk($debateId);
+
+        if ($debate === null) {
+            return;
+        }
 
         $subscriberUser = null;
         $subscriberUser = PUserQuery::create()->findPk($subscriberId);
@@ -568,6 +589,10 @@ class TimelineService
             $document = PDDebateQuery::create()->findPk($documentId);
         } else {
             $document = PDReactionQuery::create()->findPk($documentId);
+        }
+
+        if ($document === null) {
+            return;
         }
 
         $noteUser = null;
@@ -617,6 +642,10 @@ class TimelineService
             $comment = PDRCommentQuery::create()->findPk($commentId);
         }
 
+        if ($comment === null) {
+            return;
+        }
+
         $noteUser = null;
         $noteUser = PUserQuery::create()->findPk($noteUserId);
 
@@ -653,6 +682,10 @@ class TimelineService
         $badgeId = $timelineRow->getId();
         $badge = PRBadgeQuery::create()->findPk($badgeId);
 
+        if ($badge === null) {
+            return;
+        }
+
         $html = $this->templating->render(
             'PolitizrFrontBundle:Reputation:_cardBadge.html.twig',
             array(
@@ -666,7 +699,7 @@ class TimelineService
     }
 
     /**
-     * Generate the rendering of an item badge timeline row
+     * Generate the rendering of an item "user" timeline row
      *
      * @param integer $userId
      * @return string
@@ -674,6 +707,10 @@ class TimelineService
     public function generateRenderingItemUser($userId)
     {
         $user = PUserQuery::create()->findPk($userId);
+
+        if ($user === null) {
+            return;
+        }
 
         $html = $this->templating->render(
             'PolitizrFrontBundle:User:_cardUser.html.twig',
@@ -696,6 +733,10 @@ class TimelineService
     {
         $debate = PDDebateQuery::create()->findPk($debateId);
 
+        if ($debate === null) {
+            return;
+        }
+
         $html = $this->templating->render(
             'PolitizrFrontBundle:Document:_card.html.twig',
             array(
@@ -716,6 +757,10 @@ class TimelineService
     public function generateRenderingItemReaction($reactionId, $debateContext)
     {
         $reaction = PDReactionQuery::create()->findPk($reactionId);
+
+        if ($reaction === null) {
+            return;
+        }
 
         $html = $this->templating->render(
             'PolitizrFrontBundle:Document:_card.html.twig',
@@ -738,7 +783,14 @@ class TimelineService
     {
         $user = $this->securityTokenStorage->getToken()->getUser();
         $comment = PDDCommentQuery::create()->findPk($commentId);
+        if ($comment === null) {
+            return;
+        }
+
         $parentDebate = $comment->getPDocument();
+        if ($parentDebate === null) {
+            return;
+        }
 
         $authorIsMe = false;
         $authorIsFollowed = false;
@@ -782,8 +834,17 @@ class TimelineService
     {
         $user = $this->securityTokenStorage->getToken()->getUser();
         $comment = PDRCommentQuery::create()->findPk($commentId);
+        if ($comment === null) {
+            return;
+        }
         $parentReaction = $comment->getPDocument();
+        if ($parentReaction === null) {
+            return;
+        }
         $parentDebate = $parentReaction->getDebate();
+        if ($parentDebate === null) {
+            return;
+        }
 
         $authorIsMe = false;
         $authorIsFollowed = false;

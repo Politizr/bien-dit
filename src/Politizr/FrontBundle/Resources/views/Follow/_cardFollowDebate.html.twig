@@ -13,9 +13,13 @@
         <h5>{% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': timelineRow } only %}</h5>
         
         <div class="miniPost">
-            {% include 'PolitizrFrontBundle:User:_summaryAuthor.html.twig' with { 'user': followDebate.user } only %}
-            {% include 'PolitizrFrontBundle:Document:_header.html.twig' with { 'document': followDebate, 'mini': true } only %}
-            <h5>{% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': followDebate } only %}</h5>
+            {% if followDebate %}
+                {% include 'PolitizrFrontBundle:User:_summaryAuthor.html.twig' with { 'user': followDebate.user } only %}
+                {% include 'PolitizrFrontBundle:Document:_header.html.twig' with { 'document': followDebate, 'mini': true } only %}
+                <h5>{% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': followDebate } only %}</h5>
+            {% else %}
+                Ce débat a été supprimé.
+            {% endif %}
         </div>
     </div>
 </div>
