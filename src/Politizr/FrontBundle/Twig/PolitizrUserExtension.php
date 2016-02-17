@@ -91,6 +91,21 @@ class PolitizrUserExtension extends \Twig_Extension
                 array('is_safe' => array('html'))
             ),
             new \Twig_SimpleFilter(
+                'nbFollowers',
+                array($this, 'nbFollowers'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
+                'nbSubscribers',
+                array($this, 'nbSubscribers'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
+                'nbPublications',
+                array($this, 'nbPublications'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
                 'userTags',
                 array($this, 'userTags'),
                 array('is_safe' => array('html'))
@@ -258,6 +273,78 @@ class PolitizrUserExtension extends \Twig_Extension
         return $html;
     }
 
+    /**
+     * User's number of followers
+     *
+     * @param PUser $user
+     * @return html
+     */
+    public function nbFollowers(PUser $user)
+    {
+        // $this->logger->info('*** nbFollowers');
+        // $this->logger->info('$user = '.print_r($user, true));
+
+        $nbFollowers = $user->countFollowers();
+
+        if (0 === $nbFollowers) {
+            $html = 'Aucun abonné-e';
+        } elseif (1 === $nbFollowers) {
+            $html = '1 abonné-e';
+        } else {
+            $html = $this->globalTools->readeableNumber($nbFollowers).' abonné-e-s';
+        }
+
+        return $html;
+    }
+
+    /**
+     * User's number of subscribers
+     *
+     * @param PUser $user
+     * @return html
+     */
+    public function nbSubscribers(PUser $user)
+    {
+        // $this->logger->info('*** nbSubscribers');
+        // $this->logger->info('$user = '.print_r($user, true));
+
+        $nbSubscribers = $user->countSubscribers();
+
+        if (0 === $nbSubscribers) {
+            $html = 'Aucun abonnement';
+        } elseif (1 === $nbSubscribers) {
+            $html = '1 abonnement';
+        } else {
+            $html = $this->globalTools->readeableNumber($nbSubscribers).' abonnements';
+        }
+
+        return $html;
+    }
+
+    /**
+     * User's number of publications
+     *
+     * @param PUser $user
+     * @return html
+     */
+    public function nbPublications(PUser $user)
+    {
+        // $this->logger->info('*** nbPublications');
+        // $this->logger->info('$user = '.print_r($user, true));
+
+        $nbPublications = $user->countPublications();
+
+        if (0 === $nbPublications) {
+            $html = 'Aucune publication';
+        } elseif (1 === $nbPublications) {
+            $html = '1 publication';
+        } else {
+            $html = $this->globalTools->readeableNumber($nbPublications).' publications';
+        }
+
+        return $html;
+    }
+
    /**
      * Display user's tags
      *
@@ -293,14 +380,13 @@ class PolitizrUserExtension extends \Twig_Extension
         return $html;
     }
 
-
     /**
      * Follow / unfollow user
      *
      * @param PUser $user
      * @return string
      */
-    public function linkSubscribeUser(PUser $user)
+    public function linkSubscribeUser(PUser $followUser)
     {
         // $this->logger->info('*** linkSubscribeUser');
         // $this->logger->info('$debate = '.print_r($user, true));
@@ -309,10 +395,10 @@ class PolitizrUserExtension extends \Twig_Extension
         $user = $this->securityTokenStorage->getToken()->getUser();
         
         $follower = false;
-        if ($user) {
+        if ($followUser) {
             $follow = PUFollowUQuery::create()
                 ->filterByPUserFollowerId($user->getId())
-                ->filterByPUserId($user->getId())
+                ->filterByPUserId($followUser->getId())
                 ->findOne();
             
             if ($follow) {
@@ -324,7 +410,7 @@ class PolitizrUserExtension extends \Twig_Extension
         $html = $this->templating->render(
             'PolitizrFrontBundle:Follow:_subscribeUserLink.html.twig',
             array(
-                'object' => $user,
+                'object' => $followUser,
                 'follower' => $follower
             )
         );

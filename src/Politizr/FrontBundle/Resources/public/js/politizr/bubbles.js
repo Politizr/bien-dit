@@ -19,26 +19,26 @@ $("body").on("mouseover", "[action='bubbleProfile']", function() {
     var localLoader = context.find('.ajaxLoader').first();
 
     // display bubble
-    context.fadeIn();
-
-    $.ajax({
-        type: 'POST',
-        url: xhrPath,
-        context: context,
-        data: { 'uuid': uuid },
-        dataType: 'json',
-        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, localLoader ); },
-        statusCode: { 404: function () { xhr404(localLoader); }, 500: function() { xhr500(localLoader); } },
-        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown, localLoader); },
-        success: function(data) {
-            if (data['error']) {
-                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
-                $('#infoBoxHolder .boxError').show();
-            } else {
-                context.find('.bubbleContent').html(data['html']);
+    context.delay(500).fadeIn(400, function() {
+        $.ajax({
+            type: 'POST',
+            url: xhrPath,
+            context: context,
+            data: { 'uuid': uuid },
+            dataType: 'json',
+            beforeSend: function ( xhr ) { xhrBeforeSend( xhr, localLoader ); },
+            statusCode: { 404: function () { xhr404(localLoader); }, 500: function() { xhr500(localLoader); } },
+            error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown, localLoader); },
+            success: function(data) {
+                if (data['error']) {
+                    $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                    $('#infoBoxHolder .boxError').show();
+                } else {
+                    context.find('.bubbleContent').html(data['html']);
+                }
+                localLoader.hide();
             }
-            localLoader.hide();
-        }
+        });
     });
 });
 

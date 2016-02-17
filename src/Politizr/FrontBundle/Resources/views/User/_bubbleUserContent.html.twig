@@ -1,19 +1,17 @@
 <div class="bubbTop">
     {% include 'PolitizrFrontBundle:User:_bubbleMiniProfile.html.twig' %}
     <div class="profileStats">
-        34 abonnés • 2.1K abonnements<br>
-        132 publications
+        {{ user | nbFollowers }} • {{ user | nbSubscribers }}<br>
+        {{ user | nbPublications }}
     </div>  
 
     <div class="miniActions">
-        includes/actionFollow
+        <div class="actionFollow withLoaderInside">
+            {% include 'PolitizrFrontBundle:Follow:_subscribeAction.html.twig' with { 'subject': user } only %}
+        </div>
     </div>
 </div>
 <div class="bubbBottom">
-    <span class="badgesCounter">
-        <span class="badgesCounterGold">2</span>
-        <span class="badgesCounterSilver">5</span>
-        <!-- <span class="badgesCounterBronze">9</span> -->
-    </span>
+    {% include 'PolitizrFrontBundle:Reputation:_badgesCounter.html.twig' %}
 </div>
 <div class="bubbArrow"><i class="icon-arrow-down"></i></div>

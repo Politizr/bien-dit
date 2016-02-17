@@ -504,6 +504,17 @@ class PUser extends BasePUser implements UserInterface
 
     /**
      *
+     * @return integer
+     */
+    public function countSubscribers()
+    {
+        $users = $this->getSubscribers();
+
+        return count($users);
+    }
+
+    /**
+     *
      * @return PropelCollection[PUser]
      */
     public function getSubscribersQ()
@@ -518,7 +529,7 @@ class PUser extends BasePUser implements UserInterface
      *
      * @return integer
      */
-    public function countPUserSubscribersQ()
+    public function countSubscribersQ()
     {
         $users = $this->getSubscribersQ();
 
@@ -541,7 +552,7 @@ class PUser extends BasePUser implements UserInterface
      *
      * @return integer
      */
-    public function countPUserSubscribersC()
+    public function countSubscribersC()
     {
         $users = $this->getSubscribersC();
 
@@ -802,6 +813,20 @@ class PUser extends BasePUser implements UserInterface
             ->count();
 
         return $nbReactions;
+    }
+
+    /**
+     * User's debates + reactions count
+     *
+     * @param boolean $online
+     * @param boolean $published
+     * @return integer
+     */
+    public function countPublications($online = true, $published = true)
+    {
+        $nbPublications = $this->countDebates($online, $published) + $this->countReactions($online, $published);
+
+        return $nbPublications;
     }
 
     /**

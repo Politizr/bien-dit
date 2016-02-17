@@ -435,4 +435,23 @@ class GlobalTools
 
         return $timeline;
     }
+
+    /**
+     * Format high number to human readeable number (1k, 1M)
+     *
+     * @param integer $number
+     * @return integer
+     */
+    public function readeableNumber($number)
+    {
+        if ($number < 10000) {
+            $number = number_format($number, 0, ',', ' ');
+        } else {
+            $d = $number < 1000000 ? 1000 : 1000000;
+            $f = round($number / $d, 1);
+            $number = number_format($f, $f - intval($f) ? 1 : 0, ',', ' ') . ($d == 1000 ? 'k' : 'M');
+        }
+
+        return $number;
+    }
 }

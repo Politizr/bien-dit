@@ -4,15 +4,15 @@ $(function() {
 })
 
 $(document).mousedown(function (e) {
-    var container = $("#notifBox");
+    var container = $("#notifBox, [action='toggleNotifBox']");
     if (!container.is(e.target) // if the target of the click isn't the container...
         && container.has(e.target).length === 0) // ... nor a descendant of the container
     {
-        container.hide();
-        $("body").on("click", "[action='toggleNotifBox']", function() {
-            $('#notifBox').toggle();
-        });
+        $('#notifBox').hide();      
     }
+});
+$("body").on("click", "[action='toggleNotifBox']", function() {
+    $('#notifBox').toggle();
 });
 
 // Regular function with arguments

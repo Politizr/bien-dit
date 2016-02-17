@@ -1,9 +1,7 @@
 // follow / unfollow debate
 $("body").on("click", "[action='followDebate']", function(e) {
-    // console.log('*** click followDebate');
+    console.log('*** click followDebate');
     
-    var context = $(this).closest('.actionFollow');
-    var localLoader = $(this).closest('.actionFollow').find('.ajaxLoader').first();
     var xhrPath = getXhrPath(
         ROUTE_FOLLOW_DEBATE,
         'document',
@@ -11,11 +9,12 @@ $("body").on("click", "[action='followDebate']", function(e) {
         RETURN_HTML
         );
 
+    var context = $(this).closest('.actionFollow');
+    var localLoader = $(this).closest('.actionFollow').find('.ajaxLoader').first();
     var uuid = $(this).attr('uuid');
     var way = $(this).attr('way');
-
-    // console.log('uuid = '+uuid);
-    // console.log('way = '+way);
+    console.log('uuid = '+uuid);
+    console.log('way = '+way);
 
     $.ajax({
         type: 'POST',
@@ -31,7 +30,7 @@ $("body").on("click", "[action='followDebate']", function(e) {
                 $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
                 $('#infoBoxHolder .boxError').show();
             } else {
-                // MAJ du bouton suivre / Se désabonner
+                // update follow / unfollow
                 $(this).html(data['html']);
 
                 // @todo to plug w. new listing
@@ -42,10 +41,8 @@ $("body").on("click", "[action='followDebate']", function(e) {
                 badgesCounter();
 
                 // refresh timeline
-                if ($('.myfeed').length) {
-                    Waypoint.destroyAll();
-                    timelineList();
-                }
+                refreshTimeline();
+                stickySidebar();
             }
             localLoader.hide();
         }
@@ -54,10 +51,8 @@ $("body").on("click", "[action='followDebate']", function(e) {
 
 // follow / unfollow user
 $("body").on("click", "[action='followUser']", function(e) {
-    // console.log('*** click followUser');
+    console.log('*** click followUser');
 
-    var context = $(this).closest('.actionFollow');
-    var localLoader = $(this).closest('.actionFollow').find('.ajaxLoader').first();
     var xhrPath = getXhrPath(
         ROUTE_FOLLOW_USER,
         'user',
@@ -65,11 +60,18 @@ $("body").on("click", "[action='followUser']", function(e) {
         RETURN_HTML
         );
     
+    var context = $(this).closest('.actionFollow');
+    var localLoader = $(this).closest('.actionFollow').find('.ajaxLoader').first();
+    var uuid = $(this).attr('uuid');
+    var way = $(this).attr('way');
+    console.log('uuid = '+uuid);
+    console.log('way = '+way);
+
     $.ajax({
         type: 'POST',
         url: xhrPath,
         context: context,
-        data: { 'uuid': $(this).attr('uuid'), 'way': $(this).attr('way') },
+        data: { 'uuid': uuid, 'way': way },
         dataType: 'json',
         beforeSend: function ( xhr ) { xhrBeforeSend( xhr, localLoader ); },
         statusCode: { 404: function () { xhr404(localLoader); }, 500: function() { xhr500(localLoader); } },
@@ -79,12 +81,16 @@ $("body").on("click", "[action='followUser']", function(e) {
                 $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
                 $('#infoBoxHolder .boxError').show();
             } else {
-                // MAJ du bouton suivre / Se désabonner
+                // update follow / unfollow
                 $(this).html(data['html']);
 
                 // update reputation counter
                 scoreCounter();
                 badgesCounter();
+
+                // refresh timeline
+                refreshTimeline();
+                stickySidebar();
             }
             localLoader.hide();
         }

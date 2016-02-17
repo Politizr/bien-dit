@@ -14,15 +14,16 @@ $('body').on('click', "[action='closeBox']", function(e){
 
 // main menu
 $(document).mousedown(function (e) {
-    var container = $("#menu");
+    var container = $("#menu, [action='toggleMenu']");
     if (!container.is(e.target) // if the target of the click isn't the container...
         && container.has(e.target).length === 0) // ... nor a descendant of the container
     {
-        container.hide();
-        $("body").on("click", "[action='toggleMenu']", function() {
-            $('#menu').toggle();
-        });
+        $('#menu').hide();      
     }
+});
+
+$("body").on("click", "[action='toggleMenu']", function() {
+    $('#menu').toggle();
 });
 
 // Scroll haut de page
@@ -98,6 +99,22 @@ $("body").on("mouseover", "[action='confidentialToggle']", function() {
 $("body").on("mouseout", "[action='confidentialToggle']", function() {
     $(this).next('.confidentialInfo').hide();   
 });
+
+// refresh timeline
+function refreshTimeline() {
+    if ($('.myfeed').length) {
+        Waypoint.destroyAll();
+        timelineList();
+    }
+}
+
+// sticky sidebar
+function stickySidebar() {
+    var sticky = new Waypoint.Sticky({
+        element: $('#sidebar'),
+        offset: 'bottom-in-view'
+    })    
+}
 
 // imgLiquid
 function fullImgLiquid() {
