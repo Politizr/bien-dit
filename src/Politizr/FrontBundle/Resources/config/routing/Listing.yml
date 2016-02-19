@@ -1,0 +1,9 @@
+################################################################################
+#               PUBLIC
+################################################################################
+ListingByTag:
+    pattern:  /thematiques/{slug}
+    defaults: { _controller: PolitizrFrontBundle:Listing:tag }
+    requirements:
+        _method:        GET
+

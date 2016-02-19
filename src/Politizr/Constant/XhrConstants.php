@@ -105,7 +105,6 @@ class XhrConstants
     const ROUTE_SECURITY_PAYMENT_PROCESS = 'v/paiement';
 
     // TAGS
-    const ROUTE_TAG_LISTING = 'tags/listing';
     const ROUTE_TAG_DEBATE_CREATE = 'profil/debat/tag/create';
     const ROUTE_TAG_DEBATE_DELETE = 'profil/debat/tag/delete';
     const ROUTE_TAG_REACTION_CREATE = 'profil/reaction/tag/create';
@@ -115,6 +114,7 @@ class XhrConstants
     const ROUTE_TAG_USER_HIDE = 'profil/utilisateur/tag/hide';
     const ROUTE_TAG_USER_ASSOCIATE = 'profil/utilisateur/tag/associate';
 
+    const ROUTE_TAG_LISTING = 'tags/listing';
     const ROUTE_TAG_LISTING_TOP = 'tags/top';
     const ROUTE_TAG_LISTING_USER = 'profil/tags/user';
 

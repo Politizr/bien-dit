@@ -1,4 +1,14 @@
 services:
+    # ADMIN MENU
+    admingen.menu.default_builder:
+        class: Politizr\AdminBundle\Menu\AdminMenu
+        arguments:
+            - @knp_menu.factory
+            - @request_stack
+            - PolitizrAdminHomepage
+            - @security.token_storage
+        tags:
+            - { name: knp_menu.menu_builder, method: sidebarMenu, alias: admingen_mysidebar }
 
     # LISTENERS
     politzr_admin.listener.email:

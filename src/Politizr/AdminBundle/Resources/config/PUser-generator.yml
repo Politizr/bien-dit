@@ -70,11 +70,11 @@ params:
         abuse_level:
             label:          Niveau d'abus
         roles:
-            label:          Liste des rôles de l'utilisateur
-            formType:                   choice
+            label:                              Liste des rôles de l'utilisateur
+            formType:                           choice
             addFormOptions:
-                expanded:               true
-                multiple:               true
+                expanded:                       true
+                multiple:                       true
                 choices:                
                     ROLE_OAUTH_USER:            'Connexion OpenID'
                     ROLE_CITIZEN_INSCRIPTION:   'Inscription Citoyen en cours'
@@ -127,13 +127,15 @@ builders:
         params:
             title:                              "Création d'un utilisateur"
             display:
-                "Champs principaux":            [ [ qualified, p_u_status_id, email ], [ gender, firstname, name ], [ username ], [ plainPassword ], [ roles ] ]
+                "Champs principaux":            [ [ qualified, p_u_status, email ], [ gender, firstname, name ], [ username ], [ plainPassword ], [ roles ] ]
             fields:
-                p_u_status_id:
-                    label:          Statut
-                    formType:       choice
+                p_u_status:
+                    dbType:                     model
                     addFormOptions:
-                        choices:    \Politizr\Model\PUStatusQuery::create()->orderById()->find()->toKeyValue()
+                        multiple:               false
+                        required:               false
+                        class:                  Politizr\Model\PUStatus
+                #         query:                  \Politizr\Model\PUStatusQuery::create()->orderById()
                 plainPassword:          
                     dbType:                             VARCHAR
                     formType:                           repeated
@@ -169,7 +171,7 @@ builders:
                     "Bannissement":             [ [ banned, banned_nb_days_left ] ]
                     "Risque user":              [ abuse_level ]
                 "Statut":
-                    "Actuel":                   [ p_u_status_id ]
+                    "Actuel":                   [ p_u_status ]
                     "Activité":                 [ last_login, last_activity ]
                 "Rôles":
                     "Rôles":                    [ roles ]
@@ -200,20 +202,18 @@ builders:
                         mapped:                 false
                 followers:
                     dbType:                     model
-                    formType:                   model
                     addFormOptions:
                         multiple:               true
                         required:               false
                         class:                  Politizr\Model\PUser
-                        query:                  \Politizr\Model\PUserQuery::create()->orderByName() 
+                #         query:                  \Politizr\Model\PUserQuery::create()->orderByName() 
                 subscribers:
                     dbType:                     model
-                    formType:                   model
                     addFormOptions:
                         multiple:               true
                         required:               false
                         class:                  Politizr\Model\PUser
-                        query:                  \Politizr\Model\PUserQuery::create()->orderByName() 
+                #         query:                  \Politizr\Model\PUserQuery::create()->orderByName() 
                 uploadedFileName:
                     dbType:                     VARCHAR
                     label:                      Photo
@@ -230,11 +230,13 @@ builders:
                         second_options:         
                             label:                      Confirmation
                         type:                           password
-                p_u_status_id:
-                    label:          Statut
-                    formType:       choice
+                p_u_status:
+                    dbType:                     model
                     addFormOptions:
-                        choices:    \Politizr\Model\PUStatusQuery::create()->orderById()->find()->toKeyValue()
+                        multiple:               false
+                        required:               false
+                        class:                  Politizr\Model\PUStatus
+                #         query:                  \Politizr\Model\PUStatusQuery::create()->orderById()
                 subtitle:
                     grid_class:                 "col-md-12"
                 biography:
@@ -250,12 +252,11 @@ builders:
                         mapped:                 false
                 badges:
                     dbType:                     model
-                    formType:                   model
                     addFormOptions:
                         multiple:               true
                         required:               false
                         class:                  Politizr\Model\PRBadge
-                        query:                  \Politizr\Model\PRBadgeQuery::create()->orderById() 
+                        # query:                  \Politizr\Model\PRBadgeQuery::create()->orderById() 
                 block_reputation:
                     label:                      "Réputation"
                     grid_class:                 "col-md-12"

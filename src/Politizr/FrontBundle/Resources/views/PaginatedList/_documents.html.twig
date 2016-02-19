@@ -1,0 +1,8 @@
+{% for document in documents %}
+    {% include 'PolitizrFrontBundle:Document:_card.html.twig' with { 'document': document } %}
+{% endfor %}
+<div id="listingScrollNav">
+    {% if moreResults %}
+        <a id="moreResults" class="waypoint" offset="{{ offset }}" uuid="{{ uuid }}">suite</a>
+    {% endif %}
+</div>

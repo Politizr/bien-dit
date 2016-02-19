@@ -22,6 +22,7 @@ use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
 use Politizr\Model\PDDCommentQuery;
 use Politizr\Model\PDRCommentQuery;
+use Politizr\Model\PTagQuery;
 
 use Politizr\FrontBundle\Form\Type\PDDCommentType;
 use Politizr\FrontBundle\Form\Type\PDRCommentType;
@@ -49,6 +50,7 @@ class XhrDocument
     private $documentManager;
     private $documentService;
     private $reputationService;
+    private $tagService;
     private $globalTools;
     private $logger;
 
@@ -66,6 +68,7 @@ class XhrDocument
      * @param @politizr.manager.document
      * @param @politizr.functional.document
      * @param @politizr.functional.reputation
+     * @param @politizr.functional.tag
      * @param @politizr.tools.global
      * @param @logger
      */
@@ -82,6 +85,7 @@ class XhrDocument
         $documentManager,
         $documentService,
         $reputationService,
+        $tagService,
         $globalTools,
         $logger
     ) {
@@ -102,6 +106,7 @@ class XhrDocument
 
         $this->documentService = $documentService;
         $this->reputationService = $reputationService;
+        $this->tagService = $tagService;
 
         $this->globalTools = $globalTools;
 
@@ -1140,7 +1145,7 @@ class XhrDocument
         $filters = $request->get('documentFilterDate');
         $this->logger->info('$filters = ' . print_r($filters, true));
 
-        // @todo filters implementation
+        // @todo dynamic filters implementation
         $documents = $this->documentService->getTopDocumentsBestNote(
             ListingConstants::LISTING_TOP_DOCUMENTS_LIMIT
         );
@@ -1175,6 +1180,63 @@ class XhrDocument
                 'documents' => $debates
             )
         );
+
+        return array(
+            'html' => $html,
+        );
+    }
+
+    /**
+     * Documents by tag
+     */
+    public function documentsByTag(Request $request)
+    {
+        $this->logger->info('*** documentsByTag');
+        
+        // Request arguments
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        $filterDate = $request->get('filterDate');
+        $this->logger->info('$filterDate = ' . print_r($filterDate, true));
+        $offset = $request->get('offset');
+        $this->logger->info('$offset = ' . print_r($offset, true));
+
+        // Retrieve subject
+        $tag = PTagQuery::create()->filterByUuid($uuid)->findOne();
+
+        // Compute relative geo tag ids
+        $tagIds = $this->tagService->computePublicationGeotagRelativeIds($tag->getId());
+
+        // @todo dynamic filters implementation
+        $documents = $this->documentService->getDocumentsByTagsPaginated(
+            $tagIds,
+            $filterDate,
+            $offset,
+            ListingConstants::LISTING_CLASSIC_PAGINATION
+        );
+
+
+        $moreResults = false;
+        if (sizeof($documents) == ListingConstants::LISTING_CLASSIC_PAGINATION) {
+            $moreResults = true;
+        }
+
+        if ($offset == 0 && count($documents) == 0) {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_noResult.html.twig'
+            );
+        } else {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_documents.html.twig',
+                array(
+                    'uuid' => $uuid,
+                    'documents' => $documents,
+                    'offset' => intval($offset) + ListingConstants::LISTING_CLASSIC_PAGINATION,
+                    'moreResults' => $moreResults,
+                    'paginateNextAction' => 'paginateNext'
+                )
+            );
+        }
 
         return array(
             'html' => $html,

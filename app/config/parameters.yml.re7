@@ -5,6 +5,8 @@ parameters:
     database_name: ***
     database_user: ***
     database_password: ***
+    database_charset: UTF8
+    database_dsn: '%database_driver%:host=%database_host%;dbname=%database_name%;charset=%database_charset%'
     mailer_auth_mode:  login
     mailer_port:       25
     mailer_transport:  mail

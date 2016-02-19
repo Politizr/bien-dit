@@ -1,0 +1,53 @@
+{% extends 'PolitizrFrontBundle::layoutConnected.html.twig' %}
+
+{% block title %}
+    {{ parent() }} - Liste pour la thématique {{ tag.title }}
+{% endblock title %}
+
+{% block javascriptHeader %}
+    {{ parent() }}
+
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.cycle2.min.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+    <div id="content">
+        <div class="list">
+            <div class="listHeaderByTag">
+                <div class="listHeader">
+                    <h5>Les publications abordants la thématique</h5>
+                    <h1>{{ tag.title }}</h1>
+                    <div class="actionFollow withLoaderInside">
+                        {% include 'PolitizrFrontBundle:Follow:_subscribeAction.html.twig' with { 'subject': tag } only %}
+                    </div>
+                </div>
+            </div>
+            <div class="pseudoTabs" uuid="{{ tag.uuid }}">
+                <a class="currentPage" action="documentByTagListing" filter="">Top</a>
+                <a action="documentByTagListing" filter="{{ constant('Politizr\\Constant\\ListingConstants::FILTER_KEYWORD_LAST_MONTH') }}">Les plus récentes</a>
+            </div>
+            <div id="documentListing" class="withLoaderInside">
+                {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+                <div class="listTop"></div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block sidebarContent %}
+    {% include 'PolitizrFrontBundle:Tag:_sidebarFollowedTags.html.twig' %}
+    {% include 'PolitizrFrontBundle:Tag:_sidebarTopTags.html.twig' %}
+    {% include 'PolitizrFrontBundle:Document:_sidebarTopDocuments.html.twig' %}
+{% endblock sidebarContent %}
+
+{% block javascriptFooter %}
+    {{ parent() }}
+
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/tag/listing.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/document/listing.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/pages/listingByTag.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock javascriptFooter %}

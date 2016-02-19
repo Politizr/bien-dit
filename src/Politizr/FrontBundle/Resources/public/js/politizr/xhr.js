@@ -93,7 +93,6 @@ var ROUTE_SECURITY_LOST_PASSWORD_CHECK = 'password/init';
 var ROUTE_SECURITY_PAYMENT_PROCESS = 'v/paiement';
 
 // TAGS
-var ROUTE_TAG_LISTING = 'tags/listing';
 var ROUTE_TAG_DEBATE_CREATE = 'profil/debat/tag/create';
 var ROUTE_TAG_DEBATE_DELETE = 'profil/debat/tag/delete';
 var ROUTE_TAG_REACTION_CREATE = 'profil/reaction/tag/create';
@@ -105,6 +104,7 @@ var ROUTE_TAG_USER_ASSOCIATE = 'profil/utilisateur/tag/associate';
 
 var ROUTE_TAG_LISTING_TOP = 'tags/top';
 var ROUTE_TAG_LISTING_USER = 'profil/tags/user';
+var ROUTE_TAG_LISTING = 'tags/listing';
 
 // USER
 var ROUTE_USER_MANDATE_CREATE = 'profil/utilisateur/mandat/create';

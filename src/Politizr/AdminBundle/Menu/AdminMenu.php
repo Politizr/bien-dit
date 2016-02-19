@@ -1,8 +1,10 @@
 <?php
 namespace Politizr\AdminBundle\Menu;
 
-use Admingenerator\GeneratorBundle\Menu\AdmingeneratorMenuBuilder;
 use Knp\Menu\FactoryInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
+
+use Admingenerator\GeneratorBundle\Menu\AdmingeneratorMenuBuilder;
 
 /**
  *
@@ -10,26 +12,39 @@ use Knp\Menu\FactoryInterface;
  */
 class AdminMenu extends AdmingeneratorMenuBuilder
 {
-    protected $translation_domain = 'Admin';
-   
-    
+    private $securityTokenStorage;
+
+    /**
+     * @see Admingenerator\GeneratorBundle\Menu\AdmingeneratorMenuBuilder
+     * @param @security.token_storage
+     */
+    public function __construct(FactoryInterface $factory, RequestStack $requestStack, $dashboardRoute, $securityTokenStorage)
+    {
+        $this->factory = $factory;
+        $this->requestStack = $requestStack;
+        $this->dashboardRoute = $dashboardRoute;
+        $this->securityTokenStorage = $securityTokenStorage;
+    }
+
     /**
      * @param Request $requestaddNavLinkURI
      * @param Router $router
      */
-    public function sidebarMenu(FactoryInterface $factory, array $options)
+    public function sidebarMenu(array $options)
     {
-        $menu = $factory->createItem('root');
+        $menu = $this->factory->createItem('root');
         $menu->setChildrenAttributes(array('class' => 'sidebar-menu'));
 
-        if ($dashboardRoute = $this->container->getParameter('admingenerator.dashboard_route')) {
+        // get current user
+        $currentUser = $this->securityTokenStorage->getToken()->getUser();
+
+        // Homepage
+        if ($dashboardRoute = $this->dashboardRoute) {
             $this
                 ->addLinkRoute($menu, 'Accueil', $dashboardRoute)
                 ->setExtra('icon', 'fa fa-dashboard');
         }
 
-        $user = $this->container->get('security.context')->getToken()->getUser();
-              
         // Order
         $orders = $this->addLinkRoute($menu, 'Commande', 'Politizr_AdminBundle_POrder_list');
 

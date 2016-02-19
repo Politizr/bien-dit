@@ -1,4 +1,4 @@
 <div class="tag">    
-    <a href="#" action="bubbleTag" uuid="{{ tag.uuid }}">{{ tag.title }}</a>
+    <a href="{{ path('ListingByTag', {'slug': tag.slug}) }}" action="bubbleTag" uuid="{{ tag.uuid }}">{{ tag.title }}</a>
     {% include 'PolitizrFrontBundle:Tag:_bubbleTag.html.twig' %}
 </div>

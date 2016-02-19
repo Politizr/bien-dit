@@ -11,17 +11,21 @@ OAuth:
 Security:
     resource: "./routing/Security.yml"
 
-# PUBLIQUE
+# Public
 Public:
     resource: "./routing/Public.yml"
 
-# DOCUMENT
+# Document
 Document:
     resource: "./routing/Document.yml"
 
-# DOCUMENT
+# User
 User:
     resource: "./routing/User.yml"
+
+# Listing
+Listing:
+    resource: "./routing/Listing.yml"
 
 # GENERIC XHR
 XhrGeneric:

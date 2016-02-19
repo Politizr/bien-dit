@@ -111,6 +111,30 @@ jms_security_extra:
 
 # Propel Configuration
 propel:
+    logging: "%kernel.debug%"
+    build_properties:
+        propel.addClassLevelComment: false
+
+        propel.mysql.tableType: "InnoDB"
+        propel.builder.pluralizer.class: "builder.util.StandardEnglishPluralizer"
+
+        propel.useDateTimeClass: true
+        propel.dateTimeClass:    "DateTime"
+
+        propel.defaultTimeStampFormat: ~
+        propel.defaultTimeFormat: ~
+        propel.defaultDateFormat: ~
+        propel.defaultTimeStampFormat: ~
+        propel.defaultTimeFormat: ~
+        propel.defaultDateFormat: ~
+
+        propel.addValidateMethod: false
+
+        # Behaviors come below
+        propel.behavior.typehintable.class: "vendor.TypehintableBehavior.src.TypehintableBehavior"
+        propel.behavior.equal_nest.class: "vendor.EqualNestBehavior.src.EqualNestBehavior"
+        propel.behavior.uuid.class: "vendor.badlamer.propel-uuid-behavior.src.UuidBehavior"
+
     dbal:
         default_connection:         default
         connections:
@@ -118,13 +142,13 @@ propel:
                 driver:             %database_driver%
                 user:               %database_user%
                 password:           %database_password%
-                dsn:                %database_driver%:host=%database_host%;dbname=%database_name%
+                dsn:                "%database_dsn%"
                 options:
                     ATTR_PERSISTENT: false
                 attributes:
                     ATTR_EMULATE_PREPARES: true
                 settings:
-                    charset:        { value: UTF8 }
+                    charset:        { value: "%database_charset%" }
                     queries:        { query: 'set names utf8' }
 
 # FOSUser Configuration
@@ -177,60 +201,60 @@ admingenerator_generator:
     javascripts: [] # array of {path: path_to_javascript, route: route_name, routeparams: [value1, value2]}
     form_types:
         propel:
-            TIMESTAMP:    \Admingenerator\FormExtensionsBundle\Form\Type\DateTimePickerType
-            BU_TIMESTAMP: \Admingenerator\FormExtensionsBundle\Form\Type\DateTimePickerType
-            DATE:         \Admingenerator\FormExtensionsBundle\Form\Type\DateRangePickerType
-            BU_DATE:      \Admingenerator\FormExtensionsBundle\Form\Type\DatePickerType
-            TIME:         time 
-            FLOAT:        number 
-            REAL:         number 
-            DOUBLE:       number 
-            DECIMAL:      number 
-            TINYINT:      integer 
-            SMALLINT:     integer 
-            INTEGER:      integer 
-            BIGINT:       integer 
-            NUMERIC:      integer 
-            CHAR:         text 
-            VARCHAR:      text 
-            LONGVARCHAR:  textarea 
-            BLOB:         textarea 
-            CLOB:         textarea 
-            CLOB_EMU:     textarea 
-            model:        model 
-            collection:   collection 
-            PHP_ARRAY:    collection 
-            ENUM:         choice 
-            BOOLEAN:      checkbox 
-            BOOLEAN_EMU:  checkbox 
+            TIMESTAMP:    Admingenerator\FormExtensionsBundle\Form\Type\DateTimePickerType
+            BU_TIMESTAMP: Admingenerator\FormExtensionsBundle\Form\Type\DateTimePickerType
+            DATE:         Admingenerator\FormExtensionsBundle\Form\Type\DateRangePickerType
+            BU_DATE:      Admingenerator\FormExtensionsBundle\Form\Type\DatePickerType
+            TIME:         Symfony\Component\Form\Extension\Core\Type\TimeType 
+            FLOAT:        Symfony\Component\Form\Extension\Core\Type\NumberType 
+            REAL:         Symfony\Component\Form\Extension\Core\Type\NumberType 
+            DOUBLE:       Symfony\Component\Form\Extension\Core\Type\NumberType 
+            DECIMAL:      Symfony\Component\Form\Extension\Core\Type\NumberType 
+            TINYINT:      Symfony\Component\Form\Extension\Core\Type\IntegerType 
+            SMALLINT:     Symfony\Component\Form\Extension\Core\Type\IntegerType 
+            INTEGER:      Symfony\Component\Form\Extension\Core\Type\IntegerType 
+            BIGINT:       Symfony\Component\Form\Extension\Core\Type\IntegerType 
+            NUMERIC:      Symfony\Component\Form\Extension\Core\Type\IntegerType 
+            CHAR:         Symfony\Component\Form\Extension\Core\Type\TextType 
+            VARCHAR:      Symfony\Component\Form\Extension\Core\Type\TextType 
+            LONGVARCHAR:  Symfony\Component\Form\Extension\Core\Type\TextareaType 
+            BLOB:         Symfony\Component\Form\Extension\Core\Type\TextareaType 
+            CLOB:         Symfony\Component\Form\Extension\Core\Type\TextareaType 
+            CLOB_EMU:     Symfony\Component\Form\Extension\Core\Type\TextareaType 
+            model:        Propel\Bundle\PropelBundle\Form\Type\ModelType 
+            collection:   Symfony\Component\Form\Extension\Core\Type\CollectionType 
+            PHP_ARRAY:    Symfony\Component\Form\Extension\Core\Type\CollectionType 
+            ENUM:         Symfony\Component\Form\Extension\Core\Type\ChoiceType 
+            BOOLEAN:      Symfony\Component\Form\Extension\Core\Type\CheckboxType 
+            BOOLEAN_EMU:  Symfony\Component\Form\Extension\Core\Type\CheckboxType 
     filter_types:
         propel:
             DATE:          Admingenerator\FormExtensionsBundle\Form\Type\DateRangePickerType
             BU_DATE:       Admingenerator\FormExtensionsBundle\Form\Type\DateRangePickerType
             TIMESTAMP:     Admingenerator\FormExtensionsBundle\Form\Type\DateRangePickerType
             BU_TIMESTAMP:  Admingenerator\FormExtensionsBundle\Form\Type\DateRangePickerType
-            TIME:          time
-            FLOAT:         number
-            REAL:          number
-            DOUBLE:        number
-            DECIMAL:       number
-            TINYINT:       number
-            SMALLINT:      number
-            INTEGER:       number
-            BIGINT:        number
-            NUMERIC:       number
-            CHAR:          text
-            VARCHAR:       text
-            LONGVARCHAR:   text
-            BLOB:          text
-            CLOB:          text
-            CLOB_EMU:      text
-            model:         model
-            collection:    model
-            PHP_ARRAY:     text
-            ENUM:          text
-            BOOLEAN:       choice
-            BOOLEAN_EMU:   choice
+            TIME:          Symfony\Component\Form\Extension\Core\Type\TimeType
+            FLOAT:         Symfony\Component\Form\Extension\Core\Type\NumberType
+            REAL:          Symfony\Component\Form\Extension\Core\Type\NumberType
+            DOUBLE:        Symfony\Component\Form\Extension\Core\Type\NumberType
+            DECIMAL:       Symfony\Component\Form\Extension\Core\Type\NumberType
+            TINYINT:       Symfony\Component\Form\Extension\Core\Type\NumberType
+            SMALLINT:      Symfony\Component\Form\Extension\Core\Type\NumberType
+            INTEGER:       Symfony\Component\Form\Extension\Core\Type\NumberType
+            BIGINT:        Symfony\Component\Form\Extension\Core\Type\NumberType
+            NUMERIC:       Symfony\Component\Form\Extension\Core\Type\NumberType
+            CHAR:          Symfony\Component\Form\Extension\Core\Type\TextType
+            VARCHAR:       Symfony\Component\Form\Extension\Core\Type\TextType
+            LONGVARCHAR:   Symfony\Component\Form\Extension\Core\Type\TextType
+            BLOB:          Symfony\Component\Form\Extension\Core\Type\TextType
+            CLOB:          Symfony\Component\Form\Extension\Core\Type\TextType
+            CLOB_EMU:      Symfony\Component\Form\Extension\Core\Type\TextType
+            model:         Propel\Bundle\PropelBundle\Form\Type\ModelType
+            collection:    Symfony\Component\Form\Extension\Core\Type\CollectionType
+            PHP_ARRAY:     Symfony\Component\Form\Extension\Core\Type\TextType
+            ENUM:          Symfony\Component\Form\Extension\Core\Type\TextType
+            BOOLEAN:       Symfony\Component\Form\Extension\Core\Type\ChoiceType
+            BOOLEAN_EMU:   Symfony\Component\Form\Extension\Core\Type\ChoiceType
 
 # Default bundle configuration
 admingenerator_form_extensions:
@@ -245,10 +269,10 @@ admingenerator_form_extensions:
     # you need these JS assets for some form types
     # if you set it to true, the bundle will include them for you
     # otherwise you have to do it manually
-    include_jquery:           false
-    include_jqueryui:         false
+    include_jquery:           true
+    include_jqueryui:         true
     include_momentjs:         true
-    include_blueimp:          false 
+    include_blueimp:          true 
     include_gmaps:            false
 
 # Liip Imagine Configuration

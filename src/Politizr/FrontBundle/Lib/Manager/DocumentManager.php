@@ -43,6 +43,59 @@ class DocumentManager
     /**
      * Top documents
      *
+     * @see app/sql/documentsByTags.sql
+     *
+     * @param string $inQueryTagIds
+     * @param integer $nbDays
+     * @return string
+     */
+    private function createDocumentsByTagsRawSql($inQueryTagIds, $nbDays = null)
+    {
+        $subRequestCond1 = '';
+        $subRequestCond2 = '';
+        if ($nbDays) {
+            $subRequestCond1 = "AND p_d_debate.published_at BETWEEN DATE_SUB(NOW(), INTERVAL $nbDays DAY) AND NOW()";
+            $subRequestCond2 = "AND p_d_reaction.published_at BETWEEN DATE_SUB(NOW(), INTERVAL $nbDays DAY) AND NOW() ";
+        }
+
+        // Requête SQL
+        $sql = "
+( SELECT p_d_debate.id as id, p_d_debate.title as title, p_d_debate.note_pos as note_pos, p_d_debate.note_neg as note_neg, p_d_debate.published_at as published_at, 'Politizr\\\Model\\\PDDebate' as type
+FROM p_d_debate
+    LEFT JOIN p_d_d_tagged_t
+        ON p_d_debate.id = p_d_d_tagged_t.p_d_debate_id
+WHERE
+    p_d_debate.published = 1
+    AND p_d_debate.online = 1 
+    AND p_d_d_tagged_t.p_tag_id IN ($inQueryTagIds)
+    $subRequestCond1
+    )
+
+UNION DISTINCT
+
+( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.note_pos as note_pos, p_d_reaction.note_neg as note_neg, p_d_reaction.published_at as published_at, 'Politizr\\\Model\\\PDReaction' as type
+FROM p_d_reaction
+    LEFT JOIN p_d_r_tagged_t
+        ON p_d_reaction.id = p_d_r_tagged_t.p_d_reaction_id
+WHERE
+    p_d_reaction.published = 1
+    AND p_d_reaction.online = 1
+    AND p_d_reaction.tree_level > 0
+    AND p_d_r_tagged_t.p_tag_id IN ($inQueryTagIds)
+    $subRequestCond2
+    )
+
+ORDER BY note_pos DESC, note_neg ASC
+
+LIMIT :offset, :limit
+";
+
+        return $sql;
+    }
+    
+    /**
+     * Top documents
+     *
      * @see app/sql/topDocuments.sql
      *
      * @return string
@@ -381,10 +434,57 @@ GROUP BY p_d_debate_id
     /* ######################################################################################################## */
 
     /**
+     * Documents by tags
+     *
+     * @param string $inQueryTagIds
+     * @param integer $nbDays
+     * @param integer $offset
+     * @param integer $limit
+     * @return PropelCollection[PDDebate|PDReaction]
+     */
+    public function generateDocumentsByTagsPaginated($inQueryTagIds, $nbDays, $offset, $limit)
+    {
+        $this->logger->info('*** generateUserSuggestedDebatesPaginatedListing');
+        $this->logger->info('$inQueryTagIds = ' . print_r($inQueryTagIds, true));
+        $this->logger->info('$nbDays = ' . print_r($nbDays, true));
+        $this->logger->info('$offset = ' . print_r($offset, true));
+        $this->logger->info('$limit = ' . print_r($limit, true));
+
+        $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
+        $stmt = $con->prepare($this->createDocumentsByTagsRawSql($inQueryTagIds, $nbDays));
+
+        $stmt->bindValue(':offset', $offset, \PDO::PARAM_INT);
+        $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        $result = $stmt->fetchAll();
+
+        $documents = new \PropelCollection();
+        $i = 0;
+        foreach ($result as $row) {
+            $type = $row['type'];
+
+            if ($type == ObjectTypeConstants::TYPE_DEBATE) {
+                $document = PDDebateQuery::create()->findPk($row['id']);
+            } elseif ($type == ObjectTypeConstants::TYPE_REACTION) {
+                $document = PDReactionQuery::create()->findPk($row['id']);
+            } else {
+                throw new InconsistentDataException(sprintf('Object type %s unknown.', $type));
+            }
+            
+            $documents->set($i, $document);
+            $i++;
+        }
+
+        return $documents;
+    }
+    
+    /**
      * Top documents best notes
      *
      * @param int $limit
-     * @return PropelCollection[PDDebate]
+     * @return PropelCollection[PDDebate|PDReaction]
      */
     public function generateTopDocumentsBestNote($limit)
     {

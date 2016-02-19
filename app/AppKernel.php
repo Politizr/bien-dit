@@ -20,7 +20,8 @@ class AppKernel extends Kernel
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
 
             // Propel
-            new Propel\PropelBundle\PropelBundle(),
+            new Propel\Bundle\PropelBundle\PropelBundle(),
+            new Propel\Bundle\PropelAclBundle\PropelAclBundle(),
             new Bazinga\Bundle\FakerBundle\BazingaFakerBundle(),
 
             // FOSUserBundle
@@ -35,7 +36,7 @@ class AppKernel extends Kernel
             // Admin Generator & dependencies
             new Admingenerator\FormBundle\AdmingeneratorFormBundle(),
             new Admingenerator\FormExtensionsBundle\AdmingeneratorFormExtensionsBundle(),
-            new Admingenerator\GeneratorBundle\AdmingeneratorGeneratorBundle(),
+            new Admingenerator\GeneratorBundle\AdmingeneratorGeneratorBundle($this),
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle(),

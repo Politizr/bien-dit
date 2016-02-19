@@ -66,6 +66,42 @@ class DocumentService
     /* ######################################################################################################## */
 
     /**
+     * Get paginated documents by tags
+     *
+     * @param array $tagIds
+     * @param string $filterDate
+     * @param integer $offset
+     * @param înteger $count
+     * @return PropelCollection PDocument
+     */
+    public function getDocumentsByTagsPaginated($tagIds, $filterDate = null, $offset = 0, $count = ListingConstants::LISTING_CLASSIC_PAGINATION)
+    {
+        $nbDays = null;
+        switch ($filterDate) {
+            case ListingConstants::FILTER_KEYWORD_LAST_DAY:
+                $nbDays = 1;
+                break;
+            case ListingConstants::FILTER_KEYWORD_LAST_WEEK:
+                $nbDays = 7;
+                break;
+            case ListingConstants::FILTER_KEYWORD_LAST_MONTH:
+                $nbDays = 30;
+                break;
+            default:
+                break;
+        }
+
+        $inQueryTagIds = implode(',', $tagIds);
+        if (empty($inQueryTagIds)) {
+            $inQueryTagIds = 0;
+        }
+
+        $documents = $this->documentManager->generateDocumentsByTagsPaginated($inQueryTagIds, $nbDays, $offset, $count);
+
+        return $documents;
+    }
+
+    /**
      * Get top documents best notes
      *
      * @param înteger $count

@@ -13,7 +13,7 @@ class ListingConstants
     //              Pagination Constants                            //
     // ************************************************************ //
 
-    const MODAL_CLASSIC_PAGINATION = 10;
+    const LISTING_CLASSIC_PAGINATION = 3;
     const TIMELINE_CLASSIC_PAGINATION = 20;
     const TIMELINE_USER_CLASSIC_PAGINATION = 10;
     const REPUTATION_CHARTS_PAGINATION = 20;
@@ -27,17 +27,17 @@ class ListingConstants
     const MODAL_USERS = 'MODAL_USERS';
 
     // ************************************************************ //
-    //              Modal & Timeline Type Constants                 //
+    //              LISTING & Timeline Type Constants                 //
     // ************************************************************ //
 
-    const MODAL_TYPE_SEARCH = 1;
-    const MODAL_TYPE_RANKING = 2;
-    const MODAL_TYPE_SUGGESTION = 3;
-    const MODAL_TYPE_TAG = 4;
-    const MODAL_TYPE_GEOTAG = 5;
-    const MODAL_TYPE_ORGANIZATION = 6;
-    const MODAL_TYPE_FOLLOWED = 7;
-    const MODAL_TYPE_FOLLOWER = 8;
+    const LISTING_TYPE_SEARCH = 1;
+    const LISTING_TYPE_RANKING = 2;
+    const LISTING_TYPE_SUGGESTION = 3;
+    const LISTING_TYPE_TAG = 4;
+    const LISTING_TYPE_GEOTAG = 5;
+    const LISTING_TYPE_ORGANIZATION = 6;
+    const LISTING_TYPE_FOLLOWED = 7;
+    const LISTING_TYPE_FOLLOWER = 8;
 
     const TIMELINE_TYPE = 9;
     const TIMELINE_USER_TYPE = 10;
