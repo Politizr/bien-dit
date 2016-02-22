@@ -1,11 +1,22 @@
-// Timeline's next page
-$("body").on("click", "[action='documentByTagListingNext']", function(e, waypoint) {
+// paginated listing method variables
+var paginatedFunctions = {};
+paginatedFunctions[JS_KEY_LISTING_DOCUMENTS_BY_TAG] = documentsByTagListing;
+
+/**
+ * Timeline's next page
+ */
+$("body").on("click", "[action='listingNext']", function(e, waypoint) {
     // console.log('timelinePaginatedNext next');
+
+    var key = $('#moreResults').attr('key');
+    // console.log(key);
+
     if (waypoint) {
         waypoint.destroy();
         // console.log('destroy waypoint instance');
     }
-    documentByTagListing(
+    paginatedFunctions[key](
+        false,
         $(this).attr('offset')
     );
 });
@@ -13,7 +24,7 @@ $("body").on("click", "[action='documentByTagListingNext']", function(e, waypoin
 /**
  * Init a waypoint for paginate next
  */
-function initDocumentListingPaginateNextWaypoint() {
+function initPaginateNextWaypoint() {
     // console.log('initTimelinePaginateNextWaypoint');
     // console.log('create waypoint instance');
 
@@ -23,7 +34,7 @@ function initDocumentListingPaginateNextWaypoint() {
             // console.log(direction);
 
             if (direction == 'down') {
-                $("[action='documentByTagListingNext']").trigger( "click", this );
+                $("[action='listingNext']").trigger( "click", this );
             }
         },
         offset: 'bottom-in-view'
@@ -35,19 +46,23 @@ function initDocumentListingPaginateNextWaypoint() {
  * @param targetElement
  * @param localLoader
  */
-function documentByTagListing(offset) {
-    console.log('*** documentByTagListing');
-    console.log(offset);
+function documentsByTagListing(init, offset) {
+    // console.log('*** documentsByTagListing');
+    // console.log(init);
+    // console.log(offset);
+
+    init = (typeof init === "undefined") ? true : init;
+    offset = (typeof offset === "undefined") ? 0 : offset;
 
     targetElement = $('#documentListing .listTop');
     localLoader = $('#documentListing').find('.ajaxLoader').first();
     uuid = $('.pseudoTabs').attr('uuid');
     filterDate = $('.pseudoTabs .currentPage').attr('filter');
 
-    console.log(targetElement);
-    console.log(localLoader);
-    console.log(uuid);
-    console.log(filterDate);
+    // console.log(targetElement);
+    // console.log(localLoader);
+    // console.log(uuid);
+    // console.log(filterDate);
 
     var xhrPath = getXhrPath(
         ROUTE_TAG_LISTING,
@@ -56,23 +71,26 @@ function documentByTagListing(offset) {
         RETURN_HTML
     );
 
-    $.ajax({
-        type: 'POST',
-        url: xhrPath,
-        data: {'uuid': uuid, 'filterDate': filterDate, 'offset': offset},
-        dataType: 'json',
-        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, localLoader ); },
-        statusCode: { 404: function () { xhr404(localLoader); }, 500: function() { xhr500(localLoader); } },
-        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown, localLoader); },
-        success: function(data) {
-            if (data['error']) {
-                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
-                $('#infoBoxHolder .boxError').show();
-            } else {
+    return xhrCall(
+        document,
+        {'uuid': uuid, 'filterDate': filterDate, 'offset': offset},
+        xhrPath,
+        localLoader
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
+            $('#listingScrollNav').remove();
+            if (init) {
                 targetElement.html(data['html']);
+            } else {
+                targetElement.append(data['html']);
             }
-            localLoader.hide();
+            initPaginateNextWaypoint();
+            fullImgLiquid();
         }
+        localLoader.hide();
     });
 }
 
@@ -83,17 +101,17 @@ function documentByTagListing(offset) {
  * @param localLoader
  */
 function topDocumentListing(targetElement, localLoader) {
-    console.log('*** topDocumentListing');
-    console.log(targetElement);
-    console.log(localLoader);
+    // console.log('*** topDocumentListing');
+    // console.log(targetElement);
+    // console.log(localLoader);
     
     // Tag form filter
     var datas = $('#documentFilter').serializeArray();
-    console.log(datas);
+    // console.log(datas);
     if ($.isEmptyObject(datas)) {
         datas.push({name: 'documentFilterDate[]', value: 'lastMonth'});
     }
-    console.log(datas);
+    // console.log(datas);
 
     var xhrPath = getXhrPath(
         ROUTE_DOCUMENT_LISTING_TOP,
@@ -102,23 +120,19 @@ function topDocumentListing(targetElement, localLoader) {
         RETURN_HTML
     );
 
-    $.ajax({
-        type: 'POST',
-        url: xhrPath,
-        data: datas,
-        dataType: 'json',
-        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, localLoader ); },
-        statusCode: { 404: function () { xhr404(localLoader); }, 500: function() { xhr500(localLoader); } },
-        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown, localLoader); },
-        success: function(data) {
-            if (data['error']) {
-                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
-                $('#infoBoxHolder .boxError').show();
-            } else {
-                targetElement.html(data['html']);
-            }
-            localLoader.hide();
+    return xhrCall(
+        document,
+        datas,
+        xhrPath,
+        localLoader
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
+            targetElement.html(data['html']);
         }
+        localLoader.hide();
     });
 }
 
@@ -128,9 +142,9 @@ function topDocumentListing(targetElement, localLoader) {
  * @param localLoader
  */
 function suggestionDocumentListing(targetElement, localLoader) {
-    console.log('*** suggestionDocumentListing');
-    console.log(targetElement);
-    console.log(localLoader);
+    // console.log('*** suggestionDocumentListing');
+    // console.log(targetElement);
+    // console.log(localLoader);
     
     var xhrPath = getXhrPath(
         ROUTE_DOCUMENT_LISTING_SUGGESTION,
@@ -139,27 +153,24 @@ function suggestionDocumentListing(targetElement, localLoader) {
         RETURN_HTML
     );
 
-    $.ajax({
-        type: 'POST',
-        url: xhrPath,
-        dataType: 'json',
-        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, localLoader ); },
-        statusCode: { 404: function () { xhr404(localLoader); }, 500: function() { xhr500(localLoader); } },
-        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown, localLoader); },
-        success: function(data) {
-            if (data['error']) {
-                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
-                $('#infoBoxHolder .boxError').show();
-            } else {
-                targetElement.html(data['html']);
+    return xhrCall(
+        document,
+        null,
+        xhrPath,
+        localLoader
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
+            targetElement.html(data['html']);
 
-                // init cycle
-                $('.cycle-slideshow').cycle();
+            // init cycle
+            $('.cycle-slideshow').cycle();
 
-                // img liquid reinit
-                fullImgLiquid();
-            }
-            localLoader.hide();
+            // img liquid reinit
+            fullImgLiquid();
         }
+        localLoader.hide();
     });
 }

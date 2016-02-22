@@ -134,6 +134,27 @@ var ROUTE_MONITORING_ASK_FOR_UPDATE_CHECK = 'profil/modifier-mes-donnees/check';
 var ROUTE_BUBBLE_USER = 'bubble/user';
 var ROUTE_BUBBLE_TAG = 'bubble/tag';
 
+// ******************************************************** //
+//                  JS FUNCTION KEYS
+// ******************************************************** //
+var JS_KEY_LISTING_DOCUMENTS_BY_TAG = "documentsByTag";
+
+
+// Generic function to make an AJAX call
+var xhrCall = function(context, data, url, localLoader) {
+    // Return the $.ajax promise
+    return $.ajax({
+        type: 'POST',
+        data: data,
+        dataType: 'json',
+        url: url,
+        context: context,
+        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, localLoader ); },
+        statusCode: { 404: function () { xhr404(localLoader); }, 500: function() { xhr500(localLoader); } },
+        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown, localLoader); },        
+    });
+}
+
 
 // ******************************************************** //
 //                  XHR URL REWRITING (ADMIN)

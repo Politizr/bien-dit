@@ -9,6 +9,7 @@ use StudioEcho\Lib\StudioEchoUtils;
 use Politizr\Exception\InconsistentDataException;
 use Politizr\Exception\BoxErrorException;
 
+use Politizr\Constant\XhrConstants;
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\PathConstants;
 use Politizr\Constant\ListingConstants;
@@ -1207,14 +1208,12 @@ class XhrDocument
         // Compute relative geo tag ids
         $tagIds = $this->tagService->computePublicationGeotagRelativeIds($tag->getId());
 
-        // @todo dynamic filters implementation
         $documents = $this->documentService->getDocumentsByTagsPaginated(
             $tagIds,
             $filterDate,
             $offset,
             ListingConstants::LISTING_CLASSIC_PAGINATION
         );
-
 
         $moreResults = false;
         if (sizeof($documents) == ListingConstants::LISTING_CLASSIC_PAGINATION) {
@@ -1233,7 +1232,7 @@ class XhrDocument
                     'documents' => $documents,
                     'offset' => intval($offset) + ListingConstants::LISTING_CLASSIC_PAGINATION,
                     'moreResults' => $moreResults,
-                    'paginateNextAction' => 'paginateNext'
+                    'jsFunctionKey' => XhrConstants::JS_KEY_LISTING_DOCUMENTS_BY_TAG
                 )
             );
         }

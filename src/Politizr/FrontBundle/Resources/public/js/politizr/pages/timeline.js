@@ -1,33 +1,28 @@
 // TIMELINE USER
 // on document ready
 $(function() {
-    // suggestion documents listing
     suggestionDocumentListing(
         $('#suggestions').find('.documentList').first(),
         $('#suggestions').find('.ajaxLoader').first()
+    )
+    .then( function() {
+            $.when(
+                topTagListing(
+                    $('.sidebarTopTags').find('.tagList').first(),
+                    $('.sidebarTopTags').find('.ajaxLoader').first()
+                ),
+                userTagListing(
+                    $('.sidebarFollowedTags').find('.tagList').first(),
+                    $('.sidebarFollowedTags').find('.ajaxLoader').first()
+                ),
+                topDocumentListing(
+                    $('.sidebarTopPosts').find('.documentList').first(),
+                    $('.sidebarTopPosts').find('.ajaxLoader').first()
+                )
+            ).done(function(r1, r2, r3) {
+                timelineList();
+                stickySidebar();
+            })
+        }
     );
-
-    // top tags listing
-    topTagListing(
-        $('.sidebarTopTags').find('.tagList').first(),
-        $('.sidebarTopTags').find('.ajaxLoader').first()
-    );
-
-    // user tags listing
-    userTagListing(
-        $('.sidebarFollowedTags').find('.tagList').first(),
-        $('.sidebarFollowedTags').find('.ajaxLoader').first()
-    );
-
-    // top documents listing
-    topDocumentListing(
-        $('.sidebarTopPosts').find('.documentList').first(),
-        $('.sidebarTopPosts').find('.ajaxLoader').first()
-    );
-
-    // timeline
-    timelineList();
-
-    // sticky sidebar
-    stickySidebar();
 });

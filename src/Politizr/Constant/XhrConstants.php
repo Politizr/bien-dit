@@ -147,6 +147,14 @@ class XhrConstants
     const ROUTE_BUBBLE_TAG = 'bubble/tag';
 
     // ******************************************************** //
+    //                  JS FUNCTION KEYS
+    // ******************************************************** //
+    const JS_KEY_LISTING_DOCUMENTS_BY_TAG = "documentsByTag";
+
+
+
+
+    // ******************************************************** //
     //                  XHR URL REWRITING (ADMIN)
     // ******************************************************** //
 

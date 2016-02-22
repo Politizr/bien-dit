@@ -91,7 +91,7 @@ class UserController extends Controller
         $logger->info('*** timelineAction');
 
         return $this->render('PolitizrFrontBundle:Timeline:user.html.twig', array(
-            'profileSuffix' => $this->get('politizr.tools.global')->computeProfileSuffix(),
+            'homepage' => true,
         ));
     }
 

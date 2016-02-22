@@ -23,23 +23,19 @@ function topTagListing(targetElement, localLoader) {
         RETURN_HTML
     );
 
-    $.ajax({
-        type: 'POST',
-        url: xhrPath,
-        data: datas,
-        dataType: 'json',
-        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, localLoader ); },
-        statusCode: { 404: function () { xhr404(localLoader); }, 500: function() { xhr500(localLoader); } },
-        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown, localLoader); },
-        success: function(data) {
-            if (data['error']) {
-                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
-                $('#infoBoxHolder .boxError').show();
-            } else {
-                targetElement.html(data['html']);
-            }
-            localLoader.hide();
+    return xhrCall(
+        document,
+        datas,
+        xhrPath,
+        localLoader
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
+            targetElement.html(data['html']);
         }
+        localLoader.hide();
     });
 }
 
@@ -49,7 +45,7 @@ function topTagListing(targetElement, localLoader) {
  * @param localLoader
  */
 function userTagListing(targetElement, localLoader) {
-    // console.log('*** topTagListing');
+    // console.log('*** userTagListing');
     // console.log(targetElement);
     // console.log(localLoader);
     
@@ -60,22 +56,19 @@ function userTagListing(targetElement, localLoader) {
         RETURN_HTML
     );
 
-    $.ajax({
-        type: 'POST',
-        url: xhrPath,
-        dataType: 'json',
-        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, localLoader ); },
-        statusCode: { 404: function () { xhr404(localLoader); }, 500: function() { xhr500(localLoader); } },
-        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown, localLoader); },
-        success: function(data) {
-            if (data['error']) {
-                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
-                $('#infoBoxHolder .boxError').show();
-            } else {
-                targetElement.html(data['html']);
-            }
-            localLoader.hide();
+    return xhrCall(
+        document,
+        null,
+        xhrPath,
+        localLoader
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
+            targetElement.html(data['html']);
         }
+        localLoader.hide();
     });
 }
 

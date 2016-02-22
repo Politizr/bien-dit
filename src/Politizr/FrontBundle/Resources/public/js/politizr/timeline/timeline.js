@@ -3,7 +3,7 @@ $("body").on("click", "[action='timelinePaginatedNext']", function(e, waypoint) 
     // console.log('timelinePaginatedNext next');
     if (waypoint) {
         waypoint.destroy();
-        // console.log('destroy waypoint instance');
+        console.log('destroy waypoint instance');
     }
     timelineList(false, $(this).attr('offset'));
 });
@@ -51,34 +51,26 @@ function timelineList(init, offset) {
     // console.log('xhrPath = '+ xhrPath);
     
     localLoader = $('.myfeed').find('.ajaxLoader').first();
-    
-    $.ajax({
-        type: 'POST',
-        url: xhrPath,
-        data: { 'offset': offset },
-        dataType: 'json',
-        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, localLoader ); },
-        statusCode: { 404: function () { xhr404(localLoader); }, 500: function() { xhr500(localLoader); } },
-        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown, localLoader); },
-        success: function(data) {
-            if (data['error']) {
-                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
-                $('#infoBoxHolder .boxError').show();
+
+    xhrCall(
+        document,
+        { 'offset': offset },
+        xhrPath,
+        localLoader
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
+            $('#timelineScrollNav').remove();
+            if (init) {
+                $('#listContent').html(data['html']);
             } else {
-                $('#timelineScrollNav').remove();
-                if (init) {
-                    $('#listContent').html(data['html']);
-                } else {
-                    $('#listContent').append(data['html']);
-                }
-
-                // Waypoint for infinite scrolling 
-                initTimelinePaginateNextWaypoint();
-
-                // maj DOM onSuccess
-                fullImgLiquid();
+                $('#listContent').append(data['html']);
             }
-            localLoader.hide();
+            initTimelinePaginateNextWaypoint();
+            fullImgLiquid();
         }
+        localLoader.hide();
     });
 }
