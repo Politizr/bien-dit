@@ -4,12 +4,6 @@
     {{ parent() }} - Liste pour la thématique {{ tag.title }}
 {% endblock title %}
 
-{% block javascriptHeader %}
-    {{ parent() }}
-
-    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.cycle2.min.js') }}"></script>
-{% endblock %}
-
 {% block content %}
     <div id="content">
         <div class="list">
