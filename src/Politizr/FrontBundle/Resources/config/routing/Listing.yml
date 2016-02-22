@@ -7,3 +7,9 @@ ListingByTag:
     requirements:
         _method:        GET
 
+ListingByOrganization:
+    pattern:  /famille-politique/{slug}
+    defaults: { _controller: PolitizrFrontBundle:Listing:organization }
+    requirements:
+        _method:        GET
+

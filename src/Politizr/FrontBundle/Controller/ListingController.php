@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use Politizr\Model\PTagQuery;
+use Politizr\Model\PQOrganizationQuery;
 
 /**
  * Listing controller
@@ -15,7 +16,6 @@ use Politizr\Model\PTagQuery;
  */
 class ListingController extends Controller
 {
-
     /**
      * Tag listing
      */
@@ -35,6 +35,28 @@ class ListingController extends Controller
 
         return $this->render('PolitizrFrontBundle:Document:listingByTag.html.twig', array(
             'tag' => $tag
+        ));
+    }
+
+    /**
+     * Organization listing
+     */
+    public function organizationAction($slug)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** organizationAction');
+        $logger->info('$slug = '.print_r($slug, true));
+
+        $organization = PQOrganizationQuery::create()->filterBySlug($slug)->findOne();
+        if (!$organization) {
+            throw new NotFoundHttpException('Organization "'.$slug.'" not found.');
+        }
+        if (!$organization->getOnline()) {
+            throw new NotFoundHttpException('Organization "'.$slug.'" not online.');
+        }
+
+        return $this->render('PolitizrFrontBundle:Document:listingByOrganization.html.twig', array(
+            'organization' => $organization
         ));
     }
 }

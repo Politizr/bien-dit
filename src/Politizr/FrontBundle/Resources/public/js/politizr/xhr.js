@@ -106,6 +106,9 @@ var ROUTE_TAG_LISTING_TOP = 'tags/top';
 var ROUTE_TAG_LISTING_USER = 'profil/tags/user';
 var ROUTE_TAG_LISTING = 'tags/listing';
 
+// ORGANIZATION
+var ROUTE_ORGANIZATION_LISTING = 'organisation/listing';
+
 // USER
 var ROUTE_USER_MANDATE_CREATE = 'profil/utilisateur/mandat/create';
 var ROUTE_USER_MANDATE_UPDATE = 'profil/utilisateur/mandat/update';
@@ -138,6 +141,7 @@ var ROUTE_BUBBLE_TAG = 'bubble/tag';
 //                  JS FUNCTION KEYS
 // ******************************************************** //
 var JS_KEY_LISTING_DOCUMENTS_BY_TAG = "documentsByTag";
+var JS_KEY_LISTING_DOCUMENTS_BY_ORGANIZATION = "documentsByOrganization";
 
 
 // Generic function to make an AJAX call

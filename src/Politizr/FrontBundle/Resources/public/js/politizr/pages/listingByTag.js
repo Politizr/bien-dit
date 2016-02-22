@@ -1,5 +1,3 @@
-// TIMELINE USER
-// on document ready
 $(function() {
     $.when(
         topTagListing(
@@ -15,14 +13,14 @@ $(function() {
             $('.sidebarTopPosts').find('.ajaxLoader').first()
         )
     ).done(function(r1, r2, r3) {
-        $(".currentPage[action='documentByTagListing']").trigger("click");
+        $(".currentPage[action='documentsByTagListing']").trigger("click");
         stickySidebar();
     });
 });
 
 // listing
-$("body").on("click", "[action='documentByTagListing']", function() {
-    // console.log('*** click documentByTagListing');
+$("body").on("click", "[action='documentsByTagListing']", function() {
+    // console.log('*** click documentsByTagListing');
 
     $(this).siblings().removeClass('currentPage');
     $(this).addClass('currentPage');

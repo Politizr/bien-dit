@@ -118,6 +118,9 @@ class XhrConstants
     const ROUTE_TAG_LISTING_TOP = 'tags/top';
     const ROUTE_TAG_LISTING_USER = 'profil/tags/user';
 
+    // ORGANIZATION
+    const ROUTE_ORGANIZATION_LISTING = 'organisation/listing';
+
     // USER
     const ROUTE_USER_MANDATE_CREATE = 'profil/utilisateur/mandat/create';
     const ROUTE_USER_MANDATE_UPDATE = 'profil/utilisateur/mandat/update';
@@ -150,8 +153,7 @@ class XhrConstants
     //                  JS FUNCTION KEYS
     // ******************************************************** //
     const JS_KEY_LISTING_DOCUMENTS_BY_TAG = "documentsByTag";
-
-
+    const JS_KEY_LISTING_DOCUMENTS_BY_ORGANIZATION = "documentsByOrganization";
 
 
     // ******************************************************** //

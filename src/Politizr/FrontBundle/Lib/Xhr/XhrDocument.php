@@ -24,6 +24,7 @@ use Politizr\Model\PDReactionQuery;
 use Politizr\Model\PDDCommentQuery;
 use Politizr\Model\PDRCommentQuery;
 use Politizr\Model\PTagQuery;
+use Politizr\Model\PQOrganizationQuery;
 
 use Politizr\FrontBundle\Form\Type\PDDCommentType;
 use Politizr\FrontBundle\Form\Type\PDRCommentType;
@@ -1204,6 +1205,9 @@ class XhrDocument
 
         // Retrieve subject
         $tag = PTagQuery::create()->filterByUuid($uuid)->findOne();
+        if (!$tag) {
+            throw new InconsistentDataException('Tag '.$uuid.' not found.');
+        }
 
         // Compute relative geo tag ids
         $tagIds = $this->tagService->computePublicationGeotagRelativeIds($tag->getId());
@@ -1215,6 +1219,7 @@ class XhrDocument
             ListingConstants::LISTING_CLASSIC_PAGINATION
         );
 
+        // @todo create function for code above
         $moreResults = false;
         if (sizeof($documents) == ListingConstants::LISTING_CLASSIC_PAGINATION) {
             $moreResults = true;
@@ -1233,6 +1238,62 @@ class XhrDocument
                     'offset' => intval($offset) + ListingConstants::LISTING_CLASSIC_PAGINATION,
                     'moreResults' => $moreResults,
                     'jsFunctionKey' => XhrConstants::JS_KEY_LISTING_DOCUMENTS_BY_TAG
+                )
+            );
+        }
+
+        return array(
+            'html' => $html,
+        );
+    }
+
+    /**
+     * Documents by organization
+     */
+    public function documentsByOrganization(Request $request)
+    {
+        $this->logger->info('*** documentsByOrganization');
+        
+        // Request arguments
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        $filterDate = $request->get('filterDate');
+        $this->logger->info('$filterDate = ' . print_r($filterDate, true));
+        $offset = $request->get('offset');
+        $this->logger->info('$offset = ' . print_r($offset, true));
+
+        // Retrieve subject
+        $organization = PQOrganizationQuery::create()->filterByUuid($uuid)->findOne();
+        if (!$organization) {
+            throw new InconsistentDataException('Organization '.$uuid.' not found.');
+        }
+
+        $documents = $this->documentService->getDocumentsByOrganizationPaginated(
+            $organization->getId(),
+            $filterDate,
+            $offset,
+            ListingConstants::LISTING_CLASSIC_PAGINATION
+        );
+
+        // @todo create function for code above
+        $moreResults = false;
+        if (sizeof($documents) == ListingConstants::LISTING_CLASSIC_PAGINATION) {
+            $moreResults = true;
+        }
+
+        if ($offset == 0 && count($documents) == 0) {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_noResult.html.twig'
+            );
+        } else {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_documents.html.twig',
+                array(
+                    'uuid' => $uuid,
+                    'documents' => $documents,
+                    'offset' => intval($offset) + ListingConstants::LISTING_CLASSIC_PAGINATION,
+                    'moreResults' => $moreResults,
+                    'jsFunctionKey' => XhrConstants::JS_KEY_LISTING_DOCUMENTS_BY_ORGANIZATION
                 )
             );
         }

@@ -105,3 +105,11 @@ services:
             - @event_dispatcher
             - @logger
 
+    politizr.xhr.organization:
+        class: Politizr\FrontBundle\Lib\Xhr\XhrOrganization
+        arguments:
+        arguments:
+            - @security.token_storage
+            - @router
+            - @templating
+            - @logger

@@ -12,7 +12,7 @@
                 {% if user.isQualified %}
                     {% set organizations = user.currentOrganizations %}
                     {% for organization in organizations %}
-                        <div class="org"><a href="#">{{ organization.initials }}</a></div>
+                        <div class="org"><a href="{{ path('ListingByOrganization', {'slug': organization.slug}) }}">{{ organization.initials }}</a></div>
                     {% endfor %}
                 {% endif %}
             </div>
