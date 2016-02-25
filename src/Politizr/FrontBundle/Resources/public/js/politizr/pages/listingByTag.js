@@ -1,4 +1,6 @@
 $(function() {
+    $(".currentPage[action='documentsByTagListing']").trigger("click");
+
     $.when(
         topTagListing(
             $('.sidebarTopTags').find('.tagList').first(),
@@ -13,7 +15,6 @@ $(function() {
             $('.sidebarTopPosts').find('.ajaxLoader').first()
         )
     ).done(function(r1, r2, r3) {
-        $(".currentPage[action='documentsByTagListing']").trigger("click");
         stickySidebar();
     });
 });

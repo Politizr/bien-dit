@@ -6,6 +6,7 @@ $(function() {
         $('#suggestions').find('.ajaxLoader').first()
     )
     .then( function() {
+            timelineList();
             $.when(
                 topTagListing(
                     $('.sidebarTopTags').find('.tagList').first(),
@@ -20,7 +21,6 @@ $(function() {
                     $('.sidebarTopPosts').find('.ajaxLoader').first()
                 )
             ).done(function(r1, r2, r3) {
-                timelineList();
                 stickySidebar();
             })
         }

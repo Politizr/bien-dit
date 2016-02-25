@@ -1,14 +1,16 @@
 $(function() {
+    $(".currentPage[action='documentsByOrganizationListing']").trigger("click");
+
     $.when(
         organizationListing(
             $('.sidebarListOrg').find('.orgList').first(),
             $('.sidebarListOrg').find('.ajaxLoader').first(),
             $('.pseudoTabs').attr('uuid')
         )
-    ).done(function(r1) {
-        $(".currentPage[action='documentsByOrganizationListing']").trigger("click");
+    ).done(function(r1, r2, r3) {
         stickySidebar();
     });
+
 });
 
 // listing
