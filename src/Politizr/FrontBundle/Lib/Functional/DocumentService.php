@@ -66,6 +66,32 @@ class DocumentService
     /* ######################################################################################################## */
 
     /**
+     * Get recommended paginated documents
+     *
+     * @param integer $month
+     * @param integer $year
+     * @param integer $offset
+     * @param înteger $count
+     * @return PropelCollection PDocument
+     */
+    public function getDocumentsByRecommendPaginated($month, $year, $offset = 0, $count = ListingConstants::LISTING_CLASSIC_PAGINATION)
+    {
+        $now = new \DateTime();
+        $currentMonth = $now->format('n');
+        $currentYear = $now->format('Y');
+
+        if ($currentMonth == $month && $currentYear == $year) {
+            $filterDate = ListingConstants::FILTER_KEYWORD_LAST_MONTH;
+        } else {
+            $filterDate = ListingConstants::FILTER_KEYWORD_EXACT_MONTH;
+        }
+
+        $documents = $this->documentManager->generateDocumentsByRecommendPaginated($filterDate, $month, $year, $offset, $count);
+
+        return $documents;
+    }
+
+    /**
      * Get paginated documents by organization
      *
      * @param array $organizationId

@@ -39,6 +39,9 @@ class XhrConstants
     const ROUTE_DOCUMENT_LISTING_TOP = 'documents/top';
     const ROUTE_DOCUMENT_LISTING_SUGGESTION = '/profil/documents/suggestions';
 
+    const ROUTE_DOCUMENT_LISTING_RECOMMEND = 'documents/recommend';
+    const ROUTE_DOCUMENT_LISTING_RECOMMEND_NAV = 'documents/recommend/nav';
+
     // DEBATES
     const ROUTE_DEBATE_UPDATE = 'profil/debat/update';
     const ROUTE_DEBATE_PUBLISH = 'profil/debat/publier';
@@ -154,6 +157,7 @@ class XhrConstants
     // ******************************************************** //
     const JS_KEY_LISTING_DOCUMENTS_BY_TAG = "documentsByTag";
     const JS_KEY_LISTING_DOCUMENTS_BY_ORGANIZATION = "documentsByOrganization";
+    const JS_KEY_LISTING_DOCUMENTS_BY_RECOMMEND = "documentsByRecommend";
 
 
     // ******************************************************** //

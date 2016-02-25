@@ -1189,6 +1189,119 @@ class XhrDocument
     }
 
     /**
+     * Most recommended documents nav (prev/next computing)
+     */
+    public function documentsByRecommendNav(Request $request)
+    {
+        $this->logger->info('*** documentsByRecommendNav');
+        
+        // Request arguments
+        $numMonth = $request->get('month');
+        $this->logger->info('$numMonth = ' . print_r($numMonth, true));
+        $year = $request->get('year');
+        $this->logger->info('$year = ' . print_r($year, true));
+
+        $now = new \DateTime();
+        $search = new \DateTime();
+        $search->setDate($year, $numMonth, 1);
+
+        if ($search > $now) {
+            throw new InconsistentDataException('Cannot recommend with future date');
+        }
+
+        $month = $this->globalTools->getLabelFromMonthNum($numMonth);
+
+        // next / prev
+        $search->modify('-1 month');
+        $prevNumMonth = $search->format('n');
+        $prevMonth = $this->globalTools->getLabelFromMonthNum($prevNumMonth);
+        $prevYear = $search->format('Y');
+        $prevLink = $this->router->generate('ListingByRecommendMonthYear', array('month' => $prevMonth, 'year' => $prevYear));
+
+        $search->modify('+2 month');
+        $nextLink = null;
+        $nextNumMonth = null;
+        $nextYear = null;
+        if ($search <= $now) {
+            $nextNumMonth = $search->format('n');
+            $nextMonth = $this->globalTools->getLabelFromMonthNum($nextNumMonth);
+            $nextYear = $search->format('Y');
+            $nextLink = $this->router->generate('ListingByRecommendMonthYear', array('month' => $nextMonth, 'year' => $nextYear));
+        }
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Document:listingByRecommendNav.html.twig',
+            array(
+                'month' => $month,
+                'numMonth' => $numMonth,
+                'year' => $year,
+                'prevLink' => $prevLink,
+                'nextLink' => $nextLink,
+                'prevNumMonth' => $prevNumMonth,
+                'prevYear' => $prevYear,
+                'nextNumMonth' => $nextNumMonth,
+                'nextYear' => $nextYear,
+            )
+        );
+
+        return array(
+            'html' => $html,
+            'month' => $month,
+            'numMonth' => $numMonth,
+            'year' => $year,
+        );
+    }
+
+    /**
+     * Most recommended documents
+     */
+    public function documentsByRecommend(Request $request)
+    {
+        $this->logger->info('*** documentsByRecommend');
+        
+        // Request arguments
+        $offset = $request->get('offset');
+        $this->logger->info('$offset = ' . print_r($offset, true));
+        $month = $request->get('month');
+        $this->logger->info('$month = ' . print_r($month, true));
+        $year = $request->get('year');
+        $this->logger->info('$year = ' . print_r($year, true));
+
+        $documents = $this->documentService->getDocumentsByRecommendPaginated(
+            $month,
+            $year,
+            $offset,
+            ListingConstants::LISTING_CLASSIC_PAGINATION
+        );
+
+        // @todo create function for code above
+        $moreResults = false;
+        if (sizeof($documents) == ListingConstants::LISTING_CLASSIC_PAGINATION) {
+            $moreResults = true;
+        }
+
+        if ($offset == 0 && count($documents) == 0) {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_noResult.html.twig'
+            );
+        } else {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_documents.html.twig',
+                array(
+                    'documents' => $documents,
+                    'offset' => intval($offset) + ListingConstants::LISTING_CLASSIC_PAGINATION,
+                    'moreResults' => $moreResults,
+                    'jsFunctionKey' => XhrConstants::JS_KEY_LISTING_DOCUMENTS_BY_RECOMMEND
+                )
+            );
+        }
+
+        return array(
+            'html' => $html,
+        );
+    }
+
+    /**
      * Documents by tag
      */
     public function documentsByTag(Request $request)

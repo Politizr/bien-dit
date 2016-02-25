@@ -454,4 +454,78 @@ class GlobalTools
 
         return $number;
     }
+
+    /**
+     * Get french label from month num
+     *
+     * @param integer $monthNum
+     * @return string
+     */
+    public function getLabelFromMonthNum($monthNum)
+    {
+        if ($monthNum == 1) {
+            return 'janvier';
+        } elseif ($monthNum == 2) {
+            return 'février';
+        } elseif ($monthNum == 3) {
+            return 'mars';
+        } elseif ($monthNum == 4) {
+            return 'avril';
+        } elseif ($monthNum == 5) {
+            return 'mai';
+        } elseif ($monthNum == 6) {
+            return 'juin';
+        } elseif ($monthNum == 7) {
+            return 'juillet';
+        } elseif ($monthNum == 8) {
+            return 'août';
+        } elseif ($monthNum == 9) {
+            return 'septembre';
+        } elseif ($monthNum == 10) {
+            return 'octobre';
+        } elseif ($monthNum == 11) {
+            return 'novembre';
+        } elseif ($monthNum == 12) {
+            return 'décembre';
+        }
+
+        return null;
+    }
+
+    /**
+     * Get month num from french label
+     *
+     * @param string $month
+     * @return integer
+     */
+    public function getNumFromMonthLabel($month)
+    {
+        if ($month == 'janvier') {
+            return 1;
+        } elseif ($month == 'février') {
+            return 2;
+        } elseif ($month == 'mars') {
+            return 3;
+        } elseif ($month == 'avril') {
+            return 4;
+        } elseif ($month == 'mai') {
+            return 5;
+        } elseif ($month == 'juin') {
+            return 6;
+        } elseif ($month == 'juillet') {
+            return 7;
+        } elseif ($month == 'août') {
+            return 8;
+        } elseif ($month == 'septembre') {
+            return 9;
+        } elseif ($month == 'octobre') {
+            return 10;
+        } elseif ($month == 'novembre') {
+            return 11;
+        } elseif ($month == 'décembre') {
+            return 12;
+        }
+
+        return null;
+    }
 }

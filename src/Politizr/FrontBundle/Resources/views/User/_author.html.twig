@@ -1,15 +1,16 @@
-{% if user %}
-    <div class="avatar60">
-        {{ user | photo('user_60') }}
+<div class="profileName">
+    <div class="profileNameHolder">
+        {% if user %}
+            <a href="{{ path('UserDetail', { 'slug': user.slug }) }}" action="bubbleProfile" uuid="{{ user.uuid }}">{{ user }}</a>
+            {% include 'PolitizrFrontBundle:User:_bubbleUser.html.twig' with { 'user': user } only %}
+        {% else %}
+            <i>utilisateur supprimé</i>
+        {% endif %}
     </div>
-    <div class="authorName">
-        <span>Par</span>
-        {% include 'PolitizrFrontBundle:User:_authorName.html.twig' with { 'user': user } only %}
-        {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with { 'user': user } only %}
-    </div>
-    <div class="authorSubtitle">
-        {{ user.subtitle | purify }}
-    </div>
-{% else %}
-    <i>utilisateur supprimé</i>
-{% endif %}
+    {% if user and user.isQualified %}
+        {% set organizations = user.currentOrganizations %}
+        {% for organization in organizations %}
+            <div class="org"><a href="{{ path('ListingByOrganization', {'slug': organization.slug}) }}">{{ organization.initials }}</a></div>
+        {% endfor %}
+    {% endif %}
+</div>

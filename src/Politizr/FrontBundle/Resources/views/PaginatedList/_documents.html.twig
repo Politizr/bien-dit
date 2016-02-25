@@ -3,6 +3,6 @@
 {% endfor %}
 <div id="listingScrollNav">
     {% if moreResults %}
-        <a id="moreResults" action="listingNext" class="waypoint" offset="{{ offset }}" uuid="{{ uuid }}" key="{{ jsFunctionKey }}">suite</a>
+        <a id="moreResults" action="listingNext" class="waypoint" offset="{{ offset }}"{% if uuid is defined %} uuid="{{ uuid }}"{% endif %} key="{{ jsFunctionKey }}">suite</a>
     {% endif %}
 </div>

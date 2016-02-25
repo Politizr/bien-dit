@@ -2,6 +2,7 @@
 var paginatedFunctions = {};
 paginatedFunctions[JS_KEY_LISTING_DOCUMENTS_BY_TAG] = documentsByTagListing;
 paginatedFunctions[JS_KEY_LISTING_DOCUMENTS_BY_ORGANIZATION] = documentsByOrganizationListing;
+paginatedFunctions[JS_KEY_LISTING_DOCUMENTS_BY_RECOMMEND] = documentsByRecommendListing;
 
 /**
  * Timeline's next page
@@ -39,6 +40,110 @@ function initPaginateNextWaypoint() {
             }
         },
         offset: 'bottom-in-view'
+    });
+}
+
+/**
+ * Document recommend next/prev page
+ */
+$("body").on("click", "[action='prevNextLink']", function(e, waypoint) {
+    console.log('*** click prevNextLink');
+    e.preventDefault();
+    documentsByRecommendListingNav(
+        $(this).attr('month'),
+        $(this).attr('year')
+    )
+    .then(function() {
+        documentsByRecommendListing();
+    });
+});
+
+/**
+ * Compute next/prev in documents recommend listing
+ */
+function documentsByRecommendListingNav(month, year) {
+    // console.log('*** documentsByRecommendListingNav');
+    // console.log(month);
+    // console.log(year);
+
+    targetElement = $('.listTopHeader');
+    localLoader = $('.listTopHeader').find('.ajaxLoader').first();
+
+    var xhrPath = getXhrPath(
+        ROUTE_DOCUMENT_LISTING_RECOMMEND_NAV,
+        'document',
+        'documentsByRecommendNav',
+        RETURN_HTML
+    );
+
+    return xhrCall(
+        document,
+        {'month': month, 'year': year},
+        xhrPath,
+        localLoader
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
+            targetElement.html(data['html']);
+
+            $('#documentListing').attr('month', data['numMonth']);
+            $('#documentListing').attr('year', data['year']);
+
+            updateUrl(data['month']+'-'+data['year']);
+        }
+        localLoader.hide();
+    });
+
+}
+
+/**
+ * Loading of paginated "recommended" listing.
+ * @param targetElement
+ * @param localLoader
+ */
+function documentsByRecommendListing(init, offset) {
+    // console.log('*** documentsByRecommendListing');
+    // console.log(init);
+    // console.log(offset);
+
+    init = (typeof init === "undefined") ? true : init;
+    offset = (typeof offset === "undefined") ? 0 : offset;
+
+    targetElement = $('#documentListing .listTop');
+    localLoader = $('#documentListing').find('.ajaxLoader').first();
+
+    month = $('#documentListing').attr('month');
+    year = $('#documentListing').attr('year');
+
+    var xhrPath = getXhrPath(
+        ROUTE_DOCUMENT_LISTING_RECOMMEND,
+        'document',
+        'documentsByRecommend',
+        RETURN_HTML
+    );
+
+    return xhrCall(
+        document,
+        {'month': month, 'year': year, 'offset': offset},
+        xhrPath,
+        localLoader
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
+            $('#listingScrollNav').remove();
+            if (init) {
+                targetElement.html(data['html']);
+            } else {
+                targetElement.append(data['html']);
+            }
+            initPaginateNextWaypoint();
+            fullImgLiquid();
+        }
+        localLoader.hide();
     });
 }
 

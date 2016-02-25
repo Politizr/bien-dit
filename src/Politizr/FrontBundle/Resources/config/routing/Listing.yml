@@ -1,14 +1,28 @@
 ################################################################################
 #               PUBLIC
 ################################################################################
+ListingByRecommend:
+    pattern:  /debats/top
+    defaults: { _controller: PolitizrFrontBundle:Listing:recommend }
+    requirements:
+        _method:        GET
+
+ListingByRecommendMonthYear:
+    pattern:  /debats/top/{month}-{year}
+    defaults: { _controller: PolitizrFrontBundle:Listing:recommendMonthYear }
+    requirements:
+        _method:        GET
+        month:          (janvier|février|mars|avril|mai|juin|juillet|août|septembre|octobre|novembre|décembre)
+        year:           ([0-9]{4})
+
 ListingByTag:
-    pattern:  /thematiques/{slug}
+    pattern:  /debats/thematique/{slug}
     defaults: { _controller: PolitizrFrontBundle:Listing:tag }
     requirements:
         _method:        GET
 
 ListingByOrganization:
-    pattern:  /famille-politique/{slug}
+    pattern:  /debats/famille-politique/{slug}
     defaults: { _controller: PolitizrFrontBundle:Listing:organization }
     requirements:
         _method:        GET

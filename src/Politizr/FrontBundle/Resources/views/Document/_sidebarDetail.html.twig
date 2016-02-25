@@ -11,20 +11,5 @@
     <a href="{{ detailPath }}">
         <span class="postTitle {{ spanClass }}">{{ document.title }}</span>
     </a>
-    <div class="profileName">
-        <div class="profileNameHolder">
-            {% if document.user %}
-                <a href="{{ path('UserDetail', { 'slug': document.user.slug }) }}" action="bubbleProfile" uuid="{{ document.user.uuid }}">{{ document.user }}</a>
-                {% include 'PolitizrFrontBundle:User:_bubbleUser.html.twig' with { 'user': document.user } only %}
-            {% else %}
-                <i>utilisateur supprimé</i>
-            {% endif %}
-        </div>
-        {% if document.user and document.user.isQualified %}
-            {% set organizations = document.user.currentOrganizations %}
-            {% for organization in organizations %}
-                <div class="org"><a href="#">{{ organization.initials }}</a></div>
-            {% endfor %}
-        {% endif %}
-    </div>
+    {% include 'PolitizrFrontBundle:User:_author.html.twig' with { 'user': document.user } only %}
 </div>

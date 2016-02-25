@@ -97,4 +97,6 @@ class ListingConstants
     const FILTER_KEYWORD_LAST_MONTH = 'lastMonth';
     const FILTER_KEYWORD_QUALIFIED = 'qualified';
     const FILTER_KEYWORD_CITIZEN = 'citizen';
+
+    const FILTER_KEYWORD_EXACT_MONTH = 'exactMonth';
 }

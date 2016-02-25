@@ -26,6 +26,9 @@ var ROUTE_DEBATE_MY_PUBLICATIONS = 'profil/contributions/mes-publications';
 var ROUTE_DOCUMENT_LISTING_TOP = 'documents/top';
 var ROUTE_DOCUMENT_LISTING_SUGGESTION = '/profil/documents/suggestions';
 
+var ROUTE_DOCUMENT_LISTING_RECOMMEND = 'documents/recommend';
+var ROUTE_DOCUMENT_LISTING_RECOMMEND_NAV = 'documents/recommend/nav';
+
 // DEBATES
 var ROUTE_DEBATE_UPDATE = 'profil/debat/update';
 var ROUTE_DEBATE_PUBLISH = 'profil/debat/publier';
@@ -142,6 +145,7 @@ var ROUTE_BUBBLE_TAG = 'bubble/tag';
 // ******************************************************** //
 var JS_KEY_LISTING_DOCUMENTS_BY_TAG = "documentsByTag";
 var JS_KEY_LISTING_DOCUMENTS_BY_ORGANIZATION = "documentsByOrganization";
+var JS_KEY_LISTING_DOCUMENTS_BY_RECOMMEND = "documentsByRecommend";
 
 
 // Generic function to make an AJAX call

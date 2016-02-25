@@ -17,6 +17,47 @@ use Politizr\Model\PQOrganizationQuery;
 class ListingController extends Controller
 {
     /**
+     * Top listing
+     */
+    public function recommendAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** recommendAction');
+
+        $now = new \DateTime();
+        $month = $this->get('politizr.tools.global')->getLabelFromMonthNum($now->format('n'));
+        $year = $now->format('Y');
+
+        return $this->redirect($this->generateUrl('ListingByRecommendMonthYear', array('month' => $month, 'year' => $year)));
+    }
+
+    /**
+     * Top listing
+     */
+    public function recommendMonthYearAction($month, $year)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** recommendMonthYearAction');
+
+        $numMonth = $this->get('politizr.tools.global')->getNumFromMonthLabel($month);
+
+        $now = new \DateTime();
+        $search = new \DateTime();
+        $search->setDate($year, $numMonth, 1);
+
+        if ($search > $now) {
+            throw new NotFoundHttpException('Cannot recommend with future date');
+        }
+
+        return $this->render('PolitizrFrontBundle:Document:listingByRecommend.html.twig', array(
+            'top' => true,
+            'numMonth' => $numMonth,
+            'month' => $month,
+            'year' => $year,
+        ));
+    }
+
+    /**
      * Tag listing
      */
     public function tagAction($slug)
