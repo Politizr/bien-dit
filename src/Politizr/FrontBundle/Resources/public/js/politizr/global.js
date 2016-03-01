@@ -6,6 +6,19 @@ $(function() {
     $('#ajaxGlobalLoader').hide();
 });
 
+// mobile
+$(".sticky-wrapper").addClass("hideSidebarForMobile");
+$("body").on("click", "[action='showMobileSidebar']", function() {
+    $('body.css700 .sticky-wrapper').removeClass("hideSidebarForMobile");
+    $('body.css700 #actionShowMobileSidebar').hide();
+    $('body.css700 #actionHideMobileSidebar').show();
+});
+$("body").on("click", "[action='hideMobileSidebar']", function() {
+    $('body.css700 .sticky-wrapper').addClass("hideSidebarForMobile");
+    $('body.css700 #actionHideMobileSidebar').hide();
+    $('body.css700 #actionShowMobileSidebar').show();
+});
+
 // Fermeture d'une box
 $('body').on('click', "[action='closeBox']", function(e){
     // cache parent div
@@ -18,12 +31,12 @@ $(document).mousedown(function (e) {
     if (!container.is(e.target) // if the target of the click isn't the container...
         && container.has(e.target).length === 0) // ... nor a descendant of the container
     {
-        $('#menu').hide();      
+        $('#menu, body.css700 #headerMenu').hide();      
     }
 });
 
 $("body").on("click", "[action='toggleMenu']", function() {
-    $('#menu').toggle();
+    $('#menu, body.css700 #headerMenu').toggle();
 });
 
 // Scroll haut de page
