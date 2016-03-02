@@ -126,6 +126,10 @@ var ROUTE_USER_BACK_PHOTO_UPLOAD = 'profil/backphoto/upload';
 var ROUTE_USER_PHOTO_UPLOAD = 'profil/photo/upload';
 var ROUTE_USER_PHOTO_DELETE = 'profil/photo/delete';
 
+
+var ROUTE_USER_LISTING_LAST_DEBATE_FOLLOWERS = 'utilisateurs/debat/derniers-abonnes';
+
+
 // TIMELINE
 var ROUTE_TIMELINE_MINE = 'profil/timeline';
 var ROUTE_TIMELINE_USER = 'user/timeline';

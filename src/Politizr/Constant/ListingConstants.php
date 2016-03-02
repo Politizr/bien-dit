@@ -78,6 +78,9 @@ class ListingConstants
     const LISTING_TOP_DOCUMENTS_LIMIT = 5;
     const LISTING_SUGGESTION_DOCUMENTS_LIMIT = 10;
 
+    const LISTING_LAST_DEBATE_FOLLOWERS = 12;
+
+
     // ************************************************************ //
     //            Filters & Order keyword constants                 //
     // ************************************************************ //

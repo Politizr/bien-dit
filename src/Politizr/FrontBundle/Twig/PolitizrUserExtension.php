@@ -202,12 +202,19 @@ class PolitizrUserExtension extends \Twig_Extension
      * @param PUser $user
      * @param string $filterName
      * @param boolean $withLink
+     * @param boolean $withBubble
      * @param boolean $email
      * @param string $default
      * @return html
      */
-    public function photo(PUser $user, $filterName = 'user_bio', $withLink = true, $email = false, $default = 'default_avatar.jpg')
-    {
+    public function photo(
+        PUser $user,
+        $filterName = 'user_bio',
+        $withLink = true,
+        $withBubble = false,
+        $email = false,
+        $default = 'default_avatar.jpg'
+    ) {
         // $this->logger->info('*** photo');
         // $this->logger->info('$user = '.print_r($user, true));
 
@@ -234,6 +241,7 @@ class PolitizrUserExtension extends \Twig_Extension
                 'user' => $user,
                 'path' => $path,
                 'url' => $url,
+                'withBubble' => $withBubble,
                 'filterName' => $filterName,
                 )
         );

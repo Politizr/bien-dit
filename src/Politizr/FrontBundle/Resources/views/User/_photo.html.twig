@@ -1,9 +1,12 @@
 {% spaceless %}    
 {% if url %}
-    <a href="{{ url }}">
+    <a href="{{ url }}" {% if withBubble %}action="bubbleProfile" uuid="{{ user.uuid }}"{% endif %}>
 {% endif %}
 <img src="{{ asset(path) | imagine_filter(filterName) }}" alt="{{ user }}">
 {% if url %}
     </a>
+    {% if withBubble %}
+        {% include 'PolitizrFrontBundle:User:_bubbleUser.html.twig' with { 'user': user } only %}
+    {% endif %}
 {% endif %}
 {% endspaceless %}

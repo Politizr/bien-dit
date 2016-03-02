@@ -1,0 +1,15 @@
+{% if total > 0 %}
+    <h5>Sujet de discussion suivi par {{ total }} membres</h5>
+    {% for user in users %}
+        <div class="followersList">
+            <div class="followersListItem">
+                {% include 'PolitizrFrontBundle:User:_summaryMiniAuthor.html.twig' with { 'user': user } only %}
+            </div>
+        </div>
+    {% endfor %}
+    <div class="linkListFollowers">
+        <a href="#">Voir toute la liste</a>
+    </div>
+{% else %}
+    <h5>Personne ne suit ce sujet de discussion</h5>
+{% endif %}

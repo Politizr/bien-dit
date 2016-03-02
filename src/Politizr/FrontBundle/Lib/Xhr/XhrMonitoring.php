@@ -65,91 +65,6 @@ class XhrMonitoring
 
 
     /* ######################################################################################################## */
-    /*                                        PRIVATE FUNCTIONS                                                 */
-    /* ######################################################################################################## */
-
-    /**
-     * Compute the rendering template of the modal context
-     *
-     * @param int $uuid   Object UUID
-     * @param string $type
-     * @return string
-     */
-    private function getModalContext($uuid, $type)
-    {
-        // context
-        switch ($type) {
-            case ObjectTypeConstants::TYPE_USER:
-                $contextUser = PUserQuery::create()->filterByUuid($uuid)->findOne();
-                if (null === $contextUser) {
-                    throw InconsistentDataException(sprintf('Object type %s ID#%s is null.', $type, $id));
-                }
-
-                $context = $this->templating->render(
-                    'PolitizrFrontBundle:Monitoring:_contextUser.html.twig',
-                    array(
-                        'user' => $contextUser,
-                    )
-                );
-
-                break;
-            case ObjectTypeConstants::TYPE_DEBATE:
-                $contextDebate = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
-                if (null === $contextDebate) {
-                    throw InconsistentDataException(sprintf('Object type %s ID#%s is null.', $type, $id));
-                }
-
-                $context = $this->templating->render(
-                    'PolitizrFrontBundle:Monitoring:_contextDebate.html.twig',
-                    array(
-                        'debate' => $contextDebate,
-                    )
-                );
-
-                break;
-            case ObjectTypeConstants::TYPE_REACTION:
-                $contextReaction = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
-                if (null === $contextReaction) {
-                    throw InconsistentDataException(sprintf('Object type %s ID#%s is null.', $type, $id));
-                }
-
-                $context = $this->templating->render(
-                    'PolitizrFrontBundle:Monitoring:_contextReaction.html.twig',
-                    array(
-                        'reaction' => $contextReaction,
-                    )
-                );
-
-                break;
-            case ObjectTypeConstants::TYPE_DEBATE_COMMENT:
-            case ObjectTypeConstants::TYPE_REACTION_COMMENT:
-                if ($type == ObjectTypeConstants::TYPE_DEBATE_COMMENT) {
-                    $query = PDDCommentQuery::create();
-                } else {
-                    $query = PDRCommentQuery::create();
-                }
-
-                $contextComment = $query->filterByUuid($uuid)->findOne();
-                if (null === $contextComment) {
-                    throw InconsistentDataException(sprintf('Object type %s ID#%s is null.', $type, $id));
-                }
-
-                $context = $this->templating->render(
-                    'PolitizrFrontBundle:Monitoring:_contextComment.html.twig',
-                    array(
-                        'comment' => $contextComment,
-                    )
-                );
-
-                break;
-            default:
-                throw InconsistentDataException(sprintf('Object type %s is not defined.', $type));
-        }
-
-        return $context;
-    }
-
-    /* ######################################################################################################## */
     /*                                                 ABUSE                                                    */
     /* ######################################################################################################## */
 
@@ -166,9 +81,6 @@ class XhrMonitoring
         $type = $request->get('type');
         $this->logger->info('$type = ' . print_r($type, true));
 
-        // get context rendering
-        $context = $this->getModalContext($uuid, $type);
-
         // form
         $abuseReporting = new PMAbuseReporting();
         $abuseReporting->setPObjectName($type);
@@ -178,17 +90,15 @@ class XhrMonitoring
 
         // Rendering
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Monitoring:_abuse.html.twig',
+            'PolitizrFrontBundle:Monitoring:_formAbuse.html.twig',
             array(
-                'context' => $context,
                 'formAbuse' => $formAbuse->createView(),
             )
         );
 
         return array(
-            'context' => $context,
             'html' => $html,
-            );
+        );
     }
 
     /**
@@ -238,9 +148,6 @@ class XhrMonitoring
         $type = $request->get('type');
         $this->logger->info('$type = ' . print_r($type, true));
 
-        // get context rendering
-        $context = $this->getModalContext($uuid, $type);
-
         // form
         $askForUpdate = new PMAskForUpdate();
         $askForUpdate->setPObjectName($type);
@@ -250,17 +157,15 @@ class XhrMonitoring
 
         // Rendering
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Monitoring:_askForUpdate.html.twig',
+            'PolitizrFrontBundle:Monitoring:_formAskForUpdate.html.twig',
             array(
-                'context' => $context,
                 'formAskForUpdate' => $formAskForUpdate->createView(),
             )
         );
 
         return array(
-            'context' => $context,
             'html' => $html,
-            );
+        );
     }
 
     /**

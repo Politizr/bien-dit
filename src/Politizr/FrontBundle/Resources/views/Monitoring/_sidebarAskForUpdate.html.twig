@@ -1,0 +1,14 @@
+<div class="sidebarAskForModification">
+    <div class="askForModificationButton" action="askForUpdate" uuid="{{ subject.uuid }}" type="{{ subject.type }}">
+        <i class="icon-publish"></i>
+        <span>Demande de modification</span>
+    </div>
+    <div class="sidebarAskForModificationForm withLoaderInside" style="display: none">  
+        {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+        <div class="sidebarNote">
+            Ces informations ne peuvent normalement pas être modifiées, merci de justifier votre demande.
+        </div>
+        <div id="formAskForUpdate">
+        </div>
+    </div>
+</div>

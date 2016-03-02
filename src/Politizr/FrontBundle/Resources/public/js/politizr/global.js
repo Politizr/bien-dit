@@ -133,68 +133,18 @@ function stickySidebar() {
 function fullImgLiquid() {
     // console.log('*** fullImgLiquid');
 
-    // full size image on public homepage
-    $("#homeClaim, #homeOfficial").imgLiquid({
+    // full size image in avatars
+    $(".avatar30, .avatar40").imgLiquid({
         fill: true,
         horizontalAlign: "center",
         verticalAlign: "center"
     });
-
-    // document read / edition
-    $("#illustrationMain, #illustration_l, #illustration_r, #currentPhoto").imgLiquid({
-        fill: true,
-        horizontalAlign: "center",
-        verticalAlign: "center"
-    });
-
-    // user read / edition
-    $(".profileHeaderIllustration").imgLiquid({
-        fill: true,
-        horizontalAlign: "center",
-        verticalAlign: "center"
-    });
-
-    // debate summary 
-    $(".postSummary, .postSummaryCardIllustration").imgLiquid({
-        fill: true,
-        horizontalAlign: "center",
-        verticalAlign: "center"
-    });
-
-    // dashboard popular debate 
-    $(".halfWidthThumb").imgLiquid({
-        fill: true,
-        horizontalAlign: "center",
-        verticalAlign: "center"
-    });
-
-    // avatars
-    $(".avatar15, .avatar40, .avatar60").imgLiquid({
-        fill: true,
-        horizontalAlign: "center",
-        verticalAlign: "center"
-    });
-
-    // timeline item illustration
-    $(".timelineItemIllustration").imgLiquid({
-        fill: true,
-        horizontalAlign: "center",
-        verticalAlign: "center"
-    });
-
-    // reaction to post illustration
-    $(".reactionsToPostItemIllustration").imgLiquid({
-        fill: true,
-        horizontalAlign: "center",
-        verticalAlign: "center"
-    });
-
     // full size image in suggestions + minipost + new post
-    $(".suggItemImg, .miniPostImg, .postImg").imgLiquid({
+    $(".suggItemImg, .miniPostImg, .postImg, #cardPostImg").imgLiquid({
         fill: true,
         horizontalAlign: "center",
         verticalAlign: "center"
-    });     
+    });    
 }
 
 /**

@@ -19,6 +19,7 @@ use Politizr\Model\PUser;
 use Politizr\Model\PUCurrentQO;
 use Politizr\Model\PUMandate;
 
+use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PUBadgeQuery;
 use Politizr\Model\PRBadgeTypeQuery;
 use Politizr\Model\PUserQuery;
@@ -895,6 +896,48 @@ class XhrUser
                 )
             );
         }
+
+        return array(
+            'html' => $html,
+        );
+    }
+
+    /* ######################################################################################################## */
+    /*                                                TIMELINE                                                  */
+    /* ######################################################################################################## */
+
+    /**
+     *
+     */
+    public function lastDebateFollowers(Request $request)
+    {
+        $this->logger->info('*** lastDebateFollowers');
+
+        // Request arguments
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
+
+        $debate = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
+        if (!$debate) {
+            throw new InconsistentDataException(sprintf('Debate %s not found', $uuid));
+        }
+
+        $query = PUserQuery::create()
+            ->usePuFollowDdPUserQuery()
+                ->filterByPDDebateId($debate->getId())
+            ->endUse()
+            ->orderBy('PuFollowDdPUser.CreatedAt', 'desc');
+
+        $total = $query->count();
+        $users = $query->limit(ListingConstants::LISTING_LAST_DEBATE_FOLLOWERS)->find();
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Debate:_followers.html.twig',
+            array(
+                'total' => $total,
+                'users' => $users,
+            )
+        );
 
         return array(
             'html' => $html,

@@ -1,0 +1,5 @@
+{% if user %}
+    <div class="avatar40">{{ user | photo('user_40', withBubble = true) }}</div>
+{% else %}
+    <i>utilisateur supprimé</i>
+{% endif %}

@@ -1,0 +1,15 @@
+<div class="sidebarReport">
+    <div class="reportButton" action="abuseReporting" uuid="{{ subject.uuid }}" type="{{ subject.type }}">
+        <i class="icon-alert"></i>
+        <span>Signaler comme contenu indésirable</span>
+    </div>
+    <div class="sidebarReportForm withLoaderInside" style="display: none">
+        {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+        <div class="sidebarNote">
+            Tout signalement est étudié individuellement avant modération. Tout signalement justifié (propos injurieux, obscène, illégal) vous vaudra un gain de points de réputation.
+            Au contraire, tout signalement abusif sera sanctionné d’une perte de points de réputation.
+        </div>
+        <div id="formAbuse">
+        </div>
+    </div>
+</div>

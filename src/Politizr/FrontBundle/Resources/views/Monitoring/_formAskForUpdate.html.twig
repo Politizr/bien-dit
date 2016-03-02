@@ -1,0 +1,10 @@
+<form class="formAskForModification" id="formAskForUpdate">
+    {{ form_errors(formAskForUpdate) }}
+    {{ form_widget(formAskForUpdate.message, { 'attr': {'placeholder': 'Modifications demandées (obligatoire)'}}) }}
+    {{ form_rest(formAskForUpdate) }}
+    <div class="actionsBox withLoaderInside">
+        {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+        <span class="formCancel" action="closeAskForUpdate">Annuler</span>
+        <input type="button" action="createAskForUpdate" value="Valider">
+    </div>
+</form>

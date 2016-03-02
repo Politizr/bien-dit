@@ -8,138 +8,83 @@
     {{ parent() }} - {{ debate.title }}
 {% endblock title %}
 
-{% block header %}
-    {% if app.user and app.user | isAuthorizedToReportAbuse %}
-        {% embed 'PolitizrFrontBundle:Navigation\\Header:_headerConnected.html.twig' %}
-            {% block abuse %}
-                {% include 'PolitizrFrontBundle:Monitoring:_abuseLink.html.twig' with { 'uuid': debate.uuid, 'type': debate.type } only %}
-            {% endblock abuse %}
-        {% endembed %}
-    {% endif %}
-{% endblock %}
+{% block content %}
+    <div id="content">
+        <div class="post">
+            {% include 'PolitizrFrontBundle:User:_summaryAuthor.html.twig' with { 'user': debate.user } only %}
+            <h5>{% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': debate } only %}</h5>
+            <div class="postStats">
+                {% include 'PolitizrFrontBundle:Document:_statsMini.html.twig' with { 'document': debate } only %}
+            </div>
+            
+            <div id="cardPost">
+                <span class="postTitle">{{ debate.title }}</span>
+                <div id="cardPostImgHolder">
+                    <div id="cardPostImgLegend">Crédit photo: {{ debate.copyright | purify }}</div>
+                    <div id="cardPostImg">
+                        {{ debate | image('debate_header') }}
+                    </div>
+                </div>
+                <div id="cardPostText">
+                    {% for paragraph in paragraphs %}
+                        <div id="p-{{ loop.index }}" class="paragraph">
+                            {# include('includes/paragraphComments.php') #}
+                            {{ paragraph | purify }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {# include('includes/globalComments.php') #}
+            {# include('includes/postAnswersList.php') #}
+            <div class="postTags">
+                <h5>Thématiques abordées</h5>
+                <div class="tagList">
+                    {{ debate | docTags }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
 
-{% block connexionBox %}
-    {% if not is_granted('ROLE_PROFILE_COMPLETED') %}
-        {{ render(controller('PolitizrFrontBundle:Security:login')) }}
-    {% endif %}
-{% endblock %}
+{% block sidebarContent %}
+    <div class="sidebarSubject">
+        <div class="sidebarAction">
+            <div class="sidebarFollow">
+                <div class="actionFollow withLoaderInside">
+                    {% include 'PolitizrFrontBundle:Follow:_subscribeAction.html.twig' with { 'subject': debate } only %}
+                </div>
+            </div>
+            <div class="actionsBox">
+                <div class="miniActions">
+                    {% include 'PolitizrFrontBundle:Reaction:_actionNew.html.twig' with { 'document': debate } only %}
+                </div>  
+                <div class="notation withLoaderInside">
+                    {% include 'PolitizrFrontBundle:Reputation:_noteAction.html.twig' with { 'subject': debate } only %}
+                </div>
+            </div>
+            {# include('includes/share.php') #}
+        </div>
 
-{% block fixedActions %}
-    <div id="fixedActions">
+        {% include 'PolitizrFrontBundle:Monitoring:_sidebarAbuse.html.twig' with { 'subject': debate } only %}
+
         {% if app.user and app.user.id == debate.pUserId %}
-            <div class="actionAskForUpdate">
-                <a action="modalAskForUpdate" type="{{ constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE') }}" uuid="{{ debate.uuid }}"><i class="iconPublish"></i>Demande de modification</a>
-            </div>
+            {% include 'PolitizrFrontBundle:Monitoring:_sidebarAskForUpdate.html.twig' with { 'subject': debate } only %}
         {% endif %}
-        {% if app.user and app.user | isAuthorizedToReact(debate) %}
-            <a class="actionReact" href="{{ path('ReactionDraftNew'~profileSuffix, { 'debateUuid': debate.uuid, 'parentUuid': null }) }}">
-                <i class="iconReaction"></i>réagir
-            </a>
-        {% endif %}
-        <a class="actionGotoDebate" href="{{ path('DebateFeed', { 'slug': debate.slug }) }}">
-            <i class="iconTimeline"></i>fil du débat
-        </a>
-        <div class="subscribe{% if app.user.id == debate.pUserId %} noSelfSubscribe{% endif %}">
-            {{ debate | linkSubscribeDebate }}
-        </div>
+
+        <div class="sidebarSubjectFollowers withLoaderInside">
+            {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+            <div id="subjectFollowers" uuid="{{ debate.uuid }}"></div>
+        </div>    
     </div>
-{% endblock fixedActions %}
-
-{% block main %}
-    <div id="main">
-        <div class="postSummary">
-            <div class="pad40">
-                <div class="postSummaryHeader">
-                    <div class="readingTime">
-                        <i class="iconTime"></i>{{ debate | readingTime }}
-                    </div>
-                    <div class="postNote">
-                        <div class="notePlus">
-                            {{ debate.notePos }}<i class="iconNotePlus"></i>
-                        </div>
-                        <div class="noteMinus">
-                            <i class="iconNoteMinus"></i>{{ debate.noteNeg }}
-                        </div>
-                    </div>
-                </div>
-                <div class="postSummaryFooter">
-                    <div class="postSummaryTagList">
-                        {{ debate | docTags }}
-                    </div>
-                    <div class="postSummaryTitle">
-                        {{ debate.title }}
-                    </div>
-                    <div class="postSummaryActivity">
-                        <div class="viewersCounter">
-                            <i class="iconGraph"></i>
-                            {{ debate | nbViews }}
-                        </div>
-                        <div class="reactionsCounter">
-                            <i class="iconReaction"></i>
-                            {{ debate | nbReactions }}
-                        </div>
-                        <div class="commentsCounter" action="paragraphCommentsCounter">
-                            <i class="iconComment"></i>
-                            {{ debate | nbComments }}
-                        </div>
-                    </div>
-                </div>
-            </div>                      
-            {{ debate | image('debate_header') }}
-        </div>
-        <div id="illustration_l">
-            {{ debate | image('debate_header') }}
-        </div>
-        <div id="illustration_r">
-            {{ debate | image('debate_header') }}
-        </div>
-
-        {% include 'PolitizrFrontBundle:Document:_copyright.html.twig' with { 'copyright': debate.copyright } %}
-    
-        <div id="lateralHolder">
-            <div id="postAuthor">
-                {% include 'PolitizrFrontBundle:User:_author.html.twig' with { 'user': debate.user } only %}
-            </div>
-            <div id="postInfos">
-                {% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'dateTimeAt': debate.publishedAt } only %}
-            </div>
-        </div>
-
-        <div id="postText">
-            {% for paragraph in paragraphs %}
-                <div id="p-{{ loop.index }}" class="paragraph">
-                    <div class="counter">
-                        {% include 'PolitizrFrontBundle:Comment:_counter.html.twig' with { 'document': debate, 'paragraphNo': loop.index } only %}
-                    </div>
-                    {{ paragraph | purify }}
-                    <div class="comments"></div>
-                </div>
-            {% endfor %}
-        </div>
-
-        <div id="giveNote">
-            <span>noter cette publication : </span>
-            <div class="notes postNote withLoaderInside">
-                <div class="ajaxLoader" style="display: none;">
-                    <div class="ajaxLoaderSpinner"></div><div class="ajaxLoaderBg"></div><div class="ajaxLoaderBlockClick"></div>
-                </div>
-                {{ debate | linkNoteDebate }}
-            </div>
-        </div>
-
-        {% if debate.countReactions(true, true) %}
-            {% include 'PolitizrFrontBundle:Reaction:_listReactionsToPost.html.twig' with { 'document': debate } only %}
-        {% endif %}
-
-    </div>
-{% endblock main %}
+{% endblock sidebarContent %}
 
 {% block javascriptFooter %}
     {{ parent() }}
 
     {% javascripts
-        '@PolitizrFrontBundle/Resources/public/js/politizr/reputation/notation.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/document/comments.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/user/listing.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/pages/detailDebate.js'
         filter='uglifyjs2' %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
