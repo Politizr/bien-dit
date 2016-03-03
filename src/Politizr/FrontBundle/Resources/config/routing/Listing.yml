@@ -1,5 +1,5 @@
 ################################################################################
-#               PUBLIC
+#               DOCUMENTS
 ################################################################################
 ListingByRecommend:
     pattern:  /debats/top
@@ -24,6 +24,17 @@ ListingByTag:
 ListingByOrganization:
     pattern:  /debats/famille-politique/{slug}
     defaults: { _controller: PolitizrFrontBundle:Listing:organization }
+    requirements:
+        _method:        GET
+
+
+
+################################################################################
+#               USERS
+################################################################################
+ListingDebateFollowers:
+    pattern:  /debat/{slug}/abonnes
+    defaults: { _controller: PolitizrFrontBundle:Listing:debateFollowers }
     requirements:
         _method:        GET
 

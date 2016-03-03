@@ -1,5 +1,7 @@
 // beta
 $(function() {
+    debateFollowersListing();
+
     $.when(
         lastDebateFollowersListing(
             $('.sidebarSubjectFollowers').find('#subjectFollowers').first(),

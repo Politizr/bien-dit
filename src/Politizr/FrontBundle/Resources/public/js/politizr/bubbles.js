@@ -1,6 +1,7 @@
+// beta
 // use bubble
 $("body").on("mouseover", "[action='bubbleProfile']", function() {
-    console.log('*** mouseover bubbleProfile');
+    // console.log('*** mouseover bubbleProfile');
 
     $("#suggSlide.cycle-slideshow").css("overflow", "visible"); // In #suggestion : cycle2 hide the overflow during scrollHoriz, hiding the tag bubbles. This line forces it back to visible.
     $("#siblingsSlide.cycle-slideshow").css("overflow", "visible"); // In #suggestion : cycle2 hide the overflow during scrollHoriz, hiding the tag bubbles. This line forces it back to visible.
@@ -14,7 +15,7 @@ $("body").on("mouseover", "[action='bubbleProfile']", function() {
     );
 
     var uuid = $(this).attr('uuid');
-    console.log('uuid = '+uuid);
+    // console.log('uuid = '+uuid);
 
     var localLoader = context.find('.ajaxLoader').first();
 
@@ -38,7 +39,7 @@ $("body").on("mouseover", "[action='bubbleProfile']", function() {
 });
 
 $("body").on("mouseleave", ".bubblesProfile, .profileNameHolder", function() {
-    console.log('*** mouseleave bubblesProfile');
+    // console.log('*** mouseleave bubblesProfile');
 
     $(".bubblesProfile").clearQueue().hide();
 });
@@ -51,7 +52,7 @@ $("body").on("mouseleave", ".bubblesProfile, .profileNameHolder", function() {
     });
 
 $("body").on("mouseover", "[action='bubbleTag']", function() {
-    console.log('*** mouseover bubbleTag');
+    // console.log('*** mouseover bubbleTag');
 
     $("#suggSlide.cycle-slideshow").css("overflow", "visible"); // In #suggestion : cycle2 hide the overflow during scrollHoriz, hiding the tag bubbles. This line forces it back to visible.
 
@@ -64,7 +65,7 @@ $("body").on("mouseover", "[action='bubbleTag']", function() {
     );
 
     var uuid = $(this).attr('uuid');
-    console.log('uuid = '+uuid);
+    // console.log('uuid = '+uuid);
 
     var localLoader = context.find('.ajaxLoader').first();
 
@@ -88,7 +89,7 @@ $("body").on("mouseover", "[action='bubbleTag']", function() {
 });
 
 $("body").on("mouseleave", ".bubblesTag, .tag", function() {
-    console.log('*** mouseleave bubblesTag');
+    // console.log('*** mouseleave bubblesTag');
 
     $(".bubblesTag").clearQueue().hide();
 });

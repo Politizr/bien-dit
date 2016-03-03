@@ -1,3 +1,4 @@
+// beta
 // on document ready
 $(function() {
     // console.log('*** global document ready');

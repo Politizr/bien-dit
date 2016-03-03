@@ -1,0 +1,7 @@
+{# beta #}
+<div class="profileCard">
+    {% include 'PolitizrFrontBundle:User:_summaryAuthor.html.twig' with { 'user': user } only %}
+    {% if user.isQualified %}
+        {% include 'PolitizrFrontBundle:User:_mandates.html.twig' with { 'mandates': user.mandates } only %}
+    {% endif %}
+</div>

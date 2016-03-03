@@ -1,3 +1,4 @@
+// beta
 $(function() {
     documentsByRecommendListingNav(
         $('#documentListing').attr('month'),

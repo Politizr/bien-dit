@@ -1,9 +1,9 @@
-<div class="listTab profileTab">
-    {% for user in users %}
-        {# @warning /!\ test user to hack suggestion query which return 1 empty element #}
-        {% if user and user.slug %}
-            {% include 'PolitizrFrontBundle:User:_listRow.html.twig' with { 'user': user } %}
-        {% endif %}
-    {% endfor %}
+{# beta #}
+{% for user in users %}
+    {% include 'PolitizrFrontBundle:User:_card.html.twig' with { 'user': user } %}
+{% endfor %}
+<div id="listingScrollNav">
+    {% if moreResults %}
+        <a id="moreResults" action="listingNext" class="waypoint" offset="{{ offset }}"{% if uuid is defined %} uuid="{{ uuid }}"{% endif %} key="{{ jsFunctionKey }}">suite</a>
+    {% endif %}
 </div>
-{% include 'PolitizrFrontBundle:PaginatedList:_scrollNav.html.twig' with { 'moreResults': moreResults, 'offset': offset, 'action': paginateNextAction } %}

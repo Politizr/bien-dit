@@ -1,15 +1,19 @@
+{# beta #}
 {% if total > 0 %}
     <h5>Sujet de discussion suivi par {{ total }} membres</h5>
-    {% for user in users %}
-        <div class="followersList">
+    <div class="followersList">
+        {% for user in users %}
             <div class="followersListItem">
                 {% include 'PolitizrFrontBundle:User:_summaryMiniAuthor.html.twig' with { 'user': user } only %}
             </div>
-        </div>
-    {% endfor %}
-    <div class="linkListFollowers">
-        <a href="#">Voir toute la liste</a>
+        {% endfor %}
     </div>
+    {% if total > constant('Politizr\\Constant\\ListingConstants::LISTING_LAST_DEBATE_FOLLOWERS') %}
+        <div class="linkListFollowers">
+            <a href="{{ path('ListingDebateFollowers', {'slug': debate.slug}) }}">Voir toute la liste</a>
+        </div>
+    {% endif %}
 {% else %}
     <h5>Personne ne suit ce sujet de discussion</h5>
 {% endif %}
+        

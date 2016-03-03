@@ -1,3 +1,4 @@
+// beta
 $(function() {
     $(".currentPage[action='documentsByOrganizationListing']").trigger("click");
 

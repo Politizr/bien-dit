@@ -1,3 +1,4 @@
+// beta
 $(function() {
     $(".currentPage[action='documentsByTagListing']").trigger("click");
 

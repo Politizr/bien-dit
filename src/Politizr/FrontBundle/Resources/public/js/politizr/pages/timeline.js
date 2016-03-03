@@ -1,5 +1,4 @@
-// TIMELINE USER
-// on document ready
+// beta
 $(function() {
     suggestionDocumentListing(
         $('#suggestions').find('.documentList').first(),

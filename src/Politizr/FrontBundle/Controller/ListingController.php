@@ -6,6 +6,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+use Politizr\Model\PDocumentInterface;
+
+use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PTagQuery;
 use Politizr\Model\PQOrganizationQuery;
 
@@ -17,7 +20,35 @@ use Politizr\Model\PQOrganizationQuery;
 class ListingController extends Controller
 {
     /**
+     * Common document "check" validity
+     *
+     * @param PDocument
+     * @param boolean $online
+     * @param boolean $published
+     * @param boolean
+     */
+    private function checkDocument(PDocumentInterface $document = null, $online = true, $published = true)
+    {
+        if (!$document) {
+            throw new NotFoundHttpException(sprintf('Document not found.'));
+        }
+        if ($online && !$document->getOnline()) {
+            throw new NotFoundHttpException(sprintf('Document not online.'));
+        }
+        if ($published && !$document->getPublished()) {
+            throw new NotFoundHttpException(sprintf('Document not published.'));
+        }
+
+        return true;
+    }
+
+    // *************************************************************************************************** //
+    //                                      DOCUMENT LISTING
+    // *************************************************************************************************** //
+
+    /**
      * Top listing
+     * code beta
      */
     public function recommendAction()
     {
@@ -33,6 +64,7 @@ class ListingController extends Controller
 
     /**
      * Top listing
+     * code beta
      */
     public function recommendMonthYearAction($month, $year)
     {
@@ -59,6 +91,7 @@ class ListingController extends Controller
 
     /**
      * Tag listing
+     * code beta
      */
     public function tagAction($slug)
     {
@@ -81,6 +114,7 @@ class ListingController extends Controller
 
     /**
      * Organization listing
+     * code beta
      */
     public function organizationAction($slug)
     {
@@ -98,6 +132,28 @@ class ListingController extends Controller
 
         return $this->render('PolitizrFrontBundle:Document:listingByOrganization.html.twig', array(
             'organization' => $organization
+        ));
+    }
+
+    // *************************************************************************************************** //
+    //                                      USER LISTING
+    // *************************************************************************************************** //
+    
+    /**
+     * Debate followers
+     * code beta
+     */
+    public function debateFollowersAction($slug)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** debateFollowers');
+        $logger->info('$slug = '.print_r($slug, true));
+
+        $debate = PDDebateQuery::create()->filterBySlug($slug)->findOne();
+        $this->checkDocument($debate);
+
+        return $this->render('PolitizrFrontBundle:User:listingDebateFollowers.html.twig', array(
+            'debate' => $debate,
         ));
     }
 }

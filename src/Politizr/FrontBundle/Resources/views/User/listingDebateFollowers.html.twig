@@ -6,43 +6,18 @@
 {% extends layout %}
 
 {% block title %}
-    {{ parent() }} - {{ debate.title }}
+    {{ parent() }} - Abonnés {{ debate.title }}
 {% endblock title %}
 
 {% block content %}
     <div id="content">
-        <div class="post">
-            {% include 'PolitizrFrontBundle:User:_summaryAuthor.html.twig' with { 'user': debate.user } only %}
-            <h5>{% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': debate } only %}</h5>
-            <div class="postStats">
-                {% include 'PolitizrFrontBundle:Document:_statsMini.html.twig' with { 'document': debate } only %}
-            </div>
-            
-            <div id="cardPost">
-                <span class="postTitle">{{ debate.title }}</span>
-                <div id="cardPostImgHolder">
-                    <div id="cardPostImgLegend">Crédit photo: {{ debate.copyright | purify }}</div>
-                    <div id="cardPostImg">
-                        {{ debate | image('debate_header') }}
-                    </div>
-                </div>
-                <div id="cardPostText">
-                    {% for paragraph in paragraphs %}
-                        <div id="p-{{ loop.index }}" class="paragraph">
-                            {# include('includes/paragraphComments.php') #}
-                            {{ paragraph | purify }}
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
-            {# include('includes/globalComments.php') #}
-            {# include('includes/postAnswersList.php') #}
-            <div class="postTags">
-                <h5>Thématiques abordées</h5>
-                <div class="tagList">
-                    {{ debate | docTags }}
-                </div>
-            </div>
+        <div class="headerFollowers">
+            <a href="{{ path('DebateDetail', {'slug': debate.slug}) }}" class="goBack"><i class="icon-arrow-left"></i>Retour</a>
+            <span>Profils suivant la discussion: <a href="{{ path('DebateDetail', {'slug': debate.slug}) }}">{{ debate.title }}</a></span>
+        </div>
+        <div id="userListing" class="withLoaderInside" uuid="{{ debate.uuid }}">
+            {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+            <div class="listFollowers"></div>
         </div>
     </div>
 {% endblock content %}
@@ -83,9 +58,8 @@
     {{ parent() }}
 
     {% javascripts
-        '@PolitizrFrontBundle/Resources/public/js/politizr/document/comments.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/user/listing.js'
-        '@PolitizrFrontBundle/Resources/public/js/politizr/pages/detailDebate.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/pages/listingDebateFollowers.js'
         filter='uglifyjs2' %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}

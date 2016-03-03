@@ -76,11 +76,6 @@ class PolitizrUserExtension extends \Twig_Extension
     {
         return array(
             new \Twig_SimpleFilter(
-                'icon',
-                array($this, 'icon'),
-                array('is_safe' => array('html'))
-            ),
-            new \Twig_SimpleFilter(
                 'photo',
                 array($this, 'photo'),
                 array('is_safe' => array('html'))
@@ -181,20 +176,6 @@ class PolitizrUserExtension extends \Twig_Extension
     /* ######################################################################################################## */
     /*                                             FILTRES                                                      */
     /* ######################################################################################################## */
-
-    /**
-     * User's profile default icon
-     *
-     * @param PUser $user
-     * @return html
-     */
-    public function icon(PUser $user)
-    {
-        // $this->logger->info('*** photo');
-        // $this->logger->info('$user = '.print_r($user, true));
-
-        return $this->photo($user, 'user_30', false, false, 'default_avatar.jpg');
-    }
 
     /**
      * User's profile photo

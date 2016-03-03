@@ -1,3 +1,4 @@
+// beta
 // ******************************************************** //
 //                  XHR RETURN RESPONSE TYPE
 // ******************************************************** //
@@ -127,7 +128,8 @@ var ROUTE_USER_PHOTO_UPLOAD = 'profil/photo/upload';
 var ROUTE_USER_PHOTO_DELETE = 'profil/photo/delete';
 
 
-var ROUTE_USER_LISTING_LAST_DEBATE_FOLLOWERS = 'utilisateurs/debat/derniers-abonnes';
+var ROUTE_USER_LISTING_LAST_DEBATE_FOLLOWERS = 'profils/debat/derniers-abonnes';
+var ROUTE_USER_LISTING_DEBATE_FOLLOWERS = 'profils/debat/abonnes';
 
 
 // TIMELINE
@@ -150,6 +152,8 @@ var ROUTE_BUBBLE_TAG = 'bubble/tag';
 var JS_KEY_LISTING_DOCUMENTS_BY_TAG = "documentsByTag";
 var JS_KEY_LISTING_DOCUMENTS_BY_ORGANIZATION = "documentsByOrganization";
 var JS_KEY_LISTING_DOCUMENTS_BY_RECOMMEND = "documentsByRecommend";
+
+var JS_KEY_LISTING_USERS_DEBATE_FOLLOWERS = "debateFollowersListing";
 
 
 // Generic function to make an AJAX call

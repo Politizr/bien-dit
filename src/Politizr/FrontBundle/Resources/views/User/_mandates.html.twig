@@ -1,18 +1,14 @@
-{% for mandate in mandates %}
-    <div class="mandateItem">
-        <div class="mandatePeriod">
+{% if mandates | length > 0 %}
+    {% for mandate in mandates %}
+        <div class="profileMandatsItem">
+            <span>{{ mandate.mandateNaming }} - {{ mandate.localization | purify  }}</span>
             {% if (mandate.isCurrent) %}
                 Depuis {{ mandate.beginAt | date('Y') }}
             {% else %}
                 De {{ mandate.beginAt | date('Y') }} à {{ mandate.endAt | date('Y') }}
             {% endif %}
         </div>
-        <div class="mandateDetail">
-            {{ mandate.mandateNaming }}
-            {% if mandate.organization %}
-                <div class="organization" action="modalOrganization" model="PQOrganization" slug="{{ mandate.organization.slug }}">{{ mandate.organization.initials }}</div>
-            {% endif %}
-            <div class="mandateLocalization">{{ mandate.localization | purify  }}</div>
-        </div>
-    </div>
-{% endfor %}
+    {% endfor %}
+{% else %}
+    <div class="profileMandats"><a href="#">Renseignez vos mandats.</a></div>
+{% endif %}

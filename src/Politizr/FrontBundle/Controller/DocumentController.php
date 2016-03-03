@@ -91,7 +91,6 @@ class DocumentController extends Controller
         $paragraphs = $utilsManager->explodeParagraphs($debate->getDescription());
 
         return $this->render('PolitizrFrontBundle:Debate:detail.html.twig', array(
-            'profileSuffix' => $this->get('politizr.tools.global')->computeProfileSuffix(),
             'debate' => $debate,
             'paragraphs' => $paragraphs,
         ));
@@ -121,7 +120,6 @@ class DocumentController extends Controller
         $paragraphs = $utilsManager->explodeParagraphs($reaction->getDescription());
 
         return $this->render('PolitizrFrontBundle:Reaction:detail.html.twig', array(
-            'profileSuffix' => $this->get('politizr.tools.global')->computeProfileSuffix(),
             'reaction' => $reaction,
             'debate' => $debate,
             'paragraphs' => $paragraphs,
@@ -150,7 +148,6 @@ class DocumentController extends Controller
         }
 
         return $this->render('PolitizrFrontBundle:Debate:feed.html.twig', array(
-            'profileSuffix' => $this->get('politizr.tools.global')->computeProfileSuffix(),
             'debate' => $debate,
             'timelineDateKey' => $timelineDateKey,
             'noResult' => $noResult,
@@ -300,7 +297,6 @@ class DocumentController extends Controller
         $formPhotoInfo = $this->createForm(new PDReactionPhotoInfoType(), $reaction);
 
         return $this->render('PolitizrFrontBundle:Reaction:edit.html.twig', array(
-            'profileSuffix' => $this->get('politizr.tools.global')->computeProfileSuffix(),
             'reaction' => $reaction,
             'parent' => $parent,
             'paragraphs' => $paragraphs,
@@ -322,7 +318,6 @@ class DocumentController extends Controller
         $logger->info('*** draftsAction');
 
         return $this->render('PolitizrFrontBundle:Document:drafts.html.twig', array(
-            'profileSuffix' => $this->get('politizr.tools.global')->computeProfileSuffix(),
         ));
     }
 
@@ -339,7 +334,6 @@ class DocumentController extends Controller
         $logger->info('*** myPublicationsAction');
 
         return $this->render('PolitizrFrontBundle:Document:myPublications.html.twig', array(
-            'profileSuffix' => $this->get('politizr.tools.global')->computeProfileSuffix(),
         ));
     }
 }

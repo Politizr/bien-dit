@@ -1138,6 +1138,7 @@ class XhrDocument
 
     /**
      * Most popular documents
+     * code beta
      */
     public function topDocuments(Request $request)
     {
@@ -1166,6 +1167,7 @@ class XhrDocument
 
     /**
      * Suggestion documents
+     * code beta
      */
     public function suggestionDocuments(Request $request)
     {
@@ -1190,6 +1192,7 @@ class XhrDocument
 
     /**
      * Most recommended documents nav (prev/next computing)
+     * code beta
      */
     public function documentsByRecommendNav(Request $request)
     {
@@ -1254,6 +1257,7 @@ class XhrDocument
 
     /**
      * Most recommended documents
+     * code beta
      */
     public function documentsByRecommend(Request $request)
     {
@@ -1303,6 +1307,7 @@ class XhrDocument
 
     /**
      * Documents by tag
+     * code beta
      */
     public function documentsByTag(Request $request)
     {
@@ -1362,6 +1367,7 @@ class XhrDocument
 
     /**
      * Documents by organization
+     * code beta
      */
     public function documentsByOrganization(Request $request)
     {

@@ -1,3 +1,4 @@
+{# beta #}
 <div class="center">
     <div id="headerLeft">
         <div id="logo"><a href="{{ path('Homepage'~profileSuffix()) }}"><i class="icon-pltzr-logo"></i><span>politizr</span></a></div>
@@ -33,7 +34,7 @@
         <div id="userLogged">
             <a href="{{ path('Profile'~profileSuffix()) }}">
                 <span class="userName">{{ app.user.firstname }} {{ app.user.name }}</span>
-                <span class="avatar30">{{ app.user | icon }}</span>
+                <span class="avatar30">{{ app.user | photo('user_30', withLink = false) }}</span>
             </a>
         </div>
         <div class="headerSeparator"></div>

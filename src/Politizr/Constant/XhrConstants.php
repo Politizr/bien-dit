@@ -138,9 +138,8 @@ class XhrConstants
     const ROUTE_USER_PHOTO_UPLOAD = 'profil/photo/upload';
     const ROUTE_USER_PHOTO_DELETE = 'profil/photo/delete';
 
-
-    const ROUTE_USER_LISTING_LAST_DEBATE_FOLLOWERS = 'utilisateurs/debat/derniers-abonnes';
-
+    const ROUTE_USER_LISTING_LAST_DEBATE_FOLLOWERS = 'profils/debat/derniers-abonnes';
+    const ROUTE_USER_LISTING_DEBATE_FOLLOWERS = 'profils/debat/abonnes';
 
     // TIMELINE
     const ROUTE_TIMELINE_MINE = 'profil/timeline';
@@ -162,6 +161,8 @@ class XhrConstants
     const JS_KEY_LISTING_DOCUMENTS_BY_TAG = "documentsByTag";
     const JS_KEY_LISTING_DOCUMENTS_BY_ORGANIZATION = "documentsByOrganization";
     const JS_KEY_LISTING_DOCUMENTS_BY_RECOMMEND = "documentsByRecommend";
+
+    const JS_KEY_LISTING_USERS_DEBATE_FOLLOWERS = "debateFollowersListing";
 
 
     // ******************************************************** //

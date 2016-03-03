@@ -14,6 +14,7 @@ use Politizr\Constant\QualificationConstants;
 use Politizr\Constant\PathConstants;
 use Politizr\Constant\ListingConstants;
 use Politizr\Constant\ReputationConstants;
+use Politizr\Constant\XhrConstants;
 
 use Politizr\Model\PUser;
 use Politizr\Model\PUCurrentQO;
@@ -903,11 +904,12 @@ class XhrUser
     }
 
     /* ######################################################################################################## */
-    /*                                                TIMELINE                                                  */
+    /*                                                LISTING                                                   */
     /* ######################################################################################################## */
 
     /**
-     *
+     * Last 12 debate followers
+     * code beta
      */
     public function lastDebateFollowers(Request $request)
     {
@@ -934,10 +936,67 @@ class XhrUser
         $html = $this->templating->render(
             'PolitizrFrontBundle:Debate:_followers.html.twig',
             array(
+                'debate' => $debate,
                 'total' => $total,
                 'users' => $users,
             )
         );
+
+        return array(
+            'html' => $html,
+        );
+    }
+
+    /**
+     * Debate followers
+     * code beta
+     */
+    public function debateFollowers(Request $request)
+    {
+        $this->logger->info('*** debateFollowers');
+
+        // Request arguments
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        $offset = $request->get('offset');
+        $this->logger->info('$offset = ' . print_r($offset, true));
+
+        $debate = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
+        if (!$debate) {
+            throw new InconsistentDataException(sprintf('Debate %s not found', $uuid));
+        }
+
+        $users = PUserQuery::create()
+            ->usePuFollowDdPUserQuery()
+                ->filterByPDDebateId($debate->getId())
+            ->endUse()
+            ->orderBy('PuFollowDdPUser.CreatedAt', 'desc')
+            ->limit(ListingConstants::LISTING_CLASSIC_PAGINATION)
+            ->offset($offset)
+            ->find();
+
+        // @todo create function for code above
+        $moreResults = false;
+        if (sizeof($users) == ListingConstants::LISTING_CLASSIC_PAGINATION) {
+            $moreResults = true;
+        }
+
+        if ($offset == 0 && count($users) == 0) {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_noResult.html.twig'
+            );
+        } else {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_users.html.twig',
+                array(
+                    'uuid' => $uuid,
+                    'users' => $users,
+                    'offset' => intval($offset) + ListingConstants::LISTING_CLASSIC_PAGINATION,
+                    'moreResults' => $moreResults,
+                    'jsFunctionKey' => XhrConstants::JS_KEY_LISTING_USERS_DEBATE_FOLLOWERS
+                )
+            );
+        }
 
         return array(
             'html' => $html,
