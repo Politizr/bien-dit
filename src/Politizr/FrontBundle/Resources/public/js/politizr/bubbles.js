@@ -1,95 +1,110 @@
 // beta
 // use bubble
-$("body").on("mouseover", "[action='bubbleProfile']", function() {
-    // console.log('*** mouseover bubbleProfile');
+var timer;
+var delay = 1000;
 
-    $("#suggSlide.cycle-slideshow").css("overflow", "visible"); // In #suggestion : cycle2 hide the overflow during scrollHoriz, hiding the tag bubbles. This line forces it back to visible.
-    $("#siblingsSlide.cycle-slideshow").css("overflow", "visible"); // In #suggestion : cycle2 hide the overflow during scrollHoriz, hiding the tag bubbles. This line forces it back to visible.
+$("body").on("mouseover", "[action='bubbleProfile']", function(e) {
+    console.log('*** mouseover bubbleProfile');
 
-    var context = $(this).siblings('.bubblesProfile').first();
-    var xhrPath = getXhrPath(
-        ROUTE_BUBBLE_USER,
-        'bubble',
-        'user',
-        RETURN_HTML
-    );
+    var jqThis = $(this);
+    timer = setTimeout(function() {
+        console.log('*** setTimeout complete');
 
-    var uuid = $(this).attr('uuid');
-    // console.log('uuid = '+uuid);
+        $("#suggSlide.cycle-slideshow").css("overflow", "visible"); // In #suggestion : cycle2 hide the overflow during scrollHoriz, hiding the tag bubbles. This line forces it back to visible.
+        $("#siblingsSlide.cycle-slideshow").css("overflow", "visible"); // In #suggestion : cycle2 hide the overflow during scrollHoriz, hiding the tag bubbles. This line forces it back to visible.
 
-    var localLoader = context.find('.ajaxLoader').first();
+        var context = jqThis.siblings('.bubblesProfile').first();
+        var xhrPath = getXhrPath(
+            ROUTE_BUBBLE_USER,
+            'bubble',
+            'user',
+            RETURN_HTML
+        );
 
-    // display bubble
-    context.delay(500).fadeIn(400, function() {
-        return xhrCall(
-            context,
-            { 'uuid': uuid },
-            xhrPath,
-            localLoader
-        ).done(function(data) {
-            if (data['error']) {
-                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
-                $('#infoBoxHolder .boxError').show();
-            } else {
-                context.find('.bubbleContent').html(data['html']);
-            }
-            localLoader.hide();
+        var uuid = jqThis.attr('uuid');
+        console.log('uuid = '+uuid);
+
+        var localLoader = context.find('.ajaxLoader').first();
+
+        // display bubble
+        context.fadeIn(400, function() {
+            return xhrCall(
+                context,
+                { 'uuid': uuid },
+                xhrPath,
+                localLoader
+            ).done(function(data) {
+                if (data['error']) {
+                    $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                    $('#infoBoxHolder .boxError').show();
+                } else {
+                    context.find('.bubbleContent').html(data['html']);
+                }
+                localLoader.hide();
+            });
         });
-    });
+    }, delay);
 });
 
 $("body").on("mouseleave", ".bubblesProfile, .profileNameHolder", function() {
-    // console.log('*** mouseleave bubblesProfile');
+    console.log('*** mouseleave bubblesProfile');
 
     $(".bubblesProfile").clearQueue().hide();
+    clearTimeout(timer);
 });
 
-// tag bubble
-    // toggle profiles bubble
-    $(".tag").mouseover(function(){
-        $("#suggSlide.cycle-slideshow").css("overflow", "visible"); // In #suggestion : cycle2 hide the overflow during scrollHoriz, hiding the tag bubbles. This line forces it back to visible.
-        $(this).children('.bubblesTag').delay(500).fadeIn();
-    });
+// // tag bubble
+// // toggle profiles bubble
+// $(".tag").mouseover(function(){
+//     $("#suggSlide.cycle-slideshow").css("overflow", "visible"); // In #suggestion : cycle2 hide the overflow during scrollHoriz, hiding the tag bubbles. This line forces it back to visible.
+//     $(this).children('.bubblesTag').delay(500).fadeIn();
+// });
 
 $("body").on("mouseover", "[action='bubbleTag']", function() {
-    // console.log('*** mouseover bubbleTag');
+    console.log('*** mouseover bubbleTag');
 
-    $("#suggSlide.cycle-slideshow").css("overflow", "visible"); // In #suggestion : cycle2 hide the overflow during scrollHoriz, hiding the tag bubbles. This line forces it back to visible.
+    var jqThis = $(this);
+    timer = setTimeout(function() {
+        console.log('*** setTimeout complete');
 
-    var context = $(this).siblings('.bubblesTag').first();
-    var xhrPath = getXhrPath(
-        ROUTE_BUBBLE_TAG,
-        'bubble',
-        'tag',
-        RETURN_HTML
-    );
+        $("#suggSlide.cycle-slideshow").css("overflow", "visible"); // In #suggestion : cycle2 hide the overflow during scrollHoriz, hiding the tag bubbles. This line forces it back to visible.
 
-    var uuid = $(this).attr('uuid');
-    // console.log('uuid = '+uuid);
+        var context = jqThis.siblings('.bubblesTag').first();
+        var xhrPath = getXhrPath(
+            ROUTE_BUBBLE_TAG,
+            'bubble',
+            'tag',
+            RETURN_HTML
+        );
 
-    var localLoader = context.find('.ajaxLoader').first();
+        var uuid = jqThis.attr('uuid');
+        // console.log('uuid = '+uuid);
 
-    // display bubble
-    context.delay(500).fadeIn(400, function() {
-        return xhrCall(
-            context,
-            { 'uuid': uuid },
-            xhrPath,
-            localLoader
-        ).done(function(data) {
-            if (data['error']) {
-                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
-                $('#infoBoxHolder .boxError').show();
-            } else {
-                context.find('.bubbleContent').html(data['html']);
-            }
-            localLoader.hide();
+        var localLoader = context.find('.ajaxLoader').first();
+
+        // display bubble
+        context.fadeIn(400, function() {
+            return xhrCall(
+                context,
+                { 'uuid': uuid },
+                xhrPath,
+                localLoader
+            ).done(function(data) {
+                if (data['error']) {
+                    $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                    $('#infoBoxHolder .boxError').show();
+                } else {
+                    context.find('.bubbleContent').html(data['html']);
+                }
+                localLoader.hide();
+            });
         });
-    });
+    }, delay);
 });
 
 $("body").on("mouseleave", ".bubblesTag, .tag", function() {
-    // console.log('*** mouseleave bubblesTag');
+    console.log('*** mouseleave bubblesTag');
 
     $(".bubblesTag").clearQueue().hide();
+    clearTimeout(timer);
 });
