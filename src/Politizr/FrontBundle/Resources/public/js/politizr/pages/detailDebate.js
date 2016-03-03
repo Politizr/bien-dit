@@ -9,5 +9,4 @@ $(function() {
     ).done(function(r1) {
         stickySidebar();
     });
-
 });

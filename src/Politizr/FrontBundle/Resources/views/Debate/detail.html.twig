@@ -29,13 +29,13 @@
                 <div id="cardPostText">
                     {% for paragraph in paragraphs %}
                         <div id="p-{{ loop.index }}" class="paragraph">
-                            {# include('includes/paragraphComments.php') #}
+                            {% include 'PolitizrFrontBundle:Comment:_counter.html.twig' with { 'document': debate, 'paragraphNo': loop.index } only %}
                             {{ paragraph | purify }}
                         </div>
                     {% endfor %}
                 </div>
             </div>
-            {# include('includes/globalComments.php') #}
+            {% include 'PolitizrFrontBundle:Comment:_global.html.twig' with { 'document': debate } only %}
             {# include('includes/postAnswersList.php') #}
             <div class="postTags">
                 <h5>Thématiques abordées</h5>

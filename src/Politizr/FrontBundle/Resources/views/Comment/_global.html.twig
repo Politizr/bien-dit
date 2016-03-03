@@ -1,0 +1,10 @@
+{# beta #}
+<div class="paragraphHolder" uuid="{{ document.uuid }}" type="{{ document.type }}" noParagraph="0">
+    <div id="globalCommentsButton" action="globalComments">
+        <span><i class="icon-comment"></i>Commentaires</span>
+    </div>
+    <div id="globalComments" class="withLoaderInside" style="display: none;">
+        {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+        <div class="commentsContent"></div>
+    </div>
+</div>

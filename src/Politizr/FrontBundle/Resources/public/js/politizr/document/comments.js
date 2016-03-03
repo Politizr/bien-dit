@@ -1,27 +1,59 @@
+// beta
 // on document ready
 $(function() {
-    $('.comments').hide();
-
     if(window.location.hash) {
        var paragraphId = window.location.hash.substr(1);
-       openParagraph(paragraphId);
+       console.log(paragraphId);
+       var clickContext = $('#p-'+paragraphId).first(".commentsCounter");
+       $(clickContext).trigger("click");
+    }
+});
+
+// open paragraphe comments
+$("body").on("click", "[action='comments']", function() {
+    console.log('*** click comments');
+
+    if ($(this).find('.commentsContent').is(':visible')) {
+        $("[action='closeComments']").trigger("click");
+    } else {
+        $('.bubblesComments').hide();
+        $('.commentsCounter').removeClass('activeComment');
+
+        $(this).addClass('activeComment');
+        $(this).next('.bubblesComments').toggle();
+
+        var context = $(this).closest('.paragraphHolder');
+        return loadParagraphContent(context);
+    }
+});
+
+$("body").on("click", "[action='globalComments']", function() {
+    console.log('*** click globalComments');
+
+    if ($(this).find('.commentsContent').is(':visible')) {
+        $('.bubblesComments').hide();
+        $(this).closest('#globalComments').toggle();
+        $(this).closest('.paragraphHolder').find('.commentsContent').html('');
+    } else {
+        $('.bubblesComments').hide();
+        $('.commentsCounter').removeClass('activeComment');
+
+        $(this).next('#globalComments').toggle();
+
+        var context = $(this).closest('.paragraphHolder');
+        return loadParagraphContent(context);
     }
 });
 
 // close comments
 $("body").on("click", "[action='closeComments']", function(e) {
-    // console.log('*** click closeComments');
+    console.log('*** click closeComments');
 
-    var paragraphElement = $(this).closest('.paragraph');
-
-    context = paragraphElement.find('.comments');
-    context.slideUp();
-    context.html('');
-
-    // scroll to paragraph
-    $('html, body').animate({
-        scrollTop: paragraphElement.offset().top
-    }, '1000');    
+    $('.bubblesComments').hide();
+    $('#globalComments').hide();
+    $('.commentsCounter').removeClass('activeComment');
+    $(this).closest('.bubblesComments').toggle();
+    $(this).closest('.paragraphHolder').find('.commentsContent').html('');
 });
 
 // ajustement de la taille du textarea de saisie d'un commentaire en fonction de la saisie en cours
@@ -29,40 +61,37 @@ $("body").on('change keyup keydown paste cut', 'textarea', function () {
     $(this).height(0).height(this.scrollHeight);                    
 }).find('textarea').change(); 
 
-// affichage des commentaires par paragraphe
-$("body").on("click", "[action='comments']", function(e) {
-    // console.log('*** click comments');
 
-    // Fermeture préalable de tous les paragraphes ouverts
-    context = $('.comments').slideUp().html('');
-    openParagraph($(this).closest('.paragraph').attr('id'));
+// création d'un commentaire
+$("body").on("click", "input[action='createComment']", function(e) {
+    console.log('*** click createComment');
+    
+    var context = $(this).closest('.paragraphHolder');
+    createComment(context);
 });
 
-// open paragraph id
-function openParagraph(paragraphId)
+/**
+ * Load paragraph id comments
+ *
+ * @param div context
+ */
+function loadParagraphContent(context)
 {
-    // console.log('*** openParagraph');
-    // console.log(paragraphId);
+    console.log('*** loadParagraphContent');
+    console.log(context);
 
-    var context = $('#'+paragraphId);
+    var uuid = context.attr('uuid');
+    var type = context.attr('type');
+    var noParagraph = context.attr('noParagraph');
 
-    // close if already open
-    if (context.find('.comments').is(':visible')) {
-        context.find(".commentsClose").trigger( "click" );
-        return;
-    }
-
-    var uuid = context.find('.commentsCounter').attr('uuid');
-    var type = context.find('.commentsCounter').attr('type');
-    var noParagraph = context.find('.commentsCounter').attr('noParagraph');
+    console.log(uuid);
+    console.log(type);
+    console.log(noParagraph);
 
     var localLoader = context.find('.ajaxLoader').first();
-
-    // console.log(uuid);
-    // console.log(type);
-    // console.log(noParagraph);
-
-    // console.log(localLoader);
+    console.log(localLoader);
+    var targetElement = context.find('.commentsContent').first();
+    console.log(targetElement);
 
     var xhrPath = getXhrPath(
         ROUTE_COMMENTS,
@@ -71,46 +100,48 @@ function openParagraph(paragraphId)
         RETURN_HTML
         );
 
-    $.ajax({
-        type: 'POST',
-        url: xhrPath,
-        context: context,
-        data: { 'uuid': uuid, 'type': type, 'noParagraph': noParagraph },
-        dataType: 'json',
-        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, localLoader ); },
-        statusCode: { 404: function () { xhr404(localLoader); }, 500: function() { xhr500(localLoader); } },
-        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown, localLoader); },
-        success: function(data) {
-            localLoader.hide();
-            if (data['error']) {
-                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
-                $('#infoBoxHolder .boxError').show();
-            } else {
-                $(this).find('.comments').html(data['html']).slideDown();
-                $(this).find('.counter').html(data['counter']);
-                fullImgLiquid();
-
-                // input text counter
-                commentTextCounter();
-
-                // scroll to comment
-                $('html, body').animate({
-                    scrollTop: $(this).find('.comments').offset().top
-                }, '1000');
-
-                // focus
-                $('#comment_description').focus();
-            }
+    return xhrCall(
+        context,
+        { 'uuid': uuid, 'type': type, 'noParagraph': noParagraph },
+        xhrPath,
+        localLoader
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
+            targetElement.html(data['html']);
+            fullImgLiquid();
+            commentTextCounter();
+            $('#comment_description').focus();
         }
-    });        
+        localLoader.hide();
+    });
 }
 
-// création d'un commentaire
-$("body").on("click", "input[action='createComment']", function(e) {
-    // console.log('*** click createComment');
-    
-    var context = $(this).closest('.paragraph');
-    var localLoader = $(this).prev('.ajaxLoader');
+/**
+ *
+ */
+function createComment(context)
+{
+    console.log('*** createComment');
+    console.log(context);
+
+    var localLoader = context.find('.formCommentNew').find('.ajaxLoader').first();
+    console.log(localLoader);
+    var targetElement = context.find('.commentsContent').first();
+    console.log(targetElement);
+
+    var textCount = $('.textCount').text();
+    console.log(textCount);
+
+    if (textCount > 495 || textCount < 0) {
+        return false;
+    }
+
+    var form = context.find(".formCommentNew").first();
+    console.log(form);
+
     var xhrPath = getXhrPath(
         ROUTE_COMMENT_CREATE,
         'document',
@@ -118,40 +149,65 @@ $("body").on("click", "input[action='createComment']", function(e) {
         RETURN_HTML
         );
 
-    var textCount = $('.textCount').text();
-    // console.log(textCount);
+    return xhrCall(
+        context,
+        form.serialize(),
+        xhrPath,
+        localLoader
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
+            targetElement.html(data['html']);
+            fullImgLiquid();
+            commentTextCounter();
+            $('#comment_description').focus();
 
-    if (textCount > 495 || textCount < 0) {
-        return false;
-    }
 
-    $.ajax({
-        type: 'POST',
-        url: xhrPath,
-        context: context,
-        data: $("#formCommentNew").serialize(),
-        dataType: 'json',
-        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, localLoader ); },
-        statusCode: { 404: function () { xhr404(localLoader); }, 500: function() { xhr500(localLoader); } },
-        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown, localLoader); },
-        success: function(data) {
-            localLoader.hide();
-            if (data['error']) {
-                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
-                $('#infoBoxHolder .boxError').show();
-            } else {
-                $(this).find('.comments').html(data['html']).slideDown();
-                $(this).find('.counter').html(data['counter']);
-                $(this).find('.counter').addClass('withComment');
-                fullImgLiquid();
+            //    $(this).find('.comments').html(data['html']).slideDown();
+            //    $(this).find('.counter').html(data['counter']);
+            //    $(this).find('.counter').addClass('withComment');
+            //    fullImgLiquid();
+//
+            //    // $("#formCommentNew").trigger("reset");
+            //    $("#comment_description").val("");
+//
+            //    // input text counter
+            //    commentTextCounter();
 
-                // $("#formCommentNew").trigger("reset");
-                $("#comment_description").val("");
 
-                // input text counter
-                commentTextCounter();
-            }
         }
+        localLoader.hide();
     });
+}
 
-});
+
+/**
+ * Character counting for comment
+ */
+function commentTextCounter() {
+    // console.log('*** commentTextCounter');
+
+    $('#comment_description').textcounter({
+        type                     : "character",            // "character" or "word"
+        min                      : 5,                      // minimum number of characters/words
+        max                      : 500,                    // maximum number of characters/words, -1 for unlimited, 'auto' to use maxlength attribute
+        countContainerElement    : "div",                  // HTML element to wrap the text count in
+        countContainerClass      : "commentCountWrapper",   // class applied to the countContainerElement
+        textCountClass           : "textCount",           // class applied to the counter length
+        inputErrorClass          : "error",                // error class appended to the input element if error occurs
+        counterErrorClass        : "error",                // error class appended to the countContainerElement if error occurs
+        counterText              : "Caractères: ",        // counter text
+        errorTextElement         : "div",                  // error text element
+        minimumErrorText         : "Minimum: 5 caractères",      // error message for minimum not met,
+        maximumErrorText         : "Maximum: 500 caractères",     // error message for maximum range exceeded,
+        displayErrorText         : true,                   // display error text messages for minimum/maximum values
+        stopInputAtMaximum       : false,                   // stop further text input if maximum reached
+        countSpaces              : true,                  // count spaces as character (only for "character" type)
+        countDown                : true,                  // if the counter should deduct from maximum characters/words rather than counting up
+        countDownText            : "Caractères restants: ",          // count down text
+        countExtendedCharacters  : false,                       // count extended UTF-8 characters as 2 bytes (such as Chinese characters)    
+    });
+};
+

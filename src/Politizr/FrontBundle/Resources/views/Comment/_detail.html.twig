@@ -1,0 +1,19 @@
+{# beta #}
+<div class="comment">
+    {% include 'PolitizrFrontBundle:User:_summaryAuthor.html.twig' with { 'user': comment.user } only %}
+    <div class="commentText">
+        {{ comment.description | purify | converturls }}
+    </div>
+    <div class="coloredBg">
+        <div class="actionsBox">
+            <div class="notation withLoaderInside">
+                {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+                {% include 'PolitizrFrontBundle:Reputation:_noteAction.html.twig' with { 'subject': comment } only %}
+            </div>
+        </div>
+        <h5>
+            {% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': comment } only %}
+            + report
+        </h5>
+    </div>
+</div>

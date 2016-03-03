@@ -160,34 +160,6 @@ function getLastWeek(){
 }    
 
 /**
- * Character counting for comment
- */
-function commentTextCounter() {
-    // console.log('*** commentTextCounter');
-
-    $('#comment_description').textcounter({
-        type                     : "character",            // "character" or "word"
-        min                      : 5,                      // minimum number of characters/words
-        max                      : 500,                    // maximum number of characters/words, -1 for unlimited, 'auto' to use maxlength attribute
-        countContainerElement    : "div",                  // HTML element to wrap the text count in
-        countContainerClass      : "commentCountWrapper",   // class applied to the countContainerElement
-        textCountClass           : "textCount",           // class applied to the counter length
-        inputErrorClass          : "error",                // error class appended to the input element if error occurs
-        counterErrorClass        : "error",                // error class appended to the countContainerElement if error occurs
-        counterText              : "Caractères: ",        // counter text
-        errorTextElement         : "div",                  // error text element
-        minimumErrorText         : "Minimum: 5 caractères",      // error message for minimum not met,
-        maximumErrorText         : "Maximum: 500 caractères",     // error message for maximum range exceeded,
-        displayErrorText         : true,                   // display error text messages for minimum/maximum values
-        stopInputAtMaximum       : false,                   // stop further text input if maximum reached
-        countSpaces              : true,                  // count spaces as character (only for "character" type)
-        countDown                : true,                  // if the counter should deduct from maximum characters/words rather than counting up
-        countDownText            : "Caractères restants: ",          // count down text
-        countExtendedCharacters  : false,                       // count extended UTF-8 characters as 2 bytes (such as Chinese characters)    
-    });
-};
-
-/**
  * Init charts with data
  * @param string ID element name
  * @param array data

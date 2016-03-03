@@ -1,6 +1,13 @@
-<div class="commentsCounter withLoaderInside {% if document.countComments(true, paragraphNo) %}withComment{% endif %}" action="comments" uuid="{{ document.uuid }}" type="{{ document.type }}" noParagraph="{{ paragraphNo }}">
-    <div class="ajaxLoader" style="display: none;">
-        <div class="ajaxLoaderSpinner"></div><div class="ajaxLoaderBg"></div><div class="ajaxLoaderBlockClick"></div>
+{# beta #}
+<div class="paragraphCommentsHolder paragraphHolder" uuid="{{ document.uuid }}" type="{{ document.type }}" noParagraph="{{ paragraphNo }}">
+    <div class="paragraphComments">
+        <div class="commentsCounter{% if document.countComments(true, paragraphNo) %} withComment{% endif %}" action="comments">
+            <span>{{ document | nbComments(paragraphNo) | purify }}</span>
+            <i class="icon-comment-full"></i>
+        </div>
+        <div class="bubblesComments withLoaderInside" style="display: none;">
+            {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+            <div class="commentsContent"></div>
+        </div>
     </div>
-    {{ document | nbComments(paragraphNo) | purify }}<i class="iconComment"></i>
 </div>

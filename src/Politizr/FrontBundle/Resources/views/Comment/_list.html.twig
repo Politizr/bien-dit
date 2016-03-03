@@ -1,0 +1,18 @@
+{# beta #}
+{% if paragraphContext == 'global' %}
+    {{ app.user | isAuthorizedToNewComment(formComment, document.uuid) }}
+{% else %}
+    <div class="bubbCommArrow"><i class="icon-arrow-left"></i></div>
+    <div class="bubbCommTop">
+        <div class="bubblesCommentsHeader">
+            <span action="closeComments">Masquer<i class="icon-cross"></i></span>
+        </div>
+        {{ app.user | isAuthorizedToNewComment(formComment, document.uuid) }}
+    </div>
+{% endif %}
+
+{% for comment in comments %}
+    {% include 'PolitizrFrontBundle:Comment:_detail.html.twig' with { 'comment': comment } %}
+{% else %}
+    <div class="noComment">Aucun commentaire pour le moment.</div>
+{% endfor %}

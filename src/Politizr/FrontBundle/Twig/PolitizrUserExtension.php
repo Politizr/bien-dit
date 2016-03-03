@@ -586,7 +586,7 @@ class PolitizrUserExtension extends \Twig_Extension
         $score = $user->getReputationScore();
         if ($score >= ReputationConstants::ACTION_COMMENT_WRITE) {
             $html = $this->templating->render(
-                'PolitizrFrontBundle:Comment:_new.html.twig',
+                'PolitizrFrontBundle:Comment:_form.html.twig',
                 array(
                     'formComment' => $formComment,
                     'uuid' => $uuid,

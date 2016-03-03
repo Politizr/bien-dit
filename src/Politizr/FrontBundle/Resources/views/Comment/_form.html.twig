@@ -1,4 +1,5 @@
-<form id="formCommentNew">
+{# beta #}
+<form class="formCommentNew">
     {{ form_errors(formComment) }}
 
     {{ form_widget(formComment.description) }}
@@ -9,14 +10,11 @@
     <input type="hidden" name="uuid" value="{{ uuid }}">
     {{ form_rest(formComment) }}
     <div class="actionsButtons withLoaderInside">
-        <div class="ajaxLoader" style="display: none;">
-            <div class="ajaxLoaderSpinner"></div><div class="ajaxLoaderBg"></div><div class="ajaxLoaderBlockClick"></div>
-        </div>
+        {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
         {% if app.user %}
-            <input type="button" action="createComment" value="&#xe82c; Publier">
+            <input type="button" action="createComment" value="Publier">
         {% else %}
             <a href="{{ path('Inscription') }}">M'inscrire pour commenter</a>
         {% endif %}
-        <div class="cancel" action="closeComments">Annuler</div>
     </div>
 </form>
