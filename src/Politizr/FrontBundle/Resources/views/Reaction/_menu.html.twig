@@ -1,0 +1,115 @@
+{# beta #}
+<div id="answerMenu">
+    <div class="answerMenuSubject">
+        <div class="center">
+            Sujet initial: <a href="{{ path('DebateDetail', {'slug': debate.slug}) }}">{{ debate.title }}</a>
+            {% if ancestors | length > 0 %}
+                <div class="answerShowMenuAllFamily" action="showMenuAllFamily">...</div>
+                <div class="answerHideMenuAllFamily" action="hideMenuAllFamily" style="display: none;"><i class="icon-cross"></i></div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="answerMenuAllFamily" style="display: none;">
+        <ul>
+            {% for ancestor in ancestors %}
+                <li><a href="{{ path('ReactionDetail', {'slug': ancestor.slug}) }}">{{ ancestor.title }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% if parentReaction %}
+        <div class="answerMenuParent">
+            <div class="center">
+                <a href="{{ path('ReactionDetail', {'slug': parentReaction.slug}) }}">{{ parentReaction.title }}</a>
+            </div>
+        </div>
+    {% endif %}
+    {#
+    <div class="answerSlideSiblings">
+        <div class="center">
+            <div id="siblingsSlide" class="cycle-slideshow" data-cycle-auto-height="calc" data-cycle-fx="scrollHorz" data-cycle-swipe="true" data-cycle-swipe-fx="scrollHorz" data-cycle-timeout="0" data-cycle-slides="> div.slideSiblingsSlide" data-cycle-prev="#sibPrev" data-cycle-next="#sibNext">
+                <!-- 2 children -->
+                <div class="slideSiblingsSlide">
+                    <div class="answerSiblings">
+                        <a href="postAnswer.php" class="siblingsTitle">Signer la Déclaration des Droits de l'Humanité!</a>
+                        <div class="profileName">
+                            <div class="profileNameHolder">
+                                <a href="">Lionel Bouzonville</a>
+                                <?php include('includes/bubblesProfileElu.php') ?>
+                            </div>
+                            <div class="org"><a href="listByOrg.php">dvg</a></div>
+                        </div>                      
+                        <div class="currentPage"><i class="icon-arrow-up"></i></div>
+                    </div>
+                    
+                    <div class="answerSiblings">
+                        <a href="postAnswer.php" class="siblingsTitle">Co-gestion : tout dépend de l'échelle territoriale et des compétences de la collectivité.</a>
+                        <div class="profileName">
+                            <div class="profileNameHolder">
+                                <a href="">Lionel Bouzonville</a>
+                                <?php include('includes/bubblesProfileElu.php') ?>
+                            </div>
+                            <div class="org"><a href="listByOrg.php">dvg</a></div>
+                        </div>
+                        <!-- <div class="currentPage"><i class="icon-arrow-up"></i></div> -->
+                    </div>
+                </div>
+                
+                <!-- 1 child -->
+                <div class="slideSiblingsSlide">        
+                    <div class="answerSiblings">
+                        <a href="postAnswer.php" class="siblingsTitle">Signer la Déclaration des Droits de l'Humanité!</a>
+                        <div class="profileName">
+                            <div class="profileNameHolder">
+                                <a href="">Lionel Bouzonville</a>
+                                <?php include('includes/bubblesProfileElu.php') ?>
+                            </div>
+                            <div class="org"><a href="listByOrg.php">dvg</a></div>
+                        </div>
+                        <div class="currentPage"><i class="icon-arrow-up"></i></div>
+                    </div>
+                </div>
+                
+                <!-- 3 children : Bouzonville ! -->
+                <div class="slideSiblingsSlide">
+                    <div class="answerSiblings">
+                        <a href="postAnswer.php" class="siblingsTitle">Signer la Déclaration des Droits de l'Humanité!</a>
+                        <div class="profileName">
+                            <div class="profileNameHolder">
+                                <a href="">Lionel Bouzonville</a>
+                                <?php include('includes/bubblesProfileElu.php') ?>
+                            </div>
+                            <div class="org"><a href="listByOrg.php">dvg</a></div>
+                        </div>
+                        <div class="currentPage"><i class="icon-arrow-up"></i></div>
+                    </div>
+                    <div class="answerSiblings">
+                        <a href="postAnswer.php" class="siblingsTitle">Signer la Déclaration des Droits de l'Humanité!</a>
+                        <div class="profileName">
+                            <div class="profileNameHolder">
+                                <a href="">Lionel Bouzonville</a>
+                                <?php include('includes/bubblesProfileElu.php') ?>
+                            </div>
+                            <div class="org"><a href="listByOrg.php">dvg</a></div>
+                        </div>
+                        <!-- <div class="currentPage"><i class="icon-arrow-up"></i></div> -->
+                    </div>
+                    <div class="answerSiblings">
+                        <a href="postAnswer.php" class="siblingsTitle">Signer la Déclaration des Droits de l'Humanité!</a>
+                        <div class="profileName">
+                            <div class="profileNameHolder">
+                                <a href="">Lionel Bouzonville</a>
+                                <?php include('includes/bubblesProfileElu.php') ?>
+                            </div>
+                            <div class="org"><a href="listByOrg.php">dvg</a></div>
+                        </div>
+                        <!-- <div class="currentPage"><i class="icon-arrow-up"></i></div> -->
+                    </div>
+                </div>              
+            </div>
+            <div id="sibPrev"><i class="icon-goleft"></i></div>
+            <div id="sibNext"><i class="icon-goright"></i></div>
+        </div>  
+        <div id="answerSlideSiblingsBg"></div>
+    </div>
+    #}
+</div>

@@ -252,6 +252,26 @@ class PDReaction extends BasePDReaction implements PDocumentInterface
     /* ######################################################################################################## */
 
     /**
+     * Parent reaction of exists
+     *
+     * @param boolean $online
+     * @param boolean $published
+     * @return PDReaction
+     */
+    public function getParentReaction($online = null, $published = null)
+    {
+        $parentReaction = null;
+        if ($parentReactionId = $this->getParentReactionId()) {
+            $parentReaction = PDReactionQuery::create()
+                ->filterIfOnline($online)
+                ->filterIfPublished($published)
+                ->findPk($parentReactionId);
+        }
+
+        return $parentReaction;
+    }
+
+    /**
      * Nested tree children
      *
      * @param boolean $online

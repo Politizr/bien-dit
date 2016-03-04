@@ -142,11 +142,27 @@ class DocumentController extends Controller
         // Reaction's reactions
         $reactions = $reaction->getChildrenReactions(true, true);
 
+        // Menu elements
+        $parentReaction = $reaction->getParentReaction(true, true);
+
+        $queryAncestors = PDReactionQuery::create()
+            ->filterByTreeLevel(0, \Criteria::NOT_EQUAL)    // Exclusion du root node
+            ->orderByTreeLevel('asc')
+        ;
+        // + exclusion parent immédiat s'il existe
+        if ($parentReaction) {
+            $queryAncestors =  $queryAncestors->filterById($parentReaction->getId(), \Criteria::NOT_EQUAL);
+        }
+
+        $ancestors = $reaction->getAncestors($queryAncestors);
+
         return $this->render('PolitizrFrontBundle:Reaction:detail.html.twig', array(
             'debate' => $debate,
             'reaction' => $reaction,
             'paragraphs' => $paragraphs,
             'reactions' => $reactions,
+            'parentReaction' => $parentReaction,
+            'ancestors' => $ancestors,
         ));
     }
 
