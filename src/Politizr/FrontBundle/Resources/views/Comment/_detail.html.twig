@@ -13,7 +13,7 @@
         </div>
         <h5>
             {% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': comment } only %}
-            + report
+            {% include 'PolitizrFrontBundle:Monitoring:_classicAbuse.html.twig' with { 'subject': comment } only %}
         </h5>
     </div>
 </div>

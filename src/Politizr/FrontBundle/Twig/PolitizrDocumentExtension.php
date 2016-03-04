@@ -396,9 +396,10 @@ class PolitizrDocumentExtension extends \Twig_Extension
      *
      * @param PDocumentInterface $document
      * @param integer $paragraphNo
+     * @param boolean $label
      * @return string
      */
-    public function nbComments(PDocumentInterface $document, $paragraphNo = null)
+    public function nbComments(PDocumentInterface $document, $paragraphNo = null, $label = false)
     {
         // $this->logger->info('*** nbComments');
         // $this->logger->info('$document = '.print_r($document, true));
@@ -420,6 +421,13 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 $html = '&nbsp;';
             } else {
                 $html = $this->globalTools->readeableNumber($nbComments);
+            }
+            if ($label) {
+                if ($nbComments > 1) {
+                    $html .= ' commentaires';
+                } else {
+                    $html .= ' commentaire';
+                }
             }
         }
 

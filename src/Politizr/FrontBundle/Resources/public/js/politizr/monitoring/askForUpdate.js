@@ -1,30 +1,37 @@
 // Abuse reporting
 $("body").on("click", "[action='askForUpdate']", function() {
-    if ($('#formAskForUpdate').is(":visible")) {
-        $('.sidebarAskForModificationForm').slideToggle();
-        $('#formAskForUpdate').html('');
+    // console.log('*** askForUpdate');
+
+    context = $(this).closest(".askForUpdateBox");
+
+    if ($('.formAskForUpdateContent').is(":visible")) {
+        $("[action='closeAskForUpdate']").trigger("click");
     } else {
         var uuid = $(this).attr('uuid');
         var type = $(this).attr('type');
-        var localLoader = $('.sidebarAskForModificationForm').find('.ajaxLoader').first();
-        $('.sidebarAskForModificationForm').slideToggle(400, 'swing', loadFormAskForUpdate(uuid, type, localLoader));
+        var localLoader = context.find('.ajaxLoader').first();
+        context.find('.askForUpdateForm').slideToggle(400, 'swing', loadFormAskForUpdate(context, localLoader, uuid, type));
     }
 }); 
 
 $("body").on("click", "[action='closeAskForUpdate']", function() {
-    $('.sidebarAskForModificationForm').slideToggle();
-    $('#formAskForUpdate').html('');
+    // console.log('*** closeAskForUpdate');
+
+    $('.askForUpdateForm').hide();
+    $('.formAskForUpdateContent').html('');
 });
 
 $("body").on("click", "[action='createAskForUpdate']", function() {
-    var localLoader = $('.sidebarAskForModificationForm').find('.ajaxLoader').first();
+    // console.log('*** createAskForUpdate');
+
+    var context = $(this).closest(".askForUpdateBox");
+    var localLoader = context.find('.ajaxLoader').first();
 
     $.when(
-        validateFormAskForUpdate(localLoader)
+        validateFormAskForUpdate(context, localLoader)
     ).done(function(r1) {
         if (!r1['error']) {
-            $('.sidebarAskForModificationForm').slideToggle();
-            $('#formAskForUpdate').html('');
+            $("[action='closeAskForUpdate']").trigger("click");
         }
     });
 });
@@ -32,9 +39,14 @@ $("body").on("click", "[action='createAskForUpdate']", function() {
 
 /**
  * Form abuse box loading
+ *
+ * @param context
+ * @param localLoader
+ * @param uuid
+ * @param type
  */
-function loadFormAskForUpdate(uuid, type, localLoader) {
-    console.log('*** loadFormAskForUpdate');
+function loadFormAskForUpdate(context, localLoader, uuid, type) {
+    // console.log('*** loadFormAskForUpdate');
     uuid = (typeof uuid === "undefined") ? null : uuid;
     type = (typeof type === "undefined") ? null : type;
 
@@ -50,7 +62,7 @@ function loadFormAskForUpdate(uuid, type, localLoader) {
         );
 
     return xhrCall(
-        document,
+        context,
         { 'uuid': uuid, 'type': type },
         xhrPath,
         localLoader
@@ -59,7 +71,7 @@ function loadFormAskForUpdate(uuid, type, localLoader) {
             $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
             $('#infoBoxHolder .boxError').show();
         } else {
-            $('#formAskForUpdate').html(data['html']);
+            context.find('.formAskForUpdateContent').html(data['html']);
         }
         localLoader.hide();
     });
@@ -68,9 +80,12 @@ function loadFormAskForUpdate(uuid, type, localLoader) {
 
 /**
  * Form abuse box loading
+ *
+ * @param context
+ * @param localLoader
  */
-function validateFormAskForUpdate(localLoader) {
-    console.log('*** validateFormAskForUpdate');
+function validateFormAskForUpdate(context, localLoader) {
+    // console.log('*** validateFormAskForUpdate');
 
     var xhrPath = getXhrPath(
         ROUTE_MONITORING_ASK_FOR_UPDATE_CHECK,
@@ -79,9 +94,12 @@ function validateFormAskForUpdate(localLoader) {
         RETURN_BOOLEAN
         );
 
+    var form = context.find("#formAskForUpdate");
+    // console.log(form.serialize());
+
     return xhrCall(
         document,
-        $("#formAskForUpdate").serialize(),
+        form.serialize(),
         xhrPath,
         localLoader
     ).done(function(data) {

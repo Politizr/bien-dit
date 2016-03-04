@@ -1,10 +1,12 @@
 {# beta #}
-<div class="paragraphHolder" uuid="{{ document.uuid }}" type="{{ document.type }}" noParagraph="0">
-    <div id="globalCommentsButton" action="globalComments">
-        <span><i class="icon-comment"></i>Commentaires</span>
+<div class="paragraphHolder withLoaderInside" uuid="{{ document.uuid }}" type="{{ document.type }}" noParagraph="0">
+    {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+    <div id="globalCommentsButton">
+        <div class="counterContent">
+            {% include 'PolitizrFrontBundle:Comment:_counter.html.twig' with { 'document': document, 'paragraphNo': 0, 'active': false, 'paragraphContext': 'global' } only %}
+        </div>
     </div>
-    <div id="globalComments" class="withLoaderInside" style="display: none;">
-        {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+    <div id="globalComments" style="display: none;">
         <div class="commentsContent"></div>
     </div>
 </div>

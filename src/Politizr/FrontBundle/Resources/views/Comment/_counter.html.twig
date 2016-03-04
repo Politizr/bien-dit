@@ -1,13 +1,11 @@
-{# beta #}
-<div class="paragraphCommentsHolder paragraphHolder" uuid="{{ document.uuid }}" type="{{ document.type }}" noParagraph="{{ paragraphNo }}">
-    <div class="paragraphComments">
-        <div class="commentsCounter{% if document.countComments(true, paragraphNo) %} withComment{% endif %}" action="comments">
-            <span>{{ document | nbComments(paragraphNo) | purify }}</span>
-            <i class="icon-comment-full"></i>
-        </div>
-        <div class="bubblesComments withLoaderInside" style="display: none;">
-            {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
-            <div class="commentsContent"></div>
-        </div>
+{% if paragraphContext == 'paragraph' %}
+    <div class="commentsCounter{% if document.countComments(true, paragraphNo) %} withComment{% endif %}{% if active %} activeComment{% endif %}" action="comments">
+        <span>{{ document | nbComments(paragraphNo) | purify }}</span>
+        <i class="icon-comment-full"></i>
     </div>
-</div>
+{% else %}
+    <span action="globalComments">
+        <i class="icon-comment"></i>
+        {{ document | nbComments(0, label = true) | purify }}
+    </span>
+{% endif %}

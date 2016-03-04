@@ -745,6 +745,7 @@ class XhrDocument
 
     /**
      * Create a new comment
+     * code beta
      */
     public function commentNew(Request $request)
     {
@@ -798,49 +799,12 @@ class XhrDocument
             throw new BoxErrorException($errors);
         }
 
-        // Get associated object
-        $document = $comment->getPDocument();
-        $noParagraph = $comment->getParagraphNo();
-
-        // New form creation
-        $comments = $document->getComments(true, $noParagraph);
-
-        if ($user) {
-            $commentNew->setParagraphNo($noParagraph);
-        }
-        $formComment = $this->formFactory->create($formType, $comment);
-
-        // Events
-        $event = new GenericEvent($comment, array('user_id' => $user->getId(),));
-        $dispatcher = $this->eventDispatcher->dispatch('r_comment_publish', $event);
-        $event = new GenericEvent($comment, array('author_user_id' => $user->getId(),));
-        $dispatcher = $this->eventDispatcher->dispatch('n_comment_publish', $event);
-        $event = new GenericEvent($comment, array('author_user_id' => $user->getId()));
-        $dispatcher = $this->eventDispatcher->dispatch('b_comment_publish', $event);
-
-        // Rendering
-        $paragraphContext = 'global';
-        if ($noParagraph > 0) {
-            $paragraphContext = 'paragraph';
-        }
-
-        $html = $this->templating->render(
-            'PolitizrFrontBundle:Comment:_list.html.twig',
-            array(
-                'paragraphContext' => $paragraphContext,
-                'document' => $document,
-                'comments' => $comments,
-                'formComment' => $formComment->createView(),
-            )
-        );
-
-        return array(
-            'html' => $html,
-            );
+        return true;
     }
 
     /**
      * Display comments & create form comment
+     * code beta
      */
     public function comments(Request $request)
     {
@@ -881,6 +845,7 @@ class XhrDocument
         if ($noParagraph > 0) {
             $paragraphContext = 'paragraph';
         }
+
         $html = $this->templating->render(
             'PolitizrFrontBundle:Comment:_list.html.twig',
             array(
@@ -890,9 +855,19 @@ class XhrDocument
                 'formComment' => $formComment->createView(),
             )
         );
+        $counter = $this->templating->render(
+            'PolitizrFrontBundle:Comment:_counter.html.twig',
+            array(
+                'document' => $document,
+                'paragraphNo' => $noParagraph,
+                'active' => true,
+                'paragraphContext' => $paragraphContext,
+            )
+        );
 
         return array(
             'html' => $html,
+            'counter' => $counter,
             );
     }
 

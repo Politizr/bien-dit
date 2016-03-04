@@ -1,30 +1,36 @@
 // Abuse reporting
 $("body").on("click", "[action='abuseReporting']", function() {
-    if ($('#formAbuse').is(":visible")) {
-        $('.sidebarReportForm').slideToggle();
-        $('#formAbuse').html('');
+    // console.log('*** abuseReporting');
+
+    context = $(this).closest(".reportBox");
+    if ($('.formAbuseContent').is(":visible")) {
+        $("[action='closeAbuseReporting']").trigger("click");
     } else {
         var uuid = $(this).attr('uuid');
         var type = $(this).attr('type');
-        var localLoader = $('.sidebarReportForm').find('.ajaxLoader').first();
-        $('.sidebarReportForm').slideToggle(400, 'swing', loadFormAbuse(uuid, type, localLoader));
+        var localLoader = context.find('.ajaxLoader').first();
+        context.find('.reportForm').slideToggle(400, 'swing', loadFormAbuse(context, localLoader, uuid, type));
     }
 }); 
 
 $("body").on("click", "[action='closeAbuseReporting']", function() {
-    $('.sidebarReportForm').slideToggle();
-    $('#formAbuse').html('');
+    // console.log('*** closeAbuseReporting');
+
+    $('.reportForm').hide();
+    $('.formAbuseContent').html('');
 });
 
 $("body").on("click", "[action='createAbuseReporting']", function() {
-    var localLoader = $('.sidebarReportForm').find('.ajaxLoader').first();
+    // console.log('*** createAbuseReporting');
+
+    var context = $(this).closest(".reportBox");
+    var localLoader = context.find('.ajaxLoader').first();
 
     $.when(
-        validateFormAbuse(localLoader)
+        validateFormAbuse(context, localLoader)
     ).done(function(r1) {
         if (!r1['error']) {
-            $('.sidebarReportForm').slideToggle();
-            $('#formAbuse').html('');
+            $("[action='closeAbuseReporting']").trigger("click");
         }
     });
 });
@@ -32,9 +38,14 @@ $("body").on("click", "[action='createAbuseReporting']", function() {
 
 /**
  * Form abuse box loading
+ *
+ * @param context
+ * @param localLoader
+ * @param uuid
+ * @param type
  */
-function loadFormAbuse(uuid, type, localLoader) {
-    console.log('*** loadFormAbuse');
+function loadFormAbuse(context, localLoader, uuid, type) {
+    // console.log('*** loadFormAbuse');
     uuid = (typeof uuid === "undefined") ? null : uuid;
     type = (typeof type === "undefined") ? null : type;
 
@@ -47,10 +58,10 @@ function loadFormAbuse(uuid, type, localLoader) {
         'monitoring',
         'abuse',
         RETURN_HTML
-        );
+    );
 
     return xhrCall(
-        document,
+        context,
         { 'uuid': uuid, 'type': type },
         xhrPath,
         localLoader
@@ -59,7 +70,7 @@ function loadFormAbuse(uuid, type, localLoader) {
             $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
             $('#infoBoxHolder .boxError').show();
         } else {
-            $('#formAbuse').html(data['html']);
+            context.find('.formAbuseContent').html(data['html']);
         }
         localLoader.hide();
     });
@@ -68,9 +79,12 @@ function loadFormAbuse(uuid, type, localLoader) {
 
 /**
  * Form abuse box loading
+ *
+ * @param context
+ * @param localLoader
  */
-function validateFormAbuse(localLoader) {
-    console.log('*** validateFormAbuse');
+function validateFormAbuse(context, localLoader) {
+    // console.log('*** validateFormAbuse');
 
     var xhrPath = getXhrPath(
         ROUTE_MONITORING_ABUSE_CHECK,
@@ -79,9 +93,12 @@ function validateFormAbuse(localLoader) {
         RETURN_BOOLEAN
         );
 
+    var form = context.find("#formAbuseReporting");
+    // console.log(form.serialize());
+
     return xhrCall(
-        document,
-        $("#formAbuseReporting").serialize(),
+        context,
+        form.serialize(),
         xhrPath,
         localLoader
     ).done(function(data) {

@@ -1,0 +1,12 @@
+{# beta #}
+<div class="paragraphCommentsHolder paragraphHolder withLoaderInside" uuid="{{ document.uuid }}" type="{{ document.type }}" noParagraph="{{ paragraphNo }}">
+    {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+    <div class="paragraphComments">
+        <div class="counterContent">
+            {% include 'PolitizrFrontBundle:Comment:_counter.html.twig' with { 'document': document, 'paragraphNo': paragraphNo, 'active': false, 'paragraphContext': 'paragraph' } only %}
+        </div>
+        <div class="bubblesComments" style="display: none;">
+            <div class="commentsContent"></div>
+        </div>
+    </div>
+</div>
