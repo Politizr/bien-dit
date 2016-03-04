@@ -1,0 +1,10 @@
+{# beta #}
+<div class="similarSubjects">
+    <h5>Sujets similaires</h5>
+
+    {% for document in documents %}
+        {% include 'PolitizrFrontBundle:Document:_card.html.twig' with { 'document': document, 'withContext': true } only %}
+    {% else %}
+        {% include 'PolitizrFrontBundle:PaginatedList:_noResult.html.twig' only %}
+    {% endfor %}
+</div>

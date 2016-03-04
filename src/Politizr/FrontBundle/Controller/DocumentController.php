@@ -8,6 +8,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use Politizr\Exception\InconsistentDataException;
 
+use Politizr\Constant\TagConstants;
+
 use Politizr\Model\PDocumentInterface;
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
@@ -93,10 +95,21 @@ class DocumentController extends Controller
         // Debate's reactions
         $reactions = $debate->getChildrenReactions(true, true);
 
+        // Debate's similar debates
+        $similars = PDDebateQuery::create()
+            ->filterById($debate->getId(), \Criteria::NOT_EQUAL)
+            ->usePDDTaggedTQuery()
+                ->filterByPTag($debate->getTags(TagConstants::TAG_TYPE_THEME), \Criteria::IN)
+            ->endUse()
+            ->distinct()
+            ->limit(5)
+            ->find();
+
         return $this->render('PolitizrFrontBundle:Debate:detail.html.twig', array(
             'debate' => $debate,
             'paragraphs' => $paragraphs,
             'reactions' => $reactions,
+            'similars' => $similars,
         ));
     }
 

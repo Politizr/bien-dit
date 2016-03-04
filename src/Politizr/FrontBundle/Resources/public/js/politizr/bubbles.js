@@ -1,110 +1,93 @@
 // beta
-// use bubble
-var timer;
-var delay = 1000;
+/**
+ * Profile bubble
+ */
+$("body").on("mouseenter", "[action='bubbleProfile']", function() {
+    // console.log('*** mouseenter bubbleProfile');
 
-$("body").on("mouseover", "[action='bubbleProfile']", function(e) {
-    console.log('*** mouseover bubbleProfile');
+    $("#suggSlide.cycle-slideshow").css("overflow", "visible"); // In #suggestion : cycle2 hide the overflow during scrollHoriz, hiding the tag bubbles. This line forces it back to visible.
+    $("#siblingsSlide.cycle-slideshow").css("overflow", "visible"); // In #suggestion : cycle2 hide the overflow during scrollHoriz, hiding the tag bubbles. This line forces it back to visible.
 
-    var jqThis = $(this);
-    timer = setTimeout(function() {
-        console.log('*** setTimeout complete');
+    var context = $(this).siblings('.bubblesProfile').first();
+    var xhrPath = getXhrPath(
+        ROUTE_BUBBLE_USER,
+        'bubble',
+        'user',
+        RETURN_HTML
+    );
 
-        $("#suggSlide.cycle-slideshow").css("overflow", "visible"); // In #suggestion : cycle2 hide the overflow during scrollHoriz, hiding the tag bubbles. This line forces it back to visible.
-        $("#siblingsSlide.cycle-slideshow").css("overflow", "visible"); // In #suggestion : cycle2 hide the overflow during scrollHoriz, hiding the tag bubbles. This line forces it back to visible.
+    var uuid = $(this).attr('uuid');
+    // console.log('uuid = '+uuid);
 
-        var context = jqThis.siblings('.bubblesProfile').first();
-        var xhrPath = getXhrPath(
-            ROUTE_BUBBLE_USER,
-            'bubble',
-            'user',
-            RETURN_HTML
-        );
+    var localLoader = context.find('.ajaxLoader').first();
 
-        var uuid = jqThis.attr('uuid');
-        console.log('uuid = '+uuid);
-
-        var localLoader = context.find('.ajaxLoader').first();
-
-        // display bubble
-        context.fadeIn(400, function() {
-            return xhrCall(
-                context,
-                { 'uuid': uuid },
-                xhrPath,
-                localLoader
-            ).done(function(data) {
-                if (data['error']) {
-                    $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
-                    $('#infoBoxHolder .boxError').show();
-                } else {
-                    context.find('.bubbleContent').html(data['html']);
-                }
-                localLoader.hide();
-            });
+    // display bubble
+    context.delay(1000).fadeIn(400, function() {
+        return xhrCall(
+            context,
+            { 'uuid': uuid },
+            xhrPath,
+            localLoader
+        ).done(function(data) {
+            if (data['error']) {
+                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                $('#infoBoxHolder .boxError').show();
+            } else {
+                context.find('.bubbleContent').html(data['html']);
+            }
+            localLoader.hide();
         });
-    }, delay);
+    });
 });
 
-$("body").on("mouseleave", ".bubblesProfile, .profileNameHolder", function() {
-    console.log('*** mouseleave bubblesProfile');
+$("body").on("mouseleave", ".bubblesProfile, .profileNameHolder, .avatar40", function() {
+    // console.log('*** mouseleave bubblesProfile');
 
     $(".bubblesProfile").clearQueue().hide();
-    clearTimeout(timer);
 });
 
-// // tag bubble
-// // toggle profiles bubble
-// $(".tag").mouseover(function(){
-//     $("#suggSlide.cycle-slideshow").css("overflow", "visible"); // In #suggestion : cycle2 hide the overflow during scrollHoriz, hiding the tag bubbles. This line forces it back to visible.
-//     $(this).children('.bubblesTag').delay(500).fadeIn();
-// });
+/**
+ * Tag bubble
+ */
+$("body").on("mouseenter", "[action='bubbleTag']", function() {
+    // console.log('*** mouseenter bubbleTag');
 
-$("body").on("mouseover", "[action='bubbleTag']", function() {
-    console.log('*** mouseover bubbleTag');
+    $("#suggSlide.cycle-slideshow").css("overflow", "visible"); // In #suggestion : cycle2 hide the overflow during scrollHoriz, hiding the tag bubbles. This line forces it back to visible.
 
-    var jqThis = $(this);
-    timer = setTimeout(function() {
-        console.log('*** setTimeout complete');
+    var context = $(this).siblings('.bubblesTag').first();
+    var xhrPath = getXhrPath(
+        ROUTE_BUBBLE_TAG,
+        'bubble',
+        'tag',
+        RETURN_HTML
+    );
 
-        $("#suggSlide.cycle-slideshow").css("overflow", "visible"); // In #suggestion : cycle2 hide the overflow during scrollHoriz, hiding the tag bubbles. This line forces it back to visible.
+    var uuid = $(this).attr('uuid');
+    // console.log('uuid = '+uuid);
 
-        var context = jqThis.siblings('.bubblesTag').first();
-        var xhrPath = getXhrPath(
-            ROUTE_BUBBLE_TAG,
-            'bubble',
-            'tag',
-            RETURN_HTML
-        );
+    var localLoader = context.find('.ajaxLoader').first();
 
-        var uuid = jqThis.attr('uuid');
-        // console.log('uuid = '+uuid);
-
-        var localLoader = context.find('.ajaxLoader').first();
-
-        // display bubble
-        context.fadeIn(400, function() {
-            return xhrCall(
-                context,
-                { 'uuid': uuid },
-                xhrPath,
-                localLoader
-            ).done(function(data) {
-                if (data['error']) {
-                    $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
-                    $('#infoBoxHolder .boxError').show();
-                } else {
-                    context.find('.bubbleContent').html(data['html']);
-                }
-                localLoader.hide();
-            });
+    // display bubble
+    context.delay(1000).fadeIn(400, function() {
+        return xhrCall(
+            context,
+            { 'uuid': uuid },
+            xhrPath,
+            localLoader
+        ).done(function(data) {
+            if (data['error']) {
+                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                $('#infoBoxHolder .boxError').show();
+            } else {
+                context.find('.bubbleContent').html(data['html']);
+            }
+            localLoader.hide();
         });
-    }, delay);
+    });
 });
 
 $("body").on("mouseleave", ".bubblesTag, .tag", function() {
-    console.log('*** mouseleave bubblesTag');
+    // console.log('*** mouseleave bubblesTag');
 
     $(".bubblesTag").clearQueue().hide();
-    clearTimeout(timer);
 });
