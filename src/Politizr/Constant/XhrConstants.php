@@ -54,6 +54,8 @@ class XhrConstants
     const ROUTE_REACTION_DELETE = 'profil/reaction/supprimer';
     const ROUTE_REACTION_PHOTO_INFO_UPDATE = 'profil/reaction/infos/photo/update';
 
+    const ROUTE_REACTION_LISTING_DEBATE_FIRST_CHILD = 'reactions/debat';
+
     // NOTIFICATIONS
     const ROUTE_NOTIF_LOADING = 'profil/notif/chargement';
     const ROUTE_NOTIF_CHECK = 'profil/notif/marque-vu';

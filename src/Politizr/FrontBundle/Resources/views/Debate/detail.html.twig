@@ -21,7 +21,9 @@
             <div id="cardPost">
                 <span class="postTitle">{{ debate.title }}</span>
                 <div id="cardPostImgHolder">
-                    <div id="cardPostImgLegend">Crédit photo: {{ debate.copyright | purify }}</div>
+                    {% if debate.copyright | purify | length > 0 %}
+                        <div id="cardPostImgLegend">Crédit photo: {{ debate.copyright | purify }}</div>
+                    {% endif %}
                     <div id="cardPostImg">
                         {{ debate | image('debate_header') }}
                     </div>
@@ -38,7 +40,9 @@
             <div id="p-0">
                 {% include 'PolitizrFrontBundle:Comment:_global.html.twig' with { 'document': debate } only %}
             </div>
-            {# include('includes/postAnswersList.php') #}
+
+            {% include 'PolitizrFrontBundle:Reaction:_listReactionsToPost.html.twig' with { 'document': debate, 'reactions': reactions } only %}
+
             <div class="postTags">
                 <h5>Thématiques abordées</h5>
                 <div class="tagList">

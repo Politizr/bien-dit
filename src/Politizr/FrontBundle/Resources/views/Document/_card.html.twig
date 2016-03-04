@@ -13,7 +13,7 @@
         </div>
     </div>
     <div class="coloredBg">
-        {% if document.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION') %}
+        {% if document.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION') and withContext %}
             {{ document | itemContextReaction() }}
         {% endif %}
         <div class="postStats">

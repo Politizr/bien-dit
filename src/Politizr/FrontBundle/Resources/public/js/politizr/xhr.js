@@ -42,6 +42,9 @@ var ROUTE_REACTION_PUBLISH = 'profil/reaction/publier';
 var ROUTE_REACTION_DELETE = 'profil/reaction/supprimer';
 var ROUTE_REACTION_PHOTO_INFO_UPDATE = 'profil/reaction/infos/photo/update';
 
+var ROUTE_REACTION_LISTING_DEBATE_FIRST_CHILD = 'reactions/debat';
+
+
 // NOTIFICATIONS
 var ROUTE_NOTIF_LOADING = 'profil/notif/chargement';
 var ROUTE_NOTIF_CHECK = 'profil/notif/marque-vu';

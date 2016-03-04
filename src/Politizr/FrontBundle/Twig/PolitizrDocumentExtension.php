@@ -293,9 +293,10 @@ class PolitizrDocumentExtension extends \Twig_Extension
      * Document's number of reactions
      *
      * @param PDocumentInterface $document
+     * @param boolean $descendants
      * @return html
      */
-    public function nbReactions(PDocumentInterface $document)
+    public function nbReactions(PDocumentInterface $document, $descendants = true)
     {
         // $this->logger->info('*** nbReactions');
         // $this->logger->info('$document = '.print_r($document, true));
@@ -303,12 +304,20 @@ class PolitizrDocumentExtension extends \Twig_Extension
         $nbReactions = 0;
         switch ($document->getType()) {
             case ObjectTypeConstants::TYPE_DEBATE:
-                $nbReactions = $document->countReactions(true, true);
+                if ($descendants) {
+                    $nbReactions = $document->countReactions(true, true);
+                } else {
+                    // 1st level only
+                    $nbReactions = $document->countChildrenReactions(true, true);
+                }
                 break;
             case ObjectTypeConstants::TYPE_REACTION:
-                // 1st level only:
-                // $nbReactions = $document->countChildrenReactions(true, true);
-                $nbReactions = $document->countDescendantsReactions(true, true);
+                if ($descendants) {
+                    $nbReactions = $document->countDescendantsReactions(true, true);
+                } else {
+                    // 1st level only:
+                    $nbReactions = $document->countChildrenReactions(true, true);
+                }
                 break;
             default:
                 throw new InconsistentDataException(sprintf('Object type %s not managed', $document->getType()));
@@ -332,7 +341,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
      * @param boolean $debateContext
      * @return string
      */
-    public function itemContextReaction(PDReaction $reaction, $debateContext = false)
+    public function itemContextReaction(PDReaction $reaction)
     {
         $parentReaction = null;
 
@@ -347,7 +356,6 @@ class PolitizrDocumentExtension extends \Twig_Extension
             array(
                 'parentReaction' => $parentReaction,
                 'parentDebate' => $parentDebate,
-                'debateContext' => $debateContext
             )
         );
 

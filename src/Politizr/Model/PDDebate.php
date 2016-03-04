@@ -392,6 +392,23 @@ class PDDebate extends BasePDDebate implements PDocumentInterface
     }
 
     /**
+     * Debate's reactions children count
+     *
+     * @param boolean $online
+     * @param boolean $published
+     * @return int
+     */
+    public function countChildrenReactions($online = null, $published = null)
+    {
+        $query = PDReactionQuery::create()
+            ->filterByTreeLevel(1) // only first level
+            ->filterIfOnline($online)
+            ->filterIfPublished($published);
+
+        return parent::countPDReactions($query);
+    }
+
+    /**
      * Nested tree children
      *
      * @param boolean $online
@@ -401,9 +418,13 @@ class PDDebate extends BasePDDebate implements PDocumentInterface
     public function getChildrenReactions($online = null, $published = null)
     {
         $rootNode = PDReactionQuery::create()->findRoot($this->getId());
-        $children = $rootNode->getChildrenReactions($online, $published);
+        
+        if ($rootNode) {
+            $children = $rootNode->getChildrenReactions($online, $published);
+            return $children;
+        }
 
-        return $children;
+        return null;
     }
 
     /**
@@ -422,6 +443,7 @@ class PDDebate extends BasePDDebate implements PDocumentInterface
 
         return parent::countPDReactions($query);
     }
+
 
     /**
      * Last debate's published reaction

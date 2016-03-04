@@ -1,6 +1,13 @@
-<div id="reactionsToPost">
-    <h1>les réactions à cette publication</h1>
-    {% for reaction in document.childrenReactions(true, true) %}
-        {% include 'PolitizrFrontBundle:Document:_summary.html.twig' with { 'document': reaction, 'withSubscribe': false } only %}        
+{# beta #}
+<div class="postAnswersList">
+    <center>
+        <div class="answerCounter">
+            <i class="icon-reaction"></i>
+            {{ document | nbReactions(descendants = false) }}
+        </div>
+    </center>
+
+    {% for reaction in reactions %}
+        {% include 'PolitizrFrontBundle:Document:_card.html.twig' with { 'document': reaction, 'withContext': false } only %}
     {% endfor %}
 </div>
