@@ -11,7 +11,7 @@
     <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.cycle2.swipe.min.js') }}"></script>
 {% endblock %}
 
-{% block preContent %}
+{% block preMain %}
     <div id="suggestions">
         <div class="center">
             <div id="suggTitle">Sélection de nouvelles publications — d'après <a href="{{ path('Profile'~profileSuffix()) }}">les thématiques que vous suivez</a>.</div>
@@ -19,7 +19,7 @@
         </div>
         <div id="suggBg"></div>
     </div>
-{% endblock preContent %}
+{% endblock preMain %}
 
 {% block content %}
     <div id="content">

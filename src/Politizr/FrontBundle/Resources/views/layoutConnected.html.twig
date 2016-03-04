@@ -45,9 +45,10 @@
     <div id="headerTrigger"></div>
 {% endblock header %}
 
+{% block preMain %}
+{% endblock %}
+
 {% block main %}
-    {% block preContent %}
-    {% endblock %}
     <div id="main">
         <div class="center">
             {% block content %}
@@ -64,9 +65,10 @@
             {% endblock sidebar %}
         </div>
     </div>
-    {% block postContent %}
-    {% endblock %}
 {% endblock main %}
+
+{% block postMain %}
+{% endblock %}
 
 {% block footer %}
     {% block mobileFooter %}

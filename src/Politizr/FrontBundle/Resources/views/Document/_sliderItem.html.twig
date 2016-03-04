@@ -1,3 +1,4 @@
+{# beta #}
 {% if document.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE') %}
     {% set detailPath = path('DebateDetail', { 'slug': document.slug }) %}
     {% set spanClass = 'subject' %}
@@ -13,7 +14,7 @@
         {% if document.fileName %}
             <div class="suggItemImg">
                 <a href="{{ detailPath }}">
-                    {{ document | image('debate_header', false) }}
+                    {{ document | image('debate_header') }}
                 </a>
             </div>
         {% endif %}

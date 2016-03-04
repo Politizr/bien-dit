@@ -139,10 +139,14 @@ class DocumentController extends Controller
         $utilsManager = $this->get('politizr.tools.global');
         $paragraphs = $utilsManager->explodeParagraphs($reaction->getDescription());
 
+        // Reaction's reactions
+        $reactions = $reaction->getChildrenReactions(true, true);
+
         return $this->render('PolitizrFrontBundle:Reaction:detail.html.twig', array(
-            'reaction' => $reaction,
             'debate' => $debate,
+            'reaction' => $reaction,
             'paragraphs' => $paragraphs,
+            'reactions' => $reactions,
         ));
     }
 

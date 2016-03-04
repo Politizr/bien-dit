@@ -1,7 +1,7 @@
 {% if document.fileName %}
     <tr style="background-color: #FFFFFF;">
         <td colspan="2">
-            {{ document | image('debate_header', false, true) }}
+            {{ document | image('debate_header', email = true) }}
         </td>
     </tr>
 {% endif %}

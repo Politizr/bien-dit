@@ -343,6 +343,11 @@ liip_imagine:
             filters:
                 relative_resize:  { widen: 200 }
 
+        reaction_header:
+            quality:              100
+            filters:
+                relative_resize:  { widen: 700 }
+
         user_bio_back:
             quality:              100
             filters:
