@@ -79,6 +79,8 @@ class ListingConstants
     const LISTING_SUGGESTION_DOCUMENTS_LIMIT = 10;
 
     const LISTING_LAST_DEBATE_FOLLOWERS = 12;
+    
+    const LISTING_DEBATE_SIMILARS = 3;
 
 
     // ************************************************************ //

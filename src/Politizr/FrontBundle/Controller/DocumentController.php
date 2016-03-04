@@ -9,6 +9,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Politizr\Exception\InconsistentDataException;
 
 use Politizr\Constant\TagConstants;
+use Politizr\Constant\ListingConstants;
 
 use Politizr\Model\PDocumentInterface;
 use Politizr\Model\PDDebateQuery;
@@ -102,7 +103,9 @@ class DocumentController extends Controller
                 ->filterByPTag($debate->getTags(TagConstants::TAG_TYPE_THEME), \Criteria::IN)
             ->endUse()
             ->distinct()
-            ->limit(5)
+            ->limit(ListingConstants::LISTING_DEBATE_SIMILARS)
+            ->orderByNotePos('desc')
+            ->orderByNoteNeg('asc')
             ->find();
 
         return $this->render('PolitizrFrontBundle:Debate:detail.html.twig', array(

@@ -431,7 +431,9 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 $html = $this->globalTools->readeableNumber($nbComments);
             }
             if ($label) {
-                if ($nbComments > 1) {
+                if ($nbComments == 0) {
+                    $html .= 'Commentaire';
+                } elseif ($nbComments > 1) {
                     $html .= ' commentaires';
                 } else {
                     $html .= ' commentaire';
