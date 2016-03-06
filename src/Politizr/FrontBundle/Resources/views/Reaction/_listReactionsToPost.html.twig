@@ -8,6 +8,6 @@
     </center>
 
     {% for reaction in reactions %}
-        {% include 'PolitizrFrontBundle:Document:_card.html.twig' with { 'document': reaction, 'withContext': false } only %}
+        {% include 'PolitizrFrontBundle:Document:_card.html.twig' with { 'document': reaction, 'withContext': false, 'mini': true } only %}
     {% endfor %}
 </div>

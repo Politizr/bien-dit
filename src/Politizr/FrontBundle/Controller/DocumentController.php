@@ -156,6 +156,25 @@ class DocumentController extends Controller
 
         $ancestors = $reaction->getAncestors($queryAncestors);
 
+        $querySiblings = PDReactionQuery::create()
+            ->filterByTreeLevel(0, \Criteria::NOT_EQUAL)    // Exclusion du root node
+            ->orderByTreeLevel('asc')
+        ;
+        $siblings = $reaction->getSiblings(true, $querySiblings);
+
+        // Find current reaction slide number
+        $currentSlide = 0;
+        if (count($siblings) > 3) {
+            $position = 1;
+            foreach ($siblings as $sibling) {
+                if ($sibling->getId() == $reaction->getId()) {
+                    break;
+                }
+                $position++;
+            }
+            $currentSlide = ceil($position / 3) - 1;
+        }
+
         return $this->render('PolitizrFrontBundle:Reaction:detail.html.twig', array(
             'debate' => $debate,
             'reaction' => $reaction,
@@ -163,6 +182,8 @@ class DocumentController extends Controller
             'reactions' => $reactions,
             'parentReaction' => $parentReaction,
             'ancestors' => $ancestors,
+            'siblings' => $siblings,
+            'currentSlide' => $currentSlide,
         ));
     }
 

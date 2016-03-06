@@ -23,93 +23,30 @@
             </div>
         </div>
     {% endif %}
-    {#
     <div class="answerSlideSiblings">
         <div class="center">
-            <div id="siblingsSlide" class="cycle-slideshow" data-cycle-auto-height="calc" data-cycle-fx="scrollHorz" data-cycle-swipe="true" data-cycle-swipe-fx="scrollHorz" data-cycle-timeout="0" data-cycle-slides="> div.slideSiblingsSlide" data-cycle-prev="#sibPrev" data-cycle-next="#sibNext">
-                <!-- 2 children -->
-                <div class="slideSiblingsSlide">
+            <div id="siblingsSlide" class="cycle-slideshow" data-cycle-auto-height="calc" data-cycle-fx="scrollHorz" data-cycle-swipe="true" data-cycle-swipe-fx="scrollHorz" data-cycle-timeout="0" data-cycle-slides="> div.slideSiblingsSlide" data-cycle-prev="#sibPrev" data-cycle-next="#sibNext" data-starting-slide="{{ currentSlide }}">
+                {% for sibling in siblings %}
+                    {% if loop.index0 == 0 or loop.index0 is divisible by(3) %}
+                        <div class="slideSiblingsSlide">
+                    {% endif %}
                     <div class="answerSiblings">
-                        <a href="postAnswer.php" class="siblingsTitle">Signer la Déclaration des Droits de l'Humanité!</a>
-                        <div class="profileName">
-                            <div class="profileNameHolder">
-                                <a href="">Lionel Bouzonville</a>
-                                <?php include('includes/bubblesProfileElu.php') ?>
-                            </div>
-                            <div class="org"><a href="listByOrg.php">dvg</a></div>
-                        </div>                      
-                        <div class="currentPage"><i class="icon-arrow-up"></i></div>
+                        <a href="{{ path('ReactionDetail', {'slug': sibling.slug}) }}" class="siblingsTitle">{{ sibling.title }}</a>
+                        {% include 'PolitizrFrontBundle:User:_author.html.twig' with { 'user': sibling.user } only %}
+                        {% if reaction.id == sibling.id %}
+                            <div class="currentPage"><i class="icon-arrow-up"></i></div>
+                        {% endif %}
                     </div>
-                    
-                    <div class="answerSiblings">
-                        <a href="postAnswer.php" class="siblingsTitle">Co-gestion : tout dépend de l'échelle territoriale et des compétences de la collectivité.</a>
-                        <div class="profileName">
-                            <div class="profileNameHolder">
-                                <a href="">Lionel Bouzonville</a>
-                                <?php include('includes/bubblesProfileElu.php') ?>
-                            </div>
-                            <div class="org"><a href="listByOrg.php">dvg</a></div>
-                        </div>
-                        <!-- <div class="currentPage"><i class="icon-arrow-up"></i></div> -->
-                    </div>
-                </div>
-                
-                <!-- 1 child -->
-                <div class="slideSiblingsSlide">        
-                    <div class="answerSiblings">
-                        <a href="postAnswer.php" class="siblingsTitle">Signer la Déclaration des Droits de l'Humanité!</a>
-                        <div class="profileName">
-                            <div class="profileNameHolder">
-                                <a href="">Lionel Bouzonville</a>
-                                <?php include('includes/bubblesProfileElu.php') ?>
-                            </div>
-                            <div class="org"><a href="listByOrg.php">dvg</a></div>
-                        </div>
-                        <div class="currentPage"><i class="icon-arrow-up"></i></div>
-                    </div>
-                </div>
-                
-                <!-- 3 children : Bouzonville ! -->
-                <div class="slideSiblingsSlide">
-                    <div class="answerSiblings">
-                        <a href="postAnswer.php" class="siblingsTitle">Signer la Déclaration des Droits de l'Humanité!</a>
-                        <div class="profileName">
-                            <div class="profileNameHolder">
-                                <a href="">Lionel Bouzonville</a>
-                                <?php include('includes/bubblesProfileElu.php') ?>
-                            </div>
-                            <div class="org"><a href="listByOrg.php">dvg</a></div>
-                        </div>
-                        <div class="currentPage"><i class="icon-arrow-up"></i></div>
-                    </div>
-                    <div class="answerSiblings">
-                        <a href="postAnswer.php" class="siblingsTitle">Signer la Déclaration des Droits de l'Humanité!</a>
-                        <div class="profileName">
-                            <div class="profileNameHolder">
-                                <a href="">Lionel Bouzonville</a>
-                                <?php include('includes/bubblesProfileElu.php') ?>
-                            </div>
-                            <div class="org"><a href="listByOrg.php">dvg</a></div>
-                        </div>
-                        <!-- <div class="currentPage"><i class="icon-arrow-up"></i></div> -->
-                    </div>
-                    <div class="answerSiblings">
-                        <a href="postAnswer.php" class="siblingsTitle">Signer la Déclaration des Droits de l'Humanité!</a>
-                        <div class="profileName">
-                            <div class="profileNameHolder">
-                                <a href="">Lionel Bouzonville</a>
-                                <?php include('includes/bubblesProfileElu.php') ?>
-                            </div>
-                            <div class="org"><a href="listByOrg.php">dvg</a></div>
-                        </div>
-                        <!-- <div class="currentPage"><i class="icon-arrow-up"></i></div> -->
-                    </div>
-                </div>              
+                    {% if loop.index is divisible by(3) or loop.last %}
+                        </div>              
+                    {% endif %}
+                {% endfor %}
             </div>
-            <div id="sibPrev"><i class="icon-goleft"></i></div>
-            <div id="sibNext"><i class="icon-goright"></i></div>
+            {% if siblings | length > 3 %}
+                <div id="sibPrev"><i class="icon-goleft"></i></div>
+                <div id="sibNext"><i class="icon-goright"></i></div>
+            {% endif %}
         </div>  
         <div id="answerSlideSiblingsBg"></div>
     </div>
-    #}
 </div>

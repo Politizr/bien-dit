@@ -1,6 +1,7 @@
 // beta
 $(function() {
     stickySidebar();
+    // $('.cycle-slideshow').cycle('goto', 1);
 });
 
 
