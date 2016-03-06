@@ -665,6 +665,9 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
+        if (is_string($user)) {
+            $user = null;
+        }
 
         $pos = false;
         $neg = false;
@@ -752,6 +755,9 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
+        if (is_string($user)) {
+            $user = null;
+        }
 
         $pos = false;
         $neg = false;
@@ -840,6 +846,9 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
+        if (is_string($user)) {
+            $user = null;
+        }
 
         $pos = false;
         $neg = false;
@@ -939,6 +948,9 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
+        if (is_string($user)) {
+            $user = null;
+        }
 
         $owner = false;
         $follower = false;

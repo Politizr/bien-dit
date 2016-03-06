@@ -1,13 +1,17 @@
 {# beta #}
 {% if paragraphContext == 'global' %}
-    {{ app.user | isAuthorizedToNewComment(formComment, document.uuid) }}
+    {% if app.user %}
+        {{ app.user | isAuthorizedToNewComment(formComment, document.uuid) }}
+    {% endif %}
 {% else %}
     <div class="bubbCommArrow"><i class="icon-arrow-left"></i></div>
     <div class="bubbCommTop">
         <div class="bubblesCommentsHeader">
             <span action="closeComments">Masquer<i class="icon-cross"></i></span>
         </div>
-        {{ app.user | isAuthorizedToNewComment(formComment, document.uuid) }}
+        {% if app.user %}
+            {{ app.user | isAuthorizedToNewComment(formComment, document.uuid) }}
+        {% endif %}
     </div>
 {% endif %}
 

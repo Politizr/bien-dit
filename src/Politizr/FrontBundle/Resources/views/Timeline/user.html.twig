@@ -32,7 +32,9 @@
 {% endblock content %}
 
 {% block sidebarContent %}
-    {% include 'PolitizrFrontBundle:Tag:_sidebarFollowedTags.html.twig' %}
+    {% if app.user %}
+        {% include 'PolitizrFrontBundle:Tag:_sidebarFollowedTags.html.twig' %}
+    {% endif %}
     {% include 'PolitizrFrontBundle:Tag:_sidebarTopTags.html.twig' %}
     {% include 'PolitizrFrontBundle:Document:_sidebarTopDocuments.html.twig' %}
 {% endblock sidebarContent %}

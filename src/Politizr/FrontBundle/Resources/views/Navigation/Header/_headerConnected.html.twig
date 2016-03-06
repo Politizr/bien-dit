@@ -9,7 +9,7 @@
         </div>
     </div>
     <div id="headerRight">
-        <a href="{{ path('DebateDraftNew'~profileSuffix()) }}" class="newSubject"><i class="icon-plane"></i><span>rédiger un nouveau sujet</span></a>
+        <a href="#" class="newSubject"><i class="icon-plane"></i><span>rédiger un nouveau sujet</span></a>
         <div class="headerSeparator"></div>
         <div id="notifCounter">
             <i class="icon-notif" action="toggleNotifBox">
@@ -21,7 +21,7 @@
         </div>
         <div class="headerSeparator"></div>
         <div id="reputCounter">
-            <a href="{{ path('Profile'~profileSuffix()) }}">
+            <a href="#">
                 <i class="icon-cup"></i><span class="reputPoints">-</span>
                 <span class="badgesCounter">
                     <span class="badgesCounterGold">-</span>
@@ -32,7 +32,7 @@
         </div>
         <div class="headerSeparator"></div>
         <div id="userLogged">
-            <a href="{{ path('Profile'~profileSuffix()) }}">
+            <a href="#">
                 <span class="userName">{{ app.user.firstname }} {{ app.user.name }}</span>
                 <span class="avatar30">{{ app.user | photo('user_30', withLink = false) }}</span>
             </a>
@@ -42,14 +42,14 @@
         <div id="menu" style="display: none;">
             <div id="menuArrow"><i class="icon-arrow-up"></i></div> 
             <div id="primaryMenu">
-                <a href="{{ path('Drafts'~profileSuffix()) }}">Mes brouillons</a>
-                <a href="{{ path('MyPublications'~profileSuffix()) }}">Mes publications</a>
-                <a href="{{ path('Profile'~profileSuffix()) }}">Modifier mon profil</a>
+                <a href="#">Mes brouillons</a>
+                <a href="#">Mes publications</a>
+                <a href="#">Modifier mon profil</a>
             </div>
             <div id="secondaryMenu">
                 <a href="{{ path('Help') }}"><b>Aide</b></a>
-                <a href="{{ path('EditNotifications'~profileSuffix()) }}">Réglages des notifications</a>
-                <a href="{{ path('EditPerso'~profileSuffix()) }}">Mon compte</a>
+                <a href="#">Réglages des notifications</a>
+                <a href="#">Mon compte</a>
                 <div id="deconnect"><a href="{{ path('Logout') }}">Déconnexion</a></div>
             </div>
         </div>

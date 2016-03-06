@@ -49,6 +49,11 @@ function userTagListing(targetElement, localLoader) {
     // console.log(targetElement);
     // console.log(localLoader);
     
+    if(!targetElement.length > 0) {
+        // console.log('user not connected');
+        return false;
+    }
+
     var xhrPath = getXhrPath(
         ROUTE_TAG_LISTING_USER,
         'tag',

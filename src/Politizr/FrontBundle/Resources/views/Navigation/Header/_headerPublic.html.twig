@@ -1,18 +1,14 @@
-<div id="publicHeader">
-    <div class="wrapper">
-        <div class="headerLogo">
-            <a href="{{ path('Homepage') }}" title="Accueil">
-                <i class="icon-pltzr-logo"></i>
-                <span>politizr</span>
-            </a>
+{# beta #}
+<div class="center">
+    <div id="headerLeft">
+        <div id="logo"><a href="{{ path('Homepage') }}"><i class="icon-pltzr-logo"></i><span>politizr</span></a></div>
+        <div id="headerMenu">
+            <a href="{{ path('Homepage') }}"{% if homepage is defined and homepage %} class="currentPage"{% endif %}>accueil</a>
+            <a href="{{ path('ListingByRecommend') }}"{% if top is defined and top %} class="currentPage"{% endif %}>top</a>
         </div>
-        <div id="headerRight">
-            {% if is_granted('ROLE_CITIZEN_INSCRIPTION') or is_granted('ROLE_ELECTED_INSCRIPTION') %}
-                <a href="{{ path('CancelInscription') }}">Annuler l'inscription</a>
-            {% else %}
-                <a href="{{ path('Login') }}">identification</a>
-                <a href="https://www.politizr.com/inscription" target="blank">inscription</a>
-            {% endif %}
-        </div>
+    </div>
+    <div id="headerRight">
+        <a href="{{ path('Login') }}">identification</a>
+        <a href="https://www.politizr.com/inscription" target="blank">inscription</a>
     </div>
 </div>

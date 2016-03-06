@@ -176,13 +176,15 @@ class PolitizrTagExtension extends \Twig_Extension
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
+        if (is_string($user)) {
+            $user = null;
+        }
 
+        $follower = false;
         if ($user) {
             // Test if user has already associated this tag
             if ($user->isTagged($tag->getId())) {
                 $follower = true;
-            } else {
-                $follower = false;
             }
         }
 

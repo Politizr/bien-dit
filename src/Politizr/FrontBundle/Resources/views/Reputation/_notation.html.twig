@@ -19,13 +19,5 @@
         </div>
     {% endif %}
 {% else %}
-    <div class="like">
-        <div class="likeButton"><i class="icon-like-yes"></i></div>
-        {{ object.notePos }}
-    </div>
-    <div class="dislike">
-        {{ object.noteNeg }}
-        <div class="dislikeButton"><i class="icon-like-no"></i></div>
-    </div>
     <a href="{{ path('Inscription') }}">M'inscrire pour noter</a>
 {% endif %}

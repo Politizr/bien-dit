@@ -1,13 +1,10 @@
-{% extends 'PolitizrFrontBundle::layoutHomepage.html.twig' %}
+{% extends 'PolitizrFrontBundle::layoutPublic.html.twig' %}
 
 {% block title %}
     {{ parent() }} - Connexion
 {% endblock title %}
 
-{% block header %}
-{% endblock %}
-
-{% block main %}
+{% block content %}
     <!--
     <div id="oAuthButtons">
         {# include 'PolitizrFrontBundle:Security:facebookConnect.html.twig' with {'label': 'Connexion avec Facebook'} #}
@@ -17,62 +14,55 @@
     -->
 
     <div id="boxLogin">
-        <div class="wrapper">
-           <div class="pltzrHeader">
-                <a href="{{ path('Homepage') }}"><i class="icon-pltzr-logo"></i></a>
-            </div><br>
-            
-            <div id="registerIntro">
-                <b>Politizr est en phase de test "beta".</b><br>
-                <a href="https://www.politizr.com/inscription">Inscrivez-vous</a> pour recevoir une <b>invitation</b>.
-            </div><br>
+        <div id="registerIntro">
+            <b>Politizr est en phase de test "beta".</b><br>
+            <a href="https://www.politizr.com/inscription">Inscrivez-vous</a> pour recevoir une <b>invitation</b>.
+        </div><br>
 
-            <div id="loginIntro">
-                <b>Un problème?</b> <a href="mailto: support@politizr.com">Écrivez-nous</a>
-            </div><br>
+        <div id="loginIntro">
+            <b>Un problème?</b> <a href="mailto: support@politizr.com">Écrivez-nous</a>
+        </div><br>
 
-            <div id="loginForm">
-                {% if error %}
-                    <div class="boxError">
-                        <div class="notifBoxText">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-                        <i class="iconCross" action="closeBox"></i>
-                    </div>
-                    <br><br>
-                {% endif %}
+        <div id="loginForm">
+            {% if error %}
+                <div class="boxError">
+                    <div class="notifBoxText">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                    <i class="iconCross" action="closeBox"></i>
+                </div>
+                <br><br>
+            {% endif %}
 
-                <form id="formLogin" action="{{ path('LoginCheck') }}" method="post">
-                    <label for="username">Identifiant</label>
-                    <input type="text" id="username" name="_username" value="{{ last_username }}" />
+            <form id="formLogin" action="{{ path('LoginCheck') }}" method="post">
+                <label for="username">Identifiant</label>
+                <input type="text" id="username" name="_username" value="{{ last_username }}" />
 
-                    <label for="password">Mot de passe</label>
-                    <input type="password" id="password" name="_password" />
+                <label for="password">Mot de passe</label>
+                <input type="password" id="password" name="_password" />
 
-                    {#
-                        If you want to control the URL the user
-                        is redirected to on success (more details below)
-                        <input type="hidden" name="_target_path" value="/account" />
-                    #}
+                {#
+                    If you want to control the URL the user
+                    is redirected to on success (more details below)
+                    <input type="hidden" name="_target_path" value="/account" />
+                #}
 
-                    <a action="login" class="submit">Connexion</a><br>
-                    <a action="showLostPasswordBox">Mot de passe oublié?</a>
-                </form>
-            </div>
-
-            <div id="lostPasswordForm" style="display: none">
-                <form id="formLostPassword">
-                    {{ form_errors(formLostPassword) }}
-
-                    <div class="formGroup">
-                        <label>Identifiant</label>
-                        {{ form_widget(formLostPassword.email) }}
-                    </div>
-
-                    {{ form_rest(formLostPassword) }}
-                </form>
-                <a action="reinitPassword" class="submit">Réinitialisation mot de passe</a><br>
-                <a action="showLoginBox">Connexion</a>
-            </div>
+                <a action="login" class="submit">Connexion</a><br>
+                <a action="showLostPasswordBox">Mot de passe oublié?</a>
+            </form>
         </div>
 
+        <div id="lostPasswordForm" style="display: none">
+            <form id="formLostPassword">
+                {{ form_errors(formLostPassword) }}
+
+                <div class="formGroup">
+                    <label>Identifiant</label>
+                    {{ form_widget(formLostPassword.email) }}
+                </div>
+
+                {{ form_rest(formLostPassword) }}
+            </form>
+            <a action="reinitPassword" class="submit">Réinitialisation mot de passe</a><br>
+            <a action="showLoginBox">Connexion</a>
+        </div>
     </div>
-{% endblock main %}
+{% endblock content %}
