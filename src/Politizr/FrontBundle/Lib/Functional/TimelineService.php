@@ -740,7 +740,8 @@ class TimelineService
         $html = $this->templating->render(
             'PolitizrFrontBundle:Document:_card.html.twig',
             array(
-                'document' => $debate
+                'document' => $debate,
+                'mini' => false,
             )
         );
 
@@ -765,7 +766,8 @@ class TimelineService
         $html = $this->templating->render(
             'PolitizrFrontBundle:Document:_card.html.twig',
             array(
-                'document' => $reaction
+                'document' => $reaction,
+                'mini' => false,
             )
         );
 

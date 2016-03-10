@@ -299,6 +299,7 @@ class DocumentController extends Controller
             }
             $parentId = $parent->getId();
         }
+
         if (!$debate) {
             throw new InconsistentDataException('Debate\'s reaction not found.');
         }

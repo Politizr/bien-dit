@@ -5,7 +5,7 @@
         {% set reactionPath = path('ReactionDraftNew'~profileSuffix(), { 'debateUuid': document.uuid, 'parentUuid': null }) %}
     {% elseif document.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION') %}
         {% set debate = document.debate %}
-        {% set reactionPath = path('ReactionDraftNew'~profileSuffix(), { 'debateUuid': document.debate.uuid, 'parentUuid': document.parent.uuid }) %}
+        {% set reactionPath = path('ReactionDraftNew'~profileSuffix(), { 'debateUuid': document.debate.uuid, 'parentUuid': document.uuid }) %}
     {% endif %}
     {% if app.user | isAuthorizedToReact(debate) %}
         <div class="actionAnswer">

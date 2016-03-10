@@ -1,9 +1,11 @@
 {% if document.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE') %}
     {% set detailPath = path('DebateDetail', { 'slug': document.slug }) %}
     {% set spanClass = 'subject' %}
+    {% set imgFilter = 'debate_header' %}
 {% elseif document.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION') %}
     {% set detailPath = path('ReactionDetail', { 'slug': document.slug }) %}
     {% set spanClass = '' %}
+    {% set imgFilter = 'reaction_header' %}
 {% endif %}
 
 {% if mini %}
@@ -15,10 +17,10 @@
 {% if document.fileName %}
     <div class="{{ imgClass }}">
         <a href="{{ detailPath }}">
-            {{ document | image('debate_header', false) }}
+            {{ document | image(imgFilter, false) }}
         </a>
     </div>
-{% elseif not mini %}
+{% else %}
     <div class="{{ imgClass }} noImg"></div>
 {% endif %}
 
