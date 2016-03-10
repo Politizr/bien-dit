@@ -1,5 +1,10 @@
 {% if author %}
-    {% include 'PolitizrFrontBundle:Notification\\Message:_screenUserPhoto.html.twig' with {'user': author} only %}
+    {% if not (
+            notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_D_NOTE_NEG')
+            or notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_D_C_NOTE_NEG')
+        ) %}
+        {% include 'PolitizrFrontBundle:Notification\\Message:_screenUserPhoto.html.twig' with {'user': author} only %}
+    {% endif %}
 {% endif %}
 <div class="notifItemHeader">
     <i class="{% include 'PolitizrFrontBundle:Notification:_notificationIcon.html.twig' %}"></i>
