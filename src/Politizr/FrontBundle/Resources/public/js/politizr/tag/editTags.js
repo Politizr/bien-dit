@@ -2,7 +2,7 @@
 
 $(function() {
     // autocomplete initialization
-    console.log('nbZones = '+nbZones);
+    // console.log('nbZones = '+nbZones);
 
     for (i = 1; i <= nbZones; i++ ) {
         return initTagZoneAutoComplete($('#editTagZone-'+i));
@@ -11,7 +11,7 @@ $(function() {
 
 // clic ajout nouveau tag
 $("body").on("click", "button[action='addTag']", function() {
-    console.log('click addTag');
+    // console.log('click addTag');
 
     var contextZone = $(this).closest('.addTag');
 
@@ -20,7 +20,7 @@ $("body").on("click", "button[action='addTag']", function() {
 
 // clic suppression tag
 $("body").on("click", "[action='deleteTag']", function() {
-    console.log('click deleteTag');
+    // console.log('click deleteTag');
 
     var contextZone = $(this).closest('.tagLabel');
 
@@ -29,7 +29,7 @@ $("body").on("click", "[action='deleteTag']", function() {
 
 // clic suppression tag
 $("body").on("click", "[action='hideTag']", function() {
-    console.log('click hideTag');
+    // console.log('click hideTag');
 
     var contextZone = $(this).closest('.tagLabel');
 
@@ -52,11 +52,11 @@ var normalize = function( term ) {
  */
 function initTagZoneAutoComplete(contextZone)
 {
-    console.log('*** initTagZoneAutoComplete');
-    console.log(contextZone);
+    // console.log('*** initTagZoneAutoComplete');
+    // console.log(contextZone);
 
     var tagTypeId = contextZone.attr('tagTypeId');
-    console.log('tagTypeId = '+tagTypeId);
+    // console.log('tagTypeId = '+tagTypeId);
 
     var localLoader = contextZone.find('.ajaxLoader').first();
     var xhrPath = getXhrPath(
@@ -99,8 +99,8 @@ function initTagZoneAutoComplete(contextZone)
  */
 function initAutoComplete(contextZone, availableTags)
 {
-    console.log('*** initAutoComplete');
-    console.log(contextZone);
+    // console.log('*** initAutoComplete');
+    // console.log(contextZone);
 
     // http://api.jqueryui.com/autocomplete/
     return contextZone.find('.selectedTag').first().autocomplete({
@@ -130,8 +130,8 @@ function initAutoComplete(contextZone, availableTags)
  */
 function createTagAssociation(contextZone)
 {
-    console.log('*** createTagAssociation');
-    console.log(contextZone);
+    // console.log('*** createTagAssociation');
+    // console.log(contextZone);
 
     var tagTitle = contextZone.find('.selectedTag').first().val();
     var tagUuid = contextZone.find('.selectedTagUuid').first().val();
@@ -142,13 +142,13 @@ function createTagAssociation(contextZone)
     var withHidden = contextZone.attr('withHidden');
     var addUrl = contextZone.attr('path');
 
-    console.log('title = ' + tagTitle);
-    console.log('tagUuid = ' + tagUuid);
-    console.log('type = ' + tagTypeId);
-    console.log('uuid = ' + uuid);
-    console.log('newTag = ' + newTag);
-    console.log('withHidden = ' + withHidden);
-    console.log('url = ' + addUrl);
+    // console.log('title = ' + tagTitle);
+    // console.log('tagUuid = ' + tagUuid);
+    // console.log('type = ' + tagTypeId);
+    // console.log('uuid = ' + uuid);
+    // console.log('newTag = ' + newTag);
+    // console.log('withHidden = ' + withHidden);
+    // console.log('url = ' + addUrl);
 
     tag = tagTitle.trim();
     if (tag === '') {
@@ -187,16 +187,16 @@ function createTagAssociation(contextZone)
  */
 function deleteTagAssociation(contextZone)
 {
-    console.log('*** deleteTagAssociation');
-    console.log(contextZone);
+    // console.log('*** deleteTagAssociation');
+    // console.log(contextZone);
 
     var tagUuid = contextZone.attr('tagUuid');
     var uuid = contextZone.attr('uuid');;
     var deleteUrl = contextZone.find("[action='deleteTag']").first().attr('path');
 
-    console.log('tagUuid = ' + tagUuid);
-    console.log('uuid = ' + uuid);
-    console.log('deleteUrl = ' + deleteUrl);
+    // console.log('tagUuid = ' + tagUuid);
+    // console.log('uuid = ' + uuid);
+    // console.log('deleteUrl = ' + deleteUrl);
 
     var localLoader = contextZone.closest('.addTag').find('.ajaxLoader').first();
 
@@ -223,16 +223,16 @@ function deleteTagAssociation(contextZone)
  */
 function hideTagAssociation(contextZone)
 {
-    console.log('*** hideTagAssociation');
-    console.log(contextZone);
+    // console.log('*** hideTagAssociation');
+    // console.log(contextZone);
 
     var tagUuid = contextZone.attr('tagUuid');
     var uuid = contextZone.attr('uuid');;
     var hideUrl = contextZone.find("[action='hideTag']").first().attr('path');
 
-    console.log('tagUuid = ' + tagUuid);
-    console.log('uuid = ' + uuid);
-    console.log('hideUrl = ' + hideUrl);
+    // console.log('tagUuid = ' + tagUuid);
+    // console.log('uuid = ' + uuid);
+    // console.log('hideUrl = ' + hideUrl);
 
     var localLoader = contextZone.closest('.addTag').find('.ajaxLoader').first();
 

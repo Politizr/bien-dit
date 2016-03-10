@@ -1,11 +1,64 @@
 // beta
 
+// auto resize text area
+$('.formBlock').on( 'change keyup keydown paste cut', 'textarea', function (){
+    $(this).height(0).height(this.scrollHeight);                    
+}).find( 'textarea' ).change();
+
+/**
+ * Auto save
+ * Event = keyup + 2sec
+ * http://stackoverflow.com/questions/9966394/can-i-delay-the-keyup-event-for-jquery
+ */
+
+/**
+ *
+ */
+function dataRequest() {
+    return triggerSaveDocument();
+}
+
+$('#debate_title, #reaction_title, #debate_copyright, #reaction_copyright, .editable.description').on('keyup', delayRequest);
+
+/**
+ *
+ */
+function delayRequest(ev) {
+    // console.log('*** autoSaveDelay');
+    $('.actionSave').removeClass('saved');
+
+    if(delayRequest.timeout) {
+        clearTimeout(delayRequest.timeout);
+    }
+    var target = this;
+    delayRequest.timeout = setTimeout(function() {
+        dataRequest.call(target, ev);
+    }, 5000); // 5s
+}
+
+/**
+ * Auto save
+ * Event = mouseup
+ */
+$('.editable.description').on('dblclick', function() {
+    // console.log('dblclick event');
+    $('.actionSave').removeClass('saved');
+    // delayRequest(this);
+});
+
+$('.editable.description').on('mouseup', function() {
+    // console.log('mouseup event');
+    $('.actionSave').removeClass('saved');
+    // delayRequest(this);
+});
+
+
 function triggerSaveDocument()
 {
-    console.log('*** triggerSaveDocument');
+    // console.log('*** triggerSaveDocument');
 
     var documentSave = $('.actionSave').find('a').attr('action');
-    $('[action="'+documentSave+'"]').trigger('click');
+    return $('[action="'+documentSave+'"]').trigger('click');
 }
 
 /**
@@ -13,10 +66,10 @@ function triggerSaveDocument()
  */
 function saveDebate()
 {
-    console.log('*** saveDebate');
+    // console.log('*** saveDebate');
 
     var description = descriptionEditor.serialize();
-    console.log(description['element-0']['value']);
+    // console.log(description['element-0']['value']);
 
     $('#debate_description').val(description['element-0']['value']);
 
@@ -55,10 +108,10 @@ function saveDebate()
  */
 function saveReaction()
 {
-    console.log('*** saveDebate');
+    // console.log('*** saveReaction');
 
     var description = descriptionEditor.serialize();
-    console.log(description['element-0']['value']);
+    // console.log(description['element-0']['value']);
 
     $('#reaction_description').val(description['element-0']['value']);
 
@@ -97,8 +150,8 @@ function saveReaction()
  */
 function publishDebate(uuid)
 {
-    console.log('*** publishDebate');
-    console.log(uuid);
+    // console.log('*** publishDebate');
+    // console.log(uuid);
 
     var xhrPath = getXhrPath(
         ROUTE_DEBATE_PUBLISH,
@@ -114,17 +167,12 @@ function publishDebate(uuid)
         1
     ).done(function(data) {
         if (data['error']) {
+            $('#ajaxGlobalLoader').hide();
             $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
             $('#infoBoxHolder .boxError').show();
         } else {
-            if (data['error']) {
-                $('#ajaxGlobalLoader').hide();
-                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
-                $('#infoBoxHolder .boxError').show();
-            } else {
-                // redirection
-                window.location = data['redirectUrl'];
-            }
+            // redirection
+            window.location = data['redirectUrl'];
         }
     });
 }
@@ -135,8 +183,8 @@ function publishDebate(uuid)
  */
 function publishReaction(uuid)
 {
-    console.log('*** publishReaction');
-    console.log(uuid);
+    // console.log('*** publishReaction');
+    // console.log(uuid);
 
     var xhrPath = getXhrPath(
         ROUTE_REACTION_PUBLISH,
@@ -152,17 +200,12 @@ function publishReaction(uuid)
         1
     ).done(function(data) {
         if (data['error']) {
+            $('#ajaxGlobalLoader').hide();
             $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
             $('#infoBoxHolder .boxError').show();
         } else {
-            if (data['error']) {
-                $('#ajaxGlobalLoader').hide();
-                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
-                $('#infoBoxHolder .boxError').show();
-            } else {
-                // redirection
-                window.location = data['redirectUrl'];
-            }
+            // redirection
+            window.location = data['redirectUrl'];
         }
     });
 }
@@ -172,8 +215,8 @@ function publishReaction(uuid)
  */
 function deleteDebate(uuid)
 {
-    console.log('*** deleteDebate');
-    console.log(uuid);
+    // console.log('*** deleteDebate');
+    // console.log(uuid);
 
     var xhrPath = getXhrPath(
         ROUTE_DEBATE_DELETE,
@@ -209,8 +252,8 @@ function deleteDebate(uuid)
  */
 function deleteReaction(uuid)
 {
-    console.log('*** deleteReaction');
-    console.log(uuid);
+    // console.log('*** deleteReaction');
+    // console.log(uuid);
 
     var xhrPath = getXhrPath(
         ROUTE_REACTION_DELETE,

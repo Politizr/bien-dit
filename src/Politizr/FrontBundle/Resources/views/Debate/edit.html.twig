@@ -2,14 +2,8 @@
 {% extends 'PolitizrFrontBundle::layoutConnected.html.twig' %}
 
 {% block title %}
-    {{ parent() }} - Éditer un débat
+    {{ parent() }} - Éditer un sujet de discussion
 {% endblock title %}
-
-{% block javascriptHeader %}
-    {{ parent() }}
-
-    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.cycle2.min.js') }}"></script>  
-{% endblock javascriptHeader %}
 
 {% block bodyClass %} class="edition"{% endblock bodyClass %}
 
@@ -42,7 +36,7 @@
                         <input type="hidden" name="type" value="{{ constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE') }}">
                         <label for="fileName">Sélectionner une image d'illustration</label>
                         <a class="photoDelete" action="fileDelete" uuid="{{ app.user.uuid }}"><i class="icon-remove"></i>Supprimer</a>
-                        {{ form_widget(form.copyright, { 'attr': {'placeholder': 'Saisissez'}}) }}
+                        {{ form_widget(form.copyright, { 'attr': {'placeholder': 'Saississez ici la légende de votre illustration'}}) }}
                     </div>
                 </div>
                 <div class="formBlock">

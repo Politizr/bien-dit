@@ -11,7 +11,7 @@ var options = {
     success: function(responseText, statusText, xhr, form)
     {
         data = $.parseJSON( responseText );
-        console.log('data.responseText = ' + data);
+        // console.log('data.responseText = ' + data);
 
         if ( 'success' == statusText ) {
             // update & imgLiquid uploaded photo
@@ -32,6 +32,3 @@ var options = {
         $('#infoBoxHolder .boxError').show();
     }
 }; 
-
-
-// $("body").on("click", "[action='debateSave']", function(e) {

@@ -4,13 +4,13 @@
 var descriptionEditor = new MediumEditor('.editable.description', {    
     buttons: ['bold', 'italic', 'header1', 'header2', 'unorderedlist', 'quote', 'anchor'],
     buttonLabels: {
-        'bold': '<span style=\"font-family: \'Merriweather Bold\'\">B</span>',
-        'italic': '<span style=\"font-family: \'Merriweather Bold Italic\'\">i</span>',
-        'header1': '<span style=\"font-family: \'Merriweather\'\">H1</span>',
-        'header2': '<span style=\"font-family: \'Merriweather\'\">H2</span>',
-        'unorderedlist': '<i class="iconTimeline"></i>',
-        'quote': '<i class="iconQuote"></i>',
-        'anchor': '<i class="iconLink"></i>'
+        'bold': '<i class="icon-bold"></i>',
+        'italic': '<i class="icon-italic"></i>',
+        'header1': '<i class="icon-h1"></i>',
+        'header2': '<i class="icon-h2"></i>',
+        'unorderedlist': '<i class="icon-timeline"></i>',
+        'quote': '<i class="icon-quote"></i>',
+        'anchor': '<i class="icon-link"></i>'
     },
     placeholder: {
         text: 'Cliquez ici pour saisir le texte de votre publication.'
@@ -45,13 +45,13 @@ var subtitleEditor = new MediumEditor('.editable.subtitle', {
 var biographyEditor = new MediumEditor('.editable.biography', {    
     buttons: ['bold', 'italic', 'header1', 'header2', 'unorderedlist', 'quote', 'anchor'],
     buttonLabels: {
-        'bold': '<span style=\"font-family: \'Merriweather Bold\'\">B</span>',
-        'italic': '<span style=\"font-family: \'Merriweather Bold Italic\'\">i</span>',
-        'header1': '<span style=\"font-family: \'Merriweather\'\">H1</span>',
-        'header2': '<span style=\"font-family: \'Merriweather\'\">H2</span>',
-        'unorderedlist': '<i class="iconTimeline"></i>',
-        'quote': '<i class="iconQuote"></i>',
-        'anchor': '<i class="iconLink"></i>'
+        'bold': '<i class="icon-bold"></i>',
+        'italic': '<i class="icon-italic"></i>',
+        'header1': '<i class="icon-h1"></i>',
+        'header2': '<i class="icon-h2"></i>',
+        'unorderedlist': '<i class="icon-timeline"></i>',
+        'quote': '<i class="icon-quote"></i>',
+        'anchor': '<i class="icon-link"></i>'
     },
     placeholder: {
         text: 'Cliquez ici pour saisir le texte de votre biographie.'

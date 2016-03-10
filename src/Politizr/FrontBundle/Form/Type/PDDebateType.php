@@ -36,7 +36,7 @@ class PDDebateType extends AbstractType
             'required' => false,
         ));
 
-        $builder->add('copyright', 'hidden', array(
+        $builder->add('copyright', 'textarea', array(
             'required' => false,
         ));
     }

@@ -310,75 +310,6 @@ class XhrDocument
     }
 
     /**
-     * Update debate photo info
-     */
-    public function debatePhotoInfoUpdate(Request $request)
-    {
-        $this->logger->info('*** debatePhotoInfoUpdate');
-        
-        // Request arguments
-        $uuid = $request->get('debate_photo_info')['uuid'];
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
-
-        // get current user
-        $user = $this->securityTokenStorage->getToken()->getUser();
-        
-        $debate = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
-        if (!$debate) {
-            throw new InconsistentDataException('Debate '.$uuid.' not found.');
-        }
-        if (!$debate->isOwner($user->getId())) {
-            throw new InconsistentDataException('Debate '.$uuid.' is not yours.');
-        }
-        if ($debate->getPublished()) {
-            throw new InconsistentDataException('Debate '.$uuid.' is published and cannot be edited anymore.');
-        }
-
-        $form = $this->formFactory->create(new PDDebatePhotoInfoType(), $debate);
-
-        // Retrieve actual file name
-        $oldFileName = $debate->getFileName();
-
-        $form->bind($request);
-        if ($form->isValid()) {
-            $debate = $form->getData();
-            $debate->save();
-
-            // Remove old file if new upload or deletion has been done
-            $fileName = $debate->getFileName();
-            if ($fileName != $oldFileName) {
-                $path = $this->kernel->getRootDir() . '/../web' . PathConstants::DEBATE_UPLOAD_WEB_PATH;
-                if ($oldFileName && $fileExists = file_exists($path . $oldFileName)) {
-                    unlink($path . $oldFileName);
-                }
-            }
-        } else {
-            $errors = StudioEchoUtils::getAjaxFormErrors($form);
-            throw new BoxErrorException($errors);
-        }
-
-        // Rendering
-        $path = 'bundles/politizrfront/images/default_debate.jpg';
-        if ($fileName = $debate->getFileName()) {
-            $path = PathConstants::DEBATE_UPLOAD_WEB_PATH.$fileName;
-        }
-        $imageHeader = $this->templating->render(
-            'PolitizrFrontBundle:Document:_imageHeader.html.twig',
-            array(
-                'title' => $debate->getTitle(),
-                'path' => $path,
-                'filterName' => 'debate_header',
-                'withShadow' => true
-            )
-        );
-
-        return array(
-            'imageHeader' => $imageHeader,
-            'copyright' => $debate->getCopyright(),
-            );
-    }
-
-    /**
      * Debate publication
      */
     public function debatePublish(Request $request)
@@ -429,8 +360,10 @@ class XhrDocument
         $event = new GenericEvent($debate, array('author_user_id' => $user->getId(),));
         $dispatcher = $this->eventDispatcher->dispatch('n_debate_publish', $event);
 
+        $redirectUrl = $this->router->generate('DebateDetail', array('slug' => $debate->getSlug()));
+
         return array(
-            'redirectUrl' => $this->router->generate('MyPublications'.$this->globalTools->computeProfileSuffix()),
+            'redirectUrl' => $redirectUrl,
         );
     }
 
@@ -507,75 +440,6 @@ class XhrDocument
     }
 
     /**
-     * Update reaction photo info
-     */
-    public function reactionPhotoInfoUpdate(Request $request)
-    {
-        $this->logger->info('*** reactionPhotoInfoUpdate');
-        
-        // Request arguments
-        $uuid = $request->get('reaction_photo_info')['uuid'];
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
-
-        // get current user
-        $user = $this->securityTokenStorage->getToken()->getUser();
-        
-        $reaction = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
-        if (!$reaction) {
-            throw new InconsistentDataException('Reaction '.$uuid.' not found.');
-        }
-        if (!$reaction->isOwner($user->getId())) {
-            throw new InconsistentDataException('Reaction '.$uuid.' is not yours.');
-        }
-        if ($reaction->getPublished()) {
-            throw new InconsistentDataException('Reaction '.$uuid.' is published and cannot be edited anymore.');
-        }
-
-        $form = $this->formFactory->create(new PDReactionPhotoInfoType(), $reaction);
-
-        // Retrieve actual file name
-        $oldFileName = $reaction->getFileName();
-
-        $form->bind($request);
-        if ($form->isValid()) {
-            $reaction = $form->getData();
-            $reaction->save();
-
-            // Remove old file if new upload or deletion has been done
-            $fileName = $reaction->getFileName();
-            if ($fileName != $oldFileName) {
-                $path = $this->kernel->getRootDir() . '/../web' . PathConstants::REACTION_UPLOAD_WEB_PATH;
-                if ($oldFileName && $fileExists = file_exists($path . $oldFileName)) {
-                    unlink($path . $oldFileName);
-                }
-            }
-        } else {
-            $errors = StudioEchoUtils::getAjaxFormErrors($form);
-            throw new BoxErrorException($errors);
-        }
-
-        // Rendering
-        $path = 'bundles/politizrfront/images/default_reaction.jpg';
-        if ($fileName = $reaction->getFileName()) {
-            $path = PathConstants::REACTION_UPLOAD_WEB_PATH.$fileName;
-        }
-        $imageHeader = $this->templating->render(
-            'PolitizrFrontBundle:Document:_imageHeader.html.twig',
-            array(
-                'title' => $reaction->getTitle(),
-                'path' => $path,
-                'filterName' => 'debate_header',
-                'withShadow' => true
-            )
-        );
-
-        return array(
-            'imageHeader' => $imageHeader,
-            'copyright' => $reaction->getCopyright(),
-            );
-    }
-
-    /**
      * Reaction publication
      */
     public function reactionPublish(Request $request)
@@ -632,9 +496,11 @@ class XhrDocument
         $event = new GenericEvent($reaction, array('author_user_id' => $user->getId(), 'parent_user_id' => $parentUserId));
         $dispatcher = $this->eventDispatcher->dispatch('b_reaction_publish', $event);
 
+        $redirectUrl = $this->router->generate('ReactionDetail', array('slug' => $reaction->getSlug()));
+
         // Renvoi de l'url de redirection
         return array(
-            'redirectUrl' => $this->router->generate('MyPublications'.$this->globalTools->computeProfileSuffix()),
+            'redirectUrl' => $redirectUrl,
         );
     }
 
