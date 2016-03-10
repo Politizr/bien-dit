@@ -9,11 +9,11 @@
             <div class="dislikeButton"><i class="icon-like-no" action="note" uuid="{{ object.uuid }}" type="{{ type }}" way="down"></i></div>
         </div>
     {% else %}
-        <div class="like myvote">
+        <div class="like {% if pos and not isOwnDocument %}myvote{% else %}novote{% endif %}">
             <div class="likeButton"><i class="icon-like-yes"></i></div>
             {{ object.notePos }}
         </div>
-        <div class="dislike myvote">
+        <div class="dislike {% if neg and not isOwnDocument %}myvote{% else %}novote{% endif %}">
             {{ object.noteNeg }}
             <div class="dislikeButton"><i class="icon-like-no"></i></div>
         </div>

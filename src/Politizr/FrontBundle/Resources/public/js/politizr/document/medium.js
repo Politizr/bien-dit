@@ -1,3 +1,5 @@
+// beta
+
 // description
 var descriptionEditor = new MediumEditor('.editable.description', {    
     buttons: ['bold', 'italic', 'header1', 'header2', 'unorderedlist', 'quote', 'anchor'],
@@ -21,26 +23,6 @@ var descriptionEditor = new MediumEditor('.editable.description', {
     secondHeader:'h2',
     autoLink: true
 });     
-
-// copyright
-var copyrightEditor = new MediumEditor('.editable.copyright', {
-    buttons: ['bold', 'italic', 'anchor'],
-    buttonLabels: {
-        'bold': '<span style=\"font-family: \'Merriweather Bold\'\">B</span>',
-        'italic': '<span style=\"font-family: \'Merriweather Bold Italic\'\">i</span>',
-        'anchor': '<i class="iconLink"></i>'
-    },
-    placeholder: {
-        text: 'Crédits photo'
-    },
-    anchor: {
-        placeholderText: 'Saississez une adresse internet'
-    },
-    anchorPreview: false,
-    firstHeader:'h1',
-    secondHeader:'h2',
-    autoLink: true
-});
 
 // subtitle
 var subtitleEditor = new MediumEditor('.editable.subtitle', {

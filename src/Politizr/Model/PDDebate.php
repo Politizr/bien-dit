@@ -74,7 +74,7 @@ class PDDebate extends BasePDDebate implements PDocumentInterface
             //     new Length(['min' => 140, 'minMessage' => 'Le corps de la publication doit contenir au moins {{ limit }} caractères.']),
             // ),
             'geoTags' => new Count(['min' => 1, 'minMessage' => 'Saisissez au moins {{ limit }} thématique géographique parmi les départements, les régions, "France", "Europe" ou "Monde".']),
-            'allTags' => new Count(['max' => 10, 'maxMessage' => 'Saisissez au maximum {{ limit }} thématiques.']),
+            'allTags' => new Count(['max' => 5, 'maxMessage' => 'Saisissez au maximum {{ limit }} thématiques.']),
         ));
 
         return $collectionConstraint;

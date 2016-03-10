@@ -1,0 +1,29 @@
+{# beta #}
+<div class="sidebarPostEdition">    
+    <div class="sidebarPostAction">
+        {{ app.user | isAuthorizedToPublishDebate(debate.uuid) }}
+
+        <div class="actionSave withLoaderInside saved">
+            {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+            <a action="debateSave" uuid="{{ debate.uuid }}"><i class="icon-draft"></i>Enregistrer</a>
+        </div>
+
+        {#
+        <div class="secondaryActions">
+            <!--<a href="#">Prévisualiser la publication</a>-->
+            <!--<a href="#">Mes brouillons</a>-->
+        </div>
+        #}
+    </div>
+    
+    <div class="sidebarEditTag">
+        <h5>Thématiques abordées</h5>
+        <div class="notice">
+            <i class="icon-info"></i><b>5 thématiques maximum.</b><br>
+            Vous devez saisir au moins <b>une thématique géographique (Monde, Europe, France, une région ou un département)</b> parmi les thématiques de votre publication.
+        </div>
+        {# include('includes/helperEditTag.php') #}
+
+        {{ debateTagsEdit(debate, null, 1, true) }}
+    </div>
+</div>

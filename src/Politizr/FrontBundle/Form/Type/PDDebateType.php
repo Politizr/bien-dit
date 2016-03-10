@@ -9,6 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Debate edition form
+ * beta
  *
  * @author Lionel Bouzonville
  */
@@ -29,6 +30,14 @@ class PDDebateType extends AbstractType
         
         $builder->add('description', 'hidden', array(
             'required' => true,
+        ));
+
+        $builder->add('file_name', 'hidden', array(
+            'required' => false,
+        ));
+
+        $builder->add('copyright', 'hidden', array(
+            'required' => false,
         ));
     }
 

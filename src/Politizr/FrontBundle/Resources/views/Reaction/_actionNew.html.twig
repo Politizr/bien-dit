@@ -1,17 +1,21 @@
 {% spaceless %}
-{% if app.user and app.user | isAuthorizedToReact(debate) %}
+{% if app.user %}
     {% if document.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE') %}
         {% set debate = document %}
-        {% set reactionPath = path('ReactionDraftNew'~profileSuffix(), { 'debateUuid': document.uuid, 'parentUuid': null }) %}
+        {# set reactionPath = path('ReactionDraftNew'~profileSuffix(), { 'debateUuid': document.uuid, 'parentUuid': null }) #}
+        {% set reactionPath = '#' %}
     {% elseif document.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION') %}
         {% set debate = document.debate %}
-        {% set reactionPath = path('ReactionDraftNew'~profileSuffix(), { 'debateUuid': document.debate.uuid, 'parentUuid': document.parent.uuid }) %}
+        {# set reactionPath = path('ReactionDraftNew'~profileSuffix(), { 'debateUuid': document.debate.uuid, 'parentUuid': document.parent.uuid }) #}
+        {% set reactionPath = '#' %}
     {% endif %}
-    <div class="actionAnswer">
-        <a class="actionReact" href="{{ reactionPath }}">
-            <i class="icon-answer"></i>
-            <div class="actionText">Répondre</div>
-        </a>
-    </div>
+    {% if app.user | isAuthorizedToReact(debate) %}
+        <div class="actionAnswer">
+            <a class="actionReact" href="{{ reactionPath }}">
+                <i class="icon-answer"></i>
+                <div class="actionText">Répondre</div>
+            </a>
+        </div>
+    {% endif %}
 {% endif %}
 {% endspaceless %}

@@ -16,9 +16,7 @@ use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
 
 use Politizr\FrontBundle\Form\Type\PDDebateType;
-use Politizr\FrontBundle\Form\Type\PDDebatePhotoInfoType;
 use Politizr\FrontBundle\Form\Type\PDReactionType;
-use Politizr\FrontBundle\Form\Type\PDReactionPhotoInfoType;
 
 /**
  * Document controller: debates, reactions, comments
@@ -265,13 +263,11 @@ class DocumentController extends Controller
         $this->checkDocumentEditable($debate, $user->getId());
         
         $form = $this->createForm(new PDDebateType(), $debate);
-        $formPhotoInfo = $this->createForm(new PDDebatePhotoInfoType(), $debate);
 
         return $this->render('PolitizrFrontBundle:Debate:edit.html.twig', array(
             'profileSuffix' => $this->get('politizr.tools.global')->computeProfileSuffix(),
             'debate' => $debate,
             'form' => $form->createView(),
-            'formPhotoInfo' => $formPhotoInfo->createView(),
             ));
     }
 
@@ -355,14 +351,12 @@ class DocumentController extends Controller
 
         // forms
         $form = $this->createForm(new PDReactionType(), $reaction);
-        $formPhotoInfo = $this->createForm(new PDReactionPhotoInfoType(), $reaction);
 
         return $this->render('PolitizrFrontBundle:Reaction:edit.html.twig', array(
             'reaction' => $reaction,
             'parent' => $parent,
             'paragraphs' => $paragraphs,
             'form' => $form->createView(),
-            'formPhotoInfo' => $formPhotoInfo->createView(),
             ));
     }
 

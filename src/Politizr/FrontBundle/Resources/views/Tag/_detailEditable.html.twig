@@ -1,3 +1,4 @@
+{# beta #}
 {% spaceless %}
 {% if (tag.ptTagTypeId == constant('\\Politizr\\Constant\\TagConstants::TAG_TYPE_GEO')) %}
     {% set twbLabel = "success" %}
@@ -9,6 +10,6 @@
 
 <div class="tagLabel {{ twbLabel }}{% if tag.hasVirtualColumn('hidden') and tag.virtualColumn('hidden') %} tagInvisible{% endif %}" tagUuid="{{ tag.uuid }}" uuid="{{ uuid }}">
 {{ tag.title }}{% if withHidden %}<a action="hideTag" path="{{ pathHide }}"><i class="iconInvisible"></i></a>{% endif %}
-<a action="deleteTag" path="{{ pathDelete }}"><i class="iconCrossInSquare"></i></a>
+<a action="deleteTag" path="{{ pathDelete }}"><i class="icon-cross"></i></a>
 </div>
 {% endspaceless %}

@@ -1,63 +1,26 @@
-// Auto save / document context
-var documentSave = $('.actionSave').find('a').attr('action');
+// beta
 
-/**
- * Auto save
- * Event = keyup + 2sec
- * http://stackoverflow.com/questions/9966394/can-i-delay-the-keyup-event-for-jquery
- */
-var autosave = $('.postSummaryTitle, .editable.description').on('keyup', delayRequest);
-function dataRequest() {
-    $('[action="'+documentSave+'"]').trigger('click', 'silence');
-}
-function delayRequest(ev) {
-    // console.log('*** delayRequest');
-    $('.actionSave').removeClass('saved');
+function triggerSaveDocument()
+{
+    console.log('*** triggerSaveDocument');
 
-    if(delayRequest.timeout) {
-        clearTimeout(delayRequest.timeout);
-    }
-    var target = this;
-    delayRequest.timeout = setTimeout(function() {
-        dataRequest.call(target, ev);
-    }, 2000); // 2s
+    var documentSave = $('.actionSave').find('a').attr('action');
+    $('[action="'+documentSave+'"]').trigger('click');
 }
 
 /**
- * Auto save
- * Event = mouseup
+ *
  */
-$('.editable.description').on('mouseup', function() {
-    // console.log('mouseup debate description');
-    $('[action="'+documentSave+'"]').trigger('click', 'silence');
-});
+function saveDebate()
+{
+    console.log('*** saveDebate');
 
-// compared mode
-$("body").on("click", "[action='activeComparedEdition']", function() {
-    $('#swithEditionIndependentEdition').hide();
-    $('#swithEditionComparedEdition').show();
-    $('#postText').animate({width: "500px"}, 300);
-    $('#postText .paragraph').animate({width: "340px"}, 300);
-    $('#originalText').fadeIn(800);
-});
+    var description = descriptionEditor.serialize();
+    console.log(description['element-0']['value']);
 
-$("body").on("click", "[action='activeIndenpendentEdition']", function() {
-    $('#swithEditionIndependentEdition').show();
-    $('#swithEditionComparedEdition').hide();
-    $('#originalText').fadeOut();
-    $('#postText').animate({width: "700px"}, 300);
-    $('#postText .paragraph').animate({width: "540px"}, 300);
-});
+    $('#debate_description').val(description['element-0']['value']);
 
-// edit title : auto resize text area
-$('.postSummaryFooter, #postText').on( 'change keyup keydown paste cut', 'textarea', function (){
-    $(this).height(0).height(this.scrollHeight);                    
-}).find( 'textarea' ).change();
-
-// Save debate
-$("body").on("click", "[action='debateSave']", function(e, mode) {
-    // console.log('*** click debate save');
-    // console.log(mode);
+    var localLoader = $('.actionSave').find('.ajaxLoader').first();
 
     var xhrPath = getXhrPath(
         ROUTE_DEBATE_UPDATE,
@@ -65,22 +28,17 @@ $("body").on("click", "[action='debateSave']", function(e, mode) {
         'debateUpdate',
         RETURN_BOOLEAN
         );
-    var description = descriptionEditor.serialize();
-    // console.log(description['element-0']['value']);
 
-    $('#debate_description').val(description['element-0']['value']);
-
-    var localLoader = $('.actionSave').find('.ajaxLoader').first();
-    $.ajax({
-        type: 'POST',
-        dataType: 'json',
-        url : xhrPath,
-        data: $("#formDebateUpdate").serialize(),
-        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, localLoader ); },
-        statusCode: { 404: function () { xhr404(localLoader); }, 500: function() { xhr500(localLoader); } },
-        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
-        success: function(data) {
-            localLoader.hide();
+    return xhrCall(
+        document,
+        $("#formDebateUpdate").serialize(),
+        xhrPath,
+        localLoader
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
             if (data['error']) {
                 $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
                 $('#infoBoxHolder .boxError').show();
@@ -88,15 +46,23 @@ $("body").on("click", "[action='debateSave']", function(e, mode) {
                 $('.actionSave').addClass('saved');
             }
         }
+        localLoader.hide();
     });
+}
 
-    return false;
-});
+/**
+ *
+ */
+function saveReaction()
+{
+    console.log('*** saveDebate');
 
-// Save reaction
-$("body").on("click", "[action='reactionSave']", function(e, mode) {
-    // console.log('*** click reaction save');
-    // console.log(mode);
+    var description = descriptionEditor.serialize();
+    console.log(description['element-0']['value']);
+
+    $('#reaction_description').val(description['element-0']['value']);
+
+    var localLoader = $('.actionSave').find('.ajaxLoader').first();
 
     var xhrPath = getXhrPath(
         ROUTE_REACTION_UPDATE,
@@ -104,22 +70,17 @@ $("body").on("click", "[action='reactionSave']", function(e, mode) {
         'reactionUpdate',
         RETURN_BOOLEAN
         );
-    var description = descriptionEditor.serialize();
-    // console.log(description['element-0']['value']);
-
-    $('#reaction_description').val(description['element-0']['value']);
- 
-    var localLoader = $('.actionSave').find('.ajaxLoader').first();
-    $.ajax({
-        type: 'POST',
-        dataType: 'json',
-        url : xhrPath,
-        data: $("#formReactionUpdate").serialize(),
-        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, localLoader ); },
-        statusCode: { 404: function () { xhr404(localLoader); }, 500: function() { xhr500(localLoader); } },
-        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
-        success: function(data) {
-            localLoader.hide();
+    
+    return xhrCall(
+        document,
+        $("#formReactionUpdate").serialize(),
+        xhrPath,
+        localLoader
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
             if (data['error']) {
                 $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
                 $('#infoBoxHolder .boxError').show();
@@ -127,17 +88,17 @@ $("body").on("click", "[action='reactionSave']", function(e, mode) {
                 $('.actionSave').addClass('saved');
             }
         }
+        localLoader.hide();
     });
-    
-    return false;
-});
+}
 
-// Publish debate
-$('body').on('click', "[action='debatePublish']", function(e){
-    // console.log('*** click publish debate');
-
-    // automatic saving before publish
-    $('[action="debateSave"]').trigger('click', 'silence');
+/**
+ *
+ */
+function publishDebate(uuid)
+{
+    console.log('*** publishDebate');
+    console.log(uuid);
 
     var xhrPath = getXhrPath(
         ROUTE_DEBATE_PUBLISH,
@@ -146,45 +107,36 @@ $('body').on('click', "[action='debatePublish']", function(e){
         RETURN_URL
         );
 
-    var uuid = $(this).attr('uuid');
-    var confirmMsg = "Une fois publié, vous ne pourrez plus modifier votre débat. Voulez-vous publier votre débat?";
-    smoke.confirm(confirmMsg, function(e) {
-        if (e) {
-            $.ajax({
-                type: 'POST',
-                dataType: 'json',
-                url : xhrPath,
-                data: { 'uuid': uuid },
-                dataType: 'json',
-                beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
-                statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
-                error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
-                success: function(data) {
-                    if (data['error']) {
-                        $('#ajaxGlobalLoader').hide();
-                        $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
-                        $('#infoBoxHolder .boxError').show();
-                    } else {
-                        // redirection
-                        window.location = data['redirectUrl'];
-                    }
-                }
-            });
+    return xhrCall(
+        document,
+        { 'uuid': uuid },
+        xhrPath,
+        1
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
+            if (data['error']) {
+                $('#ajaxGlobalLoader').hide();
+                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                $('#infoBoxHolder .boxError').show();
+            } else {
+                // redirection
+                window.location = data['redirectUrl'];
+            }
         }
-    }, {
-        ok: "Publier",
-        cancel: "Annuler"
-        // classname: "custom-class",
-        // reverseButtons: true
     });
-});
+}
 
-// Publish reaction
-$('body').on('click', "[action='reactionPublish']", function(e){
-    // console.log('*** click publish reaction');
 
-    // automatic saving before publish
-    $('[action="reactionSave"]').trigger('click', 'silence');
+/**
+ *
+ */
+function publishReaction(uuid)
+{
+    console.log('*** publishReaction');
+    console.log(uuid);
 
     var xhrPath = getXhrPath(
         ROUTE_REACTION_PUBLISH,
@@ -193,42 +145,35 @@ $('body').on('click', "[action='reactionPublish']", function(e){
         RETURN_URL
         );
     
-    var uuid = $(this).attr('uuid');
-    var confirmMsg = "Une fois publié, vous ne pourrez plus modifier votre réaction. Voulez-vous publier votre réaction?";
-    smoke.confirm(confirmMsg, function(e) {
-        if (e) {
-            $.ajax({
-                type: 'POST',
-                dataType: 'json',
-                url : xhrPath,
-                data: { 'uuid': uuid },
-                dataType: 'json',
-                beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
-                statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
-                error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
-                success: function(data) {
-                    if (data['error']) {
-                        $('#ajaxGlobalLoader').hide();
-                        $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
-                        $('#infoBoxHolder .boxError').show();
-                    } else {
-                        // redirection
-                        window.location = data['redirectUrl'];
-                    }
-                }
-            });
+    return xhrCall(
+        document,
+        { 'uuid': uuid },
+        xhrPath,
+        1
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
+            if (data['error']) {
+                $('#ajaxGlobalLoader').hide();
+                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                $('#infoBoxHolder .boxError').show();
+            } else {
+                // redirection
+                window.location = data['redirectUrl'];
+            }
         }
-    }, {
-        ok: "Publier",
-        cancel: "Annuler"
-        // classname: "custom-class",
-        // reverseButtons: true
     });
-});
+}
 
-// Delete debate
-$('body').on('click', "[action='debateDelete']", function(e){
-    // console.log('*** click delete debate');
+/**
+ *
+ */
+function deleteDebate(uuid)
+{
+    console.log('*** deleteDebate');
+    console.log(uuid);
 
     var xhrPath = getXhrPath(
         ROUTE_DEBATE_DELETE,
@@ -237,42 +182,35 @@ $('body').on('click', "[action='debateDelete']", function(e){
         RETURN_URL
         );
 
-    var uuid = $(this).attr('uuid');
-    var confirmMsg = "Êtes-vous sûr de vouloir supprimer votre brouillon?";
-    smoke.confirm(confirmMsg, function(e) {
-        if (e) {
-            $.ajax({
-                type: 'POST',
-                dataType: 'json',
-                url : xhrPath,
-                data: { 'uuid': uuid },
-                dataType: 'json',
-                beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
-                statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
-                error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
-                success: function(data) {
-                    if (data['error']) {
-                        $('#ajaxGlobalLoader').hide();
-                        $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
-                        $('#infoBoxHolder .boxError').show();
-                    } else {
-                        // redirection
-                        window.location = data['redirectUrl'];
-                    }
-                }
-            });
+    return xhrCall(
+        document,
+        { 'uuid': uuid },
+        xhrPath,
+        1
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
+            if (data['error']) {
+                $('#ajaxGlobalLoader').hide();
+                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                $('#infoBoxHolder .boxError').show();
+            } else {
+                // redirection
+                window.location = data['redirectUrl'];
+            }
         }
-    }, {
-        ok: "Supprimer",
-        cancel: "Annuler"
-        // classname: "custom-class",
-        // reverseButtons: true
     });
-});
+}
 
-// Delete reaction
-$('body').on('click', "[action='reactionDelete']", function(e){
-    // console.log('*** click delete reaction');
+/**
+ *
+ */
+function deleteReaction(uuid)
+{
+    console.log('*** deleteReaction');
+    console.log(uuid);
 
     var xhrPath = getXhrPath(
         ROUTE_REACTION_DELETE,
@@ -281,35 +219,25 @@ $('body').on('click', "[action='reactionDelete']", function(e){
         RETURN_URL
         );
 
-    var uuid = $(this).attr('uuid');
-    var confirmMsg = "Êtes-vous sûr de vouloir supprimer votre brouillon?";
-    smoke.confirm(confirmMsg, function(e) {
-        if (e) {
-            $.ajax({
-                type: 'POST',
-                dataType: 'json',
-                url : xhrPath,
-                data: { 'uuid': uuid },
-                dataType: 'json',
-                beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
-                statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
-                error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
-                success: function(data) {
-                    if (data['error']) {
-                        $('#ajaxGlobalLoader').hide();
-                        $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
-                        $('#infoBoxHolder .boxError').show();
-                    } else {
-                        // redirection
-                        window.location = data['redirectUrl'];
-                    }
-                }
-            });
+    return xhrCall(
+        document,
+        { 'uuid': uuid },
+        xhrPath,
+        1
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
+            if (data['error']) {
+                $('#ajaxGlobalLoader').hide();
+                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                $('#infoBoxHolder .boxError').show();
+            } else {
+                // redirection
+                window.location = data['redirectUrl'];
+            }
         }
-    }, {
-        ok: "Supprimer",
-        cancel: "Annuler"
-        // classname: "custom-class",
-        // reverseButtons: true
     });
-});
+}
+

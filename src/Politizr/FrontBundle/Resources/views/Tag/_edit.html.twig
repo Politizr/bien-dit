@@ -1,17 +1,19 @@
+{# beta #}
 {% spaceless %}
 <div class="addTag withLoaderInside" id="editTagZone-{{ zoneId }}" tagTypeId="{{ tagTypeId }}" uuid="{{ object.uuid }}" newTag="{{ newTag }}" withHidden="{{ withHidden }}" path="{{ pathCreate }}">
-    <div class="ajaxLoader" style="display: none;">
-        <div class="ajaxLoaderSpinner"></div><div class="ajaxLoaderBg"></div><div class="ajaxLoaderBlockClick"></div>
+    {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+
+    <div class="formAddTag">
+        <input type="text" class="selectedTag" placeholder="Saisissez une nouvelle thématique" />
+        <input type="hidden" class="selectedTagUuid" />
+        <button type="button" action="addTag"><i class="icon-check-incircle"></i></button>
     </div>
+
     <div class="editableTagList">
         {% for tag in tags %}
             {% include 'PolitizrFrontBundle:Tag:_detailEditable.html.twig' with { 'uuid': object.uuid, 'tag': tag } %}
         {% endfor %}
     </div>
 
-    {# Sélection #}
-    <input type="text" class="selectedTag" placeholder="saisissez une nouvelle thématique" />
-    <input type="hidden" class="selectedTagUuid" />
-    <button type="button" action="addTag"><i class="iconCheck"></i></button>
 </div>
 {% endspaceless %}

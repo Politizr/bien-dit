@@ -128,8 +128,6 @@ class XhrTag
         // Request arguments
         $tagTypeId = $request->get('tagTypeId');
         $this->logger->info('$tagTypeId = ' . print_r($tagTypeId, true));
-        $zoneId = $request->get('zoneId');
-        $this->logger->info('$zoneId = ' . print_r($zoneId, true));
 
         // Function process
         if (empty($tagTypeId)) {
@@ -141,7 +139,6 @@ class XhrTag
         // Renvoi de l'ensemble des blocs HTML maj
         return array(
             'tags' => $tags,
-            'zoneId' => $zoneId
             );
     }
 

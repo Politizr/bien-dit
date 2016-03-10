@@ -43,7 +43,7 @@
         {% endblock %}
     </head>
     {% block body %}
-        <body>
+        <body{% block bodyClass %}{% endblock %}>
             {% include 'PolitizrFrontBundle:Navigation\\Social:_analytics.html.twig' %}
             <noscript>
                 <div id="noJsBox">
