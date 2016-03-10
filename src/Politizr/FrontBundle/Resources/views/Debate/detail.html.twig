@@ -20,14 +20,16 @@
             
             <div id="cardPost">
                 <span class="postTitle">{{ debate.title }}</span>
-                <div id="cardPostImgHolder">
-                    {% if debate.copyright | purify | length > 0 %}
-                        <div id="cardPostImgLegend">Crédit photo: {{ debate.copyright | purify }}</div>
-                    {% endif %}
-                    <div id="cardPostImg">
-                        {{ debate | image('debate_header') }}
+                {% if debate.fileName %}
+                    <div id="cardPostImgHolder">
+                        {% if debate.copyright | purify | length > 0 %}
+                            <div id="cardPostImgLegend">Crédit photo: {{ debate.copyright | purify }}</div>
+                        {% endif %}
+                        <div id="cardPostImg">
+                            {{ debate | image('debate_header') }}
+                        </div>
                     </div>
-                </div>
+                {% endif %}
                 <div id="cardPostText">
                     {% for paragraph in paragraphs %}
                         <div id="p-{{ loop.index }}" class="paragraph">

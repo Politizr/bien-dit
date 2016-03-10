@@ -14,7 +14,8 @@
         {% if app.user %}
             <input type="button" action="createComment" value="Publier">
         {% else %}
-            <a href="{{ path('Inscription') }}">M'inscrire pour commenter</a>
+            {#<a href="{{ path('Inscription') }}">M'inscrire pour commenter</a>#}
+            <a href="https://www.politizr.com/inscription" target="blank">inscription</a>
         {% endif %}
     </div>
 </form>

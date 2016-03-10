@@ -4,11 +4,15 @@
     {{ parent() }} - Accueil
 {% endblock title %}
 
-{% block content %}
-    <div id="content">
-        <div class="homeText">
-            <h1>politizr est une plateforme d'échanges<br>entre élu-e-s et citoyen-ne-s.<br>Changerez-vous d'opinion?</h1>
-            <a href="{{ path('Login') }}">identification</a>
-        </div>
+{% block bodyClass %} class="betaPrivate"{% endblock %}
+
+{% block main %}
+    <div id="illustrationConcept">
+        <span>Politizr est une plateforme indépendante et neutre<br>
+permettant aux élu(e)s* de toute la France de débattre publiquement<br>
+des sujets proposés par leurs concitoyens.</span>
+        <h1>Changerez-vous d’opinion ?</h1>
+        <img src="{{ asset('bundles/politizrfront/images/illustrationConcept.jpg') }}">
+        <div id="illustrationConceptMention">*Toute personne physique majeure élue de la République Française ou ancienne élue au suffrage universel direct ou indirect. </div>
     </div>
-{% endblock content %}
+{% endblock main %}
