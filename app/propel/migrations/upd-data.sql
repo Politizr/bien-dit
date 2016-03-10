@@ -1,6 +1,11 @@
 # à exécuter req par req
 
 # RAF > create table pr_metal_type
+# INSERT INTO `p_r_metal_type` (`id`, `title`, `created_at`, `updated_at`) VALUES
+# (1, 'bronze',   '2016-02-09 09:38:18',  '2016-02-09 09:38:18'),
+# (2, 'silver',   '2016-02-09 09:39:30',  '2016-02-09 09:39:30'),
+# (3, 'gold', '2016-02-09 09:39:30',  '2016-02-09 09:39:30');
+
 
 # reputation > donnée incohérente
 DELETE FROM `p_u_reputation`
