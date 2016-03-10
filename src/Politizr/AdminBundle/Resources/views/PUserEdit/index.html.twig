@@ -7,7 +7,7 @@
     {% include "PolitizrAdminBundle::tinymce-full.html.twig" %}
 {% endblock %}
 
-{% block object_actions_script_container %}
+{% block generic_actions_script_container %}
     <script>
         var nbZones = 2;
         var service = 'admin';
@@ -18,4 +18,4 @@
     <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/politizr/tag/editTags.js') }}"></script>  
 
     <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/reputation/user.js') }}"></script>  
-{% endblock object_actions_script_container %}
+{% endblock generic_actions_script_container %}

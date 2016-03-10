@@ -31,6 +31,21 @@ var ADMIN_ROUTE_USER_REPUTATION_EVOLUTION = 'admin/utilisateur/reputation/update
 var ADMIN_ROUTE_USER_MODERATION_ALERT_NEW = 'admin/utilisateur/moderation/alert/new';
 var ADMIN_ROUTE_USER_MODERATION_BANNED_EMAIL = 'admin/utilisateur/moderation/banned/email';
 
+// Generic function to make an AJAX call
+var xhrCall = function(context, data, url, localLoader) {
+    // Return the $.ajax promise
+    return $.ajax({
+        type: 'POST',
+        data: data,
+        dataType: 'json',
+        url: url,
+        context: context,
+        beforeSend: function ( xhr ) { xhrBeforeSend(); },
+        statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
+        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },        
+    });
+}
+
 /**
  *
  */

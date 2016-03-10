@@ -72,6 +72,7 @@ function initTagZoneAutoComplete(contextZone)
         xhrPath,
         localLoader
     ).done(function(data) {
+        $('#ajaxGlobalLoader').hide();
         localLoader.hide();
         if (data['error']) {
             $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
@@ -177,6 +178,7 @@ function createTagAssociation(contextZone)
             contextZone.find('.selectedTagUuid').first().val('');
         }
         localLoader.hide();
+        $('#ajaxGlobalLoader').hide();
     });
 }
 
@@ -213,6 +215,7 @@ function deleteTagAssociation(contextZone)
             contextZone.remove();
         }
         localLoader.hide();
+        $('#ajaxGlobalLoader').hide();
     });
 }
 
@@ -253,5 +256,6 @@ function hideTagAssociation(contextZone)
             }
         }
         localLoader.hide();
+        $('#ajaxGlobalLoader').hide();
     });
 }
