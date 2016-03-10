@@ -382,9 +382,12 @@ class PolitizrUserExtension extends \Twig_Extension
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
-        
+        if (is_string($user)) {
+            $user = null;
+        }
+
         $follower = false;
-        if ($followUser) {
+        if ($user && $followUser) {
             $follow = PUFollowUQuery::create()
                 ->filterByPUserFollowerId($user->getId())
                 ->filterByPUserId($followUser->getId())
