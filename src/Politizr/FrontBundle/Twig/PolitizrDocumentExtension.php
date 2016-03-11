@@ -1097,6 +1097,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
                     case ReputationConstants::ACTION_ID_D_TARGET_DEBATE_NOTE_POS:
                     case ReputationConstants::ACTION_ID_D_TARGET_DEBATE_NOTE_NEG:
                     case ReputationConstants::ACTION_ID_D_TARGET_REACTION_NOTE_POS:
+                    case ReputationConstants::ACTION_ID_D_TARGET_REACTION_NOTE_NEG:
                         try {
                             $html = $this->timelineService->generateRenderingItemActionNoteMyDocument($timelineRow, $debateContext);
                         } catch (\Exception $e) {
