@@ -4,24 +4,40 @@
     {{ parent() }} - Mes brouillons
 {% endblock title %}
 
-{% block main %}
-    <div id="publicationsList">
-        <h1>Brouillons</h1>
-        <div id="listContent">
+{% block content %}
+    <div id="content">
+        <div class="list">
+            <div class="listHeaderByUser">
+                <div class="listHeader">
+                    <h5>Mes brouillons</h5>
+                </div>
+            </div>
+            <div id="documentListing" class="withLoaderInside">
+                {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+                <div class="listTop"></div>
+            </div>
         </div>
     </div>
-{% endblock main %}
+{% endblock content %}
+
+{% block sidebarContent %}
+    {% if app.user %}
+        {% include 'PolitizrFrontBundle:Tag:_sidebarFollowedTags.html.twig' %}
+    {% endif %}
+    {% include 'PolitizrFrontBundle:Tag:_sidebarTopTags.html.twig' %}
+    {% include 'PolitizrFrontBundle:Document:_sidebarTopDocuments.html.twig' %}
+{% endblock sidebarContent %}
 
 {% block javascriptFooter %}
     {{ parent() }}
 
-    <script>
-        var xhrRoute = ROUTE_DOCUMENT_DRAFTS;
-        var xhrMethod = 'draftsPaginated';
-    </script>
     {% javascripts
-        '@PolitizrFrontBundle/Resources/public/js/politizr/document/myPublications.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/timeline/timeline.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/tag/listing.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/document/listing.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/pages/drafts.js'
         filter='uglifyjs2' %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
+
 {% endblock javascriptFooter %}

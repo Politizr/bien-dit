@@ -8,12 +8,11 @@
             <a action="debateSave" uuid="{{ debate.uuid }}"><i class="icon-draft"></i>Enregistrer</a>
         </div>
 
-        {#
         <div class="secondaryActions">
             <!--<a href="#">Prévisualiser la publication</a>-->
-            <!--<a href="#">Mes brouillons</a>-->
+            <a action="debateDelete" uuid="{{ debate.uuid }}">Supprimer mon brouillon</a>
+            <a href="{{ path('Drafts'~profileSuffix()) }}">Liste de mes brouillons</a>
         </div>
-        #}
     </div>
     
     <div class="sidebarEditTag">

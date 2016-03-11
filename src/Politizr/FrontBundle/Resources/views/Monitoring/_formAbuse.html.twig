@@ -1,12 +1,17 @@
-<form class="formReport" id="formAbuseReporting">
-    <div class="formBg">
-        {{ form_errors(formAbuse) }}
-        {{ form_widget(formAbuse.message, { 'attr': {'placeholder': 'Que signalez-vous?'}}) }}
-        {{ form_rest(formAbuse) }}
-    </div>
-    <div class="actionsBox withLoaderInside">
-        {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
-        <span class="formCancel" action="closeAbuseReporting">Annuler</span>
-        <input type="button" action="createAbuseReporting" value="Valider">
-    </div>
-</form>
+{# beta #}
+{% if app.user %}
+    <form class="formReport" id="formAbuseReporting">
+        <div class="formBg">
+            {{ form_errors(formAbuse) }}
+            {{ form_widget(formAbuse.message, { 'attr': {'placeholder': 'Que signalez-vous?'}}) }}
+            {{ form_rest(formAbuse) }}
+        </div>
+        <div class="actionsBox withLoaderInside">
+            {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+            <span class="formCancel" action="closeAbuseReporting">Annuler</span>
+            <input type="button" action="createAbuseReporting" value="Valider">
+        </div>
+    </form>
+{% else %}
+    <a href="https://www.politizr.com/inscription" target="blank">créer un compte</a>
+{% endif %}

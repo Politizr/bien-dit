@@ -52,18 +52,11 @@ $('body').on('click', "[action='reactionPublish']", function(e){
 $('body').on('click', "[action='reactionDelete']", function(e){
     // console.log('*** click delete reaction');
 
-    var xhrPath = getXhrPath(
-        ROUTE_REACTION_DELETE,
-        'document',
-        'reactionDelete',
-        RETURN_URL
-        );
-
     var uuid = $(this).attr('uuid');
     var confirmMsg = "Êtes-vous sûr de vouloir supprimer votre brouillon?";
     smoke.confirm(confirmMsg, function(e) {
         if (e) {
-            return reactionDelete(uuid);            
+            return deleteReaction(uuid);            
         }
     }, {
         ok: "Supprimer",

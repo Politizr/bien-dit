@@ -743,10 +743,11 @@ class XhrDocument
 
     /**
      * User's drafts
+     * beta
      */
-    public function draftsPaginated(Request $request)
+    public function myDraftsPaginated(Request $request)
     {
-        $this->logger->info('*** draftsPaginated');
+        $this->logger->info('*** myDraftsPaginated');
 
         // Request arguments
         $offset = $request->get('offset');
@@ -756,28 +757,26 @@ class XhrDocument
         $user = $this->securityTokenStorage->getToken()->getUser();
 
         // get drafts
-        $documents = $this->documentService->getMyDraftsPaginatedListing($user->getId(), $offset, ListingConstants::MODAL_CLASSIC_PAGINATION);
+        $documents = $this->documentService->getMyDraftsPaginatedListing($user->getId(), $offset, ListingConstants::LISTING_CLASSIC_PAGINATION);
 
+        // @todo create function for code above
         $moreResults = false;
-        if (sizeof($documents) == ListingConstants::MODAL_CLASSIC_PAGINATION) {
+        if (sizeof($documents) == ListingConstants::LISTING_CLASSIC_PAGINATION) {
             $moreResults = true;
         }
 
         if ($offset == 0 && count($documents) == 0) {
             $html = $this->templating->render(
-                'PolitizrFrontBundle:PaginatedList:_noResult.html.twig',
-                array(
-                    'type' => ListingConstants::MY_DRAFTS_TYPE,
-                )
+                'PolitizrFrontBundle:PaginatedList:_noResult.html.twig'
             );
         } else {
             $html = $this->templating->render(
-                'PolitizrFrontBundle:Document:_paginatedDrafts.html.twig',
+                'PolitizrFrontBundle:PaginatedList:_drafts.html.twig',
                 array(
-                    'profileSuffix' => $this->globalTools->computeProfileSuffix(),
                     'documents' => $documents,
-                    'offset' => intval($offset) + ListingConstants::MODAL_CLASSIC_PAGINATION,
+                    'offset' => intval($offset) + ListingConstants::LISTING_CLASSIC_PAGINATION,
                     'moreResults' => $moreResults,
+                    'jsFunctionKey' => XhrConstants::JS_KEY_LISTING_DOCUMENTS_BY_USER_DRAFTS
                 )
             );
         }

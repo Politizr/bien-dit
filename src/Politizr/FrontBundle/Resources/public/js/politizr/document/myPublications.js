@@ -1,3 +1,5 @@
+// to delete
+
 // on document ready
 $(function() {
     publicationList();

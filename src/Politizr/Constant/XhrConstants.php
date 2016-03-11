@@ -33,8 +33,8 @@ class XhrConstants
 
     // DOCUMENTS
     const ROUTE_DOCUMENT_PHOTO_UPLOAD = 'profil/photo/upload';
-    const ROUTE_DOCUMENT_DRAFTS = 'profil/contributions/mes-brouillons';
-    const ROUTE_DEBATE_MY_PUBLICATIONS = 'profil/contributions/mes-publications';
+    const ROUTE_DOCUMENT_LISTING_MY_DRAFTS = 'profil/mes-documents/brouillons';
+    const ROUTE_DOCUMENT_LISTING_MY_PUBLICATIONS = 'profil/mes-documents/publications';
 
     const ROUTE_DOCUMENT_LISTING_TOP = 'documents/top';
     const ROUTE_DOCUMENT_LISTING_SUGGESTION = '/profil/documents/suggestions';
@@ -160,11 +160,12 @@ class XhrConstants
     // ******************************************************** //
     //                  JS FUNCTION KEYS
     // ******************************************************** //
-    const JS_KEY_LISTING_DOCUMENTS_BY_TAG = "documentsByTag";
-    const JS_KEY_LISTING_DOCUMENTS_BY_ORGANIZATION = "documentsByOrganization";
-    const JS_KEY_LISTING_DOCUMENTS_BY_RECOMMEND = "documentsByRecommend";
+    const JS_KEY_LISTING_DOCUMENTS_BY_TAG = "JS_KEY_LISTING_DOCUMENTS_BY_TAG";
+    const JS_KEY_LISTING_DOCUMENTS_BY_ORGANIZATION = "JS_KEY_LISTING_DOCUMENTS_BY_ORGANIZATION";
+    const JS_KEY_LISTING_DOCUMENTS_BY_RECOMMEND = "JS_KEY_LISTING_DOCUMENTS_BY_RECOMMEND";
+    const JS_KEY_LISTING_DOCUMENTS_BY_USER_DRAFTS = "JS_KEY_LISTING_DOCUMENTS_BY_USER_DRAFTS";
 
-    const JS_KEY_LISTING_USERS_DEBATE_FOLLOWERS = "debateFollowersListing";
+    const JS_KEY_LISTING_USERS_DEBATE_FOLLOWERS = "JS_KEY_LISTING_USERS_DEBATE_FOLLOWERS";
 
 
     // ******************************************************** //

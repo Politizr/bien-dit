@@ -39,7 +39,7 @@ $('body').on('click', "[action='debateDelete']", function(e){
     var confirmMsg = "Êtes-vous sûr de vouloir supprimer votre brouillon?";
     smoke.confirm(confirmMsg, function(e) {
         if (e) {
-            return debateDelete(uuid);
+            return deleteDebate(uuid);
         }
     }, {
         ok: "Supprimer",

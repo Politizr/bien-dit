@@ -4,15 +4,10 @@
         <div class="avatar40">{{ user | photo('user_40') }}</div>
         <div class="profilenInfo">
             <div class="profileName">
-                <a href="{{ path('UserDetail', { 'slug': user.slug }) }}" class="{% if isFollowed is defined and isFollowed %}followedMember{% endif %}">
+                <a href="#{# path('UserDetail', { 'slug': user.slug }) #}" class="{% if isFollowed is defined and isFollowed %}followedMember{% endif %}">
                     {{ user }}
                 </a>
-                {% if user.isQualified %}
-                    {% set organizations = user.currentOrganizations %}
-                    {% for organization in organizations %}
-                        <div class="org"><a href="#">{{ organization.initials }}</a></div>
-                    {% endfor %}
-                {% endif %}
+                {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with { 'user': user } only %}
             </div>
             <div class="profileBio">{{ user.subtitle | purify }}</div>
         </div>

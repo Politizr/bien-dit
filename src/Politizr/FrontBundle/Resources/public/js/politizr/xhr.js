@@ -21,8 +21,8 @@ var ROUTE_COMMENT_CREATE = 'profil/commentaire/nouveau';
 
 // DOCUMENTS
 var ROUTE_DOCUMENT_PHOTO_UPLOAD = 'profil/photo/upload';
-var ROUTE_DOCUMENT_DRAFTS = 'profil/contributions/mes-brouillons';
-var ROUTE_DEBATE_MY_PUBLICATIONS = 'profil/contributions/mes-publications';
+var ROUTE_DOCUMENT_LISTING_MY_DRAFTS = 'profil/mes-documents/brouillons';
+var ROUTE_DOCUMENT_LISTING_MY_PUBLICATIONS = 'profil/mes-documents/publications';
 
 var ROUTE_DOCUMENT_LISTING_TOP = 'documents/top';
 var ROUTE_DOCUMENT_LISTING_SUGGESTION = '/profil/documents/suggestions';
@@ -152,11 +152,12 @@ var ROUTE_BUBBLE_TAG = 'bubble/tag';
 // ******************************************************** //
 //                  JS FUNCTION KEYS
 // ******************************************************** //
-var JS_KEY_LISTING_DOCUMENTS_BY_TAG = "documentsByTag";
-var JS_KEY_LISTING_DOCUMENTS_BY_ORGANIZATION = "documentsByOrganization";
-var JS_KEY_LISTING_DOCUMENTS_BY_RECOMMEND = "documentsByRecommend";
+var JS_KEY_LISTING_DOCUMENTS_BY_TAG = "JS_KEY_LISTING_DOCUMENTS_BY_TAG";
+var JS_KEY_LISTING_DOCUMENTS_BY_ORGANIZATION = "JS_KEY_LISTING_DOCUMENTS_BY_ORGANIZATION";
+var JS_KEY_LISTING_DOCUMENTS_BY_RECOMMEND = "JS_KEY_LISTING_DOCUMENTS_BY_RECOMMEND";
+var JS_KEY_LISTING_DOCUMENTS_BY_USER_DRAFTS = "JS_KEY_LISTING_DOCUMENTS_BY_USER_DRAFTS";
 
-var JS_KEY_LISTING_USERS_DEBATE_FOLLOWERS = "debateFollowersListing";
+var JS_KEY_LISTING_USERS_DEBATE_FOLLOWERS = "JS_KEY_LISTING_USERS_DEBATE_FOLLOWERS";
 
 
 // Generic function to make an AJAX call

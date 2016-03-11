@@ -2,6 +2,55 @@
 paginatedFunctions[JS_KEY_LISTING_DOCUMENTS_BY_TAG] = documentsByTagListing;
 paginatedFunctions[JS_KEY_LISTING_DOCUMENTS_BY_ORGANIZATION] = documentsByOrganizationListing;
 paginatedFunctions[JS_KEY_LISTING_DOCUMENTS_BY_RECOMMEND] = documentsByRecommendListing;
+paginatedFunctions[JS_KEY_LISTING_DOCUMENTS_BY_USER_DRAFTS] = myDraftsByUserListing;
+
+
+/**
+ * User's publication listing
+ *
+ * @param boolean init
+ * @param integer offset
+ */
+function myDraftsByUserListing(init, offset) {
+    // console.log('*** myDraftsByUserListing');
+    // console.log(init);
+    // console.log(offset);
+
+    init = (typeof init === "undefined") ? true : init;
+    offset = (typeof offset === "undefined") ? 0 : offset;
+
+    targetElement = $('#documentListing .listTop');
+    localLoader = $('#documentListing').find('.ajaxLoader').first();
+
+    var xhrPath = getXhrPath(
+        ROUTE_DOCUMENT_LISTING_MY_DRAFTS,
+        'document',
+        'myDraftsPaginated',
+        RETURN_HTML
+        );
+
+    return xhrCall(
+        document,
+        {'offset': offset},
+        xhrPath,
+        localLoader
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
+            $('#listingScrollNav').remove();
+            if (init) {
+                targetElement.html(data['html']);
+            } else {
+                targetElement.append(data['html']);
+            }
+            initPaginateNextWaypoint();
+            fullImgLiquid();
+        }
+        localLoader.hide();
+    });
+}
 
 /**
  * Document recommend next/prev page

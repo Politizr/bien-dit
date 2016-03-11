@@ -8,12 +8,11 @@
             <a action="reactionSave" uuid="{{ reaction.uuid }}"><i class="icon-draft"></i>Enregistrer</a>
         </div>
 
-        {#
         <div class="secondaryActions">
             <!--<a href="#">Prévisualiser la publication</a>-->
-            <!--<a href="#">Mes brouillons</a>-->
+            <a action="reactionDelete" uuid="{{ reaction.uuid }}">Supprimer mon brouillon</a>
+            <a href="{{ path('Drafts'~profileSuffix()) }}">Liste de mes brouillons</a>
         </div>
-        #}
     </div>
 
     <div class="sidebarComparedMode">

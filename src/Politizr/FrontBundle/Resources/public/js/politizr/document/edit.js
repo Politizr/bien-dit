@@ -232,17 +232,12 @@ function deleteDebate(uuid)
         1
     ).done(function(data) {
         if (data['error']) {
+            $('#ajaxGlobalLoader').hide();
             $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
             $('#infoBoxHolder .boxError').show();
         } else {
-            if (data['error']) {
-                $('#ajaxGlobalLoader').hide();
-                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
-                $('#infoBoxHolder .boxError').show();
-            } else {
-                // redirection
-                window.location = data['redirectUrl'];
-            }
+            // redirection
+            window.location = data['redirectUrl'];
         }
     });
 }
@@ -269,17 +264,12 @@ function deleteReaction(uuid)
         1
     ).done(function(data) {
         if (data['error']) {
+            $('#ajaxGlobalLoader').hide();
             $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
             $('#infoBoxHolder .boxError').show();
         } else {
-            if (data['error']) {
-                $('#ajaxGlobalLoader').hide();
-                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
-                $('#infoBoxHolder .boxError').show();
-            } else {
-                // redirection
-                window.location = data['redirectUrl'];
-            }
+            // redirection
+            window.location = data['redirectUrl'];
         }
     });
 }

@@ -1,6 +1,7 @@
+{# beta #}
 {% if user and user.isQualified %}
     {% set organizations = user.currentOrganizations %}
     {% for organization in organizations %}
-        <div class="organization" action="modalOrganization" model="PQOrganization" uuid="{{ organization.uuid }}">{{ organization.initials }}</div>
+        <div class="org"><a href="{{ path('ListingByOrganization', {'slug': organization.slug}) }}">{{ organization.initials }}</a></div>
     {% endfor %}
 {% endif %}

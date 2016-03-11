@@ -1,3 +1,4 @@
+{# beta #}
 <div class="card {% if app.user and app.user.id == document.PUserId %}myactivity{% endif %}">
     {% include 'PolitizrFrontBundle:User:_summaryAuthor.html.twig' with { 'user': document.user } only %}
     <div class="{% if mini %}miniPost{% else %}newPost{% endif %}">

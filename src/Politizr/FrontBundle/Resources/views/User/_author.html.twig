@@ -8,10 +8,5 @@
             <i>utilisateur supprimé</i>
         {% endif %}
     </div>
-    {% if user and user.isQualified %}
-        {% set organizations = user.currentOrganizations %}
-        {% for organization in organizations %}
-            <div class="org"><a href="{{ path('ListingByOrganization', {'slug': organization.slug}) }}">{{ organization.initials }}</a></div>
-        {% endfor %}
-    {% endif %}
+    {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with { 'user': user } only %}
 </div>

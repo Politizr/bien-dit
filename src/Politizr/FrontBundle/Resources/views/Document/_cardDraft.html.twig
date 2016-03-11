@@ -1,0 +1,22 @@
+{# beta #}
+{% if document.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE') %}
+    {% set detailPath = path('DebateDraftEditC', { 'uuid': document.uuid }) %}
+    {% set spanClass = 'subject' %}
+{% elseif document.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION') %}
+    {% set detailPath = path('ReactionDraftEditC', { 'uuid': document.uuid }) %}
+    {% set spanClass = '' %}
+{% endif %}
+
+<div class="card myactivity">
+    <div class="newPost">
+        <a href="{{ detailPath }}">
+            <span class="postTitle {{ spanClass }}">{{ document.title }}</span>
+            {{ document.description | removeLinks | removeSpans | excerpt(1, true) | purify }}
+        </a>
+    </div>
+    <div class="actionsBox">
+        <div class="miniActions">
+            <a href="{{ detailPath }}">Éditer</a>
+        </div>
+    </div>
+</div>
