@@ -1,1 +1,0 @@
-$("body").on("change","[action='goToDate']",function(e){location.hash=$("option:selected").val()});
