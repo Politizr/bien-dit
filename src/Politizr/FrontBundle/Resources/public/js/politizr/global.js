@@ -145,6 +145,12 @@ function fullImgLiquid() {
         fill: true,
         horizontalAlign: "center",
         verticalAlign: "center"
+    });
+    // full size image in edition
+    $(".postIllustration").imgLiquid({
+        fill: true,
+        horizontalAlign: "center",
+        verticalAlign: "center"
     });    
 }
 
@@ -203,7 +209,15 @@ function loadDataCharts(elementId, lineChartData) {
     return myChart;
 }
 
+/**
+ * JS update of URL
+ *
+ * @param url
+ */
 function updateUrl(url) {
+    console.log("*** updateUrl");
+    console.log(url);
+
     if (typeof (history.pushState) != "undefined") {
         history.pushState({}, '', url);
     } else {

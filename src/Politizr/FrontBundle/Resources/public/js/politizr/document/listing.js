@@ -3,6 +3,60 @@ paginatedFunctions[JS_KEY_LISTING_DOCUMENTS_BY_TAG] = documentsByTagListing;
 paginatedFunctions[JS_KEY_LISTING_DOCUMENTS_BY_ORGANIZATION] = documentsByOrganizationListing;
 paginatedFunctions[JS_KEY_LISTING_DOCUMENTS_BY_RECOMMEND] = documentsByRecommendListing;
 paginatedFunctions[JS_KEY_LISTING_DOCUMENTS_BY_USER_DRAFTS] = myDraftsByUserListing;
+paginatedFunctions[JS_KEY_LISTING_DOCUMENTS_BY_USER_PUBLICATIONS] = documentsByUserListing;
+
+/**
+ * Loading of paginated "debate followers" listing.
+ * @param targetElement
+ * @param localLoader
+ */
+function documentsByUserListing(init, offset) {
+    // console.log('*** documentsByUserListing');
+    // console.log(init);
+    // console.log(offset);
+
+    init = (typeof init === "undefined") ? true : init;
+    offset = (typeof offset === "undefined") ? 0 : offset;
+
+    targetElement = $('#documentListing .listTop');
+    localLoader = $('#documentListing').find('.ajaxLoader').first();
+    uuid = $('.pseudoTabs').attr('uuid');
+    orderBy = $('.pseudoTabs .currentPage').attr('filter');
+
+    // console.log(targetElement);
+    // console.log(localLoader);
+    // console.log(uuid);
+    // console.log(orderBy);
+
+    var xhrPath = getXhrPath(
+        ROUTE_DOCUMENT_LISTING_USER_PUBLICATIONS,
+        'document',
+        'documentsByUser',
+        RETURN_HTML
+    );
+
+    return xhrCall(
+        document,
+        {'uuid': uuid, 'orderBy': orderBy, 'offset': offset},
+        xhrPath,
+        localLoader
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
+            $('#listingScrollNav').remove();
+            if (init) {
+                targetElement.html(data['html']);
+            } else {
+                targetElement.append(data['html']);
+            }
+            initPaginateNextWaypoint();
+            fullImgLiquid();
+        }
+        localLoader.hide();
+    });
+}
 
 
 /**

@@ -10,7 +10,8 @@ WHERE
             LEFT JOIN p_u_current_q_o
                 ON p_user.id = p_u_current_q_o.p_user_id
         WHERE
-            p_u_current_q_o.p_q_organization_id = 1
+            p_user.qualified = 1
+            AND p_u_current_q_o.p_q_organization_id = 1
     )
     # AND p_d_debate.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW() 
 )
@@ -30,7 +31,8 @@ WHERE
             LEFT JOIN p_u_current_q_o
                 ON p_user.id = p_u_current_q_o.p_user_id
         WHERE
-            p_u_current_q_o.p_q_organization_id = 1
+            p_user.qualified = 1
+            AND p_u_current_q_o.p_q_organization_id = 1
     )
     # AND p_d_reaction.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW() 
 )

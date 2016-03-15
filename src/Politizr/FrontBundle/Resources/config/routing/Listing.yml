@@ -38,3 +38,15 @@ ListingDebateFollowers:
     requirements:
         _method:        GET
 
+ListingUserFollowers:
+    pattern:  /auteur/{slug}/abonnes
+    defaults: { _controller: PolitizrFrontBundle:Listing:userFollowers }
+    requirements:
+        _method:        GET
+
+ListingUserSubscribers:
+    pattern:  /auteur/{slug}/abonnements
+    defaults: { _controller: PolitizrFrontBundle:Listing:userSubscribers }
+    requirements:
+        _method:        GET
+

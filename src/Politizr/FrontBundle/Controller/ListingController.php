@@ -7,8 +7,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use Politizr\Model\PDocumentInterface;
+use Politizr\Model\PUser;
 
 use Politizr\Model\PDDebateQuery;
+use Politizr\Model\PUserQuery;
 use Politizr\Model\PTagQuery;
 use Politizr\Model\PQOrganizationQuery;
 
@@ -37,6 +39,26 @@ class ListingController extends Controller
         }
         if ($published && !$document->getPublished()) {
             throw new NotFoundHttpException(sprintf('Document not published.'));
+        }
+
+        return true;
+    }
+
+    /**
+     * Common user "check" validity
+     *
+     * @param PDocument
+     * @param boolean $online
+     * @param boolean $published
+     * @param boolean
+     */
+    private function checkUser(PUser $user = null, $online = true)
+    {
+        if (!$user) {
+            throw new NotFoundHttpException(sprintf('User not found.'));
+        }
+        if ($online && !$user->getOnline()) {
+            throw new NotFoundHttpException(sprintf('User not online.'));
         }
 
         return true;
@@ -154,6 +176,42 @@ class ListingController extends Controller
 
         return $this->render('PolitizrFrontBundle:User:listingDebateFollowers.html.twig', array(
             'debate' => $debate,
+        ));
+    }
+    
+    /**
+     * User followers
+     * code beta
+     */
+    public function userFollowersAction($slug)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** userFollowers');
+        $logger->info('$slug = '.print_r($slug, true));
+
+        $user = PUserQuery::create()->filterBySlug($slug)->findOne();
+        $this->checkUser($user);
+
+        return $this->render('PolitizrFrontBundle:User:listingUserFollowers.html.twig', array(
+            'user' => $user,
+        ));
+    }
+    
+    /**
+     * User subscribers
+     * code beta
+     */
+    public function userSubscribersAction($slug)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** userSubscribers');
+        $logger->info('$slug = '.print_r($slug, true));
+
+        $user = PUserQuery::create()->filterBySlug($slug)->findOne();
+        $this->checkUser($user);
+
+        return $this->render('PolitizrFrontBundle:User:listingUserSubscribers.html.twig', array(
+            'user' => $user,
         ));
     }
 }

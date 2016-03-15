@@ -1,0 +1,9 @@
+{# beta #}
+{% for publication in publications %}
+    {{ publicationRow(publication, true) }}
+{% endfor %}
+<div id="listingScrollNav" class="scrollNav">
+    {% if moreResults %}
+        <a id="moreResults" action="listingNext" class="waypoint" offset="{{ offset }}"{% if uuid is defined %} uuid="{{ uuid }}"{% endif %} key="{{ jsFunctionKey }}">suite</a>
+    {% endif %}
+</div>

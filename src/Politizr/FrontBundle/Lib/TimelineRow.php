@@ -3,7 +3,7 @@ namespace Politizr\FrontBundle\Lib;
 
 /**
  * Virtual object to manage timeline with various object type
- * PDDebate / PDReaction / PDDComment / PDRComment
+ * PDDebate / PDReaction / PDDComment / PDRComment / PRAction / PRBadge / PUser
  *
  * @author Lionel Bouzonville
  */

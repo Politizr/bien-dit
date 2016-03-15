@@ -1,6 +1,6 @@
 {% for dateTimeAt, timeline in timelineDateKey %}
     <h4>{% include 'PolitizrFrontBundle:Navigation\\DateTime:_dateAt.html.twig' with { 'dateTimeAt': dateTimeAt } only %}</h4>
     {% for timelineRow in timeline %}
-        {{ timelineRow(timelineRow, debateContext) }}
+        {{ timelineRow(timelineRow, withContext) }}
     {% endfor %}
 {% endfor %}

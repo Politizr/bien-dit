@@ -66,6 +66,23 @@ class DocumentService
     /* ######################################################################################################## */
 
     /**
+     * Get "user publications" paginated listing
+     *
+     * @param array $userId
+     * @param string $orderBy
+     * @param integer $offset
+     * @param înteger $count
+     * @return PropelCollection PDocument
+     */
+    public function getUserPublicationsPaginatedListing($userId, $orderBy, $offset = 0, $count = ListingConstants::LISTING_CLASSIC_PAGINATION)
+    {
+        $documents = $this->documentManager->generateDocumentsByUserPaginated($userId, $orderBy, $offset, $count);
+
+        return $documents;
+    }
+
+
+    /**
      * Get recommended paginated documents
      *
      * @param integer $month
@@ -201,21 +218,6 @@ class DocumentService
     }
     
     /**
-     * Get "my publications" paginated listing
-     *
-     * @param int $userId
-     * @param int $offset
-     * @param int $count
-     * @return PropelCollection[PDocument]
-     */
-    public function getMyPublicationsPaginatedListing($userId, $offset = 0, $count = ListingConstants::MODAL_CLASSIC_PAGINATION)
-    {
-        $documents = $this->documentManager->generateMyDocumentsPaginatedListing($userId, 1, 'published_at', $offset, $count);
-
-        return $documents;
-    }
-
-    /**
      * Get "my drafts" paginated listing
      *
      * @param int $userId
@@ -225,7 +227,7 @@ class DocumentService
      */
     public function getMyDraftsPaginatedListing($userId, $offset = 0, $count = ListingConstants::MODAL_CLASSIC_PAGINATION)
     {
-        $documents = $this->documentManager->generateMyDocumentsPaginatedListing($userId, 0, 'updated_at', $offset, $count);
+        $documents = $this->documentManager->generateMyDraftsPaginatedListing($userId, $offset, $count);
 
         return $documents;
     }

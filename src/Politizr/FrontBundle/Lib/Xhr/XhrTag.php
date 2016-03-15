@@ -599,16 +599,22 @@ class XhrTag
     {
         $this->logger->info('*** userTags');
         
-        // get current user
-        $user = $this->securityTokenStorage->getToken()->getUser();
-        
+        // Request arguments
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
+
+        $user = PUserQuery::create()->filterByUuid($uuid)->findOne();
+        if (!$user) {
+            throw new InconsistentDataException(sprintf('User %s not found', $uuid));
+        }
+
         // user tags
         $tags = $user->getTags(null, null, true);
 
         $html = $this->templating->render(
             'PolitizrFrontBundle:Tag:_list.html.twig',
             array(
-                'tags' => $tags,
+                'tags' => $tags
             )
         );
 

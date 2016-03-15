@@ -20,6 +20,7 @@ use Politizr\Model\PUReputationQuery;
 use Politizr\Model\PUFollowDDQuery;
 
 use Politizr\FrontBundle\Lib\TimelineRow;
+use Politizr\FrontBundle\Lib\PublicationRow;
 
 /**
  * Document's twig extension
@@ -199,6 +200,11 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 array($this, 'timelineRow'),
                 array('is_safe' => array('html'))
             ),
+            'publicationRow'  => new \Twig_SimpleFunction(
+                'publicationRow',
+                array($this, 'publicationRow'),
+                array('is_safe' => array('html'))
+            ),
         );
     }
 
@@ -329,7 +335,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
      * Render the item reaction context
      *
      * @param PDReaction $reaction
-     * @param boolean $debateContext
+     * @param boolean $withContext
      * @return string
      */
     public function itemContextReaction(PDReaction $reaction)
@@ -357,10 +363,10 @@ class PolitizrDocumentExtension extends \Twig_Extension
      * Render the item comment context
      *
      * @param PDCommentInterface $comment
-     * @param boolean $debateContext
+     * @param boolean $withContext
      * @return string
      */
-    public function itemContextComment(PDCommentInterface $comment, $debateContext = false)
+    public function itemContextComment(PDCommentInterface $comment, $withContext = false)
     {
         $parentReaction = null;
 
@@ -383,7 +389,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
             array(
                 'parentReaction' => $parentReaction,
                 'parentDebate' => $parentDebate,
-                'debateContext' => $debateContext
+                'withContext' => $withContext
             )
         );
 
@@ -1027,10 +1033,10 @@ class PolitizrDocumentExtension extends \Twig_Extension
      * Render an item timeline row
      *
      * @param TimelineRow $timelineRow
-     * @param boolean $debateContext
+     * @param boolean $withContext
      * @return string
      */
-    public function timelineRow(TimelineRow $timelineRow, $debateContext = false)
+    public function timelineRow(TimelineRow $timelineRow, $withContext = true)
     {
         $this->logger->info('*** timelineRow');
         $this->logger->info('$timelineRow = '.print_r($timelineRow, true));
@@ -1045,7 +1051,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
                     case ReputationConstants::ACTION_ID_D_AUTHOR_REACTION_NOTE_POS:
                     case ReputationConstants::ACTION_ID_D_AUTHOR_REACTION_NOTE_NEG:
                         try {
-                            $html = $this->timelineService->generateRenderingItemActionNoteDocument($timelineRow, $debateContext);
+                            $html = $this->timelineService->generateRenderingItemActionNoteDocument($timelineRow, $withContext);
                         } catch (\Exception $e) {
                             // catch rendering exception to only trace log
                             $this->logger->error($e->getMessage());
@@ -1054,7 +1060,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
                     case ReputationConstants::ACTION_ID_D_AUTHOR_COMMENT_NOTE_POS:
                     case ReputationConstants::ACTION_ID_D_AUTHOR_COMMENT_NOTE_NEG:
                         try {
-                            $html = $this->timelineService->generateRenderingItemActionNoteComment($timelineRow, $debateContext);
+                            $html = $this->timelineService->generateRenderingItemActionNoteComment($timelineRow, $withContext);
                         } catch (\Exception $e) {
                             // catch rendering exception to only trace log
                             $this->logger->error($e->getMessage());
@@ -1063,7 +1069,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
                     case ReputationConstants::ACTION_ID_U_AUTHOR_USER_FOLLOW:
                     case ReputationConstants::ACTION_ID_U_AUTHOR_USER_UNFOLLOW:
                         try {
-                            $html = $this->timelineService->generateRenderingItemActionFollowUser($timelineRow, $debateContext);
+                            $html = $this->timelineService->generateRenderingItemActionFollowUser($timelineRow, $withContext);
                         } catch (\Exception $e) {
                             // catch rendering exception to only trace log
                             $this->logger->error($e->getMessage());
@@ -1072,7 +1078,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
                     case ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_FOLLOW:
                     case ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_UNFOLLOW:
                         try {
-                            $html = $this->timelineService->generateRenderingItemActionFollowDebate($timelineRow, $debateContext);
+                            $html = $this->timelineService->generateRenderingItemActionFollowDebate($timelineRow, $withContext);
                         } catch (\Exception $e) {
                             // catch rendering exception to only trace log
                             $this->logger->error($e->getMessage());
@@ -1080,7 +1086,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
                         break;
                     case ReputationConstants::ACTION_ID_U_TARGET_USER_FOLLOW:
                         try {
-                            $html = $this->timelineService->generateRenderingItemActionSubscribeMe($timelineRow, $debateContext);
+                            $html = $this->timelineService->generateRenderingItemActionSubscribeMe($timelineRow, $withContext);
                         } catch (\Exception $e) {
                             // catch rendering exception to only trace log
                             $this->logger->error($e->getMessage());
@@ -1088,7 +1094,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
                         break;
                     case ReputationConstants::ACTION_ID_D_TARGET_DEBATE_FOLLOW:
                         try {
-                            $html = $this->timelineService->generateRenderingItemActionSubscribeMyDebate($timelineRow, $debateContext);
+                            $html = $this->timelineService->generateRenderingItemActionSubscribeMyDebate($timelineRow, $withContext);
                         } catch (\Exception $e) {
                             // catch rendering exception to only trace log
                             $this->logger->error($e->getMessage());
@@ -1099,7 +1105,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
                     case ReputationConstants::ACTION_ID_D_TARGET_REACTION_NOTE_POS:
                     case ReputationConstants::ACTION_ID_D_TARGET_REACTION_NOTE_NEG:
                         try {
-                            $html = $this->timelineService->generateRenderingItemActionNoteMyDocument($timelineRow, $debateContext);
+                            $html = $this->timelineService->generateRenderingItemActionNoteMyDocument($timelineRow, $withContext);
                         } catch (\Exception $e) {
                             // catch rendering exception to only trace log
                             $this->logger->error($e->getMessage());
@@ -1108,7 +1114,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
                     case ReputationConstants::ACTION_ID_D_TARGET_COMMENT_NOTE_POS:
                     case ReputationConstants::ACTION_ID_D_TARGET_COMMENT_NOTE_NEG:
                         try {
-                            $html = $this->timelineService->generateRenderingItemActionNoteMyComment($timelineRow, $debateContext);
+                            $html = $this->timelineService->generateRenderingItemActionNoteMyComment($timelineRow, $withContext);
                         } catch (\Exception $e) {
                             // catch rendering exception to only trace log
                             $this->logger->error($e->getMessage());
@@ -1121,7 +1127,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 break;
             case ObjectTypeConstants::TYPE_DEBATE:
                 try {
-                    $html = $this->timelineService->generateRenderingItemDebate($timelineRow->getId(), $debateContext);
+                    $html = $this->timelineService->generateRenderingItemDebate($timelineRow->getId(), $withContext);
                 } catch (\Exception $e) {
                     // catch rendering exception to only trace log
                     $this->logger->error($e->getMessage());
@@ -1129,7 +1135,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 break;
             case ObjectTypeConstants::TYPE_REACTION:
                 try {
-                    $html = $this->timelineService->generateRenderingItemReaction($timelineRow->getId(), $debateContext);
+                    $html = $this->timelineService->generateRenderingItemReaction($timelineRow->getId(), $withContext);
                 } catch (\Exception $e) {
                     // catch rendering exception to only trace log
                     $this->logger->error($e->getMessage());
@@ -1137,7 +1143,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 break;
             case ObjectTypeConstants::TYPE_DEBATE_COMMENT:
                 try {
-                    $html = $this->timelineService->generateRenderingItemDebateComment($timelineRow->getId(), $debateContext);
+                    $html = $this->timelineService->generateRenderingItemDebateComment($timelineRow->getId(), $withContext);
                 } catch (\Exception $e) {
                     // catch rendering exception to only trace log
                     $this->logger->error($e->getMessage());
@@ -1145,7 +1151,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 break;
             case ObjectTypeConstants::TYPE_REACTION_COMMENT:
                 try {
-                    $html = $this->timelineService->generateRenderingItemReactionComment($timelineRow->getId(), $debateContext);
+                    $html = $this->timelineService->generateRenderingItemReactionComment($timelineRow->getId(), $withContext);
                 } catch (\Exception $e) {
                     // catch rendering exception to only trace log
                     $this->logger->error($e->getMessage());
@@ -1173,6 +1179,61 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
         return $html;
     }
+
+    /**
+     * Render an item timeline row
+     *
+     * @param PublicationRow $publicationRow
+     * @param boolean $withContext
+     * @return string
+     */
+    public function publicationRow(PublicationRow $publicationRow, $withContext = true)
+    {
+        $this->logger->info('*** publicationRow');
+        $this->logger->info('$publicationRow = '.print_r($publicationRow, true));
+
+        $html = '';
+
+        switch ($publicationRow->getType()) {
+            case ObjectTypeConstants::TYPE_DEBATE:
+                try {
+                    $html = $this->timelineService->generateRenderingItemDebate($publicationRow->getId(), $withContext);
+                } catch (\Exception $e) {
+                    // catch rendering exception to only trace log
+                    $this->logger->error($e->getMessage());
+                }
+                break;
+            case ObjectTypeConstants::TYPE_REACTION:
+                try {
+                    $html = $this->timelineService->generateRenderingItemReaction($publicationRow->getId(), $withContext);
+                } catch (\Exception $e) {
+                    // catch rendering exception to only trace log
+                    $this->logger->error($e->getMessage());
+                }
+                break;
+            case ObjectTypeConstants::TYPE_DEBATE_COMMENT:
+                try {
+                    $html = $this->timelineService->generateRenderingItemDebateComment($publicationRow->getId(), $withContext);
+                } catch (\Exception $e) {
+                    // catch rendering exception to only trace log
+                    $this->logger->error($e->getMessage());
+                }
+                break;
+            case ObjectTypeConstants::TYPE_REACTION_COMMENT:
+                try {
+                    $html = $this->timelineService->generateRenderingItemReactionComment($publicationRow->getId(), $withContext);
+                } catch (\Exception $e) {
+                    // catch rendering exception to only trace log
+                    $this->logger->error($e->getMessage());
+                }
+                break;
+            default:
+                throw new InconsistentDataException(sprintf('Object type %s not managed', $publicationRow->getType()));
+        }
+
+        return $html;
+    }
+
 
     public function getName()
     {

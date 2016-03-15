@@ -34,7 +34,7 @@ class XhrConstants
     // DOCUMENTS
     const ROUTE_DOCUMENT_PHOTO_UPLOAD = 'profil/photo/upload';
     const ROUTE_DOCUMENT_LISTING_MY_DRAFTS = 'profil/mes-documents/brouillons';
-    const ROUTE_DOCUMENT_LISTING_MY_PUBLICATIONS = 'profil/mes-documents/publications';
+    const ROUTE_DOCUMENT_LISTING_USER_PUBLICATIONS = 'profil/publications';
 
     const ROUTE_DOCUMENT_LISTING_TOP = 'documents/top';
     const ROUTE_DOCUMENT_LISTING_SUGGESTION = '/profil/documents/suggestions';
@@ -140,8 +140,18 @@ class XhrConstants
     const ROUTE_USER_PHOTO_UPLOAD = 'profil/photo/upload';
     const ROUTE_USER_PHOTO_DELETE = 'profil/photo/delete';
 
-    const ROUTE_USER_LISTING_LAST_DEBATE_FOLLOWERS = 'profils/debat/derniers-abonnes';
-    const ROUTE_USER_LISTING_DEBATE_FOLLOWERS = 'profils/debat/abonnes';
+    const ROUTE_USER_LISTING_LAST_DEBATE_FOLLOWERS = 'debat/derniers-abonnes';
+    const ROUTE_USER_LISTING_DEBATE_FOLLOWERS = 'debat/abonnes';
+
+    const ROUTE_USER_LISTING_LAST_USER_FOLLOWERS = 'auteur/derniers-abonnes';
+    const ROUTE_USER_LISTING_LAST_USER_SUBSCRIBERS = 'auteur/derniers-abonnements';
+
+    const ROUTE_USER_LISTING_USER_FOLLOWERS = 'auteur/abonnes';
+    const ROUTE_USER_LISTING_USER_SUBSCRIBERS = 'auteur/abonnements';
+
+    const ROUTE_USER_DETAIL_CONTENT = 'auteur/content/detail';
+    const ROUTE_USER_LISTING_USER_FOLLOWERS_CONTENT = 'auteur/content/derniers-abonnes';
+    const ROUTE_USER_LISTING_USER_SUBSCRIBERS_CONTENT = 'auteur/content/derniers-abonnements';
 
     // TIMELINE
     const ROUTE_TIMELINE_MINE = 'profil/timeline';
@@ -164,8 +174,11 @@ class XhrConstants
     const JS_KEY_LISTING_DOCUMENTS_BY_ORGANIZATION = "JS_KEY_LISTING_DOCUMENTS_BY_ORGANIZATION";
     const JS_KEY_LISTING_DOCUMENTS_BY_RECOMMEND = "JS_KEY_LISTING_DOCUMENTS_BY_RECOMMEND";
     const JS_KEY_LISTING_DOCUMENTS_BY_USER_DRAFTS = "JS_KEY_LISTING_DOCUMENTS_BY_USER_DRAFTS";
+    const JS_KEY_LISTING_DOCUMENTS_BY_USER_PUBLICATIONS = "JS_KEY_LISTING_DOCUMENTS_BY_USER_PUBLICATIONS";
 
     const JS_KEY_LISTING_USERS_DEBATE_FOLLOWERS = "JS_KEY_LISTING_USERS_DEBATE_FOLLOWERS";
+    const JS_KEY_LISTING_USERS_USER_FOLLOWERS = "JS_KEY_LISTING_USERS_USER_FOLLOWERS";
+    const JS_KEY_LISTING_USERS_USER_SUBSCRIBERS = "JS_KEY_LISTING_USERS_USER_SUBSCRIBERS";
 
 
     // ******************************************************** //

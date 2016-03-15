@@ -1,3 +1,4 @@
+{# beta #}
 {% set layout = 'PolitizrFrontBundle::layoutPublic.html.twig' %}
 {% if (isGrantedE() or isGrantedC()) %}
     {% set layout = 'PolitizrFrontBundle::layoutConnected.html.twig' %}
@@ -5,55 +6,29 @@
 {% extends layout %}
 
 {% block title %}
-    {{ parent() }} - Utilisateur {{ user }}
+    {{ parent() }} - Profil de {{ user }}
 {% endblock title %}
 
-{% block header %}
-    {% if app.user and app.user | isAuthorizedToReportAbuse %}
-        {% embed 'PolitizrFrontBundle:Navigation\\Header:_headerConnected.html.twig' %}
-            {% block abuse %}
-                {% include 'PolitizrFrontBundle:Monitoring:_abuseLink.html.twig' with { 'uuid': user.uuid, 'type': user.type } only %}
-            {% endblock abuse %}
-        {% endembed %}
-    {% endif %}
-{% endblock %}
-
-{% block connexionBox %}
-    {% if not is_granted('ROLE_PROFILE_COMPLETED') %}
-        {{ render(controller('PolitizrFrontBundle:Security:login')) }}
-    {% endif %}
-{% endblock %}
-
-{% block fixedActions %}
-    <div id="fixedActions">
-        {% if app.user.id == user.id %}
-            <div class="editProfile">
-                <div class="ajaxLoader" style="display: none;">
-                    <div class="ajaxLoaderSpinner"></div><div class="ajaxLoaderBg"></div><div class="ajaxLoaderBlockClick"></div>
-                </div>
-                <a href="{{ path('EditProfile'~profileSuffix) }}">                  
-                    <i class="iconEdit"></i>
-                    éditer
-                </a>
-            </div>
-        {% else %}
-            <div class="subscribe{% if app.user.id == user.id %} noSelfSubscribe{% endif %}">
-                {{ user | linkSubscribeUser }}
-            </div>
-        {% endif %}
+{% block content %}
+    <div id="content" class="withLoaderInside">
+        {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+        {% include 'PolitizrFrontBundle:User:_contentDetail.html.twig' %}
     </div>
-{% endblock fixedActions %}
+{% endblock content %}
 
-{% block main %}
-    {% include 'PolitizrFrontBundle:User:_detail.html.twig' %}
-{% endblock main %}
+{% block sidebarContent %}
+    {% include 'PolitizrFrontBundle:User:_sidebarUser.html.twig' %}
+{% endblock sidebarContent %}
 
 {% block javascriptFooter %}
     {{ parent() }}
 
     {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/tag/listing.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/document/listing.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/user/detail.js'
-        '@PolitizrFrontBundle/Resources/public/js/politizr/timeline/user.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/user/listing.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/pages/detailUser.js'
         filter='uglifyjs2' %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}

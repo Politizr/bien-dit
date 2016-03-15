@@ -14,7 +14,10 @@ class ListController extends BaseListController
      */
     protected function scopeNotPublished($queryFilter)
     {
-        $queryFilter->getQuery()->filterByTreeLeft(1, \Criteria::NOT_EQUAL);
+        $queryFilter->getQuery()
+            ->filterByPublished(false)
+            ->filterByTreeLevel(null)
+        ;
     }
 
 //     /**

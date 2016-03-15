@@ -321,10 +321,10 @@ class TimelineService
      * Generate the rendering of an item action "note document" timeline row
      *
      * @param TimelineRow $timelineRow
-     * @param boolean $debateContext
+     * @param boolean $withContext
      * @return string
      */
-    public function generateRenderingItemActionNoteDocument($timelineRow, $debateContext)
+    public function generateRenderingItemActionNoteDocument($timelineRow, $withContext)
     {
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -370,10 +370,10 @@ class TimelineService
      * Generate the rendering of an item action "note comment" timeline row
      *
      * @param TimelineRow $timelineRow
-     * @param boolean $debateContext
+     * @param boolean $withContext
      * @return string
      */
-    public function generateRenderingItemActionNoteComment($timelineRow, $debateContext)
+    public function generateRenderingItemActionNoteComment($timelineRow, $withContext)
     {
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -420,10 +420,10 @@ class TimelineService
      * Generate the rendering of an item action "follow user" timeline row
      *
      * @param TimelineRow $timelineRow
-     * @param boolean $debateContext
+     * @param boolean $withContext
      * @return string
      */
-    public function generateRenderingItemActionFollowUser($timelineRow, $debateContext)
+    public function generateRenderingItemActionFollowUser($timelineRow, $withContext)
     {
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -460,10 +460,10 @@ class TimelineService
      * Generate the rendering of an item action "follow user" timeline row
      *
      * @param TimelineRow $timelineRow
-     * @param boolean $debateContext
+     * @param boolean $withContext
      * @return string
      */
-    public function generateRenderingItemActionFollowDebate($timelineRow, $debateContext)
+    public function generateRenderingItemActionFollowDebate($timelineRow, $withContext)
     {
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -499,10 +499,10 @@ class TimelineService
      * Generate the rendering of an item action "followed by user" timeline row
      *
      * @param TimelineRow $timelineRow
-     * @param boolean $debateContext
+     * @param boolean $withContext
      * @return string
      */
-    public function generateRenderingItemActionSubscribeMe($timelineRow, $debateContext)
+    public function generateRenderingItemActionSubscribeMe($timelineRow, $withContext)
     {
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -533,10 +533,10 @@ class TimelineService
      * Generate the rendering of an item action "someone subscribe my debate" timeline row
      *
      * @param TimelineRow $timelineRow
-     * @param boolean $debateContext
+     * @param boolean $withContext
      * @return string
      */
-    public function generateRenderingItemActionSubscribeMyDebate($timelineRow, $debateContext)
+    public function generateRenderingItemActionSubscribeMyDebate($timelineRow, $withContext)
     {
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -572,10 +572,10 @@ class TimelineService
      * Generate the rendering of an item action "someone note my debate / reaction" timeline row
      *
      * @param TimelineRow $timelineRow
-     * @param boolean $debateContext
+     * @param boolean $withContext
      * @return string
      */
-    public function generateRenderingItemActionNoteMyDocument($timelineRow, $debateContext)
+    public function generateRenderingItemActionNoteMyDocument($timelineRow, $withContext)
     {
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -621,10 +621,10 @@ class TimelineService
      * Generate the rendering of an item action "someone note my comment" timeline row
      *
      * @param TimelineRow $timelineRow
-     * @param boolean $debateContext
+     * @param boolean $withContext
      * @return string
      */
-    public function generateRenderingItemActionNoteMyComment($timelineRow, $debateContext)
+    public function generateRenderingItemActionNoteMyComment($timelineRow, $withContext)
     {
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -726,10 +726,10 @@ class TimelineService
      * Generate the rendering of an item debate timeline row
      *
      * @param integer $debateId
-     * @param boolean $debateContext
+     * @param boolean $withContext
      * @return string
      */
-    public function generateRenderingItemDebate($debateId, $debateContext)
+    public function generateRenderingItemDebate($debateId, $withContext)
     {
         $debate = PDDebateQuery::create()->findPk($debateId);
 
@@ -752,10 +752,10 @@ class TimelineService
      * Generate the rendering of an item reaction timeline row
      *
      * @param integer $reactionId
-     * @param boolean $debateContext
+     * @param boolean $withContext
      * @return string
      */
-    public function generateRenderingItemReaction($reactionId, $debateContext)
+    public function generateRenderingItemReaction($reactionId, $withContext)
     {
         $reaction = PDReactionQuery::create()->findPk($reactionId);
 
@@ -768,6 +768,7 @@ class TimelineService
             array(
                 'document' => $reaction,
                 'mini' => false,
+                'withContext' => $withContext,
             )
         );
 
@@ -778,10 +779,10 @@ class TimelineService
      * Generate the rendering of an item debate comment timeline row
      *
      * @param integer $commentId
-     * @param boolean $debateContext
+     * @param boolean $withContext
      * @return string
      */
-    public function generateRenderingItemDebateComment($commentId, $debateContext)
+    public function generateRenderingItemDebateComment($commentId, $withContext)
     {
         $user = $this->securityTokenStorage->getToken()->getUser();
         $comment = PDDCommentQuery::create()->findPk($commentId);
@@ -794,31 +795,10 @@ class TimelineService
             return;
         }
 
-        $authorIsMe = false;
-        $authorIsFollowed = false;
-        $debateIsFollowed = false;
-        if ($user) {
-            $debateIsFollowed = $parentDebate->isFollowedBy($user->getId());
-            $authorIsMe = ($comment->getPUserId() === $user->getId());
-            if (!$authorIsMe) {
-                $author = $comment->getUser();
-                if ($author) {
-                    $authorIsFollowed = $author->isFollowedBy($user->getId());
-                }
-            }
-        }
-
         $html = $this->templating->render(
             'PolitizrFrontBundle:Comment:_card.html.twig',
             array(
-                'type' => ObjectTypeConstants::TYPE_DEBATE_COMMENT,
                 'comment' => $comment,
-                'debateContext' => $debateContext,
-                'parentDebate' => $parentDebate,
-                'parentReaction' => null,
-                'authorIsMe' => $authorIsMe,
-                'authorIsFollowed' => $authorIsFollowed,
-                'debateIsFollowed' => $debateIsFollowed,
             )
         );
 
@@ -829,10 +809,10 @@ class TimelineService
      * Generate the rendering of an item reaction comment timeline row
      *
      * @param integer $commentId
-     * @param boolean $debateContext
+     * @param boolean $withContext
      * @return string
      */
-    public function generateRenderingItemReactionComment($commentId, $debateContext)
+    public function generateRenderingItemReactionComment($commentId, $withContext)
     {
         $user = $this->securityTokenStorage->getToken()->getUser();
         $comment = PDRCommentQuery::create()->findPk($commentId);
@@ -848,31 +828,10 @@ class TimelineService
             return;
         }
 
-        $authorIsMe = false;
-        $authorIsFollowed = false;
-        $debateIsFollowed = false;
-        if ($user) {
-            $debateIsFollowed = $parentDebate->isFollowedBy($user->getId());
-            $authorIsMe = ($comment->getPUserId() === $user->getId());
-            if (!$authorIsMe) {
-                $author = $comment->getUser();
-                if ($author) {
-                    $authorIsFollowed = $author->isFollowedBy($user->getId());
-                }
-            }
-        }
-
         $html = $this->templating->render(
             'PolitizrFrontBundle:Comment:_card.html.twig',
             array(
-                'type' => ObjectTypeConstants::TYPE_REACTION_COMMENT,
                 'comment' => $comment,
-                'debateContext' => $debateContext,
-                'parentDebate' => $parentDebate,
-                'parentReaction' => $parentReaction,
-                'authorIsMe' => $authorIsMe,
-                'authorIsFollowed' => $authorIsFollowed,
-                'debateIsFollowed' => $debateIsFollowed,
             )
         );
 

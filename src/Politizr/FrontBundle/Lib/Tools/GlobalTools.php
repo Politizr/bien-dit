@@ -13,6 +13,7 @@ use Politizr\Exception\BoxErrorException;
 
 use Politizr\FrontBundle\Lib\SimpleImage;
 use Politizr\FrontBundle\Lib\TimelineRow;
+use Politizr\FrontBundle\Lib\PublicationRow;
 use Politizr\FrontBundle\Form\Type\PUMandateType;
 
 use Politizr\Constant\QualificationConstants;
@@ -434,6 +435,33 @@ class GlobalTools
         }
 
         return $timeline;
+    }
+
+    /**
+     * Hydrate "PublicationRow" objects from raw sql results
+     *
+     * @param array|false $result
+     * @return array[TimelineRow]
+     */
+    public function hydratePublicationRows($result)
+    {
+        $this->logger->info('*** hydratePublicationRows');
+
+        $publications = array();
+        if ($result) {
+            foreach ($result as $row) {
+                $publicationRow = new PublicationRow();
+
+                $publicationRow->setId($row['id']);
+                $publicationRow->setTitle($row['title']);
+                $publicationRow->setPublishedAt($row['published_at']);
+                $publicationRow->setType($row['type']);
+
+                $publications[] = $publicationRow;
+            }
+        }
+
+        return $publications;
     }
 
     /**

@@ -47,6 +47,7 @@ class XhrUser
     private $kernel;
     private $eventDispatcher;
     private $templating;
+    private $router;
     private $formFactory;
     private $emailCanonicalizer;
     private $userManager;
@@ -63,6 +64,7 @@ class XhrUser
      * @param @kernel
      * @param @event_dispatcher
      * @param @templating
+     * @param @router
      * @param @form.factory
      * @param @fos_user.util.email_canonicalizer
      * @param @politizr.manager.user
@@ -78,6 +80,7 @@ class XhrUser
         $kernel,
         $eventDispatcher,
         $templating,
+        $router,
         $formFactory,
         $emailCanonicalizer,
         $userManager,
@@ -95,6 +98,7 @@ class XhrUser
         $this->eventDispatcher = $eventDispatcher;
 
         $this->templating = $templating;
+        $this->router = $router;
         $this->formFactory = $formFactory;
 
         $this->emailCanonicalizer = $emailCanonicalizer;
@@ -904,6 +908,112 @@ class XhrUser
     }
 
     /* ######################################################################################################## */
+    /*                                                DETAIL                                                    */
+    /* ######################################################################################################## */
+
+    /**
+     * User detail content
+     * code beta
+     */
+    public function detailContent(Request $request)
+    {
+        $this->logger->info('*** detailContent');
+
+        // Request arguments
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
+
+        $user = PUserQuery::create()->filterByUuid($uuid)->findOne();
+        if (!$user) {
+            throw new InconsistentDataException(sprintf('User %s not found', $uuid));
+        }
+
+        $uri = $this->router->generate('UserDetail', array(
+            'slug' => $user->getSlug()
+        ));
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:User:_contentDetail.html.twig',
+            array(
+                'user' => $user,
+            )
+        );
+
+        return array(
+            'html' => $html,
+            'uri' => $uri,
+        );
+    }
+
+    /**
+     * User followers listing content
+     * code beta
+     */
+    public function listingFollowersContent(Request $request)
+    {
+        $this->logger->info('*** listingFollowersContent');
+
+        // Request arguments
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
+
+        $user = PUserQuery::create()->filterByUuid($uuid)->findOne();
+        if (!$user) {
+            throw new InconsistentDataException(sprintf('User %s not found', $uuid));
+        }
+
+        $uri = $this->router->generate('ListingUserFollowers', array(
+            'slug' => $user->getSlug()
+        ));
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:User:_contentFollowers.html.twig',
+            array(
+                'user' => $user,
+            )
+        );
+
+        return array(
+            'html' => $html,
+            'uri' => $uri,
+        );
+    }
+
+    /**
+     * User subscribers listing content
+     * code beta
+     */
+    public function listingSubscribersContent(Request $request)
+    {
+        $this->logger->info('*** listingSubscribersContent');
+
+        // Request arguments
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
+
+        $user = PUserQuery::create()->filterByUuid($uuid)->findOne();
+        if (!$user) {
+            throw new InconsistentDataException(sprintf('User %s not found', $uuid));
+        }
+
+        $uri = $this->router->generate('ListingUserSubscribers', array(
+            'slug' => $user->getSlug()
+        ));
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:User:_contentSubscribers.html.twig',
+            array(
+                'user' => $user,
+            )
+        );
+
+        return array(
+            'html' => $html,
+            'uri' => $uri,
+        );
+    }
+
+    /* ######################################################################################################## */
     /*                                                LISTING                                                   */
     /* ######################################################################################################## */
 
@@ -994,6 +1104,202 @@ class XhrUser
                     'offset' => intval($offset) + ListingConstants::LISTING_CLASSIC_PAGINATION,
                     'moreResults' => $moreResults,
                     'jsFunctionKey' => XhrConstants::JS_KEY_LISTING_USERS_DEBATE_FOLLOWERS
+                )
+            );
+        }
+
+        return array(
+            'html' => $html,
+        );
+    }
+
+    /**
+     * Last 12 user followers
+     * code beta
+     */
+    public function lastUserFollowers(Request $request)
+    {
+        $this->logger->info('*** lastUserFollowers');
+
+        // Request arguments
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
+
+        $user = PUserQuery::create()->filterByUuid($uuid)->findOne();
+        if (!$user) {
+            throw new InconsistentDataException(sprintf('User %s not found', $uuid));
+        }
+
+        $query = PUserQuery::create()
+            ->joinPUFollowURelatedByPUserId()
+            ->setDistinct()
+            ->orderBy('PUFollowURelatedByPUserId.CreatedAt', 'desc');
+            
+        $total = count($user->getFollowers($query));
+
+        $query = $query->setLimit(ListingConstants::LISTING_LAST_USER_FOLLOWERS);
+
+        $users = $user->getFollowers($query);
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:User:_followers.html.twig',
+            array(
+                'user' => $user,
+                'total' => $total,
+                'users' => $users,
+            )
+        );
+
+        return array(
+            'html' => $html,
+        );
+    }
+
+    /**
+     * User followers
+     * code beta
+     */
+    public function userFollowers(Request $request)
+    {
+        $this->logger->info('*** userFollowers');
+
+        // Request arguments
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        $offset = $request->get('offset');
+        $this->logger->info('$offset = ' . print_r($offset, true));
+
+        $user = PUserQuery::create()->filterByUuid($uuid)->findOne();
+        if (!$user) {
+            throw new InconsistentDataException(sprintf('User %s not found', $uuid));
+        }
+
+        $query = PUserQuery::create()
+            ->joinPUFollowURelatedByPUserId()
+            ->setDistinct()
+            ->orderBy('PUFollowURelatedByPUserId.CreatedAt', 'desc')
+            ->limit(ListingConstants::LISTING_CLASSIC_PAGINATION)
+            ->offset($offset);
+
+        $users = $user->getFollowers($query);
+
+        // @todo create function for code above
+        $moreResults = false;
+        if (sizeof($users) == ListingConstants::LISTING_CLASSIC_PAGINATION) {
+            $moreResults = true;
+        }
+
+        if ($offset == 0 && count($users) == 0) {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_noResult.html.twig'
+            );
+        } else {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_users.html.twig',
+                array(
+                    'uuid' => $uuid,
+                    'users' => $users,
+                    'offset' => intval($offset) + ListingConstants::LISTING_CLASSIC_PAGINATION,
+                    'moreResults' => $moreResults,
+                    'jsFunctionKey' => XhrConstants::JS_KEY_LISTING_USERS_USER_FOLLOWERS
+                )
+            );
+        }
+
+        return array(
+            'html' => $html,
+        );
+    }
+
+    /**
+     * Last 12 user subscribers
+     * code beta
+     */
+    public function lastUserSubscribers(Request $request)
+    {
+        $this->logger->info('*** lastUserSubscribers');
+
+        // Request arguments
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
+
+        $user = PUserQuery::create()->filterByUuid($uuid)->findOne();
+        if (!$user) {
+            throw new InconsistentDataException(sprintf('User %s not found', $uuid));
+        }
+
+        $query = PUserQuery::create()
+            ->joinPUFollowURelatedByPUserFollowerId()
+            ->setDistinct()
+            ->orderBy('PUFollowURelatedByPUserFollowerId.CreatedAt', 'desc');
+            
+        $total = count($user->getSubscribers($query));
+
+        $query = $query->setLimit(ListingConstants::LISTING_LAST_USER_SUBSCRIBERS);
+
+        $users = $user->getSubscribers($query);
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:User:_subscribers.html.twig',
+            array(
+                'user' => $user,
+                'total' => $total,
+                'users' => $users,
+            )
+        );
+
+        return array(
+            'html' => $html,
+        );
+    }
+
+    /**
+     * User subscribers
+     * code beta
+     */
+    public function userSubscribers(Request $request)
+    {
+        $this->logger->info('*** userSubscribers');
+
+        // Request arguments
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        $offset = $request->get('offset');
+        $this->logger->info('$offset = ' . print_r($offset, true));
+
+        $user = PUserQuery::create()->filterByUuid($uuid)->findOne();
+        if (!$user) {
+            throw new InconsistentDataException(sprintf('User %s not found', $uuid));
+        }
+
+        $query = PUserQuery::create()
+            ->joinPUFollowURelatedByPUserFollowerId()
+            ->setDistinct()
+            ->orderBy('PUFollowURelatedByPUserFollowerId.CreatedAt', 'desc')
+            ->limit(ListingConstants::LISTING_CLASSIC_PAGINATION)
+            ->offset($offset);
+
+        $users = $user->getSubscribers($query);
+
+        // @todo create function for code above
+        $moreResults = false;
+        if (sizeof($users) == ListingConstants::LISTING_CLASSIC_PAGINATION) {
+            $moreResults = true;
+        }
+
+        if ($offset == 0 && count($users) == 0) {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_noResult.html.twig'
+            );
+        } else {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_users.html.twig',
+                array(
+                    'uuid' => $uuid,
+                    'users' => $users,
+                    'offset' => intval($offset) + ListingConstants::LISTING_CLASSIC_PAGINATION,
+                    'moreResults' => $moreResults,
+                    'jsFunctionKey' => XhrConstants::JS_KEY_LISTING_USERS_USER_SUBSCRIBERS
                 )
             );
         }

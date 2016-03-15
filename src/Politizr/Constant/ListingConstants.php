@@ -13,9 +13,9 @@ class ListingConstants
     //              Pagination Constants                            //
     // ************************************************************ //
 
-    const LISTING_CLASSIC_PAGINATION = 10;
+    const LISTING_CLASSIC_PAGINATION = 20;
     const TIMELINE_CLASSIC_PAGINATION = 20;
-    const TIMELINE_USER_CLASSIC_PAGINATION = 10;
+    const TIMELINE_USER_CLASSIC_PAGINATION = 20;
     const REPUTATION_CHARTS_PAGINATION = 20;
 
     // ************************************************************ //
@@ -79,6 +79,8 @@ class ListingConstants
     const LISTING_SUGGESTION_DOCUMENTS_LIMIT = 10;
 
     const LISTING_LAST_DEBATE_FOLLOWERS = 12;
+    const LISTING_LAST_USER_FOLLOWERS = 12;
+    const LISTING_LAST_USER_SUBSCRIBERS = 12;
     
     const LISTING_DEBATE_SIMILARS = 3;
 

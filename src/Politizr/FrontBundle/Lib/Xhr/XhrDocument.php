@@ -25,6 +25,7 @@ use Politizr\Model\PDDCommentQuery;
 use Politizr\Model\PDRCommentQuery;
 use Politizr\Model\PTagQuery;
 use Politizr\Model\PQOrganizationQuery;
+use Politizr\Model\PUserQuery;
 
 use Politizr\FrontBundle\Form\Type\PDDCommentType;
 use Politizr\FrontBundle\Form\Type\PDRCommentType;
@@ -787,56 +788,6 @@ class XhrDocument
     }
 
     /* ######################################################################################################## */
-    /*                                            CONTRIBUTIONS                                                 */
-    /* ######################################################################################################## */
-
-    /**
-     * User's publications
-     */
-    public function myPublicationsPaginated(Request $request)
-    {
-        $this->logger->info('*** myPublicationsPaginated');
-
-        // Request arguments
-        $offset = $request->get('offset');
-        $this->logger->info('$offset = ' . print_r($offset, true));
-
-        // get current user
-        $user = $this->securityTokenStorage->getToken()->getUser();
-        
-        // get publications
-        $documents = $this->documentService->getMyPublicationsPaginatedListing($user->getId(), $offset, ListingConstants::MODAL_CLASSIC_PAGINATION);
-
-        $moreResults = false;
-        if (sizeof($documents) == ListingConstants::MODAL_CLASSIC_PAGINATION) {
-            $moreResults = true;
-        }
-
-        if ($offset == 0 && count($documents) == 0) {
-            $html = $this->templating->render(
-                'PolitizrFrontBundle:PaginatedList:_noResult.html.twig',
-                array(
-                    'type' => ListingConstants::MY_PUBLICATIONS_TYPE,
-                )
-            );
-        } else {
-            $html = $this->templating->render(
-                'PolitizrFrontBundle:Document:_paginatedPublications.html.twig',
-                array(
-                    'profileSuffix' => $this->globalTools->computeProfileSuffix(),
-                    'documents' => $documents,
-                    'offset' => intval($offset) + ListingConstants::MODAL_CLASSIC_PAGINATION,
-                    'moreResults' => $moreResults,
-                )
-            );
-        }
-
-        return array(
-            'html' => $html,
-        );
-    }
-
-    /* ######################################################################################################## */
     /*                                            STATS                                                         */
     /* ######################################################################################################## */
 
@@ -1248,6 +1199,64 @@ class XhrDocument
                     'offset' => intval($offset) + ListingConstants::LISTING_CLASSIC_PAGINATION,
                     'moreResults' => $moreResults,
                     'jsFunctionKey' => XhrConstants::JS_KEY_LISTING_DOCUMENTS_BY_ORGANIZATION
+                )
+            );
+        }
+
+        return array(
+            'html' => $html,
+        );
+    }
+
+    /**
+     * Documents by user
+     * code beta
+     */
+    public function documentsByUser(Request $request)
+    {
+        $this->logger->info('*** documentsByUser');
+        
+        // Request arguments
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        $orderBy = $request->get('orderBy');
+        $this->logger->info('$orderBy = ' . print_r($orderBy, true));
+        $offset = $request->get('offset');
+        $this->logger->info('$offset = ' . print_r($offset, true));
+
+
+        $user = PUserQuery::create()->filterByUuid($uuid)->findOne();
+        if (!$user) {
+            throw new InconsistentDataException(sprintf('User %s not found', $uuid));
+        }
+
+        // get publications
+        $publications = $this->documentService->getUserPublicationsPaginatedListing(
+            $user->getId(),
+            $orderBy,
+            $offset,
+            ListingConstants::LISTING_CLASSIC_PAGINATION
+        );
+
+        // @todo create function for code above
+        $moreResults = false;
+        if (sizeof($publications) == ListingConstants::LISTING_CLASSIC_PAGINATION) {
+            $moreResults = true;
+        }
+
+        if ($offset == 0 && count($publications) == 0) {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_noResult.html.twig'
+            );
+        } else {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_publications.html.twig',
+                array(
+                    'uuid' => $uuid,
+                    'publications' => $publications,
+                    'offset' => intval($offset) + ListingConstants::LISTING_CLASSIC_PAGINATION,
+                    'moreResults' => $moreResults,
+                    'jsFunctionKey' => XhrConstants::JS_KEY_LISTING_DOCUMENTS_BY_USER_PUBLICATIONS
                 )
             );
         }

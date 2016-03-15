@@ -2,7 +2,7 @@
 {% for document in documents %}
     {% include 'PolitizrFrontBundle:Document:_card.html.twig' with { 'document': document, 'withContext': true, 'mini': false } %}
 {% endfor %}
-<div id="listingScrollNav">
+<div id="listingScrollNav" class="scrollNav">
     {% if moreResults %}
         <a id="moreResults" action="listingNext" class="waypoint" offset="{{ offset }}"{% if uuid is defined %} uuid="{{ uuid }}"{% endif %} key="{{ jsFunctionKey }}">suite</a>
     {% endif %}

@@ -41,6 +41,66 @@ class DocumentManager
     /*                                                  RAW SQL                                                 */
     /* ######################################################################################################## */
 
+   /**
+     * My documents (drafts / publications)
+     *
+     * @see app/sql/userDocuments.sql
+     *
+     * @param string $orderBy
+     * @return string
+     */
+    private function createDocumentsByUserRawSql($orderBy = ListingConstants::ORDER_BY_KEYWORD_BEST_NOTE)
+    {
+        $orderByReq = "ORDER BY note_pos DESC, note_neg ASC";
+        if ($orderBy == ListingConstants::ORDER_BY_KEYWORD_LAST) {
+            $orderByReq = "ORDER BY published_at DESC";
+        }
+
+
+        $sql = "
+( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.published_at as published_at, p_d_reaction.updated_at as updated_at, p_d_reaction.note_pos as note_pos, p_d_reaction.note_neg as note_neg, 'Politizr\\\Model\\\PDReaction' as type
+FROM p_d_reaction
+WHERE
+    p_user_id = :p_user_id
+    AND p_d_reaction.published = 1
+    AND p_d_reaction.online = 1
+)
+
+UNION DISTINCT
+
+( SELECT p_d_debate.id as id, p_d_debate.title as title, p_d_debate.published_at as published_at, p_d_debate.updated_at as updated_at, p_d_debate.note_pos as note_pos, p_d_debate.note_neg as note_neg, 'Politizr\\\Model\\\PDDebate' as type
+FROM p_d_debate
+WHERE
+    p_user_id = :p_user_id2
+    AND p_d_debate.published = 1
+    AND p_d_debate.online = 1
+)
+
+UNION DISTINCT
+
+( SELECT p_d_d_comment.id as id, \"commentaire\" as title, p_d_d_comment.published_at as published_at, p_d_d_comment.updated_at as updated_at, p_d_d_comment.note_pos as note_pos, p_d_d_comment.note_neg as note_neg, 'Politizr\\\Model\\\PDDComment' as type
+FROM p_d_d_comment
+WHERE
+    p_d_d_comment.online = 1
+    AND p_d_d_comment.p_user_id = :p_user_id3 )
+
+UNION DISTINCT
+
+( SELECT p_d_r_comment.id as id, \"commentaire\" as title, p_d_r_comment.published_at as published_at, p_d_r_comment.updated_at as updated_at, p_d_r_comment.note_pos as note_pos, p_d_r_comment.note_neg as note_neg, 'Politizr\\\Model\\\PDRComment' as type
+FROM p_d_r_comment
+WHERE
+    p_d_r_comment.online = 1
+    AND p_d_r_comment.p_user_id = :p_user_id4 )
+
+$orderByReq
+
+LIMIT :offset, :limit
+    ";
+
+        return $sql;
+    }
+
+
     /**
      * Documents by recommended
      *
@@ -126,7 +186,8 @@ WHERE
             LEFT JOIN p_u_current_q_o
                 ON p_user.id = p_u_current_q_o.p_user_id
         WHERE
-            p_u_current_q_o.p_q_organization_id = :p_q_organization_id
+            p_user.qualified = 1
+            AND p_u_current_q_o.p_q_organization_id = :p_q_organization_id
     )
     $subRequestCond1 
 )
@@ -145,7 +206,8 @@ WHERE
             LEFT JOIN p_u_current_q_o
                 ON p_user.id = p_u_current_q_o.p_user_id
         WHERE
-            p_u_current_q_o.p_q_organization_id = :p_q_organization_id2
+            p_user.qualified = 1
+            AND p_u_current_q_o.p_q_organization_id = :p_q_organization_id2
     )
     $subRequestCond2 
 )
@@ -452,19 +514,19 @@ ORDER BY published_at ASC
    /**
      * My documents (drafts / publications)
      *
-     * @see app/sql/myDocuments.sql
+     * @see app/sql/userDocuments.sql
      *
      * @param string $orderBy
      * @return string
      */
-    private function createMyDocumentsRawSql($orderBy = 'published_at')
+    private function createMyDraftsRawSql()
     {
         $sql = "
 ( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.published_at as published_at, p_d_reaction.updated_at as updated_at, 'Politizr\\\Model\\\PDReaction' as type
 FROM p_d_reaction
 WHERE
     p_user_id = :p_user_id
-    AND p_d_reaction.published = :published
+    AND p_d_reaction.published = 0
     AND p_d_reaction.online = 1
 )
 
@@ -474,11 +536,11 @@ UNION DISTINCT
 FROM p_d_debate
 WHERE
     p_user_id = :p_user_id2
-    AND p_d_debate.published = :published2
+    AND p_d_debate.published = 0
     AND p_d_debate.online = 1
 )
 
-ORDER BY $orderBy DESC
+ORDER BY updated_at DESC
 LIMIT :offset, :limit
     ";
 
@@ -550,6 +612,43 @@ GROUP BY p_d_debate_id
     /* ######################################################################################################## */
     /*                                            RAW SQL OPERATIONS                                            */
     /* ######################################################################################################## */
+
+    /**
+     * My documents paginated listing
+     *
+     * @param integer $userId
+     * @param integer $orderBy
+     * @param integer $offset
+     * @param integer $limit
+     * @return PropelCollection
+     */
+    public function generateDocumentsByUserPaginated($userId, $orderBy, $offset, $limit)
+    {
+        $this->logger->info('*** generateMyDraftsPaginatedListing');
+        $this->logger->info('$userId = ' . print_r($userId, true));
+        $this->logger->info('$orderBy = ' . print_r($orderBy, true));
+        $this->logger->info('$offset = ' . print_r($offset, true));
+        $this->logger->info('$limit = ' . print_r($limit, true));
+
+        $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
+        $stmt = $con->prepare($this->createDocumentsByUserRawSql($orderBy));
+
+        $stmt->bindValue(':p_user_id', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_user_id2', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_user_id3', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_user_id4', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, \PDO::PARAM_INT);
+        $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        $result = $stmt->fetchAll();
+
+        $publications = $this->globalTools->hydratePublicationRows($result);
+
+        return $publications;
+    }
+    
 
     /**
      * Documents by recommend
@@ -827,22 +926,18 @@ GROUP BY p_d_debate_id
      * @param integer $limit
      * @return PropelCollection
      */
-    public function generateMyDocumentsPaginatedListing($userId, $published, $orderBy, $offset, $limit)
+    public function generateMyDraftsPaginatedListing($userId, $offset, $limit)
     {
-        $this->logger->info('*** generateMyDocumentsPaginatedListing');
+        $this->logger->info('*** generateMyDraftsPaginatedListing');
         $this->logger->info('$userId = ' . print_r($userId, true));
-        $this->logger->info('$published = ' . print_r($published, true));
-        $this->logger->info('$orderBy = ' . print_r($orderBy, true));
         $this->logger->info('$offset = ' . print_r($offset, true));
         $this->logger->info('$limit = ' . print_r($limit, true));
 
         $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
-        $stmt = $con->prepare($this->createMyDocumentsRawSql($orderBy));
+        $stmt = $con->prepare($this->createMyDraftsRawSql($orderBy));
 
         $stmt->bindValue(':p_user_id', $userId, \PDO::PARAM_INT);
         $stmt->bindValue(':p_user_id2', $userId, \PDO::PARAM_INT);
-        $stmt->bindValue(':published', $published, \PDO::PARAM_INT);
-        $stmt->bindValue(':published2', $published, \PDO::PARAM_INT);
         $stmt->bindValue(':offset', $offset, \PDO::PARAM_INT);
         $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
 

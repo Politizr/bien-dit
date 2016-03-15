@@ -3,7 +3,7 @@
     {% include 'PolitizrFrontBundle:User:_summaryAuthor.html.twig' with { 'user': user } only %}
     {% if user.isQualified %}
         <div class="profileMandats">
-            {% include 'PolitizrFrontBundle:User:_mandates.html.twig' with { 'mandates': user.mandates } only %}
+            {% include 'PolitizrFrontBundle:User:_mandates.html.twig' with { 'user': user, 'mandates': user.mandates } only %}
         </div>
     {% endif %}
     <div class="profileActions">

@@ -1,0 +1,18 @@
+{# beta #}
+{% if total > 0 %}
+    <div class="followersList">
+        {% for user in users %}
+            <div class="followersListItem">
+                {% include 'PolitizrFrontBundle:User:_summaryMiniAuthor.html.twig' with { 'user': user } only %}
+            </div>
+        {% endfor %}
+    </div>
+    {% if total > constant('Politizr\\Constant\\ListingConstants::LISTING_LAST_USER_FOLLOWERS') %}
+        <div class="linkListFollowers">
+            {# <a action="listingContentUserFollowers" uuid="{{ user.uuid }}"> #}
+            <a href="{{ path('ListingUserFollowers', {'slug': user.slug}) }}">Voir toute la liste</a>
+        </div>
+    {% endif %}
+{% else %}
+    <h5>Personne ne suit cet auteur</h5>
+{% endif %}

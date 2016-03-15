@@ -1,0 +1,10 @@
+{# beta #}
+<div class="headerSubscribers">
+    {# <a action="detailContentUser" class="goBack" uuid="{{ user.uuid }}"> #}
+    <a href="{{ path('UserDetail', {'slug': user.slug}) }}" class="goBack"><i class="icon-arrow-left"></i>Retour</a>
+    <span>Abonnements de l'auteur: <a href="{{ path('UserDetail', {'slug': user.slug}) }}">{{ user }}</a></span>
+</div>
+<div id="userListing" class="withLoaderInside" uuid="{{ user.uuid }}">
+    {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+    <div class="listSubscribers"></div>
+</div>

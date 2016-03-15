@@ -2,7 +2,7 @@
 {% for user in users %}
     {% include 'PolitizrFrontBundle:User:_card.html.twig' with { 'user': user } %}
 {% endfor %}
-<div id="listingScrollNav">
+<div id="listingScrollNav" class="scrollNav">
     {% if moreResults %}
         <a id="moreResults" action="listingNext" class="waypoint" offset="{{ offset }}"{% if uuid is defined %} uuid="{{ uuid }}"{% endif %} key="{{ jsFunctionKey }}">suite</a>
     {% endif %}

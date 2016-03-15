@@ -1,0 +1,25 @@
+{# beta #}
+<div class="sidebarProfile">
+    {% include 'PolitizrFrontBundle:User:_card.html.twig' with { 'user': user } only %}
+    {% if app.user and app.user.id != user.id %}
+        <div class="sidebarAction">
+            <div class="sidebarFollow">
+                <div class="actionFollow withLoaderInside">
+                    {% include 'PolitizrFrontBundle:Follow:_subscribeAction.html.twig' with { 'subject': user } only %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="sidebarUserFollowers withLoaderInside">
+        {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+        <h5>Abonnés</h5>
+        <div id="userFollowers" uuid="{{ user.uuid }}"></div>
+    </div>
+    <div class="sidebarUserSubscribers withLoaderInside">
+        {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+        <h5>Abonnements</h5>
+        <div id="userSubscribers" uuid="{{ user.uuid }}"></div>
+    </div>
+    {% include 'PolitizrFrontBundle:Tag:_sidebarFollowedTags.html.twig' with {'uuid': user.uuid} only %}
+</div>

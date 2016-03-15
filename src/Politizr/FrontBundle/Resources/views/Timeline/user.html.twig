@@ -14,7 +14,7 @@
 {% block preMain %}
     <div id="suggestions">
         <div class="center">
-            <div id="suggTitle">Sélection de nouvelles publications — d'après <a href="{{ path('Profile'~profileSuffix()) }}">les thématiques que vous suivez</a>.</div>
+            <div id="suggTitle">Sélection de nouvelles publications — d'après <a href="{# path('Profile'~profileSuffix()) #}">les thématiques que vous suivez</a>.</div>
             <div class="documentList withLoaderInside"></div>
         </div>
         <div id="suggBg"></div>
@@ -33,7 +33,7 @@
 
 {% block sidebarContent %}
     {% if app.user %}
-        {% include 'PolitizrFrontBundle:Tag:_sidebarFollowedTags.html.twig' %}
+        {% include 'PolitizrFrontBundle:Tag:_sidebarFollowedTags.html.twig' with {'uuid': app.user.uuid} only %}
     {% endif %}
     {% include 'PolitizrFrontBundle:Tag:_sidebarTopTags.html.twig' %}
     {% include 'PolitizrFrontBundle:Document:_sidebarTopDocuments.html.twig' %}

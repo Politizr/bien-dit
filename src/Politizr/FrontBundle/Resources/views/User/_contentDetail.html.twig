@@ -1,0 +1,15 @@
+<div class="list">
+    <div class="pageTitle">
+        <div class="listHeader">
+            <h5>Les publications de {{ user }}</h5>
+        </div>
+    </div>
+    <div class="pseudoTabs" uuid="{{ user.uuid }}">
+        <a class="currentPage" action="documentsByUserListing" filter="{{ constant('Politizr\\Constant\\ListingConstants::ORDER_BY_KEYWORD_BEST_NOTE') }}">Top</a>
+        <a action="documentsByUserListing" filter="{{ constant('Politizr\\Constant\\ListingConstants::ORDER_BY_KEYWORD_LAST') }}">Les plus récentes</a>
+    </div>
+    <div id="documentListing" class="withLoaderInside">
+        {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+        <div class="listTop"></div>
+    </div>
+</div>

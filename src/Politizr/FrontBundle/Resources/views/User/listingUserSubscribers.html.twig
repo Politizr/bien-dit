@@ -1,0 +1,35 @@
+{# beta #}
+{% set layout = 'PolitizrFrontBundle::layoutPublic.html.twig' %}
+{% if (isGrantedE() or isGrantedC()) %}
+    {% set layout = 'PolitizrFrontBundle::layoutConnected.html.twig' %}
+{% endif %}
+{% extends layout %}
+
+{% block title %}
+    {{ parent() }} - Auteur {{ user }}
+{% endblock title %}
+
+{% block content %}
+    <div id="content" class="withLoaderInside">
+        {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+        {% include 'PolitizrFrontBundle:User:_contentSubscribers.html.twig' %}
+    </div>
+{% endblock content %}
+
+{% block sidebarContent %}
+    {% include 'PolitizrFrontBundle:User:_sidebarUser.html.twig' %}
+{% endblock sidebarContent %}
+
+{% block javascriptFooter %}
+    {{ parent() }}
+
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/tag/listing.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/document/listing.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/user/listing.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/user/detail.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/pages/listingUserSubscribers.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock javascriptFooter %}

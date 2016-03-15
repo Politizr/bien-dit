@@ -48,11 +48,9 @@ function userTagListing(targetElement, localLoader) {
     // console.log('*** userTagListing');
     // console.log(targetElement);
     // console.log(localLoader);
-    
-    if(!targetElement.length > 0) {
-        // console.log('user not connected');
-        return false;
-    }
+
+    var uuid = targetElement.attr('uuid');
+    // console.log(uuid);
 
     var xhrPath = getXhrPath(
         ROUTE_TAG_LISTING_USER,
@@ -63,7 +61,7 @@ function userTagListing(targetElement, localLoader) {
 
     return xhrCall(
         document,
-        null,
+        {'uuid': uuid},
         xhrPath,
         localLoader
     ).done(function(data) {
