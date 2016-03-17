@@ -1,19 +1,25 @@
-// JCF forms styling
-$(function() {
-    jcf.replaceAll();
-});
+// beta
 
 /**
  * Auto save
  * Event = keyup + 2sec
  * http://stackoverflow.com/questions/9966394/can-i-delay-the-keyup-event-for-jquery
  */
-var autosave = $('.editable.subtitle, .editable.biography, .profileTwitter, .profileFacebook, .profileWebsite').on('keyup', delayRequest);
+
+/**
+ *
+ */
 function dataRequest() {
-    $('[action="userProfileUpdate"]').trigger('click', 'silence');
+    return saveUserProfile();
 }
+
+$('#user_biography, #user_website, #user_twitter, #user_facebook').on('keyup', delayRequest);
+
+/**
+ *
+ */
 function delayRequest(ev) {
-    // console.log('*** delayRequest');
+    // console.log('*** autoSaveDelay');
     $('.actionSave').removeClass('saved');
 
     if(delayRequest.timeout) {
@@ -22,251 +28,212 @@ function delayRequest(ev) {
     var target = this;
     delayRequest.timeout = setTimeout(function() {
         dataRequest.call(target, ev);
-    }, 2000); // 2s
+    }, 5000); // 5s
+}
+
+function triggerSaveDocument()
+{
+    // console.log('*** triggerSaveDocument');
+
+    return saveUserProfile();
 }
 
 /**
- * Auto save
- * Event = mouseup
+ *
  */
-$('.editable.subtitle, .editable.biography').on('mouseup', function() {
-    // console.log('mouseup debate description');
-    $('[action="userProfileUpdate"]').trigger('click', 'silence');
-});
+ function deleteUserPhoto()
+ {
+    // console.log('*** deleteUserPhoto');
 
+    var localLoader = $('.actionSave').find('.ajaxLoader').first();
 
-// Update user
-$("body").on("click", "[action='userProfileUpdate']", function(e, mode) {
-    // console.log('*** click user profile update');
-    // console.log(mode);
+    var xhrPath = getXhrPath(
+        ROUTE_USER_PHOTO_DELETE,
+        'user',
+        'userPhotoDelete',
+        RETURN_HTML
+    );
 
-    var subtitle = subtitleEditor.serialize();
-    var biography = biographyEditor.serialize();
+    return xhrCall(
+        document,
+        null,
+        xhrPath,
+        localLoader
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
+            // update & imgLiquid uploaded photo
+            $('#uploadedPhoto').html(data['html']);
+            fullImgLiquid();
 
-    // console.log(subtitle['element-0']['value']);
-    // console.log(biography['element-0']['value']);
+            $('#user_file_name').val(null);
 
-    $('#user_subtitle').val(subtitle['element-0']['value']);
-    $('#user_biography').val(biography['element-0']['value']);
- 
+            saveUserProfile();
+        }
+        localLoader.hide();
+    });   
+ }
+
+/**
+ *
+ */
+function saveUserProfile()
+{
+    // console.log('*** saveUserProfile');
+
+    var localLoader = $('.actionSave').find('.ajaxLoader').first();
+
     var xhrPath = getXhrPath(
         ROUTE_USER_PROFILE_UPDATE,
         'user',
         'userProfileUpdate',
         RETURN_BOOLEAN
-        );
+    );
 
- 
-    var localLoader = $('.actionSave').find('.ajaxLoader').first();
-    $.ajax({
-        type: 'POST',
-        dataType: 'json',
-        url : xhrPath,
-        data: $("#formUserProfileUpdate").serialize(),
-        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, localLoader ); },
-        statusCode: { 404: function () { xhr404(localLoader); }, 500: function() { xhr500(localLoader); } },
-        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
-        success: function(data) {
-            localLoader.hide();
-            if (data['error']) {
-                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
-                $('#infoBoxHolder .boxError').show();
-            } else {
-                $('.actionSave').addClass('saved');
-            }
+    return xhrCall(
+        document,
+        $("#formUserProfileUpdate").serialize(),
+        xhrPath,
+        localLoader
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
+            $('.actionSave').addClass('saved');
         }
+        localLoader.hide();
     });
+}
 
-    return false;
-});
+/**
+ *
+ */
+function saveUserOrganization()
+{
+    // console.log('*** saveUserOrganization');
 
-
-// Update current organization
-$("body").on("change", "select[action='organizationUpdate']", function(e) {
-    // console.log('*** change select organization');
+    var localLoader = $('.actionSave').find('.ajaxLoader').first();
 
     var xhrPath = getXhrPath(
         ROUTE_USER_ORGA_UPDATE,
         'user',
         'orgaProfileUpdate',
         RETURN_BOOLEAN
-        );
+    );
 
-    $.ajax({
-        type: 'POST',
-        dataType: 'json',
-        url : xhrPath,
-        data: $("#formUserOrganizationUpdate").serialize(),
-        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
-        statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
-        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
-        success: function(data) {
-            $('#ajaxGlobalLoader').hide();
-            if (data['error']) {
-                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
-                $('#infoBoxHolder .boxError').show();
-            } else {
-                $('#infoBoxHolder .boxSuccess .notifBoxText').html('Organisation bien enregistrée.');
-                $('#infoBoxHolder .boxSuccess').show();
-            }
+    return xhrCall(
+        document,
+        $("#formUserOrganizationUpdate").serialize(),
+        xhrPath,
+        localLoader
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
+            $('.actionSave').addClass('saved');
         }
+        localLoader.hide();
     });
-});
+}
 
-// MAJ des affinités politiques
-// @warning dead code / relancer rossier sur le sujet
-$("body").on("click", "[action='affinities-update']", function(e) {
-    // console.log('*** click affinities-update');
+/**
+ *
+ */
+function createUserMandate()
+{
+    // console.log('*** createUserMandate');
 
-    var xhrPath = getXhrPath(
-        ROUTE_USER_AFFINITIES_UPDATE,
-        'user',
-        'affinitiesProfile',
-        RETURN_BOOLEAN
-        );
-
-    $.ajax({
-        type: 'POST',
-        url: xhrPath,
-        data: $('#form-affinities-update').serialize(),
-        dataType: 'json',
-        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
-        statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
-        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
-        success: function(data) {
-            $('#ajaxGlobalLoader').hide();
-            if (data['error']) {
-                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
-                $('#infoBoxHolder .boxError').show();
-            } else {
-                $('#infoBoxHolder .boxSuccess .notifBoxText').html('Affinités mises à jour.');
-                $('#infoBoxHolder .boxSuccess').show();
-            }
-        }
-    });
-});
-
-// Mandate creation
-$("body").on("click", "[action='mandateCreate']", function(e) {
-    // console.log('*** click mandateCreate');
+    var localLoader = $('#newMandate').find('.ajaxLoader').first();
 
     var xhrPath = getXhrPath(
         ROUTE_USER_MANDATE_CREATE,
         'user',
         'mandateProfileCreate',
         RETURN_HTML
-        );
+    );
 
-    $.ajax({
-        type: 'POST',
-        url: xhrPath,
-        data: $("#formMandateCreate").serialize(),
-        dataType: 'json',
-        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
-        statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
-        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
-        success: function(data) {
-            $('#ajaxGlobalLoader').hide();
-            if (data['error']) {
-                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
-                $('#infoBoxHolder .boxError').show();
-            } else {
-                $('#infoBoxHolder .boxSuccess .notifBoxText').html('Mandat bien enregistré.');
-                $('#infoBoxHolder .boxSuccess').show();
-
-                $('#newMandate').html(data['newMandate']);
-                $('#myMandates').html(data['editMandates']);
-                
-                // JCF forms styling
-                jcf.replaceAll();
-            }
+    return xhrCall(
+        document,
+        $("#formMandateCreate").serialize(),
+        xhrPath,
+        localLoader
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
+            $('#newMandate').html(data['newMandate']);
+            $('#editMandates').html(data['editMandates']);
         }
+        localLoader.hide();
     });
-});
+}
 
-// Mandate update
-$("body").on("click", "[action='mandateUpdate']", function(e) {
-    // console.log('*** click mandateUpdate');
+/**
+ *
+ */
+function saveUserMandate(form, localLoader)
+{
+    // console.log('*** saveUserMandate');
+    // console.log(form);
+    // console.log(localLoader);
 
     var xhrPath = getXhrPath(
         ROUTE_USER_MANDATE_UPDATE,
         'user',
         'mandateProfileUpdate',
         RETURN_HTML
-        );
+    );
 
-    $.ajax({
-        type: 'POST',
-        url: xhrPath,
-        data: $(this).closest('#formMandateUpdate').serialize(),
-        dataType: 'json',
-        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
-        statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
-        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
-        success: function(data) {
-            $('#ajaxGlobalLoader').hide();
-            if (data['error']) {
-                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
-                $('#infoBoxHolder .boxError').show();
-            } else {
-                $('#infoBoxHolder .boxSuccess .notifBoxText').html('Mandat mis à jour.');
-                $('#infoBoxHolder .boxSuccess').show();
-
-                $('#myMandates').html(data['editMandates']);
-                
-                // JCF forms styling
-                jcf.replaceAll();
-            }
+    return xhrCall(
+        document,
+        form.serialize(),
+        xhrPath,
+        localLoader
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
+            $('#editMandates').html(data['editMandates']);
         }
+        localLoader.hide();
     });
-});
+}
 
-// Mandate deletion
-$("body").on("click", "[action='mandateDelete']", function(e) {
-    // console.log('*** click mandateDelete');
+/**
+ *
+ */
+function deleteUserMandate(uuid, localLoader)
+{
+    // console.log('*** deleteUserMandate');
+    // console.log(uuid);
+    // console.log(localLoader);
 
     var xhrPath = getXhrPath(
         ROUTE_USER_MANDATE_DELETE,
         'user',
         'mandateProfileDelete',
         RETURN_HTML
-        );
-    var uuid = $(this).attr('uuid');
-    // console.log('uuid = ' + uuid);
+    );
 
-    var confirmMsg = "Êtes-vous sûr de vouloir supprimer ce mandat?";
-    smoke.confirm(confirmMsg, function(e) {
-        if (e) {
-            $.ajax({
-                type: 'POST',
-                url: xhrPath,
-                data: { 'uuid': uuid },
-                dataType: 'json',
-                beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
-                statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
-                error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
-                success: function(data) {
-                    $('#ajaxGlobalLoader').hide();
-                    if (data['error']) {
-                        $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
-                        $('#infoBoxHolder .boxError').show();
-                    } else {
-                        $('#infoBoxHolder .boxSuccess .notifBoxText').html('Mandat supprimé.');
-                        $('#infoBoxHolder .boxSuccess').show();
-
-                        $('#myMandates').html(data['editMandates']);
-                        
-                        // JCF forms styling
-                        jcf.replaceAll();
-                    }
-                }
-            });
+    return xhrCall(
+        document,
+        { 'uuid': uuid },
+        xhrPath,
+        localLoader
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
+            $('#editMandates').html(data['editMandates']);
         }
-    }, {
-        ok: "Supprimer",
-        cancel: "Annuler"
-        // classname: "custom-class",
-        // reverseButtons: true
+        localLoader.hide();
     });
-});
+}
 

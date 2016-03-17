@@ -361,22 +361,22 @@ liip_imagine:
         user_15:
             quality:              100
             filters:
-                relative_resize:  { widen: 15 }
+                relative_resize:  { widen: 20 }
 
         user_30:
             quality:              100
             filters:
-                relative_resize:  { widen: 30 }
+                relative_resize:  { widen: 50 }
 
         user_40:
             quality:              100
             filters:
-                relative_resize:  { widen: 40 }
+                relative_resize:  { widen: 60 }
 
         user_60:
             quality:              100
             filters:
-                relative_resize:  { widen: 60 }
+                relative_resize:  { widen: 80 }
 
         user_follower:
             quality:              100

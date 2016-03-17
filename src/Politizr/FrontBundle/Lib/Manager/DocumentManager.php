@@ -41,6 +41,42 @@ class DocumentManager
     /*                                                  RAW SQL                                                 */
     /* ######################################################################################################## */
 
+    /**
+     * Last publicated documents
+     *
+     * @see
+     *
+     * @return string
+     */
+    private function createDocumentsLastPublishedRawSql()
+    {
+        // Requête SQL
+        $sql = "
+( SELECT p_d_debate.id as id, p_d_debate.title as title, p_d_debate.published_at as published_at, 'Politizr\\\Model\\\PDDebate' as type
+FROM p_d_debate
+WHERE
+    p_d_debate.published = 1
+    AND p_d_debate.online = 1 
+    )
+
+UNION DISTINCT
+
+( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.published_at as published_at, 'Politizr\\\Model\\\PDReaction' as type
+FROM p_d_reaction
+WHERE
+    p_d_reaction.published = 1
+    AND p_d_reaction.online = 1
+    AND p_d_reaction.tree_level > 0
+    )
+
+ORDER BY published_at DESC
+
+LIMIT :limit
+";
+
+        return $sql;
+    }
+
    /**
      * My documents (drafts / publications)
      *
@@ -872,6 +908,47 @@ GROUP BY p_d_debate_id
             $debate->hydrate($row);
 
             $documents->append($debate);
+        }
+
+        return $documents;
+    }
+    
+    /**
+     * Last 10 publicated documents
+     *
+     * @param integer $userId
+     * @param int $limit
+     * @return PropelCollection[PDDebate]
+     */
+    public function generateDocumentsLastPublished($limit)
+    {
+        $this->logger->info('*** generateDocumentsLastPublished');
+        $this->logger->info('$limit = ' . print_r($limit, true));
+
+        $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
+        $stmt = $con->prepare($this->createDocumentsLastPublishedRawSql());
+
+        $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        $result = $stmt->fetchAll();
+
+        $documents = new \PropelCollection();
+        $i = 0;
+        foreach ($result as $row) {
+            $type = $row['type'];
+
+            if ($type == ObjectTypeConstants::TYPE_DEBATE) {
+                $document = PDDebateQuery::create()->findPk($row['id']);
+            } elseif ($type == ObjectTypeConstants::TYPE_REACTION) {
+                $document = PDReactionQuery::create()->findPk($row['id']);
+            } else {
+                throw new InconsistentDataException(sprintf('Object type %s unknown.', $type));
+            }
+            
+            $documents->set($i, $document);
+            $i++;
         }
 
         return $documents;

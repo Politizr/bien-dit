@@ -32,7 +32,9 @@ class XhrConstants
     const ROUTE_COMMENT_CREATE = 'profil/commentaire/nouveau';
 
     // DOCUMENTS
-    const ROUTE_DOCUMENT_PHOTO_UPLOAD = 'profil/photo/upload';
+    const ROUTE_DOCUMENT_PHOTO_UPLOAD = 'profil/document/photo/upload';
+    const ROUTE_DOCUMENT_PHOTO_DELETE = 'profil/document/photo/delete';
+
     const ROUTE_DOCUMENT_LISTING_MY_DRAFTS = 'profil/mes-documents/brouillons';
     const ROUTE_DOCUMENT_LISTING_USER_PUBLICATIONS = 'profil/publications';
 
@@ -135,8 +137,6 @@ class XhrConstants
     const ROUTE_USER_AFFINITIES_UPDATE = 'profil/utilisateur/affinitees/update';
     const ROUTE_USER_PERSO_UPDATE = 'profil/utilisateur/perso/update';
     
-    const ROUTE_USER_BACK_PHOTO_INFO_UPDATE = 'profil/user/infos/photoback/update';
-    const ROUTE_USER_BACK_PHOTO_UPLOAD = 'profil/backphoto/upload';
     const ROUTE_USER_PHOTO_UPLOAD = 'profil/photo/upload';
     const ROUTE_USER_PHOTO_DELETE = 'profil/photo/delete';
 

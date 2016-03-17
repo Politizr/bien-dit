@@ -5,6 +5,7 @@ $(function() {
     fullImgLiquid();
     Waypoint.destroyAll();
     $('#ajaxGlobalLoader').hide();
+    $('.bubblesHelper').hide();
 });
 
 // mobile

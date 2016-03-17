@@ -34,6 +34,7 @@ $("body").on("mouseenter", "[action='bubbleProfile']", function() {
                 $('#infoBoxHolder .boxError').show();
             } else {
                 context.find('.bubbleContent').html(data['html']);
+                fullImgLiquid();
             }
             localLoader.hide();
         });
@@ -91,3 +92,20 @@ $("body").on("mouseleave", ".bubblesTag, .tag", function() {
 
     $(".bubblesTag").clearQueue().hide();
 });
+
+// Bubbles help
+$("body").on("click", "[action='toogleHelperBubble']", function(e) {
+    // console.log('*** action toogleHelperBubble');
+
+    if ($(this).closest('.helper').find('.bubblesHelper').is(':visible')) {
+        // console.log('bubblesHelper visible');
+        $('.bubblesHelper').hide();
+        $('.helperTitle').removeClass("activeHelper");
+    } else {
+        // console.log('bubblesHelper not visible');
+        $('.bubblesHelper').hide();
+        $('.helperTitle').removeClass("activeHelper");
+        $(this).next('.bubblesHelper').toggle(); // do the toggle       
+        $(this).toggleClass("activeHelper"); // toggle  color        
+    }
+}); 

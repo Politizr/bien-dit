@@ -38,6 +38,7 @@ class UserController extends Controller
 
     /**
      * Detail
+     * beta
      */
     public function detailAction($slug)
     {
@@ -62,28 +63,13 @@ class UserController extends Controller
         ));
     }
 
-    /**
-     * Profile
-     */
-    public function profileAction()
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** profileAction');
-
-        $user = $this->getUser();
-
-        return $this->render('PolitizrFrontBundle:User:profile.html.twig', array(
-            'profileSuffix' => $this->get('politizr.tools.global')->computeProfileSuffix(),
-            'user' => $user,
-        ));
-    }
-
     /* ######################################################################################################## */
     /*                                                    TIMELINE                                              */
     /* ######################################################################################################## */
 
     /**
      * Timeline
+     * beta
      */
     public function timelineAction()
     {
@@ -101,6 +87,7 @@ class UserController extends Controller
 
     /**
      * Edit profile
+     * beta
      */
     public function editProfileAction()
     {
@@ -111,9 +98,6 @@ class UserController extends Controller
 
         // Biography
         $formBio = $this->createForm(new PUserBiographyType($user), $user);
-
-        // Photos
-        $formBackPhotoInfo = $this->createForm(new PUserBackPhotoInfoType(), $user);
 
         // Dedicated elected fields
         $formOrga = null;
@@ -145,10 +129,8 @@ class UserController extends Controller
         }
 
         return $this->render('PolitizrFrontBundle:User:editProfile.html.twig', array(
-            'profileSuffix' => $this->get('politizr.tools.global')->computeProfileSuffix(),
             'user' => $user,
             'formBio' => $formBio->createView(),
-            'formBackPhotoInfo' => $formBackPhotoInfo->createView(),
             'formOrga' => $formOrga?$formOrga->createView():null,
             'formMandate' => $formMandate?$formMandate->createView():null,
             'formMandateViews' => $formMandateViews?$formMandateViews:null,

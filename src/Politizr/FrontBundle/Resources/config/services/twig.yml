@@ -4,7 +4,7 @@ services:
        tags:
             - { name: twig.extension }
 
-    politzr.twig.tag:
+    politizr.twig.tag:
         class:          Politizr\FrontBundle\Twig\PolitizrTagExtension
         arguments:
             - @security.token_storage
@@ -16,7 +16,7 @@ services:
         tags:
             - { name: twig.extension }
 
-    politzr.twig.document:
+    politizr.twig.document:
         class:          Politizr\FrontBundle\Twig\PolitizrDocumentExtension
         arguments:
             - @security.token_storage
@@ -29,7 +29,7 @@ services:
         tags:
             - { name: twig.extension }
 
-    politzr.twig.user:
+    politizr.twig.user:
         class:          Politizr\FrontBundle\Twig\PolitizrUserExtension
         arguments:
             - @security.token_storage
@@ -42,7 +42,7 @@ services:
         tags:
             - { name: twig.extension }
 
-    politzr.twig.reputation:
+    politizr.twig.reputation:
         class:          Politizr\FrontBundle\Twig\PolitizrReputationExtension
         arguments:
             - @security.token_storage

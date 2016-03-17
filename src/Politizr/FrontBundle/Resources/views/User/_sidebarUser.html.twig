@@ -11,6 +11,14 @@
         </div>
     {% endif %}
 
+    {% if app.user and app.user.id == user.id %}
+        <div class="sidebarAction">
+            <div class="sidebarEditProfile">
+                <a href="{{ path('EditProfile'~profileSuffix())}}"><i class="icon-edit"></i>Modifier mon profil</a>
+            </div>
+        </div>
+    {% endif %}
+
     <div class="sidebarUserFollowers withLoaderInside">
         {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
         <h5>Abonnés</h5>

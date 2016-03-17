@@ -23,7 +23,7 @@
                 {% if debate.fileName %}
                     <div id="cardPostImgHolder">
                         {% if debate.copyright | purify | length > 0 %}
-                            <div id="cardPostImgLegend">Crédit photo: {{ debate.copyright | purify }}</div>
+                            <div id="cardPostImgLegend">{{ debate.copyright | purify }}</div>
                         {% endif %}
                         <div id="cardPostImg">
                             {{ debate | image('debate_header') }}

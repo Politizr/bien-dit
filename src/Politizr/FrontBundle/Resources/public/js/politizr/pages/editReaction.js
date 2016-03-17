@@ -4,6 +4,13 @@ $(function() {
     stickySidebar();
 });
 
+// TAG vars
+var nbZones = 1;
+var service = 'tag';
+var xhrRoute = ROUTE_TAG_LISTING;
+var xhrUrlPrefix = '/xhr';
+
+
 // 2 tabs in sidebar
 $("body").on("click", "[action='showTab']:first-of-type", function() {
     $(this).parents().siblings('.sidebarTabs').hide();
@@ -85,11 +92,9 @@ $("body").on("change", "#fileName", function() {
 $('body').on('click', "[action='fileDelete']", function(e){
     // console.log('*** click file delete');
 
-    $('.actionSave').removeClass('saved');
+    var uuid = $(this).attr('uuid');
+    var type = $(this).attr('type');
 
-    $('#uploadedPhoto').html('');
-    $('#reaction_photo_info_file_name').val(null);
-
-    triggerSaveDocument();    
+    return deleteDocumentPhoto(uuid, type);
 });
 

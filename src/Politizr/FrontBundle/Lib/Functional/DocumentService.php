@@ -203,6 +203,20 @@ class DocumentService
     }
     
     /**
+     * Get user's debates' last publication paginated listing
+     *
+     * @param int $userId
+     * @param int $count
+     * @return PropelCollection PDocument
+     */
+    public function getDocumentsLastPublished($count = ListingConstants::LISTING_SUGGESTION_DOCUMENTS_LIMIT)
+    {
+        $documents = $this->documentManager->generateDocumentsLastPublished($count);
+
+        return $documents;
+    }
+    
+    /**
      * Get user's reactions' suggestions paginated listing
      *
      * @param int $userId

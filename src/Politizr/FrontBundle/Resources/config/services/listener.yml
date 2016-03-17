@@ -1,5 +1,5 @@
 services:
-    politzr.listener.email:
+    politizr.listener.email:
         class:      Politizr\FrontBundle\Listener\EmailListener
         arguments:
             - @mailer
@@ -14,7 +14,7 @@ services:
             - { name: kernel.event_listener, event: monitoring_email }
             - { name: kernel.event_listener, event: notification_email }
 
-    politzr.listener.notification:
+    politizr.listener.notification:
         class:      Politizr\FrontBundle\Listener\NotificationListener
         arguments:
             - @event_dispatcher
@@ -29,13 +29,13 @@ services:
             - { name: kernel.event_listener, event: n_user_follow }
             - { name: kernel.event_listener, event: n_badge_win }
 
-    politzr.listener.notification_email:
+    politizr.listener.notification_email:
         class:      Politizr\FrontBundle\Listener\NotificationEmailListener
         arguments:  [ @logger, @event_dispatcher ]
         tags:
             - { name: kernel.event_listener, event: n_e_check }
 
-    politzr.listener.reputation:
+    politizr.listener.reputation:
         class:      Politizr\FrontBundle\Listener\ReputationListener
         arguments:  [ @logger, @event_dispatcher ]
         tags:
@@ -49,7 +49,7 @@ services:
             - { name: kernel.event_listener, event: r_user_follow }
             - { name: kernel.event_listener, event: r_user_unfollow }
 
-    politzr.listener.badge:
+    politizr.listener.badge:
         class:      Politizr\FrontBundle\Listener\BadgeListener
         arguments:
             - @politizr.functional.document

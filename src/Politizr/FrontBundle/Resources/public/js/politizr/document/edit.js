@@ -61,6 +61,48 @@ function triggerSaveDocument()
     return $('[action="'+documentSave+'"]').trigger('click');
 }
 
+
+/**
+ *
+ */
+ function deleteDocumentPhoto(uuid, type)
+ {
+     console.log('*** deleteDocumentPhoto');
+     console.log(uuid);
+     console.log(type);
+
+    var localLoader = $('.actionSave').find('.ajaxLoader').first();
+
+    var xhrPath = getXhrPath(
+        ROUTE_DOCUMENT_PHOTO_DELETE,
+        'document',
+        'documentPhotoDelete',
+        RETURN_BOOLEAN
+    );
+
+    return xhrCall(
+        document,
+        {'uuid': uuid, 'type': type},
+        xhrPath,
+        localLoader
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
+            // update & imgLiquid uploaded photo
+            $('#uploadedPhoto').html('');
+            $('.postIllustration').attr('style', '');
+
+            $('#debate_file_name').val(null);
+            $('#reaction_file_name').val(null);
+
+            triggerSaveDocument();
+        }
+        localLoader.hide();
+    });   
+ }
+
 /**
  *
  */
@@ -92,12 +134,7 @@ function saveDebate()
             $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
             $('#infoBoxHolder .boxError').show();
         } else {
-            if (data['error']) {
-                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
-                $('#infoBoxHolder .boxError').show();
-            } else {
-                $('.actionSave').addClass('saved');
-            }
+            $('.actionSave').addClass('saved');
         }
         localLoader.hide();
     });
@@ -134,12 +171,7 @@ function saveReaction()
             $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
             $('#infoBoxHolder .boxError').show();
         } else {
-            if (data['error']) {
-                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
-                $('#infoBoxHolder .boxError').show();
-            } else {
-                $('.actionSave').addClass('saved');
-            }
+            $('.actionSave').addClass('saved');
         }
         localLoader.hide();
     });

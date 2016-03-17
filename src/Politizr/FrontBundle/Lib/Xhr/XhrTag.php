@@ -528,6 +528,35 @@ class XhrTag
     }
 
     /**
+     * User's tag delete
+     */
+    public function userDeleteTag(Request $request)
+    {
+        $this->logger->info('*** userDeleteTag');
+        
+        // Request arguments
+        $tagUuid = $request->get('tagUuid');
+        $this->logger->info('$tagUuid = ' . print_r($tagUuid, true));
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
+
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        
+        $tag = PTagQuery::create()->filterByUuid($tagUuid)->findOne();
+        $subject = PUserQuery::create()->filterByUuid($uuid)->findOne();
+        if ($subject->getId() != $user->getId()) {
+            throw new InconsistentDataException(sprintf('User id-%s tries to delete tag to PUser id-%s', $user->getId(), $subject->getId()));
+        }
+        
+        // Function process
+        $this->tagManager->deleteUserTag($subject->getId(), $tag->getId());
+
+
+        return true;
+    }
+
+    /**
      * User's tag hide / unhide
      */
     public function userHideTag(Request $request)

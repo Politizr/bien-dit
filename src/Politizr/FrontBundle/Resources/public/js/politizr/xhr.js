@@ -20,7 +20,9 @@ var ROUTE_COMMENTS = 'commentaires';
 var ROUTE_COMMENT_CREATE = 'profil/commentaire/nouveau';
 
 // DOCUMENTS
-var ROUTE_DOCUMENT_PHOTO_UPLOAD = 'profil/photo/upload';
+var ROUTE_DOCUMENT_PHOTO_UPLOAD = 'profil/document/photo/upload';
+var ROUTE_DOCUMENT_PHOTO_DELETE = 'profil/document/photo/delete';
+
 var ROUTE_DOCUMENT_LISTING_MY_DRAFTS = 'profil/mes-documents/brouillons';
 var ROUTE_DOCUMENT_LISTING_USER_PUBLICATIONS = 'profil/publications';
 
@@ -125,8 +127,6 @@ var ROUTE_USER_ORGA_UPDATE = 'profil/utilisateur/orga/update';
 var ROUTE_USER_AFFINITIES_UPDATE = 'profil/utilisateur/affinitees/update';
 var ROUTE_USER_PERSO_UPDATE = 'profil/utilisateur/perso/update';
 
-var ROUTE_USER_BACK_PHOTO_INFO_UPDATE = 'profil/user/infos/photoback/update';
-var ROUTE_USER_BACK_PHOTO_UPLOAD = 'profil/backphoto/upload';
 var ROUTE_USER_PHOTO_UPLOAD = 'profil/photo/upload';
 var ROUTE_USER_PHOTO_DELETE = 'profil/photo/delete';
 

@@ -41,7 +41,7 @@
                 {% if reaction.fileName %}
                     <div id="cardPostImgHolder">
                         {% if reaction.copyright | purify | length > 0 %}
-                            <div id="cardPostImgLegend">Crédit photo: {{ reaction.copyright | purify }}</div>
+                            <div id="cardPostImgLegend">{{ reaction.copyright | purify }}</div>
                         {% endif %}
                         <div id="cardPostImg">
                             {{ reaction | image('reaction_header') }}

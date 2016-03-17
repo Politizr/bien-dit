@@ -55,6 +55,7 @@ class XhrUser
     private $timelineService;
     private $reputationService;
     private $globalTools;
+    private $userTwigExtension;
     private $logger;
 
     /**
@@ -72,6 +73,7 @@ class XhrUser
      * @param @politizr.functional.timeline
      * @param @politizr.functional.reputation
      * @param @politizr.tools.global
+     * @param @politizr.twig.user
      * @param @logger
      */
     public function __construct(
@@ -88,6 +90,7 @@ class XhrUser
         $timelineService,
         $reputationService,
         $globalTools,
+        $userTwigExtension,
         $logger
     ) {
         $this->securityTokenStorage = $securityTokenStorage;
@@ -109,6 +112,8 @@ class XhrUser
         $this->reputationService = $reputationService;
 
         $this->globalTools = $globalTools;
+
+        $this->userTwigExtension = $userTwigExtension;
 
         $this->logger = $logger;
     }
@@ -176,6 +181,7 @@ class XhrUser
 
     /**
      * Profile update
+     * beta
      */
     public function userProfileUpdate(Request $request)
     {
@@ -199,68 +205,13 @@ class XhrUser
     }
 
     /**
-     * Update user back photo info
-     */
-    public function userBackPhotoInfoUpdate(Request $request)
-    {
-        $this->logger->info('*** userBackPhotoInfoUpdate');
-        
-        // get current user
-        $user = $this->securityTokenStorage->getToken()->getUser();
-        
-        // Function process
-        $form = $this->formFactory->create(new PUserBackPhotoInfoType(), $user);
-
-        // Retrieve actual file name
-        $oldFileName = $user->getBackFileName();
-
-        $form->bind($request);
-        if ($form->isValid()) {
-            $user = $form->getData();
-            $user->save();
-
-            // Remove old file if new upload or deletion has been done
-            $fileName = $user->getBackFileName();
-            if ($fileName != $oldFileName) {
-                $path = $this->kernel->getRootDir() . '/../web' . PathConstants::USER_UPLOAD_WEB_PATH;
-                if ($oldFileName && $fileExists = file_exists($path . $oldFileName)) {
-                    unlink($path . $oldFileName);
-                }
-            }
-        } else {
-            $errors = StudioEchoUtils::getAjaxFormErrors($form);
-            throw new BoxErrorException($errors);
-        }
-
-        // Rendering
-        $path = '/bundles/politizrfront/images/default_profile.jpg';
-        if ($user && $fileName = $user->getBackFileName()) {
-            $path = PathConstants::USER_UPLOAD_WEB_PATH.$fileName;
-        }
-        $imageHeader = $this->templating->render(
-            'PolitizrFrontBundle:User:_imageHeader.html.twig',
-            array(
-                'title' => $user->__toString(),
-                'path' => $path,
-                'filterName' => 'user_bio_back',
-                'withShadow' => true
-            )
-        );
-
-        return array(
-            'imageHeader' => $imageHeader,
-            'copyright' => $user->getCopyright(),
-            );
-    }
-
-
-    /**
      * User's photo upload
+     * beta
      */
     public function userPhotoUpload(Request $request)
     {
         $this->logger->info('*** userPhotoUpload');
-        
+
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
         
@@ -276,36 +227,18 @@ class XhrUser
             150
         );
 
-        // Suppression photo déjà uploadée
-        $oldFilename = $user->getFilename();
-        if ($oldFilename && $fileExists = file_exists($path . $oldFilename)) {
-            unlink($path . $oldFilename);
-        }
+        $user->setFileName($fileName);
 
-        // MAJ du modèle
-        $user->setFilename($fileName);
-        $user->save();
-
-        $path = 'bundles/politizrfront/images/profil_default.png';
-        if ($user && $fileName = $user->getFileName()) {
-            $path = 'uploads/users/'.$fileName;
-        }
-
-        // Rendering
-        $html = $this->templating->render(
-            'PolitizrFrontBundle:User:_photo.html.twig',
-            array(
-                'url' => null,
-                'user' => $user,
-                'path' => $path,
-                'filterName' => 'user_bio',
-            )
+        $html = $this->userTwigExtension->photo(
+            $user,
+            'user_40',
+            false
         );
 
         return array(
             'fileName' => $fileName,
             'html' => $html,
-            );
+        );
     }
 
     /**
@@ -327,101 +260,22 @@ class XhrUser
             unlink($path . $filename);
         }
 
-        // MAJ du modèle
-        $user->setFilename(null);
-        $user->save();
+        $user->setFileName(null);
 
-        // Rendering
-        $path = 'bundles/politizrfront/images/profil_default.png';
-        $html = $this->templating->render(
-            'PolitizrFrontBundle:User:_photo.html.twig',
-            array(
-                'url' => null,
-                'user' => $user,
-                'path' => $path,
-                'filterName' => 'user_bio',
-            )
+        $html = $this->userTwigExtension->photo(
+            $user,
+            'user_40',
+            false
         );
 
         return array(
             'html' => $html,
-            );
-    }
-
-    /**
-     * User's background photo upload
-     */
-    public function userBackPhotoUpload(Request $request)
-    {
-        $this->logger->info('*** userBackPhotoUpload');
-
-        // Request arguments
-        $id = $request->get('id');
-        $this->logger->info(print_r($id, true));
-
-        // get current user
-        $user = $this->securityTokenStorage->getToken()->getUser();
-        
-        // get current user & args
-        $uploadWebPath = PathConstants::USER_UPLOAD_WEB_PATH;
-
-        // Chemin des images
-        $path = $this->kernel->getRootDir() . '/../web' . $uploadWebPath;
-
-        // Appel du service d'upload ajax
-        $fileName = $this->globalTools->uploadXhrImage(
-            $request,
-            'backFileName',
-            $path,
-            1024,
-            1024
         );
-
-        // Rendering
-        $html = $this->templating->render(
-            'PolitizrFrontBundle:User:_imageHeader.html.twig',
-            array(
-                'path' => $uploadWebPath . $fileName,
-                'filterName' => 'user_bio_back',
-                'title' => $user->__toString(),
-                'withShadow' => false
-            )
-        );
-
-        return array(
-            'fileName' => $fileName,
-            'html' => $html,
-            );
-    }
-
-    /**
-     * User's background photo deletion
-     */
-    public function userBackPhotoDelete(Request $request)
-    {
-        $this->logger->info('*** userPhotoDelete');
-        
-        // get current user
-        $user = $this->securityTokenStorage->getToken()->getUser();
-        
-        // Function process
-        $path = $this->kernel->getRootDir() . '/../web' . PathConstants::USER_UPLOAD_WEB_PATH;
-
-        // Suppression photo déjà uploadée
-        $filename = $user->getBackFilename();
-        if ($filename && $fileExists = file_exists($path . $filename)) {
-            unlink($path . $filename);
-        }
-
-        // MAJ du modèle
-        $user->setBackFilename(null);
-        $user->save();
-
-        return true;
     }
 
     /**
      * User's current organization update
+     * beta
      */
     public function orgaProfileUpdate(Request $request)
     {
@@ -451,31 +305,8 @@ class XhrUser
     }
 
     /**
-     * User's affinities organizations update
-     */
-    public function affinitiesProfile(Request $request)
-    {
-        $this->logger->info('*** affinitiesProfile');
-
-        // get current user
-        $user = $this->securityTokenStorage->getToken()->getUser();
-        
-        // Function process
-        $form = $this->formFactory->create(new PUserAffinitiesType(QualificationConstants::TYPE_ELECTIV), $user);
-        $form->bind($request);
-        if ($form->isValid()) {
-            $user = $form->getData();
-            $user->save();
-        } else {
-            $errors = StudioEchoUtils::getAjaxFormErrors($form);
-            throw new BoxErrorException($errors);
-        }
-
-        return true;
-    }
-
-    /**
      * User's mandate creation
+     * beta
      */
     public function mandateProfileCreate(Request $request)
     {
@@ -528,6 +359,7 @@ class XhrUser
 
     /**
      * User's mandate update
+     * beta
      */
     public function mandateProfileUpdate(Request $request)
     {
@@ -574,6 +406,7 @@ class XhrUser
 
     /**
      * User's mandate deletion
+     * beta
      */
     public function mandateProfileDelete(Request $request)
     {

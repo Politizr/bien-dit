@@ -11,14 +11,14 @@ var options = {
     success: function(responseText, statusText, xhr, form)
     {
         data = $.parseJSON( responseText );
-        // console.log('data.responseText = ' + data);
+        // console.log(data);
 
         if ( 'success' == statusText ) {
             // update & imgLiquid uploaded photo
             $('#uploadedPhoto').html(data['html']);
             fullImgLiquid();
 
-            $('#debate_file_name, #reaction_file_name').val(data['fileName']);
+            $('#debate_file_name, #reaction_file_name, #user_file_name').val(data['fileName']);
 
             triggerSaveDocument();
         }

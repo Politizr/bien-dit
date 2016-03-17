@@ -9,23 +9,34 @@ use Symfony\Component\Validator\Constraints\Url;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+use Politizr\Model\PUser;
+
 /**
  * User profile edit
+ * beta
  *
  * @author Lionel Bouzonville
  */
 class PUserBiographyType extends AbstractType
 {
+    protected $user;
+
+    /**
+     *
+     */
+    public function __construct(PUser $user)
+    {
+        $this->user = $user;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('subtitle', 'hidden', array(
-            'required' => false,
-            'label' => 'Résumé',
-        ));
-
-        $builder->add('biography', 'hidden', array(
+        $builder->add('biography', 'textarea', array(
             'required' => false,
             'label' => 'Biographie',
+            'attr' => array(
+                'maxlength' => 140
+            )
         ));
         
         $builder->add('website', 'text', array(
@@ -58,11 +69,9 @@ class PUserBiographyType extends AbstractType
             'constraints' => new Url(array('message' => 'L\'url n\'a pas un format valide.'))
         ));
 
-        // $builder->add('phone', 'text', array(
-        //     'required' => false,
-        //     'label' => 'Téléphone',
-        //     )
-        // );
+        $builder->add('file_name', 'hidden', array(
+            'required' => false,
+        ));
     }
 
     /**

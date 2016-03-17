@@ -16,6 +16,7 @@ services:
             - @politizr.functional.reputation
             - @politizr.functional.tag
             - @politizr.tools.global
+            - @politizr.twig.document
             - @logger
 
     politizr.xhr.modal:
@@ -95,6 +96,7 @@ services:
             - @politizr.functional.timeline
             - @politizr.functional.reputation
             - @politizr.tools.global
+            - @politizr.twig.user
             - @logger
 
     politizr.xhr.monitoring:

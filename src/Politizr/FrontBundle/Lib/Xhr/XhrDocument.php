@@ -55,6 +55,7 @@ class XhrDocument
     private $reputationService;
     private $tagService;
     private $globalTools;
+    private $documentTwigExtension;
     private $logger;
 
     /**
@@ -73,6 +74,7 @@ class XhrDocument
      * @param @politizr.functional.reputation
      * @param @politizr.functional.tag
      * @param @politizr.tools.global
+     * @param @politizr.twig.document
      * @param @logger
      */
     public function __construct(
@@ -90,6 +92,7 @@ class XhrDocument
         $reputationService,
         $tagService,
         $globalTools,
+        $documentTwigExtension,
         $logger
     ) {
         $this->securityTokenStorage = $securityTokenStorage;
@@ -112,6 +115,8 @@ class XhrDocument
         $this->tagService = $tagService;
 
         $this->globalTools = $globalTools;
+
+        $this->documentTwigExtension = $documentTwigExtension;
 
         $this->logger = $logger;
     }
@@ -589,21 +594,61 @@ class XhrDocument
             1024
         );
 
-        // Rendering
-        $html = $this->templating->render(
-            'PolitizrFrontBundle:Document:_imageHeader.html.twig',
-            array(
-                'path' => $uploadWebPath . $fileName,
-                'filterName' => 'debate_header',
-                'title' => $document->getTitle(),
-                'withShadow' => false
-            )
+        $document->setFileName($fileName);
+        $html = $this->documentTwigExtension->image(
+            $document,
+            'debate_header'
         );
 
         return array(
             'fileName' => $fileName,
             'html' => $html,
-            );
+        );
+    }
+
+    /**
+     * Users's photo deletion
+     */
+    public function documentPhotoDelete(Request $request)
+    {
+        $this->logger->info('*** documentPhotoDelete');
+        
+        // Request arguments
+        $uuid = $request->get('uuid');
+        $this->logger->info(print_r($uuid, true));
+        $type = $request->get('type');
+        $this->logger->info(print_r($type, true));
+
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        
+        switch ($type) {
+            case ObjectTypeConstants::TYPE_DEBATE:
+                $document = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
+                $uploadWebPath = PathConstants::DEBATE_UPLOAD_WEB_PATH;
+                break;
+            case ObjectTypeConstants::TYPE_REACTION:
+                $document = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
+                $uploadWebPath = PathConstants::REACTION_UPLOAD_WEB_PATH;
+                break;
+            default:
+                throw new InconsistentDataException(sprintf('Object type %s not managed', $type));
+        }
+
+        if (!$document->isOwner($user->getId())) {
+            throw new InconsistentDataException('Document '.$uuid.' is not yours.');
+        }
+
+        // Chemin des images
+        $path = $this->kernel->getRootDir() . '/../web' . $uploadWebPath;
+
+        // Suppression photo déjà uploadée
+        $filename = $document->getFilename();
+        if ($filename && $fileExists = file_exists($path . $filename)) {
+            unlink($path . $filename);
+        }
+
+        return true;
     }
 
     /* ######################################################################################################## */
@@ -962,12 +1007,13 @@ class XhrDocument
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
         
-        $debates = $this->documentService->getUserDocumentsSuggestion($user->getId(), ListingConstants::LISTING_SUGGESTION_DOCUMENTS_LIMIT);
-        
+        // $debates = $this->documentService->getUserDocumentsSuggestion($user->getId(), ListingConstants::LISTING_SUGGESTION_DOCUMENTS_LIMIT);
+        $documents = $this->documentService->getDocumentsLastPublished(ListingConstants::LISTING_SUGGESTION_DOCUMENTS_LIMIT);
+
         $html = $this->templating->render(
             'PolitizrFrontBundle:Document:_sliderSuggestions.html.twig',
             array(
-                'documents' => $debates
+                'documents' => $documents
             )
         );
 

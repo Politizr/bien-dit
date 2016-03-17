@@ -34,6 +34,7 @@ function listingContentUserFollowers(targetElement, localLoader, uuid) {
             $('#infoBoxHolder .boxError').show();
         } else {
             targetElement.html(data['html']);
+            fullImgLiquid();
         }
         localLoader.hide();
     });
@@ -69,6 +70,7 @@ function listingContentUserSubscribers(targetElement, localLoader, uuid) {
             $('#infoBoxHolder .boxError').show();
         } else {
             targetElement.html(data['html']);
+            fullImgLiquid();
         }
         localLoader.hide();
     });
@@ -103,6 +105,7 @@ function lastUserSubscribersListing(targetElement, localLoader, uuid) {
             $('#infoBoxHolder .boxError').show();
         } else {
             targetElement.html(data['html']);
+            fullImgLiquid();
         }
         localLoader.hide();
     });
@@ -138,6 +141,7 @@ function lastUserFollowersListing(targetElement, localLoader, uuid) {
             $('#infoBoxHolder .boxError').show();
         } else {
             targetElement.html(data['html']);
+            fullImgLiquid();
         }
         localLoader.hide();
     });
@@ -173,6 +177,7 @@ function lastDebateFollowersListing(targetElement, localLoader, uuid) {
             $('#infoBoxHolder .boxError').show();
         } else {
             targetElement.html(data['html']);
+            fullImgLiquid();
         }
         localLoader.hide();
     });

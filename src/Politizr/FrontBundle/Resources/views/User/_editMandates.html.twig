@@ -1,21 +1,23 @@
+{# beta #}
 {% for formMandate in formMandateViews %}
-    <div class="editMandateItem">
+    <div class="mandateItem myMandate withLoaderInside">
+        {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
         <form method="POST" name="formMandateUpdate" id="formMandateUpdate">
             {{ form_errors(formMandate) }}
-
-            <div class="editMandateWhatAndWhere">
-                {{ form_widget(formMandate.p_q_mandate, { 'attr': {'data-jcf': '{"wrapNative": false, "fakeDropInBody": false, "maxVisibleItems": 10, "flipDropToFit": false}'}}) }}
-                {{ form_widget(formMandate.localization, { 'attr': {'placeholder': 'lieu ou circonscription'}}) }}
+            <div class="styledSelect">
+                {{ form_widget(formMandate.p_q_mandate) }}
             </div>
-            <span class="dea">de</span>
-            <div class="editMandatePeriod">
+
+            {{ form_widget(formMandate.localization, { 'attr': {'placeholder': 'lieu ou circonscription'}}) }}
+            <div class="mandatePeriod">
+                <span class="dea">de</span>
                 {{ form_widget(formMandate.begin_at, { 'maxlength': 4, 'attr': {'placeholder': 'AAAA'}}) }}
                 <span class="dea">à</span>
-                {{ form_widget(formMandate.end_at, { 'maxlength': 4, 'attr': {'placeholder': 'AAAA'}}) }}
+                {{ form_widget(formMandate.end_at, { 'maxlength': 4, 'attr': {'placeholder': 'AAAA*'}}) }}
             </div>
             <div class="mandateActions">
-                <a class="editMandateDeleteItem" action="mandateDelete" uuid="{{ formMandate.vars.value.uuid }}"><i class="iconRemove"></i>Supprimer ce mandat</a>
-                <a class="editMandateCreate" action="mandateUpdate"><i class="iconCheck"></i>Enregistrer</a>
+                <a class="editMandateDeleteItem" action="mandateDelete" uuid="{{ formMandate.vars.value.uuid }}"><i class="icon-remove"></i>Supprimer ce mandat</a>
+                <a class="editMandateCreate" action="mandateUpdate"></i>Mettre à jour</a>
             </div>    
             {{ form_rest(formMandate) }}
         </form>

@@ -32,9 +32,9 @@
         </div>
         <div class="headerSeparator"></div>
         <div id="userLogged">
-            <a href="#">
+            <a href="{{ path('UserDetail', {'slug': app.user.slug}) }}">
                 <span class="userName">{{ app.user.firstname }} {{ app.user.name }}</span>
-                <span class="avatar30">{{ app.user | photo('user_30', withLink = false) }}</span>
+                <span class="avatar30">{{ app.user | photo('user_30', withLink = false, withBubble = false) }}</span>
             </a>
         </div>
         <div class="headerSeparator"></div>
@@ -43,8 +43,8 @@
             <div id="menuArrow"><i class="icon-arrow-up"></i></div> 
             <div id="primaryMenu">
                 <a href="{{ path('Drafts'~profileSuffix()) }}">Mes brouillons</a>
-                <a href="#">Mes publications</a>
-                <a href="#">Modifier mon profil</a>
+                <a href="{{ path('UserDetail', {'slug': app.user.slug}) }}">Mes publications</a>
+                <a href="{{ path('EditProfile'~profileSuffix())}}">Modifier mon profil</a>
             </div>
             <div id="secondaryMenu">
                 <a href="#"><b>Aide</b></a>

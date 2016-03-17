@@ -46,10 +46,6 @@ ReputationE:
     pattern:  /elu/mon-compte/ma-reputation
     defaults: { _controller: PolitizrFrontBundle:User:reputation }
 
-ProfileE:
-    pattern:  /elu/mon-profil
-    defaults: { _controller: PolitizrFrontBundle:User:profile }
-
 EditProfileE:
     pattern:  /elu/mon-compte/mon-profil
     defaults: { _controller: PolitizrFrontBundle:User:editProfile }
