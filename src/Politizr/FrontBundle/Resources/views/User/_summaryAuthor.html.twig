@@ -4,7 +4,7 @@
         <div class="avatar40">{{ user | photo('user_40') }}</div>
         <div class="profilenInfo">
             {% include 'PolitizrFrontBundle:User:_author.html.twig' with { 'user': user } only %}
-            <div class="profileBio">{{ user.subtitle | purify }}</div>
+            <div class="profileBio">{{ user.biography | purify }}</div>
         </div>
     {% else %}
         <i>utilisateur supprimé</i>
