@@ -1,9 +1,5 @@
 {# beta #}
-{% set layout = 'PolitizrFrontBundle::layoutPublic.html.twig' %}
-{% if (isGrantedE() or isGrantedC()) %}
-    {% set layout = 'PolitizrFrontBundle::layoutConnected.html.twig' %}
-{% endif %}
-{% extends layout %}
+{% extends 'PolitizrFrontBundle::layoutConnected.html.twig' %}
 
 {% block title %}
     {{ parent() }} - Édition de mon profil

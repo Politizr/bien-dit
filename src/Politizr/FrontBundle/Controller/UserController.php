@@ -138,7 +138,8 @@ class UserController extends Controller
     }
 
     /**
-     *  Mon compte - Mes informations personnelles
+     * Account info
+     * beta
      */
     public function editPersoAction()
     {
@@ -154,7 +155,6 @@ class UserController extends Controller
         $formPerso3 = $this->createForm(new PUserConnectionType(), $user);
 
         return $this->render('PolitizrFrontBundle:User:editPerso.html.twig', array(
-            'profileSuffix' => $this->get('politizr.tools.global')->computeProfileSuffix(),
             'user' => $user,
             'formPerso1' => $formPerso1->createView(),
             'formPerso2' => $formPerso2->createView(),
