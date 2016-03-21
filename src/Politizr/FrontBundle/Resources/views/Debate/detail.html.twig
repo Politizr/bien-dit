@@ -22,7 +22,7 @@
             </div>
             
             <div id="cardPost">
-                <span class="postTitle">{{ debate.title }}</span>
+                <span class="postTitle subject">{{ debate.title }}</span>
                 {% if debate.fileName %}
                     <div id="cardPostImgHolder">
                         {% if debate.copyright | purify | length > 0 %}
