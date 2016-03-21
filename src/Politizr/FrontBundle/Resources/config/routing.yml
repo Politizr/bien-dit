@@ -27,6 +27,12 @@ User:
 Listing:
     resource: "./routing/Listing.yml"
 
+# Sitemap xml
+SitemapXml:
+    pattern:  /sitemap.xml
+    defaults: { _controller: PolitizrFrontBundle:Public:sitemapXml }
+
+
 # GENERIC XHR
 XhrGeneric:
     pattern:  /xhr/{xhrRoute}/{xhrService}/{xhrMethod}.{xhrType}.json

@@ -2,6 +2,7 @@
 // on document ready
 $(function() {
     // console.log('*** global document ready');
+    $(".sticky-wrapper").addClass("hideSidebarForMobile");
     fullImgLiquid();
     Waypoint.destroyAll();
     $('#ajaxGlobalLoader').hide();
@@ -9,7 +10,6 @@ $(function() {
 });
 
 // mobile
-$(".sticky-wrapper").addClass("hideSidebarForMobile");
 $("body").on("click", "[action='showMobileSidebar']", function() {
     $('body.css700 .sticky-wrapper').removeClass("hideSidebarForMobile");
     $('body.css700 #actionShowMobileSidebar').hide();

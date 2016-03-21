@@ -2,28 +2,16 @@
 {# common "connected" layout #}
 {% extends 'PolitizrFrontBundle::baseFront.html.twig' %}
 
-{% block title %}
-    {% if (isGrantedE()) %}
-        Politizr - Élu {{ app.user }}
-    {% elseif (isGrantedC()) %}
-        Politizr - Citoyen {{ app.user }}
-    {% endif %}
-{% endblock title %}
+{% block title %}{% if (isGrantedE()) %}Politizr - Élu {{ app.user }}{% elseif (isGrantedC()) %}Politizr - Citoyen {{ app.user }}{% endif %}{% endblock title %}
 
-{% block description %}
-    {% if (isGrantedE()) %}
-        Politizr élu
-    {% elseif (isGrantedC()) %}
-        Politizr citoyen
-    {% endif %}
-{% endblock description %}
+{% block description %}Politizr est une plateforme indépendante et neutre permettant aux élu-e-s de toute la France de débattre publiquement des sujets proposés par leurs concitoyens.{% endblock description %}
 
 {% block metaopengraph %}
     {% block ogImage %}{% render controller("PolitizrFrontBundle:Social:ogImage") %}{% endblock ogImage %}
     <meta property="og:site_name" content="Politizr" /> 
     <meta property="og:title" content="{% block ogTitle %}Politizr{% endblock ogTitle %}" /> 
     <meta property="og:url" content="{% block ogUrl %}{{ app.request.uri }}{% endblock ogUrl %}" /> 
-    <meta property="og:description" content="{% block ogDescription %}Politizr{% endblock ogDescription %}" />
+    <meta property="og:description" content="{% block ogDescription %}Politizr est une plateforme indépendante et neutre permettant aux élu-e-s de toute la France de débattre publiquement des sujets proposés par leurs concitoyens.{% endblock ogDescription %}" />
 {% endblock metaopengraph %}
 
 {% block stylesheets %}

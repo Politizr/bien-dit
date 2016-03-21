@@ -5,9 +5,12 @@
 {% endif %}
 {% extends layout %}
 
-{% block title %}
-    {{ parent() }} - Profil de {{ user }}
-{% endblock title %}
+{% block title %}{{ parent() }} - Profil de {{ user | purify | trim }}{% endblock title %}
+
+{% block description %}Profil de {{ user | purify | trim }}, {{ user.biography | striptags | purify | trim }}{% endblock description %}
+
+{% block ogTitle %}{{ user }} – Politizr{% endblock ogTitle %}
+{% block ogDescription %}Profil de {{ user | purify | trim }}, {{ user.biography | striptags | purify | trim }}{% endblock ogDescription %}
 
 {% block content %}
     <div id="content" class="withLoaderInside">

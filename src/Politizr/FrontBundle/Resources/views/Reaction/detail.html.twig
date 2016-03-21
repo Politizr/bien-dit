@@ -5,9 +5,12 @@
 {% endif %}
 {% extends layout %}
 
-{% block title %}
-    {{ parent() }} - {{ reaction.title }}
-{% endblock title %}
+{% block title %}{{ parent() }} - {{ reaction.title | purify | trim }}{% endblock title %}
+
+{% block description %}{{ reaction.description | removeLinks | removeSpans | excerpt(1, true) | striptags | trim | purify }}{% endblock description %}
+
+{% block ogTitle %}{{ reaction.title | purify | trim }} – Politizr{% endblock ogTitle %}
+{% block ogDescription %}{{ reaction.description | removeLinks | removeSpans | excerpt(1, true) | striptags | trim | purify }}{% endblock ogDescription %}
 
 {% block javascriptHeader %}
     {{ parent() }}

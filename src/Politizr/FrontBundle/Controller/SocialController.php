@@ -31,6 +31,9 @@ class SocialController extends Controller
      */
     public function ogImageAction($fileNames = null)
     {
+        $logger = $this->get('logger');
+        $logger->info('*** ogImageAction');
+
         // URLs photo Facebook
         $imageUrls = array();
         if ($fileNames && !empty($fileNames)) {
@@ -65,6 +68,9 @@ class SocialController extends Controller
      */
     private function getTinyUrl($url)
     {
+        $logger = $this->get('logger');
+        $logger->info('*** getTinyUrl');
+
         // with tinyurl
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, "https://tinyurl.com/api-create.php?url=".$url);

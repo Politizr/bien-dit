@@ -61,7 +61,7 @@
 
                     {{ form_widget(formPerso2.email.first, { 'attr': { 'placeholder': 'Email' }}) }}
                     {{ form_widget(formPerso2.email.first, { 'attr': { 'placeholder': 'Confirmation email' }}) }}
-                    {{ form_widget(formPerso2.newsletter, {'label': 'Je souhaite recevoir les news de Politizr'}) }}
+                    {# form_widget(formPerso2.newsletter, {'label': 'Je souhaite recevoir les news de Politizr'}) #}
 
                     {{ form_rest(formPerso2) }}
 
@@ -101,10 +101,15 @@
     </div>
 {% endblock content %}
 
+{% block sidebarContent %}
+    {% include 'PolitizrFrontBundle:User:_sidebarEditAccount.html.twig' %}
+{% endblock sidebarContent %}
+
 {% block javascriptFooter %}
     {{ parent() }}
 
     {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/pages/editPerso.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/user/editPerso.js'
         filter='uglifyjs2' %}
         <script src="{{ asset_url }}"></script>

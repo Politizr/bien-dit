@@ -5,9 +5,12 @@
 {% endif %}
 {% extends layout %}
 
-{% block title %}
-    {{ parent() }} - {{ debate.title }}
-{% endblock title %}
+{% block title %}{{ parent() }} - {{ debate.title | purify | trim }}{% endblock title %}
+
+{% block description %}{{ debate.description | removeLinks | removeSpans | excerpt(1, true) | striptags | trim | purify }}{% endblock description %}
+
+{% block ogTitle %}{{ debate.title | purify | trim }} – Politizr{% endblock ogTitle %}
+{% block ogDescription %}{{ debate.description | removeLinks | removeSpans | excerpt(1, true) | striptags | trim | purify }}{% endblock ogDescription %}
 
 {% block content %}
     <div id="content">
