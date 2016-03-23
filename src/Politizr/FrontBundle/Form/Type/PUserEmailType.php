@@ -41,9 +41,9 @@ class PUserEmailType extends AbstractType
                 )
         ));
 
-        $builder->add('newsletter', 'checkbox', array(
-            'required' => false
-        ));
+        // $builder->add('newsletter', 'checkbox', array(
+        //     'required' => false
+        // ));
     }
 
     /**

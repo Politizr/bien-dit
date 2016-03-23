@@ -4,38 +4,43 @@
     {{ parent() }} - Mes notifications
 {% endblock title %}
 
-{% block main %}
-    <div id="main">
-        <div id="prefs" class="notificationsPrefs">
-            <h1>Mes notifications</h1>
+{% block content %}
+    <div id="content">
+        <div class="pageTitle">
+            Mes notifications
+        </div>
 
+        <div class="formBlock card">
             {% for notificationType in notificationsType %}        
-                <h2>{{ notificationType.title }}</h2>
-                <p>Je souhaite être averti par email :</p>
-                {% for notification in notificationType.notifications %}
-                    <div class="notificationsPrefs">
+                <div class="formBlockHeader">
+                    <label>{{ notificationType.title }}</label>
+                </div>
+                <div class="notificationsPrefs">
+                    <h5>Je souhaite être averti par email :</h5>
+                    {% for notification in notificationType.notifications %}
                         <div class="notificationsPrefsItem withLoaderInside">
-                            <div class="ajaxLoader" style="display: none;">
-                                <div class="ajaxLoaderSpinner"></div>
-                                <div class="ajaxLoaderBg"></div>
-                                <div class="ajaxLoaderBlockClick"></div>
-                            </div> 
+                            {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
                             <input type="checkbox" id="notif-{{ notificationType.id }}-{{ loop.index }}" uuid="{{ notification.uuid }}" action="{% if notification.id in emailNotifIds %}notifEmailUnsubscribe{% else %}notifEmailSubscribe{% endif %}" {% if notification.id in emailNotifIds %}checked{% endif %}/>
                             <label for="notif-{{ notificationType.id }}-{{ loop.index }}">
                                 <i class="iconCheckInSquare"></i>{{ notification.title }}
                             </label>
                         </div>
-                    </div>
-                {% endfor %}
+                    {% endfor %}
+                </div>
             {% endfor %}
         </div>
     </div>
-{% endblock main %}
+{% endblock content %}
+
+{% block sidebarContent %}
+    {% include 'PolitizrFrontBundle:User:_sidebarEditAccount.html.twig' %}
+{% endblock sidebarContent %}
 
 {% block javascriptFooter %}
     {{ parent() }}
 
     {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/pages/editNotifications.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/notification/email.js'
         filter='uglifyjs2' %}
         <script src="{{ asset_url }}"></script>

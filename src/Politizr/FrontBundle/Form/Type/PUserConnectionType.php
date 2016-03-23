@@ -38,10 +38,10 @@ class PUserConnectionType extends AbstractType
             // 'required' => true,
             'first_options' => array(
                 'label' => 'Mot de passe',
-                ),
+            ),
             'second_options' =>   array(
                 'label' => 'Confirmation',
-                ),
+            ),
             'type' => 'password',
             'constraints' => array(
                 // new NotBlank(array('message' => 'Mot de passe obligatoire.')),

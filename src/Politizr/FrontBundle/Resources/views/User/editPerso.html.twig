@@ -7,95 +7,89 @@
 
 {% block content %}
     <div id="content">
-        <div class="pageTitle">
-            Mes informations personnelles
-        </div>
+        <div class="accountEdition">
+            <div class="pageTitle">
+                Mon compte
+            </div>
 
-        {% if isGrantedE() %} 
-            <h5>Vous disposez actuellement d'un compte élu.</h5>
-        {% else %}
-            <h5>Vous disposez actuellement d'un compte citoyen.</h5>
-        {% endif %}
-
-        <div id="boxPerso1">
-            {% if app.user.validated %}
-                <p class="formInfo">
-                    <i class="iconAlert"></i>Ces informations ont été validées par nos services et ne peuvent être modifiées.
-                </p>
-                <div class="actionAskForUpdate">
-                    <a action="#" type="{{ constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_USER') }}" uuid="{{ user.uuid }}"></i>Demande de modification</a>
-                </div>
+            {% if isGrantedE() %} 
+                <h5>Vous disposez actuellement d'un compte élu.</h5>
+            {% else %}
+                <h5>Vous disposez actuellement d'un compte citoyen.</h5>
             {% endif %}
-            <div class="formBlock">
-                <div class="formBlockHeader">
-                    <label>Votre identité</label>
-                </div>
 
-                <form name="user" method="post" id="formPerso1">
-                    {{ form_errors(formPerso1) }}
-
-                    <div class="styledSelect">
-                        {{ form_widget(formPerso1.gender) }}
+            <div id="boxPerso1">
+                <div class="formBlock">
+                    <div class="formBlockHeader">
+                        <label>Votre identité</label>
                     </div>
-                    {{ form_widget(formPerso1.firstname, { 'attr': { 'placeholder': 'Prénom' }}) }}
-                    {{ form_widget(formPerso1.name, { 'attr': { 'placeholder': 'Nom' }}) }}
-                    {{ form_widget(formPerso1.birthday, { 'attr': { 'placeholder': 'JJ/MM/AAAA' }}) }}
-                    {{ form_rest(formPerso1) }}
-        
-                    {% if not app.user.validated %}
+
+                    <form name="user" method="post" id="formPerso1">
+                        {{ form_errors(formPerso1) }}
+
+                        <div class="styledSelect">
+                            {{ form_widget(formPerso1.gender) }}
+                        </div>
+                        {{ form_row(formPerso1.firstname, { 'attr': { 'placeholder': 'Prénom' }}) }}
+                        {{ form_row(formPerso1.name, { 'attr': { 'placeholder': 'Nom' }}) }}
+                        {{ form_row(formPerso1.birthday, { 'attr': { 'placeholder': 'JJ/MM/AAAA' }}) }}
+                        {{ form_rest(formPerso1) }}
+            
+                        {% if not app.user.validated %}
+                            <button type="button" action="submitPerso">
+                                Mettre à jour
+                            </button>
+                        {% endif %}
+                    </form>
+                    {% if app.user.validated %}
+                        <p class="formInfo">
+                            <i class="icon-alert"></i>Ces informations ont été validées par nos services et ne peuvent être modifiées.
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div id="boxPerso2">
+                <div class="formBlock">
+                    <div class="formBlockHeader">
+                        <label>Votre email et votre abonnement newsletter</label>
+                    </div>
+                    <form name="user" method="post" id="formPerso2">
+                        {{ form_errors(formPerso2) }}
+
+                        {{ form_row(formPerso2.email.first, { 'attr': { 'placeholder': 'Email' }}) }}
+                        {{ form_row(formPerso2.email.first, { 'attr': { 'placeholder': 'Confirmation email' }}) }}
+
+                        {{ form_rest(formPerso2) }}
+
                         <button type="button" action="submitPerso">
                             Mettre à jour
                         </button>
-                    {% endif %}
-                </form>
-            </div>
-        </div>
-
-        <div id="boxPerso2">
-            <div class="formBlock">
-                <div class="formBlockHeader">
-                    <label>Votre email et votre abonnement newsletter</label>
+                    </form>
                 </div>
-                <form name="user" method="post" id="formPerso2">
-                    {{ form_errors(formPerso2) }}
-
-                    {{ form_widget(formPerso2.email.first, { 'attr': { 'placeholder': 'Email' }}) }}
-                    {{ form_widget(formPerso2.email.first, { 'attr': { 'placeholder': 'Confirmation email' }}) }}
-                    {# form_widget(formPerso2.newsletter, {'label': 'Je souhaite recevoir les news de Politizr'}) #}
-
-                    {{ form_rest(formPerso2) }}
-
-                    <button type="button" action="submitPerso">
-                        <i class="iconCheck"></i>Mettre à jour
-                    </button>
-                </form>
             </div>
-        </div>
-        
-        <div id="boxPerso3">
-            <div class="formBlock">
-                <div class="formBlockHeader">
-                    <label>Vos identifiant et mot de passe de connexion</label>
+            
+            <div id="boxPerso3">
+                <div class="formBlock">
+                    <div class="formBlockHeader">
+                        <label>Vos identifiant et mot de passe de connexion</label>
+                    </div>
+                    <form name="user" method="post" id="formPerso3">
+                        {{ form_errors(formPerso3) }}
+
+                        {{ form_row(formPerso3.username, { 'attr': { 'placeholder': 'Identifiant' }}) }}
+
+                        {{ form_row(formPerso3.plainPassword.first) }}
+
+                        {{ form_row(formPerso3.plainPassword.second) }}
+
+                        {{ form_rest(formPerso3) }}
+                   
+                        <button type="button" action="submitPerso">
+                            Mettre à jour
+                        </button>
+                    </form>
                 </div>
-                <form name="user" method="post" id="formPerso3">
-                    {{ form_errors(formPerso3) }}
-
-                    {{ form_widget(formPerso3.username, { 'attr': { 'placeholder': 'Identifiant' }}) }}
-                    <div class="formBlockHeader">
-                        <label>Mot de passe</label>
-                    </div>
-                    {{ form_widget(formPerso3.plainPassword.first) }}
-                    <div class="formBlockHeader">
-                        <label>Confirmation mot de passe</label>
-                    </div>
-                    {{ form_widget(formPerso3.plainPassword.second) }}
-
-                    {{ form_rest(formPerso3) }}
-               
-                    <button type="button" action="submitPerso">
-                        <i class="iconCheck"></i>Mettre à jour
-                    </button>
-                </form>
             </div>
         </div>
     </div>

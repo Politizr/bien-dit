@@ -184,7 +184,6 @@ class UserController extends Controller
                         ->find();
 
         return $this->render('PolitizrFrontBundle:User:editNotifications.html.twig', array(
-            'profileSuffix' => $this->get('politizr.tools.global')->computeProfileSuffix(),
             'notificationsType' => $notificationsType,
             'emailNotifIds' => $emailNotifIds,
         ));
