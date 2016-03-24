@@ -16,7 +16,7 @@
     </style>
 {% endblock %}
 
-{% block wrapper %}
+{% block main %}
     <center>
         <i class="iconPltzrLogoAlt"></i><br>
         <span>Erreur {{ status_code }}</span><br>
@@ -27,7 +27,7 @@
     </center>
 
     <div id="randomBg"></div>
-{% endblock wrapper %}
+{% endblock main %}
 
 {% block javascriptFooter %}
     {{ parent() }}
