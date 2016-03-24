@@ -1,0 +1,16 @@
+{# beta #}
+{% if metal == constant('Politizr\\Constant\\ReputationConstants::METAL_TYPE_GOLD') %}
+    {% set class = 'goldBadge' %}
+    {% set img = 'gold' %}
+{% elseif metal == constant('Politizr\\Constant\\ReputationConstants::METAL_TYPE_SILVER') %}
+    {% set class = 'silverBadge' %}
+    {% set img = 'silver' %}
+{% elseif metal == constant('Politizr\\Constant\\ReputationConstants::METAL_TYPE_BRONZE') %}
+    {% set class = 'bronzeBadge' %}
+    {% set img = 'bronze' %}
+{% endif %}
+
+<div class="badgeHolder {{ class }}">
+    <img src="{{ asset('bundles/politizrfront/images/badges/'~img~'.svg') }}" width="30">
+    {% include 'PolitizrFrontBundle:Reputation:_bubbleBadge.html.twig' with { 'badge': badge } only %}
+</div> 

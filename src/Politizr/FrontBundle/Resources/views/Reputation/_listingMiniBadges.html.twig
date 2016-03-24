@@ -1,0 +1,10 @@
+{# beta #}
+{% for badge in goldBadges %}
+    {% include 'PolitizrFrontBundle:Reputation:_detailMiniBadge.html.twig' with { 'badge': badge, 'metal': constant('Politizr\\Constant\\ReputationConstants::METAL_TYPE_GOLD') } only %}
+{% endfor %}
+{% for badge in silverBadges %}
+    {% include 'PolitizrFrontBundle:Reputation:_detailMiniBadge.html.twig' with { 'badge': badge, 'metal': constant('Politizr\\Constant\\ReputationConstants::METAL_TYPE_SILVER') } only %}
+{% endfor %}
+{% for badge in bronzeBadges %}
+    {% include 'PolitizrFrontBundle:Reputation:_detailMiniBadge.html.twig' with { 'badge': badge, 'metal': constant('Politizr\\Constant\\ReputationConstants::METAL_TYPE_BRONZE') } only %}
+{% endfor %}

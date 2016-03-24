@@ -153,6 +153,8 @@ class XhrConstants
     const ROUTE_USER_LISTING_USER_FOLLOWERS_CONTENT = 'auteur/content/derniers-abonnes';
     const ROUTE_USER_LISTING_USER_SUBSCRIBERS_CONTENT = 'auteur/content/derniers-abonnements';
 
+    const ROUTE_USER_LISTING_BADGES = 'auteur/badges';
+
     // TIMELINE
     const ROUTE_TIMELINE_MINE = 'profil/timeline';
     const ROUTE_TIMELINE_USER = 'user/timeline';

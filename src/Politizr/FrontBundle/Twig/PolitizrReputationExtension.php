@@ -170,6 +170,7 @@ class PolitizrReputationExtension extends \Twig_Extension
 
     /**
      * Return explanation about how to reach a badge
+     * beta
      *
      * @param PRBadge $badge
      * @return html

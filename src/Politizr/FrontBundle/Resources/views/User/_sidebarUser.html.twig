@@ -19,6 +19,14 @@
         </div>
     {% endif %}
 
+    {% if (app.user and app.user.id == user.id) or (not user.qualified) %}
+        <div class="sidebarBadges withLoaderInside">
+            {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+            <h5>-</h5>
+            <div id="userBadges" uuid="{{ user.uuid }}" class="badgesList"></div>
+        </div>
+    {% endif %}
+
     <div class="sidebarUserFollowers withLoaderInside">
         {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
         <h5>Abonnés</h5>

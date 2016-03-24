@@ -52,6 +52,10 @@ function userTagListing(targetElement, localLoader) {
     var uuid = targetElement.attr('uuid');
     // console.log(uuid);
 
+    if (uuid == undefined) {
+        return;
+    }
+
     var xhrPath = getXhrPath(
         ROUTE_TAG_LISTING_USER,
         'tag',

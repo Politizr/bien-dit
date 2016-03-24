@@ -1,3 +1,5 @@
+// beta
+
 // Souscription email
 $("body").on("click", "[action='notifEmailSubscribe']", function(e) {
     // console.log('*** click notifEmailSubscribe');

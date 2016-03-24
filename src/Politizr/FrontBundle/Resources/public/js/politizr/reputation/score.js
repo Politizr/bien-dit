@@ -5,10 +5,47 @@ $(function() {
 })
 
 /**
- * Load reputation score
+ * Load current user's reputation score
  */
-function scoreCounter(){
+function scoreCounter()
+{
     // console.log('*** scoreCounter');
+
+    var uuid = $('#reputCounter').attr('uuid');
+
+    getUserScore(uuid).done(function(data) {
+        // console.log(data['html']);
+        $('.reputPoints').html(data['html']);
+    });
+}
+
+/**
+ * Load current user's badges score
+ */
+function badgesCounter()
+{
+    // console.log('*** badgesCounter');
+
+    var uuid = $('#reputCounter').attr('uuid');
+
+    countUserBadges(uuid).done(function(data) {
+        // console.log(data['nbBronze']);
+        // console.log(data['nbSilver']);
+        // console.log(data['nbGold']);
+        $('.badgesCounterBronze').html(data['nbBronze']);
+        $('.badgesCounterSilver').html(data['nbSilver']);
+        $('.badgesCounterGold').html(data['nbGold']);
+    });
+}
+
+/**
+ * Get user reputation score
+ * @param uuid
+ */
+function getUserScore(uuid)
+{
+    // console.log('*** getUserScore');
+    // console.log(uuid);
 
     var xhrPath = getXhrPath(
         ROUTE_SCORE_COUNTER,
@@ -17,21 +54,22 @@ function scoreCounter(){
         RETURN_HTML
         );
 
-    $.ajax({
-        type: 'POST',
-        dataType: 'json',
-        url : xhrPath,
-        success: function(data) {
-            $('.reputPoints').html(data['html']);
-        }
-    });
+    return xhrCall(
+        document,
+        { 'uuid': uuid },
+        xhrPath
+    );
 }
 
+
 /**
- * Load badges score
+ * Get user reputation score
+ * @param uuid
  */
-function badgesCounter(){
-    // console.log('*** badgesCounter');
+function countUserBadges(uuid)
+{
+    // console.log('*** countUserBadges');
+    // console.log(uuid);
 
     var xhrPath = getXhrPath(
         ROUTE_BADGES_COUNTER,
@@ -40,14 +78,9 @@ function badgesCounter(){
         RETURN_HTML
         );
 
-    $.ajax({
-        type: 'POST',
-        dataType: 'json',
-        url : xhrPath,
-        success: function(data) {
-            $('.badgesCounterBronze').html(data['nbBronze']);
-            $('.badgesCounterSilver').html(data['nbSilver']);
-            $('.badgesCounterGold').html(data['nbGold']);
-        }
-    });
+    return xhrCall(
+        document,
+        { 'uuid': uuid },
+        xhrPath
+    );
 }

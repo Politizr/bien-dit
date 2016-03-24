@@ -144,6 +144,7 @@ var ROUTE_USER_DETAIL_CONTENT = 'auteur/content/detail';
 var ROUTE_USER_LISTING_USER_FOLLOWERS_CONTENT = 'auteur/content/derniers-abonnes';
 var ROUTE_USER_LISTING_USER_SUBSCRIBERS_CONTENT = 'auteur/content/derniers-abonnements';
 
+var ROUTE_USER_LISTING_BADGES = 'auteur/badges';
 
 // TIMELINE
 var ROUTE_TIMELINE_MINE = 'profil/timeline';

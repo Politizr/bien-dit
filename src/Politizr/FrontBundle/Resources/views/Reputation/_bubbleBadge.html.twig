@@ -1,0 +1,11 @@
+{# beta #}
+<div class="bubblesBadge withLoaderInside" style="display: none;"> 
+    {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+    <div class="bubbTop">
+        {{ badge.title }}
+    </div>
+    <div class="bubbBottom">
+        {{ badge | howToReach }}
+    </div>
+    <div class="bubbArrow"><i class="icon-arrow-down"></i></div>
+</div>

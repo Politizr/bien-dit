@@ -20,8 +20,8 @@
             </div>
         </div>
         <div class="headerSeparator"></div>
-        <div id="reputCounter">
-            <a href="#">
+        <div id="reputCounter" uuid="{{ app.user.uuid }}">
+            <a href="{{ path('UserDetail', {'slug': app.user.slug}) }}">
                 <i class="icon-cup"></i><span class="reputPoints">-</span>
                 <span class="badgesCounter">
                     <span class="badgesCounterGold">-</span>

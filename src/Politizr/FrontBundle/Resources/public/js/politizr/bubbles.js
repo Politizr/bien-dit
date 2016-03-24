@@ -1,4 +1,6 @@
 // beta
+var bubbleDelay = 500;
+
 /**
  * Profile bubble
  */
@@ -22,7 +24,7 @@ $("body").on("mouseenter", "[action='bubbleProfile']", function() {
     var localLoader = context.find('.ajaxLoader').first();
 
     // display bubble
-    context.delay(1000).fadeIn(400, function() {
+    context.delay(bubbleDelay).fadeIn(400, function() {
         return xhrCall(
             context,
             { 'uuid': uuid },
@@ -69,7 +71,7 @@ $("body").on("mouseenter", "[action='bubbleTag']", function() {
     var localLoader = context.find('.ajaxLoader').first();
 
     // display bubble
-    context.delay(1000).fadeIn(400, function() {
+    context.delay(bubbleDelay).fadeIn(400, function() {
         return xhrCall(
             context,
             { 'uuid': uuid },
@@ -108,4 +110,13 @@ $("body").on("click", "[action='toogleHelperBubble']", function(e) {
         $(this).next('.bubblesHelper').toggle(); // do the toggle       
         $(this).toggleClass("activeHelper"); // toggle  color        
     }
-}); 
+});
+
+// Bubbles badge
+$("body").on("mouseover", ".badgeHolder", function() {
+    $(this).children('.bubblesBadge').delay(bubbleDelay).fadeIn();
+});
+$("body").on("mouseleave", ".bubblesBadge, .badgeHolder", function() {
+    $(".bubblesBadge").clearQueue().hide();
+});
+

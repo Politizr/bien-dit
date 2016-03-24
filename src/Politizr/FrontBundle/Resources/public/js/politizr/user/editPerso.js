@@ -1,3 +1,4 @@
+// beta
 // user profile perso update
 $("body").on("click", "button[action='submitPerso']", function(e) {
     // console.log('click submitPerso');

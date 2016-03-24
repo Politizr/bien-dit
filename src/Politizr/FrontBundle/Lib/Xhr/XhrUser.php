@@ -509,8 +509,21 @@ class XhrUser
     {
         $this->logger->info('*** reputationScore');
 
+        // Request arguments
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
+
+        $user = PUserQuery::create()->filterByUuid($uuid)->findOne();
+        if (!$user) {
+            throw new InconsistentDataException(sprintf('User %s not found', $uuid));
+        }
+
         // get current user
-        $user = $this->securityTokenStorage->getToken()->getUser();
+        $currentUser = $this->securityTokenStorage->getToken()->getUser();
+
+        if ($user->getQualified() && $user->getId() != $currentUser->getId()) {
+            throw new InconsistentDataException(sprintf('User id-%s tries to get score of user uuid-%s', $currentUser->getId(), $uuid));
+        }
         
         // score de réputation
         $reputationScore = $user->getReputationScore();
@@ -527,8 +540,21 @@ class XhrUser
     {
         $this->logger->info('*** badgesScore');
 
+        // Request arguments
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
+
+        $user = PUserQuery::create()->filterByUuid($uuid)->findOne();
+        if (!$user) {
+            throw new InconsistentDataException(sprintf('User %s not found', $uuid));
+        }
+
         // get current user
-        $user = $this->securityTokenStorage->getToken()->getUser();
+        $currentUser = $this->securityTokenStorage->getToken()->getUser();
+
+        if ($user->getQualified() && $user->getId() != $currentUser->getId()) {
+            throw new InconsistentDataException(sprintf('User id-%s tries to get score of user uuid-%s', $currentUser->getId(), $uuid));
+        }
         
         // bronze / silver / gold badges
         $nbBronze = $user->countBadges(null, ReputationConstants::METAL_TYPE_BRONZE);
@@ -1136,6 +1162,41 @@ class XhrUser
                 )
             );
         }
+
+        return array(
+            'html' => $html,
+        );
+    }
+
+    /**
+     * User badges
+     * code beta
+     */
+    public function userMiniBadges(Request $request)
+    {
+        $this->logger->info('*** userMiniBadges');
+
+        // Request arguments
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
+
+        $user = PUserQuery::create()->filterByUuid($uuid)->findOne();
+        if (!$user) {
+            throw new InconsistentDataException(sprintf('User %s not found', $uuid));
+        }
+
+        $bronzeBadges = $user->getBadges(null, ReputationConstants::METAL_TYPE_BRONZE);
+        $silverBadges = $user->getBadges(null, ReputationConstants::METAL_TYPE_SILVER);
+        $goldBadges = $user->getBadges(null, ReputationConstants::METAL_TYPE_GOLD);
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Reputation:_listingMiniBadges.html.twig',
+            array(
+                'bronzeBadges' => $bronzeBadges,
+                'silverBadges' => $silverBadges,
+                'goldBadges' => $goldBadges,
+            )
+        );
 
         return array(
             'html' => $html,

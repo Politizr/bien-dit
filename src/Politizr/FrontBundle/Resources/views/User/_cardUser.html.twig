@@ -8,7 +8,7 @@
         <div class="activity">Vous avez rejoint Politizr. Merci et bienvenu-e parmi nous !</div>
         <h5>{% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': user } only %}</h5>
         <div class="cardInfo">
-            N’hésitez pas à consulter la page <a href="{{ path('Help') }}">Premier Pas sur Politizr</a> pour vous familiariser avec la plate-forme.<br>
+            Complétez votre <a href="{{ path('EditProfile'~profileSuffix()) }}">profil</a> pour gagner de la visibilité sur notre plateforme.<br>
             Le <a href="mailto: support@politizr.com">support</a> est à votre disposition pour toutes questions ou remarques.<br>
             Au plaisir de vous lire,<br>
             — L’équipe Politizr
