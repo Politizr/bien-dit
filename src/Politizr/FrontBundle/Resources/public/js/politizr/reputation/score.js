@@ -1,8 +1,4 @@
 // on document ready
-$(function() {
-    scoreCounter();
-    badgesCounter();
-})
 
 /**
  * Load current user's reputation score

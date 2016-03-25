@@ -3,7 +3,12 @@ $(function() {
     $(".currentPage[action='documentsByUserListing']").trigger("click");
 
     $.when(
-        updateSidebarBadges(),
+        showReputation(),
+        userMiniBadgeListing(
+            $('.sidebarBadges').find('#userBadges').first(),
+            $('.sidebarBadges').find('.ajaxLoader').first(),
+            $('#userBadges').attr('uuid')
+        ),
         lastUserFollowersListing(
             $('.sidebarUserFollowers').find('#userFollowers').first(),
             $('.sidebarUserFollowers').find('.ajaxLoader').first(),
@@ -24,25 +29,16 @@ $(function() {
 });
 
 /**
- * Update sidebarBadges div if exists
+ * Show reputation score if authorized
  */
-function updateSidebarBadges()
+function showReputation()
 {
-    var divUserBadges = $('.sidebarBadges').find('#userBadges').first();
-    if (!divUserBadges.is(':visible')) {
+    if (!$('#reputationScore').is(':visible')) {
         return;
     }
-
-    var uuid = $('#userBadges').attr('uuid');
-
+    
     getUserScore(uuid).done(function(data) {
         // console.log(data['html']);
         $('.sidebarBadges').find('h5').first().html(data['html'] + ' points de réputation');
     });
-
-    return userMiniBadgeListing(
-        $('.sidebarBadges').find('#userBadges').first(),
-        $('.sidebarBadges').find('.ajaxLoader').first(),
-        uuid
-    );
 }
