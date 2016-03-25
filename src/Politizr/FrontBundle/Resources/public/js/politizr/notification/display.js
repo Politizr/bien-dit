@@ -1,21 +1,8 @@
-// on document ready
-$(function() {
-    notificationsLoading();
-})
+// beta
 
-$(document).mousedown(function (e) {
-    var container = $("#notifBox, [action='toggleNotifBox']");
-    if (!container.is(e.target) // if the target of the click isn't the container...
-        && container.has(e.target).length === 0) // ... nor a descendant of the container
-    {
-        $('#notifBox').hide();      
-    }
-});
-$("body").on("click", "[action='toggleNotifBox']", function() {
-    $('#notifBox').toggle();
-});
-
-// Regular function with arguments
+/**
+ * Notification loading
+ */
 function notificationsLoading(){
     // console.log('*** notificationsLoading');
 
@@ -24,15 +11,17 @@ function notificationsLoading(){
         'notification',
         'notificationsLoad',
         RETURN_HTML
-        );
+    );
 
-    $.ajax({
-        type: 'POST',
-        dataType: 'json',
-        url : xhrPath,
-        success: function(data) {
-            $('#ajaxGlobalLoader').hide();
-
+    return xhrCall(
+        document,
+        null,
+        xhrPath
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
             // MAJ compteur
             note = parseInt(data['counterNotifs']);
             if (note > 0) {
@@ -47,32 +36,35 @@ function notificationsLoading(){
     });
 }
 
-// check notification
-$("body").on("click", "i[action='notificationCheck']", function(e) {
-    // console.log('*** click i notificationCheck');
-
-    e.preventDefault();
-
-    var localLoader = $(this).closest('.notifItem').find('.ajaxLoader').first();
+/**
+ * Check a notification item
+ * @param targetElement
+ * @param localLoader
+ * @param uuid
+ */
+function checkNotificationItem(localLoader, context, uuid) {
+    // console.log('*** checkNotificationItem');
+    // console.log(localLoader);
+    // console.log(context);
+    // console.log(uuid);
+    
     var xhrPath = getXhrPath(
         ROUTE_NOTIF_CHECK,
         'notification',
         'notificationCheck',
         RETURN_BOOLEAN
-        );
+    );
 
-    $.ajax({
-        type: 'POST',
-        dataType: 'json',
-        url : xhrPath,
-        context: $(this).closest('.notifItem'),
-        data: { 'uuid': $(this).attr('uuid') },
-        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, localLoader ); },
-        statusCode: { 404: function () { xhr404(localLoader); }, 500: function() { xhr500(localLoader); } },
-        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown, localLoader); },
-        success: function(data) {
-            localLoader.hide();
-
+    return xhrCall(
+        context,
+        { 'uuid': uuid },
+        xhrPath,
+        localLoader
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
             $(this).find('.notifHighlight').removeClass();
             $(this).find('.icon-check-incircle').remove();
             $(this).addClass('viewedNotif');
@@ -84,58 +76,70 @@ $("body").on("click", "i[action='notificationCheck']", function(e) {
                 $('#notifCounterNew').html('-').hide();
             }
         }
+        localLoader.hide();
     });
+}
 
-})
-
-$("body").on("click", "a[action='notificationCheck']", function(e) {
-    // console.log('*** click a notificationCheck');
-
+/**
+ * Check a notification link
+ * @param uuid
+ * @param targetUrl
+ */
+function checkNotificationLink(uuid, targetUrl) {
+    // console.log('*** checkNotificationLink');
+    // console.log(uuid);
+    // console.log(targetUrl);
+    
     var xhrPath = getXhrPath(
         ROUTE_NOTIF_CHECK,
         'notification',
         'notificationCheck',
         RETURN_BOOLEAN
-        );
+    );
 
-    e.preventDefault();
-    $.ajax({
-        type: 'POST',
-        dataType: 'json',
-        url : xhrPath,
-        context: this,
-        data: { 'uuid': $(this).closest('span').attr('uuid') },
-        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
-        statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
-        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
-        success: function(data) {
-            window.location = $(this).attr('href');
+    return xhrCall(
+        document,
+        { 'uuid': uuid },
+        xhrPath,
+        1
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+            $('#ajaxGlobalLoader').hide();
+        } else {
+            window.location = targetUrl;
         }
     });
+}
 
-})
-
-// check toutes les notifications
-$("body").on("click", "div[action='notificationCheckAll']", function(e) {
-    // console.log('*** click notificationCheckAll');
-
+/**
+ * Check all notifications
+ * @param uuid
+ * @param targetUrl
+ */
+function chekNotificationAll(localLoader) {
+    // console.log('*** chekNotificationAll');
+    // console.log(localLoader);
+    
     var xhrPath = getXhrPath(
         ROUTE_NOTIF_CHECK_ALL,
         'notification',
         'notificationsCheckAll',
         RETURN_BOOLEAN
-        );
+    );
 
-    var localLoader = $(this).closest('#notifBox').find('.ajaxLoader').first();
-    $.ajax({
-        type: 'POST',
-        dataType: 'json',
-        url : xhrPath,
-        context: $(this).closest('table'),
-        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, localLoader ); },
-        statusCode: { 404: function () { xhr404(localLoader); }, 500: function() { xhr500(localLoader); } },
-        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown, localLoader); },
-        success: function(data) {
+    return xhrCall(
+        document,
+        null,
+        xhrPath,
+        localLoader
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+            $('#ajaxGlobalLoader').hide();
+        } else {
             localLoader.hide();
 
             // MAJ du style
@@ -147,5 +151,5 @@ $("body").on("click", "div[action='notificationCheckAll']", function(e) {
             $('#notifCounterNew').html('-').hide();
         }
     });
+}
 
-})

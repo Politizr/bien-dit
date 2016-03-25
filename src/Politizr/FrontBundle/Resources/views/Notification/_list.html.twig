@@ -1,16 +1,17 @@
+{# beta #}
 <div id="notifBoxArrow"><i class="icon-arrow-up"></i></div>
 <div id="notifBoxHeader">
     <div class="notifMarkAllAsRead" action="notificationCheckAll"><i class="icon-check-incircle"></i>Tout marquer comme vu</div>
 </div>
-<div id="notifList">
+<div id="notifList" class="withLoaderInside">
+    {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
     {% for notif in notifs %}
         <div class="notifItem {% if notif.checked %}viewedNotif{% endif %} withLoaderInside">
             {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
             {{ notif | linkedNotification }}
         </div>
     {% else %}
-        <div class="notifItem noAvatar withLoaderInside">
-            {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+        <div class="notifItem noAvatar">
             <div class="notifItemContent">Aucune notification</div>
         </div>
     {% endfor %}

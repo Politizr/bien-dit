@@ -15,9 +15,7 @@
             <i class="icon-notif" action="toggleNotifBox">
                 <span class="notifNew" id="notifCounterNew">-</span>
             </i>
-            <div id="notifBox" class="withLoaderInside" style="display: none;">
-                {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
-            </div>
+            <div id="notifBox" style="display: none;"></div>
         </div>
         <div class="headerSeparator"></div>
         <div id="reputCounter" uuid="{{ app.user.uuid }}">
