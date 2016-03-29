@@ -38,11 +38,13 @@ $("body").on("click", "[action='globalComments']", function() {
     
     context = $(this).closest('.paragraphHolder');
     if (context.find('.commentsContent').is(':visible')) {
+        // console.log('visible');
         // @todo this call is not working, why?
         // $("[action='closeComments']").trigger("click");
         context.find('#globalComments').hide();
-        context.find('#globalComments').html('');
+        context.find('.commentsContent').first().html('');
     } else {
+        // console.log('invisible');
         $('.bubblesComments').hide();
         $('.commentsCounter').removeClass('activeComment');
 
@@ -114,7 +116,7 @@ function loadParagraphContent(context)
         );
 
     return xhrCall(
-        context,
+        document,
         { 'uuid': uuid, 'type': type, 'noParagraph': noParagraph },
         xhrPath,
         localLoader
