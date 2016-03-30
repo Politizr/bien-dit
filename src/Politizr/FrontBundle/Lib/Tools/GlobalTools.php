@@ -35,6 +35,9 @@ class GlobalTools
     private $formFactory;
     private $validator;
 
+    private $liipImagineController;
+    private $liipImagineCacheManager;
+
     private $logger;
 
     /**
@@ -43,6 +46,8 @@ class GlobalTools
      * @param @security.context
      * @param @form.factory
      * @param @validator
+     * @param @liip_imagine.controller
+     * @param @liip_imagine.cache.manager
      * @param @logger
      */
     public function __construct(
@@ -50,6 +55,8 @@ class GlobalTools
         $securityContext,
         $formFactory,
         $validator,
+        $liipImagineController,
+        $liipImagineCacheManager,
         $logger
     ) {
         $this->securityAuthorizationChecker = $securityAuthorizationChecker;
@@ -58,6 +65,9 @@ class GlobalTools
         $this->formFactory = $formFactory;
 
         $this->validator = $validator;
+
+        $this->liipImagineController = $liipImagineController;
+        $this->liipImagineCacheManager = $liipImagineCacheManager;
 
         $this->logger = $logger;
     }
@@ -555,5 +565,34 @@ class GlobalTools
         }
 
         return null;
+    }
+
+    /**
+     * Apply a LIIP Imagine filter to an image and return the image url
+     *
+     * @param $baseUrl
+     * @param $fileName
+     * @param $fileWebPath   Relative web path
+     * @param $filterName
+     * @return string url
+     */
+    public function filterImage($baseUrl, $fileName, $fileWebPath, $filterName = 'facebook_share')
+    {
+        // $this->logger->info('*** getFilteredImageUrl');
+        // $this->logger->info('$baseUrl = '.print_r($baseUrl, true));
+        // $this->logger->info('$fileName = '.print_r($fileName, true));
+        // $this->logger->info('$fileWebPath = '.print_r($fileWebPath, true));
+        // $this->logger->info('$filterName = '.print_r($filterName, true));
+
+        $this->liipImagineController->filterAction(
+            new Request(),
+            $fileWebPath.$fileName,
+            $filterName
+        );
+
+        $imageUrl = $this->liipImagineCacheManager->getBrowserPath($fileWebPath.$fileName, $filterName);
+        // $this->logger->info('$imageUrl = '.print_r($imageUrl, true));
+
+        return $imageUrl;
     }
 }

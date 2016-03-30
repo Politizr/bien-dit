@@ -9,6 +9,7 @@
 
 {% block description %}Profil de {{ user | purify | trim }}, {{ user.biography | striptags | purify | trim }}{% endblock description %}
 
+{% block ogImage %}{{ user | ogImage(app.request.getSchemeAndHttpHost()) }}{% endblock ogImage %}
 {% block ogTitle %}{{ user }} – Politizr{% endblock ogTitle %}
 {% block ogDescription %}Profil de {{ user | purify | trim }}, {{ user.biography | striptags | purify | trim }}{% endblock ogDescription %}
 

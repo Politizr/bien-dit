@@ -7,5 +7,7 @@ services:
             - @security.context
             - @form.factory
             - @validator
+            - @liip_imagine.controller
+            - @liip_imagine.cache.manager
             - @logger
 

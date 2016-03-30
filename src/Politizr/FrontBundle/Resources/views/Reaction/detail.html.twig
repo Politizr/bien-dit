@@ -9,6 +9,7 @@
 
 {% block description %}{{ reaction.description | removeLinks | removeSpans | excerpt(1, true) | striptags | trim | purify }}{% endblock description %}
 
+{% block ogImage %}{{ reaction | ogImage(app.request.getSchemeAndHttpHost()) }}{% endblock ogImage %}
 {% block ogTitle %}{{ reaction.title | purify | trim }} – Politizr{% endblock ogTitle %}
 {% block ogDescription %}{{ reaction.description | removeLinks | removeSpans | excerpt(1, true) | striptags | trim | purify }}{% endblock ogDescription %}
 

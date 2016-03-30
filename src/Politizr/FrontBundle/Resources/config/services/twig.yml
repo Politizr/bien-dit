@@ -4,6 +4,18 @@ services:
        tags:
             - { name: twig.extension }
 
+    politizr.twig.social:
+        class:          Politizr\FrontBundle\Twig\PolitizrSocialExtension
+        arguments:
+            - @security.token_storage
+            - @security.authorization_checker
+            - @router
+            - @templating
+            - @politizr.tools.global
+            - @logger
+        tags:
+            - { name: twig.extension }
+
     politizr.twig.tag:
         class:          Politizr\FrontBundle\Twig\PolitizrTagExtension
         arguments:
