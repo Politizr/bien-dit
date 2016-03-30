@@ -163,7 +163,7 @@ function createComment(context)
         'document',
         'commentNew',
         RETURN_BOOLEAN
-        );
+    );
 
     return xhrCall(
         context,
@@ -206,7 +206,7 @@ function commentTextCounter() {
         countSpaces              : true,                  // count spaces as character (only for "character" type)
         countDown                : true,                  // if the counter should deduct from maximum characters/words rather than counting up
         countDownText            : "Caractères restants: ",          // count down text
-        countExtendedCharacters  : false,                       // count extended UTF-8 characters as 2 bytes (such as Chinese characters)    
+        countExtendedCharacters  : true,                       // count extended UTF-8 characters as 2 bytes (such as Chinese characters)    
     });
 };
 

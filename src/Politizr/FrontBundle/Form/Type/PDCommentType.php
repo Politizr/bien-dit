@@ -33,12 +33,26 @@ class PDCommentType extends AbstractType
             'label' => 'Commentaire',
             'constraints' => array(
                 new NotBlank(array('message' => 'Commentaire obligatoire.')),
-                new Length(array('min' => 5, 'max' => 500, 'minMessage' => 'Au moins 5 caractères.', 'maxMessage' => 'Maximum de 500 caractères.')),
+                new Length(array(
+                    'charset' => 'UTF-8',
+                    'min' => 5,
+                    'max' => 500,
+                    'minMessage' => 'Au moins 5 caractères.',
+                    'maxMessage' => 'Maximum de 500 caractères.'
+                )),
             ),
             'attr' => array(
                 'placeholder' => 'Votre commentaire...',
-                )
+            )
         ));
+
+        // replace various backline encoding with only "\n" to avoid double count on backline
+        // cf. http://stackoverflow.com/questions/7836632/how-to-replace-different-newline-styles-in-php-the-smartest-way
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+            $data = $event->getData();
+            $data['description'] = preg_replace('~(*BSR_ANYCRLF)\R~', "\n", $data['description']);
+            $event->setData($data);
+        });
 
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
             $comment = $event->getForm()->getData();
