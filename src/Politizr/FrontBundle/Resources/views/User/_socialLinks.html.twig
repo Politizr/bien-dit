@@ -1,0 +1,14 @@
+{# beta #}
+{% if user.website or user.twitter or user.facebook %}
+    <div class="profileLinks">
+        {% if user.facebook %}
+            <a class="linkFB" href="{{ user.facebook }}"><i class="icon-social-fb"></i></a>
+        {% endif %}
+        {% if user.twitter %}
+            <a class="linkTW" href="{{ user.twitter }}"><i class="icon-social-tw"></i></a>
+        {% endif %}
+        {% if user.website %}
+            <a class="linkWeb" href="{{ user.website }}"><i class="icon-link"></i></a>
+        {% endif %}
+    </div>
+{% endif %}
