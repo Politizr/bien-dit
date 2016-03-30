@@ -1,9 +1,9 @@
 {# beta #}
 {% if document.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE') %}
-    {% set detailPath = path('DebateDraftEditC', { 'uuid': document.uuid }) %}
+    {% set detailPath = path('DebateDraftEdit'~profileSuffix(), { 'uuid': document.uuid }) %}
     {% set spanClass = 'subject' %}
 {% elseif document.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION') %}
-    {% set detailPath = path('ReactionDraftEditC', { 'uuid': document.uuid }) %}
+    {% set detailPath = path('ReactionDraftEdit'~profileSuffix(), { 'uuid': document.uuid }) %}
     {% set spanClass = '' %}
 {% endif %}
 
