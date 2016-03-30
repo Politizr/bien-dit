@@ -1,6 +1,6 @@
 {# beta #}
 <div class="card myactivity">
-    {% include 'PolitizrFrontBundle:User:_summaryAuthor.html.twig' with { 'user': user } only %}
+    {% include 'PolitizrFrontBundle:User:_summary.html.twig' with { 'user': user, 'withSocialLinks': false } only %}
     <div class="coloredBg">
         {% if (way == 'up') %}
             <div class="activity cardLike">Vous aimez cette publication.</div>
@@ -10,7 +10,7 @@
         <h5>{% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': timelineRow } only %}</h5>
 
         <div class="miniPost">
-            {% include 'PolitizrFrontBundle:User:_summaryAuthor.html.twig' with { 'user': author } only %}
+            {% include 'PolitizrFrontBundle:User:_summary.html.twig' with { 'user': author, 'withSocialLinks': false } only %}
             {% include 'PolitizrFrontBundle:Document:_header.html.twig' with { 'document': document, 'mini': true } only %}
             <h5>{% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': document } only %}</h5>
         </div>

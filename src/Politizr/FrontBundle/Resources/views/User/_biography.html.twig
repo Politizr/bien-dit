@@ -1,0 +1,5 @@
+{% if user.biography | length > 0 %}
+    <div class="profileBio">{{ user.biography | purify }}</div>
+{% elseif app.user.id == user.id %}
+    <div class="profileBio defaultBio">Prenez 5 minutes pour <a href="{{ path('EditProfile'~profileSuffix())}}">modifier et compléter votre profil</a>. Merci!</div>
+{% endif %}

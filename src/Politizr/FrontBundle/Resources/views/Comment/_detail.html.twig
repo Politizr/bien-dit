@@ -1,6 +1,6 @@
 {# beta #}
 <div class="comment">
-    {% include 'PolitizrFrontBundle:User:_summaryAuthor.html.twig' with { 'user': comment.user } only %}
+    {% include 'PolitizrFrontBundle:User:_summary.html.twig' with { 'user': comment.user, 'withSocialLinks': false } only %}
     <div class="commentText">
         {{ comment.description | purify | converturls }}
     </div>

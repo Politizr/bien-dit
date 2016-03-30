@@ -3,7 +3,7 @@
     <div class="subscribersList">
         {% for user in users %}
             <div class="subscribersListItem">
-                {% include 'PolitizrFrontBundle:User:_summaryMiniAuthor.html.twig' with { 'user': user } only %}
+                {% include 'PolitizrFrontBundle:User:_summaryMini.html.twig' with { 'user': user } only %}
             </div>
         {% endfor %}
     </div>

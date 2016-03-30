@@ -16,7 +16,7 @@
 {% block content %}
     <div id="content">
         <div class="post">
-            {% include 'PolitizrFrontBundle:User:_summaryAuthor.html.twig' with { 'user': debate.user } only %}
+            {% include 'PolitizrFrontBundle:User:_summary.html.twig' with { 'user': debate.user, 'withSocialLinks': false } only %}
             <h5>{% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': debate } only %}</h5>
             <div class="postStats">
                 {% include 'PolitizrFrontBundle:Document:_statsMini.html.twig' with { 'document': debate } only %}

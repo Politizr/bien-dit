@@ -1,5 +1,5 @@
 <div class="card myactivity">
-    {% include 'PolitizrFrontBundle:User:_summaryAuthor.html.twig' with { 'user': user } only %}
+    {% include 'PolitizrFrontBundle:User:_summary.html.twig' with { 'user': user, 'withSocialLinks': false } only %}
     <div class="coloredBg">
         <div class="activity cardFollowing">
             {% if way == 'up' %}
@@ -12,7 +12,7 @@
         
         <div class="miniPost">
             {% if followDebate %}
-                {% include 'PolitizrFrontBundle:User:_summaryAuthor.html.twig' with { 'user': followDebate.user } only %}
+                {% include 'PolitizrFrontBundle:User:_summary.html.twig' with { 'user': followDebate.user } only %}
                 {% include 'PolitizrFrontBundle:Document:_header.html.twig' with { 'document': followDebate, 'mini': true } only %}
                 <h5>{% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': followDebate } only %}</h5>
             {% else %}
