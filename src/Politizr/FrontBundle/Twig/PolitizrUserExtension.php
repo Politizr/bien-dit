@@ -86,13 +86,13 @@ class PolitizrUserExtension extends \Twig_Extension
                 array('is_safe' => array('html'))
             ),
             new \Twig_SimpleFilter(
-                'metaTitle',
-                array($this, 'metaTitle'),
+                'typeGenderName',
+                array($this, 'typeGenderName'),
                 array('is_safe' => array('html'))
             ),
             new \Twig_SimpleFilter(
-                'typeGenderName',
-                array($this, 'typeGenderName'),
+                'nbFollowers',
+                array($this, 'nbFollowers'),
                 array('is_safe' => array('html'))
             ),
             new \Twig_SimpleFilter(
