@@ -86,8 +86,13 @@ class PolitizrUserExtension extends \Twig_Extension
                 array('is_safe' => array('html'))
             ),
             new \Twig_SimpleFilter(
-                'nbFollowers',
-                array($this, 'nbFollowers'),
+                'metaTitle',
+                array($this, 'metaTitle'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
+                'typeGenderName',
+                array($this, 'typeGenderName'),
                 array('is_safe' => array('html'))
             ),
             new \Twig_SimpleFilter(
@@ -258,6 +263,33 @@ class PolitizrUserExtension extends \Twig_Extension
                 'withShadow' => $withShadow,
             )
         );
+
+        return $html;
+    }
+
+    /**
+     * User's meta title
+     *
+     * @param PUser $user
+     * @return html
+     */
+    public function typeGenderName(PUser $user)
+    {
+        // $this->logger->info('*** typeGenderName');
+        // $this->logger->info('$user = '.print_r($user, true));
+
+        if ($user->isQualified()) {
+            $html = 'Élu';
+            if ($user->getGender() == 'Madame') {
+                $html .= 'e';
+            }
+        } else {
+            $html = 'Citoyen';
+            if ($user->getGender() == 'Madame') {
+                $html .= 'ne';
+            }
+        }
+        $html .= ' ' . $user->__toString();
 
         return $html;
     }

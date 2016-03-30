@@ -2,7 +2,7 @@
 {# common "connected" layout #}
 {% extends 'PolitizrFrontBundle::baseFront.html.twig' %}
 
-{% block title %}{% if (isGrantedE()) %}Politizr - Élu {{ app.user }}{% elseif (isGrantedC()) %}Politizr - Citoyen {{ app.user }}{% endif %}{% endblock title %}
+{% block title %}Politizr - {{ app.user | typeGenderName }}{% endblock title %}
 
 {% block description %}Politizr est une plateforme indépendante et neutre permettant aux élu-e-s de toute la France de débattre publiquement des sujets proposés par leurs concitoyens.{% endblock description %}
 
