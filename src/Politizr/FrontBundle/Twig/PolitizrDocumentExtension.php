@@ -321,11 +321,11 @@ class PolitizrDocumentExtension extends \Twig_Extension
         }
 
         if (0 === $nbReactions) {
-            $html = 'Aucune réaction d\'élu-e';
+            $html = 'Aucune réponse d\'élu-e';
         } elseif (1 === $nbReactions) {
-            $html = '1 réaction d\'élu-e';
+            $html = '1 réponse d\'élu-e';
         } else {
-            $html = $this->globalTools->readeableNumber($nbReactions).' réactions d\'élu-e-s';
+            $html = $this->globalTools->readeableNumber($nbReactions).' réponses d\'élu-e-s';
         }
 
         return $html;
