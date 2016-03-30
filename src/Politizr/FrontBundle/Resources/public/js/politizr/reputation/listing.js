@@ -35,3 +35,18 @@ function userMiniBadgeListing(targetElement, localLoader, uuid) {
     });
 }
 
+
+/**
+ * Show reputation score if authorized
+ */
+function showReputation()
+{
+    if (!$('#reputationScore').is(':visible')) {
+        return;
+    }
+    
+    getUserScore(uuid).done(function(data) {
+        // console.log(data['html']);
+        $('.sidebarBadges').find('h5').first().html(data['html'] + ' points de réputation');
+    });
+}

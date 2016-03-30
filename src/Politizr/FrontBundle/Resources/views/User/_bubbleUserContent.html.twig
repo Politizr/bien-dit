@@ -7,9 +7,7 @@
     </div>  
 
     <div class="miniActions">
-        <div class="actionFollow withLoaderInside">
-            {% include 'PolitizrFrontBundle:Follow:_subscribeAction.html.twig' with { 'subject': user } only %}
-        </div>
+        {% include 'PolitizrFrontBundle:Follow:_actionFollow.html.twig' with { 'subject': user } only %}
     </div>
 </div>
 <div class="bubbBottom">

@@ -97,4 +97,3 @@ function detailContentUser(targetElement, localLoader, uuid) {
         localLoader.hide();
     });
 }
-

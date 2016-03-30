@@ -16,9 +16,7 @@
                 <div class="listHeader">
                     <h5>Les publications abordants la thématique</h5>
                     <h1>{{ tag.title }}</h1>
-                    <div class="actionFollow withLoaderInside">
-                        {% include 'PolitizrFrontBundle:Follow:_subscribeAction.html.twig' with { 'subject': tag } only %}
-                    </div>
+                    {% include 'PolitizrFrontBundle:Follow:_actionFollow.html.twig' with { 'subject': tag } only %}
                 </div>
             </div>
             <div class="pseudoTabs" uuid="{{ tag.uuid }}">

@@ -63,11 +63,11 @@
 {% block sidebarContent %}
     <div class="sidebarSubject">
         <div class="sidebarAction">
-            <div class="sidebarFollow">
-                <div class="actionFollow withLoaderInside">
-                    {% include 'PolitizrFrontBundle:Follow:_subscribeAction.html.twig' with { 'subject': debate } only %}
+            {% if app.user and app.user.id != debate.getPUserId %}
+                <div class="sidebarFollow">
+                    {% include 'PolitizrFrontBundle:Follow:_actionFollow.html.twig' with { 'subject': debate } only %}
                 </div>
-            </div>
+            {% endif %}
             <div class="actionsBox">
                 <div class="miniActions">
                     {% include 'PolitizrFrontBundle:Reaction:_actionNew.html.twig' with { 'document': debate } only %}

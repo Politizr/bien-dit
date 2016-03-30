@@ -3,6 +3,12 @@ $(function() {
     userFollowersListing();
 
     $.when(
+        showReputation(),
+        userMiniBadgeListing(
+            $('.sidebarBadges').find('#userBadges').first(),
+            $('.sidebarBadges').find('.ajaxLoader').first(),
+            $('#userBadges').attr('uuid')
+        ),
         lastUserFollowersListing(
             $('.sidebarUserFollowers').find('#userFollowers').first(),
             $('.sidebarUserFollowers').find('.ajaxLoader').first(),

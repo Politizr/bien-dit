@@ -7,7 +7,9 @@ $(function() {
     notificationsLoading();
 })
 
-// ************************** NOTIFICATIONS ************************** //
+// ******************************************************************* //
+//                            NOTIFICATIONS                            //
+// ******************************************************************* //
 
 $(document).mousedown(function (e) {
     var container = $("#notifBox, [action='toggleNotifBox']");
@@ -53,4 +55,100 @@ $("body").on("click", "div[action='notificationCheckAll']", function(e) {
     var localLoader = $(this).closest('#notifBox').find('.ajaxLoader').first();
     
     return chekNotificationAll(localLoader);
+});
+
+
+// ******************************************************************* //
+//                            FOLLOWING                                //
+// ******************************************************************* //
+
+// follow / unfollow debate
+$("body").on("click", "[action='followDebate']", function(e) {
+    // console.log('*** click followDebate');
+    
+    var xhrPath = getXhrPath(
+        ROUTE_FOLLOW_DEBATE,
+        'document',
+        'follow',
+        RETURN_HTML
+    );
+
+    var targetElement = $(this).closest('.actionFollow');
+    var localLoader = $(this).closest('.actionFollow').find('.ajaxLoader').first();
+    var uuid = $(this).attr('uuid');
+    var way = $(this).attr('way');
+
+    $.when(
+        follow(xhrPath, targetElement, localLoader, uuid, way)
+    ).done(function(data) {
+        if (!data['error']) {
+            // update reputation counter
+            scoreCounter();
+            badgesCounter();
+
+            // refresh timeline
+            refreshTimeline();
+            stickySidebar();
+        }
+    });    
+});
+
+// follow / unfollow user
+$("body").on("click", "[action='followUser']", function(e) {
+    // console.log('*** click followUser');
+    
+    var xhrPath = getXhrPath(
+        ROUTE_FOLLOW_USER,
+        'user',
+        'follow',
+        RETURN_HTML
+    );
+
+    var targetElement = $(this).closest('.actionFollow');
+    var localLoader = $(this).closest('.actionFollow').find('.ajaxLoader').first();
+    var uuid = $(this).attr('uuid');
+    var way = $(this).attr('way');
+
+    $.when(
+        follow(xhrPath, targetElement, localLoader, uuid, way)
+    ).done(function(data) {
+        if (!data['error']) {
+            // update reputation counter
+            scoreCounter();
+            badgesCounter();
+
+            // refresh timeline
+            refreshTimeline();
+            stickySidebar();
+        }
+    });    
+});
+
+// follow / unfollow tag
+$("body").on("click", "[action='followTag']", function(e) {
+    // console.log('*** click followTag');
+
+    var xhrPath = getXhrPath(
+        ROUTE_FOLLOW_TAG,
+        'tag',
+        'follow',
+        RETURN_HTML
+    );
+    
+    var targetElement = $(this).closest('.actionFollow');
+    var localLoader = $(this).closest('.actionFollow').find('.ajaxLoader').first();
+    var uuid = $(this).attr('uuid');
+    var way = $(this).attr('way');
+
+    $.when(
+        follow(xhrPath, targetElement, localLoader, uuid, way)
+    ).done(function(data) {
+        if (!data['error']) {
+            // refresh tag sidebar
+            userTagListing(
+                $('.sidebarFollowedTags').find('.tagList').first(),
+                $('.sidebarFollowedTags').find('.ajaxLoader').first()
+            );
+        }
+    });    
 });

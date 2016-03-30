@@ -11,7 +11,7 @@ function scoreCounter()
 
     getUserScore(uuid).done(function(data) {
         // console.log(data['html']);
-        $('.reputPoints').html(data['html']);
+        $('#reputCounter').find('.reputPoints').html(data['html']);
     });
 }
 
@@ -28,9 +28,9 @@ function badgesCounter()
         // console.log(data['nbBronze']);
         // console.log(data['nbSilver']);
         // console.log(data['nbGold']);
-        $('.badgesCounterBronze').html(data['nbBronze']);
-        $('.badgesCounterSilver').html(data['nbSilver']);
-        $('.badgesCounterGold').html(data['nbGold']);
+        $('#reputCounter').find('.badgesCounterBronze').html(data['nbBronze']);
+        $('#reputCounter').find('.badgesCounterSilver').html(data['nbSilver']);
+        $('#reputCounter').find('.badgesCounterGold').html(data['nbGold']);
     });
 }
 
