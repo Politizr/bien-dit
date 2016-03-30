@@ -34,6 +34,9 @@
                 </div>
                 {% include 'PolitizrFrontBundle:Reaction:_nbReactions.html.twig' with { 'document': document } only %}
                 <h5>{% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': document } only %}</h5>
+                {% if document.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION') %}
+                    {{ document | itemContextReaction() }}
+                {% endif %}
             </div>
             <div class="actionsBox">
                 <div class="miniActions">
