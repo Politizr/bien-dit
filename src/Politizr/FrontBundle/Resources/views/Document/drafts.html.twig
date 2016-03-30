@@ -1,3 +1,4 @@
+{# beta #}
 {% extends 'PolitizrFrontBundle::layoutConnected.html.twig' %}
 
 {% block title %}
@@ -7,11 +8,7 @@
 {% block content %}
     <div id="content">
         <div class="list">
-            <div class="pageTitle">
-                <div class="listHeader">
-                    <h5>Mes brouillons</h5>
-                </div>
-            </div>
+            <div class="pageTitle">Mes brouillons</div>
             <div id="documentListing" class="withLoaderInside">
                 {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
                 <div class="listTop"></div>
