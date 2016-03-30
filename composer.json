@@ -37,6 +37,7 @@
 
         "friendsofsymfony/user-bundle": "~2.0@dev",
 
+        "knplabs/knp-menu-bundle": ">1.0,<2.2",
         "symfony2admingenerator/generator-bundle": "^2.0@beta",
         "symfony2admingenerator/form-bundle": "@stable",
         "symfony2admingenerator/form-extensions-bundle": "dev-master",
