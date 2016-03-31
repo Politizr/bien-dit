@@ -10,5 +10,7 @@
         </div>
     {% endfor %}
 {% elseif (app.user and app.user.id == user.id) %}
-    <a href="{{ path('EditProfile'~profileSuffix())}}">Renseignez vos mandats.</a>
+    <a href="{{ path('EditProfile'~profileSuffix())}}">Renseignez vos mandats</a>
+{% else %}
+    Aucun mandat renseigné
 {% endif %}
