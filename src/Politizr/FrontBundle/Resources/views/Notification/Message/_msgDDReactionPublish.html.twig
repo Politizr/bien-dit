@@ -1,5 +1,5 @@
 {% if document %}
-    {% include 'PolitizrFrontBundle:Notification\\Message:_screenAuthor.html.twig' with {'author': author, 'authorUrl': authorUrl } only %} a publié la réaction {% include 'PolitizrFrontBundle:Notification\\Message:_screenLink.html.twig' with {'description': title | truncate(50), 'url': url } only %} au sujet de la publication {% include 'PolitizrFrontBundle:Notification\\Message:_screenLink.html.twig' with {'description': document.title | truncate(50), 'url': documentUrl } only %}
+    {% include 'PolitizrFrontBundle:Notification\\Message:_screenAuthor.html.twig' with {'author': author, 'authorUrl': authorUrl } only %} a publié la réponse {% include 'PolitizrFrontBundle:Notification\\Message:_screenLink.html.twig' with {'description': title | truncate(50), 'url': url } only %} au sujet de la publication {% include 'PolitizrFrontBundle:Notification\\Message:_screenLink.html.twig' with {'description': document.title | truncate(50), 'url': documentUrl } only %}
 {% else %}
     <i>Cette notification concernait un document supprimé.</i>
 {% endif %}
