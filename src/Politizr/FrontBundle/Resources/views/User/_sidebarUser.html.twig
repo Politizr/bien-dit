@@ -14,6 +14,11 @@
             <div class="sidebarEditProfile">
                 <a href="{{ path('EditProfile'~profileSuffix())}}"><i class="icon-edit"></i>Modifier mon profil</a>
             </div>
+            {{ user | share(app.request.uri) }}
+        </div>
+    {% else %}
+        <div class="sidebarAction">
+            {{ user | share(app.request.uri) }}
         </div>
     {% endif %}
 

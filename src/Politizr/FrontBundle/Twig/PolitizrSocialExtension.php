@@ -67,6 +67,11 @@ class PolitizrSocialExtension extends \Twig_Extension
                 array($this, 'ogImage'),
                 array('is_safe' => array('html'))
             ),
+            new \Twig_SimpleFilter(
+                'share',
+                array($this, 'share'),
+                array('is_safe' => array('html'))
+            ),
         );
     }
 
@@ -75,7 +80,7 @@ class PolitizrSocialExtension extends \Twig_Extension
     /* ######################################################################################################## */
 
     /**
-     * Tag's number of associated users
+     * Compute image for og facebook tag
      *
      * @param PDDebate|PDReaction|PUser $subject
      * @param string $baseUrl
@@ -104,6 +109,78 @@ class PolitizrSocialExtension extends \Twig_Extension
             'PolitizrFrontBundle:Navigation\\Social:_ogImage.html.twig',
             array(
                 'imageUrls' => $imageUrls,
+            )
+        );
+        $this->logger->info('$html = '.print_r($html, true));
+
+        return $html;
+    }
+
+    /**
+     * Share content
+     *
+     * @param PDDebate|PDReaction|PUser $subject
+     * @param string $baseUrl
+     * @return html
+     */
+    public function share($subject, $uri)
+    {
+        $tinyUri = $this->globalTools->getTinyUrl($uri);
+
+        if ($subject->getType() == ObjectTypeConstants::TYPE_DEBATE || $subject->getType() == ObjectTypeConstants::TYPE_REACTION) {
+            $tweet = strip_tags($subject->getTitle());
+
+            $toTweet = '«'.$tweet.'»';
+            $this->logger->info('$toTweet = '.print_r($toTweet, true));
+
+            // Paragraphs explode
+            // $toTweet = $this->globalTools->explodeParagraphs($subject->getDescription());
+            // $this->logger->info('$toTweet = '.print_r($toTweet, true));
+            // $toTweet = array_slice($toTweet, 0, 1);
+            // $this->logger->info('$toTweet = '.print_r($toTweet, true));
+            // $toTweet = $toTweet[0];
+            // $this->logger->info('$toTweet = '.print_r($toTweet, true));
+            // $toTweet = strip_tags($toTweet);
+            // $this->logger->info('$toTweet = '.print_r($toTweet, true));
+            // $toTweet = html_entity_decode($toTweet);
+            // $this->logger->info('$toTweet = '.print_r($toTweet, true));
+            // $tweet = substr($toTweet, 0, 100) . '...';
+        } elseif ($subject->getType() == ObjectTypeConstants::TYPE_USER) {
+            if ($subject->isQualified()) {
+                $toTweet = 'Élu';
+                if ($subject->getGender() == 'Madame') {
+                    $toTweet .= 'e';
+                }
+            } else {
+                $toTweet = 'Citoyen';
+                if ($subject->getGender() == 'Madame') {
+                    $toTweet .= 'ne';
+                }
+            }
+            $this->logger->info('$toTweet = '.print_r($toTweet, true));
+
+            $toTweet .= ' ' . $subject->getFullName();
+            $this->logger->info('$toTweet = '.print_r($toTweet, true));
+
+            if ($biography = $subject->getBiography()) {
+                $toTweet .=  ', ' . $subject->getBiography();
+                $this->logger->info('$toTweet = '.print_r($toTweet, true));
+            }
+
+            $toTweet = strip_tags($toTweet);
+            $this->logger->info('$toTweet = '.print_r($toTweet, true));
+            $toTweet = html_entity_decode($toTweet);
+            $this->logger->info('$toTweet = '.print_r($toTweet, true));
+            $tweet = substr($toTweet, 0, 100) . '...';
+        }
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Navigation\\Social:_share.html.twig',
+            array(
+                'uri' => $uri,
+                'tinyUri' => $tinyUri,
+                'tweet' => $tweet,
             )
         );
         $this->logger->info('$html = '.print_r($html, true));

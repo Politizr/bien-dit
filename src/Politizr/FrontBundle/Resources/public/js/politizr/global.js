@@ -71,16 +71,18 @@ $("body").on("click", "[action='hideHelper']", function() {
     $('.helperMark').css("color", "#b8b9bc");i
 });
 
-// social network sharing
-$("body").on("click", "[action='share-fb']", function(e) {
+// ******************************************************************* //
+//                     SOCIAL NETWORK SHARING                          //
+// ******************************************************************* //
+$("body").on("click", "[action='shareFB']", function(e) {
     window.open('https://facebook.com/sharer.php?u='+$(this).attr('url'), 'facebook_share', 'height=320, width=640, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, directories=no, status=no');
 });
 
-$("body").on("click", "[action='share-tw']", function(e) {
-    window.open('https://twitter.com/share?url='+$(this).attr('url')+'&text='+$(this).attr('tweetText')+'&hashtags=Politizr&lang=fr&count=none', 'tweet_it', 'height=320, width=640, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, directories=no, status=no');
+$("body").on("click", "[action='shareTW']", function(e) {
+    window.open('https://twitter.com/share?url='+$(this).attr('url')+'&text='+$(this).attr('tweetText')+'&via=Politizr&lang=fr&count=none', 'tweet_it', 'height=320, width=640, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, directories=no, status=no');
 });
 
-$("body").on("click", "[action='share-gg']", function(e) {
+$("body").on("click", "[action='shareGG']", function(e) {
     window.open('https://plus.google.com/share?url='+$(this).attr('url'), 'google_plus_share', 'height=320, width=640, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, directories=no, status=no');
 });
 

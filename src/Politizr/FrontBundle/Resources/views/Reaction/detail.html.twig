@@ -93,7 +93,7 @@
                     {% include 'PolitizrFrontBundle:Reputation:_noteAction.html.twig' with { 'subject': reaction } only %}
                 </div>
             </div>
-            {# include('includes/share.php') #}
+            {{ reaction | share(app.request.uri) }}
         </div>
 
         {% include 'PolitizrFrontBundle:Monitoring:_sidebarAbuse.html.twig' with { 'subject': reaction } only %}

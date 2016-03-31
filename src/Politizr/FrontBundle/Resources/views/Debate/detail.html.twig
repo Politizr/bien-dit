@@ -77,7 +77,7 @@
                     {% include 'PolitizrFrontBundle:Reputation:_noteAction.html.twig' with { 'subject': debate } only %}
                 </div>
             </div>
-            {# include('includes/share.php') #}
+            {{ debate | share(app.request.uri) }}
         </div>
 
         {% include 'PolitizrFrontBundle:Monitoring:_sidebarAbuse.html.twig' with { 'subject': debate } only %}

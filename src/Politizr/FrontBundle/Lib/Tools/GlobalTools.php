@@ -595,4 +595,23 @@ class GlobalTools
 
         return $imageUrl;
     }
+
+    /**
+     * Tinyfy URL
+     *
+     * @param $uri
+     * @return string
+     */
+    public function getTinyUrl($uri)
+    {
+        // with tinyurl
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "https://tinyurl.com/api-create.php?url=".$uri);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $tinyUri = curl_exec($ch);
+        curl_close($ch);
+
+        return $tinyUri;
+    }
 }
