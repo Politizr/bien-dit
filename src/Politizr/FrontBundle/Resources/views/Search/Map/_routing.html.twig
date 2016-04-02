@@ -1,0 +1,8 @@
+{# beta #}
+<div id="mapHolder" class="france withLoaderInside">
+    {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+    <div class="svg">               
+        {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+        {% include 'PolitizrFrontBundle:Search\\Map:_france.svg.twig' with { 'current': null } %}
+    </div>
+</div>

@@ -2,9 +2,9 @@
 // on document ready
 $(function() {
     // console.log('*** global document ready');
-    $(".sticky-wrapper").addClass("hideSidebarForMobile");
-    fullImgLiquid();
     Waypoint.destroyAll();
+    fullImgLiquid();
+    $(".sticky-wrapper").addClass("hideSidebarForMobile");
     $('#ajaxGlobalLoader').hide();
     $('.bubblesHelper').hide();
 });
@@ -43,6 +43,7 @@ $("body").on("click", "[action='toggleMenu']", function() {
 
 // Scroll haut de page
 $("body").on("click", "[action='goUp']", function() {
+    stickySidebar();
     $('html, body').animate({
         scrollTop: $("body").offset().top
     }, '1000');
@@ -218,12 +219,12 @@ function loadDataCharts(elementId, lineChartData) {
  * @param url
  */
 function updateUrl(url) {
-    console.log("*** updateUrl");
-    console.log(url);
+    // console.log("*** updateUrl");
+    // console.log(url);
 
     if (typeof (history.pushState) != "undefined") {
         history.pushState({}, '', url);
     } else {
-        console.log("Browser does not support HTML5.");
+        console.log("Your browser does not support HTML5.");
     }
 }

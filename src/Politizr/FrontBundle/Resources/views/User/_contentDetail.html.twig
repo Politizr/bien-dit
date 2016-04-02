@@ -2,8 +2,8 @@
 <div class="list">
     <div class="pageTitle">Les publications de {{ user }}</div>
     <div class="pseudoTabs" uuid="{{ user.uuid }}">
-        <a class="currentPage" action="documentsByUserListing" filter="{{ constant('Politizr\\Constant\\ListingConstants::ORDER_BY_KEYWORD_BEST_NOTE') }}">Top</a>
-        <a action="documentsByUserListing" filter="{{ constant('Politizr\\Constant\\ListingConstants::ORDER_BY_KEYWORD_LAST') }}">Les plus récentes</a>
+        <a class="currentPage" action="publicationsByUserListing" filter="{{ constant('Politizr\\Constant\\ListingConstants::ORDER_BY_KEYWORD_BEST_NOTE') }}">Top</a>
+        <a action="publicationsByUserListing" filter="{{ constant('Politizr\\Constant\\ListingConstants::ORDER_BY_KEYWORD_LAST') }}">Les plus récentes</a>
     </div>
     <div id="documentListing" class="withLoaderInside">
         {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}

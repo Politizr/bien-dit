@@ -27,6 +27,11 @@ ListingByOrganization:
     requirements:
         _method:        GET
 
+ListingSearch:
+    pattern:  /recherche
+    defaults: { _controller: PolitizrFrontBundle:Listing:search }
+    requirements:
+        _method:        GET
 
 
 ################################################################################

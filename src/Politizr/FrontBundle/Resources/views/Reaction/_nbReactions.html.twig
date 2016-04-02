@@ -1,3 +1,4 @@
+{# beta #}
 {% if document.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE') %}
     {% set detailPath = path('DebateDetail', { 'slug': document.slug }) %}
 {% elseif document.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION') %}
@@ -5,5 +6,5 @@
 {% endif %}
 
 <a href="{{ detailPath }}" class="answerCounter">
-    <i class="icon-reaction"></i>{{ document | nbReactions }}
+    <i class="icon-reaction"></i>{{ document | nbReactions(descendants = false) }}
 </a>

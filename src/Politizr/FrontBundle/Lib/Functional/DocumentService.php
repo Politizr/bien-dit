@@ -18,6 +18,7 @@ use Politizr\Model\PDRCommentQuery;
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PRBadgeQuery;
 use Politizr\Model\PUReputationQuery;
+use Politizr\Model\PTagQuery;
 
 /**
  * Functional service for document management.
@@ -31,6 +32,8 @@ class DocumentService
     
     private $documentManager;
 
+    private $tagService;
+
     private $router;
     
     private $logger;
@@ -40,6 +43,7 @@ class DocumentService
      * @param @security.token_storage
      * @param @security.authorization_checker
      * @param @politizr.manager.document
+     * @param @politizr.functional.tag
      * @param @router
      * @param @logger
      */
@@ -47,6 +51,7 @@ class DocumentService
         $securityTokenStorage,
         $securityAuthorizationChecker,
         $documentManager,
+        $tagService,
         $router,
         $logger
     ) {
@@ -54,6 +59,8 @@ class DocumentService
         $this->securityAuthorizationChecker =$securityAuthorizationChecker;
 
         $this->documentManager = $documentManager;
+
+        $this->tagService = $tagService;
 
         $this->router = $router;
 
@@ -66,17 +73,110 @@ class DocumentService
     /* ######################################################################################################## */
 
     /**
+     * Get filtered paginated documents
+     *
+     * @param string $geoTagUuid
+     * @param string $filterPublication
+     * @param string $filterProfile
+     * @param string $filterActivity
+     * @param string $filterDate
+     * @param integer $offset
+     * @param înteger $count
+     * @return PropelCollection[PublicationRow]
+     */
+    public function getPublicationsByFilters(
+        $geoTagUuid,
+        $filterPublication,
+        $filterProfile,
+        $filterActivity,
+        $filterDate,
+        $offset = 0,
+        $count = ListingConstants::LISTING_CLASSIC_PAGINATION
+    ) {
+        $documents = new \PropelCollection();
+
+        $inQueryTagIds = null;
+        if ($geoTagUuid) {
+            $tag = PTagQuery::create()
+                ->filterByUuid($geoTagUuid)
+                ->findOne();
+            if (!$tag) {
+                throw new InconsistentDataException(sprintf('Tag %s not found', $filters['map']));
+            }
+            $tagIds = $this->tagService->computePublicationGeotagRelativeIds($tag->getId());
+
+            $inQueryTagIds = implode(',', $tagIds);
+            if (empty($inQueryTagIds)) {
+                $inQueryTagIds = 0;
+            }
+        }
+
+        // "most views" activity filters only applied to debates and/or reactions:
+        // - if publications type selected is all > return only debates & reactions
+        // - if publications type selected is comment > return "no result"
+        if ($filterActivity == ListingConstants::ORDER_BY_KEYWORD_MOST_VIEWS) {
+            if ($filterPublication == ListingConstants::FILTER_KEYWORD_COMMENTS) {
+                return $documents;
+            } elseif ($filterPublication == ListingConstants::FILTER_KEYWORD_ALL_PUBLICATIONS) {
+                $filterPublication = ListingConstants::FILTER_KEYWORD_DEBATES_AND_REACTIONS;
+            }
+        }
+
+        // "most followed" activity filters only applied to debates:
+        // - if publications type selected is comment or reactions > return "no result"
+        if ($filterActivity == ListingConstants::ORDER_BY_KEYWORD_MOST_FOLLOWED) {
+            if ($filterPublication == ListingConstants::FILTER_KEYWORD_COMMENTS || $filterPublication == ListingConstants::FILTER_KEYWORD_REACTIONS) {
+                return $documents;
+            }
+        }
+
+        // "most reactions" activity filters only applied to debates and/or reactions:
+        // - if publications type selected is all > return only debates & reactions
+        // - if publications type selected is comment > return "no result"
+        if ($filterActivity == ListingConstants::ORDER_BY_KEYWORD_MOST_REACTIONS) {
+            if ($filterPublication == ListingConstants::FILTER_KEYWORD_COMMENTS) {
+                return $documents;
+            } elseif ($filterPublication == ListingConstants::FILTER_KEYWORD_ALL_PUBLICATIONS) {
+                $filterPublication = ListingConstants::FILTER_KEYWORD_DEBATES_AND_REACTIONS;
+            }
+        }
+
+        // "most comments" activity filters only applied to debates and/or reactions:
+        // - if publications type selected is all > return only debates & reactions
+        // - if publications type selected is comment > return "no result"
+        if ($filterActivity == ListingConstants::ORDER_BY_KEYWORD_MOST_COMMENTS) {
+            if ($filterPublication == ListingConstants::FILTER_KEYWORD_COMMENTS) {
+                return $documents;
+            } elseif ($filterPublication == ListingConstants::FILTER_KEYWORD_ALL_PUBLICATIONS) {
+                $filterPublication = ListingConstants::FILTER_KEYWORD_DEBATES_AND_REACTIONS;
+            }
+        }
+
+        $documents = $this->documentManager->generatePublicationsByFiltersPaginated(
+            $inQueryTagIds,
+            $filterPublication,
+            $filterProfile,
+            $filterActivity,
+            $filterDate,
+            $offset,
+            $count
+        );
+
+        return $documents;
+    }
+
+    /**
      * Get "user publications" paginated listing
      *
      * @param array $userId
      * @param string $orderBy
      * @param integer $offset
      * @param înteger $count
-     * @return PropelCollection PDocument
+     * @return PropelCollection[PublicationRow]
      */
     public function getUserPublicationsPaginatedListing($userId, $orderBy, $offset = 0, $count = ListingConstants::LISTING_CLASSIC_PAGINATION)
     {
-        $documents = $this->documentManager->generateDocumentsByUserPaginated($userId, $orderBy, $offset, $count);
+        $documents = $this->documentManager->generatePublicationsByUserPaginated($userId, $orderBy, $offset, $count);
 
         return $documents;
     }

@@ -30,16 +30,6 @@ services:
             - @politizr.functional.tag
             - @logger
 
-    politizr.xhr.dashboard:
-        class: Politizr\FrontBundle\Lib\Xhr\XhrDashboard
-        arguments:
-        arguments:
-            - @security.token_storage
-            - @templating
-            - @politizr.functional.document
-            - @politizr.functional.user
-            - @logger
-
     politizr.xhr.bubble:
         class: Politizr\FrontBundle\Lib\Xhr\XhrBubble
         arguments:

@@ -6,6 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+use Politizr\Constant\TagConstants;
+
 use Politizr\Model\PDocumentInterface;
 use Politizr\Model\PUser;
 
@@ -156,6 +158,31 @@ class ListingController extends Controller
             'organization' => $organization
         ));
     }
+
+    /**
+     * Search listing
+     * code beta
+     */
+    public function searchAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** searchAction');
+
+        // Map ids
+        $franceTag = PTagQuery::create()->findPk(TagConstants::TAG_GEO_FRANCE_ID);
+        $fomTag = PTagQuery::create()->findPk(TagConstants::TAG_GEO_REGION_ID_FOM);
+        $europeTag = PTagQuery::create()->findPk(TagConstants::TAG_GEO_EUROPE_ID);
+        $worldTag = PTagQuery::create()->findPk(TagConstants::TAG_GEO_WORLD_ID);
+
+        return $this->render('PolitizrFrontBundle:Search:listingBySearch.html.twig', array(
+            'search' => true,
+            'franceTag' => $franceTag,
+            'fomTag' => $fomTag,
+            'europeTag' => $europeTag,
+            'worldTag' => $worldTag,
+        ));
+    }
+
 
     // *************************************************************************************************** //
     //                                      USER LISTING

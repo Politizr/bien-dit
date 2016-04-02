@@ -98,12 +98,18 @@ class ListingConstants
     const ORDER_BY_KEYWORD_MOST_VIEWS = 'mostViews';
 
     const FILTER_KEYWORD_ALL_DATE = 'allDate';
-    const FILTER_KEYWORD_ALL_USERS = 'allUsers';
     const FILTER_KEYWORD_LAST_DAY = 'lastDay';
     const FILTER_KEYWORD_LAST_WEEK = 'lastWeek';
     const FILTER_KEYWORD_LAST_MONTH = 'lastMonth';
+    const FILTER_KEYWORD_EXACT_MONTH = 'exactMonth';
+    
+    const FILTER_KEYWORD_ALL_USERS = 'allUsers';
     const FILTER_KEYWORD_QUALIFIED = 'qualified';
     const FILTER_KEYWORD_CITIZEN = 'citizen';
 
-    const FILTER_KEYWORD_EXACT_MONTH = 'exactMonth';
+    const FILTER_KEYWORD_ALL_PUBLICATIONS = 'allPublications';
+    const FILTER_KEYWORD_DEBATES_AND_REACTIONS = 'debatesReactionsPublications';
+    const FILTER_KEYWORD_DEBATES = 'debates';
+    const FILTER_KEYWORD_REACTIONS = 'reactions';
+    const FILTER_KEYWORD_COMMENTS = 'comments';
 }

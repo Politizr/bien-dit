@@ -11,10 +11,15 @@ $("body").on("click", "[action='listingNext']", function(e, waypoint) {
     var key = $('#moreResults').attr('key');
     // console.log(key);
 
+    // destroyAll to avoid infinite loading but breaks stickySidebar
+    // cf. https://github.com/Politizr/Politizr/issues/353 & https://github.com/Politizr/Politizr/issues/356
     if (waypoint) {
         waypoint.destroy();
         // console.log('destroy waypoint instance');
     }
+    Waypoint.refreshAll();
+    // Waypoint.destroyAll();
+
     paginatedFunctions[key](
         false,
         $(this).attr('offset')

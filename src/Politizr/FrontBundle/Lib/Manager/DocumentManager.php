@@ -42,6 +42,487 @@ class DocumentManager
     /* ######################################################################################################## */
 
     /**
+     * Filtered publications
+     *
+     * @see app/sql/documentsByFilters.sql
+     *
+     * @param array $inQueryTagIds
+     * @param string $filterPublication
+     * @param string $filterProfile
+     * @param string $filterActivity
+     * @param string $filterDate
+     * @return string
+     */
+    private function createPublicationsByFiltersRawSql($inQueryTagIds, $filterPublication, $filterProfile, $filterActivity, $filterDate)
+    {
+        // Tag subrequest
+        $subRequestTagIds1 = null;
+        $subRequestTagIds2 = null;
+        if ($inQueryTagIds) {
+            $subRequestTagIds1 = "AND p_d_d_tagged_t.p_tag_id IN ($inQueryTagIds)";
+            $subRequestTagIds2 = "AND p_d_r_tagged_t.p_tag_id IN ($inQueryTagIds)";
+        }
+
+        // Profile subrequest
+        $subRequestFilterProfile = null;
+        if ($filterProfile == ListingConstants::FILTER_KEYWORD_QUALIFIED) {
+            $subRequestFilterProfile = "AND p_user.qualified = 1";
+        } elseif ($filterProfile == ListingConstants::FILTER_KEYWORD_CITIZEN) {
+            $subRequestFilterProfile = "AND p_user.qualified = 0";
+        }
+
+        // Activity subrequest
+        if ($filterActivity == ListingConstants::ORDER_BY_KEYWORD_LAST) {
+            $orderBy = "ORDER BY published_at DESC";
+        } elseif ($filterActivity == ListingConstants::ORDER_BY_KEYWORD_BEST_NOTE) {
+            $orderBy = "ORDER BY note_pos DESC, note_neg ASC";
+        } elseif ($filterActivity == ListingConstants::ORDER_BY_KEYWORD_MOST_VIEWS) {
+            $orderBy = "ORDER BY nb_views DESC";
+        } else {
+            throw new InconsistentDataException(sprintf('Filter activity %s is not managed', $filterActivity));
+        }
+
+        // Date subrequest
+        $subRequestFilterDate1 = null;
+        $subRequestFilterDate2 = null;
+        $subRequestFilterDate3 = null;
+        $subRequestFilterDate4 = null;
+        if ($filterDate == ListingConstants::FILTER_KEYWORD_LAST_MONTH) {
+            $subRequestFilterDate1 = "AND p_d_debate.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW() ";
+            $subRequestFilterDate2 = "AND p_d_reaction.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW() ";
+            $subRequestFilterDate3 = "AND p_d_d_comment.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW() ";
+            $subRequestFilterDate4 = "AND p_d_r_comment.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW() ";
+        } elseif ($filterDate == ListingConstants::FILTER_KEYWORD_LAST_WEEK) {
+            $subRequestFilterDate1 = "AND p_d_debate.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 7 DAY) AND NOW() ";
+            $subRequestFilterDate2 = "AND p_d_reaction.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 7 DAY) AND NOW() ";
+            $subRequestFilterDate3 = "AND p_d_d_comment.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 7 DAY) AND NOW() ";
+            $subRequestFilterDate4 = "AND p_d_r_comment.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 7 DAY) AND NOW() ";
+        } elseif ($filterDate == ListingConstants::FILTER_KEYWORD_LAST_DAY) {
+            $subRequestFilterDate1 = "AND p_d_debate.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 1 DAY) AND NOW() ";
+            $subRequestFilterDate2 = "AND p_d_reaction.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 1 DAY) AND NOW() ";
+            $subRequestFilterDate3 = "AND p_d_d_comment.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 1 DAY) AND NOW() ";
+            $subRequestFilterDate4 = "AND p_d_r_comment.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 1 DAY) AND NOW() ";
+        }
+
+        // Requête SQL
+        $sqlPartDebates = "
+#  Débats publiés
+( SELECT DISTINCT p_d_debate.id as id, p_d_debate.title as title, p_d_debate.note_pos as note_pos, p_d_debate.note_neg as note_neg, p_d_debate.nb_views as nb_views, p_d_debate.published_at as published_at, p_d_debate.updated_at as updated_at, 'Politizr\\\Model\\\PDDebate' as type
+FROM p_d_debate
+    LEFT JOIN p_d_d_tagged_t
+        ON p_d_debate.id = p_d_d_tagged_t.p_d_debate_id
+    LEFT JOIN p_user
+        ON p_d_debate.p_user_id = p_user.id
+WHERE
+    p_d_debate.published = 1
+    AND p_d_debate.online = 1 
+    $subRequestTagIds1
+    $subRequestFilterDate1
+    $subRequestFilterProfile
+)
+";
+
+        $sqlPartReactions = "
+#  Réactions publiés
+( SELECT DISTINCT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.note_pos as note_pos, p_d_reaction.note_neg as note_neg, p_d_reaction.nb_views as nb_views, p_d_reaction.published_at as published_at, p_d_reaction.updated_at as updated_at,'Politizr\\\Model\\\PDReaction' as type
+FROM p_d_reaction
+    LEFT JOIN p_d_r_tagged_t
+        ON p_d_reaction.id = p_d_r_tagged_t.p_d_reaction_id
+    LEFT JOIN p_user
+        ON p_d_reaction.p_user_id = p_user.id
+WHERE
+    p_d_reaction.published = 1
+    AND p_d_reaction.online = 1
+    AND p_d_reaction.tree_level > 0
+    $subRequestTagIds2
+    $subRequestFilterDate2
+    $subRequestFilterProfile
+)
+";
+
+        $sqlPartComments = "
+# Commentaires débats publiés
+( SELECT DISTINCT p_d_d_comment.id as id, \"commentaire\" as title, p_d_d_comment.note_pos as note_pos, p_d_d_comment.note_neg as note_neg, -1 as nb_views, p_d_d_comment.published_at as published_at, p_d_d_comment.updated_at as updated_at, 'Politizr\\\Model\\\PDDComment' as type
+FROM p_d_d_comment
+    LEFT JOIN p_d_debate
+        ON p_d_d_comment.p_d_debate_id = p_d_debate.id
+    LEFT JOIN p_d_d_tagged_t
+        ON p_d_debate.id = p_d_d_tagged_t.p_d_debate_id
+    LEFT JOIN p_user
+        ON p_user.id = p_d_d_comment.p_user_id
+WHERE
+    p_d_d_comment.online = 1
+    $subRequestTagIds1
+    $subRequestFilterDate3
+    $subRequestFilterProfile
+)
+
+UNION DISTINCT
+
+# Commentaires réactions publiés
+( SELECT DISTINCT p_d_r_comment.id as id, \"commentaire\" as title, p_d_r_comment.note_pos as note_pos, p_d_r_comment.note_neg as note_neg, -1 as nb_views, p_d_r_comment.published_at as published_at, p_d_r_comment.updated_at as updated_at, 'Politizr\\\Model\\\PDRComment' as type
+FROM p_d_r_comment
+    LEFT JOIN p_d_reaction
+        ON p_d_r_comment.p_d_reaction_id = p_d_reaction.id
+    LEFT JOIN p_d_r_tagged_t
+        ON p_d_reaction.id = p_d_r_tagged_t.p_d_reaction_id
+    LEFT JOIN p_user
+        ON p_user.id = p_d_r_comment.p_user_id
+WHERE
+    p_d_r_comment.online = 1
+    $subRequestTagIds2
+    $subRequestFilterDate4
+    $subRequestFilterProfile
+)
+";
+
+        $sqlOrderLimit = "
+$orderBy
+
+LIMIT :offset, :limit
+";
+
+        // Publication filter
+        if ($filterPublication == ListingConstants::FILTER_KEYWORD_ALL_PUBLICATIONS) {
+            $sql = $sqlPartDebates . " UNION DISTINCT " . $sqlPartReactions . " UNION DISTINCT " . $sqlPartComments . $sqlOrderLimit;
+        } elseif ($filterPublication == ListingConstants::FILTER_KEYWORD_DEBATES_AND_REACTIONS) {
+            $sql = $sqlPartDebates . " UNION DISTINCT " . $sqlPartReactions . $sqlOrderLimit;
+        } elseif ($filterPublication == ListingConstants::FILTER_KEYWORD_DEBATES) {
+            $sql = $sqlPartDebates . $sqlOrderLimit;
+        } elseif ($filterPublication == ListingConstants::FILTER_KEYWORD_REACTIONS) {
+            $sql = $sqlPartReactions . $sqlOrderLimit;
+        } elseif ($filterPublication == ListingConstants::FILTER_KEYWORD_COMMENTS) {
+            $sql = $sqlPartComments . $sqlOrderLimit;
+        } else {
+            throw new InconsistentDataException(sprintf('Filter publication %s is not managed', $filterPublication));
+        }
+        
+        return $sql;
+    }
+
+    /**
+     * Filtered publications w. filter "most followed" > manage group by + only debates in result
+     *
+     * @see app/sql/documentsByFiltersMostFollowed.sql
+     *
+     * @param array $inQueryTagIds
+     * @param string $filterProfile
+     * @param string $filterDate
+     * @return string
+     */
+    private function createPublicationsByFiltersMostFollowedRawSql($inQueryTagIds, $filterProfile, $filterDate)
+    {
+        // Tag subrequest
+        $subRequestTagLeftJoin = null;
+        $subRequestTagIds = null;
+        if ($inQueryTagIds) {
+            $subRequestTagLeftJoin = "
+    LEFT JOIN p_d_d_tagged_t
+        ON p_d_debate.id = p_d_d_tagged_t.p_d_debate_id
+";
+            $subRequestTagIds = "AND p_d_d_tagged_t.p_tag_id IN ($inQueryTagIds)";
+        }
+
+        // Profile subrequest
+        $subRequestFilterProfileLeftJoin = null;
+        $subRequestFilterProfile = null;
+
+        if ($filterProfile == ListingConstants::FILTER_KEYWORD_QUALIFIED || $filterProfile == ListingConstants::FILTER_KEYWORD_CITIZEN) {
+            $subRequestFilterProfileLeftJoin = "
+    LEFT JOIN p_user
+        ON p_d_debate.p_user_id = p_user.id
+";
+        }
+        if ($filterProfile == ListingConstants::FILTER_KEYWORD_QUALIFIED) {
+            $subRequestFilterProfile = "AND p_user.qualified = 1";
+        } elseif ($filterProfile == ListingConstants::FILTER_KEYWORD_CITIZEN) {
+            $subRequestFilterProfile = "AND p_user.qualified = 0";
+        }
+
+        // Date subrequest
+        $subRequestFilterDate = null;
+        if ($filterDate == ListingConstants::FILTER_KEYWORD_LAST_MONTH) {
+            $subRequestFilterDate = "AND p_d_debate.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW() ";
+        } elseif ($filterDate == ListingConstants::FILTER_KEYWORD_LAST_WEEK) {
+            $subRequestFilterDate = "AND p_d_debate.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 7 DAY) AND NOW() ";
+        } elseif ($filterDate == ListingConstants::FILTER_KEYWORD_LAST_DAY) {
+            $subRequestFilterDate = "AND p_d_debate.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 1 DAY) AND NOW() ";
+        }
+
+        // Requête SQL
+        $sql = "
+SELECT DISTINCT p_d_debate.id as id, p_d_debate.title as title, p_d_debate.note_pos as note_pos, p_d_debate.note_neg as note_neg, COUNT(p_u_follow_d_d.id) as nb_followers, p_d_debate.published_at as published_at, p_d_debate.updated_at as updated_at, 'Politizr\\\Model\\\PDDebate' as type
+FROM p_d_debate
+    LEFT JOIN p_u_follow_d_d
+        ON p_d_debate.id = p_u_follow_d_d.p_d_debate_id
+    $subRequestTagLeftJoin
+    $subRequestFilterProfileLeftJoin
+WHERE
+    p_d_debate.published = 1
+    AND p_d_debate.online = 1 
+    $subRequestTagIds
+    $subRequestFilterDate
+    $subRequestFilterProfile
+
+GROUP BY id
+
+ORDER BY nb_followers DESC, note_pos DESC, note_neg ASC
+
+LIMIT :offset, :limit
+";
+        
+        return $sql;
+    }
+
+    /**
+     * Filtered publications w. filter "most reactions" > manage group by + only debates and/or reactions in result
+     *
+     * @see app/sql/documentsByFiltersMostReactions.sql
+     *
+     * @param array $inQueryTagIds
+     * @param string $filterPublication
+     * @param string $filterProfile
+     * @param string $filterDate
+     * @return string
+     */
+    private function createPublicationsByFiltersMostReactionsRawSql($inQueryTagIds, $filterPublication, $filterProfile, $filterDate)
+    {
+        // Tag subrequest
+        $subRequestTagLeftJoin1 = null;
+        $subRequestTagLeftJoin2 = null;
+        $subRequestTagIds1 = null;
+        $subRequestTagIds2 = null;
+        if ($inQueryTagIds) {
+            $subRequestTagLeftJoin1 = "
+    LEFT JOIN p_d_d_tagged_t
+        ON p_d_debate.id = p_d_d_tagged_t.p_d_debate_id
+";
+            $subRequestTagLeftJoin2 = "
+    LEFT JOIN p_d_r_tagged_t
+        ON p_d_reaction.id = p_d_r_tagged_t.p_d_reaction_id
+";
+            $subRequestTagIds1 = "AND p_d_d_tagged_t.p_tag_id IN ($inQueryTagIds)";
+            $subRequestTagIds2 = "AND p_d_r_tagged_t.p_tag_id IN ($inQueryTagIds)";
+        }
+
+        // Profile subrequest
+        $subRequestFilterProfileLeftJoin1 = null;
+        $subRequestFilterProfileLeftJoin2 = null;
+        $subRequestFilterProfile = null;
+
+        if ($filterProfile == ListingConstants::FILTER_KEYWORD_QUALIFIED || $filterProfile == ListingConstants::FILTER_KEYWORD_CITIZEN) {
+            $subRequestFilterProfileLeftJoin1 = "
+    LEFT JOIN p_user
+        ON p_d_debate.p_user_id = p_user.id
+";
+            $subRequestFilterProfileLeftJoin2 = "
+    LEFT JOIN p_user
+        ON p_d_reaction.p_user_id = p_user.id
+";
+        }
+        if ($filterProfile == ListingConstants::FILTER_KEYWORD_QUALIFIED) {
+            $subRequestFilterProfile = "AND p_user.qualified = 1";
+        } elseif ($filterProfile == ListingConstants::FILTER_KEYWORD_CITIZEN) {
+            $subRequestFilterProfile = "AND p_user.qualified = 0";
+        }
+
+        // Date subrequest
+        $subRequestFilterDate = null;
+        if ($filterDate == ListingConstants::FILTER_KEYWORD_LAST_MONTH) {
+            $subRequestFilterDate = "AND p_d_debate.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW() ";
+        } elseif ($filterDate == ListingConstants::FILTER_KEYWORD_LAST_WEEK) {
+            $subRequestFilterDate = "AND p_d_debate.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 7 DAY) AND NOW() ";
+        } elseif ($filterDate == ListingConstants::FILTER_KEYWORD_LAST_DAY) {
+            $subRequestFilterDate = "AND p_d_debate.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 1 DAY) AND NOW() ";
+        }
+
+        // Requête SQL
+        $sqlPartDebates = "
+( SELECT DISTINCT p_d_debate.id as id, p_d_debate.title as title, p_d_debate.note_pos as note_pos, p_d_debate.note_neg as note_neg, COUNT(p_d_reaction_child.id) as nb_reactions, p_d_debate.published_at as published_at, p_d_debate.updated_at as updated_at, 'Politizr\\\Model\\\PDDebate' as type
+FROM p_d_debate
+    LEFT JOIN p_d_reaction as p_d_reaction_child
+        ON p_d_debate.id = p_d_reaction_child.p_d_debate_id
+    $subRequestTagLeftJoin1
+    $subRequestFilterProfileLeftJoin1
+WHERE
+    p_d_debate.published = 1
+    AND p_d_debate.online = 1
+    AND p_d_reaction_child.published = 1
+    AND p_d_reaction_child.online = true
+    AND p_d_reaction_child.tree_level = 1
+    $subRequestTagIds1
+    $subRequestFilterDate
+    $subRequestFilterProfile
+
+GROUP BY id
+)
+";
+
+        $sqlPartReactions = "
+( SELECT DISTINCT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.note_pos as note_pos, p_d_reaction.note_neg as note_neg, COUNT(p_d_reaction_child.id) as nb_reactions, p_d_reaction.published_at as published_at, p_d_reaction.updated_at as updated_at,'Politizr\\\Model\\\PDReaction' as type
+FROM p_d_reaction
+    LEFT JOIN p_d_reaction as p_d_reaction_child
+        ON p_d_reaction.id = p_d_reaction_child.parent_reaction_id
+    $subRequestTagLeftJoin2
+    $subRequestFilterProfileLeftJoin2
+WHERE
+    p_d_reaction.published = 1
+    AND p_d_reaction.online = 1
+    AND p_d_reaction.tree_level > 0
+    AND p_d_reaction_child.published = 1
+    AND p_d_reaction_child.online = true
+    AND p_d_reaction_child.tree_level > 0
+    $subRequestTagIds2
+    $subRequestFilterDate
+    $subRequestFilterProfile
+
+GROUP BY id
+)
+";
+    
+        $sqlOrderLimit = "
+ORDER BY nb_reactions DESC, note_pos DESC, note_neg ASC
+
+LIMIT :offset, :limit
+";
+  
+        // Publication filter
+        if ($filterPublication == ListingConstants::FILTER_KEYWORD_DEBATES_AND_REACTIONS) {
+            $sql = $sqlPartDebates . " UNION DISTINCT " . $sqlPartReactions . $sqlOrderLimit;
+        } elseif ($filterPublication == ListingConstants::FILTER_KEYWORD_DEBATES) {
+            $sql = $sqlPartDebates . $sqlOrderLimit;
+        } elseif ($filterPublication == ListingConstants::FILTER_KEYWORD_REACTIONS) {
+            $sql = $sqlPartReactions . $sqlOrderLimit;
+        } else {
+            throw new InconsistentDataException(sprintf('Filter publication %s is not managed', $filterPublication));
+        }
+        
+        return $sql;
+    }
+
+    /**
+     * Filtered publications w. filter "most comments" > manage group by + only debates and/or reactions in result
+     *
+     * @see app/sql/documentsByFiltersMostReactions.sql
+     *
+     * @param array $inQueryTagIds
+     * @param string $filterPublication
+     * @param string $filterProfile
+     * @param string $filterDate
+     * @return string
+     */
+    private function createPublicationsByFiltersMostCommentsRawSql($inQueryTagIds, $filterPublication, $filterProfile, $filterDate)
+    {
+        // Tag subrequest
+        $subRequestTagLeftJoin1 = null;
+        $subRequestTagLeftJoin2 = null;
+        $subRequestTagIds1 = null;
+        $subRequestTagIds2 = null;
+        if ($inQueryTagIds) {
+            $subRequestTagLeftJoin1 = "
+    LEFT JOIN p_d_d_tagged_t
+        ON p_d_debate.id = p_d_d_tagged_t.p_d_debate_id
+";
+            $subRequestTagLeftJoin2 = "
+    LEFT JOIN p_d_r_tagged_t
+        ON p_d_reaction.id = p_d_r_tagged_t.p_d_reaction_id
+";
+            $subRequestTagIds1 = "AND p_d_d_tagged_t.p_tag_id IN ($inQueryTagIds)";
+            $subRequestTagIds2 = "AND p_d_r_tagged_t.p_tag_id IN ($inQueryTagIds)";
+        }
+
+        // Profile subrequest
+        $subRequestFilterProfileLeftJoin1 = null;
+        $subRequestFilterProfileLeftJoin2 = null;
+        $subRequestFilterProfile = null;
+
+        if ($filterProfile == ListingConstants::FILTER_KEYWORD_QUALIFIED || $filterProfile == ListingConstants::FILTER_KEYWORD_CITIZEN) {
+            $subRequestFilterProfileLeftJoin1 = "
+    LEFT JOIN p_user
+        ON p_d_debate.p_user_id = p_user.id
+";
+            $subRequestFilterProfileLeftJoin2 = "
+    LEFT JOIN p_user
+        ON p_d_reaction.p_user_id = p_user.id
+";
+        }
+        if ($filterProfile == ListingConstants::FILTER_KEYWORD_QUALIFIED) {
+            $subRequestFilterProfile = "AND p_user.qualified = 1";
+        } elseif ($filterProfile == ListingConstants::FILTER_KEYWORD_CITIZEN) {
+            $subRequestFilterProfile = "AND p_user.qualified = 0";
+        }
+
+        // Date subrequest
+        $subRequestFilterDate = null;
+        if ($filterDate == ListingConstants::FILTER_KEYWORD_LAST_MONTH) {
+            $subRequestFilterDate = "AND p_d_debate.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW() ";
+        } elseif ($filterDate == ListingConstants::FILTER_KEYWORD_LAST_WEEK) {
+            $subRequestFilterDate = "AND p_d_debate.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 7 DAY) AND NOW() ";
+        } elseif ($filterDate == ListingConstants::FILTER_KEYWORD_LAST_DAY) {
+            $subRequestFilterDate = "AND p_d_debate.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 1 DAY) AND NOW() ";
+        }
+
+        // Requête SQL
+        $sqlPartDebates = "
+( SELECT DISTINCT p_d_debate.id as id, p_d_debate.title as title, p_d_debate.note_pos as note_pos, p_d_debate.note_neg as note_neg, COUNT(p_d_d_comment.id) as nb_comments, p_d_debate.published_at as published_at, p_d_debate.updated_at as updated_at, 'Politizr\\\Model\\\PDDebate' as type
+FROM p_d_debate
+    LEFT JOIN p_d_d_comment
+        ON p_d_debate.id = p_d_d_comment.p_d_debate_id
+    $subRequestTagLeftJoin1
+    $subRequestFilterProfileLeftJoin1
+WHERE
+    p_d_debate.published = 1
+    AND p_d_debate.online = 1
+    AND p_d_d_comment.online = true
+    $subRequestTagIds1
+    $subRequestFilterDate
+    $subRequestFilterProfile
+
+GROUP BY id
+)
+";
+
+        $sqlPartReactions = "
+( SELECT DISTINCT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.note_pos as note_pos, p_d_reaction.note_neg as note_neg, COUNT(p_d_r_comment.id) as nb_comments, p_d_reaction.published_at as published_at, p_d_reaction.updated_at as updated_at,'Politizr\\\Model\\\PDReaction' as type
+FROM p_d_reaction
+    LEFT JOIN p_d_r_comment
+        ON p_d_reaction.id = p_d_r_comment.p_d_reaction_id
+    $subRequestTagLeftJoin2
+    $subRequestFilterProfileLeftJoin2
+WHERE
+    p_d_reaction.published = 1
+    AND p_d_reaction.online = 1
+    AND p_d_reaction.tree_level > 0
+    AND p_d_r_comment.online = true
+    $subRequestTagIds2
+    $subRequestFilterDate
+    $subRequestFilterProfile
+
+GROUP BY id
+)
+";
+
+        $sqlOrderLimit = "
+ORDER BY nb_comments DESC, note_pos DESC, note_neg ASC
+
+LIMIT :offset, :limit
+";
+  
+        // Publication filter
+        if ($filterPublication == ListingConstants::FILTER_KEYWORD_DEBATES_AND_REACTIONS) {
+            $sql = $sqlPartDebates . " UNION DISTINCT " . $sqlPartReactions . $sqlOrderLimit;
+        } elseif ($filterPublication == ListingConstants::FILTER_KEYWORD_DEBATES) {
+            $sql = $sqlPartDebates . $sqlOrderLimit;
+        } elseif ($filterPublication == ListingConstants::FILTER_KEYWORD_REACTIONS) {
+            $sql = $sqlPartReactions . $sqlOrderLimit;
+        } else {
+            throw new InconsistentDataException(sprintf('Filter publication %s is not managed', $filterPublication));
+        }
+
+        return $sql;
+    }
+
+    /**
      * Last publicated documents
      *
      * @see
@@ -85,7 +566,7 @@ LIMIT :limit
      * @param string $orderBy
      * @return string
      */
-    private function createDocumentsByUserRawSql($orderBy = ListingConstants::ORDER_BY_KEYWORD_BEST_NOTE)
+    private function createPublicationsByUserRawSql($orderBy = ListingConstants::ORDER_BY_KEYWORD_BEST_NOTE)
     {
         $orderByReq = "ORDER BY note_pos DESC, note_neg ASC";
         if ($orderBy == ListingConstants::ORDER_BY_KEYWORD_LAST) {
@@ -650,6 +1131,54 @@ GROUP BY p_d_debate_id
     /* ######################################################################################################## */
 
     /**
+     * Documents by filters paginated listing
+     *
+     * @param string $inQueryTagIds
+     * @param string $filterPublication
+     * @param string $filterProfile
+     * @param string $filterActivity
+     * @param string $filterDate
+     * @param integer $offset
+     * @param integer $limit
+     * @return PropelCollection
+     */
+    public function generatePublicationsByFiltersPaginated($inQueryTagIds, $filterPublication, $filterProfile, $filterActivity, $filterDate, $offset, $limit)
+    {
+        $this->logger->info('*** generatePublicationsByFiltersPaginated');
+        $this->logger->info('$inQueryTagIds = ' . print_r($inQueryTagIds, true));
+        $this->logger->info('$filterPublication = ' . print_r($filterPublication, true));
+        $this->logger->info('$filterProfile = ' . print_r($filterProfile, true));
+        $this->logger->info('$filterActivity = ' . print_r($filterActivity, true));
+        $this->logger->info('$filterDate = ' . print_r($filterDate, true));
+        $this->logger->info('$offset = ' . print_r($offset, true));
+        $this->logger->info('$limit = ' . print_r($limit, true));
+
+        $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
+
+        // special request construction for "most followed" / "most reactions" / "most comments" filters
+        if ($filterActivity == ListingConstants::ORDER_BY_KEYWORD_MOST_FOLLOWED) {
+            $stmt = $con->prepare($this->createPublicationsByFiltersMostFollowedRawSql($inQueryTagIds, $filterProfile, $filterDate));
+        } elseif ($filterActivity == ListingConstants::ORDER_BY_KEYWORD_MOST_REACTIONS) {
+            $stmt = $con->prepare($this->createPublicationsByFiltersMostReactionsRawSql($inQueryTagIds, $filterPublication, $filterProfile, $filterDate));
+        } elseif ($filterActivity == ListingConstants::ORDER_BY_KEYWORD_MOST_COMMENTS) {
+            $stmt = $con->prepare($this->createPublicationsByFiltersMostCommentsRawSql($inQueryTagIds, $filterPublication, $filterProfile, $filterDate));
+        } else {
+            $stmt = $con->prepare($this->createPublicationsByFiltersRawSql($inQueryTagIds, $filterPublication, $filterProfile, $filterActivity, $filterDate));
+        }
+
+        $stmt->bindValue(':offset', $offset, \PDO::PARAM_INT);
+        $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        $result = $stmt->fetchAll();
+
+        $publications = $this->globalTools->hydratePublicationRows($result);
+
+        return $publications;
+    }
+    
+    /**
      * My documents paginated listing
      *
      * @param integer $userId
@@ -658,16 +1187,16 @@ GROUP BY p_d_debate_id
      * @param integer $limit
      * @return PropelCollection
      */
-    public function generateDocumentsByUserPaginated($userId, $orderBy, $offset, $limit)
+    public function generatePublicationsByUserPaginated($userId, $orderBy, $offset, $limit)
     {
-        $this->logger->info('*** generateMyDraftsPaginatedListing');
+        $this->logger->info('*** generatePublicationsByUserPaginated');
         $this->logger->info('$userId = ' . print_r($userId, true));
         $this->logger->info('$orderBy = ' . print_r($orderBy, true));
         $this->logger->info('$offset = ' . print_r($offset, true));
         $this->logger->info('$limit = ' . print_r($limit, true));
 
         $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
-        $stmt = $con->prepare($this->createDocumentsByUserRawSql($orderBy));
+        $stmt = $con->prepare($this->createPublicationsByUserRawSql($orderBy));
 
         $stmt->bindValue(':p_user_id', $userId, \PDO::PARAM_INT);
         $stmt->bindValue(':p_user_id2', $userId, \PDO::PARAM_INT);

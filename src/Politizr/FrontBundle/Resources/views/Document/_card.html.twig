@@ -1,5 +1,5 @@
 {# beta #}
-<div class="card {% if app.user and app.user.id == document.PUserId %}myactivity{% endif %}">
+<div class="card {% if app.user and app.user.id == document.getPUserId %}myactivity{% endif %}">
     {% include 'PolitizrFrontBundle:User:_summary.html.twig' with { 'user': document.user, 'withSocialLinks': false } only %}
     <div class="{% if mini %}miniPost{% else %}newPost{% endif %}">
         {% include 'PolitizrFrontBundle:Document:_header.html.twig' with { 'document': document, 'mini': mini } only %}
@@ -26,5 +26,11 @@
         {% include 'PolitizrFrontBundle:Reaction:_nbReactions.html.twig' with { 'document': document } only %}
 
         <h5>{% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': document } only %}</h5>
-    </div>    
+        <div class="postTags">
+            <h5>Thématiques abordées</h5>
+            <div class="tagList">
+                {% include 'PolitizrFrontBundle:Tag:_list.html.twig' with { 'tags': document.tags } only %}
+            </div>
+        </div>
+    </div>
 </div>

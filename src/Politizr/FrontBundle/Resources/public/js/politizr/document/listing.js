@@ -3,15 +3,96 @@ paginatedFunctions[JS_KEY_LISTING_DOCUMENTS_BY_TAG] = documentsByTagListing;
 paginatedFunctions[JS_KEY_LISTING_DOCUMENTS_BY_ORGANIZATION] = documentsByOrganizationListing;
 paginatedFunctions[JS_KEY_LISTING_DOCUMENTS_BY_RECOMMEND] = documentsByRecommendListing;
 paginatedFunctions[JS_KEY_LISTING_DOCUMENTS_BY_USER_DRAFTS] = myDraftsByUserListing;
-paginatedFunctions[JS_KEY_LISTING_DOCUMENTS_BY_USER_PUBLICATIONS] = documentsByUserListing;
+paginatedFunctions[JS_KEY_LISTING_PUBLICATIONS_BY_USER_PUBLICATIONS] = publicationsByUserListing;
+paginatedFunctions[JS_KEY_LISTING_PUBLICATIONS_BY_FILTERS] = publicationsByFiltersListing;
+
 
 /**
  * Loading of paginated "debate followers" listing.
  * @param targetElement
  * @param localLoader
  */
-function documentsByUserListing(init, offset) {
-    // console.log('*** documentsByUserListing');
+function publicationsByFiltersListing(init, offset) {
+    // console.log('*** publicationsByFiltersListing');
+    // console.log(init);
+    // console.log(offset);
+
+    init = (typeof init === "undefined") ? true : init;
+    offset = (typeof offset === "undefined") ? 0 : offset;
+
+    targetElement = $('#documentListing .listTop');
+    localLoader = $('#documentListing').find('.ajaxLoader').first();
+
+    // console.log(targetElement);
+    // console.log(localLoader);
+
+    datas = getCurrentFilters();
+    datas.push({name: 'offset', value: offset});
+
+    var xhrPath = getXhrPath(
+        ROUTE_DOCUMENT_LISTING_FILTERS,
+        'document',
+        'publicationsByFilters',
+        RETURN_HTML
+    );
+
+    return xhrCall(
+        document,
+        datas,
+        xhrPath,
+        localLoader
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
+            $('#listingScrollNav').remove();
+            if (init) {
+                targetElement.html(data['html']);
+            } else {
+                targetElement.append(data['html']);
+            }
+            initPaginateNextWaypoint();
+            fullImgLiquid();
+        }
+        localLoader.hide();
+    });
+}
+
+/**
+ *
+ */
+function getCurrentFilters() {
+    // console.log('*** getCurrentFilters');
+
+    var filters = [];
+
+    // map
+    filters.push({name: 'geoTagUuid', value: $('.mapMenu').find('.active').attr('uuid')});
+    
+    // publication
+    filters.push({name: 'filterPublication', value: $('#publicationFilter input:checked').val()});
+
+    // profile
+    filters.push({name: 'filterProfile', value: $('#profileFilter input:checked').val()});
+
+    // activity
+    filters.push({name: 'filterActivity', value: $('#activityFilter input:checked').val()});
+
+    // date
+    filters.push({name: 'filterDate', value: $('#dateFilter input:checked').val()});
+
+    // console.log(filters);
+    return filters;
+}
+
+/**
+ * Loading of paginated user publications listing.
+ * @param targetElement
+ * @param localLoader
+ */
+function publicationsByUserListing(init, offset) {
+    // console.log('*** publicationsByUserListing');
     // console.log(init);
     // console.log(offset);
 
@@ -31,7 +112,7 @@ function documentsByUserListing(init, offset) {
     var xhrPath = getXhrPath(
         ROUTE_DOCUMENT_LISTING_USER_PUBLICATIONS,
         'document',
-        'documentsByUser',
+        'publicationsByUser',
         RETURN_HTML
     );
 

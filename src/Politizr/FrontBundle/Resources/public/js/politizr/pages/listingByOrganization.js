@@ -21,5 +21,8 @@ $("body").on("click", "[action='documentsByOrganizationListing']", function() {
     $(this).siblings().removeClass('currentPage');
     $(this).addClass('currentPage');
 
+    $('#documentListing .listTop').html('');
+    $("[action='goUp']").trigger("click");
+
     documentsByOrganizationListing();
 });

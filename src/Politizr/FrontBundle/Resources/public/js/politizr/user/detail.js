@@ -1,18 +1,21 @@
 // beta
 
 // load document's user listing
-$("body").on("click", "[action='documentsByUserListing']", function() {
+$("body").on("click", "[action='publicationsByUserListing']", function() {
     // console.log('*** click documentsByTagListing');
 
     $(this).siblings().removeClass('currentPage');
     $(this).addClass('currentPage');
 
-    documentsByUserListing();
+    $('#documentListing .listTop').html('');
+    $("[action='goUp']").trigger("click");
+
+    publicationsByUserListing();
 });
 
 
 // listing user followers
-// @todo if plug > waypoint bug (load all listing)
+// @todo if plug > waypoint bug (load all listing) > solution = first trigger goUp > to test
 $("body").on("click", "[action='listingContentUserFollowers']", function() {
     // console.log('*** click listingContentUserFollowers');
 

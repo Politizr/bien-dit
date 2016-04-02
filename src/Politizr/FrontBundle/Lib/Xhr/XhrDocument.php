@@ -1255,12 +1255,12 @@ class XhrDocument
     }
 
     /**
-     * Documents by user
+     * Publications by user
      * code beta
      */
-    public function documentsByUser(Request $request)
+    public function publicationsByUser(Request $request)
     {
-        $this->logger->info('*** documentsByUser');
+        $this->logger->info('*** publicationsByUser');
         
         // Request arguments
         $uuid = $request->get('uuid');
@@ -1302,7 +1302,65 @@ class XhrDocument
                     'publications' => $publications,
                     'offset' => intval($offset) + ListingConstants::LISTING_CLASSIC_PAGINATION,
                     'moreResults' => $moreResults,
-                    'jsFunctionKey' => XhrConstants::JS_KEY_LISTING_DOCUMENTS_BY_USER_PUBLICATIONS
+                    'jsFunctionKey' => XhrConstants::JS_KEY_LISTING_PUBLICATIONS_BY_USER_PUBLICATIONS
+                )
+            );
+        }
+
+        return array(
+            'html' => $html,
+        );
+    }
+
+    /**
+     * Filtered publications
+     */
+    public function publicationsByFilters(Request $request)
+    {
+        $this->logger->info('*** publicationsByFilters');
+        
+        // Request arguments
+        $offset = $request->get('offset');
+        $this->logger->info('$offset = ' . print_r($offset, true));
+        $geoTagUuid = $request->get('geoTagUuid');
+        $this->logger->info('$geoTagUuid = ' . print_r($geoTagUuid, true));
+        $filterPublication = $request->get('filterPublication');
+        $this->logger->info('$filterPublication = ' . print_r($filterPublication, true));
+        $filterProfile = $request->get('filterProfile');
+        $this->logger->info('$filterProfile = ' . print_r($filterProfile, true));
+        $filterActivity = $request->get('filterActivity');
+        $this->logger->info('$filterActivity = ' . print_r($filterActivity, true));
+        $filterDate = $request->get('filterDate');
+        $this->logger->info('$filterDate = ' . print_r($filterDate, true));
+
+        $publications = $this->documentService->getPublicationsByFilters(
+            $geoTagUuid,
+            $filterPublication,
+            $filterProfile,
+            $filterActivity,
+            $filterDate,
+            $offset,
+            ListingConstants::LISTING_CLASSIC_PAGINATION
+        );
+
+        // @todo create function for code above
+        $moreResults = false;
+        if (sizeof($publications) == ListingConstants::LISTING_CLASSIC_PAGINATION) {
+            $moreResults = true;
+        }
+
+        if ($offset == 0 && count($publications) == 0) {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_noResult.html.twig'
+            );
+        } else {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_publications.html.twig',
+                array(
+                    'publications' => $publications,
+                    'offset' => intval($offset) + ListingConstants::LISTING_CLASSIC_PAGINATION,
+                    'moreResults' => $moreResults,
+                    'jsFunctionKey' => XhrConstants::JS_KEY_LISTING_PUBLICATIONS_BY_FILTERS
                 )
             );
         }

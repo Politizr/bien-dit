@@ -1,6 +1,6 @@
 // beta
 $(function() {
-    $(".currentPage[action='documentsByUserListing']").trigger("click");
+    $(".currentPage[action='publicationsByUserListing']").trigger("click");
 
     $.when(
         showReputation(),

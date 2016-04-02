@@ -451,7 +451,7 @@ class GlobalTools
      * Hydrate "PublicationRow" objects from raw sql results
      *
      * @param array|false $result
-     * @return array[TimelineRow]
+     * @return array[PublicationRow]
      */
     public function hydratePublicationRows($result)
     {
