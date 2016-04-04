@@ -1,26 +1,19 @@
 {# beta #}
 <div class="sidebarProfile">
     {% include 'PolitizrFrontBundle:User:_card.html.twig' with { 'user': user, 'withSocialLinks': true } only %}
-    {% if app.user and app.user.id != user.id %}
-        <div class="sidebarAction">
+
+    <div class="sidebarAction">
+        {% if app.user and app.user.id != user.id %}
             <div class="sidebarFollow">
                 {% include 'PolitizrFrontBundle:Follow:_actionFollow.html.twig' with { 'subject': user } only %}
             </div>
-        </div>
-    {% endif %}
-
-    {% if app.user and app.user.id == user.id %}
-        <div class="sidebarAction">
+        {% elseif app.user and app.user.id == user.id %}
             <div class="sidebarEditProfile">
                 <a href="{{ path('EditProfile'~profileSuffix())}}"><i class="icon-edit"></i>Modifier mon profil</a>
             </div>
-            {{ user | share(app.request.uri) }}
-        </div>
-    {% else %}
-        <div class="sidebarAction">
-            {{ user | share(app.request.uri) }}
-        </div>
-    {% endif %}
+        {% endif %}
+        {{ user | share(app.request.uri) }}
+    </div>
 
     <div class="sidebarBadges withLoaderInside">
         {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
