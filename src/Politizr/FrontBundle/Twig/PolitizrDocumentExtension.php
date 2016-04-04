@@ -641,9 +641,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 throw new InconsistentDataException(sprintf('Object type %s not managed', $comment->getPDocumentType()));
         }
 
-        if ($paragraphNo = $comment->getParagraphNo()) {
-            $url .= '#p-'.$paragraphNo;
-        }
+        $url .= '#p-'.$comment->getParagraphNo();
 
         // Construction du rendu du tag
         $html = $this->templating->render(
