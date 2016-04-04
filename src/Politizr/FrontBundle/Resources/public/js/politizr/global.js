@@ -4,7 +4,6 @@ $(function() {
     // console.log('*** global document ready');
     Waypoint.destroyAll();
     fullImgLiquid();
-    $(".sticky-wrapper").addClass("hideSidebarForMobile");
     $('#ajaxGlobalLoader').hide();
     $('.bubblesHelper').hide();
 });
@@ -131,7 +130,8 @@ function stickySidebar() {
     var sticky = new Waypoint.Sticky({
         element: $('#sidebar'),
         offset: 'bottom-in-view'
-    })    
+    });
+    $(".sticky-wrapper").addClass("hideSidebarForMobile");
 }
 
 // imgLiquid
