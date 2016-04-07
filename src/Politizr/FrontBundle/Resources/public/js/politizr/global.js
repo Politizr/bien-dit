@@ -28,7 +28,7 @@ $('body').on('click', "[action='closeBox']", function(e){
 
 // main menu
 $(document).mousedown(function (e) {
-    var container = $("#menu, [action='toggleMenu']");
+    var container = $("body.css700 #headerMenu, #menu, [action='toggleMenu']");
     if (!container.is(e.target) // if the target of the click isn't the container...
         && container.has(e.target).length === 0) // ... nor a descendant of the container
     {
