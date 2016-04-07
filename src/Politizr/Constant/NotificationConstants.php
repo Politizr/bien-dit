@@ -14,6 +14,7 @@ class NotificationConstants
     const TYPE_SCREEN = 1;
     const TYPE_EMAIL = 2;
     const TYPE_EMAIL_TXT = 3;
+    const TYPE_EMAIL_SUBJECT = 4;
 
     // ******************************************************** //
     //                      DOCUMENTS                           //

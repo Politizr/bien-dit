@@ -711,6 +711,14 @@ class XhrDocument
             throw new BoxErrorException($errors);
         }
 
+        // Events
+        $event = new GenericEvent($comment, array('user_id' => $user->getId(),));
+        $dispatcher = $this->eventDispatcher->dispatch('r_comment_publish', $event);
+        $event = new GenericEvent($comment, array('author_user_id' => $user->getId(),));
+        $dispatcher = $this->eventDispatcher->dispatch('n_comment_publish', $event);
+        $event = new GenericEvent($comment, array('author_user_id' => $user->getId()));
+        $dispatcher = $this->eventDispatcher->dispatch('b_comment_publish', $event);
+
         return true;
     }
 

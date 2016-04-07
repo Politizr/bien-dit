@@ -12,7 +12,7 @@
         <h5>{% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': timelineRow } only %}</h5>
         <div class="miniPost">
             {% include 'PolitizrFrontBundle:User:_summary.html.twig' with { 'user': document.user, 'withSocialLinks': false } only %}
-            {% include 'PolitizrFrontBundle:Document:_header.html.twig' with { 'document': document, 'mini': true } only %}
+            {% include 'PolitizrFrontBundle:Document:_header.html.twig' with { 'document': document, 'mini': true, 'summary': false } only %}
             <h5>{% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': document } only %}</h5>
         </div>
     </div>

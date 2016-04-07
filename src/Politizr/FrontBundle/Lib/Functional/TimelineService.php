@@ -742,6 +742,7 @@ class TimelineService
             array(
                 'document' => $debate,
                 'mini' => false,
+                'summary' => true,
             )
         );
 
@@ -769,6 +770,7 @@ class TimelineService
                 'document' => $reaction,
                 'mini' => false,
                 'withContext' => $withContext,
+                'summary' => true,
             )
         );
 

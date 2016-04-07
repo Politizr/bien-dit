@@ -203,6 +203,16 @@ class EmailListener
         $userEmail = $event->getArgument('user_email');
 
         try {
+            $subject = $this->templating->render(
+                'PolitizrFrontBundle:Email:_notifSubject.html.twig',
+                array(
+                    'notif' => $puNotifications,
+                )
+            );
+            if (!$subject) {
+                $subject = 'Nouvelle notification';
+            }
+            
             $htmlBody = $this->templating->render(
                 'PolitizrFrontBundle:Email:notification.html.twig',
                 array(
@@ -217,7 +227,7 @@ class EmailListener
             );
 
             $message = \Swift_Message::newInstance()
-                    ->setSubject('[ Politizr ] Nouvelle notification')
+                    ->setSubject($subject)
                     ->setFrom(array($this->supportEmail => 'Support@Politizr'))
                     ->setTo($userEmail)
                     // ->setBcc(array('lionel@politizr.com'))

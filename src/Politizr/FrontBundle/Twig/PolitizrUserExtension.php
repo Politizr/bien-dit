@@ -535,6 +535,21 @@ class PolitizrUserExtension extends \Twig_Extension
                     'documentUrl' => $documentUrl,
                 )
             );
+        } elseif (NotificationConstants::TYPE_EMAIL_SUBJECT === $type) {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:Notification:_notificationMessageSubject.html.twig',
+                array(
+                    'notification' => $notification,
+                    'notificationId' => $notification->getPNotificationId(),
+                    'subject' => $subject,
+                    'title' => $title,
+                    'url' => $url,
+                    'author' => $author,
+                    'authorUrl' => $authorUrl,
+                    'document' => $document,
+                    'documentUrl' => $documentUrl,
+                )
+            );
         } else {
             $html = $this->templating->render(
                 'PolitizrFrontBundle:Notification:_notificationScreen.html.twig',

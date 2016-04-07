@@ -27,7 +27,7 @@
 
 <a href="{{ detailPath }}"{% if not document.fileName and mini %} class="fullWidth"{% endif %}>
     <span class="postTitle {{ spanClass }}">{{ document.title }}</span>
-    {% if not mini %}
+    {% if summary %}
         {{ document.description | removeLinks | removeSpans | excerpt(1, true) | purify }}
     {% endif %}
 </a>

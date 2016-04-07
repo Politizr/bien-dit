@@ -1,6 +1,6 @@
 {# beta #}
 {% for document in documents %}
-    {% include 'PolitizrFrontBundle:Document:_card.html.twig' with { 'document': document, 'withContext': true, 'mini': false } %}
+    {% include 'PolitizrFrontBundle:Document:_card.html.twig' with { 'document': document, 'withContext': true, 'mini': false, 'summary': true } %}
 {% endfor %}
 <div id="listingScrollNav" class="scrollNav">
     {% if moreResults %}
