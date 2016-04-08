@@ -97,13 +97,15 @@ class SecurityController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** inscriptionAction');
 
+        return $this->redirect($this->generateUrl('InscriptionTmp', array('type' => 'generique')));
+
         // Objet & formulaire
         $user = new PUser();
         $form = $this->createForm(new PUserRegisterType(), $user);
         
         return $this->render('PolitizrFrontBundle:Public:inscription.html.twig', array(
-                    'form' => $form->createView()
-                    ));
+            'form' => $form->createView()
+        ));
     }
 
     /**

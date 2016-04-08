@@ -40,6 +40,38 @@ class PublicController extends Controller
     }
 
     /**
+     * Inscription temp
+     */
+    public function inscriptionAction($type)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** inscriptionAction');
+
+        if ($type == 'citoyen') {
+            $template = "inscriptionTempCitizen.html.twig";
+        } elseif ($type == 'elu') {
+            $template = "inscriptionTempElected.html.twig";
+        } else {
+            $template = "inscriptionTemp.html.twig";
+        }
+
+        return $this->render('PolitizrFrontBundle:Public:'.$template, array(
+        ));
+    }
+
+    /**
+     * Qui sommes nous
+     */
+    public function whoWeAreAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** whoWeAreAction');
+
+        return $this->render('PolitizrFrontBundle:Public:whoWeAre.html.twig', array(
+        ));
+    }
+
+    /**
      * Help
      */
     public function helpAction()

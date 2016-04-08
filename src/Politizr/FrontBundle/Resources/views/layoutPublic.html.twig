@@ -17,6 +17,12 @@
     <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/styleUser.css') }}">
 {% endblock %}
 
+{% block javascriptHeader %}
+    {{ parent() }}
+
+    <script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.8/jquery.validate.min.js"></script>
+{% endblock %}
+
 {% block header %}
     <div id="header">
         {% include 'PolitizrFrontBundle:Navigation\\Header:_headerPublic.html.twig' %}
@@ -63,6 +69,7 @@
 
     {% javascripts
         '@PolitizrFrontBundle/Resources/public/js/politizr/global.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/globalPublic.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/xhr.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/bubbles.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/security/login.js'

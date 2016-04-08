@@ -1,0 +1,31 @@
+<div id="getAccount">
+    <div id="getAccountHeader">
+        <div id="getAccountHeaderLogo"><i class="icon-pltzr-logo"></i></div>
+    </div>
+    <div class="plan planCitoyen">
+        <h2>citoyen-ne</h2>
+        <span class="price">
+        Ouvert à toutes et à tous<br>
+        {#<b>Gratuit</b></span>#}
+        <a href="{{ path('InscriptionTmp', {'type': 'citoyen'}) }}">Créer un compte</a>
+        <ul>
+            <li>Lancez des sujets de discussion.</li>
+            <li>Suivez des discussions, des élus, et d’autres utilisateurs en fonction de vos préférences.</li>
+            <li>Commentez les réponses des élus et des autres utilisateurs.</li>
+        </ul>
+    </div>
+    <div class="plan planElu">
+        <h2>élu-e*</h2>
+        <span class="price">
+        Réservé aux élu-e-s et ex-élu-e-s<br>
+        {#<b>90 € par an</b></span>#}
+        <a href="{{ path('InscriptionTmp', {'type': 'elu'}) }}">Créer un compte</a>
+        <ul>
+            <li>Lancez des sujets de discussion.</li>
+            <li>Suivez des discussions, des utilisateurs et d’autres élus en fonction de vos préférences.</li>
+            <li>Commentez les réponses des utilisateurs et des autres élus.</li>
+            <li><b>Répondez à tous les sujets de discussion et aux réponses des autres élu-e-s.</b></li>
+        </ul>
+    </div>
+    <div class="note">*Toute personne physique majeure élue ou ancienne élue de la République Française au suffrage universel direct ou indirect. </div>
+</div>

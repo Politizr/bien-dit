@@ -9,3 +9,12 @@ Help:
     pattern:  /assistance
     defaults: { _controller: PolitizrFrontBundle:Public:help }
 
+InscriptionTmp:
+    pattern:  /inscription/{type}
+    defaults: { _controller: PolitizrFrontBundle:Public:inscription }
+    requirements:
+        _method:        GET
+
+WhoWeAre:
+    pattern:  /qui-sommes-nous
+    defaults: { _controller: PolitizrFrontBundle:Public:whoWeAre }

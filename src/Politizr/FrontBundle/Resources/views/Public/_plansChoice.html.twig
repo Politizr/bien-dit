@@ -1,0 +1,15 @@
+<div id="publicFooter">
+    <div id="publicFooterImg">
+        {% if mode == 'girl' %}
+            <img src="{{ asset('bundles/politizrfront/images/f-footerGirlGradient.png') }}">
+            <img src="{{ asset('bundles/politizrfront/images/f-footerGirl.jpg') }}">
+        {% else %}
+            <img src="{{ asset('bundles/politizrfront/images/f-footerGuyTalkingGradient.png') }}">
+            <img src="{{ asset('bundles/politizrfront/images/f-footerGuyTalking.jpg') }}">
+        {% endif %}
+    </div>
+    <div id="publicFooterBgColor" class="homepublicFooterBgColor"></div>
+    <div class="center">
+        {% include 'PolitizrFrontBundle:Public:_plans.html.twig' %}
+    </div>
+</div>

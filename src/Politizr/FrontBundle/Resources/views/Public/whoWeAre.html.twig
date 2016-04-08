@@ -1,0 +1,56 @@
+{# beta #}
+{% extends 'PolitizrFrontBundle::layoutPublic.html.twig' %}
+
+{% block title %}
+    {{ parent() }} - Qui sommes-nous?
+{% endblock title %}
+
+{% block main %}
+        <div id="public">
+            <div id="publicPageTitle">
+                <h1>Qui sommes-nous ?</h1>
+                <img src="{{ asset('bundles/politizrfront/images/f-headerQuisommesnous.jpg') }}">
+            </div>
+            <div class="center">
+                <div id="publicCard">
+                    <img src="{{ asset('bundles/politizrfront/images/f-duo.jpg') }}">
+                    <b>Lionel Bouzonville</b> et <b>Thomas Champion</b>, deux artisans du monde numérique ont fondé la s.a.s Politizr en août 2015. Concepteur et développeur de site internet depuis plus de 10 ans, ces deux amis se sont accordés pour mettre leur savoir-faire <b>au service de la vie publique</b>.<br><br>
+                    <b>"Le débat constitue l’essence même de la démocratie"</b><br><br>
+                    Avec le renfort de spécialistes en sciences politiques et en marketing, l'équipe Politizr, installée dans ses locaux à Varilhes en Ariège, a pour ambition d'<b>offrir un nouvel espace d'expression au débat politique local et national</b>.
+                    <br><br><br>
+                    
+                    <h1>L'équipe</h1>
+                    <div class="publicItem">
+                        <h2>Lionel Bouzonville</h2> 
+                        <img src="{{ asset('bundles/politizrfront/images/f-lb.jpg') }}">
+                        <i>39 ans. Co-fondateur Politizr. Développement web. </i>.<br>
+                        Ingénieur informatique disposant d’une expérience de plus de 15 ans en SSII parisienne et en indépendant, Lionel a participé au développement de  projets pour de grands compte (France Telecom, SACEM, DIM) et à la réalisation d'application web pour de nombreux clients.
+                    </div>
+                    <div class="publicItem">
+                        <h2>Thomas Champion</h2>    
+                        <img src="{{ asset('bundles/politizrfront/images/f-tc.jpg') }}">
+                        <i>37 ans. Co-fondateur Politizr. Webdesign. </i><br>
+                        Avec plus de 15 ans d'expérience dans la conception et la gestion de projets print, tv et web (France 2, Arte, Ligue de Football Professionnel), Thomas assure la direction artistique et le webdesign de Politizr.
+                    </div>
+                    <div class="publicItem">
+                        <h2>Maxime Forest</h2>
+                        <i>38 ans. Docteur en sciences politique, enseignant-chercheur à Sciences Po (CEVIPOF, OFCE). Consultant Politizr.</i><br>
+                        Maxime apporte le regard de la sociologie électorale et de la théorie de l’action publique, et une perspective comparée du fait de ses nombreux travaux sur l’UE. Maxime Forest est aussi acteur de l’action publique,  à travers le Haut Conseil à l’Egalité (HCEfh) et la conduite de projets en design de services publics.
+                    </div>
+                    <div class="publicItem">
+                        <h2>Arnaud Mouasso Milla</h2>
+                        <i>42 ans. Consultant Politizr en stratégie de marque de l'innovation et lancement de nouveaux produits.</i><br>
+                    </div>
+                </div>
+                <div id="publicSidebar">
+                    <h5>Pour nous contacter</h5>
+                    <span class="phoneButton"><img src="{{ asset('bundles/politizrfront/images/f-phone.svg') }}" width="14"> 05 64 88 01 71</span><br>
+                    <p>16 avenue de Dalou<br>
+                    09120 Varilhes - France<br><br>
+                    <a href="mailto:contact@politizr.com">contact@politizr.com</a><br><br></p>
+                </div>
+            </div>
+        {% include 'PolitizrFrontBundle:Public:_plansChoice.html.twig' with { 'mode': 'girl' } %}
+        {% include 'PolitizrFrontBundle:Navigation\\Footer:_publicFooter.html.twig' %}
+    </div>
+{% endblock main %}
