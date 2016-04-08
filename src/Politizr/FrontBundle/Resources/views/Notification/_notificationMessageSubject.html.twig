@@ -15,7 +15,7 @@
 {% elseif
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_D_D_REACTION_PUBLISH')
 %}
-    {{ author }} a répondu {% if document %}à "{{ document.title | truncate(50) }}"{% endif %}
+    {{ author }} a répondu {% if document %}à "{{ document.title }}"{% endif %}
 {% elseif
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_D_D_FOLLOWED')
 %}
@@ -23,7 +23,7 @@
 {% elseif
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_D_R_REACTION_PUBLISH')
 %}
-    {{ author }} a répondu {% if document %}à "{{ document.title | truncate(50) }}"{% endif %}
+    {{ author }} a répondu {% if document %}à "{{ document.title }}"{% endif %}
 {% elseif
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_D_C_NOTE_POS')
 %}
@@ -47,7 +47,7 @@
 {% elseif
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_S_D_REACTION_PUBLISH')
 %}
-    Une réponse a été publiée {% if document %}sur "{{ document.title }}"{% endif %}
+    Une réponse a été publiée {% if document %}sur "{{ document.title }}"{% endif %}
 {% elseif
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_U_FOLLOWED')
 %}
