@@ -60,6 +60,18 @@ class PublicController extends Controller
     }
 
     /**
+     * Inscription temp finish
+     */
+    public function inscriptionTempFinishAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** inscriptionTempFinishAction');
+
+        return $this->render('PolitizrFrontBundle:Public:inscriptionTempFinish.html.twig', array(
+        ));
+    }
+
+    /**
      * Qui sommes nous
      */
     public function whoWeAreAction()
