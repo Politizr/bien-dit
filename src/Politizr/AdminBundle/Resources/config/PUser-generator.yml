@@ -113,16 +113,21 @@ builders:
                     label:                      Score
             filtersMode:                        modal
             filters:                            [ id, uuid, email, name, qualified, p_u_status, online, last_activity, created_at ]
-            actions:
-                new:                            ~
             object_actions:
                 show:                           ~
                 edit:                           ~
                 delete:                         ~
+            actions:
+                new:                            ~
+                excel:                          ~
     excel:
-        params:                                 ~
-        filename:                               ~
-        filetype:                               ~
+        params:
+            display:                            [ gender, name, first_name, email, phone, email, website, twitter, facebook, reputation_score ]
+            filename:                           politizr-users
+            filetype: ~
+            datetime_format: ~
+            fields: ~
+            export: ~
     new:
         params:
             title:                              "Création d'un utilisateur"
