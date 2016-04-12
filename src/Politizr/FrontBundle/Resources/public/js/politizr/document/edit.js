@@ -1,9 +1,7 @@
 // beta
 
 // auto resize text area
-$('.formBlock').on( 'change keyup keydown paste cut', 'textarea', function (){
-    $(this).height(0).height(this.scrollHeight);                    
-}).find( 'textarea' ).change();
+autosize($('.formBlock textarea'));
 
 /**
  * Auto save

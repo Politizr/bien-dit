@@ -15,6 +15,9 @@ $(function() {
     }
 });
 
+// auto resize text area
+autosize($('.formBlock textarea'));
+
 // open paragraph comments
 $("body").on("click", "[action='comments']", function() {
     // console.log('*** click comments');
@@ -68,12 +71,6 @@ $("body").on("click", "[action='closeComments']", function() {
     context.find('.commentsContent').html('');
     context.find('#globalComments').html('');
 });
-
-// ajustement de la taille du textarea de saisie d'un commentaire en fonction de la saisie en cours
-$("body").on('change keyup keydown paste cut', 'textarea', function () {
-    $(this).height(0).height(this.scrollHeight);                    
-}).find('textarea').change(); 
-
 
 // création d'un commentaire
 $("body").on("click", "input[action='createComment']", function(e) {
