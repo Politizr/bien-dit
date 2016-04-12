@@ -5,7 +5,7 @@
     <td style="padding: 0 40px 0 40px; line-height: 140%;" valign="top">
         <b>{% include 'PolitizrFrontBundle:Notification\\MessageEmail:_emailAuthorName.html.twig' with {'author': author, 'authorUrl': authorUrl } only %} a publié le commentaire:</b>
         <br>
-        {% include 'PolitizrFrontBundle:Notification\\MessageEmail:_emailContent.html.twig' with {'url': url, 'description': title} only %}
+        {% include 'PolitizrFrontBundle:Notification\\MessageEmail:_emailContent.html.twig' with {'url': url, 'description': title | truncate(50, true) } only %}
     </td>
 </tr>
 {% include 'PolitizrFrontBundle:Notification\\MessageEmail:_emailNotificationFooter.html.twig' with {'url': url} only %}
