@@ -268,8 +268,8 @@ function xhrError(jqXHR, textStatus, errorThrown, localLoader ) {
         localLoader.hide();
     }
     $('#ajaxGlobalLoader').hide();
-    $('#infoBoxHolder .boxError .notifBoxText').html('Erreur inconnue: merci de recharger la page.');
-    $('#infoBoxHolder .boxError').show();
-    // console.log('textStatus - '+textStatus);
-    // console.log('errorThrown - '+errorThrown);
+    // $('#infoBoxHolder .boxError .notifBoxText').html('Erreur inconnue: merci de recharger la page.');
+    // $('#infoBoxHolder .boxError').show();
+    console.log(textStatus);
+    console.log(errorThrown);
 }
