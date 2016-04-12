@@ -291,29 +291,32 @@ class PolitizrDocumentExtension extends \Twig_Extension
      *
      * @param PDocumentInterface $document
      * @param boolean $descendants
+     * @param boolean $onlyElected
      * @return html
      */
-    public function nbReactions(PDocumentInterface $document, $descendants = true)
+    public function nbReactions(PDocumentInterface $document, $descendants = true, $onlyElected = false)
     {
         // $this->logger->info('*** nbReactions');
         // $this->logger->info('$document = '.print_r($document, true));
+        // $this->logger->info('$descendants = '.print_r($descendants, true));
+        // $this->logger->info('$onlyElected = '.print_r($onlyElected, true));
 
         $nbReactions = 0;
         switch ($document->getType()) {
             case ObjectTypeConstants::TYPE_DEBATE:
                 if ($descendants) {
-                    $nbReactions = $document->countReactions(true, true);
+                    $nbReactions = $document->countReactions(true, true, $onlyElected);
                 } else {
                     // 1st level only
-                    $nbReactions = $document->countChildrenReactions(true, true);
+                    $nbReactions = $document->countChildrenReactions(true, true, $onlyElected);
                 }
                 break;
             case ObjectTypeConstants::TYPE_REACTION:
                 if ($descendants) {
-                    $nbReactions = $document->countDescendantsReactions(true, true);
+                    $nbReactions = $document->countDescendantsReactions(true, true, $onlyElected);
                 } else {
                     // 1st level only:
-                    $nbReactions = $document->countChildrenReactions(true, true);
+                    $nbReactions = $document->countChildrenReactions(true, true, $onlyElected);
                 }
                 break;
             default:

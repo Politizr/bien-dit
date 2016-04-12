@@ -398,12 +398,16 @@ class PDDebate extends BasePDDebate implements PDocumentInterface
      * @param boolean $published
      * @return int
      */
-    public function countChildrenReactions($online = null, $published = null)
+    public function countChildrenReactions($online = null, $published = null, $onlyElected = false)
     {
         $query = PDReactionQuery::create()
             ->filterByTreeLevel(1) // only first level
             ->filterIfOnline($online)
             ->filterIfPublished($published);
+
+        if ($onlyElected) {
+            $query = $query->onlyElected();
+        }
 
         return parent::countPDReactions($query);
     }
@@ -434,12 +438,16 @@ class PDDebate extends BasePDDebate implements PDocumentInterface
      * @param boolean $published
      * @return int
      */
-    public function countReactions($online = null, $published = null)
+    public function countReactions($online = null, $published = null, $onlyElected = false)
     {
         $query = PDReactionQuery::create()
             ->filterByTreeLevel(0, \Criteria::NOT_EQUAL) // no root node
             ->filterIfOnline($online)
             ->filterIfPublished($published);
+
+        if ($onlyElected) {
+            $query = $query->onlyElected();
+        }
 
         return parent::countPDReactions($query);
     }

@@ -3,7 +3,7 @@
     <center>
         <div class="answerCounter">
             <i class="icon-reaction"></i>
-            {{ document | nbReactions(descendants = false) }}
+            {{ document | nbReactions(descendants = false, onlyElected = true) }}
         </div>
     </center>
 

@@ -299,9 +299,10 @@ class PDReaction extends BasePDReaction implements PDocumentInterface
         $query = PDReactionQuery::create()
             ->filterIfOnline($online)
             ->filterIfPublished($published);
-                    
+
         return parent::getDescendants($query);
     }
+
 
     /**
      * Reaction's descendant count
@@ -310,12 +311,16 @@ class PDReaction extends BasePDReaction implements PDocumentInterface
      * @param boolean $published
      * @return int
      */
-    public function countDescendantsReactions($online = null, $published = null)
+    public function countDescendantsReactions($online = null, $published = null, $onlyElected = false)
     {
         $query = PDReactionQuery::create()
             ->filterIfOnline($online)
             ->filterIfPublished($published)
             ->orderByPublishedAt('desc');
+
+        if ($onlyElected) {
+            $query = $query->onlyElected();
+        }
 
         return parent::countDescendants($query);
     }
@@ -327,12 +332,16 @@ class PDReaction extends BasePDReaction implements PDocumentInterface
      * @param boolean $published
      * @return int
      */
-    public function countChildrenReactions($online = null, $published = null)
+    public function countChildrenReactions($online = null, $published = null, $onlyElected = false)
     {
         $query = PDReactionQuery::create()
             ->filterIfOnline($online)
             ->filterIfPublished($published)
             ->orderByPublishedAt('desc');
+
+        if ($onlyElected) {
+            $query = $query->onlyElected();
+        }
 
         return parent::countChildren($query);
     }
@@ -340,8 +349,8 @@ class PDReaction extends BasePDReaction implements PDocumentInterface
     /**
      * @see PDReaction::countChildrenReactions
      */
-    public function countReactions($online = null, $published = null)
+    public function countReactions($online = null, $published = null, $onlyElected = false)
     {
-        return $this->countChildrenReactions($online, $published);
+        return $this->countChildrenReactions($online, $published, $onlyElected);
     }
 }

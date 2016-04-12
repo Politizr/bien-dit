@@ -30,6 +30,17 @@ class PDDebateQuery extends BasePDDebateQuery
             ->filterByPublished(true);
     }
 
+    /**
+     * Filter publication's author qualified
+     */
+    public function onlyElected()
+    {
+        return $this
+            ->usePUserQuery()
+                ->filterByQualified(true)
+            ->endUse();
+    }
+
     /* ######################################################################################################## */
     /*                                         CUSTOM FILTERS / ORDERS                                          */
     /* ######################################################################################################## */
