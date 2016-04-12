@@ -1527,7 +1527,6 @@ GROUP BY p_d_debate_id
      *
      * @param integer $userId
      * @param integer $published
-     * @param string $orderBy
      * @param integer $offset
      * @param integer $limit
      * @return PropelCollection
@@ -1540,7 +1539,7 @@ GROUP BY p_d_debate_id
         $this->logger->info('$limit = ' . print_r($limit, true));
 
         $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
-        $stmt = $con->prepare($this->createMyDraftsRawSql($orderBy));
+        $stmt = $con->prepare($this->createMyDraftsRawSql());
 
         $stmt->bindValue(':p_user_id', $userId, \PDO::PARAM_INT);
         $stmt->bindValue(':p_user_id2', $userId, \PDO::PARAM_INT);
