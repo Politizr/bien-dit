@@ -66,12 +66,8 @@ class PDRCommentQuery extends BasePDRCommentQuery
     public function filterIfParagraphNo($paragraphNo = null)
     {
         return $this
-            ->_if($paragraphNo)
+            ->_if($paragraphNo !== null)
                 ->filterByParagraphNo($paragraphNo)
-            ->_elseif(0 === $paragraphNo)
-                ->filterByParagraphNo(0)
-                    ->_or()
-                ->filterByParagraphNo(null)
             ->_endif();
     }
 }
