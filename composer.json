@@ -41,6 +41,7 @@
         "symfony2admingenerator/generator-bundle": "^2.0@beta",
         "symfony2admingenerator/form-bundle": "@stable",
         "symfony2admingenerator/form-extensions-bundle": "dev-master",
+        "liuggio/excelbundle": "^2.0",
         
         "fzaninotto/faker": "1.5.*",
         "willdurand/faker-bundle": "@stable",

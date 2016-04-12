@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "7e9a4ac3d36f0e0de8df593acdaf7b44",
-    "content-hash": "a6687b8e64848110bc46b65430bf23b2",
+    "hash": "b4c6ce7b774cee5941c3412cb8de4f9b",
+    "content-hash": "94d7a216d9ba08942af03b92b88b0c88",
     "packages": [
         {
             "name": "badlamer/propel-uuid-behavior",
@@ -2242,16 +2242,16 @@
         },
         {
             "name": "lexik/maintenance-bundle",
-            "version": "v2.1.0",
+            "version": "v2.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lexik/LexikMaintenanceBundle.git",
-                "reference": "722b5be3f5d97c3f482a15d70f7a3eacd212a36d"
+                "reference": "01c2763f1f2012958d4b43bbb87daf96b0316706"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lexik/LexikMaintenanceBundle/zipball/722b5be3f5d97c3f482a15d70f7a3eacd212a36d",
-                "reference": "722b5be3f5d97c3f482a15d70f7a3eacd212a36d",
+                "url": "https://api.github.com/repos/lexik/LexikMaintenanceBundle/zipball/01c2763f1f2012958d4b43bbb87daf96b0316706",
+                "reference": "01c2763f1f2012958d4b43bbb87daf96b0316706",
                 "shasum": ""
             },
             "require": {
@@ -2297,7 +2297,7 @@
                 "bundle",
                 "maintenance"
             ],
-            "time": "2016-02-22 08:01:18"
+            "time": "2016-03-15 09:38:32"
         },
         {
             "name": "liip/imagine-bundle",
@@ -2428,17 +2428,80 @@
             "time": "2015-12-11 12:29:22"
         },
         {
-            "name": "monolog/monolog",
-            "version": "1.18.1",
+            "name": "liuggio/ExcelBundle",
+            "version": "v2.0.4",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "a5f2734e8c16f3aa21b3da09715d10e15b4d2d45"
+                "url": "https://github.com/liuggio/ExcelBundle.git",
+                "reference": "a6424eef60d5a9201146d6820de7d75bb2be79bc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/a5f2734e8c16f3aa21b3da09715d10e15b4d2d45",
-                "reference": "a5f2734e8c16f3aa21b3da09715d10e15b4d2d45",
+                "url": "https://api.github.com/repos/liuggio/ExcelBundle/zipball/a6424eef60d5a9201146d6820de7d75bb2be79bc",
+                "reference": "a6424eef60d5a9201146d6820de7d75bb2be79bc",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2",
+                "phpoffice/phpexcel": "~1.8.0",
+                "symfony/framework-bundle": "~2.6|~3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.6",
+                "sensio/framework-extra-bundle": "~2.3|~3.0",
+                "symfony/browser-kit": "~2.6|~3.0",
+                "symfony/class-loader": "~2.6|~3.0",
+                "symfony/finder": "~2.6|~3.0",
+                "symfony/form": "~2.6|~3.0",
+                "symfony/validator": "~2.6|~3.0"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Liuggio\\ExcelBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "ExcelBundle Contributors",
+                    "homepage": "https://github.com/liuggio/ExcelBundle#contributors"
+                },
+                {
+                    "name": "Giulio De Donato",
+                    "email": "liuggio@gmail.com"
+                }
+            ],
+            "description": "This is a Symfony2 Bundle helps you to read and write Excel files (including pdf, xlsx, odt), thanks to the PHPExcel library",
+            "homepage": "http://www.welcometothebundle.com",
+            "keywords": [
+                "Symfony2",
+                "bundle",
+                "excel",
+                "xls"
+            ],
+            "time": "2015-12-22 11:22:03"
+        },
+        {
+            "name": "monolog/monolog",
+            "version": "1.18.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Seldaek/monolog.git",
+                "reference": "064b38c16790249488e7a8b987acf1c9d7383c09"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/064b38c16790249488e7a8b987acf1c9d7383c09",
+                "reference": "064b38c16790249488e7a8b987acf1c9d7383c09",
                 "shasum": ""
             },
             "require": {
@@ -2453,13 +2516,13 @@
                 "doctrine/couchdb": "~1.0@dev",
                 "graylog2/gelf-php": "~1.0",
                 "jakub-onderka/php-parallel-lint": "0.9",
+                "php-amqplib/php-amqplib": "~2.4",
                 "php-console/php-console": "^3.1.3",
                 "phpunit/phpunit": "~4.5",
                 "phpunit/phpunit-mock-objects": "2.3.0",
                 "raven/raven": "^0.13",
                 "ruflin/elastica": ">=0.90 <3.0",
-                "swiftmailer/swiftmailer": "~5.3",
-                "videlalvaro/php-amqplib": "~2.4"
+                "swiftmailer/swiftmailer": "~5.3"
             },
             "suggest": {
                 "aws/aws-sdk-php": "Allow sending log messages to AWS services like DynamoDB",
@@ -2468,11 +2531,11 @@
                 "ext-mongo": "Allow sending log messages to a MongoDB server",
                 "graylog2/gelf-php": "Allow sending log messages to a GrayLog2 server",
                 "mongodb/mongodb": "Allow sending log messages to a MongoDB server via PHP Driver",
+                "php-amqplib/php-amqplib": "Allow sending log messages to an AMQP server using php-amqplib",
                 "php-console/php-console": "Allow sending log messages to Google Chrome",
                 "raven/raven": "Allow sending log messages to a Sentry server",
                 "rollbar/rollbar": "Allow sending log messages to Rollbar",
-                "ruflin/elastica": "Allow sending log messages to an Elastic Search server",
-                "videlalvaro/php-amqplib": "Allow sending log messages to an AMQP server using php-amqplib"
+                "ruflin/elastica": "Allow sending log messages to an Elastic Search server"
             },
             "type": "library",
             "extra": {
@@ -2503,7 +2566,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2016-03-13 16:08:35"
+            "time": "2016-04-02 13:12:58"
         },
         {
             "name": "pagerfanta/pagerfanta",
@@ -2710,6 +2773,63 @@
                 "tool"
             ],
             "time": "2016-03-10 21:39:23"
+        },
+        {
+            "name": "phpoffice/phpexcel",
+            "version": "1.8.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PHPOffice/PHPExcel.git",
+                "reference": "372c7cbb695a6f6f1e62649381aeaa37e7e70b32"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PHPOffice/PHPExcel/zipball/372c7cbb695a6f6f1e62649381aeaa37e7e70b32",
+                "reference": "372c7cbb695a6f6f1e62649381aeaa37e7e70b32",
+                "shasum": ""
+            },
+            "require": {
+                "ext-xml": "*",
+                "ext-xmlwriter": "*",
+                "php": ">=5.2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "PHPExcel": "Classes/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL"
+            ],
+            "authors": [
+                {
+                    "name": "Maarten Balliauw",
+                    "homepage": "http://blog.maartenballiauw.be"
+                },
+                {
+                    "name": "Mark Baker"
+                },
+                {
+                    "name": "Franck Lefevre",
+                    "homepage": "http://blog.rootslabs.net"
+                },
+                {
+                    "name": "Erik Tilt"
+                }
+            ],
+            "description": "PHPExcel - OpenXML - Read, Create and Write Spreadsheet documents in PHP - Spreadsheet engine",
+            "homepage": "http://phpexcel.codeplex.com",
+            "keywords": [
+                "OpenXML",
+                "excel",
+                "php",
+                "spreadsheet",
+                "xls",
+                "xlsx"
+            ],
+            "time": "2015-05-01 07:00:55"
         },
         {
             "name": "phpoption/phpoption",
@@ -3195,16 +3315,16 @@
         },
         {
             "name": "react/promise",
-            "version": "v2.3.0",
+            "version": "v2.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/reactphp/promise.git",
-                "reference": "8ffacee1171e33a1c129f424bf1ec36e062eba82"
+                "reference": "f942da7b505d1a294284ab343d05df42d02ad6d9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/reactphp/promise/zipball/8ffacee1171e33a1c129f424bf1ec36e062eba82",
-                "reference": "8ffacee1171e33a1c129f424bf1ec36e062eba82",
+                "url": "https://api.github.com/repos/reactphp/promise/zipball/f942da7b505d1a294284ab343d05df42d02ad6d9",
+                "reference": "f942da7b505d1a294284ab343d05df42d02ad6d9",
                 "shasum": ""
             },
             "require": {
@@ -3235,20 +3355,20 @@
                 }
             ],
             "description": "A lightweight implementation of CommonJS Promises/A for PHP",
-            "time": "2016-03-24 21:20:22"
+            "time": "2016-03-31 13:10:33"
         },
         {
             "name": "rollerworks/password-strength-bundle",
-            "version": "v1.5.0",
+            "version": "v1.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rollerworks/PasswordStrengthBundle.git",
-                "reference": "387b985e2f35130b5cdaed6ab492a9ae9edeaf2f"
+                "reference": "f3b7b9952d8e2a5dbacd80182af15a944728b832"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rollerworks/PasswordStrengthBundle/zipball/387b985e2f35130b5cdaed6ab492a9ae9edeaf2f",
-                "reference": "387b985e2f35130b5cdaed6ab492a9ae9edeaf2f",
+                "url": "https://api.github.com/repos/rollerworks/PasswordStrengthBundle/zipball/f3b7b9952d8e2a5dbacd80182af15a944728b832",
+                "reference": "f3b7b9952d8e2a5dbacd80182af15a944728b832",
                 "shasum": ""
             },
             "require": {
@@ -3258,13 +3378,15 @@
                 "symfony/validator": "^2.3.20|^3.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.4",
+                "matthiasnoback/symfony-dependency-injection-test": "^0.7.4",
+                "matthiasnoback/symfony-service-definition-validator": "^1.2.2",
+                "phpunit/phpunit": "~4.4|^5.2.9",
                 "sllh/php-cs-fixer-styleci-bridge": "^1.4"
             },
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.4-dev"
+                    "dev-master": "1.5-dev"
                 }
             },
             "autoload": {
@@ -3297,7 +3419,7 @@
                 "symfony",
                 "validator"
             ],
-            "time": "2016-02-22 13:05:34"
+            "time": "2016-03-31 08:13:52"
         },
         {
             "name": "sensio/distribution-bundle",
@@ -4459,12 +4581,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony2admingenerator/FormExtensionsBundle.git",
-                "reference": "980b78da015576fd2a869b50e614a7e837b58856"
+                "reference": "f26b95e0b5b749a5a1a2ed55cf41bcb9b3f34e51"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony2admingenerator/FormExtensionsBundle/zipball/980b78da015576fd2a869b50e614a7e837b58856",
-                "reference": "980b78da015576fd2a869b50e614a7e837b58856",
+                "url": "https://api.github.com/repos/symfony2admingenerator/FormExtensionsBundle/zipball/f26b95e0b5b749a5a1a2ed55cf41bcb9b3f34e51",
+                "reference": "f26b95e0b5b749a5a1a2ed55cf41bcb9b3f34e51",
                 "shasum": ""
             },
             "require": {
@@ -4505,7 +4627,7 @@
                 }
             ],
             "description": "Add additional form types to symfony2",
-            "time": "2016-03-22 20:45:17"
+            "time": "2016-04-06 18:26:53"
         },
         {
             "name": "symfony2admingenerator/generator-bundle",

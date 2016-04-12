@@ -40,6 +40,7 @@ class AppKernel extends Kernel
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle(),
+            new Liuggio\ExcelBundle\LiuggioExcelBundle(),
     
             // Liip Imagine
             new Liip\ImagineBundle\LiipImagineBundle(),
