@@ -22,11 +22,13 @@ autosize($('.formBlock textarea'));
 $("body").on("click", "[action='comments']", function() {
     // console.log('*** click comments');
 
+    clearAllComments();
     context = $(this).closest('.paragraphHolder');
-
     if (context.find('.commentsContent').is(':visible')) {
-        $("[action='closeComments']").trigger("click");
+        // console.log('visible');
     } else {
+        // console.log('invisible');
+
         $('.bubblesComments').hide();
         $('.commentsCounter').removeClass('activeComment');
 
@@ -38,16 +40,14 @@ $("body").on("click", "[action='comments']", function() {
 
 $("body").on("click", "[action='globalComments']", function() {
     // console.log('*** click globalComments');
-    
+
     context = $(this).closest('.paragraphHolder');
     if (context.find('.commentsContent').is(':visible')) {
         // console.log('visible');
-        // @todo this call is not working, why?
-        // $("[action='closeComments']").trigger("click");
-        context.find('#globalComments').hide();
-        context.find('.commentsContent').first().html('');
+        clearAllComments();
     } else {
         // console.log('invisible');
+        clearAllComments();
         $('.bubblesComments').hide();
         $('.commentsCounter').removeClass('activeComment');
 
@@ -60,16 +60,7 @@ $("body").on("click", "[action='globalComments']", function() {
 // close comments
 $("body").on("click", "[action='closeComments']", function() {
     // console.log('*** click closeComments');
-
-    context = $(this).closest('.paragraphHolder');
-
-    $('.bubblesComments').hide();
-    $('#globalComments').hide();
-
-    $('.commentsCounter').removeClass('activeComment');
-
-    context.find('.commentsContent').html('');
-    context.find('#globalComments').html('');
+    clearAllComments();
 });
 
 // création d'un commentaire
@@ -79,6 +70,17 @@ $("body").on("click", "input[action='createComment']", function(e) {
     var context = $(this).closest('.paragraphHolder');
     createComment(context);
 });
+
+/**
+ * Clear html content & hide all comments zones
+ */
+function clearAllComments()
+{
+    $('.bubblesComments').hide();
+    $('#globalComments').hide();
+    $('.commentsContent').html('');
+    $('.commentsCounter').removeClass('activeComment');
+}
 
 /**
  * Load paragraph id comments
@@ -146,7 +148,7 @@ function createComment(context)
     // console.log(targetElement);
 
     var textCount = $('.textCount').text();
-    console.log(textCount);
+    // console.log(textCount);
 
     if (textCount > 495 || textCount < 0) {
         if (textCount > 495) {
@@ -194,7 +196,7 @@ function createComment(context)
  * Character counting for comment
  */
 function commentTextCounter() {
-    // // console.log('*** commentTextCounter');
+    // console.log('*** commentTextCounter');
 
     $('#comment_description').textcounter({
         type                     : "character",            // "character" or "word"
