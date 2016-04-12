@@ -149,9 +149,20 @@ function createComment(context)
     // console.log(targetElement);
 
     var textCount = $('.textCount').text();
-    // console.log(textCount);
+    console.log(textCount);
 
     if (textCount > 495 || textCount < 0) {
+        if (textCount > 495) {
+            smoke.alert("Votre commentaire est trop court - 5 caractères minimum", function(e){
+            }, {
+                ok: "C'est noté",
+            });
+        } else {
+            smoke.alert("Votre commentaire est trop long - 500 caractères maximum : consultez le compteur à côté du bouton 'Publier' pour connaître le nombre de caractères restants.", function(e){
+            }, {
+                ok: "C'est noté",
+            });
+        }
         return false;
     }
 
