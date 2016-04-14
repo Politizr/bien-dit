@@ -24,3 +24,7 @@ InscriptionTmpFinish:
 WhoWeAre:
     pattern:  /qui-sommes-nous
     defaults: { _controller: PolitizrFrontBundle:Public:whoWeAre }
+
+About:
+    pattern:  /a-propos
+    defaults: { _controller: PolitizrFrontBundle:Public:about }

@@ -1,0 +1,18 @@
+{# beta #}
+{% set layout = 'PolitizrFrontBundle::layoutPublic.html.twig' %}
+{% if (isGrantedE() or isGrantedC()) %}
+    {% set layout = 'PolitizrFrontBundle::layoutConnected.html.twig' %}
+{% endif %}
+{% extends layout %}
+
+{% block title %}
+    {{ parent() }} - À propos
+{% endblock title %}
+
+{% block ogTitle %}À propos – Politizr{% endblock ogTitle %}
+
+{% block main %}
+    <div id="public">
+        {% include 'PolitizrFrontBundle:Public:_about.html.twig' %}
+    </div>
+{% endblock main %}

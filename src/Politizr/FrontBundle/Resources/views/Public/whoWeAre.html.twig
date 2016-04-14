@@ -1,9 +1,17 @@
 {# beta #}
-{% extends 'PolitizrFrontBundle::layoutPublic.html.twig' %}
+{% set layout = 'PolitizrFrontBundle::layoutPublic.html.twig' %}
+{% if (isGrantedE() or isGrantedC()) %}
+    {% set layout = 'PolitizrFrontBundle::layoutConnected.html.twig' %}
+{% endif %}
+{% extends layout %}
 
 {% block title %}
-    {{ parent() }} - Qui sommes-nous?
+    {{ parent() }} - Qui sommes-nous ?
 {% endblock title %}
+{% block description %}Découvrez l'équipe derrière Politizr et contactez-les au 05 64 88 01 71 !{% endblock description %}
+
+{% block ogTitle %}Qui sommes-nous ? – Politizr{% endblock ogTitle %}
+{% block ogDescription %}Découvrez l'équipe derrière Politizr et contactez-les au 05 64 88 01 71 !{% endblock ogDescription %}
 
 {% block main %}
         <div id="public">
@@ -34,7 +42,7 @@
                     </div>
                     <div class="publicItem">
                         <h2>Maxime Forest</h2>
-                        <i>38 ans. Docteur en sciences politique, enseignant-chercheur à Sciences Po (CEVIPOF, OFCE). Consultant Politizr.</i><br>
+                        <i>39 ans. Docteur en sciences politique, enseignant-chercheur à Sciences Po (CEVIPOF, OFCE). Consultant Politizr.</i><br>
                         Maxime apporte le regard de la sociologie électorale et de la théorie de l’action publique, et une perspective comparée du fait de ses nombreux travaux sur l’UE. Maxime Forest est aussi acteur de l’action publique,  à travers le Haut Conseil à l’Egalité (HCEfh) et la conduite de projets en design de services publics.
                     </div>
                     <div class="publicItem">

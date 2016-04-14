@@ -7,62 +7,7 @@
 
 {% block main %}
     <div id="public">
-        <div id="publicHeaderImage">
-            <div id="publicBaseline">
-                <span>Changerez-vous d’opinion?</span><br>
-                Politizr est une plateforme indépendante et neutre
-                permettant aux élu-e-s* de toute la France
-                de débattre publiquement des sujets proposés
-                par leurs concitoyens. 
-            </div>
-            <img src="{{ asset('bundles/politizrfront/images/f-headerGirl.jpg') }}">
-            <img src="{{ asset('bundles/politizrfront/images/f-headerGirlGradient.jpg') }}">
-        </div>
-        <div id="publicContent">
-            <div class="center">
-                <div class="argu arguLeft">
-                    <div class="arguText">
-                        <div class="verticalAlign">
-                            <h1>Suivez les sujets de discussion qui vous intéressent...</h1><br>
-                            Recherchez un sujet par zone géographique (locale, régionale ou nationale), par thématique ou par participant.<br><br>
-                            Consultez le détail des publications, suivez toute nouvelle intervention et constituez votre fil de discussion personnel.<br><br>
-                            <h1>et créez ceux qui n’existent pas encore...</h1><br>
-                            Rédigez les termes d'un sujet de discussion pour susciter les réponses des élus et les commentaires des citoyens.
-                        </div>
-                    </div>
-                    <img src="{{ asset('bundles/politizrfront/images/f-argu1.jpg') }}">
-                </div>
-                <div class="argu arguRight">
-                    <div class="arguText">
-                        <div class="verticalAlign">
-                            <h1>participez aux discussions...</h1><br>
-                            Apportez votre contribution — en publiant une réaction, un commentaire, ou simplement, en attribuant une note — et faites progresser les débats!<br><br>
-                            Élu-e et ex-élu-e : répondez à toutes les publications quel que soit ou quel que fût votre mandat électoral.
-                        </div>
-                    </div>
-                    <img src="{{ asset('bundles/politizrfront/images/f-argu2.jpg') }}">
-                </div>
-                <div class="argu arguLeft">
-                    <div class="arguText">
-                        <div class="verticalAlign">
-                            <h1>suivez l’activité de vos élu-e-s et des autres utilisateurs</h1><br>
-                            Ne perdez pas le fil de la discussion : suivez toutes les nouvelles publications minute par minute sur votre fil d’actualité : réactions, commentaires, activité de vos publications, évolution des réputations, ... Rien ne vous échappera.
-                        </div>
-                    </div>
-                    <img src="{{ asset('bundles/politizrfront/images/f-argu3.jpg') }}">
-                </div>
-                <div class="argu arguRight">
-                    <div class="arguText">
-                        <div class="verticalAlign">
-                            <h1>améliorez votre réputation</h1><br>
-                            En prenant part aux discussions, en partageant des publications sur les réseaux sociaux, en obtenant de nouveaux badges, ... vous améliorerez votre réputation et votre visibilité sur le site.
-                        </div>
-                    </div>
-                    <img src="{{ asset('bundles/politizrfront/images/f-argu4.jpg') }}">
-                </div>
-            </div>
-        </div>
-
+        {% include 'PolitizrFrontBundle:Public:_about.html.twig' %}
         {% include 'PolitizrFrontBundle:Public:_plansChoice.html.twig' with { 'mode': 'guy' } %}
         {% include 'PolitizrFrontBundle:Navigation\\Footer:_publicFooter.html.twig' %}
     </div>

@@ -23,7 +23,8 @@ SELECT DISTINCT
     moderated_at,
     created_at,
     updated_at,
-    slug
+    slug,
+    nb_users
 FROM (
 ( SELECT DISTINCT p_d_debate.*, 0 as nb_users, 1 as unionsorting
 FROM p_d_debate
@@ -61,7 +62,7 @@ GROUP BY p_d_debate.id
 ORDER BY nb_users DESC
 )
 
-ORDER BY unionsorting ASC
+ORDER BY unionsorting ASC, nb_users DESC, published_at DESC
 ) unionsorting
 
 LIMIT 0, 10

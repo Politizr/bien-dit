@@ -14,8 +14,7 @@
 {% block preMain %}
     <div id="suggestions">
         <div class="center">
-            <div id="suggTitle">Dernières publications</div>
-            {#<div id="suggTitle">Sélection de nouvelles publications — d'après <a href="{{ path('Profile'~profileSuffix()) }}">les thématiques que vous suivez</a>.</div>#}
+            <div id="suggTitle">Sélection de suggestions d'après les <a href="{{ path('UserDetail', {'slug': app.user.slug}) }}">thématiques</a> que vous suivez. Retrouvez les dernières publications depuis le module de <a href="{{ path('ListingSearch') }}">recherche</a>!</div>
             <div class="documentList withLoaderInside"></div>
         </div>
         <div id="suggBg"></div>

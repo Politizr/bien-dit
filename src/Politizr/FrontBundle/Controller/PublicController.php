@@ -96,6 +96,19 @@ class PublicController extends Controller
     }
 
     /**
+     * A propos
+     */
+    public function aboutAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** aboutAction');
+
+        return $this->render('PolitizrFrontBundle:Public:about.html.twig', array(
+        ));
+    }
+
+
+    /**
      * Generate sitemap
      */
     public function sitemapXmlAction()

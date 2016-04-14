@@ -1015,8 +1015,8 @@ class XhrDocument
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
         
-        // $debates = $this->documentService->getUserDocumentsSuggestion($user->getId(), ListingConstants::LISTING_SUGGESTION_DOCUMENTS_LIMIT);
-        $documents = $this->documentService->getDocumentsLastPublished(ListingConstants::LISTING_SUGGESTION_DOCUMENTS_LIMIT);
+        $documents = $this->documentService->getUserDocumentsSuggestion($user->getId(), ListingConstants::LISTING_SUGGESTION_DOCUMENTS_LIMIT);
+        // $documents = $this->documentService->getDocumentsLastPublished(ListingConstants::LISTING_SUGGESTION_DOCUMENTS_LIMIT);
 
         $html = $this->templating->render(
             'PolitizrFrontBundle:Document:_sliderSuggestions.html.twig',
