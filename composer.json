@@ -31,7 +31,7 @@
         "craftyshadow/propel-equalnest-behavior": "~1.2",
         "badlamer/propel-uuid-behavior": "~0.2",
 
-        "guzzlehttp/guzzle": "5.2.*",
+        "guzzlehttp/guzzle": "^6.2",
 
         "willdurand/geocoder-bundle": "3.0.*",
 

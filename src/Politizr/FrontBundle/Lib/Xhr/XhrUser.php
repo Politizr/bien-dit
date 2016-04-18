@@ -30,10 +30,13 @@ use Politizr\FrontBundle\Form\Type\PUserIdentityType;
 use Politizr\FrontBundle\Form\Type\PUserEmailType;
 use Politizr\FrontBundle\Form\Type\PUserBiographyType;
 use Politizr\FrontBundle\Form\Type\PUserConnectionType;
+use Politizr\FrontBundle\Form\Type\PUserIdCheckType;
 use Politizr\FrontBundle\Form\Type\PUCurrentQOType;
 use Politizr\FrontBundle\Form\Type\PUMandateType;
 use Politizr\FrontBundle\Form\Type\PUserAffinitiesType;
 use Politizr\FrontBundle\Form\Type\PUserBackPhotoInfoType;
+
+use Politizr\FrontBundle\Lib\Client\Ariad;
 
 /**
  * XHR service for user management.
@@ -490,6 +493,154 @@ class XhrUser
                     $dispatcher = $this->eventDispatcher->dispatch('upd_password_email', new GenericEvent($user));
                 }
             }
+        } else {
+            $errors = StudioEchoUtils::getAjaxFormErrors($form);
+            throw new BoxErrorException($errors);
+        }
+
+        return true;
+    }
+
+    /**
+     * ARIAD ID CHECK
+     */
+    public function validateId(Request $request)
+    {
+        $this->logger->info('*** validateId');
+
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+
+        $form = $this->formFactory->create(new PUserIdCheckType($user), $user);
+
+        $form->bind($request);
+        if ($form->isValid()) {
+            $zla1 = $form->get('zla1')->getData();
+            $zla2 = $form->get('zla2')->getData();
+            $zla3 = $form->get('zla3')->getData();
+            dump($zla1);
+            dump($zla2);
+            dump($zla3);
+
+            $username = "politizr@ariadnext.com";
+            $password = "Bi3quoov4a";
+            $now = new \DateTime();
+
+            // 2016-04-15T13:55:14.179+02:00
+            $dateFormat = $now->format('Y-m-d\TH:i:s.\0\0\0P');
+            dump($dateFormat);
+
+            // $zla1 = new \SoapVar($zla1, XSD_ANYXML);
+            // $zla2 = new \SoapVar($zla2, XSD_ANYXML);
+            // $zla3 = new \SoapVar($zla3, XSD_ANYXML);
+
+            $optionsMzr = array(
+                "CheckMrz" => array (
+                    "requestDate" => $dateFormat,
+                    "accountUID" => $username,
+                    "userID" => $username,
+                    "locale" => "FR",
+                    "version" => "1.2.0",
+                    "authenticationInfo" => array (
+                        "password" => $password
+                    ),
+                    "mrz" => array (
+                        "line1" => $zla1,
+                        "line2" => $zla2,
+                        "line3" => $zla3,
+                    ),
+                    "getPdfReport" => array (
+                       "getPdfReport" => true
+                    )
+                )
+            );
+
+            $params = array (
+                'encoding' => 'UTF-8',
+                'verifypeer' => false,
+                'verifyhost' => false,
+                'soap_version' => SOAP_1_2,
+                'trace' => 1,
+                'exceptions' => 1,
+                'connection_timeout' => 180,
+                // 'stream_context' => stream_context_create($opts),
+                'authentication' => 'SOAP_AUTHENTICATION_BASIC',
+                'login' => $username,
+                'password' => $password,
+            );
+
+            $client = new \SoapClient(
+                "https://smarteye-test.ariadnext.com:443/ariadnext/ws/SmartEyeWs_v1r0?wsdl",
+                $params
+            );
+
+            // check mrz
+            // ISO Y-m-d\TH:i:sO
+            $result = $client->__soapCall("CheckMrz", $optionsMzr);
+
+            // dump($result);
+            // $result = $client->__getLastRequestHeaders();
+            // dump($result);
+            // $result = $client->__getLastRequest();
+            // dump($result);
+            // $result = $client->__getLastResponseHeaders();
+            // dump($result);
+            // $result = $client->__getLastResponse();
+            // dump($result);
+
+            if ($result->contentOk->result == 'ERROR') {
+                return false;
+            }
+
+
+//    <soap:Body>
+//       <mes:CheckMrzRequest>
+//          <requestDate>2016-04-12T00:00:00.000</requestDate>
+//          <accountUID>politizr@ariadnext.com</accountUID>
+//          <userID>politizr@ariadnext.com</userID>
+//          <locale>FR</locale>
+//          <version>1.2.0</version>
+//          <authenticationInfo>
+//             <password>Bi3quoov4a</password>
+//          </authenticationInfo>
+//          <mrz>
+//             <line1><![CDATA[P<UTOBANDERAS<<LILIAN<<<<<<<<<<<<<<<<<<<<<<<]]]]>><![CDATA[</line1>
+//             <line2><![CDATA[01234567894UTO8001014F2501017<<<<<<<<<<<<<06]]]]>><![CDATA[</line2>
+//          </mrz>
+//          <getPdfReport>
+//             <getPdfReport>true</getPdfReport>
+//          </getPdfReport>
+//       </mes:CheckMrzRequest>
+//    </soap:Body>
+
+
+            return true;
+
+
+//             $client = new SoapClient("https://smarteye-test.ariadnext.com", array("trace" => 1, "exception" => 0));
+// 
+//             // Create the header
+//             $auth = new Ariad(
+//                 "politizr@ariadnext.com",
+//                 "Bi3quoov4a"
+//             );
+//             $header = new SoapHeader("https://smarteye-test.ariadnext.com", "APICredentials", $auth, false);
+// 
+//             // Call wsdl function
+//             $result = $client->__soapCall("DeleteMarketplaceAd", array(
+//                 "DeleteMarketplaceAd" => array(
+//                     "accountID"        => $accountId,
+//                     "marketplaceAdID"    => "9938745"        // The ads ID
+//                 )
+//             ), NULL, $header);
+// 
+//             // Echo the result
+//             echo "<pre>".print_r($result, true)."</pre>";
+//             if($result->DeleteMarketplaceAdResult->Status == "Success")
+//             {
+//                 echo "Item deleted!";
+//             } 
+
         } else {
             $errors = StudioEchoUtils::getAjaxFormErrors($form);
             throw new BoxErrorException($errors);

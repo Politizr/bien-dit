@@ -91,6 +91,31 @@
                     </form>
                 </div>
             </div>
+
+            {% if not app.user.validated %}
+                <div id="idCheck">
+                    <div class="formBlock">
+                        <div class="formBlockHeader">
+                            <label>Validation de votre identité</label>
+                        </div>
+
+                        <form name="user" method="post" id="formPerso4">
+                            {{ form_errors(formIdCheck) }}
+
+                            {{ form_row(formIdCheck.zla1, { 'attr': { 'placeholder': 'ZLA Ligne 1' }}) }}
+                            {{ form_row(formIdCheck.zla2, { 'attr': { 'placeholder': 'ZLA Ligne 2' }}) }}
+                            {{ form_row(formIdCheck.zla3, { 'attr': { 'placeholder': 'ZLA Ligne 3' }}) }}
+                            {{ form_rest(formIdCheck) }}
+                
+                            <button type="button" action="validateId">
+                                Valider mon identité
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            {% endif %}
+
+
         </div>
     </div>
 {% endblock content %}

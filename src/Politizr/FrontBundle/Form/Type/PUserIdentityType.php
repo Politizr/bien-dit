@@ -68,6 +68,7 @@ class PUserIdentityType extends AbstractType
             'disabled' => $this->user->getValidated()? true : false ,
             'constraints' => new NotBlank(array('message' => 'Date de naissance obligatoire.')),
         ));
+
     }
 
     /**

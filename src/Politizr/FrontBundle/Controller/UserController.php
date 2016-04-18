@@ -19,6 +19,7 @@ use Politizr\Model\PUMandate;
 use Politizr\FrontBundle\Form\Type\PUserIdentityType;
 use Politizr\FrontBundle\Form\Type\PUserEmailType;
 use Politizr\FrontBundle\Form\Type\PUserBiographyType;
+use Politizr\FrontBundle\Form\Type\PUserIdCheckType;
 use Politizr\FrontBundle\Form\Type\PUserConnectionType;
 use Politizr\FrontBundle\Form\Type\PUCurrentQOType;
 use Politizr\FrontBundle\Form\Type\PUMandateType;
@@ -154,11 +155,14 @@ class UserController extends Controller
         $formPerso2 = $this->createForm(new PUserEmailType(), $user);
         $formPerso3 = $this->createForm(new PUserConnectionType(), $user);
 
+        $formIdCheck = $this->createForm(new PUserIdCheckType(), $user);
+
         return $this->render('PolitizrFrontBundle:User:editPerso.html.twig', array(
             'user' => $user,
             'formPerso1' => $formPerso1->createView(),
             'formPerso2' => $formPerso2->createView(),
-            'formPerso3' => $formPerso3->createView()
+            'formPerso3' => $formPerso3->createView(),
+            'formIdCheck' => $formIdCheck->createView(),
         ));
     }
 
