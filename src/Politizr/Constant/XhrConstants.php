@@ -76,6 +76,9 @@ class XhrConstants
     const ROUTE_BADGES_COUNTER = 'profil/reputation/badges';
 
     // MODAL
+    const ROUTE_MODAL_HELP_US = 'politizr-needs-you';
+    
+
     const ROUTE_MODAL_PAGINATED_LIST = 'liste';
     const ROUTE_MODAL_FILTERS = 'filtres';
     const ROUTE_MODAL_LIST_ACTIONS = 'profil/liste/historique';

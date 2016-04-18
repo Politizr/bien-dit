@@ -1,0 +1,37 @@
+<div id="modal">
+    {% if isGrantedE() %}
+        <!-- modal for representatives -->
+        <div id="modalContent" class="modalRepresentatives">
+            <div class="modalClose" action="closeModal"><i class="icon-cross"></i></div>
+            <div class="modalText">
+                <b>Faites-vous entendre !</b><br>
+                • Vous souhaitez partager vos points de vues<br>
+                ou vos questions avec d’autres élu-e-s<br>
+                et avec vos concitoyen-ne-s ?<br>
+                • Vous souhaitez faire valoir votre opinion en vous appuyant sur vos domaines de compétences ?<br><br>
+                <span>N’hésitez pas, Politizr a besoin de vous !</span>
+                <a href="{{ path('DebateDraftNew'~profileSuffix()) }}" class="newSubject"><i class="icon-plane"></i><span>rédiger un nouveau sujet</span></a>
+                <span class="modalCancel" action="closeModal">fermer</span>
+            </div>
+        </div>
+        <!-- end modal for representatives -->
+    {% else %}
+        <!-- modal for citizen -->
+        <div id="modalContent" class="modalCitizen">
+            <div class="modalClose" action="closeModal"><i class="icon-cross"></i></div>
+            <div class="modalText">
+                <b>Exprimez-vous !</b><br>
+                • Vous souhaitez dénoncer des abus ou simplement partager vos opinions politiques ?<br>
+                • Un sujet vous tient particulièrement à cœur ?<br>
+                • Vous voulez encourager une initiative ?<br>
+                • Vous avez des questions à poser à vos élus locaux ?<br><br>
+                <span>N’hésitez pas, Politizr a besoin de vous !</span>
+                <a href="{{ path('DebateDraftNew'~profileSuffix()) }}" class="newSubject"><i class="icon-plane"></i><span>rédiger un nouveau sujet</span></a>
+                <span class="modalCancel" action="closeModal">fermer</span>
+            </div>
+        </div>
+        <!-- end modal for citizen -->
+    {% endif %}
+
+    <div id="modalBg"></div>
+</div>

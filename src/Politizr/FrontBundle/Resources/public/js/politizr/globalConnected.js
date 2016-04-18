@@ -5,7 +5,7 @@ $(function() {
     scoreCounter();
     badgesCounter();
     notificationsLoading();
-})
+});
 
 // ******************************************************************* //
 //                            NOTIFICATIONS                            //
@@ -151,4 +151,40 @@ $("body").on("click", "[action='followTag']", function(e) {
             );
         }
     });    
+});
+
+/**
+ * Modal help us
+ */
+function modalHelpUs() {
+    console.log('*** modalHelpUs');
+
+    $('body').addClass('noScroll');
+
+    var xhrPath = getXhrPath(
+        ROUTE_MODAL_HELP_US,
+        'modal',
+        'helpUs',
+        RETURN_HTML
+    );
+
+    return xhrCall(
+        document,
+        null,
+        xhrPath
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
+            $('#modalContainer').html(data['html']);
+        }
+    });
+};
+
+$("body").on("click", "[action='closeModal']", function() {
+    console.log('*** closeModal');
+
+    $('body').removeClass('noScroll');
+    $('#modal').hide();
 });

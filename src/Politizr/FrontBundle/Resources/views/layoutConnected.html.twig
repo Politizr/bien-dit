@@ -86,4 +86,13 @@
         filter='uglifyjs2' %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
+
+    {% if not app.session.has('helpUs') %}
+        <script>
+            $(function() {
+                modalHelpUs();
+            });
+        </script>
+    {% endif %}
+
 {% endblock javascriptFooter %}

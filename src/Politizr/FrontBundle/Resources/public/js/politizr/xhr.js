@@ -65,6 +65,9 @@ var ROUTE_SCORE_COUNTER = 'profil/reputation/score';
 var ROUTE_BADGES_COUNTER = 'profil/reputation/badges';
 
 // MODAL
+var ROUTE_MODAL_HELP_US = 'politizr-needs-you';
+
+
 var ROUTE_MODAL_PAGINATED_LIST = 'liste';
 var ROUTE_MODAL_FILTERS = 'filtres';
 var ROUTE_MODAL_LIST_ACTIONS = 'profil/liste/historique';
