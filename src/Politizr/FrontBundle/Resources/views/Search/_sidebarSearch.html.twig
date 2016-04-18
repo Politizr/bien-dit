@@ -1,5 +1,6 @@
 {# beta #}
 <div class="sidebarSearch">
+    {#
     <div class="sidebarSearchMap">
         <h5>Zone Géographique</h5>
         <div class="mapMenu">
@@ -8,16 +9,15 @@
             <span action="map" uuid="{{ europeTag.uuid }}">Europe</span>
             <span action="map" uuid="{{ worldTag.uuid }}">Monde</span>
         </div>
-        {#
         <div class="mapBreadcrumbs">
             <span class="active">Languedoc-Roussillon Midi-Pyrénées</span>
             <span class="active current">Ariège</span>
         </div>
-        #}
         
         <!-- france -->
-        {# include 'PolitizrFrontBundle:Search\\Map:_routing.html.twig' #}
+        {% include 'PolitizrFrontBundle:Search\\Map:_routing.html.twig' %}
     </div>
+    #}
     <div class="sidebarSearchFilters">
         {% include 'PolitizrFrontBundle:Search\\Filters:_publication.html.twig' %}
         {% include 'PolitizrFrontBundle:Search\\Filters:_profile.html.twig' %}

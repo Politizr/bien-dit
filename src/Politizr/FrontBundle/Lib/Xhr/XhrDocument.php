@@ -346,7 +346,7 @@ class XhrDocument
             array(
                 'title' => $debate->getTitle(),
                 // 'description' => strip_tags($debate->getDescription()),
-                'geoTags' => $debate->getWorldToDepartmentGeoArrayTags(),
+                'geoTags' => $debate->getFranceToDepartmentGeoArrayTags(),
                 'allTags' => $debate->getArrayTags(),
             ),
             $debate->getPublishConstraints(),
@@ -476,7 +476,7 @@ class XhrDocument
             array(
                 'title' => $reaction->getTitle(),
                 // 'description' => strip_tags($reaction->getDescription()),
-                'geoTags' => $reaction->getWorldToDepartmentGeoArrayTags(),
+                'geoTags' => $reaction->getFranceToDepartmentGeoArrayTags(),
                 'allTags' => $reaction->getArrayTags(),
             ),
             $reaction->getPublishConstraints(),
