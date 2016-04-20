@@ -157,7 +157,7 @@ $("body").on("click", "[action='followTag']", function(e) {
  * Modal help us
  */
 function modalHelpUs() {
-    console.log('*** modalHelpUs');
+    // console.log('*** modalHelpUs');
 
     $('body').addClass('noScroll');
 
