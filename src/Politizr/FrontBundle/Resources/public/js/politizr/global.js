@@ -125,13 +125,24 @@ function refreshTimeline() {
     }
 }
 
-// sticky sidebar
+/**
+ * Create a sticky sidebar (if not already exists)
+ */
 function stickySidebar() {
-    var sticky = new Waypoint.Sticky({
-        element: $('#sidebar'),
-        offset: 'bottom-in-view'
-    });
-    $(".sticky-wrapper").addClass("hideSidebarForMobile");
+    // console.log('*** stickySidebar');
+    var context = Waypoint.Context.findByElement(window);
+    if (typeof context === 'undefined') {
+        // console.log('Waypoint sticky does not exist');
+
+        var sticky = new Waypoint.Sticky({
+            element: $('#sidebar'),
+            offset: 'bottom-in-view'
+        });
+        $(".sticky-wrapper").addClass("hideSidebarForMobile");
+
+    } else if (context instanceof Waypoint.Context) {
+        // console.log('Waypoint sticky already exist');
+    }    
 }
 
 // imgLiquid
