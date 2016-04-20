@@ -7,8 +7,7 @@ WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1 
     AND p_d_d_tagged_t.p_tag_id IN (8, 31)
-    AND p_d_debate.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW() 
-    )
+)
 
 UNION DISTINCT
 
@@ -22,7 +21,7 @@ WHERE
     AND p_d_reaction.online = 1
     AND p_d_reaction.tree_level > 0
     AND p_d_r_tagged_t.p_tag_id IN (8, 31)
-    AND p_d_reaction.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW() 
-    )
+)
 
-ORDER BY note_pos DESC, note_neg ASC
+ORDER BY note_pos DESC, note_neg ASC, published_at DESC
+# ORDER BY published_at DESC, note_pos DESC, note_neg ASC

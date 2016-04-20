@@ -13,7 +13,6 @@ WHERE
             p_user.qualified = 1
             AND p_u_current_q_o.p_q_organization_id = 1
     )
-    # AND p_d_debate.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW() 
 )
 
 UNION DISTINCT
@@ -34,7 +33,7 @@ WHERE
             p_user.qualified = 1
             AND p_u_current_q_o.p_q_organization_id = 1
     )
-    # AND p_d_reaction.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW() 
 )
 
-ORDER BY note_pos DESC, note_neg ASC
+# ORDER BY note_pos DESC, note_neg ASC, published_at DESC
+ORDER BY published_at DESC, note_pos DESC, note_neg ASC

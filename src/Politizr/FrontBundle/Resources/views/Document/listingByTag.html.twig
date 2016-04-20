@@ -20,8 +20,8 @@
                 </div>
             </div>
             <div class="pseudoTabs" uuid="{{ tag.uuid }}">
-                <a class="currentPage" action="documentsByTagListing" filter="">Top</a>
-                <a action="documentsByTagListing" filter="{{ constant('Politizr\\Constant\\ListingConstants::FILTER_KEYWORD_LAST_MONTH') }}">Les plus récentes</a>
+                <a class="currentPage" action="documentsByTagListing" orderBy="{{ constant('Politizr\\Constant\\ListingConstants::ORDER_BY_KEYWORD_BEST_NOTE') }}">Top</a>
+                <a action="documentsByTagListing" orderBy="{{ constant('Politizr\\Constant\\ListingConstants::ORDER_BY_KEYWORD_LAST') }}">Les plus récentes</a>
             </div>
             <div id="documentListing" class="withLoaderInside">
                 {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}

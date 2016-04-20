@@ -9,7 +9,7 @@ $(function() {
             $('.pseudoTabs').attr('uuid')
         )
     ).done(function(r1, r2, r3) {
-        stickySidebar();
+        stickySidebar(true);
     });
 
 });

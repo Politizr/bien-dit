@@ -212,29 +212,14 @@ class DocumentService
      * Get paginated documents by organization
      *
      * @param array $organizationId
-     * @param string $filterDate
+     * @param string $orderBy
      * @param integer $offset
      * @param înteger $count
      * @return PropelCollection PDocument
      */
-    public function getDocumentsByOrganizationPaginated($organizationId, $filterDate = null, $offset = 0, $count = ListingConstants::LISTING_CLASSIC_PAGINATION)
+    public function getDocumentsByOrganizationPaginated($organizationId, $orderBy = null, $offset = 0, $count = ListingConstants::LISTING_CLASSIC_PAGINATION)
     {
-        $nbDays = null;
-        switch ($filterDate) {
-            case ListingConstants::FILTER_KEYWORD_LAST_DAY:
-                $nbDays = 1;
-                break;
-            case ListingConstants::FILTER_KEYWORD_LAST_WEEK:
-                $nbDays = 7;
-                break;
-            case ListingConstants::FILTER_KEYWORD_LAST_MONTH:
-                $nbDays = 30;
-                break;
-            default:
-                break;
-        }
-
-        $documents = $this->documentManager->generateDocumentsByOrganizationPaginated($organizationId, $nbDays, $offset, $count);
+        $documents = $this->documentManager->generateDocumentsByOrganizationPaginated($organizationId, $orderBy, $offset, $count);
 
         return $documents;
     }
@@ -243,34 +228,19 @@ class DocumentService
      * Get paginated documents by tags
      *
      * @param array $tagIds
-     * @param string $filterDate
+     * @param string $orderBy
      * @param integer $offset
      * @param înteger $count
      * @return PropelCollection PDocument
      */
-    public function getDocumentsByTagsPaginated($tagIds, $filterDate = null, $offset = 0, $count = ListingConstants::LISTING_CLASSIC_PAGINATION)
+    public function getDocumentsByTagsPaginated($tagIds, $orderBy = null, $offset = 0, $count = ListingConstants::LISTING_CLASSIC_PAGINATION)
     {
-        $nbDays = null;
-        switch ($filterDate) {
-            case ListingConstants::FILTER_KEYWORD_LAST_DAY:
-                $nbDays = 1;
-                break;
-            case ListingConstants::FILTER_KEYWORD_LAST_WEEK:
-                $nbDays = 7;
-                break;
-            case ListingConstants::FILTER_KEYWORD_LAST_MONTH:
-                $nbDays = 30;
-                break;
-            default:
-                break;
-        }
-
         $inQueryTagIds = implode(',', $tagIds);
         if (empty($inQueryTagIds)) {
             $inQueryTagIds = 0;
         }
 
-        $documents = $this->documentManager->generateDocumentsByTagsPaginated($inQueryTagIds, $nbDays, $offset, $count);
+        $documents = $this->documentManager->generateDocumentsByTagsPaginated($inQueryTagIds, $orderBy, $offset, $count);
 
         return $documents;
     }
