@@ -33,6 +33,8 @@ var ROUTE_DOCUMENT_LISTING_RECOMMEND = 'documents/recommend';
 var ROUTE_DOCUMENT_LISTING_RECOMMEND_NAV = 'documents/recommend/nav';
 
 var ROUTE_DOCUMENT_LISTING_FILTERS = 'documents/filters';
+var ROUTE_MAP_BREADCRUMB = 'documents/breadcrumb';
+var ROUTE_MAP_SCHEMA = 'documents/schema';
 
 // DEBATES
 var ROUTE_DEBATE_UPDATE = 'profil/debat/update';

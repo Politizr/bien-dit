@@ -174,12 +174,16 @@ class ListingController extends Controller
         $europeTag = PTagQuery::create()->findPk(TagConstants::TAG_GEO_EUROPE_ID);
         $worldTag = PTagQuery::create()->findPk(TagConstants::TAG_GEO_WORLD_ID);
 
+        $mapTagUuids = $this->get('politizr.functional.tag')->getRegionUuids();
+
         return $this->render('PolitizrFrontBundle:Search:listingBySearch.html.twig', array(
             'search' => true,
             'franceTag' => $franceTag,
             'fomTag' => $fomTag,
             'europeTag' => $europeTag,
             'worldTag' => $worldTag,
+            'mapTagUuids' => $mapTagUuids,
+            'tags' => array(),
         ));
     }
 

@@ -13,8 +13,6 @@
         {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
         {% if app.user %}
             <input type="button" action="createComment" value="Publier">
-        {% else %}
-            <a href="{{ path('Inscription') }}">Créer un compte pour commenter</a>
         {% endif %}
     </div>
 </form>

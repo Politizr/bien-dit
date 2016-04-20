@@ -13,9 +13,9 @@ paginatedFunctions[JS_KEY_LISTING_PUBLICATIONS_BY_FILTERS] = publicationsByFilte
  * @param localLoader
  */
 function publicationsByFiltersListing(init, offset) {
-    // console.log('*** publicationsByFiltersListing');
-    // console.log(init);
-    // console.log(offset);
+    console.log('*** publicationsByFiltersListing');
+    console.log(init);
+    console.log(offset);
 
     init = (typeof init === "undefined") ? true : init;
     offset = (typeof offset === "undefined") ? 0 : offset;
@@ -23,8 +23,8 @@ function publicationsByFiltersListing(init, offset) {
     targetElement = $('#documentListing .listTop');
     localLoader = $('#documentListing').find('.ajaxLoader').first();
 
-    // console.log(targetElement);
-    // console.log(localLoader);
+    console.log(targetElement);
+    console.log(localLoader);
 
     datas = getCurrentFilters();
     datas.push({name: 'offset', value: offset});
@@ -60,10 +60,10 @@ function publicationsByFiltersListing(init, offset) {
 }
 
 /**
- *
+ * Get search filters
  */
 function getCurrentFilters() {
-    // console.log('*** getCurrentFilters');
+    console.log('*** getCurrentFilters');
 
     var filters = [];
 
@@ -82,7 +82,7 @@ function getCurrentFilters() {
     // date
     filters.push({name: 'filterDate', value: $('#dateFilter input:checked').val()});
 
-    // console.log(filters);
+    console.log(filters);
     return filters;
 }
 
@@ -92,9 +92,9 @@ function getCurrentFilters() {
  * @param localLoader
  */
 function publicationsByUserListing(init, offset) {
-    // console.log('*** publicationsByUserListing');
-    // console.log(init);
-    // console.log(offset);
+    console.log('*** publicationsByUserListing');
+    console.log(init);
+    console.log(offset);
 
     init = (typeof init === "undefined") ? true : init;
     offset = (typeof offset === "undefined") ? 0 : offset;
@@ -104,10 +104,10 @@ function publicationsByUserListing(init, offset) {
     uuid = $('.pseudoTabs').attr('uuid');
     orderBy = $('.pseudoTabs .currentPage').attr('filter');
 
-    // console.log(targetElement);
-    // console.log(localLoader);
-    // console.log(uuid);
-    // console.log(orderBy);
+    console.log(targetElement);
+    console.log(localLoader);
+    console.log(uuid);
+    console.log(orderBy);
 
     var xhrPath = getXhrPath(
         ROUTE_DOCUMENT_LISTING_USER_PUBLICATIONS,
@@ -147,9 +147,9 @@ function publicationsByUserListing(init, offset) {
  * @param integer offset
  */
 function myDraftsByUserListing(init, offset) {
-    // console.log('*** myDraftsByUserListing');
-    // console.log(init);
-    // console.log(offset);
+    console.log('*** myDraftsByUserListing');
+    console.log(init);
+    console.log(offset);
 
     init = (typeof init === "undefined") ? true : init;
     offset = (typeof offset === "undefined") ? 0 : offset;
@@ -191,7 +191,7 @@ function myDraftsByUserListing(init, offset) {
  * Document recommend next/prev page
  */
 $("body").on("click", "[action='prevNextLink']", function(e, waypoint) {
-    // console.log('*** click prevNextLink');
+    console.log('*** click prevNextLink');
     e.preventDefault();
     documentsByRecommendListingNav(
         $(this).attr('month'),
@@ -206,9 +206,9 @@ $("body").on("click", "[action='prevNextLink']", function(e, waypoint) {
  * Compute next/prev in documents recommend listing
  */
 function documentsByRecommendListingNav(month, year) {
-    // console.log('*** documentsByRecommendListingNav');
-    // console.log(month);
-    // console.log(year);
+    console.log('*** documentsByRecommendListingNav');
+    console.log(month);
+    console.log(year);
 
     targetElement = $('.listTopHeader');
     localLoader = $('.listTopHeader').find('.ajaxLoader').first();
@@ -248,9 +248,9 @@ function documentsByRecommendListingNav(month, year) {
  * @param localLoader
  */
 function documentsByRecommendListing(init, offset) {
-    // console.log('*** documentsByRecommendListing');
-    // console.log(init);
-    // console.log(offset);
+    console.log('*** documentsByRecommendListing');
+    console.log(init);
+    console.log(offset);
 
     init = (typeof init === "undefined") ? true : init;
     offset = (typeof offset === "undefined") ? 0 : offset;
@@ -297,9 +297,9 @@ function documentsByRecommendListing(init, offset) {
  * @param localLoader
  */
 function documentsByTagListing(init, offset) {
-    // console.log('*** documentsByTagListing');
-    // console.log(init);
-    // console.log(offset);
+    console.log('*** documentsByTagListing');
+    console.log(init);
+    console.log(offset);
 
     init = (typeof init === "undefined") ? true : init;
     offset = (typeof offset === "undefined") ? 0 : offset;
@@ -309,10 +309,10 @@ function documentsByTagListing(init, offset) {
     uuid = $('.pseudoTabs').attr('uuid');
     orderBy = $('.pseudoTabs .currentPage').attr('orderBy');
 
-    // console.log(targetElement);
-    // console.log(localLoader);
-    // console.log(uuid);
-    // console.log(orderBy);
+    console.log(targetElement);
+    console.log(localLoader);
+    console.log(uuid);
+    console.log(orderBy);
 
     var xhrPath = getXhrPath(
         ROUTE_TAG_LISTING,
@@ -350,9 +350,9 @@ function documentsByTagListing(init, offset) {
  * @param localLoader
  */
 function documentsByOrganizationListing(init, offset) {
-    // console.log('*** documentsByTagListing');
-    // console.log(init);
-    // console.log(offset);
+    console.log('*** documentsByTagListing');
+    console.log(init);
+    console.log(offset);
 
     init = (typeof init === "undefined") ? true : init;
     offset = (typeof offset === "undefined") ? 0 : offset;
@@ -362,10 +362,10 @@ function documentsByOrganizationListing(init, offset) {
     uuid = $('.pseudoTabs').attr('uuid');
     orderBy = $('.pseudoTabs .currentPage').attr('orderBy');
 
-    // console.log(targetElement);
-    // console.log(localLoader);
-    // console.log(uuid);
-    // console.log(orderBy);
+    console.log(targetElement);
+    console.log(localLoader);
+    console.log(uuid);
+    console.log(orderBy);
 
     var xhrPath = getXhrPath(
         ROUTE_ORGANIZATION_LISTING,
@@ -403,17 +403,17 @@ function documentsByOrganizationListing(init, offset) {
  * @param localLoader
  */
 function topDocumentListing(targetElement, localLoader) {
-    // console.log('*** topDocumentListing');
-    // console.log(targetElement);
-    // console.log(localLoader);
+    console.log('*** topDocumentListing');
+    console.log(targetElement);
+    console.log(localLoader);
     
     // Tag form filter
     var datas = $('#documentFilter').serializeArray();
-    // console.log(datas);
+    console.log(datas);
     if ($.isEmptyObject(datas)) {
         datas.push({name: 'documentFilterDate[]', value: 'lastMonth'});
     }
-    // console.log(datas);
+    console.log(datas);
 
     var xhrPath = getXhrPath(
         ROUTE_DOCUMENT_LISTING_TOP,
@@ -444,9 +444,9 @@ function topDocumentListing(targetElement, localLoader) {
  * @param localLoader
  */
 function suggestionDocumentListing(targetElement, localLoader) {
-    // console.log('*** suggestionDocumentListing');
-    // console.log(targetElement);
-    // console.log(localLoader);
+    console.log('*** suggestionDocumentListing');
+    console.log(targetElement);
+    console.log(localLoader);
     
     var xhrPath = getXhrPath(
         ROUTE_DOCUMENT_LISTING_SUGGESTION,

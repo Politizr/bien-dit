@@ -1,23 +1,21 @@
 {# beta #}
 <div class="sidebarSearch">
-    {#
     <div class="sidebarSearchMap">
         <h5>Zone Géographique</h5>
         <div class="mapMenu">
-            <span action="map" uuid="{{ franceTag.uuid }}">France</span>
-            <span action="map" uuid="{{ fomTag.uuid }}">France d'Outre-Mer</span>
-            <span action="map" uuid="{{ europeTag.uuid }}">Europe</span>
-            <span action="map" uuid="{{ worldTag.uuid }}">Monde</span>
+            <span action="map" uuid="{{ franceTag.uuid }}" class="active">France</span>
+            {#<span action="map" uuid="{{ fomTag.uuid }}">France d'Outre-Mer</span>#}
         </div>
-        <div class="mapBreadcrumbs">
-            <span class="active">Languedoc-Roussillon Midi-Pyrénées</span>
-            <span class="active current">Ariège</span>
+        <div class="mapBreadcrumbs withLoaderInside" id="mapBreadcrumb">
+            {% include 'PolitizrFrontBundle:Search\\Map:_breadcrumb.html.twig' %}
         </div>
         
         <!-- france -->
-        {% include 'PolitizrFrontBundle:Search\\Map:_routing.html.twig' %}
+        <div id="mapHolder" class="france withLoaderInside">
+            {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+            {% include 'PolitizrFrontBundle:Search\\Map:_routing.html.twig' with { 'tagId': constant('Politizr\\Constant\\TagConstants::TAG_GEO_FRANCE_ID') } %}
+        </div>
     </div>
-    #}
     <div class="sidebarSearchFilters">
         {% include 'PolitizrFrontBundle:Search\\Filters:_publication.html.twig' %}
         {% include 'PolitizrFrontBundle:Search\\Filters:_profile.html.twig' %}

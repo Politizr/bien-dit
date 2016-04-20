@@ -45,6 +45,8 @@ class XhrConstants
     const ROUTE_DOCUMENT_LISTING_RECOMMEND_NAV = 'documents/recommend/nav';
 
     const ROUTE_DOCUMENT_LISTING_FILTERS = 'documents/filters';
+    const ROUTE_MAP_BREADCRUMB = 'documents/breadcrumb';
+    const ROUTE_MAP_SCHEMA = 'documents/schema';
 
     // DEBATES
     const ROUTE_DEBATE_UPDATE = 'profil/debat/update';
