@@ -207,9 +207,13 @@ class XhrTag
         $tags = array();
         if ($tag->getId() == TagConstants::TAG_GEO_FRANCE_ID) {
             $mapTagUuids = $this->tagService->getRegionUuids();
+        } elseif ($tag->getId() == TagConstants::TAG_GEO_REGION_ID_FOM) {
+            $mapTagUuids = $this->tagService->getDepartmentsUuids($tag->getId());
         } elseif (in_array($tag->getId(), TagConstants::getGeoRegionIds())) {
             $mapTagUuids = $this->tagService->getDepartmentsUuids($tag->getId());
         } elseif (in_array($tag->getId(), TagConstants::getGeoDepartmentMetroIds())) {
+            $mapTagUuids = $this->tagService->getDepartmentsUuids($tag->getPTParentId());
+        } elseif (in_array($tag->getId(), TagConstants::getGeoDepartmentOMIds())) {
             $mapTagUuids = $this->tagService->getDepartmentsUuids($tag->getPTParentId());
         }
 

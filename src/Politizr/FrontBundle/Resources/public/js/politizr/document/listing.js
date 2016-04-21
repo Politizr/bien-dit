@@ -68,7 +68,16 @@ function getCurrentFilters() {
     var filters = [];
 
     // map
-    filters.push({name: 'geoTagUuid', value: $('.mapMenu').find('.active').attr('uuid')});
+    if ($('.mapBreadcrumbs').find('.current').length) {
+        console.log('sub map uuid');
+        uuid = $('.mapBreadcrumbs').find('.current').attr('uuid');
+        console.log(uuid);
+    } else {
+        console.log('map uuid');
+        uuid = $('.mapMenu').find('.active').attr('uuid');
+    }
+
+    filters.push({name: 'geoTagUuid', value: uuid});
     
     // publication
     filters.push({name: 'filterPublication', value: $('#publicationFilter input:checked').val()});

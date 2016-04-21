@@ -10,34 +10,20 @@ $("body").on("click", "[action='map']", function() {
     console.log('*** click map');
     uuid = $(this).attr('uuid');
 
+    $("[action='goUp']").trigger("click");
+
     $(this).siblings().removeClass('active');
     $(this).addClass('active');
     
-    // update breadcrumb
-    mapBreadcrumb(uuid);
-
-    // update map
-    mapSchema(uuid);
-
-    $('#documentListing .listTop').html('');
-    $("[action='goUp']").trigger("click");
-
-    return publicationsByFiltersListing();
-});
-
-$("body").on("click", "[action='mapZoom']", function() {
-    console.log('*** click map zoom');
-
-    uuid = $(this).attr('uuid');
-    
-    // update breadcrumb
-    mapBreadcrumb(uuid);
-
-    // update map
-    mapSchema(uuid);
-
-    // listing
-    return publicationsByFiltersListing();
+    $.when(
+        // update breadcrumb
+        mapBreadcrumb(uuid),
+        // update map
+        mapSchema(uuid)
+    ).done(function(r1, r2) {
+        $('#documentListing .listTop').html('');
+        return publicationsByFiltersListing();
+    });
 });
 
 // Publication filter change

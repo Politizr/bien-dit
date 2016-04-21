@@ -55,6 +55,10 @@
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapPACA.svg.twig' with { 'current': null } %}
     </div>
+{% elseif tagId == constant('Politizr\\Constant\\TagConstants::TAG_GEO_REGION_ID_FOM') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Search\\Map:_fom.html.twig' with { 'current': null } %}
+    </div>
 {% elseif tagId == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_AIN') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapARA.svg.twig' with { 'current': 'ain' } %}
@@ -438,5 +442,49 @@
 {% elseif tagId == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_VAL_D_OISE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapIDF.svg.twig' with { 'current': 'valDOise' } %}
+    </div>
+{% elseif tagId == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_GUADELOUPE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Search\\Map:_fom.html.twig' with { 'current': 'guadeloupe' } %}
+    </div>
+{% elseif tagId == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_MARTINIQUE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Search\\Map:_fom.html.twig' with { 'current': 'martinique' } %}
+    </div>
+{% elseif tagId == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_GUYANE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Search\\Map:_fom.html.twig' with { 'current': 'guyane' } %}
+    </div>
+{% elseif tagId == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_LA_REUNION') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Search\\Map:_fom.html.twig' with { 'current': 'laReunion' } %}
+    </div>
+{% elseif tagId == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_MAYOTTE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Search\\Map:_fom.html.twig' with { 'current': 'mayotte' } %}
+    </div>
+{% elseif tagId == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_POLYNESIE_FRANCAISE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Search\\Map:_fom.html.twig' with { 'current': 'polynesieFrancaise' } %}
+    </div>
+{% elseif tagId == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_SAINT_BARTHELEMY') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Search\\Map:_fom.html.twig' with { 'current': 'saintBarthelemy' } %}
+    </div>
+{% elseif tagId == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_SAINT_MARTIN') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Search\\Map:_fom.html.twig' with { 'current': 'saintMartin' } %}
+    </div>
+{% elseif tagId == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_SAINT_PIERRE_ET_MIQUELON') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Search\\Map:_fom.html.twig' with { 'current': 'saintPierreEtMiquelon' } %}
+    </div>
+{% elseif tagId == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_WALLIS_ET_FUTUNA') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Search\\Map:_fom.html.twig' with { 'current': 'wallisEtFutuna' } %}
+    </div>
+{% elseif tagId == constant('Politizr\\Constant\\TagConstants::TAG_GEO_DEPARTMENT_ID_NOUVELLE_CALEDONIE') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Search\\Map:_fom.html.twig' with { 'current': 'nouvelleCaledonie' } %}
     </div>
 {% endif %}

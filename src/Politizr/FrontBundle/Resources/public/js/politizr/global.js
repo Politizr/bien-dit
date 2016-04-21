@@ -43,7 +43,7 @@ $("body").on("click", "[action='toggleMenu']", function() {
 
 // Scroll haut de page
 $("body").on("click", "[action='goUp']", function() {
-    stickySidebar();
+    stickySidebar(true);
     $('html, body').animate({
         scrollTop: $("body").offset().top
     }, '1000');

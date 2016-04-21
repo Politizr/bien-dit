@@ -1,5 +1,5 @@
 {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
 
 {% for tag in tags %}
-    <span action="mapZoom" class="active{% if loop.last %} current{% endif %}" uuid="{{ tag.uuid }}">{{ tag.title }}</span>
+    <span action="map" class="active{% if loop.last %} current{% endif %}" uuid="{{ tag.uuid }}">{{ tag.title }}</span>
 {% endfor %}
