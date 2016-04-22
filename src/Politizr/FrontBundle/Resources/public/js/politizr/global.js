@@ -141,8 +141,8 @@ var stickyWaypoint;
  */
 function stickySidebar(forceReload)
 {
-    console.log('*** stickySidebar');
-    console.log(forceReload);
+    // console.log('*** stickySidebar');
+    // console.log(forceReload);
     
     // var context = Waypoint.Context.findByElement(window);
     // if (typeof context === 'undefined') {
@@ -159,13 +159,12 @@ function stickySidebar(forceReload)
 
     // console.log(stickyWaypoint);
     if (typeof stickyWaypoint === 'undefined') {
-        console.log('Waypoint sticky does not exist');
+        // console.log('Waypoint sticky does not exist');
         stickyWaypoint = createStickySidebar();
-        // console.log(stickyWaypoint);
     } else {
-        console.log('Waypoint sticky already exist');
+        // console.log('Waypoint sticky already exist');
         if (forceReload) {
-            console.log('force sticky reloading');
+            // console.log('force sticky reloading');
 
             stickyWaypoint.destroy();
             stickyWaypoint = createStickySidebar();
