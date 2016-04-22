@@ -27,6 +27,13 @@ $('body').on('click', "[action='closeBox']", function(e){
     $(this).closest('div').hide();
 });
 
+// close modal
+$("body").on("click", "[action='closeModal']", function() {
+    // console.log('*** closeModal');
+    $('body').removeClass('noScroll');
+    $('#modal').hide();
+});
+
 // main menu
 $(document).mousedown(function (e) {
     var container = $("body.css700 #headerMenu, #menu, [action='toggleMenu']");

@@ -6,7 +6,7 @@
     {% elseif hasAlreadyNoteNeg %}
         Vous avez déjà attribué une note <i class="iconNoteMinus"></i> à cette publication.
     {% elseif not isAuthorizedToNotateNeg %}
-        Votre <a href="{{ path('Help') }}#p-reputation">réputation</a> est de "{{ score }}". Elle doit être de "{{ minScore }}" au moins pour pouvoir attribuer une note négative.
+        Votre <a href="#">réputation</a> est de "{{ score }}". Elle doit être de "{{ minScore }}" au moins pour pouvoir attribuer une note négative.
     {% endif %}
     <i class="iconArrowDown"></i>
 </div>

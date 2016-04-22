@@ -25,7 +25,11 @@
 {% endblock content %}
 
 {% block sidebarContent %}
-    {% include 'PolitizrFrontBundle:Search:_sidebarSearch.html.twig' %}
+    {% if not app.user %}
+        {% include 'PolitizrFrontBundle:Navigation\\Menu:_createAccount.html.twig' %}
+    {% else %}
+        {% include 'PolitizrFrontBundle:Search:_sidebarSearch.html.twig' %}
+    {% endif %}
 {% endblock sidebarContent %}
 
 {% block javascriptFooter %}

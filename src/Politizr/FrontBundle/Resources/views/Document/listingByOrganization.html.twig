@@ -31,6 +31,9 @@
 {% endblock content %}
 
 {% block sidebarContent %}
+    {% if not app.user %}
+        {% include 'PolitizrFrontBundle:Navigation\\Menu:_createAccount.html.twig' %}
+    {% endif %}
     {% include 'PolitizrFrontBundle:Organization:_sidebarList.html.twig' %}
 {% endblock sidebarContent %}
 

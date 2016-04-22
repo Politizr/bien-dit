@@ -62,6 +62,9 @@
 {% endblock content %}
 
 {% block sidebarContent %}
+    {% if not app.user %}
+        {% include 'PolitizrFrontBundle:Navigation\\Menu:_createAccount.html.twig' %}
+    {% endif %}
     <div class="sidebarSubject">
         <div class="sidebarAction">
             {% if app.user and app.user.id != debate.getPUserId %}

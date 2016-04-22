@@ -68,6 +68,7 @@ var ROUTE_BADGES_COUNTER = 'profil/reputation/badges';
 
 // MODAL
 var ROUTE_MODAL_HELP_US = 'politizr-needs-you';
+var ROUTE_MODAL_CREATE_ACCOUNT_TO_COMMNET = 'commentaires/creer-un-compte';
 
 
 var ROUTE_MODAL_PAGINATED_LIST = 'liste';

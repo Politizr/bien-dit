@@ -60,4 +60,21 @@ class XhrModal
             'html' => $html,
         );
     }
+
+    /**
+     * Help us
+     * beta
+     */
+    public function createAccountToComment(Request $request)
+    {
+        $this->logger->info('*** createAccountToComment');
+        
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Navigation\\Helper:_createAccountToComment.html.twig'
+        );
+
+        return array(
+            'html' => $html,
+        );
+    }
 }

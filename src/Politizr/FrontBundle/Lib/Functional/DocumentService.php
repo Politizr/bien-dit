@@ -86,10 +86,10 @@ class DocumentService
      */
     public function getPublicationsByFilters(
         $geoTagUuid,
-        $filterPublication,
-        $filterProfile,
-        $filterActivity,
-        $filterDate,
+        $filterPublication = ListingConstants::FILTER_KEYWORD_ALL_PUBLICATIONS,
+        $filterProfile = ListingConstants::FILTER_KEYWORD_ALL_USERS,
+        $filterActivity = ListingConstants::ORDER_BY_KEYWORD_LAST,
+        $filterDate = ListingConstants::FILTER_KEYWORD_ALL_DATE,
         $offset = 0,
         $count = ListingConstants::LISTING_CLASSIC_PAGINATION
     ) {

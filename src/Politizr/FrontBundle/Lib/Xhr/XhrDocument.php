@@ -1341,6 +1341,20 @@ class XhrDocument
         $filterDate = $request->get('filterDate');
         $this->logger->info('$filterDate = ' . print_r($filterDate, true));
 
+        // set default values if not set
+        if (empty($filterPublication)) {
+            $filterPublication = ListingConstants::FILTER_KEYWORD_ALL_PUBLICATIONS;
+        }
+        if (empty($filterProfile)) {
+            $filterProfile = ListingConstants::FILTER_KEYWORD_ALL_USERS;
+        }
+        if (empty($filterActivity)) {
+            $filterActivity = ListingConstants::ORDER_BY_KEYWORD_LAST;
+        }
+        if (empty($filterDate)) {
+            $filterDate = ListingConstants::FILTER_KEYWORD_ALL_DATE;
+        }
+
         $publications = $this->documentService->getPublicationsByFilters(
             $geoTagUuid,
             $filterPublication,

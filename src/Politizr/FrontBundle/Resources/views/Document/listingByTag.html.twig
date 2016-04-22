@@ -32,7 +32,9 @@
 {% endblock content %}
 
 {% block sidebarContent %}
-    {% if app.user %}
+    {% if not app.user %}
+        {% include 'PolitizrFrontBundle:Navigation\\Menu:_createAccount.html.twig' %}
+    {% else %}
         {% include 'PolitizrFrontBundle:Tag:_sidebarFollowedTags.html.twig' with {'uuid': app.user.uuid} only %}
     {% endif %}
     {% include 'PolitizrFrontBundle:Tag:_sidebarTopTags.html.twig' %}

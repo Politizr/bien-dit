@@ -181,10 +181,3 @@ function modalHelpUs() {
         }
     });
 };
-
-$("body").on("click", "[action='closeModal']", function() {
-    console.log('*** closeModal');
-
-    $('body').removeClass('noScroll');
-    $('#modal').hide();
-});
