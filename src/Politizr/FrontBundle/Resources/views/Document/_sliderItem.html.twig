@@ -22,7 +22,7 @@
         <div class="suggExtract">
             <a href="{{ detailPath }}">
                 <span class="postTitle {{ spanClass }}">{{ document.title }}</span>
-                {{ document.description | removeLinks | removeSpans | excerpt(1, true) | purify }}
+                {{ document.description | striptags | truncate(250 - (document.title | length), true) | purify }}
             </a>
         </div>
     </div>
