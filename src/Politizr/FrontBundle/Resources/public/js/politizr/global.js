@@ -40,7 +40,7 @@ $(document).mousedown(function (e) {
     if (!container.is(e.target) // if the target of the click isn't the container...
         && container.has(e.target).length === 0) // ... nor a descendant of the container
     {
-        $('#menu, body.css700 #headerMenu').hide();      
+        $('#menu, body.user.css700 #headerMenu').hide();      
     }
 });
 
