@@ -22,7 +22,7 @@ $(function() {
 });
 
 // auto resize text area
-autosize($('.formBlock textarea'));
+autosize($('.formCommentNew textarea'));
 
 // public mode
 $("body").on("click", "[action='createAccountToComment']", function() {
