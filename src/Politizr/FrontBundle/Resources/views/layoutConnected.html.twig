@@ -26,6 +26,8 @@
     <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/chart.min.js') }}"></script>
 {% endblock %}
 
+{% block bodyClass %} class="user"{% endblock %}
+
 {% block header %}
     <div id="header">
         {% include 'PolitizrFrontBundle:Navigation\\Header:_headerConnected.html.twig' %}
@@ -86,4 +88,13 @@
         filter='uglifyjs2' %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
+
+    {% if not app.session.has('helpUs') %}
+        <script>
+            $(function() {
+                modalHelpUs();
+            });
+        </script>
+    {% endif %}
+
 {% endblock javascriptFooter %}

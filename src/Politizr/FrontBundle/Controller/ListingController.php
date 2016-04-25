@@ -114,6 +114,19 @@ class ListingController extends Controller
     }
 
     /**
+     * Tag listing w. minimal url
+     * code beta
+     */
+    public function tagRawAction($slug)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** tagAction');
+        $logger->info('$slug = '.print_r($slug, true));
+
+        return $this->redirect($this->generateUrl('ListingByTag', array('slug' => $slug)));
+    }
+
+    /**
      * Tag listing
      * code beta
      */
@@ -174,12 +187,16 @@ class ListingController extends Controller
         $europeTag = PTagQuery::create()->findPk(TagConstants::TAG_GEO_EUROPE_ID);
         $worldTag = PTagQuery::create()->findPk(TagConstants::TAG_GEO_WORLD_ID);
 
+        $mapTagUuids = $this->get('politizr.functional.tag')->getRegionUuids();
+
         return $this->render('PolitizrFrontBundle:Search:listingBySearch.html.twig', array(
             'search' => true,
             'franceTag' => $franceTag,
             'fomTag' => $fomTag,
             'europeTag' => $europeTag,
             'worldTag' => $worldTag,
+            'mapTagUuids' => $mapTagUuids,
+            'tags' => array(),
         ));
     }
 

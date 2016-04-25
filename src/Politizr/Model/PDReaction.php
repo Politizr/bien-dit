@@ -73,7 +73,7 @@ class PDReaction extends BasePDReaction implements PDocumentInterface
             //     new NotBlank(['message' => 'La description ne doit pas être vide']),
             //     new Length(['min' => 140, 'minMessage' => 'Le corps de la publication doit contenir {{ limit }} caractères minimum.']),
             // ),
-            'geoTags' => new Count(['min' => 1, 'minMessage' => 'Saisissez au moins {{ limit }} thématique géographique parmi les départements, les régions, "France", "Europe" ou "Monde".']),
+            'geoTags' => new Count(['min' => 1, 'minMessage' => 'Saisissez au moins {{ limit }} thématique géographique parmi "France", une région ou un département.']),
             'allTags' => new Count(['max' => 5, 'maxMessage' => 'Saisissez au maximum {{ limit }} thématiques.']),
         ));
 
@@ -145,13 +145,14 @@ class PDReaction extends BasePDReaction implements PDocumentInterface
      *
      * @return array[string]
      */
-    public function getWorldToDepartmentGeoArrayTags()
+    public function getFranceToDepartmentGeoArrayTags()
     {
         $query = PTagQuery::create()
             ->select('Title')
             ->filterIfTypeId(TagConstants::TAG_TYPE_GEO)
             ->filterIfOnline(true)
             ->where('p_tag.id <= ?', TagConstants::TAG_GEO_DEPARTMENT_LAST_ID)
+            ->where('p_tag.id >= ?', TagConstants::TAG_GEO_FRANCE_ID)
             ->orderByTitle()
             ->setDistinct();
 

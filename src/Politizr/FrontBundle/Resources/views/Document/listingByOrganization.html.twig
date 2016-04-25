@@ -19,8 +19,8 @@
                 </div>
             </div>
             <div class="pseudoTabs" uuid="{{ organization.uuid }}">
-                <a class="currentPage" action="documentsByOrganizationListing" filter="">Top</a>
-                <a action="documentsByOrganizationListing" filter="{{ constant('Politizr\\Constant\\ListingConstants::FILTER_KEYWORD_LAST_MONTH') }}">Les plus récentes</a>
+                <a class="currentPage" action="documentsByOrganizationListing" orderBy="{{ constant('Politizr\\Constant\\ListingConstants::ORDER_BY_KEYWORD_BEST_NOTE') }}">Top</a>
+                <a action="documentsByOrganizationListing" orderBy="{{ constant('Politizr\\Constant\\ListingConstants::ORDER_BY_KEYWORD_LAST') }}">Les plus récentes</a>
             </div>
             <div id="documentListing" class="withLoaderInside">
                 {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
@@ -31,6 +31,9 @@
 {% endblock content %}
 
 {% block sidebarContent %}
+    {% if not app.user %}
+        {% include 'PolitizrFrontBundle:Navigation\\Menu:_createAccount.html.twig' %}
+    {% endif %}
     {% include 'PolitizrFrontBundle:Organization:_sidebarList.html.twig' %}
 {% endblock sidebarContent %}
 

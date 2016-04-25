@@ -33,7 +33,7 @@
             {% endif %}
 
             <form id="formLogin" action="{{ path('LoginCheck') }}" method="post">
-                <label for="username">Identifiant</label>
+                <label for="username">Courriel</label>
                 <input type="text" id="username" name="_username" value="{{ last_username }}" />
 
                 <label for="password">Mot de passe</label>
@@ -55,7 +55,7 @@
                 {{ form_errors(formLostPassword) }}
 
                 <div class="formGroup">
-                    <label>Identifiant</label>
+                    <label>Courriel</label>
                     {{ form_widget(formLostPassword.email) }}
                 </div>
 

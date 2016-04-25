@@ -122,7 +122,7 @@ builders:
                 excel:                          ~
     excel:
         params:
-            display:                            [ gender, name, first_name, email, phone, email, website, twitter, facebook, reputation_score ]
+            display:                            [ gender, name, first_name, email, phone, email, website, twitter, facebook, reputation_score, stringifiedGeoTags ]
             filename:                           politizr-users
             filetype: ~
             datetime_format: ~

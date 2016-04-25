@@ -45,6 +45,8 @@ class XhrConstants
     const ROUTE_DOCUMENT_LISTING_RECOMMEND_NAV = 'documents/recommend/nav';
 
     const ROUTE_DOCUMENT_LISTING_FILTERS = 'documents/filters';
+    const ROUTE_MAP_BREADCRUMB = 'documents/breadcrumb';
+    const ROUTE_MAP_SCHEMA = 'documents/schema';
 
     // DEBATES
     const ROUTE_DEBATE_UPDATE = 'profil/debat/update';
@@ -76,6 +78,10 @@ class XhrConstants
     const ROUTE_BADGES_COUNTER = 'profil/reputation/badges';
 
     // MODAL
+    const ROUTE_MODAL_HELP_US = 'politizr-needs-you';
+    const ROUTE_MODAL_CREATE_ACCOUNT_TO_COMMNET = 'commentaires/creer-un-compte';
+    
+
     const ROUTE_MODAL_PAGINATED_LIST = 'liste';
     const ROUTE_MODAL_FILTERS = 'filtres';
     const ROUTE_MODAL_LIST_ACTIONS = 'profil/liste/historique';

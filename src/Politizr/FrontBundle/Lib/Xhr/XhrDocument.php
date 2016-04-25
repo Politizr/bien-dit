@@ -346,7 +346,7 @@ class XhrDocument
             array(
                 'title' => $debate->getTitle(),
                 // 'description' => strip_tags($debate->getDescription()),
-                'geoTags' => $debate->getWorldToDepartmentGeoArrayTags(),
+                'geoTags' => $debate->getFranceToDepartmentGeoArrayTags(),
                 'allTags' => $debate->getArrayTags(),
             ),
             $debate->getPublishConstraints(),
@@ -476,7 +476,7 @@ class XhrDocument
             array(
                 'title' => $reaction->getTitle(),
                 // 'description' => strip_tags($reaction->getDescription()),
-                'geoTags' => $reaction->getWorldToDepartmentGeoArrayTags(),
+                'geoTags' => $reaction->getFranceToDepartmentGeoArrayTags(),
                 'allTags' => $reaction->getArrayTags(),
             ),
             $reaction->getPublishConstraints(),
@@ -1156,8 +1156,8 @@ class XhrDocument
         // Request arguments
         $uuid = $request->get('uuid');
         $this->logger->info('$uuid = ' . print_r($uuid, true));
-        $filterDate = $request->get('filterDate');
-        $this->logger->info('$filterDate = ' . print_r($filterDate, true));
+        $orderBy = $request->get('orderBy');
+        $this->logger->info('$orderBy = ' . print_r($orderBy, true));
         $offset = $request->get('offset');
         $this->logger->info('$offset = ' . print_r($offset, true));
 
@@ -1172,7 +1172,7 @@ class XhrDocument
 
         $documents = $this->documentService->getDocumentsByTagsPaginated(
             $tagIds,
-            $filterDate,
+            $orderBy,
             $offset,
             ListingConstants::LISTING_CLASSIC_PAGINATION
         );
@@ -1216,8 +1216,8 @@ class XhrDocument
         // Request arguments
         $uuid = $request->get('uuid');
         $this->logger->info('$uuid = ' . print_r($uuid, true));
-        $filterDate = $request->get('filterDate');
-        $this->logger->info('$filterDate = ' . print_r($filterDate, true));
+        $orderBy = $request->get('orderBy');
+        $this->logger->info('$orderBy = ' . print_r($orderBy, true));
         $offset = $request->get('offset');
         $this->logger->info('$offset = ' . print_r($offset, true));
 
@@ -1229,7 +1229,7 @@ class XhrDocument
 
         $documents = $this->documentService->getDocumentsByOrganizationPaginated(
             $organization->getId(),
-            $filterDate,
+            $orderBy,
             $offset,
             ListingConstants::LISTING_CLASSIC_PAGINATION
         );
@@ -1340,6 +1340,20 @@ class XhrDocument
         $this->logger->info('$filterActivity = ' . print_r($filterActivity, true));
         $filterDate = $request->get('filterDate');
         $this->logger->info('$filterDate = ' . print_r($filterDate, true));
+
+        // set default values if not set
+        if (empty($filterPublication)) {
+            $filterPublication = ListingConstants::FILTER_KEYWORD_ALL_PUBLICATIONS;
+        }
+        if (empty($filterProfile)) {
+            $filterProfile = ListingConstants::FILTER_KEYWORD_ALL_USERS;
+        }
+        if (empty($filterActivity)) {
+            $filterActivity = ListingConstants::ORDER_BY_KEYWORD_LAST;
+        }
+        if (empty($filterDate)) {
+            $filterDate = ListingConstants::FILTER_KEYWORD_ALL_DATE;
+        }
 
         $publications = $this->documentService->getPublicationsByFilters(
             $geoTagUuid,

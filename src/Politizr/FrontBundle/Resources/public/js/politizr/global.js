@@ -1,4 +1,5 @@
 // beta
+
 // on document ready
 $(function() {
     // console.log('*** global document ready');
@@ -26,13 +27,20 @@ $('body').on('click', "[action='closeBox']", function(e){
     $(this).closest('div').hide();
 });
 
+// close modal
+$("body").on("click", "[action='closeModal']", function() {
+    // console.log('*** closeModal');
+    $('body').removeClass('noScroll');
+    $('#modal').hide();
+});
+
 // main menu
 $(document).mousedown(function (e) {
     var container = $("body.css700 #headerMenu, #menu, [action='toggleMenu']");
     if (!container.is(e.target) // if the target of the click isn't the container...
         && container.has(e.target).length === 0) // ... nor a descendant of the container
     {
-        $('#menu, body.css700 #headerMenu').hide();      
+        $('#menu, body.user.css700 #headerMenu').hide();      
     }
 });
 
@@ -42,7 +50,7 @@ $("body").on("click", "[action='toggleMenu']", function() {
 
 // Scroll haut de page
 $("body").on("click", "[action='goUp']", function() {
-    stickySidebar();
+    stickySidebar(true);
     $('html, body').animate({
         scrollTop: $("body").offset().top
     }, '1000');
@@ -125,13 +133,58 @@ function refreshTimeline() {
     }
 }
 
-// sticky sidebar
-function stickySidebar() {
-    var sticky = new Waypoint.Sticky({
+// global sticky instance
+var stickyWaypoint;
+
+/**
+ * Manage creation or not of a sticky sidebar
+ */
+function stickySidebar(forceReload)
+{
+    // console.log('*** stickySidebar');
+    // console.log(forceReload);
+    
+    // var context = Waypoint.Context.findByElement(window);
+    // if (typeof context === 'undefined') {
+    //     // console.log('Waypoint sticky does not exist');
+    //     stickyWaypoint = new Waypoint.Sticky({
+    //         element: $('#sidebar'),
+    //         offset: 'bottom-in-view'
+    //     });
+    //     $(".sticky-wrapper").addClass("hideSidebarForMobile");
+    // } else if (context instanceof Waypoint.Context) {
+    //     // console.log(context);
+    //     // console.log('Waypoint sticky already exist');
+    // }
+
+    // console.log(stickyWaypoint);
+    if (typeof stickyWaypoint === 'undefined') {
+        // console.log('Waypoint sticky does not exist');
+        stickyWaypoint = createStickySidebar();
+    } else {
+        // console.log('Waypoint sticky already exist');
+        if (forceReload) {
+            // console.log('force sticky reloading');
+
+            stickyWaypoint.destroy();
+            stickyWaypoint = createStickySidebar();
+        }
+    }
+}
+
+/**
+ * Create sticky sidebar
+ */
+function createStickySidebar()
+{
+    // console.log('*** createStickySidebar');
+    sticky = new Waypoint.Sticky({
         element: $('#sidebar'),
         offset: 'bottom-in-view'
     });
     $(".sticky-wrapper").addClass("hideSidebarForMobile");
+
+    return sticky;
 }
 
 // imgLiquid
@@ -225,6 +278,6 @@ function updateUrl(url) {
     if (typeof (history.pushState) != "undefined") {
         history.pushState({}, '', url);
     } else {
-        console.log("Your browser does not support HTML5.");
+        // console.log("Your browser does not support HTML5.");
     }
 }

@@ -1,22 +1,25 @@
 {# beta #}
-{% if paragraphContext == 'global' %}
-    {% if app.user %}
+{% if app.user %}
+    {% if paragraphContext == 'global' %}
         {{ app.user | isAuthorizedToNewComment(formComment, document.uuid) }}
-    {% endif %}
-{% else %}
-    <div class="bubbCommArrow"><i class="icon-arrow-left"></i></div>
-    <div class="bubbCommTop">
-        <div class="bubblesCommentsHeader">
-            <span action="closeComments">Masquer<i class="icon-cross"></i></span>
-        </div>
-        {% if app.user %}
+    {% else %}
+        <div class="bubbCommArrow"><i class="icon-arrow-left"></i></div>
+        <div class="bubbCommTop">
+            <div class="bubblesCommentsHeader">
+                <span action="closeComments">Masquer<i class="icon-cross"></i></span>
+            </div>
             {{ app.user | isAuthorizedToNewComment(formComment, document.uuid) }}
-        {% endif %}
+        </div>
+    {% endif %}
+
+    {% for comment in comments %}
+        {% include 'PolitizrFrontBundle:Comment:_detail.html.twig' with { 'comment': comment } %}
+    {% else %}
+        <div class="noComment">Aucun commentaire pour le moment.</div>
+    {% endfor %}
+{% else %}
+    <div class="createAccountToComment">
+        <span action="closeComments">Masquer<i class="icon-cross"></i></span>
+        <a class="linkCreateAccount" href="{{ path('Inscription') }}"><i class="icon-alert"></i>Créer un compte pour participer au débat</a>
     </div>
 {% endif %}
-
-{% for comment in comments %}
-    {% include 'PolitizrFrontBundle:Comment:_detail.html.twig' with { 'comment': comment } %}
-{% else %}
-    <div class="noComment">Aucun commentaire pour le moment.</div>
-{% endfor %}

@@ -5,18 +5,31 @@ $(function() {
         var paragraphId = window.location.hash.substr(3);
         // console.log(paragraphId);
 
-        if (paragraphId > 0) {
-            var clickContext = $('#p-'+paragraphId).find("[action='comments']");
-            // console.log(clickContext);
-            clickContext.trigger("click");
+        var commentMode = $('#commentMode').attr('mode');
+        // console.log(commentMode);
+        if (commentMode === 'public') {
+            $("[action='createAccountToComment']").trigger("click");
         } else {
-            $("[action='globalComments']").trigger("click");
+            if (paragraphId > 0) {
+                var clickContext = $('#p-'+paragraphId).find("[action='comments']");
+                // console.log(clickContext);
+                clickContext.trigger("click");
+            } else {
+                $("[action='globalComments']").trigger("click");
+            }
         }
     }
 });
 
 // auto resize text area
-autosize($('.formBlock textarea'));
+autosize($('.formCommentNew textarea'));
+
+// public mode
+$("body").on("click", "[action='createAccountToComment']", function() {
+    // console.log('*** click comments');
+
+    return modalCreateAccountToComment();
+});
 
 // open paragraph comments
 $("body").on("click", "[action='comments']", function() {
@@ -70,6 +83,35 @@ $("body").on("click", "input[action='createComment']", function(e) {
     var context = $(this).closest('.paragraphHolder');
     createComment(context);
 });
+
+/**
+ * Modal create account to comment
+ */
+function modalCreateAccountToComment() {
+    // console.log('*** modalCreateAccountToComment');
+
+    $('body').addClass('noScroll');
+
+    var xhrPath = getXhrPath(
+        ROUTE_MODAL_HELP_US,
+        'modal',
+        'createAccountToComment',
+        RETURN_HTML
+    );
+
+    return xhrCall(
+        document,
+        null,
+        xhrPath
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
+            $('#modalContainer').html(data['html']);
+        }
+    });
+};
 
 /**
  * Clear html content & hide all comments zones

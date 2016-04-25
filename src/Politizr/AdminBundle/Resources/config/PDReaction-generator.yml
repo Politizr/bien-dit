@@ -67,7 +67,7 @@ params:
 builders:
     list:
         params:
-            title:                              Liste des réactions
+            title:                              Liste des réponses
             max_per_page:                       50
             sort:                               [ published_at, DESC ]
             scopes:
@@ -103,13 +103,13 @@ builders:
         filetype: ~
     edit:
         params:
-            title:                              "Edition du contenu réaction '{{ PDReaction.getTitle }}'"
+            title:                              "Edition du contenu réponse '{{ PDReaction.getTitle }}'"
             tabs:
                 "Contenu":
                     "Texte":                    [ block_file_name, copyright, title, description ]
                 "Objets":
                     "Utilisateur":              [ p_user ]
-                    "Débat":                    [ p_d_debate ]
+                    "Sujet":                    [ p_d_debate ]
                     # "Réaction parente":         [ parent ]
                 "Tags":
                     "Tags associés":            [ block_tags ]
@@ -180,7 +180,7 @@ builders:
                 delete:                         ~
     show:
         params:
-            title:                              "Visualisation du contenu réaction '{{ PDReaction.getTitle }}'"
+            title:                              "Visualisation du contenu réponse '{{ PDReaction.getTitle }}'"
             tabs:
                 "Contenu":
                     "Texte":                    [ block_file_name, copyright, title, description ]

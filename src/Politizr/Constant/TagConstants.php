@@ -147,7 +147,7 @@ class TagConstants
     const TAG_GEO_DEPARTMENT_ID_SAINT_BARTHELEMY = 125;
     const TAG_GEO_DEPARTMENT_ID_SAINT_MARTIN = 126;
     const TAG_GEO_DEPARTMENT_ID_SAINT_PIERRE_ET_MIQUELON = 127;
-    const TAG_GEO_DEPARTMENT_ID_WALLIS_ET_FUTUMA = 128;
+    const TAG_GEO_DEPARTMENT_ID_WALLIS_ET_FUTUNA = 128;
     const TAG_GEO_DEPARTMENT_ID_NOUVELLE_CALEDONIE = 129;
 
 
@@ -171,8 +171,7 @@ class TagConstants
             TagConstants::TAG_GEO_REGION_ID_NPDCP,
             TagConstants::TAG_GEO_REGION_ID_N,
             TagConstants::TAG_GEO_REGION_ID_PDLL,
-            TagConstants::TAG_GEO_REGION_ID_PACA,
-            TagConstants::TAG_GEO_REGION_ID_FOM,
+            TagConstants::TAG_GEO_REGION_ID_PACA
         ];
     }
 
@@ -300,7 +299,7 @@ class TagConstants
             TagConstants::TAG_GEO_DEPARTMENT_ID_SAINT_BARTHELEMY,
             TagConstants::TAG_GEO_DEPARTMENT_ID_SAINT_MARTIN,
             TagConstants::TAG_GEO_DEPARTMENT_ID_SAINT_PIERRE_ET_MIQUELON,
-            TagConstants::TAG_GEO_DEPARTMENT_ID_WALLIS_ET_FUTUMA,
+            TagConstants::TAG_GEO_DEPARTMENT_ID_WALLIS_ET_FUTUNA,
             TagConstants::TAG_GEO_DEPARTMENT_ID_NOUVELLE_CALEDONIE,
         ];
     }

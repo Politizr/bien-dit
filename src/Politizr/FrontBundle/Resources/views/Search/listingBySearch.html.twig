@@ -25,7 +25,20 @@
 {% endblock content %}
 
 {% block sidebarContent %}
-    {% include 'PolitizrFrontBundle:Search:_sidebarSearch.html.twig' %}
+    {% if not app.user %}
+        <div id="mapHolder" class="mapUnlogged">
+            <div class="mapUnloggedText">
+                <h1>Vous devez vous<br>inscrire pour accéder<br>au filtre par zone<br>géographique</h1>
+                <a href="{{ path('Inscription') }}">Créer un compte</a>
+                <span>100 %<br>gratuit</span>
+            </div>
+            <div class="svg">
+                {% include 'PolitizrFrontBundle:Search\\Map:_france.svg.twig' with { 'current': null } %}
+            </div>
+        </div>
+    {% else %}
+        {% include 'PolitizrFrontBundle:Search:_sidebarSearch.html.twig' %}
+    {% endif %}
 {% endblock sidebarContent %}
 
 {% block javascriptFooter %}

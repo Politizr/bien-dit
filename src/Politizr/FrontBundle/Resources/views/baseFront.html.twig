@@ -64,6 +64,7 @@
     {% block body %}
         <body{% block bodyClass %}{% endblock %}>
             {% include 'PolitizrFrontBundle:Navigation\\Social:_analytics.html.twig' %}
+            {% include 'PolitizrFrontBundle:Navigation\\Social:_socialInit.html.twig' %}
             <noscript>
                 <div id="noJsBox">
                     Désolé, vous devez activer Javascript pour naviguer sur ce site.
@@ -88,15 +89,7 @@
                 </div>
 
                 {# loader ajax global #} 
-                <div id="ajaxGlobalLoader" class="modal">
-                    <div class="ajaxLoader">
-                        <i class="icon-pltzr-logo"></i>
-                        <div class="iconLoaderBg"></div>
-                        <svg width="44" height="44" viewbox="0 0 40 40" ><polygon points="0 0 0 40 40 40 40 0" class="pltzrLoaderStrokes" /></svg>
-                        <div class="ajaxLoaderBg"></div><div class="ajaxLoaderBlockClick"></div>
-                    </div>
-                </div>              
-
+                <div id="modalContainer"></div>
             {% endblock genericBoxes %}
 
             {% block header %}

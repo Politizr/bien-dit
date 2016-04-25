@@ -678,16 +678,17 @@ LIMIT :offset, :limit
      *
      * @see app/sql/documentsByOrganization.sql
      *
-     * @param integer $nbDays
+     * @param integer $orderBy
      * @return string
      */
-    private function createDocumentsByOrganizationRawSql($nbDays = null)
+    private function createDocumentsByOrganizationRawSql($orderBy = null)
     {
-        $subRequestCond1 = '';
-        $subRequestCond2 = '';
-        if ($nbDays) {
-            $subRequestCond1 = "AND p_d_debate.published_at BETWEEN DATE_SUB(NOW(), INTERVAL $nbDays DAY) AND NOW()";
-            $subRequestCond2 = "AND p_d_reaction.published_at BETWEEN DATE_SUB(NOW(), INTERVAL $nbDays DAY) AND NOW() ";
+        if ($orderBy == ListingConstants::ORDER_BY_KEYWORD_BEST_NOTE) {
+            $orderBy = "ORDER BY note_pos DESC, note_neg ASC, published_at DESC";
+        } elseif ($orderBy == ListingConstants::ORDER_BY_KEYWORD_LAST) {
+            $orderBy = "ORDER BY published_at DESC, note_pos DESC, note_neg ASC";
+        } else {
+            throw new InconsistentDataException(sprintf('OrderBy keyword %s not found'), $keyword);
         }
 
         // Requête SQL
@@ -706,7 +707,6 @@ WHERE
             p_user.qualified = 1
             AND p_u_current_q_o.p_q_organization_id = :p_q_organization_id
     )
-    $subRequestCond1 
 )
 
 UNION DISTINCT
@@ -726,10 +726,9 @@ WHERE
             p_user.qualified = 1
             AND p_u_current_q_o.p_q_organization_id = :p_q_organization_id2
     )
-    $subRequestCond2 
 )
 
-ORDER BY note_pos DESC, note_neg ASC
+$orderBy
 
 LIMIT :offset, :limit
 ";
@@ -743,16 +742,17 @@ LIMIT :offset, :limit
      * @see app/sql/documentsByTags.sql
      *
      * @param string $inQueryTagIds
-     * @param integer $nbDays
+     * @param integer $orderBy
      * @return string
      */
-    private function createDocumentsByTagsRawSql($inQueryTagIds, $nbDays = null)
+    private function createDocumentsByTagsRawSql($inQueryTagIds, $orderBy = null)
     {
-        $subRequestCond1 = '';
-        $subRequestCond2 = '';
-        if ($nbDays) {
-            $subRequestCond1 = "AND p_d_debate.published_at BETWEEN DATE_SUB(NOW(), INTERVAL $nbDays DAY) AND NOW()";
-            $subRequestCond2 = "AND p_d_reaction.published_at BETWEEN DATE_SUB(NOW(), INTERVAL $nbDays DAY) AND NOW() ";
+        if ($orderBy == ListingConstants::ORDER_BY_KEYWORD_BEST_NOTE) {
+            $orderBy = "ORDER BY note_pos DESC, note_neg ASC, published_at DESC";
+        } elseif ($orderBy == ListingConstants::ORDER_BY_KEYWORD_LAST) {
+            $orderBy = "ORDER BY published_at DESC, note_pos DESC, note_neg ASC";
+        } else {
+            throw new InconsistentDataException(sprintf('OrderBy keyword %s not found'), $keyword);
         }
 
         // Requête SQL
@@ -765,7 +765,6 @@ WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1 
     AND p_d_d_tagged_t.p_tag_id IN ($inQueryTagIds)
-    $subRequestCond1
     )
 
 UNION DISTINCT
@@ -779,10 +778,9 @@ WHERE
     AND p_d_reaction.online = 1
     AND p_d_reaction.tree_level > 0
     AND p_d_r_tagged_t.p_tag_id IN ($inQueryTagIds)
-    $subRequestCond2
     )
 
-ORDER BY note_pos DESC, note_neg ASC
+$orderBy
 
 LIMIT :offset, :limit
 ";
@@ -1272,21 +1270,21 @@ GROUP BY p_d_debate_id
      * Documents by organization
      *
      * @param integer $organizationId
-     * @param integer $nbDays
+     * @param integer $orderBy
      * @param integer $offset
      * @param integer $limit
      * @return PropelCollection[PDDebate|PDReaction]
      */
-    public function generateDocumentsByOrganizationPaginated($organizationId, $nbDays, $offset, $limit)
+    public function generateDocumentsByOrganizationPaginated($organizationId, $orderBy, $offset, $limit)
     {
         $this->logger->info('*** generateDocumentsByOrganizationPaginated');
         $this->logger->info('$organizationId = ' . print_r($organizationId, true));
-        $this->logger->info('$nbDays = ' . print_r($nbDays, true));
+        $this->logger->info('$orderBy = ' . print_r($orderBy, true));
         $this->logger->info('$offset = ' . print_r($offset, true));
         $this->logger->info('$limit = ' . print_r($limit, true));
 
         $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
-        $stmt = $con->prepare($this->createDocumentsByOrganizationRawSql($nbDays));
+        $stmt = $con->prepare($this->createDocumentsByOrganizationRawSql($orderBy));
 
         $stmt->bindValue(':p_q_organization_id', $organizationId, \PDO::PARAM_INT);
         $stmt->bindValue(':p_q_organization_id2', $organizationId, \PDO::PARAM_INT);
@@ -1322,21 +1320,21 @@ GROUP BY p_d_debate_id
      * Documents by tags
      *
      * @param string $inQueryTagIds
-     * @param integer $nbDays
+     * @param integer $orderBy
      * @param integer $offset
      * @param integer $limit
      * @return PropelCollection[PDDebate|PDReaction]
      */
-    public function generateDocumentsByTagsPaginated($inQueryTagIds, $nbDays, $offset, $limit)
+    public function generateDocumentsByTagsPaginated($inQueryTagIds, $orderBy, $offset, $limit)
     {
         $this->logger->info('*** generateUserSuggestedDebatesPaginatedListing');
         $this->logger->info('$inQueryTagIds = ' . print_r($inQueryTagIds, true));
-        $this->logger->info('$nbDays = ' . print_r($nbDays, true));
+        $this->logger->info('$orderBy = ' . print_r($orderBy, true));
         $this->logger->info('$offset = ' . print_r($offset, true));
         $this->logger->info('$limit = ' . print_r($limit, true));
 
         $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
-        $stmt = $con->prepare($this->createDocumentsByTagsRawSql($inQueryTagIds, $nbDays));
+        $stmt = $con->prepare($this->createDocumentsByTagsRawSql($inQueryTagIds, $orderBy));
 
         $stmt->bindValue(':offset', $offset, \PDO::PARAM_INT);
         $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);

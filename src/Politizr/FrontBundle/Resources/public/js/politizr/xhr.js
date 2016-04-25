@@ -33,6 +33,8 @@ var ROUTE_DOCUMENT_LISTING_RECOMMEND = 'documents/recommend';
 var ROUTE_DOCUMENT_LISTING_RECOMMEND_NAV = 'documents/recommend/nav';
 
 var ROUTE_DOCUMENT_LISTING_FILTERS = 'documents/filters';
+var ROUTE_MAP_BREADCRUMB = 'documents/breadcrumb';
+var ROUTE_MAP_SCHEMA = 'documents/schema';
 
 // DEBATES
 var ROUTE_DEBATE_UPDATE = 'profil/debat/update';
@@ -65,6 +67,10 @@ var ROUTE_SCORE_COUNTER = 'profil/reputation/score';
 var ROUTE_BADGES_COUNTER = 'profil/reputation/badges';
 
 // MODAL
+var ROUTE_MODAL_HELP_US = 'politizr-needs-you';
+var ROUTE_MODAL_CREATE_ACCOUNT_TO_COMMNET = 'commentaires/creer-un-compte';
+
+
 var ROUTE_MODAL_PAGINATED_LIST = 'liste';
 var ROUTE_MODAL_FILTERS = 'filtres';
 var ROUTE_MODAL_LIST_ACTIONS = 'profil/liste/historique';

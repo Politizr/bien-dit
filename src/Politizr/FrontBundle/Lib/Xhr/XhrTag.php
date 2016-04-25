@@ -18,6 +18,8 @@ use Politizr\Model\PDDTaggedTQuery;
 use Politizr\Model\PDRTaggedTQuery;
 use Politizr\Model\PUTaggedTQuery;
 
+use Politizr\Constant\TagConstants;
+
 /**
  * XHR service for tag management.
  *
@@ -143,36 +145,91 @@ class XhrTag
     }
 
     /* ######################################################################################################## */
-    /*                                               SEARCH TAG FUNCTIONS                                      */
+    /*                                               MAP TAG FUNCTIONS                                          */
     /* ######################################################################################################## */
 
     /**
-     * Get search tags, w. only used tags in debate or users
+     * Map breadcrumb
+     * beta
      */
-    public function getSearchTags(Request $request)
+    public function mapBreadcrumb(Request $request)
     {
-        $this->logger->info('*** getSearchTags');
+        $this->logger->info('*** mapBreadcrumb');
 
         // Request arguments
-        $tagTypeId = $request->get('tagTypeId');
-        $this->logger->info('$tagTypeId = ' . print_r($tagTypeId, true));
-        $zoneId = $request->get('zoneId');
-        $this->logger->info('$zoneId = ' . print_r($zoneId, true));
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
 
-        // Function process
-        if (empty($tagTypeId)) {
-            $tagTypeId = null;
+        $tag = PTagQuery::create()->filterByUuid($uuid)->findOne();
+        if (!$tag) {
+            throw new InconsistentDataException(sprintf('Tag uuid-%s not found', $uuid));
         }
 
-        $tags = $this->tagManager->getArrayTags($tagTypeId, true, true);
-        dump($tags);
+        $tags = array();
+        if (in_array($tag->getId(), TagConstants::getGeoRegionIds())) {
+            $tags[] = $tag;
+        } elseif (in_array($tag->getId(), TagConstants::getGeoDepartmentMetroIds())) {
+            $tagRegion = PTagQuery::create()->findPk($tag->getPTParentId());
 
-        // Renvoi de l'ensemble des blocs HTML maj
+            $tags[] = $tagRegion;
+            $tags[] = $tag;
+        }
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Search\\Map:_breadcrumb.html.twig',
+            array(
+                'tags' => $tags,
+            )
+        );
+
         return array(
-            'tags' => $tags,
-            'zoneId' => $zoneId
-            );
+            'html' => $html,
+        );
     }
+
+    /**
+     * Map schema
+     * beta
+     */
+    public function mapSchema(Request $request)
+    {
+        $this->logger->info('*** mapSchema');
+
+        // Request arguments
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
+
+        $tag = PTagQuery::create()->filterByUuid($uuid)->findOne();
+        if (!$tag) {
+            throw new InconsistentDataException(sprintf('Tag uuid-%s not found', $uuid));
+        }
+
+        $tags = array();
+        if ($tag->getId() == TagConstants::TAG_GEO_FRANCE_ID) {
+            $mapTagUuids = $this->tagService->getRegionUuids();
+        } elseif ($tag->getId() == TagConstants::TAG_GEO_REGION_ID_FOM) {
+            $mapTagUuids = $this->tagService->getDepartmentsUuids($tag->getId());
+        } elseif (in_array($tag->getId(), TagConstants::getGeoRegionIds())) {
+            $mapTagUuids = $this->tagService->getDepartmentsUuids($tag->getId());
+        } elseif (in_array($tag->getId(), TagConstants::getGeoDepartmentMetroIds())) {
+            $mapTagUuids = $this->tagService->getDepartmentsUuids($tag->getPTParentId());
+        } elseif (in_array($tag->getId(), TagConstants::getGeoDepartmentOMIds())) {
+            $mapTagUuids = $this->tagService->getDepartmentsUuids($tag->getPTParentId());
+        }
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Search\\Map:_routing.html.twig',
+            array(
+                'tagId' => $tag->getId(),
+                'mapTagUuids' => $mapTagUuids,
+            )
+        );
+
+        return array(
+            'html' => $html,
+        );
+    }
+
 
     /* ######################################################################################################## */
     /*                                                      DEBATE                                              */

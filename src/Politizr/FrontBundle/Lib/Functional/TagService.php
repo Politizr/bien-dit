@@ -418,6 +418,18 @@ class TagService
             $mapTags['maineEtLoire'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_MAINE_ET_LOIRE)->getUuid();
             $mapTags['sarthe'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_SARTHE)->getUuid();
             $mapTags['mayenne'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_MAYENNE)->getUuid();
+        } elseif ($regionId == TagConstants::TAG_GEO_REGION_ID_FOM) {
+            $mapTags['guadeloupe'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_GUADELOUPE)->getUuid();
+            $mapTags['martinique'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_MARTINIQUE)->getUuid();
+            $mapTags['guyane'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_GUYANE)->getUuid();
+            $mapTags['laReunion'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_LA_REUNION)->getUuid();
+            $mapTags['mayotte'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_MAYOTTE)->getUuid();
+            $mapTags['polynesieFrancaise'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_POLYNESIE_FRANCAISE)->getUuid();
+            $mapTags['saintBarthelemy'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_SAINT_BARTHELEMY)->getUuid();
+            $mapTags['saintMartin'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_SAINT_MARTIN)->getUuid();
+            $mapTags['saintPierreEtMiquelon'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_SAINT_PIERRE_ET_MIQUELON)->getUuid();
+            $mapTags['wallisEtFutuna'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_WALLIS_ET_FUTUNA)->getUuid();
+            $mapTags['nouvelleCaledonie'] = PTagQuery::create()->findPk(TagConstants::TAG_GEO_DEPARTMENT_ID_NOUVELLE_CALEDONIE)->getUuid();
         } else {
             throw new InconsistentDataException(sprintf('Region id %s does not match', $regionId));
         }

@@ -5,11 +5,11 @@
         <div id="headerMenu">
             <a href="{{ path('Homepage'~profileSuffix()) }}"{% if homepage is defined and homepage %} class="currentPage"{% endif %}>accueil</a>
             <a href="{{ path('ListingByRecommend') }}"{% if top is defined and top %} class="currentPage"{% endif %}>top</a>
-            <a href="{{ path('ListingSearch') }}"{% if search is defined and search %} class="currentPage"{% endif %}>rechercher</a>
+            <a href="{{ path('ListingSearch') }}"{% if search is defined and search %} class="currentPage"{% endif %}>recherche</a>
         </div>
     </div>
     <div id="headerRight">
-        <a href="{{ path('DebateDraftNewC') }}" class="newSubject"><i class="icon-plane"></i><span>rédiger un nouveau sujet</span></a>
+        <a href="{{ path('DebateDraftNew'~profileSuffix()) }}" class="newSubject"><i class="icon-plane"></i><span>rédiger un nouveau sujet</span></a>
         <div class="headerSeparator"></div>
         <div id="notifCounter">
             <i class="icon-notif" action="toggleNotifBox">

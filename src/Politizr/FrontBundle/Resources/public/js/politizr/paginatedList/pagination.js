@@ -17,7 +17,7 @@ $("body").on("click", "[action='listingNext']", function(e, waypoint) {
         waypoint.destroy();
         // console.log('destroy waypoint instance');
     }
-    Waypoint.refreshAll();
+    // Waypoint.refreshAll();
     // Waypoint.destroyAll();
 
     paginatedFunctions[key](

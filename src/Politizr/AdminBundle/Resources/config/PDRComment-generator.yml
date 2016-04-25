@@ -51,7 +51,7 @@ params:
 builders:
     list:
         params:
-            title:                              Liste des commentaires sur les réactions
+            title:                              Liste des commentaires sur les réponses
             max_per_page:                       50
             sort:                               [ created_at, DESC ]
             display:                            [ id, p_user_id, p_d_reaction_id, description, paragraph_no, published_at ]
@@ -67,7 +67,7 @@ builders:
         filetype: ~
     edit:
         params:
-            title:                              "Edition du commentaire de réaction id-{{ PDRComment.id }}"
+            title:                              "Edition du commentaire de réponse id-{{ PDRComment.id }}"
             tabs:
                 "Contenu":
                     "Texte":                    [ description, paragraph_no ]
@@ -123,7 +123,7 @@ builders:
                 delete:                         ~
     show:
         params:
-            title:                              "Visualisation du commentaire de réaction id-{{ PDRComment.id }}"
+            title:                              "Visualisation du commentaire de réponse id-{{ PDRComment.id }}"
             tabs:
                 "Contenu":
                     "Texte":                    [ description, paragraph_no ]
@@ -148,7 +148,7 @@ builders:
                 block_p_user:
                     label:                      "Auteur"
                 block_p_d_reaction:
-                    label:                      "Réaction"
+                    label:                      "Réponse"
                 block_moderation_alert_new:
                     label:                      "Alerte"
                 block_moderation_alert_listing:

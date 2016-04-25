@@ -60,7 +60,7 @@ function publicationsByFiltersListing(init, offset) {
 }
 
 /**
- *
+ * Get search filters
  */
 function getCurrentFilters() {
     // console.log('*** getCurrentFilters');
@@ -68,7 +68,16 @@ function getCurrentFilters() {
     var filters = [];
 
     // map
-    filters.push({name: 'geoTagUuid', value: $('.mapMenu').find('.active').attr('uuid')});
+    if ($('.mapBreadcrumbs').find('.current').length) {
+        // console.log('sub map uuid');
+        uuid = $('.mapBreadcrumbs').find('.current').attr('uuid');
+        // console.log(uuid);
+    } else {
+        // console.log('map uuid');
+        uuid = $('.mapMenu').find('.active').attr('uuid');
+    }
+
+    filters.push({name: 'geoTagUuid', value: uuid});
     
     // publication
     filters.push({name: 'filterPublication', value: $('#publicationFilter input:checked').val()});
@@ -307,12 +316,12 @@ function documentsByTagListing(init, offset) {
     targetElement = $('#documentListing .listTop');
     localLoader = $('#documentListing').find('.ajaxLoader').first();
     uuid = $('.pseudoTabs').attr('uuid');
-    filterDate = $('.pseudoTabs .currentPage').attr('filter');
+    orderBy = $('.pseudoTabs .currentPage').attr('orderBy');
 
     // console.log(targetElement);
     // console.log(localLoader);
     // console.log(uuid);
-    // console.log(filterDate);
+    // console.log(orderBy);
 
     var xhrPath = getXhrPath(
         ROUTE_TAG_LISTING,
@@ -323,7 +332,7 @@ function documentsByTagListing(init, offset) {
 
     return xhrCall(
         document,
-        {'uuid': uuid, 'filterDate': filterDate, 'offset': offset},
+        {'uuid': uuid, 'orderBy': orderBy, 'offset': offset},
         xhrPath,
         localLoader
     ).done(function(data) {
@@ -360,12 +369,12 @@ function documentsByOrganizationListing(init, offset) {
     targetElement = $('#documentListing .listTop');
     localLoader = $('#documentListing').find('.ajaxLoader').first();
     uuid = $('.pseudoTabs').attr('uuid');
-    filterDate = $('.pseudoTabs .currentPage').attr('filter');
+    orderBy = $('.pseudoTabs .currentPage').attr('orderBy');
 
     // console.log(targetElement);
     // console.log(localLoader);
     // console.log(uuid);
-    // console.log(filterDate);
+    // console.log(orderBy);
 
     var xhrPath = getXhrPath(
         ROUTE_ORGANIZATION_LISTING,
@@ -376,7 +385,7 @@ function documentsByOrganizationListing(init, offset) {
 
     return xhrCall(
         document,
-        {'uuid': uuid, 'filterDate': filterDate, 'offset': offset},
+        {'uuid': uuid, 'orderBy': orderBy, 'offset': offset},
         xhrPath,
         localLoader
     ).done(function(data) {
