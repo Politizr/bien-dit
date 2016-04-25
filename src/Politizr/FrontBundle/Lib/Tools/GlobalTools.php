@@ -168,7 +168,6 @@ class GlobalTools
             foreach ($errors as $error) {
                 $msgErrors['error'] = $error->getMessage();
             }
-            dump($msgErrors);
 
             if (!empty($msgErrors)) {
                 throw new BoxErrorException(StudioEchoUtils::multiImplode($msgErrors, ' <br/> '));
