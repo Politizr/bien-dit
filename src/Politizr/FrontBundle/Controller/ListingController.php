@@ -114,6 +114,19 @@ class ListingController extends Controller
     }
 
     /**
+     * Tag listing w. minimal url
+     * code beta
+     */
+    public function tagRawAction($slug)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** tagAction');
+        $logger->info('$slug = '.print_r($slug, true));
+
+        return $this->redirect($this->generateUrl('ListingByTag', array('slug' => $slug)));
+    }
+
+    /**
      * Tag listing
      * code beta
      */
