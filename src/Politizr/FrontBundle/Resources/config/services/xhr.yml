@@ -83,6 +83,7 @@ services:
             - @politizr.functional.timeline
             - @politizr.functional.reputation
             - @politizr.tools.global
+            - @politizr.tools.idcheck
             - @politizr.twig.user
             - @logger
 

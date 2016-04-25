@@ -11,3 +11,12 @@ services:
             - @liip_imagine.cache.manager
             - @logger
 
+    # ID CHECK
+    politizr.tools.idcheck:
+        class: Politizr\FrontBundle\Lib\Tools\IdCheck
+        arguments:
+            - @security.token_storage
+            - "%idcheck_wsdl_url%"
+            - "%idcheck_login%"
+            - "%idcheck_password%"
+            - @logger

@@ -36,3 +36,8 @@ parameters:
     google_client_id: ***
     google_client_secret: ***
     google_scope: email profile
+
+    # ID Check
+    idcheck_wsdl_url: ***
+    idcheck_login: 123
+    idcheck_password: ***

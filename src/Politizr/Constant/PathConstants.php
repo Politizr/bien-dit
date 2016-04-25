@@ -19,6 +19,7 @@ class PathConstants
     // ************************************************************************************ //
     const USER_UPLOAD_PATH = '/../../../web/uploads/users/';
     const USER_UPLOAD_WEB_PATH = '/uploads/users/';
+    const IDCHECK_UPLOAD_WEB_PATH = '/uploads/idcheck/';
 
     // ************************************************************************************ //
     //                                        DEBATES

@@ -38,6 +38,26 @@ class SimpleImage
         }
     }
 
+    /**
+     * get image raw / binary
+     *
+     * @return string
+     */
+    public function raw()
+    {
+        $rawImg = null;
+        
+        if ($this->imageType == IMAGETYPE_JPEG) {
+            // start buffering
+            ob_start();
+            imagejpeg($this->image);
+            $rawImg =  ob_get_contents();
+            ob_end_clean();
+        }
+
+        return $rawImg;
+    }
+
     public function save($filename, $imageType = IMAGETYPE_JPEG, $compression = 90, $permissions = null)
     {
         if ($imageType == IMAGETYPE_JPEG) {

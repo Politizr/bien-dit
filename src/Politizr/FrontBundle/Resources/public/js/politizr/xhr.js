@@ -134,7 +134,9 @@ var ROUTE_USER_PROFILE_UPDATE = 'profil/utilisateur/update';
 var ROUTE_USER_ORGA_UPDATE = 'profil/utilisateur/orga/update';
 var ROUTE_USER_AFFINITIES_UPDATE = 'profil/utilisateur/affinitees/update';
 var ROUTE_USER_PERSO_UPDATE = 'profil/utilisateur/perso/update';
+
 var ROUTE_USER_VALIDATE_ID = 'utilisateur/validation/carte-identite';
+var ROUTE_USER_VALIDATE_PHOTO_UPLOAD = 'utilisateur/validation/photo-id-upload';
 
 var ROUTE_USER_PHOTO_UPLOAD = 'profil/photo/upload';
 var ROUTE_USER_PHOTO_DELETE = 'profil/photo/delete';

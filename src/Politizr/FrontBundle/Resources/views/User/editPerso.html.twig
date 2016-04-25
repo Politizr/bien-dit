@@ -96,7 +96,7 @@
                 <div id="idCheck">
                     <div class="formBlock">
                         <div class="formBlockHeader">
-                            <label>Validation de votre identité</label>
+                            <label>Validation de votre identité par ZLA</label>
                         </div>
 
                         <form name="user" method="post" id="formPerso4">
@@ -107,9 +107,21 @@
                             {{ form_row(formIdCheck.zla3, { 'attr': { 'placeholder': 'ZLA Ligne 3' }}) }}
                             {{ form_rest(formIdCheck) }}
                 
-                            <button type="button" action="validateId">
+                            <button type="button" action="validateIdZla">
                                 Valider mon identité
                             </button>
+                        </form>
+                    </div>
+
+                    <div class="formBlock">
+                        <div class="formBlockHeader">
+                            <label>Validation de votre identité par upload de la photo de la carte d'identité</label>
+                        </div>
+
+                        {% set uploadAction = path('XhrGeneric', {'xhrRoute': constant('Politizr\\Constant\\XhrConstants::ROUTE_USER_VALIDATE_PHOTO_UPLOAD'), 'xhrService': 'user', 'xhrMethod': 'idCheckPhotoUpload', 'xhrType': constant('Politizr\\Constant\\XhrConstants::RETURN_HTML')}) %}
+                        <form method="POST" action="{{ uploadAction }}" name="user" id="formIdCheckPhoto" enctype="multipart/form-data">
+                            <input type="file" name="fileName" id="fileName">
+                            <label action="fileSelect" for="fileName">Photo ID</label>
                         </form>
                     </div>
                 </div>
@@ -128,6 +140,7 @@
     {{ parent() }}
 
     {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/jquery.form.min.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/pages/editPerso.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/user/editPerso.js'
         filter='uglifyjs2' %}

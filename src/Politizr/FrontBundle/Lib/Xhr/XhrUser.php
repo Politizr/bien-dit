@@ -15,6 +15,7 @@ use Politizr\Constant\PathConstants;
 use Politizr\Constant\ListingConstants;
 use Politizr\Constant\ReputationConstants;
 use Politizr\Constant\XhrConstants;
+use Politizr\Constant\IdCheckConstants;
 
 use Politizr\Model\PUser;
 use Politizr\Model\PUCurrentQO;
@@ -36,6 +37,7 @@ use Politizr\FrontBundle\Form\Type\PUMandateType;
 use Politizr\FrontBundle\Form\Type\PUserAffinitiesType;
 use Politizr\FrontBundle\Form\Type\PUserBackPhotoInfoType;
 
+use Politizr\FrontBundle\Lib\SimpleImage;
 use Politizr\FrontBundle\Lib\Client\Ariad;
 
 /**
@@ -58,6 +60,7 @@ class XhrUser
     private $timelineService;
     private $reputationService;
     private $globalTools;
+    private $idcheck;
     private $userTwigExtension;
     private $logger;
 
@@ -76,6 +79,7 @@ class XhrUser
      * @param @politizr.functional.timeline
      * @param @politizr.functional.reputation
      * @param @politizr.tools.global
+     * @param @politizr.tools.idcheck
      * @param @politizr.twig.user
      * @param @logger
      */
@@ -93,6 +97,7 @@ class XhrUser
         $timelineService,
         $reputationService,
         $globalTools,
+        $idcheck,
         $userTwigExtension,
         $logger
     ) {
@@ -115,6 +120,7 @@ class XhrUser
         $this->reputationService = $reputationService;
 
         $this->globalTools = $globalTools;
+        $this->idcheck = $idcheck;
 
         $this->userTwigExtension = $userTwigExtension;
 
@@ -502,11 +508,12 @@ class XhrUser
     }
 
     /**
-     * ARIAD ID CHECK
+     * ARIAD ID CHECK ZLA
+     * beta
      */
-    public function validateId(Request $request)
+    public function validateIdZla(Request $request)
     {
-        $this->logger->info('*** validateId');
+        $this->logger->info('*** validateIdZla');
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -518,136 +525,88 @@ class XhrUser
             $zla1 = $form->get('zla1')->getData();
             $zla2 = $form->get('zla2')->getData();
             $zla3 = $form->get('zla3')->getData();
-            dump($zla1);
-            dump($zla2);
-            dump($zla3);
 
-            $username = "politizr@ariadnext.com";
-            $password = "Bi3quoov4a";
-            $now = new \DateTime();
+            $result = $this->idcheck->executeZlaChecking($zla1, $zla2, $zla3);
 
-            // 2016-04-15T13:55:14.179+02:00
-            $dateFormat = $now->format('Y-m-d\TH:i:s.\0\0\0P');
-            dump($dateFormat);
-
-            // $zla1 = new \SoapVar($zla1, XSD_ANYXML);
-            // $zla2 = new \SoapVar($zla2, XSD_ANYXML);
-            // $zla3 = new \SoapVar($zla3, XSD_ANYXML);
-
-            $optionsMzr = array(
-                "CheckMrz" => array (
-                    "requestDate" => $dateFormat,
-                    "accountUID" => $username,
-                    "userID" => $username,
-                    "locale" => "FR",
-                    "version" => "1.2.0",
-                    "authenticationInfo" => array (
-                        "password" => $password
-                    ),
-                    "mrz" => array (
-                        "line1" => $zla1,
-                        "line2" => $zla2,
-                        "line3" => $zla3,
-                    ),
-                    "getPdfReport" => array (
-                       "getPdfReport" => true
-                    )
-                )
-            );
-
-            $params = array (
-                'encoding' => 'UTF-8',
-                'verifypeer' => false,
-                'verifyhost' => false,
-                'soap_version' => SOAP_1_2,
-                'trace' => 1,
-                'exceptions' => 1,
-                'connection_timeout' => 180,
-                // 'stream_context' => stream_context_create($opts),
-                'authentication' => 'SOAP_AUTHENTICATION_BASIC',
-                'login' => $username,
-                'password' => $password,
-            );
-
-            $client = new \SoapClient(
-                "https://smarteye-test.ariadnext.com:443/ariadnext/ws/SmartEyeWs_v1r0?wsdl",
-                $params
-            );
-
-            // check mrz
-            // ISO Y-m-d\TH:i:sO
-            $result = $client->__soapCall("CheckMrz", $optionsMzr);
-
-            // dump($result);
-            // $result = $client->__getLastRequestHeaders();
-            // dump($result);
-            // $result = $client->__getLastRequest();
-            // dump($result);
-            // $result = $client->__getLastResponseHeaders();
-            // dump($result);
-            // $result = $client->__getLastResponse();
-            // dump($result);
-
-            if ($result->contentOk->result == 'ERROR') {
+            // @todo gestion WARNING exemple: photo flash id camille
+            if ($result == IdCheckConstants::WSDL_RESULT_ERROR) {
                 return false;
+            } elseif ($this->idcheck->isUserLastResult($user)) {
+                return true;
             }
-
-
-//    <soap:Body>
-//       <mes:CheckMrzRequest>
-//          <requestDate>2016-04-12T00:00:00.000</requestDate>
-//          <accountUID>politizr@ariadnext.com</accountUID>
-//          <userID>politizr@ariadnext.com</userID>
-//          <locale>FR</locale>
-//          <version>1.2.0</version>
-//          <authenticationInfo>
-//             <password>Bi3quoov4a</password>
-//          </authenticationInfo>
-//          <mrz>
-//             <line1><![CDATA[P<UTOBANDERAS<<LILIAN<<<<<<<<<<<<<<<<<<<<<<<]]]]>><![CDATA[</line1>
-//             <line2><![CDATA[01234567894UTO8001014F2501017<<<<<<<<<<<<<06]]]]>><![CDATA[</line2>
-//          </mrz>
-//          <getPdfReport>
-//             <getPdfReport>true</getPdfReport>
-//          </getPdfReport>
-//       </mes:CheckMrzRequest>
-//    </soap:Body>
-
-
-            return true;
-
-
-//             $client = new SoapClient("https://smarteye-test.ariadnext.com", array("trace" => 1, "exception" => 0));
-// 
-//             // Create the header
-//             $auth = new Ariad(
-//                 "politizr@ariadnext.com",
-//                 "Bi3quoov4a"
-//             );
-//             $header = new SoapHeader("https://smarteye-test.ariadnext.com", "APICredentials", $auth, false);
-// 
-//             // Call wsdl function
-//             $result = $client->__soapCall("DeleteMarketplaceAd", array(
-//                 "DeleteMarketplaceAd" => array(
-//                     "accountID"        => $accountId,
-//                     "marketplaceAdID"    => "9938745"        // The ads ID
-//                 )
-//             ), NULL, $header);
-// 
-//             // Echo the result
-//             echo "<pre>".print_r($result, true)."</pre>";
-//             if($result->DeleteMarketplaceAdResult->Status == "Success")
-//             {
-//                 echo "Item deleted!";
-//             } 
-
         } else {
             $errors = StudioEchoUtils::getAjaxFormErrors($form);
             throw new BoxErrorException($errors);
         }
 
-        return true;
+        return false;
     }
+
+    /**
+     * ARIAD ID CHECK PHOTO
+     * beta
+     */
+    public function validateIdPhoto(Request $request)
+    {
+        $this->logger->info('*** validateIdPhoto');
+
+        $fileName = $request->get('fileName');
+        $this->logger->info('$fileName = ' . print_r($fileName, true));
+
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+
+        $path = $this->kernel->getRootDir() . '/../web' . PathConstants::IDCHECK_UPLOAD_WEB_PATH;
+
+        if (file_exists($path . $fileName)) {
+            $image = new SimpleImage();
+            $image->load($path . $fileName);
+            $rawImg = $image->raw();
+
+            $result = $this->idcheck->executeImageIdCardChecking($rawImg);
+
+            // @todo gestion WARNING exemple: photo flash id camille
+            if ($result == IdCheckConstants::WSDL_RESULT_ERROR) {
+                return false;
+            } elseif ($this->idcheck->isUserLastResult($user)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * ARIAD ID CHECK UPLOAD PHOTO
+     * beta
+     */
+    public function idCheckPhotoUpload(Request $request)
+    {
+        $this->logger->info('*** idCheckPhotoUpload');
+
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        
+        // Function process
+        $path = $this->kernel->getRootDir() . '/../web' . PathConstants::IDCHECK_UPLOAD_WEB_PATH;
+
+        // XHR upload
+        $fileName = $this->globalTools->uploadXhrImage(
+            $request,
+            'fileName',
+            $path,
+            5000,
+            5000,
+            20971520,
+            [ 'image/jpeg', 'image/pjpeg', 'image/jpeg', 'image/pjpeg' ]
+        );
+
+        return array(
+            'fileName' => $fileName
+        );
+    }
+
+
 
     /* ######################################################################################################## */
     /*                                                REPUTATION                                                */

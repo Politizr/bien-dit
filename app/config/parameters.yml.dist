@@ -14,7 +14,7 @@ parameters:
     mailer_password:   123
     mailer_encryption: ssl
     locale: fr
-    secret: 79b0b1f8ea9a911a6961f56e5144524c
+    secret: 123
 
     # Email contact
     contact_email: contact@politizr.com
@@ -38,3 +38,8 @@ parameters:
     google_client_id: 123
     google_client_secret: 123
     google_scope: email profile
+
+    # ID Check
+    idcheck_wsdl_url: ***
+    idcheck_login: 123
+    idcheck_password: ***

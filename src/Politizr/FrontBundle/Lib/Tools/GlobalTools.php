@@ -136,15 +136,16 @@ class GlobalTools
     /**
      * Upload XHR d'une image
      *
+     * @param  Request     $request
      * @param  string      $inputName            nom du champ input
      * @param  string      $destPath             chemin absolu de destination
      * @param  int         $maxWidth             largeur max > utilisé pour resize
      * @param  int         $maxHeight            hauteur max > utilisé pour resize
      * @param  int         $sizeLimit            Taille limite du fichier > 20 * 1024 * 1024 (20Mo)
-     * @param  array       $allowedExtensions    Extensions de fichier autorisées
+     * @param  array|string $mimeTypes Types MIME http://www.iana.org/assignments/media-types/media-types.xhtml
      *
      */
-    public function uploadXhrImage(Request $request, $inputName, $destPath, $maxWidth, $maxHeight, $sizeLimit = 20971520, $allowedExtensions = array('jpg', 'jpeg', 'png', 'gif'))
+    public function uploadXhrImage(Request $request, $inputName, $destPath, $maxWidth, $maxHeight, $sizeLimit = 20971520, $mimeTypes = 'image/*')
     {
         $this->logger->info('*** uploadXhrImage');
 
@@ -154,15 +155,10 @@ class GlobalTools
         } else if ($myRequestedFile->getError() > 0) {
             throw new BoxErrorException('Erreur upload n°'.$myRequestedFile->getError());
         } else {
-            // // Contrôle extension
-            // // $allowedExtensions = array('jpg', 'jpeg', 'png');
-            // $ext = $myRequestedFile->guessExtension();
-            // if ($allowedExtensions && !in_array(strtolower($ext), $allowedExtensions)) {
-            //     throw new BoxErrorException('Type de fichier non autorisé.');
-            // }
-
             // Contrôle SF2 Image
-            $imageConstraint = new Image();
+            $imageConstraint = new Image(array(
+                'mimeTypes' => $mimeTypes
+            ));
             $errors = $this->validator->validateValue(
                 $myRequestedFile,
                 $imageConstraint
@@ -172,6 +168,7 @@ class GlobalTools
             foreach ($errors as $error) {
                 $msgErrors['error'] = $error->getMessage();
             }
+            dump($msgErrors);
 
             if (!empty($msgErrors)) {
                 throw new BoxErrorException(StudioEchoUtils::multiImplode($msgErrors, ' <br/> '));
