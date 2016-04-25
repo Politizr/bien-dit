@@ -55,7 +55,7 @@ params:
 builders:
     list:
         params:
-            title:                              Liste des débats
+            title:                              Liste des sujets
             max_per_page:                       50
             sort:                               [ published_at, DESC ]
             scopes:
@@ -72,7 +72,7 @@ builders:
             filters:                            [ id, uuid, p_user_id, title, online, published, published_at, created_at ]
             fields:
                 count_reactions:
-                    label:                      Réactions
+                    label:                      Réponses
                 PDDebate.PDDTaggedT:
                     dbType:                     model
                     formType:                   model
@@ -92,7 +92,7 @@ builders:
         filetype: ~
     edit:
         params:
-            title:                              "Edition du contenu débat '{{ PDDebate.title }}'"
+            title:                              "Edition du contenu sujet '{{ PDDebate.title }}'"
             tabs:
                 "Contenu":
                     "Texte":                    [ block_file_name, copyright, title, description ]
@@ -163,7 +163,7 @@ builders:
                 delete:                         ~
     show:
         params:
-            title:                              "Visualisation du contenu débat '{{ PDDebate.getTitle }}'"
+            title:                              "Visualisation du contenu sujet '{{ PDDebate.getTitle }}'"
             tabs:
                 "Contenu":
                     "Texte":                    [ block_file_name, copyright, title, description ]

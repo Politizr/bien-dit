@@ -55,12 +55,12 @@ class AdminMenu extends AdmingeneratorMenuBuilder
         $reputation = $this->addDropdown($menu, 'Document');
         $this->addLinkRoute(
             $reputation,
-            'Débat',
+            'Sujet',
             'Politizr_AdminBundle_PDDebate_list'
         );
         $this->addLinkRoute(
             $reputation,
-            'Réaction',
+            'Réponse',
             'Politizr_AdminBundle_PDReaction_list'
         );
 
@@ -69,12 +69,12 @@ class AdminMenu extends AdmingeneratorMenuBuilder
         $reputation = $this->addDropdown($menu, 'Commentaire');
         $this->addLinkRoute(
             $reputation,
-            'Débat',
+            'Sujet',
             'Politizr_AdminBundle_PDDComment_list'
         );
         $this->addLinkRoute(
             $reputation,
-            'Réaction',
+            'Réponse',
             'Politizr_AdminBundle_PDRComment_list'
         );
 

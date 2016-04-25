@@ -9,6 +9,7 @@ use StudioEcho\Lib\StudioEchoUtils;
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\QualificationConstants;
 use Politizr\Constant\ListingConstants;
+use Politizr\Constant\TagConstants;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
@@ -692,6 +693,31 @@ class PUser extends BasePUser implements UserInterface
             ->setDistinct();
 
         return parent::getPuTaggedTPTags($query)->toArray();
+    }
+
+    /**
+     * User's stringified geo tags, useful for admin export
+     *
+     * @param integer $tagTypeId
+     * @param boolean $online
+     * @return PropelCollection[PTag]
+     */
+    public function getStringifiedGeoTags()
+    {
+        $tags = $this->getArrayTags(TagConstants::TAG_TYPE_GEO);
+
+        $tagStr = '';
+        $count = 0;
+        foreach ($tags as $tag) {
+            if ($count == sizeof($tags)) {
+                $tagStr .= $tag;
+            } else {
+                $tagStr .= $tag . ', ';
+            }
+            $count++;
+        }
+
+        return $tagStr;
     }
 
     /**

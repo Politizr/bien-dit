@@ -51,7 +51,7 @@ params:
 builders:
     list:
         params:
-            title:                              Liste des commentaires sur les débats
+            title:                              Liste des commentaires sur les sujets
             max_per_page:                       50
             sort:                               [ created_at, DESC ]
             display:                            [ id, p_user_id, p_d_debate_id, description, paragraph_no, published_at ]
@@ -67,7 +67,7 @@ builders:
         filetype: ~
     edit:
         params:
-            title:                              "Edition du commentaire de débat id-{{ PDDComment.id }}"
+            title:                              "Edition du commentaire de sujet id-{{ PDDComment.id }}"
             tabs:
                 "Contenu":
                     "Texte":                    [ description, paragraph_no ]
@@ -125,7 +125,7 @@ builders:
                 delete:                         ~
     show:
         params:
-            title:                              "Visualisation du commentaire de débat id-{{ PDDComment.id }}"
+            title:                              "Visualisation du commentaire de sujet id-{{ PDDComment.id }}"
             tabs:
                 "Contenu":
                     "Texte":                    [ description, paragraph_no ]
@@ -150,7 +150,7 @@ builders:
                 block_p_user:
                     label:                      "Auteur"
                 block_p_d_debate:
-                    label:                      "Débat"
+                    label:                      "Sujet"
                 block_moderation_alert_new:
                     label:                      "Alerte"
                 block_moderation_alert_listing:
