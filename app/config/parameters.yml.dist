@@ -40,6 +40,6 @@ parameters:
     google_scope: email profile
 
     # ID Check
-    idcheck_wsdl_url: ***
+    idcheck_wsdl_url: http://www.wsdl.com
     idcheck_login: 123
-    idcheck_password: ***
+    idcheck_password: 123
