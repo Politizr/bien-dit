@@ -62,73 +62,59 @@ class TagService
         $ids = array();
         $tag = PTagQuery::create()->findPk($id);
 
-        // get departements under region
-        if ($tag->getPTTagTypeId() == TagConstants::TAG_TYPE_GEO
-            && in_array($id, TagConstants::getGeoRegionIds())) {
-            $ids = PTagQuery::create()
-                ->select('Id')
-                ->filterByPTParentId($id)
-                ->find()
-                ->toArray();
-        }
-
-        $ids[] = $id;
-
-        return $ids;
-    }
-
-    /**
-     * Depending of tag id, compute relative ids ie. ids of tags where parent_id is set to given id
-     *
-     * france = france + region + departements
-     * region = region + departements
-     *
-     * @param int $id Tag ID
-     * @return array
-     */
-    public function computeUserGeotagRelativeIds($id)
-    {
-        $this->logger->info('*** computeUserGeotagRelativeIds');
-
-        $ids = array();
-        $tag = PTagQuery::create()->findPk($id);
-
         if ($tag->getPTTagTypeId() == TagConstants::TAG_TYPE_GEO
             && $id == TagConstants::TAG_GEO_FRANCE_ID) {
-            // get regions under france
-            $regionIds = PTagQuery::create()
-                ->select('Id')
-                ->filterByPTParentId($id)
-                ->find()
-                ->toArray();
+            // get region & departements & cities under france
+            $countryIds = array();
+            $regionIds = array();
+            $departmentIds = array();
+            $cityIds = array();
 
-            $ids = array_merge($ids, $regionIds);
+            $countryIds[] = TagConstants::TAG_GEO_FRANCE_ID;
 
+            $regionIds = TagConstants::getGeoRegionIds();
             foreach ($regionIds as $regionId) {
-                $departmentIds = PTagQuery::create()
-                ->select('Id')
-                ->filterByPTParentId($regionId)
-                ->find()
-                ->toArray();
-                
-                $ids = array_merge($ids, $departmentIds);
+                $departmentIds = array_merge($departmentIds, $this->getDepartmentsIds($regionId));
             }
+            
+            $cityIds = array();
+            foreach ($departmentIds as $departmentId) {
+                $cityIds = array_merge($cityIds, $this->getCityIds($departmentId));
+            }
+
+            $ids = array_merge($countryIds, $regionIds, $departmentIds, $cityIds);
         } elseif ($tag->getPTTagTypeId() == TagConstants::TAG_TYPE_GEO
             && in_array($id, TagConstants::getGeoRegionIds())) {
-            // get departements under region
-            $ids = PTagQuery::create()
-                ->select('Id')
-                ->filterByPTParentId($id)
-                ->find()
-                ->toArray();
-        }
+            // get departements & cities under region
+            $regionIds = array();
+            $departmentIds = array();
+            $cityIds = array();
 
-        $ids[] = $id;
+            $regionIds[] = $id;
+
+            $departmentIds = $this->getDepartmentsIds($id);
+            
+            $cityIds = array();
+            foreach ($departmentIds as $departmentId) {
+                $cityIds = array_merge($cityIds, $this->getCityIds($departmentId));
+            }
+
+            $ids = array_merge($regionIds, $departmentIds, $cityIds);
+        } elseif ($tag->getPTTagTypeId() == TagConstants::TAG_TYPE_GEO
+            && in_array($id, TagConstants::getGeoDepartmentIds())) {
+            // get cities under department
+            $departmentIds[] = $id;
+            
+            $cityIds = $this->getCityIds($id);
+
+            $ids = array_merge($departmentIds, $cityIds);
+        } else {
+            $ids[] = $id;
+        }
 
         return $ids;
     }
 
-  
     /**
      * Array of key indexed regions uuids
      *
@@ -435,6 +421,26 @@ class TagService
         }
 
         return $mapTags;
+    }
+
+    /**
+     * Get city ids of a department
+     *
+     * @param integer $departmentId
+     * @return array
+     */
+    public function getCityIds($departmentId)
+    {
+        $this->logger->info('*** getCityIds');
+        $this->logger->info('$departmentId = '.print_r($departmentId, true));
+
+        $cityIds = PTagQuery::create()
+            ->select('Id')
+            ->filterByPTParentId($departmentId)
+            ->find()
+            ->toArray();
+
+        return $cityIds;
     }
 
     /**

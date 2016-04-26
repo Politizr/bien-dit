@@ -303,4 +303,17 @@ class TagConstants
             TagConstants::TAG_GEO_DEPARTMENT_ID_NOUVELLE_CALEDONIE,
         ];
     }
+
+    /**
+     * Return array of all departments ids
+     *
+     * @return array
+     */
+    public static function getGeoDepartmentIds()
+    {
+        $metroIds = TagConstants::getGeoDepartmentMetroIds();
+        $omIds = TagConstants::getGeoDepartmentOMIds();
+
+        return array_merge($metroIds, $omIds);
+    }
 }
