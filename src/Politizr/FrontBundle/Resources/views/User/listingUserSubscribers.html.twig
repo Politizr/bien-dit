@@ -5,9 +5,17 @@
 {% endif %}
 {% extends layout %}
 
-{% block title %}
-    {{ parent() }} - Auteur {{ user }}
-{% endblock title %}
+{% set metaTitle = 'Abonnements du profil "' ~ user ~ '"' %}
+{% set metaDescription = 'Liste des abonnements du profil "' ~ user ~ '" disponible sur Politizr.' %}
+
+{% block title %}{{ metaTitle }} - {{ parent() }}{% endblock title %}
+{% block description %}{{ metaDescription }}{% endblock description %}
+
+{% block ogTitle %}{{ metaTitle }} - {{ parent() }}{% endblock ogTitle %}
+{% block ogDescription %}{{ metaDescription }}{% endblock ogDescription %}
+
+{% block tcTitle %}{{ metaTitle }} - {{ parent() }}{% endblock tcTitle %}
+{% block tcDescription %}{{ metaDescription }}{% endblock tcDescription %}
 
 {% block content %}
     <div id="content" class="withLoaderInside">

@@ -11,9 +11,17 @@
     <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.svgdom.min.js') }}"></script>
 {% endblock %}
 
-{% block title %}
-    {{ parent() }} - Recherche
-{% endblock title %}
+{% set metaTitle = 'Recherche' %}
+{% set metaDescription = 'Recherchez et classez les dernières publications de Politizr, en utilisant la carte et les nombreux filtres disponibles.' %}
+
+{% block title %}{{ metaTitle }} - {{ parent() }}{% endblock title %}
+{% block description %}{{ metaDescription }}{% endblock description %}
+
+{% block ogTitle %}{{ metaTitle }} - {{ parent() }}{% endblock ogTitle %}
+{% block ogDescription %}{{ metaDescription }}{% endblock ogDescription %}
+
+{% block tcTitle %}{{ metaTitle }} - {{ parent() }}{% endblock tcTitle %}
+{% block tcDescription %}{{ metaDescription }}{% endblock tcDescription %}
 
 {% block content %}
     <div id="content">

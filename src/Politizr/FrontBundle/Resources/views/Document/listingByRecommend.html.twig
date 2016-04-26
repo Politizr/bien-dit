@@ -5,9 +5,17 @@
 {% endif %}
 {% extends layout %}
 
-{% block title %}
-    {{ parent() }} - Publications les plus recommandées
-{% endblock title %}
+{% set metaTitle = 'Publications les plus recommandées' %}
+{% set metaDescription = 'Liste des publications les plus recommandées pour ' ~ month ~ ' ' ~ year ~ 'disponibles sur Politizr.' %}
+
+{% block title %}{{ metaTitle }} - {{ parent() }}{% endblock title %}
+{% block description %}{{ metaDescription }}{% endblock description %}
+
+{% block ogTitle %}{{ metaTitle }} - {{ parent() }}{% endblock ogTitle %}
+{% block ogDescription %}{{ metaDescription }}{% endblock ogDescription %}
+
+{% block tcTitle %}{{ metaTitle }} - {{ parent() }}{% endblock tcTitle %}
+{% block tcDescription %}{{ metaDescription }}{% endblock tcDescription %}
 
 {% block content %}
     <div id="content">

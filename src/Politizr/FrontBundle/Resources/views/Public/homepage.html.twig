@@ -1,9 +1,10 @@
 {# beta #}
 {% extends 'PolitizrFrontBundle::layoutPublic.html.twig' %}
 
-{% block title %}
-    {{ parent() }} - Changerez-vous d'opinion ?
-{% endblock title %}
+{% block title %}Politizr, changerez-vous d'opinion ?{% endblock title %}
+
+{% block ogVideo %}<meta property='og:video' content='https://www.youtube.com/v/7WHZpebc9q4' />{% endblock ogVideo %}
+{% block tcPlayer %}<meta name="twitter:player" content="https://www.youtube.com/embed/7WHZpebc9q4" />{% endblock tcPlayer %}
 
 {% block main %}
     <div id="public">

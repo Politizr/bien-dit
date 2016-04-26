@@ -5,9 +5,18 @@
 {% endif %}
 {% extends layout %}
 
-{% block title %}
-    {{ parent() }} - Publications pour la thématique {{ tag.title }}
-{% endblock title %}
+{% set metaTitle = 'Thématique ' ~ tag.title %}
+{% set metaDescription = 'Liste des publications pour la thématique ' ~ tag.title ~ ' disponibles sur Politizr.' %}
+
+{% block title %}{{ metaTitle }} - {{ parent() }}{% endblock title %}
+{% block description %}{{ metaDescription }}{% endblock description %}
+
+{% block ogTitle %}{{ metaTitle }} - {{ parent() }}{% endblock ogTitle %}
+{% block ogDescription %}{{ metaDescription }}{% endblock ogDescription %}
+
+{% block tcTitle %}{{ metaTitle }} - {{ parent() }}{% endblock tcTitle %}
+{% block tcDescription %}{{ metaDescription }}{% endblock tcDescription %}
+
 
 {% block content %}
     <div id="content">

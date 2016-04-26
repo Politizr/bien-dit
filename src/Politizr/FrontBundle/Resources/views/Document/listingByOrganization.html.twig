@@ -5,9 +5,17 @@
 {% endif %}
 {% extends layout %}
 
-{% block title %}
-    {{ parent() }} - Publications pour la famille politique {{ organization.title }}
-{% endblock title %}
+{% set metaTitle = organization.title %}
+{% set metaDescription = 'Liste des publications de l\'organisation politique "' ~ organization.title ~ '" disponibles sur Politizr.' %}
+
+{% block title %}{{ metaTitle }} - {{ parent() }}{% endblock title %}
+{% block description %}{{ metaDescription }}{% endblock description %}
+
+{% block ogTitle %}{{ metaTitle }} - {{ parent() }}{% endblock ogTitle %}
+{% block ogDescription %}{{ metaDescription }}{% endblock ogDescription %}
+
+{% block tcTitle %}{{ metaTitle }} - {{ parent() }}{% endblock tcTitle %}
+{% block tcDescription %}{{ metaDescription }}{% endblock tcDescription %}
 
 {% block content %}
     <div id="content">

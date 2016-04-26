@@ -5,13 +5,17 @@
 {% endif %}
 {% extends layout %}
 
-{% block title %}
-    {{ parent() }} - Qui sommes-nous ?
-{% endblock title %}
-{% block description %}Découvrez l'équipe derrière Politizr et contactez-les au 05 64 88 01 71 !{% endblock description %}
+{% set metaTitle = 'Qui sommes-nous ?' %}
+{% set metaDescription = 'Découvrez l\'équipe derrière Politizr et contactez-les au 05 64 88 01 71 !' %}
 
-{% block ogTitle %}Qui sommes-nous ? – Politizr{% endblock ogTitle %}
-{% block ogDescription %}Découvrez l'équipe derrière Politizr et contactez-les au 05 64 88 01 71 !{% endblock ogDescription %}
+{% block title %}{{ metaTitle }} - {{ parent() }}{% endblock title %}
+{% block description %}{{ metaDescription }}{% endblock description %}
+
+{% block ogTitle %}{{ metaTitle }} - {{ parent() }}{% endblock ogTitle %}
+{% block ogDescription %}{{ metaDescription }}{% endblock ogDescription %}
+
+{% block tcTitle %}{{ metaTitle }} - {{ parent() }}{% endblock tcTitle %}
+{% block tcDescription %}{{ metaDescription }}{% endblock tcDescription %}
 
 {% block main %}
         <div id="public">

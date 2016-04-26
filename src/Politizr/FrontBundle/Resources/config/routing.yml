@@ -41,3 +41,11 @@ XhrGeneric:
         _method:        POST
         xhrRoute:       ".+"
         xhrType:        \d
+
+# Catch all URLs to tag listing
+ListingByTagRaw:
+    pattern:  /{slug}
+    defaults: { _controller: PolitizrFrontBundle:Listing:tagRaw }
+    requirements:
+        _method:        GET
+

@@ -5,13 +5,19 @@
 {% endif %}
 {% extends layout %}
 
-{% block title %}{{ parent() }} - Profil de {{ user | purify | trim }}{% endblock title %}
+{% set metaTitle = 'Profil de ' ~ user | purify | trim %}
+{% set metaDescription = user | purify | trim ~ ', ' ~ user.biography | striptags | purify | trim %}
 
-{% block description %}Profil de {{ user | purify | trim }}, {{ user.biography | striptags | purify | trim }}{% endblock description %}
+{% block title %}{{ metaTitle }} - {{ parent() }}{% endblock title %}
+{% block description %}{{ metaDescription }}{% endblock description %}
 
 {% block ogImage %}{{ user | ogImage(app.request.getSchemeAndHttpHost()) }}{% endblock ogImage %}
-{% block ogTitle %}{{ user }} – Politizr{% endblock ogTitle %}
-{% block ogDescription %}Profil de {{ user | purify | trim }}, {{ user.biography | striptags | purify | trim }}{% endblock ogDescription %}
+{% block ogTitle %}{{ metaTitle }} - {{ parent() }}{% endblock ogTitle %}
+{% block ogDescription %}{{ metaDescription }}{% endblock ogDescription %}
+
+{% block tcTitle %}{{ metaTitle }} - {{ parent() }}{% endblock tcTitle %}
+{% block tcDescription %}{{ metaDescription }}{% endblock tcDescription %}
+{% block tcImage %}{{ user | tcImage(app.request.getSchemeAndHttpHost()) }}{% endblock tcImage %}
 
 {% block content %}
     <div id="content" class="withLoaderInside">

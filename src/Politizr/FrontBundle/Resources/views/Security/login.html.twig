@@ -1,8 +1,17 @@
+{# beta #}
 {% extends 'PolitizrFrontBundle::layoutPublic.html.twig' %}
 
-{% block title %}
-    {{ parent() }} - Connexion
-{% endblock title %}
+{% set metaTitle = 'Connexion' %}
+{% set metaDescription = 'Connectez-vous pour accéder à votre espace personnel sur Politizr.' %}
+
+{% block title %}{{ metaTitle }} - {{ parent() }}{% endblock title %}
+{% block description %}{{ metaDescription }}{% endblock description %}
+
+{% block ogTitle %}{{ metaTitle }} - {{ parent() }}{% endblock ogTitle %}
+{% block ogDescription %}{{ metaDescription }}{% endblock ogDescription %}
+
+{% block tcTitle %}{{ metaTitle }} - {{ parent() }}{% endblock tcTitle %}
+{% block tcDescription %}{{ metaDescription }}{% endblock tcDescription %}
 
 {% block content %}
     <!--

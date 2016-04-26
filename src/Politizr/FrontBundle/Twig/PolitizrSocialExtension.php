@@ -68,6 +68,11 @@ class PolitizrSocialExtension extends \Twig_Extension
                 array('is_safe' => array('html'))
             ),
             new \Twig_SimpleFilter(
+                'tcImage',
+                array($this, 'tcImage'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
                 'share',
                 array($this, 'share'),
                 array('is_safe' => array('html'))
@@ -80,7 +85,7 @@ class PolitizrSocialExtension extends \Twig_Extension
     /* ######################################################################################################## */
 
     /**
-     * Compute image for og facebook tag
+     * Compute images for og facebook tag
      *
      * @param PDDebate|PDReaction|PUser $subject
      * @param string $baseUrl
@@ -114,6 +119,35 @@ class PolitizrSocialExtension extends \Twig_Extension
         $this->logger->info('$html = '.print_r($html, true));
 
         return $html;
+    }
+
+    /**
+     * Compute image for twitter card
+     *
+     * @param PDDebate|PDReaction|PUser $subject
+     * @param string $baseUrl
+     * @return string
+     */
+    public function tcImage($subject, $baseUrl)
+    {
+        // $this->logger->info('*** tcImage');
+        // $this->logger->info('$subject = '.print_r($subject, true));
+        // $this->logger->info('$baseUrl = '.print_r($baseUrl, true));
+
+        if ($fileName = $subject->getFileName()) {
+            $fileWebPath = PathConstants::DEBATE_UPLOAD_WEB_PATH;
+            if ($subject->getType() == ObjectTypeConstants::TYPE_REACTION) {
+                $fileWebPath = PathConstants::REACTION_UPLOAD_WEB_PATH;
+            } elseif ($subject->getType() == ObjectTypeConstants::TYPE_USER) {
+                $fileWebPath = PathConstants::USER_UPLOAD_WEB_PATH;
+            }
+
+            $imageUrl = $this->globalTools->filterImage($baseUrl, $fileName, $fileWebPath, 'twitter_share');
+        } else {
+            $imageUrl = $baseUrl.'/bundles/politizrfront/images/share_twitter.jpg';
+        }
+
+        return $imageUrl;
     }
 
     /**

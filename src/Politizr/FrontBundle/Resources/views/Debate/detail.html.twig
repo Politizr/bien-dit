@@ -5,13 +5,20 @@
 {% endif %}
 {% extends layout %}
 
-{% block title %}{{ parent() }} - {{ debate.title | purify | trim }}{% endblock title %}
+{% set metaTitle = debate.title | purify | trim %}
+{% set metaDescription = debate.description | striptags | truncate(160, true) | purify %}
+{% set ogDescription = debate.description | striptags | truncate(295, true) | purify %}
 
-{% block description %}{{ debate.description | removeLinks | removeSpans | excerpt(1, true) | striptags | trim | purify }}{% endblock description %}
+{% block title %}{{ metaTitle }} - {{ parent() }}{% endblock title %}
+{% block description %}{{ metaDescription }}{% endblock description %}
 
 {% block ogImage %}{{ debate | ogImage(app.request.getSchemeAndHttpHost()) }}{% endblock ogImage %}
-{% block ogTitle %}{{ debate.title | purify | trim }} – Politizr{% endblock ogTitle %}
-{% block ogDescription %}{{ debate.description | removeLinks | removeSpans | excerpt(1, true) | striptags | trim | purify }}{% endblock ogDescription %}
+{% block ogTitle %}{{ metaTitle }} - {{ parent() }}{% endblock ogTitle %}
+{% block ogDescription %}{{ ogDescription }}{% endblock ogDescription %}
+
+{% block tcTitle %}{{ metaTitle }} - {{ parent() }}{% endblock tcTitle %}
+{% block tcDescription %}{{ metaDescription }}{% endblock tcDescription %}
+{% block tcImage %}{{ debate | tcImage(app.request.getSchemeAndHttpHost()) }}{% endblock tcImage %}
 
 {% block content %}
     <div id="content">
