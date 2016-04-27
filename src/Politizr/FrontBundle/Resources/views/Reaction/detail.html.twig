@@ -9,7 +9,7 @@
 {% set metaDescription = reaction.description | striptags | truncate(160, true) | purify %}
 {% set ogDescription = reaction.description | striptags | truncate(295, true) | purify %}
 
-{% block title %}{{ metaTitle } - {{ parent() }}}{% endblock title %}
+{% block title %}{{ metaTitle }} - {{ parent() }}{% endblock title %}
 {% block description %}{{ metaDescription }}{% endblock description %}
 
 {% block ogImage %}{{ reaction | ogImage(app.request.getSchemeAndHttpHost()) }}{% endblock ogImage %}
