@@ -19,17 +19,11 @@ use Politizr\Model\PUFollowUQuery;
 use Politizr\Model\PUser;
 
 /**
- * @method PUFollowUQuery orderByNotifDebate($order = Criteria::ASC) Order by the notif_debate column
- * @method PUFollowUQuery orderByNotifReaction($order = Criteria::ASC) Order by the notif_reaction column
- * @method PUFollowUQuery orderByNotifComment($order = Criteria::ASC) Order by the notif_comment column
  * @method PUFollowUQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PUFollowUQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  * @method PUFollowUQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
  * @method PUFollowUQuery orderByPUserFollowerId($order = Criteria::ASC) Order by the p_user_follower_id column
  *
- * @method PUFollowUQuery groupByNotifDebate() Group by the notif_debate column
- * @method PUFollowUQuery groupByNotifReaction() Group by the notif_reaction column
- * @method PUFollowUQuery groupByNotifComment() Group by the notif_comment column
  * @method PUFollowUQuery groupByCreatedAt() Group by the created_at column
  * @method PUFollowUQuery groupByUpdatedAt() Group by the updated_at column
  * @method PUFollowUQuery groupByPUserId() Group by the p_user_id column
@@ -50,17 +44,11 @@ use Politizr\Model\PUser;
  * @method PUFollowU findOne(PropelPDO $con = null) Return the first PUFollowU matching the query
  * @method PUFollowU findOneOrCreate(PropelPDO $con = null) Return the first PUFollowU matching the query, or a new PUFollowU object populated from the query conditions when no match is found
  *
- * @method PUFollowU findOneByNotifDebate(boolean $notif_debate) Return the first PUFollowU filtered by the notif_debate column
- * @method PUFollowU findOneByNotifReaction(boolean $notif_reaction) Return the first PUFollowU filtered by the notif_reaction column
- * @method PUFollowU findOneByNotifComment(boolean $notif_comment) Return the first PUFollowU filtered by the notif_comment column
  * @method PUFollowU findOneByCreatedAt(string $created_at) Return the first PUFollowU filtered by the created_at column
  * @method PUFollowU findOneByUpdatedAt(string $updated_at) Return the first PUFollowU filtered by the updated_at column
  * @method PUFollowU findOneByPUserId(int $p_user_id) Return the first PUFollowU filtered by the p_user_id column
  * @method PUFollowU findOneByPUserFollowerId(int $p_user_follower_id) Return the first PUFollowU filtered by the p_user_follower_id column
  *
- * @method array findByNotifDebate(boolean $notif_debate) Return PUFollowU objects filtered by the notif_debate column
- * @method array findByNotifReaction(boolean $notif_reaction) Return PUFollowU objects filtered by the notif_reaction column
- * @method array findByNotifComment(boolean $notif_comment) Return PUFollowU objects filtered by the notif_comment column
  * @method array findByCreatedAt(string $created_at) Return PUFollowU objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PUFollowU objects filtered by the updated_at column
  * @method array findByPUserId(int $p_user_id) Return PUFollowU objects filtered by the p_user_id column
@@ -160,7 +148,7 @@ abstract class BasePUFollowUQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `notif_debate`, `notif_reaction`, `notif_comment`, `created_at`, `updated_at`, `p_user_id`, `p_user_follower_id` FROM `p_u_follow_u` WHERE `p_user_id` = :p0 AND `p_user_follower_id` = :p1';
+        $sql = 'SELECT `created_at`, `updated_at`, `p_user_id`, `p_user_follower_id` FROM `p_u_follow_u` WHERE `p_user_id` = :p0 AND `p_user_follower_id` = :p1';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
@@ -259,87 +247,6 @@ abstract class BasePUFollowUQuery extends ModelCriteria
         }
 
         return $this;
-    }
-
-    /**
-     * Filter the query on the notif_debate column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByNotifDebate(true); // WHERE notif_debate = true
-     * $query->filterByNotifDebate('yes'); // WHERE notif_debate = true
-     * </code>
-     *
-     * @param     boolean|string $notifDebate The value to use as filter.
-     *              Non-boolean arguments are converted using the following rules:
-     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
-     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
-     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PUFollowUQuery The current query, for fluid interface
-     */
-    public function filterByNotifDebate($notifDebate = null, $comparison = null)
-    {
-        if (is_string($notifDebate)) {
-            $notifDebate = in_array(strtolower($notifDebate), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
-        }
-
-        return $this->addUsingAlias(PUFollowUPeer::NOTIF_DEBATE, $notifDebate, $comparison);
-    }
-
-    /**
-     * Filter the query on the notif_reaction column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByNotifReaction(true); // WHERE notif_reaction = true
-     * $query->filterByNotifReaction('yes'); // WHERE notif_reaction = true
-     * </code>
-     *
-     * @param     boolean|string $notifReaction The value to use as filter.
-     *              Non-boolean arguments are converted using the following rules:
-     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
-     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
-     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PUFollowUQuery The current query, for fluid interface
-     */
-    public function filterByNotifReaction($notifReaction = null, $comparison = null)
-    {
-        if (is_string($notifReaction)) {
-            $notifReaction = in_array(strtolower($notifReaction), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
-        }
-
-        return $this->addUsingAlias(PUFollowUPeer::NOTIF_REACTION, $notifReaction, $comparison);
-    }
-
-    /**
-     * Filter the query on the notif_comment column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByNotifComment(true); // WHERE notif_comment = true
-     * $query->filterByNotifComment('yes'); // WHERE notif_comment = true
-     * </code>
-     *
-     * @param     boolean|string $notifComment The value to use as filter.
-     *              Non-boolean arguments are converted using the following rules:
-     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
-     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
-     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PUFollowUQuery The current query, for fluid interface
-     */
-    public function filterByNotifComment($notifComment = null, $comparison = null)
-    {
-        if (is_string($notifComment)) {
-            $notifComment = in_array(strtolower($notifComment), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
-        }
-
-        return $this->addUsingAlias(PUFollowUPeer::NOTIF_COMMENT, $notifComment, $comparison);
     }
 
     /**

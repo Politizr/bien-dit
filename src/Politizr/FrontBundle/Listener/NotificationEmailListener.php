@@ -47,13 +47,13 @@ class NotificationEmailListener
         $user = $this->getDestPUser($puNotification);
 
         // Contrôle user courant en ligne
-        $isOnline = $this->isOnline($user);
+        // $isOnline = $this->isOnline($user);
 
         // Contrôle user courant abonné à cette notification
         $isSubscriber = $this->isSubscriber($puNotification, $user);
 
         // Envoi de l'email
-        if (!$isOnline && $isSubscriber) {
+        if ($isSubscriber) {
             $event = new GenericEvent($puNotification, array('user_email' => $user->getEmail(),));
             $dispatcher =  $this->eventDispatcher->dispatch('notification_email', $event);
         }

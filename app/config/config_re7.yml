@@ -2,8 +2,30 @@ imports:
     - { resource: config.yml }
 
 framework:
-    router:   { resource: "%kernel.root_dir%/config/routing.yml" }
+    router:
+        resource: "%kernel.root_dir%/config/routing_re7.yml"
+        strict_requirements: true
     profiler: { only_exceptions: false }
+
+web_profiler:
+    toolbar: true
+    intercept_redirects: false
+
+
+web_profiler_extra:
+    routing:
+        enabled:        false
+        display_in_wdt: true
+    container:
+        enabled:        false
+        display_in_wdt: true
+    assetic:
+        enabled:        false
+        display_in_wdt: true
+    twig:
+        enabled:        true
+        display_in_wdt: true
+
 
 monolog:
     handlers:

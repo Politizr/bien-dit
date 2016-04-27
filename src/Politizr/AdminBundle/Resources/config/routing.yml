@@ -181,6 +181,11 @@ Politizr_AdminBundle_PMModerationType:
     type:     admingenerator
     prefix:   /PMModerationType
 
+Politizr_AdminBundle_PNotification:
+    resource: "@PolitizrAdminBundle/Controller/PNotification/"
+    type:     admingenerator
+    prefix:   /PNotification
+
 Politizr_AdminBundle_POSubscription:
     resource: "@PolitizrAdminBundle/Controller/POSubscription/"
     type:     admingenerator

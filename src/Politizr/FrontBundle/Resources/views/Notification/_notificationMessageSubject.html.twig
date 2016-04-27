@@ -49,6 +49,14 @@
 %}
     Une réponse a été publiée {% if document %}sur "{{ document.title }}"{% endif %}
 {% elseif
+    notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_S_D_D_COMMENT_PUBLISH')
+%}
+    Un commentaire a été publié {% if document %}sur "{{ document.title }}"{% endif %}
+{% elseif
+    notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_S_D_R_COMMENT_PUBLISH')
+%}
+    Un commentaire a été publié  {% if document %}sur "{{ document.title }}"{% endif %}
+{% elseif
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_U_FOLLOWED')
 %}
     {{ author }} s'est abonné{% if author and author.gender == 'Madame' %}e{% endif %} à votre profil

@@ -27,7 +27,7 @@ $("body").on("click", "[action='toggleNotifBox']", function() {
 
 // check notification
 $("body").on("click", "i[action='notificationCheck']", function(e) {
-    console.log('*** click i notificationCheck');
+    // console.log('*** click i notificationCheck');
 
     e.preventDefault();
 
@@ -39,7 +39,7 @@ $("body").on("click", "i[action='notificationCheck']", function(e) {
 });
 
 $("body").on("click", "a[action='notificationCheck']", function(e) {
-    console.log('*** click a notificationCheck');
+    // console.log('*** click a notificationCheck');
 
     e.preventDefault();
 
@@ -50,7 +50,7 @@ $("body").on("click", "a[action='notificationCheck']", function(e) {
 });
 
 $("body").on("click", "div[action='notificationCheckAll']", function(e) {
-    console.log('*** click notificationCheckAll');
+    // console.log('*** click notificationCheckAll');
 
     var localLoader = $(this).closest('#notifBox').find('.ajaxLoader').first();
     
@@ -64,7 +64,7 @@ $("body").on("click", "div[action='notificationCheckAll']", function(e) {
 
 // follow / unfollow debate
 $("body").on("click", "[action='followDebate']", function(e) {
-    // console.log('*** click followDebate');
+    // // console.log('*** click followDebate');
     
     var xhrPath = getXhrPath(
         ROUTE_FOLLOW_DEBATE,
@@ -95,7 +95,7 @@ $("body").on("click", "[action='followDebate']", function(e) {
 
 // follow / unfollow user
 $("body").on("click", "[action='followUser']", function(e) {
-    // console.log('*** click followUser');
+    // // console.log('*** click followUser');
     
     var xhrPath = getXhrPath(
         ROUTE_FOLLOW_USER,
@@ -126,7 +126,7 @@ $("body").on("click", "[action='followUser']", function(e) {
 
 // follow / unfollow tag
 $("body").on("click", "[action='followTag']", function(e) {
-    // console.log('*** click followTag');
+    // // console.log('*** click followTag');
 
     var xhrPath = getXhrPath(
         ROUTE_FOLLOW_TAG,

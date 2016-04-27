@@ -200,18 +200,4 @@ class PUserQuery extends BasePUserQuery
             ->_endif();
     }
 
-    /**
-     *
-     * @param boolean $notifReaction
-     * @return PUserQuery
-     */
-    public function filterIfNotifReaction($notifReaction = null)
-    {
-        return $this
-            ->_if(null !== $notifReaction)
-                ->usePuFollowDdPUserQuery()
-                    ->filterByNotifReaction($notifReaction)
-                ->endUse()
-            ->_endif();
-    }
 }

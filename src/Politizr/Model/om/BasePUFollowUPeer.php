@@ -31,22 +31,13 @@ abstract class BasePUFollowUPeer
     const TM_CLASS = 'Politizr\\Model\\map\\PUFollowUTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 7;
+    const NUM_COLUMNS = 4;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 7;
-
-    /** the column name for the notif_debate field */
-    const NOTIF_DEBATE = 'p_u_follow_u.notif_debate';
-
-    /** the column name for the notif_reaction field */
-    const NOTIF_REACTION = 'p_u_follow_u.notif_reaction';
-
-    /** the column name for the notif_comment field */
-    const NOTIF_COMMENT = 'p_u_follow_u.notif_comment';
+    const NUM_HYDRATE_COLUMNS = 4;
 
     /** the column name for the created_at field */
     const CREATED_AT = 'p_u_follow_u.created_at';
@@ -79,12 +70,12 @@ abstract class BasePUFollowUPeer
      * e.g. PUFollowUPeer::$fieldNames[PUFollowUPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('NotifDebate', 'NotifReaction', 'NotifComment', 'CreatedAt', 'UpdatedAt', 'PUserId', 'PUserFollowerId', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('notifDebate', 'notifReaction', 'notifComment', 'createdAt', 'updatedAt', 'pUserId', 'pUserFollowerId', ),
-        BasePeer::TYPE_COLNAME => array (PUFollowUPeer::NOTIF_DEBATE, PUFollowUPeer::NOTIF_REACTION, PUFollowUPeer::NOTIF_COMMENT, PUFollowUPeer::CREATED_AT, PUFollowUPeer::UPDATED_AT, PUFollowUPeer::P_USER_ID, PUFollowUPeer::P_USER_FOLLOWER_ID, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('NOTIF_DEBATE', 'NOTIF_REACTION', 'NOTIF_COMMENT', 'CREATED_AT', 'UPDATED_AT', 'P_USER_ID', 'P_USER_FOLLOWER_ID', ),
-        BasePeer::TYPE_FIELDNAME => array ('notif_debate', 'notif_reaction', 'notif_comment', 'created_at', 'updated_at', 'p_user_id', 'p_user_follower_id', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
+        BasePeer::TYPE_PHPNAME => array ('CreatedAt', 'UpdatedAt', 'PUserId', 'PUserFollowerId', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('createdAt', 'updatedAt', 'pUserId', 'pUserFollowerId', ),
+        BasePeer::TYPE_COLNAME => array (PUFollowUPeer::CREATED_AT, PUFollowUPeer::UPDATED_AT, PUFollowUPeer::P_USER_ID, PUFollowUPeer::P_USER_FOLLOWER_ID, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('CREATED_AT', 'UPDATED_AT', 'P_USER_ID', 'P_USER_FOLLOWER_ID', ),
+        BasePeer::TYPE_FIELDNAME => array ('created_at', 'updated_at', 'p_user_id', 'p_user_follower_id', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
     );
 
     /**
@@ -94,12 +85,12 @@ abstract class BasePUFollowUPeer
      * e.g. PUFollowUPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('NotifDebate' => 0, 'NotifReaction' => 1, 'NotifComment' => 2, 'CreatedAt' => 3, 'UpdatedAt' => 4, 'PUserId' => 5, 'PUserFollowerId' => 6, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('notifDebate' => 0, 'notifReaction' => 1, 'notifComment' => 2, 'createdAt' => 3, 'updatedAt' => 4, 'pUserId' => 5, 'pUserFollowerId' => 6, ),
-        BasePeer::TYPE_COLNAME => array (PUFollowUPeer::NOTIF_DEBATE => 0, PUFollowUPeer::NOTIF_REACTION => 1, PUFollowUPeer::NOTIF_COMMENT => 2, PUFollowUPeer::CREATED_AT => 3, PUFollowUPeer::UPDATED_AT => 4, PUFollowUPeer::P_USER_ID => 5, PUFollowUPeer::P_USER_FOLLOWER_ID => 6, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('NOTIF_DEBATE' => 0, 'NOTIF_REACTION' => 1, 'NOTIF_COMMENT' => 2, 'CREATED_AT' => 3, 'UPDATED_AT' => 4, 'P_USER_ID' => 5, 'P_USER_FOLLOWER_ID' => 6, ),
-        BasePeer::TYPE_FIELDNAME => array ('notif_debate' => 0, 'notif_reaction' => 1, 'notif_comment' => 2, 'created_at' => 3, 'updated_at' => 4, 'p_user_id' => 5, 'p_user_follower_id' => 6, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
+        BasePeer::TYPE_PHPNAME => array ('CreatedAt' => 0, 'UpdatedAt' => 1, 'PUserId' => 2, 'PUserFollowerId' => 3, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('createdAt' => 0, 'updatedAt' => 1, 'pUserId' => 2, 'pUserFollowerId' => 3, ),
+        BasePeer::TYPE_COLNAME => array (PUFollowUPeer::CREATED_AT => 0, PUFollowUPeer::UPDATED_AT => 1, PUFollowUPeer::P_USER_ID => 2, PUFollowUPeer::P_USER_FOLLOWER_ID => 3, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('CREATED_AT' => 0, 'UPDATED_AT' => 1, 'P_USER_ID' => 2, 'P_USER_FOLLOWER_ID' => 3, ),
+        BasePeer::TYPE_FIELDNAME => array ('created_at' => 0, 'updated_at' => 1, 'p_user_id' => 2, 'p_user_follower_id' => 3, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
     );
 
     /**
@@ -173,17 +164,11 @@ abstract class BasePUFollowUPeer
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(PUFollowUPeer::NOTIF_DEBATE);
-            $criteria->addSelectColumn(PUFollowUPeer::NOTIF_REACTION);
-            $criteria->addSelectColumn(PUFollowUPeer::NOTIF_COMMENT);
             $criteria->addSelectColumn(PUFollowUPeer::CREATED_AT);
             $criteria->addSelectColumn(PUFollowUPeer::UPDATED_AT);
             $criteria->addSelectColumn(PUFollowUPeer::P_USER_ID);
             $criteria->addSelectColumn(PUFollowUPeer::P_USER_FOLLOWER_ID);
         } else {
-            $criteria->addSelectColumn($alias . '.notif_debate');
-            $criteria->addSelectColumn($alias . '.notif_reaction');
-            $criteria->addSelectColumn($alias . '.notif_comment');
             $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
             $criteria->addSelectColumn($alias . '.p_user_id');
@@ -407,11 +392,11 @@ abstract class BasePUFollowUPeer
     public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
     {
         // If the PK cannot be derived from the row, return null.
-        if ($row[$startcol + 5] === null && $row[$startcol + 6] === null) {
+        if ($row[$startcol + 2] === null && $row[$startcol + 3] === null) {
             return null;
         }
 
-        return serialize(array((string) $row[$startcol + 5], (string) $row[$startcol + 6]));
+        return serialize(array((string) $row[$startcol + 2], (string) $row[$startcol + 3]));
     }
 
     /**
@@ -426,7 +411,7 @@ abstract class BasePUFollowUPeer
     public static function getPrimaryKeyFromRow($row, $startcol = 0)
     {
 
-        return array((int) $row[$startcol + 5], (int) $row[$startcol + 6]);
+        return array((int) $row[$startcol + 2], (int) $row[$startcol + 3]);
     }
 
     /**

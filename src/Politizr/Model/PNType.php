@@ -8,6 +8,14 @@ class PNType extends BasePNType
 {
     /**
      *
+     */
+    public function __toString()
+    {
+        return $this->getTitle();
+    }
+
+    /**
+     *
      * @return PropelCollection[PNotification]
      */
     public function getNotifications()

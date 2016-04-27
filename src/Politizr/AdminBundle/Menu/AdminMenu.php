@@ -152,6 +152,11 @@ class AdminMenu extends AdmingeneratorMenuBuilder
         );
         $this->addLinkRoute(
             $regulations,
+            'Notification',
+            'Politizr_AdminBundle_PNotification_list'
+        );
+        $this->addLinkRoute(
+            $regulations,
             'Formule d\'abonnement',
             'Politizr_AdminBundle_POSubscription_list'
         );

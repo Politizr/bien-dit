@@ -387,36 +387,6 @@ class PUser extends BasePUser implements UserInterface
     }
 
     /**
-     * User's debate's notification of user's followers
-     *
-     * @return PropelObjectCollection[PUser]
-     */
-    public function getNotifDebateFollowers($query = null)
-    {
-        return $this->getFollowers($query, 'AND p_u_follow_u.notif_debate = true');
-    }
-
-    /**
-     * User's reaction's notification of user's followers
-     *
-     * @return PropelObjectCollection[PUser]
-     */
-    public function getNotifReactionFollowers($query = null)
-    {
-        return $this->getFollowers($query, 'AND p_u_follow_u.notif_reaction= true');
-    }
-
-    /**
-     * User's comment's notification of user's followers
-     *
-     * @return PropelObjectCollection[PUser]
-     */
-    public function getNotifCommentFollowers($query = null)
-    {
-        return $this->getFollowers($query, 'AND p_u_follow_u.notif_comment = true');
-    }
-
-    /**
      *
      * @return PropelObjectCollection[PUser]
      */
@@ -1051,24 +1021,19 @@ class PUser extends BasePUser implements UserInterface
     // ************************************************************************************ //
 
     /**
-     * Check if follower $userId wants to be notified of user update in the scope of $context
+     * Check if user subscribe to notif email
      *
-     * @param integer $userId
-     * @param string $context
+     * @param int $notification
      * @return boolean
      */
-    public function isNotified($userId, $context = ObjectTypeConstants::CONTEXT_REACTION)
+    public function isEmailNotificationSubscriber($notificationId)
     {
-        $puFollowU = PUFollowUQuery::create()
-            ->filterByPUserId($userId)
-            ->filterByPUserFollowerId($this->getId())
+        $isSubscriber = PUSubscribeEmailQuery::create()
+            ->filterByPNotificationId($notificationId)
+            ->filterByPUserId($this->getId())
             ->findOne();
 
-        if ($context == ObjectTypeConstants::CONTEXT_DEBATE && $puFollowU && $puFollowU->getNotifDebate()) {
-            return true;
-        } elseif ($context == ObjectTypeConstants::CONTEXT_REACTION && $puFollowU && $puFollowU->getNotifReaction()) {
-            return true;
-        } elseif ($context == ObjectTypeConstants::CONTEXT_COMMENT && $puFollowU && $puFollowU->getNotifComment()) {
+        if ($isSubscriber) {
             return true;
         }
 

@@ -1,34 +1,21 @@
-# à exécuter req par req
+INSERT INTO `p_notification` (`id`, `uuid`, `p_n_type_id`, `title`, `created_at`, `updated_at`) 
+VALUES (15, 'dfe92694-faed-4078-92b9-1a15561a8564', 3, 'Lorsqu\'un commentaire a été publié sur un sujet suivi', '2016-04-27 10:51:12', '2016-04-27 10:51:12');
 
-# RAF > create table pr_metal_type
-# INSERT INTO `p_r_metal_type` (`id`, `title`, `created_at`, `updated_at`) VALUES
-# (1, 'bronze',   '2016-02-09 09:38:18',  '2016-02-09 09:38:18'),
-# (2, 'silver',   '2016-02-09 09:39:30',  '2016-02-09 09:39:30'),
-# (3, 'gold', '2016-02-09 09:39:30',  '2016-02-09 09:39:30');
+UPDATE `p_notification` SET `description`='Lorsqu\'un commentaire a été publié sur un sujet suivi', `online`=1, `updated_at`='2016-04-27 10:52:32' 
+WHERE p_notification.id=15;
+
+INSERT INTO `p_notification` (`id`, `uuid`, `p_n_type_id`, `title`, `created_at`, `updated_at`) 
+VALUES (16, 'cf41ce98-83c1-42b2-a208-87879dca21b6', 3, 'Lorsqu\'un commentaire a été publié sur une réponse à un sujet suivi', '2016-04-27 10:54:01', '2016-04-27 10:54:01');
+
+UPDATE `p_notification` SET `description`='Lorsqu\'un commentaire a été publié sur une réponse à un sujet suivi', `online`=1, `updated_at`='2016-04-27 10:55:29' 
+WHERE p_notification.id=16;
 
 
-# reputation > donnée incohérente
-DELETE FROM `p_u_reputation`
-WHERE `id` = '4';
+INSERT INTO `p_u_subscribe_email`
+    (`p_user_id`, `p_notification_id`, `created_at`, `updated_at`)
+SELECT id, 15, NOW(), NOW() from p_user;
 
-# reputation > MAJ des id "suiveurs"
-
-# 1/ Patch à la con (support vous suit partout)
-UPDATE p_u_reputation
-SET p_object_id = 1
-WHERE
-p_r_action_id = 28
-
-# 2/ MAJ par date équivalente
-UPDATE p_u_reputation as t1,
-(
-SELECT *
-FROM p_u_reputation
-WHERE
-    p_r_action_id = 24
-) as t2
-SET t1.p_object_id = t2.p_user_id
-WHERE
-t1.created_at = t2.created_at
-AND t1.p_r_action_id = 28
+INSERT INTO `p_u_subscribe_email`
+    (`p_user_id`, `p_notification_id`, `created_at`, `updated_at`)
+SELECT id, 16, NOW(), NOW() from p_user;
 

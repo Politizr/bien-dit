@@ -54,4 +54,7 @@ class NotificationConstants
     const ID_S_U_COMMENT_PUBLISH = 13;
 
     const ID_S_D_REACTION_PUBLISH = 14;
+
+    const ID_S_D_D_COMMENT_PUBLISH = 15;
+    const ID_S_D_R_COMMENT_PUBLISH = 16;
 }

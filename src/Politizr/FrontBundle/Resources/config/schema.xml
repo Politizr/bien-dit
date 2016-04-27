@@ -458,7 +458,7 @@
 
         <foreign-key foreignTable="p_n_type" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_n_type_id" foreign="id" />
-        </foreign-key>        
+        </foreign-key>
 
         <unique>
             <unique-column name="uuid"/>
@@ -585,10 +585,6 @@
             <parameter name="reference_column_1" value="p_user_id" />
             <parameter name="reference_column_2" value="p_user_follower_id" />
         </behavior>
-
-        <column name="notif_debate" type="boolean" defaultValue="true" />
-        <column name="notif_reaction" type="boolean" defaultValue="true" />
-        <column name="notif_comment" type="boolean" defaultValue="true" />
     </table>    
 
     <table name="p_u_follow_d_d" isCrossRef="true">
@@ -598,8 +594,6 @@
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="p_user_id" type="integer" required="true" />
         <column name="p_d_debate_id" type="integer" required="true" />
-
-        <column name="notif_reaction" type="boolean" defaultValue="true" />
 
         <foreign-key foreignTable="p_user" phpName="PuFollowDdPUser" refPhpName="PuFollowDdPUser" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />

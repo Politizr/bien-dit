@@ -31,13 +31,13 @@ abstract class BasePUFollowDDPeer
     const TM_CLASS = 'Politizr\\Model\\map\\PUFollowDDTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 6;
+    const NUM_COLUMNS = 5;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 6;
+    const NUM_HYDRATE_COLUMNS = 5;
 
     /** the column name for the id field */
     const ID = 'p_u_follow_d_d.id';
@@ -47,9 +47,6 @@ abstract class BasePUFollowDDPeer
 
     /** the column name for the p_d_debate_id field */
     const P_D_DEBATE_ID = 'p_u_follow_d_d.p_d_debate_id';
-
-    /** the column name for the notif_reaction field */
-    const NOTIF_REACTION = 'p_u_follow_d_d.notif_reaction';
 
     /** the column name for the created_at field */
     const CREATED_AT = 'p_u_follow_d_d.created_at';
@@ -76,12 +73,12 @@ abstract class BasePUFollowDDPeer
      * e.g. PUFollowDDPeer::$fieldNames[PUFollowDDPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'PUserId', 'PDDebateId', 'NotifReaction', 'CreatedAt', 'UpdatedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pUserId', 'pDDebateId', 'notifReaction', 'createdAt', 'updatedAt', ),
-        BasePeer::TYPE_COLNAME => array (PUFollowDDPeer::ID, PUFollowDDPeer::P_USER_ID, PUFollowDDPeer::P_D_DEBATE_ID, PUFollowDDPeer::NOTIF_REACTION, PUFollowDDPeer::CREATED_AT, PUFollowDDPeer::UPDATED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_USER_ID', 'P_D_DEBATE_ID', 'NOTIF_REACTION', 'CREATED_AT', 'UPDATED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'p_user_id', 'p_d_debate_id', 'notif_reaction', 'created_at', 'updated_at', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'PUserId', 'PDDebateId', 'CreatedAt', 'UpdatedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pUserId', 'pDDebateId', 'createdAt', 'updatedAt', ),
+        BasePeer::TYPE_COLNAME => array (PUFollowDDPeer::ID, PUFollowDDPeer::P_USER_ID, PUFollowDDPeer::P_D_DEBATE_ID, PUFollowDDPeer::CREATED_AT, PUFollowDDPeer::UPDATED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_USER_ID', 'P_D_DEBATE_ID', 'CREATED_AT', 'UPDATED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'p_user_id', 'p_d_debate_id', 'created_at', 'updated_at', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
     );
 
     /**
@@ -91,12 +88,12 @@ abstract class BasePUFollowDDPeer
      * e.g. PUFollowDDPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PUserId' => 1, 'PDDebateId' => 2, 'NotifReaction' => 3, 'CreatedAt' => 4, 'UpdatedAt' => 5, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pUserId' => 1, 'pDDebateId' => 2, 'notifReaction' => 3, 'createdAt' => 4, 'updatedAt' => 5, ),
-        BasePeer::TYPE_COLNAME => array (PUFollowDDPeer::ID => 0, PUFollowDDPeer::P_USER_ID => 1, PUFollowDDPeer::P_D_DEBATE_ID => 2, PUFollowDDPeer::NOTIF_REACTION => 3, PUFollowDDPeer::CREATED_AT => 4, PUFollowDDPeer::UPDATED_AT => 5, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_USER_ID' => 1, 'P_D_DEBATE_ID' => 2, 'NOTIF_REACTION' => 3, 'CREATED_AT' => 4, 'UPDATED_AT' => 5, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_user_id' => 1, 'p_d_debate_id' => 2, 'notif_reaction' => 3, 'created_at' => 4, 'updated_at' => 5, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PUserId' => 1, 'PDDebateId' => 2, 'CreatedAt' => 3, 'UpdatedAt' => 4, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pUserId' => 1, 'pDDebateId' => 2, 'createdAt' => 3, 'updatedAt' => 4, ),
+        BasePeer::TYPE_COLNAME => array (PUFollowDDPeer::ID => 0, PUFollowDDPeer::P_USER_ID => 1, PUFollowDDPeer::P_D_DEBATE_ID => 2, PUFollowDDPeer::CREATED_AT => 3, PUFollowDDPeer::UPDATED_AT => 4, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_USER_ID' => 1, 'P_D_DEBATE_ID' => 2, 'CREATED_AT' => 3, 'UPDATED_AT' => 4, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_user_id' => 1, 'p_d_debate_id' => 2, 'created_at' => 3, 'updated_at' => 4, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
     );
 
     /**
@@ -173,14 +170,12 @@ abstract class BasePUFollowDDPeer
             $criteria->addSelectColumn(PUFollowDDPeer::ID);
             $criteria->addSelectColumn(PUFollowDDPeer::P_USER_ID);
             $criteria->addSelectColumn(PUFollowDDPeer::P_D_DEBATE_ID);
-            $criteria->addSelectColumn(PUFollowDDPeer::NOTIF_REACTION);
             $criteria->addSelectColumn(PUFollowDDPeer::CREATED_AT);
             $criteria->addSelectColumn(PUFollowDDPeer::UPDATED_AT);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.p_user_id');
             $criteria->addSelectColumn($alias . '.p_d_debate_id');
-            $criteria->addSelectColumn($alias . '.notif_reaction');
             $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
         }

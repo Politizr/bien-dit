@@ -7,6 +7,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use Politizr\Exception\InconsistentDataException;
 
 use Politizr\Constant\NotificationConstants;
+use Politizr\Constant\ObjectTypeConstants;
 
 use Politizr\Model\PUNotification;
 
@@ -14,7 +15,7 @@ use Politizr\Model\PUserQuery;
 use Politizr\Model\PRBadgeQuery;
 
 /**
- * Gestion des actions mettant à jour la réputation
+ * Notification listener
  *
  * @author Lionel Bouzonville
  */
@@ -137,11 +138,11 @@ class NotificationListener
         $objectName = get_class($subject);
         $objectId = $subject->getId();
 
-        // Récupération de l'auteur du débat
+        // retrieve user
         $authorUser = PUserQuery::create()->findPk($authorUserId);
 
-        // Liste des users suivant l'auteur du document et souhaitant être notifié de ses publications
-        $users = $authorUser->getNotifDebateFollowers();
+        // get debate's user followers
+        $users = $authorUser->getFollowers();
         foreach ($users as $user) {
             $pNotificationId = NotificationConstants::ID_S_U_DEBATE_PUBLISH;
             $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId);
@@ -158,8 +159,8 @@ class NotificationListener
      *
      * Notifications associées à gérer:
      * - Une réaction a été publiée sur un de vos débats / une de vos réactions
-     * - Une réaction a été publié sur un débat suivi
      * - Une réaction a été publié par un auteur suivi
+     * - Une réaction a été publié sur un débat suivi
      *
      * @param GenericEvent
      */
@@ -172,68 +173,103 @@ class NotificationListener
         $objectName = get_class($subject);
         $objectId = $subject->getId();
 
-        // Débat associé à la réaction
+        // retrieve reaction's debate
         $debate = $subject->getPDDebate();
         $debateUserId = $debate->getPUserId();
+        $debateUser = $debate->getPUser();
         $pNotificationId = NotificationConstants::ID_D_D_REACTION_PUBLISH;
 
-        // Notification = reaction published on my debate
+        // Emails notification array
+        $neCheck = [];
+
+        // reaction published on my debate
         // don't notif if same user
         if ($debateUserId != $authorUserId) {
             $puNotification = $this->insertPUNotification($debateUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
 
-            // Alerte email
+            // email
             $event = new GenericEvent($puNotification);
-            $dispatcher =  $this->eventDispatcher->dispatch('n_e_check', $event);
+
+            // store user's email notification to prevent duplicate sending
+            if ($debateUser && $debateUser->isEmailNotificationSubscriber($puNotification->getPNotificationId())) {
+                if (!isset($neCheck[$debateUser->getId()])) {
+                    $neCheck[$debateUser->getId()] = $event;
+                }
+            }
         }
 
-        // Réaction associée à la réaction
+        // reaction published on my reaction
         if ($subject->getTreeLevel() > 1) {
+            // retrieve parent's reaction
             $parent = $subject->getParent();
 
             $targetUserId = $parent->getPUserId();
+            $targetUser = $parent->getPUser();
             $pNotificationId = NotificationConstants::ID_D_R_REACTION_PUBLISH;
 
-            // Notification = reaction published on my reaction
             // don't notif if same user
             if ($targetUserId != $authorUserId) {
                 $puNotification = $this->insertPUNotification($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
 
-                // Alerte email
+                // email
                 $event = new GenericEvent($puNotification);
-                $dispatcher =  $this->eventDispatcher->dispatch('n_e_check', $event);
+
+                // store user's email notification to prevent duplicate sending
+                if ($targetUser->isEmailNotificationSubscriber($puNotification->getPNotificationId())) {
+                    if (!isset($neCheck[$targetUser->getId()])) {
+                        $neCheck[$targetUser->getId()] = $event;
+                    }
+                }
             }
         }
 
-        // Notification = reaction published on followed debate
-        $users = $debate->getNotifReactionFollowers();
-        foreach ($users as $user) {
-            $pNotificationId = NotificationConstants::ID_S_D_REACTION_PUBLISH;
-            $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId);
-
-            // Alerte email
-            $event = new GenericEvent($puNotification);
-            $dispatcher =  $this->eventDispatcher->dispatch('n_e_check', $event);
-        }
-
-        // Get exlusion query for users already following debate
-        $alreadyNotifiedUsersQuery = $this->getNotInPUserQuery($users);
-
-        // Récupération de l'auteur du débat
+        // reaction published by followed user
+        // retrieve debate's author
         $authorUser = PUserQuery::create()->findPk($authorUserId);
 
-        // Notification = reaction published by followed user
-        $users = $authorUser->getNotifReactionFollowers($alreadyNotifiedUsersQuery);
-
+        // get debate's user followers
+        $users = $authorUser->getFollowers();
         foreach ($users as $user) {
-            $pNotificationId = NotificationConstants::ID_S_U_REACTION_PUBLISH;
-            $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId);
+            if ($user->getId() != $authorUserId) {
+                $pNotificationId = NotificationConstants::ID_S_U_REACTION_PUBLISH;
+                $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId);
 
-            // Alerte email
-            $event = new GenericEvent($puNotification);
-            $dispatcher =  $this->eventDispatcher->dispatch('n_e_check', $event);
+                // email
+                $event = new GenericEvent($puNotification);
+
+                // store user's email notification to prevent duplicate sending
+                if ($user->isEmailNotificationSubscriber($puNotification->getPNotificationId())) {
+                    if (!isset($neCheck[$user->getId()])) {
+                        $neCheck[$user->getId()] = $event;
+                    }
+                }
+            }
         }
 
+        // reaction published on followed debate
+        // retrieve debate's followers
+        $users = $debate->getFollowers();
+        foreach ($users as $user) {
+            if ($user->getId() != $authorUserId) {
+                $pNotificationId = NotificationConstants::ID_S_D_REACTION_PUBLISH;
+                $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId);
+
+                // email
+                $event = new GenericEvent($puNotification);
+
+                // store user's email notification to prevent duplicate sending
+                if ($user->isEmailNotificationSubscriber($puNotification->getPNotificationId())) {
+                    if (!isset($neCheck[$user->getId()])) {
+                        $neCheck[$user->getId()] = $event;
+                    }
+                }
+            }
+        }
+
+        // email notification dispatching
+        foreach ($neCheck as $userId => $event) {
+            $dispatcher = $this->eventDispatcher->dispatch('n_e_check', $event);
+        }
     }
 
     /**
@@ -242,6 +278,8 @@ class NotificationListener
      * Notifications associées à gérer:
      * - Un commentaire a été publié sur un de vos documents
      * - Un commentaire a été publié par un utilisateur suivi
+     * - Un commentaire a été publié sur un sujet suivi
+     * - Un commentaire a été publié sur une réponse à un sujet suivi
      *
      * @param GenericEvent
      */
@@ -258,35 +296,84 @@ class NotificationListener
         // Document associé
         $document = $subject->getPDocument();
         $targetUserId = $document->getPUserId();
+        $targetUser = $document->getPUser();
 
-        // Notification = comment published on my debate/reaction
+        // Emails notification array
+        $neCheck = [];
+
+        // Comment published on my debate or reaction
         // don't notif if same user
         if ($targetUserId != $authorUserId) {
             $puNotification = $this->insertPUNotification($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
 
-            // Alerte email
+            // email
             $event = new GenericEvent($puNotification);
-            $dispatcher =  $this->eventDispatcher->dispatch('n_e_check', $event);
+
+            // store user's email notification to prevent duplicate sending
+            if ($targetUser && $targetUser->isEmailNotificationSubscriber($puNotification->getPNotificationId())) {
+                if (!isset($neCheck[$targetUser->getId()])) {
+                    $neCheck[$targetUser->getId()] = $event;
+                }
+            }
         }
 
-        // Récupération de l'auteur du commentaire
+        // Retrieve comment's user
         $authorUser = PUserQuery::create()->findPk($authorUserId);
 
-        // Liste des users suivant l'auteur du commentaire et souhaitant être notifié de ses publications
-        $users = $authorUser->getNotifCommentFollowers();
+        // get comment's user followers
+        $users = $authorUser->getFollowers();
+        $userFollowerIds = [];
         foreach ($users as $user) {
-            // don't notif UC3 & UC4 (followed user publish comment for my debate/reaction)
-            if ($user->getId() != $targetUserId) {
+            if ($user->getId() != $authorUserId) {
                 $pNotificationId = NotificationConstants::ID_S_U_COMMENT_PUBLISH;
                 $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId);
 
-                // Alerte email
+                // email
                 $event = new GenericEvent($puNotification);
-                $dispatcher =  $this->eventDispatcher->dispatch('n_e_check', $event);
+
+                // store user's email notification to prevent duplicate sending
+                if ($user->isEmailNotificationSubscriber($puNotification->getPNotificationId())) {
+                    if (!isset($neCheck[$user->getId()])) {
+                        $neCheck[$user->getId()] = $event;
+                    }
+                }
             }
         }
-    }
 
+        // new comments on followed debate and/or reaction of followed debate
+        if ($document->getType() == ObjectTypeConstants::TYPE_DEBATE) {
+            $debate = $document;
+            $pNotificationId = NotificationConstants::ID_S_D_D_COMMENT_PUBLISH;
+        } elseif ($document->getType() == ObjectTypeConstants::TYPE_REACTION) {
+            $debate = $document->getDebate();
+            $pNotificationId = NotificationConstants::ID_S_D_R_COMMENT_PUBLISH;
+        } else {
+            throw new InconsistentDataException(sprintf('Object type %s not managed', $document->getType()));
+        }
+
+        // get debate's followers
+        $users = $debate->getFollowers();
+        foreach ($users as $user) {
+            if ($user->getId() != $authorUserId) {
+                $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId);
+
+                // email
+                $event = new GenericEvent($puNotification);
+
+                // store user's email notification to prevent duplicate sending
+                if ($user->isEmailNotificationSubscriber($puNotification->getPNotificationId())) {
+                    if (!isset($neCheck[$user->getId()])) {
+                        $neCheck[$user->getId()] = $event;
+                    }
+                }
+            }
+        }
+
+        // email notification dispatching
+        foreach ($neCheck as $userId => $event) {
+            $dispatcher = $this->eventDispatcher->dispatch('n_e_check', $event);
+        }
+    }
 
     /**
      * Suivi d'un débat.
@@ -384,23 +471,6 @@ class NotificationListener
     // ******************************************************** //
     //                      Méthodes privées                    //
     // ******************************************************** //
-
-    /**
-     *
-     * @param PropelCollection[PUser] $users
-     * @return PUserQuery
-     */
-    private function getNotInPUserQuery($users)
-    {
-        $usersIds = array();
-        $usersQuery = null;
-        foreach ($users as $user) {
-            $usersIds[] = $user->getId();
-        }
-        $usersQuery = PUserQuery::create()->filterById($usersIds, \Criteria::NOT_IN);
-
-        return $usersQuery;
-    }
 
     /**
      * Insertion en BDD

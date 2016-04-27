@@ -61,13 +61,6 @@ abstract class BasePUFollowDD extends BaseObject implements Persistent
     protected $p_d_debate_id;
 
     /**
-     * The value for the notif_reaction field.
-     * Note: this column has a database default value of: true
-     * @var        boolean
-     */
-    protected $notif_reaction;
-
-    /**
      * The value for the created_at field.
      * @var        string
      */
@@ -110,27 +103,6 @@ abstract class BasePUFollowDD extends BaseObject implements Persistent
     protected $alreadyInClearAllReferencesDeep = false;
 
     /**
-     * Applies default values to this object.
-     * This method should be called from the object's constructor (or
-     * equivalent initialization method).
-     * @see        __construct()
-     */
-    public function applyDefaultValues()
-    {
-        $this->notif_reaction = true;
-    }
-
-    /**
-     * Initializes internal state of BasePUFollowDD object.
-     * @see        applyDefaults()
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->applyDefaultValues();
-    }
-
-    /**
      * Get the [id] column value.
      *
      * @return int
@@ -161,17 +133,6 @@ abstract class BasePUFollowDD extends BaseObject implements Persistent
     {
 
         return $this->p_d_debate_id;
-    }
-
-    /**
-     * Get the [notif_reaction] column value.
-     *
-     * @return boolean
-     */
-    public function getNotifReaction()
-    {
-
-        return $this->notif_reaction;
     }
 
     /**
@@ -326,35 +287,6 @@ abstract class BasePUFollowDD extends BaseObject implements Persistent
     } // setPDDebateId()
 
     /**
-     * Sets the value of the [notif_reaction] column.
-     * Non-boolean arguments are converted using the following rules:
-     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
-     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
-     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     *
-     * @param boolean|integer|string $v The new value
-     * @return PUFollowDD The current object (for fluent API support)
-     */
-    public function setNotifReaction($v)
-    {
-        if ($v !== null) {
-            if (is_string($v)) {
-                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
-            } else {
-                $v = (boolean) $v;
-            }
-        }
-
-        if ($this->notif_reaction !== $v) {
-            $this->notif_reaction = $v;
-            $this->modifiedColumns[] = PUFollowDDPeer::NOTIF_REACTION;
-        }
-
-
-        return $this;
-    } // setNotifReaction()
-
-    /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
@@ -410,10 +342,6 @@ abstract class BasePUFollowDD extends BaseObject implements Persistent
      */
     public function hasOnlyDefaultValues()
     {
-            if ($this->notif_reaction !== true) {
-                return false;
-            }
-
         // otherwise, everything was equal, so return true
         return true;
     } // hasOnlyDefaultValues()
@@ -439,9 +367,8 @@ abstract class BasePUFollowDD extends BaseObject implements Persistent
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->p_user_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
             $this->p_d_debate_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
-            $this->notif_reaction = ($row[$startcol + 3] !== null) ? (boolean) $row[$startcol + 3] : null;
-            $this->created_at = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-            $this->updated_at = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->created_at = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+            $this->updated_at = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -451,7 +378,7 @@ abstract class BasePUFollowDD extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 6; // 6 = PUFollowDDPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 5; // 5 = PUFollowDDPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PUFollowDD object", $e);
@@ -710,9 +637,6 @@ abstract class BasePUFollowDD extends BaseObject implements Persistent
         if ($this->isColumnModified(PUFollowDDPeer::P_D_DEBATE_ID)) {
             $modifiedColumns[':p' . $index++]  = '`p_d_debate_id`';
         }
-        if ($this->isColumnModified(PUFollowDDPeer::NOTIF_REACTION)) {
-            $modifiedColumns[':p' . $index++]  = '`notif_reaction`';
-        }
         if ($this->isColumnModified(PUFollowDDPeer::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`created_at`';
         }
@@ -738,9 +662,6 @@ abstract class BasePUFollowDD extends BaseObject implements Persistent
                         break;
                     case '`p_d_debate_id`':
                         $stmt->bindValue($identifier, $this->p_d_debate_id, PDO::PARAM_INT);
-                        break;
-                    case '`notif_reaction`':
-                        $stmt->bindValue($identifier, (int) $this->notif_reaction, PDO::PARAM_INT);
                         break;
                     case '`created_at`':
                         $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
@@ -781,98 +702,6 @@ abstract class BasePUFollowDD extends BaseObject implements Persistent
     }
 
     /**
-     * Array of ValidationFailed objects.
-     * @var        array ValidationFailed[]
-     */
-    protected $validationFailures = array();
-
-    /**
-     * Gets any ValidationFailed objects that resulted from last call to validate().
-     *
-     *
-     * @return array ValidationFailed[]
-     * @see        validate()
-     */
-    public function getValidationFailures()
-    {
-        return $this->validationFailures;
-    }
-
-    /**
-     * Validates the objects modified field values and all objects related to this table.
-     *
-     * If $columns is either a column name or an array of column names
-     * only those columns are validated.
-     *
-     * @param mixed $columns Column name or an array of column names.
-     * @return boolean Whether all columns pass validation.
-     * @see        doValidate()
-     * @see        getValidationFailures()
-     */
-    public function validate($columns = null)
-    {
-        $res = $this->doValidate($columns);
-        if ($res === true) {
-            $this->validationFailures = array();
-
-            return true;
-        }
-
-        $this->validationFailures = $res;
-
-        return false;
-    }
-
-    /**
-     * This function performs the validation work for complex object models.
-     *
-     * In addition to checking the current object, all related objects will
-     * also be validated.  If all pass then <code>true</code> is returned; otherwise
-     * an aggregated array of ValidationFailed objects will be returned.
-     *
-     * @param array $columns Array of column names to validate.
-     * @return mixed <code>true</code> if all validations pass; array of <code>ValidationFailed</code> objects otherwise.
-     */
-    protected function doValidate($columns = null)
-    {
-        if (!$this->alreadyInValidation) {
-            $this->alreadyInValidation = true;
-            $retval = null;
-
-            $failureMap = array();
-
-
-            // We call the validate method on the following object(s) if they
-            // were passed to this object by their corresponding set
-            // method.  This object relates to these object(s) by a
-            // foreign key reference.
-
-            if ($this->aPuFollowDdPUser !== null) {
-                if (!$this->aPuFollowDdPUser->validate($columns)) {
-                    $failureMap = array_merge($failureMap, $this->aPuFollowDdPUser->getValidationFailures());
-                }
-            }
-
-            if ($this->aPuFollowDdPDDebate !== null) {
-                if (!$this->aPuFollowDdPDDebate->validate($columns)) {
-                    $failureMap = array_merge($failureMap, $this->aPuFollowDdPDDebate->getValidationFailures());
-                }
-            }
-
-
-            if (($retval = PUFollowDDPeer::doValidate($this, $columns)) !== true) {
-                $failureMap = array_merge($failureMap, $retval);
-            }
-
-
-
-            $this->alreadyInValidation = false;
-        }
-
-        return (!empty($failureMap) ? $failureMap : true);
-    }
-
-    /**
      * Retrieves a field from the object by name passed in as a string.
      *
      * @param string $name name
@@ -910,12 +739,9 @@ abstract class BasePUFollowDD extends BaseObject implements Persistent
                 return $this->getPDDebateId();
                 break;
             case 3:
-                return $this->getNotifReaction();
-                break;
-            case 4:
                 return $this->getCreatedAt();
                 break;
-            case 5:
+            case 4:
                 return $this->getUpdatedAt();
                 break;
             default:
@@ -950,9 +776,8 @@ abstract class BasePUFollowDD extends BaseObject implements Persistent
             $keys[0] => $this->getId(),
             $keys[1] => $this->getPUserId(),
             $keys[2] => $this->getPDDebateId(),
-            $keys[3] => $this->getNotifReaction(),
-            $keys[4] => $this->getCreatedAt(),
-            $keys[5] => $this->getUpdatedAt(),
+            $keys[3] => $this->getCreatedAt(),
+            $keys[4] => $this->getUpdatedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1010,12 +835,9 @@ abstract class BasePUFollowDD extends BaseObject implements Persistent
                 $this->setPDDebateId($value);
                 break;
             case 3:
-                $this->setNotifReaction($value);
-                break;
-            case 4:
                 $this->setCreatedAt($value);
                 break;
-            case 5:
+            case 4:
                 $this->setUpdatedAt($value);
                 break;
         } // switch()
@@ -1045,9 +867,8 @@ abstract class BasePUFollowDD extends BaseObject implements Persistent
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setPUserId($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setPDDebateId($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setNotifReaction($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setCreatedAt($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setUpdatedAt($arr[$keys[5]]);
+        if (array_key_exists($keys[3], $arr)) $this->setCreatedAt($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setUpdatedAt($arr[$keys[4]]);
     }
 
     /**
@@ -1062,7 +883,6 @@ abstract class BasePUFollowDD extends BaseObject implements Persistent
         if ($this->isColumnModified(PUFollowDDPeer::ID)) $criteria->add(PUFollowDDPeer::ID, $this->id);
         if ($this->isColumnModified(PUFollowDDPeer::P_USER_ID)) $criteria->add(PUFollowDDPeer::P_USER_ID, $this->p_user_id);
         if ($this->isColumnModified(PUFollowDDPeer::P_D_DEBATE_ID)) $criteria->add(PUFollowDDPeer::P_D_DEBATE_ID, $this->p_d_debate_id);
-        if ($this->isColumnModified(PUFollowDDPeer::NOTIF_REACTION)) $criteria->add(PUFollowDDPeer::NOTIF_REACTION, $this->notif_reaction);
         if ($this->isColumnModified(PUFollowDDPeer::CREATED_AT)) $criteria->add(PUFollowDDPeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(PUFollowDDPeer::UPDATED_AT)) $criteria->add(PUFollowDDPeer::UPDATED_AT, $this->updated_at);
 
@@ -1130,7 +950,6 @@ abstract class BasePUFollowDD extends BaseObject implements Persistent
     {
         $copyObj->setPUserId($this->getPUserId());
         $copyObj->setPDDebateId($this->getPDDebateId());
-        $copyObj->setNotifReaction($this->getNotifReaction());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
 
@@ -1303,14 +1122,12 @@ abstract class BasePUFollowDD extends BaseObject implements Persistent
         $this->id = null;
         $this->p_user_id = null;
         $this->p_d_debate_id = null;
-        $this->notif_reaction = null;
         $this->created_at = null;
         $this->updated_at = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
         $this->clearAllReferences();
-        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);

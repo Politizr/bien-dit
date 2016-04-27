@@ -59,6 +59,14 @@
 %}
     {% include 'PolitizrFrontBundle:Notification\\'~twigFolder~':_msgSDReactionPublish.'~twigExt~'.twig' %}
 {% elseif
+    notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_S_D_D_COMMENT_PUBLISH')
+%}
+    {% include 'PolitizrFrontBundle:Notification\\'~twigFolder~':_msgSDDCommentPublish.'~twigExt~'.twig' %}
+{% elseif
+    notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_S_D_R_COMMENT_PUBLISH')
+%}
+    {% include 'PolitizrFrontBundle:Notification\\'~twigFolder~':_msgSDRCommentPublish.'~twigExt~'.twig' %}
+{% elseif
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_U_FOLLOWED')
 %}
     {% include 'PolitizrFrontBundle:Notification\\'~twigFolder~':_msgUFollowed.'~twigExt~'.twig' %}

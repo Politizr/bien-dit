@@ -1,0 +1,110 @@
+generator:                  admingenerator.generator.propel
+params:
+    model:                  Politizr\Model\PNotification
+    namespace_prefix:       Politizr
+    concurrency_lock:       ~
+    bundle_name:            AdminBundle
+    pk_requirement:         ~
+    fields:
+        id:
+            label:          ID
+        uuid:
+            label:          UUID
+        p_n_type:
+            label:          Type
+        title:
+            label:          Titre
+        Description:
+            label:          Description
+        online:
+            label:          En ligne
+        created_at:
+            label:          Création
+        updated_at:
+            label:          Mis à jour
+    object_actions:
+        delete:             ~
+    batch_actions:
+        delete:             ~
+builders:
+    list:
+        params:
+            title:                              Liste des notifications
+            max_per_page:                       50
+            sort:                               [ id, ASC ]
+            display:                            [ title, description, p_n_type, online ]
+            # filtersMode:                        top
+            filters:                            [ title, p_n_type, online, created_at ]
+            actions:
+                new:                            ~
+            object_actions:
+                edit:                           ~
+                delete:                         ~
+    excel:
+        params: ~
+        filename: ~
+        filetype: ~
+    new:
+        params:
+            title:                              "Création d'une notification"
+            display:
+                "Champs principaux":            [ [ p_n_type ], [ title ] ]
+            fields:
+                p_n_type:
+                    addFormOptions:
+                        query:                  \Politizr\Model\PNTypeQuery::create()->orderById()
+            actions:
+              save:                             ~
+              list:                             ~
+    edit:
+        params:
+            title:                              "Edition de la notification '{{ PNotification.title }}'"
+            tabs:
+                "Contenu":
+                    "Texte":                    [ [ p_n_type  ], [ title, description ] ]
+                "Attributs":
+                    "Identifiants":             [ [ id, uuid ] ]
+                    "Création":                 [ [ online ], [ created_at, updated_at ] ]
+            fields:
+                p_r_badge_family:
+                    addFormOptions:
+                        query:                  \Politizr\Model\PNTypeQuery::create()->orderById()
+                id:
+                    addFormOptions:
+                        read_only:              true
+                uuid:
+                    addFormOptions:
+                        read_only:              true
+                created_at:
+                    addFormOptions:
+                      widget:                   single_text
+                updated_at:
+                    addFormOptions:
+                      widget:                   single_text
+            actions:
+                save: ~
+                list: ~
+#     show:
+#         params:
+#             title:                              "Visualisation du badge '{{ PRBadge.title }}'"
+#             tabs:
+#                 "Contenu":
+#                     "Texte":                    [ [ p_r_badge_family ], [ title ] ]
+#                 "Utilisation":
+#                     "Utilisateurs badgés":      [ block_users ]
+#                 "Attributs":
+#                     "Création":                 [ [ online ], [ created_at, updated_at ] ]
+#             fields:
+#                 block_users:
+#                     label:                      "Utilisateurs"
+#                     formType:                   hidden
+#                     dbType:                     VARCHAR
+#             actions:
+#               list:                             ~
+#               delete:                           ~
+    actions:
+        params:
+            object_actions:
+                delete: ~
+            batch_actions:
+                delete: ~

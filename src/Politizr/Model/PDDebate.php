@@ -218,29 +218,17 @@ class PDDebate extends BasePDDebate implements PDocumentInterface
      * Debate's followers
      *
      * @param boolean $qualified
-     * @param boolean $notifReaction notification subscribe
      * @param boolean $online
      * @return PropelCollection[PUser]
      */
-    public function getFollowers($qualified = null, $notifReaction = null, $online = true)
+    public function getFollowers($qualified = null, $online = true)
     {
         $query = PUserQuery::create()
             ->filterIfQualified($qualified)
-            ->filterIfNotifReaction($notifReaction)
             ->filterIfOnline($online)
             ->setDistinct();
         
         return parent::getPuFollowDdPUsers($query);
-    }
-
-    /**
-     * Debate's followers who subscribe debate's reaction
-     *
-     * @return PropelCollection[PUser]
-     */
-    public function getNotifReactionFollowers()
-    {
-        return $this->getFollowers(null, true);
     }
 
     /**
@@ -337,31 +325,6 @@ class PDDebate extends BasePDDebate implements PDocumentInterface
             ->count();
 
         if ($followers > 0) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /* ######################################################################################################## */
-    /*                                           NOTIFICATIONS                                                  */
-    /* ######################################################################################################## */
-
-    /**
-     * Check if follower $userId wants to be notified of debate update in the scope of $context
-     *
-     * @param integer $userId
-     * @param string $context   @todo refactor migrate constant
-     * @return boolean
-     */
-    public function isNotified($userId, $context = ObjectTypeConstants::CONTEXT_REACTION)
-    {
-        $puFollowDD = PUFollowDDQuery::create()
-            ->filterByPUserId($userId)
-            ->filterByPDDebateId($this->getId())
-            ->findOne();
-
-        if ($context == ObjectTypeConstants::CONTEXT_REACTION && $puFollowDD && $puFollowDD->getNotifReaction()) {
             return true;
         }
 

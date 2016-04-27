@@ -426,13 +426,13 @@ class XhrDocument
         
         $reaction = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
         if (!$reaction) {
-            throw new InconsistentDataException('Reaction '.$id.' not found.');
+            throw new InconsistentDataException('Reaction '.$uuid.' not found.');
         }
         if (!$reaction->isOwner($user->getId())) {
-            throw new InconsistentDataException('Reaction '.$id.' is not yours.');
+            throw new InconsistentDataException('Reaction '.$uuid.' is not yours.');
         }
         if ($reaction->getPublished()) {
-            throw new InconsistentDataException('Reaction '.$id.' is published and cannot be edited anymore.');
+            throw new InconsistentDataException('Reaction '.$uuid.' is published and cannot be edited anymore.');
         }
 
         $form = $this->formFactory->create(new PDReactionType(), $reaction);
@@ -1168,7 +1168,7 @@ class XhrDocument
         }
 
         // Compute relative geo tag ids
-        $tagIds = $this->tagService->computePublicationGeotagRelativeIds($tag->getId());
+        $tagIds = $this->tagService->computePublicationGeotagRelativeIds($tag->getId(), false, false);
 
         $documents = $this->documentService->getDocumentsByTagsPaginated(
             $tagIds,

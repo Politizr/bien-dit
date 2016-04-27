@@ -50,19 +50,26 @@ class TagService
     /**
      * Depending of tag id, compute relative ids ie. ids of tags where parent_id is set to given id
      *
-     * region = region + departements
-     *
      * @param int $id Tag ID
+     * @param boolean $withFranceChildren
+     * @param boolean $withRegionChildren
+     * @param boolean $withDepartmentChildren
+     *
      * @return array
      */
-    public function computePublicationGeotagRelativeIds($id)
-    {
+    public function computePublicationGeotagRelativeIds(
+        $id,
+        $withFranceChildren = true,
+        $withRegionChildren = true,
+        $withDepartmentChildren = true
+    ) {
         $this->logger->info('*** computePublicationGeotagRelativeIds');
 
         $ids = array();
         $tag = PTagQuery::create()->findPk($id);
 
-        if ($tag->getPTTagTypeId() == TagConstants::TAG_TYPE_GEO
+        if ($withFranceChildren
+            && $tag->getPTTagTypeId() == TagConstants::TAG_TYPE_GEO
             && $id == TagConstants::TAG_GEO_FRANCE_ID) {
             // get region & departements & cities under france
             $countryIds = array();
@@ -83,7 +90,8 @@ class TagService
             }
 
             $ids = array_merge($countryIds, $regionIds, $departmentIds, $cityIds);
-        } elseif ($tag->getPTTagTypeId() == TagConstants::TAG_TYPE_GEO
+        } elseif ($withRegionChildren
+            && $tag->getPTTagTypeId() == TagConstants::TAG_TYPE_GEO
             && in_array($id, TagConstants::getGeoRegionIds())) {
             // get departements & cities under region
             $regionIds = array();
@@ -100,7 +108,8 @@ class TagService
             }
 
             $ids = array_merge($regionIds, $departmentIds, $cityIds);
-        } elseif ($tag->getPTTagTypeId() == TagConstants::TAG_TYPE_GEO
+        } elseif ($withDepartmentChildren
+            && $tag->getPTTagTypeId() == TagConstants::TAG_TYPE_GEO
             && in_array($id, TagConstants::getGeoDepartmentIds())) {
             // get cities under department
             $departmentIds[] = $id;
