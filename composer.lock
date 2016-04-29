@@ -903,12 +903,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSUserBundle.git",
-                "reference": "16b04c49af05dd3fb381e4abe04f0e5e231ac76d"
+                "reference": "def27463609e24af410b2606f0062de46fab5662"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/16b04c49af05dd3fb381e4abe04f0e5e231ac76d",
-                "reference": "16b04c49af05dd3fb381e4abe04f0e5e231ac76d",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/def27463609e24af410b2606f0062de46fab5662",
+                "reference": "def27463609e24af410b2606f0062de46fab5662",
                 "shasum": ""
             },
             "require": {
@@ -964,7 +964,7 @@
             "keywords": [
                 "User management"
             ],
-            "time": "2016-03-08 11:05:28"
+            "time": "2016-04-28 10:51:07"
         },
         {
             "name": "fzaninotto/faker",
@@ -3310,16 +3310,16 @@
         },
         {
             "name": "rollerworks/password-strength-bundle",
-            "version": "v1.5.2",
+            "version": "v1.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rollerworks/PasswordStrengthBundle.git",
-                "reference": "f3b7b9952d8e2a5dbacd80182af15a944728b832"
+                "reference": "0169b29f48bf7440c12d3a00f9cc560245998447"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rollerworks/PasswordStrengthBundle/zipball/f3b7b9952d8e2a5dbacd80182af15a944728b832",
-                "reference": "f3b7b9952d8e2a5dbacd80182af15a944728b832",
+                "url": "https://api.github.com/repos/rollerworks/PasswordStrengthBundle/zipball/0169b29f48bf7440c12d3a00f9cc560245998447",
+                "reference": "0169b29f48bf7440c12d3a00f9cc560245998447",
                 "shasum": ""
             },
             "require": {
@@ -3370,7 +3370,7 @@
                 "symfony",
                 "validator"
             ],
-            "time": "2016-03-31 08:13:52"
+            "time": "2016-04-28 14:13:45"
         },
         {
             "name": "sensio/distribution-bundle",
