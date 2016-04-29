@@ -3,7 +3,7 @@ $("body").on("click", "[action='timelinePaginatedNext']", function(e, waypoint) 
     // console.log('timelinePaginatedNext next');
     if (waypoint) {
         waypoint.destroy();
-        console.log('destroy waypoint instance');
+        // console.log('destroy waypoint instance');
     }
     timelineList(false, $(this).attr('offset'));
 });
