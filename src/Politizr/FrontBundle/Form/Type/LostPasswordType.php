@@ -10,6 +10,7 @@ use Symfony\Component\Validator\Constraints\Email;
 
 /**
  * Formulaire perte du mot de passe
+ * beta
  *
  * @author Lionel Bouzonville
  */

@@ -13,6 +13,7 @@ use Politizr\Model\PQOrganizationQuery;
 
 /**
  * Organisation courante
+ * beta
  *
  * @author Lionel Bouzonville
  */

@@ -9,6 +9,7 @@ use Politizr\Constant\ObjectTypeConstants;
 
 /**
  * Debate's comment type
+ * beta
  *
  * @author Lionel Bouzonville
  */

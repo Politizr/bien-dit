@@ -14,14 +14,6 @@ HomepageC:
     pattern:  /citoyen
     defaults: { _controller: PolitizrFrontBundle:User:timeline }
 
-ReputationC:
-    pattern:  /citoyen/mon-compte/ma-reputation
-    defaults: { _controller: PolitizrFrontBundle:User:reputation }
-
-ProfileC:
-    pattern:  /citoyen/mon-profil
-    defaults: { _controller: PolitizrFrontBundle:User:profile }
-
 EditProfileC:
     pattern:  /citoyen/mon-compte/mon-profil
     defaults: { _controller: PolitizrFrontBundle:User:editProfile }
@@ -41,10 +33,6 @@ EditNotificationsC:
 HomepageE:
     pattern:  /elu
     defaults: { _controller: PolitizrFrontBundle:User:timeline }
-
-ReputationE:
-    pattern:  /elu/mon-compte/ma-reputation
-    defaults: { _controller: PolitizrFrontBundle:User:reputation }
 
 EditProfileE:
     pattern:  /elu/mon-compte/mon-profil

@@ -12,7 +12,8 @@ use Rollerworks\Bundle\PasswordStrengthBundle\Validator\Constraints\PasswordStre
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * Gestion de la MAJ des données personnelles
+ * User account / id password
+ * beta
  *
  * @author Lionel Bouzonville
  */

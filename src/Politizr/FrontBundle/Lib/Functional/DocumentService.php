@@ -22,6 +22,7 @@ use Politizr\Model\PTagQuery;
 
 /**
  * Functional service for document management.
+ * beta
  *
  * @author Lionel Bouzonville
  */

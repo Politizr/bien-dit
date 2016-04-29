@@ -153,6 +153,26 @@ $("body").on("click", "[action='followTag']", function(e) {
     });    
 });
 
+// ******************************************************************* //
+//                            NOTATION                                 //
+// ******************************************************************* //
+
+// notation
+$("body").on("click", "[action='note']", function(e) {
+    // console.log('*** click note');
+    
+    var localLoader = $(this).closest('.notation').find('.ajaxLoader').first();
+    var uuid = $(this).attr('uuid');
+    var type = $(this).attr('type');
+    var way = $(this).attr('way');
+
+    return noteDocument($(this), localLoader, uuid, type, way);
+});
+
+// ******************************************************************* //
+//                              MODAL                                  //
+// ******************************************************************* //
+
 /**
  * Modal help us
  */

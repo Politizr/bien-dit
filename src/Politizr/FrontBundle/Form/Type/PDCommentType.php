@@ -14,6 +14,7 @@ use Symfony\Component\Validator\Constraints\Length;
 /**
  * Comment type for debate & reaction
  * /!\ do not use directly, use PDDCommentType or PDRComment type instead
+ * beta
  *
  * @author Lionel Bouzonville
  */

@@ -14,6 +14,7 @@ use Politizr\Model\PQOrganizationQuery;
 
 /**
  * XHR service for organization management.
+ * beta
  *
  * @author Lionel Bouzonville
  */
@@ -47,6 +48,7 @@ class XhrOrganization
 
     /**
      * List organization
+     * beta
      */
     public function listing(Request $request)
     {

@@ -27,6 +27,7 @@ class DocumentController extends Controller
 {
     /**
      * Common document "check" validity
+     * beta
      *
      * @param PDocument
      * @param boolean $online
@@ -50,6 +51,7 @@ class DocumentController extends Controller
 
     /**
      * Common document edit "check" validity
+     * beta
      *
      * @param PDocument
      * @param integer $userId
@@ -69,11 +71,12 @@ class DocumentController extends Controller
     }
 
     /* ######################################################################################################## */
-    /*                                        AFFICHAGE DÉBAT & RÉACTION                                        */
+    /*                                         DEBATE & REACTION DETAILS                                        */
     /* ######################################################################################################## */
 
     /**
      * Détail débat
+     * beta
      */
     public function debateDetailAction($slug)
     {
@@ -117,6 +120,7 @@ class DocumentController extends Controller
 
     /**
      * Détail réaction
+     * beta
      */
     public function reactionDetailAction($slug)
     {
@@ -185,41 +189,13 @@ class DocumentController extends Controller
         ));
     }
 
-    /**
-     * Fil débat
-     */
-    public function debateFeedAction($slug)
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** debateFeedAction');
-        $logger->info('$slug = '.print_r($slug, true));
-
-        $debate = PDDebateQuery::create()->filterBySlug($slug)->findOne();
-        $this->checkDocument($debate);
-
-        // get debate feed
-        $timeline = $this->get('politizr.functional.timeline')->getDebateFeedTimeline($debate->getId());
-        $timelineDateKey = $this->get('politizr.functional.timeline')->generateTimelineDateKey($timeline);
-
-        $noResult = false;
-        if (count($timeline) == 0) {
-            $noResult = true;
-        }
-
-        return $this->render('PolitizrFrontBundle:Debate:feed.html.twig', array(
-            'debate' => $debate,
-            'timelineDateKey' => $timelineDateKey,
-            'noResult' => $noResult,
-        ));
-    }
-
-
     /* ######################################################################################################## */
-    /*                                              ÉDITION DEBAT                                               */
+    /*                                             DEBATE EDITION                                               */
     /* ######################################################################################################## */
 
     /**
-     * Création d'un nouveau débat
+     * Create new debate
+     * beta
      */
     public function debateNewAction()
     {
@@ -248,6 +224,7 @@ class DocumentController extends Controller
 
     /**
      * Debate edition
+     * beta
      *
      * @param $uuid
      */
@@ -272,11 +249,12 @@ class DocumentController extends Controller
     }
 
     /* ######################################################################################################## */
-    /*                                           ÉDITION REACTION                                               */
+    /*                                           REACTION EDITION                                               */
     /* ######################################################################################################## */
 
     /**
      * Création d'une nouvelle réaction
+     * beta
      */
     public function reactionNewAction($debateUuid, $parentUuid)
     {
@@ -325,6 +303,7 @@ class DocumentController extends Controller
 
     /**
      * Reaction edition
+     * beta
      *
      * @param $uuid
      */
@@ -367,6 +346,7 @@ class DocumentController extends Controller
 
     /**
      * Drafts
+     * beta
      */
     public function draftsAction()
     {
@@ -374,22 +354,6 @@ class DocumentController extends Controller
         $logger->info('*** draftsAction');
 
         return $this->render('PolitizrFrontBundle:Document:drafts.html.twig', array(
-        ));
-    }
-
-    /* ######################################################################################################## */
-    /*                                                 CONTRIBUTIONS                                            */
-    /* ######################################################################################################## */
-
-    /**
-     * Debates & Reactions
-     */
-    public function myPublicationsAction()
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** myPublicationsAction');
-
-        return $this->render('PolitizrFrontBundle:Document:myPublications.html.twig', array(
         ));
     }
 }

@@ -34,7 +34,6 @@ use Politizr\FrontBundle\Form\Type\PUserConnectionType;
 use Politizr\FrontBundle\Form\Type\PUserIdCheckType;
 use Politizr\FrontBundle\Form\Type\PUCurrentQOType;
 use Politizr\FrontBundle\Form\Type\PUMandateType;
-use Politizr\FrontBundle\Form\Type\PUserAffinitiesType;
 use Politizr\FrontBundle\Form\Type\PUserBackPhotoInfoType;
 
 use Politizr\FrontBundle\Lib\SimpleImage;
@@ -133,6 +132,7 @@ class XhrUser
 
     /**
      * Follow/Unfollow a user by current user
+     * beta
      */
     public function follow(Request $request)
     {
@@ -252,6 +252,7 @@ class XhrUser
 
     /**
      * Users's photo deletion
+     * beta
      */
     public function userPhotoDelete(Request $request)
     {
@@ -454,6 +455,7 @@ class XhrUser
 
     /**
      * User's personal information update
+     * beta
      */
     public function userPersoUpdate(Request $request)
     {
@@ -506,6 +508,10 @@ class XhrUser
 
         return true;
     }
+
+    /* ######################################################################################################## */
+    /*                                                 ARIAD IDCHECK                                            */
+    /* ######################################################################################################## */
 
     /**
      * ARIAD ID CHECK ZLA
@@ -614,6 +620,7 @@ class XhrUser
 
     /**
      * Reputation score
+     * beta
      */
     public function reputationScore(Request $request)
     {
@@ -645,6 +652,7 @@ class XhrUser
 
     /**
      * Badges score
+     * beta
      */
     public function badgesScore(Request $request)
     {
@@ -678,110 +686,13 @@ class XhrUser
         );
     }
 
-    /**
-     * User's reputation detail & stats
-     */
-    public function reputation(Request $request)
-    {
-        $this->logger->info('*** reputation');
-
-        // get current user
-        $user = $this->securityTokenStorage->getToken()->getUser();
-        
-        // score de réputation
-        $reputationScore = $user->getReputationScore();
-
-        // badges
-        $badgesType = PRBadgeTypeQuery::create()
-                        ->orderByRank()
-                        ->find();
-
-        // ids des badges du user
-        $badgeIds = array();
-        $badgeIds = PUBadgeQuery::create()
-                        ->filterByPUserId($user->getId())
-                        ->find()
-                        ->toKeyValue('PRBadgeId', 'PRBadgeId');
-        $badgeIds = array_keys($badgeIds);
-
-        // Rendering
-        $html = $this->templating->render(
-            'PolitizrFrontBundle:Reputation:_detail.html.twig',
-            array(
-                'reputationScore' => $reputationScore,
-                'badgesType' => $badgesType,
-                'badgeIds' => $badgeIds,
-            )
-        );
-
-        return array(
-            'html' => $html,
-            );
-    }
-
-    /**
-     * User's reputation evolution datas for chart JS
-     */
-    public function reputationEvolution(Request $request)
-    {
-        $this->logger->info('*** reputationEvolution');
-
-        // Request arguments
-        $jsStartAt = $request->get('startAt');
-        $this->logger->info('$jsStartAt = ' . print_r($jsStartAt, true));
-
-        // get current user
-        $user = $this->securityTokenStorage->getToken()->getUser();
-        
-        // First & last day of month
-        $startAt = new \DateTime($jsStartAt);
-        $endAt = new \DateTime($jsStartAt);
-        $endAt->modify('+1 month');
-
-        $scoresByDate = $this->reputationService->getUserScoresByDate($user->getId(), $startAt, $endAt);
-
-        // Score evolution by date
-        $score = $user->getReputationScore($startAt);
-
-        $labels = [];
-        $data = [];
-        
-        $interval = \DateInterval::createFromDateString('1 day');
-        $period = new \DatePeriod($startAt, $interval, $endAt);
-        foreach ($period as $day) {
-            foreach ($scoresByDate as $scoreByDate) {
-                if ($day->format('Y-m-d') == $scoreByDate['created_at']) {
-                    $score += $scoreByDate['sum_score'];
-                    break;
-                }
-            }
-            $data[] = $score;
-            $labels[] = $day->format('d/m/Y');
-        }
-
-        // delete first / last labels for pagination
-        $labels[0] = "";
-        $labels[sizeof($labels) -1] = "";
-
-        // next / prev
-        $nextMonth = $endAt;
-        $prevMonth = new \DateTime($jsStartAt);
-        $prevMonth->modify('-1 month');
-
-        return array(
-            'labels' => $labels,
-            'data' => $data,
-            'datePrev' => $prevMonth->format('Y-m-d'),
-            'dateNext' => $nextMonth->format('Y-m-d'),
-        );
-    }
-
     /* ######################################################################################################## */
     /*                                                TIMELINE                                                  */
     /* ######################################################################################################## */
 
     /**
-     * Personal's user timeline "My Politizr"
+     * Personal's user timeline
+     * beta
      */
     public function timelinePaginated(Request $request)
     {
@@ -827,6 +738,7 @@ class XhrUser
 
     /**
      * User's timeline (user's detail)
+     * beta
      */
     public function timelineUserPaginated(Request $request)
     {

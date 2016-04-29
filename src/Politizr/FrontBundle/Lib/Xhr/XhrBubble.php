@@ -8,6 +8,7 @@ use Politizr\Model\PTagQuery;
 
 /**
  * XHR service for bubble management.
+ * beta
  *
  * @author Lionel Bouzonville
  */

@@ -12,7 +12,8 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Politizr\Model\PUser;
 
 /**
- * Gestion de la MAJ des données personnelles
+ * User account / name firstname birthdate
+ * beta
  *
  * @author Lionel Bouzonville
  */

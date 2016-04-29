@@ -9,6 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Abuse reporting edition form
+ * beta
  *
  * @author Lionel Bouzonville
  */

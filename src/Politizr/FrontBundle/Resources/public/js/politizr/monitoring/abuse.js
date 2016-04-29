@@ -1,3 +1,5 @@
+// beta
+
 // Abuse reporting
 $("body").on("click", "[action='abuseReporting']", function() {
     // console.log('*** abuseReporting');
@@ -78,7 +80,7 @@ function loadFormAbuse(context, localLoader, uuid, type) {
 
 
 /**
- * Form abuse box loading
+ * Form abuse box validation
  *
  * @param context
  * @param localLoader

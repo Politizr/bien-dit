@@ -25,6 +25,7 @@ class ListingController extends Controller
 {
     /**
      * Common document "check" validity
+     * code beta
      *
      * @param PDocument
      * @param boolean $online
@@ -48,6 +49,7 @@ class ListingController extends Controller
 
     /**
      * Common user "check" validity
+     * code beta
      *
      * @param PDocument
      * @param boolean $online

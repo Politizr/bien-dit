@@ -1,3 +1,5 @@
+// beta
+
 // Timeline's next page
 $("body").on("click", "[action='timelinePaginatedNext']", function(e, waypoint) {
     // console.log('timelinePaginatedNext next');

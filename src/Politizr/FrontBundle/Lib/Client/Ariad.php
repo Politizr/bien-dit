@@ -5,6 +5,7 @@ use Politizr\Exception\InconsistentDataException;
 
 /**
  * SOAP Client for Ariad WSDL
+ * beta
  *
  * @author Lionel Bouzonville
  */

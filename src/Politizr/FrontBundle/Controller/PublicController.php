@@ -23,6 +23,7 @@ class PublicController extends Controller
 {
     /**
      * Homepage
+     * code beta
      */
     public function homepageAction()
     {
@@ -41,6 +42,7 @@ class PublicController extends Controller
 
     /**
      * Inscription temp
+     * code beta
      */
     public function inscriptionAction($type)
     {
@@ -61,6 +63,7 @@ class PublicController extends Controller
 
     /**
      * Inscription temp finish
+     * code beta
      */
     public function inscriptionTempFinishAction()
     {
@@ -73,6 +76,7 @@ class PublicController extends Controller
 
     /**
      * Qui sommes nous
+     * code beta
      */
     public function whoWeAreAction()
     {
@@ -80,18 +84,6 @@ class PublicController extends Controller
         $logger->info('*** whoWeAreAction');
 
         return $this->render('PolitizrFrontBundle:Public:whoWeAre.html.twig', array(
-        ));
-    }
-
-    /**
-     * Help
-     */
-    public function helpAction()
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** helpAction');
-
-        return $this->render('PolitizrFrontBundle:Public:help.html.twig', array(
         ));
     }
 
@@ -106,7 +98,6 @@ class PublicController extends Controller
         return $this->render('PolitizrFrontBundle:Public:about.html.twig', array(
         ));
     }
-
 
     /**
      * Generate sitemap

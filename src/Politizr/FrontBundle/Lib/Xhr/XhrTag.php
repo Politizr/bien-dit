@@ -69,6 +69,7 @@ class XhrTag
 
     /**
      * Useful method which manage differents scenarios for retrieving or creating a tag.
+     * beta
      *
      * @param integer $tagUuid
      * @param string $tagTitle
@@ -122,6 +123,7 @@ class XhrTag
 
     /**
      * Get tags
+     * beta
      */
     public function getTags(Request $request)
     {
@@ -237,6 +239,7 @@ class XhrTag
 
     /**
      * Debate's tag creation
+     * beta
      */
     public function debateAddTag(Request $request)
     {
@@ -312,6 +315,7 @@ class XhrTag
 
     /**
      * Debate's tag deletion
+     * beta
      */
     public function debateDeleteTag(Request $request)
     {
@@ -344,6 +348,7 @@ class XhrTag
 
     /**
      * Reaction's tag creation
+     * beta
      */
     public function reactionAddTag(Request $request)
     {
@@ -419,6 +424,7 @@ class XhrTag
 
     /**
      * Reaction's tag deletion
+     * beta
      */
     public function reactionDeleteTag(Request $request)
     {
@@ -451,6 +457,7 @@ class XhrTag
 
     /**
      * User's tag association ("user follow tag")
+     * beta
      */
     public function follow(Request $request)
     {
@@ -497,6 +504,7 @@ class XhrTag
 
     /**
      * User's tag creation
+     * beta
      */
     public function userAddTag(Request $request)
     {
@@ -586,6 +594,7 @@ class XhrTag
 
     /**
      * User's tag delete
+     * beta
      */
     public function userDeleteTag(Request $request)
     {
@@ -613,47 +622,13 @@ class XhrTag
         return true;
     }
 
-    /**
-     * User's tag hide / unhide
-     */
-    public function userHideTag(Request $request)
-    {
-        $this->logger->info('*** userHideTag');
-        
-        // Request arguments
-        $tagUuid = $request->get('tagUuid');
-        $this->logger->info('$tagUuid = ' . print_r($tagUuid, true));
-        $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
-
-        // get current user
-        $user = $this->securityTokenStorage->getToken()->getUser();
-        
-        $tag = PTagQuery::create()->filterByUuid($tagUuid)->findOne();
-        $subject = PUserQuery::create()->filterByUuid($uuid)->findOne();
-        if ($subject->getId() != $user->getId()) {
-            throw new InconsistentDataException(sprintf('User id-%s tries to hide tag to PUser id-%s', $user->getId(), $subject->getId()));
-        }
-
-        $userTaggedTag = PUTaggedTQuery::create()
-            ->filterByPUserId($subject->getId())
-            ->filterByPTagId($tag->getId())
-            ->findOne();
-
-        $userTaggedTag->setHidden(!$userTaggedTag->getHidden());
-        $userTaggedTag->save();
-
-        $withHidden = $userTaggedTag->getHidden();
-
-        return $withHidden;
-    }
-
     /* ######################################################################################################## */
     /*                                                     LISTING                                              */
     /* ######################################################################################################## */
 
     /**
      * Most popular tags
+     * beta
      */
     public function topTags(Request $request)
     {
@@ -680,6 +655,7 @@ class XhrTag
 
     /**
      * User followed tags
+     * beta
      */
     public function userTags(Request $request)
     {

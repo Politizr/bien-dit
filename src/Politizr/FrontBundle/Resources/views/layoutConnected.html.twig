@@ -12,12 +12,6 @@
     <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/styleUser.css') }}">
 {% endblock %}
 
-{% block javascriptHeader %}
-    {{ parent() }}
-
-    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/chart.min.js') }}"></script>
-{% endblock %}
-
 {% block bodyClass %} class="user"{% endblock %}
 
 {% block header %}
@@ -67,15 +61,11 @@
         '@PolitizrFrontBundle/Resources/public/js/politizr/bubbles.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/notification/display.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/follow/subscribe.js'
-        '@PolitizrFrontBundle/Resources/public/js/politizr/modal/opening.js'
-        '@PolitizrFrontBundle/Resources/public/js/politizr/paginatedList/loading.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/paginatedList/pagination.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/tag/accentMap.js'
-        '@PolitizrFrontBundle/Resources/public/js/politizr/tag/userAssociateTag.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/monitoring/abuse.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/monitoring/askForUpdate.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/reputation/score.js'
-        '@PolitizrFrontBundle/Resources/public/js/politizr/reputation/reputation.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/reputation/notation.js'
         filter='uglifyjs2' %}
         <script src="{{ asset_url }}"></script>

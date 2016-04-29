@@ -52,10 +52,6 @@ DraftsC:
     pattern:  /citoyen/mes-brouillons
     defaults: { _controller: PolitizrFrontBundle:Document:drafts }
 
-MyPublicationsC:
-    pattern:  /citoyen/mes-publications
-    defaults: { _controller: PolitizrFrontBundle:Document:myPublications }
-
 ################################################################################
 #               ELECTED
 ################################################################################
@@ -88,8 +84,3 @@ ReactionDraftEditE:
 DraftsE:
     pattern:  /elu/mes-brouillons
     defaults: { _controller: PolitizrFrontBundle:Document:drafts }
-
-MyPublicationsE:
-    pattern:  /elu/mes-publications
-    defaults: { _controller: PolitizrFrontBundle:Document:myPublications }
-

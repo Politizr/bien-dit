@@ -14,6 +14,7 @@ use Politizr\Model\PQOrganizationQuery;
 
 /**
  * XHR service for modal management.
+ * beta
  *
  * @author Lionel Bouzonville
  */

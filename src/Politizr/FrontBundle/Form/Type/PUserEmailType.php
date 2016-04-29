@@ -11,7 +11,8 @@ use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * Gestion de la MAJ des données personnelles
+ * User account / email
+ * beta
  *
  * @author Lionel Bouzonville
  */

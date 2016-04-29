@@ -5,10 +5,6 @@ Homepage:
     pattern:  /
     defaults: { _controller: PolitizrFrontBundle:Public:homepage }
 
-Help:
-    pattern:  /assistance
-    defaults: { _controller: PolitizrFrontBundle:Public:help }
-
 InscriptionTmp:
     pattern:  /inscription/{type}
     defaults: { _controller: PolitizrFrontBundle:Public:inscription }

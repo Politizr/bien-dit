@@ -1,4 +1,4 @@
-// on document ready
+// beta
 
 /**
  * Load current user's reputation score

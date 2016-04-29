@@ -78,3 +78,15 @@
 
 {% block sidebar %}
 {% endblock %}
+
+
+{% block javascriptFooter %}
+    {{ parent() }}
+
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/pages/login.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/security/login.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock javascriptFooter %}

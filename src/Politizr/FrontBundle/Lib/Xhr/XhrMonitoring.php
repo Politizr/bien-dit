@@ -15,17 +15,12 @@ use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Model\PMAbuseReporting;
 use Politizr\Model\PMAskForUpdate;
 
-use Politizr\Model\PUserQuery;
-use Politizr\Model\PDDebateQuery;
-use Politizr\Model\PDReactionQuery;
-use Politizr\Model\PDDCommentQuery;
-use Politizr\Model\PDRCommentQuery;
-
 use Politizr\FrontBundle\Form\Type\PMAbuseReportingType;
 use Politizr\FrontBundle\Form\Type\PMAskForUpdateType;
 
 /**
  * XHR service for monitoring management.
+ * beta
  *
  * @author Lionel Bouzonville
  */

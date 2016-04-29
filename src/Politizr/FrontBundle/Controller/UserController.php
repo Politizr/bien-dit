@@ -168,6 +168,7 @@ class UserController extends Controller
 
     /**
      * Edit notifications
+     * beta
      */
     public function editNotificationsAction()
     {

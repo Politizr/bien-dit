@@ -10,6 +10,7 @@ use Politizr\Model\PUNotificationQuery;
 
 /**
  * XHR service for user's notification management.
+ * beta
  *
  * @author Lionel Bouzonville
  */
@@ -52,6 +53,7 @@ class XhrNotification
 
     /**
      * Notifications loading
+     * beta
      */
     public function notificationsLoad(Request $request)
     {
@@ -85,6 +87,7 @@ class XhrNotification
 
     /**
      * Notification check
+     * beta
      */
     public function notificationCheck(Request $request)
     {
@@ -109,6 +112,7 @@ class XhrNotification
 
     /**
      * Notification check all
+     * beta
      */
     public function notificationsCheckAll(Request $request)
     {
@@ -134,6 +138,7 @@ class XhrNotification
 
     /**
      * Notification email subscription
+     * beta
      */
     public function notifEmailSubscribe(Request $request)
     {
@@ -156,6 +161,7 @@ class XhrNotification
 
     /**
      * Notification email unsubscription
+     * beta
      */
     public function notifEmailUnsubscribe(Request $request)
     {

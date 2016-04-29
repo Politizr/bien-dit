@@ -1,4 +1,6 @@
-// Abuse reporting
+// beta
+
+// Ask for update
 $("body").on("click", "[action='askForUpdate']", function() {
     // console.log('*** askForUpdate');
 
@@ -38,7 +40,7 @@ $("body").on("click", "[action='createAskForUpdate']", function() {
 
 
 /**
- * Form abuse box loading
+ * Form ask for update box loading
  *
  * @param context
  * @param localLoader
@@ -79,7 +81,7 @@ function loadFormAskForUpdate(context, localLoader, uuid, type) {
 
 
 /**
- * Form abuse box loading
+ * Form ask for update validation
  *
  * @param context
  * @param localLoader
