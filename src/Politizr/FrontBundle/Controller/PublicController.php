@@ -197,6 +197,25 @@ class PublicController extends Controller
     }
 
     /**
+     * Generate robots.txt
+     */
+    public function robotsTxtAction()
+    {
+        dump('robotsTxtAction');
+
+        // Render robots.txt
+        $response = new Response();
+        $response->headers->set('Content-Type', 'text/plain');
+        $response->sendHeaders();
+        
+        return $this->render(
+            'PolitizrFrontBundle:Navigation:robots.txt.twig',
+            array(),
+            $response
+        );
+    }
+
+    /**
      * Generate the url item
      * @return array
      */

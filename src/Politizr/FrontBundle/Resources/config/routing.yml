@@ -32,6 +32,11 @@ SitemapXml:
     pattern:  /sitemap.xml
     defaults: { _controller: PolitizrFrontBundle:Public:sitemapXml }
 
+# Robots.txt
+RobotsTxt:
+    pattern:  /robots.txt
+    defaults: { _controller: PolitizrFrontBundle:Public:robotsTxt }
+
 
 # GENERIC XHR
 XhrGeneric:
