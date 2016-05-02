@@ -1,5 +1,6 @@
+{# beta #}
 {% if user %}
-    <a href="{{ path('UserDetail', { 'slug': user.slug }) }}" class="{% if isFollowed is defined and isFollowed %}followedMember{% endif %}">
+    <a href="{{ path('UserDetail', { 'slug': user.slug }) }}">
         {{ user }}
     </a>
 {% else %}

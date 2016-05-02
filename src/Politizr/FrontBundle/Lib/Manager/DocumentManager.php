@@ -559,7 +559,7 @@ LIMIT :limit
     }
 
    /**
-     * My documents (drafts / publications)
+     * User's publications
      *
      * @see app/sql/userDocuments.sql
      *
@@ -905,130 +905,8 @@ LIMIT :limit
         return $sql;
     }
 
-    /**
-     * Reactions' suggestion for user.
-     *
-     * @see app/sql/suggestions.sql
-     *
-     * @return string
-     */
-    private function createUserSuggestedReactionsRawSql()
-    {
-        // Requête SQL
-        $sql = "
-SELECT DISTINCT
-    id,
-    uuid,
-    p_user_id,
-    p_d_debate_id,
-    parent_reaction_id,
-    title,
-    file_name,
-    copyright,
-    description,
-    note_pos,
-    note_neg,
-    nb_views,
-    published,
-    published_at,
-    published_by,
-    favorite,
-    online,
-    moderated,
-    moderated_partial,
-    moderated_at,
-    created_at,
-    updated_at,
-    slug,
-    tree_left,
-    tree_right,
-    tree_level
-FROM (
-    ( SELECT DISTINCT p_d_reaction.*, 0 as nb_users, 1 as unionsorting
-        FROM p_d_reaction
-            LEFT JOIN p_d_r_tagged_t
-                ON p_d_reaction.id = p_d_r_tagged_t.p_d_reaction_id
-        WHERE
-            p_d_r_tagged_t.p_tag_id IN (
-                SELECT p_tag.id
-                FROM p_tag
-                    LEFT JOIN p_u_tagged_t
-                        ON p_tag.id = p_u_tagged_t.p_tag_id
-                WHERE
-                    p_tag.online = true
-                    AND p_u_tagged_t.p_user_id = :p_user_id
-            )
-        AND p_d_reaction.online = 1
-        AND p_d_reaction.published = 1
-        AND p_d_reaction.id NOT IN (SELECT p_d_reaction_id FROM p_u_follow_d_d WHERE p_user_id = :p_user_id2)
-        AND p_d_reaction.p_user_id <> :p_user_id3
-    )
-) unionsorting
-
-LIMIT :offset, :limit
-";
-
-        return $sql;
-    }
-
    /**
-     * Debate feed timeline
-     *
-     * @see app/sql/debateFeed.sql
-     *
-     * @param array $inQueryUserIds IN stmt values
-     * @return string
-     */
-    public function createDebateFeedRawSql($inQueryUserIds)
-    {
-        // Préparation requête SQL
-        $sql = "
-( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.description as summary, p_d_reaction.published_at as published_at, 'Politizr\\\Model\\\PDReaction' as type
-FROM p_d_reaction
-WHERE
-    p_d_reaction.published = 1
-    AND p_d_reaction.online = 1
-    AND p_d_reaction.p_d_debate_id = :p_d_debate_id
-    AND p_d_reaction.tree_level > 0
-)
-
-UNION DISTINCT
-
-( SELECT p_d_d_comment.id as id, \"commentaire\" as title, p_d_d_comment.description as summary, p_d_d_comment.published_at as published_at, 'Politizr\\\Model\\\PDDComment' as type
-FROM p_d_d_comment
-WHERE
-    p_d_d_comment.online = 1
-    AND p_d_d_comment.p_d_debate_id = :p_d_debate_id2
-    AND p_d_d_comment.p_user_id IN ($inQueryUserIds)
-)
-
-UNION DISTINCT
-
-( SELECT p_d_r_comment.id as id, \"commentaire\" as title, p_d_r_comment.description as summary, p_d_r_comment.published_at as published_at, 'Politizr\\\Model\\\PDRComment' as type
-FROM p_d_r_comment
-WHERE 
-    p_d_r_comment.online = 1
-    AND p_d_r_comment.p_d_reaction_id IN (
-        # Requête \"Réactions descendantes au débat courant\"
-        SELECT p_d_reaction.id as id
-        FROM p_d_reaction
-        WHERE
-            p_d_reaction.published = 1
-            AND p_d_reaction.online = 1
-            AND p_d_reaction.p_d_debate_id = :p_d_debate_id3
-            AND p_d_reaction.tree_level > 0
-            )
-            AND p_d_r_comment.p_user_id IN ($inQueryUserIds)
-    )
-
-ORDER BY published_at ASC
-    ";
-
-        return $sql;
-    }
-
-   /**
-     * My documents (drafts / publications)
+     * User's draft listing
      *
      * @see app/sql/userDocuments.sql
      *
@@ -1412,7 +1290,7 @@ GROUP BY p_d_debate_id
      */
     public function generateUserDocumentsSuggestion($userId, $limit)
     {
-        $this->logger->info('*** generateUserSuggestedDebatesPaginatedListing');
+        $this->logger->info('*** generateUserDocumentsSuggestion');
         $this->logger->info('$userId = ' . print_r($userId, true));
         $this->logger->info('$limit = ' . print_r($limit, true));
 
@@ -1483,45 +1361,6 @@ GROUP BY p_d_debate_id
     }
     
     /**
-     * User's reactions' suggestions paginated listing
-     *
-     * @param integer $userId
-     * @param integer $offset
-     * @param integer $limit
-     * @return PropelCollection[PDReaction]
-     */
-    public function generateUserSuggestedReactionsPaginatedListing($userId, $offset, $limit)
-    {
-        $this->logger->info('*** generateUserSuggestedReactionsPaginatedListing');
-        $this->logger->info('$userId = ' . print_r($userId, true));
-        $this->logger->info('$offset = ' . print_r($offset, true));
-        $this->logger->info('$limit = ' . print_r($limit, true));
-
-        $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
-        $stmt = $con->prepare($this->createUserSuggestedReactionsRawSql());
-
-        $stmt->bindValue(':p_user_id', $userId, \PDO::PARAM_INT);
-        $stmt->bindValue(':p_user_id2', $userId, \PDO::PARAM_INT);
-        $stmt->bindValue(':p_user_id3', $userId, \PDO::PARAM_INT);
-        $stmt->bindValue(':offset', $offset, \PDO::PARAM_INT);
-        $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
-
-        $stmt->execute();
-
-        $result = $stmt->fetchAll();
-
-        $documents = new \PropelCollection();
-        foreach ($result as $row) {
-            $reaction = new PDReaction();
-            $reaction->hydrate($row);
-
-            $documents->append($reaction);
-        }
-
-        return $documents;
-    }
-    
-    /**
      * My documents paginated listing
      *
      * @param integer $userId
@@ -1567,34 +1406,6 @@ GROUP BY p_d_debate_id
         }
 
         return $documents;
-    }
-    
-    /**
-     * My documents listing
-     *
-     * @param integer $debateId
-     * @param array $inQueryUserIds
-     * @return array
-     */
-    public function generateDebateFeedTimeline($debateId, $inQueryUserIds)
-    {
-        $this->logger->info('*** generateDebateFeedTimeline');
-        $this->logger->info('$debateId = ' . print_r($debateId, true));
-        $this->logger->info('$inQueryUserIds = ' . print_r($inQueryUserIds, true));
-
-        $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
-        $stmt = $con->prepare($this->createDebateFeedRawSql($inQueryUserIds));
-
-        $stmt->bindValue(':p_d_debate_id', $debateId, \PDO::PARAM_INT);
-        $stmt->bindValue(':p_d_debate_id2', $debateId, \PDO::PARAM_INT);
-        $stmt->bindValue(':p_d_debate_id3', $debateId, \PDO::PARAM_INT);
-
-        $stmt->execute();
-        $result = $stmt->fetchAll();
-
-        $timeline = $this->globalTools->hydrateTimelineRows($result);
-
-        return $timeline;
     }
     
     /**

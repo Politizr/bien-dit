@@ -55,9 +55,7 @@ class XhrUser
     private $formFactory;
     private $emailCanonicalizer;
     private $userManager;
-    private $reputationManager;
     private $timelineService;
-    private $reputationService;
     private $globalTools;
     private $idcheck;
     private $userTwigExtension;
@@ -74,9 +72,7 @@ class XhrUser
      * @param @form.factory
      * @param @fos_user.util.email_canonicalizer
      * @param @politizr.manager.user
-     * @param @politizr.manager.reputation
      * @param @politizr.functional.timeline
-     * @param @politizr.functional.reputation
      * @param @politizr.tools.global
      * @param @politizr.tools.idcheck
      * @param @politizr.twig.user
@@ -92,9 +88,7 @@ class XhrUser
         $formFactory,
         $emailCanonicalizer,
         $userManager,
-        $reputationManager,
         $timelineService,
-        $reputationService,
         $globalTools,
         $idcheck,
         $userTwigExtension,
@@ -114,9 +108,7 @@ class XhrUser
         $this->emailCanonicalizer = $emailCanonicalizer;
 
         $this->userManager = $userManager;
-        $this->reputationManager = $reputationManager;
         $this->timelineService = $timelineService;
-        $this->reputationService = $reputationService;
 
         $this->globalTools = $globalTools;
         $this->idcheck = $idcheck;

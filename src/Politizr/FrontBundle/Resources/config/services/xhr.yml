@@ -13,7 +13,6 @@ services:
             - @politizr.manager.user
             - @politizr.manager.document
             - @politizr.functional.document
-            - @politizr.functional.reputation
             - @politizr.functional.tag
             - @politizr.tools.global
             - @politizr.twig.document
@@ -79,9 +78,7 @@ services:
             - @form.factory
             - @fos_user.util.email_canonicalizer
             - @politizr.manager.user
-            - @politizr.manager.reputation
             - @politizr.functional.timeline
-            - @politizr.functional.reputation
             - @politizr.tools.global
             - @politizr.tools.idcheck
             - @politizr.twig.user

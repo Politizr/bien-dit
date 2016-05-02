@@ -1,10 +1,4 @@
 services:
-    politizr.functional.user:
-        class: Politizr\FrontBundle\Lib\Functional\UserService
-        arguments:
-            - @politizr.manager.user
-            - @logger
-
     politizr.functional.document:
         class: Politizr\FrontBundle\Lib\Functional\DocumentService
         arguments:
@@ -13,12 +7,6 @@ services:
             - @politizr.manager.document
             - @politizr.functional.tag
             - @router
-            - @logger
-
-    politizr.functional.reputation:
-        class: Politizr\FrontBundle\Lib\Functional\ReputationService
-        arguments:
-            - @politizr.manager.reputation
             - @logger
 
     politizr.functional.security:

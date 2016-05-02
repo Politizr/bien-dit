@@ -16,14 +16,6 @@ services:
         class: Politizr\FrontBundle\Lib\Manager\TagManager
         arguments: [ @logger ]
 
-    politizr.manager.qualification:
-        class: Politizr\FrontBundle\Lib\Manager\QualificationManager
-        arguments: [ @logger ]
-
-    politizr.manager.reputation:
-        class: Politizr\FrontBundle\Lib\Manager\ReputationManager
-        arguments: [ @logger ]
-
     politizr.manager.order:
         class: Politizr\FrontBundle\Lib\Manager\OrderManager
         arguments: [ @logger ]

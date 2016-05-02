@@ -1,8 +1,0 @@
-<div class="listTab postTab">
-    {% for reaction in reactions %}
-        <div class="modalItem listPost">
-            {% include 'PolitizrFrontBundle:Document:_summary.html.twig' with { 'document': reaction, 'withSubscribe': true } only %}
-        </div>
-    {% endfor %}
-</div>
-{% include 'PolitizrFrontBundle:PaginatedList:_scrollNav.html.twig' with { 'moreResults': moreResults, 'offset': offset, 'action': paginateNextAction } %}

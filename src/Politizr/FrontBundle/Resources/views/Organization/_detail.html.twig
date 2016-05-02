@@ -1,1 +1,2 @@
+{# beta #}
 <li{% if organization.uuid == uuid %} class="current"{% endif %}><a href="{{ path('ListingByOrganization', {'slug': organization.slug}) }}">{{ organization.title }}<div class="org">{{ organization.initials }}</div></a></li>

@@ -147,11 +147,6 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 array('is_safe' => array('html'))
             ),
             new \Twig_SimpleFilter(
-                'linkParentReaction',
-                array($this, 'linkParentReaction'),
-                array('is_safe' => array('html'))
-            ),
-            new \Twig_SimpleFilter(
                 'linkParentDocument',
                 array($this, 'linkParentDocument'),
                 array('is_safe' => array('html'))
@@ -575,49 +570,6 @@ class PolitizrDocumentExtension extends \Twig_Extension
     {
         $text = preg_replace('#</?span[^>]*>#is', '', $text);
         return $text;
-    }
-
-    /**
-     * Affiche le lien vers le document parent (réaction ou débat) de la réaction courante
-     *
-     * @param PDReaction $reaction
-     * @param boolean $edit
-     * @return string
-     */
-    public function linkParentReaction(PDReaction $reaction, $edit = false)
-    {
-        // $this->logger->info('*** linkParentReaction');
-        // $this->logger->info('$reaction = '.print_r($reaction, true));
-
-        if ($edit) {
-            if (null === $reaction->getParentReactionId()) {
-                $parent = $reaction->getDebate();
-                $url = $this->router->generate('DebateDetail', array('slug' => $parent->getSlug()));
-            } else {
-                $parent = PDReactionQuery::create()->findPk($reaction->getParentReactionId());
-                $url = $this->router->generate('ReactionDetail', array('slug' => $parent->getSlug()));
-            }
-        } else {
-            if ($reaction->getLevel() > 1) {
-                $parent = $reaction->getParent();
-                $url = $this->router->generate('ReactionDetail', array('slug' => $parent->getSlug()));
-            } else {
-                $parent = $reaction->getDebate();
-                $url = $this->router->generate('DebateDetail', array('slug' => $parent->getSlug()));
-            }
-        }
-
-        // Construction du rendu du tag
-        $html = $this->templating->render(
-            'PolitizrFrontBundle:Reaction:_linkParentReaction.html.twig',
-            array(
-                'parent' => $parent,
-                'url' => $url,
-            )
-        );
-
-        return $html;
-
     }
 
     /**

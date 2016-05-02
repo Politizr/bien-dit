@@ -1,5 +1,6 @@
+{# beta #}
 {% include 'PolitizrFrontBundle:Timeline:_timeline.html.twig' with { 'timelineDateKey': timelineDateKey, 'withContext': true } only %}
-<div id="timelineScrollNav">
+<div id="timelineScrollNav" class="scrollNav">
     {% if moreResults %}
         <a id="moreResults" class="waypoint" action="timelineUserPaginatedNext" offset="{{ offset }}" uuid="{{ uuid }}">suite</a>
     {% endif %}

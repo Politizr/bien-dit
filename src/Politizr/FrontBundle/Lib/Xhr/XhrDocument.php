@@ -53,7 +53,6 @@ class XhrDocument
     private $userManager;
     private $documentManager;
     private $documentService;
-    private $reputationService;
     private $tagService;
     private $globalTools;
     private $documentTwigExtension;
@@ -72,7 +71,6 @@ class XhrDocument
      * @param @politizr.manager.user
      * @param @politizr.manager.document
      * @param @politizr.functional.document
-     * @param @politizr.functional.reputation
      * @param @politizr.functional.tag
      * @param @politizr.tools.global
      * @param @politizr.twig.document
@@ -90,7 +88,6 @@ class XhrDocument
         $userManager,
         $documentManager,
         $documentService,
-        $reputationService,
         $tagService,
         $globalTools,
         $documentTwigExtension,
@@ -112,7 +109,6 @@ class XhrDocument
         $this->documentManager = $documentManager;
 
         $this->documentService = $documentService;
-        $this->reputationService = $reputationService;
         $this->tagService = $tagService;
 
         $this->globalTools = $globalTools;

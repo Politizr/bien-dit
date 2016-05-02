@@ -249,47 +249,6 @@ class TimelineService
     }
 
     /* ######################################################################################################## */
-    /*                                            DEBATE FEED TIMELINE                                          */
-    /* ######################################################################################################## */
-
-    /**
-     * Get the debate feed timeline indexed by date key
-     *
-     * @param integer $debateId
-     * @return array[TimelineRow]
-     */
-    public function getDebateFeedTimeline($debateId)
-    {
-        $this->logger->info('*** getDebateFeedTimeline');
-        $this->logger->info('$debateId = ' . print_r($debateId, true));
-        
-        if ($this->securityAuthorizationChecker->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-            $user = $this->securityTokenStorage->getToken()->getUser();
-            $userId = $user->getId();
-
-            // Récupération d'un tableau des ids des users suivis
-            $userIds = $this->getFollowedUsersIdsArray($user->getId());
-
-            $inQueryUserIds = implode(',', $userIds);
-            if (empty($inQueryUserIds)) {
-                $inQueryUserIds = $userId;
-            } else {
-                $inQueryUserIds .= ',' . $userId;
-            }
-        } else {
-            $inQueryUserIds = 0;
-        }
-
-        $timeline = $this->documentManager->generateDebateFeedTimeline(
-            $debateId,
-            $inQueryUserIds
-        );
-
-        return $timeline;
-    }
-
-
-    /* ######################################################################################################## */
     /*                                            USER DETAIL TIMELINE                                          */
     /* ######################################################################################################## */
 

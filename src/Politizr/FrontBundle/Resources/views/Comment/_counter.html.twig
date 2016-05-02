@@ -1,3 +1,4 @@
+{# beta #}
 <span id="commentMode" mode="{% if app.user %}connected{% else %}public{% endif %}" />
 {% if paragraphContext == 'paragraph' %}
     <div class="commentsCounter{% if document.countComments(true, paragraphNo) %} withComment{% endif %}{% if active %} activeComment{% endif %}" action="{% if app.user %}comments{% else %}createAccountToComment{% endif %}">

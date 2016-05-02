@@ -75,6 +75,7 @@ class DocumentService
 
     /**
      * Get filtered paginated documents
+     * beta
      *
      * @param string $geoTagUuid
      * @param string $filterPublication
@@ -168,6 +169,7 @@ class DocumentService
 
     /**
      * Get "user publications" paginated listing
+     * beta
      *
      * @param array $userId
      * @param string $orderBy
@@ -185,6 +187,7 @@ class DocumentService
 
     /**
      * Get recommended paginated documents
+     * beta
      *
      * @param integer $month
      * @param integer $year
@@ -211,6 +214,7 @@ class DocumentService
 
     /**
      * Get paginated documents by organization
+     * beta
      *
      * @param array $organizationId
      * @param string $orderBy
@@ -227,6 +231,7 @@ class DocumentService
 
     /**
      * Get paginated documents by tags
+     * beta
      *
      * @param array $tagIds
      * @param string $orderBy
@@ -248,6 +253,7 @@ class DocumentService
 
     /**
      * Get top documents best notes
+     * beta
      *
      * @param înteger $count
      * @return PropelCollection PDocument
@@ -261,6 +267,7 @@ class DocumentService
 
     /**
      * Get user's debates' suggestions paginated listing
+     * beta
      *
      * @param int $userId
      * @param int $count
@@ -275,6 +282,7 @@ class DocumentService
     
     /**
      * Get user's debates' last publication paginated listing
+     * beta
      *
      * @param int $userId
      * @param int $count
@@ -288,22 +296,8 @@ class DocumentService
     }
     
     /**
-     * Get user's reactions' suggestions paginated listing
-     *
-     * @param int $userId
-     * @param int $offset
-     * @param int $count
-     * @return PropelCollection[PDocument]
-     */
-    public function getUserSuggestedReactionsPaginatedListing($userId, $offset = 0, $count = ListingConstants::MODAL_CLASSIC_PAGINATION)
-    {
-        $documents = $this->documentManager->generateUserSuggestedReactionsPaginatedListing($userId, $offset, $count);
-
-        return $documents;
-    }
-    
-    /**
      * Get "my drafts" paginated listing
+     * beta
      *
      * @param int $userId
      * @param int $offset

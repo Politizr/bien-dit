@@ -81,11 +81,6 @@ class PolitizrUserExtension extends \Twig_Extension
                 array('is_safe' => array('html'))
             ),
             new \Twig_SimpleFilter(
-                'photoBack',
-                array($this, 'photoBack'),
-                array('is_safe' => array('html'))
-            ),
-            new \Twig_SimpleFilter(
                 'typeGenderName',
                 array($this, 'typeGenderName'),
                 array('is_safe' => array('html'))
@@ -230,38 +225,6 @@ class PolitizrUserExtension extends \Twig_Extension
                 'withBubble' => $withBubble,
                 'filterName' => $filterName,
                 )
-        );
-
-        return $html;
-    }
-
-    /**
-     * Load an <img> html tag with the back profile photo of user and apply it a filter.
-     *
-     * @param PUser $user
-     * @param string $filterName
-     * @param boolean $withShadow
-     * @return html
-     */
-    public function photoBack(PUser $user, $filterName = 'user_bio_back', $withShadow = true)
-    {
-        // $this->logger->info('*** photoBack');
-        // $this->logger->info('$user = '.print_r($user, true));
-
-        $path = '/bundles/politizrfront/images/default_profile.jpg';
-        if ($user && $fileName = $user->getBackFileName()) {
-            $path = PathConstants::USER_UPLOAD_WEB_PATH.$fileName;
-        }
-
-        // Construction du rendu du tag
-        $html = $this->templating->render(
-            'PolitizrFrontBundle:User:_imageHeader.html.twig',
-            array(
-                'title' => $user->getFullName(),
-                'path' => $path,
-                'filterName' => $filterName,
-                'withShadow' => $withShadow,
-            )
         );
 
         return $html;
