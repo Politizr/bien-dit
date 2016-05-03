@@ -26,6 +26,8 @@ params:
             label:          Titre
         description:
             label:          Description
+        nb_views:
+            label:          Nombre de vues
         note_pos:
             label:          Notes +
         note_neg:
@@ -102,6 +104,7 @@ builders:
                     "Tags associés":            [ block_tags ]
                 "Statut":
                     "Publication":              [ [ published, published_by, published_at ] ]
+                    "Vues":                     [ nb_views ]
                     "Notes":                    [ [ note_pos, note_neg ] ]
                 "Modération":
                     "Portée":                   [ [ moderated, moderated_partial, moderated_at ] ]
@@ -179,6 +182,8 @@ builders:
                     "Utilisateurs":             [ block_followers_q, block_followers_c ]
                 "Statut":
                     "Publication":              [ [ published ], [ published_by ], [ published_at ] ]
+                    "Vues":                     [ nb_views ]
+                    "Notes":                    [ [ note_pos, note_neg ] ]
                 "Modération":
                     "Portée":                   [ [ moderated, moderated_partial, moderated_at ] ]
                     "Notification":             [ block_moderation_alert_new  ]
