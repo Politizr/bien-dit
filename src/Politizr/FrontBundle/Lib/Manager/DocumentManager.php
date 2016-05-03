@@ -329,11 +329,14 @@ LIMIT :offset, :limit
         // Date subrequest
         $subRequestFilterDate = null;
         if ($filterDate == ListingConstants::FILTER_KEYWORD_LAST_MONTH) {
-            $subRequestFilterDate = "AND p_d_debate.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW() ";
+            $subRequestFilterDate1 = "AND p_d_debate.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW() ";
+            $subRequestFilterDate2 = "AND p_d_reaction.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW() ";
         } elseif ($filterDate == ListingConstants::FILTER_KEYWORD_LAST_WEEK) {
-            $subRequestFilterDate = "AND p_d_debate.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 7 DAY) AND NOW() ";
+            $subRequestFilterDate1 = "AND p_d_debate.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 7 DAY) AND NOW() ";
+            $subRequestFilterDate2 = "AND p_d_reaction.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 7 DAY) AND NOW() ";
         } elseif ($filterDate == ListingConstants::FILTER_KEYWORD_LAST_DAY) {
-            $subRequestFilterDate = "AND p_d_debate.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 1 DAY) AND NOW() ";
+            $subRequestFilterDate1 = "AND p_d_debate.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 1 DAY) AND NOW() ";
+            $subRequestFilterDate2 = "AND p_d_reaction.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 1 DAY) AND NOW() ";
         }
 
         // Requête SQL
@@ -351,7 +354,7 @@ WHERE
     AND p_d_reaction_child.online = true
     AND p_d_reaction_child.tree_level = 1
     $subRequestTagIds1
-    $subRequestFilterDate
+    $subRequestFilterDate1
     $subRequestFilterProfile
 
 GROUP BY id
@@ -373,7 +376,7 @@ WHERE
     AND p_d_reaction_child.online = true
     AND p_d_reaction_child.tree_level > 0
     $subRequestTagIds2
-    $subRequestFilterDate
+    $subRequestFilterDate2
     $subRequestFilterProfile
 
 GROUP BY id
