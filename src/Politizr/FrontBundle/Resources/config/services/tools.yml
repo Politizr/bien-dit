@@ -5,6 +5,7 @@ services:
         arguments:
             - @security.authorization_checker
             - @security.context
+            - @request_stack
             - @form.factory
             - @validator
             - @liip_imagine.controller

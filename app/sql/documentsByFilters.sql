@@ -1,5 +1,5 @@
 #  Débats publiés
-( SELECT DISTINCT p_d_debate.id as id, p_d_debate.title as title, p_d_debate.note_pos as note_pos, p_d_debate.note_neg as note_neg, p_d_debate.nb_views as nb_views, p_d_debate.published_at as published_at, p_d_debate.updated_at as updated_at, 'Politizr\\Model\\PDDebate' as type
+( SELECT DISTINCT p_d_debate.id as id, p_d_debate.title as title, p_d_debate.file_name as fileName, p_d_debate.description as description, p_d_debate.slug as slug, p_d_debate.note_pos as note_pos, p_d_debate.note_neg as note_neg, p_d_debate.nb_views as nb_views, p_d_debate.published_at as published_at, p_d_debate.updated_at as updated_at, 'Politizr\\Model\\PDDebate' as type
 FROM p_d_debate
     LEFT JOIN p_d_d_tagged_t
         ON p_d_debate.id = p_d_d_tagged_t.p_d_debate_id
@@ -16,7 +16,7 @@ WHERE
 UNION DISTINCT
 
 #  Réactions publiés
-( SELECT DISTINCT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.note_pos as note_pos, p_d_reaction.note_neg as note_neg, p_d_reaction.nb_views as nb_views, p_d_reaction.published_at as published_at, p_d_reaction.updated_at as updated_at,'Politizr\\Model\\PDReaction' as type
+( SELECT DISTINCT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.file_name as fileName, p_d_reaction.description as description, p_d_reaction.slug as slug, p_d_reaction.note_pos as note_pos, p_d_reaction.note_neg as note_neg, p_d_reaction.nb_views as nb_views, p_d_reaction.published_at as published_at, p_d_reaction.updated_at as updated_at,'Politizr\\Model\\PDReaction' as type
 FROM p_d_reaction
     LEFT JOIN p_d_r_tagged_t
         ON p_d_reaction.id = p_d_r_tagged_t.p_d_reaction_id
@@ -34,7 +34,7 @@ WHERE
 UNION DISTINCT
 
 # Commentaires débats publiés
-( SELECT DISTINCT p_d_d_comment.id as id, "commentaire" as title, p_d_d_comment.note_pos as note_pos, p_d_d_comment.note_neg as note_neg, -1 as nb_views, p_d_d_comment.published_at as published_at, p_d_d_comment.updated_at as updated_at, 'Politizr\\Model\\PDDComment' as type
+( SELECT DISTINCT p_d_d_comment.id as id, "commentaire" as title, "image" as fileName, p_d_d_comment.description as description, "slug" as slug, p_d_d_comment.note_pos as note_pos, p_d_d_comment.note_neg as note_neg, -1 as nb_views, p_d_d_comment.published_at as published_at, p_d_d_comment.updated_at as updated_at, 'Politizr\\Model\\PDDComment' as type
 FROM p_d_d_comment
     LEFT JOIN p_d_debate
         ON p_d_d_comment.p_d_debate_id = p_d_debate.id
@@ -52,7 +52,7 @@ WHERE
 UNION DISTINCT
 
 # Commentaires réactions publiés
-( SELECT DISTINCT p_d_r_comment.id as id, "commentaire" as title, p_d_r_comment.note_pos as note_pos, p_d_r_comment.note_neg as note_neg, -1 as nb_views, p_d_r_comment.published_at as published_at, p_d_r_comment.updated_at as updated_at, 'Politizr\\Model\\PDRComment' as type
+( SELECT DISTINCT p_d_r_comment.id as id, "commentaire" as title, "image" as fileName, p_d_r_comment.description as description, "slug" as slug, p_d_r_comment.note_pos as note_pos, p_d_r_comment.note_neg as note_neg, -1 as nb_views, p_d_r_comment.published_at as published_at, p_d_r_comment.updated_at as updated_at, 'Politizr\\Model\\PDRComment' as type
 FROM p_d_r_comment
     LEFT JOIN p_d_reaction
         ON p_d_r_comment.p_d_reaction_id = p_d_reaction.id

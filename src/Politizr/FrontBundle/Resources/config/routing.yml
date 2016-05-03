@@ -27,6 +27,11 @@ User:
 Listing:
     resource: "./routing/Listing.yml"
 
+# Feed RSS
+RssFeed:
+    pattern:  /rss
+    defaults: { _controller: PolitizrFrontBundle:Public:rssFeed }
+
 # Sitemap xml
 SitemapXml:
     pattern:  /sitemap.xml

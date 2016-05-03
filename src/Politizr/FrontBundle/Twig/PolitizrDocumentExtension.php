@@ -20,7 +20,7 @@ use Politizr\Model\PUReputationQuery;
 use Politizr\Model\PUFollowDDQuery;
 
 use Politizr\FrontBundle\Lib\TimelineRow;
-use Politizr\FrontBundle\Lib\PublicationRow;
+use Politizr\FrontBundle\Lib\Publication;
 
 /**
  * Document's twig extension
@@ -1136,14 +1136,14 @@ class PolitizrDocumentExtension extends \Twig_Extension
     /**
      * Render an item timeline row
      *
-     * @param PublicationRow $publicationRow
+     * @param Publication $publicationRow
      * @param boolean $withContext
      * @return string
      */
-    public function publicationRow(PublicationRow $publicationRow, $withContext = true)
+    public function publicationRow(Publication $publicationRow, $withContext = true)
     {
         $this->logger->info('*** publicationRow');
-        $this->logger->info('$publicationRow = '.print_r($publicationRow, true));
+        // $this->logger->info('$publicationRow = '.print_r($publicationRow, true));
 
         $html = '';
 

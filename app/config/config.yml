@@ -682,3 +682,14 @@ lexik_maintenance:
     response:
         code: 503
         status: "Service Temporarily Unavailable"
+
+eko_feed:
+    feeds:
+        debates:
+            title:       'Nouvelles publications - Politizr'
+            description: 'Nouveaux publications sur Politizr'
+            link:
+                route_name: RssFeed
+                # route_params: {id: 2} # necessary if route cantains required parameters
+            encoding:    'utf-8'
+            author:      'Politizr'

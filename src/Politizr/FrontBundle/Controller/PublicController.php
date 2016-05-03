@@ -8,11 +8,15 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
+use Politizr\Constant\ListingConstants;
+
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PTagQuery;
 use Politizr\Model\PQOrganizationQuery;
+
+use Eko\FeedBundle\Field\Item\MediaItemField;
 
 /**
  * Public controller
@@ -97,6 +101,45 @@ class PublicController extends Controller
 
         return $this->render('PolitizrFrontBundle:Public:about.html.twig', array(
         ));
+    }
+
+    /**
+     * RSS feed
+     */
+    public function rssFeedAction()
+    {
+        $publications = $this->get('politizr.functional.document')->getPublicationsByFilters(
+            null,
+            ListingConstants::FILTER_KEYWORD_DEBATES_AND_REACTIONS,
+            ListingConstants::FILTER_KEYWORD_ALL_USERS,
+            ListingConstants::ORDER_BY_KEYWORD_LAST,
+            ListingConstants::FILTER_KEYWORD_ALL_DATE,
+            0,
+            ListingConstants::LISTING_RSS
+        );
+
+        $feed = $this->get('eko_feed.feed.manager')->get('debates');
+        $feed->addFromArray((array) $publications);
+        $feed->addItemField(new MediaItemField('getFeedMediaItem'));
+
+        return new Response($feed->render('rss')); // or 'atom'
+    }
+
+    /**
+     * Generate robots.txt
+     */
+    public function robotsTxtAction()
+    {
+        // Render robots.txt
+        $response = new Response();
+        $response->headers->set('Content-Type', 'text/plain');
+        $response->sendHeaders();
+        
+        return $this->render(
+            'PolitizrFrontBundle:Navigation:robots.txt.twig',
+            array(),
+            $response
+        );
     }
 
     /**
@@ -192,25 +235,6 @@ class PublicController extends Controller
             array(
                 'urls' => $urls
             ),
-            $response
-        );
-    }
-
-    /**
-     * Generate robots.txt
-     */
-    public function robotsTxtAction()
-    {
-        dump('robotsTxtAction');
-
-        // Render robots.txt
-        $response = new Response();
-        $response->headers->set('Content-Type', 'text/plain');
-        $response->sendHeaders();
-        
-        return $this->render(
-            'PolitizrFrontBundle:Navigation:robots.txt.twig',
-            array(),
             $response
         );
     }

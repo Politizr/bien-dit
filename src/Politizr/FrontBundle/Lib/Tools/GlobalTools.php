@@ -13,7 +13,7 @@ use Politizr\Exception\BoxErrorException;
 
 use Politizr\FrontBundle\Lib\SimpleImage;
 use Politizr\FrontBundle\Lib\TimelineRow;
-use Politizr\FrontBundle\Lib\PublicationRow;
+use Politizr\FrontBundle\Lib\Publication;
 use Politizr\FrontBundle\Form\Type\PUMandateType;
 
 use Politizr\Constant\QualificationConstants;
@@ -32,6 +32,8 @@ class GlobalTools
     private $securityAuthorizationChecker;
     private $securityContext;
 
+    private $requestStack;
+
     private $formFactory;
     private $validator;
 
@@ -44,6 +46,7 @@ class GlobalTools
      *
      * @param @security.authorization_checker
      * @param @security.context
+     * @param @request_stack
      * @param @form.factory
      * @param @validator
      * @param @liip_imagine.controller
@@ -53,6 +56,7 @@ class GlobalTools
     public function __construct(
         $securityAuthorizationChecker,
         $securityContext,
+        $requestStack,
         $formFactory,
         $validator,
         $liipImagineController,
@@ -61,6 +65,8 @@ class GlobalTools
     ) {
         $this->securityAuthorizationChecker = $securityAuthorizationChecker;
         $this->securityContext = $securityContext;
+
+        $this->requestStack = $requestStack;
         
         $this->formFactory = $formFactory;
 
@@ -444,26 +450,29 @@ class GlobalTools
     }
 
     /**
-     * Hydrate "PublicationRow" objects from raw sql results
+     * Hydrate "Publication" objects from raw sql results
      *
      * @param array|false $result
-     * @return array[PublicationRow]
+     * @return array[Publication]
      */
-    public function hydratePublicationRows($result)
+    public function hydratePublication($result)
     {
-        $this->logger->info('*** hydratePublicationRows');
+        $this->logger->info('*** hydratePublication');
 
         $publications = array();
         if ($result) {
             foreach ($result as $row) {
-                $publicationRow = new PublicationRow();
+                $publication = new Publication($this, $this->requestStack);
 
-                $publicationRow->setId($row['id']);
-                $publicationRow->setTitle($row['title']);
-                $publicationRow->setPublishedAt($row['published_at']);
-                $publicationRow->setType($row['type']);
+                $publication->setId($row['id']);
+                $publication->setTitle($row['title']);
+                $publication->setFileName($row['fileName']);
+                $publication->setDescription($row['description']);
+                $publication->setSlug($row['slug']);
+                $publication->setPublishedAt(new \DateTime($row['published_at']));
+                $publication->setType($row['type']);
 
-                $publications[] = $publicationRow;
+                $publications[] = $publication;
             }
         }
 

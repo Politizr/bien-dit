@@ -84,7 +84,7 @@ class DocumentService
      * @param string $filterDate
      * @param integer $offset
      * @param înteger $count
-     * @return PropelCollection[PublicationRow]
+     * @return PropelCollection[Publication]
      */
     public function getPublicationsByFilters(
         $geoTagUuid,
@@ -175,7 +175,7 @@ class DocumentService
      * @param string $orderBy
      * @param integer $offset
      * @param înteger $count
-     * @return PropelCollection[PublicationRow]
+     * @return PropelCollection[Publication]
      */
     public function getUserPublicationsPaginatedListing($userId, $orderBy, $offset = 0, $count = ListingConstants::LISTING_CLASSIC_PAGINATION)
     {
@@ -183,7 +183,6 @@ class DocumentService
 
         return $documents;
     }
-
 
     /**
      * Get recommended paginated documents

@@ -17,6 +17,7 @@ class ListingConstants
     const TIMELINE_CLASSIC_PAGINATION = 20;
     const TIMELINE_USER_CLASSIC_PAGINATION = 20;
     const REPUTATION_CHARTS_PAGINATION = 20;
+    const LISTING_RSS = 50;
 
     // ************************************************************ //
     //              Modal context Constants                         //

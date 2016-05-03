@@ -55,6 +55,9 @@ class AppKernel extends Kernel
             // Strength Password
             new Rollerworks\Bundle\PasswordStrengthBundle\RollerworksPasswordStrengthBundle(),
 
+            // ATOM RSS Feed
+            new Eko\FeedBundle\EkoFeedBundle(),
+
             // Lexik maintenance
             new Lexik\Bundle\MaintenanceBundle\LexikMaintenanceBundle(),
 
