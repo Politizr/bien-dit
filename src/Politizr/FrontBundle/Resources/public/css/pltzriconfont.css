@@ -1,10 +1,11 @@
 @font-face {
   font-family: 'pltzriconfont';
-  src: url('../fonts/pltzriconfont.eot?92267616');
-  src: url('../fonts/pltzriconfont.eot?92267616#iefix') format('embedded-opentype'),
-       url('../fonts/pltzriconfont.woff?92267616') format('woff'),
-       url('../fonts/pltzriconfont.ttf?92267616') format('truetype'),
-       url('../fonts/pltzriconfont.svg?92267616#pltzriconfont') format('svg');
+  src: url('../fonts/pltzriconfont.eot?47192853');
+  src: url('../fonts/pltzriconfont.eot?47192853#iefix') format('embedded-opentype'),
+       url('../fonts/pltzriconfont.woff2?47192853') format('woff2'),
+       url('../fonts/pltzriconfont.woff?47192853') format('woff'),
+       url('../fonts/pltzriconfont.ttf?47192853') format('truetype'),
+       url('../fonts/pltzriconfont.svg?47192853#pltzriconfont') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -14,7 +15,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'pltzriconfont';
-    src: url('../font/pltzriconfont.svg?92267616#pltzriconfont') format('svg');
+    src: url('../font/pltzriconfont.svg?47192853#pltzriconfont') format('svg');
   }
 }
 */
@@ -117,3 +118,4 @@
 .icon-italic:before { content: '\e83c'; } /* '' */
 .icon-h1:before { content: '\e83d'; } /* '' */
 .icon-h2:before { content: '\e83e'; } /* '' */
+.icon-social-rss:before { content: '\e83f'; } /* '' */

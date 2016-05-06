@@ -179,6 +179,20 @@ class PUserQuery extends BasePUserQuery
      * @param boolean $online
      * @return PUserQuery
      */
+    public function filterIfTags($tagIds = null)
+    {
+        if ($tagIds && sizeof($tagIds) > 0) {
+            return $this->filterByTags($tagIds);
+        }
+
+        return $this;
+    }
+
+    /**
+     *
+     * @param boolean $online
+     * @return PUserQuery
+     */
     public function filterIfOnline($online = null)
     {
         return $this

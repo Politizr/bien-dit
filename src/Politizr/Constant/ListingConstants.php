@@ -20,14 +20,6 @@ class ListingConstants
     const LISTING_RSS = 50;
 
     // ************************************************************ //
-    //              Modal context Constants                         //
-    // ************************************************************ //
-
-    const MODAL_DEBATES = 'MODAL_DEBATES';
-    const MODAL_REACTIONS = 'MODAL_REACTIONS';
-    const MODAL_USERS = 'MODAL_USERS';
-
-    // ************************************************************ //
     //              LISTING & Timeline Type Constants                 //
     // ************************************************************ //
 
@@ -47,30 +39,6 @@ class ListingConstants
 
     const MY_DRAFTS_TYPE = 12;
     const MY_PUBLICATIONS_TYPE = 13;
-
-    // ************************************************************ //
-    //              Dashboard type & context constants              //
-    // ************************************************************ //
-    const DASHBOARD_TYPE_MAP = 'DASHBOARD_MAP';
-    const DASHBOARD_TYPE_TOP_DEBATES = 'DASHBOARD_TOP_DEBATES';
-    const DASHBOARD_TYPE_TOP_USERS = 'DASHBOARD_TOP_USERS';
-    const DASHBOARD_TYPE_GEO_DEBATES = 'DASHBOARD_GEO_DEBATES';
-    const DASHBOARD_TYPE_GEO_USERS = 'DASHBOARD_GEO_USERS';
-    const DASHBOARD_TYPE_SUGGESTION_DEBATES = 'DASHBOARD_SUGGESTION_DEBATES';
-    const DASHBOARD_TYPE_SUGGESTION_USERS = 'DASHBOARD_SUGGESTION_USERS';
-
-    const DASHBOARD_DEBATES = 'DASHBOARD_DEBATES';
-    const DASHBOARD_REACTIONS = 'DASHBOARD_REACTIONS';
-    const DASHBOARD_USERS = 'DASHBOARD_USERS';
-
-    // ************************************************************ //
-    //              Dashboard Constants                             //
-    // ************************************************************ //
-    const DASHBOARD_MAP_LIMIT = 3;
-    const DASHBOARD_TOP_USERS_LIMIT = 6;
-    const DASHBOARD_GEO_DEBATES_LIMIT = 2;
-    const DASHBOARD_GEO_USERS_LIMIT = 2;
-    const DASHBOARD_SUGGESTION_USERS_LIMIT = 5; // @warning /!\ hack > +1 to hack suggestion user query which return 1 first null element
 
     // ************************************************************ //
     //                  Top Constants                               //

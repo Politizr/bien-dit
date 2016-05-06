@@ -55,6 +55,7 @@ class XhrUser
     private $formFactory;
     private $emailCanonicalizer;
     private $userManager;
+    private $userService;
     private $timelineService;
     private $globalTools;
     private $idcheck;
@@ -72,6 +73,7 @@ class XhrUser
      * @param @form.factory
      * @param @fos_user.util.email_canonicalizer
      * @param @politizr.manager.user
+     * @param @politizr.functional.user
      * @param @politizr.functional.timeline
      * @param @politizr.tools.global
      * @param @politizr.tools.idcheck
@@ -88,6 +90,7 @@ class XhrUser
         $formFactory,
         $emailCanonicalizer,
         $userManager,
+        $userService,
         $timelineService,
         $globalTools,
         $idcheck,
@@ -108,6 +111,8 @@ class XhrUser
         $this->emailCanonicalizer = $emailCanonicalizer;
 
         $this->userManager = $userManager;
+
+        $this->userService = $userService;
         $this->timelineService = $timelineService;
 
         $this->globalTools = $globalTools;
@@ -1211,6 +1216,73 @@ class XhrUser
                 'goldBadges' => $goldBadges,
             )
         );
+
+        return array(
+            'html' => $html,
+        );
+    }
+
+    /**
+     * Filtered users
+     * code beta
+     */
+    public function usersByFilters(Request $request)
+    {
+        $this->logger->info('*** usersByFilters');
+        
+        // Request arguments
+        $offset = $request->get('offset');
+        $this->logger->info('$offset = ' . print_r($offset, true));
+        $geoTagUuid = $request->get('geoTagUuid');
+        $this->logger->info('$geoTagUuid = ' . print_r($geoTagUuid, true));
+        $filterProfile = $request->get('filterProfile');
+        $this->logger->info('$filterProfile = ' . print_r($filterProfile, true));
+        $filterActivity = $request->get('filterActivity');
+        $this->logger->info('$filterActivity = ' . print_r($filterActivity, true));
+        $filterDate = $request->get('filterDate');
+        $this->logger->info('$filterDate = ' . print_r($filterDate, true));
+
+        // set default values if not set
+        if (empty($filterProfile)) {
+            $filterProfile = ListingConstants::FILTER_KEYWORD_ALL_USERS;
+        }
+        if (empty($filterActivity)) {
+            $filterActivity = ListingConstants::ORDER_BY_KEYWORD_LAST;
+        }
+        if (empty($filterDate)) {
+            $filterDate = ListingConstants::FILTER_KEYWORD_ALL_DATE;
+        }
+
+        $users = $this->userService->getUsersByFilters(
+            $geoTagUuid,
+            $filterProfile,
+            $filterActivity,
+            $filterDate,
+            $offset,
+            ListingConstants::LISTING_CLASSIC_PAGINATION
+        );
+
+        // @todo create function for code above
+        $moreResults = false;
+        if (sizeof($users) == ListingConstants::LISTING_CLASSIC_PAGINATION) {
+            $moreResults = true;
+        }
+
+        if ($offset == 0 && count($users) == 0) {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_noResult.html.twig'
+            );
+        } else {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_users.html.twig',
+                array(
+                    'users' => $users,
+                    'offset' => intval($offset) + ListingConstants::LISTING_CLASSIC_PAGINATION,
+                    'moreResults' => $moreResults,
+                    'jsFunctionKey' => XhrConstants::JS_KEY_LISTING_USERS_BY_FILTERS
+                )
+            );
+        }
 
         return array(
             'html' => $html,

@@ -21,9 +21,6 @@ $(function() {
     }
 });
 
-// auto resize text area
-autosize($('.formCommentNew textarea'));
-
 // public mode
 $("body").on("click", "[action='createAccountToComment']", function() {
     // console.log('*** click comments');
@@ -169,6 +166,7 @@ function loadParagraphContent(context)
             targetElement.html(data['html']);
             targetCounter.html(data['counter']);
             fullImgLiquid();
+            autosize($('.formCommentNew textarea'));
             commentTextCounter();
             $('#comment_description').focus();
         }

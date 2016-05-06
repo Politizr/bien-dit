@@ -5,6 +5,11 @@
     Inscription - {{ parent() }}
 {% endblock title %}
 
+{% block fbScript %}
+    {{ parent }}
+    <script>fbq('track', 'CompleteRegistration');</script>
+{% endblock %}
+
 {% block main %}
     <div id="public">
         <div class="center">

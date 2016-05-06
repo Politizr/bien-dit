@@ -1,6 +1,6 @@
 {# beta #}
 <div class="sidebarProfile">
-    {% include 'PolitizrFrontBundle:User:_card.html.twig' with { 'user': user, 'withSocialLinks': true } only %}
+    {% include 'PolitizrFrontBundle:User:_cardDetail.html.twig' with { 'user': user, 'withSocialLinks': true } only %}
 
     <div class="sidebarAction">
         {% if app.user and app.user.id != user.id %}

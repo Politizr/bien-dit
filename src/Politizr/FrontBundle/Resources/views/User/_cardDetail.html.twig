@@ -1,0 +1,19 @@
+{# beta #}
+<div class="profileCard">
+    {% include 'PolitizrFrontBundle:User:_summary.html.twig' with { 'user': user, 'withSocialLinks': true } only %}
+    {% if user.isQualified %}
+        <div class="profileMandats">
+            {% include 'PolitizrFrontBundle:User:_mandates.html.twig' with { 'user': user, 'mandates': user.mandates } only %}
+        </div>
+    {% endif %}
+    <div class="profileActions">
+        <div class="profileStats">
+            {{ user | nbFollowers }} • {{ user | nbSubscribers }}<br>
+            {{ user | nbPublications }}
+        </div>
+        <div class="miniActions">
+            {% include 'PolitizrFrontBundle:Follow:_actionFollow.html.twig' with { 'subject': user } only %}
+        </div>
+    </div>
+    {% include 'PolitizrFrontBundle:Reputation:_badgesCounter.html.twig' %}
+</div>

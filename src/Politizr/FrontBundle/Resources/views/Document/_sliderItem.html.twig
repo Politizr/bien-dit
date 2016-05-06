@@ -18,7 +18,7 @@
                 </a>
             </div>
         {% endif %}
-        {% include 'PolitizrFrontBundle:User:_summary.html.twig' with { 'user': document.user, 'withSocialLinks': false } only %}
+        {% include 'PolitizrFrontBundle:User:_summary.html.twig' with { 'user': document.user, 'withSocialLinks': false, 'withMandates': false } only %}
         <div class="suggExtract">
             <a href="{{ detailPath }}">
                 <span class="postTitle {{ spanClass }}">{{ document.title }}</span>

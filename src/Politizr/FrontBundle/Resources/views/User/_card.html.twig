@@ -1,19 +1,11 @@
 {# beta #}
-<div class="profileCard">
-    {% include 'PolitizrFrontBundle:User:_summary.html.twig' with { 'user': user, 'withSocialLinks': true } only %}
-    {% if user.isQualified %}
-        <div class="profileMandats">
-            {% include 'PolitizrFrontBundle:User:_mandates.html.twig' with { 'user': user, 'mandates': user.mandates } only %}
-        </div>
-    {% endif %}
-    <div class="profileActions">
+<div class="cardProfile card">
+    {% include 'PolitizrFrontBundle:User:_summary.html.twig' with { 'user': user, 'withSocialLinks': true, 'withMandates': true } only %}
+    <div class="coloredBg">
         <div class="profileStats">
-            {{ user | nbFollowers }} • {{ user | nbSubscribers }}<br>
-            {{ user | nbPublications }}
+            {{ user | nbFollowers }} • {{ user | nbSubscribers }} • {{ user | nbPublications }}
         </div>
-        <div class="miniActions">
-            {% include 'PolitizrFrontBundle:Follow:_actionFollow.html.twig' with { 'subject': user } only %}
-        </div>
+        {% include 'PolitizrFrontBundle:Reputation:_badgesCounter.html.twig' %}
+        {% include 'PolitizrFrontBundle:Follow:_actionFollow.html.twig' with { 'subject': user } only %}
     </div>
-    {% include 'PolitizrFrontBundle:Reputation:_badgesCounter.html.twig' %}
 </div>

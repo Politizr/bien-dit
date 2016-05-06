@@ -1197,6 +1197,37 @@ class XhrDocument
     }
 
     /**
+     * Filtered publications > reload filters
+     * code beta
+     */
+    public function reloadFilters(Request $request)
+    {
+        $this->logger->info('*** reloadFilters');
+
+        // Request arguments
+        $filterCategory = $request->get('filterCategory');
+        $this->logger->info('$filterCategory = ' . print_r($filterCategory, true));
+
+        if ($filterCategory == ObjectTypeConstants::CONTEXT_PUBLICATION) {
+            $template = '_publicationsCategory.html.twig';
+        } elseif ($filterCategory == ObjectTypeConstants::CONTEXT_USER) {
+            $template = '_usersCategory.html.twig';
+        } else {
+            throw new InconsistentDataException(sprintf('Filter category %s not managed', $filterCategory));
+        }
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Search\\Filters:'.$template,
+            array(
+            )
+        );
+
+        return array(
+            'html' => $html
+        );
+    }
+
+    /**
      * Filtered publications
      * code beta
      */

@@ -9,6 +9,16 @@ services:
             - @router
             - @logger
 
+    politizr.functional.user:
+        class: Politizr\FrontBundle\Lib\Functional\UserService
+        arguments:
+            - @security.token_storage
+            - @security.authorization_checker
+            - @politizr.manager.user
+            - @politizr.functional.tag
+            - @router
+            - @logger
+
     politizr.functional.security:
         class: Politizr\FrontBundle\Lib\Functional\SecurityService
         arguments:

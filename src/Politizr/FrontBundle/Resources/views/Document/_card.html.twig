@@ -1,6 +1,6 @@
 {# beta #}
 <div class="card {% if app.user and app.user.id == document.getPUserId %}myactivity{% endif %}">
-    {% include 'PolitizrFrontBundle:User:_summary.html.twig' with { 'user': document.user, 'withSocialLinks': false } only %}
+    {% include 'PolitizrFrontBundle:User:_summary.html.twig' with { 'user': document.user, 'withSocialLinks': false, 'withMandates': false } only %}
     <div class="{% if mini %}miniPost{% else %}newPost{% endif %}">
         {% include 'PolitizrFrontBundle:Document:_cardContent.html.twig' with { 'document': document, 'mini': mini, 'summary': summary } only %}
     </div>

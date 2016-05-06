@@ -5,9 +5,23 @@ $(function() {
     stickySidebar();
 });
 
+
+// Publication filter change
+$("body").on("change", ".categoryFilter", function() {
+    console.log('*** change categoryFilter');
+
+    $.when(
+        reloadFilters()
+    ).done(function(r1) {
+        $('#documentListing .listTop').html('');
+        $("[action='goUp']").trigger("click");
+        return filtersListing();
+    });
+});
+
 // Map selection
 $("body").on("click", "[action='map']", function() {
-    // console.log('*** click map');
+    console.log('*** click map');
     uuid = $(this).attr('uuid');
 
     $("[action='goUp']").trigger("click");
@@ -22,50 +36,99 @@ $("body").on("click", "[action='map']", function() {
         mapSchema(uuid)
     ).done(function(r1, r2) {
         $('#documentListing .listTop').html('');
-        return publicationsByFiltersListing();
+        return filtersListing();
     });
 });
 
 // Publication filter change
 $("body").on("change", ".publicationFilter", function() {
-    // console.log('*** change publicationFilter');
+    console.log('*** change publicationFilter');
 
     $('#documentListing .listTop').html('');
     $("[action='goUp']").trigger("click");
 
-    return publicationsByFiltersListing();
+    return filtersListing();
 });
 
 // Profile filter change
 $("body").on("change", ".profileFilter", function() {
-    // console.log('*** change profileFilter');
+    console.log('*** change profileFilter');
 
     $('#documentListing .listTop').html('');
     $("[action='goUp']").trigger("click");
 
-    return publicationsByFiltersListing();
+    return filtersListing();
 });
 
 // Activity filter change
 $("body").on("change", ".activityFilter", function() {
-    // console.log('*** change activityFilter');
+    console.log('*** change activityFilter');
 
     $('#documentListing .listTop').html('');
     $("[action='goUp']").trigger("click");
 
-    return publicationsByFiltersListing();
+    return filtersListing();
 });
 
 // Date filter change
 $("body").on("change", ".dateFilter", function() {
-    // console.log('*** change dateFilter');
+    console.log('*** change dateFilter');
 
     $('#documentListing .listTop').html('');
     $("[action='goUp']").trigger("click");
 
-    return publicationsByFiltersListing();
+    return filtersListing();
 });
 
+/**
+ * Check selecteed category to call right filter listing function
+ */
+function filtersListing() {
+    console.log('*** filtersListing');
+
+    var category = $('#categoryFilter input:checked').val();
+    console.log(category);
+    if (category == 'user') {
+        return usersByFiltersListing();
+    } else if (category == 'publication') {
+        return publicationsByFiltersListing();
+    }
+}
+
+/**
+ * Reload filters depending of selected category
+ */
+function reloadFilters() {
+    console.log('*** reloadFilters');
+
+    localLoader = $('.sidebarSearchFilters').find('.ajaxLoader').first();
+
+    var xhrPath = getXhrPath(
+        ROUTE_LISTING_FILTERS_CATEGORY,
+        'document',
+        'reloadFilters',
+        RETURN_HTML
+    );
+
+    // activity
+    var filters = [];
+    filters.push({name: 'filterCategory', value: $('#categoryFilter input:checked').val()});
+
+    return xhrCall(
+        document,
+        filters,
+        xhrPath,
+        localLoader
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
+            $('.sidebarSearchFilters').html(data['html']);
+        }
+        localLoader.hide();
+    });
+}
 
 /**
  * Update map breadcrumb
@@ -73,8 +136,8 @@ $("body").on("change", ".dateFilter", function() {
  * @param uuid
  */
 function mapBreadcrumb(uuid) {
-    // console.log('*** mapBreadcrumb');
-    // console.log(uuid);
+    console.log('*** mapBreadcrumb');
+    console.log(uuid);
 
     localLoader = $('#mapBreadcrumb').find('.ajaxLoader').first();
 
@@ -108,8 +171,8 @@ function mapBreadcrumb(uuid) {
  * @param uuid
  */
 function mapSchema(uuid) {
-    // console.log('*** mapSchema');
-    // console.log(uuid);
+    console.log('*** mapSchema');
+    console.log(uuid);
 
     localLoader = $('#mapHolder').find('.ajaxLoader').first();
 

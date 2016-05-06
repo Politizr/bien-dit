@@ -78,6 +78,7 @@ services:
             - @form.factory
             - @fos_user.util.email_canonicalizer
             - @politizr.manager.user
+            - @politizr.functional.user
             - @politizr.functional.timeline
             - @politizr.tools.global
             - @politizr.tools.idcheck

@@ -1,9 +1,9 @@
 {# beta #}
 <div class="card myactivity">
-    {% include 'PolitizrFrontBundle:User:_summary.html.twig' with { 'user': user, 'withSocialLinks': false } only %}
+    {% include 'PolitizrFrontBundle:User:_summary.html.twig' with { 'user': user, 'withSocialLinks': false, 'withMandates': false } only %}
     <div class="coloredBg">
         <div class="activity cardFollowing">Félicitations, vous êtes suivi par {{ subscriberUser }}!</div>
         <h5>{% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': timelineRow } only %}</h5>
-        {% include 'PolitizrFrontBundle:User:_summary.html.twig' with { 'user': subscriberUser, 'withSocialLinks': false } only %}
+        {% include 'PolitizrFrontBundle:User:_summary.html.twig' with { 'user': subscriberUser, 'withSocialLinks': false, 'withMandates': false } only %}
     </div>
 </div>

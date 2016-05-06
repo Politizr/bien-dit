@@ -1,0 +1,10 @@
+{# beta #}
+<h5>Activité</h5>
+<form id="activityFilter">
+    <input type="radio" class="activityFilter" name="activityFilter[]" value="{{ constant('Politizr\\Constant\\ListingConstants::ORDER_BY_KEYWORD_MOST_ACTIVE') }}" id="activityFilterMostActiv" checked/>
+    <label for="activityFilterMostActiv"><i class="icon-check"></i>Plus actifs</label>
+    <input type="radio" class="activityFilter" name="activityFilter[]" value="{{ constant('Politizr\\Constant\\ListingConstants::ORDER_BY_KEYWORD_LAST') }}" id="activityFilterLast"/>
+    <label for="activityFilterLast"><i class="icon-check"></i>Plus récents</label>
+    <input type="radio" class="activityFilter" name="activityFilter[]" value="{{ constant('Politizr\\Constant\\ListingConstants::ORDER_BY_KEYWORD_MOST_FOLLOWED') }}" id="activityFilterMostFollowed"/>
+    <label for="activityFilterMostFollowed"><i class="icon-check"></i>Plus suivis</label>
+</form>

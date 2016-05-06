@@ -1,3 +1,5 @@
+// beta
+
 // Options Jquery Form JS > upload ajax
 var idCheckPhotoOptions = {
     // iframe: true,

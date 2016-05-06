@@ -24,4 +24,5 @@ class ObjectTypeConstants
     const CONTEXT_REACTION = 'reaction';
     const CONTEXT_COMMENT = 'comment';
     const CONTEXT_USER = 'user';
+    const CONTEXT_PUBLICATION = 'publication';
 }

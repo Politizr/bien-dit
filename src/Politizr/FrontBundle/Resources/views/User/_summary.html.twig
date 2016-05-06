@@ -6,10 +6,15 @@
             {% include 'PolitizrFrontBundle:User:_author.html.twig' with { 'user': user } only %}
             {% include 'PolitizrFrontBundle:User:_biography.html.twig' with { 'user': user } only %}
         </div>
-        {% if withSocialLinks %}
+        {% if withSocialLinks is defined and withSocialLinks %}
             {% include 'PolitizrFrontBundle:User:_socialLinks.html.twig' with { 'user': user } only %}
         {% endif %}
     {% else %}
         <i>utilisateur supprimé</i>
+    {% endif %}
+    {% if user.isQualified and withMandates is defined and withMandates %}
+        <div class="profileMandats">
+            {% include 'PolitizrFrontBundle:User:_mandates.html.twig' with { 'user': user, 'mandates': user.mandates } only %}
+        </div>
     {% endif %}
 </div>

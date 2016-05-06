@@ -1,7 +1,7 @@
 {# beta #}
 <div class="card">
     {% if way == 'up' %}
-        {% include 'PolitizrFrontBundle:User:_summary.html.twig' with { 'user': noteUser, 'withSocialLinks': false } only %}
+        {% include 'PolitizrFrontBundle:User:_summary.html.twig' with { 'user': noteUser, 'withSocialLinks': false, 'withMandates': false } only %}
     {% endif %}
     <div class="coloredBg">
         {% if way == 'up' %}

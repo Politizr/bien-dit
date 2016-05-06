@@ -41,7 +41,7 @@
 {% block content %}
     <div id="content">
         <div class="post">
-            {% include 'PolitizrFrontBundle:User:_summary.html.twig' with { 'user': reaction.user, 'withSocialLinks': false } only %}
+            {% include 'PolitizrFrontBundle:User:_summary.html.twig' with { 'user': reaction.user, 'withSocialLinks': false, 'withMandates': false } only %}
             <h5>{% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': reaction } only %}</h5>
             <div class="postStats">
                 {% include 'PolitizrFrontBundle:Document:_statsMini.html.twig' with { 'document': reaction } only %}

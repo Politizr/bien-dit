@@ -15,10 +15,10 @@
             {% include 'PolitizrFrontBundle:Search\\Map:_routing.html.twig' with { 'tagId': constant('Politizr\\Constant\\TagConstants::TAG_GEO_FRANCE_ID') } %}
         </div>
     </div>
-    <div class="sidebarSearchFilters">
-        {% include 'PolitizrFrontBundle:Search\\Filters:_publication.html.twig' %}
-        {% include 'PolitizrFrontBundle:Search\\Filters:_profile.html.twig' %}
-        {% include 'PolitizrFrontBundle:Search\\Filters:_activity.html.twig' %}
-        {% include 'PolitizrFrontBundle:Search\\Filters:_date.html.twig' %}
+    <div class="sidebarSearchCategory">
+        {% include 'PolitizrFrontBundle:Search\\Filters:_category.html.twig' %}
+    </div>
+    <div class="sidebarSearchFilters withLoaderInside">
+        {% include 'PolitizrFrontBundle:Search\\Filters:_publicationsCategory.html.twig' %}
     </div>
 </div>
