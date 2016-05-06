@@ -11,9 +11,9 @@ paginatedFunctions[JS_KEY_LISTING_USERS_BY_FILTERS] = usersByFiltersListing;
  * @param localLoader
  */
 function usersByFiltersListing(init, offset) {
-    console.log('*** usersByFiltersListing');
-    console.log(init);
-    console.log(offset);
+    // console.log('*** usersByFiltersListing');
+    // console.log(init);
+    // console.log(offset);
 
     init = (typeof init === "undefined") ? true : init;
     offset = (typeof offset === "undefined") ? 0 : offset;
@@ -21,8 +21,8 @@ function usersByFiltersListing(init, offset) {
     targetElement = $('#documentListing .listTop');
     localLoader = $('#documentListing').find('.ajaxLoader').first();
 
-    console.log(targetElement);
-    console.log(localLoader);
+    // console.log(targetElement);
+    // console.log(localLoader);
 
     datas = getCurrentUserFilters();
     datas.push({name: 'offset', value: offset});
@@ -61,17 +61,17 @@ function usersByFiltersListing(init, offset) {
  * Get search filters
  */
 function getCurrentUserFilters() {
-    console.log('*** getCurrentUserFilters');
+    // console.log('*** getCurrentUserFilters');
 
     var filters = [];
 
     // map
     if ($('.mapBreadcrumbs').find('.current').length) {
-        console.log('sub map uuid');
+        // console.log('sub map uuid');
         uuid = $('.mapBreadcrumbs').find('.current').attr('uuid');
-        console.log(uuid);
+        // console.log(uuid);
     } else {
-        console.log('map uuid');
+        // console.log('map uuid');
         uuid = $('.mapMenu').find('.active').attr('uuid');
     }
 
@@ -86,7 +86,7 @@ function getCurrentUserFilters() {
     // date
     filters.push({name: 'filterDate', value: $('#dateFilter input:checked').val()});
 
-    console.log(filters);
+    // console.log(filters);
     return filters;
 }
 
@@ -98,10 +98,10 @@ function getCurrentUserFilters() {
  * @param uuid
  */
 function listingContentUserFollowers(targetElement, localLoader, uuid) {
-    console.log('*** listingContentUserFollowers');
-    console.log(targetElement);
-    console.log(localLoader);
-    console.log(uuid);
+    // console.log('*** listingContentUserFollowers');
+    // console.log(targetElement);
+    // console.log(localLoader);
+    // console.log(uuid);
     
     var xhrPath = getXhrPath(
         ROUTE_USER_LISTING_USER_FOLLOWERS_CONTENT,
@@ -134,10 +134,10 @@ function listingContentUserFollowers(targetElement, localLoader, uuid) {
  * @param uuid
  */
 function listingContentUserSubscribers(targetElement, localLoader, uuid) {
-    console.log('*** listingContentUserSubscribers');
-    console.log(targetElement);
-    console.log(localLoader);
-    console.log(uuid);
+    // console.log('*** listingContentUserSubscribers');
+    // console.log(targetElement);
+    // console.log(localLoader);
+    // console.log(uuid);
     
     var xhrPath = getXhrPath(
         ROUTE_USER_LISTING_USER_SUBSCRIBERS_CONTENT,
@@ -169,10 +169,10 @@ function listingContentUserSubscribers(targetElement, localLoader, uuid) {
  * @param localLoader
  */
 function lastUserSubscribersListing(targetElement, localLoader, uuid) {
-    console.log('*** lastUserSubscribersListing');
-    console.log(targetElement);
-    console.log(localLoader);
-    console.log(uuid);
+    // console.log('*** lastUserSubscribersListing');
+    // console.log(targetElement);
+    // console.log(localLoader);
+    // console.log(uuid);
     
     var xhrPath = getXhrPath(
         ROUTE_USER_LISTING_LAST_USER_SUBSCRIBERS,
@@ -205,10 +205,10 @@ function lastUserSubscribersListing(targetElement, localLoader, uuid) {
  * @param localLoader
  */
 function lastUserFollowersListing(targetElement, localLoader, uuid) {
-    console.log('*** lastUserFollowersListing');
-    console.log(targetElement);
-    console.log(localLoader);
-    console.log(uuid);
+    // console.log('*** lastUserFollowersListing');
+    // console.log(targetElement);
+    // console.log(localLoader);
+    // console.log(uuid);
     
     var xhrPath = getXhrPath(
         ROUTE_USER_LISTING_LAST_USER_FOLLOWERS,
@@ -241,10 +241,10 @@ function lastUserFollowersListing(targetElement, localLoader, uuid) {
  * @param localLoader
  */
 function lastDebateFollowersListing(targetElement, localLoader, uuid) {
-    console.log('*** lastDebateFollowersListing');
-    console.log(targetElement);
-    console.log(localLoader);
-    console.log(uuid);
+    // console.log('*** lastDebateFollowersListing');
+    // console.log(targetElement);
+    // console.log(localLoader);
+    // console.log(uuid);
     
     var xhrPath = getXhrPath(
         ROUTE_USER_LISTING_LAST_DEBATE_FOLLOWERS,
@@ -276,9 +276,9 @@ function lastDebateFollowersListing(targetElement, localLoader, uuid) {
  * @param localLoader
  */
 function userSubscribersListing(init, offset) {
-    console.log('*** userSubscribersListing');
-    console.log(init);
-    console.log(offset);
+    // console.log('*** userSubscribersListing');
+    // console.log(init);
+    // console.log(offset);
 
     init = (typeof init === "undefined") ? true : init;
     offset = (typeof offset === "undefined") ? 0 : offset;
@@ -324,9 +324,9 @@ function userSubscribersListing(init, offset) {
  * @param localLoader
  */
 function userFollowersListing(init, offset) {
-    console.log('*** userFollowersListing');
-    console.log(init);
-    console.log(offset);
+    // console.log('*** userFollowersListing');
+    // console.log(init);
+    // console.log(offset);
 
     init = (typeof init === "undefined") ? true : init;
     offset = (typeof offset === "undefined") ? 0 : offset;
@@ -372,9 +372,9 @@ function userFollowersListing(init, offset) {
  * @param localLoader
  */
 function debateFollowersListing(init, offset) {
-    console.log('*** debateFollowersListing');
-    console.log(init);
-    console.log(offset);
+    // console.log('*** debateFollowersListing');
+    // console.log(init);
+    // console.log(offset);
 
     init = (typeof init === "undefined") ? true : init;
     offset = (typeof offset === "undefined") ? 0 : offset;

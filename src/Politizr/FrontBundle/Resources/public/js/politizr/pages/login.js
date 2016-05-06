@@ -2,14 +2,14 @@
 
 // show / hide connection / lost password boxes
 $("body").on("click", "[action='showLostPasswordBox']", function(e) {
-    console.log('*** click showLostPasswordBox');
+    // console.log('*** click showLostPasswordBox');
 
     $('#lostPasswordForm').show();
     $('#loginForm').hide();
 });
 
 $("body").on("click", "[action='showLoginBox']", function(e) {
-    console.log('*** click showLoginBox');
+    // console.log('*** click showLoginBox');
 
     $('#lostPasswordForm').hide();
     $('#loginForm').show();
@@ -19,7 +19,7 @@ $("body").on("click", "[action='showLoginBox']", function(e) {
  * Connexion
  */
 $("body").on("click", "[action='login']", function(e) {
-    console.log('*** click login');
+    // console.log('*** click login');
     $('#ajaxGlobalLoader').show();
     $("#formLogin").submit();
 });
@@ -28,7 +28,7 @@ $("body").on("click", "[action='login']", function(e) {
  * Lost password
  */
 $("body").on("click", "[action='reinitPassword']", function(e) {
-    console.log('*** click reinitPassword');
+    // console.log('*** click reinitPassword');
 
     return lostPasswordCheck($("#formLostPassword"));
 });

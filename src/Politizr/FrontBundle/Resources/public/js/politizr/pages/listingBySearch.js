@@ -8,7 +8,7 @@ $(function() {
 
 // Publication filter change
 $("body").on("change", ".categoryFilter", function() {
-    console.log('*** change categoryFilter');
+    // console.log('*** change categoryFilter');
 
     $.when(
         reloadFilters()
@@ -21,7 +21,7 @@ $("body").on("change", ".categoryFilter", function() {
 
 // Map selection
 $("body").on("click", "[action='map']", function() {
-    console.log('*** click map');
+    // console.log('*** click map');
     uuid = $(this).attr('uuid');
 
     $("[action='goUp']").trigger("click");
@@ -42,7 +42,7 @@ $("body").on("click", "[action='map']", function() {
 
 // Publication filter change
 $("body").on("change", ".publicationFilter", function() {
-    console.log('*** change publicationFilter');
+    // console.log('*** change publicationFilter');
 
     $('#documentListing .listTop').html('');
     $("[action='goUp']").trigger("click");
@@ -52,7 +52,7 @@ $("body").on("change", ".publicationFilter", function() {
 
 // Profile filter change
 $("body").on("change", ".profileFilter", function() {
-    console.log('*** change profileFilter');
+    // console.log('*** change profileFilter');
 
     $('#documentListing .listTop').html('');
     $("[action='goUp']").trigger("click");
@@ -62,7 +62,7 @@ $("body").on("change", ".profileFilter", function() {
 
 // Activity filter change
 $("body").on("change", ".activityFilter", function() {
-    console.log('*** change activityFilter');
+    // console.log('*** change activityFilter');
 
     $('#documentListing .listTop').html('');
     $("[action='goUp']").trigger("click");
@@ -72,7 +72,7 @@ $("body").on("change", ".activityFilter", function() {
 
 // Date filter change
 $("body").on("change", ".dateFilter", function() {
-    console.log('*** change dateFilter');
+    // console.log('*** change dateFilter');
 
     $('#documentListing .listTop').html('');
     $("[action='goUp']").trigger("click");
@@ -84,10 +84,10 @@ $("body").on("change", ".dateFilter", function() {
  * Check selecteed category to call right filter listing function
  */
 function filtersListing() {
-    console.log('*** filtersListing');
+    // console.log('*** filtersListing');
 
     var category = $('#categoryFilter input:checked').val();
-    console.log(category);
+    // console.log(category);
     if (category == 'user') {
         return usersByFiltersListing();
     } else if (category == 'publication') {
@@ -99,7 +99,7 @@ function filtersListing() {
  * Reload filters depending of selected category
  */
 function reloadFilters() {
-    console.log('*** reloadFilters');
+    // console.log('*** reloadFilters');
 
     localLoader = $('.sidebarSearchFilters').find('.ajaxLoader').first();
 
@@ -136,8 +136,8 @@ function reloadFilters() {
  * @param uuid
  */
 function mapBreadcrumb(uuid) {
-    console.log('*** mapBreadcrumb');
-    console.log(uuid);
+    // console.log('*** mapBreadcrumb');
+    // console.log(uuid);
 
     localLoader = $('#mapBreadcrumb').find('.ajaxLoader').first();
 
@@ -171,8 +171,8 @@ function mapBreadcrumb(uuid) {
  * @param uuid
  */
 function mapSchema(uuid) {
-    console.log('*** mapSchema');
-    console.log(uuid);
+    // console.log('*** mapSchema');
+    // console.log(uuid);
 
     localLoader = $('#mapHolder').find('.ajaxLoader').first();
 
