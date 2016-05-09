@@ -16,6 +16,7 @@ use Politizr\Constant\ListingConstants;
 use Politizr\Constant\ReputationConstants;
 use Politizr\Constant\XhrConstants;
 use Politizr\Constant\IdCheckConstants;
+use Politizr\Constant\TagConstants;
 
 use Politizr\Model\PUser;
 use Politizr\Model\PUCurrentQO;
@@ -26,6 +27,7 @@ use Politizr\Model\PUBadgeQuery;
 use Politizr\Model\PRBadgeTypeQuery;
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PUMandateQuery;
+use Politizr\Model\PTagQuery;
 
 use Politizr\FrontBundle\Form\Type\PUserIdentityType;
 use Politizr\FrontBundle\Form\Type\PUserEmailType;
@@ -1243,11 +1245,15 @@ class XhrUser
         $this->logger->info('$filterDate = ' . print_r($filterDate, true));
 
         // set default values if not set
+        if (empty($geoTagUuid)) {
+            $franceTag = PTagQuery::create()->findPk(TagConstants::TAG_GEO_FRANCE_ID);
+            $geoTagUuid = $franceTag->getUuid();
+        }
         if (empty($filterProfile)) {
             $filterProfile = ListingConstants::FILTER_KEYWORD_ALL_USERS;
         }
         if (empty($filterActivity)) {
-            $filterActivity = ListingConstants::ORDER_BY_KEYWORD_LAST;
+            $filterActivity = ListingConstants::ORDER_BY_KEYWORD_MOST_ACTIVE;
         }
         if (empty($filterDate)) {
             $filterDate = ListingConstants::FILTER_KEYWORD_ALL_DATE;

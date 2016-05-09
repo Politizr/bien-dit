@@ -79,7 +79,7 @@ class UserService
     public function getUsersByFilters(
         $geoTagUuid,
         $filterProfile = ListingConstants::FILTER_KEYWORD_ALL_USERS,
-        $filterActivity = ListingConstants::ORDER_BY_KEYWORD_LAST,
+        $filterActivity = ListingConstants::ORDER_BY_KEYWORD_MOST_ACTIVE,
         $filterDate = ListingConstants::FILTER_KEYWORD_ALL_DATE,
         $offset = 0,
         $count = ListingConstants::LISTING_CLASSIC_PAGINATION

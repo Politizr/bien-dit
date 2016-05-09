@@ -13,6 +13,7 @@ use Politizr\Constant\XhrConstants;
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\PathConstants;
 use Politizr\Constant\ListingConstants;
+use Politizr\Constant\TagConstants;
 
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDReaction;
@@ -1250,6 +1251,10 @@ class XhrDocument
         $this->logger->info('$filterDate = ' . print_r($filterDate, true));
 
         // set default values if not set
+        if (empty($geoTagUuid)) {
+            $franceTag = PTagQuery::create()->findPk(TagConstants::TAG_GEO_FRANCE_ID);
+            $geoTagUuid = $franceTag->getUuid();
+        }
         if (empty($filterPublication)) {
             $filterPublication = ListingConstants::FILTER_KEYWORD_ALL_PUBLICATIONS;
         }

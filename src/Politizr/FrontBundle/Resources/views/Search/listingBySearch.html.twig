@@ -44,6 +44,11 @@
                 {% include 'PolitizrFrontBundle:Search\\Map:_france.svg.twig' with { 'current': null } %}
             </div>
         </div>
+        <div class="sidebarSearch">
+            <div class="sidebarSearchCategory">
+                {% include 'PolitizrFrontBundle:Search\\Filters:_category.html.twig' %}
+            </div>
+        </div>
     {% else %}
         {% include 'PolitizrFrontBundle:Search:_sidebarSearch.html.twig' %}
     {% endif %}
