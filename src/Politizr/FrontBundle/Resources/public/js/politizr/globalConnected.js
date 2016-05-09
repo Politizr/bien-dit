@@ -11,7 +11,7 @@ $(function() {
 //                            NOTIFICATIONS                            //
 // ******************************************************************* //
 
-$(document).mousedown(function (e) {
+$("body").on("mousedown touchstart", function(e) {
     var container = $("#notifBox, [action='toggleNotifBox']");
     if (!container.is(e.target) // if the target of the click isn't the container...
         && container.has(e.target).length === 0) // ... nor a descendant of the container
