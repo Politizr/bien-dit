@@ -16,7 +16,8 @@ function usersByFiltersListing(init, offset) {
     // console.log(offset);
 
     init = (typeof init === "undefined") ? true : init;
-    offset = (typeof offset === "undefined") ? 0 : offset;
+    // /!\ propel pagination > num page is used instead of offset
+    offset = (typeof offset === "undefined") ? 1 : offset;
 
     targetElement = $('#documentListing .listTop');
     localLoader = $('#documentListing').find('.ajaxLoader').first();

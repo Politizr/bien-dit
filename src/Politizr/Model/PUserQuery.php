@@ -62,6 +62,7 @@ class PUserQuery extends BasePUserQuery
 
     /**
      * Note: only "positives" actions are counted
+     *
      * @return PUserQuery
      */
     public function orderByMostActive()
@@ -69,7 +70,7 @@ class PUserQuery extends BasePUserQuery
         return $this
             ->withColumn('COUNT(p_u_reputation.id)', 'MostActive')
             ->join('PUReputation', \Criteria::LEFT_JOIN)
-            ->where('PUReputation.p_r_action_id IN ('.implode(',', ReputationConstants::getPositivesPRActionsId()).')')
+            ->addJoinCondition('PUReputation', 'PUReputation.PRActionId IN ?', implode(',', ReputationConstants::getPositivesPRActionsId()), \Criteria::IN)
             ->groupBy('Id')
             ->orderBy('MostActive', 'desc');
     }
