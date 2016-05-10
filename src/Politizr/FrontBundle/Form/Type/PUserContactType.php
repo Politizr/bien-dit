@@ -36,7 +36,6 @@ class PUserContactType extends AbstractType
             'attr'     => array( 'value' => false )
         ));
 
-
         $builder->add('gender', 'choice', array(
             'required' => true,
             'label' => 'Civilité',
@@ -59,37 +58,9 @@ class PUserContactType extends AbstractType
             'attr' => array('placeholder' => 'Prénom')
         ));
 
-        $builder->add('birthday', 'date', array(
-            'required' => true,
-            'label' => 'Date de naissance',
-            'widget' => 'single_text',
-            'format' => 'dd/MM/yyyy',
-            'invalid_message' => 'La date de naissance doit être au format JJ/MM/AAAA',
-            'constraints' => new NotBlank(array('message' => 'Date de naissance obligatoire.')),
-            'attr' => array('placeholder' => 'JJ/MM/AAAA')
-        ));
-
-        $builder->add('email', 'repeated', array(
-            'required' => true,
-            'first_options' =>   array(
-                'label' => 'Email',
-                'attr' => array('placeholder' => 'Email')
-            ),
-            'second_options' =>   array(
-                'label' => 'Confirmation email',
-                'attr' => array('placeholder' => 'Email')
-            ),
-            'type' => 'email',
-            'constraints' => array(
-                new NotBlank(array('message' => 'Email obligatoire.')),
-                new Email(array('message' => 'Le format de l\'email n\'est pas valide.'))
-            )
-        ));
-
         $builder->add('newsletter', 'checkbox', array(
             'required' => false,
-            'label' => 'Je souhaite recevoir les news de Politizr',
-            'attr'     => array( 'checked' => 'checked', 'align_with_widget' => true )
+            'label' => 'Je souhaite recevoir les news de Politizr'
         ));
     }
 

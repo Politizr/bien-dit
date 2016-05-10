@@ -4,15 +4,21 @@ namespace Politizr\FrontBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Email;
+use Rollerworks\Bundle\PasswordStrengthBundle\Validator\Constraints\PasswordStrength;
+
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormEvent;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Politizr\Constant\UserConstants;
 
 /**
- * Inscription user citoyen
+ * Citizen inscription form
  *
  * @author Lionel Bouzonville
  */
@@ -32,14 +38,20 @@ class PUserRegisterType extends AbstractType
             'attr'     => array( 'value' => false )
         ));
 
-        $builder->add('username', 'text', array(
+        $builder->add('username', 'hidden', array(
+            'attr'     => array( 'value' => '' )
+        ));
+
+        $builder->add('email', 'email', array(
             'required' => true,
-            'label' => 'Identifiant',
-            'constraints' => new NotBlank(array('message' => 'Identifiant obligatoire.')),
-            'attr' => array('placeholder' => 'Identifiant')
+            'label' => 'Email',
+            'constraints' => array(
+                new NotBlank(array('message' => 'Email obligatoire.')),
+                new Email(array('message' => 'Le format de l\'email n\'est pas valide.')),
+            ),
+            'attr' => array('placeholder' => 'Email')
         ));
         
-        # TODO > contraintes en plus mot de passe "fort"
         $builder->add('plainPassword', 'repeated', array(
             'required' => true,
             'first_options' =>   array(
@@ -51,9 +63,32 @@ class PUserRegisterType extends AbstractType
                 'attr' => array('placeholder' => 'Mot de passe')
             ),
             'type' => 'password',
-            'constraints' => new NotBlank(array('message' => 'Mot de passe obligatoire.'))
+            'constraints' => array(
+                new NotBlank(array('message' => 'Mot de passe obligatoire.')),
+                new PasswordStrength(
+                    array(
+                        'message' => 'Le mot de passe doit contenir au moins 8 caractères',
+                        'minLength' => 8,
+                        'minStrength' => 1
+                    )
+                ),
+            )
         ));
 
+        $builder->add('cgu', 'checkbox', array(
+            'required' => true,
+            'label' => 'J\'accepte les conditions générales d\'utilisation',
+            'mapped' => false
+        ));
+
+        // update username same as email field
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+            $data = $event->getData();
+            if (isset($data['email'])) {
+                $data['username'] = $data['email'];
+            }
+            $event->setData($data);
+        });
     }
 
     /**

@@ -539,39 +539,7 @@ class XhrAdmin
         }
 
         // Reputation evolution update
-        $con = \Propel::getConnection('default');
-
-        if ($evolution > 0) {
-            $con->beginTransaction();
-            try {
-                for ($i = 0; $i < $evolution; $i++) {
-                    $puReputation = new PUReputation();
-                    $puReputation->setPRActionId(ReputationConstants::ACTION_ID_R_ADMIN_POS);
-                    $puReputation->setPUserId($subjectId);
-                    $puReputation->save();
-                }
-
-                $con->commit();
-            } catch (\Exception $e) {
-                $con->rollback();
-                throw new InconsistentDataException(sprintf('Rollback reputation evolution user id-%s.', $subjectId));
-            }
-        } elseif ($evolution < 0) {
-            $con->beginTransaction();
-            try {
-                for ($i = 0; $i > $evolution; $i--) {
-                    $puReputation = new PUReputation();
-                    $puReputation->setPRActionId(ReputationConstants::ACTION_ID_R_ADMIN_NEG);
-                    $puReputation->setPUserId($subjectId);
-                    $puReputation->save();
-                }
-
-                $con->commit();
-            } catch (\Exception $e) {
-                $con->rollback();
-                throw new InconsistentDataException(sprintf('Rollback reputation evolution user id-%s.', $subjectId));
-            }
-        }
+        $user->updateReputation($evolution);
 
         $newScore = $user->getReputationScore();
 

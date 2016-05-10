@@ -129,6 +129,11 @@ class ReputationConstants
     const BADGE_ID_FAN = 35;
     const BADGE_ID_AMBASSADEUR = 36;
 
+    // ******************************************************** //
+    //       ACTIONS' POST INSCRIPTION FUNCTIONAL CONSTANTS
+    // ******************************************************** //
+    const ACTION_CITIZEN_INSCRIPTION = 100;
+    const ACTION_ELECTED_INSCRIPTION = 150;
 
     // ******************************************************** //
     //             ACTIONS' FUNCTIONAL CONSTANTS

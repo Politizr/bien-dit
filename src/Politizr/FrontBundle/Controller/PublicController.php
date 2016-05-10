@@ -45,40 +45,6 @@ class PublicController extends Controller
     }
 
     /**
-     * Inscription temp
-     * code beta
-     */
-    public function inscriptionAction($type)
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** inscriptionAction');
-
-        if ($type == 'citoyen') {
-            $template = "inscriptionTempCitizen.html.twig";
-        } elseif ($type == 'elu') {
-            $template = "inscriptionTempElected.html.twig";
-        } else {
-            $template = "inscriptionTemp.html.twig";
-        }
-
-        return $this->render('PolitizrFrontBundle:Public:'.$template, array(
-        ));
-    }
-
-    /**
-     * Inscription temp finish
-     * code beta
-     */
-    public function inscriptionTempFinishAction()
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** inscriptionTempFinishAction');
-
-        return $this->render('PolitizrFrontBundle:Public:inscriptionTempFinish.html.twig', array(
-        ));
-    }
-
-    /**
      * Qui sommes nous
      * code beta
      */

@@ -20,6 +20,7 @@ use Politizr\Exception\InconsistentDataException;
 use Politizr\Constant\OrderConstants;
 use Politizr\Constant\UserConstants;
 use Politizr\Constant\PathConstants;
+use Politizr\Constant\ReputationConstants;
 
 use Politizr\Model\PUser;
 
@@ -137,12 +138,11 @@ class SecurityService
      * Soft firewall public connection
      *
      * @param PUser $user
+     * @param string $firewalll
      */
-    private function doPublicConnection(PUser $user)
+    private function doPublicConnection(PUser $user, $firewall = 'user_area')
     {
-        $providerKey = 'public';
-
-        $token = new UsernamePasswordToken($user, null, $providerKey, $user->getRoles());
+        $token = new UsernamePasswordToken($user, null, $firewall, $user->getRoles());
         $this->securityTokenStorage->setToken($token);
         $this->eventDispatcher->dispatch(AuthenticationEvents::AUTHENTICATION_SUCCESS, new AuthenticationEvent($token));
     }
@@ -221,7 +221,7 @@ class SecurityService
         $facebookClient = new Facebook\Facebook([
           'app_id' => $this->facebookClientId,
           'app_secret' => $this->facebookClientSecret,
-          'default_graph_version' => 'v2.4',
+          'default_graph_version' => 'v2.6',
           'default_access_token' => $accessToken, // optional
         ]);
 
@@ -229,9 +229,9 @@ class SecurityService
             // Get the Facebook\GraphNodes\GraphUser object for the current user.
             // If you provided a 'default_access_token', the '{access-token}' is optional.
 
-            // ?fields=email,about,address,birthday,bio
+            // id,name,email,birthday,picture.type(square)
             $response = $facebookClient->get(
-                sprintf('/%s?fields=gender,first_name,last_name,birthday,about,bio,address,location,website,is_verified', $providerId)
+                sprintf('/%s?fields=gender,first_name,last_name,birthday,about,bio,location,website,is_verified', $providerId)
             );
         } catch (FacebookResponseException $e) {
             // When Graph returns an error
@@ -246,6 +246,8 @@ class SecurityService
         $graphUser = $response->getGraphUser();
 
         // @todo / how to get the facebook page url?
+
+        dump($graphUser);
 
         $gender = $graphUser->getField('gender');
         $firstName = $graphUser->getField('first_name');
@@ -477,6 +479,7 @@ class SecurityService
             $user->setQualified(false);
             $user->setOnline(false);
 
+            // http://www.jesuisundev.fr/tag/hwioauthbundle/
             $user = $this->userManager->updateOAuthData($user, $oAuthData);
 
             // manage download photo profile
@@ -562,10 +565,12 @@ class SecurityService
         $roles = [ 'ROLE_CITIZEN_INSCRIPTION' ];
 
         // update user
+        $this->userManager->updateCanonicalFields($user);
+
         $user = $this->userManager->updateForInscriptionStart(
             $user,
             $roles,
-            $this->usernameCanonicalizer->canonicalize($user->getUsername()),
+            $this->usernameCanonicalizer->canonicalize($user->getEmail()),
             $this->encoderFactory->getEncoder($user)->encodePassword($user->getPlainPassword(), $user->getSalt())
         );
 
@@ -593,6 +598,9 @@ class SecurityService
         
         // save user
         $user->save();
+
+        // update reputation
+        $user->updateReputation(ReputationConstants::ACTION_CITIZEN_INSCRIPTION);
 
         // (re)connect user
         $this->doPublicConnection($user);

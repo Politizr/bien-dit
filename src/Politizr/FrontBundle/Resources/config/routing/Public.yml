@@ -5,18 +5,6 @@ Homepage:
     pattern:  /
     defaults: { _controller: PolitizrFrontBundle:Public:homepage }
 
-InscriptionTmp:
-    pattern:  /inscription/{type}
-    defaults: { _controller: PolitizrFrontBundle:Public:inscription }
-    requirements:
-        _method:        GET
-
-InscriptionTmpFinish:
-    pattern:  /merci
-    defaults: { _controller: PolitizrFrontBundle:Public:inscriptionTempFinish }
-    requirements:
-        _method:        GET
-
 WhoWeAre:
     pattern:  /qui-sommes-nous
     defaults: { _controller: PolitizrFrontBundle:Public:whoWeAre }

@@ -26,6 +26,7 @@ parameters:
 
     # OAuth parameters
     # Facebook
+    # https://developers.facebook.com/docs/facebook-login/permissions
     facebook_client_id: 123
     facebook_client_secret: 123
     facebook_scope: public_profile,email

@@ -1,56 +1,39 @@
 {% extends 'PolitizrFrontBundle::layoutPublic.html.twig' %}
 
 {% block title %}
-    Inscription - {{ parent() }}
+    Inscription étape 1 / 2 - {{ parent() }}
 {% endblock title %}
 
-{% block connexionBox %}
-    {{ render(controller('PolitizrFrontBundle:Security:login')) }}
-{% endblock %}
-
-{% block inscriptionSteps %}
-    {% include 'PolitizrFrontBundle:Security:citizenSteps.html.twig' with { 'step': 1 } only %}
-{% endblock %}
-
 {% block main %}
-    <div id="main">
-        <h1>Inscription</h1>
-        <p class="bg-info">Accélérez le processus d'inscription en utilisant votre compte Facebook, Twitter ou Google</p>
-        <div id="o-auth-buttons">
-            {% include 'PolitizrFrontBundle:Security:facebookConnect.html.twig' with {'label': 'Inscription avec Facebook'} %}
-            {% include 'PolitizrFrontBundle:Security:twitterConnect.html.twig' with {'label': 'Inscription avec Twitter'} %}
-            {% include 'PolitizrFrontBundle:Security:googleConnect.html.twig' with {'label': 'Inscription avec Google'} %}
-        </div>
-        <hr>
-        <p class="bg-info">Sinon choisissez vos identifiant et mot de passe Politizr</p>
-        {% if form.vars.errors|length %}
-            <div class="box-error">
-                {{ form_errors(form) }}
+    <div id="public">
+        <div class="center">
+            <h1>Inscription</h1>
+            <p class="bg-info">Accélérez le processus d'inscription en utilisant votre compte Facebook, Twitter ou Google</p>
+            <div id="o-auth-buttons">
+                {% include 'PolitizrFrontBundle:Security:facebookConnect.html.twig' with {'label': 'Inscription avec Facebook'} %}
+                {% include 'PolitizrFrontBundle:Security:twitterConnect.html.twig' with {'label': 'Inscription avec Twitter'} %}
+                {% include 'PolitizrFrontBundle:Security:googleConnect.html.twig' with {'label': 'Inscription avec Google'} %}
             </div>
-        {% endif %}
-        <div id="box-inscription-register">
-            {{ form_start(form, {'action': path('InscriptionCheck'), 'method': 'POST', 'style': 'horizontal'}) }}
-                {{ form_row(form.username) }}
-                {{ form_row(form.plainPassword) }}
-        
-                <button type="submit">Valider</button>
+            <hr>
+            <p class="bg-info">Sinon choisissez vos identifiant et mot de passe Politizr</p>
+            {% if form.vars.errors|length %}
+                <div class="box-error">
+                    {{ form_errors(form) }}
+                </div>
+            {% endif %}
+            <div id="box-inscription-register">
+                {{ form_start(form, {'action': path('InscriptionCheck'), 'method': 'POST', 'style': 'horizontal'}) }}
+                    {{ form_row(form.email) }}
+                    {{ form_row(form.plainPassword) }}
+                    {{ form_row(form.cgu) }}
+            
+                    <button type="submit">Valider</button>
 
-            {{ form_end(form) }}
-            <span class="label label-warning pull-right">Tous les champs sont obligatoires</span>
+                {{ form_end(form) }}
+                <span class="label label-warning pull-right">Tous les champs sont obligatoires</span>
+            </div>
+            <h1>Vous êtes élu ou ancien élu?</h1>
+            <p class="bg-info">Politizr vous offre la possibilité de disposer d'un compte permettant de débattre en créant votre <a href="{{ path('InscriptionElected') }}">compte élu</a>.</p>
         </div>
-        <hr>
-        <h1>Vous êtes élu ou ancien élu?</h1>
-        <p class="bg-info">Politizr vous offre la possibilité de disposer d'un compte permettant de débattre en créant votre <a href="{{ path('InscriptionElected') }}">compte élu</a>.</p>
-        <hr>
     </div>
 {% endblock main %}
-
-{% block javascriptFooter %}
-    {{ parent() }}
-
-    {% javascripts
-        '@PolitizrFrontBundle/Resources/public/js/politizr/security/login.js'
-        filter='uglifyjs2' %}
-        <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-{% endblock javascriptFooter %}

@@ -15,25 +15,30 @@ CancelInscription:
     pattern:  /annuler-inscription
     defaults: { _controller: PolitizrFrontBundle:Security:cancelInscription }
 
+InscriptionChoice:
+    pattern:  /inscription
+    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionChoice }
+
+
 ################################################################################
 #               ROUTING CREATION PROFIL CITOYEN
 ################################################################################
 Inscription:
-    pattern:  /inscription
+    pattern:  /inscription/citoyen
     defaults: { _controller: PolitizrFrontBundle:Security:inscription }
 
 InscriptionCheck:
-    pattern:  /inscription/check
+    pattern:  /inscription/citoyen/check
     defaults: { _controller: PolitizrFrontBundle:Security:inscriptionCheck }
     requirements:
         _method:        POST
 
 InscriptionContact:
-    pattern:  /u/inscription-contact
+    pattern:  /u/inscription/citoyen/contact
     defaults: { _controller: PolitizrFrontBundle:Security:inscriptionContact }
 
 InscriptionContactCheck:
-    pattern:  /u/inscription-contact/check
+    pattern:  /u/inscription/citoyen/contact/check
     defaults: { _controller: PolitizrFrontBundle:Security:inscriptionContactCheck }
     requirements:
         _method:        POST
@@ -42,51 +47,51 @@ InscriptionContactCheck:
 #               ROUTING CREATION PROFIL ÉLU
 ################################################################################
 InscriptionElected:
-    pattern:  /inscription-elu
+    pattern:  /inscription/elu
     defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElected }
 
 InscriptionElectedCheck:
-    pattern:  /inscription-elu/check
+    pattern:  /inscription/elu/check
     defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedCheck }
     requirements:
         _method:        POST
 
 InscriptionElectedOrder:
-    pattern:  /v/inscription-elu-commande
+    pattern:  /v/inscription/elu/commande
     defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedOrder }
 
 InscriptionElectedOrderCheck:
-    pattern:  /v/inscription-elu-commande/check
+    pattern:  /v/inscription/elu/commande/check
     defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedOrderCheck }
     requirements:
         _method:        POST
 
 InscriptionElectedPayment:
-    pattern:  /v/inscription-elu-paiement
+    pattern:  /v/inscription/elu/paiement
     defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedPayment }
 
 InscriptionElectedPaymentCheck:
-    pattern:  /v/inscription-elu-paiement/check
+    pattern:  /v/inscription/elu/paiement/check
     defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedPaymentCheck }
 
 InscriptionElectedPaymentFinished:
-    pattern:  /v/inscription-elu-paiement-termine
+    pattern:  /v/inscription/elu/paiement-termine
     defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedPaymentFinished }
 
 InscriptionElectedPaymentCanceled:
-    pattern:  /v/inscription-elu-paiement-annule
+    pattern:  /v/inscription/elu/paiement-annule
     defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedPaymentCanceled }
 
 InscriptionElectedThanking:
-    pattern:  /v/inscription-elu-remerciement
+    pattern:  /v/inscription/elu/remerciement
     defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedThanking }
 
 MigrationElected:
-    pattern:  /citoyen/migration-elu
+    pattern:  /citoyen/migration/elu
     defaults: { _controller: PolitizrFrontBundle:Security:migrationElected }
 
 MigrationElectedCheck:
-    pattern:  /citoyen/check
+    pattern:  /citoyen/migration/elu/check
     defaults: { _controller: PolitizrFrontBundle:Security:migrationElectedCheck }
     requirements:
         _method:        POST

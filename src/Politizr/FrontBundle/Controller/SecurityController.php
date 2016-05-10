@@ -6,6 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 
+use Symfony\Component\EventDispatcher\EventDispatcher;
+
 use Politizr\Model\PUser;
 use Politizr\Model\POrderQuery;
 use Politizr\Model\POPaymentTypeQuery;
@@ -85,6 +87,19 @@ class SecurityController extends Controller
         return $this->redirect($this->generateUrl('Logout'));
     }
 
+
+    /**
+     * Page d'inscription: choix élu / citoyen
+     */
+    public function inscriptionChoiceAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** inscriptionChoiceAction');
+
+        return $this->render('PolitizrFrontBundle:Public:inscriptionChoice.html.twig', array(
+        ));
+    }
+
     /* ######################################################################################################## */
     /*                                               INSCRIPTION CLASSIQUE                                      */
     /* ######################################################################################################## */
@@ -97,7 +112,7 @@ class SecurityController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** inscriptionAction');
 
-        return $this->redirect($this->generateUrl('InscriptionTmp', array('type' => 'generique')));
+        /// return $this->redirect($this->generateUrl('InscriptionTmp', array('type' => 'generique')));
 
         // Objet & formulaire
         $user = new PUser();
@@ -130,8 +145,8 @@ class SecurityController extends Controller
         }
 
         return $this->render('PolitizrFrontBundle:Public:inscription.html.twig', array(
-                'form' => $form->createView(),
-                ));
+            'form' => $form->createView(),
+        ));
     }
 
     /**
@@ -146,8 +161,8 @@ class SecurityController extends Controller
         $form = $this->createForm(new PUserContactType(), $user);
         
         return $this->render('PolitizrFrontBundle:Security:inscriptionContact.html.twig', array(
-                    'form' => $form->createView()
-                    ));
+            'form' => $form->createView()
+        ));
     }
 
     /**
@@ -164,23 +179,17 @@ class SecurityController extends Controller
         $form->bind($request);
         if ($form->isValid()) {
             $user = $form->getData();
-
-            // Canonicalization email
-            $canonicalizeEmail = $this->get('fos_user.util.email_canonicalizer');
-            $user->setEmailCanonical($canonicalizeEmail->canonicalize($user->getEmail()));
             $user->save();
 
-            // Service associé à la finalisation de l'inscription
             $this->get('politizr.functional.security')->inscriptionCitizenFinish($user);
 
             return $this->redirect($this->generateUrl('HomepageC'));
         }
 
         return $this->render('PolitizrFrontBundle:Security:inscriptionContact.html.twig', array(
-                    'form' => $form->createView()
-                    ));
+            'form' => $form->createView()
+        ));
     }
-
 
     /* ######################################################################################################## */
     /*                           INSCRIPTION ELU + MIGRATION CIOYEN VERS ELU                                    */

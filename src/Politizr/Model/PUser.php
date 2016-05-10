@@ -4,12 +4,15 @@ namespace Politizr\Model;
 
 use Politizr\Model\om\BasePUser;
 
+use Politizr\Exception\InconsistentDataException;
+
 use StudioEcho\Lib\StudioEchoUtils;
 
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\QualificationConstants;
 use Politizr\Constant\ListingConstants;
 use Politizr\Constant\TagConstants;
+use Politizr\Constant\ReputationConstants;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
@@ -951,6 +954,48 @@ class PUser extends BasePUser implements UserInterface
             ->orderByTitle();
 
         return parent::countPRBadges($query);
+    }
+
+    /**
+     * Update reputation
+     *
+     * @param int $evolution
+     * @return PUser
+     */
+    public function updateReputation($evolution = 0)
+    {
+        $con = \Propel::getConnection('default');
+        if ($evolution > 0) {
+            $con->beginTransaction();
+            try {
+                for ($i = 0; $i < $evolution; $i++) {
+                    $puReputation = new PUReputation();
+                    $puReputation->setPRActionId(ReputationConstants::ACTION_ID_R_ADMIN_POS);
+                    $puReputation->setPUserId($this->getId());
+                    $puReputation->save();
+                }
+
+                $con->commit();
+            } catch (\Exception $e) {
+                $con->rollback();
+                throw new InconsistentDataException(sprintf('Rollback reputation evolution user id-%s.', $this->getId()));
+            }
+        } elseif ($evolution < 0) {
+            $con->beginTransaction();
+            try {
+                for ($i = 0; $i > $evolution; $i--) {
+                    $puReputation = new PUReputation();
+                    $puReputation->setPRActionId(ReputationConstants::ACTION_ID_R_ADMIN_NEG);
+                    $puReputation->setPUserId($this->getId());
+                    $puReputation->save();
+                }
+
+                $con->commit();
+            } catch (\Exception $e) {
+                $con->rollback();
+                throw new InconsistentDataException(sprintf('Rollback reputation evolution user id-%s.', $this->getId()));
+            }
+        }
     }
 
     /**
