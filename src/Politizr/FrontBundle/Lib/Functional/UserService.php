@@ -105,7 +105,7 @@ class UserService
             ->filterIfTags($tagIds)
             ->filterByKeywords($keywords)
             ->orderWithKeyword($filterActivity)
-            ->find();
+            ->paginate($offset, $count);
 
         return $users;
     }

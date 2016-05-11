@@ -1268,9 +1268,8 @@ class XhrUser
             ListingConstants::LISTING_CLASSIC_PAGINATION
         );
 
-        // @todo create function for code above
         $moreResults = false;
-        if (sizeof($users) == ListingConstants::LISTING_CLASSIC_PAGINATION) {
+        if (!$users->isLast()) {
             $moreResults = true;
         }
 
@@ -1283,7 +1282,7 @@ class XhrUser
                 'PolitizrFrontBundle:PaginatedList:_users.html.twig',
                 array(
                     'users' => $users,
-                    'offset' => intval($offset) + ListingConstants::LISTING_CLASSIC_PAGINATION,
+                    'offset' => intval($offset) + 1, // + ListingConstants::LISTING_CLASSIC_PAGINATION,
                     'moreResults' => $moreResults,
                     'jsFunctionKey' => XhrConstants::JS_KEY_LISTING_USERS_BY_FILTERS
                 )
