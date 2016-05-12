@@ -15,7 +15,6 @@ use Politizr\Constant\PathConstants;
 use Politizr\Constant\ListingConstants;
 use Politizr\Constant\ReputationConstants;
 use Politizr\Constant\XhrConstants;
-use Politizr\Constant\IdCheckConstants;
 use Politizr\Constant\TagConstants;
 
 use Politizr\Model\PUser;
@@ -37,9 +36,6 @@ use Politizr\FrontBundle\Form\Type\PUserIdCheckType;
 use Politizr\FrontBundle\Form\Type\PUCurrentQOType;
 use Politizr\FrontBundle\Form\Type\PUMandateType;
 use Politizr\FrontBundle\Form\Type\PUserBackPhotoInfoType;
-
-use Politizr\FrontBundle\Lib\SimpleImage;
-use Politizr\FrontBundle\Lib\Client\Ariad;
 
 /**
  * XHR service for user management.
@@ -507,111 +503,6 @@ class XhrUser
 
         return true;
     }
-
-    /* ######################################################################################################## */
-    /*                                                 ARIAD IDCHECK                                            */
-    /* ######################################################################################################## */
-
-    /**
-     * ARIAD ID CHECK ZLA
-     * beta
-     */
-    public function validateIdZla(Request $request)
-    {
-        $this->logger->info('*** validateIdZla');
-
-        // get current user
-        $user = $this->securityTokenStorage->getToken()->getUser();
-
-        $form = $this->formFactory->create(new PUserIdCheckType($user), $user);
-
-        $form->bind($request);
-        if ($form->isValid()) {
-            $zla1 = $form->get('zla1')->getData();
-            $zla2 = $form->get('zla2')->getData();
-            $zla3 = $form->get('zla3')->getData();
-
-            $result = $this->idcheck->executeZlaChecking($zla1, $zla2, $zla3);
-
-            // @todo gestion WARNING exemple: photo flash id camille
-            if ($result == IdCheckConstants::WSDL_RESULT_ERROR) {
-                return false;
-            } elseif ($this->idcheck->isUserLastResult($user)) {
-                return true;
-            }
-        } else {
-            $errors = StudioEchoUtils::getAjaxFormErrors($form);
-            throw new BoxErrorException($errors);
-        }
-
-        return false;
-    }
-
-    /**
-     * ARIAD ID CHECK PHOTO
-     * beta
-     */
-    public function validateIdPhoto(Request $request)
-    {
-        $this->logger->info('*** validateIdPhoto');
-
-        $fileName = $request->get('fileName');
-        $this->logger->info('$fileName = ' . print_r($fileName, true));
-
-        // get current user
-        $user = $this->securityTokenStorage->getToken()->getUser();
-
-        $path = $this->kernel->getRootDir() . '/../web' . PathConstants::IDCHECK_UPLOAD_WEB_PATH;
-
-        if (file_exists($path . $fileName)) {
-            $image = new SimpleImage();
-            $image->load($path . $fileName);
-            $rawImg = $image->raw();
-
-            $result = $this->idcheck->executeImageIdCardChecking($rawImg);
-
-            // @todo gestion WARNING exemple: photo flash id camille
-            if ($result == IdCheckConstants::WSDL_RESULT_ERROR) {
-                return false;
-            } elseif ($this->idcheck->isUserLastResult($user)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * ARIAD ID CHECK UPLOAD PHOTO
-     * beta
-     */
-    public function idCheckPhotoUpload(Request $request)
-    {
-        $this->logger->info('*** idCheckPhotoUpload');
-
-        // get current user
-        $user = $this->securityTokenStorage->getToken()->getUser();
-        
-        // Function process
-        $path = $this->kernel->getRootDir() . '/../web' . PathConstants::IDCHECK_UPLOAD_WEB_PATH;
-
-        // XHR upload
-        $fileName = $this->globalTools->uploadXhrImage(
-            $request,
-            'fileName',
-            $path,
-            5000,
-            5000,
-            20971520,
-            [ 'image/jpeg', 'image/pjpeg', 'image/jpeg', 'image/pjpeg' ]
-        );
-
-        return array(
-            'fileName' => $fileName
-        );
-    }
-
-
 
     /* ######################################################################################################## */
     /*                                                REPUTATION                                                */

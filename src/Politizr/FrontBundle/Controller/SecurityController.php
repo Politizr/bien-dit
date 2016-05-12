@@ -352,7 +352,7 @@ class SecurityController extends Controller
     }
 
     /**
-     * Page d'inscription élu / Etape 2 / Choix de la formule
+     * Page d'inscription élu / Etape 4 / Choix de la formule
      */
     public function inscriptionElectedOrderAction(Request $request)
     {
@@ -362,12 +362,6 @@ class SecurityController extends Controller
         $user = $this->getUser();
         $form = $this->createForm(new POrderSubscriptionType());
 
-        // Cas migration formule > MAJ du layout
-        $layout = 'PolitizrFrontBundle::layoutPublic.html.twig';
-        if ($user->hasRole('ROLE_CITIZEN')) {
-            $layout = 'PolitizrFrontBundle::layoutConnected.html.twig';
-        }
-
         return $this->render('PolitizrFrontBundle:Security:inscriptionElectedOrder.html.twig', array(
                     'form' => $form->createView(),
                     'layout' => $layout,
@@ -375,7 +369,7 @@ class SecurityController extends Controller
     }
 
     /**
-     * Page d'inscription élu / Etape 2 / Validation choix de la formule
+     * Page d'inscription élu / Etape 4 / Validation choix de la formule
      */
     public function inscriptionElectedOrderCheckAction(Request $request)
     {
@@ -467,21 +461,21 @@ class SecurityController extends Controller
     }
 
     /**
-     * Page d'inscription élu / Etape 4 / Remerciement
+     * Page d'inscription élu / Etape 4 / IdCheck
      */
-    public function inscriptionElectedThankingAction(Request $request)
+    public function inscriptionElectedIdCheckAction(Request $request)
     {
         $logger = $this->get('logger');
-        $logger->info('*** inscriptionElectedThankingAction');
+        $logger->info('*** inscriptionElectedIdCheckAction');
 
         $user = $this->getUser();
 
         // Récupération de la commande en cours
         $orderId = $this->get('session')->get('p_order_id');
         $order = POrderQuery::create()->findPk($orderId);
+        // @todo manage session expired
         if (!$order) {
             $this->get('session')->getFlashBag()->add('error', 'Session expirée.');
-            return $this->redirect($this->generateUrl('Homepage'));
         }
 
         // Suppression des valeurs en session
@@ -491,16 +485,9 @@ class SecurityController extends Controller
         // Finalisation du process d'inscription élu
         $this->get('politizr.functional.security')->inscriptionFinishElected($user);
 
-        // Cas migration formule > MAJ du layout
-        $layout = 'PolitizrFrontBundle::layoutPublic.html.twig';
-        if ($user->hasRole('ROLE_CITIZEN')) {
-            $layout = 'PolitizrFrontBundle::layoutConnected.html.twig';
-        }
-
-        return $this->render('PolitizrFrontBundle:Security:inscriptionElectedThanking.html.twig', array(
-            'layout' => $layout,
+        return $this->render('PolitizrFrontBundle:Security:inscriptionElectedIdCheck.html.twig', array(
             'order' => $order,
-            ));
+        ));
     }
 
     /* ######################################################################################################## */

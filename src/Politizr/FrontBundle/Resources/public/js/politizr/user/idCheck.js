@@ -56,7 +56,6 @@ $("body").on("click", "button[action='validateIdZla']", function(e) {
     return validateIdZla(form, localLoader);
 });
 
-
 /**
  * Id check / validate ZLA
  * @param form
@@ -69,7 +68,7 @@ function validateIdZla(form, localLoader)
 
     var xhrPath = getXhrPath(
         ROUTE_USER_VALIDATE_ID,
-        'user',
+        'security',
         'validateIdZla',
         RETURN_BOOLEAN
     );
@@ -107,7 +106,7 @@ function validateIdPhoto(fileName)
 
     var xhrPath = getXhrPath(
         ROUTE_USER_VALIDATE_PHOTO_UPLOAD,
-        'user',
+        'security',
         'validateIdPhoto',
         RETURN_BOOLEAN
     );

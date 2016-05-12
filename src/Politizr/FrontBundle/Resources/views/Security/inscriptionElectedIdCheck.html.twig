@@ -1,0 +1,86 @@
+{% extends layout %}
+
+{% block title %}
+    Inscription étape 6 / X - {{ parent() }}
+{% endblock title %}
+
+{% block main %}
+    <div id="public">
+        <div class="center">
+            <h1>Validation par nos services</h1>
+            <div id="box-order-thanking">
+                <h3>Récapitulatif paiement</h3>
+                <p>
+                    Merci de votre commande chez Politizr!
+                </p>
+                <p>
+                    Commande n°{{ order.id }}
+                </p>
+                {% if order.POPaymentStateId == constant('Politizr\\Constant\\OrderConstants::PAYMENT_REFUSED') %}
+                    <p>Votre paiement a été refusé: votre commande ne sera pas prise en compte.</p>
+                {% elseif order.POPaymentStateId == constant('Politizr\\Constant\\OrderConstants::PAYMENT_CANCELED') %}
+                    <p>Votre paiement a été annulé: votre commande ne sera pas prise en compte.</p>
+                {% else %}
+                    <p>Type de paiement: <b>{{ order.POPaymentType }}</b></p>
+                    <p>Statut paiement: <b>{{ order.POPaymentState }}</b></p>
+                {% endif %}
+                <p>
+                    Un e-mail de confirmation a été envoyé sur "{{ order.email }}", comportant les détails de votre commande.
+                <p>    
+                <h3>La suite</h3>
+                <p>
+                    Notre équipe doit maintenant procéder à la vérification de votre identité et de vos mandats avant d'activer votre compte. Vous recevrez un email dès que votre compte sera actif.
+                </p>
+                <p>
+                    Vous pouvez dès à présent profiter de Politizr: n'hésitez pas à compléter votre profil, à suivre des débats et des utilisateurs, toutes ces informations seront conservées lors de la mise à jour de votre compte à la suite de sa validation par nos équipes.
+                </p>
+            </div>
+            <hr>
+            <div id="idCheck" class="withLoaderInside">
+                {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+                <div class="formBlock">
+                    <div class="formBlockHeader">
+                        <label>Validation de votre identité par ZLA</label>
+                    </div>
+
+                    <form name="user" method="post" id="formPerso4">
+                        {{ form_errors(formIdCheck) }}
+
+                        {{ form_row(formIdCheck.zla1, { 'attr': { 'placeholder': 'ZLA Ligne 1' }}) }}
+                        {{ form_row(formIdCheck.zla2, { 'attr': { 'placeholder': 'ZLA Ligne 2' }}) }}
+                        {{ form_row(formIdCheck.zla3, { 'attr': { 'placeholder': 'ZLA Ligne 3' }}) }}
+                        {{ form_rest(formIdCheck) }}
+            
+                        <button type="button" action="validateIdZla">
+                            Valider mon identité
+                        </button>
+                    </form>
+                </div>
+
+                <div class="formBlock">
+                    <div class="formBlockHeader">
+                        <label>Validation de votre identité par upload de la photo de la carte d'identité</label>
+                    </div>
+
+                    {% set uploadAction = path('XhrGeneric', {'xhrRoute': constant('Politizr\\Constant\\XhrConstants::ROUTE_USER_VALIDATE_PHOTO_UPLOAD'), 'xhrService': 'security', 'xhrMethod': 'idCheckPhotoUpload', 'xhrType': constant('Politizr\\Constant\\XhrConstants::RETURN_HTML')}) %}
+                    <form method="POST" action="{{ uploadAction }}" name="user" id="formIdCheckPhoto" enctype="multipart/form-data">
+                        <input type="file" name="fileName" id="fileName">
+                        <label action="fileSelect" for="fileName">Photo ID</label>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock main %}
+
+{% block javascriptFooter %}
+    {{ parent() }}
+
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/jquery.form.min.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/pages/inscriptionElectedIdCheck.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/user/idCheck.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock javascriptFooter %}

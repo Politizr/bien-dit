@@ -10,11 +10,15 @@ use Politizr\Exception\BoxErrorException;
 use StudioEcho\Lib\StudioEchoUtils;
 
 use Politizr\Constant\OrderConstants;
+use Politizr\Constant\PathConstants;
+use Politizr\Constant\IdCheckConstants;
 
 use Politizr\Model\PUserQuery;
 use Politizr\Model\POSubscriptionQuery;
 
 use Politizr\FrontBundle\Form\Type\LostPasswordType;
+
+use Politizr\FrontBundle\Lib\Client\Ariad;
 
 /**
  * XHR service for security management.
@@ -23,7 +27,9 @@ use Politizr\FrontBundle\Form\Type\LostPasswordType;
  */
 class XhrSecurity
 {
+    private $securityTokenStorage;
     private $encoderFactory;
+    private $kernel;
     private $session;
     private $eventDispatcher;
     private $templating;
@@ -35,7 +41,9 @@ class XhrSecurity
 
     /**
      *
+     * @param @security.token_storage
      * @param @security.encoder_factory
+     * @param @kernel
      * @param @session
      * @param @event_dispatcher
      * @param @templating
@@ -46,7 +54,9 @@ class XhrSecurity
      * @param @logger
      */
     public function __construct(
+        $securityTokenStorage,
         $encoderFactory,
+        $kernel,
         $session,
         $eventDispatcher,
         $templating,
@@ -56,7 +66,10 @@ class XhrSecurity
         $orderManager,
         $logger
     ) {
+        $this->securityTokenStorage = $securityTokenStorage;
         $this->encoderFactory = $encoderFactory;
+
+        $this->kernel = $kernel;
 
         $this->session = $session;
 
@@ -117,7 +130,6 @@ class XhrSecurity
         return true;
     }
 
-
     /* ######################################################################################################## */
     /*                                                  INSCRIPTION                                             */
     /* ######################################################################################################## */
@@ -129,11 +141,11 @@ class XhrSecurity
     {
         $this->logger->info('*** paymentProcess');
         
-        // Function process
-        $user = $securityTokenStorage->getToken()->getUser();
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
 
         // Request arguments
-        $paymentTypeId = $request->get('pOPaymentTypeId');
+        $paymentTypeId = $request->get('paymentTypeId');
         $this->logger->info('$paymentTypeId = ' . print_r($paymentTypeId, true));
         
         // Session arguments
@@ -205,6 +217,109 @@ class XhrSecurity
             'htmlForm' => $htmlForm,
             'redirectUrl' => $redirectUrl,
             'redirect' => $redirect,
-            );
+        );
+    }
+
+    /* ######################################################################################################## */
+    /*                                                 ARIAD IDCHECK                                            */
+    /* ######################################################################################################## */
+
+    /**
+     * ARIAD ID CHECK ZLA
+     * beta
+     */
+    public function validateIdZla(Request $request)
+    {
+        $this->logger->info('*** validateIdZla');
+
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+
+        $form = $this->formFactory->create(new PUserIdCheckType($user), $user);
+
+        $form->bind($request);
+        if ($form->isValid()) {
+            $zla1 = $form->get('zla1')->getData();
+            $zla2 = $form->get('zla2')->getData();
+            $zla3 = $form->get('zla3')->getData();
+
+            $result = $this->idcheck->executeZlaChecking($zla1, $zla2, $zla3);
+
+            // @todo gestion WARNING exemple: photo flash id camille
+            if ($result == IdCheckConstants::WSDL_RESULT_ERROR) {
+                return false;
+            } elseif ($this->idcheck->isUserLastResult($user)) {
+                return true;
+            }
+        } else {
+            $errors = StudioEchoUtils::getAjaxFormErrors($form);
+            throw new BoxErrorException($errors);
+        }
+
+        return false;
+    }
+
+    /**
+     * ARIAD ID CHECK PHOTO
+     * beta
+     */
+    public function validateIdPhoto(Request $request)
+    {
+        $this->logger->info('*** validateIdPhoto');
+
+        $fileName = $request->get('fileName');
+        $this->logger->info('$fileName = ' . print_r($fileName, true));
+
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+
+        $path = $this->kernel->getRootDir() . '/../web' . PathConstants::IDCHECK_UPLOAD_WEB_PATH;
+
+        if (file_exists($path . $fileName)) {
+            $image = new SimpleImage();
+            $image->load($path . $fileName);
+            $rawImg = $image->raw();
+
+            $result = $this->idcheck->executeImageIdCardChecking($rawImg);
+
+            // @todo gestion WARNING exemple: photo flash id camille
+            if ($result == IdCheckConstants::WSDL_RESULT_ERROR) {
+                return false;
+            } elseif ($this->idcheck->isUserLastResult($user)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * ARIAD ID CHECK UPLOAD PHOTO
+     * beta
+     */
+    public function idCheckPhotoUpload(Request $request)
+    {
+        $this->logger->info('*** idCheckPhotoUpload');
+
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        
+        // Function process
+        $path = $this->kernel->getRootDir() . '/../web' . PathConstants::IDCHECK_UPLOAD_WEB_PATH;
+
+        // XHR upload
+        $fileName = $this->globalTools->uploadXhrImage(
+            $request,
+            'fileName',
+            $path,
+            5000,
+            5000,
+            20971520,
+            [ 'image/jpeg', 'image/pjpeg', 'image/jpeg', 'image/pjpeg' ]
+        );
+
+        return array(
+            'fileName' => $fileName
+        );
     }
 }

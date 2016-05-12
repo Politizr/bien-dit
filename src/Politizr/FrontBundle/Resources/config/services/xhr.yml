@@ -46,7 +46,9 @@ services:
     politizr.xhr.security:
         class: Politizr\FrontBundle\Lib\Xhr\XhrSecurity
         arguments:
+            - @security.token_storage
             - @security.encoder_factory
+            - @kernel
             - @session
             - @event_dispatcher
             - @templating

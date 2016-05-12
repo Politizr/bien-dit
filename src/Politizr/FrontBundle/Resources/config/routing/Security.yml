@@ -100,17 +100,6 @@ InscriptionElectedPaymentCanceled:
     pattern:  /v/inscription/elu/paiement-annule
     defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedPaymentCanceled }
 
-InscriptionElectedThanking:
-    pattern:  /v/inscription/elu/remerciement
-    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedThanking }
-
-MigrationElected:
-    pattern:  /citoyen/migration/elu
-    defaults: { _controller: PolitizrFrontBundle:Security:migrationElected }
-
-MigrationElectedCheck:
-    pattern:  /citoyen/migration/elu/check
-    defaults: { _controller: PolitizrFrontBundle:Security:migrationElectedCheck }
-    requirements:
-        _method:        POST
-
+InscriptionElectedIdCheck:
+    pattern:  /v/inscription/elu/validation-identite
+    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedIdCheck }

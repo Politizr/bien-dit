@@ -1,26 +1,25 @@
 {% extends layout %}
 
-{% block inscriptionSteps %}
-    {% include 'PolitizrFrontBundle:Security:electedSteps.html.twig' with { 'step': 3 } only %}
-{% endblock %}
+{% block title %}
+    Inscription étape 5 / X - {{ parent() }}
+{% endblock title %}
 
 {% block main %}
-    <div id="main">
-        <h1>Mode de paiement</h1>
-        <p class="bg-info">Choisissez le mode de paiement.</p>
-        <div id="box-inscription-elected-payment">
-            {% for payment in payments %}
-                <div class="payment-choice">
-                    <input type="radio" name="radio-choice" action="payment-choice"><label>{{ payment.title }}</label>
-                    <div class="payment-detail">
-                        {{ payment.description | purify }}
-                        <br/>
-                        <a action="payment-process" class="btn btn-success" pOPaymentTypeId="{{ payment.id }}">procéder au paiement</a>
+    <div id="public">
+        <div class="center">
+            <div id="box-inscription-elected-payment">
+                {% for payment in payments %}
+                    <div class="payment-choice">
+                        <input type="radio" name="radio-choice" action="payment-choice"><label>{{ payment.title }}</label>
+                        <div class="payment-detail">
+                            {{ payment.description | purify }}
+                            <br/>
+                            <a action="payment-process" class="btn btn-success" paymentTypeId="{{ payment.id }}">procéder au paiement</a>
+                        </div>
                     </div>
-                </div>
-            {% endfor %}
+                {% endfor %}
+            </div>
         </div>
-        <hr>
     </div>
 {% endblock main %}
 
@@ -29,6 +28,7 @@
 
     {% javascripts
         '@PolitizrFrontBundle/Resources/public/js/politizr/security/payment.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/pages/inscriptionElectedPayment.js'
         filter='uglifyjs2' %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
