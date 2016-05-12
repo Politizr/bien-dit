@@ -1,0 +1,46 @@
+{% extends 'PolitizrFrontBundle::layoutPublic.html.twig' %}
+
+{% block title %}
+    Inscription étape 3 / X - {{ parent() }}
+{% endblock title %}
+
+{% block main %}
+    <div id="public">
+        <div class="center">
+            {% if errorMsg is defined %}
+                <div class="box-error">
+                    {{ errorMsg }}
+                </div>
+            {% endif %}
+
+            <div class="formBlock">
+                <div class="formBlockHeader">
+                    <label>Mandats</label>
+                    {% include 'PolitizrFrontBundle:Navigation\\Helper:_mandates.html.twig' %}
+                </div>
+                <div class="mandateItem withLoaderInside" id="newMandate">
+                    {% include 'PolitizrFrontBundle:User:_newMandate.html.twig' %}
+                </div>
+
+                <div id="editMandates">
+                    {% include 'PolitizrFrontBundle:User:_editMandates.html.twig' %}
+                </div>
+            </div>
+
+            <a href="{{ path('InscriptionElectedMandateCheck') }}">Etape suivante</a>
+
+            <a href="{{ path('CancelInscription') }}">Annuler l'inscription</a>
+        </div>
+    </div>
+{% endblock main %}
+
+{% block javascriptFooter %}
+    {{ parent() }}
+
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/user/mandates.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/pages/inscriptionElectedMandate.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock javascriptFooter %}

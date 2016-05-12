@@ -14,11 +14,11 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Politizr\Constant\UserConstants;
 
 /**
- * Citizen inscription form step 2
+ * Elected inscription form step 2
  *
  * @author Lionel Bouzonville
  */
-class PUserContactType extends AbstractType
+class PUserElectedContactType extends AbstractType
 {
     private $withEmail;
 
@@ -73,6 +73,17 @@ class PUserContactType extends AbstractType
             'constraints' => new NotBlank(array('message' => 'Prénom obligatoire.')),
             'attr' => array('placeholder' => 'Prénom')
         ));
+
+        $builder->add('birthday', 'date', array(
+            'required' => true,
+            'label' => 'Date de naissance',
+            'widget' => 'single_text',
+            'format' => 'dd/MM/yyyy',
+            'invalid_message' => 'La date de naissance doit être au format JJ/MM/AAAA',
+            'constraints' => new NotBlank(array('message' => 'Date de naissance obligatoire.')),
+            'attr' => array('placeholder' => 'JJ/MM/AAAA')
+        ));
+
 
         $builder->add('newsletter', 'checkbox', array(
             'required' => false,

@@ -1,0 +1,97 @@
+/**
+ *
+ */
+function createUserMandate()
+{
+    // console.log('*** createUserMandate');
+
+    var localLoader = $('#newMandate').find('.ajaxLoader').first();
+
+    var xhrPath = getXhrPath(
+        ROUTE_USER_MANDATE_CREATE,
+        'user',
+        'mandateProfileCreate',
+        RETURN_HTML
+    );
+
+    return xhrCall(
+        document,
+        $("#formMandateCreate").serialize(),
+        xhrPath,
+        localLoader
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
+            $('#newMandate').html(data['newMandate']);
+            $('#editMandates').html(data['editMandates']);
+        }
+        localLoader.hide();
+    });
+}
+
+/**
+ *
+ */
+function saveUserMandate(form, localLoader)
+{
+    // console.log('*** saveUserMandate');
+    // console.log(form);
+    // console.log(localLoader);
+
+    var xhrPath = getXhrPath(
+        ROUTE_USER_MANDATE_UPDATE,
+        'user',
+        'mandateProfileUpdate',
+        RETURN_HTML
+    );
+
+    return xhrCall(
+        document,
+        form.serialize(),
+        xhrPath,
+        localLoader
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
+            $('#editMandates').html(data['editMandates']);
+        }
+        localLoader.hide();
+    });
+}
+
+/**
+ *
+ */
+function deleteUserMandate(uuid, localLoader)
+{
+    // console.log('*** deleteUserMandate');
+    // console.log(uuid);
+    // console.log(localLoader);
+
+    var xhrPath = getXhrPath(
+        ROUTE_USER_MANDATE_DELETE,
+        'user',
+        'mandateProfileDelete',
+        RETURN_HTML
+    );
+
+    return xhrCall(
+        document,
+        { 'uuid': uuid },
+        xhrPath,
+        localLoader
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
+            $('#editMandates').html(data['editMandates']);
+        }
+        localLoader.hide();
+    });
+}
+

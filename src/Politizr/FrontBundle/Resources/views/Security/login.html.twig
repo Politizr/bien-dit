@@ -14,13 +14,11 @@
 {% block tcDescription %}{{ metaDescription }}{% endblock tcDescription %}
 
 {% block content %}
-    <!--
     <div id="oAuthButtons">
-        {# include 'PolitizrFrontBundle:Security:facebookConnect.html.twig' with {'label': 'Connexion avec Facebook'} #}
-        {# include 'PolitizrFrontBundle:Security:twitterConnect.html.twig' with {'label': 'Connexion avec Twitter'} #}
-        {# include 'PolitizrFrontBundle:Security:googleConnect.html.twig' with {'label': 'Connexion avec Google'} #}
+        {% include 'PolitizrFrontBundle:Security:facebookConnect.html.twig' with {'label': 'Connexion avec Facebook'} %}
+        {% include 'PolitizrFrontBundle:Security:twitterConnect.html.twig' with {'label': 'Connexion avec Twitter'} %}
+        {% include 'PolitizrFrontBundle:Security:googleConnect.html.twig' with {'label': 'Connexion avec Google'} %}
     </div>
-    -->
 
     <div id="boxLogin">
         <div id="registerIntro">

@@ -231,7 +231,7 @@ class SecurityService
 
             // id,name,email,birthday,picture.type(square)
             $response = $facebookClient->get(
-                sprintf('/%s?fields=gender,first_name,last_name,birthday,about,bio,location,website,is_verified', $providerId)
+                sprintf('/%s?fields=gender,first_name,last_name,link,birthday,about,bio,location,website,is_verified', $providerId)
             );
         } catch (FacebookResponseException $e) {
             // When Graph returns an error
@@ -252,6 +252,7 @@ class SecurityService
         $gender = $graphUser->getField('gender');
         $firstName = $graphUser->getField('first_name');
         $lastName = $graphUser->getField('last_name');
+        $fbLink = $graphUser->getField('link');
         $birthday = $graphUser->getField('birthday');
         $about = $graphUser->getField('about');
         $bio = $graphUser->getField('bio');
@@ -274,6 +275,10 @@ class SecurityService
 
         if (null !== $lastName) {
             $user->setName($lastName);
+        }
+
+        if (null !== $fbLink) {
+            $user->setFacebook($fbLink);
         }
 
         if (null !== $birthday) {
@@ -311,7 +316,7 @@ class SecurityService
      */
     private function manageTwitterApiExtraData($providerId, $accessToken, $tokenSecret, PUser $user)
     {
-        https://api.twitter.com/1.1/users/show.json?screen_name=lionel09
+        // https://api.twitter.com/1.1/users/show.json?screen_name=lionelbzv
 
         $url = 'https://api.twitter.com/1.1/users/show.json';
         $getfield = sprintf('?user_id=%s', $providerId);
@@ -335,11 +340,14 @@ class SecurityService
             return false;
         }
 
-        // @todo / how to get the twitter page url?
+        dump($twitterResult);
 
-        // dump($twitterResult);
         if (isset($twitterResult->error)) {
             return false;
+        }
+
+        if (isset($twitterResult->screen_name) && null !== $twitterResult->screen_name) {
+            $user->setTwitter(sprintf('https://twitter.com/%s', $twitterResult->screen_name));
         }
 
         if (isset($twitterResult->name) && null !== $twitterResult->name) {
@@ -353,7 +361,7 @@ class SecurityService
         }
 
         if (isset($twitterResult->description) && null !== $twitterResult->description) {
-            $user->setSubtitle($twitterResult->description);
+            $user->setBiography($twitterResult->description);
         }
 
         if (isset($twitterResult->url) && null !== $twitterResult->url) {
@@ -386,25 +394,159 @@ class SecurityService
 
         $client->setClientId($this->googleClientId);
         $client->setClientSecret($this->googleClientSecret);
-
         $client->setAccessToken(json_encode([
-            'access_token' => $accessToken,
-//            'refresh_token' => $refreshToken,
-//            'expires_in' => $expiresIn,
+                'access_token' => $accessToken,
+                'refresh_token' => $refreshToken,
+                'expires_in' => $expiresIn,
+                'created' => time()
         ]));
 
-        // http://stackoverflow.com/questions/13506930/how-to-get-oauth2-access-token-with-google-api-php-client
-        //$client->setAssertionCredentials(new Google_AssertionCredentials(
-        //    SERVICE_ACCOUNT_NAME,
-        //    array('https://www.googleapis.com/auth/fusiontables'),
-        //    $key)
-        //);
+        try {
+            $googlePlus = new Google_Service_Oauth2($client);
+            $googleResult = $googlePlus->userinfo->get();
+            dump($googleResult);
+        } catch (\Exception $e) {
+            $this->logger->error(sprintf('Exception - msg = %s', $e->getMessage()));
+            return false;
+        }
 
-        // http://stackoverflow.com/questions/22117243/getting-user-info-google-php-client-issue
-        // $googlePlus = new Google_Service_Plus($client);
-        $googlePlus = new Google_Service_Oauth2($client);
-        $userProfile = $googlePlus->userinfo->get();
-        // var_dump($userProfile);
+        if (isset($googleResult->gender) && null !== $googleResult->gender) {
+            if ('male' === $googleResult->gender) {
+                $user->setGender('Monsieur');
+            } elseif ('female' === $googleResult->gender) {
+                $user->setGender('Madame');
+            }
+        }
+
+        if (isset($googleResult->familyName) && null !== $googleResult->familyName) {
+            $user->setName($googleResult->familyName);
+        }
+
+        if (isset($googleResult->givenName) && null !== $googleResult->givenName) {
+            $user->setFirstName($googleResult->givenName);
+        }
+
+        // @todo bio, website
+
+        return true;
+
+    }
+
+    /**
+     * Retrieve an existing user w. provided oauth data
+     *
+     * @param $oAuthData
+     * @return PUser
+     */
+    private function getUserFromOAuthData($oAuthData)
+    {
+        $this->logger->info('*** getUserFromOAuthData');
+
+        if (!$oAuthData
+            || !is_array($oAuthData)
+            || !isset($oAuthData['provider'])
+            || !isset($oAuthData['providerId'])
+            ) {
+            // unexpected oauth data, back to homepage
+            throw new InconsistentDataException('Unexpected OAuth data');
+        }
+
+        // get db user
+        $user = PUserQuery::create()
+            ->filterByProvider($oAuthData['provider'])
+            ->filterByProviderId($oAuthData['providerId'])
+            ->findOne();
+
+        // user previously connected w. classic id / pwd
+        if (!$user && isset($oAuthData['email'])) {
+            // get db user
+            $user = PUserQuery::create()
+                ->filterByEmail($oAuthData['email'])
+                ->_or()
+                ->filterByUsername($oAuthData['email'])
+                ->findOne();
+        }
+
+        if ($user) {
+            // update open id connection infos
+            $user->setProvider($oAuthData['provider']);
+            $user->setProviderId($oAuthData['providerId']);
+
+            // update confirmation token
+            if (isset($oAuthData['accessToken'])) {
+                $user->setConfirmationToken($oAuthData['accessToken']);
+            }
+
+            // save user
+            $user->save();
+        }
+
+        return $user;
+    }
+
+    /**
+     * Retrieve an existing user w. provided oauth data
+     *
+     * @param array $oAuthData
+     * @param boolean $isQualified citizen / elected
+     * @return PUser
+     */
+    private function createUserFromOAuthData($oAuthData, $isQualified = false)
+    {
+        $this->logger->info('*** createUserFromOAuthData');
+
+        // create new user & update it
+        $user = new PUser();
+
+        $user->setPUStatusId(UserConstants::STATUS_ACTIVED);
+        $user->setQualified(false);
+        $user->setOnline(false);
+
+        $user = $this->userManager->updateOAuthData($user, $oAuthData);
+
+        // manage download photo profile
+        $this->manageOAuthProfilePhoto($user, $oAuthData['profilePicture']);
+
+        // manage username / default email
+        if ($user->getEmail()) {
+            $username = $user->getEmail();
+        } elseif ($user->getNickname()) {
+            $username = $user->getNickname();
+        } else {
+            throw new InconsistentDataException('No email or nickname found in OAuth data, cannot create app profile.');
+        }
+        $user->setUsername($username);
+
+        // fb / tw / g+ api connections to retrieve:
+        //  - user's description > biography
+        //  - users's coord > website, facebook, twitter, phone
+        //  - user's profile verified attribute > validated
+        $provider = $user->getProvider();
+        $providerId = $user->getProviderId();
+        $accessToken = $oAuthData['accessToken'];
+        $tokenSecret = $oAuthData['tokenSecret'];
+        $refreshToken = $oAuthData['refreshToken'];
+        $expiresIn = $oAuthData['expiresIn'];
+
+        switch ($provider) {
+            case 'facebook':
+                $this->manageFacebookApiExtraData($providerId, $accessToken, $user);
+                break;
+            case 'twitter':
+                $this->manageTwitterApiExtraData($providerId, $accessToken, $tokenSecret, $user);
+                break;
+            case 'google':
+                // https://github.com/hwi/HWIOAuthBundle/issues/833
+                $this->manageGoogleApiExtraData($providerId, $accessToken, $refreshToken, $expiresIn, $user);
+                break;
+            default:
+                throw new InconsistentDataException(sprintf('OAuth Provider %s not managed.'), $provider);
+        }
+
+        // save user
+        $user->save();
+
+        return $user;
     }
 
     /* ######################################################################################################## */
@@ -430,122 +572,63 @@ class SecurityService
 
     /**
      * OAuth connection or inscription
+     * @param boolean $isQualified citizen / elected
      */
-    public function oauthRegister()
+    public function oauthRegister($isQualified = false)
     {
         $this->logger->info('*** oauthRegister');
 
-        // get user
-        $user = $this->securityTokenStorage->getToken()->getUser();
-
         // get oAuth data
         $oAuthData = $this->session->getFlashBag()->get('oAuthData');
-        if (!$oAuthData
-            || !is_array($oAuthData)
-            || !isset($oAuthData['provider'])
-            || !isset($oAuthData['providerId'])
-            ) {
-            // unexpected oauth data, back to homepage
-            return $this->router->generate('Homepage');
-        }
-        
-        // get db user
-        $user = PUserQuery::create()
-            ->filterByProvider($oAuthData['provider'])
-            ->filterByProviderId($oAuthData['providerId'])
-            ->findOne();
 
+        $user = $this->getUserFromOAuthData($oAuthData);
+
+        // connect and redirect existing user
         if ($user) {
-            // update confirmation token
-            if (isset($oAuthData['accessToken'])) {
-                $user->setConfirmationToken($oAuthData['accessToken']);
-            }
-
-            // save user
-            $user->save();
-
-            // connect and redirect user
-            $redirectUrl = $this->connectUser($user);
-
-            return $redirectUrl;
-        } else {
-            // citizen inscription roles
-            $roles = [ 'ROLE_CITIZEN_INSCRIPTION' ];
-
-            // create new user & update it
-            $user = new PUser();
-
-            $user->setPUStatusId(UserConstants::STATUS_ACTIVED);
-            $user->setQualified(false);
-            $user->setOnline(false);
-
-            // http://www.jesuisundev.fr/tag/hwioauthbundle/
-            $user = $this->userManager->updateOAuthData($user, $oAuthData);
-
-            // manage download photo profile
-            $this->manageOAuthProfilePhoto($user, $oAuthData['profilePicture']);
-
-            // manage username
-            if ($user->getNickname()) {
-                $username = $user->getNickname();
-                $canonicalizer = $this->usernameCanonicalizer;
-            } elseif ($user->getEmail()) {
-                $username = $user->getEmail();
-                $canonicalizer = $this->emailCanonicalizer;
-            } else {
-                throw new InconsistentDataException('No email or nickname found in OAuth data, cannot create app profile.');
-            }
-            $user->setUsername($username);
-
-            // manage canonicalization & roles
-            $user = $this->userManager->updateForInscriptionStart(
-                $user,
-                $roles,
-                $canonicalizer->canonicalize($username),
-                null
-            );
-
-            // @todo api connections fb / tw / g+ to retrieve:
-            //  - user's description > summary & biography
-            //  - users's coord > website, facebook, twitter, phone
-            //  - user's profile verified attribute > validated
-            $provider = $user->getProvider();
-            $providerId = $user->getProviderId();
-            $accessToken = $oAuthData['accessToken'];
-            $tokenSecret = $oAuthData['tokenSecret'];
-            $refreshToken = $oAuthData['refreshToken'];
-            $expiresIn = $oAuthData['expiresIn'];
-
-            $this->logger->info('*** token & co');
-            $this->logger->info(print_r($accessToken, true));
-            $this->logger->info(print_r($tokenSecret, true));
-            $this->logger->info(print_r($refreshToken, true));
-            $this->logger->info(print_r($expiresIn, true));
-
-            switch ($provider) {
-                case 'facebook':
-                    $this->manageFacebookApiExtraData($providerId, $accessToken, $user);
-                    break;
-                case 'twitter':
-                    $this->manageTwitterApiExtraData($providerId, $accessToken, $tokenSecret, $user);
-                    break;
-                case 'google':
-                    // https://github.com/hwi/HWIOAuthBundle/issues/833
-                    // $this->manageGoogleApiExtraData($providerId, $accessToken, $refreshToken, $expiresIn, $user);
-                    break;
-                default:
-                    throw new InconsistentDataException(sprintf('OAuth Provider %s not managed.'), $provider);
-            }
-
-            // save user
-            $user->save();
-
-            // connect user
-            $this->doPublicConnection($user);
-
-            // redirect to inscription next step
-            return $this->router->generate('InscriptionContact');
+            return $this->connectUser($user);
         }
+
+        // create new user
+        $user = $this->createUserFromOAuthData($oAuthData, $isQualified);
+
+        // update user for inscription process
+        $roles = [ 'ROLE_CITIZEN_INSCRIPTION' ];
+        if ($isQualified) {
+            $roles = [ 'ROLE_ELECTED_INSCRIPTION' ];
+        }
+
+        // @todo to refactor
+        $canonicalizer = $this->usernameCanonicalizer;
+        if (null !== $user->getEmail()) {
+            $canonicalizer = $this->emailCanonicalizer;
+        }
+
+        $user = $this->userManager->updateForInscriptionStart(
+            $user,
+            $roles,
+            $canonicalizer->canonicalize($user->getUsername()),
+            null
+        );
+        $user->save();
+
+        // if all mandatory params are provided by oauth, connect else redirect to form step
+        if (! $isQualified
+            && null !== $user->getGender()
+            && null !== $user->getFirstName()
+            && null !== $user->getName()
+            && null !== $user->getEmail()
+        ) {
+            $this->inscriptionCitizenFinish($user);
+            $redirectUrl = $this->connectUser($user);
+            return $redirectUrl;
+        }
+
+        $this->doPublicConnection($user);
+
+        if ($isQualified) {
+            return $this->router->generate('InscriptionElectedContact');
+        }
+        return $this->router->generate('InscriptionContact');
     }
     
     /* ######################################################################################################## */

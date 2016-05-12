@@ -18,7 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Politizr\Constant\UserConstants;
 
 /**
- * Citizen inscription form
+ * Citizen inscription form step 1
  *
  * @author Lionel Bouzonville
  */

@@ -12,7 +12,7 @@ Logout:
     pattern:  /deconnexion
 
 CancelInscription:
-    pattern:  /annuler-inscription
+    pattern:  /inscription/annuler
     defaults: { _controller: PolitizrFrontBundle:Security:cancelInscription }
 
 InscriptionChoice:
@@ -55,6 +55,24 @@ InscriptionElectedCheck:
     defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedCheck }
     requirements:
         _method:        POST
+
+InscriptionElectedContact:
+    pattern:  /v/inscription/elu/contact
+    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedContact }
+
+InscriptionElectedContactCheck:
+    pattern:  /v/inscription/elu/contact/check
+    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedContactCheck }
+    requirements:
+        _method:        POST
+
+InscriptionElectedMandate:
+    pattern:  /v/inscription/elu/mandat
+    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedMandate }
+
+InscriptionElectedMandateCheck:
+    pattern:  /v/inscription/elu/mandat/check
+    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedMandateCheck }
 
 InscriptionElectedOrder:
     pattern:  /v/inscription/elu/commande

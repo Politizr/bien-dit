@@ -8,15 +8,20 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
+use Politizr\Constant\QualificationConstants;
+
 use Politizr\Model\PUser;
+use Politizr\Model\PUMandate;
+
 use Politizr\Model\POrderQuery;
 use Politizr\Model\POPaymentTypeQuery;
 
 use Politizr\FrontBundle\Form\Type\PUserRegisterType;
 use Politizr\FrontBundle\Form\Type\PUserContactType;
+use Politizr\FrontBundle\Form\Type\PUMandateType;
 
 use Politizr\FrontBundle\Form\Type\PUserElectedRegisterType;
-use Politizr\FrontBundle\Form\Type\PUserElectedMigrationType;
+use Politizr\FrontBundle\Form\Type\PUserElectedContactType;
 
 use Politizr\FrontBundle\Form\Type\LostPasswordType;
 
@@ -112,8 +117,8 @@ class SecurityController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** inscriptionAction');
 
-        /// return $this->redirect($this->generateUrl('InscriptionTmp', array('type' => 'generique')));
-
+        $this->get('session')->set('inscription/type', 0);
+        
         // Objet & formulaire
         $user = new PUser();
         $form = $this->createForm(new PUserRegisterType(), $user);
@@ -158,7 +163,12 @@ class SecurityController extends Controller
         $logger->info('*** inscriptionContactAction');
 
         $user = $this->getUser();
-        $form = $this->createForm(new PUserContactType(), $user);
+        if ($email = $user->getEmail()) {
+            $withEmail = false;
+        } else {
+            $withEmail = true;
+        }
+        $form = $this->createForm(new PUserContactType($withEmail), $user);
         
         return $this->render('PolitizrFrontBundle:Security:inscriptionContact.html.twig', array(
             'form' => $form->createView()
@@ -174,7 +184,12 @@ class SecurityController extends Controller
         $logger->info('*** inscriptionContactCheckAction');
 
         $user = $this->getUser();
-        $form = $this->createForm(new PUserContactType(), $user);
+        if ($email = $user->getEmail()) {
+            $withEmail = false;
+        } else {
+            $withEmail = true;
+        }
+        $form = $this->createForm(new PUserContactType($withEmail), $user);
         
         $form->bind($request);
         if ($form->isValid()) {
@@ -192,7 +207,7 @@ class SecurityController extends Controller
     }
 
     /* ######################################################################################################## */
-    /*                           INSCRIPTION ELU + MIGRATION CIOYEN VERS ELU                                    */
+    /*                                          INSCRIPTION ELU                                                 */
     /* ######################################################################################################## */
 
     /**
@@ -203,12 +218,14 @@ class SecurityController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** inscriptionElectedAction');
 
+        $this->get('session')->set('inscription/type', 1);
+
         $user = new PUser();
         $form = $this->createForm(new PUserElectedRegisterType(), $user);
         
         return $this->render('PolitizrFrontBundle:Public:inscriptionElected.html.twig', array(
-                    'form' => $form->createView()
-                    ));
+            'form' => $form->createView()
+        ));
     }
 
     /**
@@ -229,91 +246,110 @@ class SecurityController extends Controller
             // Service associé au démarrage de l'inscription élu
             $this->get('politizr.functional.security')->inscriptionElectedStart($user);
 
-            // gestion upload pièce ID
-            $file = $form['uploaded_supporting_document']->getData();
-            if ($file) {
-                $supportingDocument = $file->move($this->get('kernel')->getRootDir() . '/../web/uploads/supporting/', $file->getClientOriginalName());
-                $this->get('session')->set('p_o_supporting_document', $supportingDocument->getBasename());
-            }
-
-            // gestion mandats électifs
-            $electiveMandates = $form['elective_mandates']->getData();
-            $this->get('session')->set('p_o_elective_mandates', $electiveMandates);
-
-            return $this->redirect($this->generateUrl('InscriptionElectedOrder'));
+            return $this->redirect($this->generateUrl('InscriptionElectedContact'));
         }
         
         return $this->render('PolitizrFrontBundle:Public:inscriptionElected.html.twig', array(
-                    'form' => $form->createView()
-                    ));
+            'form' => $form->createView()
+        ));
     }
 
-
     /**
-     * Page d'inscription élu  / Etape 1 / Migration de compte
+     * Page d'inscription / Etape 2 / Contact
      */
-    public function migrationElectedAction()
+    public function inscriptionElectedContactAction()
     {
         $logger = $this->get('logger');
-        $logger->info('*** migrationElectedAction');
+        $logger->info('*** inscriptionElectedContactAction');
 
-        // Mise en session d'une variable spéciale
-        $this->get('session')->set('migration', true);
-
-        // profil déjà validé => étape 2 directement
         $user = $this->getUser();
-        if ($user->getValidated()) {
-            $this->get('politizr.functional.security')->migrationElectedStart($user);
-
-            return $this->redirect($this->generateUrl('InscriptionElectedOrder'));
+        if ($email = $user->getEmail()) {
+            $withEmail = false;
+        } else {
+            $withEmail = true;
         }
-
-        // Inscription depuis un compte citoyen
-        $form = $this->createForm(new PUserElectedMigrationType(), $user);
+        $form = $this->createForm(new PUserElectedContactType($withEmail), $user);
         
-        return $this->render('PolitizrFrontBundle:Security:migrationElected.html.twig', array(
-                    'form' => $form->createView()
-                    ));
+        return $this->render('PolitizrFrontBundle:Security:inscriptionElectedContact.html.twig', array(
+            'form' => $form->createView()
+        ));
     }
 
-
     /**
-     * Page d'inscription élu  / Etape 1 / Validation migration de compte
+     *  Validation inscription / Etape 2 / Contact
      */
-    public function migrationElectedCheckAction(Request $request)
+    public function inscriptionElectedContactCheckAction(Request $request)
     {
         $logger = $this->get('logger');
-        $logger->info('*** migrationElectedCheckAction');
+        $logger->info('*** inscriptionElectedContactCheckAction');
 
         $user = $this->getUser();
-        $form = $this->createForm(new PUserElectedMigrationType(), $user);
-
+        if ($email = $user->getEmail()) {
+            $withEmail = false;
+        } else {
+            $withEmail = true;
+        }
+        $form = $this->createForm(new PUserElectedContactType($withEmail), $user);
+        
         $form->bind($request);
         if ($form->isValid()) {
             $user = $form->getData();
+            $user->save();
 
-            // Service associé au démarrage de la migration vers un compte élu
-            $this->get('politizr.functional.security')->migrationElectedStart($user);
-
-            // gestion upload pièce ID
-            $file = $form['uploaded_supporting_document']->getData();
-            if ($file) {
-                $supportingDocument = $file->move($this->get('kernel')->getRootDir() . '/../web/uploads/supporting/', $file->getClientOriginalName());
-                $this->get('session')->set('p_o_supporting_document', $supportingDocument->getBasename());
-            }
-
-            // gestion mandats électifs
-            $electiveMandates = $form['elective_mandates']->getData();
-            $this->get('session')->set('p_o_elective_mandates', $electiveMandates);
-
-            return $this->redirect($this->generateUrl('InscriptionElectedOrder'));
+            return $this->redirect($this->generateUrl('InscriptionElectedMandate'));
         }
 
-        return $this->render('PolitizrFrontBundle:Security:migrationElected.html.twig', array(
-                    'form' => $form->createView()
-                    ));
+        return $this->render('PolitizrFrontBundle:Security:inscriptionElectedContact.html.twig', array(
+            'form' => $form->createView()
+        ));
     }
 
+    /**
+     * Page d'inscription / Etape 3 / Mandat
+     */
+    public function inscriptionElectedMandateAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** inscriptionElectedMandateAction');
+
+        $user = $this->getUser();
+
+        // Existing mandates form views
+        $formMandateViews = $this->get('politizr.tools.global')->getFormMandateViews($user->getId());
+
+        // New mandate
+        $mandate = new PUMandate();
+        $mandate->setPQTypeId(QualificationConstants::TYPE_ELECTIV);
+        $formMandate = $this->createForm(new PUMandateType(QualificationConstants::TYPE_ELECTIV), $mandate);
+
+        return $this->render('PolitizrFrontBundle:Security:inscriptionElectedMandate.html.twig', array(
+            'formMandate' => $formMandate?$formMandate->createView():null,
+            'formMandateViews' => $formMandateViews?$formMandateViews:null,
+        ));
+    }
+
+    /**
+     *  Validation inscription / Etape 3 / Mandat
+     */
+    public function inscriptionElectedMandateCheckAction(Request $request)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** inscriptionElectedMandateCheckAction');
+
+        $user = $this->getUser();
+
+        // @todo > check if user has at least 1 mandate and throw error if not
+        if ($count = $user->countPUMandates() > 0) {
+            return $this->redirect($this->generateUrl('InscriptionElectedOrder'));
+        }
+        
+        $errorMsg = 'Vous devez renseigner au moins 1 mandat';
+
+        return $this->render('PolitizrFrontBundle:Security:inscriptionElectedMandate.html.twig', array(
+            'form' => $form->createView(),
+            'error' => $errorMsg,
+        ));
+    }
 
     /**
      * Page d'inscription élu / Etape 2 / Choix de la formule
@@ -337,7 +373,6 @@ class SecurityController extends Controller
                     'layout' => $layout,
             ));
     }
-
 
     /**
      * Page d'inscription élu / Etape 2 / Validation choix de la formule
@@ -496,8 +531,10 @@ class SecurityController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** oauthRegisterAction');
 
+        $isQualified = $this->get('session')->get('inscription/type');
+
         // Appel du service connexion oauth ou création user + connexion oauth suivant les cas
-        $redirectUrl = $this->get('politizr.functional.security')->oauthRegister();
+        $redirectUrl = $this->get('politizr.functional.security')->oauthRegister($isQualified);
 
         // Redirection
         return $this->redirect($redirectUrl);

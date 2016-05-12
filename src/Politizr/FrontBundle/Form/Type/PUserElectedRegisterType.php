@@ -7,13 +7,17 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Email;
+use Rollerworks\Bundle\PasswordStrengthBundle\Validator\Constraints\PasswordStrength;
+
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormEvent;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Politizr\Constant\UserConstants;
 
 /**
- * Inscription user elu / étape 1
+ * Elected inscription form step 1
  *
  * @author Lionel Bouzonville
  */
@@ -34,69 +38,15 @@ class PUserElectedRegisterType extends AbstractType
             'attr'     => array( 'value' => false )
         ));
 
-        // Nom, prénom, etc.
-        $builder->add('gender', 'choice', array(
-            'required' => true,
-            'label' => 'Civilité',
-            'choices' => array('Madame' => 'Madame', 'Monsieur' => 'Monsieur'),
-            'expanded' => true,
-            'constraints' => new NotBlank(array('message' => 'Civilité obligatoire.'))
-        ));
 
-        $builder->add('name', 'text', array(
+        $builder->add('email', 'email', array(
             'required' => true,
-            'label' => 'Nom',
-            'constraints' => new NotBlank(array('message' => 'Nom obligatoire.')),
-            'attr' => array('placeholder' => 'Nom')
-        ));
-
-        $builder->add('firstname', 'text', array(
-            'required' => true,
-            'label' => 'Prénom',
-            'constraints' => new NotBlank(array('message' => 'Prénom obligatoire.')),
-            'attr' => array('placeholder' => 'Prénom')
-        ));
-
-        $builder->add('birthday', 'date', array(
-            'required' => true,
-            'label' => 'Date de naissance',
-            'widget' => 'single_text',
-            'format' => 'dd/MM/yyyy',
-            'invalid_message' => 'La date de naissance doit être au format JJ/MM/AAAA',
-            'constraints' => new NotBlank(array('message' => 'Date de naissance obligatoire.')),
-            'attr' => array('placeholder' => 'JJ/MM/AAAA')
-        ));
-
-        $builder->add('email', 'repeated', array(
-            'required' => true,
-            'first_options' =>   array(
-                'label' => 'Email',
-                'attr' => array('placeholder' => 'Email')
-                ),
-            'second_options' =>   array(
-                'label' => 'Confirmation email',
-                'attr' => array('placeholder' => 'Email')
-                ),
-            'type' => 'email',
+            'label' => 'Email',
             'constraints' => array(
                 new NotBlank(array('message' => 'Email obligatoire.')),
-                new Email(array('message' => 'Le format de l\'email n\'est pas valide.'))
-                )
-        ));
-
-        $builder->add('newsletter', 'checkbox', array(
-            'required' => false,
-            'label' => 'Je souhaite recevoir les news de Politizr',
-            'attr'     => array( 'checked' => 'checked', 'align_with_widget' => true )
-        ));
-
-
-        // Username / Password
-        $builder->add('username', 'text', array(
-            'required' => true,
-            'label' => 'Identifiant',
-            'constraints' => new NotBlank(array('message' => 'Identifiant obligatoire.')),
-            'attr' => array('placeholder' => 'Identifiant')
+                new Email(array('message' => 'Le format de l\'email n\'est pas valide.')),
+            ),
+            'attr' => array('placeholder' => 'Email')
         ));
         
         $builder->add('plainPassword', 'repeated', array(
@@ -104,33 +54,44 @@ class PUserElectedRegisterType extends AbstractType
             'first_options' =>   array(
                 'label' => 'Mot de passe',
                 'attr' => array('placeholder' => 'Mot de passe')
-                ),
+            ),
             'second_options' =>   array(
                 'label' => 'Confirmation',
                 'attr' => array('placeholder' => 'Mot de passe')
-                ),
+            ),
             'type' => 'password',
-            'constraints' => new NotBlank(array('message' => 'Mot de passe obligatoire.'))
+            'constraints' => array(
+                new NotBlank(array('message' => 'Mot de passe obligatoire.')),
+                new PasswordStrength(
+                    array(
+                        'message' => 'Le mot de passe doit contenir au moins 8 caractères',
+                        'minLength' => 8,
+                        'minStrength' => 1
+                    )
+                ),
+            )
         ));
 
-
-        // Justificatif + mandats électifs
-        $builder->add('uploaded_supporting_document', 'file', array(
+        $builder->add('elected', 'checkbox', array(
             'required' => true,
-            'label' => 'Pièce justificative',
-            'mapped' => false,
-            'attr' => array('help_text' => 'Scan de votre pièce d\'identité.'),
-            'constraints' => new NotBlank(array('message' => 'Scan d\'une pièce justificative obligatoire.'))
+            'label' => 'Je certifie être un élu',
+            'mapped' => false
         ));
 
-        $builder->add('elective_mandates', 'textarea', array(
+        $builder->add('cgu', 'checkbox', array(
             'required' => true,
-            'label' => 'Mandats électifs',
-            'mapped' => false,
-            'attr' => array('help_text' => 'Liste des mandats électifs exercés.'),
-            'constraints' => new NotBlank(array('message' => 'Liste de vos mandats électifs obligatoire.')),
-            'attr' => array('placeholder' => 'Liste de vos mandats électifs passés ou présents')
+            'label' => 'J\'accepte les conditions générales d\'utilisation',
+            'mapped' => false
         ));
+
+        // update username same as email field
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+            $data = $event->getData();
+            if (isset($data['email'])) {
+                $data['username'] = $data['email'];
+            }
+            $event->setData($data);
+        });
     }
 
     /**

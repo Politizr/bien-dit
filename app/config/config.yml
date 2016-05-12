@@ -618,8 +618,8 @@ hwi_oauth:
                 email:                  email
                 birthday:               birthday
                 profilepicture:         picture.data.url
-            options:        
-                display:                popup               #dialog is optimized for popup window
+            # options:        
+            #     display:                popup               #dialog is optimized for popup window
 
         twitter:
             type:                       twitter

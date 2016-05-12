@@ -561,6 +561,16 @@ class PUser extends BasePUser implements UserInterface
      *
      * @return PropelCollection[PUMandate]
      */
+    public function countMandates()
+    {
+        return parent::countPUMandates();
+    }
+
+    /**
+     * User's user mandates
+     *
+     * @return PropelCollection[PUMandate]
+     */
     public function getMandates()
     {
         $query = PUMandateQuery::create()
