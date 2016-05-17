@@ -4,33 +4,55 @@
     Inscription étape 2 / X - {{ parent() }}
 {% endblock title %}
 
+{% block bodyClass %} class="process"{% endblock %}
+
+{% block header %}
+    <div id="header">
+        {% include 'PolitizrFrontBundle:Navigation\\Header:_headerInscription.html.twig' with { 'type': 'elected' } %}
+    </div>
+    <div id="headerTrigger"></div>
+{% endblock header %}
+
 {% block main %}
-    <div id="public">
-        <div class="center">
-            {% if form.vars.errors|length %}
-                <div class="box-error">
-                    {{ form_errors(form) }}
+    <div id="main">
+        <center>
+            <div class="column column140">
+                <div class="processNav">
+                    <ol>
+                        <li class="activeStep">Profil</li>
+                        <li>Mandat électoral</li>
+                        <li>Formule</li>
+                        <li>Paiement</li>
+                        <li>Validation d'identité</li>
+                    </ol>
                 </div>
-            {% endif %}
-
-            <div id="box-inscription-contact">
-                {{ form_start(form, {'action': path('InscriptionElectedContactCheck'), 'method': 'POST'}) }}
-                    {{ form_row(form.gender) }}
-                    {{ form_row(form.name) }}
-                    {{ form_row(form.firstname) }}
-                    {% if (form.email is defined) %}
-                        {{ form_row(form.email) }}
-                    {% endif %}
-                    {{ form_row(form.birthday) }}
-                    {{ form_row(form.newsletter) }}
-
-                    <button type="submit">Valider</button>
-
-                {{ form_end(form) }}
-                <span class="label label-warning pull-right">Tous les champs sont obligatoires</span>
             </div>
-
-            <a href="{{ path('CancelInscription') }}">Annuler l'inscription</a>
-        </div>
+            <div class="column column280">
+                <div class="card">
+                    {% if form.vars.errors|length %}
+                        <div class="boxError">
+                            {{ form_errors(form) }}
+                        </div>
+                    {% endif %}
+                    {{ form_start(form, {'action': path('InscriptionElectedContactCheck'), 'method': 'POST'}) }}
+                        {{ form_row(form.gender) }}
+                        {{ form_row(form.name) }}
+                        {{ form_row(form.firstname) }}
+                        {% if (form.email is defined) %}
+                            {{ form_row(form.email) }}
+                        {% endif %}
+                        {{ form_row(form.birthday) }}
+                        {{ form_row(form.newsletter) }}
+                        <button type="submit" class="submit nextStepOrange">Étape suivante</button>
+                    {{ form_end(form) }}
+                </div>
+                <div class="cardFooter">
+                    Tous les champs sont obligatoires
+                </div>
+            </div>
+            <div class="column column140">
+                <div class="columnSidebar processGreen"><i class="icon-info"></i><br>Pour nous permettre de garantir l’identité des comptes élus, les pseudonymes ne sont pas acceptés.</div>
+            </div>
+        </center>
     </div>
 {% endblock main %}

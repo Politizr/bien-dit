@@ -67,8 +67,8 @@ InscriptionElectedContactCheck:
         _method:        POST
 
 InscriptionElectedMandate:
-    pattern:  /v/inscription/elu/mandat
-    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedMandate }
+    pattern:  /v/inscription/elu/mandat{error}
+    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedMandate, error: 0  }
 
 InscriptionElectedMandateCheck:
     pattern:  /v/inscription/elu/mandat/check
@@ -101,5 +101,5 @@ InscriptionElectedPaymentCanceled:
     defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedPaymentCanceled }
 
 InscriptionElectedIdCheck:
-    pattern:  /v/inscription/elu/validation-identite
+    pattern:  /elu/validation-identite
     defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedIdCheck }

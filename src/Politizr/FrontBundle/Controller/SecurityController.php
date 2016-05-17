@@ -19,6 +19,7 @@ use Politizr\Model\POPaymentTypeQuery;
 use Politizr\FrontBundle\Form\Type\PUserRegisterType;
 use Politizr\FrontBundle\Form\Type\PUserContactType;
 use Politizr\FrontBundle\Form\Type\PUMandateType;
+use Politizr\FrontBundle\Form\Type\PUserIdCheckType;
 
 use Politizr\FrontBundle\Form\Type\PUserElectedRegisterType;
 use Politizr\FrontBundle\Form\Type\PUserElectedContactType;
@@ -307,7 +308,7 @@ class SecurityController extends Controller
     /**
      * Page d'inscription / Etape 3 / Mandat
      */
-    public function inscriptionElectedMandateAction()
+    public function inscriptionElectedMandateAction($error)
     {
         $logger = $this->get('logger');
         $logger->info('*** inscriptionElectedMandateAction');
@@ -322,7 +323,14 @@ class SecurityController extends Controller
         $mandate->setPQTypeId(QualificationConstants::TYPE_ELECTIV);
         $formMandate = $this->createForm(new PUMandateType(QualificationConstants::TYPE_ELECTIV), $mandate);
 
+        // error
+        $errorMsg = null;
+        if ($error) {
+            $errorMsg = 'Vous devez renseigner au moins 1 mandat';
+        }
+
         return $this->render('PolitizrFrontBundle:Security:inscriptionElectedMandate.html.twig', array(
+            'errorMsg' => $errorMsg,
             'formMandate' => $formMandate?$formMandate->createView():null,
             'formMandateViews' => $formMandateViews?$formMandateViews:null,
         ));
@@ -338,17 +346,12 @@ class SecurityController extends Controller
 
         $user = $this->getUser();
 
-        // @todo > check if user has at least 1 mandate and throw error if not
+        // @todo > check if user has at least 1 mandate and redirect
         if ($count = $user->countPUMandates() > 0) {
             return $this->redirect($this->generateUrl('InscriptionElectedOrder'));
+        } else {
+            return $this->redirect($this->generateUrl('InscriptionElectedMandate', array('error' => true)));
         }
-        
-        $errorMsg = 'Vous devez renseigner au moins 1 mandat';
-
-        return $this->render('PolitizrFrontBundle:Security:inscriptionElectedMandate.html.twig', array(
-            'form' => $form->createView(),
-            'error' => $errorMsg,
-        ));
     }
 
     /**
@@ -363,9 +366,8 @@ class SecurityController extends Controller
         $form = $this->createForm(new POrderSubscriptionType());
 
         return $this->render('PolitizrFrontBundle:Security:inscriptionElectedOrder.html.twig', array(
-                    'form' => $form->createView(),
-                    'layout' => $layout,
-            ));
+            'form' => $form->createView(),
+        ));
     }
 
     /**
@@ -390,18 +392,11 @@ class SecurityController extends Controller
             return $this->redirect($this->generateUrl('InscriptionElectedPayment'));
         }
 
-        // Cas migration formule > MAJ du layout
-        $layout = 'PolitizrFrontBundle::layoutPublic.html.twig';
-        if ($user->hasRole('ROLE_CITIZEN')) {
-            $layout = 'PolitizrFrontBundle::layoutConnected.html.twig';
-        }
-
         return $this->render('PolitizrFrontBundle:Security:inscriptionElectedOrder.html.twig', array(
-                    'form' => $form->createView(),
-                    'layout' => $layout,
-            ));
+            'form' => $form->createView(),
+            'layout' => $layout,
+        ));
     }
-
 
     /**
      * Page d'inscription élu / Etape 3 / Paiement
@@ -416,16 +411,9 @@ class SecurityController extends Controller
         // Listes des moyens de paiement / gestion hors form pour chargement dynamique des formulaires paypal/banque & pavés d'informations spécifiques
         $payments = POPaymentTypeQuery::create()->filterByOnline(true)->orderByRank()->find();
         
-        // Cas migration formule > MAJ du layout
-        $layout = 'PolitizrFrontBundle::layoutPublic.html.twig';
-        if ($user->hasRole('ROLE_CITIZEN')) {
-            $layout = 'PolitizrFrontBundle::layoutConnected.html.twig';
-        }
-
         return $this->render('PolitizrFrontBundle:Security:inscriptionElectedPayment.html.twig', array(
-                    'payments' => $payments,
-                    'layout' => $layout
-                ));
+            'payments' => $payments,
+        ));
     }
 
     /**
@@ -439,7 +427,7 @@ class SecurityController extends Controller
         // Mise à jour de la commande
         $this->get('politizr.functional.security')->updateOrderPaymentCompleted();
 
-        return $this->redirect($this->generateUrl('InscriptionElectedThanking'));
+        return $this->redirect($this->generateUrl('InscriptionElectedIdCheck'));
     }
 
     /**
@@ -471,9 +459,10 @@ class SecurityController extends Controller
         $user = $this->getUser();
 
         // Récupération de la commande en cours
+        // @todo payment not ok > redirect before to another page
+        // @todo manage session expired
         $orderId = $this->get('session')->get('p_order_id');
         $order = POrderQuery::create()->findPk($orderId);
-        // @todo manage session expired
         if (!$order) {
             $this->get('session')->getFlashBag()->add('error', 'Session expirée.');
         }
@@ -485,8 +474,11 @@ class SecurityController extends Controller
         // Finalisation du process d'inscription élu
         $this->get('politizr.functional.security')->inscriptionFinishElected($user);
 
+        // id check form
+        $formIdCheck = $this->createForm(new PUserIdCheckType(), $user);
+
         return $this->render('PolitizrFrontBundle:Security:inscriptionElectedIdCheck.html.twig', array(
-            'order' => $order,
+            'formIdCheck' => $formIdCheck->createView(),
         ));
     }
 

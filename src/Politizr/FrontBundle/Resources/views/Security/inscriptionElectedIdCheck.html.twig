@@ -1,75 +1,91 @@
-{% extends layout %}
+{% extends 'PolitizrFrontBundle::layoutPublic.html.twig' %}
 
 {% block title %}
     Inscription étape 6 / X - {{ parent() }}
 {% endblock title %}
 
-{% block main %}
-    <div id="public">
+{% block bodyClass %} class="process"{% endblock %}
+
+{% block header %}
+    {# @todo other header without "cancel" > payment ok > inscription done #}
+    <div id="header">
+        {% include 'PolitizrFrontBundle:Navigation\\Header:_headerInscription.html.twig' with { 'type': 'elected' } %}
+    </div>
+    <div id="headerTrigger"></div>
+{% endblock header %}
+
+{% block preMain %}
+    <div id="paiementOk">
         <div class="center">
-            <h1>Validation par nos services</h1>
-            <div id="box-order-thanking">
-                <h3>Récapitulatif paiement</h3>
-                <p>
-                    Merci de votre commande chez Politizr!
-                </p>
-                <p>
-                    Commande n°{{ order.id }}
-                </p>
-                {% if order.POPaymentStateId == constant('Politizr\\Constant\\OrderConstants::PAYMENT_REFUSED') %}
-                    <p>Votre paiement a été refusé: votre commande ne sera pas prise en compte.</p>
-                {% elseif order.POPaymentStateId == constant('Politizr\\Constant\\OrderConstants::PAYMENT_CANCELED') %}
-                    <p>Votre paiement a été annulé: votre commande ne sera pas prise en compte.</p>
-                {% else %}
-                    <p>Type de paiement: <b>{{ order.POPaymentType }}</b></p>
-                    <p>Statut paiement: <b>{{ order.POPaymentState }}</b></p>
-                {% endif %}
-                <p>
-                    Un e-mail de confirmation a été envoyé sur "{{ order.email }}", comportant les détails de votre commande.
-                <p>    
-                <h3>La suite</h3>
-                <p>
-                    Notre équipe doit maintenant procéder à la vérification de votre identité et de vos mandats avant d'activer votre compte. Vous recevrez un email dès que votre compte sera actif.
-                </p>
-                <p>
-                    Vous pouvez dès à présent profiter de Politizr: n'hésitez pas à compléter votre profil, à suivre des débats et des utilisateurs, toutes ces informations seront conservées lors de la mise à jour de votre compte à la suite de sa validation par nos équipes.
-                </p>
-            </div>
-            <hr>
-            <div id="idCheck" class="withLoaderInside">
-                {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
-                <div class="formBlock">
-                    <div class="formBlockHeader">
-                        <label>Validation de votre identité par ZLA</label>
-                    </div>
-
-                    <form name="user" method="post" id="formPerso4">
-                        {{ form_errors(formIdCheck) }}
-
-                        {{ form_row(formIdCheck.zla1, { 'attr': { 'placeholder': 'ZLA Ligne 1' }}) }}
-                        {{ form_row(formIdCheck.zla2, { 'attr': { 'placeholder': 'ZLA Ligne 2' }}) }}
-                        {{ form_row(formIdCheck.zla3, { 'attr': { 'placeholder': 'ZLA Ligne 3' }}) }}
-                        {{ form_rest(formIdCheck) }}
-            
-                        <button type="button" action="validateIdZla">
-                            Valider mon identité
-                        </button>
-                    </form>
-                </div>
-
-                <div class="formBlock">
-                    <div class="formBlockHeader">
-                        <label>Validation de votre identité par upload de la photo de la carte d'identité</label>
-                    </div>
-
-                    {% set uploadAction = path('XhrGeneric', {'xhrRoute': constant('Politizr\\Constant\\XhrConstants::ROUTE_USER_VALIDATE_PHOTO_UPLOAD'), 'xhrService': 'security', 'xhrMethod': 'idCheckPhotoUpload', 'xhrType': constant('Politizr\\Constant\\XhrConstants::RETURN_HTML')}) %}
-                    <form method="POST" action="{{ uploadAction }}" name="user" id="formIdCheckPhoto" enctype="multipart/form-data">
-                        <input type="file" name="fileName" id="fileName">
-                        <label action="fileSelect" for="fileName">Photo ID</label>
-                    </form>
-                </div>
+            <i class="icon-like-yes"></i>
+            <div id="paimentMsg">
+                <h1>Votre paiement a été bien reçu. Merci !</h1>
+                Vous devez maintenant procéder a la vérification de votre identité pour profiter pleinement de votre compte élu.
             </div>
         </div>
+    </div>
+{% endblock %}
+{% block main %}
+    <div id="main">
+        <center>
+            <div class="column column140">
+                <div class="processNav">
+                    <ol>
+                        <li class="activeStep">Profil</li>
+                        <li class="activeStep">Mandat électoral</li>
+                        <li class="activeStep">Formule</li>
+                        <li class="activeStep">Paiement</li>
+                        <li class="activeStep">Validation d'identité</li>
+                    </ol>
+                </div>
+            </div><!--
+            --><div class="column column280">
+                <div class="card">
+                    <div class="formBlock">
+                        {% set uploadAction = path('XhrGeneric', {'xhrRoute': constant('Politizr\\Constant\\XhrConstants::ROUTE_USER_VALIDATE_PHOTO_UPLOAD'), 'xhrService': 'security', 'xhrMethod': 'idCheckPhotoUpload', 'xhrType': constant('Politizr\\Constant\\XhrConstants::RETURN_HTML')}) %}
+                        <form method="POST" action="{{ uploadAction }}" name="user" id="formIdCheckPhoto" enctype="multipart/form-data">
+                            <label>Validation de votre identité par upload de la photo de la carte d'identité</label>
+                            <div class="uploadCNI">
+                                <input type="file" name="fileName" id="fileName">
+                                <label action="fileSelect" for="fileName">Photo ID</label>
+                            </form>
+
+                            <div class="coloredBg">
+                                <img src="{{ asset('bundles/politizrfront/images/pictoCNI.png') }}" width="44" height="29" class="pictoCNI">
+                                <div class="infoUploadCNI">Face comportant votre photo.<br>Format : jpg, max. 1Mo</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="orElse">
+                    <div class="orElseLine"></div><span>ou</span><div class="orElseLine"></div>
+                </div>
+                <div class="card">
+                    {{ form_errors(formIdCheck) }}
+                    <form class="zlaBox" name="user" method="post" id="formPerso4">
+                        <label>Saisie manuelle des numéros de votre Carte Nationale d’Identité</label>
+                            <div class="zlaInputs">
+                            {{ form_row(formIdCheck.zla1, { 'attr': { 'placeholder': '36 caractères de la ligne 1' }}) }}<div class="zlaCounter">36</div>
+                            {{ form_row(formIdCheck.zla2, { 'attr': { 'placeholder': '36 caractères de la ligne 2' }}) }}<div class="zlaCounter">36</div>
+                            {{ form_rest(formIdCheck) }}
+
+                            <div class="coloredBg">
+                                <img src="{{ asset('bundles/politizrfront/images/cni.jpg') }}">
+                            </div>
+
+                            <button type="button" action="validateIdZla">
+                                Valider mon identité
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div><!--
+            --><div class="column column140">
+                <div class="columnSidebar skip">
+                    <a href="processDemo.php">Procédez à la vérification de votre identité plus tard<i class="icon-arrow-right"></i></a>
+                </div>
+                <div class="columnSidebar processGreen"><i class="icon-info"></i><br><b>Si vous ne procédez pas à la validation de votre identité maintenant, vous disposerez d’un profil citoyen.</b><br>Vous devrez reprendre et compléter cette étape ultérieurement pour disposer d’un compte élu.</div>
+        </center>
     </div>
 {% endblock main %}
 

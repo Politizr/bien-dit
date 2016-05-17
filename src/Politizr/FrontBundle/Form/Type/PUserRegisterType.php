@@ -44,7 +44,7 @@ class PUserRegisterType extends AbstractType
 
         $builder->add('email', 'email', array(
             'required' => true,
-            'label' => 'Email',
+            'label' => 'Renseignez votre email',
             'constraints' => array(
                 new NotBlank(array('message' => 'Email obligatoire.')),
                 new Email(array('message' => 'Le format de l\'email n\'est pas valide.')),
@@ -55,11 +55,11 @@ class PUserRegisterType extends AbstractType
         $builder->add('plainPassword', 'repeated', array(
             'required' => true,
             'first_options' =>   array(
-                'label' => 'Mot de passe',
+                'label' => 'Choisissez votre mot de passe',
                 'attr' => array('placeholder' => 'Mot de passe')
             ),
             'second_options' =>   array(
-                'label' => 'Confirmation',
+                'label' => 'Confirmation de votre mot de passe',
                 'attr' => array('placeholder' => 'Mot de passe')
             ),
             'type' => 'password',

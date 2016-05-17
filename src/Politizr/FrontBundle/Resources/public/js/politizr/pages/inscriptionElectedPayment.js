@@ -1,19 +1,19 @@
 // on document ready
 $(function() {
-    $(".payment-detail").hide();
+    $(".paymentDetail").hide();
 });
 
 // payment choice
-$("body").on("click", "[action='payment-choice']", function() {
-    console.log('*** click radio-choice');
+$("body").on("click", "[action='paymentChoice']", function() {
+    console.log('*** click paymentChoice');
 
-    $(".payment-detail").hide();
-    $(this).siblings(".payment-detail").show();
+    $(".paymentDetail").hide();
+    $(this).siblings(".paymentDetail").show();
 });
 
 // payment process
-$("body").on("click", "[action='payment-process']", function(e) {
-    console.log('*** payment-process');
+$("body").on("click", "[action='paymentProcess']", function(e) {
+    console.log('*** paymentProcess');
 
     var targetElement = $(this).parent();
     var paymentTypeId = $(this).attr('paymentTypeId');

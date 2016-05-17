@@ -4,39 +4,63 @@
     Inscription étape 1 / X - {{ parent() }}
 {% endblock title %}
 
-{% block main %}
-    <div id="public">
-        <div class="center">
-            <h1>Inscription Élu</h1>
-            <p class="bg-info">Vous exercez ou avez exercé un mandat électif, vous pouvez souscrire un abonnement pour disposer d'un compte vous permettant de débattre avec les élus sur Politizr.</p>
-            <hr>
-            <p class="bg-info">Accélérez le processus d'inscription en utilisant votre compte Facebook, Twitter ou Google</p>
-            <div id="o-auth-buttons">
-                {% include 'PolitizrFrontBundle:Security:facebookConnect.html.twig' with {'label': 'Inscription avec Facebook'} %}
-                {% include 'PolitizrFrontBundle:Security:twitterConnect.html.twig' with {'label': 'Inscription avec Twitter'} %}
-                {% include 'PolitizrFrontBundle:Security:googleConnect.html.twig' with {'label': 'Inscription avec Google'} %}
-            </div>
-            <hr>
-            <p class="bg-info">Sinon choisissez vos identifiant et mot de passe Politizr</p>
-            {% if form.vars.errors|length %}
-                <div class="box-error">
-                    {{ form_errors(form) }}
-                </div>
-            {% endif %}
-            <div id="box-inscription-register">
-                {{ form_start(form, {'action': path('InscriptionElectedCheck'), 'method': 'POST', 'style': 'horizontal'}) }}
-                    {{ form_row(form.email) }}
-                    {{ form_row(form.plainPassword) }}
-                    {{ form_row(form.elected) }}
-                    {{ form_row(form.cgu) }}
-            
-                    <button type="submit">Valider</button>
+{% block bodyClass %} class="process"{% endblock %}
 
-                {{ form_end(form) }}
-                <span class="label label-warning pull-right">Tous les champs sont obligatoires</span>
+{% block header %}
+    <div id="header">
+        {% include 'PolitizrFrontBundle:Navigation\\Header:_headerInscription.html.twig' with { 'type': 'elected' } %}
+    </div>
+    <div id="headerTrigger"></div>
+{% endblock header %}
+
+{# checkbox without sf2 label #}
+{% form_theme form _self %}
+
+{% block checkbox_widget %}
+{% spaceless %}
+    <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+{% endspaceless %}
+{% endblock checkbox_widget %}
+
+{% block main %}
+    <div id="main">
+        <center>
+            <div class="column column140"></div>
+            <div class="column column280">
+                <div class="openId">
+                    {% include 'PolitizrFrontBundle:Security:facebookConnect.html.twig' with {'label': 'Inscription avec Facebook'} %}
+                    {% include 'PolitizrFrontBundle:Security:twitterConnect.html.twig' with {'label': 'Inscription avec Twitter'} %}
+                    {% include 'PolitizrFrontBundle:Security:googleConnect.html.twig' with {'label': 'Inscription avec Google'} %}
+                </div>
+                <div class="orElse">
+                    <div class="orElseLine"></div><span>ou</span><div class="orElseLine"></div>
+                </div>
+                <div class="card">
+                    {% if form.vars.errors|length %}
+                        <div class="boxError">
+                            {{ form_errors(form) }}
+                        </div>
+                    {% endif %}
+                    {{ form_start(form, {'action': path('InscriptionElectedCheck'), 'method': 'POST'}) }}
+                        {{ form_row(form.email) }}
+                        {{ form_row(form.plainPassword) }}
+                        <div class="coloredBg">
+                            {{ form_widget(form.elected) }}<label><b>Je certifie exercer — ou avoir exercé — un mandat électif* et reconnaît que ma responsabilité est engagée en cas de fraude.</b><br>Politizr procède à la vérification d’identité de tous les comptes élus.</label>
+                            {{ form_widget(form.cgu) }}<label>J’accepte les <a href="" target="_blank">conditions générales d’utilisation</a>.</label>
+                        </div>
+                        {#<a href="processCreateAccount-citoyen2.php" class="submit nextStepOrange">Valider</a>#}
+                        <button type="submit" class="submit nextStepOrange">Valider</button>
+                    {{ form_end(form) }}
+                </div>
+                <div class="cardFooter">
+                    Tous les champs sont obligatoires<br><br>
+                    <span>*Conseil municipal, conseil départemental, conseil régional, conseil consulaire, Assemblée Nationale, Sénat</span>
+                </div>
             </div>
-            <h1>Vous êtes simple citoyen?</h1>
-            <p class="bg-info">Politizr vous offre la possibilité de disposer d'un compte permettant de débattre en créant votre <a href="{{ path('Inscription') }}">compte citoyen</a>.</p>
-        </div>
+            <div class="column column140">
+                <div class="columnSidebar processGreen"><i class="icon-info"></i><br>Inscription payante réservée aux élu-e-s et ancien-ne-s élu-e-s uniquement.</div>
+                <div class="columnSidebar processGrey">Vous n’avez jamais exercé de mandat électif ?<br><a href="{{ path('Inscription') }}">Créez gratuitement votre compte citoyen-ne</a></div>
+            </div>
+        </center>
     </div>
 {% endblock main %}

@@ -18,14 +18,19 @@ class POrderSubscriptionType extends AbstractType
     {
         // Liste des formules
         $builder->add('p_o_subscription', 'model', array(
-                'required' => true,
-                'label' => 'Formule',
-                'class' => 'Politizr\\Model\\POSubscription',
-                'property' => 'titleAndPrice',
-                'multiple' => false,
-                'expanded' => true,
-                'constraints' => new NotBlank(array('message' => 'Choix de la formule obligatoire.')),
-            ));
+            'required' => true,
+            'label' => 'Formule',
+            'class' => 'Politizr\\Model\\POSubscription',
+            'property' => 'titleAndPrice',
+            'multiple' => false,
+            'expanded' => true,
+            'constraints' => new NotBlank(array('message' => 'Choix de la formule obligatoire.')),
+        ));
+
+        $builder->add('cgv', 'checkbox', array(
+            'required' => true,
+            'mapped' => false
+        ));
     }
 
     /**

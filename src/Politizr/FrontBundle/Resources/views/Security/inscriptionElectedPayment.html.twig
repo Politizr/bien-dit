@@ -1,25 +1,52 @@
-{% extends layout %}
+{% extends 'PolitizrFrontBundle::layoutPublic.html.twig' %}
 
 {% block title %}
     Inscription étape 5 / X - {{ parent() }}
 {% endblock title %}
 
+{% block bodyClass %} class="process"{% endblock %}
+
+{% block header %}
+    <div id="header">
+        {% include 'PolitizrFrontBundle:Navigation\\Header:_headerInscription.html.twig' with { 'type': 'elected' } %}
+    </div>
+    <div id="headerTrigger"></div>
+{% endblock header %}
+
 {% block main %}
-    <div id="public">
-        <div class="center">
-            <div id="box-inscription-elected-payment">
-                {% for payment in payments %}
-                    <div class="payment-choice">
-                        <input type="radio" name="radio-choice" action="payment-choice"><label>{{ payment.title }}</label>
-                        <div class="payment-detail">
-                            {{ payment.description | purify }}
-                            <br/>
-                            <a action="payment-process" class="btn btn-success" paymentTypeId="{{ payment.id }}">procéder au paiement</a>
-                        </div>
-                    </div>
-                {% endfor %}
+    <div id="main">
+        <center>
+            <div class="column column140">
+                <div class="processNav">
+                    <ol>
+                        <li class="activeStep">Profil</li>
+                        <li class="activeStep">Mandat électoral</li>
+                        <li class="activeStep">Formule</li>
+                        <li class="activeStep">Paiement</li>
+                        <li>Validation d'identité</li>
+                    </ol>
+                </div>
             </div>
-        </div>
+            <div class="column column280">
+                <div class="card">
+                    {% for payment in payments %}
+                        <div class="paymentChoice">
+                            <input type="radio" name="paymentChoice" action="paymentChoice"><label>{{ payment.title }}</label>
+                            <div class="paymentDetail">
+                                {{ payment.description | purify }}
+                                <br/>
+                                <a action="paymentProcess" paymentTypeId="{{ payment.id }}">procéder au paiement</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="cardFooter">
+                </div>
+            </div>
+            <div class="column column140">
+                <div class="columnSidebar processGreen"><i class="icon-info"></i><br>Si vous n’etes pas — ou n’avez jamais été —  élu-e et que vous effectuez ce paiement, Politizr ne procédera a aucun remboursement.</div>
+            </div>
+        </center>
     </div>
 {% endblock main %}
 

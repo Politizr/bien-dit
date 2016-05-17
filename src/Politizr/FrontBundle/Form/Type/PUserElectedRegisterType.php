@@ -38,10 +38,14 @@ class PUserElectedRegisterType extends AbstractType
             'attr'     => array( 'value' => false )
         ));
 
+        $builder->add('username', 'hidden', array(
+            'attr'     => array( 'value' => '' )
+        ));
+
 
         $builder->add('email', 'email', array(
             'required' => true,
-            'label' => 'Email',
+            'label' => 'Renseignez votre email',
             'constraints' => array(
                 new NotBlank(array('message' => 'Email obligatoire.')),
                 new Email(array('message' => 'Le format de l\'email n\'est pas valide.')),
@@ -52,11 +56,11 @@ class PUserElectedRegisterType extends AbstractType
         $builder->add('plainPassword', 'repeated', array(
             'required' => true,
             'first_options' =>   array(
-                'label' => 'Mot de passe',
+                'label' => 'Choisissez votre mot de passe',
                 'attr' => array('placeholder' => 'Mot de passe')
             ),
             'second_options' =>   array(
-                'label' => 'Confirmation',
+                'label' => 'Confirmation de votre mot de passe',
                 'attr' => array('placeholder' => 'Mot de passe')
             ),
             'type' => 'password',
@@ -74,13 +78,11 @@ class PUserElectedRegisterType extends AbstractType
 
         $builder->add('elected', 'checkbox', array(
             'required' => true,
-            'label' => 'Je certifie être un élu',
             'mapped' => false
         ));
 
         $builder->add('cgu', 'checkbox', array(
             'required' => true,
-            'label' => 'J\'accepte les conditions générales d\'utilisation',
             'mapped' => false
         ));
 

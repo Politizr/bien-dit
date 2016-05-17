@@ -709,6 +709,9 @@ class SecurityService
             $this->encoderFactory->getEncoder($user)->encodePassword($user->getPlainPassword(), $user->getSalt())
         );
 
+        // save user
+        $user->save();
+
         // connect user
         $this->doPublicConnection($user);
     }

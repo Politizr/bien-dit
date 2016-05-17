@@ -55,8 +55,10 @@ class PUserElectedContactType extends AbstractType
         $builder->add('gender', 'choice', array(
             'required' => true,
             'label' => 'Civilité',
+            // 'placeholder' => 'Civilité',
             'choices' => array('Madame' => 'Madame', 'Monsieur' => 'Monsieur'),
-            'expanded' => true,
+            'multiple' => false,
+            'expanded' => false,
             'constraints' => new NotBlank(array('message' => 'Civilité obligatoire.'))
         ));
 
