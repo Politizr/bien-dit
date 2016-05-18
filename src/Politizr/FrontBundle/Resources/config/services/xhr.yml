@@ -56,6 +56,8 @@ services:
             - @router
             - @politizr.functional.security
             - @politizr.manager.order
+            - @politizr.tools.global
+            - @politizr.tools.idcheck
             - @logger
 
     politizr.xhr.tag:
@@ -83,7 +85,6 @@ services:
             - @politizr.functional.user
             - @politizr.functional.timeline
             - @politizr.tools.global
-            - @politizr.tools.idcheck
             - @politizr.twig.user
             - @logger
 

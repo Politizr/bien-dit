@@ -543,6 +543,7 @@
 
         <column name="qualified" type="boolean" />
         <column name="validated" type="boolean" defaultValue="false" />
+        <column name="nb_id_check" type="integer" />
 
         <column name="online" type="boolean" />
 

@@ -21,6 +21,30 @@
     <div id="headerTrigger"></div>
 {% endblock header %}
 
+{% block headerMsg %}
+    {# id check big messages #}
+    {% if app.session.flashbag.has('idcheck/success') and app.session.flashbag.get('idcheck/success')[0] %}
+        <div id="idCheckOk">
+            <div class="center">
+                <i class="icon-like-yes"></i>
+                <div id="idCheckMsg">
+                    <h1>Votre identité à été validée. Merci !</h1>
+                    Nous allons procéder à la vérification de vos mandats. Vous disposez de toutes les fonctionnalités.
+                </div>
+            </div>
+        </div>
+    {% elseif app.session.flashbag.has('idcheck/maxUserTry') and app.session.flashbag.get('idcheck/maxUserTry')[0] %}
+        <div id="idCheckKo">
+            <div class="center">
+                <div id="idCheckMsg">
+                    <h1>Votre identité n'a pas pu être validée...</h1>
+                    Pas d'inquiétudes, nous allons prendre contact avec vous très rapidement pour valider ensemble votre identité.
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
 {% block main %}
     <div id="main">
         <div class="center">

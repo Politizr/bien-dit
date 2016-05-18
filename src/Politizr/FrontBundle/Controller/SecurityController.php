@@ -348,7 +348,8 @@ class SecurityController extends Controller
 
         // @todo > check if user has at least 1 mandate and redirect
         if ($count = $user->countPUMandates() > 0) {
-            return $this->redirect($this->generateUrl('InscriptionElectedOrder'));
+            // return $this->redirect($this->generateUrl('InscriptionElectedOrder'));
+            return $this->redirect($this->generateUrl('InscriptionElectedFinishSuccess'));
         } else {
             return $this->redirect($this->generateUrl('InscriptionElectedMandate', array('error' => true)));
         }
@@ -449,6 +450,37 @@ class SecurityController extends Controller
     }
 
     /**
+     * Page d'inscription élu / success
+     */
+    public function inscriptionElectedFinishSuccessAction(Request $request)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** inscriptionElectedFinishSuccessAction');
+
+        $user = $this->getUser();
+
+        // @todo more controls to avoid direct url call
+
+//         // Récupération de la commande en cours
+//         // @todo payment not ok > redirect before to another page
+//         // @todo manage session expired
+//         $orderId = $this->get('session')->get('p_order_id');
+//         $order = POrderQuery::create()->findPk($orderId);
+//         if (!$order) {
+//             $this->get('session')->getFlashBag()->add('error', 'Session expirée.');
+//         }
+// 
+//         // Suppression des valeurs en session
+//         $this->get('session')->remove('p_o_subscription_id');
+//         $this->get('session')->remove('p_order_id');
+
+        // Finalisation du process d'inscription élu
+        $this->get('politizr.functional.security')->inscriptionFinishElected($user);
+
+        return $this->redirect($this->generateUrl('InscriptionElectedIdCheck'));
+    }
+
+    /**
      * Page d'inscription élu / Etape 4 / IdCheck
      */
     public function inscriptionElectedIdCheckAction(Request $request)
@@ -458,21 +490,10 @@ class SecurityController extends Controller
 
         $user = $this->getUser();
 
-        // Récupération de la commande en cours
-        // @todo payment not ok > redirect before to another page
-        // @todo manage session expired
-        $orderId = $this->get('session')->get('p_order_id');
-        $order = POrderQuery::create()->findPk($orderId);
-        if (!$order) {
-            $this->get('session')->getFlashBag()->add('error', 'Session expirée.');
+        // user already validated
+        if ($user->isValidated()) {
+            return $this->redirect($this->generateUrl('HomepageE'));
         }
-
-        // Suppression des valeurs en session
-        $this->get('session')->remove('p_o_subscription_id');
-        $this->get('session')->remove('p_order_id');
-        
-        // Finalisation du process d'inscription élu
-        $this->get('politizr.functional.security')->inscriptionFinishElected($user);
 
         // id check form
         $formIdCheck = $this->createForm(new PUserIdCheckType(), $user);

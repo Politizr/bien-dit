@@ -21,8 +21,8 @@
                     <ol>
                         <li class="activeStep">Profil</li>
                         <li class="activeStep">Mandat électoral</li>
-                        <li>Formule</li>
-                        <li>Paiement</li>
+                        {#<li>Formule</li>
+                        <li>Paiement</li>#}
                         <li>Validation d'identité</li>
                     </ol>
                 </div>
@@ -37,12 +37,12 @@
                     <div class="mandateItem withLoaderInside" id="newMandate">
                         {% include 'PolitizrFrontBundle:User:_newMandate.html.twig' %}
                     </div>
+                    <a href="{{ path('InscriptionElectedMandateCheck') }}" class="submit nextStepOrange">Étape suivante</a>
                     <div class="coloredBg">
                         <div id="editMandates">
                             {% include 'PolitizrFrontBundle:User:_editMandates.html.twig' %}
                         </div>
                     </div>
-                    <a href="{{ path('InscriptionElectedMandateCheck') }}" class="submit nextStepOrange">Étape suivante</a>
                 </div>
                 <div class="cardFooter">
                     Tous les champs sont obligatoires

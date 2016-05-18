@@ -245,9 +245,7 @@ class SecurityService
 
         $graphUser = $response->getGraphUser();
 
-        // @todo / how to get the facebook page url?
-
-        dump($graphUser);
+        // dump($graphUser);
 
         $gender = $graphUser->getField('gender');
         $firstName = $graphUser->getField('first_name');
@@ -340,7 +338,7 @@ class SecurityService
             return false;
         }
 
-        dump($twitterResult);
+        // dump($twitterResult);
 
         if (isset($twitterResult->error)) {
             return false;
@@ -404,7 +402,7 @@ class SecurityService
         try {
             $googlePlus = new Google_Service_Oauth2($client);
             $googleResult = $googlePlus->userinfo->get();
-            dump($googleResult);
+            // dump($googleResult);
         } catch (\Exception $e) {
             $this->logger->error(sprintf('Exception - msg = %s', $e->getMessage()));
             return false;
@@ -802,7 +800,15 @@ class SecurityService
         $roles = [ 'ROLE_ELECTED', 'ROLE_CITIZEN' /* during waiting for validation */, 'ROLE_PROFILE_COMPLETED' ];
 
         // update user
-        $user = $this->userManager->updateForInscriptionFinish($user, $roles, UserConstants::STATUS_VALIDATION_PROCESS, true);
+        $user = $this->userManager->updateForInscriptionFinish(
+            $user,
+            $roles,
+            UserConstants::STATUS_VALIDATION_PROCESS,
+            true
+        );
+
+        // update reputation
+        $user->updateReputation(ReputationConstants::ACTION_ELECTED_INSCRIPTION);
 
         // save user
         $user->save();

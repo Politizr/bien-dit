@@ -32,7 +32,6 @@ use Politizr\FrontBundle\Form\Type\PUserIdentityType;
 use Politizr\FrontBundle\Form\Type\PUserEmailType;
 use Politizr\FrontBundle\Form\Type\PUserBiographyType;
 use Politizr\FrontBundle\Form\Type\PUserConnectionType;
-use Politizr\FrontBundle\Form\Type\PUserIdCheckType;
 use Politizr\FrontBundle\Form\Type\PUCurrentQOType;
 use Politizr\FrontBundle\Form\Type\PUMandateType;
 use Politizr\FrontBundle\Form\Type\PUserBackPhotoInfoType;
@@ -56,7 +55,6 @@ class XhrUser
     private $userService;
     private $timelineService;
     private $globalTools;
-    private $idcheck;
     private $userTwigExtension;
     private $logger;
 
@@ -74,7 +72,6 @@ class XhrUser
      * @param @politizr.functional.user
      * @param @politizr.functional.timeline
      * @param @politizr.tools.global
-     * @param @politizr.tools.idcheck
      * @param @politizr.twig.user
      * @param @logger
      */
@@ -91,7 +88,6 @@ class XhrUser
         $userService,
         $timelineService,
         $globalTools,
-        $idcheck,
         $userTwigExtension,
         $logger
     ) {
@@ -114,7 +110,6 @@ class XhrUser
         $this->timelineService = $timelineService;
 
         $this->globalTools = $globalTools;
-        $this->idcheck = $idcheck;
 
         $this->userTwigExtension = $userTwigExtension;
 

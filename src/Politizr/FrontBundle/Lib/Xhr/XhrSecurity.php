@@ -13,10 +13,15 @@ use Politizr\Constant\OrderConstants;
 use Politizr\Constant\PathConstants;
 use Politizr\Constant\IdCheckConstants;
 
+use Politizr\FrontBundle\Lib\SimpleImage;
+
+use Politizr\Model\PUser;
+
 use Politizr\Model\PUserQuery;
 use Politizr\Model\POSubscriptionQuery;
 
 use Politizr\FrontBundle\Form\Type\LostPasswordType;
+use Politizr\FrontBundle\Form\Type\PUserIdCheckType;
 
 use Politizr\FrontBundle\Lib\Client\Ariad;
 
@@ -37,6 +42,8 @@ class XhrSecurity
     private $router;
     private $securityService;
     private $orderManager;
+    private $globalTools;
+    private $idcheck;
     private $logger;
 
     /**
@@ -51,6 +58,8 @@ class XhrSecurity
      * @param @router
      * @param @politizr.functional.security
      * @param @politizr.manager.order
+     * @param @politizr.tools.global
+     * @param @politizr.tools.idcheck
      * @param @logger
      */
     public function __construct(
@@ -64,6 +73,8 @@ class XhrSecurity
         $router,
         $securityService,
         $orderManager,
+        $globalTools,
+        $idcheck,
         $logger
     ) {
         $this->securityTokenStorage = $securityTokenStorage;
@@ -81,6 +92,9 @@ class XhrSecurity
 
         $this->securityService = $securityService;
         $this->orderManager = $orderManager;
+
+        $this->globalTools = $globalTools;
+        $this->idcheck = $idcheck;
 
         $this->logger = $logger;
     }
@@ -228,12 +242,9 @@ class XhrSecurity
      * ARIAD ID CHECK ZLA
      * beta
      */
-    public function validateIdZla(Request $request)
+    private function isValidIdZla(Request $request, PUser $user)
     {
-        $this->logger->info('*** validateIdZla');
-
-        // get current user
-        $user = $this->securityTokenStorage->getToken()->getUser();
+        $this->logger->info('*** isValidIdZla');
 
         $form = $this->formFactory->create(new PUserIdCheckType($user), $user);
 
@@ -241,11 +252,13 @@ class XhrSecurity
         if ($form->isValid()) {
             $zla1 = $form->get('zla1')->getData();
             $zla2 = $form->get('zla2')->getData();
-            $zla3 = $form->get('zla3')->getData();
 
-            $result = $this->idcheck->executeZlaChecking($zla1, $zla2, $zla3);
+            $result = $this->idcheck->executeZlaChecking($zla1, $zla2);
 
-            // @todo gestion WARNING exemple: photo flash id camille
+            // upd nb try
+            $user->setNbIdCheck($user->getNbIdCheck() + 1);
+            $user->save();
+
             if ($result == IdCheckConstants::WSDL_RESULT_ERROR) {
                 return false;
             } elseif ($this->idcheck->isUserLastResult($user)) {
@@ -263,15 +276,12 @@ class XhrSecurity
      * ARIAD ID CHECK PHOTO
      * beta
      */
-    public function validateIdPhoto(Request $request)
+    public function isValidIdPhoto(Request $request, PUser $user)
     {
-        $this->logger->info('*** validateIdPhoto');
+        $this->logger->info('*** isValidIdPhoto');
 
         $fileName = $request->get('fileName');
         $this->logger->info('$fileName = ' . print_r($fileName, true));
-
-        // get current user
-        $user = $this->securityTokenStorage->getToken()->getUser();
 
         $path = $this->kernel->getRootDir() . '/../web' . PathConstants::IDCHECK_UPLOAD_WEB_PATH;
 
@@ -282,6 +292,10 @@ class XhrSecurity
 
             $result = $this->idcheck->executeImageIdCardChecking($rawImg);
 
+            // upd nb try
+            $user->setNbIdCheck($user->getNbIdCheck() + 1);
+            $user->save();
+
             // @todo gestion WARNING exemple: photo flash id camille
             if ($result == IdCheckConstants::WSDL_RESULT_ERROR) {
                 return false;
@@ -291,6 +305,114 @@ class XhrSecurity
         }
 
         return false;
+    }
+
+    /**
+     * ARIAD ID CHECK ZLA
+     * beta
+     */
+    public function validateIdZla(Request $request)
+    {
+        $this->logger->info('*** validateIdZla');
+
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+
+        $nbTry = $user->getNbIdCheck();
+
+        // max try reach > redirect to account w. error msg
+        if ($nbTry >= IdCheckConstants::MAX_USER_TRY) {
+            $this->session->getFlashBag()->add('idcheck/maxUserTry', true);
+
+            $success = false;
+            $redirect = true;
+            $redirectUrl = $this->router->generate('EditPerso'.$this->globalTools->computeProfileSuffix());
+        } else {
+            if ($this->isValidIdZla($request, $user)) {
+                $this->session->getFlashBag()->add('idcheck/success', true);
+
+                $user->setValidated(true);
+                $user->save();
+
+                $success = true;
+                $redirect = true;
+                $redirectUrl = $this->router->generate('Homepage'.$this->globalTools->computeProfileSuffix());
+            } else {
+                // max try reach > redirect to account w. error msg
+                if ($nbTry >= IdCheckConstants::MAX_USER_TRY) {
+                    $this->session->getFlashBag()->add('idcheck/maxUserTry', true);
+
+                    $success = false;
+                    $redirect = true;
+                    $redirectUrl = $this->router->generate('EditPerso'.$this->globalTools->computeProfileSuffix());
+                } else {
+                    $success = false;
+                    $redirectUrl = false;
+                    $redirect = false;
+                }
+            }
+        }
+
+        return array(
+            'success' => $success,
+            'redirectUrl' => $redirectUrl,
+            'redirect' => $redirect,
+            'nbTryLeft' => IdCheckConstants::MAX_USER_TRY - $nbTry,
+        );
+    }
+
+    /**
+     * ARIAD ID CHECK PHOTO
+     * beta
+     */
+    public function validateIdPhoto(Request $request)
+    {
+        $this->logger->info('*** validateIdPhoto');
+
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+
+        $nbTry = $user->getNbIdCheck();
+
+        // max try reach > redirect to account w. error msg
+        if ($nbTry = $user->getNbIdCheck() >= IdCheckConstants::MAX_USER_TRY) {
+            $this->session->getFlashBag()->add('idcheck/maxUserTry', true);
+
+            $success = false;
+            $redirect = true;
+            $redirectUrl = $this->router->generate('EditPerso'.$this->globalTools->computeProfileSuffix());
+        } else {
+            if ($this->isValidIdPhoto($request, $user)) {
+                $this->session->getFlashBag()->add('idcheck/success', true);
+
+                $user->setValidated(true);
+                $user->save();
+
+                $success = true;
+                $redirect = true;
+                $redirectUrl = $this->router->generate('Homepage'.$this->globalTools->computeProfileSuffix());
+            } else {
+                // max try reach > redirect to account w. error msg
+                if ($nbTry = $user->getNbIdCheck() >= IdCheckConstants::MAX_USER_TRY) {
+                    $this->session->getFlashBag()->add('idcheck/maxUserTry', true);
+
+                    $success = false;
+                    $redirect = true;
+                    $redirectUrl = $this->router->generate('EditPerso'.$this->globalTools->computeProfileSuffix());
+                } else {
+                    $success = false;
+                    $redirectUrl = false;
+                    $redirect = false;
+                }
+            }
+        }
+
+        return array(
+            'success' => $success,
+            'redirectUrl' => $redirectUrl,
+            'redirect' => $redirect,
+            'nbTryLeft' => IdCheckConstants::MAX_USER_TRY - $nbTry,
+        );
     }
 
     /**

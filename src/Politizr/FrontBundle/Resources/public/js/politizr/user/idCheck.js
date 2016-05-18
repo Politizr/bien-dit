@@ -10,7 +10,7 @@ var idCheckPhotoOptions = {
     success: function(responseText, statusText, xhr, form)
     {
         data = $.parseJSON( responseText );
-        // console.log(data);
+        console.log(data);
 
         if ( 'success' == statusText && data['success']) {
             validateIdPhoto(data['fileName']);
@@ -29,11 +29,12 @@ var idCheckPhotoOptions = {
 
 $(function() {
     $("#formIdCheckPhoto").ajaxForm(idCheckPhotoOptions);
+    zlaTextCounter();
 });
 
 // Clic bouton upload photo local
 $("body").on("click", "[action='fileSelect']", function() {
-    // console.log('click file select');
+    console.log('click file select');
 
     $("#fileName").trigger('click');
     return false;
@@ -41,57 +42,65 @@ $("body").on("click", "[action='fileSelect']", function() {
 
 // Upload simple
 $("body").on("change", "#fileName", function() {
-    // console.log('change file name');
+    console.log('change file name');
 
     $('#formIdCheckPhoto').submit();
 });
 
 // id check validate ZLA
 $("body").on("click", "button[action='validateIdZla']", function(e) {
-    // console.log('click submitPerso');
+    console.log('click submitPerso');
 
     var form = $(this).closest('form');
-    var localLoader = $('#idCheck').find('.ajaxLoader').first();
 
-    return validateIdZla(form, localLoader);
+    return validateIdZla(form);
 });
 
 /**
  * Id check / validate ZLA
  * @param form
  */
-function validateIdZla(form, localLoader)
+function validateIdZla(form)
 {
-    // console.log('click validateIdZla');
-    // console.log(form);
-    // console.log(localLoader);
+    console.log('click validateIdZla');
+    console.log(form);
 
     var xhrPath = getXhrPath(
         ROUTE_USER_VALIDATE_ID,
         'security',
         'validateIdZla',
-        RETURN_BOOLEAN
+        RETURN_HTML
     );
 
     return xhrCall(
         document,
         form.serialize(),
         xhrPath,
-        localLoader
+        1
     ).done(function(data) {
         if (data['error']) {
             $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
             $('#infoBoxHolder .boxError').show();
+            $('#ajaxGlobalLoader').hide();
         } else {
             if (data['success']) {
-                $('#infoBoxHolder .boxSuccess .notifBoxText').html('Votre identité a été validée.');
-                $('#infoBoxHolder .boxSuccess').show();
+                window.location = data['redirectUrl'];
+            } else if (data['redirect']) {
+                window.location = data['redirectUrl'];
             } else {
-                $('#infoBoxHolder .boxError .notifBoxText').html('Votre identité n\'a pas été validée.');
+                $('#infoBoxHolder .boxError .notifBoxText').html('Echec de la validation de votre identité.');
                 $('#infoBoxHolder .boxError').show();
+
+                console.log(data['nbTryLeft'])
+                $('#nbTryLeft').html(data['nbTryLeft']);
+
+                if (data['nbTryLeft'] == 0) {
+                    $('#idCheck').hide();
+                }
+
+                $('#ajaxGlobalLoader').hide();
             }
         }
-        localLoader.hide();
     });
 }
 
@@ -101,14 +110,14 @@ function validateIdZla(form, localLoader)
  */
 function validateIdPhoto(fileName)
 {
-    // console.log('click validateIdPhoto');
-    // console.log(fileName);
+    console.log('click validateIdPhoto');
+    console.log(fileName);
 
     var xhrPath = getXhrPath(
         ROUTE_USER_VALIDATE_PHOTO_UPLOAD,
         'security',
         'validateIdPhoto',
-        RETURN_BOOLEAN
+        RETURN_HTML
     );
 
     return xhrCall(
@@ -117,14 +126,57 @@ function validateIdPhoto(fileName)
         xhrPath,
         1
     ).done(function(data) {
-        $('#ajaxGlobalLoader').hide();
-        if (data['success']) {
-            $('#infoBoxHolder .boxSuccess .notifBoxText').html('Votre identité a été validée.');
-            $('#infoBoxHolder .boxSuccess').show();
-        } else {
-            $('#infoBoxHolder .boxError .notifBoxText').html('Votre identité n\'a pas été validée.');
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
             $('#infoBoxHolder .boxError').show();
+            $('#ajaxGlobalLoader').hide();
+        } else {
+            if (data['success']) {
+                window.location = data['redirectUrl'];
+            } else if (data['redirect']) {
+                window.location = data['redirectUrl'];
+            } else {
+                $('#infoBoxHolder .boxError .notifBoxText').html('Echec de la validation de votre identité.');
+                $('#infoBoxHolder .boxError').show();
+
+                console.log(data['nbTryLeft'])
+                $('#nbTryLeft').html(data['nbTryLeft']);
+
+                if (data['nbTryLeft'] == 0) {
+                    $('#idCheck').hide();
+                }
+
+                $('#ajaxGlobalLoader').hide();
+            }
         }
     });
 }
+
+/**
+ * Character counting for zla
+ */
+function zlaTextCounter() {
+    console.log('*** zlaTextCounter');
+
+    $('.zlaInputs input').textcounter({
+        type                     : "character",            // "character" or "word"
+        min                      : 36,                      // minimum number of characters/words
+        max                      : 36,                    // maximum number of characters/words, -1 for unlimited, 'auto' to use maxlength attribute
+        countContainerElement    : "div",                  // HTML element to wrap the text count in
+        countContainerClass      : "zlaCountWrapper",   // class applied to the countContainerElement
+        textCountClass           : "textCount",           // class applied to the counter length
+        inputErrorClass          : "error",                // error class appended to the input element if error occurs
+        counterErrorClass        : "error",                // error class appended to the countContainerElement if error occurs
+        counterText              : "Caractères: ",        // counter text
+        errorTextElement         : "div",                  // error text element
+        minimumErrorText         : "36 caractères",      // error message for minimum not met,
+        maximumErrorText         : "36 caractères",     // error message for maximum range exceeded,
+        displayErrorText         : true,                   // display error text messages for minimum/maximum values
+        stopInputAtMaximum       : true,                   // stop further text input if maximum reached
+        countSpaces              : true,                  // count spaces as character (only for "character" type)
+        countDown                : true,                  // if the counter should deduct from maximum characters/words rather than counting up
+        countDownText            : "Caractères restants: ",          // count down text
+        countExtendedCharacters  : true,                       // count extended UTF-8 characters as 2 bytes (such as Chinese characters)    
+    });
+};
 

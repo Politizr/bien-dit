@@ -71,16 +71,14 @@ class IdCheck
      * Check zla and return result
      *
      * @param string $zla1
-     * @param string $zla1
-     * @param string $zla1
+     * @param string $zla2
      * @return string WSDL constant response
      */
-    public function executeZlaChecking($zla1, $zla2, $zla3)
+    public function executeZlaChecking($zla1, $zla2)
     {
         $this->logger->info('*** executeZlaChecking');
         $this->logger->info('$zla1 = '.print_r($zla1, true));
         $this->logger->info('$zla2 = '.print_r($zla2, true));
-        $this->logger->info('$zla3 = '.print_r($zla3, true));
 
         $now = new \DateTime();
         // expected format example: 2016-04-15T13:55:14.179+02:00
@@ -99,7 +97,6 @@ class IdCheck
                 "mrz" => array (
                     "line1" => $zla1,
                     "line2" => $zla2,
-                    "line3" => $zla3,
                 ),
                 "getPdfReport" => array (
                    "getPdfReport" => true
@@ -155,6 +152,7 @@ class IdCheck
 
         $this->lastResult = $this->wsdlClient->__soapCall("CheckImage", $optionsImage);
         $this->logger->info(print_r($this->lastResult, true));
+        // dump($this->lastResult);
 
         if (isset($this->lastResult) && isset($this->lastResult->contentOk) && isset($this->lastResult->contentOk->result)) {
             return $this->lastResult->contentOk->result;

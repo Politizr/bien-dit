@@ -721,7 +721,7 @@ class PolitizrUserExtension extends \Twig_Extension
         
         if ($this->securityAuthorizationChecker->isGranted('ROLE_ELECTED') &&
             $user &&
-            $user->getPUStatusId() == UserConstants::STATUS_ACTIVED &&
+            // $user->getPUStatusId() == UserConstants::STATUS_ACTIVED &&
             $user->getOnline()) {
             return true;
         }

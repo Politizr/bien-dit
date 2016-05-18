@@ -100,6 +100,10 @@ InscriptionElectedPaymentCanceled:
     pattern:  /v/inscription/elu/paiement-annule
     defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedPaymentCanceled }
 
+InscriptionElectedFinishSuccess:
+    pattern:  /v/inscription/elu/inscription-terminee
+    defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedFinishSuccess }
+
 InscriptionElectedIdCheck:
     pattern:  /elu/validation-identite
     defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedIdCheck }

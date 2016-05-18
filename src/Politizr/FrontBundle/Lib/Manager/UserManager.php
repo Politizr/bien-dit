@@ -501,6 +501,7 @@ SELECT DISTINCT
     nb_views,
     qualified,
     validated,
+    nb_id_check,
     online,
     banned,
     banned_nb_days_left,

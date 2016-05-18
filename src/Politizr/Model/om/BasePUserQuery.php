@@ -96,6 +96,7 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery orderByNbViews($order = Criteria::ASC) Order by the nb_views column
  * @method PUserQuery orderByQualified($order = Criteria::ASC) Order by the qualified column
  * @method PUserQuery orderByValidated($order = Criteria::ASC) Order by the validated column
+ * @method PUserQuery orderByNbIdCheck($order = Criteria::ASC) Order by the nb_id_check column
  * @method PUserQuery orderByOnline($order = Criteria::ASC) Order by the online column
  * @method PUserQuery orderByBanned($order = Criteria::ASC) Order by the banned column
  * @method PUserQuery orderByBannedNbDaysLeft($order = Criteria::ASC) Order by the banned_nb_days_left column
@@ -148,6 +149,7 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery groupByNbViews() Group by the nb_views column
  * @method PUserQuery groupByQualified() Group by the qualified column
  * @method PUserQuery groupByValidated() Group by the validated column
+ * @method PUserQuery groupByNbIdCheck() Group by the nb_id_check column
  * @method PUserQuery groupByOnline() Group by the online column
  * @method PUserQuery groupByBanned() Group by the banned column
  * @method PUserQuery groupByBannedNbDaysLeft() Group by the banned_nb_days_left column
@@ -326,6 +328,7 @@ use Politizr\Model\PUserQuery;
  * @method PUser findOneByNbViews(int $nb_views) Return the first PUser filtered by the nb_views column
  * @method PUser findOneByQualified(boolean $qualified) Return the first PUser filtered by the qualified column
  * @method PUser findOneByValidated(boolean $validated) Return the first PUser filtered by the validated column
+ * @method PUser findOneByNbIdCheck(int $nb_id_check) Return the first PUser filtered by the nb_id_check column
  * @method PUser findOneByOnline(boolean $online) Return the first PUser filtered by the online column
  * @method PUser findOneByBanned(boolean $banned) Return the first PUser filtered by the banned column
  * @method PUser findOneByBannedNbDaysLeft(int $banned_nb_days_left) Return the first PUser filtered by the banned_nb_days_left column
@@ -378,6 +381,7 @@ use Politizr\Model\PUserQuery;
  * @method array findByNbViews(int $nb_views) Return PUser objects filtered by the nb_views column
  * @method array findByQualified(boolean $qualified) Return PUser objects filtered by the qualified column
  * @method array findByValidated(boolean $validated) Return PUser objects filtered by the validated column
+ * @method array findByNbIdCheck(int $nb_id_check) Return PUser objects filtered by the nb_id_check column
  * @method array findByOnline(boolean $online) Return PUser objects filtered by the online column
  * @method array findByBanned(boolean $banned) Return PUser objects filtered by the banned column
  * @method array findByBannedNbDaysLeft(int $banned_nb_days_left) Return PUser objects filtered by the banned_nb_days_left column
@@ -497,7 +501,7 @@ abstract class BasePUserQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `last_activity`, `p_u_status_id`, `file_name`, `back_file_name`, `copyright`, `gender`, `firstname`, `name`, `birthday`, `subtitle`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_connected_days`, `nb_views`, `qualified`, `validated`, `online`, `banned`, `banned_nb_days_left`, `banned_nb_total`, `abuse_level`, `created_at`, `updated_at`, `slug` FROM `p_user` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `last_activity`, `p_u_status_id`, `file_name`, `back_file_name`, `copyright`, `gender`, `firstname`, `name`, `birthday`, `subtitle`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_connected_days`, `nb_views`, `qualified`, `validated`, `nb_id_check`, `online`, `banned`, `banned_nb_days_left`, `banned_nb_total`, `abuse_level`, `created_at`, `updated_at`, `slug` FROM `p_user` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -2019,6 +2023,48 @@ abstract class BasePUserQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PUserPeer::VALIDATED, $validated, $comparison);
+    }
+
+    /**
+     * Filter the query on the nb_id_check column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByNbIdCheck(1234); // WHERE nb_id_check = 1234
+     * $query->filterByNbIdCheck(array(12, 34)); // WHERE nb_id_check IN (12, 34)
+     * $query->filterByNbIdCheck(array('min' => 12)); // WHERE nb_id_check >= 12
+     * $query->filterByNbIdCheck(array('max' => 12)); // WHERE nb_id_check <= 12
+     * </code>
+     *
+     * @param     mixed $nbIdCheck The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function filterByNbIdCheck($nbIdCheck = null, $comparison = null)
+    {
+        if (is_array($nbIdCheck)) {
+            $useMinMax = false;
+            if (isset($nbIdCheck['min'])) {
+                $this->addUsingAlias(PUserPeer::NB_ID_CHECK, $nbIdCheck['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($nbIdCheck['max'])) {
+                $this->addUsingAlias(PUserPeer::NB_ID_CHECK, $nbIdCheck['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PUserPeer::NB_ID_CHECK, $nbIdCheck, $comparison);
     }
 
     /**

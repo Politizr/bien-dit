@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Length;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -21,14 +22,30 @@ class PUserIdCheckType extends AbstractType
         $builder->add('zla1', 'text', array(
             'required' => true,
             'mapped' => false,
+            'constraints' => array(
+                new NotBlank(array('message' => 'Zone obligatoire.')),
+                new Length(array(
+                    'charset' => 'UTF-8',
+                    'min' => 36,
+                    'max' => 36,
+                    'minMessage' => 'Ce champ doit faire exactement 36 caractères.',
+                    'maxMessage' => 'Ce champ doit faire exactement 36 caractères.'
+                )),
+            )
         ));
         $builder->add('zla2', 'text', array(
-            'required' => false,
+            'required' => true,
             'mapped' => false,
-        ));
-        $builder->add('zla3', 'text', array(
-            'required' => false,
-            'mapped' => false,
+            'constraints' => array(
+                new NotBlank(array('message' => 'Zone obligatoire.')),
+                new Length(array(
+                    'charset' => 'UTF-8',
+                    'min' => 36,
+                    'max' => 36,
+                    'minMessage' => 'Ce champ doit faire exactement 36 caractères.',
+                    'maxMessage' => 'Ce champ doit faire exactement 36 caractères.'
+                )),
+            )
         ));
     }
 
