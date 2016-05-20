@@ -31,6 +31,13 @@ var ADMIN_ROUTE_USER_REPUTATION_EVOLUTION = 'admin/utilisateur/reputation/update
 var ADMIN_ROUTE_USER_MODERATION_ALERT_NEW = 'admin/utilisateur/moderation/alert/new';
 var ADMIN_ROUTE_USER_MODERATION_BANNED_EMAIL = 'admin/utilisateur/moderation/banned/email';
 
+// MANDATES
+var ROUTE_USER_MANDATE_CREATE = 'admin/utilisateur/mandat/create';
+var ROUTE_USER_MANDATE_UPDATE = 'admin/utilisateur/mandat/update';
+var ROUTE_USER_MANDATE_DELETE = 'admin/utilisateur/mandat/delete';
+
+
+
 // Generic function to make an AJAX call
 var xhrCall = function(context, data, url, localLoader) {
     // Return the $.ajax promise

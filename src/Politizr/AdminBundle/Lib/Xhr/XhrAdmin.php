@@ -7,6 +7,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use StudioEcho\Lib\StudioEchoUtils;
 
 use Politizr\Constant\ReputationConstants;
+use Politizr\Constant\QualificationConstants;
 
 use Politizr\Exception\InconsistentDataException;
 use Politizr\Exception\BoxErrorException;
@@ -14,6 +15,7 @@ use Politizr\Exception\BoxErrorException;
 use Politizr\Model\PTag;
 use Politizr\Model\PUReputation;
 use Politizr\Model\PMUserModerated;
+use Politizr\Model\PUMandate;
 
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
@@ -23,8 +25,10 @@ use Politizr\Model\PDDTaggedTQuery;
 use Politizr\Model\PDRTaggedTQuery;
 use Politizr\Model\PUTaggedTQuery;
 use Politizr\Model\PMUserModeratedQuery;
+use Politizr\Model\PUMandateQuery;
 
 use Politizr\AdminBundle\Form\Type\PMUserModeratedType;
+use Politizr\FrontBundle\Form\Type\PUMandateType;
 
 /**
  * XHR service for admin management.
@@ -38,6 +42,7 @@ class XhrAdmin
     private $templating;
     private $formFactory;
     private $tagManager;
+    private $userManager;
     private $globalTools;
     private $logger;
 
@@ -48,6 +53,7 @@ class XhrAdmin
      * @param @templating
      * @param @form.factory
      * @param @politizr.manager.tag
+     * @param @politizr.manager.user
      * @param @politizr.tools.global
      * @param @logger
      */
@@ -57,6 +63,7 @@ class XhrAdmin
         $templating,
         $formFactory,
         $tagManager,
+        $userManager,
         $globalTools,
         $logger
     ) {
@@ -68,6 +75,7 @@ class XhrAdmin
         $this->formFactory = $formFactory;
 
         $this->tagManager = $tagManager;
+        $this->userManager = $userManager;
 
         $this->globalTools = $globalTools;
 
@@ -513,6 +521,147 @@ class XhrAdmin
         $withHidden = $userTaggedTag->getHidden();
 
         return $withHidden;
+    }
+
+    /**
+     * User's mandate creation
+     * beta
+     */
+    public function mandateProfileCreate(Request $request)
+    {
+        $this->logger->info('*** mandateProfileCreate');
+
+        // Request arguments
+        $userId = $request->get('mandate')['p_user_id'];
+        $this->logger->info('userId = ' . print_r($userId, true));
+
+        $user = PUserQuery::create()->findPk($userId);
+        if (!$user) {
+            throw new InconsistentDataException(sprintf('User id-%s does not exist', $userId));
+        }
+
+        // Function process
+        $form = $this->formFactory->create(new PUMandateType(QualificationConstants::TYPE_ELECTIV, $userId), new PUMandate());
+        $form->bind($request);
+        if ($form->isValid()) {
+            $newMandate = $form->getData();
+            $newMandate->save();
+        } else {
+            $errors = StudioEchoUtils::getAjaxFormErrors($form);
+            throw new BoxErrorException($errors);
+        }
+
+        // New empty form
+        $mandate = new PUMandate();
+        $form = $this->formFactory->create(new PUMandateType(QualificationConstants::TYPE_ELECTIV, $userId), $mandate);
+
+        $formMandateViews = $this->globalTools->getFormMandateViews($userId);
+
+        // Rendering
+        $newMandate = $this->templating->render(
+            'PolitizrFrontBundle:User:_newMandate.html.twig',
+            array(
+                'formMandate' => $form->createView(),
+                'user' => $user,
+            )
+        );
+
+        // Rendering
+        $editMandates = $this->templating->render(
+            'PolitizrFrontBundle:User:_editMandates.html.twig',
+            array(
+                'formMandateViews' => $formMandateViews
+            )
+        );
+
+        return array(
+            'newMandate' => $newMandate,
+            'editMandates' => $editMandates,
+            );
+    }
+
+    /**
+     * User's mandate update
+     * beta
+     */
+    public function mandateProfileUpdate(Request $request)
+    {
+        $this->logger->info('*** mandateProfileCreate');
+
+        // Request arguments
+        $uuid = $request->get('mandate')['uuid'];
+        $this->logger->info('uuid = ' . print_r($uuid, true));
+
+        // Function process
+        $mandate = PUMandateQuery::create()->filterByUuid($uuid)->findOne();
+
+        $form = $this->formFactory->create(new PUMandateType(QualificationConstants::TYPE_ELECTIV), $mandate);
+        $form->bind($request);
+        if ($form->isValid()) {
+            $mandate = $form->getData();
+            $mandate->save();
+        } else {
+            $errors = StudioEchoUtils::getAjaxFormErrors($form);
+            throw new BoxErrorException($errors);
+        }
+
+        // Retrieve user
+        $user = PUserQuery::create()->findPk($mandate->getPUserId());
+        if (!$user) {
+            throw new InconsistentDataException(sprintf('User id-%s does not exist', $mandate->getPUserId()));
+        }
+
+        $formMandateViews = $this->globalTools->getFormMandateViews($user->getId());
+
+        // Rendering
+        $editMandates = $this->templating->render(
+            'PolitizrFrontBundle:User:_editMandates.html.twig',
+            array(
+                'formMandateViews' => $formMandateViews
+            )
+        );
+
+        return array(
+            'editMandates' => $editMandates,
+            );
+    }
+
+    /**
+     * User's mandate deletion
+     * beta
+     */
+    public function mandateProfileDelete(Request $request)
+    {
+        $this->logger->info('*** mandateProfileDelete');
+        
+        // Request arguments
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
+
+        // Function process
+        $mandate = PUMandateQuery::create()->filterByUuid($uuid)->findOne();
+
+        // Retrieve user
+        $user = PUserQuery::create()->findPk($mandate->getPUserId());
+        if (!$user) {
+            throw new InconsistentDataException(sprintf('User id-%s does not exist', $mandate->getPUserId()));
+        }
+
+        $this->userManager->deleteMandate($mandate);
+
+        $formMandateViews = $this->globalTools->getFormMandateViews($user->getId());
+
+        // Rendering
+        $editMandates = $this->templating->render(
+            'PolitizrFrontBundle:User:_editMandates.html.twig',
+            array(
+                'formMandateViews' => $formMandateViews
+            )
+        );
+
+        return array(
+            'editMandates' => $editMandates,
+            );
     }
 
     /* ######################################################################################################## */

@@ -26,7 +26,7 @@
     <div id="main">
         <center>
             <div class="column column140"></div>
-            <div class="column column280">
+            <div class="column column360">
                 <div class="openId">
                     {% include 'PolitizrFrontBundle:Security:facebookConnect.html.twig' with {'label': 'Inscription avec Facebook'} %}
                     {% include 'PolitizrFrontBundle:Security:twitterConnect.html.twig' with {'label': 'Inscription avec Twitter'} %}
@@ -46,6 +46,9 @@
                         {{ form_row(form.plainPassword) }}
                         <div class="coloredBg">
                             {{ form_widget(form.cgu) }}<label>J’accepte les <a href="" target="_blank">conditions générales d’utilisation</a>.</label>
+                            {% if form.cgu.vars.errors|length %}
+                                <div class="field_error">{{ form_errors(form.cgu) }}</div>
+                            {% endif %}
                         </div>
                         {#<a href="processCreateAccount-citoyen2.php" class="submit nextStepOrange">Valider</a>#}
                         <button type="submit" class="submit nextStepOrange">Valider</button>

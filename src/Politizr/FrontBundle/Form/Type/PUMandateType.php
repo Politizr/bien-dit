@@ -26,15 +26,23 @@ class PUMandateType extends AbstractType
     // Permet de filtrer sur le type d'organisation
     private $pqTypeId;
 
-    public function __construct($pqTypeId = QualificationConstants::TYPE_ELECTIV)
+    // special admin
+    private $userId;
+
+    public function __construct($pqTypeId = QualificationConstants::TYPE_ELECTIV, $userId = null)
     {
         $this->pqTypeId = $pqTypeId;
+        $this->userId = $userId;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('uuid', 'hidden');
-        $builder->add('p_q_type_id', 'hidden');
+        $builder->add('p_q_type_id', 'hidden', array('data' => $this->pqTypeId));
+
+        if ($this->userId) {
+            $builder->add('p_user_id', 'hidden', array('data' => $this->userId));
+        }
 
         // Mandates type list
         $builder->add('p_q_mandate', 'model', array(

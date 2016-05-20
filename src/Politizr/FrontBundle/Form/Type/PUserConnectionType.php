@@ -30,11 +30,13 @@ class PUserConnectionType extends AbstractType
         // Username / Password
         $builder->add('username', 'text', array(
             'required' => true,
-            'label' => 'Identifiant',
-            'constraints' => new NotBlank(array('message' => 'Identifiant obligatoire.'))
+            'label' => 'Email de connexion',
+            'constraints' => array(
+                new NotBlank(array('message' => 'Email de connexion obligatoire.')),
+                new Email(array('message' => 'Le format de l\'email n\'est pas valide.')),
+            ),
         ));
 
-        # TODO > contraintes en plus mot de passe "fort"
         $builder->add('plainPassword', 'repeated', array(
             // 'required' => true,
             'first_options' => array(

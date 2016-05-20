@@ -1,6 +1,6 @@
 // Fermeture d'une box
-$("body").on("click", "[action='closeBox']", function(e) {
-    // console.log('*** click closeBox');
+$("body").on("click", ".closeAdminBox", function(e) {
+    console.log('*** click closeAdminBox');
     
     // cache parent div
     $(this).closest('div').hide();

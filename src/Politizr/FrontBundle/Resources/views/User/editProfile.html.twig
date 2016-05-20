@@ -75,7 +75,7 @@
                             {% include 'PolitizrFrontBundle:Navigation\\Helper:_mandates.html.twig' %}
                         </div>
                         <div class="mandateItem withLoaderInside" id="newMandate">
-                            {% include 'PolitizrFrontBundle:User:_newMandate.html.twig' %}
+                            {% include 'PolitizrFrontBundle:User:_newMandate.html.twig' with { 'user': user } %}
                         </div>
 
                         <div id="editMandates">

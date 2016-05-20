@@ -27,7 +27,7 @@
                     </ol>
                 </div>
             </div>
-            <div class="column column280">
+            <div class="column column360">
                 <div class="card">
                     {% if errorMsg %}
                         <div class="boxError">
@@ -35,7 +35,7 @@
                         </div>
                     {% endif %}
                     <div class="mandateItem withLoaderInside" id="newMandate">
-                        {% include 'PolitizrFrontBundle:User:_newMandate.html.twig' %}
+                        {% include 'PolitizrFrontBundle:User:_newMandate.html.twig' with { 'user': app.user } %}
                     </div>
                     <a href="{{ path('InscriptionElectedMandateCheck') }}" class="submit nextStepOrange">Étape suivante</a>
                     <div class="coloredBg">

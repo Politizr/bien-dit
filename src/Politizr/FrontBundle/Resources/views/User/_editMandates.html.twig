@@ -4,11 +4,13 @@
         {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
         <form method="POST" name="formMandateUpdate" id="formMandateUpdate">
             {{ form_errors(formMandate) }}
+            <label>Fonction</label>
             <div class="styledSelect">
                 {{ form_widget(formMandate.p_q_mandate) }}
             </div>
 
-            {{ form_widget(formMandate.localization, { 'attr': {'placeholder': 'lieu ou circonscription'}}) }}
+            <label>Lieu ou circonscription</label>
+            {{ form_widget(formMandate.localization, { 'attr': {'placeholder': 'Ex: Corbelin (38630), Lot (1ère circo), ...'}}) }}
             <div class="mandatePeriod">
                 <span class="dea">de</span>
                 {{ form_widget(formMandate.begin_at, { 'maxlength': 4, 'attr': {'placeholder': 'AAAA'}}) }}

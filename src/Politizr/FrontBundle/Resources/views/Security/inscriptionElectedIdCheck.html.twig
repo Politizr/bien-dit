@@ -29,7 +29,13 @@
         <div class="center">
             <div id="maxIdCheckMsg">
                 <h1><span id="nbTryLeft">{{ constant('Politizr\\Constant\\IdCheckConstants::MAX_USER_TRY') - app.user.nbIdCheck }}</span> tentative(s) restante(s)</h1>
-                Vous devez maintenant procéder a la vérification de votre identité pour profiter pleinement de votre compte élu: vous disposez de 3 tentatives pour le faire automatiquement mais n'hésitez pas à nous contacter pour le faire avec nous. En cas d'échec, nous prendrons contact directement avec vous.
+                Vous devez maintenant procéder a la vérification de votre identité pour profiter pleinement de votre compte élu: vous disposez de 3 tentatives pour le faire automatiquement. En cas d'échec ou pour toute question, <a href="mailto: support@politizr.com">contactez le support</a> et procédez à la vérification de votre identité <a href="{{ path('HomepageE') }}">plus tard</a>.
+            </div>
+            <div id="userInfo">
+                Rappel des informations saisies et contrôlées<br/>
+                Nom: {{ app.user.name }}<br/>
+                Prénom: {{ app.user.firstName }}<br/>
+                Date de naissance: {{ app.user.birthday | date('d/m/Y') }}<br/>
             </div>
         </div>
     </div>
@@ -49,57 +55,13 @@
                     </ol>
                 </div>
             </div>
-            <div class="column column280">
-                <div id="userInfo">
-                    Rappel des informations saisies et contrôlées<br/>
-                    Nom: {{ app.user.name }}<br/>
-                    Prénom: {{ app.user.firstName }}<br/>
-                    Date de naissance: {{ app.user.birthday | date('d/m/Y') }}<br/>
-                    En cas d'erreur, <a href="mailto: support@politizr.com">contactez le support</a> et <a href="{{ path('HomepageE') }}">procédez à la vérification de votre identité plus tard</a>
-                </div>
-                <div id="idCheck">
-                    <div class="card">
-                        <div class="formBlock">
-                            {% set uploadAction = path('XhrGeneric', {'xhrRoute': constant('Politizr\\Constant\\XhrConstants::ROUTE_USER_VALIDATE_PHOTO_UPLOAD'), 'xhrService': 'security', 'xhrMethod': 'idCheckPhotoUpload', 'xhrType': constant('Politizr\\Constant\\XhrConstants::RETURN_HTML')}) %}
-                            <form method="POST" action="{{ uploadAction }}" name="user" id="formIdCheckPhoto" enctype="multipart/form-data">
-                                <label>Validation de votre identité par upload de la photo de la carte d'identité</label>
-                                <div class="uploadCNI">
-                                    <input type="file" name="fileName" id="fileName">
-                                    <label action="fileSelect" for="fileName">Photo ID</label>
-                                </form>
-
-                                <div class="coloredBg">
-                                    <img src="{{ asset('bundles/politizrfront/images/pictoCNI.png') }}" width="44" height="29" class="pictoCNI">
-                                    <div class="infoUploadCNI">Face comportant votre photo.<br>Format : jpg, max. 10Mo</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="orElse">
-                        <div class="orElseLine"></div><span>ou</span><div class="orElseLine"></div>
-                    </div>
-                    <div class="card">
-                        {{ form_errors(formIdCheck) }}
-                        <form class="zlaBox" name="user" method="post" id="formPerso4">
-                            <label>Saisie manuelle des numéros de votre Carte Nationale d’Identité</label>
-                            <div class="zlaInputs">
-                                {{ form_row(formIdCheck.zla1, { 'attr': { 'placeholder': '36 caractères de la ligne 1' }}) }}
-                                {{ form_row(formIdCheck.zla2, { 'attr': { 'placeholder': '36 caractères de la ligne 2' }}) }}
-                            </div>
-                            {{ form_rest(formIdCheck) }}
-
-                            <div class="coloredBg">
-                                <img src="{{ asset('bundles/politizrfront/images/cni.jpg') }}">
-                            </div>
-
-                            <button type="button" action="validateIdZla">
-                                Valider mon identité
-                            </button>
-                        </form>
-                    </div>
-                </div>
+            <div class="column column360">
+                {% include 'PolitizrFrontBundle:User:_idCheck.html.twig' %}
             </div><!--
             --><div class="column column140">
+                <div class="columnSidebar skip">
+                    <a href="{{ path('HomepageE') }}">Procédez à la vérification de votre identité plus tard<i class="icon-arrow-right"></i></a>
+                </div>
                 <div class="columnSidebar processGreen"><i class="icon-info"></i><br><b>Si vous ne procédez pas à la validation de votre identité maintenant, vous disposerez d’un profil élu non certifié et ne disposerez pas de toutes les fonctionnalités.</b><br>Vous devrez reprendre et compléter cette étape ultérieurement pour finaliser votre inscription.</div>
         </center>
     </div>

@@ -170,7 +170,7 @@ class SecurityService
         } elseif ($user->hasRole('ROLE_CITIZEN_INSCRIPTION')) {
             $redirectUrl = $this->router->generate('InscriptionContact');
         } elseif ($user->hasRole('ROLE_ELECTED_INSCRIPTION')) {
-            $redirectUrl = $this->router->generate('InscriptionElectedOrder');
+            $redirectUrl = $this->router->generate('InscriptionElectedContact');
         } else {
             throw new InconsistentDataException('No valid role for user');
         }
@@ -590,9 +590,9 @@ class SecurityService
         $user = $this->createUserFromOAuthData($oAuthData, $isQualified);
 
         // update user for inscription process
-        $roles = [ 'ROLE_CITIZEN_INSCRIPTION' ];
+        $roles = [ 'ROLE_OAUTH_USER', 'ROLE_CITIZEN_INSCRIPTION' ];
         if ($isQualified) {
-            $roles = [ 'ROLE_ELECTED_INSCRIPTION' ];
+            $roles = [ 'ROLE_OAUTH_USER', 'ROLE_ELECTED_INSCRIPTION' ];
         }
 
         // @todo to refactor
@@ -610,16 +610,17 @@ class SecurityService
         $user->save();
 
         // if all mandatory params are provided by oauth, connect else redirect to form step
-        if (! $isQualified
-            && null !== $user->getGender()
-            && null !== $user->getFirstName()
-            && null !== $user->getName()
-            && null !== $user->getEmail()
-        ) {
-            $this->inscriptionCitizenFinish($user);
-            $redirectUrl = $this->connectUser($user);
-            return $redirectUrl;
-        }
+        // > form step for everyone to check cgu
+        // if (! $isQualified
+        //     && null !== $user->getGender()
+        //     && null !== $user->getFirstName()
+        //     && null !== $user->getName()
+        //     && null !== $user->getEmail()
+        // ) {
+        //     $this->inscriptionCitizenFinish($user);
+        //     $redirectUrl = $this->connectUser($user);
+        //     return $redirectUrl;
+        // }
 
         $this->doPublicConnection($user);
 
@@ -647,7 +648,6 @@ class SecurityService
 
         // update user
         $this->userManager->updateCanonicalFields($user);
-
         $user = $this->userManager->updateForInscriptionStart(
             $user,
             $roles,
@@ -714,24 +714,33 @@ class SecurityService
         $this->doPublicConnection($user);
     }
 
-
     /**
-     * Citizen to elected migration process start
+     *  Finalisation du process d'inscription élu
      *
-     * @param  PUser $user
      */
-    public function migrationElectedStart(PUser $user)
+    public function inscriptionFinishElected(PUser $user)
     {
-        $this->logger->info('*** migrationElectedStart');
+        $this->logger->info('*** inscriptionFinishElected');
 
-        // update role
-        $user->addRole('ROLE_ELECTED_INSCRIPTION');
+        // citizen inscription roles
+        $roles = [ 'ROLE_ELECTED', 'ROLE_CITIZEN', 'ROLE_PROFILE_COMPLETED' ];
+
+        // update user
+        $user = $this->userManager->updateForInscriptionFinish(
+            $user,
+            $roles,
+            UserConstants::STATUS_VALIDATION_PROCESS,
+            true
+        );
+
+        // update reputation
+        $user->updateReputation(ReputationConstants::ACTION_ELECTED_INSCRIPTION);
+
+        // save user
         $user->save();
-
-        // connect user
+        
         $this->doPublicConnection($user);
     }
-
 
     /**
      * Order payment completed
@@ -786,33 +795,5 @@ class SecurityService
         }
 
         $this->orderManager->deleteOrder($order);
-    }
-
-    /**
-     *  Finalisation du process d'inscription élu
-     *
-     */
-    public function inscriptionFinishElected(PUser $user)
-    {
-        $this->logger->info('*** inscriptionFinishElected');
-
-        // citizen inscription roles
-        $roles = [ 'ROLE_ELECTED', 'ROLE_CITIZEN' /* during waiting for validation */, 'ROLE_PROFILE_COMPLETED' ];
-
-        // update user
-        $user = $this->userManager->updateForInscriptionFinish(
-            $user,
-            $roles,
-            UserConstants::STATUS_VALIDATION_PROCESS,
-            true
-        );
-
-        // update reputation
-        $user->updateReputation(ReputationConstants::ACTION_ELECTED_INSCRIPTION);
-
-        // save user
-        $user->save();
-        
-        $this->doPublicConnection($user);
     }
 }

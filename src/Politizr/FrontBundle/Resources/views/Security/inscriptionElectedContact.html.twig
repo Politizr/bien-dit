@@ -13,6 +13,15 @@
     <div id="headerTrigger"></div>
 {% endblock header %}
 
+{# checkbox without sf2 label #}
+{% form_theme form _self %}
+
+{% block checkbox_widget %}
+{% spaceless %}
+    <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+{% endspaceless %}
+{% endblock checkbox_widget %}
+
 {% block main %}
     <div id="main">
         <center>
@@ -27,7 +36,7 @@
                     </ol>
                 </div>
             </div>
-            <div class="column column280">
+            <div class="column column360">
                 <div class="card">
                     {% if form.vars.errors|length %}
                         <div class="boxError">
@@ -35,19 +44,37 @@
                         </div>
                     {% endif %}
                     {{ form_start(form, {'action': path('InscriptionElectedContactCheck'), 'method': 'POST'}) }}
-                        {{ form_row(form.gender) }}
+                        <div class="styledSelect">{{ form_widget(form.gender) }}</div>
                         {{ form_row(form.name) }}
                         {{ form_row(form.firstname) }}
                         {% if (form.email is defined) %}
                             {{ form_row(form.email) }}
                         {% endif %}
                         {{ form_row(form.birthday) }}
-                        {{ form_row(form.newsletter) }}
+                        <div class="coloredBg">
+                            {{ form_widget(form.newsletter) }}<label>Je m'inscris à la newsletter de Politizr</a>.</label>
+                            {% if (form.elected is defined) %}
+                                {{ form_widget(form.elected) }}<label><b>Je certifie exercer — ou avoir exercé — un mandat électif* et reconnaît que ma responsabilité est engagée en cas de fraude.</b><br>Politizr procède à la vérification d’identité de tous les comptes élus.</label>
+                                {% if form.elected.vars.errors|length %}
+                                    <div class="field_error">{{ form_errors(form.elected) }}</div>
+                                {% endif %}
+                            {% endif %}
+                            {% if (form.cgu is defined) %}
+                                {{ form_widget(form.cgu) }}<label>J’accepte les <a href="" target="_blank">conditions générales d’utilisation</a>.</label>
+                                {% if form.cgu.vars.errors|length %}
+                                    <div class="field_error">{{ form_errors(form.cgu) }}</div>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+
                         <button type="submit" class="submit nextStepOrange">Étape suivante</button>
                     {{ form_end(form) }}
                 </div>
                 <div class="cardFooter">
                     Tous les champs sont obligatoires
+                    {% if (form.elected is defined) %}
+                        <span>*Conseil municipal, conseil départemental, conseil régional, conseil consulaire, Assemblée Nationale, Sénat</span>
+                    {% endif %}
                 </div>
             </div>
             <div class="column column140">

@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Email;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -25,10 +26,12 @@ class PUserContactType extends AbstractType
     /**
      *
      * @param $withEmail boolean
+     * @param $oAuth boolean
      */
-    public function __construct($withEmail = false)
+    public function __construct($withEmail = false, $oAuth = false)
     {
         $this->withEmail = $withEmail;
+        $this->oAuth = $oAuth;
     }
 
     /**
@@ -36,22 +39,6 @@ class PUserContactType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('id', 'hidden', array(
-            'required' => true
-        ));
-
-        $builder->add('qualified', 'hidden', array(
-            'attr'     => array( 'value' => false )
-        ));
-
-        $builder->add('p_u_status_id', 'hidden', array(
-            'attr'     => array( 'value' => UserConstants::STATUS_ACTIVED )
-        ));
-
-        $builder->add('online', 'hidden', array(
-            'attr'     => array( 'value' => false )
-        ));
-
         $builder->add('gender', 'choice', array(
             'required' => true,
             'label' => 'Civilité',
@@ -104,6 +91,18 @@ class PUserContactType extends AbstractType
                 }
                 $event->setData($data);
             });
+        }
+
+        if ($this->oAuth) {
+            $builder->add('cgu', 'checkbox', array(
+                'required' => true,
+                'mapped' => false,
+                'constraints' => new IsTrue(
+                    array(
+                        'message' => 'Vous devez accepter les conditions générales d\'utilisation.'
+                    )
+                )
+            ));
         }
     }
 

@@ -13,10 +13,19 @@
     <div id="headerTrigger"></div>
 {% endblock header %}
 
+{# checkbox without sf2 label #}
+{% form_theme form _self %}
+
+{% block checkbox_widget %}
+{% spaceless %}
+    <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+{% endspaceless %}
+{% endblock checkbox_widget %}
+
 {% block main %}
     <div id="main">
         <center>
-            <div class="column column280">
+            <div class="column column360">
                 <div class="card">
                     {% if form.vars.errors|length %}
                         <div class="boxError">
@@ -30,7 +39,15 @@
                         {% if (form.email is defined) %}
                             {{ form_row(form.email) }}
                         {% endif %}
-                        {{ form_row(form.newsletter) }}
+                        <div class="coloredBg">
+                            {{ form_widget(form.newsletter) }}<label>Je m'inscris à la newsletter de Politizr</a>.</label>
+                            {% if (form.cgu is defined) %}
+                                {{ form_widget(form.cgu) }}<label>J’accepte les <a href="" target="_blank">conditions générales d’utilisation</a>.</label>
+                                {% if form.cgu.vars.errors|length %}
+                                    <div class="field_error">{{ form_errors(form.cgu) }}</div>
+                                {% endif %}
+                            {% endif %}
+                        </div>
                         <button type="submit" class="submit nextStepOrange">Valider</button>
                     {{ form_end(form) }}
                 </div>

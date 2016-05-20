@@ -1,0 +1,19 @@
+<div class="userMandates">
+    {% if user.isQualified %}
+        <div class="formBlock">
+            <div class="formBlockHeader">
+                <label>Mandats</label>
+                {% include 'PolitizrFrontBundle:Navigation\\Helper:_mandates.html.twig' %}
+            </div>
+            <div class="mandateItem withLoaderInside" id="newMandate">
+                {% include 'PolitizrFrontBundle:User:_newMandate.html.twig' with { 'user': user } %}
+            </div>
+
+            <div id="editMandates">
+                {% include 'PolitizrFrontBundle:User:_editMandates.html.twig' %}
+            </div>
+        </div>
+    {% else %}
+        L'utilisateur doit être "élu" pour éditer les mandats.
+    {% endif %}
+</div>

@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\IsTrue;
 use Rollerworks\Bundle\PasswordStrengthBundle\Validator\Constraints\PasswordStrength;
 
 use Symfony\Component\Form\FormEvents;
@@ -25,23 +26,9 @@ class PUserElectedRegisterType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        // Attributs cachés
-        $builder->add('qualified', 'hidden', array(
-            'attr'     => array( 'value' => true )
-        ));
-
-        $builder->add('p_u_status_id', 'hidden', array(
-            'attr'     => array( 'value' => UserConstants::STATUS_ACTIVED )
-        ));
-
-        $builder->add('online', 'hidden', array(
-            'attr'     => array( 'value' => false )
-        ));
-
         $builder->add('username', 'hidden', array(
             'attr'     => array( 'value' => '' )
         ));
-
 
         $builder->add('email', 'email', array(
             'required' => true,
@@ -78,12 +65,22 @@ class PUserElectedRegisterType extends AbstractType
 
         $builder->add('elected', 'checkbox', array(
             'required' => true,
-            'mapped' => false
+            'mapped' => false,
+            'constraints' => new IsTrue(
+                array(
+                    'message' => 'Vous devez certifier exercer — ou avoir exercé — un mandat électif*.'
+                )
+            )
         ));
 
         $builder->add('cgu', 'checkbox', array(
             'required' => true,
-            'mapped' => false
+            'mapped' => false,
+            'constraints' => new IsTrue(
+                array(
+                    'message' => 'Vous devez accepter les conditions générales d\'utilisation.'
+                )
+            )
         ));
 
         // update username same as email field

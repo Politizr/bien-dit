@@ -321,6 +321,8 @@ builders:
                 "Abonnement":
                     "Followers":                [ block_followers ]
                     "Abonnements":              [ block_subscribers ]
+                "Mandats":
+                    "Mandats":                  [ block_mandates ]
                 "Statut":
                     "Actuel":                   [ [ p_u_status ] ]
                     "Connexion":                [ last_login, last_activity ]
@@ -368,8 +370,8 @@ builders:
                     label:                      "Followers"
                 block_subscribers:
                     label:                      "Abonnements"
-                block_affinities:
-                    label:                      "Partis Politiques"
+                block_mandates:
+                    label:                      "Mandats"
                 block_moderation_banned:
                     label:                      "Bannissement"
                 block_moderation_alert_new:

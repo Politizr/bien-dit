@@ -15,6 +15,7 @@ use Politizr\Model\PUMandate;
 
 use Politizr\Model\POrderQuery;
 use Politizr\Model\POPaymentTypeQuery;
+use Politizr\Model\PUserQuery;
 
 use Politizr\FrontBundle\Form\Type\PUserRegisterType;
 use Politizr\FrontBundle\Form\Type\PUserContactType;
@@ -81,15 +82,8 @@ class SecurityController extends Controller
     public function cancelInscriptionAction()
     {
         // Récupération user
-        $user = $this->get('security.context')->getToken()->getUser();
-
-        // Cas spécial migration profil à gérer: pas de suppression du profil.
-        $migration = $this->get('session')->get('migration');
-        if ($migration) {
-            return $this->redirect($this->generateUrl('HomepageC'));
-        }
-
-        $user->deleteWithoutArchive();
+        // $user = $this->get('security.context')->getToken()->getUser();
+        // $user->deleteWithoutArchive();
         return $this->redirect($this->generateUrl('Logout'));
     }
 
@@ -137,7 +131,15 @@ class SecurityController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** inscriptionCheckAction');
 
-        $user = new PUser();
+        // test & redirect if user previously canceled his subscription during process
+        $data =  $request->request->get('user_elected_register');
+        if ($data['email']) {
+            $user = PUserQuery::create()->filterByUsername($data['email'])->findOne();
+        }
+        if (!$user) {
+            $user = new PUser();
+        }
+
         $form = $this->createForm(new PUserRegisterType(), $user);
 
         $form->bind($request);
@@ -164,12 +166,21 @@ class SecurityController extends Controller
         $logger->info('*** inscriptionContactAction');
 
         $user = $this->getUser();
+
+        // check if user has already filled his email
+        $withEmail = true;
         if ($email = $user->getEmail()) {
             $withEmail = false;
-        } else {
-            $withEmail = true;
         }
-        $form = $this->createForm(new PUserContactType($withEmail), $user);
+
+        // check if user comes from oauth
+        $rolesTab = $user->getRoles();
+        $oAuth = false;
+        if (in_array('ROLE_OAUTH_USER', $rolesTab)) {
+            $oAuth = true;
+        }
+
+        $form = $this->createForm(new PUserContactType($withEmail, $oAuth), $user);
         
         return $this->render('PolitizrFrontBundle:Security:inscriptionContact.html.twig', array(
             'form' => $form->createView()
@@ -185,12 +196,21 @@ class SecurityController extends Controller
         $logger->info('*** inscriptionContactCheckAction');
 
         $user = $this->getUser();
+        
+        // check if user has already filled his email
+        $withEmail = true;
         if ($email = $user->getEmail()) {
             $withEmail = false;
-        } else {
-            $withEmail = true;
         }
-        $form = $this->createForm(new PUserContactType($withEmail), $user);
+
+        // check if user comes from oauth
+        $rolesTab = $user->getRoles();
+        $oAuth = false;
+        if (in_array('ROLE_OAUTH_USER', $rolesTab)) {
+            $oAuth = true;
+        }
+
+        $form = $this->createForm(new PUserContactType($withEmail, $oAuth), $user);
         
         $form->bind($request);
         if ($form->isValid()) {
@@ -237,7 +257,17 @@ class SecurityController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** inscriptionElectedCheckAction');
 
-        $user = new PUser();
+        $user = null;
+
+        // test & redirect if user previously canceled his subscription during process
+        $data =  $request->request->get('user_elected_register');
+        if ($data['email']) {
+            $user = PUserQuery::create()->filterByUsername($data['email'])->findOne();
+        }
+        if (!$user) {
+            $user = new PUser();
+        }
+
         $form = $this->createForm(new PUserElectedRegisterType(), $user);
 
         $form->bind($request);
@@ -264,12 +294,22 @@ class SecurityController extends Controller
         $logger->info('*** inscriptionElectedContactAction');
 
         $user = $this->getUser();
+
+        // check if user has already filled his email
+        $withEmail = true;
         if ($email = $user->getEmail()) {
             $withEmail = false;
-        } else {
-            $withEmail = true;
         }
-        $form = $this->createForm(new PUserElectedContactType($withEmail), $user);
+
+        // check if user comes from oauth
+        $rolesTab = $user->getRoles();
+        dump($rolesTab);
+        $oAuth = false;
+        if (in_array('ROLE_OAUTH_USER', $rolesTab)) {
+            $oAuth = true;
+        }
+
+        $form = $this->createForm(new PUserElectedContactType($withEmail, $oAuth), $user);
         
         return $this->render('PolitizrFrontBundle:Security:inscriptionElectedContact.html.twig', array(
             'form' => $form->createView()
@@ -285,12 +325,21 @@ class SecurityController extends Controller
         $logger->info('*** inscriptionElectedContactCheckAction');
 
         $user = $this->getUser();
+
+        // check if user has already filled his email
+        $withEmail = true;
         if ($email = $user->getEmail()) {
             $withEmail = false;
-        } else {
-            $withEmail = true;
         }
-        $form = $this->createForm(new PUserElectedContactType($withEmail), $user);
+
+        // check if user comes from oauth
+        $rolesTab = $user->getRoles();
+        $oAuth = false;
+        if (in_array('ROLE_OAUTH_USER', $rolesTab)) {
+            $oAuth = true;
+        }
+
+        $form = $this->createForm(new PUserElectedContactType($withEmail, $oAuth), $user);
         
         $form->bind($request);
         if ($form->isValid()) {
@@ -363,6 +412,8 @@ class SecurityController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** inscriptionElectedOrderAction');
 
+        return $this->redirect($this->generateUrl('InscriptionElectedContact'));
+
         $user = $this->getUser();
         $form = $this->createForm(new POrderSubscriptionType());
 
@@ -378,6 +429,8 @@ class SecurityController extends Controller
     {
         $logger = $this->get('logger');
         $logger->info('*** inscriptionElectedOrderCheckAction');
+
+        return $this->redirect($this->generateUrl('InscriptionElectedContact'));
 
         $user = $this->getUser();
         $form = $this->createForm(new POrderSubscriptionType());
@@ -407,6 +460,8 @@ class SecurityController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** inscriptionElectedPaymentAction');
 
+        return $this->redirect($this->generateUrl('InscriptionElectedContact'));
+
         $user = $this->getUser();
 
         // Listes des moyens de paiement / gestion hors form pour chargement dynamique des formulaires paypal/banque & pavés d'informations spécifiques
@@ -425,6 +480,8 @@ class SecurityController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** inscriptionElectedPaymentFinishedAction');
 
+        return $this->redirect($this->generateUrl('InscriptionElectedContact'));
+
         // Mise à jour de la commande
         $this->get('politizr.functional.security')->updateOrderPaymentCompleted();
 
@@ -438,6 +495,8 @@ class SecurityController extends Controller
     {
         $logger = $this->get('logger');
         $logger->info('*** inscriptionElectedPaymentCanceledAction');
+
+        return $this->redirect($this->generateUrl('InscriptionElectedContact'));
 
         // Mise à jour de la commande
         $this->get('politizr.functional.security')->updateOrderPaymentCanceled();

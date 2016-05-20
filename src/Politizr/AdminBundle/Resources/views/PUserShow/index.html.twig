@@ -72,7 +72,6 @@
     {{ adminUserRComments(PUser) }}
 {% endblock %}
 
-
 {# Bloc followers #}
 {% block show_column_block_followers %}
     {{ adminUserFollowers(PUser) }}
@@ -83,9 +82,9 @@
     {{ adminUserSubscribers(PUser) }}
 {% endblock %}
 
-{# Bloc affinités politiques #}
-{% block show_column_block_affinities %}
-    {{ adminUserAffinities(PUser) }}
+{# Block mandates #}
+{% block show_column_block_mandates %}
+    {{ adminUserMandates(PUser) }}
 {% endblock %}
 
 {# Block moderation new alert #}
@@ -134,6 +133,30 @@
     <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/jquery.form.min.js') }}"></script>  
     <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/uploadImage.js') }}"></script>  
 
-
     <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/moderation/notification.js') }}"></script>
+
+    <script>
+        // Mandate creation
+        $("body").on("click", "[action='mandateCreate']", function(e) {
+            console.log('*** click mandateCreate');
+            var uuid = $(this).attr('uuid');
+            return createAdminUserMandate(uuid);
+        });
+
+        // Mandate update
+        $("body").on("click", "[action='mandateUpdate']", function(e) {
+            console.log('*** click mandateUpdate');
+            var form = $(this).closest('#formMandateUpdate');
+            return saveAdminUserMandate(form);
+        });
+
+        // Mandate deletion
+        $("body").on("click", "[action='mandateDelete']", function(e) {
+            console.log('*** click mandateDelete');
+            var uuid = $(this).attr('uuid');
+            return deleteAdminUserMandate(uuid);
+        });
+    </script>
+
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/politizr/user/mandates.js') }}"></script>    
 {% endblock object_actions_script_container %}

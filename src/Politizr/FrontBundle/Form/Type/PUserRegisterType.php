@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Email;
 use Rollerworks\Bundle\PasswordStrengthBundle\Validator\Constraints\PasswordStrength;
 
@@ -26,18 +27,6 @@ class PUserRegisterType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('qualified', 'hidden', array(
-            'attr' => array( 'value' => false)
-        ));
-
-        $builder->add('p_u_status_id', 'hidden', array(
-            'attr'     => array( 'value' => UserConstants::STATUS_ACTIVED )
-        ));
-
-        $builder->add('online', 'hidden', array(
-            'attr'     => array( 'value' => false )
-        ));
-
         $builder->add('username', 'hidden', array(
             'attr'     => array( 'value' => '' )
         ));
@@ -77,8 +66,12 @@ class PUserRegisterType extends AbstractType
 
         $builder->add('cgu', 'checkbox', array(
             'required' => true,
-            'label' => 'J\'accepte les conditions générales d\'utilisation',
-            'mapped' => false
+            'mapped' => false,
+            'constraints' => new IsTrue(
+                array(
+                    'message' => 'Vous devez accepter les conditions générales d\'utilisation.'
+                )
+            )
         ));
 
         // update username same as email field

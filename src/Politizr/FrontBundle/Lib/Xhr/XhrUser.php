@@ -347,7 +347,8 @@ class XhrUser
         $editMandates = $this->templating->render(
             'PolitizrFrontBundle:User:_editMandates.html.twig',
             array(
-                'formMandateViews' => $formMandateViews
+                'formMandateViews' => $formMandateViews,
+                'user' => $user,
             )
         );
 

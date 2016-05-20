@@ -11,10 +11,6 @@ LoginCheck:
 Logout:
     pattern:  /deconnexion
 
-CancelInscription:
-    pattern:  /inscription/annuler
-    defaults: { _controller: PolitizrFrontBundle:Security:cancelInscription }
-
 InscriptionChoice:
     pattern:  /inscription
     defaults: { _controller: PolitizrFrontBundle:Security:inscriptionChoice }

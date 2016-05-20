@@ -1,0 +1,41 @@
+<div id="idCheck">
+    <div class="card">
+        <div class="formBlock">
+            {% set uploadAction = path('XhrGeneric', {'xhrRoute': constant('Politizr\\Constant\\XhrConstants::ROUTE_USER_VALIDATE_PHOTO_UPLOAD'), 'xhrService': 'security', 'xhrMethod': 'idCheckPhotoUpload', 'xhrType': constant('Politizr\\Constant\\XhrConstants::RETURN_HTML')}) %}
+            <form method="POST" action="{{ uploadAction }}" name="user" id="formIdCheckPhoto" enctype="multipart/form-data">
+                <label>Télécharger une photo de votre Carte Nationale d’Identité</label>
+                <div class="uploadCNI">
+                    <input type="file" name="fileName" id="fileName">
+                    <label action="fileSelect" for="fileName">Photo ID</label>
+                </form>
+
+                <div class="coloredBg">
+                    <img src="{{ asset('bundles/politizrfront/images/pictoCNI.png') }}" width="44" height="29" class="pictoCNI">
+                    <div class="infoUploadCNI">Face comportant votre photo.<br>Format : jpg, max. 10Mo</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="orElse">
+        <div class="orElseLine"></div><span>ou</span><div class="orElseLine"></div>
+    </div>
+    <div class="card">
+        {{ form_errors(formIdCheck) }}
+        <form class="zlaBox" name="user" method="post" id="formPerso4">
+            <label>Saisie manuelle des numéros de votre Carte Nationale d’Identité</label>
+            <div class="zlaInputs">
+                {{ form_row(formIdCheck.zla1, { 'attr': { 'placeholder': '36 caractères de la ligne 1' }}) }}
+                {{ form_row(formIdCheck.zla2, { 'attr': { 'placeholder': '36 caractères de la ligne 2' }}) }}
+            </div>
+            {{ form_rest(formIdCheck) }}
+
+            <div class="coloredBg">
+                <img src="{{ asset('bundles/politizrfront/images/cni.jpg') }}">
+            </div>
+
+            <button type="button" action="validateIdZla">
+                Valider mon identité
+            </button>
+        </form>
+    </div>
+</div>

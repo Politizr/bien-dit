@@ -4,8 +4,12 @@ namespace Politizr\AdminBundle\Twig;
 use Politizr\Exception\InconsistentDataException;
 
 use Politizr\Constant\ObjectTypeConstants;
+use Politizr\Constant\QualificationConstants;
 
 use Politizr\Model\PUser;
+use Politizr\Model\PUMandate;
+
+use Politizr\FrontBundle\Form\Type\PUMandateType;
 
 /**
  * User admin twig extension
@@ -22,6 +26,8 @@ class PolitizrAdminUserExtension extends \Twig_Extension
     private $router;
     private $templating;
 
+    private $globalTools;
+
     /**
      *
      */
@@ -35,6 +41,8 @@ class PolitizrAdminUserExtension extends \Twig_Extension
 
         $this->router = $serviceContainer->get('router');
         $this->templating = $serviceContainer->get('templating');
+
+        $this->globalTools = $serviceContainer->get('politizr.tools.global');
     }
 
     /* ######################################################################################################## */
@@ -64,6 +72,13 @@ class PolitizrAdminUserExtension extends \Twig_Extension
             'adminUserBadges'  => new \Twig_SimpleFunction(
                 'adminUserBadges',
                 array($this, 'adminUserBadges'),
+                array(
+                    'is_safe' => array('html')
+                    )
+            ),
+            'adminUserMandates'  => new \Twig_SimpleFunction(
+                'adminUserMandates',
+                array($this, 'adminUserMandates'),
                 array(
                     'is_safe' => array('html')
                     )
@@ -162,6 +177,37 @@ class PolitizrAdminUserExtension extends \Twig_Extension
 
         return $html;
 
+    }
+
+    /**
+     * Edit user's mandates
+     *
+     * @param PUser $user
+     * @return string
+     */
+    public function adminUserMandates(PUser $user)
+    {
+        $this->logger->info('*** adminUserMandates');
+        // $this->logger->info('$pUser = '.print_r($pUser, true));
+
+        // Mandates form views
+        $formMandateViews = $this->globalTools->getFormMandateViews($user->getId());
+
+        // New mandate
+        $mandate = new PUMandate();
+        $formMandate = $this->formFactory->create(new PUMandateType(QualificationConstants::TYPE_ELECTIV, $user->getId()), $mandate);
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+            'PolitizrAdminBundle:Fragment\\User:_mandates.html.twig',
+            array(
+                'user' => $user,
+                'formMandate' => $formMandate?$formMandate->createView():null,
+                'formMandateViews' => $formMandateViews?$formMandateViews:null,
+            )
+        );
+
+        return $html;
     }
 
     /**

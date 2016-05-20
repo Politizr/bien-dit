@@ -802,6 +802,13 @@ LIMIT :offset, :limit
     public function updateForInscriptionStart(PUser $user, $roles, $canonicalUsername, $encodedPassword)
     {
         if ($user) {
+            $user->setQualified(false);
+            $user->setOnline(false);
+
+            // remove existing roles
+            foreach ($existingRoles = $user->getRoles() as $role) {
+                $user->removeRole($role);
+            }
             foreach ($roles as $role) {
                 $user->addRole($role);
             }
