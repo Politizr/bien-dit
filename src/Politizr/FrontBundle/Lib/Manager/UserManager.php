@@ -5,6 +5,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\ReputationConstants;
+use Politizr\Constant\UserConstants;
 
 use Politizr\Model\PUser;
 use Politizr\Model\PUFollowDD;
@@ -814,6 +815,7 @@ LIMIT :offset, :limit
             }
             $user->setUsernameCanonical($canonicalUsername);
             $user->setPassword($encodedPassword);
+            $user->setPUStatusId(UserConstants::STATUS_VALIDATION_PROCESS);
             
             $user->eraseCredentials();
         }

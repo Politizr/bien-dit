@@ -24,21 +24,28 @@
 {% block headerMsg %}
     {# id check big messages #}
     {% if app.session.flashbag.has('idcheck/success') and app.session.flashbag.get('idcheck/success')[0] %}
+        <div class="idCheckOkClose">
+            <div class="center"> 
+                <span><i class="icon-cross"></i>Fermer</span>
+            </div>
+        </div>
         <div id="idCheckOk">
-            <div class="center">
+            <div class="center">         
                 <i class="icon-like-yes"></i>
                 <div id="idCheckMsg">
                     <h1>Votre identité à été validée. Merci !</h1>
-                    Nous allons procéder à la vérification de vos mandats. Vous disposez de toutes les fonctionnalités.
+                    Nous allons procéder à la vérification de vos mandats. Vous disposez dès à présent de toutes les fonctionnalités.
                 </div>
             </div>
         </div>
     {% elseif app.session.flashbag.has('idcheck/maxUserTry') and app.session.flashbag.get('idcheck/maxUserTry')[0] %}
-        <div id="idCheckKo">
+        <div id="alertIdCheck">
             <div class="center">
-                <div id="idCheckMsg">
-                    <h1>Votre identité n'a pas pu être validée...</h1>
-                    Pas d'inquiétudes, nous allons prendre contact avec vous très rapidement pour valider ensemble votre identité.
+                <div id="maxIdCheckMsg">
+                    <i class="icon-info"></i>
+                    <b>Nous prendrons contact directement avec vous très rapidement pour valider votre identité. </b><br>
+                    Merci de nous envoyer un <a href="mailto:support@politizr.com">email</a> rapidement si votre adresse email n'est pas correcte (voir ci-dessous).<br>
+                    Vous pouvez également prendre directement contact avec nous au 05.64.88.01.71.
                 </div>
             </div>
         </div>

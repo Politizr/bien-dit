@@ -8,16 +8,14 @@
 {% block bodyClass %} class="process"{% endblock %}
 
 {% block header %}
-    <div id="header">
-        {% include 'PolitizrFrontBundle:Navigation\\Header:_headerInscription.html.twig' with { 'type': 'choice' } %}
-    </div>
+    {% include 'PolitizrFrontBundle:Navigation\\Header:_headerInscription.html.twig' with { 'type': 'choice' } %}
     <div id="headerTrigger"></div>
 {% endblock header %}
 
 {% block main %}
     <div id="main">
         <center>
-            <div class="column column280">
+            <div class="column column360">
                 <div class="card">
                     <h1>citoyen-ne</h1>
                     {#<h2>Gratuit</h2>#}
@@ -29,7 +27,7 @@
                     <a href="{{ path('Inscription') }}" class="submit nextStepOrange">Créer un compte</a>
                 </div>
             </div><!-- keep comment mark this way : they prevent unwanted space between cols
-            --><div class="column column280">
+            --><div class="column column360">
                 <div class="card">
                     <h1>élu-e*</h1>
                     {#<h2><b>90 € pour 1 an</b> ou <b>50 € pour 6 mois</b></h2>#}

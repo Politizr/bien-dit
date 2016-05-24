@@ -35,6 +35,9 @@ class IdCheck
 
     private $lastResult;
 
+    private $errorLevel;
+    private $errorMsg;
+
     /**
      *
      * @param @security.token_storage
@@ -65,6 +68,26 @@ class IdCheck
             $this->wsdlUrl,
             $this->wsdlParams
         );
+
+        $this->errorMsg = array();
+    }
+
+    /**
+     *
+     * @param array
+     */
+    public function getErrorMsg()
+    {
+        return $this->errorMsg;
+    }
+
+    /**
+     *
+     * @param array
+     */
+    public function getErrorLevel()
+    {
+        return $this->errorLevel;
     }
 
     /**
@@ -79,6 +102,8 @@ class IdCheck
         $this->logger->info('*** executeZlaChecking');
         $this->logger->info('$zla1 = '.print_r($zla1, true));
         $this->logger->info('$zla2 = '.print_r($zla2, true));
+
+        $this->errorMsg = array();
 
         $now = new \DateTime();
         // expected format example: 2016-04-15T13:55:14.179+02:00
@@ -107,10 +132,12 @@ class IdCheck
         $this->lastResult = $this->wsdlClient->__soapCall("CheckMrz", $optionsMzr);
         $this->logger->info(print_r($this->lastResult, true));
 
-        if ($this->lastResult && $this->lastResult->contentOk && $this->lastResult->contentOk->result) {
-            return $this->lastResult->contentOk->result;
+        if (isset($this->lastResult) && isset($this->lastResult->contentOk) && isset($this->lastResult->contentOk->result) && $this->lastResult->contentOk->result == IdCheckConstants::WSDL_RESULT_OK) {
+            return true;
         } else {
-            return IdCheckConstants::WSDL_RESULT_ERROR;
+            $this->errorMsg[] = 'Erreur de saisie, merci de vérifier les informations fournies.';
+            $this->errorLevel = IdCheckConstants::ERROR_LEVEL_SOFT;
+            return false;
         }
     }
 
@@ -123,6 +150,8 @@ class IdCheck
     public function executeImageIdCardChecking($rawImg)
     {
         $this->logger->info('*** executeImageIdCardChecking');
+
+        $this->errorMsg = array();
 
         $now = new \DateTime();
         // expected format example: 2016-04-15T13:55:14.179+02:00
@@ -154,10 +183,12 @@ class IdCheck
         $this->logger->info(print_r($this->lastResult, true));
         // dump($this->lastResult);
 
-        if (isset($this->lastResult) && isset($this->lastResult->contentOk) && isset($this->lastResult->contentOk->result)) {
-            return $this->lastResult->contentOk->result;
+        if (isset($this->lastResult) && isset($this->lastResult->contentOk) && isset($this->lastResult->contentOk->result) && $this->lastResult->contentOk->result == IdCheckConstants::WSDL_RESULT_OK) {
+            return true;
         } else {
-            return IdCheckConstants::WSDL_RESULT_ERROR;
+            $this->errorMsg[] = 'Nous n\'avons pas pu valider votre photo d\'identité: elle doit être nette et dans le sens de la lecture.';
+            $this->errorLevel = IdCheckConstants::ERROR_LEVEL_SOFT;
+            return false;
         }
     }
 
@@ -172,11 +203,18 @@ class IdCheck
         $this->logger->info('*** isUserLastResult');
         $this->logger->info('$user = '.print_r($user, true));
 
+        $this->errorMsg = array();
+
         if (! (isset($this->lastResult) && isset($this->lastResult->contentOk) && isset($this->lastResult->contentOk->result) && isset($this->lastResult->contentOk->holderDetail) && isset($this->lastResult->contentOk->holderDetail->gender) && isset($this->lastResult->contentOk->holderDetail->lastName) && isset($this->lastResult->contentOk->holderDetail->birthDate))) {
             return false;
         } else {
             $gender = $this->lastResult->contentOk->holderDetail->gender;
             $lastName = $this->lastResult->contentOk->holderDetail->lastName;
+
+            if (is_array($lastName)) {
+                $lastName = implode(' ', $lastName);
+            }
+
             $lastName = strtoupper($lastName);
             $lastName = preg_replace('/\s+/', '-', $lastName);
 
@@ -195,14 +233,22 @@ class IdCheck
 
             if (!(($gender == 'M' && $userGender == 'Monsieur') || ($gender == 'F' && $userGender == 'Madame'))) {
                 $this->logger->info('gender ko');
-                return false;
+
+                $this->errorMsg[] = 'La civilité saisie ne correspond pas aux informations de la carte d\'identité.';
             }
             if (!($lastName == $userLastName)) {
                 $this->logger->info('lastname ko');
-                return false;
+
+                $this->errorMsg[] = 'Le nom saisi ne correspond pas aux informations de la carte d\'identité.';
             }
             if (!($birthDate == $userBirthDate)) {
                 $this->logger->info('birthdate ko');
+
+                $this->errorMsg[] = 'La date de naissance saisie ne correspond pas aux informations de la carte d\'identité.';
+            }
+
+            if (!empty($this->errorMsg)) {
+                $this->errorLevel = IdCheckConstants::ERROR_LEVEL_REDIRECT;
                 return false;
             }
 

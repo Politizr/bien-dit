@@ -131,6 +131,8 @@ class SecurityController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** inscriptionCheckAction');
 
+        $user = null;
+
         // test & redirect if user previously canceled his subscription during process
         $data =  $request->request->get('user_elected_register');
         if ($data['email']) {

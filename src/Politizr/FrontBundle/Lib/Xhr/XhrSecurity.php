@@ -6,6 +6,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 use Politizr\Exception\InconsistentDataException;
 use Politizr\Exception\BoxErrorException;
+use Politizr\Exception\PolitizrException;
 
 use StudioEcho\Lib\StudioEchoUtils;
 
@@ -253,23 +254,21 @@ class XhrSecurity
             $zla1 = $form->get('zla1')->getData();
             $zla2 = $form->get('zla2')->getData();
 
-            $result = $this->idcheck->executeZlaChecking($zla1, $zla2);
+            $checked = $this->idcheck->executeZlaChecking($zla1, $zla2);
 
             // upd nb try
             $user->setNbIdCheck($user->getNbIdCheck() + 1);
             $user->save();
 
-            if ($result == IdCheckConstants::WSDL_RESULT_ERROR) {
-                return false;
-            } elseif ($this->idcheck->isUserLastResult($user)) {
+            if ($checked && $this->idcheck->isUserLastResult($user)) {
                 return true;
+            } else {
+                return false;
             }
         } else {
             $errors = StudioEchoUtils::getAjaxFormErrors($form);
-            throw new BoxErrorException($errors);
+            throw new PolitizrException($errors);
         }
-
-        return false;
     }
 
     /**
@@ -290,21 +289,20 @@ class XhrSecurity
             $image->load($path . $fileName);
             $rawImg = $image->raw();
 
-            $result = $this->idcheck->executeImageIdCardChecking($rawImg);
+            $checked = $this->idcheck->executeImageIdCardChecking($rawImg);
 
             // upd nb try
             $user->setNbIdCheck($user->getNbIdCheck() + 1);
             $user->save();
 
-            // @todo gestion WARNING exemple: photo flash id camille
-            if ($result == IdCheckConstants::WSDL_RESULT_ERROR) {
-                return false;
-            } elseif ($this->idcheck->isUserLastResult($user)) {
+            if ($checked && $this->idcheck->isUserLastResult($user)) {
                 return true;
+            } else {
+                return false;
             }
+        } else {
+            throw new PolitizrException('Le fichier image n\'existe pas.');
         }
-
-        return false;
     }
 
     /**
@@ -317,13 +315,13 @@ class XhrSecurity
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
-
         $nbTry = $user->getNbIdCheck();
 
         // max try reach > redirect to account w. error msg
         if ($nbTry >= IdCheckConstants::MAX_USER_TRY) {
             $this->session->getFlashBag()->add('idcheck/maxUserTry', true);
 
+            $errors = null;
             $success = false;
             $redirect = true;
             $redirectUrl = $this->router->generate('EditPerso'.$this->globalTools->computeProfileSuffix());
@@ -334,27 +332,24 @@ class XhrSecurity
                 $user->setValidated(true);
                 $user->save();
 
+                $errors = null;
                 $success = true;
                 $redirect = true;
                 $redirectUrl = $this->router->generate('Homepage'.$this->globalTools->computeProfileSuffix());
             } else {
-                // max try reach > redirect to account w. error msg
                 if ($nbTry >= IdCheckConstants::MAX_USER_TRY) {
                     $this->session->getFlashBag()->add('idcheck/maxUserTry', true);
-
-                    $success = false;
-                    $redirect = true;
-                    $redirectUrl = $this->router->generate('EditPerso'.$this->globalTools->computeProfileSuffix());
-                } else {
-                    $success = false;
-                    $redirectUrl = false;
-                    $redirect = false;
                 }
+                $errors = StudioEchoUtils::multiImplode($this->idcheck->getErrorMsg(), ' <br/> ');
+                $success = false;
+                $redirect = false;
+                $redirectUrl = false;
             }
         }
 
         return array(
             'success' => $success,
+            'errors' => $errors,
             'redirectUrl' => $redirectUrl,
             'redirect' => $redirect,
             'nbTryLeft' => IdCheckConstants::MAX_USER_TRY - $nbTry,
@@ -371,13 +366,13 @@ class XhrSecurity
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
-
         $nbTry = $user->getNbIdCheck();
 
         // max try reach > redirect to account w. error msg
-        if ($nbTry = $user->getNbIdCheck() >= IdCheckConstants::MAX_USER_TRY) {
+        if ($nbTry >= IdCheckConstants::MAX_USER_TRY) {
             $this->session->getFlashBag()->add('idcheck/maxUserTry', true);
 
+            $errors = null;
             $success = false;
             $redirect = true;
             $redirectUrl = $this->router->generate('EditPerso'.$this->globalTools->computeProfileSuffix());
@@ -388,27 +383,24 @@ class XhrSecurity
                 $user->setValidated(true);
                 $user->save();
 
+                $errors = null;
                 $success = true;
                 $redirect = true;
                 $redirectUrl = $this->router->generate('Homepage'.$this->globalTools->computeProfileSuffix());
             } else {
-                // max try reach > redirect to account w. error msg
-                if ($nbTry = $user->getNbIdCheck() >= IdCheckConstants::MAX_USER_TRY) {
+                if ($nbTry >= IdCheckConstants::MAX_USER_TRY) {
                     $this->session->getFlashBag()->add('idcheck/maxUserTry', true);
-
-                    $success = false;
-                    $redirect = true;
-                    $redirectUrl = $this->router->generate('EditPerso'.$this->globalTools->computeProfileSuffix());
-                } else {
-                    $success = false;
-                    $redirectUrl = false;
-                    $redirect = false;
                 }
+                $errors = StudioEchoUtils::multiImplode($this->idcheck->getErrorMsg(), ' <br/> ');
+                $success = false;
+                $redirect = false;
+                $redirectUrl = false;
             }
         }
 
         return array(
             'success' => $success,
+            'errors' => $errors,
             'redirectUrl' => $redirectUrl,
             'redirect' => $redirect,
             'nbTryLeft' => IdCheckConstants::MAX_USER_TRY - $nbTry,

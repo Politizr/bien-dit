@@ -7,11 +7,11 @@
 
 Politizr\Model\PUser:
     properties:
-        p_u_status_id:
-            - Type:
-                type:       integer 
-                message:    "La valeur {{ value }} n'est pas un type {{ type }} valide."
-            - NotBlank:     ~
+#         p_u_status_id:
+#             - Type:
+#                 type:       integer 
+#                 message:    "La valeur {{ value }} n'est pas un type {{ type }} valide."
+#             - NotBlank:     ~
         username:
             - NotBlank:     ~
 

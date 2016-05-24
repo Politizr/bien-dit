@@ -13,70 +13,76 @@
 {% block tcTitle %}{{ metaTitle }} - {{ parent() }}{% endblock tcTitle %}
 {% block tcDescription %}{{ metaDescription }}{% endblock tcDescription %}
 
-{% block content %}
-    <div id="oAuthButtons">
-        {% include 'PolitizrFrontBundle:Security:facebookConnect.html.twig' with {'label': 'Connexion avec Facebook'} %}
-        {% include 'PolitizrFrontBundle:Security:twitterConnect.html.twig' with {'label': 'Connexion avec Twitter'} %}
-        {% include 'PolitizrFrontBundle:Security:googleConnect.html.twig' with {'label': 'Connexion avec Google'} %}
-    </div>
+{% block bodyClass %} class="process"{% endblock %}
 
-    <div id="boxLogin">
-        <div id="registerIntro">
-            <b>Politizr est en phase de test "beta".</b><br>
-            <a href="https://www.politizr.com/inscription">Inscrivez-vous</a> pour recevoir une <b>invitation</b>.
-        </div><br>
+{% block header %}
+    {% include 'PolitizrFrontBundle:Navigation\\Header:_headerLogin.html.twig' %}
+{% endblock header %}
 
-        <div id="loginIntro">
-            <b>Un problème?</b> <a href="mailto: support@politizr.com">Écrivez-nous</a>
-        </div><br>
-
-        <div id="loginForm">
-            {% if error %}
-                <div class="boxError">
-                    <div class="notifBoxText">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-                    <i class="iconCross" action="closeBox"></i>
-                </div>
-                <br><br>
-            {% endif %}
-
-            <form id="formLogin" action="{{ path('LoginCheck') }}" method="post">
-                <label for="username">Courriel</label>
-                <input type="text" id="username" name="_username" value="{{ last_username }}" />
-
-                <label for="password">Mot de passe</label>
-                <input type="password" id="password" name="_password" />
-
-                {#
-                    If you want to control the URL the user
-                    is redirected to on success (more details below)
-                    <input type="hidden" name="_target_path" value="/account" />
-                #}
-
-                <a action="login" class="submit">Connexion</a><br>
-                <a action="showLostPasswordBox">Mot de passe oublié?</a>
-            </form>
-        </div>
-
-        <div id="lostPasswordForm" style="display: none">
-            <form id="formLostPassword">
-                {{ form_errors(formLostPassword) }}
-
-                <div class="formGroup">
-                    <label>Courriel</label>
-                    {{ form_widget(formLostPassword.email) }}
+{% block main %}
+    <div id="main">
+        <center>
+            <div class="column column360">
+                <div class="openId">
+                    {% include 'PolitizrFrontBundle:Security:facebookConnect.html.twig' with {'label': 'Connexion avec Facebook'} %}
+                    {% include 'PolitizrFrontBundle:Security:twitterConnect.html.twig' with {'label': 'Connexion avec Twitter'} %}
+                    {% include 'PolitizrFrontBundle:Security:googleConnect.html.twig' with {'label': 'Connexion avec Google'} %}
                 </div>
 
-                {{ form_rest(formLostPassword) }}
-            </form>
-            <a action="reinitPassword" class="submit">Réinitialisation mot de passe</a><br>
-            <a action="showLoginBox">Connexion</a>
-        </div>
+                <div class="orElse">
+                    <div class="orElseLine"></div><span>ou</span><div class="orElseLine"></div>
+                </div>
+
+                <div class="card">
+                    <div id="loginForm">
+                        {% if error %}
+                            <div class="boxError">
+                                <div class="notifBoxText">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                                <i class="iconCross" action="closeBox"></i>
+                            </div>
+                            <br><br>
+                        {% endif %}
+
+                        <form id="formLogin" action="{{ path('LoginCheck') }}" method="post">
+                            <label for="username">Courriel</label>
+                            <input type="text" id="username" name="_username" value="{{ last_username }}" />
+
+                            <label for="password">Mot de passe</label>
+                            <input type="password" id="password" name="_password" />
+
+                            {#
+                                If you want to control the URL the user
+                                is redirected to on success (more details below)
+                                <input type="hidden" name="_target_path" value="/account" />
+                            #}
+
+                            <a action="login" class="submit">Connexion</a><br>
+                            <a action="showLostPasswordBox">Mot de passe oublié?</a>
+                        </form>
+                    </div>
+
+                    <div id="lostPasswordForm" style="display: none">
+                        <form id="formLostPassword">
+                            {{ form_errors(formLostPassword) }}
+
+                            <div class="formGroup">
+                                <label>Courriel</label>
+                                {{ form_widget(formLostPassword.email) }}
+                            </div>
+
+                            {{ form_rest(formLostPassword) }}
+                        </form>
+                        <a action="reinitPassword" class="submit">Réinitialisation mot de passe</a><br>
+                        <a action="showLoginBox">Connexion</a>
+                    </div>
+                </div>
+
+            </div>
+            
+            <div class="footerXcolumns footer1column">Pas inscrit-e? <a href="{{ path('InscriptionChoice') }}">Inscrivez-vous</a></div>
+        </center>
     </div>
-{% endblock content %}
-
-{% block sidebar %}
-{% endblock %}
-
+{% endblock main %}
 
 {% block javascriptFooter %}
     {{ parent() }}

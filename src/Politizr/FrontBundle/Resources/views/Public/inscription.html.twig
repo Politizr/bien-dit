@@ -1,15 +1,13 @@
 {% extends 'PolitizrFrontBundle::layoutPublic.html.twig' %}
 
 {% block title %}
-    Inscription étape 1 / 2 - {{ parent() }}
+    Inscription étape - {{ parent() }}
 {% endblock title %}
 
 {% block bodyClass %} class="process"{% endblock %}
 
 {% block header %}
-    <div id="header">
-        {% include 'PolitizrFrontBundle:Navigation\\Header:_headerInscription.html.twig' with { 'type': 'citizen' } %}
-    </div>
+    {% include 'PolitizrFrontBundle:Navigation\\Header:_headerInscription.html.twig' with { 'type': 'citizen' } %}
     <div id="headerTrigger"></div>
 {% endblock header %}
 
@@ -45,10 +43,12 @@
                         {{ form_row(form.email) }}
                         {{ form_row(form.plainPassword) }}
                         <div class="coloredBg">
-                            {{ form_widget(form.cgu) }}<label>J’accepte les <a href="" target="_blank">conditions générales d’utilisation</a>.</label>
-                            {% if form.cgu.vars.errors|length %}
-                                <div class="field_error">{{ form_errors(form.cgu) }}</div>
-                            {% endif %}
+                            <div class "control-group">
+                                {{ form_widget(form.cgu) }}<label>J’accepte les <a href="" target="_blank">conditions générales d’utilisation</a>.</label>
+                                {% if form.cgu.vars.errors|length %}
+                                    <div class="field_error">{{ form_errors(form.cgu) }}</div>
+                                {% endif %}
+                            </div>
                         </div>
                         {#<a href="processCreateAccount-citoyen2.php" class="submit nextStepOrange">Valider</a>#}
                         <button type="submit" class="submit nextStepOrange">Valider</button>

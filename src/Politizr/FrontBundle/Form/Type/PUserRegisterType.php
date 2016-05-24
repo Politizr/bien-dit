@@ -33,25 +33,17 @@ class PUserRegisterType extends AbstractType
 
         $builder->add('email', 'email', array(
             'required' => true,
-            'label' => 'Renseignez votre email',
+            'label' => 'Renseignez votre e-mail',
             'constraints' => array(
-                new NotBlank(array('message' => 'Email obligatoire.')),
-                new Email(array('message' => 'Le format de l\'email n\'est pas valide.')),
+                new NotBlank(array('message' => 'E-mail obligatoire.')),
+                new Email(array('message' => 'Le format de l\'e-mail n\'est pas valide.')),
             ),
             'attr' => array('placeholder' => 'Email')
         ));
-        
-        $builder->add('plainPassword', 'repeated', array(
+
+        $builder->add('plainPassword', 'password', array(
             'required' => true,
-            'first_options' =>   array(
-                'label' => 'Choisissez votre mot de passe',
-                'attr' => array('placeholder' => 'Mot de passe')
-            ),
-            'second_options' =>   array(
-                'label' => 'Confirmation de votre mot de passe',
-                'attr' => array('placeholder' => 'Mot de passe')
-            ),
-            'type' => 'password',
+            'label' => 'Choisissez votre mot de passe (min. 8 caratères)',
             'constraints' => array(
                 new NotBlank(array('message' => 'Mot de passe obligatoire.')),
                 new PasswordStrength(
@@ -61,8 +53,32 @@ class PUserRegisterType extends AbstractType
                         'minStrength' => 1
                     )
                 ),
-            )
+            ),
+            'attr' => array('placeholder' => 'Mot de passe')
         ));
+        
+//         $builder->add('plainPassword', 'repeated', array(
+//             'required' => true,
+//             'first_options' =>   array(
+//                 'label' => 'Choisissez votre mot de passe (min. 8 caratères)',
+//                 'attr' => array('placeholder' => 'Mot de passe')
+//             ),
+//             'second_options' =>   array(
+//                 'label' => 'Confirmation de votre mot de passe',
+//                 'attr' => array('placeholder' => 'Mot de passe')
+//             ),
+//             'type' => 'password',
+//             'constraints' => array(
+//                 new NotBlank(array('message' => 'Mot de passe obligatoire.')),
+//                 new PasswordStrength(
+//                     array(
+//                         'message' => 'Le mot de passe doit contenir au moins 8 caractères',
+//                         'minLength' => 8,
+//                         'minStrength' => 1
+//                     )
+//                 ),
+//             )
+//         ));
 
         $builder->add('cgu', 'checkbox', array(
             'required' => true,

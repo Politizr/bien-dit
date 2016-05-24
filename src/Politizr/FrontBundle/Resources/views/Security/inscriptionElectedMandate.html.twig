@@ -1,15 +1,13 @@
 {% extends 'PolitizrFrontBundle::layoutPublic.html.twig' %}
 
 {% block title %}
-    Inscription étape 3 / X - {{ parent() }}
+    Inscription étape 2 / 3 - {{ parent() }}
 {% endblock title %}
 
 {% block bodyClass %} class="process"{% endblock %}
 
 {% block header %}
-    <div id="header">
-        {% include 'PolitizrFrontBundle:Navigation\\Header:_headerInscription.html.twig' with { 'type': 'elected' } %}
-    </div>
+    {% include 'PolitizrFrontBundle:Navigation\\Header:_headerInscription.html.twig' with { 'type': 'elected' } %}
     <div id="headerTrigger"></div>
 {% endblock header %}
 
@@ -37,12 +35,12 @@
                     <div class="mandateItem withLoaderInside" id="newMandate">
                         {% include 'PolitizrFrontBundle:User:_newMandate.html.twig' with { 'user': app.user } %}
                     </div>
-                    <a href="{{ path('InscriptionElectedMandateCheck') }}" class="submit nextStepOrange">Étape suivante</a>
-                    <div class="coloredBg">
+                    <div class="coloredBgforEditMandates">
                         <div id="editMandates">
                             {% include 'PolitizrFrontBundle:User:_editMandates.html.twig' %}
                         </div>
                     </div>
+                    <a href="{{ path('InscriptionElectedMandateCheck') }}" class="submit nextStepOrange">Étape suivante</a>
                 </div>
                 <div class="cardFooter">
                     Tous les champs sont obligatoires

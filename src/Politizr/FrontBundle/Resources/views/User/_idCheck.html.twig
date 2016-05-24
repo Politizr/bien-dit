@@ -6,13 +6,12 @@
                 <label>Télécharger une photo de votre Carte Nationale d’Identité</label>
                 <div class="uploadCNI">
                     <input type="file" name="fileName" id="fileName">
-                    <label action="fileSelect" for="fileName">Photo ID</label>
-                </form>
-
-                <div class="coloredBg">
-                    <img src="{{ asset('bundles/politizrfront/images/pictoCNI.png') }}" width="44" height="29" class="pictoCNI">
-                    <div class="infoUploadCNI">Face comportant votre photo.<br>Format : jpg, max. 10Mo</div>
+                    <label action="fileSelect" for="fileName">Parcourir</label>
                 </div>
+            </form>
+            <div class="coloredBg">
+                <img src="{{ asset('bundles/politizrfront/images/pictoCNI.png') }}" width="44" height="29" class="pictoCNI">
+                <div class="infoUploadCNI">Face comportant votre photo.<br>Format : jpg, max. 10Mo</div>
             </div>
         </div>
     </div>
@@ -24,6 +23,8 @@
         <form class="zlaBox" name="user" method="post" id="formPerso4">
             <label>Saisie manuelle des numéros de votre Carte Nationale d’Identité</label>
             <div class="zlaInputs">
+                <div class="zlaNumber1">1</div>
+                <div class="zlaNumber2">2</div>
                 {{ form_row(formIdCheck.zla1, { 'attr': { 'placeholder': '36 caractères de la ligne 1' }}) }}
                 {{ form_row(formIdCheck.zla2, { 'attr': { 'placeholder': '36 caractères de la ligne 2' }}) }}
             </div>
@@ -33,7 +34,7 @@
                 <img src="{{ asset('bundles/politizrfront/images/cni.jpg') }}">
             </div>
 
-            <button type="button" action="validateIdZla">
+            <button type="button" action="validateIdZla" class="submit nextStepOrange">
                 Valider mon identité
             </button>
         </form>

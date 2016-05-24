@@ -83,12 +83,13 @@ function validateIdZla(form)
             $('#infoBoxHolder .boxError').show();
             $('#ajaxGlobalLoader').hide();
         } else {
+            console.log(data);
             if (data['success']) {
                 window.location = data['redirectUrl'];
             } else if (data['redirect']) {
                 window.location = data['redirectUrl'];
             } else {
-                $('#infoBoxHolder .boxError .notifBoxText').html('Echec de la validation de votre identité.');
+                $('#infoBoxHolder .boxError .notifBoxText').html(data['errors']);
                 $('#infoBoxHolder .boxError').show();
 
                 console.log(data['nbTryLeft'])
@@ -131,12 +132,13 @@ function validateIdPhoto(fileName)
             $('#infoBoxHolder .boxError').show();
             $('#ajaxGlobalLoader').hide();
         } else {
+            console.log(data);
             if (data['success']) {
                 window.location = data['redirectUrl'];
             } else if (data['redirect']) {
                 window.location = data['redirectUrl'];
             } else {
-                $('#infoBoxHolder .boxError .notifBoxText').html('Echec de la validation de votre identité.');
+                $('#infoBoxHolder .boxError .notifBoxText').html(data['errors']);
                 $('#infoBoxHolder .boxError').show();
 
                 console.log(data['nbTryLeft'])
@@ -169,13 +171,13 @@ function zlaTextCounter() {
         counterErrorClass        : "error",                // error class appended to the countContainerElement if error occurs
         counterText              : "Caractères: ",        // counter text
         errorTextElement         : "div",                  // error text element
-        minimumErrorText         : "36 caractères",      // error message for minimum not met,
-        maximumErrorText         : "36 caractères",     // error message for maximum range exceeded,
+        minimumErrorText         : "",      // error message for minimum not met,
+        maximumErrorText         : "",     // error message for maximum range exceeded,
         displayErrorText         : true,                   // display error text messages for minimum/maximum values
         stopInputAtMaximum       : true,                   // stop further text input if maximum reached
         countSpaces              : true,                  // count spaces as character (only for "character" type)
         countDown                : true,                  // if the counter should deduct from maximum characters/words rather than counting up
-        countDownText            : "Caractères restants: ",          // count down text
+        countDownText            : "",                      // count down text
         countExtendedCharacters  : true,                       // count extended UTF-8 characters as 2 bytes (such as Chinese characters)    
     });
 };

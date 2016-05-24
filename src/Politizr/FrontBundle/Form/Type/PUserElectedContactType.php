@@ -42,7 +42,7 @@ class PUserElectedContactType extends AbstractType
         $builder->add('gender', 'choice', array(
             'required' => true,
             'label' => 'Civilité',
-            // 'placeholder' => 'Civilité',
+            'placeholder' => 'Sélectionnez',
             'choices' => array('Madame' => 'Madame', 'Monsieur' => 'Monsieur'),
             'multiple' => false,
             'expanded' => false,
@@ -51,21 +51,21 @@ class PUserElectedContactType extends AbstractType
 
         $builder->add('name', 'text', array(
             'required' => true,
-            'label' => 'Nom',
+            'label' => 'Votre nom',
             'constraints' => new NotBlank(array('message' => 'Nom obligatoire.')),
             'attr' => array('placeholder' => 'Nom')
         ));
 
         $builder->add('firstname', 'text', array(
             'required' => true,
-            'label' => 'Prénom',
+            'label' => 'Votre prénom',
             'constraints' => new NotBlank(array('message' => 'Prénom obligatoire.')),
             'attr' => array('placeholder' => 'Prénom')
         ));
 
         $builder->add('birthday', 'date', array(
             'required' => true,
-            'label' => 'Date de naissance',
+            'label' => 'Votre date de naissance',
             'widget' => 'single_text',
             'format' => 'dd/MM/yyyy',
             'invalid_message' => 'La date de naissance doit être au format JJ/MM/AAAA',
@@ -86,12 +86,12 @@ class PUserElectedContactType extends AbstractType
 
             $builder->add('email', 'email', array(
                 'required' => true,
-                'label' => 'Email',
+                'label' => 'Votre e-mail',
                 'constraints' => array(
-                    new NotBlank(array('message' => 'Email obligatoire.')),
-                    new Email(array('message' => 'Le format de l\'email n\'est pas valide.')),
+                    new NotBlank(array('message' => 'E-mail obligatoire.')),
+                    new Email(array('message' => 'Le format de l\'e-mail n\'est pas valide.')),
                 ),
-                'attr' => array('placeholder' => 'Email')
+                'attr' => array('placeholder' => 'E-mail')
             ));
             
             // update username same as email field

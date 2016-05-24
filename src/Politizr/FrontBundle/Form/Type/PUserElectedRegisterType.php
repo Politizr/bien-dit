@@ -40,17 +40,9 @@ class PUserElectedRegisterType extends AbstractType
             'attr' => array('placeholder' => 'Email')
         ));
         
-        $builder->add('plainPassword', 'repeated', array(
+        $builder->add('plainPassword', 'password', array(
             'required' => true,
-            'first_options' =>   array(
-                'label' => 'Choisissez votre mot de passe',
-                'attr' => array('placeholder' => 'Mot de passe')
-            ),
-            'second_options' =>   array(
-                'label' => 'Confirmation de votre mot de passe',
-                'attr' => array('placeholder' => 'Mot de passe')
-            ),
-            'type' => 'password',
+            'label' => 'Choisissez votre mot de passe (min. 8 caratères)',
             'constraints' => array(
                 new NotBlank(array('message' => 'Mot de passe obligatoire.')),
                 new PasswordStrength(
@@ -60,9 +52,10 @@ class PUserElectedRegisterType extends AbstractType
                         'minStrength' => 1
                     )
                 ),
-            )
+            ),
+            'attr' => array('placeholder' => 'Mot de passe')
         ));
-
+        
         $builder->add('elected', 'checkbox', array(
             'required' => true,
             'mapped' => false,

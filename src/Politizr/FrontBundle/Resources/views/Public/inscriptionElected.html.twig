@@ -1,15 +1,13 @@
 {% extends 'PolitizrFrontBundle::layoutPublic.html.twig' %}
 
 {% block title %}
-    Inscription étape 1 / X - {{ parent() }}
+    Inscription étape - {{ parent() }}
 {% endblock title %}
 
 {% block bodyClass %} class="process"{% endblock %}
 
 {% block header %}
-    <div id="header">
-        {% include 'PolitizrFrontBundle:Navigation\\Header:_headerInscription.html.twig' with { 'type': 'elected' } %}
-    </div>
+    {% include 'PolitizrFrontBundle:Navigation\\Header:_headerInscription.html.twig' with { 'type': 'elected' } %}
     <div id="headerTrigger"></div>
 {% endblock header %}
 
@@ -45,14 +43,16 @@
                         {{ form_row(form.email) }}
                         {{ form_row(form.plainPassword) }}
                         <div class="coloredBg">
-                            {{ form_widget(form.elected) }}<label><b>Je certifie exercer — ou avoir exercé — un mandat électif* et reconnaît que ma responsabilité est engagée en cas de fraude.</b><br>Politizr procède à la vérification d’identité de tous les comptes élus.</label>
-                            {% if form.elected.vars.errors|length %}
-                                <div class="field_error">{{ form_errors(form.elected) }}</div>
-                            {% endif %}
-                            {{ form_widget(form.cgu) }}<label>J’accepte les <a href="" target="_blank">conditions générales d’utilisation</a>.</label>
-                            {% if form.cgu.vars.errors|length %}
-                                <div class="field_error">{{ form_errors(form.cgu) }}</div>
-                            {% endif %}
+                            <div class "control-group">
+                                {{ form_widget(form.elected) }}<label><b>Je certifie exercer — ou avoir exercé — un mandat électif* et reconnaît que ma responsabilité est engagée en cas de fraude.</b><br>Politizr procède à la vérification d’identité de tous les comptes élus.</label>
+                                {% if form.elected.vars.errors|length %}
+                                    <div class="field_error">{{ form_errors(form.elected) }}</div>
+                                {% endif %}
+                                {{ form_widget(form.cgu) }}<label>J’accepte les <a href="" target="_blank">conditions générales d’utilisation</a>.</label>
+                                {% if form.cgu.vars.errors|length %}
+                                    <div class="field_error">{{ form_errors(form.cgu) }}</div>
+                                {% endif %}
+                            </div>
                         </div>
                         {#<a href="processCreateAccount-citoyen2.php" class="submit nextStepOrange">Valider</a>#}
                         <button type="submit" class="submit nextStepOrange">Valider</button>

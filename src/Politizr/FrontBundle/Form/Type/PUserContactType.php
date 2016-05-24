@@ -42,7 +42,7 @@ class PUserContactType extends AbstractType
         $builder->add('gender', 'choice', array(
             'required' => true,
             'label' => 'Civilité',
-            // 'placeholder' => 'Civilité',
+            'placeholder' => 'Sélectionnez',
             'choices' => array('Madame' => 'Madame', 'Monsieur' => 'Monsieur'),
             'multiple' => false,
             'expanded' => false,
@@ -51,14 +51,14 @@ class PUserContactType extends AbstractType
 
         $builder->add('name', 'text', array(
             'required' => true,
-            'label' => 'Nom',
+            'label' => 'Votre nom',
             'constraints' => new NotBlank(array('message' => 'Nom obligatoire.')),
             'attr' => array('placeholder' => 'Nom')
         ));
 
         $builder->add('firstname', 'text', array(
             'required' => true,
-            'label' => 'Prénom',
+            'label' => 'Votre prénom',
             'constraints' => new NotBlank(array('message' => 'Prénom obligatoire.')),
             'attr' => array('placeholder' => 'Prénom')
         ));

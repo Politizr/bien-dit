@@ -1,15 +1,13 @@
 {% extends 'PolitizrFrontBundle::layoutPublic.html.twig' %}
 
 {% block title %}
-    Inscription étape 2 / 3 - {{ parent() }}
+    Inscription - {{ parent() }}
 {% endblock title %}
 
 {% block bodyClass %} class="process"{% endblock %}
 
 {% block header %}
-    <div id="header">
-        {% include 'PolitizrFrontBundle:Navigation\\Header:_headerInscription.html.twig' with { 'type': 'citizen' } %}
-    </div>
+    {% include 'PolitizrFrontBundle:Navigation\\Header:_headerInscription.html.twig' with { 'type': 'citizen' } %}
     <div id="headerTrigger"></div>
 {% endblock header %}
 
@@ -33,19 +31,24 @@
                         </div>
                     {% endif %}
                     {{ form_start(form, {'action': path('InscriptionContactCheck'), 'method': 'POST'}) }}
-                        {{ form_row(form.gender) }}
+                        {{ form_label(form.gender) }}
+                        <div class="styledSelect">{{ form_widget(form.gender) }}</div>
                         {{ form_row(form.name) }}
                         {{ form_row(form.firstname) }}
                         {% if (form.email is defined) %}
                             {{ form_row(form.email) }}
                         {% endif %}
                         <div class="coloredBg">
-                            {{ form_widget(form.newsletter) }}<label>Je m'inscris à la newsletter de Politizr</a>.</label>
+                            <div class "control-group">
+                                {{ form_widget(form.newsletter) }}<label>Je m'inscris à la newsletter de Politizr</a>.</label>
+                            </div>
                             {% if (form.cgu is defined) %}
-                                {{ form_widget(form.cgu) }}<label>J’accepte les <a href="" target="_blank">conditions générales d’utilisation</a>.</label>
-                                {% if form.cgu.vars.errors|length %}
-                                    <div class="field_error">{{ form_errors(form.cgu) }}</div>
-                                {% endif %}
+                                <div class "control-group">
+                                    {{ form_widget(form.cgu) }}<label>J’accepte les <a href="" target="_blank">conditions générales d’utilisation</a>.</label>
+                                    {% if form.cgu.vars.errors|length %}
+                                        <div class="field_error">{{ form_errors(form.cgu) }}</div>
+                                    {% endif %}
+                                </div>
                             {% endif %}
                         </div>
                         <button type="submit" class="submit nextStepOrange">Valider</button>

@@ -1,15 +1,13 @@
 {% extends 'PolitizrFrontBundle::layoutPublic.html.twig' %}
 
 {% block title %}
-    Inscription étape 4 / X - {{ parent() }}
+    Inscription étape 3 / X - {{ parent() }}
 {% endblock title %}
 
 {% block bodyClass %} class="process"{% endblock %}
 
 {% block header %}
-    <div id="header">
-        {% include 'PolitizrFrontBundle:Navigation\\Header:_headerInscription.html.twig' with { 'type': 'elected' } %}
-    </div>
+    {% include 'PolitizrFrontBundle:Navigation\\Header:_headerInscription.html.twig' with { 'type': 'elected' } %}
     <div id="headerTrigger"></div>
 {% endblock header %}
 

@@ -1,15 +1,13 @@
 {% extends 'PolitizrFrontBundle::layoutPublic.html.twig' %}
 
 {% block title %}
-    Inscription étape 6 / X - {{ parent() }}
+    Inscription étape 3 / 3 - {{ parent() }}
 {% endblock title %}
 
 {% block bodyClass %} class="process"{% endblock %}
 
 {% block header %}
-    <div id="header">
-        {% include 'PolitizrFrontBundle:Navigation\\Header:_headerInscriptionElectedFinished.html.twig' %}
-    </div>
+    {% include 'PolitizrFrontBundle:Navigation\\Header:_headerInscriptionElectedFinished.html.twig' %}
     <div id="headerTrigger"></div>
 {% endblock header %}
 
@@ -28,14 +26,18 @@
     <div id="alertIdCheck">
         <div class="center">
             <div id="maxIdCheckMsg">
+                <i class="icon-info"></i>
+                Vous devez maintenant procéder a la vérification de votre identité pour profiter pleinement de votre compte élu: vous disposez de 3 tentatives.
                 <h1><span id="nbTryLeft">{{ constant('Politizr\\Constant\\IdCheckConstants::MAX_USER_TRY') - app.user.nbIdCheck }}</span> tentative(s) restante(s)</h1>
-                Vous devez maintenant procéder a la vérification de votre identité pour profiter pleinement de votre compte élu: vous disposez de 3 tentatives pour le faire automatiquement. En cas d'échec ou pour toute question, <a href="mailto: support@politizr.com">contactez le support</a> et procédez à la vérification de votre identité <a href="{{ path('HomepageE') }}">plus tard</a>.
+                Si vous souhaitez être accompagné-e durant cette procédure n'hésitez pas à nous contacter au <b>05.64.88.01.71</b>.<br>
+                En cas d'échec, nous prendrons contact directement avec vous.
             </div>
             <div id="userInfo">
                 Rappel des informations saisies et contrôlées<br/>
-                Nom: {{ app.user.name }}<br/>
+                <b>Nom: {{ app.user.name }}<br/>
                 Prénom: {{ app.user.firstName }}<br/>
-                Date de naissance: {{ app.user.birthday | date('d/m/Y') }}<br/>
+                Date de naissance: {{ app.user.birthday | date('d/m/Y') }}</b><br/>
+                En cas d'erreur, <a href="{{ path('EditPersoE') }}">cliquez ici pour corriger les informations saisies</a>.
             </div>
         </div>
     </div>
