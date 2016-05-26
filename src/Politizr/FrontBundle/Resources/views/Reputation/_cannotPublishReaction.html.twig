@@ -1,4 +1,8 @@
 {# beta #}
 <div class="cannotPublishReaction">
-    Vous avez {{ score }} point(s) de <a href="{{ path('Help') }}#p-reputation">réputation</a>. Vous devez en avoir au moins {{ constant('Politizr\\Constant\\ReputationConstants::ACTION_REACTION_WRITE') }} pour publier une réaction.
+    {% if case == constant('Politizr\\Constant\\ReputationConstants::SCORE_NOT_REACHED') %}
+        Vous avez {{ score }} point(s) de <a href="{{ path('Help') }}#p-reputation">réputation</a>. Vous devez en avoir au moins {{ constant('Politizr\\Constant\\ReputationConstants::ACTION_REACTION_WRITE') }} pour publier une réaction.
+    {% elseif case == constant('Politizr\\Constant\\ReputationConstants::USER_ELECTED_NOT_VALIDATED') %}
+        Vous devez <a href="">certifier votre identité</a> pour pouvoir publier une réaction.
+    {% endif %}
 </div>

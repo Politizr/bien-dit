@@ -27,6 +27,11 @@ $('body').on("click", "[action='closeBox']", function(e){
     $(this).closest('div').hide();
 });
 
+// Close id check ok
+$('body').on("click", "[action='closeIdCheckOk']", function(e){
+    $('#alertIdCheckOk').hide();
+});
+
 // close modal
 $("body").on("click", "[action='closeModal']", function() {
     // console.log('*** closeModal');

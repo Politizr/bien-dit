@@ -81,7 +81,7 @@ class PUserElectedContactType extends AbstractType
 
         if ($this->withEmail) {
             $builder->add('username', 'hidden', array(
-                'attr'     => array( 'value' => '' )
+                'attr' => array( 'value' => '' )
             ));
 
             $builder->add('email', 'email', array(

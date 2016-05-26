@@ -34,15 +34,15 @@ $(function() {
 });
 
 // Clic bouton upload photo local
-$("body").on("click", "[action='fileSelect']", function() {
+$("body").on("click", "[action='fileSelectIdCheck']", function() {
     console.log('click file select');
 
-    $("#fileName").trigger('click');
+    $("#fileNameIdCheck").trigger('click');
     return false;
 });
 
 // Upload simple
-$("body").on("change", "#fileName", function() {
+$("body").on("change", "#fileNameIdCheck", function() {
     console.log('change file name');
 
     $('#formIdCheckPhoto').submit();
@@ -67,9 +67,9 @@ function validateIdZla(form)
     console.log(form);
 
     var xhrPath = getXhrPath(
-        ROUTE_USER_VALIDATE_ID,
+        ADMIN_ROUTE_USER_VALIDATE_ID,
         'security',
-        'validateIdZla',
+        'adminValidateIdZla',
         RETURN_HTML
     );
 
@@ -86,22 +86,13 @@ function validateIdZla(form)
         } else {
             console.log(data);
             if (data['success']) {
-                window.location = data['redirectUrl'];
-            } else if (data['redirect']) {
-                window.location = data['redirectUrl'];
+                $('#infoBoxHolder .boxSuccess .notifBoxText').html('Identité vérifiée: vous pouvez cocher la case "Identité validée" depuis l\'édition de cet utilisateur.');
+                $('#infoBoxHolder .boxSuccess').show();
             } else {
                 $('#infoBoxHolder .boxError .notifBoxText').html(data['errors']);
                 $('#infoBoxHolder .boxError').show();
-
-                console.log(data['nbTryLeft'])
-                $('#nbTryLeft').html(data['nbTryLeft']);
-
-                if (data['nbTryLeft'] == 0) {
-                    $('#idCheck').hide();
-                }
-
-                $('#ajaxGlobalLoader').hide();
             }
+            $('#ajaxGlobalLoader').hide();
         }
     });
 }
@@ -116,15 +107,18 @@ function validateIdPhoto(fileName)
     console.log(fileName);
 
     var xhrPath = getXhrPath(
-        ROUTE_USER_VALIDATE_PHOTO_UPLOAD,
+        ADMIN_ROUTE_USER_VALIDATE_PHOTO_UPLOAD,
         'security',
-        'validateIdPhoto',
+        'adminValidateIdPhoto',
         RETURN_HTML
     );
 
+    var userId = $('#idCheck').attr('userId');
+    console.log(userId);
+
     return xhrCall(
         document,
-        { 'fileName': fileName },
+        { 'userId': userId, 'fileName': fileName },
         xhrPath,
         1
     ).done(function(data) {
@@ -135,22 +129,13 @@ function validateIdPhoto(fileName)
         } else {
             console.log(data);
             if (data['success']) {
-                window.location = data['redirectUrl'];
-            } else if (data['redirect']) {
-                window.location = data['redirectUrl'];
+                $('#infoBoxHolder .boxSuccess .notifBoxText').html('Identité vérifiée: vous pouvez cocher la case "Identité validée" depuis l\'édition de cet utilisateur.');
+                $('#infoBoxHolder .boxSuccess').show();
             } else {
                 $('#infoBoxHolder .boxError .notifBoxText').html(data['errors']);
                 $('#infoBoxHolder .boxError').show();
-
-                console.log(data['nbTryLeft'])
-                $('#nbTryLeft').html(data['nbTryLeft']);
-
-                if (data['nbTryLeft'] == 0) {
-                    $('#idCheck').hide();
-                }
-
-                $('#ajaxGlobalLoader').hide();
             }
+            $('#ajaxGlobalLoader').hide();
         }
     });
 }

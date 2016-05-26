@@ -112,7 +112,7 @@ builders:
                 reputation_score:
                     label:                      Score
             filtersMode:                        modal
-            filters:                            [ id, uuid, email, name, qualified, p_u_status, online, last_activity, created_at ]
+            filters:                            [ id, uuid, email, name, qualified, validated, p_u_status, online, last_activity, created_at ]
             object_actions:
                 show:                           ~
                 edit:                           ~
@@ -158,7 +158,7 @@ builders:
             title:                              "Edition de l'utilisateur {{ PUser.firstname }} {{ PUser.name }}"
             tabs:
                 "Identité":
-                    "Civilité":                 [ [ block_back_file_name ], [ copyright ], [ block_file_name ], [ gender ], [ firstname, name ] ]
+                    "Civilité":                 [ [ block_file_name ], [ gender ], [ firstname, name ] ]
                     "Contacts":                 [ [ phone, email ], [ website ], [ twitter, facebook ] ]
                 "Connexion":
                     "Connexion":                [ username, plainPassword ]
@@ -305,8 +305,9 @@ builders:
             tabs:
                 "Identité":
                     "Type":                     [ qualified ]
-                    "Civilité":                 [ [ block_back_file_name ], [ copyright ], [ block_file_name ], [ gender, firstname, name ] ]
+                    "Civilité":                 [ [ block_file_name ], [ gender, firstname, name ] ]
                     "Contacts":                 [ [ phone, email ], [ website ], [ twitter, facebook ] ]
+                    "Validation IdCheck":       [ block_id_check ]
                 "Descriptif":
                     "Informations":             [ biography ]
                 "Tag":
@@ -372,6 +373,8 @@ builders:
                     label:                      "Abonnements"
                 block_mandates:
                     label:                      "Mandats"
+                block_id_check:
+                    label:                      "Vérification de l'identité"
                 block_moderation_banned:
                     label:                      "Bannissement"
                 block_moderation_alert_new:

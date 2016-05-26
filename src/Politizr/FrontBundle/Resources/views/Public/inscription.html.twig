@@ -43,7 +43,7 @@
                         {{ form_row(form.email) }}
                         {{ form_row(form.plainPassword) }}
                         <div class="coloredBg">
-                            <div class "control-group">
+                            <div class="control-group">
                                 {{ form_widget(form.cgu) }}<label>J’accepte les <a href="" target="_blank">conditions générales d’utilisation</a>.</label>
                                 {% if form.cgu.vars.errors|length %}
                                     <div class="field_error">{{ form_errors(form.cgu) }}</div>

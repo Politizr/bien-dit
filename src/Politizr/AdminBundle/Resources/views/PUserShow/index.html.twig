@@ -1,16 +1,6 @@
 {% extends_admingenerated "PolitizrAdminBundle:PUserShow:index.html.twig" %}
 
 {# Image upload #}
-{% block show_column_block_back_file_name %}
-    {% include 'PolitizrAdminBundle:Fragment:_uploadImage.html.twig' with {'zone': 1, 'fileName': PUser.backFileName,'subjectId': PUser.id, 'queryClass': 'Politizr\\Model\\PUserQuery', 'setter': 'setBackFileName', 'uploadWebPath': constant('Politizr\\Constant\\PathConstants::USER_UPLOAD_WEB_PATH')} %}
-{% endblock %}
-
-{% block show_column_copyright %}
-    {{ PUser.getCopyright | purify }}
-{% endblock %}
-
-
-{# Image upload #}
 {% block show_column_block_file_name %}
     {% include 'PolitizrAdminBundle:Fragment:_uploadImage.html.twig' with {'zone': 2, 'fileName': PUser.fileName,'subjectId': PUser.id, 'queryClass': 'Politizr\\Model\\PUserQuery', 'setter': 'setFileName', 'uploadWebPath': constant('Politizr\\Constant\\PathConstants::USER_UPLOAD_WEB_PATH')} %}
 {% endblock %}
@@ -87,6 +77,11 @@
     {{ adminUserMandates(PUser) }}
 {% endblock %}
 
+{# Block idcheck #}
+{% block show_column_block_id_check %}
+    {{ adminUserIdCheck(PUser) }}
+{% endblock %}
+
 {# Block moderation new alert #}
 {% block show_column_block_moderation_alert_new %}
     {{ adminModerationAlertNew(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_USER'), PUser.Id, PUser.Id) }}
@@ -135,6 +130,11 @@
 
     <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/moderation/notification.js') }}"></script>
 
+    {# idcheck js libs #}
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/textcounter.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/user/idCheck.js') }}"></script>  
+
+    {# mandate js actions & lib #}
     <script>
         // Mandate creation
         $("body").on("click", "[action='mandateCreate']", function(e) {
@@ -157,6 +157,5 @@
             return deleteAdminUserMandate(uuid);
         });
     </script>
-
     <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/politizr/user/mandates.js') }}"></script>    
 {% endblock object_actions_script_container %}

@@ -39,23 +39,23 @@
                             {{ form_row(form.email) }}
                         {% endif %}
                         <div class="coloredBg">
-                            <div class "control-group">
-                                {{ form_widget(form.newsletter) }}<label>Je m'inscris à la newsletter de Politizr</a>.</label>
-                            </div>
                             {% if (form.cgu is defined) %}
-                                <div class "control-group">
+                                <div class="control-group">
                                     {{ form_widget(form.cgu) }}<label>J’accepte les <a href="" target="_blank">conditions générales d’utilisation</a>.</label>
                                     {% if form.cgu.vars.errors|length %}
                                         <div class="field_error">{{ form_errors(form.cgu) }}</div>
                                     {% endif %}
                                 </div>
                             {% endif %}
+                            <div class="control-group">
+                                {{ form_widget(form.newsletter) }}<label>Je m'inscris à la newsletter de Politizr</a>.</label>
+                            </div>
                         </div>
                         <button type="submit" class="submit nextStepOrange">Valider</button>
                     {{ form_end(form) }}
                 </div>
                 <div class="cardFooter">
-                    Tous les champs sont obligatoires
+                    Tous les champs sont obligatoires<br><br>
                 </div>
             </div>
         </center>

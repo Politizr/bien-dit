@@ -534,7 +534,7 @@ class PolitizrUserExtension extends \Twig_Extension
     }
 
     /**
-     * Test if the user can publish a reaction to the debate
+     * Test if the user has role to react to the debate
      *
      * @param PUser $user
      * @param PDDebate $debate
@@ -618,7 +618,7 @@ class PolitizrUserExtension extends \Twig_Extension
     }
 
     /**
-     * Display the publish link - or not - depending of the reputation score
+     * Display the publish link - or not - depending of the reputation score and if elected user is validated
      *
      * @param PUser $user
      * @param string $uuid
@@ -630,6 +630,7 @@ class PolitizrUserExtension extends \Twig_Extension
         // $this->logger->info('$user = '.print_r($user, true));
 
         $score = $user->getReputationScore();
+
         if ($score >= ReputationConstants::ACTION_DEBATE_WRITE) {
             $html = $this->templating->render(
                 'PolitizrFrontBundle:Debate:_publishLink.html.twig',
@@ -662,7 +663,16 @@ class PolitizrUserExtension extends \Twig_Extension
         // $this->logger->info('$user = '.print_r($user, true));
 
         $score = $user->getReputationScore();
-        if ($score >= ReputationConstants::ACTION_REACTION_WRITE) {
+        
+        if ($this->securityAuthorizationChecker->isGranted('ROLE_ELECTED') && !$user->isValidated()) {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:Reputation:_cannotPublishReaction.html.twig',
+                array(
+                    'case' => ReputationConstants::USER_ELECTED_NOT_VALIDATED,
+                    'score' => $score,
+                )
+            );
+        } elseif ($score >= ReputationConstants::ACTION_REACTION_WRITE) {
             $html = $this->templating->render(
                 'PolitizrFrontBundle:Reaction:_publishLink.html.twig',
                 array(
@@ -673,6 +683,7 @@ class PolitizrUserExtension extends \Twig_Extension
             $html = $this->templating->render(
                 'PolitizrFrontBundle:Reputation:_cannotPublishReaction.html.twig',
                 array(
+                    'case' => ReputationConstants::SCORE_NOT_REACHED,
                     'score' => $score,
                 )
             );

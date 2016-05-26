@@ -10,6 +10,13 @@ namespace Politizr\Constant;
 class ReputationConstants
 {
     // ******************************************************** //
+    //            GLOBAL/GENERAL CONSTANTS
+    // ******************************************************** //
+    const USER_ELECTED_NOT_VALIDATED = 1;
+    const SCORE_NOT_REACHED = 2;
+
+
+    // ******************************************************** //
     //            PRBADGETYPE OBJECT ID CONSTANTS
     // ******************************************************** //
     const BADGE_TYPE_DEBATE = 1;

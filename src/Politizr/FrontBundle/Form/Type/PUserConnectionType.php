@@ -40,7 +40,7 @@ class PUserConnectionType extends AbstractType
         $builder->add('plainPassword', 'repeated', array(
             // 'required' => true,
             'first_options' => array(
-                'label' => 'Mot de passe',
+                'label' => 'Mot de passe (min. 8 caratères)',
             ),
             'second_options' =>   array(
                 'label' => 'Confirmation',

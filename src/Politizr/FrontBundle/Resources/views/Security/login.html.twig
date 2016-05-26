@@ -33,7 +33,7 @@
                     <div class="orElseLine"></div><span>ou</span><div class="orElseLine"></div>
                 </div>
 
-                <div class="card">
+                <div class="card cardLogin">
                     <div id="loginForm">
                         {% if error %}
                             <div class="boxError">
@@ -56,7 +56,7 @@
                                 <input type="hidden" name="_target_path" value="/account" />
                             #}
 
-                            <a action="login" class="submit">Connexion</a><br>
+                            <a action="login" class="submit nextStepOrange">Connexion</a><br>
                             <a action="showLostPasswordBox">Mot de passe oublié?</a>
                         </form>
                     </div>
@@ -71,9 +71,9 @@
                             </div>
 
                             {{ form_rest(formLostPassword) }}
+                            <a action="reinitPassword" class="submit nextStepOrange">Réinitialisation mot de passe</a><br>
+                            <a action="showLoginBox">Connexion</a>
                         </form>
-                        <a action="reinitPassword" class="submit">Réinitialisation mot de passe</a><br>
-                        <a action="showLoginBox">Connexion</a>
                     </div>
                 </div>
 

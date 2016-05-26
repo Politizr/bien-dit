@@ -3,29 +3,6 @@
 
 {% block title %}Mes informations personnelles - {{ parent() }}{% endblock title %}
 
-{% block headerMsg %}
-    {% if isGrantedE() and not app.user.validated %}
-        <div id="alertIdCheck">
-            <div class="center">
-                <div id="maxIdCheckMsg">
-                    {% if app.user.nbIdCheck < constant('Politizr\\Constant\\IdCheckConstants::MAX_USER_TRY') %}
-                        <i class="icon-info"></i>
-                        Vous devez maintenant procéder a la vérification de votre identité pour profiter pleinement de votre compte élu: vous disposez de 3 tentatives.
-                        <h1><span id="nbTryLeft">{{ constant('Politizr\\Constant\\IdCheckConstants::MAX_USER_TRY') - app.user.nbIdCheck }}</span> tentative(s) restante(s)</h1>
-                        Si vous souhaitez être accompagné-e durant cette procédure n'hésitez pas à nous contacter au <b>05.64.88.01.71</b>.<br>
-                        En cas d'échec, nous prendrons contact directement avec vous.
-                    {% else %}
-                        <i class="icon-info"></i>
-                        <b>Nous prendrons contact directement avec vous très rapidement pour valider votre identité. </b><br>
-                        Merci de nous envoyer un <a href="mailto:support@politizr.com">email</a> rapidement si votre adresse email n'est pas correcte (voir ci-dessous).<br>
-                        Vous pouvez également prendre directement contact avec nous au 05.64.88.01.71.
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-    {% endif %}
-{% endblock %}
-
 {% block content %}
     <div id="content">
         <div class="accountEdition">
@@ -34,13 +11,13 @@
             </div>
 
             {% if isGrantedE() %} 
-                <h5>Vous disposez actuellement d'un compte élu.</h5>
+                <h5>Vous disposez actuellement d'un compte élu {% if not app.user.validated %}<b>non</b> {% endif %}certifié.</h5>
             {% else %}
                 <h5>Vous disposez actuellement d'un compte citoyen.</h5>
             {% endif %}
 
             <div id="boxPerso1">
-                <div class="formBlock" class="withLoaderInside">
+                <div class="formBlock withLoaderInside">
                     {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
                     <div class="formBlockHeader">
                         <label>Votre identité</label>
@@ -68,24 +45,26 @@
                             <i class="icon-alert"></i>Vous ne pouvez pas modifier ces informations: <a href="mailto: support@politizr.com">contactez-nous</a> en cas d'erreur.
                         </p>
                     {% endif %}
-
                     {% if isGrantedE() and not app.user.validated and app.user.nbIdCheck < constant('Politizr\\Constant\\IdCheckConstants::MAX_USER_TRY') %}
+                        <div id="msgIdCheck">
+                            <h5><b>Merci de procéder à la vérification de votre identité pour valider définitivement votre compte élu.</b><br>Pensez à vérifier l'exactitude des informations saisies ci-dessus avant de poursuivre.</h5>
+                        </div>
                         {% include 'PolitizrFrontBundle:User:_idCheck.html.twig' %}
                     {% endif %}
                 </div>
             </div>
 
             <div id="boxPerso2">
-                <div class="formBlock" class="withLoaderInside">
+                <div class="formBlock withLoaderInside">
                     {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
                     <div class="formBlockHeader">
-                        <label>Votre email et votre abonnement newsletter</label>
+                        <label>Votre email de contact et de notification</label>
                     </div>
                     <form name="user" method="post" id="formPerso2">
                         {{ form_errors(formPerso2) }}
 
                         {{ form_row(formPerso2.email.first, { 'attr': { 'placeholder': 'Email' }}) }}
-                        {{ form_row(formPerso2.email.first, { 'attr': { 'placeholder': 'Confirmation email' }}) }}
+                        {{ form_row(formPerso2.email.second, { 'attr': { 'placeholder': 'Confirmation email' }}) }}
 
                         {{ form_rest(formPerso2) }}
 
@@ -97,7 +76,7 @@
             </div>
             
             <div id="boxPerso3">
-                <div class="formBlock" class="withLoaderInside">
+                <div class="formBlock withLoaderInside">
                     {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
                     <div class="formBlockHeader">
                         <label>Vos identifiant et mot de passe de connexion</label>

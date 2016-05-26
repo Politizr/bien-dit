@@ -39,15 +39,17 @@
                             {{ form_errors(form) }}
                         </div>
                     {% endif %}
-                    {{ form_start(form, {'action': path('InscriptionElectedCheck'), 'method': 'POST' }) }}
+                    {{ form_start(form, {'action': path('InscriptionElectedCheck'), 'method': 'POST'}) }}
                         {{ form_row(form.email) }}
                         {{ form_row(form.plainPassword) }}
                         <div class="coloredBg">
-                            <div class "control-group">
+                            <div class="control-group">
                                 {{ form_widget(form.elected) }}<label><b>Je certifie exercer — ou avoir exercé — un mandat électif* et reconnaît que ma responsabilité est engagée en cas de fraude.</b><br>Politizr procède à la vérification d’identité de tous les comptes élus.</label>
                                 {% if form.elected.vars.errors|length %}
                                     <div class="field_error">{{ form_errors(form.elected) }}</div>
                                 {% endif %}
+                            </div>
+                            <div class="control-group">
                                 {{ form_widget(form.cgu) }}<label>J’accepte les <a href="" target="_blank">conditions générales d’utilisation</a>.</label>
                                 {% if form.cgu.vars.errors|length %}
                                     <div class="field_error">{{ form_errors(form.cgu) }}</div>

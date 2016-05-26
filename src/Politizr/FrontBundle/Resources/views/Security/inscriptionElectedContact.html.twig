@@ -42,6 +42,7 @@
                         </div>
                     {% endif %}
                     {{ form_start(form, {'action': path('InscriptionElectedContactCheck'), 'method': 'POST'}) }}
+                        {{ form_label(form.gender) }}
                         <div class="styledSelect">{{ form_widget(form.gender) }}</div>
                         {{ form_row(form.name) }}
                         {{ form_row(form.firstname) }}
@@ -50,11 +51,8 @@
                         {% endif %}
                         {{ form_row(form.birthday) }}
                         <div class="coloredBg">
-                            <div class "control-group">
-                                {{ form_widget(form.newsletter) }}<label>Je m'inscris à la newsletter de Politizr</a>.</label>
-                            </div>
                             {% if (form.elected is defined) %}
-                                <div class "control-group">
+                                <div class="control-group">
                                     {{ form_widget(form.elected) }}<label><b>Je certifie exercer — ou avoir exercé — un mandat électif* et reconnaît que ma responsabilité est engagée en cas de fraude.</b><br>Politizr procède à la vérification d’identité de tous les comptes élus.</label>
                                     {% if form.elected.vars.errors|length %}
                                         <div class="field_error">{{ form_errors(form.elected) }}</div>
@@ -62,20 +60,24 @@
                                 </div>
                             {% endif %}
                             {% if (form.cgu is defined) %}
-                                <div class "control-group">
+                                <div class="control-group">
                                     {{ form_widget(form.cgu) }}<label>J’accepte les <a href="" target="_blank">conditions générales d’utilisation</a>.</label>
                                     {% if form.cgu.vars.errors|length %}
                                         <div class="field_error">{{ form_errors(form.cgu) }}</div>
                                     {% endif %}
                                 </div>
                             {% endif %}
+                            <div class="control-group">
+                                {{ form_widget(form.newsletter) }}<label>Je m'inscris à la newsletter de Politizr</a>.</label>
+                            </div>
                         </div>
 
                         <button type="submit" class="submit nextStepOrange">Étape suivante</button>
                     {{ form_end(form) }}
                 </div>
                 <div class="cardFooter">
-                    Tous les champs sont obligatoires
+                    Tous les champs sont obligatoires<br><br>
+                    <br><br>
                     {% if (form.elected is defined) %}
                         <span>*Conseil municipal, conseil départemental, conseil régional, conseil consulaire, Assemblée Nationale, Sénat</span>
                     {% endif %}

@@ -36,6 +36,9 @@ var ROUTE_USER_MANDATE_CREATE = 'admin/utilisateur/mandat/create';
 var ROUTE_USER_MANDATE_UPDATE = 'admin/utilisateur/mandat/update';
 var ROUTE_USER_MANDATE_DELETE = 'admin/utilisateur/mandat/delete';
 
+// ID CHECK
+var ADMIN_ROUTE_USER_VALIDATE_ID = 'admin/utilisateur/validation/carte-identite';
+var ADMIN_ROUTE_USER_VALIDATE_PHOTO_UPLOAD = 'admin/validation/photo-id-upload';
 
 
 // Generic function to make an AJAX call

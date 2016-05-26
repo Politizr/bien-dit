@@ -17,8 +17,23 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class PUserIdCheckType extends AbstractType
 {
+    // special admin
+    private $userId;
+
+    public function __construct($userId = null)
+    {
+        $this->userId = $userId;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        if ($this->userId) {
+            $builder->add('p_user_id', 'hidden', array(
+                'mapped' => false,
+                'data' => $this->userId
+            ));
+        }
+
         $builder->add('zla1', 'text', array(
             'required' => true,
             'mapped' => false,

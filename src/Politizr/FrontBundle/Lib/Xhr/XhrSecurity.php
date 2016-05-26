@@ -243,7 +243,7 @@ class XhrSecurity
      * ARIAD ID CHECK ZLA
      * beta
      */
-    private function isValidIdZla(Request $request, PUser $user)
+    private function isValidIdZla(Request $request, PUser $user, $updNbTry = true)
     {
         $this->logger->info('*** isValidIdZla');
 
@@ -257,8 +257,10 @@ class XhrSecurity
             $checked = $this->idcheck->executeZlaChecking($zla1, $zla2);
 
             // upd nb try
-            $user->setNbIdCheck($user->getNbIdCheck() + 1);
-            $user->save();
+            if ($updNbTry) {
+                $user->setNbIdCheck($user->getNbIdCheck() + 1);
+                $user->save();
+            }
 
             if ($checked && $this->idcheck->isUserLastResult($user)) {
                 return true;
@@ -275,7 +277,7 @@ class XhrSecurity
      * ARIAD ID CHECK PHOTO
      * beta
      */
-    public function isValidIdPhoto(Request $request, PUser $user)
+    public function isValidIdPhoto(Request $request, PUser $user, $updNbTry = true)
     {
         $this->logger->info('*** isValidIdPhoto');
 
@@ -292,8 +294,10 @@ class XhrSecurity
             $checked = $this->idcheck->executeImageIdCardChecking($rawImg);
 
             // upd nb try
-            $user->setNbIdCheck($user->getNbIdCheck() + 1);
-            $user->save();
+            if ($updNbTry) {
+                $user->setNbIdCheck($user->getNbIdCheck() + 1);
+                $user->save();
+            }
 
             if ($checked && $this->idcheck->isUserLastResult($user)) {
                 return true;
@@ -319,8 +323,6 @@ class XhrSecurity
 
         // max try reach > redirect to account w. error msg
         if ($nbTry >= IdCheckConstants::MAX_USER_TRY) {
-            $this->session->getFlashBag()->add('idcheck/maxUserTry', true);
-
             $errors = null;
             $success = false;
             $redirect = true;
@@ -337,14 +339,19 @@ class XhrSecurity
                 $redirect = true;
                 $redirectUrl = $this->router->generate('Homepage'.$this->globalTools->computeProfileSuffix());
             } else {
-                if ($nbTry >= IdCheckConstants::MAX_USER_TRY) {
-                    $this->session->getFlashBag()->add('idcheck/maxUserTry', true);
-                }
                 $errors = StudioEchoUtils::multiImplode($this->idcheck->getErrorMsg(), ' <br/> ');
                 $success = false;
                 $redirect = false;
                 $redirectUrl = false;
             }
+        }
+
+        $nbTry = $user->getNbIdCheck();
+        if ($nbTry >= IdCheckConstants::MAX_USER_TRY) {
+            $errors = null;
+            $success = false;
+            $redirect = true;
+            $redirectUrl = $this->router->generate('EditPerso'.$this->globalTools->computeProfileSuffix());
         }
 
         return array(
@@ -370,8 +377,6 @@ class XhrSecurity
 
         // max try reach > redirect to account w. error msg
         if ($nbTry >= IdCheckConstants::MAX_USER_TRY) {
-            $this->session->getFlashBag()->add('idcheck/maxUserTry', true);
-
             $errors = null;
             $success = false;
             $redirect = true;
@@ -388,9 +393,6 @@ class XhrSecurity
                 $redirect = true;
                 $redirectUrl = $this->router->generate('Homepage'.$this->globalTools->computeProfileSuffix());
             } else {
-                if ($nbTry >= IdCheckConstants::MAX_USER_TRY) {
-                    $this->session->getFlashBag()->add('idcheck/maxUserTry', true);
-                }
                 $errors = StudioEchoUtils::multiImplode($this->idcheck->getErrorMsg(), ' <br/> ');
                 $success = false;
                 $redirect = false;
@@ -398,12 +400,76 @@ class XhrSecurity
             }
         }
 
+        $nbTry = $user->getNbIdCheck();
+
         return array(
             'success' => $success,
             'errors' => $errors,
             'redirectUrl' => $redirectUrl,
             'redirect' => $redirect,
             'nbTryLeft' => IdCheckConstants::MAX_USER_TRY - $nbTry,
+        );
+    }
+
+    /**
+     * ARIAD ID CHECK ZLA / ADMIN
+     * beta
+     */
+    public function adminValidateIdZla(Request $request)
+    {
+        $this->logger->info('*** adminValidateIdZla');
+
+        // Request arguments
+        $userId = $request->get('user_id_check')['p_user_id'];
+        $this->logger->info('userId = ' . print_r($userId, true));
+
+        $user = PUserQuery::create()->findPk($userId);
+        if (!$user) {
+            throw new InconsistentDataException(sprintf('User id-%s not found', $userId));
+        }
+
+        $errors = null;
+        if ($this->isValidIdZla($request, $user, false)) {
+            $success = true;
+        } else {
+            $errors = StudioEchoUtils::multiImplode($this->idcheck->getErrorMsg(), ' <br/> ');
+            $success = false;
+        }
+
+        return array(
+            'success' => $success,
+            'errors' => $errors,
+        );
+    }
+
+    /**
+     * ARIAD ID CHECK PHOTO / ADMIN
+     * beta
+     */
+    public function adminValidateIdPhoto(Request $request)
+    {
+        $this->logger->info('*** adminValidateIdPhoto');
+
+        // get user
+        $userId = $request->get('userId');
+        $this->logger->info('$userId = '.print_r($userId, true));
+
+        $user = PUserQuery::create()->findPk($userId);
+        if (!$user) {
+            throw new InconsistentDataException(sprintf('User id-%s not found', $userId));
+        }
+
+        $errors = null;
+        if ($this->isValidIdPhoto($request, $user, false)) {
+            $success = true;
+        } else {
+            $errors = StudioEchoUtils::multiImplode($this->idcheck->getErrorMsg(), ' <br/> ');
+            $success = false;
+        }
+
+        return array(
+            'success' => $success,
+            'errors' => $errors,
         );
     }
 

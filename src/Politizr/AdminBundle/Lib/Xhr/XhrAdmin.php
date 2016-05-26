@@ -6,6 +6,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 use StudioEcho\Lib\StudioEchoUtils;
 
+use Politizr\Constant\PathConstants;
 use Politizr\Constant\ReputationConstants;
 use Politizr\Constant\QualificationConstants;
 
@@ -857,5 +858,32 @@ class XhrAdmin
         $subject->save();
 
         return true;
+    }
+
+    /**
+     * ARIAD ID CHECK UPLOAD PHOTO
+     * beta
+     */
+    public function idCheckPhotoUpload(Request $request)
+    {
+        $this->logger->info('*** idCheckPhotoUpload');
+
+        // Function process
+        $path = $this->kernel->getRootDir() . '/../web' . PathConstants::IDCHECK_UPLOAD_WEB_PATH;
+
+        // XHR upload
+        $fileName = $this->globalTools->uploadXhrImage(
+            $request,
+            'fileNameIdCheck',
+            $path,
+            5000,
+            5000,
+            20971520,
+            [ 'image/jpeg', 'image/pjpeg', 'image/jpeg', 'image/pjpeg' ]
+        );
+
+        return array(
+            'fileName' => $fileName
+        );
     }
 }

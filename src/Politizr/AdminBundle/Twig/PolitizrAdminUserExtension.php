@@ -10,6 +10,7 @@ use Politizr\Model\PUser;
 use Politizr\Model\PUMandate;
 
 use Politizr\FrontBundle\Form\Type\PUMandateType;
+use Politizr\FrontBundle\Form\Type\PUserIdCheckType;
 
 /**
  * User admin twig extension
@@ -79,6 +80,13 @@ class PolitizrAdminUserExtension extends \Twig_Extension
             'adminUserMandates'  => new \Twig_SimpleFunction(
                 'adminUserMandates',
                 array($this, 'adminUserMandates'),
+                array(
+                    'is_safe' => array('html')
+                    )
+            ),
+            'adminUserIdCheck'  => new \Twig_SimpleFunction(
+                'adminUserIdCheck',
+                array($this, 'adminUserIdCheck'),
                 array(
                     'is_safe' => array('html')
                     )
@@ -204,6 +212,32 @@ class PolitizrAdminUserExtension extends \Twig_Extension
                 'user' => $user,
                 'formMandate' => $formMandate?$formMandate->createView():null,
                 'formMandateViews' => $formMandateViews?$formMandateViews:null,
+            )
+        );
+
+        return $html;
+    }
+
+    /**
+     * Validate user's identity
+     *
+     * @param PUser $user
+     * @return string
+     */
+    public function adminUserIdCheck(PUser $user)
+    {
+        $this->logger->info('*** adminUserIdCheck');
+        // $this->logger->info('$pUser = '.print_r($pUser, true));
+
+        // id check form
+        $formIdCheck = $this->formFactory->create(new PUserIdCheckType($user->getId()), $user);
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+            'PolitizrAdminBundle:Fragment\\User:_idCheck.html.twig',
+            array(
+                'user' => $user,
+                'formIdCheck' => $formIdCheck->createView(),
             )
         );
 

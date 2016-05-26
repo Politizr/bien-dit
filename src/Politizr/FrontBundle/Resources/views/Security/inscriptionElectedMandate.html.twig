@@ -35,7 +35,7 @@
                     <div class="mandateItem withLoaderInside" id="newMandate">
                         {% include 'PolitizrFrontBundle:User:_newMandate.html.twig' with { 'user': app.user } %}
                     </div>
-                    <div class="coloredBgforEditMandates">
+                    <div class="coloredBg forEditMandates">
                         <div id="editMandates">
                             {% include 'PolitizrFrontBundle:User:_editMandates.html.twig' %}
                         </div>
@@ -43,7 +43,7 @@
                     <a href="{{ path('InscriptionElectedMandateCheck') }}" class="submit nextStepOrange">Étape suivante</a>
                 </div>
                 <div class="cardFooter">
-                    Tous les champs sont obligatoires
+                    Tous les champs sont obligatoires<br><br>
                 </div>
             </div>
             <div class="column column140">
