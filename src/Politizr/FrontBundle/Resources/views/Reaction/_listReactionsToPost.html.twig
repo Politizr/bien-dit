@@ -1,11 +1,6 @@
 {# beta #}
 <div class="postAnswersList">
-    <center>
-        <div class="answerCounter">
-            <i class="icon-reaction"></i>
-            {{ document | nbReactions(descendants = false, onlyElected = true) }}
-        </div>
-    </center>
+    <h5 class="postAnswersListTitle">Réponses</h5>
 
     {% for reaction in reactions %}
         {% include 'PolitizrFrontBundle:Document:_card.html.twig' with { 'document': reaction, 'withContext': false, 'mini': true, 'summary': true } only %}

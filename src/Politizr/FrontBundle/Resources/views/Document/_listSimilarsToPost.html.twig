@@ -3,7 +3,7 @@
     <h5>Sujets similaires</h5>
 
     {% for document in documents %}
-        {% include 'PolitizrFrontBundle:Document:_card.html.twig' with { 'document': document, 'withContext': true, 'mini': true, 'summary': true } only %}
+        {% include 'PolitizrFrontBundle:Document:_cardContent.html.twig' with { 'document': document, 'withImg': false, 'mini': false, 'summary': true } only %}
     {% else %}
         {% include 'PolitizrFrontBundle:PaginatedList:_noResult.html.twig' only %}
     {% endfor %}

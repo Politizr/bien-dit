@@ -2,7 +2,7 @@
 {# common "connected" layout #}
 {% extends 'PolitizrFrontBundle::baseFront.html.twig' %}
 
-{% block title %}{{ app.user | typeGenderName }} - Politizr{% endblock title %}
+{% block title %}{{ app.user | typeGender }} {{ app.user }} - Politizr{% endblock title %}
 
 {% block description %}Politizr est une plateforme neutre et indépendante permettant aux élus et anciens élus de débattre publiquement des sujets proposés par leurs concitoyens.{% endblock description %}
 

@@ -176,6 +176,11 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 array($this, 'followersDebate'),
                 array('is_safe' => array('html'))
             ),
+            new \Twig_SimpleFilter(
+                'footer',
+                array($this, 'footer'),
+                array('is_safe' => array('html'))
+            ),
         );
     }
 
@@ -977,6 +982,46 @@ class PolitizrDocumentExtension extends \Twig_Extension
         return $html;
 
     }
+
+    /**
+     * Document footer explanations
+     *
+     * @param PDDebate $debate
+     * @return string
+     */
+    public function footer(PDocumentInterface $document)
+    {
+        // $this->logger->info('*** footer');
+        // $this->logger->info('$document = '.print_r($document, true));
+
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        if (is_string($user)) {
+            $user = null;
+        }
+
+        $qualified = false;
+        $owner = false;
+        if ($user) {
+            if ($user->isQualified()) {
+                $qualified = true;
+            } elseif ($document->isOwner($user->getId())) {
+                $owner = true;
+            }
+        }
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Document:_footer.html.twig',
+            array(
+                'qualified' => $qualified,
+                'owner' => $owner,
+            )
+        );
+
+        return $html;
+    }
+
 
     /* ######################################################################################################## */
     /*                                             FONCTIONS                                                    */

@@ -49,12 +49,17 @@
                         </div>
                     {% endfor %}
                 </div>
+                <div id="cardPostTextFooter">
+                    {{ debate | footer }}
+                </div>
             </div>
             <div id="p-0">
                 {% include 'PolitizrFrontBundle:Comment:_global.html.twig' with { 'document': debate } only %}
             </div>
 
-            {% include 'PolitizrFrontBundle:Reaction:_listReactionsToPost.html.twig' with { 'document': debate, 'reactions': reactions } only %}
+            {% if reactions | length > 0 %}
+                {% include 'PolitizrFrontBundle:Reaction:_listReactionsToPost.html.twig' with { 'document': debate, 'reactions': reactions } only %}
+            {% endif %}
 
             <div class="postTags">
                 <h5>Thématiques abordées</h5>

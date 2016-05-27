@@ -81,8 +81,8 @@ class PolitizrUserExtension extends \Twig_Extension
                 array('is_safe' => array('html'))
             ),
             new \Twig_SimpleFilter(
-                'typeGenderName',
-                array($this, 'typeGenderName'),
+                'typeGender',
+                array($this, 'typeGender'),
                 array('is_safe' => array('html'))
             ),
             new \Twig_SimpleFilter(
@@ -236,9 +236,9 @@ class PolitizrUserExtension extends \Twig_Extension
      * @param PUser $user
      * @return html
      */
-    public function typeGenderName(PUser $user)
+    public function typeGender(PUser $user)
     {
-        // $this->logger->info('*** typeGenderName');
+        // $this->logger->info('*** typeGender');
         // $this->logger->info('$user = '.print_r($user, true));
 
         if ($user->isQualified()) {
@@ -252,7 +252,6 @@ class PolitizrUserExtension extends \Twig_Extension
                 $html .= 'ne';
             }
         }
-        $html .= ' ' . $user->__toString();
 
         return $html;
     }
@@ -556,7 +555,7 @@ class PolitizrUserExtension extends \Twig_Extension
         $debateUser = $debate->getUser();
         $id = $user->getId();
         $score = $user->getReputationScore();
-        if ($debateUser->getId() === $id && $score >= ReputationConstants::ACTION_REACTION_WRITE) {
+        if ($debateUser && $debateUser->getId() === $id && $score >= ReputationConstants::ACTION_REACTION_WRITE) {
             return true;
         }
 

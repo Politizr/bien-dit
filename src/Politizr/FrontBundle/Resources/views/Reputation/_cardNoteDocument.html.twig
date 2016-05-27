@@ -11,7 +11,7 @@
 
         <div class="miniPost">
             {% include 'PolitizrFrontBundle:User:_summary.html.twig' with { 'user': author, 'withSocialLinks': false, 'withMandates': false } only %}
-            {% include 'PolitizrFrontBundle:Document:_cardContent.html.twig' with { 'document': document, 'mini': true, 'summary': false } only %}
+            {% include 'PolitizrFrontBundle:Document:_cardContent.html.twig' with { 'document': document, 'withImg': true, 'mini': true, 'summary': false } only %}
             <h5>{% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': document } only %}</h5>
         </div>
     </div>

@@ -14,7 +14,7 @@
         <div class="miniPost">
             {% if followDebate %}
                 {% include 'PolitizrFrontBundle:User:_summary.html.twig' with { 'user': followDebate.user, 'withMandates': false } only %}
-                {% include 'PolitizrFrontBundle:Document:_cardContent.html.twig' with { 'document': followDebate, 'mini': true, 'summary': false } only %}
+                {% include 'PolitizrFrontBundle:Document:_cardContent.html.twig' with { 'document': followDebate, 'withImg': true, 'mini': true, 'summary': false } only %}
                 <h5>{% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': followDebate } only %}</h5>
             {% else %}
                 Ce débat a été supprimé.

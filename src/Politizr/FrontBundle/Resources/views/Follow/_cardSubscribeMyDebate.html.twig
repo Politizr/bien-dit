@@ -5,7 +5,7 @@
         <div class="activity cardFollowing">Félicitations, {{ subscriberUser }} suit votre sujet de discussion!</div>
         <h5>{% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': timelineRow } only %}</h5>
         <div class="miniPost">
-            {% include 'PolitizrFrontBundle:Document:_cardContent.html.twig' with { 'document': debate, 'mini': true, 'summary': false } only %}
+            {% include 'PolitizrFrontBundle:Document:_cardContent.html.twig' with { 'document': debate, 'withImg': true, 'mini': true, 'summary': false } only %}
             <h5>{% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': debate } only %}</h5>
         </div>
     </div>

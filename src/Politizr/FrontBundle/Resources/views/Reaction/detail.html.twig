@@ -72,7 +72,9 @@
                 {% include 'PolitizrFrontBundle:Comment:_global.html.twig' with { 'document': reaction } only %}
             </div>
 
-            {% include 'PolitizrFrontBundle:Reaction:_listReactionsToPost.html.twig' with { 'document': reaction, 'reactions': reactions } only %}
+            {% if reactions | length > 0 %}
+                {% include 'PolitizrFrontBundle:Reaction:_listReactionsToPost.html.twig' with { 'document': reaction, 'reactions': reactions } only %}
+            {% endif %}
 
             <div class="postTags">
                 <h5>Thématiques abordées</h5>

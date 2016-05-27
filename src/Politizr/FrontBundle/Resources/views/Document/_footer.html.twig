@@ -1,0 +1,31 @@
+<div class="noticeBox">
+    {% if not app.user %}
+        <span>
+            <a href="{{ path('InscriptionChoice') }}">Inscrivez-vous</a> pour participer au débat.
+        </span> 
+    {% elseif qualified %}
+        <span class="withActionAnswer">
+            <b>En tant qu'{{ app.user | typeGender }}, vous pouvez publier une réponse à cette publication.</b><br> 
+            Cette fonctionnalité est exclusivement réservée aux élu-e-s et au citoyen-ne auteur du sujet si sa réputation est d'au moins {{ constant('Politizr\\Constant\\ReputationConstants::ACTION_REACTION_WRITE') }} points.
+        </span>
+        <div class="actionsBox">
+            <div class="miniActions">
+                {% include 'PolitizrFrontBundle:Reaction:_actionNew.html.twig' with { 'document': debate } only %}
+            </div>
+        </div>
+    {% elseif owner %}
+        <span class="withActionAnswer">             
+            En tant qu'auteur du sujet original, vous pouvez publier une réponse à cette publication.
+        </span>
+        <div class="actionsBox">
+            <div class="miniActions">
+                {% include 'PolitizrFrontBundle:Reaction:_actionNew.html.twig' with { 'document': debate } only %}
+            </div>
+        </div>
+    {% else %}
+        <span class="withNewSubject">               
+            Seuls les élu-e-s et l'auteur du sujet peuvent publier une réponse à cette publication, vous pouvez publier des commentaires ou <a href="{{ path('DebateDraftNew'~profileSuffix()) }}">initier un nouveau sujet</a>.                 
+        </span> 
+        <a href="{{ path('DebateDraftNew'~profileSuffix()) }}" class="newSubject"><i class="icon-plane"></i><span>rédiger un nouveau sujet</span></a>
+    {% endif %}
+</div>
