@@ -3,7 +3,7 @@
  */
 function createUserMandate()
 {
-    console.log('*** createUserMandate');
+    // console.log('*** createUserMandate');
 
     var localLoader = $('#newMandate').find('.ajaxLoader').first();
 
@@ -36,9 +36,9 @@ function createUserMandate()
  */
 function saveUserMandate(form, localLoader)
 {
-    console.log('*** saveUserMandate');
-    console.log(form);
-    console.log(localLoader);
+    // console.log('*** saveUserMandate');
+    // console.log(form);
+    // console.log(localLoader);
 
     var xhrPath = getXhrPath(
         ROUTE_USER_MANDATE_UPDATE,
@@ -68,9 +68,9 @@ function saveUserMandate(form, localLoader)
  */
 function deleteUserMandate(uuid, localLoader)
 {
-    console.log('*** deleteUserMandate');
-    console.log(uuid);
-    console.log(localLoader);
+    // console.log('*** deleteUserMandate');
+    // console.log(uuid);
+    // console.log(localLoader);
 
     var xhrPath = getXhrPath(
         ROUTE_USER_MANDATE_DELETE,
@@ -100,8 +100,8 @@ function deleteUserMandate(uuid, localLoader)
  */
 function createAdminUserMandate(uuid)
 {
-    console.log('*** createAdminUserMandate');
-    console.log(uuid);
+    // console.log('*** createAdminUserMandate');
+    // console.log(uuid);
 
     var xhrPath = getXhrPath(
         ROUTE_USER_MANDATE_CREATE,
@@ -131,8 +131,8 @@ function createAdminUserMandate(uuid)
  */
 function saveAdminUserMandate(form)
 {
-    console.log('*** saveAdminUserMandate');
-    console.log(form);
+    // console.log('*** saveAdminUserMandate');
+    // console.log(form);
 
     var xhrPath = getXhrPath(
         ROUTE_USER_MANDATE_UPDATE,
@@ -161,8 +161,8 @@ function saveAdminUserMandate(form)
  */
 function deleteAdminUserMandate(uuid)
 {
-    console.log('*** deleteUserMandate');
-    console.log(uuid);
+    // console.log('*** deleteUserMandate');
+    // console.log(uuid);
 
     var xhrPath = getXhrPath(
         ROUTE_USER_MANDATE_DELETE,

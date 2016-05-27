@@ -14,28 +14,28 @@ var xhrUrlPrefix = '/xhr';
 
 // Update user
 $("body").on("click", "[action='userProfileUpdate']", function(e) {
-    console.log('*** click user profile update');
+    // console.log('*** click user profile update');
 
     return saveUserProfile();
 });
 
 // Update current organization
 $("body").on("change", "select[action='organizationUpdate']", function(e) {
-    console.log('*** change select organization');
+    // console.log('*** change select organization');
 
     return saveUserOrganization();
 });
 
 // Mandate creation
 $("body").on("click", "[action='mandateCreate']", function(e) {
-    console.log('*** click mandateCreate');
+    // console.log('*** click mandateCreate');
 
     return createUserMandate();
 });
 
 // Mandate update
 $("body").on("click", "[action='mandateUpdate']", function(e) {
-    console.log('*** click mandateUpdate');
+    // console.log('*** click mandateUpdate');
 
     var form = $(this).closest('#formMandateUpdate');
     var localLoader = $(this).closest('.myMandate').find('.ajaxLoader').first();
@@ -44,7 +44,7 @@ $("body").on("click", "[action='mandateUpdate']", function(e) {
 
 // Mandate deletion
 $("body").on("click", "[action='mandateDelete']", function(e) {
-    console.log('*** click mandateDelete');
+    // console.log('*** click mandateDelete');
     var uuid = $(this).attr('uuid');
     var localLoader = $(this).closest('.myMandate').find('.ajaxLoader').first();
     var confirmMsg = "Êtes-vous sûr de vouloir supprimer ce mandat?";
@@ -63,20 +63,20 @@ $("body").on("click", "[action='mandateDelete']", function(e) {
 
 // Clic bouton upload photo local
 $("body").on("click", "[action='fileSelect']", function() {
-    console.log('click file select');
+    // console.log('click file select');
     $("#fileName").trigger('click');
     return false;
 });
 
 // Upload simple
 $("body").on("change", "#fileName", function() {
-    console.log('change file name');
+    // console.log('change file name');
     $('#formUserPhoto').submit();
 });
 
 // Delete photo
 $('body').on('click', "[action='fileDelete']", function(e){
-    console.log('*** click file delete');
+    // console.log('*** click file delete');
 
     return deleteUserPhoto();
 });
@@ -86,7 +86,7 @@ $('body').on('click', "[action='fileDelete']", function(e){
  * Character counting for comment
  */
 function biographyTextCounter() {
-    // console.log('*** biographyTextCounter');
+    // // console.log('*** biographyTextCounter');
 
     $('#user_biography').textcounter({
         type                     : "character",            // "character" or "word"

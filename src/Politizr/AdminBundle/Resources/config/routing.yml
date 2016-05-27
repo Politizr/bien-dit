@@ -252,3 +252,20 @@ Politizr_AdminBundle_PMRCommentHistoric:
     resource: "@PolitizrAdminBundle/Controller/PMRCommentHistoric/"
     type:     admingenerator
     prefix:   /PMRCommentHistoric
+
+# Monitoring / Juridique
+Politizr_AdminBundle_PMCgu:
+    resource: "@PolitizrAdminBundle/Controller/PMCgu/"
+    type:     admingenerator
+    prefix:   /PMCgu
+
+Politizr_AdminBundle_PMCgv:
+    resource: "@PolitizrAdminBundle/Controller/PMCgv/"
+    type:     admingenerator
+    prefix:   /PMCgv
+
+Politizr_AdminBundle_PMCharte:
+    resource: "@PolitizrAdminBundle/Controller/PMCharte/"
+    type:     admingenerator
+    prefix:   /PMCharte
+

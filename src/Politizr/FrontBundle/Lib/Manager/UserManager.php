@@ -815,7 +815,7 @@ LIMIT :offset, :limit
             }
             $user->setUsernameCanonical($canonicalUsername);
             $user->setPassword($encodedPassword);
-            $user->setPUStatusId(UserConstants::STATUS_VALIDATION_PROCESS);
+            $user->setPUStatusId(UserConstants::STATUS_INSCRIPTION_PROCESS);
             
             $user->eraseCredentials();
         }

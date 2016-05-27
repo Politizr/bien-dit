@@ -286,3 +286,143 @@ function updateUrl(url) {
         // console.log("Your browser does not support HTML5.");
     }
 }
+
+
+// ******************************************************************* //
+//                              MODAL                                  //
+// ******************************************************************* //
+
+$('body').on("click", "[action='openCgu']", function(e){
+    // console.log('*** click openCgu');
+
+    return modalCgu();
+});
+
+$('body').on("click", "[action='openCgv']", function(e){
+    // console.log('*** click openCgv');
+
+    return modalCgv();
+});
+
+$('body').on("click", "[action='openCharte']", function(e){
+    // console.log('*** click openCharte');
+
+    return modalCharte();
+});
+
+$('body').on("click", "[action='openGlobalHelper']", function(e){
+    // console.log('*** click openGlobalHelper');
+
+    return modalGlobalHelper();
+});
+
+
+
+/**
+ * Modal CGU
+ */
+function modalCgu() {
+    // console.log('*** modalCgu');
+
+    var xhrPath = getXhrPath(
+        ROUTE_MODAL_CGU,
+        'modal',
+        'cgu',
+        RETURN_HTML
+    );
+
+    return xhrCall(
+        document,
+        null,
+        xhrPath
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
+            $('#modalContainer').html(data['html']);
+        }
+    });
+};
+
+/**
+ * Modal CGV
+ */
+function modalCgv() {
+    // console.log('*** modalCgv');
+
+    var xhrPath = getXhrPath(
+        ROUTE_MODAL_CGV,
+        'modal',
+        'cgv',
+        RETURN_HTML
+    );
+
+    return xhrCall(
+        document,
+        null,
+        xhrPath
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
+            $('#modalContainer').html(data['html']);
+        }
+    });
+};
+
+/**
+ * Modal Charte
+ */
+function modalCharte() {
+    // console.log('*** modalCharte');
+
+    var xhrPath = getXhrPath(
+        ROUTE_MODAL_CHARTE,
+        'modal',
+        'charte',
+        RETURN_HTML
+    );
+
+    return xhrCall(
+        document,
+        null,
+        xhrPath
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
+            $('#modalContainer').html(data['html']);
+        }
+    });
+};
+
+/**
+ * Modal Global Helper
+ */
+function modalGlobalHelper() {
+    // console.log('*** modalGlobalHelper');
+
+    var xhrPath = getXhrPath(
+        ROUTE_MODAL_GLOBAL_HELPER,
+        'modal',
+        'globalHelper',
+        RETURN_HTML
+    );
+
+    return xhrCall(
+        document,
+        null,
+        xhrPath
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
+            $('#modalContainer').html(data['html']);
+        }
+    });
+};
+

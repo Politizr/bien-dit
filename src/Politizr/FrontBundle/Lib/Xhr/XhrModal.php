@@ -6,11 +6,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\ListingConstants;
 
-use Politizr\Model\PDDebateQuery;
-use Politizr\Model\PDReactionQuery;
-use Politizr\Model\PUserQuery;
-use Politizr\Model\PTagQuery;
-use Politizr\Model\PQOrganizationQuery;
+use Politizr\Model\PMCguQuery;
+use Politizr\Model\PMCgvQuery;
+use Politizr\Model\PMCharteQuery;
 
 /**
  * XHR service for modal management.
@@ -72,6 +70,89 @@ class XhrModal
         
         $html = $this->templating->render(
             'PolitizrFrontBundle:Navigation\\Helper:_createAccountToComment.html.twig'
+        );
+
+        return array(
+            'html' => $html,
+        );
+    }
+
+    /**
+     * CGU
+     * beta
+     */
+    public function cgu(Request $request)
+    {
+        $this->logger->info('*** cgu');
+
+        $legal = PMCguQuery::create()->filterByOnline(true)->orderByCreatedAt('desc')->findOne();
+        
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Monitoring:_legal.html.twig',
+            array(
+                'legal' => $legal
+            )
+        );
+
+        return array(
+            'html' => $html,
+        );
+    }
+
+    /**
+     * CGV
+     * beta
+     */
+    public function cgv(Request $request)
+    {
+        $this->logger->info('*** cgv');
+
+        $legal = PMCgvQuery::create()->filterByOnline(true)->orderByCreatedAt('desc')->findOne();
+        
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Monitoring:_legal.html.twig',
+            array(
+                'legal' => $legal
+            )
+        );
+
+        return array(
+            'html' => $html,
+        );
+    }
+
+    /**
+     * Charte
+     * beta
+     */
+    public function charte(Request $request)
+    {
+        $this->logger->info('*** charte');
+
+        $legal = PMCharteQuery::create()->filterByOnline(true)->orderByCreatedAt('desc')->findOne();
+        
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Monitoring:_legal.html.twig',
+            array(
+                'legal' => $legal
+            )
+        );
+
+        return array(
+            'html' => $html,
+        );
+    }
+
+    /**
+     * Global helper
+     * beta
+     */
+    public function globalHelper(Request $request)
+    {
+        $this->logger->info('*** globalHelper');
+        
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Navigation\\Helper:_globalHelper.html.twig'
         );
 
         return array(

@@ -44,7 +44,7 @@
                     {{ form_start(form, {'action': path('InscriptionElectedOrderCheck'), 'method': 'POST'}) }}
                         {{ form_row(form.p_o_subscription) }}
                         <div class="coloredBg">
-                            {{ form_widget(form.cgv) }}<label>J’accepte les <a href="" target="_blank">conditions générales de vente</a>.</label>
+                            {{ form_widget(form.cgv) }}<label>J’accepte les <a action="openCgv">conditions générales de vente</a>.</label>.</label>
                         </div>
                         <button type="submit" class="submit nextStepOrange">Étape suivante</button>
                     {{ form_end(form) }}

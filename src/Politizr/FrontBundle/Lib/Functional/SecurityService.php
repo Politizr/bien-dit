@@ -729,7 +729,7 @@ class SecurityService
         $user = $this->userManager->updateForInscriptionFinish(
             $user,
             $roles,
-            UserConstants::STATUS_VALIDATION_PROCESS,
+            UserConstants::STATUS_ACTIVED,
             true
         );
 

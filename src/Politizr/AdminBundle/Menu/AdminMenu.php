@@ -181,6 +181,24 @@ class AdminMenu extends AdmingeneratorMenuBuilder
             'Politizr_AdminBundle_User_list'
         );
 
+        // Documents juridiques
+        $legals = $this->addDropdown($menu, 'Juridique');
+        $this->addLinkRoute(
+            $legals,
+            'CGU',
+            'Politizr_AdminBundle_PMCgu_list'
+        );
+        $this->addLinkRoute(
+            $legals,
+            'CGV',
+            'Politizr_AdminBundle_PMCgv_list'
+        );
+        $this->addLinkRoute(
+            $legals,
+            'Charte',
+            'Politizr_AdminBundle_PMCharte_list'
+        );
+
         // Archives
         $archive = $this->addDropdown($menu, 'Archive');
         $this->addLinkRoute(

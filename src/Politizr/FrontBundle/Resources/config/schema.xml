@@ -1264,4 +1264,41 @@
         </foreign-key>
     </table>
 
+
+    <table name="p_m_cgu">
+        <behavior name="timestampable" />
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+
+        <column name="title" type="varchar" size="100" />
+        <column name="summary" type="longvarchar" />
+        <column name="description" type="clob" />
+
+        <column name="online" type="boolean" />
+    </table>
+
+    <table name="p_m_cgv">
+        <behavior name="timestampable" />
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        
+        <column name="title" type="varchar" size="100" />
+        <column name="summary" type="longvarchar" />
+        <column name="description" type="clob" />
+
+        <column name="online" type="boolean" />
+    </table>
+
+    <table name="p_m_charte">
+        <behavior name="timestampable" />
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        
+        <column name="title" type="varchar" size="100" />
+        <column name="summary" type="longvarchar" />
+        <column name="description" type="clob" />
+
+        <column name="online" type="boolean" />
+    </table>
+
 </database>

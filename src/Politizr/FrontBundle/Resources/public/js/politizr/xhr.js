@@ -71,37 +71,10 @@ var ROUTE_BADGES_COUNTER = 'profil/reputation/badges';
 // MODAL
 var ROUTE_MODAL_HELP_US = 'politizr-needs-you';
 var ROUTE_MODAL_CREATE_ACCOUNT_TO_COMMNET = 'commentaires/creer-un-compte';
-
-
-var ROUTE_MODAL_PAGINATED_LIST = 'liste';
-var ROUTE_MODAL_FILTERS = 'filtres';
-var ROUTE_MODAL_LIST_ACTIONS = 'profil/liste/historique';
-var ROUTE_MODAL_RANKING_DEBATE_LIST = 'profil/liste/classement/debat';
-var ROUTE_MODAL_RANKING_REACTION_LIST = 'profil/liste/classement/reaction';
-var ROUTE_MODAL_RANKING_USER_LIST = 'profil/liste/classement/utilisateur';
-var ROUTE_MODAL_SUGGESTION_DEBATE_LIST = 'profil/liste/suggestion/debat';
-var ROUTE_MODAL_SUGGESTION_REACTION_LIST = 'profil/liste/suggestion/reaction';
-var ROUTE_MODAL_SUGGESTION_USER_LIST = 'profil/liste/suggestion/utilisateur';
-var ROUTE_MODAL_TAG_DEBATE_LIST = 'profil/liste/tag/debat';
-var ROUTE_MODAL_TAG_REACTION_LIST = 'profil/liste/tag/reaction';
-var ROUTE_MODAL_TAG_USER_LIST = 'profil/liste/tag/utilisateur';
-var ROUTE_MODAL_FOLLOWED_DEBATE_LIST = 'profil/liste/follow/debat';
-var ROUTE_MODAL_FOLLOWED_USER_LIST = 'profil/liste/follow/utilisateur';
-var ROUTE_MODAL_ORGANIZATION_USER_LIST = 'profil/liste/org/utilisateur';
-var ROUTE_MODAL_FOLLOWERS_LIST = 'profil/abonnes';
-var ROUTE_MODAL_REPUTATION = 'profil/reputation';
-var ROUTE_MODAL_REPUTATION_EVOLUTION = 'profil/reputation/evolution';
-var ROUTE_MODAL_DOCUMENT_STATS = 'profil/document/stats';
-var ROUTE_MODAL_DOCUMENT_STATS_NOTES_EVOLUTION = 'profil/document/stats/notes/evolution';
-var ROUTE_MODAL_DOCUMENT_STATS_REACTIONS_EVOLUTION = 'profil/document/stats/reactions/evolution';
-var ROUTE_MODAL_DOCUMENT_STATS_COMMENTS_EVOLUTION = 'profil/document/stats/comments/evolution';
-
-// DASHBOARD
-var ROUTE_DASHBOARD_MAP = 'profil/tableau/carte';
-var ROUTE_DASHBOARD_TOP_DEBATES = 'profil/tableau/debats';
-var ROUTE_DASHBOARD_TOP_USERS = 'profil/tableau/debats';
-var ROUTE_DASHBOARD_GEO = 'profil/tableau/geo';
-var ROUTE_DASHBOARD_SUGGESTION = 'profil/tableau/suggestion';
+var ROUTE_MODAL_CGU = 'conditions-generales-d-utilisation';
+var ROUTE_MODAL_CGV = 'conditions-generales-de-vente';
+var ROUTE_MODAL_CHARTE = 'charte-politizr';
+var ROUTE_MODAL_GLOBAL_HELPER = 'aide-generale'
 
 // NOTATION
 var ROUTE_NOTE = 'profil/noter';

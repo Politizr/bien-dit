@@ -61,7 +61,7 @@
                             {% endif %}
                             {% if (form.cgu is defined) %}
                                 <div class="control-group">
-                                    {{ form_widget(form.cgu) }}<label>J’accepte les <a href="" target="_blank">conditions générales d’utilisation</a>.</label>
+                                    {{ form_widget(form.cgu) }}<label>J’accepte les <a action="openCgu">conditions générales d'utilisation</a> et je m'engage à respecter la <a action="openCharte">charte de Politizr</a>.</label>
                                     {% if form.cgu.vars.errors|length %}
                                         <div class="field_error">{{ form_errors(form.cgu) }}</div>
                                     {% endif %}

@@ -112,12 +112,17 @@
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
 
-    {% if not app.session.has('helpUs') %}
+    {% if app.session.flashbag.has('inscription/success') and app.session.flashbag.get('inscription/success')[0] %}
+        <script>
+            $(function() {
+                modalGlobalHelper();
+            });
+        </script>
+    {% elseif not app.session.has('helpUs') %}
         <script>
             $(function() {
                 modalHelpUs();
             });
         </script>
     {% endif %}
-
 {% endblock javascriptFooter %}

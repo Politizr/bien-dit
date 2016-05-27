@@ -10,7 +10,7 @@ var idCheckPhotoOptions = {
     success: function(responseText, statusText, xhr, form)
     {
         data = $.parseJSON( responseText );
-        console.log(data);
+        // console.log(data);
 
         if ( 'success' == statusText && data['success']) {
             validateIdPhoto(data['fileName']);
@@ -35,7 +35,7 @@ $(function() {
 
 // Clic bouton upload photo local
 $("body").on("click", "[action='fileSelect']", function() {
-    console.log('click file select');
+    // console.log('click file select');
 
     $("#fileName").trigger('click');
     return false;
@@ -43,14 +43,14 @@ $("body").on("click", "[action='fileSelect']", function() {
 
 // Upload simple
 $("body").on("change", "#fileName", function() {
-    console.log('change file name');
+    // console.log('change file name');
 
     $('#formIdCheckPhoto').submit();
 });
 
 // id check validate ZLA
 $("body").on("click", "button[action='validateIdZla']", function(e) {
-    console.log('click submitPerso');
+    // console.log('click submitPerso');
 
     var form = $(this).closest('form');
 
@@ -63,8 +63,8 @@ $("body").on("click", "button[action='validateIdZla']", function(e) {
  */
 function validateIdZla(form)
 {
-    console.log('click validateIdZla');
-    console.log(form);
+    // console.log('click validateIdZla');
+    // console.log(form);
 
     var xhrPath = getXhrPath(
         ROUTE_USER_VALIDATE_ID,
@@ -84,7 +84,7 @@ function validateIdZla(form)
             $('#infoBoxHolder .boxError').show();
             $('#ajaxGlobalLoader').hide();
         } else {
-            console.log(data);
+            // console.log(data);
             if (data['success']) {
                 window.location = data['redirectUrl'];
             } else if (data['redirect']) {
@@ -93,7 +93,7 @@ function validateIdZla(form)
                 $('#infoBoxHolder .boxError .notifBoxText').html(data['errors']);
                 $('#infoBoxHolder .boxError').show();
 
-                console.log(data['nbTryLeft'])
+                // console.log(data['nbTryLeft'])
                 $('#nbTryLeft').html(data['nbTryLeft']);
 
                 if (data['nbTryLeft'] == 0) {
@@ -112,8 +112,8 @@ function validateIdZla(form)
  */
 function validateIdPhoto(fileName)
 {
-    console.log('click validateIdPhoto');
-    console.log(fileName);
+    // console.log('click validateIdPhoto');
+    // console.log(fileName);
 
     var xhrPath = getXhrPath(
         ROUTE_USER_VALIDATE_PHOTO_UPLOAD,
@@ -133,7 +133,7 @@ function validateIdPhoto(fileName)
             $('#infoBoxHolder .boxError').show();
             $('#ajaxGlobalLoader').hide();
         } else {
-            console.log(data);
+            // console.log(data);
             if (data['success']) {
                 window.location = data['redirectUrl'];
             } else if (data['redirect']) {
@@ -142,7 +142,7 @@ function validateIdPhoto(fileName)
                 $('#infoBoxHolder .boxError .notifBoxText').html(data['errors']);
                 $('#infoBoxHolder .boxError').show();
 
-                console.log(data['nbTryLeft'])
+                // console.log(data['nbTryLeft'])
                 $('#nbTryLeft').html(data['nbTryLeft']);
 
                 if (data['nbTryLeft'] == 0) {
@@ -159,7 +159,7 @@ function validateIdPhoto(fileName)
  * Character counting for zla
  */
 function zlaTextCounter() {
-    console.log('*** zlaTextCounter');
+    // console.log('*** zlaTextCounter');
 
     $('.zlaInputs input').textcounter({
         type                     : "character",            // "character" or "word"

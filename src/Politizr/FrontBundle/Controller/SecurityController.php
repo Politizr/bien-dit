@@ -221,6 +221,9 @@ class SecurityController extends Controller
 
             $this->get('politizr.functional.security')->inscriptionCitizenFinish($user);
 
+            // Inscription done
+            $request->getSession()->getFlashBag()->add('inscription/success', true);
+
             return $this->redirect($this->generateUrl('HomepageC'));
         }
 
@@ -548,6 +551,9 @@ class SecurityController extends Controller
     {
         $logger = $this->get('logger');
         $logger->info('*** inscriptionElectedIdCheckAction');
+
+        // Inscription done
+        $request->getSession()->getFlashBag()->add('inscription/success', true);
 
         $user = $this->getUser();
 

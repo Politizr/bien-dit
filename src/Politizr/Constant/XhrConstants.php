@@ -82,36 +82,10 @@ class XhrConstants
     // MODAL
     const ROUTE_MODAL_HELP_US = 'politizr-needs-you';
     const ROUTE_MODAL_CREATE_ACCOUNT_TO_COMMNET = 'commentaires/creer-un-compte';
-    
-
-    const ROUTE_MODAL_PAGINATED_LIST = 'liste';
-    const ROUTE_MODAL_FILTERS = 'filtres';
-    const ROUTE_MODAL_LIST_ACTIONS = 'profil/liste/historique';
-    const ROUTE_MODAL_RANKING_DEBATE_LIST = 'profil/liste/classement/debat';
-    const ROUTE_MODAL_RANKING_REACTION_LIST = 'profil/liste/classement/reaction';
-    const ROUTE_MODAL_RANKING_USER_LIST = 'profil/liste/classement/utilisateur';
-    const ROUTE_MODAL_SUGGESTION_DEBATE_LIST = 'profil/liste/suggestion/debat';
-    const ROUTE_MODAL_SUGGESTION_REACTION_LIST = 'profil/liste/suggestion/reaction';
-    const ROUTE_MODAL_SUGGESTION_USER_LIST = 'profil/liste/suggestion/utilisateur';
-    const ROUTE_MODAL_TAG_DEBATE_LIST = 'profil/liste/tag/debat';
-    const ROUTE_MODAL_TAG_REACTION_LIST = 'profil/liste/tag/reaction';
-    const ROUTE_MODAL_TAG_USER_LIST = 'profil/liste/tag/utilisateur';
-    const ROUTE_MODAL_FOLLOWED_DEBATE_LIST = 'profil/liste/follow/debat';
-    const ROUTE_MODAL_FOLLOWED_USER_LIST = 'profil/liste/follow/utilisateur';
-    const ROUTE_MODAL_ORGANIZATION_USER_LIST = 'profil/liste/org/utilisateur';
-    const ROUTE_MODAL_FOLLOWERS_LIST = 'profil/abonnes';
-    const ROUTE_MODAL_REPUTATION = 'profil/reputation';
-    const ROUTE_MODAL_REPUTATION_EVOLUTION = 'profil/reputation/evolution';
-    const ROUTE_MODAL_DOCUMENT_STATS = 'profil/document/stats';
-    const ROUTE_MODAL_DOCUMENT_STATS_NOTES_EVOLUTION = 'profil/document/stats/notes/evolution';
-    const ROUTE_MODAL_DOCUMENT_STATS_REACTIONS_EVOLUTION = 'profil/document/stats/reactions/evolution';
-    const ROUTE_MODAL_DOCUMENT_STATS_COMMENTS_EVOLUTION = 'profil/document/stats/comments/evolution';
-
-    // DASHBOARD
-    const ROUTE_DASHBOARD_MAP = 'profil/tableau/carte';
-    const ROUTE_DASHBOARD_TOP_DEBATES = 'profil/tableau/debats';
-    const ROUTE_DASHBOARD_TOP_USERS = 'profil/tableau/debats';
-    const ROUTE_DASHBOARD_GEO = 'profil/tableau/geo';
+    const ROUTE_MODAL_CGU = 'conditions-generales-d-utilisation';
+    const ROUTE_MODAL_CGV = 'conditions-generales-de-vente';
+    const ROUTE_MODAL_CHARTE = 'charte-politizr';
+    const ROUTE_MODAL_GLOBAL_HELPER = 'aide-generale';
 
     // NOTATION
     const ROUTE_NOTE = 'profil/noter';
