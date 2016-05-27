@@ -1,0 +1,8 @@
+{% if user and user.qualified and user.validated %}
+    <div class="status"><div class="representativeIdChecked"><i class="icon-profil-elu"></i><span>Profil certifié</span></div></div>
+{% elseif user and user.qualified and not user.validated %}
+    <div class="status"><div class="representativeIdInProgress"><i class="icon-profil-elu"></i><span>Certification en cours</span></div></div
+    >
+{% elseif user and not user.qualified and user.validated %}
+    <div class="status"><div class="citizenIdChecked"><i class="icon-profil-citoyen"></i><span>Identité certifiée</span></div></div>
+{% endif %}
