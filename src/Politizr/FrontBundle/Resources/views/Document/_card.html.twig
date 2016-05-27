@@ -23,7 +23,7 @@
             {% include 'PolitizrFrontBundle:Document:_statsMini.html.twig' with { 'document': document } only %}
         </div>
 
-        {{ document | nbReactions(descendants = false, onlyElected = true) }}
+        {{ document | nbReactions }}
 
         <h5>{% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': document } only %}</h5>
         <div class="postTags">

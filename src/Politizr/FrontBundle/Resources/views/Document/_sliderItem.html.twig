@@ -32,7 +32,7 @@
                 <div class="postStats">
                     {% include 'PolitizrFrontBundle:Document:_statsMini.html.twig' with { 'document': document } only %}
                 </div>
-                {{ document | nbReactions(descendants = false, onlyElected = true) }}
+                {{ document | nbReactions }}
                 <h5>{% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': document } only %}</h5>
                 {% if document.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION') %}
                     {{ document | itemContextReaction() }}

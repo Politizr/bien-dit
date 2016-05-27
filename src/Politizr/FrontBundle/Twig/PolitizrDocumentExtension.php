@@ -290,11 +290,9 @@ class PolitizrDocumentExtension extends \Twig_Extension
      * Document's number of reactions
      *
      * @param PDocumentInterface $document
-     * @param boolean $descendants
-     * @param boolean $onlyElected
      * @return html
      */
-    public function nbReactions(PDocumentInterface $document, $descendants = true, $onlyElected = false)
+    public function nbReactions(PDocumentInterface $document)
     {
         // $this->logger->info('*** nbReactions');
         // $this->logger->info('$document = '.print_r($document, true));
@@ -304,29 +302,42 @@ class PolitizrDocumentExtension extends \Twig_Extension
         $nbReactions = 0;
         switch ($document->getType()) {
             case ObjectTypeConstants::TYPE_DEBATE:
-                if ($descendants) {
-                    $nbReactions = $document->countReactions(true, true, $onlyElected);
-                } else {
-                    // 1st level only
-                    $nbReactions = $document->countChildrenReactions(true, true, $onlyElected);
-                }
+                $nbDescendantsElected = $document->countReactions(true, true, true);
+                $nbDescendantsTotal = $document->countReactions(true, true, false);
+                $nbChildrenTotal = $document->countChildrenReactions(true, true, false);
+                $nbChildrenElected = $document->countChildrenReactions(true, true, true);
+                
+                // Nb of author reaction if not elected
+                $nbDescendantsNotElected = $nbChildrenTotal - $nbChildrenElected;
                 break;
             case ObjectTypeConstants::TYPE_REACTION:
-                if ($descendants) {
-                    $nbReactions = $document->countDescendantsReactions(true, true, $onlyElected);
-                } else {
-                    // 1st level only:
-                    $nbReactions = $document->countChildrenReactions(true, true, $onlyElected);
-                }
+                $nbDescendantsElected = $document->countDescendantsReactions(true, true, true);
+                $nbDescendantsTotal = $document->countDescendantsReactions(true, true, false);
+                $nbChildrenTotal = $document->countChildrenReactions(true, true, false);
+                $nbChildrenElected = $document->countChildrenReactions(true, true, true);
+
+                // Nb of author reaction if not elected
+                $nbDescendantsNotElected = $nbChildrenTotal - $nbChildrenElected;
                 break;
             default:
                 throw new InconsistentDataException(sprintf('Object type %s not managed', $document->getType()));
         }
 
-        if (1 === $nbReactions) {
-            $label = '1 réponse d\'élu-e';
+        // compute labels
+        if (1 === $nbChildrenElected) {
+            $labelChildrenElected = '1 réponse d\'élu-e';
         } else {
-            $label = $this->globalTools->readeableNumber($nbReactions).' réponses d\'élu-e-s';
+            $labelChildrenElected = $this->globalTools->readeableNumber($nbChildrenElected).' réponses d\'élu-e-s';
+        }
+        if (1 === $nbDescendantsElected) {
+            $labelDescendantsElected = '1';
+        } else {
+            $labelDescendantsElected = $this->globalTools->readeableNumber($nbDescendantsElected);
+        }
+        if (1 === $nbDescendantsNotElected) {
+            $labelDescendantsNotElected = '1';
+        } else {
+            $labelDescendantsNotElected = $this->globalTools->readeableNumber($nbDescendantsNotElected);
         }
 
         // Construction du rendu du tag
@@ -334,8 +345,12 @@ class PolitizrDocumentExtension extends \Twig_Extension
             'PolitizrFrontBundle:Reaction:_nbReactions.html.twig',
             array(
                 'document' => $document,
-                'nbReactions' => $nbReactions,
-                'label' => $label,
+                'nbChildrenElected' => $nbChildrenElected,
+                'labelChildrenElected' => $labelChildrenElected,
+                'nbDescendantsElected' => $nbDescendantsElected,
+                'labelDescendantsElected' => $labelDescendantsElected,
+                'nbDescendantsNotElected' => $nbDescendantsNotElected,
+                'labelDescendantsNotElected' => $labelDescendantsNotElected,
             )
         );
         
