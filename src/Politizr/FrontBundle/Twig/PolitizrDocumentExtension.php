@@ -323,14 +323,22 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 throw new InconsistentDataException(sprintf('Object type %s not managed', $document->getType()));
         }
 
-        if (0 === $nbReactions) {
-            $html = 'Aucune réponse d\'élu-e';
-        } elseif (1 === $nbReactions) {
-            $html = '1 réponse d\'élu-e';
+        if (1 === $nbReactions) {
+            $label = '1 réponse d\'élu-e';
         } else {
-            $html = $this->globalTools->readeableNumber($nbReactions).' réponses d\'élu-e-s';
+            $label = $this->globalTools->readeableNumber($nbReactions).' réponses d\'élu-e-s';
         }
 
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Reaction:_nbReactions.html.twig',
+            array(
+                'document' => $document,
+                'nbReactions' => $nbReactions,
+                'label' => $label,
+            )
+        );
+        
         return $html;
     }
  
