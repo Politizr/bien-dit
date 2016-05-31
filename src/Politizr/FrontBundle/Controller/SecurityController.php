@@ -541,6 +541,8 @@ class SecurityController extends Controller
         // Finalisation du process d'inscription élu
         $this->get('politizr.functional.security')->inscriptionFinishElected($user);
 
+        return $this->redirect($this->generateUrl('HomepageE'));
+
         return $this->redirect($this->generateUrl('InscriptionElectedIdCheck'));
     }
 

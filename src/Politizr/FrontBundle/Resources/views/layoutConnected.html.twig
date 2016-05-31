@@ -22,7 +22,7 @@
 {% endblock header %}
 
 {% block headerMsg %}
-    {# id check big messages #}
+    {#
     {% if app.session.flashbag.has('idcheck/success') and app.session.flashbag.get('idcheck/success')[0] %}
         <div id="alertIdCheckOk">
             <div class="idCheckOkClose">
@@ -60,6 +60,7 @@
             </div>
         </div>
     {% endif %}
+    #}
 {% endblock %}
 
 {% block main %}
@@ -112,6 +113,7 @@
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
 
+    {#
     {% if app.session.flashbag.has('inscription/success') and app.session.flashbag.get('inscription/success')[0] %}
         <script>
             $(function() {
@@ -119,6 +121,8 @@
             });
         </script>
     {% elseif not app.session.has('helpUs') %}
+    #}
+    {% if not app.session.has('helpUs') %}
         <script>
             $(function() {
                 modalHelpUs();
