@@ -1,22 +1,20 @@
 {# beta #}
-{% if document.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE') %}
-    {% set detailPath = path('DebateDetail', { 'slug': document.slug }) %}
-{% elseif document.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION') %}
-    {% set detailPath = path('ReactionDetail', { 'slug': document.slug }) %}
-{% endif %}
+{% if nbChildrenElected > 0 or nbDescendantsNotElected > 0 or nbDescendantsElected > 0 %}
+    {% if document.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE') %}
+        {% set detailPath = path('DebateDetail', { 'slug': document.slug }) %}
+    {% elseif document.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION') %}
+        {% set detailPath = path('ReactionDetail', { 'slug': document.slug }) %}
+    {% endif %}
 
-{% if nbChildrenElected > 0 %}
     <a href="{{ detailPath }}" class="answerCounter">
-        <span><i class="icon-profil-elu"></i>{{ labelChildrenElected }}</span>
-    </a>
-{% endif %}
-{% if nbDescendantsNotElected > 0 %}
-    <a href="{{ detailPath }}" class="answerCounter">
-        <span><i class="icon-profil-citoyen"></i>{{ labelDescendantsNotElected }}</span>
-    </a>
-{% endif %}
-{% if nbDescendantsElected > 0 %}
-    <a href="{{ detailPath }}" class="answerCounter">
-        <span><i class="icon-arbo"></i>{{ labelDescendantsElected }}</span>
+        {% if nbChildrenElected > 0 %}
+            <span><i class="icon-profil-elu"></i>{{ labelChildrenElected }}</span>
+        {% endif %}
+        {% if nbDescendantsNotElected > 0 %}
+            <span><i class="icon-profil-citoyen"></i>{{ labelDescendantsNotElected }}</span>
+        {% endif %}
+        {% if nbDescendantsElected > 0 %}
+            <span><i class="icon-arbo"></i>{{ labelDescendantsElected }}</span>
+        {% endif %}
     </a>
 {% endif %}

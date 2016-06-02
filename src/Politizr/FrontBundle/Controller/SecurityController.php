@@ -308,7 +308,7 @@ class SecurityController extends Controller
 
         // check if user comes from oauth
         $rolesTab = $user->getRoles();
-        dump($rolesTab);
+        // dump($rolesTab);
         $oAuth = false;
         if (in_array('ROLE_OAUTH_USER', $rolesTab)) {
             $oAuth = true;

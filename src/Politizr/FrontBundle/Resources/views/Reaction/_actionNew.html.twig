@@ -1,6 +1,6 @@
 {# beta #}
 {% spaceless %}
-{% if app.user %}
+{% if app.user and document %}
     {% if document.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE') %}
         {% set debate = document %}
         {% set reactionPath = path('ReactionDraftNew'~profileSuffix(), { 'debateUuid': document.uuid, 'parentUuid': null }) %}
@@ -8,7 +8,7 @@
         {% set debate = document.debate %}
         {% set reactionPath = path('ReactionDraftNew'~profileSuffix(), { 'debateUuid': document.debate.uuid, 'parentUuid': document.uuid }) %}
     {% endif %}
-    {% if app.user | isAuthorizedToReact(debate) %}
+    {% if app.user | isAuthorizedToReact(document) %}
         <div class="actionAnswer">
             <a class="actionReact" href="{{ reactionPath }}">
                 <i class="icon-answer"></i>

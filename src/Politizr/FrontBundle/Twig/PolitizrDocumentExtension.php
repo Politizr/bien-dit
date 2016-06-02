@@ -1037,6 +1037,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
         $html = $this->templating->render(
             'PolitizrFrontBundle:Document:_footer.html.twig',
             array(
+                'document' => $document,
                 'qualified' => $qualified,
                 'owner' => $owner,
             )

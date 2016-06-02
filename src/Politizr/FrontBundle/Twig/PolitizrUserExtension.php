@@ -9,6 +9,7 @@ use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\UserConstants;
 use Politizr\Constant\PathConstants;
 
+use Politizr\Model\PDocumentInterface;
 use Politizr\Model\PDDebate;
 use Politizr\Model\PUNotification;
 use Politizr\Model\PUser;
@@ -533,17 +534,17 @@ class PolitizrUserExtension extends \Twig_Extension
     }
 
     /**
-     * Test if the user has role to react to the debate
+     * Test if the user has role to react to the document
      *
      * @param PUser $user
-     * @param PDDebate $debate
+     * @param PDDebate $document
      * @return boolean
      */
-    public function isAuthorizedToReact(PUser $user, PDDebate $debate)
+    public function isAuthorizedToReact(PUser $user, PDocumentInterface $document)
     {
         // $this->logger->info('*** isAuthorizedToReact');
         // $this->logger->info('$user = '.print_r($user, true));
-        // $this->logger->info('$debate = '.print_r($debate, true));
+        // $this->logger->info('$document = '.print_r($document, true));
 
         // elected profile can react
         if ($this->securityAuthorizationChecker->isGranted('ROLE_ELECTED')) {
@@ -552,7 +553,15 @@ class PolitizrUserExtension extends \Twig_Extension
 
         // author of the debate can react
         // + min reputation to reach
-        $debateUser = $debate->getUser();
+
+        $debateUser = null;
+        if ($document->getType() == ObjectTypeConstants::TYPE_DEBATE) {
+            $debateUser = $document->getUser();
+        } else {
+            $debate = $document->getDebate();
+            $debateUser = $debate->getUser();
+        }
+
         $id = $user->getId();
         $score = $user->getReputationScore();
         if ($debateUser && $debateUser->getId() === $id && $score >= ReputationConstants::ACTION_REACTION_WRITE) {
