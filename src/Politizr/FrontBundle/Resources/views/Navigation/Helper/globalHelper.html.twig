@@ -16,7 +16,11 @@
         <center>
             <div class="demoItem demoSubject">
                 <h1>Lancez des sujets!</h1>
-                Rédigez un nouveau sujet pour faire réagir vos élu-e-s sur vos propositions ou exprimer vos opinions. Vous aurez l'occasion d'écrire des réponses si des élu-e-s s'emparent de votre sujet, afin de prolonger les débats. Devenez acteur de votre territoire!
+                {% if app.user and app.user.qualified %}
+                    Rédigez un nouveau sujet pour expliquer vos décisions ou exprimer votre vision de votre territoire. D'autres élu-e-s pourront écrire des réponses pour vous faire part de leurs points de vue et de leurs expériences.
+                {% else %}
+                    Rédigez un nouveau sujet pour faire réagir vos élu-e-s sur vos propositions ou exprimer vos opinions. Vous aurez l'occasion d'écrire des réponses si des élu-e-s s'emparent de votre sujet, afin de prolonger les débats. Devenez acteur de votre territoire!
+                {% endif %}
             </div>
             {% if app.user and app.user.qualified %}
                 <div class="demoSeparator demoLeftLine"></div>

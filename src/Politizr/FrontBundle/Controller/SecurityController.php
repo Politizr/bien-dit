@@ -224,7 +224,7 @@ class SecurityController extends Controller
             // Inscription done
             $request->getSession()->getFlashBag()->add('inscription/success', true);
 
-            return $this->redirect($this->generateUrl('GlobalHelper'));
+            return $this->redirect($this->generateUrl('GlobalHelperC'));
         }
 
         return $this->render('PolitizrFrontBundle:Security:inscriptionContact.html.twig', array(
@@ -541,7 +541,7 @@ class SecurityController extends Controller
         // Finalisation du process d'inscription élu
         $this->get('politizr.functional.security')->inscriptionFinishElected($user);
 
-        return $this->redirect($this->generateUrl('GlobalHelper'));
+        return $this->redirect($this->generateUrl('GlobalHelperE'));
 
         return $this->redirect($this->generateUrl('InscriptionElectedIdCheck'));
     }
