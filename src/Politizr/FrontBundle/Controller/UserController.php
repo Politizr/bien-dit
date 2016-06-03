@@ -4,6 +4,8 @@ namespace Politizr\FrontBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
+
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use Politizr\Constant\QualificationConstants;
@@ -191,6 +193,58 @@ class UserController extends Controller
         return $this->render('PolitizrFrontBundle:User:editNotifications.html.twig', array(
             'notificationsType' => $notificationsType,
             'emailNotifIds' => $emailNotifIds,
+        ));
+    }
+
+    /* ######################################################################################################## */
+    /*                                                      ID CHECK                                            */
+    /* ######################################################################################################## */
+
+    /**
+     * Id Check / step 1
+     */
+    public function idCheckDataReviewAction(Request $request)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** idCheckDataReviewAction');
+
+        $user = $this->getUser();
+
+        // user already validated
+        if ($user->isValidated()) {
+            $request->getSession()->getFlashBag()->add('idcheck/success', true);
+            return $this->redirect($this->generateUrl('Homepage').$this->get('politizr.tools.global')->computeProfileSuffix());
+        }
+
+        // id check form
+        $formIdentity = $this->createForm(new PUserIdentityType($user), $user);
+
+        return $this->render('PolitizrFrontBundle:User:idCheckDataReview.html.twig', array(
+            'formIdentity' => $formIdentity->createView(),
+        ));
+    }
+
+    /**
+     * Id Check / step 2
+     */
+    public function idCheckAction(Request $request)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** idCheckAction');
+
+        $user = $this->getUser();
+
+        // user already validated
+        if ($user->isValidated()) {
+            $request->getSession()->getFlashBag()->add('idcheck/success', true);
+            return $this->redirect($this->generateUrl('Homepage').$this->get('politizr.tools.global')->computeProfileSuffix());
+        }
+
+        // id check form
+        $formIdCheck = $this->createForm(new PUserIdCheckType(), $user);
+
+        return $this->render('PolitizrFrontBundle:User:idCheck.html.twig', array(
+            'formIdCheck' => $formIdCheck->createView(),
         ));
     }
 }

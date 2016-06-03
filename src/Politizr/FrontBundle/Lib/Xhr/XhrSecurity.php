@@ -343,15 +343,13 @@ class XhrSecurity
                 $success = false;
                 $redirect = false;
                 $redirectUrl = false;
-            }
-        }
 
-        $nbTry = $user->getNbIdCheck();
-        if ($nbTry >= IdCheckConstants::MAX_USER_TRY) {
-            $errors = null;
-            $success = false;
-            $redirect = true;
-            $redirectUrl = $this->router->generate('EditPerso'.$this->globalTools->computeProfileSuffix());
+                $nbTry = $user->getNbIdCheck();
+                if ($nbTry >= IdCheckConstants::MAX_USER_TRY) {
+                    $redirect = true;
+                    $redirectUrl = $this->router->generate('EditPerso'.$this->globalTools->computeProfileSuffix());
+                }
+            }
         }
 
         return array(
@@ -397,10 +395,14 @@ class XhrSecurity
                 $success = false;
                 $redirect = false;
                 $redirectUrl = false;
+
+                $nbTry = $user->getNbIdCheck();
+                if ($nbTry >= IdCheckConstants::MAX_USER_TRY) {
+                    $redirect = true;
+                    $redirectUrl = $this->router->generate('EditPerso'.$this->globalTools->computeProfileSuffix());
+                }
             }
         }
-
-        $nbTry = $user->getNbIdCheck();
 
         return array(
             'success' => $success,

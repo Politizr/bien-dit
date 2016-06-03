@@ -1,0 +1,71 @@
+{% extends 'PolitizrFrontBundle::layoutPublic.html.twig' %}
+
+{% block title %}
+    Validation identité étape 1 / 2 - {{ parent() }}
+{% endblock title %}
+
+{% block bodyClass %} class="process"{% endblock %}
+
+{% block header %}
+    {% include 'PolitizrFrontBundle:Navigation\\Header:_headerIdCheck.html.twig' %}
+{% endblock header %}
+
+{% block main %}
+    <div id="main">
+        <center>
+            <div class="column column140">
+                <div class="processNav">
+                    <ol>
+                        <li class="activeStep">Rappels</li>
+                        <li>Validation d'identité</li>
+                    </ol>
+                </div>
+            </div><!--
+             --><div class="column column360">              
+                <div class="card">
+                    <div class="redAlert">
+                        <i class="icon-alert"></i>Merci de vérifier attentivement l’exactitude des informations fournies ci-dessous : nous vérifions votre identité sur la base de ces informations.
+                    </div>
+                    <div class="formBlock withLoaderInside">
+                        {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+                        <div class="formBlockHeader">
+                            <label>Votre identité</label>
+                        </div>
+
+                        <form name="user" method="post">
+                            {{ form_errors(formIdentity) }}
+
+                            <div class="styledSelect">
+                                {{ form_widget(formIdentity.gender) }}
+                            </div>
+                            {{ form_row(formIdentity.firstname, { 'attr': { 'placeholder': 'Prénom' }}) }}
+                            {{ form_row(formIdentity.name, { 'attr': { 'placeholder': 'Nom' }}) }}
+                            {{ form_row(formIdentity.birthday, { 'attr': { 'placeholder': 'JJ/MM/AAAA' }}) }}
+                            {{ form_rest(formIdentity) }}
+
+                            <button type="button" action="submitPerso">Mettre à jour</button>
+                            <a href="{{ path('IdCheckE') }}" class="submit nextStepOrange">Valider</a>
+                        </form>
+                    </div>
+                </div>
+            </div><!--
+            --><div class="column column140">
+                <div class="columnSidebar skip">
+                    <a href="{{ path('HomepageE') }}">Procédez à la vérification de votre identité plus tard<i class="icon-arrow-right"></i></a>
+                </div>
+                <div class="columnSidebar processGreen"><i class="icon-info"></i><br><b>Si vous ne procédez pas à la validation de votre identité maintenant, vous disposerez d’un profil élu non certifié et ne disposerez pas de toutes les fonctionnalités. </b><br>Vous devrez reprendre et compléter cette étape ultérieurement pour disposer d’un compte élu.</div>
+        </center>
+    </div>
+{% endblock main %}
+
+{% block javascriptFooter %}
+    {{ parent() }}
+
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/jquery.form.min.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/pages/idCheckDataReview.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/user/editPerso.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock javascriptFooter %}

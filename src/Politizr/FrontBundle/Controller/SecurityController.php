@@ -546,32 +546,6 @@ class SecurityController extends Controller
         return $this->redirect($this->generateUrl('InscriptionElectedIdCheck'));
     }
 
-    /**
-     * Page d'inscription élu / Etape 4 / IdCheck
-     */
-    public function inscriptionElectedIdCheckAction(Request $request)
-    {
-        $logger = $this->get('logger');
-        $logger->info('*** inscriptionElectedIdCheckAction');
-
-        // Inscription done
-        $request->getSession()->getFlashBag()->add('inscription/success', true);
-
-        $user = $this->getUser();
-
-        // user already validated
-        if ($user->isValidated()) {
-            return $this->redirect($this->generateUrl('HomepageE'));
-        }
-
-        // id check form
-        $formIdCheck = $this->createForm(new PUserIdCheckType(), $user);
-
-        return $this->render('PolitizrFrontBundle:Security:inscriptionElectedIdCheck.html.twig', array(
-            'formIdCheck' => $formIdCheck->createView(),
-        ));
-    }
-
     /* ######################################################################################################## */
     /*                                                 CONNEXION OAUTH                                          */
     /* ######################################################################################################## */

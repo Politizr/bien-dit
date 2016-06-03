@@ -1,4 +1,8 @@
 <div id="idCheck">
+    <div id="maxIdCheckMsg">
+        Vous disposez de 3 tentatives pour procéder a la vérification de votre identité :
+        <h1><span id="nbTryLeft">3</span> tentative(s) restante(s)</h1>
+    </div>
     <div class="card">
         <div class="formBlock">
             {% set uploadAction = path('XhrGeneric', {'xhrRoute': constant('Politizr\\Constant\\XhrConstants::ROUTE_USER_VALIDATE_PHOTO_UPLOAD'), 'xhrService': 'security', 'xhrMethod': 'idCheckPhotoUpload', 'xhrType': constant('Politizr\\Constant\\XhrConstants::RETURN_HTML')}) %}

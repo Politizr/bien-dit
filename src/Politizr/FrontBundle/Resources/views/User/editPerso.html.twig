@@ -45,14 +45,11 @@
                             <i class="icon-alert"></i>Vous ne pouvez pas modifier ces informations: <a href="mailto: support@politizr.com">contactez-nous</a> en cas d'erreur.
                         </p>
                     {% endif %}
-                    {#
                     {% if isGrantedE() and not app.user.validated and app.user.nbIdCheck < constant('Politizr\\Constant\\IdCheckConstants::MAX_USER_TRY') %}
                         <div id="msgIdCheck">
-                            <h5><b>Merci de procéder à la vérification de votre identité pour valider définitivement votre compte élu.</b><br>Pensez à vérifier l'exactitude des informations saisies ci-dessus avant de poursuivre.</h5>
+                            <h5><b>Merci de procéder à la <a href="{{ path('IdCheckDataReviewE') }}">vérification de votre identité</a> pour valider définitivement votre compte élu.</b></h5>
                         </div>
-                        {% include 'PolitizrFrontBundle:User:_idCheck.html.twig' %}
                     {% endif %}
-                    #}
                 </div>
             </div>
 

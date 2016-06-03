@@ -44,3 +44,11 @@ EditPersoE:
 EditNotificationsE:
     pattern:  /elu/mon-compte/mes-notifications
     defaults: { _controller: PolitizrFrontBundle:User:editNotifications }
+
+IdCheckDataReviewE:
+    pattern:  /elu/mon-compte/verification-donnees
+    defaults: { _controller: PolitizrFrontBundle:User:idCheckDataReview }
+
+IdCheckE:
+    pattern:  /elu/mon-compte/validation-identite
+    defaults: { _controller: PolitizrFrontBundle:User:idCheck }
