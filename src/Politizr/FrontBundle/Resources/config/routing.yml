@@ -11,6 +11,10 @@ OAuth:
 Security:
     resource: "./routing/Security.yml"
 
+# Helper
+Helper:
+    resource: "./routing/Helper.yml"
+
 # Public
 Public:
     resource: "./routing/Public.yml"

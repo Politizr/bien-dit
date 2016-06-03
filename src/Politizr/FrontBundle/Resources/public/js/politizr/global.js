@@ -398,31 +398,3 @@ function modalCharte() {
         }
     });
 };
-
-/**
- * Modal Global Helper
- */
-function modalGlobalHelper() {
-    // console.log('*** modalGlobalHelper');
-
-    var xhrPath = getXhrPath(
-        ROUTE_MODAL_GLOBAL_HELPER,
-        'modal',
-        'globalHelper',
-        RETURN_HTML
-    );
-
-    return xhrCall(
-        document,
-        null,
-        xhrPath
-    ).done(function(data) {
-        if (data['error']) {
-            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
-            $('#infoBoxHolder .boxError').show();
-        } else {
-            $('#modalContainer').html(data['html']);
-        }
-    });
-};
-

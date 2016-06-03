@@ -1,0 +1,11 @@
+################################################################################
+#               ROUTING POST INSCRIPTION HELPER
+################################################################################
+GlobalHelperC:
+    pattern:  /citoyen/comment-ca-marche
+    defaults: { _controller: PolitizrFrontBundle:Helper:global }
+
+GlobalHelperE:
+    pattern:  /elu/comment-ca-marche
+    defaults: { _controller: PolitizrFrontBundle:Helper:global }
+

@@ -1,0 +1,48 @@
+{% extends 'PolitizrFrontBundle::layoutPublic.html.twig' %}
+
+{% block title %}
+    Comment çà marche ? - {{ parent() }}
+{% endblock title %}
+
+{% block bodyClass %} class="demo"{% endblock %}
+
+{% block header %}
+    {% include 'PolitizrFrontBundle:Navigation\\Header:_headerHelper.html.twig' %}
+    <div id="headerTrigger"></div>
+{% endblock header %}
+
+{% block main %}
+    <div id="main">
+        <center>
+            <div class="demoItem demoSubject">
+                <h1>Lancez des sujets!</h1>
+                Rédigez un nouveau sujet pour faire réagir vos élu-e-s sur vos propositions ou exprimer vos opinions. Vous aurez l'occasion d'écrire des réponses si des élu-e-s s'emparent de votre sujet, afin de prolonger les débats. Devenez acteur de votre territoire!
+            </div>
+            {% if app.user and app.user.qualified %}
+                <div class="demoSeparator demoLeftLine"></div>
+                <div class="demoItem demoAnswer">
+                    <h1>Rédigez des réponses!</h1>
+                    Répondez aux préocuppations de vos concitoyen-ne-s en répondant aux sujets publiés, pour faire valoir votre point de vue ou votre expérience sur le sujet abordé!
+                </div>
+            {% endif %}
+            <div class="demoSeparator demoLeftLine"></div>
+            <div class="demoItem demoComment">
+                <h1>Commentez les publications</h1>
+                Une phrase vous choque ou vous avez une remarque à faire sur une publication? Rédigez un commentaire général ou par paragraphe!
+            </div>
+            <div class="demoSeparator demoLeftLine"></div>
+            <div class="demoItem demoFeed">
+                <h1>Un fil d'actualité sur-mesure</h1>
+                Suivez des sujets et des profils pour vous construire un fil d'actualité sur-mesure!
+            </div>
+            <div class="demoSeparator demoRightLine"></div>
+            <div class="demoItem demoStats">
+                <h1>Réputation & Badges</h1>
+                Vos actions et celles des autres membres de la communauté font évoluer votre réputation et vous permettent de gagner des badges: soyez constructif, curieux et positif!
+            </div>
+            <div class="demoNext">
+                <a href="{{ path('Homepage'~profileSuffix()) }}">Accueil</a>
+            </div>
+        </center>
+    </div>
+{% endblock main %}

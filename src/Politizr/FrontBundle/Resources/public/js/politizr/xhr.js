@@ -74,7 +74,6 @@ var ROUTE_MODAL_CREATE_ACCOUNT_TO_COMMNET = 'commentaires/creer-un-compte';
 var ROUTE_MODAL_CGU = 'conditions-generales-d-utilisation';
 var ROUTE_MODAL_CGV = 'conditions-generales-de-vente';
 var ROUTE_MODAL_CHARTE = 'charte-politizr';
-var ROUTE_MODAL_GLOBAL_HELPER = 'aide-generale'
 
 // NOTATION
 var ROUTE_NOTE = 'profil/noter';

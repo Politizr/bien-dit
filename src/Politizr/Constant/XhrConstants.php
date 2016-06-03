@@ -85,7 +85,6 @@ class XhrConstants
     const ROUTE_MODAL_CGU = 'conditions-generales-d-utilisation';
     const ROUTE_MODAL_CGV = 'conditions-generales-de-vente';
     const ROUTE_MODAL_CHARTE = 'charte-politizr';
-    const ROUTE_MODAL_GLOBAL_HELPER = 'aide-generale';
 
     // NOTATION
     const ROUTE_NOTE = 'profil/noter';

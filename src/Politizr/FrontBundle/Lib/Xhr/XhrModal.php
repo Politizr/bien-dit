@@ -142,21 +142,4 @@ class XhrModal
             'html' => $html,
         );
     }
-
-    /**
-     * Global helper
-     * beta
-     */
-    public function globalHelper(Request $request)
-    {
-        $this->logger->info('*** globalHelper');
-        
-        $html = $this->templating->render(
-            'PolitizrFrontBundle:Navigation\\Helper:_globalHelper.html.twig'
-        );
-
-        return array(
-            'html' => $html,
-        );
-    }
 }

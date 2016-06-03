@@ -26,7 +26,6 @@ EditNotificationsC:
     pattern:  /citoyen/mon-compte/mes-notifications
     defaults: { _controller: PolitizrFrontBundle:User:editNotifications }
 
-
 ################################################################################
 #               ELECTED
 ################################################################################
