@@ -4,10 +4,12 @@
         <i class="icon-arrow-up"></i>Retour en haut de page
     </div>
     <div id="footerLinks">
-        <a href="{{ path('GlobalHelper'~profileSuffix()) }}">Aide</a>
         <a href="{{ path('WhoWeAre') }}">Qui sommes-nous?</a>
-        <a action="openCgu">CGU</a>
-        <a action="openCharte">Charte</a>
+        <a href="{{ path('GlobalHelper') }}">Aide</a>
+        {% if app.user %}
+            <a action="openCgu">CGU</a>
+            <a action="openCharte">Charte</a>
+        {% endif %}
         {#
         <a href="#">Contacts</a>
         #}

@@ -28,13 +28,10 @@
                     </div>
                     <div class="formBlock withLoaderInside">
                         {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
-                        <div class="formBlockHeader">
-                            <label>Votre identité</label>
-                        </div>
-
                         <form name="user" method="post">
                             {{ form_errors(formIdentity) }}
 
+                            <label>Civilité</label>
                             <div class="styledSelect">
                                 {{ form_widget(formIdentity.gender) }}
                             </div>
@@ -43,8 +40,8 @@
                             {{ form_row(formIdentity.birthday, { 'attr': { 'placeholder': 'JJ/MM/AAAA' }}) }}
                             {{ form_rest(formIdentity) }}
 
-                            <button type="button" action="submitPerso">Mettre à jour</button>
-                            <a href="{{ path('IdCheckE') }}" class="submit nextStepOrange">Valider</a>
+                            <button type="button" action="submitPerso" class="buttonMaj">Mettre à jour</button>
+                            <a href="{{ path('IdCheckE') }}" class="submit nextStepOrange">Étape suivante</a>
                         </form>
                     </div>
                 </div>

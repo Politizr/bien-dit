@@ -269,7 +269,7 @@ class XhrSecurity
             }
         } else {
             $errors = StudioEchoUtils::getAjaxFormErrors($form);
-            throw new PolitizrException($errors);
+            throw new BoxErrorException($errors);
         }
     }
 
