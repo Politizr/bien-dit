@@ -31,6 +31,8 @@ params:
             label:          Prénom
         name:
             label:          Nom
+        birthday:
+            label:          Date de naissance
         subtitle:
             label:          En quelques mots
         biography:
@@ -59,6 +61,8 @@ params:
             label:          Profil élu
         validated:
             label:          Profil validé
+        nb_id_check:
+            label:          Essai(s)
         online:
             label:          En ligne
         banned:
@@ -107,7 +111,7 @@ builders:
                     "Citoyens":
                         filters: 
                             qualified:          0
-            display:                            [ file_name, gender, name, firstname, qualified, p_u_status, reputation_score, online, last_activity, created_at ]
+            display:                            [ file_name, gender, name, firstname, qualified, validated, nb_id_check, p_u_status, reputation_score, online, last_activity, created_at ]
             fields:
                 reputation_score:
                     label:                      Score
@@ -158,7 +162,7 @@ builders:
             title:                              "Edition de l'utilisateur {{ PUser.firstname }} {{ PUser.name }}"
             tabs:
                 "Identité":
-                    "Civilité":                 [ [ block_file_name ], [ gender ], [ firstname, name ] ]
+                    "Civilité":                 [ [ block_file_name ], [ gender ], [ firstname, name ], [ birthday ] ]
                     "Contacts":                 [ [ phone, email ], [ website ], [ twitter, facebook ] ]
                 "Connexion":
                     "Connexion":                [ username, plainPassword ]
@@ -184,7 +188,7 @@ builders:
                     "Identifiants":             [ [ id, uuid, slug ] ]
                     "Type":                     [ qualified ]
                     "En ligne":                 [ online ]
-                    "Validé":                   [ validated ]
+                    "Validé":                   [ validated, nb_id_check ]
                     "Création":                 [ [ created_at, updated_at ] ]
             fields:
                 block_back_file_name:
@@ -305,7 +309,7 @@ builders:
             tabs:
                 "Identité":
                     "Type":                     [ qualified ]
-                    "Civilité":                 [ [ block_file_name ], [ gender, firstname, name ] ]
+                    "Civilité":                 [ [ block_file_name ], [ gender, firstname, name ], [ birthday ] ]
                     "Contacts":                 [ [ phone, email ], [ website ], [ twitter, facebook ] ]
                     "Validation IdCheck":       [ block_id_check ]
                 "Descriptif":
