@@ -24,8 +24,6 @@ $("body").on("click", "[action='map']", function() {
     // console.log('*** click map');
     uuid = $(this).attr('uuid');
 
-    $("[action='goUp']").trigger("click");
-
     $(this).siblings().removeClass('active');
     $(this).addClass('active');
     
@@ -36,6 +34,7 @@ $("body").on("click", "[action='map']", function() {
         mapSchema(uuid)
     ).done(function(r1, r2) {
         $('#documentListing .listTop').html('');
+        $("[action='goUp']").trigger("click");
         return filtersListing();
     });
 });
