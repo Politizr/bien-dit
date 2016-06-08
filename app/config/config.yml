@@ -203,7 +203,7 @@ admingenerator_generator:
         propel:
             TIMESTAMP:    Admingenerator\FormExtensionsBundle\Form\Type\DateTimePickerType
             BU_TIMESTAMP: Admingenerator\FormExtensionsBundle\Form\Type\DateTimePickerType
-            DATE:         Admingenerator\FormExtensionsBundle\Form\Type\DateRangePickerType
+            DATE:         Admingenerator\FormExtensionsBundle\Form\Type\DatePickerType
             BU_DATE:      Admingenerator\FormExtensionsBundle\Form\Type\DatePickerType
             TIME:         Symfony\Component\Form\Extension\Core\Type\TimeType 
             FLOAT:        Symfony\Component\Form\Extension\Core\Type\NumberType 
