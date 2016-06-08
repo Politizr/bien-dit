@@ -3,6 +3,8 @@ namespace Politizr\FrontBundle\Lib\Tools;
 
 use Symfony\Component\HttpFoundation\Request;
 
+use StudioEcho\Lib\StudioEchoUtils;
+
 use Politizr\Constant\IdCheckConstants;
 
 use Politizr\Model\PUser;
@@ -131,6 +133,7 @@ class IdCheck
 
         $this->lastResult = $this->wsdlClient->__soapCall("CheckMrz", $optionsMzr);
         $this->logger->info(print_r($this->lastResult, true));
+        // dump($this->lastResult);
 
         if (isset($this->lastResult) && isset($this->lastResult->contentOk) && isset($this->lastResult->contentOk->result) && $this->lastResult->contentOk->result == IdCheckConstants::WSDL_RESULT_OK) {
             return true;
@@ -209,14 +212,26 @@ class IdCheck
             return false;
         } else {
             $gender = $this->lastResult->contentOk->holderDetail->gender;
-            $lastName = $this->lastResult->contentOk->holderDetail->lastName;
 
+            $lastName = $this->lastResult->contentOk->holderDetail->lastName;
             if (is_array($lastName)) {
                 $lastName = implode(' ', $lastName);
             }
-
             $lastName = strtoupper($lastName);
             $lastName = preg_replace('/\s+/', '-', $lastName);
+            $lastName = StudioEchoUtils::transliterateString($lastName);
+
+            // cas nom d'usage
+            $usageName = null;
+            if (isset($this->lastResult->contentOk->holderDetail->usageName)) {
+                $usageName = $this->lastResult->contentOk->holderDetail->usageName;
+                if (is_array($usageName)) {
+                    $usageName = implode(' ', $usageName);
+                }
+                $usageName = strtoupper($usageName);
+                $usageName = preg_replace('/\s+/', '-', $usageName);
+                $usageName = StudioEchoUtils::transliterateString($usageName);
+            }
 
             // $firstName = $this->lastResult->contentOk->holderDetail->firstName;
             $birthDate = $this->lastResult->contentOk->holderDetail->birthDate;
@@ -227,6 +242,7 @@ class IdCheck
             $userGender = $user->getGender();
             $userLastName = strtoupper($user->getName());
             $userLastName = preg_replace('/\s+/', '-', $userLastName);
+            $userLastName = StudioEchoUtils::transliterateString($userLastName);
 
             // $userFirstName = $user->getFirstname();
             $userBirthDate = $user->getBirthday()->format('Y-m-d');
@@ -239,7 +255,12 @@ class IdCheck
             if (!($lastName == $userLastName)) {
                 $this->logger->info('lastname ko');
 
-                $this->errorMsg[] = 'Le nom saisi ne correspond pas aux informations de la carte d\'identité.';
+                // nom d'usage?
+                if (!($usageName == $userLastName)) {
+                    $this->logger->info('usageName ko');
+
+                    $this->errorMsg[] = 'Le nom saisi ne correspond pas aux informations de la carte d\'identité.';
+                }
             }
             if (!($birthDate == $userBirthDate)) {
                 $this->logger->info('birthdate ko');
