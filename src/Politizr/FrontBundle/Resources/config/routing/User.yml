@@ -53,6 +53,12 @@ IdCheckDataReviewE:
     pattern:  /elu/mon-compte/verification-donnees
     defaults: { _controller: PolitizrFrontBundle:User:idCheckDataReview }
 
+IdCheckDataReviewCheckE:
+    pattern:  /elu/mon-compte/verification-donnees/check
+    defaults: { _controller: PolitizrFrontBundle:User:idCheckDataReviewCheck }
+    requirements:
+        _method:        POST
+
 IdCheckE:
     pattern:  /elu/mon-compte/validation-identite
     defaults: { _controller: PolitizrFrontBundle:User:idCheck }

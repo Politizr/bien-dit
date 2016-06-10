@@ -28,7 +28,7 @@
                     </div>
                     <div class="formBlock withLoaderInside">
                         {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
-                        <form name="user" method="post">
+                        {{ form_start(formIdentity, {'action': path('IdCheckDataReviewCheckE'), 'method': 'POST'}) }}
                             {{ form_errors(formIdentity) }}
 
                             <label>Civilité</label>
@@ -38,11 +38,9 @@
                             {{ form_row(formIdentity.firstname, { 'attr': { 'placeholder': 'Prénom' }}) }}
                             {{ form_row(formIdentity.name, { 'attr': { 'placeholder': 'Nom' }}) }}
                             {{ form_row(formIdentity.birthday, { 'attr': { 'placeholder': 'JJ/MM/AAAA' }}) }}
-                            {{ form_rest(formIdentity) }}
 
-                            <button type="button" action="submitPerso" class="buttonMaj">Mettre à jour</button>
-                            <a href="{{ path('IdCheckE') }}" class="submit nextStepOrange">Étape suivante</a>
-                        </form>
+                            <button type="submit" class="submit nextStepOrange">Étape suivante</a>
+                        {{ form_end(formIdentity) }}
                     </div>
                 </div>
             </div><!--
@@ -54,15 +52,3 @@
         </center>
     </div>
 {% endblock main %}
-
-{% block javascriptFooter %}
-    {{ parent() }}
-
-    {% javascripts
-        '@PolitizrFrontBundle/Resources/public/js/jquery.form.min.js'
-        '@PolitizrFrontBundle/Resources/public/js/politizr/pages/idCheckDataReview.js'
-        '@PolitizrFrontBundle/Resources/public/js/politizr/user/editPerso.js'
-        filter='uglifyjs2' %}
-        <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-{% endblock javascriptFooter %}

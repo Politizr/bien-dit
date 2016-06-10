@@ -1,5 +1,5 @@
 {# beta #}
-{% if user.biography | length > 0 %}
+{% if user.biography | length > 0 or (app.user and app.user.id != user.id) or (app.user is null) %}
     <div class="profileBio">
         {% include 'PolitizrFrontBundle:User:_certification.html.twig' with { 'user': user } only %}
         {{ user.biography | purify }}

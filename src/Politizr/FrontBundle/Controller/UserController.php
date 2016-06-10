@@ -225,6 +225,42 @@ class UserController extends Controller
     }
 
     /**
+     * Id Check / step 1 check
+     */
+    public function idCheckDataReviewCheckAction(Request $request)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** idCheckDataReviewCheckAction');
+
+        $user = $this->getUser();
+
+        // user already validated
+        if ($user->isValidated()) {
+            $request->getSession()->getFlashBag()->add('idcheck/success', true);
+            return $this->redirect($this->generateUrl('Homepage').$this->get('politizr.tools.global')->computeProfileSuffix());
+        }
+
+        // get current user
+        $user = $this->getUser();
+        $formIdentity = $this->createForm(new PUserIdentityType($user), $user);
+
+        $formIdentity->bind($request);
+        if ($formIdentity->isValid()) {
+            $user = $formIdentity->getData();
+
+            $user->setNickname($user->getFirstname() . ' ' . $user->getName());
+            $user->setRealname($user->getFirstname() . ' ' . $user->getName());
+            $user->save();
+
+            return $this->redirect($this->generateUrl('IdCheckE'));
+        }
+
+        return $this->render('PolitizrFrontBundle:User:idCheckDataReview.html.twig', array(
+            'formIdentity' => $formIdentity->createView(),
+        ));
+    }
+
+    /**
      * Id Check / step 2
      */
     public function idCheckAction(Request $request)

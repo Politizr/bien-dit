@@ -339,7 +339,7 @@ builders:
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
                     "En ligne":                 [ [ online ] ]
-                    "Validé":                   [ [ validated ] ]
+                    "Validé":                   [ validated, nb_id_check ]
                     "Rôles":                    [ roles ]
                     "Création":                 [ [ created_at, updated_at ] ]
                 "Front":
