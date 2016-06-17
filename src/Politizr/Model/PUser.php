@@ -825,7 +825,28 @@ class PUser extends BasePUser implements UserInterface
     }
 
     /**
-     * User's debates + reactions count
+     * User's comments count
+     *
+     * @param boolean $online
+     * @return integer
+     */
+    public function countComments($online = true)
+    {
+        $nbDComments = PDDCommentQuery::create()
+            ->filterByPUserId($this->getId())
+            ->filterIfOnline($online)
+            ->count();
+
+        $nbRComments = PDRCommentQuery::create()
+            ->filterByPUserId($this->getId())
+            ->filterIfOnline($online)
+            ->count();
+
+        return $nbDComments + $nbRComments;
+    }
+
+    /**
+     * User's debates + reactions count + comments count
      *
      * @param boolean $online
      * @param boolean $published
@@ -833,7 +854,11 @@ class PUser extends BasePUser implements UserInterface
      */
     public function countPublications($online = true, $published = true)
     {
-        $nbPublications = $this->countDebates($online, $published) + $this->countReactions($online, $published);
+        $nbPublications = 
+            $this->countDebates($online, $published)
+            + $this->countReactions($online, $published)
+            + $this->countComments($online)
+            ;
 
         return $nbPublications;
     }
