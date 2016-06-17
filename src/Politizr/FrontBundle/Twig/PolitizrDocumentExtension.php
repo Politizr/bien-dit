@@ -304,35 +304,31 @@ class PolitizrDocumentExtension extends \Twig_Extension
             case ObjectTypeConstants::TYPE_DEBATE:
                 $nbDescendantsElected = $document->countReactions(true, true, true);
                 $nbDescendantsTotal = $document->countReactions(true, true, false);
-                $nbChildrenTotal = $document->countChildrenReactions(true, true, false);
-                $nbChildrenElected = $document->countChildrenReactions(true, true, true);
                 
                 // Nb of author reaction if not elected
-                $nbDescendantsNotElected = $nbChildrenTotal - $nbChildrenElected;
+                $nbDescendantsNotElected = $nbDescendantsTotal - $nbDescendantsElected;
                 break;
             case ObjectTypeConstants::TYPE_REACTION:
                 $nbDescendantsElected = $document->countDescendantsReactions(true, true, true);
                 $nbDescendantsTotal = $document->countDescendantsReactions(true, true, false);
-                $nbChildrenTotal = $document->countChildrenReactions(true, true, false);
-                $nbChildrenElected = $document->countChildrenReactions(true, true, true);
 
                 // Nb of author reaction if not elected
-                $nbDescendantsNotElected = $nbChildrenTotal - $nbChildrenElected;
+                $nbDescendantsNotElected = $nbDescendantsTotal - $nbDescendantsElected;
                 break;
             default:
                 throw new InconsistentDataException(sprintf('Object type %s not managed', $document->getType()));
         }
 
         // compute labels
-        if (1 === $nbChildrenElected) {
-            $labelChildrenElected = '1 réponse d\'élu-e';
-        } else {
-            $labelChildrenElected = $this->globalTools->readeableNumber($nbChildrenElected).' réponses d\'élu-e-s';
-        }
         if (1 === $nbDescendantsElected) {
-            $labelDescendantsElected = '1';
+            $labelDescendantsElected = '1 réponse d\'élu-e';
         } else {
-            $labelDescendantsElected = $this->globalTools->readeableNumber($nbDescendantsElected);
+            $labelDescendantsElected = $this->globalTools->readeableNumber($nbDescendantsElected).' réponses d\'élu-e-s';
+        }
+        if (1 === $nbDescendantsTotal) {
+            $labelDescendantsTotal = '1';
+        } else {
+            $labelDescendantsTotal = $this->globalTools->readeableNumber($nbDescendantsTotal);
         }
         if (1 === $nbDescendantsNotElected) {
             $labelDescendantsNotElected = '1';
@@ -345,8 +341,8 @@ class PolitizrDocumentExtension extends \Twig_Extension
             'PolitizrFrontBundle:Reaction:_nbReactions.html.twig',
             array(
                 'document' => $document,
-                'nbChildrenElected' => $nbChildrenElected,
-                'labelChildrenElected' => $labelChildrenElected,
+                'nbDescendantsTotal' => $nbDescendantsTotal,
+                'labelDescendantsTotal' => $labelDescendantsTotal,
                 'nbDescendantsElected' => $nbDescendantsElected,
                 'labelDescendantsElected' => $labelDescendantsElected,
                 'nbDescendantsNotElected' => $nbDescendantsNotElected,

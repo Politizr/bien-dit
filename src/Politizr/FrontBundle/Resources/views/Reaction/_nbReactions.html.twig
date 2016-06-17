@@ -1,5 +1,5 @@
 {# beta #}
-{% if nbChildrenElected > 0 or nbDescendantsNotElected > 0 or nbDescendantsElected > 0 %}
+{% if nbDescendantsElected > 0 or nbDescendantsNotElected > 0 or nbDescendantsTotal > 0 %}
     {% if document.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE') %}
         {% set detailPath = path('DebateDetail', { 'slug': document.slug }) %}
     {% elseif document.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION') %}
@@ -7,14 +7,14 @@
     {% endif %}
 
     <a href="{{ detailPath }}" class="answerCounter">
-        {% if nbChildrenElected > 0 %}
-            <span><i class="icon-profil-elu"></i>{{ labelChildrenElected }}</span>
+        {% if nbDescendantsElected > 0 %}
+            <span><i class="icon-profil-elu"></i>{{ labelDescendantsElected }}</span>
         {% endif %}
         {% if nbDescendantsNotElected > 0 %}
             <span><i class="icon-profil-citoyen"></i>{{ labelDescendantsNotElected }}</span>
         {% endif %}
-        {% if nbDescendantsElected > 0 %}
-            <span><i class="icon-arbo"></i>{{ labelDescendantsElected }}</span>
+        {% if nbDescendantsTotal > 0 %}
+            <span><i class="icon-arbo"></i>{{ labelDescendantsTotal }}</span>
         {% endif %}
     </a>
 {% endif %}
