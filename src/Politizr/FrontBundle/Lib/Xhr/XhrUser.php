@@ -802,6 +802,7 @@ class XhrUser
         }
 
         $query = PUserQuery::create()
+            ->distinct()
             ->usePuFollowDdPUserQuery()
                 ->filterByPDDebateId($debate->getId())
             ->endUse()
@@ -844,6 +845,7 @@ class XhrUser
         }
 
         $users = PUserQuery::create()
+            ->distinct()
             ->usePuFollowDdPUserQuery()
                 ->filterByPDDebateId($debate->getId())
             ->endUse()
