@@ -483,7 +483,7 @@ class SecurityService
     }
 
     /**
-     * Retrieve an existing user w. provided oauth data
+     * Create user w. provided oauth data
      *
      * @param array $oAuthData
      * @param boolean $isQualified citizen / elected
