@@ -13,6 +13,7 @@ use Politizr\Model\PUFollowU;
 use Politizr\Model\PUMandate;
 use Politizr\Model\PUSubscribeEmail;
 
+use Politizr\Model\PUserQuery;
 use Politizr\Model\PUFollowDDQuery;
 use Politizr\Model\PUFollowUQuery;
 use Politizr\Model\PNotificationQuery;
@@ -53,6 +54,29 @@ class UserManager
     /* ######################################################################################################## */
     /*                                                  RAW SQL                                                 */
     /* ######################################################################################################## */
+
+    /**
+     * Homepage userse
+     *
+     * @see app/sql/homeUsers.sql
+     *
+     * @return string
+     */
+    private function createHomepageUsersRawSql()
+    {
+        // Requête SQL
+        $sql = "
+SELECT p_user.id as id
+FROM p_user
+WHERE
+    p_user.online = 1
+    AND p_user.homepage = 1
+ORDER BY rand()
+LIMIT :offset, :limit
+";
+
+        return $sql;
+    }
 
     /**
      * User's "My Politizr" timeline
@@ -504,6 +528,7 @@ SELECT DISTINCT
     validated,
     nb_id_check,
     online,
+    homepage,
     banned,
     banned_nb_days_left,
     banned_nb_total,
@@ -558,6 +583,38 @@ LIMIT :offset, :limit
     /* ######################################################################################################## */
     /*                                            RAW SQL OPERATIONS                                            */
     /* ######################################################################################################## */
+
+    /**
+     * Users homepage listing
+     *
+     * @param integer $limit
+     * @return PropelCollection
+     */
+    public function generateHomepageUsers($limit)
+    {
+        $this->logger->info('*** generateHomepageUsers');
+
+        $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
+
+        $stmt = $con->prepare($this->createHomepageUsersRawSql($limit));
+        $stmt->bindValue(':offset', 0, \PDO::PARAM_INT);
+        $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        $result = $stmt->fetchAll();
+
+        $users = new \PropelCollection();
+        $i = 0;
+        foreach ($result as $row) {
+            $user = PUserQuery::create()->findPk($row['id']);
+            $users->set($i, $user);
+            $i++;
+        }
+
+        return $users;
+    }
+    
 
     /**
      * My timeline paginated listing

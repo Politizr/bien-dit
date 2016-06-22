@@ -42,6 +42,45 @@ class DocumentManager
     /* ######################################################################################################## */
 
     /**
+     * Homepage publications
+     *
+     * @see app/sql/homeDocuments.sql
+     *
+     * @return string
+     */
+    private function createHomepagePublicationsRawSql()
+    {
+        // Requête SQL
+        $sql = "
+#  Débats publiés
+( SELECT p_d_debate.id as id, p_d_debate.title as title, p_d_debate.published_at as published_at, 'Politizr\\\Model\\\PDDebate' as type
+FROM p_d_debate
+WHERE
+    p_d_debate.published = 1
+    AND p_d_debate.online = 1 
+    AND p_d_debate.homepage = 1 
+)
+
+UNION DISTINCT
+
+#  Réactions publiés
+( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.published_at as published_at, 'Politizr\\\Model\\\PDReaction' as type
+FROM p_d_reaction
+WHERE
+    p_d_reaction.published = 1
+    AND p_d_reaction.online = 1
+    AND p_d_reaction.homepage = 1
+    AND p_d_reaction.tree_level > 0
+)
+
+ORDER BY rand()
+LIMIT :offset, :limit
+";
+
+        return $sql;
+    }
+
+    /**
      * Filtered publications
      *
      * @see app/sql/documentsByFilters.sql
@@ -1010,6 +1049,46 @@ GROUP BY p_d_debate_id
     /*                                            RAW SQL OPERATIONS                                            */
     /* ######################################################################################################## */
 
+    /**
+     * Documents homepage listing
+     *
+     * @param integer $limit
+     * @return PropelCollection
+     */
+    public function generateHomepagePublications($limit)
+    {
+        $this->logger->info('*** generateHomepagePublications');
+
+        $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
+
+        $stmt = $con->prepare($this->createHomepagePublicationsRawSql($limit));
+        $stmt->bindValue(':offset', 0, \PDO::PARAM_INT);
+        $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        $result = $stmt->fetchAll();
+
+        $documents = new \PropelCollection();
+        $i = 0;
+        foreach ($result as $row) {
+            $type = $row['type'];
+
+            if ($type == ObjectTypeConstants::TYPE_DEBATE) {
+                $document = PDDebateQuery::create()->findPk($row['id']);
+            } elseif ($type == ObjectTypeConstants::TYPE_REACTION) {
+                $document = PDReactionQuery::create()->findPk($row['id']);
+            } else {
+                throw new InconsistentDataException(sprintf('Object type %s unknown.', $type));
+            }
+            
+            $documents->set($i, $document);
+            $i++;
+        }
+
+        return $documents;
+    }
+    
     /**
      * Documents by filters paginated listing
      *

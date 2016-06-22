@@ -2,8 +2,12 @@
 {% for publication in publications %}
     {{ publicationRow(publication, true) }}
 {% endfor %}
-<div id="listingScrollNav" class="scrollNav">
-    {% if moreResults %}
-        <a id="moreResults" action="listingNext" class="waypoint" offset="{{ offset }}"{% if uuid is defined %} uuid="{{ uuid }}"{% endif %} key="{{ jsFunctionKey }}">suite</a>
-    {% endif %}
-</div>
+{% if app.user %}
+    <div id="listingScrollNav" class="scrollNav">
+        {% if moreResults %}
+            <a id="moreResults" action="listingNext" class="waypoint" offset="{{ offset }}"{% if uuid is defined %} uuid="{{ uuid }}"{% endif %} key="{{ jsFunctionKey }}">suite</a>
+        {% endif %}
+    </div>
+{% else %}
+    <a class="linkCreateAccount" href="{{ path('InscriptionChoice') }}"><i class="icon-alert"></i>Créer un compte pour voir plus de résultats</a>
+{% endif %}

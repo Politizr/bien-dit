@@ -1,0 +1,33 @@
+{# beta #}
+{% if document.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE') %}
+    {% set detailPath = path('DebateDetail', { 'slug': document.slug }) %}
+    {% set spanClass = 'subject' %}
+    {% set imgFilter = 'debate_header' %}
+{% elseif document.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION') %}
+    {% set detailPath = path('ReactionDetail', { 'slug': document.slug }) %}
+    {% set spanClass = '' %}
+    {% set imgFilter = 'reaction_header' %}
+{% endif %}
+
+<div class="publicCard">
+    <div class="publicCardHeader">
+        <a class="publicCardTitle" href="{{ detailPath }}">
+            {{ document.title }}
+        </a>
+        {% if document.fileName %}
+            <a class="publicCardImg" href="{{ detailPath }}">
+                {{ document | image(imgFilter, false) }}
+            </a>
+        {% endif %}
+    </div>
+    <div class="publicCardFooter">
+        {% if document.user and document.user.online %}
+            {% set user = document.user %}
+            <div class="avatar40">
+                {{ user | photo('user_40') }}
+            </div>
+            <a class="publicCardReadmore" href="{{ detailPath }}">Lire</a>
+            {% include 'PolitizrFrontBundle:User:_cardBioPublic.html.twig' with {'user': user} %}
+        {% endif %}
+    </div>
+</div>

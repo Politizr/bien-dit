@@ -11,6 +11,7 @@ use Politizr\Constant\PathConstants;
 use Politizr\Model\PMUserHistoric;
 
 use Politizr\Model\PUserQuery;
+use Politizr\Model\PUser;
 
 use Politizr\Exception\InconsistentDataException;
 
@@ -19,6 +20,32 @@ use Politizr\Exception\InconsistentDataException;
  */
 class ActionsController extends BaseActionsController
 {
+    /**
+     *
+     * @param PUser $user
+     */
+    public function executeObjectHomepage(PUser $user)
+    {
+        $user->setHomepage(!$user->getHomepage());
+        $user->save();
+    }
+
+    /**
+     *
+     * @param array $usersId
+     */
+    protected function executeBatchHomepage(array $usersId)
+    {
+        foreach ($usersId as $pk) {
+            $user = PUserQuery::create()->findPk($pk);
+            if (!$user) {
+                throw new InconsistentDataException('PUserQuery pk-'.$pk.' not found.');
+            }
+            $user->setHomepage(!$user->getHomepage());
+            $user->save();
+        }
+    }
+
     /**
      *
      * @param int $pk

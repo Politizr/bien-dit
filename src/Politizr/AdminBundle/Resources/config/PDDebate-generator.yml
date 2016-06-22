@@ -40,6 +40,8 @@ params:
             label:          Auteur
         online:
             label:          En ligne
+        homepage:
+            label:          Accueil
         moderated:
             label:          Modéré
         moderated_partial:
@@ -69,9 +71,9 @@ builders:
                     "Brouillons":
                         filters:
                             published:          0
-            display:                            [ file_name, id, p_user_id, title, count_reactions, online, published, published_at, created_at ]
+            display:                            [ file_name, id, p_user_id, title, count_reactions, online, homepage, published, published_at, created_at ]
             filtersMode:                        modal
-            filters:                            [ id, uuid, p_user_id, title, online, published, published_at, created_at ]
+            filters:                            [ id, uuid, p_user_id, title, online, homepage, published, published_at, created_at ]
             fields:
                 count_reactions:
                     label:                      Réponses
@@ -85,9 +87,15 @@ builders:
                         class:                  Politizr\Model\PTag
                         query:                  \Politizr\Model\PTagQuery::create()->filterByOnline(1)->orderByTitle()
             object_actions:
+                homepage:
+                    label:    En page d'accueil
+                    icon:     fa-star-o
                 show:                           ~
                 edit:                           ~
                 delete:                         ~
+            batch_actions:
+                homepage:
+                    label:    En page d'accueil
     excel:
         params: ~
         filename: ~
@@ -110,7 +118,9 @@ builders:
                     "Portée":                   [ [ moderated, moderated_partial, moderated_at ] ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
-                    "Création":                 [ [ online ], [ created_at, updated_at ] ]
+                    "En ligne":                 [ online ]
+                    "Mise en avant":            [ homepage ]
+                    "Création":                 [ [ created_at, updated_at ] ]
             fields:
                 block_file_name:
                     label:                      "Image"
@@ -190,7 +200,9 @@ builders:
                     "Précédentes notifications": [ block_moderation_alert_listing  ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
-                    "Création":                 [ [ online ], [ created_at, updated_at ] ]
+                    "En ligne":                 [ online ]
+                    "Mise en avant":            [ homepage ]
+                    "Création":                 [ [ created_at, updated_at ] ]
                 "Front":
                     "Rendu":                    [ block_front ]
             fields:
@@ -221,6 +233,8 @@ builders:
     actions:
         params:
             object_actions:
+                homepage:                       ~
                 delete: ~
             batch_actions:
+                homepage:                       ~
                 delete: ~

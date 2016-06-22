@@ -1,0 +1,10 @@
+<div class="publicCardBio">
+    <div class="profileName">
+        <a class="publicCardAuthor" href="{{ path('UserDetail', { 'slug': user.slug }) }}">{{ user }}</a>
+        {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with { 'user': user } only %}
+    </div>
+    {% include 'PolitizrFrontBundle:User:_certification.html.twig' with { 'user': user } only %}
+    <a class="publicCardBioText" href="{{ path('UserDetail', { 'slug': user.slug }) }}">
+        {{ user.biography | purify }}
+    </a>
+</div>

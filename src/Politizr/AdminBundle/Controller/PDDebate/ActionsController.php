@@ -11,6 +11,7 @@ use Politizr\Constant\PathConstants;
 use Politizr\Model\PMDebateHistoric;
 
 use Politizr\Model\PDDebateQuery;
+use Politizr\Model\PDDebate;
 
 use Politizr\Exception\InconsistentDataException;
 
@@ -19,6 +20,32 @@ use Politizr\Exception\InconsistentDataException;
  */
 class ActionsController extends BaseActionsController
 {
+    /**
+     *
+     * @param PDDebate $debate
+     */
+    public function executeObjectHomepage(PDDebate $debate)
+    {
+        $debate->setHomepage(!$debate->getHomepage());
+        $debate->save();
+    }
+
+    /**
+     *
+     * @param array $debatesId
+     */
+    protected function executeBatchHomepage(array $debatesId)
+    {
+        foreach ($debatesId as $pk) {
+            $debate = PDDebateQuery::create()->findPk($pk);
+            if (!$debate) {
+                throw new InconsistentDataException('PDDebateQuery pk-'.$pk.' not found.');
+            }
+            $debate->setHomepage(!$debate->getHomepage());
+            $debate->save();
+        }
+    }
+
     /**
      *
      * @param int $pk

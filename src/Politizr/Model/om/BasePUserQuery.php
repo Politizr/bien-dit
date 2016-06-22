@@ -98,6 +98,7 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery orderByValidated($order = Criteria::ASC) Order by the validated column
  * @method PUserQuery orderByNbIdCheck($order = Criteria::ASC) Order by the nb_id_check column
  * @method PUserQuery orderByOnline($order = Criteria::ASC) Order by the online column
+ * @method PUserQuery orderByHomepage($order = Criteria::ASC) Order by the homepage column
  * @method PUserQuery orderByBanned($order = Criteria::ASC) Order by the banned column
  * @method PUserQuery orderByBannedNbDaysLeft($order = Criteria::ASC) Order by the banned_nb_days_left column
  * @method PUserQuery orderByBannedNbTotal($order = Criteria::ASC) Order by the banned_nb_total column
@@ -151,6 +152,7 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery groupByValidated() Group by the validated column
  * @method PUserQuery groupByNbIdCheck() Group by the nb_id_check column
  * @method PUserQuery groupByOnline() Group by the online column
+ * @method PUserQuery groupByHomepage() Group by the homepage column
  * @method PUserQuery groupByBanned() Group by the banned column
  * @method PUserQuery groupByBannedNbDaysLeft() Group by the banned_nb_days_left column
  * @method PUserQuery groupByBannedNbTotal() Group by the banned_nb_total column
@@ -330,6 +332,7 @@ use Politizr\Model\PUserQuery;
  * @method PUser findOneByValidated(boolean $validated) Return the first PUser filtered by the validated column
  * @method PUser findOneByNbIdCheck(int $nb_id_check) Return the first PUser filtered by the nb_id_check column
  * @method PUser findOneByOnline(boolean $online) Return the first PUser filtered by the online column
+ * @method PUser findOneByHomepage(boolean $homepage) Return the first PUser filtered by the homepage column
  * @method PUser findOneByBanned(boolean $banned) Return the first PUser filtered by the banned column
  * @method PUser findOneByBannedNbDaysLeft(int $banned_nb_days_left) Return the first PUser filtered by the banned_nb_days_left column
  * @method PUser findOneByBannedNbTotal(int $banned_nb_total) Return the first PUser filtered by the banned_nb_total column
@@ -383,6 +386,7 @@ use Politizr\Model\PUserQuery;
  * @method array findByValidated(boolean $validated) Return PUser objects filtered by the validated column
  * @method array findByNbIdCheck(int $nb_id_check) Return PUser objects filtered by the nb_id_check column
  * @method array findByOnline(boolean $online) Return PUser objects filtered by the online column
+ * @method array findByHomepage(boolean $homepage) Return PUser objects filtered by the homepage column
  * @method array findByBanned(boolean $banned) Return PUser objects filtered by the banned column
  * @method array findByBannedNbDaysLeft(int $banned_nb_days_left) Return PUser objects filtered by the banned_nb_days_left column
  * @method array findByBannedNbTotal(int $banned_nb_total) Return PUser objects filtered by the banned_nb_total column
@@ -501,7 +505,7 @@ abstract class BasePUserQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `last_activity`, `p_u_status_id`, `file_name`, `back_file_name`, `copyright`, `gender`, `firstname`, `name`, `birthday`, `subtitle`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_connected_days`, `nb_views`, `qualified`, `validated`, `nb_id_check`, `online`, `banned`, `banned_nb_days_left`, `banned_nb_total`, `abuse_level`, `created_at`, `updated_at`, `slug` FROM `p_user` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `last_activity`, `p_u_status_id`, `file_name`, `back_file_name`, `copyright`, `gender`, `firstname`, `name`, `birthday`, `subtitle`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_connected_days`, `nb_views`, `qualified`, `validated`, `nb_id_check`, `online`, `homepage`, `banned`, `banned_nb_days_left`, `banned_nb_total`, `abuse_level`, `created_at`, `updated_at`, `slug` FROM `p_user` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -2092,6 +2096,33 @@ abstract class BasePUserQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PUserPeer::ONLINE, $online, $comparison);
+    }
+
+    /**
+     * Filter the query on the homepage column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByHomepage(true); // WHERE homepage = true
+     * $query->filterByHomepage('yes'); // WHERE homepage = true
+     * </code>
+     *
+     * @param     boolean|string $homepage The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function filterByHomepage($homepage = null, $comparison = null)
+    {
+        if (is_string($homepage)) {
+            $homepage = in_array(strtolower($homepage), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PUserPeer::HOMEPAGE, $homepage, $comparison);
     }
 
     /**

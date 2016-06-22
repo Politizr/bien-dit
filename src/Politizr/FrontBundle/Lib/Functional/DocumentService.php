@@ -74,6 +74,19 @@ class DocumentService
     /* ######################################################################################################## */
 
     /**
+     * Get "homepage publications" listing
+     * beta
+     * @param înteger $count
+     * @return PropelCollection[Publication]
+     */
+    public function getHomepagePublicationsListing($count = ListingConstants::LISTING_HOMEPAGE_DOCUMENTS_LIMIT)
+    {
+        $documents = $this->documentManager->generateHomepagePublications($count);
+
+        return $documents;
+    }
+
+    /**
      * Get filtered paginated documents
      * beta
      *

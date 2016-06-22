@@ -2,10 +2,10 @@
 
 /**
  * Data object containing the SQL and PHP code to migrate the database
- * up to version 1464337784.
- * Generated on 2016-05-27 10:29:44 by lionel
+ * up to version 1466600913.
+ * Generated on 2016-06-22 15:08:33 by lionel
  */
-class PropelMigration_1464337784
+class PropelMigration_1466600913
 {
 
     public function preUp($manager)
@@ -42,41 +42,25 @@ class PropelMigration_1464337784
 # It "suspends judgement" for fkey relationships until are tables are set.
 SET FOREIGN_KEY_CHECKS = 0;
 
-CREATE TABLE `p_m_cgu`
-(
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `title` VARCHAR(100),
-    `summary` TEXT,
-    `description` LONGTEXT,
-    `online` TINYINT(1),
-    `created_at` DATETIME,
-    `updated_at` DATETIME,
-    PRIMARY KEY (`id`)
-) ENGINE=InnoDB;
+DROP TABLE IF EXISTS `subscriber`;
 
-CREATE TABLE `p_m_cgv`
-(
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `title` VARCHAR(100),
-    `summary` TEXT,
-    `description` LONGTEXT,
-    `online` TINYINT(1),
-    `created_at` DATETIME,
-    `updated_at` DATETIME,
-    PRIMARY KEY (`id`)
-) ENGINE=InnoDB;
+ALTER TABLE `p_d_debate`
+    ADD `homepage` TINYINT(1) AFTER `online`;
 
-CREATE TABLE `p_m_charte`
-(
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `title` VARCHAR(100),
-    `summary` TEXT,
-    `description` LONGTEXT,
-    `online` TINYINT(1),
-    `created_at` DATETIME,
-    `updated_at` DATETIME,
-    PRIMARY KEY (`id`)
-) ENGINE=InnoDB;
+ALTER TABLE `p_d_debate_archive`
+    ADD `homepage` TINYINT(1) AFTER `online`;
+
+ALTER TABLE `p_d_reaction`
+    ADD `homepage` TINYINT(1) AFTER `online`;
+
+ALTER TABLE `p_d_reaction_archive`
+    ADD `homepage` TINYINT(1) AFTER `online`;
+
+ALTER TABLE `p_user`
+    ADD `homepage` TINYINT(1) AFTER `online`;
+
+ALTER TABLE `p_user_archive`
+    ADD `homepage` TINYINT(1) AFTER `online`;
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;
@@ -98,11 +82,43 @@ SET FOREIGN_KEY_CHECKS = 1;
 # It "suspends judgement" for fkey relationships until are tables are set.
 SET FOREIGN_KEY_CHECKS = 0;
 
-DROP TABLE IF EXISTS `p_m_cgu`;
+DROP TABLE IF EXISTS `acl_classes`;
 
-DROP TABLE IF EXISTS `p_m_cgv`;
+DROP TABLE IF EXISTS `acl_security_identities`;
 
-DROP TABLE IF EXISTS `p_m_charte`;
+DROP TABLE IF EXISTS `acl_object_identities`;
+
+DROP TABLE IF EXISTS `acl_object_identity_ancestors`;
+
+DROP TABLE IF EXISTS `acl_entries`;
+
+ALTER TABLE `p_d_debate` DROP `homepage`;
+
+ALTER TABLE `p_d_debate_archive` DROP `homepage`;
+
+ALTER TABLE `p_d_reaction` DROP `homepage`;
+
+ALTER TABLE `p_d_reaction_archive` DROP `homepage`;
+
+ALTER TABLE `p_r_badge` DROP FOREIGN KEY `p_r_badge_FK_2`;
+
+ALTER TABLE `p_user` CHANGE `password` `password` VARCHAR(255);
+
+ALTER TABLE `p_user` DROP `homepage`;
+
+ALTER TABLE `p_user_archive` DROP `homepage`;
+
+CREATE TABLE `subscriber`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(250),
+    `email` VARCHAR(250),
+    `region` VARCHAR(250),
+    `elected` TINYINT(1),
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    PRIMARY KEY (`id`)
+) ENGINE=MyISAM;
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

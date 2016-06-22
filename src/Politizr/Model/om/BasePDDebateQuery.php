@@ -40,6 +40,7 @@ use Politizr\Model\PUser;
  * @method PDDebateQuery orderByPublishedBy($order = Criteria::ASC) Order by the published_by column
  * @method PDDebateQuery orderByFavorite($order = Criteria::ASC) Order by the favorite column
  * @method PDDebateQuery orderByOnline($order = Criteria::ASC) Order by the online column
+ * @method PDDebateQuery orderByHomepage($order = Criteria::ASC) Order by the homepage column
  * @method PDDebateQuery orderByModerated($order = Criteria::ASC) Order by the moderated column
  * @method PDDebateQuery orderByModeratedPartial($order = Criteria::ASC) Order by the moderated_partial column
  * @method PDDebateQuery orderByModeratedAt($order = Criteria::ASC) Order by the moderated_at column
@@ -62,6 +63,7 @@ use Politizr\Model\PUser;
  * @method PDDebateQuery groupByPublishedBy() Group by the published_by column
  * @method PDDebateQuery groupByFavorite() Group by the favorite column
  * @method PDDebateQuery groupByOnline() Group by the online column
+ * @method PDDebateQuery groupByHomepage() Group by the homepage column
  * @method PDDebateQuery groupByModerated() Group by the moderated column
  * @method PDDebateQuery groupByModeratedPartial() Group by the moderated_partial column
  * @method PDDebateQuery groupByModeratedAt() Group by the moderated_at column
@@ -114,6 +116,7 @@ use Politizr\Model\PUser;
  * @method PDDebate findOneByPublishedBy(string $published_by) Return the first PDDebate filtered by the published_by column
  * @method PDDebate findOneByFavorite(boolean $favorite) Return the first PDDebate filtered by the favorite column
  * @method PDDebate findOneByOnline(boolean $online) Return the first PDDebate filtered by the online column
+ * @method PDDebate findOneByHomepage(boolean $homepage) Return the first PDDebate filtered by the homepage column
  * @method PDDebate findOneByModerated(boolean $moderated) Return the first PDDebate filtered by the moderated column
  * @method PDDebate findOneByModeratedPartial(boolean $moderated_partial) Return the first PDDebate filtered by the moderated_partial column
  * @method PDDebate findOneByModeratedAt(string $moderated_at) Return the first PDDebate filtered by the moderated_at column
@@ -136,6 +139,7 @@ use Politizr\Model\PUser;
  * @method array findByPublishedBy(string $published_by) Return PDDebate objects filtered by the published_by column
  * @method array findByFavorite(boolean $favorite) Return PDDebate objects filtered by the favorite column
  * @method array findByOnline(boolean $online) Return PDDebate objects filtered by the online column
+ * @method array findByHomepage(boolean $homepage) Return PDDebate objects filtered by the homepage column
  * @method array findByModerated(boolean $moderated) Return PDDebate objects filtered by the moderated column
  * @method array findByModeratedPartial(boolean $moderated_partial) Return PDDebate objects filtered by the moderated_partial column
  * @method array findByModeratedAt(string $moderated_at) Return PDDebate objects filtered by the moderated_at column
@@ -253,7 +257,7 @@ abstract class BasePDDebateQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `title`, `file_name`, `copyright`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `moderated`, `moderated_partial`, `moderated_at`, `created_at`, `updated_at`, `slug` FROM `p_d_debate` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `title`, `file_name`, `copyright`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `homepage`, `moderated`, `moderated_partial`, `moderated_at`, `created_at`, `updated_at`, `slug` FROM `p_d_debate` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -850,6 +854,33 @@ abstract class BasePDDebateQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDDebatePeer::ONLINE, $online, $comparison);
+    }
+
+    /**
+     * Filter the query on the homepage column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByHomepage(true); // WHERE homepage = true
+     * $query->filterByHomepage('yes'); // WHERE homepage = true
+     * </code>
+     *
+     * @param     boolean|string $homepage The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDDebateQuery The current query, for fluid interface
+     */
+    public function filterByHomepage($homepage = null, $comparison = null)
+    {
+        if (is_string($homepage)) {
+            $homepage = in_array(strtolower($homepage), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PDDebatePeer::HOMEPAGE, $homepage, $comparison);
     }
 
     /**

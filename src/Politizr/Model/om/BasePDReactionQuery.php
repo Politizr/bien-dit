@@ -41,6 +41,7 @@ use Politizr\Model\PUser;
  * @method PDReactionQuery orderByPublishedBy($order = Criteria::ASC) Order by the published_by column
  * @method PDReactionQuery orderByFavorite($order = Criteria::ASC) Order by the favorite column
  * @method PDReactionQuery orderByOnline($order = Criteria::ASC) Order by the online column
+ * @method PDReactionQuery orderByHomepage($order = Criteria::ASC) Order by the homepage column
  * @method PDReactionQuery orderByModerated($order = Criteria::ASC) Order by the moderated column
  * @method PDReactionQuery orderByModeratedPartial($order = Criteria::ASC) Order by the moderated_partial column
  * @method PDReactionQuery orderByModeratedAt($order = Criteria::ASC) Order by the moderated_at column
@@ -68,6 +69,7 @@ use Politizr\Model\PUser;
  * @method PDReactionQuery groupByPublishedBy() Group by the published_by column
  * @method PDReactionQuery groupByFavorite() Group by the favorite column
  * @method PDReactionQuery groupByOnline() Group by the online column
+ * @method PDReactionQuery groupByHomepage() Group by the homepage column
  * @method PDReactionQuery groupByModerated() Group by the moderated column
  * @method PDReactionQuery groupByModeratedPartial() Group by the moderated_partial column
  * @method PDReactionQuery groupByModeratedAt() Group by the moderated_at column
@@ -121,6 +123,7 @@ use Politizr\Model\PUser;
  * @method PDReaction findOneByPublishedBy(string $published_by) Return the first PDReaction filtered by the published_by column
  * @method PDReaction findOneByFavorite(boolean $favorite) Return the first PDReaction filtered by the favorite column
  * @method PDReaction findOneByOnline(boolean $online) Return the first PDReaction filtered by the online column
+ * @method PDReaction findOneByHomepage(boolean $homepage) Return the first PDReaction filtered by the homepage column
  * @method PDReaction findOneByModerated(boolean $moderated) Return the first PDReaction filtered by the moderated column
  * @method PDReaction findOneByModeratedPartial(boolean $moderated_partial) Return the first PDReaction filtered by the moderated_partial column
  * @method PDReaction findOneByModeratedAt(string $moderated_at) Return the first PDReaction filtered by the moderated_at column
@@ -148,6 +151,7 @@ use Politizr\Model\PUser;
  * @method array findByPublishedBy(string $published_by) Return PDReaction objects filtered by the published_by column
  * @method array findByFavorite(boolean $favorite) Return PDReaction objects filtered by the favorite column
  * @method array findByOnline(boolean $online) Return PDReaction objects filtered by the online column
+ * @method array findByHomepage(boolean $homepage) Return PDReaction objects filtered by the homepage column
  * @method array findByModerated(boolean $moderated) Return PDReaction objects filtered by the moderated column
  * @method array findByModeratedPartial(boolean $moderated_partial) Return PDReaction objects filtered by the moderated_partial column
  * @method array findByModeratedAt(string $moderated_at) Return PDReaction objects filtered by the moderated_at column
@@ -268,7 +272,7 @@ abstract class BasePDReactionQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `p_d_debate_id`, `parent_reaction_id`, `title`, `file_name`, `copyright`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `moderated`, `moderated_partial`, `moderated_at`, `created_at`, `updated_at`, `slug`, `tree_left`, `tree_right`, `tree_level` FROM `p_d_reaction` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `p_d_debate_id`, `parent_reaction_id`, `title`, `file_name`, `copyright`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `homepage`, `moderated`, `moderated_partial`, `moderated_at`, `created_at`, `updated_at`, `slug`, `tree_left`, `tree_right`, `tree_level` FROM `p_d_reaction` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -951,6 +955,33 @@ abstract class BasePDReactionQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDReactionPeer::ONLINE, $online, $comparison);
+    }
+
+    /**
+     * Filter the query on the homepage column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByHomepage(true); // WHERE homepage = true
+     * $query->filterByHomepage('yes'); // WHERE homepage = true
+     * </code>
+     *
+     * @param     boolean|string $homepage The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDReactionQuery The current query, for fluid interface
+     */
+    public function filterByHomepage($homepage = null, $comparison = null)
+    {
+        if (is_string($homepage)) {
+            $homepage = in_array(strtolower($homepage), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PDReactionPeer::HOMEPAGE, $homepage, $comparison);
     }
 
     /**

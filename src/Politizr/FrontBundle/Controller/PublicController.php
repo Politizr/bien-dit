@@ -39,8 +39,16 @@ class PublicController extends Controller
             return $this->redirect($this->generateUrl(sprintf('Homepage%s', $profileSuffix)));
         }
 
+        // 9 debates / reactions
+        $documents = $this->get('politizr.functional.document')->getHomepagePublicationsListing(ListingConstants::LISTING_HOMEPAGE_DOCUMENTS_LIMIT);
+
+        // 6 users
+        $users = $this->get('politizr.functional.user')->getHomepagePublicationsListing(ListingConstants::LISTING_HOMEPAGE_USERS_LIMIT);
+
         return $this->render('PolitizrFrontBundle:Public:homepage.html.twig', array(
             'homepage' => true,
+            'documents' => $documents,
+            'users' => $users,
         ));
     }
 

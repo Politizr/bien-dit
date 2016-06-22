@@ -143,6 +143,12 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
     protected $online;
 
     /**
+     * The value for the homepage field.
+     * @var        boolean
+     */
+    protected $homepage;
+
+    /**
      * The value for the moderated field.
      * @var        boolean
      */
@@ -458,6 +464,17 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
     {
 
         return $this->online;
+    }
+
+    /**
+     * Get the [homepage] column value.
+     *
+     * @return boolean
+     */
+    public function getHomepage()
+    {
+
+        return $this->homepage;
     }
 
     /**
@@ -1070,6 +1087,35 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
     } // setOnline()
 
     /**
+     * Sets the value of the [homepage] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return PDReactionArchive The current object (for fluent API support)
+     */
+    public function setHomepage($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->homepage !== $v) {
+            $this->homepage = $v;
+            $this->modifiedColumns[] = PDReactionArchivePeer::HOMEPAGE;
+        }
+
+
+        return $this;
+    } // setHomepage()
+
+    /**
      * Sets the value of the [moderated] column.
      * Non-boolean arguments are converted using the following rules:
      *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
@@ -1360,16 +1406,17 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
             $this->published_by = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
             $this->favorite = ($row[$startcol + 15] !== null) ? (boolean) $row[$startcol + 15] : null;
             $this->online = ($row[$startcol + 16] !== null) ? (boolean) $row[$startcol + 16] : null;
-            $this->moderated = ($row[$startcol + 17] !== null) ? (boolean) $row[$startcol + 17] : null;
-            $this->moderated_partial = ($row[$startcol + 18] !== null) ? (boolean) $row[$startcol + 18] : null;
-            $this->moderated_at = ($row[$startcol + 19] !== null) ? (string) $row[$startcol + 19] : null;
-            $this->created_at = ($row[$startcol + 20] !== null) ? (string) $row[$startcol + 20] : null;
-            $this->updated_at = ($row[$startcol + 21] !== null) ? (string) $row[$startcol + 21] : null;
-            $this->slug = ($row[$startcol + 22] !== null) ? (string) $row[$startcol + 22] : null;
-            $this->tree_left = ($row[$startcol + 23] !== null) ? (int) $row[$startcol + 23] : null;
-            $this->tree_right = ($row[$startcol + 24] !== null) ? (int) $row[$startcol + 24] : null;
-            $this->tree_level = ($row[$startcol + 25] !== null) ? (int) $row[$startcol + 25] : null;
-            $this->archived_at = ($row[$startcol + 26] !== null) ? (string) $row[$startcol + 26] : null;
+            $this->homepage = ($row[$startcol + 17] !== null) ? (boolean) $row[$startcol + 17] : null;
+            $this->moderated = ($row[$startcol + 18] !== null) ? (boolean) $row[$startcol + 18] : null;
+            $this->moderated_partial = ($row[$startcol + 19] !== null) ? (boolean) $row[$startcol + 19] : null;
+            $this->moderated_at = ($row[$startcol + 20] !== null) ? (string) $row[$startcol + 20] : null;
+            $this->created_at = ($row[$startcol + 21] !== null) ? (string) $row[$startcol + 21] : null;
+            $this->updated_at = ($row[$startcol + 22] !== null) ? (string) $row[$startcol + 22] : null;
+            $this->slug = ($row[$startcol + 23] !== null) ? (string) $row[$startcol + 23] : null;
+            $this->tree_left = ($row[$startcol + 24] !== null) ? (int) $row[$startcol + 24] : null;
+            $this->tree_right = ($row[$startcol + 25] !== null) ? (int) $row[$startcol + 25] : null;
+            $this->tree_level = ($row[$startcol + 26] !== null) ? (int) $row[$startcol + 26] : null;
+            $this->archived_at = ($row[$startcol + 27] !== null) ? (string) $row[$startcol + 27] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -1379,7 +1426,7 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 27; // 27 = PDReactionArchivePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 28; // 28 = PDReactionArchivePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PDReactionArchive object", $e);
@@ -1638,6 +1685,9 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PDReactionArchivePeer::ONLINE)) {
             $modifiedColumns[':p' . $index++]  = '`online`';
         }
+        if ($this->isColumnModified(PDReactionArchivePeer::HOMEPAGE)) {
+            $modifiedColumns[':p' . $index++]  = '`homepage`';
+        }
         if ($this->isColumnModified(PDReactionArchivePeer::MODERATED)) {
             $modifiedColumns[':p' . $index++]  = '`moderated`';
         }
@@ -1729,6 +1779,9 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
                         break;
                     case '`online`':
                         $stmt->bindValue($identifier, (int) $this->online, PDO::PARAM_INT);
+                        break;
+                    case '`homepage`':
+                        $stmt->bindValue($identifier, (int) $this->homepage, PDO::PARAM_INT);
                         break;
                     case '`moderated`':
                         $stmt->bindValue($identifier, (int) $this->moderated, PDO::PARAM_INT);
@@ -1865,33 +1918,36 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
                 return $this->getOnline();
                 break;
             case 17:
-                return $this->getModerated();
+                return $this->getHomepage();
                 break;
             case 18:
-                return $this->getModeratedPartial();
+                return $this->getModerated();
                 break;
             case 19:
-                return $this->getModeratedAt();
+                return $this->getModeratedPartial();
                 break;
             case 20:
-                return $this->getCreatedAt();
+                return $this->getModeratedAt();
                 break;
             case 21:
-                return $this->getUpdatedAt();
+                return $this->getCreatedAt();
                 break;
             case 22:
-                return $this->getSlug();
+                return $this->getUpdatedAt();
                 break;
             case 23:
-                return $this->getTreeLeft();
+                return $this->getSlug();
                 break;
             case 24:
-                return $this->getTreeRight();
+                return $this->getTreeLeft();
                 break;
             case 25:
-                return $this->getTreeLevel();
+                return $this->getTreeRight();
                 break;
             case 26:
+                return $this->getTreeLevel();
+                break;
+            case 27:
                 return $this->getArchivedAt();
                 break;
             default:
@@ -1939,16 +1995,17 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
             $keys[14] => $this->getPublishedBy(),
             $keys[15] => $this->getFavorite(),
             $keys[16] => $this->getOnline(),
-            $keys[17] => $this->getModerated(),
-            $keys[18] => $this->getModeratedPartial(),
-            $keys[19] => $this->getModeratedAt(),
-            $keys[20] => $this->getCreatedAt(),
-            $keys[21] => $this->getUpdatedAt(),
-            $keys[22] => $this->getSlug(),
-            $keys[23] => $this->getTreeLeft(),
-            $keys[24] => $this->getTreeRight(),
-            $keys[25] => $this->getTreeLevel(),
-            $keys[26] => $this->getArchivedAt(),
+            $keys[17] => $this->getHomepage(),
+            $keys[18] => $this->getModerated(),
+            $keys[19] => $this->getModeratedPartial(),
+            $keys[20] => $this->getModeratedAt(),
+            $keys[21] => $this->getCreatedAt(),
+            $keys[22] => $this->getUpdatedAt(),
+            $keys[23] => $this->getSlug(),
+            $keys[24] => $this->getTreeLeft(),
+            $keys[25] => $this->getTreeRight(),
+            $keys[26] => $this->getTreeLevel(),
+            $keys[27] => $this->getArchivedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -2040,33 +2097,36 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
                 $this->setOnline($value);
                 break;
             case 17:
-                $this->setModerated($value);
+                $this->setHomepage($value);
                 break;
             case 18:
-                $this->setModeratedPartial($value);
+                $this->setModerated($value);
                 break;
             case 19:
-                $this->setModeratedAt($value);
+                $this->setModeratedPartial($value);
                 break;
             case 20:
-                $this->setCreatedAt($value);
+                $this->setModeratedAt($value);
                 break;
             case 21:
-                $this->setUpdatedAt($value);
+                $this->setCreatedAt($value);
                 break;
             case 22:
-                $this->setSlug($value);
+                $this->setUpdatedAt($value);
                 break;
             case 23:
-                $this->setTreeLeft($value);
+                $this->setSlug($value);
                 break;
             case 24:
-                $this->setTreeRight($value);
+                $this->setTreeLeft($value);
                 break;
             case 25:
-                $this->setTreeLevel($value);
+                $this->setTreeRight($value);
                 break;
             case 26:
+                $this->setTreeLevel($value);
+                break;
+            case 27:
                 $this->setArchivedAt($value);
                 break;
         } // switch()
@@ -2110,16 +2170,17 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
         if (array_key_exists($keys[14], $arr)) $this->setPublishedBy($arr[$keys[14]]);
         if (array_key_exists($keys[15], $arr)) $this->setFavorite($arr[$keys[15]]);
         if (array_key_exists($keys[16], $arr)) $this->setOnline($arr[$keys[16]]);
-        if (array_key_exists($keys[17], $arr)) $this->setModerated($arr[$keys[17]]);
-        if (array_key_exists($keys[18], $arr)) $this->setModeratedPartial($arr[$keys[18]]);
-        if (array_key_exists($keys[19], $arr)) $this->setModeratedAt($arr[$keys[19]]);
-        if (array_key_exists($keys[20], $arr)) $this->setCreatedAt($arr[$keys[20]]);
-        if (array_key_exists($keys[21], $arr)) $this->setUpdatedAt($arr[$keys[21]]);
-        if (array_key_exists($keys[22], $arr)) $this->setSlug($arr[$keys[22]]);
-        if (array_key_exists($keys[23], $arr)) $this->setTreeLeft($arr[$keys[23]]);
-        if (array_key_exists($keys[24], $arr)) $this->setTreeRight($arr[$keys[24]]);
-        if (array_key_exists($keys[25], $arr)) $this->setTreeLevel($arr[$keys[25]]);
-        if (array_key_exists($keys[26], $arr)) $this->setArchivedAt($arr[$keys[26]]);
+        if (array_key_exists($keys[17], $arr)) $this->setHomepage($arr[$keys[17]]);
+        if (array_key_exists($keys[18], $arr)) $this->setModerated($arr[$keys[18]]);
+        if (array_key_exists($keys[19], $arr)) $this->setModeratedPartial($arr[$keys[19]]);
+        if (array_key_exists($keys[20], $arr)) $this->setModeratedAt($arr[$keys[20]]);
+        if (array_key_exists($keys[21], $arr)) $this->setCreatedAt($arr[$keys[21]]);
+        if (array_key_exists($keys[22], $arr)) $this->setUpdatedAt($arr[$keys[22]]);
+        if (array_key_exists($keys[23], $arr)) $this->setSlug($arr[$keys[23]]);
+        if (array_key_exists($keys[24], $arr)) $this->setTreeLeft($arr[$keys[24]]);
+        if (array_key_exists($keys[25], $arr)) $this->setTreeRight($arr[$keys[25]]);
+        if (array_key_exists($keys[26], $arr)) $this->setTreeLevel($arr[$keys[26]]);
+        if (array_key_exists($keys[27], $arr)) $this->setArchivedAt($arr[$keys[27]]);
     }
 
     /**
@@ -2148,6 +2209,7 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PDReactionArchivePeer::PUBLISHED_BY)) $criteria->add(PDReactionArchivePeer::PUBLISHED_BY, $this->published_by);
         if ($this->isColumnModified(PDReactionArchivePeer::FAVORITE)) $criteria->add(PDReactionArchivePeer::FAVORITE, $this->favorite);
         if ($this->isColumnModified(PDReactionArchivePeer::ONLINE)) $criteria->add(PDReactionArchivePeer::ONLINE, $this->online);
+        if ($this->isColumnModified(PDReactionArchivePeer::HOMEPAGE)) $criteria->add(PDReactionArchivePeer::HOMEPAGE, $this->homepage);
         if ($this->isColumnModified(PDReactionArchivePeer::MODERATED)) $criteria->add(PDReactionArchivePeer::MODERATED, $this->moderated);
         if ($this->isColumnModified(PDReactionArchivePeer::MODERATED_PARTIAL)) $criteria->add(PDReactionArchivePeer::MODERATED_PARTIAL, $this->moderated_partial);
         if ($this->isColumnModified(PDReactionArchivePeer::MODERATED_AT)) $criteria->add(PDReactionArchivePeer::MODERATED_AT, $this->moderated_at);
@@ -2237,6 +2299,7 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
         $copyObj->setPublishedBy($this->getPublishedBy());
         $copyObj->setFavorite($this->getFavorite());
         $copyObj->setOnline($this->getOnline());
+        $copyObj->setHomepage($this->getHomepage());
         $copyObj->setModerated($this->getModerated());
         $copyObj->setModeratedPartial($this->getModeratedPartial());
         $copyObj->setModeratedAt($this->getModeratedAt());
@@ -2315,6 +2378,7 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
         $this->published_by = null;
         $this->favorite = null;
         $this->online = null;
+        $this->homepage = null;
         $this->moderated = null;
         $this->moderated_partial = null;
         $this->moderated_at = null;

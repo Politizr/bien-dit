@@ -502,7 +502,7 @@
 
         <column name="enabled" type="boolean" defaultValue="false" />
         <column name="salt" type="varchar" size="255" required="true" />
-        <column name="password" type="varchar" size="255" required="true" />
+        <column name="password" type="varchar" size="255" />
         <column name="last_login" type="timestamp" />
         <column name="locked" type="boolean" defaultValue="false" />
         <column name="expired" type="boolean" defaultValue="false" />
@@ -546,6 +546,7 @@
         <column name="nb_id_check" type="integer" />
 
         <column name="online" type="boolean" />
+        <column name="homepage" type="boolean" />
 
         <column name="banned" type="boolean" />
         <column name="banned_nb_days_left" type="integer" />
@@ -857,6 +858,7 @@
 
         <column name="favorite" type="boolean" />
         <column name="online" type="boolean" />
+        <column name="homepage" type="boolean" />
         <column name="moderated" type="boolean" />
         <column name="moderated_partial" type="boolean" />
         <column name="moderated_at" type="timestamp" />
@@ -910,6 +912,7 @@
 
         <column name="favorite" type="boolean" />
         <column name="online" type="boolean" />
+        <column name="homepage" type="boolean" />
         <column name="moderated" type="boolean" />
         <column name="moderated_partial" type="boolean" />
         <column name="moderated_at" type="timestamp" />

@@ -6,10 +6,90 @@
 {% block ogVideo %}<meta property='og:video' content='https://www.youtube.com/v/7WHZpebc9q4' />{% endblock ogVideo %}
 {% block tcPlayer %}<meta name="twitter:player" content="https://www.youtube.com/embed/7WHZpebc9q4" />{% endblock tcPlayer %}
 
+{% block javascriptHeader %}
+    {{ parent() }}
+
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.youtubebackground.js') }}"></script>  
+{% endblock %}
+
 {% block main %}
-    <div id="public">
-        {% include 'PolitizrFrontBundle:Public:_about.html.twig' %}
-        {% include 'PolitizrFrontBundle:Public:_plansChoice.html.twig' with { 'mode': 'guy' } %}
-        {% include 'PolitizrFrontBundle:Navigation\\Footer:_publicFooter.html.twig' %}
+    <div id="publicVideo">
+        <div id="videoOverlay">
+            <div id="videoText">
+                <h1>Changerez-vous d'opinion ?</h1>
+                <h2>Faites réagir vos élu-e-s sur vos propositions. Exprimez vos opinions.<br> Devenez acteur de votre territoire!</h2>
+                <a href="{{ path('InscriptionChoice') }}">Créer un compte</a>
+                <a href="{{ path('GlobalHelper') }}">En savoir plus</a>
+            </div>
+            <div id="goDown">
+                Découvrir<br><img src="{{ asset('bundles/politizrfront/images/f-arrowGoDown.svg') }}">
+            </div>
+        </div>
+        <div id="video"></div>
+        <div id="videoLoader"></div>
+        <div id="ifNoVideo"><img src="{{ asset('bundles/politizrfront/images/f-ifNoVideo.jpg') }}"></div>
+    </div>
+    
+    <div id="triggerVideo"></div>
+    <div id="videoFooter">
+        <div class="center">
+            <div id="yellowBlock">
+                <span>Politizr est une plateforme indépendante et neutre permettant aux <b>élu-e-s</b> de débattre publiquement des sujets proposés par leurs <b>concitoyen-ne-s</b>.</span>
+                <a href="{{ path('InscriptionChoice') }}">Exprimez-vous et lancez un débat</a>
+            </div>
+            <div id="blueBlock">
+                <span>Des débats politiques<br>de proximité <b>aux quatre<br>coins de la France !</b></span>
+            </div>
+        </div>
+    </div>
+    <div id="postSelection">
+        <div class="center">
+            <h1>Les discussions en cours</h1>
+            <h2>Parce que le débat est l'essence de la démocratie!</h2>
+            
+            {% for document in documents %}
+                {% if loop.first or loop.index0 is divisible by(3) %}
+                    <div class="cardColumn">
+                {% endif %}
+                    {% include 'PolitizrFrontBundle:Document:_cardPublic.html.twig' %}
+                {% if loop.last or loop.index is divisible by(3) %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+            
+            <div id="morePosts"><a href="{{ path('ListingSearch') }}">Toutes les discussions en cours</a></div>
+        </div>
+    </div>
+    
+    <div id="profileSelection">
+        <div class="center">
+            <h1>Rejoignez la communauté Politizr</h1>
+            <h2>Citoyen-nes ou élu-es de toute la France partagent leurs points de vue en toute transparence sur la plateforme:<br>
+            <a href="{{ path('InscriptionChoice') }}">inscrivez-vous et participez aux débats!</a></h2>
+            
+            {% for user in users %}
+                {% if loop.first or loop.index0 is divisible by(2) %}
+                    <div class="cardColumn">
+                {% endif %}
+                    {% include 'PolitizrFrontBundle:User:_cardPublic.html.twig' %}
+                {% if loop.last or loop.index is divisible by(2) %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
     </div>
 {% endblock main %}
+
+{% block postMain %}
+    {% include 'PolitizrFrontBundle:Navigation\\Footer:_publicFooter.html.twig' %}
+{% endblock postMain %}
+
+{% block javascriptFooter %}
+    {{ parent() }}
+
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/pages/home.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock javascriptFooter %}

@@ -54,7 +54,7 @@ class PUserTableMap extends TableMap
         $this->addColumn('email_canonical', 'EmailCanonical', 'VARCHAR', false, 255, null);
         $this->addColumn('enabled', 'Enabled', 'BOOLEAN', false, 1, false);
         $this->addColumn('salt', 'Salt', 'VARCHAR', true, 255, null);
-        $this->addColumn('password', 'Password', 'VARCHAR', true, 255, null);
+        $this->addColumn('password', 'Password', 'VARCHAR', false, 255, null);
         $this->addColumn('last_login', 'LastLogin', 'TIMESTAMP', false, null, null);
         $this->addColumn('locked', 'Locked', 'BOOLEAN', false, 1, false);
         $this->addColumn('expired', 'Expired', 'BOOLEAN', false, 1, false);
@@ -91,6 +91,7 @@ class PUserTableMap extends TableMap
         $this->addColumn('validated', 'Validated', 'BOOLEAN', false, 1, false);
         $this->addColumn('nb_id_check', 'NbIdCheck', 'INTEGER', false, null, null);
         $this->addColumn('online', 'Online', 'BOOLEAN', false, 1, null);
+        $this->addColumn('homepage', 'Homepage', 'BOOLEAN', false, 1, null);
         $this->addColumn('banned', 'Banned', 'BOOLEAN', false, 1, null);
         $this->addColumn('banned_nb_days_left', 'BannedNbDaysLeft', 'INTEGER', false, null, null);
         $this->addColumn('banned_nb_total', 'BannedNbTotal', 'INTEGER', false, null, null);

@@ -57,6 +57,7 @@ class PDDebateArchiveTableMap extends TableMap
         $this->addColumn('published_by', 'PublishedBy', 'VARCHAR', false, 300, null);
         $this->addColumn('favorite', 'Favorite', 'BOOLEAN', false, 1, null);
         $this->addColumn('online', 'Online', 'BOOLEAN', false, 1, null);
+        $this->addColumn('homepage', 'Homepage', 'BOOLEAN', false, 1, null);
         $this->addColumn('moderated', 'Moderated', 'BOOLEAN', false, 1, null);
         $this->addColumn('moderated_partial', 'ModeratedPartial', 'BOOLEAN', false, 1, null);
         $this->addColumn('moderated_at', 'ModeratedAt', 'TIMESTAMP', false, null, null);

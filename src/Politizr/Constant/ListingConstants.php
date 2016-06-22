@@ -53,6 +53,9 @@ class ListingConstants
     
     const LISTING_DEBATE_SIMILARS = 3;
 
+    const LISTING_HOMEPAGE_DOCUMENTS_LIMIT = 9;
+    const LISTING_HOMEPAGE_USERS_LIMIT = 6;
+
 
     // ************************************************************ //
     //            Filters & Order keyword constants                 //

@@ -11,6 +11,7 @@ use Politizr\Constant\PathConstants;
 use Politizr\Model\PMReactionHistoric;
 
 use Politizr\Model\PDReactionQuery;
+use Politizr\Model\PDReaction;
 
 use Politizr\Exception\InconsistentDataException;
 
@@ -19,6 +20,32 @@ use Politizr\Exception\InconsistentDataException;
  */
 class ActionsController extends BaseActionsController
 {
+    /**
+     *
+     * @param PDReaction $reaction
+     */
+    public function executeObjectHomepage(PDReaction $reaction)
+    {
+        $reaction->setHomepage(!$reaction->getHomepage());
+        $reaction->save();
+    }
+
+    /**
+     *
+     * @param array $reactionsId
+     */
+    protected function executeBatchHomepage(array $reactionsId)
+    {
+        foreach ($reactionsId as $pk) {
+            $reaction = PDReactionQuery::create()->findPk($pk);
+            if (!$reaction) {
+                throw new InconsistentDataException('PDReactionQuery pk-'.$pk.' not found.');
+            }
+            $reaction->setHomepage(!$reaction->getHomepage());
+            $reaction->save();
+        }
+    }
+
     /**
      *
      * @param int $pk

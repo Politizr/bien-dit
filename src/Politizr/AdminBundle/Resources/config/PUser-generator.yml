@@ -65,6 +65,8 @@ params:
             label:          Essai(s)
         online:
             label:          En ligne
+        homepage:
+            label:          Accueil
         banned:
             label:          Banni
         banned_nb_days_left:
@@ -111,19 +113,25 @@ builders:
                     "Citoyens":
                         filters: 
                             qualified:          0
-            display:                            [ file_name, gender, name, firstname, qualified, validated, nb_id_check, p_u_status, reputation_score, online, last_activity, created_at ]
+            display:                            [ file_name, gender, name, firstname, qualified, validated, nb_id_check, p_u_status, reputation_score, online, homepage, last_activity, created_at ]
             fields:
                 reputation_score:
                     label:                      Score
             filtersMode:                        modal
-            filters:                            [ id, uuid, email, name, qualified, validated, p_u_status, online, last_activity, created_at ]
+            filters:                            [ id, uuid, email, name, qualified, validated, p_u_status, online, homepage, last_activity, created_at ]
             object_actions:
+                homepage:
+                    label:    En page d'accueil
+                    icon:     fa-star-o
                 show:                           ~
                 edit:                           ~
                 delete:                         ~
             actions:
                 new:                            ~
                 excel:                          ~
+            batch_actions:
+                homepage:
+                    label:    En page d'accueil
     excel:
         params:
             display:                            [ gender, name, first_name, email, phone, email, website, twitter, facebook, reputation_score, stringifiedGeoTags ]
@@ -188,6 +196,7 @@ builders:
                     "Identifiants":             [ [ id, uuid, slug ] ]
                     "Type":                     [ qualified ]
                     "En ligne":                 [ online ]
+                    "Mise en avant":            [ homepage ]
                     "Validé":                   [ validated, nb_id_check ]
                     "Création":                 [ [ created_at, updated_at ] ]
             fields:
@@ -338,7 +347,8 @@ builders:
                     "Précédentes notifications": [ block_moderation_alert_listing  ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
-                    "En ligne":                 [ [ online ] ]
+                    "En ligne":                 [ online ]
+                    "Mise en avant":            [ homepage ]
                     "Validé":                   [ validated, nb_id_check ]
                     "Rôles":                    [ roles ]
                     "Création":                 [ [ created_at, updated_at ] ]
@@ -398,6 +408,8 @@ builders:
     actions:
         params:
             object_actions:
+                homepage:                       ~
                 delete: ~
             batch_actions:
+                homepage:                       ~
                 delete: ~

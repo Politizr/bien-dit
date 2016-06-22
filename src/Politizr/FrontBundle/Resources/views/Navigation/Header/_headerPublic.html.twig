@@ -5,11 +5,24 @@
         <div id="headerMenu">
             <a href="{{ path('Homepage') }}"{% if homepage is defined and homepage %} class="currentPage"{% endif %}>accueil</a>
             <a href="{{ path('ListingByRecommend') }}"{% if top is defined and top %} class="currentPage"{% endif %}>top</a>
-            {# <a href="{{ path('ListingSearch') }}"{% if search is defined and search %} class="currentPage"{% endif %}>classement</a> #}
+            <a href="{{ path('ListingSearch') }}"{% if search is defined and search %} class="currentPage"{% endif %}>classement</a>
         </div>
     </div>
-    <div id="headerRight"class="headerRightFront">
-        <a href="{{ path('InscriptionChoice') }}">Créer un compte</a>
-        <a href="{{ path('Login') }}">identification</a>
+    <div id="headerRight">
+        <a class="headerCreateAccountLink" href="{{ path('InscriptionChoice') }}">Créer un compte</a>
+        <a class="headerLoginLink" href="{{ path('Login') }}">identification</a>
+        <div id="menuButton"><i class="icon-menu" action="toggleMenu"></i></div>
+        <div id="publicMenu" style="display: none;">
+            <div id="menuArrow"><i class="icon-arrow-up"></i></div> 
+            <div id="primaryMenu">
+                <a href="{{ path('GlobalHelper') }}">Comment ça marche ?</a>
+                {# <a href="{{ path('WhoWeAre') }}">Qui sommes-nous ?</a> #}
+            </div>
+            <div id="secondaryMenu">
+                {# <a href="#">La charte Politizr</a> #}
+                {# <a href="#">Espace presse</a> #}
+                <a href="http://politizr.help" target="_blank"><b>Support et assistance</b></a></div>
+            </div>
+        </div>
     </div>
 </div>

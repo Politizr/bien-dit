@@ -65,6 +65,20 @@ class UserService
     /* ######################################################################################################## */
 
     /**
+     * Get "homepage users" listing
+     * beta
+     * @param înteger $count
+     * @return PropelCollection[Publication]
+     */
+    public function getHomepagePublicationsListing($count = ListingConstants::LISTING_HOMEPAGE_USERS_LIMIT)
+    {
+        $users = $this->userManager->generateHomepageUsers($count);
+
+        return $users;
+    }
+
+
+    /**
      * Get filtered paginated documents
      * beta
      *
