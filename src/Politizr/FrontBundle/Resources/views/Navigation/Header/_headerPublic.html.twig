@@ -4,7 +4,7 @@
         <div id="logo"><a href="{{ path('Homepage') }}"><i class="icon-pltzr-logo"></i><span>politizr<span class="betaMarker">beta</span></span></a></div>
         <div id="headerMenu">
             <a href="{{ path('Homepage') }}"{% if homepage is defined and homepage %} class="currentPage"{% endif %}>accueil</a>
-            {# <a href="{{ path('ListingByRecommend') }}"{% if top is defined and top %} class="currentPage"{% endif %}>top</a> #}
+            <a href="{{ path('ListingByRecommend') }}"{% if top is defined and top %} class="currentPage"{% endif %}>top</a>
             {# <a href="{{ path('ListingSearch') }}"{% if search is defined and search %} class="currentPage"{% endif %}>classement</a> #}
         </div>
     </div>
