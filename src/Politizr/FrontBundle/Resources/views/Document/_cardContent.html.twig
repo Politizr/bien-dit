@@ -31,6 +31,7 @@
 <a href="{{ detailPath }}"{% if withImg and not document.fileName and mini %} class="fullWidth"{% endif %}>
     <span{% if withImg %} class="postTitle {{ spanClass }}"{% endif %}>{{ document.title }}</span>
     {% if summary %}
-        {{ document.description | removeLinks | removeSpans | excerpt(1, true) | purify }}
+        {# document.description | removeLinks | removeSpans | excerpt(1, true) | purify #}
+        {{ document.description | striptags | truncate(250, true) | purify }}
     {% endif %}
 </a>
