@@ -10,7 +10,15 @@
     {{ parent() }}
 
     <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.youtubebackground.js') }}"></script>  
+
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/pages/home.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 {% endblock %}
+
+{% block bodyClass %} class="public visitor"{% endblock %}
 
 {% block main %}
     <div id="publicVideo">
@@ -21,7 +29,7 @@
                 <a href="{{ path('InscriptionChoice') }}">Créer un compte</a>
                 <a href="{{ path('GlobalHelper') }}">En savoir plus</a>
             </div>
-            <div id="goDown">
+            <div id="goDown" action="scrollVideo">
                 Découvrir<br><img src="{{ asset('bundles/politizrfront/images/f-arrowGoDown.svg') }}">
             </div>
         </div>
@@ -83,13 +91,3 @@
 {% block postMain %}
     {% include 'PolitizrFrontBundle:Navigation\\Footer:_publicFooter.html.twig' %}
 {% endblock postMain %}
-
-{% block javascriptFooter %}
-    {{ parent() }}
-
-    {% javascripts
-        '@PolitizrFrontBundle/Resources/public/js/politizr/pages/home.js'
-        filter='uglifyjs2' %}
-        <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-{% endblock javascriptFooter %}
