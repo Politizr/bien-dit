@@ -1,5 +1,9 @@
 {% extends_admingenerated "PolitizrAdminBundle:PDReactionList:row.html.twig" %}
 
+{% block list_td_column_file_name %}
+    {{ PDReaction | image('admin_list_thumb', false) }}
+{% endblock list_td_column_file_name %}
+
 {% block list_td_column_p_user_id %}
     {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_USER'), PDReaction.PUserId) }}
 {% endblock %}
