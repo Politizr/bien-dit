@@ -366,7 +366,8 @@ LIMIT :offset, :limit
         }
 
         // Date subrequest
-        $subRequestFilterDate = null;
+        $subRequestFilterDate1 = null;
+        $subRequestFilterDate2 = null;
         if ($filterDate == ListingConstants::FILTER_KEYWORD_LAST_MONTH) {
             $subRequestFilterDate1 = "AND p_d_debate.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW() ";
             $subRequestFilterDate2 = "AND p_d_reaction.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW() ";
