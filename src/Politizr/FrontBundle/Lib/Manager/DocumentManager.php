@@ -896,6 +896,7 @@ SELECT DISTINCT
     published_by,
     favorite,
     online,
+    homepage,
     moderated,
     moderated_partial,
     moderated_at,
@@ -1332,7 +1333,7 @@ GROUP BY p_d_debate_id
      */
     public function generateTopDocumentsBestNote($limit)
     {
-        $this->logger->info('*** generateUserSuggestedDebatesPaginatedListing');
+        $this->logger->info('*** generateTopDocumentsBestNote');
         $this->logger->info('$limit = ' . print_r($limit, true));
 
         $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
