@@ -19,6 +19,8 @@ use Politizr\Model\PUserQuery;
 use Politizr\Model\PRBadgeQuery;
 use Politizr\Model\PUReputationQuery;
 use Politizr\Model\PTagQuery;
+use Politizr\Model\PUFollowDDQuery;
+use Politizr\Model\PUFollowUQuery;
 
 /**
  * Functional service for document management.
@@ -66,6 +68,46 @@ class DocumentService
         $this->router = $router;
 
         $this->logger = $logger;
+    }
+
+    /* ######################################################################################################## */
+    /*                                               PRIVATE FUNCTIONS                                          */
+    /* ######################################################################################################## */
+
+    /**
+     * Get array of user's PUFollowDD's ids
+     * @todo refactoring duplicate w. TimelineService
+     *
+     * @param integer $userId
+     * @return array
+     */
+    private function getFollowedDebatesIdsArray($userId)
+    {
+        $debateIds = PUFollowDDQuery::create()
+            ->select('PDDebateId')
+            ->filterByPUserId($userId)
+            ->find()
+            ->toArray();
+
+        return $debateIds;
+    }
+
+    /**
+     * Get array of user's PUFollowU's ids
+     * @todo refactoring duplicate w. TimelineService
+     *
+     * @param integer $userId
+     * @return array
+     */
+    private function getFollowedUsersIdsArray($userId)
+    {
+        $userIds = PUFollowUQuery::create()
+            ->select('PUserId')
+            ->filterByPUserFollowerId($userId)
+            ->find()
+            ->toArray();
+
+        return $userIds;
     }
 
 
@@ -287,7 +329,21 @@ class DocumentService
      */
     public function getUserDocumentsSuggestion($userId, $count = ListingConstants::LISTING_SUGGESTION_DOCUMENTS_LIMIT)
     {
-        $documents = $this->documentManager->generateUserDocumentsSuggestion($userId, $count);
+        // Récupération d'un tableau des ids des débats suivis
+        $debateIds = $this->getFollowedDebatesIdsArray($userId);
+        $inQueryDebateIds = implode(',', $debateIds);
+        if (empty($inQueryDebateIds)) {
+            $inQueryDebateIds = 0;
+        }
+
+        // Récupération d'un tableau des ids des users suivis
+        $userIds = $this->getFollowedUsersIdsArray($userId);
+        $inQueryUserIds = implode(',', $userIds);
+        if (empty($inQueryUserIds)) {
+            $inQueryUserIds = 0;
+        }
+
+        $documents = $this->documentManager->generateUserDocumentsSuggestion($userId, $inQueryDebateIds, $inQueryUserIds, $count);
 
         return $documents;
     }

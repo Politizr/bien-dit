@@ -42,7 +42,8 @@ WHERE
 	)
     AND p_d_debate.online = 1
     AND p_d_debate.published = 1
-    AND p_d_debate.id NOT IN (SELECT p_d_debate_id FROM p_u_follow_d_d WHERE p_user_id = 73)
+    AND p_d_debate.id NOT IN (1,5)
+    AND p_d_debate.p_user_id NOT IN (6,9,60)
     AND p_d_debate.p_user_id <> 73
 )
 
@@ -56,7 +57,8 @@ FROM p_d_debate
 WHERE
     p_d_debate.online = 1
     AND p_d_debate.published = 1
-    AND p_d_debate.id NOT IN (SELECT p_d_debate_id FROM p_u_follow_d_d WHERE p_user_id = 73)
+    AND p_d_debate.id NOT IN (1,5)
+    AND p_d_debate.p_user_id NOT IN (6,9,60)
     AND p_d_debate.p_user_id <> 73
 GROUP BY p_d_debate.id
 ORDER BY nb_users DESC

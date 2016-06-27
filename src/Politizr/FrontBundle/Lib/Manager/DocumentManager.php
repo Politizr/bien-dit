@@ -876,7 +876,7 @@ LIMIT :limit
      *
      * @return string
      */
-    private function createUserSuggestedDebatesRawSql()
+    private function createUserSuggestedDebatesRawSql($inQueryDebateIds, $inQueryUserIds)
     {
         // Requête SQL
         $sql = "
@@ -921,8 +921,9 @@ WHERE
     )
     AND p_d_debate.online = 1
     AND p_d_debate.published = 1
-    AND p_d_debate.id NOT IN (SELECT p_d_debate_id FROM p_u_follow_d_d WHERE p_user_id = :p_user_id2)
-    AND p_d_debate.p_user_id <> :p_user_id3
+    AND p_d_debate.id NOT IN ($inQueryDebateIds)
+    AND p_d_debate.p_user_id NOT IN ($inQueryUserIds)
+    AND p_d_debate.p_user_id <> :p_user_id2
 )
 
 UNION DISTINCT
@@ -934,8 +935,9 @@ FROM p_d_debate
 WHERE
     p_d_debate.online = 1
     AND p_d_debate.published = 1
-    AND p_d_debate.id NOT IN (SELECT p_d_debate_id FROM p_u_follow_d_d WHERE p_user_id = :p_user_id4)
-    AND p_d_debate.p_user_id <> :p_user_id5
+    AND p_d_debate.id NOT IN ($inQueryDebateIds)
+    AND p_d_debate.p_user_id NOT IN ($inQueryUserIds)
+    AND p_d_debate.p_user_id <> :p_user_id3
 GROUP BY p_d_debate.id
 ORDER BY nb_users DESC
 )
@@ -1369,23 +1371,25 @@ GROUP BY p_d_debate_id
      * User's debates' suggestions paginated listing
      *
      * @param integer $userId
+     * @param string $inQueryDebateIds
+     * @param string $inQueryUserIds
      * @param int $limit
      * @return PropelCollection[PDDebate]
      */
-    public function generateUserDocumentsSuggestion($userId, $limit)
+    public function generateUserDocumentsSuggestion($userId, $inQueryDebateIds, $inQueryUserIds, $limit)
     {
         $this->logger->info('*** generateUserDocumentsSuggestion');
         $this->logger->info('$userId = ' . print_r($userId, true));
+        $this->logger->info('$debateIds = ' . print_r($inQueryDebateIds, true));
+        $this->logger->info('$userIds = ' . print_r($inQueryUserIds, true));
         $this->logger->info('$limit = ' . print_r($limit, true));
 
         $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
-        $stmt = $con->prepare($this->createUserSuggestedDebatesRawSql());
+        $stmt = $con->prepare($this->createUserSuggestedDebatesRawSql($inQueryDebateIds, $inQueryUserIds));
 
         $stmt->bindValue(':p_user_id', $userId, \PDO::PARAM_INT);
         $stmt->bindValue(':p_user_id2', $userId, \PDO::PARAM_INT);
         $stmt->bindValue(':p_user_id3', $userId, \PDO::PARAM_INT);
-        $stmt->bindValue(':p_user_id4', $userId, \PDO::PARAM_INT);
-        $stmt->bindValue(':p_user_id5', $userId, \PDO::PARAM_INT);
         $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
 
         $stmt->execute();
