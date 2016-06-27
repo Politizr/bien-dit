@@ -104,6 +104,8 @@ class DocumentController extends Controller
                 ->filterByPTag($debate->getTags(TagConstants::TAG_TYPE_THEME), \Criteria::IN)
             ->endUse()
             ->distinct()
+            ->filterByOnline(true)
+            ->filterByPublished(true)
             ->limit(ListingConstants::LISTING_DEBATE_SIMILARS)
             ->orderByNotePos('desc')
             ->orderByNoteNeg('asc')
@@ -177,6 +179,20 @@ class DocumentController extends Controller
             $currentSlide = ceil($position / 3) - 1;
         }
 
+        // Reaction's similar debates
+        $similars = PDDebateQuery::create()
+            ->filterById($reaction->getPDDebateId(), \Criteria::NOT_EQUAL)
+            ->usePDDTaggedTQuery()
+                ->filterByPTag($reaction->getTags(TagConstants::TAG_TYPE_THEME), \Criteria::IN)
+            ->endUse()
+            ->distinct()
+            ->filterByOnline(true)
+            ->filterByPublished(true)
+            ->limit(ListingConstants::LISTING_DEBATE_SIMILARS)
+            ->orderByNotePos('desc')
+            ->orderByNoteNeg('asc')
+            ->find();
+
         return $this->render('PolitizrFrontBundle:Reaction:detail.html.twig', array(
             'debate' => $debate,
             'reaction' => $reaction,
@@ -186,6 +202,7 @@ class DocumentController extends Controller
             'ancestors' => $ancestors,
             'siblings' => $siblings,
             'currentSlide' => $currentSlide,
+            'similars' => $similars,
         ));
     }
 

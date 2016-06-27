@@ -85,6 +85,8 @@
                     {{ reaction | docTags }}
                 </div>
             </div>
+
+            {% include 'PolitizrFrontBundle:Document:_listSimilarsToPost.html.twig' with { 'documents': similars } only %}
         </div>
     </div>
 {% endblock content %}
