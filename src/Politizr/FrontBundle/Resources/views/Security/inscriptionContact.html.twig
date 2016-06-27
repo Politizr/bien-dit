@@ -30,7 +30,7 @@
                             {{ form_errors(form) }}
                         </div>
                     {% endif %}
-                    {{ form_start(form, {'action': path('InscriptionContactCheck'), 'method': 'POST'}}) }}
+                    {{ form_start(form, {'action': path('InscriptionContactCheck'), 'method': 'POST'}) }}
                         {{ form_label(form.gender) }}
                         <div class="styledSelect">{{ form_widget(form.gender) }}</div>
                         {% if form.gender.vars.errors|length %}
