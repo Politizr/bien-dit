@@ -188,13 +188,13 @@ class DocumentService
         }
 
         // "most reactions" activity filters only applied to debates and/or reactions:
-        // - if publications type selected is all > return only debates & reactions
+        // - if publications type selected is all > return only debates
         // - if publications type selected is comment > return "no result"
         if ($filterActivity == ListingConstants::ORDER_BY_KEYWORD_MOST_REACTIONS) {
             if ($filterPublication == ListingConstants::FILTER_KEYWORD_COMMENTS) {
                 return $documents;
             } elseif ($filterPublication == ListingConstants::FILTER_KEYWORD_ALL_PUBLICATIONS) {
-                $filterPublication = ListingConstants::FILTER_KEYWORD_DEBATES_AND_REACTIONS;
+                $filterPublication = ListingConstants::FILTER_KEYWORD_DEBATES;
             }
         }
 
