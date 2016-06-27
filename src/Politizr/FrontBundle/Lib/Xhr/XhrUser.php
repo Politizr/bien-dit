@@ -1157,12 +1157,13 @@ class XhrUser
             ListingConstants::LISTING_CLASSIC_PAGINATION
         );
 
+        // /!\ PropelPager object
         $moreResults = false;
-        if (!$users->isLast()) {
+        if (!$users->isLastPage()) {
             $moreResults = true;
         }
 
-        if ($offset == 0 && count($users) == 0) {
+        if ($users->isFirstPage() && $users->getNbResults() == 0) {
             $html = $this->templating->render(
                 'PolitizrFrontBundle:PaginatedList:_noResult.html.twig'
             );
