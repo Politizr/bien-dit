@@ -1,0 +1,27 @@
+Bonjour {{ user }},
+
+Merci d'avoir rejoint la communauté en pleine expansion de Politizr.
+
+Nous connectons les citoyen-ne-s et leurs élu-e-s pour faire vivre notre démocratie. 
+{% if user.qualified %}
+En tant qu'élu{% if user.gender == 'Madame' %}e{% endif %}, vous pourrez faire valoir vos points de vue et apporter votre expérience pour aider à co-construire la décision publique en toute transparence.
+{% else %}
+En tant que citoyen{% if user.gender == 'Madame' %}ne{% endif %}, vous pourrez exprimer vos opinions ou vos questions et ouvrir un canal de discussion direct avec vos élu-e-s.
+{% endif %}
+
+Complétez votre profil pour permettre aux autres utilisateurs de suivre votre actualité. Suivez les sujets et les profils qui vous intéressent pour être tenu au courant des nouveautés.
+
+Nous sommes une société jeune et nous sommes à votre écoute pour améliorer votre expérience. N'hésitez pas à nous contacter si vous avez des retours ou des idées à nous faire part, cela nous aidera beaucoup.
+
+Merci,
+
+{% if user.qualified %}
+Lionel Bouzonville
+Co Fondateur @ Politizr
+Ex-Conseiller Municipal de Foix (2007-2014)
+{% else %}
+Thomas Champion
+Co Fondateur @ Politizr
+{% endif %} 
+
+{% include 'PolitizrFrontBundle:Email:_signature.txt.twig' %}

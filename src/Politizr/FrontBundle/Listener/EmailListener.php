@@ -250,4 +250,99 @@ class EmailListener
             $pmAppException = $this->monitoringManager->createAppException($e);
         }
     }
+
+    /**
+     * Post connection email
+     *
+     * @param GenericEvent
+     */
+    public function onWelcomeEmail(GenericEvent $event)
+    {
+        $this->logger->info('*** onWelcomeEmail');
+
+        $user = $event->getSubject();
+        try {
+            $htmlBody = $this->templating->render(
+                'PolitizrFrontBundle:Email:welcome.html.twig',
+                array(
+                    'user' => $user,
+                )
+            );
+            $txtBody = $this->templating->render(
+                'PolitizrFrontBundle:Email:welcome.txt.twig',
+                array(
+                    'user' => $user,
+                )
+            );
+
+            $message = \Swift_Message::newInstance()
+                    ->setSubject('Bienvenue chez Politizr!')
+                    ->setFrom(array($this->supportEmail => 'Support@Politizr'))
+                    ->setTo($user->getEmail())
+                    // ->setBcc(array('lionel@politizr.com'))
+                    ->setBody($htmlBody, 'text/html', 'utf-8')
+                    ->addPart($txtBody, 'text/plain', 'utf-8')
+            ;
+            $message->getHeaders()->addTextHeader('X-CMail-GroupName', 'Welcome');
+
+            // Envoi email
+            $failedRecipients = array();
+            $send = $this->mailer->send($message, $failedRecipients);
+
+            $this->logger->info('send = '.print_r($send, true));
+            if (!$send) {
+                throw new \Exception('email non envoyé - code retour = '.$send.' - adresse(s) en échec = '.print_r($failedRecipients, true));
+            }
+        } catch (\Exception $e) {
+            if (null !== $this->logger) {
+                $this->logger->err('Exception - message = '.$e->getMessage());
+            }
+            
+            throw new SendEmailException($e->getMessage(), $e);
+        }
+    }
+
+    /**
+     * Post idcheck trace email
+     *
+     * @param GenericEvent
+     */
+    public function onIdcheckTraceEmail(GenericEvent $event)
+    {
+        $this->logger->info('*** onIdcheckTraceEmail');
+
+        $lastResult = $event->getSubject();
+        try {
+            $htmlBody = $this->templating->render(
+                'PolitizrFrontBundle:Email:idcheckTrace.html.twig',
+                array(
+                    'trace' => var_export($lastResult, true),
+                )
+            );
+
+            $message = \Swift_Message::newInstance()
+                    ->setSubject('Trace ID Check')
+                    ->setFrom(array($this->supportEmail => 'Support@Politizr'))
+                    ->setTo(array($this->supportEmail => 'Support@Politizr'))
+                    // ->setBcc(array('lionel@politizr.com'))
+                    ->setBody($htmlBody, 'text/html', 'utf-8')
+            ;
+            $message->getHeaders()->addTextHeader('X-CMail-GroupName', 'IdCheck');
+
+            // Envoi email
+            $failedRecipients = array();
+            $send = $this->mailer->send($message, $failedRecipients);
+
+            $this->logger->info('send = '.print_r($send, true));
+            if (!$send) {
+                throw new \Exception('email non envoyé - code retour = '.$send.' - adresse(s) en échec = '.print_r($failedRecipients, true));
+            }
+        } catch (\Exception $e) {
+            if (null !== $this->logger) {
+                $this->logger->err('Exception - message = '.$e->getMessage());
+            }
+            
+            throw new SendEmailException($e->getMessage(), $e);
+        }
+    }
 }

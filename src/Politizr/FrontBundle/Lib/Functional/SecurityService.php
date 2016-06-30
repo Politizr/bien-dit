@@ -685,6 +685,9 @@ class SecurityService
 
         // (re)connect user
         $this->doPublicConnection($user);
+
+        // welcome email
+        $dispatcher =  $this->eventDispatcher->dispatch('welcome_email', new GenericEvent($user));
     }
 
     /**
@@ -740,6 +743,9 @@ class SecurityService
         $user->save();
         
         $this->doPublicConnection($user);
+
+        // welcome email
+        $dispatcher =  $this->eventDispatcher->dispatch('welcome_email', new GenericEvent($user));
     }
 
     /**
