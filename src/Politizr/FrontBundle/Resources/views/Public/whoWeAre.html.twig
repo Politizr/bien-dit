@@ -62,7 +62,9 @@
                     <a href="mailto:contact@politizr.com">contact@politizr.com</a><br><br></p>
                 </div>
             </div>
-        {% include 'PolitizrFrontBundle:Public:_plansChoice.html.twig' with { 'mode': 'girl' } %}
-        {% include 'PolitizrFrontBundle:Navigation\\Footer:_publicFooter.html.twig' %}
     </div>
 {% endblock main %}
+
+{% block postMain %}
+    {% include 'PolitizrFrontBundle:Navigation\\Footer:_publicFooter.html.twig' %}
+{% endblock postMain %}
