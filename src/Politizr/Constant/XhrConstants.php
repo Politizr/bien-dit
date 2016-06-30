@@ -22,6 +22,9 @@ class XhrConstants
     //                  XHR URL REWRITING
     // ******************************************************** //
 
+    // GENERAL
+    const ROUTE_SHOW_HIDE_SUGGESTION = 'profil/suggestion';
+
     // FOLLOW
     const ROUTE_FOLLOW_DEBATE = 'profil/suivre/debat';
     const ROUTE_FOLLOW_USER = 'profil/suivre/utilisateur';

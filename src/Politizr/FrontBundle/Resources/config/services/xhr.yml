@@ -1,4 +1,12 @@
 services:
+    politizr.xhr.general:
+        class: Politizr\FrontBundle\Lib\Xhr\XhrGeneral
+        arguments:
+        arguments:
+            - @security.token_storage
+            - @templating
+            - @logger
+
     politizr.xhr.document:
         class: Politizr\FrontBundle\Lib\Xhr\XhrDocument
         arguments:
