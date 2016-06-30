@@ -130,13 +130,13 @@ class XhrDocument
      */
     public function follow(Request $request)
     {
-        $this->logger->info('*** follow');
+        // $this->logger->info('*** follow');
         
         // Request arguments
         $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
         $way = $request->get('way');
-        $this->logger->info('$way = ' . print_r($way, true));
+        // $this->logger->info('$way = ' . print_r($way, true));
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -180,15 +180,15 @@ class XhrDocument
      */
     public function note(Request $request)
     {
-        $this->logger->info('*** note');
+        // $this->logger->info('*** note');
         
         // Request arguments
         $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
         $type = $request->get('type');
-        $this->logger->info('$type = ' . print_r($type, true));
+        // $this->logger->info('$type = ' . print_r($type, true));
         $way = $request->get('way');
-        $this->logger->info('$way = ' . print_r($way, true));
+        // $this->logger->info('$way = ' . print_r($way, true));
 
         $user = $this->securityTokenStorage->getToken()->getUser();
 
@@ -286,11 +286,11 @@ class XhrDocument
      */
     public function debateUpdate(Request $request)
     {
-        $this->logger->info('*** debateUpdate');
+        // $this->logger->info('*** debateUpdate');
         
         // Request arguments
         $uuid = $request->get('debate')['uuid'];
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -322,11 +322,11 @@ class XhrDocument
      */
     public function debatePublish(Request $request)
     {
-        $this->logger->info('*** debatePublish');
+        // $this->logger->info('*** debatePublish');
         
         // Request arguments
         $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -381,11 +381,11 @@ class XhrDocument
      */
     public function debateDelete(Request $request)
     {
-        $this->logger->info('*** debateDelete');
+        // $this->logger->info('*** debateDelete');
         
         // Request arguments
         $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -419,11 +419,11 @@ class XhrDocument
      */
     public function reactionUpdate(Request $request)
     {
-        $this->logger->info('*** reactionUpdate');
+        // $this->logger->info('*** reactionUpdate');
         
         // Request arguments
         $uuid = $request->get('reaction')['uuid'];
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -455,11 +455,11 @@ class XhrDocument
      */
     public function reactionPublish(Request $request)
     {
-        $this->logger->info('*** reactionPublish');
+        // $this->logger->info('*** reactionPublish');
         
         // Request arguments
         $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -522,11 +522,11 @@ class XhrDocument
      */
     public function reactionDelete(Request $request)
     {
-        $this->logger->info('*** reactionDelete');
+        // $this->logger->info('*** reactionDelete');
         
         // Request arguments
         $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -561,13 +561,13 @@ class XhrDocument
      */
     public function documentPhotoUpload(Request $request)
     {
-        $this->logger->info('*** documentPhotoUpload');
+        // $this->logger->info('*** documentPhotoUpload');
 
         // Request arguments
         $uuid = $request->get('uuid');
-        $this->logger->info(print_r($uuid, true));
+        // $this->logger->info(print_r($uuid, true));
         $type = $request->get('type');
-        $this->logger->info(print_r($type, true));
+        // $this->logger->info(print_r($type, true));
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -619,13 +619,13 @@ class XhrDocument
      */
     public function documentPhotoDelete(Request $request)
     {
-        $this->logger->info('*** documentPhotoDelete');
+        // $this->logger->info('*** documentPhotoDelete');
         
         // Request arguments
         $uuid = $request->get('uuid');
-        $this->logger->info(print_r($uuid, true));
+        // $this->logger->info(print_r($uuid, true));
         $type = $request->get('type');
-        $this->logger->info(print_r($type, true));
+        // $this->logger->info(print_r($type, true));
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -669,13 +669,13 @@ class XhrDocument
      */
     public function commentNew(Request $request)
     {
-        $this->logger->info('*** commentNew');
+        // $this->logger->info('*** commentNew');
         
         // Request arguments
         $type = $request->get('comment')['type'];
-        $this->logger->info('$type = ' . print_r($type, true));
+        // $this->logger->info('$type = ' . print_r($type, true));
         $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -709,12 +709,12 @@ class XhrDocument
 
         $form->bind($request);
         if ($form->isValid()) {
-            $this->logger->info('*** isValid');
+            // $this->logger->info('*** isValid');
             $comment = $form->getData();
 
             $comment->save();
         } else {
-            $this->logger->info('*** not valid');
+            // $this->logger->info('*** not valid');
             $errors = StudioEchoUtils::getAjaxFormErrors($form);
             throw new BoxErrorException($errors);
         }
@@ -736,15 +736,15 @@ class XhrDocument
      */
     public function comments(Request $request)
     {
-        $this->logger->info('*** comments');
+        // $this->logger->info('*** comments');
         
         // Request arguments
         $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
         $type = $request->get('type');
-        $this->logger->info('$type = ' . print_r($type, true));
+        // $this->logger->info('$type = ' . print_r($type, true));
         $noParagraph = $request->get('noParagraph');
-        $this->logger->info('$noParagraph = ' . print_r($noParagraph, true));
+        // $this->logger->info('$noParagraph = ' . print_r($noParagraph, true));
 
         switch ($type) {
             case ObjectTypeConstants::TYPE_DEBATE:
@@ -809,11 +809,11 @@ class XhrDocument
      */
     public function myDraftsPaginated(Request $request)
     {
-        $this->logger->info('*** myDraftsPaginated');
+        // $this->logger->info('*** myDraftsPaginated');
 
         // Request arguments
         $offset = $request->get('offset');
-        $this->logger->info('$offset = ' . print_r($offset, true));
+        // $this->logger->info('$offset = ' . print_r($offset, true));
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -858,11 +858,11 @@ class XhrDocument
      */
     public function topDocuments(Request $request)
     {
-        $this->logger->info('*** topDocuments');
+        // $this->logger->info('*** topDocuments');
         
         // Request arguments
         $filters = $request->get('documentFilterDate');
-        $this->logger->info('$filters = ' . print_r($filters, true));
+        // $this->logger->info('$filters = ' . print_r($filters, true));
 
         // @todo dynamic filters implementation
         $documents = $this->documentService->getTopDocumentsBestNote(
@@ -887,7 +887,7 @@ class XhrDocument
      */
     public function suggestionDocuments(Request $request)
     {
-        $this->logger->info('*** suggestionDocuments');
+        // $this->logger->info('*** suggestionDocuments');
         
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -913,13 +913,13 @@ class XhrDocument
      */
     public function documentsByRecommendNav(Request $request)
     {
-        $this->logger->info('*** documentsByRecommendNav');
+        // $this->logger->info('*** documentsByRecommendNav');
         
         // Request arguments
         $numMonth = $request->get('month');
-        $this->logger->info('$numMonth = ' . print_r($numMonth, true));
+        // $this->logger->info('$numMonth = ' . print_r($numMonth, true));
         $year = $request->get('year');
-        $this->logger->info('$year = ' . print_r($year, true));
+        // $this->logger->info('$year = ' . print_r($year, true));
 
         $now = new \DateTime();
         $search = new \DateTime();
@@ -978,15 +978,15 @@ class XhrDocument
      */
     public function documentsByRecommend(Request $request)
     {
-        $this->logger->info('*** documentsByRecommend');
+        // $this->logger->info('*** documentsByRecommend');
         
         // Request arguments
         $offset = $request->get('offset');
-        $this->logger->info('$offset = ' . print_r($offset, true));
+        // $this->logger->info('$offset = ' . print_r($offset, true));
         $month = $request->get('month');
-        $this->logger->info('$month = ' . print_r($month, true));
+        // $this->logger->info('$month = ' . print_r($month, true));
         $year = $request->get('year');
-        $this->logger->info('$year = ' . print_r($year, true));
+        // $this->logger->info('$year = ' . print_r($year, true));
 
         $documents = $this->documentService->getDocumentsByRecommendPaginated(
             $month,
@@ -1028,15 +1028,15 @@ class XhrDocument
      */
     public function documentsByTag(Request $request)
     {
-        $this->logger->info('*** documentsByTag');
+        // $this->logger->info('*** documentsByTag');
         
         // Request arguments
         $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
         $orderBy = $request->get('orderBy');
-        $this->logger->info('$orderBy = ' . print_r($orderBy, true));
+        // $this->logger->info('$orderBy = ' . print_r($orderBy, true));
         $offset = $request->get('offset');
-        $this->logger->info('$offset = ' . print_r($offset, true));
+        // $this->logger->info('$offset = ' . print_r($offset, true));
 
         // Retrieve subject
         $tag = PTagQuery::create()->filterByUuid($uuid)->findOne();
@@ -1088,15 +1088,15 @@ class XhrDocument
      */
     public function documentsByOrganization(Request $request)
     {
-        $this->logger->info('*** documentsByOrganization');
+        // $this->logger->info('*** documentsByOrganization');
         
         // Request arguments
         $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
         $orderBy = $request->get('orderBy');
-        $this->logger->info('$orderBy = ' . print_r($orderBy, true));
+        // $this->logger->info('$orderBy = ' . print_r($orderBy, true));
         $offset = $request->get('offset');
-        $this->logger->info('$offset = ' . print_r($offset, true));
+        // $this->logger->info('$offset = ' . print_r($offset, true));
 
         // Retrieve subject
         $organization = PQOrganizationQuery::create()->filterByUuid($uuid)->findOne();
@@ -1145,15 +1145,15 @@ class XhrDocument
      */
     public function publicationsByUser(Request $request)
     {
-        $this->logger->info('*** publicationsByUser');
+        // $this->logger->info('*** publicationsByUser');
         
         // Request arguments
         $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
         $orderBy = $request->get('orderBy');
-        $this->logger->info('$orderBy = ' . print_r($orderBy, true));
+        // $this->logger->info('$orderBy = ' . print_r($orderBy, true));
         $offset = $request->get('offset');
-        $this->logger->info('$offset = ' . print_r($offset, true));
+        // $this->logger->info('$offset = ' . print_r($offset, true));
 
 
         $user = PUserQuery::create()->filterByUuid($uuid)->findOne();
@@ -1203,11 +1203,11 @@ class XhrDocument
      */
     public function reloadFilters(Request $request)
     {
-        $this->logger->info('*** reloadFilters');
+        // $this->logger->info('*** reloadFilters');
 
         // Request arguments
         $filterCategory = $request->get('filterCategory');
-        $this->logger->info('$filterCategory = ' . print_r($filterCategory, true));
+        // $this->logger->info('$filterCategory = ' . print_r($filterCategory, true));
 
         if ($filterCategory == ObjectTypeConstants::CONTEXT_PUBLICATION) {
             $template = '_publicationsCategory.html.twig';
@@ -1234,21 +1234,21 @@ class XhrDocument
      */
     public function publicationsByFilters(Request $request)
     {
-        $this->logger->info('*** publicationsByFilters');
+        // $this->logger->info('*** publicationsByFilters');
         
         // Request arguments
         $offset = $request->get('offset');
-        $this->logger->info('$offset = ' . print_r($offset, true));
+        // $this->logger->info('$offset = ' . print_r($offset, true));
         $geoTagUuid = $request->get('geoTagUuid');
-        $this->logger->info('$geoTagUuid = ' . print_r($geoTagUuid, true));
+        // $this->logger->info('$geoTagUuid = ' . print_r($geoTagUuid, true));
         $filterPublication = $request->get('filterPublication');
-        $this->logger->info('$filterPublication = ' . print_r($filterPublication, true));
+        // $this->logger->info('$filterPublication = ' . print_r($filterPublication, true));
         $filterProfile = $request->get('filterProfile');
-        $this->logger->info('$filterProfile = ' . print_r($filterProfile, true));
+        // $this->logger->info('$filterProfile = ' . print_r($filterProfile, true));
         $filterActivity = $request->get('filterActivity');
-        $this->logger->info('$filterActivity = ' . print_r($filterActivity, true));
+        // $this->logger->info('$filterActivity = ' . print_r($filterActivity, true));
         $filterDate = $request->get('filterDate');
-        $this->logger->info('$filterDate = ' . print_r($filterDate, true));
+        // $this->logger->info('$filterDate = ' . print_r($filterDate, true));
 
         // set default values if not set
         if (empty($geoTagUuid)) {

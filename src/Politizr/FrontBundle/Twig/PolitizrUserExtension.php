@@ -339,7 +339,7 @@ class PolitizrUserExtension extends \Twig_Extension
      */
     public function userTags(PUser $user, $tagTypeId = null)
     {
-        $this->logger->info('*** userTags');
+        // $this->logger->info('*** userTags');
         // $this->logger->info('$uiser = '.print_r($user, true));
         // $this->logger->info('$pTTagType = '.print_r($pTTagType, true));
 
@@ -451,9 +451,9 @@ class PolitizrUserExtension extends \Twig_Extension
      */
     public function linkedNotification(PUNotification $notification, $type = NotificationConstants::TYPE_SCREEN)
     {
-        $this->logger->info('*** linkedNotification');
-        $this->logger->info('$notification = '.print_r($notification, true));
-        $this->logger->info('$type = '.print_r($type, true));
+        // $this->logger->info('*** linkedNotification');
+        // $this->logger->info('$notification = '.print_r($notification, true));
+        // $this->logger->info('$type = '.print_r($type, true));
 
         // absolute URL for email notif
         $absolute = false;
@@ -711,7 +711,7 @@ class PolitizrUserExtension extends \Twig_Extension
      */
     public function isGrantedC()
     {
-        $this->logger->info('*** isGrantedC');
+        // $this->logger->info('*** isGrantedC');
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -733,7 +733,7 @@ class PolitizrUserExtension extends \Twig_Extension
      */
     public function isGrantedE()
     {
-        $this->logger->info('*** isGrantedE');
+        // $this->logger->info('*** isGrantedE');
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -755,7 +755,7 @@ class PolitizrUserExtension extends \Twig_Extension
      */
     public function profileSuffix()
     {
-        $this->logger->info('*** profileSuffix');
+        // $this->logger->info('*** profileSuffix');
 
         return $this->globalTools->computeProfileSuffix();
     }

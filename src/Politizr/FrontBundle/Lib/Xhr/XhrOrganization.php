@@ -52,11 +52,11 @@ class XhrOrganization
      */
     public function listing(Request $request)
     {
-        $this->logger->info('*** listing');
+        // $this->logger->info('*** listing');
         
         // Request arguments
         $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
 
         // top tags
         $organizations = PQOrganizationQuery::create()

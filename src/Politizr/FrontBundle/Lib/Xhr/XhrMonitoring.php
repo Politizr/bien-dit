@@ -68,13 +68,13 @@ class XhrMonitoring
      */
     public function abuse(Request $request)
     {
-        $this->logger->info('*** abuse');
+        // $this->logger->info('*** abuse');
         
         // Request arguments
         $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
         $type = $request->get('type');
-        $this->logger->info('$type = ' . print_r($type, true));
+        // $this->logger->info('$type = ' . print_r($type, true));
 
         // form
         $abuseReporting = new PMAbuseReporting();
@@ -101,7 +101,7 @@ class XhrMonitoring
      */
     public function abuseCreate(Request $request)
     {
-        $this->logger->info('*** abuseCreate');
+        // $this->logger->info('*** abuseCreate');
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -135,13 +135,13 @@ class XhrMonitoring
      */
     public function askForUpdate(Request $request)
     {
-        $this->logger->info('*** askForUpdate');
+        // $this->logger->info('*** askForUpdate');
         
         // Request arguments
         $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
         $type = $request->get('type');
-        $this->logger->info('$type = ' . print_r($type, true));
+        // $this->logger->info('$type = ' . print_r($type, true));
 
         // form
         $askForUpdate = new PMAskForUpdate();
@@ -168,7 +168,7 @@ class XhrMonitoring
      */
     public function askForUpdateCreate(Request $request)
     {
-        $this->logger->info('*** askForUpdateCreate');
+        // $this->logger->info('*** askForUpdateCreate');
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();

@@ -1056,8 +1056,8 @@ class PolitizrDocumentExtension extends \Twig_Extension
      */
     public function timelineRow(TimelineRow $timelineRow, $withContext = true)
     {
-        $this->logger->info('*** timelineRow');
-        $this->logger->info('$timelineRow = '.print_r($timelineRow, true));
+        // $this->logger->info('*** timelineRow');
+        // $this->logger->info('$timelineRow = '.print_r($timelineRow, true));
 
         $html = '';
 

@@ -46,7 +46,7 @@ class XhrModal
      */
     public function helpUs(Request $request)
     {
-        $this->logger->info('*** helpUs');
+        // $this->logger->info('*** helpUs');
         
         $request->getSession()->set('helpUs', true);
         // $request->getSession()->remove('helpUs');
@@ -66,7 +66,7 @@ class XhrModal
      */
     public function createAccountToComment(Request $request)
     {
-        $this->logger->info('*** createAccountToComment');
+        // $this->logger->info('*** createAccountToComment');
         
         $html = $this->templating->render(
             'PolitizrFrontBundle:Navigation\\Helper:_createAccountToComment.html.twig'
@@ -83,7 +83,7 @@ class XhrModal
      */
     public function cgu(Request $request)
     {
-        $this->logger->info('*** cgu');
+        // $this->logger->info('*** cgu');
 
         $legal = PMCguQuery::create()->filterByOnline(true)->orderByCreatedAt('desc')->findOne();
         
@@ -105,7 +105,7 @@ class XhrModal
      */
     public function cgv(Request $request)
     {
-        $this->logger->info('*** cgv');
+        // $this->logger->info('*** cgv');
 
         $legal = PMCgvQuery::create()->filterByOnline(true)->orderByCreatedAt('desc')->findOne();
         
@@ -127,7 +127,7 @@ class XhrModal
      */
     public function charte(Request $request)
     {
-        $this->logger->info('*** charte');
+        // $this->logger->info('*** charte');
 
         $legal = PMCharteQuery::create()->filterByOnline(true)->orderByCreatedAt('desc')->findOne();
         

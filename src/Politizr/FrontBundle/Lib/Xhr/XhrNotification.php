@@ -57,7 +57,7 @@ class XhrNotification
      */
     public function notificationsLoad(Request $request)
     {
-        $this->logger->info('*** notificationsLoad');
+        // $this->logger->info('*** notificationsLoad');
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -91,11 +91,11 @@ class XhrNotification
      */
     public function notificationCheck(Request $request)
     {
-        $this->logger->info('*** notificationChek');
+        // $this->logger->info('*** notificationChek');
 
         // Request arguments
         $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -116,7 +116,7 @@ class XhrNotification
      */
     public function notificationsCheckAll(Request $request)
     {
-        $this->logger->info('*** notificationsLoad');
+        // $this->logger->info('*** notificationsLoad');
         
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -142,11 +142,11 @@ class XhrNotification
      */
     public function notifEmailSubscribe(Request $request)
     {
-        $this->logger->info('*** notifEmailSubscribe');
+        // $this->logger->info('*** notifEmailSubscribe');
 
         // Request arguments
         $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -165,11 +165,11 @@ class XhrNotification
      */
     public function notifEmailUnsubscribe(Request $request)
     {
-        $this->logger->info('*** notifEmailUnsubscribe');
+        // $this->logger->info('*** notifEmailUnsubscribe');
 
         // Request arguments
         $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();

@@ -54,7 +54,7 @@ class BadgeListener
      */
     public function onBReactionPublish(GenericEvent $event)
     {
-        $this->logger->info('*** onBReactionPublish');
+        // $this->logger->info('*** onBReactionPublish');
 
         $subject = $event->getSubject();
         $authorUserId = $event->getArgument('author_user_id');
@@ -79,7 +79,7 @@ class BadgeListener
      */
     public function onBDocumentNotePos(GenericEvent $event)
     {
-        $this->logger->info('*** onBDocumentNotePos');
+        // $this->logger->info('*** onBDocumentNotePos');
 
         $subject = $event->getSubject();
         $authorUserId = $event->getArgument('author_user_id');
@@ -103,7 +103,7 @@ class BadgeListener
      */
     public function onBDocumentNoteNeg(GenericEvent $event)
     {
-        $this->logger->info('*** onBDocumentNoteNeg');
+        // $this->logger->info('*** onBDocumentNoteNeg');
 
         $subject = $event->getSubject();
         $authorUserId = $event->getArgument('author_user_id');
@@ -122,7 +122,7 @@ class BadgeListener
      */
     public function onBCommentPublish(GenericEvent $event)
     {
-        $this->logger->info('*** onBCommentPublish');
+        // $this->logger->info('*** onBCommentPublish');
 
         $subject = $event->getSubject();
         $authorUserId = $event->getArgument('author_user_id');
@@ -141,7 +141,7 @@ class BadgeListener
      */
     public function onBCommentNotePos(GenericEvent $event)
     {
-        $this->logger->info('*** onBCommentNotePos');
+        // $this->logger->info('*** onBCommentNotePos');
 
         $subject = $event->getSubject();
         $authorUserId = $event->getArgument('author_user_id');
@@ -165,7 +165,7 @@ class BadgeListener
      */
     public function onBCommentNoteNeg(GenericEvent $event)
     {
-        $this->logger->info('*** onBCommentNoteNeg');
+        // $this->logger->info('*** onBCommentNoteNeg');
 
         $subject = $event->getSubject();
         $authorUserId = $event->getArgument('author_user_id');
@@ -185,7 +185,7 @@ class BadgeListener
      */
     public function onBUserFollow(GenericEvent $event)
     {
-        $this->logger->info('*** onBUserFollow');
+        // $this->logger->info('*** onBUserFollow');
 
         $subject = $event->getSubject();
         $authorUserId = $event->getArgument('author_user_id');

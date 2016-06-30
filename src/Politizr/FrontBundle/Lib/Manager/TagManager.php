@@ -107,8 +107,8 @@ ORDER BY nb_tagged_objects desc
      */
     public function generateMostPopularTagIds($interval)
     {
-        $this->logger->info('*** generateMostPopularTagIds');
-        $this->logger->info('$userIdinterval = ' . print_r($interval, true));
+        // $this->logger->info('*** generateMostPopularTagIds');
+        // $this->logger->info('$userIdinterval = ' . print_r($interval, true));
 
         $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
         $stmt = $con->prepare($this->createMostPopularTagIdsRawSql($interval));

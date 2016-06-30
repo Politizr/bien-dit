@@ -59,7 +59,7 @@ class LoginListener
             return $role->getRole();
         }, $roles);
 
-        $this->logger->info(var_export($rolesTab, true));
+        // $this->logger->info(var_export($rolesTab, true));
 
         if (in_array('ROLE_ADMIN', $rolesTab)) {
             $route = $this->router->generate('PolitizrAdminHomepage');

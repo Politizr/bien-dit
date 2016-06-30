@@ -109,7 +109,7 @@ class XhrSecurity
      */
     public function lostPasswordCheck(Request $request)
     {
-        $this->logger->info('*** lostPasswordCheck');
+        // $this->logger->info('*** lostPasswordCheck');
         
         // Function process
         $form = $this->formFactory->create(new LostPasswordType());
@@ -130,7 +130,7 @@ class XhrSecurity
 
             // new random password
             $password = substr(md5(uniqid(mt_rand(), true)), 0, 6);
-            $this->logger->info('password = '.$password);
+            // $this->logger->info('password = '.$password);
             $user->setPlainPassword($password);
             $user->setPassword($this->encoderFactory->getEncoder($user)->encodePassword($password, $user->getSalt()));
             $user->save();
@@ -154,22 +154,22 @@ class XhrSecurity
      */
     public function paymentProcess(Request $request)
     {
-        $this->logger->info('*** paymentProcess');
+        // $this->logger->info('*** paymentProcess');
         
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
 
         // Request arguments
         $paymentTypeId = $request->get('paymentTypeId');
-        $this->logger->info('$paymentTypeId = ' . print_r($paymentTypeId, true));
+        // $this->logger->info('$paymentTypeId = ' . print_r($paymentTypeId, true));
         
         // Session arguments
         $subscriptionId = $this->session->get('p_o_subscription_id');
-        $this->logger->info('$subscriptionId = ' . print_r($subscriptionId, true));
+        // $this->logger->info('$subscriptionId = ' . print_r($subscriptionId, true));
         $supportingDocument = $this->session->get('p_o_supporting_document');
-        $this->logger->info('$supportingDocument = ' . print_r($supportingDocument, true));
+        // $this->logger->info('$supportingDocument = ' . print_r($supportingDocument, true));
         $electiveMandates = $this->session->get('p_o_elective_mandates');
-        $this->logger->info('$electiveMandates = ' . print_r($electiveMandates, true));
+        // $this->logger->info('$electiveMandates = ' . print_r($electiveMandates, true));
 
         // get subscription
         $subscription = POSubscriptionQuery::create()->findPk($subscriptionId);
@@ -245,7 +245,7 @@ class XhrSecurity
      */
     private function isValidIdZla(Request $request, PUser $user, $updNbTry = true)
     {
-        $this->logger->info('*** isValidIdZla');
+        // $this->logger->info('*** isValidIdZla');
 
         $form = $this->formFactory->create(new PUserIdCheckType($user), $user);
 
@@ -279,10 +279,10 @@ class XhrSecurity
      */
     public function isValidIdPhoto(Request $request, PUser $user, $updNbTry = true)
     {
-        $this->logger->info('*** isValidIdPhoto');
+        // $this->logger->info('*** isValidIdPhoto');
 
         $fileName = $request->get('fileName');
-        $this->logger->info('$fileName = ' . print_r($fileName, true));
+        // $this->logger->info('$fileName = ' . print_r($fileName, true));
 
         $path = $this->kernel->getRootDir() . '/../web' . PathConstants::IDCHECK_UPLOAD_WEB_PATH;
 
@@ -315,7 +315,7 @@ class XhrSecurity
      */
     public function validateIdZla(Request $request)
     {
-        $this->logger->info('*** validateIdZla');
+        // $this->logger->info('*** validateIdZla');
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -367,7 +367,7 @@ class XhrSecurity
      */
     public function validateIdPhoto(Request $request)
     {
-        $this->logger->info('*** validateIdPhoto');
+        // $this->logger->info('*** validateIdPhoto');
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -419,11 +419,11 @@ class XhrSecurity
      */
     public function adminValidateIdZla(Request $request)
     {
-        $this->logger->info('*** adminValidateIdZla');
+        // $this->logger->info('*** adminValidateIdZla');
 
         // Request arguments
         $userId = $request->get('user_id_check')['p_user_id'];
-        $this->logger->info('userId = ' . print_r($userId, true));
+        // $this->logger->info('userId = ' . print_r($userId, true));
 
         $user = PUserQuery::create()->findPk($userId);
         if (!$user) {
@@ -450,11 +450,11 @@ class XhrSecurity
      */
     public function adminValidateIdPhoto(Request $request)
     {
-        $this->logger->info('*** adminValidateIdPhoto');
+        // $this->logger->info('*** adminValidateIdPhoto');
 
         // get user
         $userId = $request->get('userId');
-        $this->logger->info('$userId = '.print_r($userId, true));
+        // $this->logger->info('$userId = '.print_r($userId, true));
 
         $user = PUserQuery::create()->findPk($userId);
         if (!$user) {
@@ -481,7 +481,7 @@ class XhrSecurity
      */
     public function idCheckPhotoUpload(Request $request)
     {
-        $this->logger->info('*** idCheckPhotoUpload');
+        // $this->logger->info('*** idCheckPhotoUpload');
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();

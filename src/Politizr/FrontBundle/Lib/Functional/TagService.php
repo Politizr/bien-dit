@@ -63,7 +63,7 @@ class TagService
         $withRegionChildren = true,
         $withDepartmentChildren = true
     ) {
-        $this->logger->info('*** computePublicationGeotagRelativeIds');
+        // $this->logger->info('*** computePublicationGeotagRelativeIds');
 
         $ids = array();
         $tag = PTagQuery::create()->findPk($id);
@@ -131,7 +131,7 @@ class TagService
      */
     public function getRegionUuids()
     {
-        $this->logger->info('*** getRegionUuids');
+        // $this->logger->info('*** getRegionUuids');
 
         $regionACAL = PTagQuery::create()->findPk(TagConstants::TAG_GEO_REGION_ID_ACAL);
         $regionALPC = PTagQuery::create()->findPk(TagConstants::TAG_GEO_REGION_ID_ALPC);
@@ -172,7 +172,7 @@ class TagService
      */
     public function getDepartmentsIds($regionId)
     {
-        $this->logger->info('*** getDepartmentsIds');
+        // $this->logger->info('*** getDepartmentsIds');
 
         $departmentIds = array();
 
@@ -300,7 +300,7 @@ class TagService
      */
     public function getDepartmentsUuids($regionId)
     {
-        $this->logger->info('*** getDepartmentsUuids');
+        // $this->logger->info('*** getDepartmentsUuids');
 
         $mapTags = array();
 
@@ -440,8 +440,8 @@ class TagService
      */
     public function getCityIds($departmentId)
     {
-        $this->logger->info('*** getCityIds');
-        $this->logger->info('$departmentId = '.print_r($departmentId, true));
+        // $this->logger->info('*** getCityIds');
+        // $this->logger->info('$departmentId = '.print_r($departmentId, true));
 
         $cityIds = PTagQuery::create()
             ->select('Id')
@@ -460,8 +460,8 @@ class TagService
      */
     public function getMostPopularTags($keywords = null)
     {
-        $this->logger->info('*** getMostPopularTags');
-        $this->logger->info('$keywords = '.print_r($keywords, true));
+        // $this->logger->info('*** getMostPopularTags');
+        // $this->logger->info('$keywords = '.print_r($keywords, true));
 
         $interval = null;
         if ($keywords && (in_array(ListingConstants::FILTER_KEYWORD_LAST_DAY, $keywords))) {

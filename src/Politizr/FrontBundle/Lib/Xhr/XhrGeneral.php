@@ -46,11 +46,11 @@ class XhrGeneral
      */
     public function showSuggestion(Request $request)
     {
-        $this->logger->info('*** showSuggestion');
+        // $this->logger->info('*** showSuggestion');
 
         // Request arguments
         $show = $request->get('show');
-        $this->logger->info('$show = ' . print_r($show, true));
+        // $this->logger->info('$show = ' . print_r($show, true));
         
         if ($show == "true") {
             $show = true;

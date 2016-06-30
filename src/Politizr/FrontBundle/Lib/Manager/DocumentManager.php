@@ -1059,7 +1059,7 @@ GROUP BY p_d_debate_id
      */
     public function generateHomepagePublications($limit)
     {
-        $this->logger->info('*** generateHomepagePublications');
+        // $this->logger->info('*** generateHomepagePublications');
 
         $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
 
@@ -1105,14 +1105,14 @@ GROUP BY p_d_debate_id
      */
     public function generatePublicationsByFiltersPaginated($inQueryTagIds, $filterPublication, $filterProfile, $filterActivity, $filterDate, $offset, $limit)
     {
-        $this->logger->info('*** generatePublicationsByFiltersPaginated');
-        $this->logger->info('$inQueryTagIds = ' . print_r($inQueryTagIds, true));
-        $this->logger->info('$filterPublication = ' . print_r($filterPublication, true));
-        $this->logger->info('$filterProfile = ' . print_r($filterProfile, true));
-        $this->logger->info('$filterActivity = ' . print_r($filterActivity, true));
-        $this->logger->info('$filterDate = ' . print_r($filterDate, true));
-        $this->logger->info('$offset = ' . print_r($offset, true));
-        $this->logger->info('$limit = ' . print_r($limit, true));
+        // $this->logger->info('*** generatePublicationsByFiltersPaginated');
+        // $this->logger->info('$inQueryTagIds = ' . print_r($inQueryTagIds, true));
+        // $this->logger->info('$filterPublication = ' . print_r($filterPublication, true));
+        // $this->logger->info('$filterProfile = ' . print_r($filterProfile, true));
+        // $this->logger->info('$filterActivity = ' . print_r($filterActivity, true));
+        // $this->logger->info('$filterDate = ' . print_r($filterDate, true));
+        // $this->logger->info('$offset = ' . print_r($offset, true));
+        // $this->logger->info('$limit = ' . print_r($limit, true));
 
         $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
 
@@ -1150,11 +1150,11 @@ GROUP BY p_d_debate_id
      */
     public function generatePublicationsByUserPaginated($userId, $orderBy, $offset, $limit)
     {
-        $this->logger->info('*** generatePublicationsByUserPaginated');
-        $this->logger->info('$userId = ' . print_r($userId, true));
-        $this->logger->info('$orderBy = ' . print_r($orderBy, true));
-        $this->logger->info('$offset = ' . print_r($offset, true));
-        $this->logger->info('$limit = ' . print_r($limit, true));
+        // $this->logger->info('*** generatePublicationsByUserPaginated');
+        // $this->logger->info('$userId = ' . print_r($userId, true));
+        // $this->logger->info('$orderBy = ' . print_r($orderBy, true));
+        // $this->logger->info('$offset = ' . print_r($offset, true));
+        // $this->logger->info('$limit = ' . print_r($limit, true));
 
         $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
         $stmt = $con->prepare($this->createPublicationsByUserRawSql($orderBy));
@@ -1239,11 +1239,11 @@ GROUP BY p_d_debate_id
      */
     public function generateDocumentsByOrganizationPaginated($organizationId, $orderBy, $offset, $limit)
     {
-        $this->logger->info('*** generateDocumentsByOrganizationPaginated');
-        $this->logger->info('$organizationId = ' . print_r($organizationId, true));
-        $this->logger->info('$orderBy = ' . print_r($orderBy, true));
-        $this->logger->info('$offset = ' . print_r($offset, true));
-        $this->logger->info('$limit = ' . print_r($limit, true));
+        // $this->logger->info('*** generateDocumentsByOrganizationPaginated');
+        // $this->logger->info('$organizationId = ' . print_r($organizationId, true));
+        // $this->logger->info('$orderBy = ' . print_r($orderBy, true));
+        // $this->logger->info('$offset = ' . print_r($offset, true));
+        // $this->logger->info('$limit = ' . print_r($limit, true));
 
         $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
         $stmt = $con->prepare($this->createDocumentsByOrganizationRawSql($orderBy));
@@ -1289,11 +1289,11 @@ GROUP BY p_d_debate_id
      */
     public function generateDocumentsByTagsPaginated($inQueryTagIds, $orderBy, $offset, $limit)
     {
-        $this->logger->info('*** generateUserSuggestedDebatesPaginatedListing');
-        $this->logger->info('$inQueryTagIds = ' . print_r($inQueryTagIds, true));
-        $this->logger->info('$orderBy = ' . print_r($orderBy, true));
-        $this->logger->info('$offset = ' . print_r($offset, true));
-        $this->logger->info('$limit = ' . print_r($limit, true));
+        // $this->logger->info('*** generateUserSuggestedDebatesPaginatedListing');
+        // $this->logger->info('$inQueryTagIds = ' . print_r($inQueryTagIds, true));
+        // $this->logger->info('$orderBy = ' . print_r($orderBy, true));
+        // $this->logger->info('$offset = ' . print_r($offset, true));
+        // $this->logger->info('$limit = ' . print_r($limit, true));
 
         $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
         $stmt = $con->prepare($this->createDocumentsByTagsRawSql($inQueryTagIds, $orderBy));
@@ -1333,8 +1333,8 @@ GROUP BY p_d_debate_id
      */
     public function generateTopDocumentsBestNote($limit)
     {
-        $this->logger->info('*** generateTopDocumentsBestNote');
-        $this->logger->info('$limit = ' . print_r($limit, true));
+        // $this->logger->info('*** generateTopDocumentsBestNote');
+        // $this->logger->info('$limit = ' . print_r($limit, true));
 
         $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
         $stmt = $con->prepare($this->createTopDocumentsBestNoteRawSql());
@@ -1376,11 +1376,11 @@ GROUP BY p_d_debate_id
      */
     public function generateUserDocumentsSuggestion($userId, $inQueryDebateIds, $inQueryUserIds, $limit)
     {
-        $this->logger->info('*** generateUserDocumentsSuggestion');
-        $this->logger->info('$userId = ' . print_r($userId, true));
-        $this->logger->info('$debateIds = ' . print_r($inQueryDebateIds, true));
-        $this->logger->info('$userIds = ' . print_r($inQueryUserIds, true));
-        $this->logger->info('$limit = ' . print_r($limit, true));
+        // $this->logger->info('*** generateUserDocumentsSuggestion');
+        // $this->logger->info('$userId = ' . print_r($userId, true));
+        // $this->logger->info('$debateIds = ' . print_r($inQueryDebateIds, true));
+        // $this->logger->info('$userIds = ' . print_r($inQueryUserIds, true));
+        // $this->logger->info('$limit = ' . print_r($limit, true));
 
         $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
         $stmt = $con->prepare($this->createUserSuggestedDebatesRawSql($inQueryDebateIds, $inQueryUserIds));
@@ -1414,8 +1414,8 @@ GROUP BY p_d_debate_id
      */
     public function generateDocumentsLastPublished($limit)
     {
-        $this->logger->info('*** generateDocumentsLastPublished');
-        $this->logger->info('$limit = ' . print_r($limit, true));
+        // $this->logger->info('*** generateDocumentsLastPublished');
+        // $this->logger->info('$limit = ' . print_r($limit, true));
 
         $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
         $stmt = $con->prepare($this->createDocumentsLastPublishedRawSql());
@@ -1457,10 +1457,10 @@ GROUP BY p_d_debate_id
      */
     public function generateMyDraftsPaginatedListing($userId, $offset, $limit)
     {
-        $this->logger->info('*** generateMyDraftsPaginatedListing');
-        $this->logger->info('$userId = ' . print_r($userId, true));
-        $this->logger->info('$offset = ' . print_r($offset, true));
-        $this->logger->info('$limit = ' . print_r($limit, true));
+        // $this->logger->info('*** generateMyDraftsPaginatedListing');
+        // $this->logger->info('$userId = ' . print_r($userId, true));
+        // $this->logger->info('$offset = ' . print_r($offset, true));
+        // $this->logger->info('$limit = ' . print_r($limit, true));
 
         $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
         $stmt = $con->prepare($this->createMyDraftsRawSql());
@@ -1502,8 +1502,8 @@ GROUP BY p_d_debate_id
      */
     public function generateNbUserDocumentReactionsLevel1($userId)
     {
-        $this->logger->info('*** generateNbUserDocumentReactionsLevel1');
-        $this->logger->info('$userId = ' . print_r($userId, true));
+        // $this->logger->info('*** generateNbUserDocumentReactionsLevel1');
+        // $this->logger->info('$userId = ' . print_r($userId, true));
 
         $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
         $stmt = $con->prepare($this->createNbUserDocumentReactionsLevel1RawSql());
@@ -1532,8 +1532,8 @@ GROUP BY p_d_debate_id
      */
     public function generateNbUserDebateFirstReaction($userId)
     {
-        $this->logger->info('*** generateNbUserDebateFirstReaction');
-        $this->logger->info('$userId = ' . print_r($userId, true));
+        // $this->logger->info('*** generateNbUserDebateFirstReaction');
+        // $this->logger->info('$userId = ' . print_r($userId, true));
 
         $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
         $stmt = $con->prepare($this->createNbUserDebateFirstReaction());

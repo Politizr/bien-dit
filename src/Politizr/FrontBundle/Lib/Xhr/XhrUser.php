@@ -126,13 +126,13 @@ class XhrUser
      */
     public function follow(Request $request)
     {
-        $this->logger->info('*** follow');
+        // $this->logger->info('*** follow');
         
         // Request arguments
         $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
         $way = $request->get('way');
-        $this->logger->info('$way = ' . print_r($way, true));
+        // $this->logger->info('$way = ' . print_r($way, true));
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -184,7 +184,7 @@ class XhrUser
      */
     public function userProfileUpdate(Request $request)
     {
-        $this->logger->info('*** userProfileUpdate');
+        // $this->logger->info('*** userProfileUpdate');
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -209,7 +209,7 @@ class XhrUser
      */
     public function userPhotoUpload(Request $request)
     {
-        $this->logger->info('*** userPhotoUpload');
+        // $this->logger->info('*** userPhotoUpload');
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -246,7 +246,7 @@ class XhrUser
      */
     public function userPhotoDelete(Request $request)
     {
-        $this->logger->info('*** userPhotoDelete');
+        // $this->logger->info('*** userPhotoDelete');
         
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -279,7 +279,7 @@ class XhrUser
      */
     public function orgaProfileUpdate(Request $request)
     {
-        $this->logger->info('*** orgaProfileUpdate');
+        // $this->logger->info('*** orgaProfileUpdate');
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -310,7 +310,7 @@ class XhrUser
      */
     public function mandateProfileCreate(Request $request)
     {
-        $this->logger->info('*** mandateProfileCreate');
+        // $this->logger->info('*** mandateProfileCreate');
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -364,11 +364,11 @@ class XhrUser
      */
     public function mandateProfileUpdate(Request $request)
     {
-        $this->logger->info('*** mandateProfileCreate');
+        // $this->logger->info('*** mandateProfileCreate');
 
         // Request arguments
         $uuid = $request->get('mandate')['uuid'];
-        $this->logger->info('uuid = ' . print_r($uuid, true));
+        // $this->logger->info('uuid = ' . print_r($uuid, true));
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -411,11 +411,11 @@ class XhrUser
      */
     public function mandateProfileDelete(Request $request)
     {
-        $this->logger->info('*** mandateProfileDelete');
+        // $this->logger->info('*** mandateProfileDelete');
         
         // Request arguments
         $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -450,11 +450,11 @@ class XhrUser
      */
     public function userPersoUpdate(Request $request)
     {
-        $this->logger->info('*** userPersoUpdate');
+        // $this->logger->info('*** userPersoUpdate');
 
         // Request arguments
         $formTypeId = $request->get('user')['form_type_id'];
-        $this->logger->info('$formTypeId = '.print_r($formTypeId, true));
+        // $this->logger->info('$formTypeId = '.print_r($formTypeId, true));
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -510,11 +510,11 @@ class XhrUser
      */
     public function reputationScore(Request $request)
     {
-        $this->logger->info('*** reputationScore');
+        // $this->logger->info('*** reputationScore');
 
         // Request arguments
         $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
 
         $user = PUserQuery::create()->filterByUuid($uuid)->findOne();
         if (!$user) {
@@ -542,11 +542,11 @@ class XhrUser
      */
     public function badgesScore(Request $request)
     {
-        $this->logger->info('*** badgesScore');
+        // $this->logger->info('*** badgesScore');
 
         // Request arguments
         $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
 
         $user = PUserQuery::create()->filterByUuid($uuid)->findOne();
         if (!$user) {
@@ -582,11 +582,11 @@ class XhrUser
      */
     public function timelinePaginated(Request $request)
     {
-        $this->logger->info('*** timelinePaginated');
+        // $this->logger->info('*** timelinePaginated');
 
         // Request arguments
         $offset = $request->get('offset');
-        $this->logger->info('$offset = ' . print_r($offset, true));
+        // $this->logger->info('$offset = ' . print_r($offset, true));
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -628,13 +628,13 @@ class XhrUser
      */
     public function timelineUserPaginated(Request $request)
     {
-        $this->logger->info('*** timelineUserPaginated');
+        // $this->logger->info('*** timelineUserPaginated');
 
         // Request arguments
         $offset = $request->get('offset');
-        $this->logger->info('$offset = ' . print_r($offset, true));
+        // $this->logger->info('$offset = ' . print_r($offset, true));
         $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
 
         $user = PUserQuery::create()->filterByUuid($uuid)->findOne();
         if (!$user) {
@@ -684,11 +684,11 @@ class XhrUser
      */
     public function detailContent(Request $request)
     {
-        $this->logger->info('*** detailContent');
+        // $this->logger->info('*** detailContent');
 
         // Request arguments
         $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
 
         $user = PUserQuery::create()->filterByUuid($uuid)->findOne();
         if (!$user) {
@@ -718,11 +718,11 @@ class XhrUser
      */
     public function listingFollowersContent(Request $request)
     {
-        $this->logger->info('*** listingFollowersContent');
+        // $this->logger->info('*** listingFollowersContent');
 
         // Request arguments
         $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
 
         $user = PUserQuery::create()->filterByUuid($uuid)->findOne();
         if (!$user) {
@@ -752,11 +752,11 @@ class XhrUser
      */
     public function listingSubscribersContent(Request $request)
     {
-        $this->logger->info('*** listingSubscribersContent');
+        // $this->logger->info('*** listingSubscribersContent');
 
         // Request arguments
         $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
 
         $user = PUserQuery::create()->filterByUuid($uuid)->findOne();
         if (!$user) {
@@ -790,11 +790,11 @@ class XhrUser
      */
     public function lastDebateFollowers(Request $request)
     {
-        $this->logger->info('*** lastDebateFollowers');
+        // $this->logger->info('*** lastDebateFollowers');
 
         // Request arguments
         $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
 
         $debate = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
         if (!$debate) {
@@ -831,13 +831,13 @@ class XhrUser
      */
     public function debateFollowers(Request $request)
     {
-        $this->logger->info('*** debateFollowers');
+        // $this->logger->info('*** debateFollowers');
 
         // Request arguments
         $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
         $offset = $request->get('offset');
-        $this->logger->info('$offset = ' . print_r($offset, true));
+        // $this->logger->info('$offset = ' . print_r($offset, true));
 
         $debate = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
         if (!$debate) {
@@ -888,11 +888,11 @@ class XhrUser
      */
     public function lastUserFollowers(Request $request)
     {
-        $this->logger->info('*** lastUserFollowers');
+        // $this->logger->info('*** lastUserFollowers');
 
         // Request arguments
         $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
 
         $user = PUserQuery::create()->filterByUuid($uuid)->findOne();
         if (!$user) {
@@ -930,13 +930,13 @@ class XhrUser
      */
     public function userFollowers(Request $request)
     {
-        $this->logger->info('*** userFollowers');
+        // $this->logger->info('*** userFollowers');
 
         // Request arguments
         $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
         $offset = $request->get('offset');
-        $this->logger->info('$offset = ' . print_r($offset, true));
+        // $this->logger->info('$offset = ' . print_r($offset, true));
 
         $user = PUserQuery::create()->filterByUuid($uuid)->findOne();
         if (!$user) {
@@ -986,11 +986,11 @@ class XhrUser
      */
     public function lastUserSubscribers(Request $request)
     {
-        $this->logger->info('*** lastUserSubscribers');
+        // $this->logger->info('*** lastUserSubscribers');
 
         // Request arguments
         $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
 
         $user = PUserQuery::create()->filterByUuid($uuid)->findOne();
         if (!$user) {
@@ -1028,13 +1028,13 @@ class XhrUser
      */
     public function userSubscribers(Request $request)
     {
-        $this->logger->info('*** userSubscribers');
+        // $this->logger->info('*** userSubscribers');
 
         // Request arguments
         $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
         $offset = $request->get('offset');
-        $this->logger->info('$offset = ' . print_r($offset, true));
+        // $this->logger->info('$offset = ' . print_r($offset, true));
 
         $user = PUserQuery::create()->filterByUuid($uuid)->findOne();
         if (!$user) {
@@ -1084,11 +1084,11 @@ class XhrUser
      */
     public function userMiniBadges(Request $request)
     {
-        $this->logger->info('*** userMiniBadges');
+        // $this->logger->info('*** userMiniBadges');
 
         // Request arguments
         $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
 
         $user = PUserQuery::create()->filterByUuid($uuid)->findOne();
         if (!$user) {
@@ -1119,19 +1119,19 @@ class XhrUser
      */
     public function usersByFilters(Request $request)
     {
-        $this->logger->info('*** usersByFilters');
+        // $this->logger->info('*** usersByFilters');
         
         // Request arguments
         $offset = $request->get('offset');
-        $this->logger->info('$offset = ' . print_r($offset, true));
+        // $this->logger->info('$offset = ' . print_r($offset, true));
         $geoTagUuid = $request->get('geoTagUuid');
-        $this->logger->info('$geoTagUuid = ' . print_r($geoTagUuid, true));
+        // $this->logger->info('$geoTagUuid = ' . print_r($geoTagUuid, true));
         $filterProfile = $request->get('filterProfile');
-        $this->logger->info('$filterProfile = ' . print_r($filterProfile, true));
+        // $this->logger->info('$filterProfile = ' . print_r($filterProfile, true));
         $filterActivity = $request->get('filterActivity');
-        $this->logger->info('$filterActivity = ' . print_r($filterActivity, true));
+        // $this->logger->info('$filterActivity = ' . print_r($filterActivity, true));
         $filterDate = $request->get('filterDate');
-        $this->logger->info('$filterDate = ' . print_r($filterDate, true));
+        // $this->logger->info('$filterDate = ' . print_r($filterDate, true));
 
         // set default values if not set
         if (empty($geoTagUuid)) {

@@ -50,7 +50,7 @@ class EmailListener
      */
     public function onLostPasswordEmail(GenericEvent $event)
     {
-        $this->logger->info('*** onLostPasswordEmail');
+        // $this->logger->info('*** onLostPasswordEmail');
 
         $user = $event->getSubject();
         try {
@@ -83,7 +83,7 @@ class EmailListener
             $failedRecipients = array();
             $send = $this->mailer->send($message, $failedRecipients);
 
-            $this->logger->info('send = '.print_r($send, true));
+            // $this->logger->info('send = '.print_r($send, true));
             if (!$send) {
                 throw new \Exception('email non envoyé - code retour = '.$send.' - adresse(s) en échec = '.print_r($failedRecipients, true));
             }
@@ -103,7 +103,7 @@ class EmailListener
      */
     public function onUpdPasswordEmail(GenericEvent $event)
     {
-        $this->logger->info('*** onUpdPasswordEmail');
+        // $this->logger->info('*** onUpdPasswordEmail');
 
         $user = $event->getSubject();
         try {
@@ -128,7 +128,7 @@ class EmailListener
             $failedRecipients = array();
             $send = $this->mailer->send($message, $failedRecipients);
 
-            $this->logger->info('send = '.print_r($send, true));
+            // $this->logger->info('send = '.print_r($send, true));
             if (!$send) {
                 throw new \Exception('email non envoyé - code retour = '.$send.' - adresse(s) en échec = '.print_r($failedRecipients, true));
             }
@@ -148,7 +148,7 @@ class EmailListener
      */
     public function onMonitoringEmail(GenericEvent $event)
     {
-        $this->logger->info('*** onMonitoringEmail');
+        // $this->logger->info('*** onMonitoringEmail');
 
         // subject implements PMonitoredInterface
         $monitored = $event->getSubject();
@@ -180,7 +180,7 @@ class EmailListener
             $failedRecipients = array();
             $send = $this->mailer->send($message, $failedRecipients);
 
-            $this->logger->info('send = '.print_r($send, true));
+            // $this->logger->info('send = '.print_r($send, true));
             if (!$send) {
                 throw new \Exception('email non envoyé - code retour = '.$send.' - adresse(s) en échec = '.print_r($failedRecipients, true));
             }
@@ -197,7 +197,7 @@ class EmailListener
      */
     public function onNotificationEmail(GenericEvent $event)
     {
-        $this->logger->info('*** onNotificationEmail');
+        // $this->logger->info('*** onNotificationEmail');
 
         $puNotifications = $event->getSubject();
         $userEmail = $event->getArgument('user_email');
@@ -240,7 +240,7 @@ class EmailListener
             $failedRecipients = array();
             $send = $this->mailer->send($message, $failedRecipients);
 
-            $this->logger->info('send = '.print_r($send, true));
+            // $this->logger->info('send = '.print_r($send, true));
             if (!$send) {
                 throw new \Exception('email non envoyé - code retour = '.$send.' - adresse(s) en échec = '.print_r($failedRecipients, true));
             }
@@ -258,7 +258,7 @@ class EmailListener
      */
     public function onWelcomeEmail(GenericEvent $event)
     {
-        $this->logger->info('*** onWelcomeEmail');
+        // $this->logger->info('*** onWelcomeEmail');
 
         $user = $event->getSubject();
         try {
@@ -289,7 +289,7 @@ class EmailListener
             $failedRecipients = array();
             $send = $this->mailer->send($message, $failedRecipients);
 
-            $this->logger->info('send = '.print_r($send, true));
+            // $this->logger->info('send = '.print_r($send, true));
             if (!$send) {
                 throw new \Exception('email non envoyé - code retour = '.$send.' - adresse(s) en échec = '.print_r($failedRecipients, true));
             }
@@ -309,7 +309,7 @@ class EmailListener
      */
     public function onIdcheckTraceEmail(GenericEvent $event)
     {
-        $this->logger->info('*** onIdcheckTraceEmail');
+        // $this->logger->info('*** onIdcheckTraceEmail');
 
         $lastResult = $event->getSubject();
         try {
@@ -333,7 +333,7 @@ class EmailListener
             $failedRecipients = array();
             $send = $this->mailer->send($message, $failedRecipients);
 
-            $this->logger->info('send = '.print_r($send, true));
+            // $this->logger->info('send = '.print_r($send, true));
             if (!$send) {
                 throw new \Exception('email non envoyé - code retour = '.$send.' - adresse(s) en échec = '.print_r($failedRecipients, true));
             }

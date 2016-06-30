@@ -220,7 +220,7 @@ class PolitizrTagExtension extends \Twig_Extension
      */
     public function debateTagsEdit($debate, $tagTypeId, $zoneId = 1, $newTag = false)
     {
-        $this->logger->info('*** debateTagsEdit');
+        // $this->logger->info('*** debateTagsEdit');
         // $this->logger->info('$debate = '.print_r($debate, true));
         // $this->logger->info('$tagTypeId = '.print_r($tagTypeId, true));
         // $this->logger->info('$zoneId = '.print_r($zoneId, true));
@@ -275,7 +275,7 @@ class PolitizrTagExtension extends \Twig_Extension
      */
     public function reactionTagsEdit($reaction, $tagTypeId, $zoneId = 1, $newTag = false)
     {
-        $this->logger->info('*** reactionTagsEdit');
+        // $this->logger->info('*** reactionTagsEdit');
         // $this->logger->info('$reaction = '.print_r($reaction, true));
         // $this->logger->info('$tagTypeId = '.print_r($tagTypeId, true));
         // $this->logger->info('$zoneId = '.print_r($zoneId, true));
@@ -331,7 +331,7 @@ class PolitizrTagExtension extends \Twig_Extension
      */
     public function userTagsEdit($user, $tagTypeId, $zoneId = 1, $newTag = false, $withHidden = true)
     {
-        $this->logger->info('*** userTagsEdit');
+        // $this->logger->info('*** userTagsEdit');
         // $this->logger->info('$debate = '.print_r($user, true));
         // $this->logger->info('$tagTypeId = '.print_r($tagTypeId, true));
         // $this->logger->info('$zoneId = '.print_r($zoneId, true));
@@ -403,8 +403,8 @@ class PolitizrTagExtension extends \Twig_Extension
      */
     public function geoTagBreadcrumb($geoTagUuid = null)
     {
-        $this->logger->info('*** geoTagBreadcrumb');
-        $this->logger->info('$geoTagUuid = '.print_r($geoTagUuid, true));
+        // $this->logger->info('*** geoTagBreadcrumb');
+        // $this->logger->info('$geoTagUuid = '.print_r($geoTagUuid, true));
 
         $tag = PTagQuery::create()->filterByPTTagTypeId(TagConstants::TAG_TYPE_GEO)->filterByUuid($geoTagUuid)->findOne();
         if (!$tag) {

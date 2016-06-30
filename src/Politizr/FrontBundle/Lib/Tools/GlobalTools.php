@@ -427,7 +427,7 @@ class GlobalTools
      */
     public function hydrateTimelineRows($result)
     {
-        $this->logger->info('*** hydrateTimelineRows');
+        // $this->logger->info('*** hydrateTimelineRows');
 
         $timeline = array();
         if ($result) {
@@ -457,7 +457,7 @@ class GlobalTools
      */
     public function hydratePublication($result)
     {
-        $this->logger->info('*** hydratePublication');
+        // $this->logger->info('*** hydratePublication');
 
         $publications = array();
         if ($result) {

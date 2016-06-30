@@ -39,7 +39,7 @@ class ReputationListener
      */
     public function onRDebatePublish(GenericEvent $event)
     {
-        $this->logger->info('*** onRDebatePublish');
+        // $this->logger->info('*** onRDebatePublish');
 
         $subject = $event->getSubject();
         $userId = $event->getArgument('user_id');
@@ -57,7 +57,7 @@ class ReputationListener
      */
     public function onRReactionPublish(GenericEvent $event)
     {
-        $this->logger->info('*** onRReactionPublish');
+        // $this->logger->info('*** onRReactionPublish');
 
         // Réaction de la réaction
         $subject = $event->getSubject();
@@ -102,7 +102,7 @@ class ReputationListener
      */
     public function onRCommentPublish(GenericEvent $event)
     {
-        $this->logger->info('*** onRCommentPublish');
+        // $this->logger->info('*** onRCommentPublish');
 
         $subject = $event->getSubject();
         $userId = $event->getArgument('user_id');
@@ -138,7 +138,7 @@ class ReputationListener
      */
     public function onRNotePos(GenericEvent $event)
     {
-        $this->logger->info('*** onRNotePos');
+        // $this->logger->info('*** onRNotePos');
 
         $subject = $event->getSubject();
         $userId = $event->getArgument('user_id');
@@ -193,7 +193,7 @@ class ReputationListener
      */
     public function onRNoteNeg(GenericEvent $event)
     {
-        $this->logger->info('*** onRNoteNeg');
+        // $this->logger->info('*** onRNoteNeg');
 
         $subject = $event->getSubject();
         $userId = $event->getArgument('user_id');
@@ -249,7 +249,7 @@ class ReputationListener
      */
     public function onRDebateFollow(GenericEvent $event)
     {
-        $this->logger->info('*** onRDebateFollow');
+        // $this->logger->info('*** onRDebateFollow');
 
         $subject = $event->getSubject();
         $userId = $event->getArgument('user_id');
@@ -275,7 +275,7 @@ class ReputationListener
      */
     public function onRUserFollow(GenericEvent $event)
     {
-        $this->logger->info('*** onRUserFollow');
+        // $this->logger->info('*** onRUserFollow');
 
         $subject = $event->getSubject();
         $userId = $event->getArgument('user_id');
@@ -299,7 +299,7 @@ class ReputationListener
      */
     public function onRDebateUnfollow(GenericEvent $event)
     {
-        $this->logger->info('*** onRDebateUnfollow');
+        // $this->logger->info('*** onRDebateUnfollow');
 
         $subject = $event->getSubject();
         $userId = $event->getArgument('user_id');
@@ -325,7 +325,7 @@ class ReputationListener
      */
     public function onRUserUnfollow(GenericEvent $event)
     {
-        $this->logger->info('*** onRUserUnfollow');
+        // $this->logger->info('*** onRUserUnfollow');
 
         $subject = $event->getSubject();
         $userId = $event->getArgument('user_id');
@@ -356,11 +356,11 @@ class ReputationListener
      */
     private function insertPUReputation($userId, $prActionId, $objectName, $objectId)
     {
-        $this->logger->info('*** insertPUReputation');
-        $this->logger->info('userId = '.print_r($userId, true));
-        $this->logger->info('prActionId = '.print_r($prActionId, true));
-        $this->logger->info('objectName = '.print_r($objectName, true));
-        $this->logger->info('objectId = '.print_r($objectId, true));
+        // $this->logger->info('*** insertPUReputation');
+        // $this->logger->info('userId = '.print_r($userId, true));
+        // $this->logger->info('prActionId = '.print_r($prActionId, true));
+        // $this->logger->info('objectName = '.print_r($objectName, true));
+        // $this->logger->info('objectId = '.print_r($objectId, true));
 
         $userRepAction = new PUReputation();
 

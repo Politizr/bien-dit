@@ -40,20 +40,16 @@ class XhrBubble
     /*                                         PRIVATE FUNCTIONS                                                */
     /* ######################################################################################################## */
 
-    /* ######################################################################################################## */
-    /*                                   DASHBOARD MAP LOADING                                                  */
-    /* ######################################################################################################## */
-
     /**
      * User's bubble
      */
     public function user(Request $request)
     {
-        $this->logger->info('*** user');
+        // $this->logger->info('*** user');
         
         // Request arguments
         $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
 
         // get user
         $user = PUserQuery::create()->filterByUuid($uuid)->findOne();
@@ -75,11 +71,11 @@ class XhrBubble
      */
     public function tag(Request $request)
     {
-        $this->logger->info('*** tag');
+        // $this->logger->info('*** tag');
         
         // Request arguments
         $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
 
         // get tag
         $tag = PTagQuery::create()->filterByUuid($uuid)->findOne();

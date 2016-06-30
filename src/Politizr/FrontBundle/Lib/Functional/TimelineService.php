@@ -174,10 +174,10 @@ class TimelineService
      */
     public function getMyTimelinePaginatedListing($userId, $offset = 0, $count = ListingConstants::TIMELINE_CLASSIC_PAGINATION)
     {
-        $this->logger->info('*** getMyTimelineDateKeyPaginatedListing');
-        $this->logger->info('userId = '.print_r($userId, true));
-        $this->logger->info('offset = '.print_r($offset, true));
-        $this->logger->info('count = '.print_r($count, true));
+        // $this->logger->info('*** getMyTimelineDateKeyPaginatedListing');
+        // $this->logger->info('userId = '.print_r($userId, true));
+        // $this->logger->info('offset = '.print_r($offset, true));
+        // $this->logger->info('count = '.print_r($count, true));
         
         // Récupération d'un tableau des ids des débats suivis
         $debateIds = $this->getFollowedDebatesIdsArray($userId);
@@ -261,10 +261,10 @@ class TimelineService
      */
     public function getUserDetailTimelinePaginatedListing($userId, $offset = 0, $count = ListingConstants::TIMELINE_USER_CLASSIC_PAGINATION)
     {
-        $this->logger->info('*** getUserDetailTimelinePaginatedListing');
-        $this->logger->info('userId = '.print_r($userId, true));
-        $this->logger->info('offset = '.print_r($offset, true));
-        $this->logger->info('count = '.print_r($count, true));
+        // $this->logger->info('*** getUserDetailTimelinePaginatedListing');
+        // $this->logger->info('userId = '.print_r($userId, true));
+        // $this->logger->info('offset = '.print_r($offset, true));
+        // $this->logger->info('count = '.print_r($count, true));
 
         $timeline = $this->userManager->generateUserDetailTimelinePaginatedListing($userId, $offset, $count);
 

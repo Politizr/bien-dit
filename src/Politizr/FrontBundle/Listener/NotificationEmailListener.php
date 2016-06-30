@@ -39,7 +39,7 @@ class NotificationEmailListener
      */
     public function onNECheck(GenericEvent $event)
     {
-        $this->logger->info('*** onNECheck');
+        // $this->logger->info('*** onNECheck');
 
         $puNotification = $event->getSubject();
 

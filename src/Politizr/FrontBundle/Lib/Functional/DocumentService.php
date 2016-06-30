@@ -416,7 +416,7 @@ class DocumentService
      */
     public function createDebate()
     {
-        $this->logger->info('*** createDebate');
+        // $this->logger->info('*** createDebate');
 
         $user = $this->securityTokenStorage->getToken()->getUser();
         $debate = $this->documentManager->createDebate($user->getId());
@@ -433,7 +433,7 @@ class DocumentService
      */
     public function createReaction(PDDebate $debate, PDReaction $parent = null)
     {
-        $this->logger->info('*** createReaction');
+        // $this->logger->info('*** createReaction');
 
         $user = $this->securityTokenStorage->getToken()->getUser();
 
@@ -475,7 +475,7 @@ class DocumentService
      */
     public function canUserNoteDocument(PUser $user, $object, $way)
     {
-        $this->logger->info('*** canUserNoteDocument');
+        // $this->logger->info('*** canUserNoteDocument');
         // $this->logger->info('$user = '.print_r($user, true));
         // $this->logger->info('$object = '.print_r($object, true));
         // $this->logger->info('$way = '.print_r($way, true));
@@ -522,10 +522,10 @@ class DocumentService
      */
     public function computeDocumentContextAttributes($objectName, $objectId, $absolute = true)
     {
-        $this->logger->info('*** computeDocumentContextAttributes');
-        $this->logger->info('$objectName = '.print_r($objectName, true));
-        $this->logger->info('$objectId = '.print_r($objectId, true));
-        $this->logger->info('$absolute = '.print_r($absolute, true));
+        // $this->logger->info('*** computeDocumentContextAttributes');
+        // $this->logger->info('$objectName = '.print_r($objectName, true));
+        // $this->logger->info('$objectId = '.print_r($objectId, true));
+        // $this->logger->info('$absolute = '.print_r($absolute, true));
 
         $subject = null;
         $title = '';

@@ -49,7 +49,7 @@ class NotificationListener
      */
     public function onNNotePos(GenericEvent $event)
     {
-        $this->logger->info('*** onNNotePos');
+        // $this->logger->info('*** onNNotePos');
 
         $subject = $event->getSubject();
         $authorUserId = $event->getArgument('author_user_id');
@@ -90,7 +90,7 @@ class NotificationListener
      */
     public function onNNoteNeg(GenericEvent $event)
     {
-        $this->logger->info('*** onNNoteNeg');
+        // $this->logger->info('*** onNNoteNeg');
 
         $subject = $event->getSubject();
         $authorUserId = $event->getArgument('author_user_id');
@@ -131,7 +131,7 @@ class NotificationListener
      */
     public function onNDebatePublish(GenericEvent $event)
     {
-        $this->logger->info('*** onNDebatePublish');
+        // $this->logger->info('*** onNDebatePublish');
 
         $subject = $event->getSubject();
         $authorUserId = $event->getArgument('author_user_id');
@@ -166,7 +166,7 @@ class NotificationListener
      */
     public function onNReactionPublish(GenericEvent $event)
     {
-        $this->logger->info('*** onNDebateReactionPublish');
+        // $this->logger->info('*** onNDebateReactionPublish');
         
         $subject = $event->getSubject();
         $authorUserId = $event->getArgument('author_user_id');
@@ -285,7 +285,7 @@ class NotificationListener
      */
     public function onNCommentPublish(GenericEvent $event)
     {
-        $this->logger->info('*** onNCommentPublish');
+        // $this->logger->info('*** onNCommentPublish');
 
         $subject = $event->getSubject();
         $authorUserId = $event->getArgument('author_user_id');
@@ -385,7 +385,7 @@ class NotificationListener
      */
     public function onNDebateFollow(GenericEvent $event)
     {
-        $this->logger->info('*** onNDebateFollow');
+        // $this->logger->info('*** onNDebateFollow');
 
         $subject = $event->getSubject();
         $authorUserId = $event->getArgument('author_user_id');
@@ -415,7 +415,7 @@ class NotificationListener
      */
     public function onNUserFollow(GenericEvent $event)
     {
-        $this->logger->info('*** onNUserFollow');
+        // $this->logger->info('*** onNUserFollow');
 
         $subject = $event->getSubject();
         $authorUserId = $event->getArgument('author_user_id');
@@ -446,7 +446,7 @@ class NotificationListener
      */
     public function onNBadgeWin(GenericEvent $event)
     {
-        $this->logger->info('*** onNBadgeWin');
+        // $this->logger->info('*** onNBadgeWin');
 
         $subject = $event->getSubject();
         $pNotificationId = NotificationConstants::ID_U_BADGE;
@@ -485,12 +485,12 @@ class NotificationListener
      */
     private function insertPUNotification($userId, $authorUserId, $notificationId, $objectName, $objectId)
     {
-        $this->logger->info('*** insertPUNotification');
-        $this->logger->info('userId = '.print_r($userId, true));
-        $this->logger->info('authorUserId = '.print_r($authorUserId, true));
-        $this->logger->info('notificationId = '.print_r($notificationId, true));
-        $this->logger->info('objectName = '.print_r($objectName, true));
-        $this->logger->info('objectId = '.print_r($objectId, true));
+        // $this->logger->info('*** insertPUNotification');
+        // $this->logger->info('userId = '.print_r($userId, true));
+        // $this->logger->info('authorUserId = '.print_r($authorUserId, true));
+        // $this->logger->info('notificationId = '.print_r($notificationId, true));
+        // $this->logger->info('objectName = '.print_r($objectName, true));
+        // $this->logger->info('objectId = '.print_r($objectId, true));
 
         $notif = new PUNotification();
 

@@ -592,7 +592,7 @@ LIMIT :offset, :limit
      */
     public function generateHomepageUsers($limit)
     {
-        $this->logger->info('*** generateHomepageUsers');
+        // $this->logger->info('*** generateHomepageUsers');
 
         $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
 
@@ -645,18 +645,18 @@ LIMIT :offset, :limit
         $offset,
         $count
     ) {
-        $this->logger->info('*** generateMyTimelinePaginatedListing');
-        $this->logger->info('$userId = ' . print_r($userId, true));
-        $this->logger->info('$inQueryDebateIds = ' . print_r($inQueryDebateIds, true));
-        $this->logger->info('$inQueryUserIds = ' . print_r($inQueryUserIds, true));
-        $this->logger->info('$inQueryMyDebateIds = ' . print_r($inQueryMyDebateIds, true));
-        $this->logger->info('$inQueryMyReactionIds = ' . print_r($inQueryMyReactionIds, true));
-        $this->logger->info('$inQueryReputationIds = ' . print_r($inQueryReputationIds, true));
-        $this->logger->info('$inQueryReputationIds2 = ' . print_r($inQueryReputationIds2, true));
-        $this->logger->info('$inQueryReputationIds3 = ' . print_r($inQueryReputationIds3, true));
-        $this->logger->info('$inQueryReputationIds4 = ' . print_r($inQueryReputationIds4, true));
-        $this->logger->info('$offset = ' . print_r($offset, true));
-        $this->logger->info('$count = ' . print_r($count, true));
+        // $this->logger->info('*** generateMyTimelinePaginatedListing');
+        // $this->logger->info('$userId = ' . print_r($userId, true));
+        // $this->logger->info('$inQueryDebateIds = ' . print_r($inQueryDebateIds, true));
+        // $this->logger->info('$inQueryUserIds = ' . print_r($inQueryUserIds, true));
+        // $this->logger->info('$inQueryMyDebateIds = ' . print_r($inQueryMyDebateIds, true));
+        // $this->logger->info('$inQueryMyReactionIds = ' . print_r($inQueryMyReactionIds, true));
+        // $this->logger->info('$inQueryReputationIds = ' . print_r($inQueryReputationIds, true));
+        // $this->logger->info('$inQueryReputationIds2 = ' . print_r($inQueryReputationIds2, true));
+        // $this->logger->info('$inQueryReputationIds3 = ' . print_r($inQueryReputationIds3, true));
+        // $this->logger->info('$inQueryReputationIds4 = ' . print_r($inQueryReputationIds4, true));
+        // $this->logger->info('$offset = ' . print_r($offset, true));
+        // $this->logger->info('$count = ' . print_r($count, true));
 
         $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
         $stmt = $con->prepare($this->createMyTimelineRawSql(
@@ -724,10 +724,10 @@ LIMIT :offset, :limit
      */
     public function generateUserDetailTimelinePaginatedListing($userId, $offset, $count)
     {
-        $this->logger->info('*** generateUserDetailTimelinePaginatedListing');
-        $this->logger->info('$userId = ' . print_r($userId, true));
-        $this->logger->info('$offset = ' . print_r($offset, true));
-        $this->logger->info('$count = ' . print_r($count, true));
+        // $this->logger->info('*** generateUserDetailTimelinePaginatedListing');
+        // $this->logger->info('$userId = ' . print_r($userId, true));
+        // $this->logger->info('$offset = ' . print_r($offset, true));
+        // $this->logger->info('$count = ' . print_r($count, true));
 
         $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
         $stmt = $con->prepare($this->createUserDetailTimelineRawSql());
@@ -758,10 +758,10 @@ LIMIT :offset, :limit
      */
     public function generateUserSuggestedUsersPaginatedListing($userId, $offset, $limit)
     {
-        $this->logger->info('*** generateUserSuggestedUsersPaginatedListing');
-        $this->logger->info('$userId = ' . print_r($userId, true));
-        $this->logger->info('$offset = ' . print_r($offset, true));
-        $this->logger->info('$limit = ' . print_r($limit, true));
+        // $this->logger->info('*** generateUserSuggestedUsersPaginatedListing');
+        // $this->logger->info('$userId = ' . print_r($userId, true));
+        // $this->logger->info('$offset = ' . print_r($offset, true));
+        // $this->logger->info('$limit = ' . print_r($limit, true));
 
         $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
         $stmt = $con->prepare($this->createUserSuggestedUsersRawSql());

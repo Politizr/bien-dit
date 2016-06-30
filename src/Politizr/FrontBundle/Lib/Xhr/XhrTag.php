@@ -127,11 +127,11 @@ class XhrTag
      */
     public function getTags(Request $request)
     {
-        $this->logger->info('*** getTags');
+        // $this->logger->info('*** getTags');
 
         // Request arguments
         $tagTypeId = $request->get('tagTypeId');
-        $this->logger->info('$tagTypeId = ' . print_r($tagTypeId, true));
+        // $this->logger->info('$tagTypeId = ' . print_r($tagTypeId, true));
 
         // Function process
         if (empty($tagTypeId)) {
@@ -156,11 +156,11 @@ class XhrTag
      */
     public function mapBreadcrumb(Request $request)
     {
-        $this->logger->info('*** mapBreadcrumb');
+        // $this->logger->info('*** mapBreadcrumb');
 
         // Request arguments
         $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
 
         $tag = PTagQuery::create()->filterByUuid($uuid)->findOne();
         if (!$tag) {
@@ -195,11 +195,11 @@ class XhrTag
      */
     public function mapSchema(Request $request)
     {
-        $this->logger->info('*** mapSchema');
+        // $this->logger->info('*** mapSchema');
 
         // Request arguments
         $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
 
         $tag = PTagQuery::create()->filterByUuid($uuid)->findOne();
         if (!$tag) {
@@ -243,19 +243,19 @@ class XhrTag
      */
     public function debateAddTag(Request $request)
     {
-        $this->logger->info('*** debateAddTag');
+        // $this->logger->info('*** debateAddTag');
 
         // Request arguments
         $tagTitle = $request->get('tagTitle');
-        $this->logger->info('$tagTitle = ' . print_r($tagTitle, true));
+        // $this->logger->info('$tagTitle = ' . print_r($tagTitle, true));
         $tagUuid = $request->get('tagUuid');
-        $this->logger->info('$tagUuid = ' . print_r($tagUuid, true));
+        // $this->logger->info('$tagUuid = ' . print_r($tagUuid, true));
         $tagTypeId = $request->get('tagTypeId');
-        $this->logger->info('$tagTypeId = ' . print_r($tagTypeId, true));
+        // $this->logger->info('$tagTypeId = ' . print_r($tagTypeId, true));
         $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
         $newTag = $request->get('newTag');
-        $this->logger->info('$newTag = ' . print_r($newTag, true));
+        // $this->logger->info('$newTag = ' . print_r($newTag, true));
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -319,13 +319,13 @@ class XhrTag
      */
     public function debateDeleteTag(Request $request)
     {
-        $this->logger->info('*** debateDeleteTag');
+        // $this->logger->info('*** debateDeleteTag');
         
         // Request arguments
         $tagUuid = $request->get('tagUuid');
-        $this->logger->info('$tagUuid = ' . print_r($tagUuid, true));
+        // $this->logger->info('$tagUuid = ' . print_r($tagUuid, true));
         $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -352,19 +352,19 @@ class XhrTag
      */
     public function reactionAddTag(Request $request)
     {
-        $this->logger->info('*** reactionAddTag');
+        // $this->logger->info('*** reactionAddTag');
 
         // Request arguments
         $tagTitle = $request->get('tagTitle');
-        $this->logger->info('$tagTitle = ' . print_r($tagTitle, true));
+        // $this->logger->info('$tagTitle = ' . print_r($tagTitle, true));
         $tagUuid = $request->get('tagUuid');
-        $this->logger->info('$tagUuid = ' . print_r($tagUuid, true));
+        // $this->logger->info('$tagUuid = ' . print_r($tagUuid, true));
         $tagTypeId = $request->get('tagTypeId');
-        $this->logger->info('$tagTypeId = ' . print_r($tagTypeId, true));
+        // $this->logger->info('$tagTypeId = ' . print_r($tagTypeId, true));
         $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
         $newTag = $request->get('newTag');
-        $this->logger->info('$newTag = ' . print_r($newTag, true));
+        // $this->logger->info('$newTag = ' . print_r($newTag, true));
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -428,13 +428,13 @@ class XhrTag
      */
     public function reactionDeleteTag(Request $request)
     {
-        $this->logger->info('*** reactionDeleteTag');
+        // $this->logger->info('*** reactionDeleteTag');
         
         // Request arguments
         $tagUuid = $request->get('tagUuid');
-        $this->logger->info('$tagUuid = ' . print_r($tagUuid, true));
+        // $this->logger->info('$tagUuid = ' . print_r($tagUuid, true));
         $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -461,13 +461,13 @@ class XhrTag
      */
     public function follow(Request $request)
     {
-        $this->logger->info('*** follow');
+        // $this->logger->info('*** follow');
 
         // Request arguments
         $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
         $way = $request->get('way');
-        $this->logger->info('$way = ' . print_r($way, true));
+        // $this->logger->info('$way = ' . print_r($way, true));
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -508,21 +508,21 @@ class XhrTag
      */
     public function userAddTag(Request $request)
     {
-        $this->logger->info('*** userAddTag');
+        // $this->logger->info('*** userAddTag');
 
         // Request arguments
         $tagTitle = $request->get('tagTitle');
-        $this->logger->info('$tagTitle = ' . print_r($tagTitle, true));
+        // $this->logger->info('$tagTitle = ' . print_r($tagTitle, true));
         $tagUuid = $request->get('tagUuid');
-        $this->logger->info('$tagUuid = ' . print_r($tagUuid, true));
+        // $this->logger->info('$tagUuid = ' . print_r($tagUuid, true));
         $tagTypeId = $request->get('tagTypeId');
-        $this->logger->info('$tagTypeId = ' . print_r($tagTypeId, true));
+        // $this->logger->info('$tagTypeId = ' . print_r($tagTypeId, true));
         $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
         $newTag = $request->get('newTag');
-        $this->logger->info('$newTag = ' . print_r($newTag, true));
+        // $this->logger->info('$newTag = ' . print_r($newTag, true));
         $withHidden = $request->get('withHidden');
-        $this->logger->info('$withHidden = ' . print_r($withHidden, true));
+        // $this->logger->info('$withHidden = ' . print_r($withHidden, true));
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -598,13 +598,13 @@ class XhrTag
      */
     public function userDeleteTag(Request $request)
     {
-        $this->logger->info('*** userDeleteTag');
+        // $this->logger->info('*** userDeleteTag');
         
         // Request arguments
         $tagUuid = $request->get('tagUuid');
-        $this->logger->info('$tagUuid = ' . print_r($tagUuid, true));
+        // $this->logger->info('$tagUuid = ' . print_r($tagUuid, true));
         $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -632,11 +632,11 @@ class XhrTag
      */
     public function topTags(Request $request)
     {
-        $this->logger->info('*** topTags');
+        // $this->logger->info('*** topTags');
         
         // Request arguments
         $filters = $request->get('tagFilterDate');
-        $this->logger->info('$filters = ' . print_r($filters, true));
+        // $this->logger->info('$filters = ' . print_r($filters, true));
 
         // top tags
         $tags = $this->tagService->getMostPopularTags($filters);
@@ -659,11 +659,11 @@ class XhrTag
      */
     public function userTags(Request $request)
     {
-        $this->logger->info('*** userTags');
+        // $this->logger->info('*** userTags');
         
         // Request arguments
         $uuid = $request->get('uuid');
-        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
 
         $user = PUserQuery::create()->filterByUuid($uuid)->findOne();
         if (!$user) {

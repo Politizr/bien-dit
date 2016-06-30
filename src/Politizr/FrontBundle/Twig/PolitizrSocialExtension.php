@@ -116,7 +116,7 @@ class PolitizrSocialExtension extends \Twig_Extension
                 'imageUrls' => $imageUrls,
             )
         );
-        $this->logger->info('$html = '.print_r($html, true));
+        // $this->logger->info('$html = '.print_r($html, true));
 
         return $html;
     }
@@ -165,7 +165,7 @@ class PolitizrSocialExtension extends \Twig_Extension
             $tweet = strip_tags($subject->getTitle());
 
             $toTweet = '«'.$tweet.'»';
-            $this->logger->info('$toTweet = '.print_r($toTweet, true));
+            // $this->logger->info('$toTweet = '.print_r($toTweet, true));
 
             // Paragraphs explode
             // $toTweet = $this->globalTools->explodeParagraphs($subject->getDescription());
@@ -191,10 +191,10 @@ class PolitizrSocialExtension extends \Twig_Extension
                     $toTweet .= 'ne';
                 }
             }
-            $this->logger->info('$toTweet = '.print_r($toTweet, true));
+            // $this->logger->info('$toTweet = '.print_r($toTweet, true));
 
             $toTweet .= ' ' . $subject->getFullName();
-            $this->logger->info('$toTweet = '.print_r($toTweet, true));
+            // $this->logger->info('$toTweet = '.print_r($toTweet, true));
 
             if ($biography = $subject->getBiography()) {
                 $toTweet .=  ', ' . $subject->getBiography();
@@ -202,9 +202,9 @@ class PolitizrSocialExtension extends \Twig_Extension
             }
 
             $toTweet = strip_tags($toTweet);
-            $this->logger->info('$toTweet = '.print_r($toTweet, true));
+            // $this->logger->info('$toTweet = '.print_r($toTweet, true));
             $toTweet = html_entity_decode($toTweet);
-            $this->logger->info('$toTweet = '.print_r($toTweet, true));
+            // $this->logger->info('$toTweet = '.print_r($toTweet, true));
             $tweet = substr($toTweet, 0, 100) . '...';
         }
 
@@ -217,7 +217,7 @@ class PolitizrSocialExtension extends \Twig_Extension
                 'tweet' => $tweet,
             )
         );
-        $this->logger->info('$html = '.print_r($html, true));
+        // $this->logger->info('$html = '.print_r($html, true));
 
         return $html;
     }
