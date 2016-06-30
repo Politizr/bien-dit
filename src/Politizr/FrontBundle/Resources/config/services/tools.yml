@@ -17,6 +17,7 @@ services:
         class: Politizr\FrontBundle\Lib\Tools\IdCheck
         arguments:
             - @security.token_storage
+            - @event_dispatcher
             - "%idcheck_wsdl_url%"
             - "%idcheck_login%"
             - "%idcheck_password%"

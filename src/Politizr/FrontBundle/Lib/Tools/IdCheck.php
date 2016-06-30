@@ -3,6 +3,8 @@ namespace Politizr\FrontBundle\Lib\Tools;
 
 use Symfony\Component\HttpFoundation\Request;
 
+use Symfony\Component\EventDispatcher\GenericEvent;
+
 use StudioEcho\Lib\StudioEchoUtils;
 
 use Politizr\Constant\IdCheckConstants;
@@ -17,6 +19,7 @@ use Politizr\Model\PUser;
 class IdCheck
 {
     private $securityTokenStorage;
+    private $eventDispatcher;
     private $logger;
 
     private $wsdlUrl;
@@ -43,6 +46,7 @@ class IdCheck
     /**
      *
      * @param @security.token_storage
+     * @param @event_dispatcher
      * @param %idcheck_wsdl_url%
      * @param %idcheck_login%
      * @param %idcheck_password%
@@ -50,12 +54,15 @@ class IdCheck
      */
     public function __construct(
         $securityTokenStorage,
+        $eventDispatcher,
         $wsdlUrl,
         $login,
         $password,
         $logger
     ) {
         $this->securityTokenStorage = $securityTokenStorage;
+
+        $this->eventDispatcher = $eventDispatcher;
 
         $this->wsdlUrl = $wsdlUrl;
         $this->wsdlLogin = $login;
@@ -135,6 +142,9 @@ class IdCheck
         $this->logger->info(print_r($this->lastResult, true));
         // dump($this->lastResult);
 
+        // idcheck trace email
+        $dispatcher =  $this->eventDispatcher->dispatch('idcheck_trace_email', new GenericEvent($this->lastResult));
+
         if (isset($this->lastResult) && isset($this->lastResult->contentOk) && isset($this->lastResult->contentOk->result) && $this->lastResult->contentOk->result == IdCheckConstants::WSDL_RESULT_OK) {
             return true;
         } else {
@@ -185,6 +195,9 @@ class IdCheck
         $this->lastResult = $this->wsdlClient->__soapCall("CheckImage", $optionsImage);
         $this->logger->info(print_r($this->lastResult, true));
         // dump($this->lastResult);
+
+        // idcheck trace email
+        $dispatcher =  $this->eventDispatcher->dispatch('idcheck_trace_email', new GenericEvent($this->lastResult));
 
         if (isset($this->lastResult) && isset($this->lastResult->contentOk) && isset($this->lastResult->contentOk->result) && $this->lastResult->contentOk->result == IdCheckConstants::WSDL_RESULT_OK) {
             return true;
