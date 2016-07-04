@@ -222,11 +222,6 @@ Politizr_AdminBundle_PMAppException:
     type:     admingenerator
     prefix:   /PMAppException
 
-Politizr_AdminBundle_PMLegalContent:
-    resource: "@PolitizrAdminBundle/Controller/PMLegalContent/"
-    type:     admingenerator
-    prefix:   /PMLegalContent
-
 # Monitoring / Archives
 Politizr_AdminBundle_PMUserHistoric:
     resource: "@PolitizrAdminBundle/Controller/PMUserHistoric/"
