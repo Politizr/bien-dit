@@ -239,6 +239,19 @@ class PDReaction extends BasePDReaction implements PDocumentInterface
     /**
      * @see PDocumentInterface::isOwner
      */
+    public function isDebateOwner($userId)
+    {
+        $debate = $this->getDebate();
+        if ($debate && $debate->getPUserId() == $userId) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @see PDocumentInterface::isOwner
+     */
     public function isOwner($userId)
     {
         if ($this->getPUserId() == $userId) {

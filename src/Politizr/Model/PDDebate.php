@@ -303,6 +303,14 @@ class PDDebate extends BasePDDebate implements PDocumentInterface
     /**
      * @see PDocumentInterface::isOwner
      */
+    public function isDebateOwner($userId)
+    {
+        return $this->isOwner($userId);
+    }
+
+    /**
+     * @see PDocumentInterface::isOwner
+     */
     public function isOwner($userId)
     {
         if ($this->getPUserId() == $userId) {

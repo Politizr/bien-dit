@@ -1024,7 +1024,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
         if ($user) {
             if ($user->isQualified()) {
                 $qualified = true;
-            } elseif ($document->isOwner($user->getId())) {
+            } elseif ($document->isDebateOwner($user->getId())) {
                 $owner = true;
             }
         }

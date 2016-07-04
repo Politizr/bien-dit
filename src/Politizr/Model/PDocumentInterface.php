@@ -18,6 +18,14 @@ interface PDocumentInterface
     public function isOwner($userId);
 
     /**
+     * Test if the document's debate is owned by the parameter's userId
+     *
+     * @param int $userId
+     * @return boolean
+     */
+    public function isDebateOwner($userId);
+
+    /**
      * Test if the document is displayed in front: check online && published attributes
      *
      * @return boolean
