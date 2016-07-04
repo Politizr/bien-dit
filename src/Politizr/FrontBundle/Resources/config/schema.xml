@@ -1234,20 +1234,6 @@
         </foreign-key>        
     </table>
 
-    <table name="p_m_legal_content">
-        <behavior name="timestampable" />
-        <behavior name="query_cache" />
-        
-        <column name="id" type="integer" required="true" primaryKey="true" />
-
-        <column name="title" type="varchar" size="150" />
-
-        <column name="summary" type="longvarchar" />
-        <column name="description" type="clob" />
-
-        <column name="online" type="boolean" />
-    </table>
-
     <table name="p_m_app_exception">
         <behavior name="timestampable" />
         
