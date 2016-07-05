@@ -4,6 +4,6 @@
 
 {% include 'PolitizrFrontBundle:Notification\\MessageEmail\\Txt:_emailAuthorName.txt.twig' with {'author': author, 'authorUrl': authorUrl } only %}
 
-La publication {% include 'PolitizrFrontBundle:Notification\\MessageEmail:_emailContent.html.twig' with {'url': url, 'description': title} only %} contient une thématique que vous suivez.
+a publié un {% include 'PolitizrFrontBundle:Notification\\MessageEmail:_emailContent.html.twig' with {'url': url, 'description': title} only %} qui contient une thématique que vous suivez.
 
 {% include 'PolitizrFrontBundle:Notification\\MessageEmail\\Txt:_emailNotificationFooter.txt.twig' with {'url': url} only %}

@@ -68,5 +68,9 @@
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_S_T_USER')
 %}
     Un autre utilisateur suit une de vos thématiques
+{% elseif
+    notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_S_T_DOCUMENT')
+%}
+    "{{ title }}" contient une thématique que vous suivez
 {% endif %}
 {% endspaceless %}

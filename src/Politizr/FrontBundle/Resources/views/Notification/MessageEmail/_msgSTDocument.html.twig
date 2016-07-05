@@ -2,7 +2,9 @@
 <tr style="background-color: #FFFFFF; width: 100%; padding-bottom: 20px;">
     {% include 'PolitizrFrontBundle:Notification\\MessageEmail:_emailAuthorPhoto.html.twig' with {'author': author, 'authorUrl': authorUrl } only %}
     <td style="padding: 0 40px 0 40px; line-height: 140%;" valign="top">
-         La publication {% include 'PolitizrFrontBundle:Notification\\MessageEmail:_emailContent.html.twig' with {'url': url, 'description': title} only %} contient une thématique que vous suivez.
+        <b>{% include 'PolitizrFrontBundle:Notification\\MessageEmail:_emailAuthorName.html.twig' with {'author': author, 'authorUrl': authorUrl } only %} a publié un document contenant une thématique que vous suivez:</b>
+        <br>
+        {% include 'PolitizrFrontBundle:Notification\\MessageEmail:_emailContent.html.twig' with {'url': url, 'description': title} only %}
         </b>
     </td>
 </tr>
