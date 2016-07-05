@@ -74,5 +74,13 @@
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_U_BADGE')
 %}
     {% include 'PolitizrFrontBundle:Notification\\'~twigFolder~':_msgUBadge.'~twigExt~'.twig' %}
+{% elseif
+    notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_S_T_USER')
+%}
+    {% include 'PolitizrFrontBundle:Notification\\'~twigFolder~':_msgSTUser.'~twigExt~'.twig' %}
+{% elseif
+    notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_S_T_DOCUMENT')
+%}
+    {% include 'PolitizrFrontBundle:Notification\\'~twigFolder~':_msgSTDocument.'~twigExt~'.twig' %}
 {% endif %}
 {% endspaceless %}

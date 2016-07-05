@@ -30,6 +30,7 @@ services:
             - { name: kernel.event_listener, event: n_debate_follow }
             - { name: kernel.event_listener, event: n_user_follow }
             - { name: kernel.event_listener, event: n_badge_win }
+            - { name: kernel.event_listener, event: n_user_tag }
 
     politizr.listener.notification_email:
         class:      Politizr\FrontBundle\Listener\NotificationEmailListener

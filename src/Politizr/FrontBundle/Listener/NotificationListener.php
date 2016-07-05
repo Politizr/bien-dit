@@ -126,6 +126,7 @@ class NotificationListener
      *
      * Notifications associées à gérer:
      * - Un débat ou une réaction a été publié par un utilisateur suivi
+     * - Un débat ou une réaction contenant une thématique suivi a été publié
      *
      * @param GenericEvent
      */
@@ -141,17 +142,70 @@ class NotificationListener
         // retrieve user
         $authorUser = PUserQuery::create()->findPk($authorUserId);
 
+        // Emails notification array
+        $neCheck = [];
+
+        // Notification user ids array to manage notification exclusion
+        $notInUsersId = array();
+        
         // get debate's user followers
         $users = $authorUser->getFollowers();
         foreach ($users as $user) {
+            $notInUsersId[] = $user->getId();
+
             $pNotificationId = NotificationConstants::ID_S_U_DEBATE_PUBLISH;
             $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId);
 
-            // Alerte email
+            // email
             $event = new GenericEvent($puNotification);
-            $dispatcher =  $this->eventDispatcher->dispatch('n_e_check', $event);
+
+            // store user's email notification to prevent duplicate sending
+            if ($user && $user->isEmailNotificationSubscriber($puNotification->getPNotificationId())) {
+                if (!isset($neCheck[$user->getId()])) {
+                    $neCheck[$user->getId()] = $event;
+                }
+            }
         }
 
+        // get debate's tags
+        $tags = $subject->getTags();
+        $notInUsersIdFromTag = array();
+        foreach ($tags as $tag) {
+            // exclude users who had the previous notification
+            // exclude users who already have a tag notification (case multi tag match user)
+            $notInUsersId = array_merge($notInUsersId, $notInUsersIdFromTag);
+
+            // get tag's users
+            $users = $tag->getUsers(null, $notInUsersId);
+
+            foreach ($users as $user) {
+                if ($user->getId() != $authorUserId) {
+                    $notInUsersIdFromTag[] = $user->getId();
+
+                    $pNotificationId = NotificationConstants::ID_S_T_DOCUMENT;
+                    $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId);
+
+                    // email
+                    $event = new GenericEvent($puNotification);
+
+                    // store user's email notification to prevent duplicate sending
+                    if ($user && $user->isEmailNotificationSubscriber($puNotification->getPNotificationId())) {
+                        if (!isset($neCheck[$user->getId()])) {
+                            $neCheck[$user->getId()] = $event;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Alerte email
+
+        // email notification dispatching
+        foreach ($neCheck as $userId => $event) {
+            $dispatcher = $this->eventDispatcher->dispatch('n_e_check', $event);
+        }
+
+        $dispatcher =  $this->eventDispatcher->dispatch('n_e_check', $event);
     }
 
     /**
@@ -161,6 +215,7 @@ class NotificationListener
      * - Une réaction a été publiée sur un de vos débats / une de vos réactions
      * - Une réaction a été publié par un auteur suivi
      * - Une réaction a été publié sur un débat suivi
+     * - Un débat ou une réaction contenant une thématique suivi a été publié
      *
      * @param GenericEvent
      */
@@ -182,9 +237,13 @@ class NotificationListener
         // Emails notification array
         $neCheck = [];
 
+        // Notification user ids array to manage notification exclusion
+        $notInUsersId = array();
+        
         // reaction published on my debate
         // don't notif if same user
         if ($debateUserId != $authorUserId) {
+            $notInUsersId[] = $debateUserId;
             $puNotification = $this->insertPUNotification($debateUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
 
             // email
@@ -206,6 +265,8 @@ class NotificationListener
             $targetUserId = $parent->getPUserId();
             $targetUser = $parent->getPUser();
             $pNotificationId = NotificationConstants::ID_D_R_REACTION_PUBLISH;
+
+            $notInUsersId[] = $targetUserId;
 
             // don't notif if same user
             if ($targetUserId != $authorUserId) {
@@ -230,6 +291,7 @@ class NotificationListener
         // get debate's user followers
         $users = $authorUser->getFollowers();
         foreach ($users as $user) {
+            $notInUsersId[] = $user->getId();
             if ($user->getId() != $authorUserId) {
                 $pNotificationId = NotificationConstants::ID_S_U_REACTION_PUBLISH;
                 $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId);
@@ -250,6 +312,7 @@ class NotificationListener
         // retrieve debate's followers
         $users = $debate->getFollowers();
         foreach ($users as $user) {
+            $notInUsersId[] = $user->getId();
             if ($user->getId() != $authorUserId) {
                 $pNotificationId = NotificationConstants::ID_S_D_REACTION_PUBLISH;
                 $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId);
@@ -261,6 +324,38 @@ class NotificationListener
                 if ($user->isEmailNotificationSubscriber($puNotification->getPNotificationId())) {
                     if (!isset($neCheck[$user->getId()])) {
                         $neCheck[$user->getId()] = $event;
+                    }
+                }
+            }
+        }
+
+        // reaction with followed tags
+        // get reaction's tags
+        $tags = $subject->getTags();
+        $notInUsersIdFromTag = array();
+        foreach ($tags as $tag) {
+            // exclude users who had the previous notifications
+            // exclude users who already have a tag notification (case multi tag match user)
+            $notInUsersId = array_merge($notInUsersId, $notInUsersIdFromTag);
+
+            // get tag's users
+            $users = $tag->getUsers(null, $notInUsersId);
+
+            foreach ($users as $user) {
+                if ($user->getId() != $authorUserId) {
+                    $notInUsersIdFromTag[] = $user->getId();
+
+                    $pNotificationId = NotificationConstants::ID_S_T_DOCUMENT;
+                    $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId);
+
+                    // email
+                    $event = new GenericEvent($puNotification);
+
+                    // store user's email notification to prevent duplicate sending
+                    if ($user && $user->isEmailNotificationSubscriber($puNotification->getPNotificationId())) {
+                        if (!isset($neCheck[$user->getId()])) {
+                            $neCheck[$user->getId()] = $event;
+                        }
                     }
                 }
             }
@@ -404,7 +499,6 @@ class NotificationListener
         $dispatcher =  $this->eventDispatcher->dispatch('n_e_check', $event);
     }
 
-
     /**
      * Suivi d'un profil.
      *
@@ -433,8 +527,6 @@ class NotificationListener
         $event = new GenericEvent($puNotification);
         $dispatcher =  $this->eventDispatcher->dispatch('n_e_check', $event);
     }
-
-
 
     /**
      * Gain d'un débat.
@@ -467,6 +559,55 @@ class NotificationListener
         $dispatcher =  $this->eventDispatcher->dispatch('n_e_check', $event);
     }
 
+    /**
+     * Ajout d'un tag à un profil
+     *
+     * Notifications associées à gérer:
+     * - Un utilisateur s'est associé une thématique suivi
+     *
+     * @param GenericEvent
+     */
+    public function onNUserTag(GenericEvent $event)
+    {
+        // $this->logger->info('*** onNUserTag');
+
+        $subject = $event->getSubject();
+        $authorUserId = $event->getArgument('author_user_id');
+        $pNotificationId = NotificationConstants::ID_S_T_USER;
+
+        $objectName = get_class($subject);
+        $objectId = $subject->getId();
+
+        // Emails notification array
+        $neCheck = [];
+
+        $users = $subject->getUsers();
+        foreach ($users as $user) {
+            if ($user->getId() != $authorUserId) {
+                $pNotificationId = NotificationConstants::ID_S_T_USER;
+                $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId);
+
+                // email
+                $event = new GenericEvent($puNotification);
+
+                // store user's email notification to prevent duplicate sending
+                if ($user && $user->isEmailNotificationSubscriber($puNotification->getPNotificationId())) {
+                    if (!isset($neCheck[$user->getId()])) {
+                        $neCheck[$user->getId()] = $event;
+                    }
+                }
+            }
+        }
+
+        // Alerte email
+
+        // email notification dispatching
+        foreach ($neCheck as $userId => $event) {
+            $dispatcher = $this->eventDispatcher->dispatch('n_e_check', $event);
+        }
+
+        $dispatcher =  $this->eventDispatcher->dispatch('n_e_check', $event);
+    }
 
     // ******************************************************** //
     //                      Méthodes privées                    //

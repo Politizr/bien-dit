@@ -215,4 +215,17 @@ class PUserQuery extends BasePUserQuery
             ->_endif();
     }
 
+    /**
+     *
+     * @param array $notInIds
+     * @return PUserQuery
+     */
+    public function filterIfNotInIds($notInIds = null)
+    {
+        return $this
+            ->_if(null !== $notInIds)
+                ->filterById($notInIds, \Criteria::NOT_IN)
+            ->_endif();
+    }
+
 }

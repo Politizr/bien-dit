@@ -597,6 +597,15 @@ class DocumentService
                 }
                 
                 break;
+            case ObjectTypeConstants::TYPE_TAG:
+                $subject = PTagQuery::create()->findPk($objectId);
+
+                if ($subject) {
+                    $title = $subject->getTitle();
+                    $url = $this->router->generate('ListingByTag', array('slug' => $subject->getSlug()), $absolute);
+                }
+                
+                break;
             default:
                 throw new InconsistentDataException(sprintf('Object name %s not managed.'), $objectName);
         }

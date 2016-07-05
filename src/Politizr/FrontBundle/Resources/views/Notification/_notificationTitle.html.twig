@@ -56,5 +56,9 @@
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_S_D_REACTION_PUBLISH')
 %}
     Une réponse a été publié sur un sujet suivi
+{% elseif
+    notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_S_T_USER')
+%}
+    Un autre utilisateur suit une de vos thématiques
 {% endif %}
 {% endspaceless %}

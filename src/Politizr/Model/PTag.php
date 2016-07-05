@@ -138,16 +138,18 @@ class PTag extends BasePTag
     /**
      * Tagged users
      *
-     * @param $online
+     * @param boolean $online
+     * @param array $notInUsersId
      * @return PropelCollection[PUser]
      */
-    public function getUsers($online = null)
+    public function getUsers($online = null, $notInUsersId = null)
     {
         $users = PUserQuery::create()
             ->usePuTaggedTPUserQuery()
                 ->filterByPTagId($this->getId())
             ->endUse()
             ->filterIfOnline($online)
+            ->filterIfNotInIds($notInUsersId)
             ->find();
 
         return $users;

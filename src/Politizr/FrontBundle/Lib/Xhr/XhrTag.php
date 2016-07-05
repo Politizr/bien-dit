@@ -2,6 +2,7 @@
 namespace Politizr\FrontBundle\Lib\Xhr;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 use StudioEcho\Lib\StudioEchoUtils;
 
@@ -30,6 +31,7 @@ class XhrTag
     private $securityTokenStorage;
     private $router;
     private $templating;
+    private $eventDispatcher;
     private $tagService;
     private $tagManager;
     private $logger;
@@ -39,6 +41,7 @@ class XhrTag
      * @param @security.token_storage
      * @param @router
      * @param @templating
+     * @param @event_dispatcher
      * @param @politizr.functional.tag
      * @param @politizr.manager.tag
      * @param @logger
@@ -47,14 +50,18 @@ class XhrTag
         $securityTokenStorage,
         $router,
         $templating,
+        $eventDispatcher,
         $tagService,
         $tagManager,
         $logger
     ) {
         $this->securityTokenStorage = $securityTokenStorage;
 
+
         $this->router = $router;
         $this->templating = $templating;
+
+        $this->eventDispatcher = $eventDispatcher;
 
         $this->tagService = $tagService;
         $this->tagManager = $tagManager;
@@ -482,6 +489,10 @@ class XhrTag
 
         if ($way == 'follow') {
             $this->tagManager->createUserTag($user->getId(), $tag->getId());
+
+            // Events
+            $event = new GenericEvent($tag, array('author_user_id' => $user->getId(),));
+            $dispatcher = $this->eventDispatcher->dispatch('n_user_tag', $event);
         } elseif ($way == 'unfollow') {
             $deleted = $this->tagManager->deleteUserTag($user->getId(), $tag->getId());
         } else {
@@ -552,6 +563,10 @@ class XhrTag
         } else {
             $created = true;
             $this->tagManager->createUserTag($subject->getId(), $tag->getId());
+
+            // Events
+            $event = new GenericEvent($tag, array('author_user_id' => $user->getId(),));
+            $dispatcher = $this->eventDispatcher->dispatch('n_user_tag', $event);
 
             $xhrPathDelete = $this->templating->render(
                 'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
