@@ -122,8 +122,9 @@ class XhrNotification
         $user = $this->securityTokenStorage->getToken()->getUser();
 
         $notifs = PUNotificationQuery::create()
-                            ->filterByPUserId($user->getId())
-                            ->find();
+                    ->filterByPUserId($user->getId())
+                    ->filterByChecked(false)
+                    ->find();
         foreach ($notifs as $notif) {
             $this->notificationManager->checkUserNotification($notif);
         }
