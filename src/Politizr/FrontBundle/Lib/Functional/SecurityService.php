@@ -683,6 +683,9 @@ class SecurityService
         // update reputation
         $user->updateReputation(ReputationConstants::ACTION_CITIZEN_INSCRIPTION);
 
+        // notification subscription > all by default
+        $this->userManager->createAllUserSubscribeEmail($user->getId());
+
         // (re)connect user
         $this->doPublicConnection($user);
 
@@ -742,6 +745,9 @@ class SecurityService
         // save user
         $user->save();
         
+        // notification subscription > all by default
+        $this->userManager->createAllUserSubscribeEmail($user->getId());
+
         $this->doPublicConnection($user);
 
         // welcome email
