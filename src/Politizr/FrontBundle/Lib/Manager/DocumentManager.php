@@ -900,8 +900,7 @@ SELECT DISTINCT
     moderated_at,
     created_at,
     updated_at,
-    slug,
-    nb_users
+    slug
 FROM (
 ( SELECT DISTINCT p_d_debate.*, 0 as nb_users, 1 as unionsorting
 FROM p_d_debate
