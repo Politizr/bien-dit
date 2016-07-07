@@ -204,8 +204,6 @@ class NotificationListener
         foreach ($neCheck as $userId => $event) {
             $dispatcher = $this->eventDispatcher->dispatch('n_e_check', $event);
         }
-
-        $dispatcher =  $this->eventDispatcher->dispatch('n_e_check', $event);
     }
 
     /**
