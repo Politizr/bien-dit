@@ -31,6 +31,8 @@ use Politizr\Model\PMReactionHistoric;
 use Politizr\Model\PMReactionHistoricQuery;
 use Politizr\Model\PTag;
 use Politizr\Model\PTagQuery;
+use Politizr\Model\PUTrackDR;
+use Politizr\Model\PUTrackDRQuery;
 use Politizr\Model\PUser;
 use Politizr\Model\PUserQuery;
 
@@ -230,6 +232,12 @@ abstract class BasePDReaction extends BaseObject implements Persistent
     protected $aPDDebate;
 
     /**
+     * @var        PropelObjectCollection|PUTrackDR[] Collection to store aggregation of PUTrackDR objects.
+     */
+    protected $collPuTrackDrPDReactions;
+    protected $collPuTrackDrPDReactionsPartial;
+
+    /**
      * @var        PropelObjectCollection|PDRComment[] Collection to store aggregation of PDRComment objects.
      */
     protected $collPDRComments;
@@ -246,6 +254,11 @@ abstract class BasePDReaction extends BaseObject implements Persistent
      */
     protected $collPMReactionHistorics;
     protected $collPMReactionHistoricsPartial;
+
+    /**
+     * @var        PropelObjectCollection|PUser[] Collection to store aggregation of PUser objects.
+     */
+    protected $collPuTrackDrPUsers;
 
     /**
      * @var        PropelObjectCollection|PTag[] Collection to store aggregation of PTag objects.
@@ -300,7 +313,19 @@ abstract class BasePDReaction extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
+    protected $puTrackDrPUsersScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
     protected $pTagsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $puTrackDrPDReactionsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -1532,12 +1557,15 @@ abstract class BasePDReaction extends BaseObject implements Persistent
 
             $this->aPUser = null;
             $this->aPDDebate = null;
+            $this->collPuTrackDrPDReactions = null;
+
             $this->collPDRComments = null;
 
             $this->collPDRTaggedTs = null;
 
             $this->collPMReactionHistorics = null;
 
+            $this->collPuTrackDrPUsers = null;
             $this->collPTags = null;
         } // if (deep)
     }
@@ -1739,6 +1767,32 @@ abstract class BasePDReaction extends BaseObject implements Persistent
                 $this->resetModified();
             }
 
+            if ($this->puTrackDrPUsersScheduledForDeletion !== null) {
+                if (!$this->puTrackDrPUsersScheduledForDeletion->isEmpty()) {
+                    $pks = array();
+                    $pk = $this->getPrimaryKey();
+                    foreach ($this->puTrackDrPUsersScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
+                        $pks[] = array($remotePk, $pk);
+                    }
+                    PUTrackDRQuery::create()
+                        ->filterByPrimaryKeys($pks)
+                        ->delete($con);
+                    $this->puTrackDrPUsersScheduledForDeletion = null;
+                }
+
+                foreach ($this->getPuTrackDrPUsers() as $puTrackDrPUser) {
+                    if ($puTrackDrPUser->isModified()) {
+                        $puTrackDrPUser->save($con);
+                    }
+                }
+            } elseif ($this->collPuTrackDrPUsers) {
+                foreach ($this->collPuTrackDrPUsers as $puTrackDrPUser) {
+                    if ($puTrackDrPUser->isModified()) {
+                        $puTrackDrPUser->save($con);
+                    }
+                }
+            }
+
             if ($this->pTagsScheduledForDeletion !== null) {
                 if (!$this->pTagsScheduledForDeletion->isEmpty()) {
                     $pks = array();
@@ -1761,6 +1815,23 @@ abstract class BasePDReaction extends BaseObject implements Persistent
                 foreach ($this->collPTags as $pTag) {
                     if ($pTag->isModified()) {
                         $pTag->save($con);
+                    }
+                }
+            }
+
+            if ($this->puTrackDrPDReactionsScheduledForDeletion !== null) {
+                if (!$this->puTrackDrPDReactionsScheduledForDeletion->isEmpty()) {
+                    PUTrackDRQuery::create()
+                        ->filterByPrimaryKeys($this->puTrackDrPDReactionsScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->puTrackDrPDReactionsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPuTrackDrPDReactions !== null) {
+                foreach ($this->collPuTrackDrPDReactions as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
                     }
                 }
             }
@@ -2226,6 +2297,9 @@ abstract class BasePDReaction extends BaseObject implements Persistent
             if (null !== $this->aPDDebate) {
                 $result['PDDebate'] = $this->aPDDebate->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
+            if (null !== $this->collPuTrackDrPDReactions) {
+                $result['PuTrackDrPDReactions'] = $this->collPuTrackDrPDReactions->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
             if (null !== $this->collPDRComments) {
                 $result['PDRComments'] = $this->collPDRComments->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
@@ -2536,6 +2610,12 @@ abstract class BasePDReaction extends BaseObject implements Persistent
             // store object hash to prevent cycle
             $this->startCopy = true;
 
+            foreach ($this->getPuTrackDrPDReactions() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPuTrackDrPDReaction($relObj->copy($deepCopy));
+                }
+            }
+
             foreach ($this->getPDRComments() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addPDRComment($relObj->copy($deepCopy));
@@ -2719,6 +2799,9 @@ abstract class BasePDReaction extends BaseObject implements Persistent
      */
     public function initRelation($relationName)
     {
+        if ('PuTrackDrPDReaction' == $relationName) {
+            $this->initPuTrackDrPDReactions();
+        }
         if ('PDRComment' == $relationName) {
             $this->initPDRComments();
         }
@@ -2728,6 +2811,256 @@ abstract class BasePDReaction extends BaseObject implements Persistent
         if ('PMReactionHistoric' == $relationName) {
             $this->initPMReactionHistorics();
         }
+    }
+
+    /**
+     * Clears out the collPuTrackDrPDReactions collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PDReaction The current object (for fluent API support)
+     * @see        addPuTrackDrPDReactions()
+     */
+    public function clearPuTrackDrPDReactions()
+    {
+        $this->collPuTrackDrPDReactions = null; // important to set this to null since that means it is uninitialized
+        $this->collPuTrackDrPDReactionsPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPuTrackDrPDReactions collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPuTrackDrPDReactions($v = true)
+    {
+        $this->collPuTrackDrPDReactionsPartial = $v;
+    }
+
+    /**
+     * Initializes the collPuTrackDrPDReactions collection.
+     *
+     * By default this just sets the collPuTrackDrPDReactions collection to an empty array (like clearcollPuTrackDrPDReactions());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPuTrackDrPDReactions($overrideExisting = true)
+    {
+        if (null !== $this->collPuTrackDrPDReactions && !$overrideExisting) {
+            return;
+        }
+        $this->collPuTrackDrPDReactions = new PropelObjectCollection();
+        $this->collPuTrackDrPDReactions->setModel('PUTrackDR');
+    }
+
+    /**
+     * Gets an array of PUTrackDR objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PDReaction is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PUTrackDR[] List of PUTrackDR objects
+     * @throws PropelException
+     */
+    public function getPuTrackDrPDReactions($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPuTrackDrPDReactionsPartial && !$this->isNew();
+        if (null === $this->collPuTrackDrPDReactions || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPuTrackDrPDReactions) {
+                // return empty collection
+                $this->initPuTrackDrPDReactions();
+            } else {
+                $collPuTrackDrPDReactions = PUTrackDRQuery::create(null, $criteria)
+                    ->filterByPuTrackDrPDReaction($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPuTrackDrPDReactionsPartial && count($collPuTrackDrPDReactions)) {
+                      $this->initPuTrackDrPDReactions(false);
+
+                      foreach ($collPuTrackDrPDReactions as $obj) {
+                        if (false == $this->collPuTrackDrPDReactions->contains($obj)) {
+                          $this->collPuTrackDrPDReactions->append($obj);
+                        }
+                      }
+
+                      $this->collPuTrackDrPDReactionsPartial = true;
+                    }
+
+                    $collPuTrackDrPDReactions->getInternalIterator()->rewind();
+
+                    return $collPuTrackDrPDReactions;
+                }
+
+                if ($partial && $this->collPuTrackDrPDReactions) {
+                    foreach ($this->collPuTrackDrPDReactions as $obj) {
+                        if ($obj->isNew()) {
+                            $collPuTrackDrPDReactions[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPuTrackDrPDReactions = $collPuTrackDrPDReactions;
+                $this->collPuTrackDrPDReactionsPartial = false;
+            }
+        }
+
+        return $this->collPuTrackDrPDReactions;
+    }
+
+    /**
+     * Sets a collection of PuTrackDrPDReaction objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $puTrackDrPDReactions A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PDReaction The current object (for fluent API support)
+     */
+    public function setPuTrackDrPDReactions(PropelCollection $puTrackDrPDReactions, PropelPDO $con = null)
+    {
+        $puTrackDrPDReactionsToDelete = $this->getPuTrackDrPDReactions(new Criteria(), $con)->diff($puTrackDrPDReactions);
+
+
+        $this->puTrackDrPDReactionsScheduledForDeletion = $puTrackDrPDReactionsToDelete;
+
+        foreach ($puTrackDrPDReactionsToDelete as $puTrackDrPDReactionRemoved) {
+            $puTrackDrPDReactionRemoved->setPuTrackDrPDReaction(null);
+        }
+
+        $this->collPuTrackDrPDReactions = null;
+        foreach ($puTrackDrPDReactions as $puTrackDrPDReaction) {
+            $this->addPuTrackDrPDReaction($puTrackDrPDReaction);
+        }
+
+        $this->collPuTrackDrPDReactions = $puTrackDrPDReactions;
+        $this->collPuTrackDrPDReactionsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PUTrackDR objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PUTrackDR objects.
+     * @throws PropelException
+     */
+    public function countPuTrackDrPDReactions(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPuTrackDrPDReactionsPartial && !$this->isNew();
+        if (null === $this->collPuTrackDrPDReactions || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPuTrackDrPDReactions) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPuTrackDrPDReactions());
+            }
+            $query = PUTrackDRQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPuTrackDrPDReaction($this)
+                ->count($con);
+        }
+
+        return count($this->collPuTrackDrPDReactions);
+    }
+
+    /**
+     * Method called to associate a PUTrackDR object to this object
+     * through the PUTrackDR foreign key attribute.
+     *
+     * @param    PUTrackDR $l PUTrackDR
+     * @return PDReaction The current object (for fluent API support)
+     */
+    public function addPuTrackDrPDReaction(PUTrackDR $l)
+    {
+        if ($this->collPuTrackDrPDReactions === null) {
+            $this->initPuTrackDrPDReactions();
+            $this->collPuTrackDrPDReactionsPartial = true;
+        }
+
+        if (!in_array($l, $this->collPuTrackDrPDReactions->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPuTrackDrPDReaction($l);
+
+            if ($this->puTrackDrPDReactionsScheduledForDeletion and $this->puTrackDrPDReactionsScheduledForDeletion->contains($l)) {
+                $this->puTrackDrPDReactionsScheduledForDeletion->remove($this->puTrackDrPDReactionsScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PuTrackDrPDReaction $puTrackDrPDReaction The puTrackDrPDReaction object to add.
+     */
+    protected function doAddPuTrackDrPDReaction($puTrackDrPDReaction)
+    {
+        $this->collPuTrackDrPDReactions[]= $puTrackDrPDReaction;
+        $puTrackDrPDReaction->setPuTrackDrPDReaction($this);
+    }
+
+    /**
+     * @param	PuTrackDrPDReaction $puTrackDrPDReaction The puTrackDrPDReaction object to remove.
+     * @return PDReaction The current object (for fluent API support)
+     */
+    public function removePuTrackDrPDReaction($puTrackDrPDReaction)
+    {
+        if ($this->getPuTrackDrPDReactions()->contains($puTrackDrPDReaction)) {
+            $this->collPuTrackDrPDReactions->remove($this->collPuTrackDrPDReactions->search($puTrackDrPDReaction));
+            if (null === $this->puTrackDrPDReactionsScheduledForDeletion) {
+                $this->puTrackDrPDReactionsScheduledForDeletion = clone $this->collPuTrackDrPDReactions;
+                $this->puTrackDrPDReactionsScheduledForDeletion->clear();
+            }
+            $this->puTrackDrPDReactionsScheduledForDeletion[]= clone $puTrackDrPDReaction;
+            $puTrackDrPDReaction->setPuTrackDrPDReaction(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PDReaction is new, it will return
+     * an empty collection; or if this PDReaction has previously
+     * been saved, it will retrieve related PuTrackDrPDReactions from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PDReaction.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PUTrackDR[] List of PUTrackDR objects
+     */
+    public function getPuTrackDrPDReactionsJoinPuTrackDrPUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PUTrackDRQuery::create(null, $criteria);
+        $query->joinWith('PuTrackDrPUser', $join_behavior);
+
+        return $this->getPuTrackDrPDReactions($query, $con);
     }
 
     /**
@@ -3481,6 +3814,193 @@ abstract class BasePDReaction extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collPuTrackDrPUsers collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PDReaction The current object (for fluent API support)
+     * @see        addPuTrackDrPUsers()
+     */
+    public function clearPuTrackDrPUsers()
+    {
+        $this->collPuTrackDrPUsers = null; // important to set this to null since that means it is uninitialized
+        $this->collPuTrackDrPUsersPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * Initializes the collPuTrackDrPUsers collection.
+     *
+     * By default this just sets the collPuTrackDrPUsers collection to an empty collection (like clearPuTrackDrPUsers());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @return void
+     */
+    public function initPuTrackDrPUsers()
+    {
+        $this->collPuTrackDrPUsers = new PropelObjectCollection();
+        $this->collPuTrackDrPUsers->setModel('PUser');
+    }
+
+    /**
+     * Gets a collection of PUser objects related by a many-to-many relationship
+     * to the current object by way of the p_u_track_d_r cross-reference table.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PDReaction is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return PropelObjectCollection|PUser[] List of PUser objects
+     */
+    public function getPuTrackDrPUsers($criteria = null, PropelPDO $con = null)
+    {
+        if (null === $this->collPuTrackDrPUsers || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPuTrackDrPUsers) {
+                // return empty collection
+                $this->initPuTrackDrPUsers();
+            } else {
+                $collPuTrackDrPUsers = PUserQuery::create(null, $criteria)
+                    ->filterByPuTrackDrPDReaction($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    return $collPuTrackDrPUsers;
+                }
+                $this->collPuTrackDrPUsers = $collPuTrackDrPUsers;
+            }
+        }
+
+        return $this->collPuTrackDrPUsers;
+    }
+
+    /**
+     * Sets a collection of PUser objects related by a many-to-many relationship
+     * to the current object by way of the p_u_track_d_r cross-reference table.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $puTrackDrPUsers A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PDReaction The current object (for fluent API support)
+     */
+    public function setPuTrackDrPUsers(PropelCollection $puTrackDrPUsers, PropelPDO $con = null)
+    {
+        $this->clearPuTrackDrPUsers();
+        $currentPuTrackDrPUsers = $this->getPuTrackDrPUsers(null, $con);
+
+        $this->puTrackDrPUsersScheduledForDeletion = $currentPuTrackDrPUsers->diff($puTrackDrPUsers);
+
+        foreach ($puTrackDrPUsers as $puTrackDrPUser) {
+            if (!$currentPuTrackDrPUsers->contains($puTrackDrPUser)) {
+                $this->doAddPuTrackDrPUser($puTrackDrPUser);
+            }
+        }
+
+        $this->collPuTrackDrPUsers = $puTrackDrPUsers;
+
+        return $this;
+    }
+
+    /**
+     * Gets the number of PUser objects related by a many-to-many relationship
+     * to the current object by way of the p_u_track_d_r cross-reference table.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param boolean $distinct Set to true to force count distinct
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return int the number of related PUser objects
+     */
+    public function countPuTrackDrPUsers($criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        if (null === $this->collPuTrackDrPUsers || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPuTrackDrPUsers) {
+                return 0;
+            } else {
+                $query = PUserQuery::create(null, $criteria);
+                if ($distinct) {
+                    $query->distinct();
+                }
+
+                return $query
+                    ->filterByPuTrackDrPDReaction($this)
+                    ->count($con);
+            }
+        } else {
+            return count($this->collPuTrackDrPUsers);
+        }
+    }
+
+    /**
+     * Associate a PUser object to this object
+     * through the p_u_track_d_r cross reference table.
+     *
+     * @param  PUser $pUser The PUTrackDR object to relate
+     * @return PDReaction The current object (for fluent API support)
+     */
+    public function addPuTrackDrPUser(PUser $pUser)
+    {
+        if ($this->collPuTrackDrPUsers === null) {
+            $this->initPuTrackDrPUsers();
+        }
+
+        if (!$this->collPuTrackDrPUsers->contains($pUser)) { // only add it if the **same** object is not already associated
+            $this->doAddPuTrackDrPUser($pUser);
+            $this->collPuTrackDrPUsers[] = $pUser;
+
+            if ($this->puTrackDrPUsersScheduledForDeletion and $this->puTrackDrPUsersScheduledForDeletion->contains($pUser)) {
+                $this->puTrackDrPUsersScheduledForDeletion->remove($this->puTrackDrPUsersScheduledForDeletion->search($pUser));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PuTrackDrPUser $puTrackDrPUser The puTrackDrPUser object to add.
+     */
+    protected function doAddPuTrackDrPUser(PUser $puTrackDrPUser)
+    {
+        // set the back reference to this object directly as using provided method either results
+        // in endless loop or in multiple relations
+        if (!$puTrackDrPUser->getPuTrackDrPDReactions()->contains($this)) { $pUTrackDR = new PUTrackDR();
+            $pUTrackDR->setPuTrackDrPUser($puTrackDrPUser);
+            $this->addPuTrackDrPDReaction($pUTrackDR);
+
+            $foreignCollection = $puTrackDrPUser->getPuTrackDrPDReactions();
+            $foreignCollection[] = $this;
+        }
+    }
+
+    /**
+     * Remove a PUser object to this object
+     * through the p_u_track_d_r cross reference table.
+     *
+     * @param PUser $pUser The PUTrackDR object to relate
+     * @return PDReaction The current object (for fluent API support)
+     */
+    public function removePuTrackDrPUser(PUser $pUser)
+    {
+        if ($this->getPuTrackDrPUsers()->contains($pUser)) {
+            $this->collPuTrackDrPUsers->remove($this->collPuTrackDrPUsers->search($pUser));
+            if (null === $this->puTrackDrPUsersScheduledForDeletion) {
+                $this->puTrackDrPUsersScheduledForDeletion = clone $this->collPuTrackDrPUsers;
+                $this->puTrackDrPUsersScheduledForDeletion->clear();
+            }
+            $this->puTrackDrPUsersScheduledForDeletion[]= $pUser;
+        }
+
+        return $this;
+    }
+
+    /**
      * Clears out the collPTags collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
@@ -3722,6 +4242,11 @@ abstract class BasePDReaction extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
+            if ($this->collPuTrackDrPDReactions) {
+                foreach ($this->collPuTrackDrPDReactions as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collPDRComments) {
                 foreach ($this->collPDRComments as $o) {
                     $o->clearAllReferences($deep);
@@ -3734,6 +4259,11 @@ abstract class BasePDReaction extends BaseObject implements Persistent
             }
             if ($this->collPMReactionHistorics) {
                 foreach ($this->collPMReactionHistorics as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collPuTrackDrPUsers) {
+                foreach ($this->collPuTrackDrPUsers as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -3755,6 +4285,10 @@ abstract class BasePDReaction extends BaseObject implements Persistent
         // nested_set behavior
         $this->collNestedSetChildren = null;
         $this->aNestedSetParent = null;
+        if ($this->collPuTrackDrPDReactions instanceof PropelCollection) {
+            $this->collPuTrackDrPDReactions->clearIterator();
+        }
+        $this->collPuTrackDrPDReactions = null;
         if ($this->collPDRComments instanceof PropelCollection) {
             $this->collPDRComments->clearIterator();
         }
@@ -3767,6 +4301,10 @@ abstract class BasePDReaction extends BaseObject implements Persistent
             $this->collPMReactionHistorics->clearIterator();
         }
         $this->collPMReactionHistorics = null;
+        if ($this->collPuTrackDrPUsers instanceof PropelCollection) {
+            $this->collPuTrackDrPUsers->clearIterator();
+        }
+        $this->collPuTrackDrPUsers = null;
         if ($this->collPTags instanceof PropelCollection) {
             $this->collPTags->clearIterator();
         }

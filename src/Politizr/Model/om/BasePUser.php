@@ -86,6 +86,12 @@ use Politizr\Model\PUSubscribeScreen;
 use Politizr\Model\PUSubscribeScreenQuery;
 use Politizr\Model\PUTaggedT;
 use Politizr\Model\PUTaggedTQuery;
+use Politizr\Model\PUTrackDD;
+use Politizr\Model\PUTrackDDQuery;
+use Politizr\Model\PUTrackDR;
+use Politizr\Model\PUTrackDRQuery;
+use Politizr\Model\PUTrackU;
+use Politizr\Model\PUTrackUQuery;
 use Politizr\Model\PUser;
 use Politizr\Model\PUserArchive;
 use Politizr\Model\PUserArchiveQuery;
@@ -468,6 +474,18 @@ abstract class BasePUser extends BaseObject implements Persistent
     protected $collPuFollowDdPUsersPartial;
 
     /**
+     * @var        PropelObjectCollection|PUTrackDD[] Collection to store aggregation of PUTrackDD objects.
+     */
+    protected $collPuTrackDdPUsers;
+    protected $collPuTrackDdPUsersPartial;
+
+    /**
+     * @var        PropelObjectCollection|PUTrackDR[] Collection to store aggregation of PUTrackDR objects.
+     */
+    protected $collPuTrackDrPUsers;
+    protected $collPuTrackDrPUsersPartial;
+
+    /**
      * @var        PropelObjectCollection|PUBadge[] Collection to store aggregation of PUBadge objects.
      */
     protected $collPUBadges;
@@ -624,9 +642,31 @@ abstract class BasePUser extends BaseObject implements Persistent
     protected $collPUFollowUsRelatedByPUserFollowerIdPartial;
 
     /**
+     * @var        PropelObjectCollection|PUTrackU[] Collection to store aggregation of PUTrackU objects.
+     */
+    protected $collPUTrackUsRelatedByPUserIdSource;
+    protected $collPUTrackUsRelatedByPUserIdSourcePartial;
+
+    /**
+     * @var        PropelObjectCollection|PUTrackU[] Collection to store aggregation of PUTrackU objects.
+     */
+    protected $collPUTrackUsRelatedByPUserIdDest;
+    protected $collPUTrackUsRelatedByPUserIdDestPartial;
+
+    /**
      * @var        PropelObjectCollection|PDDebate[] Collection to store aggregation of PDDebate objects.
      */
     protected $collPuFollowDdPDDebates;
+
+    /**
+     * @var        PropelObjectCollection|PDDebate[] Collection to store aggregation of PDDebate objects.
+     */
+    protected $collPuTrackDdPDDebates;
+
+    /**
+     * @var        PropelObjectCollection|PDReaction[] Collection to store aggregation of PDReaction objects.
+     */
+    protected $collPuTrackDrPDReactions;
 
     /**
      * @var        PropelObjectCollection|PRBadge[] Collection to store aggregation of PRBadge objects.
@@ -726,6 +766,18 @@ abstract class BasePUser extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
+    protected $puTrackDdPDDebatesScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $puTrackDrPDReactionsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
     protected $pRBadgesScheduledForDeletion = null;
 
     /**
@@ -799,6 +851,18 @@ abstract class BasePUser extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $puFollowDdPUsersScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $puTrackDdPUsersScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $puTrackDrPUsersScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -955,6 +1019,18 @@ abstract class BasePUser extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $pUFollowUsRelatedByPUserFollowerIdScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pUTrackUsRelatedByPUserIdSourceScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pUTrackUsRelatedByPUserIdDestScheduledForDeletion = null;
 
     /**
      * Applies default values to this object.
@@ -3294,6 +3370,10 @@ abstract class BasePUser extends BaseObject implements Persistent
 
             $this->collPuFollowDdPUsers = null;
 
+            $this->collPuTrackDdPUsers = null;
+
+            $this->collPuTrackDrPUsers = null;
+
             $this->collPUBadges = null;
 
             $this->collPUReputations = null;
@@ -3346,7 +3426,13 @@ abstract class BasePUser extends BaseObject implements Persistent
 
             $this->collPUFollowUsRelatedByPUserFollowerId = null;
 
+            $this->collPUTrackUsRelatedByPUserIdSource = null;
+
+            $this->collPUTrackUsRelatedByPUserIdDest = null;
+
             $this->collPuFollowDdPDDebates = null;
+            $this->collPuTrackDdPDDebates = null;
+            $this->collPuTrackDrPDReactions = null;
             $this->collPRBadges = null;
             $this->collPRActions = null;
             $this->collPuTaggedTPTags = null;
@@ -3546,6 +3632,58 @@ abstract class BasePUser extends BaseObject implements Persistent
                 foreach ($this->collPuFollowDdPDDebates as $puFollowDdPDDebate) {
                     if ($puFollowDdPDDebate->isModified()) {
                         $puFollowDdPDDebate->save($con);
+                    }
+                }
+            }
+
+            if ($this->puTrackDdPDDebatesScheduledForDeletion !== null) {
+                if (!$this->puTrackDdPDDebatesScheduledForDeletion->isEmpty()) {
+                    $pks = array();
+                    $pk = $this->getPrimaryKey();
+                    foreach ($this->puTrackDdPDDebatesScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
+                        $pks[] = array($pk, $remotePk);
+                    }
+                    PUTrackDDQuery::create()
+                        ->filterByPrimaryKeys($pks)
+                        ->delete($con);
+                    $this->puTrackDdPDDebatesScheduledForDeletion = null;
+                }
+
+                foreach ($this->getPuTrackDdPDDebates() as $puTrackDdPDDebate) {
+                    if ($puTrackDdPDDebate->isModified()) {
+                        $puTrackDdPDDebate->save($con);
+                    }
+                }
+            } elseif ($this->collPuTrackDdPDDebates) {
+                foreach ($this->collPuTrackDdPDDebates as $puTrackDdPDDebate) {
+                    if ($puTrackDdPDDebate->isModified()) {
+                        $puTrackDdPDDebate->save($con);
+                    }
+                }
+            }
+
+            if ($this->puTrackDrPDReactionsScheduledForDeletion !== null) {
+                if (!$this->puTrackDrPDReactionsScheduledForDeletion->isEmpty()) {
+                    $pks = array();
+                    $pk = $this->getPrimaryKey();
+                    foreach ($this->puTrackDrPDReactionsScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
+                        $pks[] = array($pk, $remotePk);
+                    }
+                    PUTrackDRQuery::create()
+                        ->filterByPrimaryKeys($pks)
+                        ->delete($con);
+                    $this->puTrackDrPDReactionsScheduledForDeletion = null;
+                }
+
+                foreach ($this->getPuTrackDrPDReactions() as $puTrackDrPDReaction) {
+                    if ($puTrackDrPDReaction->isModified()) {
+                        $puTrackDrPDReaction->save($con);
+                    }
+                }
+            } elseif ($this->collPuTrackDrPDReactions) {
+                foreach ($this->collPuTrackDrPDReactions as $puTrackDrPDReaction) {
+                    if ($puTrackDrPDReaction->isModified()) {
+                        $puTrackDrPDReaction->save($con);
                     }
                 }
             }
@@ -3857,6 +3995,40 @@ abstract class BasePUser extends BaseObject implements Persistent
 
             if ($this->collPuFollowDdPUsers !== null) {
                 foreach ($this->collPuFollowDdPUsers as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->puTrackDdPUsersScheduledForDeletion !== null) {
+                if (!$this->puTrackDdPUsersScheduledForDeletion->isEmpty()) {
+                    PUTrackDDQuery::create()
+                        ->filterByPrimaryKeys($this->puTrackDdPUsersScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->puTrackDdPUsersScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPuTrackDdPUsers !== null) {
+                foreach ($this->collPuTrackDdPUsers as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->puTrackDrPUsersScheduledForDeletion !== null) {
+                if (!$this->puTrackDrPUsersScheduledForDeletion->isEmpty()) {
+                    PUTrackDRQuery::create()
+                        ->filterByPrimaryKeys($this->puTrackDrPUsersScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->puTrackDrPUsersScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPuTrackDrPUsers !== null) {
+                foreach ($this->collPuTrackDrPUsers as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -4312,6 +4484,40 @@ abstract class BasePUser extends BaseObject implements Persistent
 
             if ($this->collPUFollowUsRelatedByPUserFollowerId !== null) {
                 foreach ($this->collPUFollowUsRelatedByPUserFollowerId as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->pUTrackUsRelatedByPUserIdSourceScheduledForDeletion !== null) {
+                if (!$this->pUTrackUsRelatedByPUserIdSourceScheduledForDeletion->isEmpty()) {
+                    PUTrackUQuery::create()
+                        ->filterByPrimaryKeys($this->pUTrackUsRelatedByPUserIdSourceScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->pUTrackUsRelatedByPUserIdSourceScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPUTrackUsRelatedByPUserIdSource !== null) {
+                foreach ($this->collPUTrackUsRelatedByPUserIdSource as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->pUTrackUsRelatedByPUserIdDestScheduledForDeletion !== null) {
+                if (!$this->pUTrackUsRelatedByPUserIdDestScheduledForDeletion->isEmpty()) {
+                    PUTrackUQuery::create()
+                        ->filterByPrimaryKeys($this->pUTrackUsRelatedByPUserIdDestScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->pUTrackUsRelatedByPUserIdDestScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPUTrackUsRelatedByPUserIdDest !== null) {
+                foreach ($this->collPUTrackUsRelatedByPUserIdDest as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -4993,6 +5199,12 @@ abstract class BasePUser extends BaseObject implements Persistent
             if (null !== $this->collPuFollowDdPUsers) {
                 $result['PuFollowDdPUsers'] = $this->collPuFollowDdPUsers->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
+            if (null !== $this->collPuTrackDdPUsers) {
+                $result['PuTrackDdPUsers'] = $this->collPuTrackDdPUsers->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collPuTrackDrPUsers) {
+                $result['PuTrackDrPUsers'] = $this->collPuTrackDrPUsers->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
             if (null !== $this->collPUBadges) {
                 $result['PUBadges'] = $this->collPUBadges->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
@@ -5070,6 +5282,12 @@ abstract class BasePUser extends BaseObject implements Persistent
             }
             if (null !== $this->collPUFollowUsRelatedByPUserFollowerId) {
                 $result['PUFollowUsRelatedByPUserFollowerId'] = $this->collPUFollowUsRelatedByPUserFollowerId->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collPUTrackUsRelatedByPUserIdSource) {
+                $result['PUTrackUsRelatedByPUserIdSource'] = $this->collPUTrackUsRelatedByPUserIdSource->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collPUTrackUsRelatedByPUserIdDest) {
+                $result['PUTrackUsRelatedByPUserIdDest'] = $this->collPUTrackUsRelatedByPUserIdDest->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -5554,6 +5772,18 @@ abstract class BasePUser extends BaseObject implements Persistent
                 }
             }
 
+            foreach ($this->getPuTrackDdPUsers() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPuTrackDdPUser($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getPuTrackDrPUsers() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPuTrackDrPUser($relObj->copy($deepCopy));
+                }
+            }
+
             foreach ($this->getPUBadges() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addPUBadge($relObj->copy($deepCopy));
@@ -5710,6 +5940,18 @@ abstract class BasePUser extends BaseObject implements Persistent
                 }
             }
 
+            foreach ($this->getPUTrackUsRelatedByPUserIdSource() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPUTrackURelatedByPUserIdSource($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getPUTrackUsRelatedByPUserIdDest() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPUTrackURelatedByPUserIdDest($relObj->copy($deepCopy));
+                }
+            }
+
             //unflag object copy
             $this->startCopy = false;
         } // if ($deepCopy)
@@ -5832,6 +6074,12 @@ abstract class BasePUser extends BaseObject implements Persistent
         if ('PuFollowDdPUser' == $relationName) {
             $this->initPuFollowDdPUsers();
         }
+        if ('PuTrackDdPUser' == $relationName) {
+            $this->initPuTrackDdPUsers();
+        }
+        if ('PuTrackDrPUser' == $relationName) {
+            $this->initPuTrackDrPUsers();
+        }
         if ('PUBadge' == $relationName) {
             $this->initPUBadges();
         }
@@ -5909,6 +6157,12 @@ abstract class BasePUser extends BaseObject implements Persistent
         }
         if ('PUFollowURelatedByPUserFollowerId' == $relationName) {
             $this->initPUFollowUsRelatedByPUserFollowerId();
+        }
+        if ('PUTrackURelatedByPUserIdSource' == $relationName) {
+            $this->initPUTrackUsRelatedByPUserIdSource();
+        }
+        if ('PUTrackURelatedByPUserIdDest' == $relationName) {
+            $this->initPUTrackUsRelatedByPUserIdDest();
         }
     }
 
@@ -6760,6 +7014,506 @@ abstract class BasePUser extends BaseObject implements Persistent
         $query->joinWith('PuFollowDdPDDebate', $join_behavior);
 
         return $this->getPuFollowDdPUsers($query, $con);
+    }
+
+    /**
+     * Clears out the collPuTrackDdPUsers collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PUser The current object (for fluent API support)
+     * @see        addPuTrackDdPUsers()
+     */
+    public function clearPuTrackDdPUsers()
+    {
+        $this->collPuTrackDdPUsers = null; // important to set this to null since that means it is uninitialized
+        $this->collPuTrackDdPUsersPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPuTrackDdPUsers collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPuTrackDdPUsers($v = true)
+    {
+        $this->collPuTrackDdPUsersPartial = $v;
+    }
+
+    /**
+     * Initializes the collPuTrackDdPUsers collection.
+     *
+     * By default this just sets the collPuTrackDdPUsers collection to an empty array (like clearcollPuTrackDdPUsers());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPuTrackDdPUsers($overrideExisting = true)
+    {
+        if (null !== $this->collPuTrackDdPUsers && !$overrideExisting) {
+            return;
+        }
+        $this->collPuTrackDdPUsers = new PropelObjectCollection();
+        $this->collPuTrackDdPUsers->setModel('PUTrackDD');
+    }
+
+    /**
+     * Gets an array of PUTrackDD objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PUser is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PUTrackDD[] List of PUTrackDD objects
+     * @throws PropelException
+     */
+    public function getPuTrackDdPUsers($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPuTrackDdPUsersPartial && !$this->isNew();
+        if (null === $this->collPuTrackDdPUsers || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPuTrackDdPUsers) {
+                // return empty collection
+                $this->initPuTrackDdPUsers();
+            } else {
+                $collPuTrackDdPUsers = PUTrackDDQuery::create(null, $criteria)
+                    ->filterByPuTrackDdPUser($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPuTrackDdPUsersPartial && count($collPuTrackDdPUsers)) {
+                      $this->initPuTrackDdPUsers(false);
+
+                      foreach ($collPuTrackDdPUsers as $obj) {
+                        if (false == $this->collPuTrackDdPUsers->contains($obj)) {
+                          $this->collPuTrackDdPUsers->append($obj);
+                        }
+                      }
+
+                      $this->collPuTrackDdPUsersPartial = true;
+                    }
+
+                    $collPuTrackDdPUsers->getInternalIterator()->rewind();
+
+                    return $collPuTrackDdPUsers;
+                }
+
+                if ($partial && $this->collPuTrackDdPUsers) {
+                    foreach ($this->collPuTrackDdPUsers as $obj) {
+                        if ($obj->isNew()) {
+                            $collPuTrackDdPUsers[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPuTrackDdPUsers = $collPuTrackDdPUsers;
+                $this->collPuTrackDdPUsersPartial = false;
+            }
+        }
+
+        return $this->collPuTrackDdPUsers;
+    }
+
+    /**
+     * Sets a collection of PuTrackDdPUser objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $puTrackDdPUsers A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PUser The current object (for fluent API support)
+     */
+    public function setPuTrackDdPUsers(PropelCollection $puTrackDdPUsers, PropelPDO $con = null)
+    {
+        $puTrackDdPUsersToDelete = $this->getPuTrackDdPUsers(new Criteria(), $con)->diff($puTrackDdPUsers);
+
+
+        $this->puTrackDdPUsersScheduledForDeletion = $puTrackDdPUsersToDelete;
+
+        foreach ($puTrackDdPUsersToDelete as $puTrackDdPUserRemoved) {
+            $puTrackDdPUserRemoved->setPuTrackDdPUser(null);
+        }
+
+        $this->collPuTrackDdPUsers = null;
+        foreach ($puTrackDdPUsers as $puTrackDdPUser) {
+            $this->addPuTrackDdPUser($puTrackDdPUser);
+        }
+
+        $this->collPuTrackDdPUsers = $puTrackDdPUsers;
+        $this->collPuTrackDdPUsersPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PUTrackDD objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PUTrackDD objects.
+     * @throws PropelException
+     */
+    public function countPuTrackDdPUsers(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPuTrackDdPUsersPartial && !$this->isNew();
+        if (null === $this->collPuTrackDdPUsers || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPuTrackDdPUsers) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPuTrackDdPUsers());
+            }
+            $query = PUTrackDDQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPuTrackDdPUser($this)
+                ->count($con);
+        }
+
+        return count($this->collPuTrackDdPUsers);
+    }
+
+    /**
+     * Method called to associate a PUTrackDD object to this object
+     * through the PUTrackDD foreign key attribute.
+     *
+     * @param    PUTrackDD $l PUTrackDD
+     * @return PUser The current object (for fluent API support)
+     */
+    public function addPuTrackDdPUser(PUTrackDD $l)
+    {
+        if ($this->collPuTrackDdPUsers === null) {
+            $this->initPuTrackDdPUsers();
+            $this->collPuTrackDdPUsersPartial = true;
+        }
+
+        if (!in_array($l, $this->collPuTrackDdPUsers->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPuTrackDdPUser($l);
+
+            if ($this->puTrackDdPUsersScheduledForDeletion and $this->puTrackDdPUsersScheduledForDeletion->contains($l)) {
+                $this->puTrackDdPUsersScheduledForDeletion->remove($this->puTrackDdPUsersScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PuTrackDdPUser $puTrackDdPUser The puTrackDdPUser object to add.
+     */
+    protected function doAddPuTrackDdPUser($puTrackDdPUser)
+    {
+        $this->collPuTrackDdPUsers[]= $puTrackDdPUser;
+        $puTrackDdPUser->setPuTrackDdPUser($this);
+    }
+
+    /**
+     * @param	PuTrackDdPUser $puTrackDdPUser The puTrackDdPUser object to remove.
+     * @return PUser The current object (for fluent API support)
+     */
+    public function removePuTrackDdPUser($puTrackDdPUser)
+    {
+        if ($this->getPuTrackDdPUsers()->contains($puTrackDdPUser)) {
+            $this->collPuTrackDdPUsers->remove($this->collPuTrackDdPUsers->search($puTrackDdPUser));
+            if (null === $this->puTrackDdPUsersScheduledForDeletion) {
+                $this->puTrackDdPUsersScheduledForDeletion = clone $this->collPuTrackDdPUsers;
+                $this->puTrackDdPUsersScheduledForDeletion->clear();
+            }
+            $this->puTrackDdPUsersScheduledForDeletion[]= clone $puTrackDdPUser;
+            $puTrackDdPUser->setPuTrackDdPUser(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PUser is new, it will return
+     * an empty collection; or if this PUser has previously
+     * been saved, it will retrieve related PuTrackDdPUsers from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PUser.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PUTrackDD[] List of PUTrackDD objects
+     */
+    public function getPuTrackDdPUsersJoinPuTrackDdPDDebate($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PUTrackDDQuery::create(null, $criteria);
+        $query->joinWith('PuTrackDdPDDebate', $join_behavior);
+
+        return $this->getPuTrackDdPUsers($query, $con);
+    }
+
+    /**
+     * Clears out the collPuTrackDrPUsers collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PUser The current object (for fluent API support)
+     * @see        addPuTrackDrPUsers()
+     */
+    public function clearPuTrackDrPUsers()
+    {
+        $this->collPuTrackDrPUsers = null; // important to set this to null since that means it is uninitialized
+        $this->collPuTrackDrPUsersPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPuTrackDrPUsers collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPuTrackDrPUsers($v = true)
+    {
+        $this->collPuTrackDrPUsersPartial = $v;
+    }
+
+    /**
+     * Initializes the collPuTrackDrPUsers collection.
+     *
+     * By default this just sets the collPuTrackDrPUsers collection to an empty array (like clearcollPuTrackDrPUsers());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPuTrackDrPUsers($overrideExisting = true)
+    {
+        if (null !== $this->collPuTrackDrPUsers && !$overrideExisting) {
+            return;
+        }
+        $this->collPuTrackDrPUsers = new PropelObjectCollection();
+        $this->collPuTrackDrPUsers->setModel('PUTrackDR');
+    }
+
+    /**
+     * Gets an array of PUTrackDR objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PUser is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PUTrackDR[] List of PUTrackDR objects
+     * @throws PropelException
+     */
+    public function getPuTrackDrPUsers($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPuTrackDrPUsersPartial && !$this->isNew();
+        if (null === $this->collPuTrackDrPUsers || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPuTrackDrPUsers) {
+                // return empty collection
+                $this->initPuTrackDrPUsers();
+            } else {
+                $collPuTrackDrPUsers = PUTrackDRQuery::create(null, $criteria)
+                    ->filterByPuTrackDrPUser($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPuTrackDrPUsersPartial && count($collPuTrackDrPUsers)) {
+                      $this->initPuTrackDrPUsers(false);
+
+                      foreach ($collPuTrackDrPUsers as $obj) {
+                        if (false == $this->collPuTrackDrPUsers->contains($obj)) {
+                          $this->collPuTrackDrPUsers->append($obj);
+                        }
+                      }
+
+                      $this->collPuTrackDrPUsersPartial = true;
+                    }
+
+                    $collPuTrackDrPUsers->getInternalIterator()->rewind();
+
+                    return $collPuTrackDrPUsers;
+                }
+
+                if ($partial && $this->collPuTrackDrPUsers) {
+                    foreach ($this->collPuTrackDrPUsers as $obj) {
+                        if ($obj->isNew()) {
+                            $collPuTrackDrPUsers[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPuTrackDrPUsers = $collPuTrackDrPUsers;
+                $this->collPuTrackDrPUsersPartial = false;
+            }
+        }
+
+        return $this->collPuTrackDrPUsers;
+    }
+
+    /**
+     * Sets a collection of PuTrackDrPUser objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $puTrackDrPUsers A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PUser The current object (for fluent API support)
+     */
+    public function setPuTrackDrPUsers(PropelCollection $puTrackDrPUsers, PropelPDO $con = null)
+    {
+        $puTrackDrPUsersToDelete = $this->getPuTrackDrPUsers(new Criteria(), $con)->diff($puTrackDrPUsers);
+
+
+        $this->puTrackDrPUsersScheduledForDeletion = $puTrackDrPUsersToDelete;
+
+        foreach ($puTrackDrPUsersToDelete as $puTrackDrPUserRemoved) {
+            $puTrackDrPUserRemoved->setPuTrackDrPUser(null);
+        }
+
+        $this->collPuTrackDrPUsers = null;
+        foreach ($puTrackDrPUsers as $puTrackDrPUser) {
+            $this->addPuTrackDrPUser($puTrackDrPUser);
+        }
+
+        $this->collPuTrackDrPUsers = $puTrackDrPUsers;
+        $this->collPuTrackDrPUsersPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PUTrackDR objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PUTrackDR objects.
+     * @throws PropelException
+     */
+    public function countPuTrackDrPUsers(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPuTrackDrPUsersPartial && !$this->isNew();
+        if (null === $this->collPuTrackDrPUsers || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPuTrackDrPUsers) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPuTrackDrPUsers());
+            }
+            $query = PUTrackDRQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPuTrackDrPUser($this)
+                ->count($con);
+        }
+
+        return count($this->collPuTrackDrPUsers);
+    }
+
+    /**
+     * Method called to associate a PUTrackDR object to this object
+     * through the PUTrackDR foreign key attribute.
+     *
+     * @param    PUTrackDR $l PUTrackDR
+     * @return PUser The current object (for fluent API support)
+     */
+    public function addPuTrackDrPUser(PUTrackDR $l)
+    {
+        if ($this->collPuTrackDrPUsers === null) {
+            $this->initPuTrackDrPUsers();
+            $this->collPuTrackDrPUsersPartial = true;
+        }
+
+        if (!in_array($l, $this->collPuTrackDrPUsers->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPuTrackDrPUser($l);
+
+            if ($this->puTrackDrPUsersScheduledForDeletion and $this->puTrackDrPUsersScheduledForDeletion->contains($l)) {
+                $this->puTrackDrPUsersScheduledForDeletion->remove($this->puTrackDrPUsersScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PuTrackDrPUser $puTrackDrPUser The puTrackDrPUser object to add.
+     */
+    protected function doAddPuTrackDrPUser($puTrackDrPUser)
+    {
+        $this->collPuTrackDrPUsers[]= $puTrackDrPUser;
+        $puTrackDrPUser->setPuTrackDrPUser($this);
+    }
+
+    /**
+     * @param	PuTrackDrPUser $puTrackDrPUser The puTrackDrPUser object to remove.
+     * @return PUser The current object (for fluent API support)
+     */
+    public function removePuTrackDrPUser($puTrackDrPUser)
+    {
+        if ($this->getPuTrackDrPUsers()->contains($puTrackDrPUser)) {
+            $this->collPuTrackDrPUsers->remove($this->collPuTrackDrPUsers->search($puTrackDrPUser));
+            if (null === $this->puTrackDrPUsersScheduledForDeletion) {
+                $this->puTrackDrPUsersScheduledForDeletion = clone $this->collPuTrackDrPUsers;
+                $this->puTrackDrPUsersScheduledForDeletion->clear();
+            }
+            $this->puTrackDrPUsersScheduledForDeletion[]= clone $puTrackDrPUser;
+            $puTrackDrPUser->setPuTrackDrPUser(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PUser is new, it will return
+     * an empty collection; or if this PUser has previously
+     * been saved, it will retrieve related PuTrackDrPUsers from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PUser.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PUTrackDR[] List of PUTrackDR objects
+     */
+    public function getPuTrackDrPUsersJoinPuTrackDrPDReaction($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PUTrackDRQuery::create(null, $criteria);
+        $query->joinWith('PuTrackDrPDReaction', $join_behavior);
+
+        return $this->getPuTrackDrPUsers($query, $con);
     }
 
     /**
@@ -13119,6 +13873,462 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collPUTrackUsRelatedByPUserIdSource collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PUser The current object (for fluent API support)
+     * @see        addPUTrackUsRelatedByPUserIdSource()
+     */
+    public function clearPUTrackUsRelatedByPUserIdSource()
+    {
+        $this->collPUTrackUsRelatedByPUserIdSource = null; // important to set this to null since that means it is uninitialized
+        $this->collPUTrackUsRelatedByPUserIdSourcePartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPUTrackUsRelatedByPUserIdSource collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPUTrackUsRelatedByPUserIdSource($v = true)
+    {
+        $this->collPUTrackUsRelatedByPUserIdSourcePartial = $v;
+    }
+
+    /**
+     * Initializes the collPUTrackUsRelatedByPUserIdSource collection.
+     *
+     * By default this just sets the collPUTrackUsRelatedByPUserIdSource collection to an empty array (like clearcollPUTrackUsRelatedByPUserIdSource());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPUTrackUsRelatedByPUserIdSource($overrideExisting = true)
+    {
+        if (null !== $this->collPUTrackUsRelatedByPUserIdSource && !$overrideExisting) {
+            return;
+        }
+        $this->collPUTrackUsRelatedByPUserIdSource = new PropelObjectCollection();
+        $this->collPUTrackUsRelatedByPUserIdSource->setModel('PUTrackU');
+    }
+
+    /**
+     * Gets an array of PUTrackU objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PUser is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PUTrackU[] List of PUTrackU objects
+     * @throws PropelException
+     */
+    public function getPUTrackUsRelatedByPUserIdSource($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPUTrackUsRelatedByPUserIdSourcePartial && !$this->isNew();
+        if (null === $this->collPUTrackUsRelatedByPUserIdSource || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPUTrackUsRelatedByPUserIdSource) {
+                // return empty collection
+                $this->initPUTrackUsRelatedByPUserIdSource();
+            } else {
+                $collPUTrackUsRelatedByPUserIdSource = PUTrackUQuery::create(null, $criteria)
+                    ->filterByPUserRelatedByPUserIdSource($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPUTrackUsRelatedByPUserIdSourcePartial && count($collPUTrackUsRelatedByPUserIdSource)) {
+                      $this->initPUTrackUsRelatedByPUserIdSource(false);
+
+                      foreach ($collPUTrackUsRelatedByPUserIdSource as $obj) {
+                        if (false == $this->collPUTrackUsRelatedByPUserIdSource->contains($obj)) {
+                          $this->collPUTrackUsRelatedByPUserIdSource->append($obj);
+                        }
+                      }
+
+                      $this->collPUTrackUsRelatedByPUserIdSourcePartial = true;
+                    }
+
+                    $collPUTrackUsRelatedByPUserIdSource->getInternalIterator()->rewind();
+
+                    return $collPUTrackUsRelatedByPUserIdSource;
+                }
+
+                if ($partial && $this->collPUTrackUsRelatedByPUserIdSource) {
+                    foreach ($this->collPUTrackUsRelatedByPUserIdSource as $obj) {
+                        if ($obj->isNew()) {
+                            $collPUTrackUsRelatedByPUserIdSource[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPUTrackUsRelatedByPUserIdSource = $collPUTrackUsRelatedByPUserIdSource;
+                $this->collPUTrackUsRelatedByPUserIdSourcePartial = false;
+            }
+        }
+
+        return $this->collPUTrackUsRelatedByPUserIdSource;
+    }
+
+    /**
+     * Sets a collection of PUTrackURelatedByPUserIdSource objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pUTrackUsRelatedByPUserIdSource A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PUser The current object (for fluent API support)
+     */
+    public function setPUTrackUsRelatedByPUserIdSource(PropelCollection $pUTrackUsRelatedByPUserIdSource, PropelPDO $con = null)
+    {
+        $pUTrackUsRelatedByPUserIdSourceToDelete = $this->getPUTrackUsRelatedByPUserIdSource(new Criteria(), $con)->diff($pUTrackUsRelatedByPUserIdSource);
+
+
+        //since at least one column in the foreign key is at the same time a PK
+        //we can not just set a PK to NULL in the lines below. We have to store
+        //a backup of all values, so we are able to manipulate these items based on the onDelete value later.
+        $this->pUTrackUsRelatedByPUserIdSourceScheduledForDeletion = clone $pUTrackUsRelatedByPUserIdSourceToDelete;
+
+        foreach ($pUTrackUsRelatedByPUserIdSourceToDelete as $pUTrackURelatedByPUserIdSourceRemoved) {
+            $pUTrackURelatedByPUserIdSourceRemoved->setPUserRelatedByPUserIdSource(null);
+        }
+
+        $this->collPUTrackUsRelatedByPUserIdSource = null;
+        foreach ($pUTrackUsRelatedByPUserIdSource as $pUTrackURelatedByPUserIdSource) {
+            $this->addPUTrackURelatedByPUserIdSource($pUTrackURelatedByPUserIdSource);
+        }
+
+        $this->collPUTrackUsRelatedByPUserIdSource = $pUTrackUsRelatedByPUserIdSource;
+        $this->collPUTrackUsRelatedByPUserIdSourcePartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PUTrackU objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PUTrackU objects.
+     * @throws PropelException
+     */
+    public function countPUTrackUsRelatedByPUserIdSource(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPUTrackUsRelatedByPUserIdSourcePartial && !$this->isNew();
+        if (null === $this->collPUTrackUsRelatedByPUserIdSource || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPUTrackUsRelatedByPUserIdSource) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPUTrackUsRelatedByPUserIdSource());
+            }
+            $query = PUTrackUQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPUserRelatedByPUserIdSource($this)
+                ->count($con);
+        }
+
+        return count($this->collPUTrackUsRelatedByPUserIdSource);
+    }
+
+    /**
+     * Method called to associate a PUTrackU object to this object
+     * through the PUTrackU foreign key attribute.
+     *
+     * @param    PUTrackU $l PUTrackU
+     * @return PUser The current object (for fluent API support)
+     */
+    public function addPUTrackURelatedByPUserIdSource(PUTrackU $l)
+    {
+        if ($this->collPUTrackUsRelatedByPUserIdSource === null) {
+            $this->initPUTrackUsRelatedByPUserIdSource();
+            $this->collPUTrackUsRelatedByPUserIdSourcePartial = true;
+        }
+
+        if (!in_array($l, $this->collPUTrackUsRelatedByPUserIdSource->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPUTrackURelatedByPUserIdSource($l);
+
+            if ($this->pUTrackUsRelatedByPUserIdSourceScheduledForDeletion and $this->pUTrackUsRelatedByPUserIdSourceScheduledForDeletion->contains($l)) {
+                $this->pUTrackUsRelatedByPUserIdSourceScheduledForDeletion->remove($this->pUTrackUsRelatedByPUserIdSourceScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PUTrackURelatedByPUserIdSource $pUTrackURelatedByPUserIdSource The pUTrackURelatedByPUserIdSource object to add.
+     */
+    protected function doAddPUTrackURelatedByPUserIdSource($pUTrackURelatedByPUserIdSource)
+    {
+        $this->collPUTrackUsRelatedByPUserIdSource[]= $pUTrackURelatedByPUserIdSource;
+        $pUTrackURelatedByPUserIdSource->setPUserRelatedByPUserIdSource($this);
+    }
+
+    /**
+     * @param	PUTrackURelatedByPUserIdSource $pUTrackURelatedByPUserIdSource The pUTrackURelatedByPUserIdSource object to remove.
+     * @return PUser The current object (for fluent API support)
+     */
+    public function removePUTrackURelatedByPUserIdSource($pUTrackURelatedByPUserIdSource)
+    {
+        if ($this->getPUTrackUsRelatedByPUserIdSource()->contains($pUTrackURelatedByPUserIdSource)) {
+            $this->collPUTrackUsRelatedByPUserIdSource->remove($this->collPUTrackUsRelatedByPUserIdSource->search($pUTrackURelatedByPUserIdSource));
+            if (null === $this->pUTrackUsRelatedByPUserIdSourceScheduledForDeletion) {
+                $this->pUTrackUsRelatedByPUserIdSourceScheduledForDeletion = clone $this->collPUTrackUsRelatedByPUserIdSource;
+                $this->pUTrackUsRelatedByPUserIdSourceScheduledForDeletion->clear();
+            }
+            $this->pUTrackUsRelatedByPUserIdSourceScheduledForDeletion[]= clone $pUTrackURelatedByPUserIdSource;
+            $pUTrackURelatedByPUserIdSource->setPUserRelatedByPUserIdSource(null);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Clears out the collPUTrackUsRelatedByPUserIdDest collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PUser The current object (for fluent API support)
+     * @see        addPUTrackUsRelatedByPUserIdDest()
+     */
+    public function clearPUTrackUsRelatedByPUserIdDest()
+    {
+        $this->collPUTrackUsRelatedByPUserIdDest = null; // important to set this to null since that means it is uninitialized
+        $this->collPUTrackUsRelatedByPUserIdDestPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPUTrackUsRelatedByPUserIdDest collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPUTrackUsRelatedByPUserIdDest($v = true)
+    {
+        $this->collPUTrackUsRelatedByPUserIdDestPartial = $v;
+    }
+
+    /**
+     * Initializes the collPUTrackUsRelatedByPUserIdDest collection.
+     *
+     * By default this just sets the collPUTrackUsRelatedByPUserIdDest collection to an empty array (like clearcollPUTrackUsRelatedByPUserIdDest());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPUTrackUsRelatedByPUserIdDest($overrideExisting = true)
+    {
+        if (null !== $this->collPUTrackUsRelatedByPUserIdDest && !$overrideExisting) {
+            return;
+        }
+        $this->collPUTrackUsRelatedByPUserIdDest = new PropelObjectCollection();
+        $this->collPUTrackUsRelatedByPUserIdDest->setModel('PUTrackU');
+    }
+
+    /**
+     * Gets an array of PUTrackU objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PUser is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PUTrackU[] List of PUTrackU objects
+     * @throws PropelException
+     */
+    public function getPUTrackUsRelatedByPUserIdDest($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPUTrackUsRelatedByPUserIdDestPartial && !$this->isNew();
+        if (null === $this->collPUTrackUsRelatedByPUserIdDest || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPUTrackUsRelatedByPUserIdDest) {
+                // return empty collection
+                $this->initPUTrackUsRelatedByPUserIdDest();
+            } else {
+                $collPUTrackUsRelatedByPUserIdDest = PUTrackUQuery::create(null, $criteria)
+                    ->filterByPUserRelatedByPUserIdDest($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPUTrackUsRelatedByPUserIdDestPartial && count($collPUTrackUsRelatedByPUserIdDest)) {
+                      $this->initPUTrackUsRelatedByPUserIdDest(false);
+
+                      foreach ($collPUTrackUsRelatedByPUserIdDest as $obj) {
+                        if (false == $this->collPUTrackUsRelatedByPUserIdDest->contains($obj)) {
+                          $this->collPUTrackUsRelatedByPUserIdDest->append($obj);
+                        }
+                      }
+
+                      $this->collPUTrackUsRelatedByPUserIdDestPartial = true;
+                    }
+
+                    $collPUTrackUsRelatedByPUserIdDest->getInternalIterator()->rewind();
+
+                    return $collPUTrackUsRelatedByPUserIdDest;
+                }
+
+                if ($partial && $this->collPUTrackUsRelatedByPUserIdDest) {
+                    foreach ($this->collPUTrackUsRelatedByPUserIdDest as $obj) {
+                        if ($obj->isNew()) {
+                            $collPUTrackUsRelatedByPUserIdDest[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPUTrackUsRelatedByPUserIdDest = $collPUTrackUsRelatedByPUserIdDest;
+                $this->collPUTrackUsRelatedByPUserIdDestPartial = false;
+            }
+        }
+
+        return $this->collPUTrackUsRelatedByPUserIdDest;
+    }
+
+    /**
+     * Sets a collection of PUTrackURelatedByPUserIdDest objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pUTrackUsRelatedByPUserIdDest A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PUser The current object (for fluent API support)
+     */
+    public function setPUTrackUsRelatedByPUserIdDest(PropelCollection $pUTrackUsRelatedByPUserIdDest, PropelPDO $con = null)
+    {
+        $pUTrackUsRelatedByPUserIdDestToDelete = $this->getPUTrackUsRelatedByPUserIdDest(new Criteria(), $con)->diff($pUTrackUsRelatedByPUserIdDest);
+
+
+        //since at least one column in the foreign key is at the same time a PK
+        //we can not just set a PK to NULL in the lines below. We have to store
+        //a backup of all values, so we are able to manipulate these items based on the onDelete value later.
+        $this->pUTrackUsRelatedByPUserIdDestScheduledForDeletion = clone $pUTrackUsRelatedByPUserIdDestToDelete;
+
+        foreach ($pUTrackUsRelatedByPUserIdDestToDelete as $pUTrackURelatedByPUserIdDestRemoved) {
+            $pUTrackURelatedByPUserIdDestRemoved->setPUserRelatedByPUserIdDest(null);
+        }
+
+        $this->collPUTrackUsRelatedByPUserIdDest = null;
+        foreach ($pUTrackUsRelatedByPUserIdDest as $pUTrackURelatedByPUserIdDest) {
+            $this->addPUTrackURelatedByPUserIdDest($pUTrackURelatedByPUserIdDest);
+        }
+
+        $this->collPUTrackUsRelatedByPUserIdDest = $pUTrackUsRelatedByPUserIdDest;
+        $this->collPUTrackUsRelatedByPUserIdDestPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PUTrackU objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PUTrackU objects.
+     * @throws PropelException
+     */
+    public function countPUTrackUsRelatedByPUserIdDest(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPUTrackUsRelatedByPUserIdDestPartial && !$this->isNew();
+        if (null === $this->collPUTrackUsRelatedByPUserIdDest || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPUTrackUsRelatedByPUserIdDest) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPUTrackUsRelatedByPUserIdDest());
+            }
+            $query = PUTrackUQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPUserRelatedByPUserIdDest($this)
+                ->count($con);
+        }
+
+        return count($this->collPUTrackUsRelatedByPUserIdDest);
+    }
+
+    /**
+     * Method called to associate a PUTrackU object to this object
+     * through the PUTrackU foreign key attribute.
+     *
+     * @param    PUTrackU $l PUTrackU
+     * @return PUser The current object (for fluent API support)
+     */
+    public function addPUTrackURelatedByPUserIdDest(PUTrackU $l)
+    {
+        if ($this->collPUTrackUsRelatedByPUserIdDest === null) {
+            $this->initPUTrackUsRelatedByPUserIdDest();
+            $this->collPUTrackUsRelatedByPUserIdDestPartial = true;
+        }
+
+        if (!in_array($l, $this->collPUTrackUsRelatedByPUserIdDest->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPUTrackURelatedByPUserIdDest($l);
+
+            if ($this->pUTrackUsRelatedByPUserIdDestScheduledForDeletion and $this->pUTrackUsRelatedByPUserIdDestScheduledForDeletion->contains($l)) {
+                $this->pUTrackUsRelatedByPUserIdDestScheduledForDeletion->remove($this->pUTrackUsRelatedByPUserIdDestScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PUTrackURelatedByPUserIdDest $pUTrackURelatedByPUserIdDest The pUTrackURelatedByPUserIdDest object to add.
+     */
+    protected function doAddPUTrackURelatedByPUserIdDest($pUTrackURelatedByPUserIdDest)
+    {
+        $this->collPUTrackUsRelatedByPUserIdDest[]= $pUTrackURelatedByPUserIdDest;
+        $pUTrackURelatedByPUserIdDest->setPUserRelatedByPUserIdDest($this);
+    }
+
+    /**
+     * @param	PUTrackURelatedByPUserIdDest $pUTrackURelatedByPUserIdDest The pUTrackURelatedByPUserIdDest object to remove.
+     * @return PUser The current object (for fluent API support)
+     */
+    public function removePUTrackURelatedByPUserIdDest($pUTrackURelatedByPUserIdDest)
+    {
+        if ($this->getPUTrackUsRelatedByPUserIdDest()->contains($pUTrackURelatedByPUserIdDest)) {
+            $this->collPUTrackUsRelatedByPUserIdDest->remove($this->collPUTrackUsRelatedByPUserIdDest->search($pUTrackURelatedByPUserIdDest));
+            if (null === $this->pUTrackUsRelatedByPUserIdDestScheduledForDeletion) {
+                $this->pUTrackUsRelatedByPUserIdDestScheduledForDeletion = clone $this->collPUTrackUsRelatedByPUserIdDest;
+                $this->pUTrackUsRelatedByPUserIdDestScheduledForDeletion->clear();
+            }
+            $this->pUTrackUsRelatedByPUserIdDestScheduledForDeletion[]= clone $pUTrackURelatedByPUserIdDest;
+            $pUTrackURelatedByPUserIdDest->setPUserRelatedByPUserIdDest(null);
+        }
+
+        return $this;
+    }
+
+    /**
      * Clears out the collPuFollowDdPDDebates collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
@@ -13300,6 +14510,380 @@ abstract class BasePUser extends BaseObject implements Persistent
                 $this->puFollowDdPDDebatesScheduledForDeletion->clear();
             }
             $this->puFollowDdPDDebatesScheduledForDeletion[]= $pDDebate;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Clears out the collPuTrackDdPDDebates collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PUser The current object (for fluent API support)
+     * @see        addPuTrackDdPDDebates()
+     */
+    public function clearPuTrackDdPDDebates()
+    {
+        $this->collPuTrackDdPDDebates = null; // important to set this to null since that means it is uninitialized
+        $this->collPuTrackDdPDDebatesPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * Initializes the collPuTrackDdPDDebates collection.
+     *
+     * By default this just sets the collPuTrackDdPDDebates collection to an empty collection (like clearPuTrackDdPDDebates());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @return void
+     */
+    public function initPuTrackDdPDDebates()
+    {
+        $this->collPuTrackDdPDDebates = new PropelObjectCollection();
+        $this->collPuTrackDdPDDebates->setModel('PDDebate');
+    }
+
+    /**
+     * Gets a collection of PDDebate objects related by a many-to-many relationship
+     * to the current object by way of the p_u_track_d_d cross-reference table.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PUser is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return PropelObjectCollection|PDDebate[] List of PDDebate objects
+     */
+    public function getPuTrackDdPDDebates($criteria = null, PropelPDO $con = null)
+    {
+        if (null === $this->collPuTrackDdPDDebates || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPuTrackDdPDDebates) {
+                // return empty collection
+                $this->initPuTrackDdPDDebates();
+            } else {
+                $collPuTrackDdPDDebates = PDDebateQuery::create(null, $criteria)
+                    ->filterByPuTrackDdPUser($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    return $collPuTrackDdPDDebates;
+                }
+                $this->collPuTrackDdPDDebates = $collPuTrackDdPDDebates;
+            }
+        }
+
+        return $this->collPuTrackDdPDDebates;
+    }
+
+    /**
+     * Sets a collection of PDDebate objects related by a many-to-many relationship
+     * to the current object by way of the p_u_track_d_d cross-reference table.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $puTrackDdPDDebates A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PUser The current object (for fluent API support)
+     */
+    public function setPuTrackDdPDDebates(PropelCollection $puTrackDdPDDebates, PropelPDO $con = null)
+    {
+        $this->clearPuTrackDdPDDebates();
+        $currentPuTrackDdPDDebates = $this->getPuTrackDdPDDebates(null, $con);
+
+        $this->puTrackDdPDDebatesScheduledForDeletion = $currentPuTrackDdPDDebates->diff($puTrackDdPDDebates);
+
+        foreach ($puTrackDdPDDebates as $puTrackDdPDDebate) {
+            if (!$currentPuTrackDdPDDebates->contains($puTrackDdPDDebate)) {
+                $this->doAddPuTrackDdPDDebate($puTrackDdPDDebate);
+            }
+        }
+
+        $this->collPuTrackDdPDDebates = $puTrackDdPDDebates;
+
+        return $this;
+    }
+
+    /**
+     * Gets the number of PDDebate objects related by a many-to-many relationship
+     * to the current object by way of the p_u_track_d_d cross-reference table.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param boolean $distinct Set to true to force count distinct
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return int the number of related PDDebate objects
+     */
+    public function countPuTrackDdPDDebates($criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        if (null === $this->collPuTrackDdPDDebates || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPuTrackDdPDDebates) {
+                return 0;
+            } else {
+                $query = PDDebateQuery::create(null, $criteria);
+                if ($distinct) {
+                    $query->distinct();
+                }
+
+                return $query
+                    ->filterByPuTrackDdPUser($this)
+                    ->count($con);
+            }
+        } else {
+            return count($this->collPuTrackDdPDDebates);
+        }
+    }
+
+    /**
+     * Associate a PDDebate object to this object
+     * through the p_u_track_d_d cross reference table.
+     *
+     * @param  PDDebate $pDDebate The PUTrackDD object to relate
+     * @return PUser The current object (for fluent API support)
+     */
+    public function addPuTrackDdPDDebate(PDDebate $pDDebate)
+    {
+        if ($this->collPuTrackDdPDDebates === null) {
+            $this->initPuTrackDdPDDebates();
+        }
+
+        if (!$this->collPuTrackDdPDDebates->contains($pDDebate)) { // only add it if the **same** object is not already associated
+            $this->doAddPuTrackDdPDDebate($pDDebate);
+            $this->collPuTrackDdPDDebates[] = $pDDebate;
+
+            if ($this->puTrackDdPDDebatesScheduledForDeletion and $this->puTrackDdPDDebatesScheduledForDeletion->contains($pDDebate)) {
+                $this->puTrackDdPDDebatesScheduledForDeletion->remove($this->puTrackDdPDDebatesScheduledForDeletion->search($pDDebate));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PuTrackDdPDDebate $puTrackDdPDDebate The puTrackDdPDDebate object to add.
+     */
+    protected function doAddPuTrackDdPDDebate(PDDebate $puTrackDdPDDebate)
+    {
+        // set the back reference to this object directly as using provided method either results
+        // in endless loop or in multiple relations
+        if (!$puTrackDdPDDebate->getPuTrackDdPUsers()->contains($this)) { $pUTrackDD = new PUTrackDD();
+            $pUTrackDD->setPuTrackDdPDDebate($puTrackDdPDDebate);
+            $this->addPuTrackDdPUser($pUTrackDD);
+
+            $foreignCollection = $puTrackDdPDDebate->getPuTrackDdPUsers();
+            $foreignCollection[] = $this;
+        }
+    }
+
+    /**
+     * Remove a PDDebate object to this object
+     * through the p_u_track_d_d cross reference table.
+     *
+     * @param PDDebate $pDDebate The PUTrackDD object to relate
+     * @return PUser The current object (for fluent API support)
+     */
+    public function removePuTrackDdPDDebate(PDDebate $pDDebate)
+    {
+        if ($this->getPuTrackDdPDDebates()->contains($pDDebate)) {
+            $this->collPuTrackDdPDDebates->remove($this->collPuTrackDdPDDebates->search($pDDebate));
+            if (null === $this->puTrackDdPDDebatesScheduledForDeletion) {
+                $this->puTrackDdPDDebatesScheduledForDeletion = clone $this->collPuTrackDdPDDebates;
+                $this->puTrackDdPDDebatesScheduledForDeletion->clear();
+            }
+            $this->puTrackDdPDDebatesScheduledForDeletion[]= $pDDebate;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Clears out the collPuTrackDrPDReactions collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PUser The current object (for fluent API support)
+     * @see        addPuTrackDrPDReactions()
+     */
+    public function clearPuTrackDrPDReactions()
+    {
+        $this->collPuTrackDrPDReactions = null; // important to set this to null since that means it is uninitialized
+        $this->collPuTrackDrPDReactionsPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * Initializes the collPuTrackDrPDReactions collection.
+     *
+     * By default this just sets the collPuTrackDrPDReactions collection to an empty collection (like clearPuTrackDrPDReactions());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @return void
+     */
+    public function initPuTrackDrPDReactions()
+    {
+        $this->collPuTrackDrPDReactions = new PropelObjectCollection();
+        $this->collPuTrackDrPDReactions->setModel('PDReaction');
+    }
+
+    /**
+     * Gets a collection of PDReaction objects related by a many-to-many relationship
+     * to the current object by way of the p_u_track_d_r cross-reference table.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PUser is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return PropelObjectCollection|PDReaction[] List of PDReaction objects
+     */
+    public function getPuTrackDrPDReactions($criteria = null, PropelPDO $con = null)
+    {
+        if (null === $this->collPuTrackDrPDReactions || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPuTrackDrPDReactions) {
+                // return empty collection
+                $this->initPuTrackDrPDReactions();
+            } else {
+                $collPuTrackDrPDReactions = PDReactionQuery::create(null, $criteria)
+                    ->filterByPuTrackDrPUser($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    return $collPuTrackDrPDReactions;
+                }
+                $this->collPuTrackDrPDReactions = $collPuTrackDrPDReactions;
+            }
+        }
+
+        return $this->collPuTrackDrPDReactions;
+    }
+
+    /**
+     * Sets a collection of PDReaction objects related by a many-to-many relationship
+     * to the current object by way of the p_u_track_d_r cross-reference table.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $puTrackDrPDReactions A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PUser The current object (for fluent API support)
+     */
+    public function setPuTrackDrPDReactions(PropelCollection $puTrackDrPDReactions, PropelPDO $con = null)
+    {
+        $this->clearPuTrackDrPDReactions();
+        $currentPuTrackDrPDReactions = $this->getPuTrackDrPDReactions(null, $con);
+
+        $this->puTrackDrPDReactionsScheduledForDeletion = $currentPuTrackDrPDReactions->diff($puTrackDrPDReactions);
+
+        foreach ($puTrackDrPDReactions as $puTrackDrPDReaction) {
+            if (!$currentPuTrackDrPDReactions->contains($puTrackDrPDReaction)) {
+                $this->doAddPuTrackDrPDReaction($puTrackDrPDReaction);
+            }
+        }
+
+        $this->collPuTrackDrPDReactions = $puTrackDrPDReactions;
+
+        return $this;
+    }
+
+    /**
+     * Gets the number of PDReaction objects related by a many-to-many relationship
+     * to the current object by way of the p_u_track_d_r cross-reference table.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param boolean $distinct Set to true to force count distinct
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return int the number of related PDReaction objects
+     */
+    public function countPuTrackDrPDReactions($criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        if (null === $this->collPuTrackDrPDReactions || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPuTrackDrPDReactions) {
+                return 0;
+            } else {
+                $query = PDReactionQuery::create(null, $criteria);
+                if ($distinct) {
+                    $query->distinct();
+                }
+
+                return $query
+                    ->filterByPuTrackDrPUser($this)
+                    ->count($con);
+            }
+        } else {
+            return count($this->collPuTrackDrPDReactions);
+        }
+    }
+
+    /**
+     * Associate a PDReaction object to this object
+     * through the p_u_track_d_r cross reference table.
+     *
+     * @param  PDReaction $pDReaction The PUTrackDR object to relate
+     * @return PUser The current object (for fluent API support)
+     */
+    public function addPuTrackDrPDReaction(PDReaction $pDReaction)
+    {
+        if ($this->collPuTrackDrPDReactions === null) {
+            $this->initPuTrackDrPDReactions();
+        }
+
+        if (!$this->collPuTrackDrPDReactions->contains($pDReaction)) { // only add it if the **same** object is not already associated
+            $this->doAddPuTrackDrPDReaction($pDReaction);
+            $this->collPuTrackDrPDReactions[] = $pDReaction;
+
+            if ($this->puTrackDrPDReactionsScheduledForDeletion and $this->puTrackDrPDReactionsScheduledForDeletion->contains($pDReaction)) {
+                $this->puTrackDrPDReactionsScheduledForDeletion->remove($this->puTrackDrPDReactionsScheduledForDeletion->search($pDReaction));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PuTrackDrPDReaction $puTrackDrPDReaction The puTrackDrPDReaction object to add.
+     */
+    protected function doAddPuTrackDrPDReaction(PDReaction $puTrackDrPDReaction)
+    {
+        // set the back reference to this object directly as using provided method either results
+        // in endless loop or in multiple relations
+        if (!$puTrackDrPDReaction->getPuTrackDrPUsers()->contains($this)) { $pUTrackDR = new PUTrackDR();
+            $pUTrackDR->setPuTrackDrPDReaction($puTrackDrPDReaction);
+            $this->addPuTrackDrPUser($pUTrackDR);
+
+            $foreignCollection = $puTrackDrPDReaction->getPuTrackDrPUsers();
+            $foreignCollection[] = $this;
+        }
+    }
+
+    /**
+     * Remove a PDReaction object to this object
+     * through the p_u_track_d_r cross reference table.
+     *
+     * @param PDReaction $pDReaction The PUTrackDR object to relate
+     * @return PUser The current object (for fluent API support)
+     */
+    public function removePuTrackDrPDReaction(PDReaction $pDReaction)
+    {
+        if ($this->getPuTrackDrPDReactions()->contains($pDReaction)) {
+            $this->collPuTrackDrPDReactions->remove($this->collPuTrackDrPDReactions->search($pDReaction));
+            if (null === $this->puTrackDrPDReactionsScheduledForDeletion) {
+                $this->puTrackDrPDReactionsScheduledForDeletion = clone $this->collPuTrackDrPDReactions;
+                $this->puTrackDrPDReactionsScheduledForDeletion->clear();
+            }
+            $this->puTrackDrPDReactionsScheduledForDeletion[]= $pDReaction;
         }
 
         return $this;
@@ -15272,6 +16856,16 @@ abstract class BasePUser extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collPuTrackDdPUsers) {
+                foreach ($this->collPuTrackDdPUsers as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collPuTrackDrPUsers) {
+                foreach ($this->collPuTrackDrPUsers as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collPUBadges) {
                 foreach ($this->collPUBadges as $o) {
                     $o->clearAllReferences($deep);
@@ -15402,8 +16996,28 @@ abstract class BasePUser extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collPUTrackUsRelatedByPUserIdSource) {
+                foreach ($this->collPUTrackUsRelatedByPUserIdSource as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collPUTrackUsRelatedByPUserIdDest) {
+                foreach ($this->collPUTrackUsRelatedByPUserIdDest as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collPuFollowDdPDDebates) {
                 foreach ($this->collPuFollowDdPDDebates as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collPuTrackDdPDDebates) {
+                foreach ($this->collPuTrackDdPDDebates as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collPuTrackDrPDReactions) {
+                foreach ($this->collPuTrackDrPDReactions as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -15489,6 +17103,14 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->collPuFollowDdPUsers->clearIterator();
         }
         $this->collPuFollowDdPUsers = null;
+        if ($this->collPuTrackDdPUsers instanceof PropelCollection) {
+            $this->collPuTrackDdPUsers->clearIterator();
+        }
+        $this->collPuTrackDdPUsers = null;
+        if ($this->collPuTrackDrPUsers instanceof PropelCollection) {
+            $this->collPuTrackDrPUsers->clearIterator();
+        }
+        $this->collPuTrackDrPUsers = null;
         if ($this->collPUBadges instanceof PropelCollection) {
             $this->collPUBadges->clearIterator();
         }
@@ -15593,10 +17215,26 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->collPUFollowUsRelatedByPUserFollowerId->clearIterator();
         }
         $this->collPUFollowUsRelatedByPUserFollowerId = null;
+        if ($this->collPUTrackUsRelatedByPUserIdSource instanceof PropelCollection) {
+            $this->collPUTrackUsRelatedByPUserIdSource->clearIterator();
+        }
+        $this->collPUTrackUsRelatedByPUserIdSource = null;
+        if ($this->collPUTrackUsRelatedByPUserIdDest instanceof PropelCollection) {
+            $this->collPUTrackUsRelatedByPUserIdDest->clearIterator();
+        }
+        $this->collPUTrackUsRelatedByPUserIdDest = null;
         if ($this->collPuFollowDdPDDebates instanceof PropelCollection) {
             $this->collPuFollowDdPDDebates->clearIterator();
         }
         $this->collPuFollowDdPDDebates = null;
+        if ($this->collPuTrackDdPDDebates instanceof PropelCollection) {
+            $this->collPuTrackDdPDDebates->clearIterator();
+        }
+        $this->collPuTrackDdPDDebates = null;
+        if ($this->collPuTrackDrPDReactions instanceof PropelCollection) {
+            $this->collPuTrackDrPDReactions->clearIterator();
+        }
+        $this->collPuTrackDrPDReactions = null;
         if ($this->collPRBadges instanceof PropelCollection) {
             $this->collPRBadges->clearIterator();
         }

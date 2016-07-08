@@ -38,6 +38,9 @@ use Politizr\Model\PUStatusPeer;
 use Politizr\Model\PUSubscribeEmailPeer;
 use Politizr\Model\PUSubscribeScreenPeer;
 use Politizr\Model\PUTaggedTPeer;
+use Politizr\Model\PUTrackDDPeer;
+use Politizr\Model\PUTrackDRPeer;
+use Politizr\Model\PUTrackUPeer;
 use Politizr\Model\PUser;
 use Politizr\Model\PUserPeer;
 use Politizr\Model\map\PUserTableMap;
@@ -715,6 +718,12 @@ abstract class BasePUserPeer
         // Invalidate objects in PUFollowDDPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PUFollowDDPeer::clearInstancePool();
+        // Invalidate objects in PUTrackDDPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PUTrackDDPeer::clearInstancePool();
+        // Invalidate objects in PUTrackDRPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PUTrackDRPeer::clearInstancePool();
         // Invalidate objects in PUBadgePeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PUBadgePeer::clearInstancePool();
@@ -793,6 +802,12 @@ abstract class BasePUserPeer
         // Invalidate objects in PUFollowUPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PUFollowUPeer::clearInstancePool();
+        // Invalidate objects in PUTrackUPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PUTrackUPeer::clearInstancePool();
+        // Invalidate objects in PUTrackUPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PUTrackUPeer::clearInstancePool();
     }
 
     /**

@@ -587,7 +587,17 @@
             <parameter name="reference_column_1" value="p_user_id" />
             <parameter name="reference_column_2" value="p_user_follower_id" />
         </behavior>
-    </table>    
+    </table>
+
+    <table name="p_u_track_u">
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+        <behavior name="equal_nest">
+            <parameter name="parent_table" value="p_user" />
+            <parameter name="reference_column_1" value="p_user_id_source" />
+            <parameter name="reference_column_2" value="p_user_id_dest" />
+        </behavior>
+    </table>
 
     <table name="p_u_follow_d_d" isCrossRef="true">
         <behavior name="timestampable" />
@@ -602,6 +612,38 @@
         </foreign-key>
         <foreign-key foreignTable="p_d_debate" phpName="PuFollowDdPDDebate" refPhpName="PuFollowDdPDDebate" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_d_debate_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+    <table name="p_u_track_d_d" isCrossRef="true">
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_user_id" type="integer" required="true" />
+        <column name="p_d_debate_id" type="integer" required="true" />
+
+        <foreign-key foreignTable="p_user" phpName="PuTrackDdPUser" refPhpName="PuTrackDdPUser" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_user_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="p_d_debate" phpName="PuTrackDdPDDebate" refPhpName="PuTrackDdPDDebate" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_d_debate_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+    <table name="p_u_track_d_r" isCrossRef="true">
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_user_id" type="integer" required="true" />
+        <column name="p_d_reaction_id" type="integer" required="true" />
+
+        <foreign-key foreignTable="p_user" phpName="PuTrackDrPUser" refPhpName="PuTrackDrPUser" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_user_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="p_d_reaction" phpName="PuTrackDrPDReaction" refPhpName="PuTrackDrPDReaction" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_d_reaction_id" foreign="id" />
         </foreign-key>
     </table>
 

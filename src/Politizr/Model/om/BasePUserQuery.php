@@ -48,6 +48,9 @@ use Politizr\Model\PUStatus;
 use Politizr\Model\PUSubscribeEmail;
 use Politizr\Model\PUSubscribeScreen;
 use Politizr\Model\PUTaggedT;
+use Politizr\Model\PUTrackDD;
+use Politizr\Model\PUTrackDR;
+use Politizr\Model\PUTrackU;
 use Politizr\Model\PUser;
 use Politizr\Model\PUserPeer;
 use Politizr\Model\PUserQuery;
@@ -181,6 +184,14 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery rightJoinPuFollowDdPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PuFollowDdPUser relation
  * @method PUserQuery innerJoinPuFollowDdPUser($relationAlias = null) Adds a INNER JOIN clause to the query using the PuFollowDdPUser relation
  *
+ * @method PUserQuery leftJoinPuTrackDdPUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the PuTrackDdPUser relation
+ * @method PUserQuery rightJoinPuTrackDdPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PuTrackDdPUser relation
+ * @method PUserQuery innerJoinPuTrackDdPUser($relationAlias = null) Adds a INNER JOIN clause to the query using the PuTrackDdPUser relation
+ *
+ * @method PUserQuery leftJoinPuTrackDrPUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the PuTrackDrPUser relation
+ * @method PUserQuery rightJoinPuTrackDrPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PuTrackDrPUser relation
+ * @method PUserQuery innerJoinPuTrackDrPUser($relationAlias = null) Adds a INNER JOIN clause to the query using the PuTrackDrPUser relation
+ *
  * @method PUserQuery leftJoinPUBadge($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUBadge relation
  * @method PUserQuery rightJoinPUBadge($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUBadge relation
  * @method PUserQuery innerJoinPUBadge($relationAlias = null) Adds a INNER JOIN clause to the query using the PUBadge relation
@@ -284,6 +295,14 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery leftJoinPUFollowURelatedByPUserFollowerId($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUFollowURelatedByPUserFollowerId relation
  * @method PUserQuery rightJoinPUFollowURelatedByPUserFollowerId($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUFollowURelatedByPUserFollowerId relation
  * @method PUserQuery innerJoinPUFollowURelatedByPUserFollowerId($relationAlias = null) Adds a INNER JOIN clause to the query using the PUFollowURelatedByPUserFollowerId relation
+ *
+ * @method PUserQuery leftJoinPUTrackURelatedByPUserIdSource($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUTrackURelatedByPUserIdSource relation
+ * @method PUserQuery rightJoinPUTrackURelatedByPUserIdSource($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUTrackURelatedByPUserIdSource relation
+ * @method PUserQuery innerJoinPUTrackURelatedByPUserIdSource($relationAlias = null) Adds a INNER JOIN clause to the query using the PUTrackURelatedByPUserIdSource relation
+ *
+ * @method PUserQuery leftJoinPUTrackURelatedByPUserIdDest($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUTrackURelatedByPUserIdDest relation
+ * @method PUserQuery rightJoinPUTrackURelatedByPUserIdDest($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUTrackURelatedByPUserIdDest relation
+ * @method PUserQuery innerJoinPUTrackURelatedByPUserIdDest($relationAlias = null) Adds a INNER JOIN clause to the query using the PUTrackURelatedByPUserIdDest relation
  *
  * @method PUser findOne(PropelPDO $con = null) Return the first PUser matching the query
  * @method PUser findOneOrCreate(PropelPDO $con = null) Return the first PUser matching the query, or a new PUser object populated from the query conditions when no match is found
@@ -2692,6 +2711,154 @@ abstract class BasePUserQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query by a related PUTrackDD object
+     *
+     * @param   PUTrackDD|PropelObjectCollection $pUTrackDD  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PUserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPuTrackDdPUser($pUTrackDD, $comparison = null)
+    {
+        if ($pUTrackDD instanceof PUTrackDD) {
+            return $this
+                ->addUsingAlias(PUserPeer::ID, $pUTrackDD->getPUserId(), $comparison);
+        } elseif ($pUTrackDD instanceof PropelObjectCollection) {
+            return $this
+                ->usePuTrackDdPUserQuery()
+                ->filterByPrimaryKeys($pUTrackDD->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPuTrackDdPUser() only accepts arguments of type PUTrackDD or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PuTrackDdPUser relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function joinPuTrackDdPUser($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PuTrackDdPUser');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PuTrackDdPUser');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PuTrackDdPUser relation PUTrackDD object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PUTrackDDQuery A secondary query class using the current class as primary query
+     */
+    public function usePuTrackDdPUserQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPuTrackDdPUser($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PuTrackDdPUser', '\Politizr\Model\PUTrackDDQuery');
+    }
+
+    /**
+     * Filter the query by a related PUTrackDR object
+     *
+     * @param   PUTrackDR|PropelObjectCollection $pUTrackDR  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PUserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPuTrackDrPUser($pUTrackDR, $comparison = null)
+    {
+        if ($pUTrackDR instanceof PUTrackDR) {
+            return $this
+                ->addUsingAlias(PUserPeer::ID, $pUTrackDR->getPUserId(), $comparison);
+        } elseif ($pUTrackDR instanceof PropelObjectCollection) {
+            return $this
+                ->usePuTrackDrPUserQuery()
+                ->filterByPrimaryKeys($pUTrackDR->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPuTrackDrPUser() only accepts arguments of type PUTrackDR or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PuTrackDrPUser relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function joinPuTrackDrPUser($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PuTrackDrPUser');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PuTrackDrPUser');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PuTrackDrPUser relation PUTrackDR object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PUTrackDRQuery A secondary query class using the current class as primary query
+     */
+    public function usePuTrackDrPUserQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPuTrackDrPUser($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PuTrackDrPUser', '\Politizr\Model\PUTrackDRQuery');
+    }
+
+    /**
      * Filter the query by a related PUBadge object
      *
      * @param   PUBadge|PropelObjectCollection $pUBadge  the related object to use as filter
@@ -4616,6 +4783,154 @@ abstract class BasePUserQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query by a related PUTrackU object
+     *
+     * @param   PUTrackU|PropelObjectCollection $pUTrackU  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PUserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPUTrackURelatedByPUserIdSource($pUTrackU, $comparison = null)
+    {
+        if ($pUTrackU instanceof PUTrackU) {
+            return $this
+                ->addUsingAlias(PUserPeer::ID, $pUTrackU->getPUserIdSource(), $comparison);
+        } elseif ($pUTrackU instanceof PropelObjectCollection) {
+            return $this
+                ->usePUTrackURelatedByPUserIdSourceQuery()
+                ->filterByPrimaryKeys($pUTrackU->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPUTrackURelatedByPUserIdSource() only accepts arguments of type PUTrackU or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PUTrackURelatedByPUserIdSource relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function joinPUTrackURelatedByPUserIdSource($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PUTrackURelatedByPUserIdSource');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PUTrackURelatedByPUserIdSource');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PUTrackURelatedByPUserIdSource relation PUTrackU object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PUTrackUQuery A secondary query class using the current class as primary query
+     */
+    public function usePUTrackURelatedByPUserIdSourceQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPUTrackURelatedByPUserIdSource($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PUTrackURelatedByPUserIdSource', '\Politizr\Model\PUTrackUQuery');
+    }
+
+    /**
+     * Filter the query by a related PUTrackU object
+     *
+     * @param   PUTrackU|PropelObjectCollection $pUTrackU  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PUserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPUTrackURelatedByPUserIdDest($pUTrackU, $comparison = null)
+    {
+        if ($pUTrackU instanceof PUTrackU) {
+            return $this
+                ->addUsingAlias(PUserPeer::ID, $pUTrackU->getPUserIdDest(), $comparison);
+        } elseif ($pUTrackU instanceof PropelObjectCollection) {
+            return $this
+                ->usePUTrackURelatedByPUserIdDestQuery()
+                ->filterByPrimaryKeys($pUTrackU->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPUTrackURelatedByPUserIdDest() only accepts arguments of type PUTrackU or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PUTrackURelatedByPUserIdDest relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function joinPUTrackURelatedByPUserIdDest($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PUTrackURelatedByPUserIdDest');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PUTrackURelatedByPUserIdDest');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PUTrackURelatedByPUserIdDest relation PUTrackU object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PUTrackUQuery A secondary query class using the current class as primary query
+     */
+    public function usePUTrackURelatedByPUserIdDestQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPUTrackURelatedByPUserIdDest($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PUTrackURelatedByPUserIdDest', '\Politizr\Model\PUTrackUQuery');
+    }
+
+    /**
      * Filter the query by a related PDDebate object
      * using the p_u_follow_d_d table as cross reference
      *
@@ -4629,6 +4944,40 @@ abstract class BasePUserQuery extends ModelCriteria
         return $this
             ->usePuFollowDdPUserQuery()
             ->filterByPuFollowDdPDDebate($pDDebate, $comparison)
+            ->endUse();
+    }
+
+    /**
+     * Filter the query by a related PDDebate object
+     * using the p_u_track_d_d table as cross reference
+     *
+     * @param   PDDebate $pDDebate the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return   PUserQuery The current query, for fluid interface
+     */
+    public function filterByPuTrackDdPDDebate($pDDebate, $comparison = Criteria::EQUAL)
+    {
+        return $this
+            ->usePuTrackDdPUserQuery()
+            ->filterByPuTrackDdPDDebate($pDDebate, $comparison)
+            ->endUse();
+    }
+
+    /**
+     * Filter the query by a related PDReaction object
+     * using the p_u_track_d_r table as cross reference
+     *
+     * @param   PDReaction $pDReaction the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return   PUserQuery The current query, for fluid interface
+     */
+    public function filterByPuTrackDrPDReaction($pDReaction, $comparison = Criteria::EQUAL)
+    {
+        return $this
+            ->usePuTrackDrPUserQuery()
+            ->filterByPuTrackDrPDReaction($pDReaction, $comparison)
             ->endUse();
     }
 

@@ -15,6 +15,9 @@ use Politizr\Model\PDocumentInterface;
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
 
+use Politizr\Model\PUTrackDD;
+use Politizr\Model\PUTrackDR;
+
 use Politizr\FrontBundle\Form\Type\PDDebateType;
 use Politizr\FrontBundle\Form\Type\PDReactionType;
 
@@ -90,6 +93,17 @@ class DocumentController extends Controller
         $debate->setNbViews($debate->getNbViews() + 1);
         $debate->save();
 
+        // Tracking
+        $visitor = $this->getUser();
+        if ($visitor) {
+            $uTrackd = new PUTrackDD();
+
+            $uTrackd->setPUserId($visitor->getId());
+            $uTrackd->setPDDebateId($debate->getId());
+
+            $uTrackd->save();
+        }
+
         // Paragraphs explode
         $utilsManager = $this->get('politizr.tools.global');
         $paragraphs = $utilsManager->explodeParagraphs($debate->getDescription());
@@ -138,6 +152,17 @@ class DocumentController extends Controller
 
         $reaction->setNbViews($reaction->getNbViews() + 1);
         $reaction->save();
+
+        // Tracking
+        $visitor = $this->getUser();
+        if ($visitor) {
+            $uTrackr = new PUTrackDR();
+
+            $uTrackr->setPUserId($visitor->getId());
+            $uTrackr->setPDReactionId($reaction->getId());
+
+            $uTrackr->save();
+        }
 
         // Paragraphs explode
         $utilsManager = $this->get('politizr.tools.global');

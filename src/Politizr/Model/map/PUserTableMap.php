@@ -53,7 +53,7 @@ class PUserTableMap extends TableMap
         $this->addColumn('email', 'Email', 'VARCHAR', false, 255, null);
         $this->addColumn('email_canonical', 'EmailCanonical', 'VARCHAR', false, 255, null);
         $this->addColumn('enabled', 'Enabled', 'BOOLEAN', false, 1, false);
-        $this->addColumn('salt', 'Salt', 'VARCHAR', true, 255, null);
+        $this->addColumn('salt', 'Salt', 'VARCHAR', false, 255, null);
         $this->addColumn('password', 'Password', 'VARCHAR', false, 255, null);
         $this->addColumn('last_login', 'LastLogin', 'TIMESTAMP', false, null, null);
         $this->addColumn('locked', 'Locked', 'BOOLEAN', false, 1, false);
@@ -111,6 +111,8 @@ class PUserTableMap extends TableMap
         $this->addRelation('PTag', 'Politizr\\Model\\PTag', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'SET NULL', 'CASCADE', 'PTags');
         $this->addRelation('POrder', 'Politizr\\Model\\POrder', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'SET NULL', 'CASCADE', 'POrders');
         $this->addRelation('PuFollowDdPUser', 'Politizr\\Model\\PUFollowDD', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', 'CASCADE', 'PuFollowDdPUsers');
+        $this->addRelation('PuTrackDdPUser', 'Politizr\\Model\\PUTrackDD', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', 'CASCADE', 'PuTrackDdPUsers');
+        $this->addRelation('PuTrackDrPUser', 'Politizr\\Model\\PUTrackDR', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', 'CASCADE', 'PuTrackDrPUsers');
         $this->addRelation('PUBadge', 'Politizr\\Model\\PUBadge', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', 'CASCADE', 'PUBadges');
         $this->addRelation('PUReputation', 'Politizr\\Model\\PUReputation', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', 'CASCADE', 'PUReputations');
         $this->addRelation('PuTaggedTPUser', 'Politizr\\Model\\PUTaggedT', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', 'CASCADE', 'PuTaggedTPUsers');
@@ -137,7 +139,11 @@ class PUserTableMap extends TableMap
         $this->addRelation('PMAppException', 'Politizr\\Model\\PMAppException', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'SET NULL', 'CASCADE', 'PMAppExceptions');
         $this->addRelation('PUFollowURelatedByPUserId', 'Politizr\\Model\\PUFollowU', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', null, 'PUFollowUsRelatedByPUserId');
         $this->addRelation('PUFollowURelatedByPUserFollowerId', 'Politizr\\Model\\PUFollowU', RelationMap::ONE_TO_MANY, array('id' => 'p_user_follower_id', ), 'CASCADE', null, 'PUFollowUsRelatedByPUserFollowerId');
+        $this->addRelation('PUTrackURelatedByPUserIdSource', 'Politizr\\Model\\PUTrackU', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id_source', ), 'CASCADE', null, 'PUTrackUsRelatedByPUserIdSource');
+        $this->addRelation('PUTrackURelatedByPUserIdDest', 'Politizr\\Model\\PUTrackU', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id_dest', ), 'CASCADE', null, 'PUTrackUsRelatedByPUserIdDest');
         $this->addRelation('PuFollowDdPDDebate', 'Politizr\\Model\\PDDebate', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PuFollowDdPDDebates');
+        $this->addRelation('PuTrackDdPDDebate', 'Politizr\\Model\\PDDebate', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PuTrackDdPDDebates');
+        $this->addRelation('PuTrackDrPDReaction', 'Politizr\\Model\\PDReaction', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PuTrackDrPDReactions');
         $this->addRelation('PRBadge', 'Politizr\\Model\\PRBadge', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PRBadges');
         $this->addRelation('PRAction', 'Politizr\\Model\\PRAction', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PRActions');
         $this->addRelation('PuTaggedTPTag', 'Politizr\\Model\\PTag', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PuTaggedTPTags');

@@ -17,6 +17,7 @@ use Politizr\Model\PUCurrentQOQuery;
 
 use Politizr\Model\PUCurrentQO;
 use Politizr\Model\PUMandate;
+use Politizr\Model\PUTrackU;
 
 use Politizr\FrontBundle\Form\Type\PUserIdentityType;
 use Politizr\FrontBundle\Form\Type\PUserEmailType;
@@ -59,6 +60,17 @@ class UserController extends Controller
 
         $user->setNbViews($user->getNbViews() + 1);
         $user->save();
+
+        // Tracking
+        $visitor = $this->getUser();
+        if ($visitor && $visitor->getId() != $user->getId()) {
+            $uTracku = new PUTrackU();
+
+            $uTracku->setPUserIdSource($visitor->getId());
+            $uTracku->setPUserIdDest($user->getId());
+
+            $uTracku->save();
+        }
 
         return $this->render('PolitizrFrontBundle:User:detail.html.twig', array(
             'profileSuffix' => $this->get('politizr.tools.global')->computeProfileSuffix(),

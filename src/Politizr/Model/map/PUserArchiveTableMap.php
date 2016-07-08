@@ -53,7 +53,7 @@ class PUserArchiveTableMap extends TableMap
         $this->addColumn('email', 'Email', 'VARCHAR', false, 255, null);
         $this->addColumn('email_canonical', 'EmailCanonical', 'VARCHAR', false, 255, null);
         $this->addColumn('enabled', 'Enabled', 'BOOLEAN', false, 1, false);
-        $this->addColumn('salt', 'Salt', 'VARCHAR', true, 255, null);
+        $this->addColumn('salt', 'Salt', 'VARCHAR', false, 255, null);
         $this->addColumn('password', 'Password', 'VARCHAR', false, 255, null);
         $this->addColumn('last_login', 'LastLogin', 'TIMESTAMP', false, null, null);
         $this->addColumn('locked', 'Locked', 'BOOLEAN', false, 1, false);

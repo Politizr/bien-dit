@@ -9,115 +9,59 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
-use Politizr\Model\PDDCommentPeer;
-use Politizr\Model\PDDTaggedTPeer;
-use Politizr\Model\PDDebate;
 use Politizr\Model\PDDebatePeer;
-use Politizr\Model\PDReactionPeer;
-use Politizr\Model\PMDebateHistoricPeer;
-use Politizr\Model\PUFollowDDPeer;
+use Politizr\Model\PUTrackDD;
 use Politizr\Model\PUTrackDDPeer;
 use Politizr\Model\PUserPeer;
-use Politizr\Model\map\PDDebateTableMap;
+use Politizr\Model\map\PUTrackDDTableMap;
 
-abstract class BasePDDebatePeer
+abstract class BasePUTrackDDPeer
 {
 
     /** the default database name for this class */
     const DATABASE_NAME = 'default';
 
     /** the table name for this class */
-    const TABLE_NAME = 'p_d_debate';
+    const TABLE_NAME = 'p_u_track_d_d';
 
     /** the related Propel class for this table */
-    const OM_CLASS = 'Politizr\\Model\\PDDebate';
+    const OM_CLASS = 'Politizr\\Model\\PUTrackDD';
 
     /** the related TableMap class for this table */
-    const TM_CLASS = 'Politizr\\Model\\map\\PDDebateTableMap';
+    const TM_CLASS = 'Politizr\\Model\\map\\PUTrackDDTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 22;
+    const NUM_COLUMNS = 5;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 22;
+    const NUM_HYDRATE_COLUMNS = 5;
 
     /** the column name for the id field */
-    const ID = 'p_d_debate.id';
-
-    /** the column name for the uuid field */
-    const UUID = 'p_d_debate.uuid';
+    const ID = 'p_u_track_d_d.id';
 
     /** the column name for the p_user_id field */
-    const P_USER_ID = 'p_d_debate.p_user_id';
+    const P_USER_ID = 'p_u_track_d_d.p_user_id';
 
-    /** the column name for the title field */
-    const TITLE = 'p_d_debate.title';
-
-    /** the column name for the file_name field */
-    const FILE_NAME = 'p_d_debate.file_name';
-
-    /** the column name for the copyright field */
-    const COPYRIGHT = 'p_d_debate.copyright';
-
-    /** the column name for the description field */
-    const DESCRIPTION = 'p_d_debate.description';
-
-    /** the column name for the note_pos field */
-    const NOTE_POS = 'p_d_debate.note_pos';
-
-    /** the column name for the note_neg field */
-    const NOTE_NEG = 'p_d_debate.note_neg';
-
-    /** the column name for the nb_views field */
-    const NB_VIEWS = 'p_d_debate.nb_views';
-
-    /** the column name for the published field */
-    const PUBLISHED = 'p_d_debate.published';
-
-    /** the column name for the published_at field */
-    const PUBLISHED_AT = 'p_d_debate.published_at';
-
-    /** the column name for the published_by field */
-    const PUBLISHED_BY = 'p_d_debate.published_by';
-
-    /** the column name for the favorite field */
-    const FAVORITE = 'p_d_debate.favorite';
-
-    /** the column name for the online field */
-    const ONLINE = 'p_d_debate.online';
-
-    /** the column name for the homepage field */
-    const HOMEPAGE = 'p_d_debate.homepage';
-
-    /** the column name for the moderated field */
-    const MODERATED = 'p_d_debate.moderated';
-
-    /** the column name for the moderated_partial field */
-    const MODERATED_PARTIAL = 'p_d_debate.moderated_partial';
-
-    /** the column name for the moderated_at field */
-    const MODERATED_AT = 'p_d_debate.moderated_at';
+    /** the column name for the p_d_debate_id field */
+    const P_D_DEBATE_ID = 'p_u_track_d_d.p_d_debate_id';
 
     /** the column name for the created_at field */
-    const CREATED_AT = 'p_d_debate.created_at';
+    const CREATED_AT = 'p_u_track_d_d.created_at';
 
     /** the column name for the updated_at field */
-    const UPDATED_AT = 'p_d_debate.updated_at';
-
-    /** the column name for the slug field */
-    const SLUG = 'p_d_debate.slug';
+    const UPDATED_AT = 'p_u_track_d_d.updated_at';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
 
     /**
-     * An identity map to hold any loaded instances of PDDebate objects.
+     * An identity map to hold any loaded instances of PUTrackDD objects.
      * This must be public so that other peer classes can access this when hydrating from JOIN
      * queries.
-     * @var        array PDDebate[]
+     * @var        array PUTrackDD[]
      */
     public static $instances = array();
 
@@ -126,30 +70,30 @@ abstract class BasePDDebatePeer
      * holds an array of fieldnames
      *
      * first dimension keys are the type constants
-     * e.g. PDDebatePeer::$fieldNames[PDDebatePeer::TYPE_PHPNAME][0] = 'Id'
+     * e.g. PUTrackDDPeer::$fieldNames[PUTrackDDPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'PUserId', 'Title', 'FileName', 'Copyright', 'Description', 'NotePos', 'NoteNeg', 'NbViews', 'Published', 'PublishedAt', 'PublishedBy', 'Favorite', 'Online', 'Homepage', 'Moderated', 'ModeratedPartial', 'ModeratedAt', 'CreatedAt', 'UpdatedAt', 'Slug', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'pUserId', 'title', 'fileName', 'copyright', 'description', 'notePos', 'noteNeg', 'nbViews', 'published', 'publishedAt', 'publishedBy', 'favorite', 'online', 'homepage', 'moderated', 'moderatedPartial', 'moderatedAt', 'createdAt', 'updatedAt', 'slug', ),
-        BasePeer::TYPE_COLNAME => array (PDDebatePeer::ID, PDDebatePeer::UUID, PDDebatePeer::P_USER_ID, PDDebatePeer::TITLE, PDDebatePeer::FILE_NAME, PDDebatePeer::COPYRIGHT, PDDebatePeer::DESCRIPTION, PDDebatePeer::NOTE_POS, PDDebatePeer::NOTE_NEG, PDDebatePeer::NB_VIEWS, PDDebatePeer::PUBLISHED, PDDebatePeer::PUBLISHED_AT, PDDebatePeer::PUBLISHED_BY, PDDebatePeer::FAVORITE, PDDebatePeer::ONLINE, PDDebatePeer::HOMEPAGE, PDDebatePeer::MODERATED, PDDebatePeer::MODERATED_PARTIAL, PDDebatePeer::MODERATED_AT, PDDebatePeer::CREATED_AT, PDDebatePeer::UPDATED_AT, PDDebatePeer::SLUG, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'P_USER_ID', 'TITLE', 'FILE_NAME', 'COPYRIGHT', 'DESCRIPTION', 'NOTE_POS', 'NOTE_NEG', 'NB_VIEWS', 'PUBLISHED', 'PUBLISHED_AT', 'PUBLISHED_BY', 'FAVORITE', 'ONLINE', 'HOMEPAGE', 'MODERATED', 'MODERATED_PARTIAL', 'MODERATED_AT', 'CREATED_AT', 'UPDATED_AT', 'SLUG', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'p_user_id', 'title', 'file_name', 'copyright', 'description', 'note_pos', 'note_neg', 'nb_views', 'published', 'published_at', 'published_by', 'favorite', 'online', 'homepage', 'moderated', 'moderated_partial', 'moderated_at', 'created_at', 'updated_at', 'slug', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'PUserId', 'PDDebateId', 'CreatedAt', 'UpdatedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pUserId', 'pDDebateId', 'createdAt', 'updatedAt', ),
+        BasePeer::TYPE_COLNAME => array (PUTrackDDPeer::ID, PUTrackDDPeer::P_USER_ID, PUTrackDDPeer::P_D_DEBATE_ID, PUTrackDDPeer::CREATED_AT, PUTrackDDPeer::UPDATED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_USER_ID', 'P_D_DEBATE_ID', 'CREATED_AT', 'UPDATED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'p_user_id', 'p_d_debate_id', 'created_at', 'updated_at', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
     );
 
     /**
      * holds an array of keys for quick access to the fieldnames array
      *
      * first dimension keys are the type constants
-     * e.g. PDDebatePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
+     * e.g. PUTrackDDPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'PUserId' => 2, 'Title' => 3, 'FileName' => 4, 'Copyright' => 5, 'Description' => 6, 'NotePos' => 7, 'NoteNeg' => 8, 'NbViews' => 9, 'Published' => 10, 'PublishedAt' => 11, 'PublishedBy' => 12, 'Favorite' => 13, 'Online' => 14, 'Homepage' => 15, 'Moderated' => 16, 'ModeratedPartial' => 17, 'ModeratedAt' => 18, 'CreatedAt' => 19, 'UpdatedAt' => 20, 'Slug' => 21, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'pUserId' => 2, 'title' => 3, 'fileName' => 4, 'copyright' => 5, 'description' => 6, 'notePos' => 7, 'noteNeg' => 8, 'nbViews' => 9, 'published' => 10, 'publishedAt' => 11, 'publishedBy' => 12, 'favorite' => 13, 'online' => 14, 'homepage' => 15, 'moderated' => 16, 'moderatedPartial' => 17, 'moderatedAt' => 18, 'createdAt' => 19, 'updatedAt' => 20, 'slug' => 21, ),
-        BasePeer::TYPE_COLNAME => array (PDDebatePeer::ID => 0, PDDebatePeer::UUID => 1, PDDebatePeer::P_USER_ID => 2, PDDebatePeer::TITLE => 3, PDDebatePeer::FILE_NAME => 4, PDDebatePeer::COPYRIGHT => 5, PDDebatePeer::DESCRIPTION => 6, PDDebatePeer::NOTE_POS => 7, PDDebatePeer::NOTE_NEG => 8, PDDebatePeer::NB_VIEWS => 9, PDDebatePeer::PUBLISHED => 10, PDDebatePeer::PUBLISHED_AT => 11, PDDebatePeer::PUBLISHED_BY => 12, PDDebatePeer::FAVORITE => 13, PDDebatePeer::ONLINE => 14, PDDebatePeer::HOMEPAGE => 15, PDDebatePeer::MODERATED => 16, PDDebatePeer::MODERATED_PARTIAL => 17, PDDebatePeer::MODERATED_AT => 18, PDDebatePeer::CREATED_AT => 19, PDDebatePeer::UPDATED_AT => 20, PDDebatePeer::SLUG => 21, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'P_USER_ID' => 2, 'TITLE' => 3, 'FILE_NAME' => 4, 'COPYRIGHT' => 5, 'DESCRIPTION' => 6, 'NOTE_POS' => 7, 'NOTE_NEG' => 8, 'NB_VIEWS' => 9, 'PUBLISHED' => 10, 'PUBLISHED_AT' => 11, 'PUBLISHED_BY' => 12, 'FAVORITE' => 13, 'ONLINE' => 14, 'HOMEPAGE' => 15, 'MODERATED' => 16, 'MODERATED_PARTIAL' => 17, 'MODERATED_AT' => 18, 'CREATED_AT' => 19, 'UPDATED_AT' => 20, 'SLUG' => 21, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'p_user_id' => 2, 'title' => 3, 'file_name' => 4, 'copyright' => 5, 'description' => 6, 'note_pos' => 7, 'note_neg' => 8, 'nb_views' => 9, 'published' => 10, 'published_at' => 11, 'published_by' => 12, 'favorite' => 13, 'online' => 14, 'homepage' => 15, 'moderated' => 16, 'moderated_partial' => 17, 'moderated_at' => 18, 'created_at' => 19, 'updated_at' => 20, 'slug' => 21, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PUserId' => 1, 'PDDebateId' => 2, 'CreatedAt' => 3, 'UpdatedAt' => 4, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pUserId' => 1, 'pDDebateId' => 2, 'createdAt' => 3, 'updatedAt' => 4, ),
+        BasePeer::TYPE_COLNAME => array (PUTrackDDPeer::ID => 0, PUTrackDDPeer::P_USER_ID => 1, PUTrackDDPeer::P_D_DEBATE_ID => 2, PUTrackDDPeer::CREATED_AT => 3, PUTrackDDPeer::UPDATED_AT => 4, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_USER_ID' => 1, 'P_D_DEBATE_ID' => 2, 'CREATED_AT' => 3, 'UPDATED_AT' => 4, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_user_id' => 1, 'p_d_debate_id' => 2, 'created_at' => 3, 'updated_at' => 4, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
     );
 
     /**
@@ -164,10 +108,10 @@ abstract class BasePDDebatePeer
      */
     public static function translateFieldName($name, $fromType, $toType)
     {
-        $toNames = PDDebatePeer::getFieldNames($toType);
-        $key = isset(PDDebatePeer::$fieldKeys[$fromType][$name]) ? PDDebatePeer::$fieldKeys[$fromType][$name] : null;
+        $toNames = PUTrackDDPeer::getFieldNames($toType);
+        $key = isset(PUTrackDDPeer::$fieldKeys[$fromType][$name]) ? PUTrackDDPeer::$fieldKeys[$fromType][$name] : null;
         if ($key === null) {
-            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(PDDebatePeer::$fieldKeys[$fromType], true));
+            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(PUTrackDDPeer::$fieldKeys[$fromType], true));
         }
 
         return $toNames[$key];
@@ -184,11 +128,11 @@ abstract class BasePDDebatePeer
      */
     public static function getFieldNames($type = BasePeer::TYPE_PHPNAME)
     {
-        if (!array_key_exists($type, PDDebatePeer::$fieldNames)) {
+        if (!array_key_exists($type, PUTrackDDPeer::$fieldNames)) {
             throw new PropelException('Method getFieldNames() expects the parameter $type to be one of the class constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME, BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. ' . $type . ' was given.');
         }
 
-        return PDDebatePeer::$fieldNames[$type];
+        return PUTrackDDPeer::$fieldNames[$type];
     }
 
     /**
@@ -200,12 +144,12 @@ abstract class BasePDDebatePeer
      *		$c->addJoin(TablePeer::alias("alias1", TablePeer::PRIMARY_KEY_COLUMN), TablePeer::PRIMARY_KEY_COLUMN);
      * </code>
      * @param      string $alias The alias for the current table.
-     * @param      string $column The column name for current table. (i.e. PDDebatePeer::COLUMN_NAME).
+     * @param      string $column The column name for current table. (i.e. PUTrackDDPeer::COLUMN_NAME).
      * @return string
      */
     public static function alias($alias, $column)
     {
-        return str_replace(PDDebatePeer::TABLE_NAME.'.', $alias.'.', $column);
+        return str_replace(PUTrackDDPeer::TABLE_NAME.'.', $alias.'.', $column);
     }
 
     /**
@@ -223,51 +167,17 @@ abstract class BasePDDebatePeer
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(PDDebatePeer::ID);
-            $criteria->addSelectColumn(PDDebatePeer::UUID);
-            $criteria->addSelectColumn(PDDebatePeer::P_USER_ID);
-            $criteria->addSelectColumn(PDDebatePeer::TITLE);
-            $criteria->addSelectColumn(PDDebatePeer::FILE_NAME);
-            $criteria->addSelectColumn(PDDebatePeer::COPYRIGHT);
-            $criteria->addSelectColumn(PDDebatePeer::DESCRIPTION);
-            $criteria->addSelectColumn(PDDebatePeer::NOTE_POS);
-            $criteria->addSelectColumn(PDDebatePeer::NOTE_NEG);
-            $criteria->addSelectColumn(PDDebatePeer::NB_VIEWS);
-            $criteria->addSelectColumn(PDDebatePeer::PUBLISHED);
-            $criteria->addSelectColumn(PDDebatePeer::PUBLISHED_AT);
-            $criteria->addSelectColumn(PDDebatePeer::PUBLISHED_BY);
-            $criteria->addSelectColumn(PDDebatePeer::FAVORITE);
-            $criteria->addSelectColumn(PDDebatePeer::ONLINE);
-            $criteria->addSelectColumn(PDDebatePeer::HOMEPAGE);
-            $criteria->addSelectColumn(PDDebatePeer::MODERATED);
-            $criteria->addSelectColumn(PDDebatePeer::MODERATED_PARTIAL);
-            $criteria->addSelectColumn(PDDebatePeer::MODERATED_AT);
-            $criteria->addSelectColumn(PDDebatePeer::CREATED_AT);
-            $criteria->addSelectColumn(PDDebatePeer::UPDATED_AT);
-            $criteria->addSelectColumn(PDDebatePeer::SLUG);
+            $criteria->addSelectColumn(PUTrackDDPeer::ID);
+            $criteria->addSelectColumn(PUTrackDDPeer::P_USER_ID);
+            $criteria->addSelectColumn(PUTrackDDPeer::P_D_DEBATE_ID);
+            $criteria->addSelectColumn(PUTrackDDPeer::CREATED_AT);
+            $criteria->addSelectColumn(PUTrackDDPeer::UPDATED_AT);
         } else {
             $criteria->addSelectColumn($alias . '.id');
-            $criteria->addSelectColumn($alias . '.uuid');
             $criteria->addSelectColumn($alias . '.p_user_id');
-            $criteria->addSelectColumn($alias . '.title');
-            $criteria->addSelectColumn($alias . '.file_name');
-            $criteria->addSelectColumn($alias . '.copyright');
-            $criteria->addSelectColumn($alias . '.description');
-            $criteria->addSelectColumn($alias . '.note_pos');
-            $criteria->addSelectColumn($alias . '.note_neg');
-            $criteria->addSelectColumn($alias . '.nb_views');
-            $criteria->addSelectColumn($alias . '.published');
-            $criteria->addSelectColumn($alias . '.published_at');
-            $criteria->addSelectColumn($alias . '.published_by');
-            $criteria->addSelectColumn($alias . '.favorite');
-            $criteria->addSelectColumn($alias . '.online');
-            $criteria->addSelectColumn($alias . '.homepage');
-            $criteria->addSelectColumn($alias . '.moderated');
-            $criteria->addSelectColumn($alias . '.moderated_partial');
-            $criteria->addSelectColumn($alias . '.moderated_at');
+            $criteria->addSelectColumn($alias . '.p_d_debate_id');
             $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
-            $criteria->addSelectColumn($alias . '.slug');
         }
     }
 
@@ -287,21 +197,21 @@ abstract class BasePDDebatePeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(PDDebatePeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(PUTrackDDPeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            PDDebatePeer::addSelectColumns($criteria);
+            PUTrackDDPeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-        $criteria->setDbName(PDDebatePeer::DATABASE_NAME); // Set the correct dbName
+        $criteria->setDbName(PUTrackDDPeer::DATABASE_NAME); // Set the correct dbName
 
         if ($con === null) {
-            $con = Propel::getConnection(PDDebatePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PUTrackDDPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
         // BasePeer returns a PDOStatement
         $stmt = BasePeer::doCount($criteria, $con);
@@ -320,7 +230,7 @@ abstract class BasePDDebatePeer
      *
      * @param      Criteria $criteria object used to create the SELECT statement.
      * @param      PropelPDO $con
-     * @return PDDebate
+     * @return PUTrackDD
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
@@ -328,7 +238,7 @@ abstract class BasePDDebatePeer
     {
         $critcopy = clone $criteria;
         $critcopy->setLimit(1);
-        $objects = PDDebatePeer::doSelect($critcopy, $con);
+        $objects = PUTrackDDPeer::doSelect($critcopy, $con);
         if ($objects) {
             return $objects[0];
         }
@@ -346,7 +256,7 @@ abstract class BasePDDebatePeer
      */
     public static function doSelect(Criteria $criteria, PropelPDO $con = null)
     {
-        return PDDebatePeer::populateObjects(PDDebatePeer::doSelectStmt($criteria, $con));
+        return PUTrackDDPeer::populateObjects(PUTrackDDPeer::doSelectStmt($criteria, $con));
     }
     /**
      * Prepares the Criteria object and uses the parent doSelect() method to execute a PDOStatement.
@@ -364,16 +274,16 @@ abstract class BasePDDebatePeer
     public static function doSelectStmt(Criteria $criteria, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PDDebatePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PUTrackDDPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         if (!$criteria->hasSelectClause()) {
             $criteria = clone $criteria;
-            PDDebatePeer::addSelectColumns($criteria);
+            PUTrackDDPeer::addSelectColumns($criteria);
         }
 
         // Set the correct dbName
-        $criteria->setDbName(PDDebatePeer::DATABASE_NAME);
+        $criteria->setDbName(PUTrackDDPeer::DATABASE_NAME);
 
         // BasePeer returns a PDOStatement
         return BasePeer::doSelect($criteria, $con);
@@ -387,7 +297,7 @@ abstract class BasePDDebatePeer
      * to the cache in order to ensure that the same objects are always returned by doSelect*()
      * and retrieveByPK*() calls.
      *
-     * @param PDDebate $obj A PDDebate object.
+     * @param PUTrackDD $obj A PUTrackDD object.
      * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
      */
     public static function addInstanceToPool($obj, $key = null)
@@ -396,7 +306,7 @@ abstract class BasePDDebatePeer
             if ($key === null) {
                 $key = (string) $obj->getId();
             } // if key === null
-            PDDebatePeer::$instances[$key] = $obj;
+            PUTrackDDPeer::$instances[$key] = $obj;
         }
     }
 
@@ -408,7 +318,7 @@ abstract class BasePDDebatePeer
      * methods in your stub classes -- you may need to explicitly remove objects
      * from the cache in order to prevent returning objects that no longer exist.
      *
-     * @param      mixed $value A PDDebate object or a primary key value.
+     * @param      mixed $value A PUTrackDD object or a primary key value.
      *
      * @return void
      * @throws PropelException - if the value is invalid.
@@ -416,17 +326,17 @@ abstract class BasePDDebatePeer
     public static function removeInstanceFromPool($value)
     {
         if (Propel::isInstancePoolingEnabled() && $value !== null) {
-            if (is_object($value) && $value instanceof PDDebate) {
+            if (is_object($value) && $value instanceof PUTrackDD) {
                 $key = (string) $value->getId();
             } elseif (is_scalar($value)) {
                 // assume we've been passed a primary key
                 $key = (string) $value;
             } else {
-                $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or PDDebate object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
+                $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or PUTrackDD object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
                 throw $e;
             }
 
-            unset(PDDebatePeer::$instances[$key]);
+            unset(PUTrackDDPeer::$instances[$key]);
         }
     } // removeInstanceFromPool()
 
@@ -437,14 +347,14 @@ abstract class BasePDDebatePeer
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
      * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-     * @return PDDebate Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+     * @return PUTrackDD Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
      * @see        getPrimaryKeyHash()
      */
     public static function getInstanceFromPool($key)
     {
         if (Propel::isInstancePoolingEnabled()) {
-            if (isset(PDDebatePeer::$instances[$key])) {
-                return PDDebatePeer::$instances[$key];
+            if (isset(PUTrackDDPeer::$instances[$key])) {
+                return PUTrackDDPeer::$instances[$key];
             }
         }
 
@@ -459,37 +369,19 @@ abstract class BasePDDebatePeer
     public static function clearInstancePool($and_clear_all_references = false)
     {
       if ($and_clear_all_references) {
-        foreach (PDDebatePeer::$instances as $instance) {
+        foreach (PUTrackDDPeer::$instances as $instance) {
           $instance->clearAllReferences(true);
         }
       }
-        PDDebatePeer::$instances = array();
+        PUTrackDDPeer::$instances = array();
     }
 
     /**
-     * Method to invalidate the instance pool of all tables related to p_d_debate
+     * Method to invalidate the instance pool of all tables related to p_u_track_d_d
      * by a foreign key with ON DELETE CASCADE
      */
     public static function clearRelatedInstancePool()
     {
-        // Invalidate objects in PUFollowDDPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PUFollowDDPeer::clearInstancePool();
-        // Invalidate objects in PUTrackDDPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PUTrackDDPeer::clearInstancePool();
-        // Invalidate objects in PDReactionPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PDReactionPeer::clearInstancePool();
-        // Invalidate objects in PDDCommentPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PDDCommentPeer::clearInstancePool();
-        // Invalidate objects in PDDTaggedTPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PDDTaggedTPeer::clearInstancePool();
-        // Invalidate objects in PMDebateHistoricPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PMDebateHistoricPeer::clearInstancePool();
     }
 
     /**
@@ -539,11 +431,11 @@ abstract class BasePDDebatePeer
         $results = array();
 
         // set the class once to avoid overhead in the loop
-        $cls = PDDebatePeer::getOMClass();
+        $cls = PUTrackDDPeer::getOMClass();
         // populate the object(s)
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key = PDDebatePeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj = PDDebatePeer::getInstanceFromPool($key))) {
+            $key = PUTrackDDPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj = PUTrackDDPeer::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
@@ -552,7 +444,7 @@ abstract class BasePDDebatePeer
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                PDDebatePeer::addInstanceToPool($obj, $key);
+                PUTrackDDPeer::addInstanceToPool($obj, $key);
             } // if key exists
         }
         $stmt->closeCursor();
@@ -566,21 +458,21 @@ abstract class BasePDDebatePeer
      * @param      int $startcol The 0-based offset for reading from the resultset row.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
-     * @return array (PDDebate object, last column rank)
+     * @return array (PUTrackDD object, last column rank)
      */
     public static function populateObject($row, $startcol = 0)
     {
-        $key = PDDebatePeer::getPrimaryKeyHashFromRow($row, $startcol);
-        if (null !== ($obj = PDDebatePeer::getInstanceFromPool($key))) {
+        $key = PUTrackDDPeer::getPrimaryKeyHashFromRow($row, $startcol);
+        if (null !== ($obj = PUTrackDDPeer::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $startcol, true); // rehydrate
-            $col = $startcol + PDDebatePeer::NUM_HYDRATE_COLUMNS;
+            $col = $startcol + PUTrackDDPeer::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = PDDebatePeer::OM_CLASS;
+            $cls = PUTrackDDPeer::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $startcol);
-            PDDebatePeer::addInstanceToPool($obj, $key);
+            PUTrackDDPeer::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -588,7 +480,7 @@ abstract class BasePDDebatePeer
 
 
     /**
-     * Returns the number of rows matching criteria, joining the related PUser table
+     * Returns the number of rows matching criteria, joining the related PuTrackDdPUser table
      *
      * @param      Criteria $criteria
      * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -596,7 +488,7 @@ abstract class BasePDDebatePeer
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
      * @return int Number of matching rows.
      */
-    public static function doCountJoinPUser(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doCountJoinPuTrackDdPUser(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         // we're going to modify criteria, so copy it first
         $criteria = clone $criteria;
@@ -604,26 +496,26 @@ abstract class BasePDDebatePeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(PDDebatePeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(PUTrackDDPeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            PDDebatePeer::addSelectColumns($criteria);
+            PUTrackDDPeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(PDDebatePeer::DATABASE_NAME);
+        $criteria->setDbName(PUTrackDDPeer::DATABASE_NAME);
 
         if ($con === null) {
-            $con = Propel::getConnection(PDDebatePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PUTrackDDPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(PDDebatePeer::P_USER_ID, PUserPeer::ID, $join_behavior);
+        $criteria->addJoin(PUTrackDDPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -639,45 +531,96 @@ abstract class BasePDDebatePeer
 
 
     /**
-     * Selects a collection of PDDebate objects pre-filled with their PUser objects.
+     * Returns the number of rows matching criteria, joining the related PuTrackDdPDDebate table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinPuTrackDdPDDebate(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(PUTrackDDPeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            PUTrackDDPeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+
+        // Set the correct dbName
+        $criteria->setDbName(PUTrackDDPeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(PUTrackDDPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(PUTrackDDPeer::P_D_DEBATE_ID, PDDebatePeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
+     * Selects a collection of PUTrackDD objects pre-filled with their PUser objects.
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of PDDebate objects.
+     * @return array           Array of PUTrackDD objects.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
-    public static function doSelectJoinPUser(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doSelectJoinPuTrackDdPUser(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $criteria = clone $criteria;
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(PDDebatePeer::DATABASE_NAME);
+            $criteria->setDbName(PUTrackDDPeer::DATABASE_NAME);
         }
 
-        PDDebatePeer::addSelectColumns($criteria);
-        $startcol = PDDebatePeer::NUM_HYDRATE_COLUMNS;
+        PUTrackDDPeer::addSelectColumns($criteria);
+        $startcol = PUTrackDDPeer::NUM_HYDRATE_COLUMNS;
         PUserPeer::addSelectColumns($criteria);
 
-        $criteria->addJoin(PDDebatePeer::P_USER_ID, PUserPeer::ID, $join_behavior);
+        $criteria->addJoin(PUTrackDDPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
 
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = PDDebatePeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = PDDebatePeer::getInstanceFromPool($key1))) {
+            $key1 = PUTrackDDPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PUTrackDDPeer::getInstanceFromPool($key1))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj1->hydrate($row, 0, true); // rehydrate
             } else {
 
-                $cls = PDDebatePeer::getOMClass();
+                $cls = PUTrackDDPeer::getOMClass();
 
                 $obj1 = new $cls();
                 $obj1->hydrate($row);
-                PDDebatePeer::addInstanceToPool($obj1, $key1);
+                PUTrackDDPeer::addInstanceToPool($obj1, $key1);
             } // if $obj1 already loaded
 
             $key2 = PUserPeer::getPrimaryKeyHashFromRow($row, $startcol);
@@ -692,8 +635,75 @@ abstract class BasePDDebatePeer
                     PUserPeer::addInstanceToPool($obj2, $key2);
                 } // if obj2 already loaded
 
-                // Add the $obj1 (PDDebate) to $obj2 (PUser)
-                $obj2->addPDDebate($obj1);
+                // Add the $obj1 (PUTrackDD) to $obj2 (PUser)
+                $obj2->addPuTrackDdPUser($obj1);
+
+            } // if joined row was not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Selects a collection of PUTrackDD objects pre-filled with their PDDebate objects.
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of PUTrackDD objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinPuTrackDdPDDebate(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(PUTrackDDPeer::DATABASE_NAME);
+        }
+
+        PUTrackDDPeer::addSelectColumns($criteria);
+        $startcol = PUTrackDDPeer::NUM_HYDRATE_COLUMNS;
+        PDDebatePeer::addSelectColumns($criteria);
+
+        $criteria->addJoin(PUTrackDDPeer::P_D_DEBATE_ID, PDDebatePeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = PUTrackDDPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PUTrackDDPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+
+                $cls = PUTrackDDPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                PUTrackDDPeer::addInstanceToPool($obj1, $key1);
+            } // if $obj1 already loaded
+
+            $key2 = PDDebatePeer::getPrimaryKeyHashFromRow($row, $startcol);
+            if ($key2 !== null) {
+                $obj2 = PDDebatePeer::getInstanceFromPool($key2);
+                if (!$obj2) {
+
+                    $cls = PDDebatePeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol);
+                    PDDebatePeer::addInstanceToPool($obj2, $key2);
+                } // if obj2 already loaded
+
+                // Add the $obj1 (PUTrackDD) to $obj2 (PDDebate)
+                $obj2->addPuTrackDdPDDebate($obj1);
 
             } // if joined row was not null
 
@@ -722,26 +732,28 @@ abstract class BasePDDebatePeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(PDDebatePeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(PUTrackDDPeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            PDDebatePeer::addSelectColumns($criteria);
+            PUTrackDDPeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(PDDebatePeer::DATABASE_NAME);
+        $criteria->setDbName(PUTrackDDPeer::DATABASE_NAME);
 
         if ($con === null) {
-            $con = Propel::getConnection(PDDebatePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PUTrackDDPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(PDDebatePeer::P_USER_ID, PUserPeer::ID, $join_behavior);
+        $criteria->addJoin(PUTrackDDPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
+
+        $criteria->addJoin(PUTrackDDPeer::P_D_DEBATE_ID, PDDebatePeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -756,12 +768,12 @@ abstract class BasePDDebatePeer
     }
 
     /**
-     * Selects a collection of PDDebate objects pre-filled with all related objects.
+     * Selects a collection of PUTrackDD objects pre-filled with all related objects.
      *
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of PDDebate objects.
+     * @return array           Array of PUTrackDD objects.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
@@ -771,32 +783,37 @@ abstract class BasePDDebatePeer
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(PDDebatePeer::DATABASE_NAME);
+            $criteria->setDbName(PUTrackDDPeer::DATABASE_NAME);
         }
 
-        PDDebatePeer::addSelectColumns($criteria);
-        $startcol2 = PDDebatePeer::NUM_HYDRATE_COLUMNS;
+        PUTrackDDPeer::addSelectColumns($criteria);
+        $startcol2 = PUTrackDDPeer::NUM_HYDRATE_COLUMNS;
 
         PUserPeer::addSelectColumns($criteria);
         $startcol3 = $startcol2 + PUserPeer::NUM_HYDRATE_COLUMNS;
 
-        $criteria->addJoin(PDDebatePeer::P_USER_ID, PUserPeer::ID, $join_behavior);
+        PDDebatePeer::addSelectColumns($criteria);
+        $startcol4 = $startcol3 + PDDebatePeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(PUTrackDDPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
+
+        $criteria->addJoin(PUTrackDDPeer::P_D_DEBATE_ID, PDDebatePeer::ID, $join_behavior);
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
 
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = PDDebatePeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = PDDebatePeer::getInstanceFromPool($key1))) {
+            $key1 = PUTrackDDPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PUTrackDDPeer::getInstanceFromPool($key1))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj1->hydrate($row, 0, true); // rehydrate
             } else {
-                $cls = PDDebatePeer::getOMClass();
+                $cls = PUTrackDDPeer::getOMClass();
 
                 $obj1 = new $cls();
                 $obj1->hydrate($row);
-                PDDebatePeer::addInstanceToPool($obj1, $key1);
+                PUTrackDDPeer::addInstanceToPool($obj1, $key1);
             } // if obj1 already loaded
 
             // Add objects for joined PUser rows
@@ -813,9 +830,277 @@ abstract class BasePDDebatePeer
                     PUserPeer::addInstanceToPool($obj2, $key2);
                 } // if obj2 loaded
 
-                // Add the $obj1 (PDDebate) to the collection in $obj2 (PUser)
-                $obj2->addPDDebate($obj1);
+                // Add the $obj1 (PUTrackDD) to the collection in $obj2 (PUser)
+                $obj2->addPuTrackDdPUser($obj1);
             } // if joined row not null
+
+            // Add objects for joined PDDebate rows
+
+            $key3 = PDDebatePeer::getPrimaryKeyHashFromRow($row, $startcol3);
+            if ($key3 !== null) {
+                $obj3 = PDDebatePeer::getInstanceFromPool($key3);
+                if (!$obj3) {
+
+                    $cls = PDDebatePeer::getOMClass();
+
+                    $obj3 = new $cls();
+                    $obj3->hydrate($row, $startcol3);
+                    PDDebatePeer::addInstanceToPool($obj3, $key3);
+                } // if obj3 loaded
+
+                // Add the $obj1 (PUTrackDD) to the collection in $obj3 (PDDebate)
+                $obj3->addPuTrackDdPDDebate($obj1);
+            } // if joined row not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining the related PuTrackDdPUser table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinAllExceptPuTrackDdPUser(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(PUTrackDDPeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            PUTrackDDPeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY should not affect count
+
+        // Set the correct dbName
+        $criteria->setDbName(PUTrackDDPeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(PUTrackDDPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(PUTrackDDPeer::P_D_DEBATE_ID, PDDebatePeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining the related PuTrackDdPDDebate table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinAllExceptPuTrackDdPDDebate(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(PUTrackDDPeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            PUTrackDDPeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY should not affect count
+
+        // Set the correct dbName
+        $criteria->setDbName(PUTrackDDPeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(PUTrackDDPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(PUTrackDDPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
+     * Selects a collection of PUTrackDD objects pre-filled with all related objects except PuTrackDdPUser.
+     *
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of PUTrackDD objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinAllExceptPuTrackDdPUser(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        // $criteria->getDbName() will return the same object if not set to another value
+        // so == check is okay and faster
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(PUTrackDDPeer::DATABASE_NAME);
+        }
+
+        PUTrackDDPeer::addSelectColumns($criteria);
+        $startcol2 = PUTrackDDPeer::NUM_HYDRATE_COLUMNS;
+
+        PDDebatePeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + PDDebatePeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(PUTrackDDPeer::P_D_DEBATE_ID, PDDebatePeer::ID, $join_behavior);
+
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = PUTrackDDPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PUTrackDDPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+                $cls = PUTrackDDPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                PUTrackDDPeer::addInstanceToPool($obj1, $key1);
+            } // if obj1 already loaded
+
+                // Add objects for joined PDDebate rows
+
+                $key2 = PDDebatePeer::getPrimaryKeyHashFromRow($row, $startcol2);
+                if ($key2 !== null) {
+                    $obj2 = PDDebatePeer::getInstanceFromPool($key2);
+                    if (!$obj2) {
+
+                        $cls = PDDebatePeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol2);
+                    PDDebatePeer::addInstanceToPool($obj2, $key2);
+                } // if $obj2 already loaded
+
+                // Add the $obj1 (PUTrackDD) to the collection in $obj2 (PDDebate)
+                $obj2->addPuTrackDdPDDebate($obj1);
+
+            } // if joined row is not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Selects a collection of PUTrackDD objects pre-filled with all related objects except PuTrackDdPDDebate.
+     *
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of PUTrackDD objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinAllExceptPuTrackDdPDDebate(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        // $criteria->getDbName() will return the same object if not set to another value
+        // so == check is okay and faster
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(PUTrackDDPeer::DATABASE_NAME);
+        }
+
+        PUTrackDDPeer::addSelectColumns($criteria);
+        $startcol2 = PUTrackDDPeer::NUM_HYDRATE_COLUMNS;
+
+        PUserPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + PUserPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(PUTrackDDPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
+
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = PUTrackDDPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PUTrackDDPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+                $cls = PUTrackDDPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                PUTrackDDPeer::addInstanceToPool($obj1, $key1);
+            } // if obj1 already loaded
+
+                // Add objects for joined PUser rows
+
+                $key2 = PUserPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+                if ($key2 !== null) {
+                    $obj2 = PUserPeer::getInstanceFromPool($key2);
+                    if (!$obj2) {
+
+                        $cls = PUserPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol2);
+                    PUserPeer::addInstanceToPool($obj2, $key2);
+                } // if $obj2 already loaded
+
+                // Add the $obj1 (PUTrackDD) to the collection in $obj2 (PUser)
+                $obj2->addPuTrackDdPUser($obj1);
+
+            } // if joined row is not null
 
             $results[] = $obj1;
         }
@@ -833,7 +1118,7 @@ abstract class BasePDDebatePeer
      */
     public static function getTableMap()
     {
-        return Propel::getDatabaseMap(PDDebatePeer::DATABASE_NAME)->getTable(PDDebatePeer::TABLE_NAME);
+        return Propel::getDatabaseMap(PUTrackDDPeer::DATABASE_NAME)->getTable(PUTrackDDPeer::TABLE_NAME);
     }
 
     /**
@@ -841,9 +1126,9 @@ abstract class BasePDDebatePeer
      */
     public static function buildTableMap()
     {
-      $dbMap = Propel::getDatabaseMap(BasePDDebatePeer::DATABASE_NAME);
-      if (!$dbMap->hasTable(BasePDDebatePeer::TABLE_NAME)) {
-        $dbMap->addTableObject(new \Politizr\Model\map\PDDebateTableMap());
+      $dbMap = Propel::getDatabaseMap(BasePUTrackDDPeer::DATABASE_NAME);
+      if (!$dbMap->hasTable(BasePUTrackDDPeer::TABLE_NAME)) {
+        $dbMap->addTableObject(new \Politizr\Model\map\PUTrackDDTableMap());
       }
     }
 
@@ -855,13 +1140,13 @@ abstract class BasePDDebatePeer
      */
     public static function getOMClass($row = 0, $colnum = 0)
     {
-        return PDDebatePeer::OM_CLASS;
+        return PUTrackDDPeer::OM_CLASS;
     }
 
     /**
-     * Performs an INSERT on the database, given a PDDebate or Criteria object.
+     * Performs an INSERT on the database, given a PUTrackDD or Criteria object.
      *
-     * @param      mixed $values Criteria or PDDebate object containing data that is used to create the INSERT statement.
+     * @param      mixed $values Criteria or PUTrackDD object containing data that is used to create the INSERT statement.
      * @param      PropelPDO $con the PropelPDO connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -870,22 +1155,22 @@ abstract class BasePDDebatePeer
     public static function doInsert($values, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PDDebatePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PUTrackDDPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
         } else {
-            $criteria = $values->buildCriteria(); // build Criteria from PDDebate object
+            $criteria = $values->buildCriteria(); // build Criteria from PUTrackDD object
         }
 
-        if ($criteria->containsKey(PDDebatePeer::ID) && $criteria->keyContainsValue(PDDebatePeer::ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.PDDebatePeer::ID.')');
+        if ($criteria->containsKey(PUTrackDDPeer::ID) && $criteria->keyContainsValue(PUTrackDDPeer::ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.PUTrackDDPeer::ID.')');
         }
 
 
         // Set the correct dbName
-        $criteria->setDbName(PDDebatePeer::DATABASE_NAME);
+        $criteria->setDbName(PUTrackDDPeer::DATABASE_NAME);
 
         try {
             // use transaction because $criteria could contain info
@@ -902,9 +1187,9 @@ abstract class BasePDDebatePeer
     }
 
     /**
-     * Performs an UPDATE on the database, given a PDDebate or Criteria object.
+     * Performs an UPDATE on the database, given a PUTrackDD or Criteria object.
      *
-     * @param      mixed $values Criteria or PDDebate object containing data that is used to create the UPDATE statement.
+     * @param      mixed $values Criteria or PUTrackDD object containing data that is used to create the UPDATE statement.
      * @param      PropelPDO $con The connection to use (specify PropelPDO connection object to exert more control over transactions).
      * @return int             The number of affected rows (if supported by underlying database driver).
      * @throws PropelException Any exceptions caught during processing will be
@@ -913,35 +1198,35 @@ abstract class BasePDDebatePeer
     public static function doUpdate($values, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PDDebatePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PUTrackDDPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
-        $selectCriteria = new Criteria(PDDebatePeer::DATABASE_NAME);
+        $selectCriteria = new Criteria(PUTrackDDPeer::DATABASE_NAME);
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
 
-            $comparison = $criteria->getComparison(PDDebatePeer::ID);
-            $value = $criteria->remove(PDDebatePeer::ID);
+            $comparison = $criteria->getComparison(PUTrackDDPeer::ID);
+            $value = $criteria->remove(PUTrackDDPeer::ID);
             if ($value) {
-                $selectCriteria->add(PDDebatePeer::ID, $value, $comparison);
+                $selectCriteria->add(PUTrackDDPeer::ID, $value, $comparison);
             } else {
-                $selectCriteria->setPrimaryTableName(PDDebatePeer::TABLE_NAME);
+                $selectCriteria->setPrimaryTableName(PUTrackDDPeer::TABLE_NAME);
             }
 
-        } else { // $values is PDDebate object
+        } else { // $values is PUTrackDD object
             $criteria = $values->buildCriteria(); // gets full criteria
             $selectCriteria = $values->buildPkeyCriteria(); // gets criteria w/ primary key(s)
         }
 
         // set the correct dbName
-        $criteria->setDbName(PDDebatePeer::DATABASE_NAME);
+        $criteria->setDbName(PUTrackDDPeer::DATABASE_NAME);
 
         return BasePeer::doUpdate($selectCriteria, $criteria, $con);
     }
 
     /**
-     * Deletes all rows from the p_d_debate table.
+     * Deletes all rows from the p_u_track_d_d table.
      *
      * @param      PropelPDO $con the connection to use
      * @return int             The number of affected rows (if supported by underlying database driver).
@@ -950,19 +1235,19 @@ abstract class BasePDDebatePeer
     public static function doDeleteAll(PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PDDebatePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PUTrackDDPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
         $affectedRows = 0; // initialize var to track total num of affected rows
         try {
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-            $affectedRows += BasePeer::doDeleteAll(PDDebatePeer::TABLE_NAME, $con, PDDebatePeer::DATABASE_NAME);
+            $affectedRows += BasePeer::doDeleteAll(PUTrackDDPeer::TABLE_NAME, $con, PUTrackDDPeer::DATABASE_NAME);
             // Because this db requires some delete cascade/set null emulation, we have to
             // clear the cached instance *after* the emulation has happened (since
             // instances get re-added by the select statement contained therein).
-            PDDebatePeer::clearInstancePool();
-            PDDebatePeer::clearRelatedInstancePool();
+            PUTrackDDPeer::clearInstancePool();
+            PUTrackDDPeer::clearRelatedInstancePool();
             $con->commit();
 
             return $affectedRows;
@@ -973,9 +1258,9 @@ abstract class BasePDDebatePeer
     }
 
     /**
-     * Performs a DELETE on the database, given a PDDebate or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a PUTrackDD or Criteria object OR a primary key value.
      *
-     * @param      mixed $values Criteria or PDDebate object or primary key or array of primary keys
+     * @param      mixed $values Criteria or PUTrackDD object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param      PropelPDO $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -986,32 +1271,32 @@ abstract class BasePDDebatePeer
      public static function doDelete($values, PropelPDO $con = null)
      {
         if ($con === null) {
-            $con = Propel::getConnection(PDDebatePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PUTrackDDPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         if ($values instanceof Criteria) {
             // invalidate the cache for all objects of this type, since we have no
             // way of knowing (without running a query) what objects should be invalidated
             // from the cache based on this Criteria.
-            PDDebatePeer::clearInstancePool();
+            PUTrackDDPeer::clearInstancePool();
             // rename for clarity
             $criteria = clone $values;
-        } elseif ($values instanceof PDDebate) { // it's a model object
+        } elseif ($values instanceof PUTrackDD) { // it's a model object
             // invalidate the cache for this single object
-            PDDebatePeer::removeInstanceFromPool($values);
+            PUTrackDDPeer::removeInstanceFromPool($values);
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(PDDebatePeer::DATABASE_NAME);
-            $criteria->add(PDDebatePeer::ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(PUTrackDDPeer::DATABASE_NAME);
+            $criteria->add(PUTrackDDPeer::ID, (array) $values, Criteria::IN);
             // invalidate the cache for this object(s)
             foreach ((array) $values as $singleval) {
-                PDDebatePeer::removeInstanceFromPool($singleval);
+                PUTrackDDPeer::removeInstanceFromPool($singleval);
             }
         }
 
         // Set the correct dbName
-        $criteria->setDbName(PDDebatePeer::DATABASE_NAME);
+        $criteria->setDbName(PUTrackDDPeer::DATABASE_NAME);
 
         $affectedRows = 0; // initialize var to track total num of affected rows
 
@@ -1021,7 +1306,7 @@ abstract class BasePDDebatePeer
             $con->beginTransaction();
 
             $affectedRows += BasePeer::doDelete($criteria, $con);
-            PDDebatePeer::clearRelatedInstancePool();
+            PUTrackDDPeer::clearRelatedInstancePool();
             $con->commit();
 
             return $affectedRows;
@@ -1032,13 +1317,13 @@ abstract class BasePDDebatePeer
     }
 
     /**
-     * Validates all modified columns of given PDDebate object.
+     * Validates all modified columns of given PUTrackDD object.
      * If parameter $columns is either a single column name or an array of column names
      * than only those columns are validated.
      *
      * NOTICE: This does not apply to primary or foreign keys for now.
      *
-     * @param PDDebate $obj The object to validate.
+     * @param PUTrackDD $obj The object to validate.
      * @param      mixed $cols Column name or array of column names.
      *
      * @return mixed TRUE if all columns are valid or the error message of the first invalid column.
@@ -1048,8 +1333,8 @@ abstract class BasePDDebatePeer
         $columns = array();
 
         if ($cols) {
-            $dbMap = Propel::getDatabaseMap(PDDebatePeer::DATABASE_NAME);
-            $tableMap = $dbMap->getTable(PDDebatePeer::TABLE_NAME);
+            $dbMap = Propel::getDatabaseMap(PUTrackDDPeer::DATABASE_NAME);
+            $tableMap = $dbMap->getTable(PUTrackDDPeer::TABLE_NAME);
 
             if (! is_array($cols)) {
                 $cols = array($cols);
@@ -1065,7 +1350,7 @@ abstract class BasePDDebatePeer
 
         }
 
-        return BasePeer::doValidate(PDDebatePeer::DATABASE_NAME, PDDebatePeer::TABLE_NAME, $columns);
+        return BasePeer::doValidate(PUTrackDDPeer::DATABASE_NAME, PUTrackDDPeer::TABLE_NAME, $columns);
     }
 
     /**
@@ -1073,23 +1358,23 @@ abstract class BasePDDebatePeer
      *
      * @param int $pk the primary key.
      * @param      PropelPDO $con the connection to use
-     * @return PDDebate
+     * @return PUTrackDD
      */
     public static function retrieveByPK($pk, PropelPDO $con = null)
     {
 
-        if (null !== ($obj = PDDebatePeer::getInstanceFromPool((string) $pk))) {
+        if (null !== ($obj = PUTrackDDPeer::getInstanceFromPool((string) $pk))) {
             return $obj;
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(PDDebatePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PUTrackDDPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria = new Criteria(PDDebatePeer::DATABASE_NAME);
-        $criteria->add(PDDebatePeer::ID, $pk);
+        $criteria = new Criteria(PUTrackDDPeer::DATABASE_NAME);
+        $criteria->add(PUTrackDDPeer::ID, $pk);
 
-        $v = PDDebatePeer::doSelect($criteria, $con);
+        $v = PUTrackDDPeer::doSelect($criteria, $con);
 
         return !empty($v) > 0 ? $v[0] : null;
     }
@@ -1099,31 +1384,31 @@ abstract class BasePDDebatePeer
      *
      * @param      array $pks List of primary keys
      * @param      PropelPDO $con the connection to use
-     * @return PDDebate[]
+     * @return PUTrackDD[]
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
     public static function retrieveByPKs($pks, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PDDebatePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PUTrackDDPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         $objs = null;
         if (empty($pks)) {
             $objs = array();
         } else {
-            $criteria = new Criteria(PDDebatePeer::DATABASE_NAME);
-            $criteria->add(PDDebatePeer::ID, $pks, Criteria::IN);
-            $objs = PDDebatePeer::doSelect($criteria, $con);
+            $criteria = new Criteria(PUTrackDDPeer::DATABASE_NAME);
+            $criteria->add(PUTrackDDPeer::ID, $pks, Criteria::IN);
+            $objs = PUTrackDDPeer::doSelect($criteria, $con);
         }
 
         return $objs;
     }
 
-} // BasePDDebatePeer
+} // BasePUTrackDDPeer
 
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-BasePDDebatePeer::buildTableMap();
+BasePUTrackDDPeer::buildTableMap();
 

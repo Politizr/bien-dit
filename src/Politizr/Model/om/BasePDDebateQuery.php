@@ -22,6 +22,7 @@ use Politizr\Model\PDReaction;
 use Politizr\Model\PMDebateHistoric;
 use Politizr\Model\PTag;
 use Politizr\Model\PUFollowDD;
+use Politizr\Model\PUTrackDD;
 use Politizr\Model\PUser;
 
 /**
@@ -82,6 +83,10 @@ use Politizr\Model\PUser;
  * @method PDDebateQuery leftJoinPuFollowDdPDDebate($relationAlias = null) Adds a LEFT JOIN clause to the query using the PuFollowDdPDDebate relation
  * @method PDDebateQuery rightJoinPuFollowDdPDDebate($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PuFollowDdPDDebate relation
  * @method PDDebateQuery innerJoinPuFollowDdPDDebate($relationAlias = null) Adds a INNER JOIN clause to the query using the PuFollowDdPDDebate relation
+ *
+ * @method PDDebateQuery leftJoinPuTrackDdPDDebate($relationAlias = null) Adds a LEFT JOIN clause to the query using the PuTrackDdPDDebate relation
+ * @method PDDebateQuery rightJoinPuTrackDdPDDebate($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PuTrackDdPDDebate relation
+ * @method PDDebateQuery innerJoinPuTrackDdPDDebate($relationAlias = null) Adds a INNER JOIN clause to the query using the PuTrackDdPDDebate relation
  *
  * @method PDDebateQuery leftJoinPDReaction($relationAlias = null) Adds a LEFT JOIN clause to the query using the PDReaction relation
  * @method PDDebateQuery rightJoinPDReaction($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PDReaction relation
@@ -1246,6 +1251,80 @@ abstract class BasePDDebateQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query by a related PUTrackDD object
+     *
+     * @param   PUTrackDD|PropelObjectCollection $pUTrackDD  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PDDebateQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPuTrackDdPDDebate($pUTrackDD, $comparison = null)
+    {
+        if ($pUTrackDD instanceof PUTrackDD) {
+            return $this
+                ->addUsingAlias(PDDebatePeer::ID, $pUTrackDD->getPDDebateId(), $comparison);
+        } elseif ($pUTrackDD instanceof PropelObjectCollection) {
+            return $this
+                ->usePuTrackDdPDDebateQuery()
+                ->filterByPrimaryKeys($pUTrackDD->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPuTrackDdPDDebate() only accepts arguments of type PUTrackDD or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PuTrackDdPDDebate relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PDDebateQuery The current query, for fluid interface
+     */
+    public function joinPuTrackDdPDDebate($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PuTrackDdPDDebate');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PuTrackDdPDDebate');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PuTrackDdPDDebate relation PUTrackDD object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PUTrackDDQuery A secondary query class using the current class as primary query
+     */
+    public function usePuTrackDdPDDebateQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPuTrackDdPDDebate($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PuTrackDdPDDebate', '\Politizr\Model\PUTrackDDQuery');
+    }
+
+    /**
      * Filter the query by a related PDReaction object
      *
      * @param   PDReaction|PropelObjectCollection $pDReaction  the related object to use as filter
@@ -1555,6 +1634,23 @@ abstract class BasePDDebateQuery extends ModelCriteria
         return $this
             ->usePuFollowDdPDDebateQuery()
             ->filterByPuFollowDdPUser($pUser, $comparison)
+            ->endUse();
+    }
+
+    /**
+     * Filter the query by a related PUser object
+     * using the p_u_track_d_d table as cross reference
+     *
+     * @param   PUser $pUser the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return   PDDebateQuery The current query, for fluid interface
+     */
+    public function filterByPuTrackDdPUser($pUser, $comparison = Criteria::EQUAL)
+    {
+        return $this
+            ->usePuTrackDdPDDebateQuery()
+            ->filterByPuTrackDdPUser($pUser, $comparison)
             ->endUse();
     }
 
