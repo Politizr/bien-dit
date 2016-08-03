@@ -2,12 +2,12 @@
 {% if app.user %}
     {% if not pos and not neg %}
         <div class="like">
-            <div class="likeButton"><i class="icon-like-yes" action="note" uuid="{{ object.uuid }}" type="{{ type }}" way="up"></i></div>
+            <div class="likeButton" action="note" uuid="{{ object.uuid }}" type="{{ type }}" way="up"><i class="icon-like-yes"></i></div>
             {{ object.notePos }}
         </div>
         <div class="dislike">
             {{ object.noteNeg }}
-            <div class="dislikeButton"><i class="icon-like-no" action="note" uuid="{{ object.uuid }}" type="{{ type }}" way="down"></i></div>
+            <div class="dislikeButton" action="note" uuid="{{ object.uuid }}" type="{{ type }}" way="down"><i class="icon-like-no"></i></div>
         </div>
     {% else %}
         <div class="like {% if pos and not isOwnDocument %}myvote{% else %}novote{% endif %}">
