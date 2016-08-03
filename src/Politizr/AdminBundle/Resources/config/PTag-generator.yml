@@ -84,6 +84,9 @@ builders:
                 p_t_tag_type:
                     addFormOptions:
                         query:                  \Politizr\Model\PTTagTypeQuery::create()->orderByTitle() 
+                PTagRelatedByPTParentId:
+                    addFormOptions:
+                        required:               false
             actions:
               save:                             ~
               list:                             ~
