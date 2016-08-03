@@ -900,9 +900,9 @@ class XhrUser
         }
 
         $query = PUserQuery::create()
-            ->joinPUFollowURelatedByPUserId()
+            ->joinPUFollowURelatedByPUserFollowerId()
             ->setDistinct()
-            ->orderBy('PUFollowURelatedByPUserId.CreatedAt', 'desc');
+            ->orderBy('PUFollowURelatedByPUserFollowerId.CreatedAt', 'desc');
             
         $total = count($user->getFollowers($query));
 
@@ -944,9 +944,9 @@ class XhrUser
         }
 
         $query = PUserQuery::create()
-            ->joinPUFollowURelatedByPUserId()
+            ->joinPUFollowURelatedByPUserFollowerId()
             ->setDistinct()
-            ->orderBy('PUFollowURelatedByPUserId.CreatedAt', 'desc')
+            ->orderBy('PUFollowURelatedByPUserFollowerId.CreatedAt', 'desc')
             ->limit(ListingConstants::LISTING_CLASSIC_PAGINATION)
             ->offset($offset);
 
@@ -998,9 +998,9 @@ class XhrUser
         }
 
         $query = PUserQuery::create()
-            ->joinPUFollowURelatedByPUserFollowerId()
+            ->joinPUFollowURelatedByPUserId()
             ->setDistinct()
-            ->orderBy('PUFollowURelatedByPUserFollowerId.CreatedAt', 'desc');
+            ->orderBy('PUFollowURelatedByPUserId.CreatedAt', 'desc');
             
         $total = count($user->getSubscribers($query));
 
@@ -1042,9 +1042,9 @@ class XhrUser
         }
 
         $query = PUserQuery::create()
-            ->joinPUFollowURelatedByPUserFollowerId()
+            ->joinPUFollowURelatedByPUserId()
             ->setDistinct()
-            ->orderBy('PUFollowURelatedByPUserFollowerId.CreatedAt', 'desc')
+            ->orderBy('PUFollowURelatedByPUserId.CreatedAt', 'desc')
             ->limit(ListingConstants::LISTING_CLASSIC_PAGINATION)
             ->offset($offset);
 
