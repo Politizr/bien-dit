@@ -2,10 +2,10 @@
 
 /**
  * Data object containing the SQL and PHP code to migrate the database
- * up to version 1467972576.
- * Generated on 2016-07-08 12:09:36 by lionel
+ * up to version 1470208983.
+ * Generated on 2016-08-03 09:23:03 by lionel
  */
-class PropelMigration_1467972576
+class PropelMigration_1470208983
 {
 
     public function preUp($manager)
@@ -44,11 +44,13 @@ SET FOREIGN_KEY_CHECKS = 0;
 
 CREATE TABLE `p_u_track_u`
 (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
     `created_at` DATETIME,
     `updated_at` DATETIME,
     `p_user_id_source` INTEGER NOT NULL,
     `p_user_id_dest` INTEGER NOT NULL,
-    PRIMARY KEY (`p_user_id_source`,`p_user_id_dest`),
+    PRIMARY KEY (`id`,`p_user_id_source`,`p_user_id_dest`),
+    INDEX `FI_ser_id_source` (`p_user_id_source`),
     INDEX `FI_ser_id_dest` (`p_user_id_dest`),
     CONSTRAINT `p_user_id_source`
         FOREIGN KEY (`p_user_id_source`)
@@ -57,50 +59,6 @@ CREATE TABLE `p_u_track_u`
     CONSTRAINT `p_user_id_dest`
         FOREIGN KEY (`p_user_id_dest`)
         REFERENCES `p_user` (`id`)
-        ON DELETE CASCADE
-) ENGINE=InnoDB;
-
-CREATE TABLE `p_u_track_d_d`
-(
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `p_user_id` INTEGER NOT NULL,
-    `p_d_debate_id` INTEGER NOT NULL,
-    `created_at` DATETIME,
-    `updated_at` DATETIME,
-    PRIMARY KEY (`id`),
-    INDEX `p_u_track_d_d_FI_1` (`p_user_id`),
-    INDEX `p_u_track_d_d_FI_2` (`p_d_debate_id`),
-    CONSTRAINT `p_u_track_d_d_FK_1`
-        FOREIGN KEY (`p_user_id`)
-        REFERENCES `p_user` (`id`)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE,
-    CONSTRAINT `p_u_track_d_d_FK_2`
-        FOREIGN KEY (`p_d_debate_id`)
-        REFERENCES `p_d_debate` (`id`)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE
-) ENGINE=InnoDB;
-
-CREATE TABLE `p_u_track_d_r`
-(
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `p_user_id` INTEGER NOT NULL,
-    `p_d_reaction_id` INTEGER NOT NULL,
-    `created_at` DATETIME,
-    `updated_at` DATETIME,
-    PRIMARY KEY (`id`),
-    INDEX `p_u_track_d_r_FI_1` (`p_user_id`),
-    INDEX `p_u_track_d_r_FI_2` (`p_d_reaction_id`),
-    CONSTRAINT `p_u_track_d_r_FK_1`
-        FOREIGN KEY (`p_user_id`)
-        REFERENCES `p_user` (`id`)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE,
-    CONSTRAINT `p_u_track_d_r_FK_2`
-        FOREIGN KEY (`p_d_reaction_id`)
-        REFERENCES `p_d_reaction` (`id`)
-        ON UPDATE CASCADE
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
@@ -126,9 +84,33 @@ SET FOREIGN_KEY_CHECKS = 0;
 
 DROP TABLE IF EXISTS `p_u_track_u`;
 
-DROP TABLE IF EXISTS `p_u_track_d_d`;
+DROP TABLE IF EXISTS `acl_classes`;
 
-DROP TABLE IF EXISTS `p_u_track_d_r`;
+DROP TABLE IF EXISTS `acl_security_identities`;
+
+DROP TABLE IF EXISTS `acl_object_identities`;
+
+DROP TABLE IF EXISTS `acl_object_identity_ancestors`;
+
+DROP TABLE IF EXISTS `acl_entries`;
+
+ALTER TABLE `p_r_badge` DROP FOREIGN KEY `p_r_badge_FK_2`;
+
+ALTER TABLE `p_user_archive` CHANGE `salt` `salt` VARCHAR(255) NOT NULL;
+
+ALTER TABLE `p_user_archive` CHANGE `password` `password` VARCHAR(255) NOT NULL;
+
+CREATE TABLE `p_m_legal_content`
+(
+    `id` INTEGER NOT NULL,
+    `title` VARCHAR(150),
+    `summary` TEXT,
+    `description` LONGTEXT,
+    `online` TINYINT(1),
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

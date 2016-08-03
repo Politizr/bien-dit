@@ -597,6 +597,7 @@
             <parameter name="reference_column_1" value="p_user_id_source" />
             <parameter name="reference_column_2" value="p_user_id_dest" />
         </behavior>
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
     </table>
 
     <table name="p_u_follow_d_d" isCrossRef="true">
