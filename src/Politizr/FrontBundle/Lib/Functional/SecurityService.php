@@ -183,12 +183,24 @@ class SecurityService
      *
      * @param PUser $user
      * @param string $oAuthFileUrl
+     * @param string $provider
      * @return boolean
      */
-    private function manageOAuthProfilePhoto(PUser $user, $oAuthFileUrl)
+    private function manageOAuthProfilePhoto(PUser $user, $oAuthFileUrl, $provider)
     {
+        // $this->logger->info('*** manageOAuthProfilePhoto');
+        // $this->logger->info(print_r($oAuthFileUrl, true));
+        // $this->logger->info(print_r($provider, true));
+
         if ($oAuthFileUrl) {
             $lastDotPos = strrpos($oAuthFileUrl, '.');
+
+            // twitter hack cf #https://github.com/hwi/HWIOAuthBundle/issues/1019
+            if ($provider == 'twitter') {
+                $oAuthFileUrl = str_replace('_normal', '', $oAuthFileUrl);
+                // $this->logger->info(print_r($oAuthFileUrl, true));
+            }
+
             if ($lastDotPos) {
                 $extension = substr($oAuthFileUrl, ($lastDotPos + 1));
                 $fileName = $this->globalTools->downloadFileFromUrl(
@@ -438,7 +450,7 @@ class SecurityService
      */
     private function getUserFromOAuthData($oAuthData)
     {
-        $this->logger->info('*** getUserFromOAuthData');
+        // $this->logger->info('*** getUserFromOAuthData');
 
         if (!$oAuthData
             || !is_array($oAuthData)
@@ -491,7 +503,7 @@ class SecurityService
      */
     private function createUserFromOAuthData($oAuthData, $isQualified = false)
     {
-        $this->logger->info('*** createUserFromOAuthData');
+        // $this->logger->info('*** createUserFromOAuthData');
 
         // create new user & update it
         $user = new PUser();
@@ -501,9 +513,6 @@ class SecurityService
         $user->setOnline(false);
 
         $user = $this->userManager->updateOAuthData($user, $oAuthData);
-
-        // manage download photo profile
-        $this->manageOAuthProfilePhoto($user, $oAuthData['profilePicture']);
 
         // manage username / default email
         if ($user->getEmail()) {
@@ -525,6 +534,9 @@ class SecurityService
         $tokenSecret = $oAuthData['tokenSecret'];
         $refreshToken = $oAuthData['refreshToken'];
         $expiresIn = $oAuthData['expiresIn'];
+
+        // manage download photo profile
+        $this->manageOAuthProfilePhoto($user, $oAuthData['profilePicture'], $provider);
 
         switch ($provider) {
             case 'facebook':
@@ -574,7 +586,7 @@ class SecurityService
      */
     public function oauthRegister($isQualified = false)
     {
-        $this->logger->info('*** oauthRegister');
+        // $this->logger->info('*** oauthRegister');
 
         // get oAuth data
         $oAuthData = $this->session->getFlashBag()->get('oAuthData');
@@ -641,7 +653,7 @@ class SecurityService
      */
     public function inscriptionCitizenStart(PUser $user)
     {
-        $this->logger->info('*** inscriptionCitizenStart');
+        // $this->logger->info('*** inscriptionCitizenStart');
 
         // citizen inscription roles
         $roles = [ 'ROLE_CITIZEN_INSCRIPTION' ];
@@ -669,7 +681,7 @@ class SecurityService
      */
     public function inscriptionCitizenFinish(PUser $user)
     {
-        $this->logger->info('*** inscriptionCitizenFinish');
+        // $this->logger->info('*** inscriptionCitizenFinish');
 
         // citizen inscription roles
         $roles = [ 'ROLE_CITIZEN', 'ROLE_PROFILE_COMPLETED' ];
@@ -700,7 +712,7 @@ class SecurityService
      */
     public function inscriptionElectedStart(PUser $user)
     {
-        $this->logger->info('*** inscriptionElectedStart');
+        // $this->logger->info('*** inscriptionElectedStart');
         
         // elected inscription roles
         $roles = [ 'ROLE_ELECTED_INSCRIPTION' ];
@@ -726,7 +738,7 @@ class SecurityService
      */
     public function inscriptionFinishElected(PUser $user)
     {
-        $this->logger->info('*** inscriptionFinishElected');
+        // $this->logger->info('*** inscriptionFinishElected');
 
         // citizen inscription roles
         $roles = [ 'ROLE_ELECTED', 'ROLE_CITIZEN', 'ROLE_PROFILE_COMPLETED' ];
@@ -759,7 +771,7 @@ class SecurityService
      */
     public function updateOrderPaymentCompleted()
     {
-        $this->logger->info('*** updateOrderPaymentCompleted');
+        // $this->logger->info('*** updateOrderPaymentCompleted');
 
         // Session arguments
         $orderId = $this->session->get('p_order_id');
@@ -795,7 +807,7 @@ class SecurityService
      */
     public function updateOrderPaymentCanceled()
     {
-        $this->logger->info('*** updateOrderPaymentCanceled');
+        // $this->logger->info('*** updateOrderPaymentCanceled');
 
         // Session arguments
         $orderId = $this->session->get('p_order_id');
