@@ -50,6 +50,7 @@ class PUNotificationTableMap extends TableMap
         $this->addColumn('p_object_name', 'PObjectName', 'VARCHAR', false, 150, null);
         $this->addColumn('p_object_id', 'PObjectId', 'INTEGER', false, null, null);
         $this->addColumn('p_author_user_id', 'PAuthorUserId', 'INTEGER', false, null, null);
+        $this->addColumn('description', 'Description', 'LONGVARCHAR', false, null, null);
         $this->addColumn('checked', 'Checked', 'BOOLEAN', false, 1, null);
         $this->addColumn('checked_at', 'CheckedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);

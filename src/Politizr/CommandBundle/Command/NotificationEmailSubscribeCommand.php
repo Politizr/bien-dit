@@ -28,6 +28,11 @@ class NotificationEmailSubscribeCommand extends ContainerAwareCommand
             ->setName('politizr:notif:subscribe')
             ->setDescription('Subscribe users to notification email')
             ->addArgument(
+                'notifId',
+                InputArgument::REQUIRED,
+                'specific notif id'
+            )
+            ->addArgument(
                 'from',
                 InputArgument::OPTIONAL,
                 'start from specified user id'
@@ -44,10 +49,9 @@ class NotificationEmailSubscribeCommand extends ContainerAwareCommand
     {
         $isVerbose = (OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity());
 
+        $notifId = $input->getArgument('notifId');
+
         $fromUserId = $input->getArgument('from');
-        if (!$fromUserId) {
-            $fromUserId = 299;
-        }
 
         $toUserId = $input->getArgument('to');
 
@@ -63,9 +67,10 @@ class NotificationEmailSubscribeCommand extends ContainerAwareCommand
         $con = \Propel::getConnection('default');
         $con->beginTransaction();
         try {
-            foreach ($users as $user) {
-                $notifications = PNotificationQuery::create()->find();
-                foreach ($notifications as $notif) {
+            $notif = PNotificationQuery::create()->findPk($notifId);
+            $counter = 0;
+            if ($notif) {
+                foreach ($users as $user) {
                     $puSubscribeEmail = PUSubscribeEmailQuery::create()
                         ->filterByPUserId($user->getId())
                         ->filterByPNotificationId($notif->getId())
@@ -78,6 +83,8 @@ class NotificationEmailSubscribeCommand extends ContainerAwareCommand
                         $puSubscribeEmail->setPNotificationId($notif->getId());
 
                         $puSubscribeEmail->save();
+
+                        $counter++;
                     }
                 }
             }
@@ -87,6 +94,6 @@ class NotificationEmailSubscribeCommand extends ContainerAwareCommand
             throw new \Exception('Rollback - msg = '.print_r($e->getMessage(), true));
         }
 
-        $output->writeln(sprintf('<info>%s user\'s email\'s notifications subscribtions have been successfully updated.</info>', count($users)));
+        $output->writeln(sprintf('<info>%s user\'s email\'s notifications subscriptions have been successfully updated.</info>', $counter));
     }
 }

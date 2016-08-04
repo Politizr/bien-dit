@@ -46,6 +46,7 @@ class NotificationManager
             NotificationConstants::ID_U_BADGE,
             NotificationConstants::ID_S_T_USER,
             NotificationConstants::ID_S_T_DOCUMENT,
+            NotificationConstants::ID_ADM_MESSAGE,
         );
 
         return $notifIds;

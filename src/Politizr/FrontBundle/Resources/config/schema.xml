@@ -816,6 +816,8 @@
         <column name="p_object_id" type="integer" />
         <column name="p_author_user_id" type="integer" />
 
+        <column name="description" type="longvarchar" />
+
         <column name="checked" type="boolean" />
         <column name="checked_at" type="timestamp" />
 

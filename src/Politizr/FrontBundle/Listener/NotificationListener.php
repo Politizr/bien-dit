@@ -8,6 +8,7 @@ use Politizr\Exception\InconsistentDataException;
 
 use Politizr\Constant\NotificationConstants;
 use Politizr\Constant\ObjectTypeConstants;
+use Politizr\Constant\UserConstants;
 
 use Politizr\Model\PUNotification;
 
@@ -605,6 +606,38 @@ class NotificationListener
         }
     }
 
+    /**
+     * Admin notification.
+     * 
+     * Notifications associées à gérer:
+     * - Le support a envoyé une notification
+     *
+     * @param GenericEvent
+     */
+    public function onNAdminMessage(GenericEvent $event)
+    {
+        $this->logger->info('*** onNAdminMessage');
+
+        $subject = $event->getSubject();
+        $pNotificationId = NotificationConstants::ID_ADM_MESSAGE;
+
+        $adminMsg = $event->getArgument('admin_msg');
+        
+        $targetUserId = $subject->getId();
+        $authorUserId = UserConstants::USER_ID_ADMIN;
+
+        $objectName = get_class($subject);
+        $objectId = $subject->getId();
+
+        $puNotification = $this->insertPUNotification($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId, $adminMsg);
+
+        // Alerte email
+        $event = new GenericEvent($puNotification);
+        $dispatcher =  $this->eventDispatcher->dispatch('n_e_check', $event);
+    }
+
+    /**
+
     // ******************************************************** //
     //                      Méthodes privées                    //
     // ******************************************************** //
@@ -620,7 +653,7 @@ class NotificationListener
      *
      * @return PUNotification  Objet inséré
      */
-    private function insertPUNotification($userId, $authorUserId, $notificationId, $objectName, $objectId)
+    private function insertPUNotification($userId, $authorUserId, $notificationId, $objectName, $objectId, $description = null)
     {
         // $this->logger->info('*** insertPUNotification');
         // $this->logger->info('userId = '.print_r($userId, true));
@@ -636,6 +669,7 @@ class NotificationListener
         $notif->setPObjectName($objectName);
         $notif->setPObjectId($objectId);
         $notif->setPAuthorUserId($authorUserId);
+        $notif->setDescription($description);
         $notif->setChecked(false);
         
         $notif->save();

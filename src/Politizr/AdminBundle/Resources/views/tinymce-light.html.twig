@@ -1,0 +1,21 @@
+<!-- TinyMCE V4 Configuration -->
+<script src="{{ asset("bundles/politizradmin/js/tinymce_v4/jquery.tinymce.min.js") }}"></script>
+
+<script type="text/javascript">
+    // Initializes all textareas with the tinymce class
+    $().ready(function() {
+       $('textarea.tinymce').tinymce({
+          script_url : '{{ asset("bundles/politizradmin/js/tinymce_v4/tinymce.min.js") }}',
+          theme : "modern",
+          language : "fr_FR",
+          width : 500,
+          height : 100,
+          plugins : "paste,link,code",
+          tools: "inserttable",
+          toolbar: "bold italic | link",
+          paste_as_text: true,
+          convert_urls: false,
+          relatives_urls: false,
+       });
+    });
+</script>

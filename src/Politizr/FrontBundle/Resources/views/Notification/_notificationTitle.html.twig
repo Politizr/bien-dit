@@ -60,5 +60,9 @@
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_S_T_USER')
 %}
     Un autre utilisateur suit une de vos thématiques
+{% elseif
+    notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_ADM_MESSAGE')
+%}
+    Le support a effectué une notification
 {% endif %}
 {% endspaceless %}

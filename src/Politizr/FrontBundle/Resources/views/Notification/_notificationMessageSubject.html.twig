@@ -72,5 +72,9 @@
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_S_T_DOCUMENT')
 %}
     "{{ title }}" contient une thématique que vous suivez
+{% elseif
+    notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_ADM_MESSAGE')
+%}
+    Nouvelle notification du support
 {% endif %}
 {% endspaceless %}

@@ -27,6 +27,7 @@ use Politizr\Model\PUser;
  * @method PUNotificationQuery orderByPObjectName($order = Criteria::ASC) Order by the p_object_name column
  * @method PUNotificationQuery orderByPObjectId($order = Criteria::ASC) Order by the p_object_id column
  * @method PUNotificationQuery orderByPAuthorUserId($order = Criteria::ASC) Order by the p_author_user_id column
+ * @method PUNotificationQuery orderByDescription($order = Criteria::ASC) Order by the description column
  * @method PUNotificationQuery orderByChecked($order = Criteria::ASC) Order by the checked column
  * @method PUNotificationQuery orderByCheckedAt($order = Criteria::ASC) Order by the checked_at column
  * @method PUNotificationQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
@@ -39,6 +40,7 @@ use Politizr\Model\PUser;
  * @method PUNotificationQuery groupByPObjectName() Group by the p_object_name column
  * @method PUNotificationQuery groupByPObjectId() Group by the p_object_id column
  * @method PUNotificationQuery groupByPAuthorUserId() Group by the p_author_user_id column
+ * @method PUNotificationQuery groupByDescription() Group by the description column
  * @method PUNotificationQuery groupByChecked() Group by the checked column
  * @method PUNotificationQuery groupByCheckedAt() Group by the checked_at column
  * @method PUNotificationQuery groupByCreatedAt() Group by the created_at column
@@ -65,6 +67,7 @@ use Politizr\Model\PUser;
  * @method PUNotification findOneByPObjectName(string $p_object_name) Return the first PUNotification filtered by the p_object_name column
  * @method PUNotification findOneByPObjectId(int $p_object_id) Return the first PUNotification filtered by the p_object_id column
  * @method PUNotification findOneByPAuthorUserId(int $p_author_user_id) Return the first PUNotification filtered by the p_author_user_id column
+ * @method PUNotification findOneByDescription(string $description) Return the first PUNotification filtered by the description column
  * @method PUNotification findOneByChecked(boolean $checked) Return the first PUNotification filtered by the checked column
  * @method PUNotification findOneByCheckedAt(string $checked_at) Return the first PUNotification filtered by the checked_at column
  * @method PUNotification findOneByCreatedAt(string $created_at) Return the first PUNotification filtered by the created_at column
@@ -77,6 +80,7 @@ use Politizr\Model\PUser;
  * @method array findByPObjectName(string $p_object_name) Return PUNotification objects filtered by the p_object_name column
  * @method array findByPObjectId(int $p_object_id) Return PUNotification objects filtered by the p_object_id column
  * @method array findByPAuthorUserId(int $p_author_user_id) Return PUNotification objects filtered by the p_author_user_id column
+ * @method array findByDescription(string $description) Return PUNotification objects filtered by the description column
  * @method array findByChecked(boolean $checked) Return PUNotification objects filtered by the checked column
  * @method array findByCheckedAt(string $checked_at) Return PUNotification objects filtered by the checked_at column
  * @method array findByCreatedAt(string $created_at) Return PUNotification objects filtered by the created_at column
@@ -189,7 +193,7 @@ abstract class BasePUNotificationQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `p_notification_id`, `p_object_name`, `p_object_id`, `p_author_user_id`, `checked`, `checked_at`, `created_at`, `updated_at` FROM `p_u_notification` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `p_notification_id`, `p_object_name`, `p_object_id`, `p_author_user_id`, `description`, `checked`, `checked_at`, `created_at`, `updated_at` FROM `p_u_notification` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -548,6 +552,35 @@ abstract class BasePUNotificationQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PUNotificationPeer::P_AUTHOR_USER_ID, $pAuthorUserId, $comparison);
+    }
+
+    /**
+     * Filter the query on the description column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByDescription('fooValue');   // WHERE description = 'fooValue'
+     * $query->filterByDescription('%fooValue%'); // WHERE description LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $description The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUNotificationQuery The current query, for fluid interface
+     */
+    public function filterByDescription($description = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($description)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $description)) {
+                $description = str_replace('*', '%', $description);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PUNotificationPeer::DESCRIPTION, $description, $comparison);
     }
 
     /**

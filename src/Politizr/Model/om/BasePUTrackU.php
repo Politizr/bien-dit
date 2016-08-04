@@ -41,6 +41,12 @@ abstract class BasePUTrackU extends BaseObject implements Persistent
     protected $startCopy = false;
 
     /**
+     * The value for the id field.
+     * @var        int
+     */
+    protected $id;
+
+    /**
      * The value for the created_at field.
      * @var        string
      */
@@ -93,6 +99,17 @@ abstract class BasePUTrackU extends BaseObject implements Persistent
      * @var        boolean
      */
     protected $alreadyInClearAllReferencesDeep = false;
+
+    /**
+     * Get the [id] column value.
+     *
+     * @return int
+     */
+    public function getId()
+    {
+
+        return $this->id;
+    }
 
     /**
      * Get the [optionally formatted] temporal [created_at] column value.
@@ -195,6 +212,27 @@ abstract class BasePUTrackU extends BaseObject implements Persistent
 
         return $this->p_user_id_dest;
     }
+
+    /**
+     * Set the value of [id] column.
+     *
+     * @param  int $v new value
+     * @return PUTrackU The current object (for fluent API support)
+     */
+    public function setId($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->id !== $v) {
+            $this->id = $v;
+            $this->modifiedColumns[] = PUTrackUPeer::ID;
+        }
+
+
+        return $this;
+    } // setId()
 
     /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
@@ -324,10 +362,11 @@ abstract class BasePUTrackU extends BaseObject implements Persistent
     {
         try {
 
-            $this->created_at = ($row[$startcol + 0] !== null) ? (string) $row[$startcol + 0] : null;
-            $this->updated_at = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
-            $this->p_user_id_source = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
-            $this->p_user_id_dest = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
+            $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
+            $this->created_at = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
+            $this->updated_at = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
+            $this->p_user_id_source = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
+            $this->p_user_id_dest = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -337,7 +376,7 @@ abstract class BasePUTrackU extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 4; // 4 = PUTrackUPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 5; // 5 = PUTrackUPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PUTrackU object", $e);
@@ -581,8 +620,15 @@ abstract class BasePUTrackU extends BaseObject implements Persistent
         $modifiedColumns = array();
         $index = 0;
 
+        $this->modifiedColumns[] = PUTrackUPeer::ID;
+        if (null !== $this->id) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . PUTrackUPeer::ID . ')');
+        }
 
          // check the columns in natural order for more readable SQL queries
+        if ($this->isColumnModified(PUTrackUPeer::ID)) {
+            $modifiedColumns[':p' . $index++]  = '`id`';
+        }
         if ($this->isColumnModified(PUTrackUPeer::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`created_at`';
         }
@@ -606,6 +652,9 @@ abstract class BasePUTrackU extends BaseObject implements Persistent
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
+                    case '`id`':
+                        $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
+                        break;
                     case '`created_at`':
                         $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
                         break;
@@ -625,6 +674,13 @@ abstract class BasePUTrackU extends BaseObject implements Persistent
             Propel::log($e->getMessage(), Propel::LOG_ERR);
             throw new PropelException(sprintf('Unable to execute INSERT statement [%s]', $sql), $e);
         }
+
+        try {
+            $pk = $con->lastInsertId();
+        } catch (Exception $e) {
+            throw new PropelException('Unable to get autoincrement id.', $e);
+        }
+        $this->setId($pk);
 
         $this->setNew(false);
     }
@@ -672,15 +728,18 @@ abstract class BasePUTrackU extends BaseObject implements Persistent
     {
         switch ($pos) {
             case 0:
-                return $this->getCreatedAt();
+                return $this->getId();
                 break;
             case 1:
-                return $this->getUpdatedAt();
+                return $this->getCreatedAt();
                 break;
             case 2:
-                return $this->getPUserIdSource();
+                return $this->getUpdatedAt();
                 break;
             case 3:
+                return $this->getPUserIdSource();
+                break;
+            case 4:
                 return $this->getPUserIdDest();
                 break;
             default:
@@ -712,10 +771,11 @@ abstract class BasePUTrackU extends BaseObject implements Persistent
         $alreadyDumpedObjects['PUTrackU'][serialize($this->getPrimaryKey())] = true;
         $keys = PUTrackUPeer::getFieldNames($keyType);
         $result = array(
-            $keys[0] => $this->getCreatedAt(),
-            $keys[1] => $this->getUpdatedAt(),
-            $keys[2] => $this->getPUserIdSource(),
-            $keys[3] => $this->getPUserIdDest(),
+            $keys[0] => $this->getId(),
+            $keys[1] => $this->getCreatedAt(),
+            $keys[2] => $this->getUpdatedAt(),
+            $keys[3] => $this->getPUserIdSource(),
+            $keys[4] => $this->getPUserIdDest(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -764,15 +824,18 @@ abstract class BasePUTrackU extends BaseObject implements Persistent
     {
         switch ($pos) {
             case 0:
-                $this->setCreatedAt($value);
+                $this->setId($value);
                 break;
             case 1:
-                $this->setUpdatedAt($value);
+                $this->setCreatedAt($value);
                 break;
             case 2:
-                $this->setPUserIdSource($value);
+                $this->setUpdatedAt($value);
                 break;
             case 3:
+                $this->setPUserIdSource($value);
+                break;
+            case 4:
                 $this->setPUserIdDest($value);
                 break;
         } // switch()
@@ -799,10 +862,11 @@ abstract class BasePUTrackU extends BaseObject implements Persistent
     {
         $keys = PUTrackUPeer::getFieldNames($keyType);
 
-        if (array_key_exists($keys[0], $arr)) $this->setCreatedAt($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setUpdatedAt($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setPUserIdSource($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setPUserIdDest($arr[$keys[3]]);
+        if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
+        if (array_key_exists($keys[1], $arr)) $this->setCreatedAt($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setUpdatedAt($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setPUserIdSource($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setPUserIdDest($arr[$keys[4]]);
     }
 
     /**
@@ -814,6 +878,7 @@ abstract class BasePUTrackU extends BaseObject implements Persistent
     {
         $criteria = new Criteria(PUTrackUPeer::DATABASE_NAME);
 
+        if ($this->isColumnModified(PUTrackUPeer::ID)) $criteria->add(PUTrackUPeer::ID, $this->id);
         if ($this->isColumnModified(PUTrackUPeer::CREATED_AT)) $criteria->add(PUTrackUPeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(PUTrackUPeer::UPDATED_AT)) $criteria->add(PUTrackUPeer::UPDATED_AT, $this->updated_at);
         if ($this->isColumnModified(PUTrackUPeer::P_USER_ID_SOURCE)) $criteria->add(PUTrackUPeer::P_USER_ID_SOURCE, $this->p_user_id_source);
@@ -833,6 +898,7 @@ abstract class BasePUTrackU extends BaseObject implements Persistent
     public function buildPkeyCriteria()
     {
         $criteria = new Criteria(PUTrackUPeer::DATABASE_NAME);
+        $criteria->add(PUTrackUPeer::ID, $this->id);
         $criteria->add(PUTrackUPeer::P_USER_ID_SOURCE, $this->p_user_id_source);
         $criteria->add(PUTrackUPeer::P_USER_ID_DEST, $this->p_user_id_dest);
 
@@ -847,8 +913,9 @@ abstract class BasePUTrackU extends BaseObject implements Persistent
     public function getPrimaryKey()
     {
         $pks = array();
-        $pks[0] = $this->getPUserIdSource();
-        $pks[1] = $this->getPUserIdDest();
+        $pks[0] = $this->getId();
+        $pks[1] = $this->getPUserIdSource();
+        $pks[2] = $this->getPUserIdDest();
 
         return $pks;
     }
@@ -861,8 +928,9 @@ abstract class BasePUTrackU extends BaseObject implements Persistent
      */
     public function setPrimaryKey($keys)
     {
-        $this->setPUserIdSource($keys[0]);
-        $this->setPUserIdDest($keys[1]);
+        $this->setId($keys[0]);
+        $this->setPUserIdSource($keys[1]);
+        $this->setPUserIdDest($keys[2]);
     }
 
     /**
@@ -872,7 +940,7 @@ abstract class BasePUTrackU extends BaseObject implements Persistent
     public function isPrimaryKeyNull()
     {
 
-        return (null === $this->getPUserIdSource()) && (null === $this->getPUserIdDest());
+        return (null === $this->getId()) && (null === $this->getPUserIdSource()) && (null === $this->getPUserIdDest());
     }
 
     /**
@@ -906,6 +974,7 @@ abstract class BasePUTrackU extends BaseObject implements Persistent
 
         if ($makeNew) {
             $copyObj->setNew(true);
+            $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
         }
     }
 
@@ -1058,6 +1127,7 @@ abstract class BasePUTrackU extends BaseObject implements Persistent
      */
     public function clear()
     {
+        $this->id = null;
         $this->created_at = null;
         $this->updated_at = null;
         $this->p_user_id_source = null;

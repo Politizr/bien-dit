@@ -178,6 +178,9 @@ class XhrConstants
     //                  XHR URL REWRITING (ADMIN)
     // ******************************************************** //
 
+    // DASHBOARD
+    const ADMIN_ROUTE_NOTIF_CREATE = 'admin/notification/create';
+
     // UPLOAD
     const ADMIN_ROUTE_UPLOAD_IMAGE = 'admin/upload/image';
     const ADMIN_ROUTE_DELETE_IMAGE = 'admin/delete/image';

@@ -85,6 +85,12 @@ abstract class BasePUNotification extends BaseObject implements Persistent
     protected $p_author_user_id;
 
     /**
+     * The value for the description field.
+     * @var        string
+     */
+    protected $description;
+
+    /**
      * The value for the checked field.
      * @var        boolean
      */
@@ -213,6 +219,17 @@ abstract class BasePUNotification extends BaseObject implements Persistent
     {
 
         return $this->p_author_user_id;
+    }
+
+    /**
+     * Get the [description] column value.
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+
+        return $this->description;
     }
 
     /**
@@ -502,6 +519,27 @@ abstract class BasePUNotification extends BaseObject implements Persistent
     } // setPAuthorUserId()
 
     /**
+     * Set the value of [description] column.
+     *
+     * @param  string $v new value
+     * @return PUNotification The current object (for fluent API support)
+     */
+    public function setDescription($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->description !== $v) {
+            $this->description = $v;
+            $this->modifiedColumns[] = PUNotificationPeer::DESCRIPTION;
+        }
+
+
+        return $this;
+    } // setDescription()
+
+    /**
      * Sets the value of the [checked] column.
      * Non-boolean arguments are converted using the following rules:
      *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
@@ -638,10 +676,11 @@ abstract class BasePUNotification extends BaseObject implements Persistent
             $this->p_object_name = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
             $this->p_object_id = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
             $this->p_author_user_id = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
-            $this->checked = ($row[$startcol + 7] !== null) ? (boolean) $row[$startcol + 7] : null;
-            $this->checked_at = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
-            $this->created_at = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
-            $this->updated_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+            $this->description = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+            $this->checked = ($row[$startcol + 8] !== null) ? (boolean) $row[$startcol + 8] : null;
+            $this->checked_at = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+            $this->created_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+            $this->updated_at = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -651,7 +690,7 @@ abstract class BasePUNotification extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 11; // 11 = PUNotificationPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 12; // 12 = PUNotificationPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PUNotification object", $e);
@@ -922,6 +961,9 @@ abstract class BasePUNotification extends BaseObject implements Persistent
         if ($this->isColumnModified(PUNotificationPeer::P_AUTHOR_USER_ID)) {
             $modifiedColumns[':p' . $index++]  = '`p_author_user_id`';
         }
+        if ($this->isColumnModified(PUNotificationPeer::DESCRIPTION)) {
+            $modifiedColumns[':p' . $index++]  = '`description`';
+        }
         if ($this->isColumnModified(PUNotificationPeer::CHECKED)) {
             $modifiedColumns[':p' . $index++]  = '`checked`';
         }
@@ -965,6 +1007,9 @@ abstract class BasePUNotification extends BaseObject implements Persistent
                         break;
                     case '`p_author_user_id`':
                         $stmt->bindValue($identifier, $this->p_author_user_id, PDO::PARAM_INT);
+                        break;
+                    case '`description`':
+                        $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
                         break;
                     case '`checked`':
                         $stmt->bindValue($identifier, (int) $this->checked, PDO::PARAM_INT);
@@ -1060,15 +1105,18 @@ abstract class BasePUNotification extends BaseObject implements Persistent
                 return $this->getPAuthorUserId();
                 break;
             case 7:
-                return $this->getChecked();
+                return $this->getDescription();
                 break;
             case 8:
-                return $this->getCheckedAt();
+                return $this->getChecked();
                 break;
             case 9:
-                return $this->getCreatedAt();
+                return $this->getCheckedAt();
                 break;
             case 10:
+                return $this->getCreatedAt();
+                break;
+            case 11:
                 return $this->getUpdatedAt();
                 break;
             default:
@@ -1107,10 +1155,11 @@ abstract class BasePUNotification extends BaseObject implements Persistent
             $keys[4] => $this->getPObjectName(),
             $keys[5] => $this->getPObjectId(),
             $keys[6] => $this->getPAuthorUserId(),
-            $keys[7] => $this->getChecked(),
-            $keys[8] => $this->getCheckedAt(),
-            $keys[9] => $this->getCreatedAt(),
-            $keys[10] => $this->getUpdatedAt(),
+            $keys[7] => $this->getDescription(),
+            $keys[8] => $this->getChecked(),
+            $keys[9] => $this->getCheckedAt(),
+            $keys[10] => $this->getCreatedAt(),
+            $keys[11] => $this->getUpdatedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1180,15 +1229,18 @@ abstract class BasePUNotification extends BaseObject implements Persistent
                 $this->setPAuthorUserId($value);
                 break;
             case 7:
-                $this->setChecked($value);
+                $this->setDescription($value);
                 break;
             case 8:
-                $this->setCheckedAt($value);
+                $this->setChecked($value);
                 break;
             case 9:
-                $this->setCreatedAt($value);
+                $this->setCheckedAt($value);
                 break;
             case 10:
+                $this->setCreatedAt($value);
+                break;
+            case 11:
                 $this->setUpdatedAt($value);
                 break;
         } // switch()
@@ -1222,10 +1274,11 @@ abstract class BasePUNotification extends BaseObject implements Persistent
         if (array_key_exists($keys[4], $arr)) $this->setPObjectName($arr[$keys[4]]);
         if (array_key_exists($keys[5], $arr)) $this->setPObjectId($arr[$keys[5]]);
         if (array_key_exists($keys[6], $arr)) $this->setPAuthorUserId($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setChecked($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setCheckedAt($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setCreatedAt($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setUpdatedAt($arr[$keys[10]]);
+        if (array_key_exists($keys[7], $arr)) $this->setDescription($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setChecked($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setCheckedAt($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setCreatedAt($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setUpdatedAt($arr[$keys[11]]);
     }
 
     /**
@@ -1244,6 +1297,7 @@ abstract class BasePUNotification extends BaseObject implements Persistent
         if ($this->isColumnModified(PUNotificationPeer::P_OBJECT_NAME)) $criteria->add(PUNotificationPeer::P_OBJECT_NAME, $this->p_object_name);
         if ($this->isColumnModified(PUNotificationPeer::P_OBJECT_ID)) $criteria->add(PUNotificationPeer::P_OBJECT_ID, $this->p_object_id);
         if ($this->isColumnModified(PUNotificationPeer::P_AUTHOR_USER_ID)) $criteria->add(PUNotificationPeer::P_AUTHOR_USER_ID, $this->p_author_user_id);
+        if ($this->isColumnModified(PUNotificationPeer::DESCRIPTION)) $criteria->add(PUNotificationPeer::DESCRIPTION, $this->description);
         if ($this->isColumnModified(PUNotificationPeer::CHECKED)) $criteria->add(PUNotificationPeer::CHECKED, $this->checked);
         if ($this->isColumnModified(PUNotificationPeer::CHECKED_AT)) $criteria->add(PUNotificationPeer::CHECKED_AT, $this->checked_at);
         if ($this->isColumnModified(PUNotificationPeer::CREATED_AT)) $criteria->add(PUNotificationPeer::CREATED_AT, $this->created_at);
@@ -1317,6 +1371,7 @@ abstract class BasePUNotification extends BaseObject implements Persistent
         $copyObj->setPObjectName($this->getPObjectName());
         $copyObj->setPObjectId($this->getPObjectId());
         $copyObj->setPAuthorUserId($this->getPAuthorUserId());
+        $copyObj->setDescription($this->getDescription());
         $copyObj->setChecked($this->getChecked());
         $copyObj->setCheckedAt($this->getCheckedAt());
         $copyObj->setCreatedAt($this->getCreatedAt());
@@ -1495,6 +1550,7 @@ abstract class BasePUNotification extends BaseObject implements Persistent
         $this->p_object_name = null;
         $this->p_object_id = null;
         $this->p_author_user_id = null;
+        $this->description = null;
         $this->checked = null;
         $this->checked_at = null;
         $this->created_at = null;

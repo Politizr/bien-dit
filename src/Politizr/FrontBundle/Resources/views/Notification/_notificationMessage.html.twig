@@ -82,5 +82,9 @@
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_S_T_DOCUMENT')
 %}
     {% include 'PolitizrFrontBundle:Notification\\'~twigFolder~':_msgSTDocument.'~twigExt~'.twig' %}
+{% elseif
+    notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_ADM_MESSAGE')
+%}
+    {% include 'PolitizrFrontBundle:Notification\\'~twigFolder~':_msgAdmMessage.'~twigExt~'.twig' %}
 {% endif %}
 {% endspaceless %}

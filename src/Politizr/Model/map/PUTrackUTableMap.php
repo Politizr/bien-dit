@@ -40,8 +40,9 @@ class PUTrackUTableMap extends TableMap
         $this->setPhpName('PUTrackU');
         $this->setClassname('Politizr\\Model\\PUTrackU');
         $this->setPackage('src.Politizr.Model');
-        $this->setUseIdGenerator(false);
+        $this->setUseIdGenerator(true);
         // columns
+        $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
         $this->addForeignPrimaryKey('p_user_id_source', 'PUserIdSource', 'INTEGER' , 'p_user', 'id', true, null, null);

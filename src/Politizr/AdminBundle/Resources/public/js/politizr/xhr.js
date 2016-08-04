@@ -9,6 +9,10 @@ var RETURN_URL = 3;
 //                  XHR URL REWRITING (ADMIN)
 // ******************************************************** //
 
+// DASHBOARD
+var ADMIN_ROUTE_NOTIF_CREATE = 'admin/notification/create';
+
+
 // UPLOAD
 var ADMIN_ROUTE_UPLOAD_IMAGE = 'admin/upload/image';
 var ADMIN_ROUTE_DELETE_IMAGE = 'admin/delete/image';
@@ -42,7 +46,7 @@ var ADMIN_ROUTE_USER_VALIDATE_PHOTO_UPLOAD = 'admin/validation/photo-id-upload';
 
 
 // Generic function to make an AJAX call
-var xhrCall = function(context, data, url, localLoader) {
+var xhrCall = function(context, data, url) {
     // Return the $.ajax promise
     return $.ajax({
         type: 'POST',

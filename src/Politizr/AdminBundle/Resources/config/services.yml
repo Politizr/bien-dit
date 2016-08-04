@@ -43,6 +43,16 @@ services:
             - @politizr.tools.global
             - @logger
 
+    politizr.xhr.dashboard:
+        class: Politizr\AdminBundle\Lib\Xhr\XhrDashboard
+        arguments:
+            - @kernel
+            - @event_dispatcher
+            - @templating
+            - @form.factory
+            - @politizr.tools.global
+            - @logger
+
 
     # EXTENSIONS TWIG
     politzr_admin.twig.generic:

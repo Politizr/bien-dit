@@ -31,13 +31,16 @@ abstract class BasePUTrackUPeer
     const TM_CLASS = 'Politizr\\Model\\map\\PUTrackUTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 4;
+    const NUM_COLUMNS = 5;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 4;
+    const NUM_HYDRATE_COLUMNS = 5;
+
+    /** the column name for the id field */
+    const ID = 'p_u_track_u.id';
 
     /** the column name for the created_at field */
     const CREATED_AT = 'p_u_track_u.created_at';
@@ -70,12 +73,12 @@ abstract class BasePUTrackUPeer
      * e.g. PUTrackUPeer::$fieldNames[PUTrackUPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('CreatedAt', 'UpdatedAt', 'PUserIdSource', 'PUserIdDest', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('createdAt', 'updatedAt', 'pUserIdSource', 'pUserIdDest', ),
-        BasePeer::TYPE_COLNAME => array (PUTrackUPeer::CREATED_AT, PUTrackUPeer::UPDATED_AT, PUTrackUPeer::P_USER_ID_SOURCE, PUTrackUPeer::P_USER_ID_DEST, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('CREATED_AT', 'UPDATED_AT', 'P_USER_ID_SOURCE', 'P_USER_ID_DEST', ),
-        BasePeer::TYPE_FIELDNAME => array ('created_at', 'updated_at', 'p_user_id_source', 'p_user_id_dest', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'CreatedAt', 'UpdatedAt', 'PUserIdSource', 'PUserIdDest', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'createdAt', 'updatedAt', 'pUserIdSource', 'pUserIdDest', ),
+        BasePeer::TYPE_COLNAME => array (PUTrackUPeer::ID, PUTrackUPeer::CREATED_AT, PUTrackUPeer::UPDATED_AT, PUTrackUPeer::P_USER_ID_SOURCE, PUTrackUPeer::P_USER_ID_DEST, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'CREATED_AT', 'UPDATED_AT', 'P_USER_ID_SOURCE', 'P_USER_ID_DEST', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'created_at', 'updated_at', 'p_user_id_source', 'p_user_id_dest', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
     );
 
     /**
@@ -85,12 +88,12 @@ abstract class BasePUTrackUPeer
      * e.g. PUTrackUPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('CreatedAt' => 0, 'UpdatedAt' => 1, 'PUserIdSource' => 2, 'PUserIdDest' => 3, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('createdAt' => 0, 'updatedAt' => 1, 'pUserIdSource' => 2, 'pUserIdDest' => 3, ),
-        BasePeer::TYPE_COLNAME => array (PUTrackUPeer::CREATED_AT => 0, PUTrackUPeer::UPDATED_AT => 1, PUTrackUPeer::P_USER_ID_SOURCE => 2, PUTrackUPeer::P_USER_ID_DEST => 3, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('CREATED_AT' => 0, 'UPDATED_AT' => 1, 'P_USER_ID_SOURCE' => 2, 'P_USER_ID_DEST' => 3, ),
-        BasePeer::TYPE_FIELDNAME => array ('created_at' => 0, 'updated_at' => 1, 'p_user_id_source' => 2, 'p_user_id_dest' => 3, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'CreatedAt' => 1, 'UpdatedAt' => 2, 'PUserIdSource' => 3, 'PUserIdDest' => 4, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'createdAt' => 1, 'updatedAt' => 2, 'pUserIdSource' => 3, 'pUserIdDest' => 4, ),
+        BasePeer::TYPE_COLNAME => array (PUTrackUPeer::ID => 0, PUTrackUPeer::CREATED_AT => 1, PUTrackUPeer::UPDATED_AT => 2, PUTrackUPeer::P_USER_ID_SOURCE => 3, PUTrackUPeer::P_USER_ID_DEST => 4, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'CREATED_AT' => 1, 'UPDATED_AT' => 2, 'P_USER_ID_SOURCE' => 3, 'P_USER_ID_DEST' => 4, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'created_at' => 1, 'updated_at' => 2, 'p_user_id_source' => 3, 'p_user_id_dest' => 4, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
     );
 
     /**
@@ -164,11 +167,13 @@ abstract class BasePUTrackUPeer
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
+            $criteria->addSelectColumn(PUTrackUPeer::ID);
             $criteria->addSelectColumn(PUTrackUPeer::CREATED_AT);
             $criteria->addSelectColumn(PUTrackUPeer::UPDATED_AT);
             $criteria->addSelectColumn(PUTrackUPeer::P_USER_ID_SOURCE);
             $criteria->addSelectColumn(PUTrackUPeer::P_USER_ID_DEST);
         } else {
+            $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
             $criteria->addSelectColumn($alias . '.p_user_id_source');
@@ -299,7 +304,7 @@ abstract class BasePUTrackUPeer
     {
         if (Propel::isInstancePoolingEnabled()) {
             if ($key === null) {
-                $key = serialize(array((string) $obj->getPUserIdSource(), (string) $obj->getPUserIdDest()));
+                $key = serialize(array((string) $obj->getId(), (string) $obj->getPUserIdSource(), (string) $obj->getPUserIdDest()));
             } // if key === null
             PUTrackUPeer::$instances[$key] = $obj;
         }
@@ -322,10 +327,10 @@ abstract class BasePUTrackUPeer
     {
         if (Propel::isInstancePoolingEnabled() && $value !== null) {
             if (is_object($value) && $value instanceof PUTrackU) {
-                $key = serialize(array((string) $value->getPUserIdSource(), (string) $value->getPUserIdDest()));
-            } elseif (is_array($value) && count($value) === 2) {
+                $key = serialize(array((string) $value->getId(), (string) $value->getPUserIdSource(), (string) $value->getPUserIdDest()));
+            } elseif (is_array($value) && count($value) === 3) {
                 // assume we've been passed a primary key
-                $key = serialize(array((string) $value[0], (string) $value[1]));
+                $key = serialize(array((string) $value[0], (string) $value[1], (string) $value[2]));
             } else {
                 $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or PUTrackU object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
                 throw $e;
@@ -392,11 +397,11 @@ abstract class BasePUTrackUPeer
     public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
     {
         // If the PK cannot be derived from the row, return null.
-        if ($row[$startcol + 2] === null && $row[$startcol + 3] === null) {
+        if ($row[$startcol] === null && $row[$startcol + 3] === null && $row[$startcol + 4] === null) {
             return null;
         }
 
-        return serialize(array((string) $row[$startcol + 2], (string) $row[$startcol + 3]));
+        return serialize(array((string) $row[$startcol], (string) $row[$startcol + 3], (string) $row[$startcol + 4]));
     }
 
     /**
@@ -411,7 +416,7 @@ abstract class BasePUTrackUPeer
     public static function getPrimaryKeyFromRow($row, $startcol = 0)
     {
 
-        return array((int) $row[$startcol + 2], (int) $row[$startcol + 3]);
+        return array((int) $row[$startcol], (int) $row[$startcol + 3], (int) $row[$startcol + 4]);
     }
 
     /**
@@ -1107,6 +1112,10 @@ abstract class BasePUTrackUPeer
             $criteria = $values->buildCriteria(); // build Criteria from PUTrackU object
         }
 
+        if ($criteria->containsKey(PUTrackUPeer::ID) && $criteria->keyContainsValue(PUTrackUPeer::ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.PUTrackUPeer::ID.')');
+        }
+
 
         // Set the correct dbName
         $criteria->setDbName(PUTrackUPeer::DATABASE_NAME);
@@ -1144,6 +1153,14 @@ abstract class BasePUTrackUPeer
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
+
+            $comparison = $criteria->getComparison(PUTrackUPeer::ID);
+            $value = $criteria->remove(PUTrackUPeer::ID);
+            if ($value) {
+                $selectCriteria->add(PUTrackUPeer::ID, $value, $comparison);
+            } else {
+                $selectCriteria->setPrimaryTableName(PUTrackUPeer::TABLE_NAME);
+            }
 
             $comparison = $criteria->getComparison(PUTrackUPeer::P_USER_ID_SOURCE);
             $value = $criteria->remove(PUTrackUPeer::P_USER_ID_SOURCE);
@@ -1242,8 +1259,9 @@ abstract class BasePUTrackUPeer
                 $values = array($values);
             }
             foreach ($values as $value) {
-                $criterion = $criteria->getNewCriterion(PUTrackUPeer::P_USER_ID_SOURCE, $value[0]);
-                $criterion->addAnd($criteria->getNewCriterion(PUTrackUPeer::P_USER_ID_DEST, $value[1]));
+                $criterion = $criteria->getNewCriterion(PUTrackUPeer::ID, $value[0]);
+                $criterion->addAnd($criteria->getNewCriterion(PUTrackUPeer::P_USER_ID_SOURCE, $value[1]));
+                $criterion->addAnd($criteria->getNewCriterion(PUTrackUPeer::P_USER_ID_DEST, $value[2]));
                 $criteria->addOr($criterion);
                 // we can invalidate the cache for this single PK
                 PUTrackUPeer::removeInstanceFromPool($value);
@@ -1310,13 +1328,14 @@ abstract class BasePUTrackUPeer
 
     /**
      * Retrieve object using using composite pkey values.
+     * @param   int $id
      * @param   int $p_user_id_source
      * @param   int $p_user_id_dest
      * @param      PropelPDO $con
      * @return PUTrackU
      */
-    public static function retrieveByPK($p_user_id_source, $p_user_id_dest, PropelPDO $con = null) {
-        $_instancePoolKey = serialize(array((string) $p_user_id_source, (string) $p_user_id_dest));
+    public static function retrieveByPK($id, $p_user_id_source, $p_user_id_dest, PropelPDO $con = null) {
+        $_instancePoolKey = serialize(array((string) $id, (string) $p_user_id_source, (string) $p_user_id_dest));
          if (null !== ($obj = PUTrackUPeer::getInstanceFromPool($_instancePoolKey))) {
              return $obj;
         }
@@ -1325,6 +1344,7 @@ abstract class BasePUTrackUPeer
             $con = Propel::getConnection(PUTrackUPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
         $criteria = new Criteria(PUTrackUPeer::DATABASE_NAME);
+        $criteria->add(PUTrackUPeer::ID, $id);
         $criteria->add(PUTrackUPeer::P_USER_ID_SOURCE, $p_user_id_source);
         $criteria->add(PUTrackUPeer::P_USER_ID_DEST, $p_user_id_dest);
         $v = PUTrackUPeer::doSelect($criteria, $con);

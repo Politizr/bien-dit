@@ -2,10 +2,10 @@
 
 /**
  * Data object containing the SQL and PHP code to migrate the database
- * up to version 1470208983.
- * Generated on 2016-08-03 09:23:03 by lionel
+ * up to version 1470229071.
+ * Generated on 2016-08-03 14:57:51 by lionel
  */
-class PropelMigration_1470208983
+class PropelMigration_1470229071
 {
 
     public function preUp($manager)
@@ -42,25 +42,8 @@ class PropelMigration_1470208983
 # It "suspends judgement" for fkey relationships until are tables are set.
 SET FOREIGN_KEY_CHECKS = 0;
 
-CREATE TABLE `p_u_track_u`
-(
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `created_at` DATETIME,
-    `updated_at` DATETIME,
-    `p_user_id_source` INTEGER NOT NULL,
-    `p_user_id_dest` INTEGER NOT NULL,
-    PRIMARY KEY (`id`,`p_user_id_source`,`p_user_id_dest`),
-    INDEX `FI_ser_id_source` (`p_user_id_source`),
-    INDEX `FI_ser_id_dest` (`p_user_id_dest`),
-    CONSTRAINT `p_user_id_source`
-        FOREIGN KEY (`p_user_id_source`)
-        REFERENCES `p_user` (`id`)
-        ON DELETE CASCADE,
-    CONSTRAINT `p_user_id_dest`
-        FOREIGN KEY (`p_user_id_dest`)
-        REFERENCES `p_user` (`id`)
-        ON DELETE CASCADE
-) ENGINE=InnoDB;
+ALTER TABLE `p_u_notification`
+    ADD `description` TEXT AFTER `p_author_user_id`;
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;
@@ -82,8 +65,6 @@ SET FOREIGN_KEY_CHECKS = 1;
 # It "suspends judgement" for fkey relationships until are tables are set.
 SET FOREIGN_KEY_CHECKS = 0;
 
-DROP TABLE IF EXISTS `p_u_track_u`;
-
 DROP TABLE IF EXISTS `acl_classes`;
 
 DROP TABLE IF EXISTS `acl_security_identities`;
@@ -95,6 +76,8 @@ DROP TABLE IF EXISTS `acl_object_identity_ancestors`;
 DROP TABLE IF EXISTS `acl_entries`;
 
 ALTER TABLE `p_r_badge` DROP FOREIGN KEY `p_r_badge_FK_2`;
+
+ALTER TABLE `p_u_notification` DROP `description`;
 
 ALTER TABLE `p_user_archive` CHANGE `salt` `salt` VARCHAR(255) NOT NULL;
 

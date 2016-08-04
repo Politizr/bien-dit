@@ -26,8 +26,6 @@
     
     <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/jquery-ui.autocomplete.min.js') }}"></script>
 
-    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/global.js') }}"></script>
-
     <!-- XHR routing -->
     <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/xhr.js') }}"></script>
     <script type="text/javascript">
@@ -82,3 +80,7 @@
         {% endembed %}
     </aside>
 {% endblock sidebar %}
+
+{% block javascripts %}
+    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/global.js') }}"></script>
+{% endblock javascripts %}

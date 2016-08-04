@@ -1,0 +1,7 @@
+{% if lastPUNotif %}
+    <p><em>Dernière notification générée le {{ lastPUNotif.createdAt | date('d/m/Y H:i:s') }}</em></p>
+    <label class="title">Message</label>
+    <p>
+        {{ lastPUNotif.description | raw }}
+    </p>
+{% endif %}

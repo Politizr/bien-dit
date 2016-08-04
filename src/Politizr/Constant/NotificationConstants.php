@@ -60,4 +60,9 @@ class NotificationConstants
 
     const ID_S_T_USER = 17;
     const ID_S_T_DOCUMENT = 18;
+
+    // ******************************************************** //
+    //                        ADMIN                             //
+    // ******************************************************** //
+    const ID_ADM_MESSAGE = 19;
 }

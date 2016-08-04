@@ -77,3 +77,41 @@ $("body").on("click", "[action='bannedEmail']", function(e) {
     });
 
 });
+
+
+/**
+ * admin notification
+ */
+function createAdminNotification()
+{
+    console.log('*** createAdminNotification');
+
+    var xhrPath = getXhrPath(
+        ADMIN_ROUTE_NOTIF_CREATE,
+        'dashboard',
+        'adminNotif',
+        RETURN_HTML
+    );
+
+    return xhrCall(
+        document,
+        $("#formNotification").serialize(),
+        xhrPath
+    ).done(function(data) {
+        $('#ajaxGlobalLoader').hide();
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
+            $('#infoBoxHolder .boxSuccess .notifBoxText').html('Notif envoyée.');
+            $('#infoBoxHolder .boxSuccess').show();
+
+            // reset form
+            $('#formNotification')[0].reset();
+
+            // upd last notif
+            $('#notificationsAdminHistory').html(data['notifLast']);
+        }
+    });
+}
+
