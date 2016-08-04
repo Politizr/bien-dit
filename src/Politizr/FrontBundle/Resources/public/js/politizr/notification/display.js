@@ -32,6 +32,8 @@ function notificationsLoading(){
 
             // MAJ listing des notifs
             $('#notifBox').html(data['html']);
+
+            fullImgLiquid();
         }
     });
 }
