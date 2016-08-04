@@ -82,5 +82,6 @@
 {% endblock sidebar %}
 
 {% block javascripts %}
+    {{ parent() }}
     <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/global.js') }}"></script>
 {% endblock javascripts %}
