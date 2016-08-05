@@ -19,6 +19,8 @@ use Politizr\Model\PDDebate;
 use Politizr\Model\PDReaction;
 use Politizr\Model\PDDComment;
 use Politizr\Model\PDRComment;
+use Politizr\Model\PUBookmarkDD;
+use Politizr\Model\PUBookmarkDR;
 
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
@@ -27,6 +29,8 @@ use Politizr\Model\PDRCommentQuery;
 use Politizr\Model\PTagQuery;
 use Politizr\Model\PQOrganizationQuery;
 use Politizr\Model\PUserQuery;
+use Politizr\Model\PUBookmarkDDQuery;
+use Politizr\Model\PUBookmarkDRQuery;
 
 use Politizr\FrontBundle\Form\Type\PDDCommentType;
 use Politizr\FrontBundle\Form\Type\PDRCommentType;
@@ -800,7 +804,7 @@ class XhrDocument
     }
 
     /* ######################################################################################################## */
-    /*                                                  DRAFTS                                                  */
+    /*                                            DRAFTS & BOOKMARKS                                            */
     /* ######################################################################################################## */
 
     /**
@@ -839,6 +843,51 @@ class XhrDocument
                     'offset' => intval($offset) + ListingConstants::LISTING_CLASSIC_PAGINATION,
                     'moreResults' => $moreResults,
                     'jsFunctionKey' => XhrConstants::JS_KEY_LISTING_DOCUMENTS_BY_USER_DRAFTS
+                )
+            );
+        }
+
+        return array(
+            'html' => $html,
+        );
+    }
+
+    /**
+     * User's bookmarks
+     * beta
+     */
+    public function myBookmarksPaginated(Request $request)
+    {
+        // $this->logger->info('*** myBookmarksPaginated');
+
+        // Request arguments
+        $offset = $request->get('offset');
+        // $this->logger->info('$offset = ' . print_r($offset, true));
+
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+
+        // get drafts
+        $documents = $this->documentService->getMyBookmarksPaginatedListing($user->getId(), $offset, ListingConstants::LISTING_CLASSIC_PAGINATION);
+
+        // @todo create function for code above
+        $moreResults = false;
+        if (sizeof($documents) == ListingConstants::LISTING_CLASSIC_PAGINATION) {
+            $moreResults = true;
+        }
+
+        if ($offset == 0 && count($documents) == 0) {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_noResult.html.twig'
+            );
+        } else {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_documents.html.twig',
+                array(
+                    'documents' => $documents,
+                    'offset' => intval($offset) + ListingConstants::LISTING_CLASSIC_PAGINATION,
+                    'moreResults' => $moreResults,
+                    'jsFunctionKey' => XhrConstants::JS_KEY_LISTING_DOCUMENTS_BY_USER_BOOKMARKS
                 )
             );
         }
@@ -1304,4 +1353,80 @@ class XhrDocument
             'html' => $html,
         );
     }
+
+    /* ######################################################################################################## */
+    /*                                          DETAIL                                                          */
+    /* ######################################################################################################## */
+
+    /**
+     * Bookmark/Unbookmark debate / reaction
+     * code beta
+     */
+    public function bookmark(Request $request)
+    {
+        // $this->logger->info('*** bookmark');
+        
+        // Request arguments
+        $uuid = $request->get('uuid');
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
+        $type = $request->get('type');
+        // $this->logger->info('$type = ' . print_r($type, true));
+
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+
+        if ($type == ObjectTypeConstants::TYPE_DEBATE) {
+            $document = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
+
+            $query = PUBookmarkDDQuery::create()
+                ->filterByPDDebateId($document->getId())
+                ->filterByPUserId($user->getId());
+
+            $puBookmark = $query->findOne();
+            if ($puBookmark) {
+                // un-bookmark
+                $query->filterByPUserId($user->getId())->delete();
+            } else {
+                // bookmark
+                $bookmark = new PUBookmarkDD();
+                $bookmark->setPUserId($user->getId());
+                $bookmark->setPDDebateId($document->getId());
+
+                $bookmark->save();
+            }
+        } elseif ($type == ObjectTypeConstants::TYPE_REACTION) {
+            $document = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
+
+            $query = PUBookmarkDRQuery::create()
+                ->filterByPDReactionId($document->getId())
+                ->filterByPUserId($user->getId());
+            
+            $puBookmark = $query->findOne();
+            if ($puBookmark) {
+                // un-bookmark
+                $query->filterByPUserId($user->getId())->delete();
+            } else {
+                // bookmark
+                $bookmark = new PUBookmarkDR();
+                $bookmark->setPUserId($user->getId());
+                $bookmark->setPDReactionId($document->getId());
+
+                $bookmark->save();
+            }
+        } else {
+            throw new InconsistentDataException(sprintf('Object type %s not managed', $document->getType()));
+        }
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Document:_bookmarkBox.html.twig',
+            array(
+                'document' => $document,
+            )
+        );
+
+        return array(
+            'html' => $html,
+        );
+    }
+
 }

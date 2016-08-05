@@ -21,6 +21,31 @@ WHERE
 
 ORDER BY published_at DESC
 
+# BOOKMARKS
+#  Débats
+( SELECT p_d_debate.id as id, p_d_debate.title as title, p_d_debate.file_name as fileName, p_d_debate.published_at as published_at, 'Politizr\\Model\\PDDebate' as type, p_u_bookmark_d_d.created_at as bookmarked_at
+FROM p_d_debate
+INNER JOIN p_u_bookmark_d_d ON p_u_bookmark_d_d.p_d_debate_id = p_d_debate.id
+WHERE
+    p_u_bookmark_d_d.p_user_id = 3
+    AND p_d_debate.published = 1
+    AND p_d_debate.online = 1
+)
+
+UNION DISTINCT
+
+#  Réactions
+( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.file_name as fileName, p_d_reaction.published_at as published_at, 'Politizr\\Model\\PDReaction' as type, p_u_bookmark_d_r.created_at as bookmarked_at
+FROM p_d_reaction
+INNER JOIN p_u_bookmark_d_r ON p_u_bookmark_d_r.p_d_reaction_id = p_d_reaction.id
+WHERE
+    p_u_bookmark_d_r.p_user_id = 3
+    AND p_d_reaction.published = 1
+    AND p_d_reaction.online = 1
+)
+
+ORDER BY bookmarked_at DESC
+
 # USER PUBLICATIONS
 # Réactions
 ( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.file_name as fileName, p_d_reaction.description as description, p_d_reaction.slug as slug, p_d_reaction.published_at as published_at, p_d_reaction.updated_at as updated_at, p_d_reaction.note_pos as note_pos, p_d_reaction.note_neg as note_neg, 'Politizr\\\Model\\\PDReaction' as type

@@ -83,9 +83,9 @@ class DocumentController extends Controller
      */
     public function debateDetailAction($slug)
     {
-        $logger = $this->get('logger');
-        $logger->info('*** debateDetailAction');
-        $logger->info('$slug = '.print_r($slug, true));
+        // $logger = $this->get('logger');
+        // $logger->info('*** debateDetailAction');
+        // $logger->info('$slug = '.print_r($slug, true));
 
         $debate = PDDebateQuery::create()->filterBySlug($slug)->findOne();
         $this->checkDocument($debate);
@@ -140,9 +140,9 @@ class DocumentController extends Controller
      */
     public function reactionDetailAction($slug)
     {
-        $logger = $this->get('logger');
-        $logger->info('*** reactionDetailAction');
-        $logger->info('$slug = '.print_r($slug, true));
+        // $logger = $this->get('logger');
+        // $logger->info('*** reactionDetailAction');
+        // $logger->info('$slug = '.print_r($slug, true));
 
         $reaction = PDReactionQuery::create()->filterBySlug($slug)->findOne();
         $this->checkDocument($reaction);
@@ -241,8 +241,8 @@ class DocumentController extends Controller
      */
     public function debateNewAction()
     {
-        $logger = $this->get('logger');
-        $logger->info('*** debateNewAction');
+        // $logger = $this->get('logger');
+        // $logger->info('*** debateNewAction');
 
         $user = $this->getUser();
         if (!$user) {
@@ -272,9 +272,9 @@ class DocumentController extends Controller
      */
     public function debateEditAction($uuid)
     {
-        $logger = $this->get('logger');
-        $logger->info('*** debateEditAction');
-        $logger->info('$uuid = '.print_r($uuid, true));
+        // $logger = $this->get('logger');
+        // $logger->info('*** debateEditAction');
+        // $logger->info('$uuid = '.print_r($uuid, true));
 
         $user = $this->getUser();
 
@@ -300,8 +300,8 @@ class DocumentController extends Controller
      */
     public function reactionNewAction($debateUuid, $parentUuid)
     {
-        $logger = $this->get('logger');
-        $logger->info('*** reactionNewAction');
+        // $logger = $this->get('logger');
+        // $logger->info('*** reactionNewAction');
 
         $user = $this->getUser();
         if (!$user) {
@@ -351,9 +351,9 @@ class DocumentController extends Controller
      */
     public function reactionEditAction($uuid)
     {
-        $logger = $this->get('logger');
-        $logger->info('*** reactionEditAction');
-        $logger->info('$uuid = '.print_r($uuid, true));
+        // $logger = $this->get('logger');
+        // $logger->info('*** reactionEditAction');
+        // $logger->info('$uuid = '.print_r($uuid, true));
 
         $user = $this->getUser();
 
@@ -383,7 +383,7 @@ class DocumentController extends Controller
     }
 
     /* ######################################################################################################## */
-    /*                                                  DRAFTS                                                  */
+    /*                                        DRAFTS & BOOKMARKS                                                */
     /* ######################################################################################################## */
 
     /**
@@ -392,10 +392,23 @@ class DocumentController extends Controller
      */
     public function draftsAction()
     {
-        $logger = $this->get('logger');
-        $logger->info('*** draftsAction');
+        // $logger = $this->get('logger');
+        // $logger->info('*** draftsAction');
 
         return $this->render('PolitizrFrontBundle:Document:drafts.html.twig', array(
+        ));
+    }
+
+    /**
+     * Bookmarks
+     * beta
+     */
+    public function bookmarksAction()
+    {
+        // $logger = $this->get('logger');
+        // $logger->info('*** bookmarksAction');
+
+        return $this->render('PolitizrFrontBundle:Document:bookmarks.html.twig', array(
         ));
     }
 }

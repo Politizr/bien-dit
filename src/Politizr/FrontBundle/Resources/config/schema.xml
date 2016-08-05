@@ -616,6 +616,40 @@
         </foreign-key>
     </table>
 
+
+    <table name="p_u_bookmark_d_d" isCrossRef="true">
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_user_id" type="integer" required="true" />
+        <column name="p_d_debate_id" type="integer" required="true" />
+
+        <foreign-key foreignTable="p_user" phpName="PuBookmarkDdPUser" refPhpName="PuBookmarkDdPUser" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_user_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="p_d_debate" phpName="PuBookmarkDdPDDebate" refPhpName="PuBookmarkDdPDDebate" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_d_debate_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+    <table name="p_u_bookmark_d_r" isCrossRef="true">
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_user_id" type="integer" required="true" />
+        <column name="p_d_reaction_id" type="integer" required="true" />
+
+        <foreign-key foreignTable="p_user" phpName="PuBookmarkDrPUser" refPhpName="PuBookmarkDrPUser" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_user_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="p_d_reaction" phpName="PuBookmarkDrPDReaction" refPhpName="PuBookmarkDrPDReaction" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_d_reaction_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+
     <table name="p_u_track_d_d" isCrossRef="true">
         <behavior name="timestampable" />
         <behavior name="query_cache" />

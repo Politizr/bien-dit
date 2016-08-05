@@ -1,0 +1,9 @@
+{% if app.user %}
+    {% if bookmarked %}
+        <a action="bookmark" uuid="{{ document.uuid }}" type="{{ type }}">Retirer cette publication de mes favoris</a>
+    {% else %}
+        <a action="bookmark" uuid="{{ document.uuid }}" type="{{ type }}">Ajouter cette publication à mes favoris</a>
+    {% endif %}
+{% else %}
+    <a href="{{ path('InscriptionChoice') }}">Ajouter cette publication à mes favoris</a>
+{% endif %}

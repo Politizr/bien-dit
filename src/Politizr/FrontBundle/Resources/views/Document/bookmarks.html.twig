@@ -1,0 +1,38 @@
+{# beta #}
+{% extends 'PolitizrFrontBundle::layoutConnected.html.twig' %}
+
+{% block title %}Mes favoris - {{ parent() }}{% endblock title %}
+
+{% block content %}
+    <div id="content">
+        <div class="list">
+            <div class="pageTitle">Mes favoris</div>
+            <div id="documentListing" class="withLoaderInside">
+                {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+                <div class="listTop"></div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block sidebarContent %}
+    {% if app.user %}
+        {% include 'PolitizrFrontBundle:Tag:_sidebarFollowedTags.html.twig' with {'uuid': app.user.uuid} only %}
+    {% endif %}
+    {% include 'PolitizrFrontBundle:Tag:_sidebarTopTags.html.twig' %}
+    {% include 'PolitizrFrontBundle:Document:_sidebarTopDocuments.html.twig' %}
+{% endblock sidebarContent %}
+
+{% block javascriptFooter %}
+    {{ parent() }}
+
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/timeline/timeline.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/tag/listing.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/document/listing.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/pages/bookmarks.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+{% endblock javascriptFooter %}

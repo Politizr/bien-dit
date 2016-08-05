@@ -7,6 +7,27 @@ $(function() {
     notificationsLoading();
 });
 
+
+
+
+// ******************************************************************* //
+//                            DOCUMENTS                                //
+// ******************************************************************* //
+
+// bookmark
+$("body").on("click", "[action='bookmark']", function(e) {
+    // console.log('*** click bookmark');
+    
+    var targetElement = $(this).closest('.bookmarkBox');
+    var localLoader = $(this).closest('.bookmarkBox').find('.ajaxLoader').first();
+    var uuid = $(this).attr('uuid');
+    var type = $(this).attr('type');
+
+    return bookmark(targetElement, localLoader, uuid, type);
+});
+
+
+
 // ******************************************************************* //
 //                            NOTIFICATIONS                            //
 // ******************************************************************* //

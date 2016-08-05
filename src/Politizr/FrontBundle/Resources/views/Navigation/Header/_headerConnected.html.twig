@@ -41,6 +41,7 @@
             <div id="menuArrow"><i class="icon-arrow-up"></i></div> 
             <div id="primaryMenu">
                 <a href="{{ path('Drafts'~profileSuffix()) }}">Mes brouillons</a>
+                <a href="{{ path('Bookmarks'~profileSuffix()) }}">Mes favoris</a>
                 <a href="{{ path('UserDetail', {'slug': app.user.slug}) }}">Mes publications</a>
                 <a href="{{ path('EditProfile'~profileSuffix())}}">Modifier mon profil</a>
             </div>

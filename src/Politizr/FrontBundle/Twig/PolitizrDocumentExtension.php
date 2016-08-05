@@ -18,6 +18,8 @@ use Politizr\Model\PDDCommentQuery;
 use Politizr\Model\PDRCommentQuery;
 use Politizr\Model\PUReputationQuery;
 use Politizr\Model\PUFollowDDQuery;
+use Politizr\Model\PUBookmarkDDQuery;
+use Politizr\Model\PUBookmarkDRQuery;
 
 use Politizr\FrontBundle\Lib\TimelineRow;
 use Politizr\FrontBundle\Lib\Publication;
@@ -179,6 +181,11 @@ class PolitizrDocumentExtension extends \Twig_Extension
             new \Twig_SimpleFilter(
                 'footer',
                 array($this, 'footer'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
+                'bookmark',
+                array($this, 'bookmark'),
                 array('is_safe' => array('html'))
             ),
         );
@@ -1005,7 +1012,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
     /**
      * Document footer explanations
      *
-     * @param PDDebate $debate
+     * @param PDocumentInterface $document
      * @return string
      */
     public function footer(PDocumentInterface $document)
@@ -1036,6 +1043,60 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 'document' => $document,
                 'qualified' => $qualified,
                 'owner' => $owner,
+            )
+        );
+
+        return $html;
+    }
+
+    /**
+     * User's document bookmark link
+     *
+     * @param PDocumentInterface $document
+     * @return string
+     */
+    public function bookmark(PDocumentInterface $document)
+    {
+        // $this->logger->info('*** bookmark');
+        // $this->logger->info('$document = '.print_r($document, true));
+
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        if (is_string($user)) {
+            $user = null;
+        }
+
+        $type = $document->getType();
+        $bookmarked = false;
+        if ($user) {
+            switch ($type) {
+                case ObjectTypeConstants::TYPE_DEBATE:
+                    $query = PUBookmarkDDQuery::create()
+                        ->filterByPDDebateId($document->getId())
+                        ;
+                    break;
+                case ObjectTypeConstants::TYPE_REACTION:
+                    $query = PUBookmarkDRQuery::create()
+                        ->filterByPDReactionId($document->getId())
+                        ;
+                    break;
+                default:
+                    throw new InconsistentDataException(sprintf('Object type %s not managed', $document->getType()));
+            }
+
+            $puBookmark = $query->filterByPUserId($user->getId())->findOne();
+            if ($puBookmark) {
+                $bookmarked = true;
+            }
+        }
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Document:_bookmark.html.twig',
+            array(
+                'document' => $document,
+                'type' => $type,
+                'bookmarked' => $bookmarked,
             )
         );
 

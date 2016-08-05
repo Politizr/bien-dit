@@ -37,6 +37,8 @@ use Politizr\Model\PRBadge;
 use Politizr\Model\PTag;
 use Politizr\Model\PUAffinityQO;
 use Politizr\Model\PUBadge;
+use Politizr\Model\PUBookmarkDD;
+use Politizr\Model\PUBookmarkDR;
 use Politizr\Model\PUCurrentQO;
 use Politizr\Model\PUFollowDD;
 use Politizr\Model\PUFollowU;
@@ -183,6 +185,14 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery leftJoinPuFollowDdPUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the PuFollowDdPUser relation
  * @method PUserQuery rightJoinPuFollowDdPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PuFollowDdPUser relation
  * @method PUserQuery innerJoinPuFollowDdPUser($relationAlias = null) Adds a INNER JOIN clause to the query using the PuFollowDdPUser relation
+ *
+ * @method PUserQuery leftJoinPuBookmarkDdPUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the PuBookmarkDdPUser relation
+ * @method PUserQuery rightJoinPuBookmarkDdPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PuBookmarkDdPUser relation
+ * @method PUserQuery innerJoinPuBookmarkDdPUser($relationAlias = null) Adds a INNER JOIN clause to the query using the PuBookmarkDdPUser relation
+ *
+ * @method PUserQuery leftJoinPuBookmarkDrPUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the PuBookmarkDrPUser relation
+ * @method PUserQuery rightJoinPuBookmarkDrPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PuBookmarkDrPUser relation
+ * @method PUserQuery innerJoinPuBookmarkDrPUser($relationAlias = null) Adds a INNER JOIN clause to the query using the PuBookmarkDrPUser relation
  *
  * @method PUserQuery leftJoinPuTrackDdPUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the PuTrackDdPUser relation
  * @method PUserQuery rightJoinPuTrackDdPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PuTrackDdPUser relation
@@ -2711,6 +2721,154 @@ abstract class BasePUserQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query by a related PUBookmarkDD object
+     *
+     * @param   PUBookmarkDD|PropelObjectCollection $pUBookmarkDD  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PUserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPuBookmarkDdPUser($pUBookmarkDD, $comparison = null)
+    {
+        if ($pUBookmarkDD instanceof PUBookmarkDD) {
+            return $this
+                ->addUsingAlias(PUserPeer::ID, $pUBookmarkDD->getPUserId(), $comparison);
+        } elseif ($pUBookmarkDD instanceof PropelObjectCollection) {
+            return $this
+                ->usePuBookmarkDdPUserQuery()
+                ->filterByPrimaryKeys($pUBookmarkDD->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPuBookmarkDdPUser() only accepts arguments of type PUBookmarkDD or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PuBookmarkDdPUser relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function joinPuBookmarkDdPUser($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PuBookmarkDdPUser');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PuBookmarkDdPUser');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PuBookmarkDdPUser relation PUBookmarkDD object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PUBookmarkDDQuery A secondary query class using the current class as primary query
+     */
+    public function usePuBookmarkDdPUserQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPuBookmarkDdPUser($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PuBookmarkDdPUser', '\Politizr\Model\PUBookmarkDDQuery');
+    }
+
+    /**
+     * Filter the query by a related PUBookmarkDR object
+     *
+     * @param   PUBookmarkDR|PropelObjectCollection $pUBookmarkDR  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PUserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPuBookmarkDrPUser($pUBookmarkDR, $comparison = null)
+    {
+        if ($pUBookmarkDR instanceof PUBookmarkDR) {
+            return $this
+                ->addUsingAlias(PUserPeer::ID, $pUBookmarkDR->getPUserId(), $comparison);
+        } elseif ($pUBookmarkDR instanceof PropelObjectCollection) {
+            return $this
+                ->usePuBookmarkDrPUserQuery()
+                ->filterByPrimaryKeys($pUBookmarkDR->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPuBookmarkDrPUser() only accepts arguments of type PUBookmarkDR or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PuBookmarkDrPUser relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function joinPuBookmarkDrPUser($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PuBookmarkDrPUser');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PuBookmarkDrPUser');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PuBookmarkDrPUser relation PUBookmarkDR object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PUBookmarkDRQuery A secondary query class using the current class as primary query
+     */
+    public function usePuBookmarkDrPUserQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPuBookmarkDrPUser($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PuBookmarkDrPUser', '\Politizr\Model\PUBookmarkDRQuery');
+    }
+
+    /**
      * Filter the query by a related PUTrackDD object
      *
      * @param   PUTrackDD|PropelObjectCollection $pUTrackDD  the related object to use as filter
@@ -4944,6 +5102,40 @@ abstract class BasePUserQuery extends ModelCriteria
         return $this
             ->usePuFollowDdPUserQuery()
             ->filterByPuFollowDdPDDebate($pDDebate, $comparison)
+            ->endUse();
+    }
+
+    /**
+     * Filter the query by a related PDDebate object
+     * using the p_u_bookmark_d_d table as cross reference
+     *
+     * @param   PDDebate $pDDebate the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return   PUserQuery The current query, for fluid interface
+     */
+    public function filterByPuBookmarkDdPDDebate($pDDebate, $comparison = Criteria::EQUAL)
+    {
+        return $this
+            ->usePuBookmarkDdPUserQuery()
+            ->filterByPuBookmarkDdPDDebate($pDDebate, $comparison)
+            ->endUse();
+    }
+
+    /**
+     * Filter the query by a related PDReaction object
+     * using the p_u_bookmark_d_r table as cross reference
+     *
+     * @param   PDReaction $pDReaction the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return   PUserQuery The current query, for fluid interface
+     */
+    public function filterByPuBookmarkDrPDReaction($pDReaction, $comparison = Criteria::EQUAL)
+    {
+        return $this
+            ->usePuBookmarkDrPUserQuery()
+            ->filterByPuBookmarkDrPDReaction($pDReaction, $comparison)
             ->endUse();
     }
 

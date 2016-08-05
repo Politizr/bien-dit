@@ -63,6 +63,10 @@ use Politizr\Model\PUAffinityQO;
 use Politizr\Model\PUAffinityQOQuery;
 use Politizr\Model\PUBadge;
 use Politizr\Model\PUBadgeQuery;
+use Politizr\Model\PUBookmarkDD;
+use Politizr\Model\PUBookmarkDDQuery;
+use Politizr\Model\PUBookmarkDR;
+use Politizr\Model\PUBookmarkDRQuery;
 use Politizr\Model\PUCurrentQO;
 use Politizr\Model\PUCurrentQOQuery;
 use Politizr\Model\PUFollowDD;
@@ -474,6 +478,18 @@ abstract class BasePUser extends BaseObject implements Persistent
     protected $collPuFollowDdPUsersPartial;
 
     /**
+     * @var        PropelObjectCollection|PUBookmarkDD[] Collection to store aggregation of PUBookmarkDD objects.
+     */
+    protected $collPuBookmarkDdPUsers;
+    protected $collPuBookmarkDdPUsersPartial;
+
+    /**
+     * @var        PropelObjectCollection|PUBookmarkDR[] Collection to store aggregation of PUBookmarkDR objects.
+     */
+    protected $collPuBookmarkDrPUsers;
+    protected $collPuBookmarkDrPUsersPartial;
+
+    /**
      * @var        PropelObjectCollection|PUTrackDD[] Collection to store aggregation of PUTrackDD objects.
      */
     protected $collPuTrackDdPUsers;
@@ -661,6 +677,16 @@ abstract class BasePUser extends BaseObject implements Persistent
     /**
      * @var        PropelObjectCollection|PDDebate[] Collection to store aggregation of PDDebate objects.
      */
+    protected $collPuBookmarkDdPDDebates;
+
+    /**
+     * @var        PropelObjectCollection|PDReaction[] Collection to store aggregation of PDReaction objects.
+     */
+    protected $collPuBookmarkDrPDReactions;
+
+    /**
+     * @var        PropelObjectCollection|PDDebate[] Collection to store aggregation of PDDebate objects.
+     */
     protected $collPuTrackDdPDDebates;
 
     /**
@@ -766,6 +792,18 @@ abstract class BasePUser extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
+    protected $puBookmarkDdPDDebatesScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $puBookmarkDrPDReactionsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
     protected $puTrackDdPDDebatesScheduledForDeletion = null;
 
     /**
@@ -851,6 +889,18 @@ abstract class BasePUser extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $puFollowDdPUsersScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $puBookmarkDdPUsersScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $puBookmarkDrPUsersScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -3370,6 +3420,10 @@ abstract class BasePUser extends BaseObject implements Persistent
 
             $this->collPuFollowDdPUsers = null;
 
+            $this->collPuBookmarkDdPUsers = null;
+
+            $this->collPuBookmarkDrPUsers = null;
+
             $this->collPuTrackDdPUsers = null;
 
             $this->collPuTrackDrPUsers = null;
@@ -3431,6 +3485,8 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->collPUTrackUsRelatedByPUserIdDest = null;
 
             $this->collPuFollowDdPDDebates = null;
+            $this->collPuBookmarkDdPDDebates = null;
+            $this->collPuBookmarkDrPDReactions = null;
             $this->collPuTrackDdPDDebates = null;
             $this->collPuTrackDrPDReactions = null;
             $this->collPRBadges = null;
@@ -3632,6 +3688,58 @@ abstract class BasePUser extends BaseObject implements Persistent
                 foreach ($this->collPuFollowDdPDDebates as $puFollowDdPDDebate) {
                     if ($puFollowDdPDDebate->isModified()) {
                         $puFollowDdPDDebate->save($con);
+                    }
+                }
+            }
+
+            if ($this->puBookmarkDdPDDebatesScheduledForDeletion !== null) {
+                if (!$this->puBookmarkDdPDDebatesScheduledForDeletion->isEmpty()) {
+                    $pks = array();
+                    $pk = $this->getPrimaryKey();
+                    foreach ($this->puBookmarkDdPDDebatesScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
+                        $pks[] = array($pk, $remotePk);
+                    }
+                    PUBookmarkDDQuery::create()
+                        ->filterByPrimaryKeys($pks)
+                        ->delete($con);
+                    $this->puBookmarkDdPDDebatesScheduledForDeletion = null;
+                }
+
+                foreach ($this->getPuBookmarkDdPDDebates() as $puBookmarkDdPDDebate) {
+                    if ($puBookmarkDdPDDebate->isModified()) {
+                        $puBookmarkDdPDDebate->save($con);
+                    }
+                }
+            } elseif ($this->collPuBookmarkDdPDDebates) {
+                foreach ($this->collPuBookmarkDdPDDebates as $puBookmarkDdPDDebate) {
+                    if ($puBookmarkDdPDDebate->isModified()) {
+                        $puBookmarkDdPDDebate->save($con);
+                    }
+                }
+            }
+
+            if ($this->puBookmarkDrPDReactionsScheduledForDeletion !== null) {
+                if (!$this->puBookmarkDrPDReactionsScheduledForDeletion->isEmpty()) {
+                    $pks = array();
+                    $pk = $this->getPrimaryKey();
+                    foreach ($this->puBookmarkDrPDReactionsScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
+                        $pks[] = array($pk, $remotePk);
+                    }
+                    PUBookmarkDRQuery::create()
+                        ->filterByPrimaryKeys($pks)
+                        ->delete($con);
+                    $this->puBookmarkDrPDReactionsScheduledForDeletion = null;
+                }
+
+                foreach ($this->getPuBookmarkDrPDReactions() as $puBookmarkDrPDReaction) {
+                    if ($puBookmarkDrPDReaction->isModified()) {
+                        $puBookmarkDrPDReaction->save($con);
+                    }
+                }
+            } elseif ($this->collPuBookmarkDrPDReactions) {
+                foreach ($this->collPuBookmarkDrPDReactions as $puBookmarkDrPDReaction) {
+                    if ($puBookmarkDrPDReaction->isModified()) {
+                        $puBookmarkDrPDReaction->save($con);
                     }
                 }
             }
@@ -3995,6 +4103,40 @@ abstract class BasePUser extends BaseObject implements Persistent
 
             if ($this->collPuFollowDdPUsers !== null) {
                 foreach ($this->collPuFollowDdPUsers as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->puBookmarkDdPUsersScheduledForDeletion !== null) {
+                if (!$this->puBookmarkDdPUsersScheduledForDeletion->isEmpty()) {
+                    PUBookmarkDDQuery::create()
+                        ->filterByPrimaryKeys($this->puBookmarkDdPUsersScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->puBookmarkDdPUsersScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPuBookmarkDdPUsers !== null) {
+                foreach ($this->collPuBookmarkDdPUsers as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->puBookmarkDrPUsersScheduledForDeletion !== null) {
+                if (!$this->puBookmarkDrPUsersScheduledForDeletion->isEmpty()) {
+                    PUBookmarkDRQuery::create()
+                        ->filterByPrimaryKeys($this->puBookmarkDrPUsersScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->puBookmarkDrPUsersScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPuBookmarkDrPUsers !== null) {
+                foreach ($this->collPuBookmarkDrPUsers as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -5199,6 +5341,12 @@ abstract class BasePUser extends BaseObject implements Persistent
             if (null !== $this->collPuFollowDdPUsers) {
                 $result['PuFollowDdPUsers'] = $this->collPuFollowDdPUsers->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
+            if (null !== $this->collPuBookmarkDdPUsers) {
+                $result['PuBookmarkDdPUsers'] = $this->collPuBookmarkDdPUsers->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collPuBookmarkDrPUsers) {
+                $result['PuBookmarkDrPUsers'] = $this->collPuBookmarkDrPUsers->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
             if (null !== $this->collPuTrackDdPUsers) {
                 $result['PuTrackDdPUsers'] = $this->collPuTrackDdPUsers->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
@@ -5772,6 +5920,18 @@ abstract class BasePUser extends BaseObject implements Persistent
                 }
             }
 
+            foreach ($this->getPuBookmarkDdPUsers() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPuBookmarkDdPUser($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getPuBookmarkDrPUsers() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPuBookmarkDrPUser($relObj->copy($deepCopy));
+                }
+            }
+
             foreach ($this->getPuTrackDdPUsers() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addPuTrackDdPUser($relObj->copy($deepCopy));
@@ -6073,6 +6233,12 @@ abstract class BasePUser extends BaseObject implements Persistent
         }
         if ('PuFollowDdPUser' == $relationName) {
             $this->initPuFollowDdPUsers();
+        }
+        if ('PuBookmarkDdPUser' == $relationName) {
+            $this->initPuBookmarkDdPUsers();
+        }
+        if ('PuBookmarkDrPUser' == $relationName) {
+            $this->initPuBookmarkDrPUsers();
         }
         if ('PuTrackDdPUser' == $relationName) {
             $this->initPuTrackDdPUsers();
@@ -7014,6 +7180,506 @@ abstract class BasePUser extends BaseObject implements Persistent
         $query->joinWith('PuFollowDdPDDebate', $join_behavior);
 
         return $this->getPuFollowDdPUsers($query, $con);
+    }
+
+    /**
+     * Clears out the collPuBookmarkDdPUsers collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PUser The current object (for fluent API support)
+     * @see        addPuBookmarkDdPUsers()
+     */
+    public function clearPuBookmarkDdPUsers()
+    {
+        $this->collPuBookmarkDdPUsers = null; // important to set this to null since that means it is uninitialized
+        $this->collPuBookmarkDdPUsersPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPuBookmarkDdPUsers collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPuBookmarkDdPUsers($v = true)
+    {
+        $this->collPuBookmarkDdPUsersPartial = $v;
+    }
+
+    /**
+     * Initializes the collPuBookmarkDdPUsers collection.
+     *
+     * By default this just sets the collPuBookmarkDdPUsers collection to an empty array (like clearcollPuBookmarkDdPUsers());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPuBookmarkDdPUsers($overrideExisting = true)
+    {
+        if (null !== $this->collPuBookmarkDdPUsers && !$overrideExisting) {
+            return;
+        }
+        $this->collPuBookmarkDdPUsers = new PropelObjectCollection();
+        $this->collPuBookmarkDdPUsers->setModel('PUBookmarkDD');
+    }
+
+    /**
+     * Gets an array of PUBookmarkDD objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PUser is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PUBookmarkDD[] List of PUBookmarkDD objects
+     * @throws PropelException
+     */
+    public function getPuBookmarkDdPUsers($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPuBookmarkDdPUsersPartial && !$this->isNew();
+        if (null === $this->collPuBookmarkDdPUsers || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPuBookmarkDdPUsers) {
+                // return empty collection
+                $this->initPuBookmarkDdPUsers();
+            } else {
+                $collPuBookmarkDdPUsers = PUBookmarkDDQuery::create(null, $criteria)
+                    ->filterByPuBookmarkDdPUser($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPuBookmarkDdPUsersPartial && count($collPuBookmarkDdPUsers)) {
+                      $this->initPuBookmarkDdPUsers(false);
+
+                      foreach ($collPuBookmarkDdPUsers as $obj) {
+                        if (false == $this->collPuBookmarkDdPUsers->contains($obj)) {
+                          $this->collPuBookmarkDdPUsers->append($obj);
+                        }
+                      }
+
+                      $this->collPuBookmarkDdPUsersPartial = true;
+                    }
+
+                    $collPuBookmarkDdPUsers->getInternalIterator()->rewind();
+
+                    return $collPuBookmarkDdPUsers;
+                }
+
+                if ($partial && $this->collPuBookmarkDdPUsers) {
+                    foreach ($this->collPuBookmarkDdPUsers as $obj) {
+                        if ($obj->isNew()) {
+                            $collPuBookmarkDdPUsers[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPuBookmarkDdPUsers = $collPuBookmarkDdPUsers;
+                $this->collPuBookmarkDdPUsersPartial = false;
+            }
+        }
+
+        return $this->collPuBookmarkDdPUsers;
+    }
+
+    /**
+     * Sets a collection of PuBookmarkDdPUser objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $puBookmarkDdPUsers A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PUser The current object (for fluent API support)
+     */
+    public function setPuBookmarkDdPUsers(PropelCollection $puBookmarkDdPUsers, PropelPDO $con = null)
+    {
+        $puBookmarkDdPUsersToDelete = $this->getPuBookmarkDdPUsers(new Criteria(), $con)->diff($puBookmarkDdPUsers);
+
+
+        $this->puBookmarkDdPUsersScheduledForDeletion = $puBookmarkDdPUsersToDelete;
+
+        foreach ($puBookmarkDdPUsersToDelete as $puBookmarkDdPUserRemoved) {
+            $puBookmarkDdPUserRemoved->setPuBookmarkDdPUser(null);
+        }
+
+        $this->collPuBookmarkDdPUsers = null;
+        foreach ($puBookmarkDdPUsers as $puBookmarkDdPUser) {
+            $this->addPuBookmarkDdPUser($puBookmarkDdPUser);
+        }
+
+        $this->collPuBookmarkDdPUsers = $puBookmarkDdPUsers;
+        $this->collPuBookmarkDdPUsersPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PUBookmarkDD objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PUBookmarkDD objects.
+     * @throws PropelException
+     */
+    public function countPuBookmarkDdPUsers(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPuBookmarkDdPUsersPartial && !$this->isNew();
+        if (null === $this->collPuBookmarkDdPUsers || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPuBookmarkDdPUsers) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPuBookmarkDdPUsers());
+            }
+            $query = PUBookmarkDDQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPuBookmarkDdPUser($this)
+                ->count($con);
+        }
+
+        return count($this->collPuBookmarkDdPUsers);
+    }
+
+    /**
+     * Method called to associate a PUBookmarkDD object to this object
+     * through the PUBookmarkDD foreign key attribute.
+     *
+     * @param    PUBookmarkDD $l PUBookmarkDD
+     * @return PUser The current object (for fluent API support)
+     */
+    public function addPuBookmarkDdPUser(PUBookmarkDD $l)
+    {
+        if ($this->collPuBookmarkDdPUsers === null) {
+            $this->initPuBookmarkDdPUsers();
+            $this->collPuBookmarkDdPUsersPartial = true;
+        }
+
+        if (!in_array($l, $this->collPuBookmarkDdPUsers->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPuBookmarkDdPUser($l);
+
+            if ($this->puBookmarkDdPUsersScheduledForDeletion and $this->puBookmarkDdPUsersScheduledForDeletion->contains($l)) {
+                $this->puBookmarkDdPUsersScheduledForDeletion->remove($this->puBookmarkDdPUsersScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PuBookmarkDdPUser $puBookmarkDdPUser The puBookmarkDdPUser object to add.
+     */
+    protected function doAddPuBookmarkDdPUser($puBookmarkDdPUser)
+    {
+        $this->collPuBookmarkDdPUsers[]= $puBookmarkDdPUser;
+        $puBookmarkDdPUser->setPuBookmarkDdPUser($this);
+    }
+
+    /**
+     * @param	PuBookmarkDdPUser $puBookmarkDdPUser The puBookmarkDdPUser object to remove.
+     * @return PUser The current object (for fluent API support)
+     */
+    public function removePuBookmarkDdPUser($puBookmarkDdPUser)
+    {
+        if ($this->getPuBookmarkDdPUsers()->contains($puBookmarkDdPUser)) {
+            $this->collPuBookmarkDdPUsers->remove($this->collPuBookmarkDdPUsers->search($puBookmarkDdPUser));
+            if (null === $this->puBookmarkDdPUsersScheduledForDeletion) {
+                $this->puBookmarkDdPUsersScheduledForDeletion = clone $this->collPuBookmarkDdPUsers;
+                $this->puBookmarkDdPUsersScheduledForDeletion->clear();
+            }
+            $this->puBookmarkDdPUsersScheduledForDeletion[]= clone $puBookmarkDdPUser;
+            $puBookmarkDdPUser->setPuBookmarkDdPUser(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PUser is new, it will return
+     * an empty collection; or if this PUser has previously
+     * been saved, it will retrieve related PuBookmarkDdPUsers from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PUser.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PUBookmarkDD[] List of PUBookmarkDD objects
+     */
+    public function getPuBookmarkDdPUsersJoinPuBookmarkDdPDDebate($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PUBookmarkDDQuery::create(null, $criteria);
+        $query->joinWith('PuBookmarkDdPDDebate', $join_behavior);
+
+        return $this->getPuBookmarkDdPUsers($query, $con);
+    }
+
+    /**
+     * Clears out the collPuBookmarkDrPUsers collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PUser The current object (for fluent API support)
+     * @see        addPuBookmarkDrPUsers()
+     */
+    public function clearPuBookmarkDrPUsers()
+    {
+        $this->collPuBookmarkDrPUsers = null; // important to set this to null since that means it is uninitialized
+        $this->collPuBookmarkDrPUsersPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPuBookmarkDrPUsers collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPuBookmarkDrPUsers($v = true)
+    {
+        $this->collPuBookmarkDrPUsersPartial = $v;
+    }
+
+    /**
+     * Initializes the collPuBookmarkDrPUsers collection.
+     *
+     * By default this just sets the collPuBookmarkDrPUsers collection to an empty array (like clearcollPuBookmarkDrPUsers());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPuBookmarkDrPUsers($overrideExisting = true)
+    {
+        if (null !== $this->collPuBookmarkDrPUsers && !$overrideExisting) {
+            return;
+        }
+        $this->collPuBookmarkDrPUsers = new PropelObjectCollection();
+        $this->collPuBookmarkDrPUsers->setModel('PUBookmarkDR');
+    }
+
+    /**
+     * Gets an array of PUBookmarkDR objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PUser is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PUBookmarkDR[] List of PUBookmarkDR objects
+     * @throws PropelException
+     */
+    public function getPuBookmarkDrPUsers($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPuBookmarkDrPUsersPartial && !$this->isNew();
+        if (null === $this->collPuBookmarkDrPUsers || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPuBookmarkDrPUsers) {
+                // return empty collection
+                $this->initPuBookmarkDrPUsers();
+            } else {
+                $collPuBookmarkDrPUsers = PUBookmarkDRQuery::create(null, $criteria)
+                    ->filterByPuBookmarkDrPUser($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPuBookmarkDrPUsersPartial && count($collPuBookmarkDrPUsers)) {
+                      $this->initPuBookmarkDrPUsers(false);
+
+                      foreach ($collPuBookmarkDrPUsers as $obj) {
+                        if (false == $this->collPuBookmarkDrPUsers->contains($obj)) {
+                          $this->collPuBookmarkDrPUsers->append($obj);
+                        }
+                      }
+
+                      $this->collPuBookmarkDrPUsersPartial = true;
+                    }
+
+                    $collPuBookmarkDrPUsers->getInternalIterator()->rewind();
+
+                    return $collPuBookmarkDrPUsers;
+                }
+
+                if ($partial && $this->collPuBookmarkDrPUsers) {
+                    foreach ($this->collPuBookmarkDrPUsers as $obj) {
+                        if ($obj->isNew()) {
+                            $collPuBookmarkDrPUsers[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPuBookmarkDrPUsers = $collPuBookmarkDrPUsers;
+                $this->collPuBookmarkDrPUsersPartial = false;
+            }
+        }
+
+        return $this->collPuBookmarkDrPUsers;
+    }
+
+    /**
+     * Sets a collection of PuBookmarkDrPUser objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $puBookmarkDrPUsers A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PUser The current object (for fluent API support)
+     */
+    public function setPuBookmarkDrPUsers(PropelCollection $puBookmarkDrPUsers, PropelPDO $con = null)
+    {
+        $puBookmarkDrPUsersToDelete = $this->getPuBookmarkDrPUsers(new Criteria(), $con)->diff($puBookmarkDrPUsers);
+
+
+        $this->puBookmarkDrPUsersScheduledForDeletion = $puBookmarkDrPUsersToDelete;
+
+        foreach ($puBookmarkDrPUsersToDelete as $puBookmarkDrPUserRemoved) {
+            $puBookmarkDrPUserRemoved->setPuBookmarkDrPUser(null);
+        }
+
+        $this->collPuBookmarkDrPUsers = null;
+        foreach ($puBookmarkDrPUsers as $puBookmarkDrPUser) {
+            $this->addPuBookmarkDrPUser($puBookmarkDrPUser);
+        }
+
+        $this->collPuBookmarkDrPUsers = $puBookmarkDrPUsers;
+        $this->collPuBookmarkDrPUsersPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PUBookmarkDR objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PUBookmarkDR objects.
+     * @throws PropelException
+     */
+    public function countPuBookmarkDrPUsers(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPuBookmarkDrPUsersPartial && !$this->isNew();
+        if (null === $this->collPuBookmarkDrPUsers || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPuBookmarkDrPUsers) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPuBookmarkDrPUsers());
+            }
+            $query = PUBookmarkDRQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPuBookmarkDrPUser($this)
+                ->count($con);
+        }
+
+        return count($this->collPuBookmarkDrPUsers);
+    }
+
+    /**
+     * Method called to associate a PUBookmarkDR object to this object
+     * through the PUBookmarkDR foreign key attribute.
+     *
+     * @param    PUBookmarkDR $l PUBookmarkDR
+     * @return PUser The current object (for fluent API support)
+     */
+    public function addPuBookmarkDrPUser(PUBookmarkDR $l)
+    {
+        if ($this->collPuBookmarkDrPUsers === null) {
+            $this->initPuBookmarkDrPUsers();
+            $this->collPuBookmarkDrPUsersPartial = true;
+        }
+
+        if (!in_array($l, $this->collPuBookmarkDrPUsers->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPuBookmarkDrPUser($l);
+
+            if ($this->puBookmarkDrPUsersScheduledForDeletion and $this->puBookmarkDrPUsersScheduledForDeletion->contains($l)) {
+                $this->puBookmarkDrPUsersScheduledForDeletion->remove($this->puBookmarkDrPUsersScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PuBookmarkDrPUser $puBookmarkDrPUser The puBookmarkDrPUser object to add.
+     */
+    protected function doAddPuBookmarkDrPUser($puBookmarkDrPUser)
+    {
+        $this->collPuBookmarkDrPUsers[]= $puBookmarkDrPUser;
+        $puBookmarkDrPUser->setPuBookmarkDrPUser($this);
+    }
+
+    /**
+     * @param	PuBookmarkDrPUser $puBookmarkDrPUser The puBookmarkDrPUser object to remove.
+     * @return PUser The current object (for fluent API support)
+     */
+    public function removePuBookmarkDrPUser($puBookmarkDrPUser)
+    {
+        if ($this->getPuBookmarkDrPUsers()->contains($puBookmarkDrPUser)) {
+            $this->collPuBookmarkDrPUsers->remove($this->collPuBookmarkDrPUsers->search($puBookmarkDrPUser));
+            if (null === $this->puBookmarkDrPUsersScheduledForDeletion) {
+                $this->puBookmarkDrPUsersScheduledForDeletion = clone $this->collPuBookmarkDrPUsers;
+                $this->puBookmarkDrPUsersScheduledForDeletion->clear();
+            }
+            $this->puBookmarkDrPUsersScheduledForDeletion[]= clone $puBookmarkDrPUser;
+            $puBookmarkDrPUser->setPuBookmarkDrPUser(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PUser is new, it will return
+     * an empty collection; or if this PUser has previously
+     * been saved, it will retrieve related PuBookmarkDrPUsers from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PUser.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PUBookmarkDR[] List of PUBookmarkDR objects
+     */
+    public function getPuBookmarkDrPUsersJoinPuBookmarkDrPDReaction($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PUBookmarkDRQuery::create(null, $criteria);
+        $query->joinWith('PuBookmarkDrPDReaction', $join_behavior);
+
+        return $this->getPuBookmarkDrPUsers($query, $con);
     }
 
     /**
@@ -14516,6 +15182,380 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collPuBookmarkDdPDDebates collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PUser The current object (for fluent API support)
+     * @see        addPuBookmarkDdPDDebates()
+     */
+    public function clearPuBookmarkDdPDDebates()
+    {
+        $this->collPuBookmarkDdPDDebates = null; // important to set this to null since that means it is uninitialized
+        $this->collPuBookmarkDdPDDebatesPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * Initializes the collPuBookmarkDdPDDebates collection.
+     *
+     * By default this just sets the collPuBookmarkDdPDDebates collection to an empty collection (like clearPuBookmarkDdPDDebates());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @return void
+     */
+    public function initPuBookmarkDdPDDebates()
+    {
+        $this->collPuBookmarkDdPDDebates = new PropelObjectCollection();
+        $this->collPuBookmarkDdPDDebates->setModel('PDDebate');
+    }
+
+    /**
+     * Gets a collection of PDDebate objects related by a many-to-many relationship
+     * to the current object by way of the p_u_bookmark_d_d cross-reference table.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PUser is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return PropelObjectCollection|PDDebate[] List of PDDebate objects
+     */
+    public function getPuBookmarkDdPDDebates($criteria = null, PropelPDO $con = null)
+    {
+        if (null === $this->collPuBookmarkDdPDDebates || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPuBookmarkDdPDDebates) {
+                // return empty collection
+                $this->initPuBookmarkDdPDDebates();
+            } else {
+                $collPuBookmarkDdPDDebates = PDDebateQuery::create(null, $criteria)
+                    ->filterByPuBookmarkDdPUser($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    return $collPuBookmarkDdPDDebates;
+                }
+                $this->collPuBookmarkDdPDDebates = $collPuBookmarkDdPDDebates;
+            }
+        }
+
+        return $this->collPuBookmarkDdPDDebates;
+    }
+
+    /**
+     * Sets a collection of PDDebate objects related by a many-to-many relationship
+     * to the current object by way of the p_u_bookmark_d_d cross-reference table.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $puBookmarkDdPDDebates A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PUser The current object (for fluent API support)
+     */
+    public function setPuBookmarkDdPDDebates(PropelCollection $puBookmarkDdPDDebates, PropelPDO $con = null)
+    {
+        $this->clearPuBookmarkDdPDDebates();
+        $currentPuBookmarkDdPDDebates = $this->getPuBookmarkDdPDDebates(null, $con);
+
+        $this->puBookmarkDdPDDebatesScheduledForDeletion = $currentPuBookmarkDdPDDebates->diff($puBookmarkDdPDDebates);
+
+        foreach ($puBookmarkDdPDDebates as $puBookmarkDdPDDebate) {
+            if (!$currentPuBookmarkDdPDDebates->contains($puBookmarkDdPDDebate)) {
+                $this->doAddPuBookmarkDdPDDebate($puBookmarkDdPDDebate);
+            }
+        }
+
+        $this->collPuBookmarkDdPDDebates = $puBookmarkDdPDDebates;
+
+        return $this;
+    }
+
+    /**
+     * Gets the number of PDDebate objects related by a many-to-many relationship
+     * to the current object by way of the p_u_bookmark_d_d cross-reference table.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param boolean $distinct Set to true to force count distinct
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return int the number of related PDDebate objects
+     */
+    public function countPuBookmarkDdPDDebates($criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        if (null === $this->collPuBookmarkDdPDDebates || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPuBookmarkDdPDDebates) {
+                return 0;
+            } else {
+                $query = PDDebateQuery::create(null, $criteria);
+                if ($distinct) {
+                    $query->distinct();
+                }
+
+                return $query
+                    ->filterByPuBookmarkDdPUser($this)
+                    ->count($con);
+            }
+        } else {
+            return count($this->collPuBookmarkDdPDDebates);
+        }
+    }
+
+    /**
+     * Associate a PDDebate object to this object
+     * through the p_u_bookmark_d_d cross reference table.
+     *
+     * @param  PDDebate $pDDebate The PUBookmarkDD object to relate
+     * @return PUser The current object (for fluent API support)
+     */
+    public function addPuBookmarkDdPDDebate(PDDebate $pDDebate)
+    {
+        if ($this->collPuBookmarkDdPDDebates === null) {
+            $this->initPuBookmarkDdPDDebates();
+        }
+
+        if (!$this->collPuBookmarkDdPDDebates->contains($pDDebate)) { // only add it if the **same** object is not already associated
+            $this->doAddPuBookmarkDdPDDebate($pDDebate);
+            $this->collPuBookmarkDdPDDebates[] = $pDDebate;
+
+            if ($this->puBookmarkDdPDDebatesScheduledForDeletion and $this->puBookmarkDdPDDebatesScheduledForDeletion->contains($pDDebate)) {
+                $this->puBookmarkDdPDDebatesScheduledForDeletion->remove($this->puBookmarkDdPDDebatesScheduledForDeletion->search($pDDebate));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PuBookmarkDdPDDebate $puBookmarkDdPDDebate The puBookmarkDdPDDebate object to add.
+     */
+    protected function doAddPuBookmarkDdPDDebate(PDDebate $puBookmarkDdPDDebate)
+    {
+        // set the back reference to this object directly as using provided method either results
+        // in endless loop or in multiple relations
+        if (!$puBookmarkDdPDDebate->getPuBookmarkDdPUsers()->contains($this)) { $pUBookmarkDD = new PUBookmarkDD();
+            $pUBookmarkDD->setPuBookmarkDdPDDebate($puBookmarkDdPDDebate);
+            $this->addPuBookmarkDdPUser($pUBookmarkDD);
+
+            $foreignCollection = $puBookmarkDdPDDebate->getPuBookmarkDdPUsers();
+            $foreignCollection[] = $this;
+        }
+    }
+
+    /**
+     * Remove a PDDebate object to this object
+     * through the p_u_bookmark_d_d cross reference table.
+     *
+     * @param PDDebate $pDDebate The PUBookmarkDD object to relate
+     * @return PUser The current object (for fluent API support)
+     */
+    public function removePuBookmarkDdPDDebate(PDDebate $pDDebate)
+    {
+        if ($this->getPuBookmarkDdPDDebates()->contains($pDDebate)) {
+            $this->collPuBookmarkDdPDDebates->remove($this->collPuBookmarkDdPDDebates->search($pDDebate));
+            if (null === $this->puBookmarkDdPDDebatesScheduledForDeletion) {
+                $this->puBookmarkDdPDDebatesScheduledForDeletion = clone $this->collPuBookmarkDdPDDebates;
+                $this->puBookmarkDdPDDebatesScheduledForDeletion->clear();
+            }
+            $this->puBookmarkDdPDDebatesScheduledForDeletion[]= $pDDebate;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Clears out the collPuBookmarkDrPDReactions collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PUser The current object (for fluent API support)
+     * @see        addPuBookmarkDrPDReactions()
+     */
+    public function clearPuBookmarkDrPDReactions()
+    {
+        $this->collPuBookmarkDrPDReactions = null; // important to set this to null since that means it is uninitialized
+        $this->collPuBookmarkDrPDReactionsPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * Initializes the collPuBookmarkDrPDReactions collection.
+     *
+     * By default this just sets the collPuBookmarkDrPDReactions collection to an empty collection (like clearPuBookmarkDrPDReactions());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @return void
+     */
+    public function initPuBookmarkDrPDReactions()
+    {
+        $this->collPuBookmarkDrPDReactions = new PropelObjectCollection();
+        $this->collPuBookmarkDrPDReactions->setModel('PDReaction');
+    }
+
+    /**
+     * Gets a collection of PDReaction objects related by a many-to-many relationship
+     * to the current object by way of the p_u_bookmark_d_r cross-reference table.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PUser is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return PropelObjectCollection|PDReaction[] List of PDReaction objects
+     */
+    public function getPuBookmarkDrPDReactions($criteria = null, PropelPDO $con = null)
+    {
+        if (null === $this->collPuBookmarkDrPDReactions || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPuBookmarkDrPDReactions) {
+                // return empty collection
+                $this->initPuBookmarkDrPDReactions();
+            } else {
+                $collPuBookmarkDrPDReactions = PDReactionQuery::create(null, $criteria)
+                    ->filterByPuBookmarkDrPUser($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    return $collPuBookmarkDrPDReactions;
+                }
+                $this->collPuBookmarkDrPDReactions = $collPuBookmarkDrPDReactions;
+            }
+        }
+
+        return $this->collPuBookmarkDrPDReactions;
+    }
+
+    /**
+     * Sets a collection of PDReaction objects related by a many-to-many relationship
+     * to the current object by way of the p_u_bookmark_d_r cross-reference table.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $puBookmarkDrPDReactions A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PUser The current object (for fluent API support)
+     */
+    public function setPuBookmarkDrPDReactions(PropelCollection $puBookmarkDrPDReactions, PropelPDO $con = null)
+    {
+        $this->clearPuBookmarkDrPDReactions();
+        $currentPuBookmarkDrPDReactions = $this->getPuBookmarkDrPDReactions(null, $con);
+
+        $this->puBookmarkDrPDReactionsScheduledForDeletion = $currentPuBookmarkDrPDReactions->diff($puBookmarkDrPDReactions);
+
+        foreach ($puBookmarkDrPDReactions as $puBookmarkDrPDReaction) {
+            if (!$currentPuBookmarkDrPDReactions->contains($puBookmarkDrPDReaction)) {
+                $this->doAddPuBookmarkDrPDReaction($puBookmarkDrPDReaction);
+            }
+        }
+
+        $this->collPuBookmarkDrPDReactions = $puBookmarkDrPDReactions;
+
+        return $this;
+    }
+
+    /**
+     * Gets the number of PDReaction objects related by a many-to-many relationship
+     * to the current object by way of the p_u_bookmark_d_r cross-reference table.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param boolean $distinct Set to true to force count distinct
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return int the number of related PDReaction objects
+     */
+    public function countPuBookmarkDrPDReactions($criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        if (null === $this->collPuBookmarkDrPDReactions || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPuBookmarkDrPDReactions) {
+                return 0;
+            } else {
+                $query = PDReactionQuery::create(null, $criteria);
+                if ($distinct) {
+                    $query->distinct();
+                }
+
+                return $query
+                    ->filterByPuBookmarkDrPUser($this)
+                    ->count($con);
+            }
+        } else {
+            return count($this->collPuBookmarkDrPDReactions);
+        }
+    }
+
+    /**
+     * Associate a PDReaction object to this object
+     * through the p_u_bookmark_d_r cross reference table.
+     *
+     * @param  PDReaction $pDReaction The PUBookmarkDR object to relate
+     * @return PUser The current object (for fluent API support)
+     */
+    public function addPuBookmarkDrPDReaction(PDReaction $pDReaction)
+    {
+        if ($this->collPuBookmarkDrPDReactions === null) {
+            $this->initPuBookmarkDrPDReactions();
+        }
+
+        if (!$this->collPuBookmarkDrPDReactions->contains($pDReaction)) { // only add it if the **same** object is not already associated
+            $this->doAddPuBookmarkDrPDReaction($pDReaction);
+            $this->collPuBookmarkDrPDReactions[] = $pDReaction;
+
+            if ($this->puBookmarkDrPDReactionsScheduledForDeletion and $this->puBookmarkDrPDReactionsScheduledForDeletion->contains($pDReaction)) {
+                $this->puBookmarkDrPDReactionsScheduledForDeletion->remove($this->puBookmarkDrPDReactionsScheduledForDeletion->search($pDReaction));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PuBookmarkDrPDReaction $puBookmarkDrPDReaction The puBookmarkDrPDReaction object to add.
+     */
+    protected function doAddPuBookmarkDrPDReaction(PDReaction $puBookmarkDrPDReaction)
+    {
+        // set the back reference to this object directly as using provided method either results
+        // in endless loop or in multiple relations
+        if (!$puBookmarkDrPDReaction->getPuBookmarkDrPUsers()->contains($this)) { $pUBookmarkDR = new PUBookmarkDR();
+            $pUBookmarkDR->setPuBookmarkDrPDReaction($puBookmarkDrPDReaction);
+            $this->addPuBookmarkDrPUser($pUBookmarkDR);
+
+            $foreignCollection = $puBookmarkDrPDReaction->getPuBookmarkDrPUsers();
+            $foreignCollection[] = $this;
+        }
+    }
+
+    /**
+     * Remove a PDReaction object to this object
+     * through the p_u_bookmark_d_r cross reference table.
+     *
+     * @param PDReaction $pDReaction The PUBookmarkDR object to relate
+     * @return PUser The current object (for fluent API support)
+     */
+    public function removePuBookmarkDrPDReaction(PDReaction $pDReaction)
+    {
+        if ($this->getPuBookmarkDrPDReactions()->contains($pDReaction)) {
+            $this->collPuBookmarkDrPDReactions->remove($this->collPuBookmarkDrPDReactions->search($pDReaction));
+            if (null === $this->puBookmarkDrPDReactionsScheduledForDeletion) {
+                $this->puBookmarkDrPDReactionsScheduledForDeletion = clone $this->collPuBookmarkDrPDReactions;
+                $this->puBookmarkDrPDReactionsScheduledForDeletion->clear();
+            }
+            $this->puBookmarkDrPDReactionsScheduledForDeletion[]= $pDReaction;
+        }
+
+        return $this;
+    }
+
+    /**
      * Clears out the collPuTrackDdPDDebates collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
@@ -16856,6 +17896,16 @@ abstract class BasePUser extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collPuBookmarkDdPUsers) {
+                foreach ($this->collPuBookmarkDdPUsers as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collPuBookmarkDrPUsers) {
+                foreach ($this->collPuBookmarkDrPUsers as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collPuTrackDdPUsers) {
                 foreach ($this->collPuTrackDdPUsers as $o) {
                     $o->clearAllReferences($deep);
@@ -17011,6 +18061,16 @@ abstract class BasePUser extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collPuBookmarkDdPDDebates) {
+                foreach ($this->collPuBookmarkDdPDDebates as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collPuBookmarkDrPDReactions) {
+                foreach ($this->collPuBookmarkDrPDReactions as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collPuTrackDdPDDebates) {
                 foreach ($this->collPuTrackDdPDDebates as $o) {
                     $o->clearAllReferences($deep);
@@ -17103,6 +18163,14 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->collPuFollowDdPUsers->clearIterator();
         }
         $this->collPuFollowDdPUsers = null;
+        if ($this->collPuBookmarkDdPUsers instanceof PropelCollection) {
+            $this->collPuBookmarkDdPUsers->clearIterator();
+        }
+        $this->collPuBookmarkDdPUsers = null;
+        if ($this->collPuBookmarkDrPUsers instanceof PropelCollection) {
+            $this->collPuBookmarkDrPUsers->clearIterator();
+        }
+        $this->collPuBookmarkDrPUsers = null;
         if ($this->collPuTrackDdPUsers instanceof PropelCollection) {
             $this->collPuTrackDdPUsers->clearIterator();
         }
@@ -17227,6 +18295,14 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->collPuFollowDdPDDebates->clearIterator();
         }
         $this->collPuFollowDdPDDebates = null;
+        if ($this->collPuBookmarkDdPDDebates instanceof PropelCollection) {
+            $this->collPuBookmarkDdPDDebates->clearIterator();
+        }
+        $this->collPuBookmarkDdPDDebates = null;
+        if ($this->collPuBookmarkDrPDReactions instanceof PropelCollection) {
+            $this->collPuBookmarkDrPDReactions->clearIterator();
+        }
+        $this->collPuBookmarkDrPDReactions = null;
         if ($this->collPuTrackDdPDDebates instanceof PropelCollection) {
             $this->collPuTrackDdPDDebates->clearIterator();
         }

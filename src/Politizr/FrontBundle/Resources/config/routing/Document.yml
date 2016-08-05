@@ -52,6 +52,10 @@ DraftsC:
     pattern:  /citoyen/mes-brouillons
     defaults: { _controller: PolitizrFrontBundle:Document:drafts }
 
+BookmarksC:
+    pattern:  /citoyen/mes-favoris
+    defaults: { _controller: PolitizrFrontBundle:Document:bookmarks }
+
 ################################################################################
 #               ELECTED
 ################################################################################
@@ -84,3 +88,8 @@ ReactionDraftEditE:
 DraftsE:
     pattern:  /elu/mes-brouillons
     defaults: { _controller: PolitizrFrontBundle:Document:drafts }
+
+BookmarksE:
+    pattern:  /elu/mes-favoris
+    defaults: { _controller: PolitizrFrontBundle:Document:bookmarks }
+

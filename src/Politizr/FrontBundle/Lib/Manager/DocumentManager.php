@@ -984,6 +984,46 @@ LIMIT :offset, :limit
         return $sql;
     }
 
+   /**
+     * User's bookmarks listing
+     *
+     * @see app/sql/userDocuments.sql
+     *
+     * @param string $orderBy
+     * @return string
+     */
+    private function createMyBookmarksRawSql()
+    {
+        $sql = "
+( SELECT p_d_debate.id as id, p_d_debate.title as title, p_d_debate.file_name as fileName, p_d_debate.published_at as published_at, 'Politizr\\\Model\\\PDDebate' as type, p_u_bookmark_d_d.created_at as bookmarked_at
+FROM p_d_debate
+INNER JOIN p_u_bookmark_d_d ON p_u_bookmark_d_d.p_d_debate_id = p_d_debate.id
+WHERE
+    p_u_bookmark_d_d.p_user_id = :p_user_id
+    AND p_d_debate.published = 1
+    AND p_d_debate.online = 1
+)
+
+UNION DISTINCT
+
+#  Réactions
+( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.file_name as fileName, p_d_reaction.published_at as published_at, 'Politizr\\\Model\\\PDReaction' as type, p_u_bookmark_d_r.created_at as bookmarked_at
+FROM p_d_reaction
+INNER JOIN p_u_bookmark_d_r ON p_u_bookmark_d_r.p_d_reaction_id = p_d_reaction.id
+WHERE
+    p_u_bookmark_d_r.p_user_id = :p_user_id2
+    AND p_d_reaction.published = 1
+    AND p_d_reaction.online = 1
+)
+
+ORDER BY bookmarked_at DESC
+
+LIMIT :offset, :limit
+    ";
+
+        return $sql;
+    }
+
     /**
      * Return number of 1st level reactions for user publications
      *
@@ -1463,6 +1503,54 @@ GROUP BY p_d_debate_id
 
         $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
         $stmt = $con->prepare($this->createMyDraftsRawSql());
+
+        $stmt->bindValue(':p_user_id', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_user_id2', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, \PDO::PARAM_INT);
+        $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        $result = $stmt->fetchAll();
+
+        $documents = new \PropelCollection();
+        $i = 0;
+        foreach ($result as $row) {
+            $type = $row['type'];
+
+            if ($type == ObjectTypeConstants::TYPE_DEBATE) {
+                $document = PDDebateQuery::create()->findPk($row['id']);
+            } elseif ($type == ObjectTypeConstants::TYPE_REACTION) {
+                $document = PDReactionQuery::create()->findPk($row['id']);
+            } else {
+                throw new InconsistentDataException(sprintf('Object type %s unknown.', $type));
+            }
+            
+            $documents->set($i, $document);
+            $i++;
+        }
+
+        return $documents;
+    }
+    
+    /**
+     * My documents paginated listing
+     *
+     * @param integer $userId
+     * @param integer $published
+     * @param integer $offset
+     * @param integer $limit
+     * @return PropelCollection
+     */
+    public function generateMyBookmarksPaginatedListing($userId, $offset, $limit)
+    {
+        // $this->logger->info('*** generateMyBookmarksPaginatedListing');
+        // $this->logger->info('$userId = ' . print_r($userId, true));
+        // $this->logger->info('$offset = ' . print_r($offset, true));
+        // $this->logger->info('$limit = ' . print_r($limit, true));
+
+        $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
+        $stmt = $con->prepare($this->createMyBookmarksRawSql());
 
         $stmt->bindValue(':p_user_id', $userId, \PDO::PARAM_INT);
         $stmt->bindValue(':p_user_id2', $userId, \PDO::PARAM_INT);

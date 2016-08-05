@@ -380,6 +380,22 @@ class DocumentService
     }
 
     /**
+     * Get "my favorites" paginated listing
+     * beta
+     *
+     * @param int $userId
+     * @param int $offset
+     * @param int $count
+     * @return PropelCollection[PDocument]
+     */
+    public function getMyBookmarksPaginatedListing($userId, $offset = 0, $count = ListingConstants::MODAL_CLASSIC_PAGINATION)
+    {
+        $documents = $this->documentManager->generateMyBookmarksPaginatedListing($userId, $offset, $count);
+
+        return $documents;
+    }
+
+    /**
      * Return number of 1st level reactions for user publications
      *
      * @param int $userId

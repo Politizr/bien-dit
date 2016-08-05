@@ -111,6 +111,8 @@ class PUserTableMap extends TableMap
         $this->addRelation('PTag', 'Politizr\\Model\\PTag', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'SET NULL', 'CASCADE', 'PTags');
         $this->addRelation('POrder', 'Politizr\\Model\\POrder', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'SET NULL', 'CASCADE', 'POrders');
         $this->addRelation('PuFollowDdPUser', 'Politizr\\Model\\PUFollowDD', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', 'CASCADE', 'PuFollowDdPUsers');
+        $this->addRelation('PuBookmarkDdPUser', 'Politizr\\Model\\PUBookmarkDD', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', 'CASCADE', 'PuBookmarkDdPUsers');
+        $this->addRelation('PuBookmarkDrPUser', 'Politizr\\Model\\PUBookmarkDR', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', 'CASCADE', 'PuBookmarkDrPUsers');
         $this->addRelation('PuTrackDdPUser', 'Politizr\\Model\\PUTrackDD', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', 'CASCADE', 'PuTrackDdPUsers');
         $this->addRelation('PuTrackDrPUser', 'Politizr\\Model\\PUTrackDR', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', 'CASCADE', 'PuTrackDrPUsers');
         $this->addRelation('PUBadge', 'Politizr\\Model\\PUBadge', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', 'CASCADE', 'PUBadges');
@@ -142,6 +144,8 @@ class PUserTableMap extends TableMap
         $this->addRelation('PUTrackURelatedByPUserIdSource', 'Politizr\\Model\\PUTrackU', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id_source', ), 'CASCADE', null, 'PUTrackUsRelatedByPUserIdSource');
         $this->addRelation('PUTrackURelatedByPUserIdDest', 'Politizr\\Model\\PUTrackU', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id_dest', ), 'CASCADE', null, 'PUTrackUsRelatedByPUserIdDest');
         $this->addRelation('PuFollowDdPDDebate', 'Politizr\\Model\\PDDebate', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PuFollowDdPDDebates');
+        $this->addRelation('PuBookmarkDdPDDebate', 'Politizr\\Model\\PDDebate', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PuBookmarkDdPDDebates');
+        $this->addRelation('PuBookmarkDrPDReaction', 'Politizr\\Model\\PDReaction', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PuBookmarkDrPDReactions');
         $this->addRelation('PuTrackDdPDDebate', 'Politizr\\Model\\PDDebate', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PuTrackDdPDDebates');
         $this->addRelation('PuTrackDrPDReaction', 'Politizr\\Model\\PDReaction', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PuTrackDrPDReactions');
         $this->addRelation('PRBadge', 'Politizr\\Model\\PRBadge', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PRBadges');

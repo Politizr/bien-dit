@@ -21,6 +21,7 @@ use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReaction;
 use Politizr\Model\PMDebateHistoric;
 use Politizr\Model\PTag;
+use Politizr\Model\PUBookmarkDD;
 use Politizr\Model\PUFollowDD;
 use Politizr\Model\PUTrackDD;
 use Politizr\Model\PUser;
@@ -83,6 +84,10 @@ use Politizr\Model\PUser;
  * @method PDDebateQuery leftJoinPuFollowDdPDDebate($relationAlias = null) Adds a LEFT JOIN clause to the query using the PuFollowDdPDDebate relation
  * @method PDDebateQuery rightJoinPuFollowDdPDDebate($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PuFollowDdPDDebate relation
  * @method PDDebateQuery innerJoinPuFollowDdPDDebate($relationAlias = null) Adds a INNER JOIN clause to the query using the PuFollowDdPDDebate relation
+ *
+ * @method PDDebateQuery leftJoinPuBookmarkDdPDDebate($relationAlias = null) Adds a LEFT JOIN clause to the query using the PuBookmarkDdPDDebate relation
+ * @method PDDebateQuery rightJoinPuBookmarkDdPDDebate($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PuBookmarkDdPDDebate relation
+ * @method PDDebateQuery innerJoinPuBookmarkDdPDDebate($relationAlias = null) Adds a INNER JOIN clause to the query using the PuBookmarkDdPDDebate relation
  *
  * @method PDDebateQuery leftJoinPuTrackDdPDDebate($relationAlias = null) Adds a LEFT JOIN clause to the query using the PuTrackDdPDDebate relation
  * @method PDDebateQuery rightJoinPuTrackDdPDDebate($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PuTrackDdPDDebate relation
@@ -1251,6 +1256,80 @@ abstract class BasePDDebateQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query by a related PUBookmarkDD object
+     *
+     * @param   PUBookmarkDD|PropelObjectCollection $pUBookmarkDD  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PDDebateQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPuBookmarkDdPDDebate($pUBookmarkDD, $comparison = null)
+    {
+        if ($pUBookmarkDD instanceof PUBookmarkDD) {
+            return $this
+                ->addUsingAlias(PDDebatePeer::ID, $pUBookmarkDD->getPDDebateId(), $comparison);
+        } elseif ($pUBookmarkDD instanceof PropelObjectCollection) {
+            return $this
+                ->usePuBookmarkDdPDDebateQuery()
+                ->filterByPrimaryKeys($pUBookmarkDD->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPuBookmarkDdPDDebate() only accepts arguments of type PUBookmarkDD or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PuBookmarkDdPDDebate relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PDDebateQuery The current query, for fluid interface
+     */
+    public function joinPuBookmarkDdPDDebate($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PuBookmarkDdPDDebate');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PuBookmarkDdPDDebate');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PuBookmarkDdPDDebate relation PUBookmarkDD object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PUBookmarkDDQuery A secondary query class using the current class as primary query
+     */
+    public function usePuBookmarkDdPDDebateQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPuBookmarkDdPDDebate($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PuBookmarkDdPDDebate', '\Politizr\Model\PUBookmarkDDQuery');
+    }
+
+    /**
      * Filter the query by a related PUTrackDD object
      *
      * @param   PUTrackDD|PropelObjectCollection $pUTrackDD  the related object to use as filter
@@ -1634,6 +1713,23 @@ abstract class BasePDDebateQuery extends ModelCriteria
         return $this
             ->usePuFollowDdPDDebateQuery()
             ->filterByPuFollowDdPUser($pUser, $comparison)
+            ->endUse();
+    }
+
+    /**
+     * Filter the query by a related PUser object
+     * using the p_u_bookmark_d_d table as cross reference
+     *
+     * @param   PUser $pUser the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return   PDDebateQuery The current query, for fluid interface
+     */
+    public function filterByPuBookmarkDdPUser($pUser, $comparison = Criteria::EQUAL)
+    {
+        return $this
+            ->usePuBookmarkDdPDDebateQuery()
+            ->filterByPuBookmarkDdPUser($pUser, $comparison)
             ->endUse();
     }
 
