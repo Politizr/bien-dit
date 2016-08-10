@@ -27,6 +27,7 @@ use Politizr\FrontBundle\Form\Type\PUserConnectionType;
 use Politizr\FrontBundle\Form\Type\PUCurrentQOType;
 use Politizr\FrontBundle\Form\Type\PUMandateType;
 use Politizr\FrontBundle\Form\Type\PUserBackPhotoInfoType;
+use Politizr\FrontBundle\Form\Type\PUserLocalizationType;
 
 /**
  * User controller
@@ -168,6 +169,7 @@ class UserController extends Controller
         $formPerso1 = $this->createForm(new PUserIdentityType($user), $user);
         $formPerso2 = $this->createForm(new PUserEmailType(), $user);
         $formPerso3 = $this->createForm(new PUserConnectionType(), $user);
+        $formPerso4 = $this->createForm(new PUserLocalizationType($user), $user);
 
         // $formIdCheck = $this->createForm(new PUserIdCheckType(), $user);
 
@@ -176,6 +178,7 @@ class UserController extends Controller
             'formPerso1' => $formPerso1->createView(),
             'formPerso2' => $formPerso2->createView(),
             'formPerso3' => $formPerso3->createView(),
+            'formPerso4' => $formPerso4->createView(),
             // 'formIdCheck' => $formIdCheck->createView(),
         ));
     }

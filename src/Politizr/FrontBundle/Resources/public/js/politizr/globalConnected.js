@@ -223,3 +223,43 @@ function modalHelpUs() {
     });
 };
 
+// ******************************************************************* //
+//                    LOCALIZATION MSG FORM                            //
+// ******************************************************************* //
+
+// User localization vars
+var service = 'localization';
+var xhrRouteCity = ROUTE_CITY_LISTING;
+
+// user profile perso update
+$("body").on("click", "button[action='updateLocalization']", function(e) {
+    // console.log('click updateLocalization');
+
+    var form = $(this).closest('form');
+    var localLoader = $(this).closest('.formBlock').find('.ajaxLoader').first();
+
+    var xhrPath = getXhrPath(
+        ROUTE_USER_PERSO_UPDATE,
+        'user',
+        'userPersoUpdate',
+        RETURN_BOOLEAN
+    );
+
+    return xhrCall(
+        document,
+        form.serialize(),
+        xhrPath,
+        localLoader
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
+            $('#alertLocalization').html('');
+            $('#alertLocalization').hide();
+        }
+        localLoader.hide();
+    });
+});
+
+

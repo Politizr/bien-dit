@@ -42,7 +42,8 @@ class ActivityListener
         if ($this->securityTokenStorage->getToken()) {
             $user = $this->securityTokenStorage->getToken()->getUser();
  
-            // We are using a delay during wich the user will be considered as still active, in order to avoid too much UPDATE in the database
+            // Update the user "lastActivity" on each request
+            // use a delay during wich the user will be considered as still active, in order to avoid too much upd in db
             $delay = new \DateTime();
             $delay->setTimestamp(strtotime('2 minutes ago'));
  

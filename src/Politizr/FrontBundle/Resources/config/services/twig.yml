@@ -49,6 +49,7 @@ services:
             - @router
             - @templating
             - @politizr.functional.document
+            - @form.factory
             - @politizr.tools.global
             - @logger
         tags:

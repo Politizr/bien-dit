@@ -35,6 +35,7 @@ use Politizr\FrontBundle\Form\Type\PUserConnectionType;
 use Politizr\FrontBundle\Form\Type\PUCurrentQOType;
 use Politizr\FrontBundle\Form\Type\PUMandateType;
 use Politizr\FrontBundle\Form\Type\PUserBackPhotoInfoType;
+use Politizr\FrontBundle\Form\Type\PUserLocalizationType;
 
 /**
  * XHR service for user management.
@@ -470,6 +471,8 @@ class XhrUser
             $form = $this->formFactory->create(new PUserEmailType(), $user);
         } elseif ($formTypeId == 3) {
             $form = $this->formFactory->create(new PUserConnectionType(), $user);
+        } elseif ($formTypeId == 4) {
+            $form = $this->formFactory->create(new PUserLocalizationType($user), $user);
         } else {
             throw new InconsistentDataException(sprintf('Invalid form type %s', $formTypeId));
         }
@@ -498,6 +501,9 @@ class XhrUser
                     // Envoi email
                     $dispatcher = $this->eventDispatcher->dispatch('upd_password_email', new GenericEvent($user));
                 }
+            } elseif ($formTypeId == 4) {
+                // upd localization infos
+                $this->localizationManager->updateUserCity($user, $form->get('localization')->getData()['city']);
             }
         } else {
             $errors = StudioEchoUtils::getAjaxFormErrors($form);

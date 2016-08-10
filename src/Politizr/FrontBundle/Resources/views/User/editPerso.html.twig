@@ -3,6 +3,19 @@
 
 {% block title %}Mes informations personnelles - {{ parent() }}{% endblock title %}
 
+{% block headerMsgLocalization %}
+    {% if not app.user.pLCityId %}
+        <div id="alertLocalization">
+            <div class="center">
+                <i class="icon-info"></i>
+                <div id="localizationMsg">
+                    Merci de compléter vos données de localisation.
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
 {% block content %}
     <div id="content">
         <div class="accountEdition">
@@ -32,7 +45,6 @@
                         {{ form_row(formPerso1.firstname, { 'attr': { 'placeholder': 'Prénom' }}) }}
                         {{ form_row(formPerso1.name, { 'attr': { 'placeholder': 'Nom' }}) }}
                         {{ form_row(formPerso1.birthday, { 'attr': { 'placeholder': 'JJ/MM/AAAA' }}) }}
-                        {{ form_widget(formPerso1.localization) }}
                         {{ form_rest(formPerso1) }}
             
                         {% if not app.user.validated %}
@@ -53,6 +65,26 @@
                     {% endif %}
                 </div>
             </div>
+
+            <div id="boxPerso4">
+                <div class="formBlock withLoaderInside">
+                    {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+                    <div class="formBlockHeader">
+                        <label>Votre localisation</label>
+                    </div>
+
+                    <form name="user" method="post" id="formPerso4">
+                        {{ form_errors(formPerso4) }}
+
+                        {{ form_widget(formPerso4.localization) }}
+                        {{ form_rest(formPerso4) }}
+            
+                        <button type="button" action="submitPerso">
+                            Mettre à jour
+                        </button>
+                    </form>
+                </div>
+            </div>            
 
             <div id="boxPerso2">
                 <div class="formBlock withLoaderInside">

@@ -1,0 +1,20 @@
+<div id="alertLocalization">
+    <div class="center">
+        <i class="icon-info"></i>
+        <div id="localizationMsg">
+            <div class="formBlock withLoaderInside">
+                {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+                <form name="userLocalization" method="post" id="formPerso4">
+                    {{ form_errors(form) }}
+
+                    {{ form_widget(form.localization) }}
+                    {{ form_rest(form) }}
+
+                    <button type="button" action="updateLocalization">
+                        Mettre à jour
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

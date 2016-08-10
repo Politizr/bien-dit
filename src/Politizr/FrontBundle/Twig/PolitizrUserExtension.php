@@ -17,6 +17,8 @@ use Politizr\Model\PUser;
 use Politizr\Model\PUFollowUQuery;
 use Politizr\Model\PUserQuery;
 
+use Politizr\FrontBundle\Form\Type\PUserLocalizationType;
+
 /**
  * User's twig extension
  *
@@ -31,6 +33,9 @@ class PolitizrUserExtension extends \Twig_Extension
     private $templating;
 
     private $documentService;
+    
+    private $formFactory;
+
     private $globalTools;
 
     private $logger;
@@ -41,6 +46,7 @@ class PolitizrUserExtension extends \Twig_Extension
      * @router
      * @templating
      * @politizr.functional.document
+     * @form.factory
      * @politizr.tools.global
      * @logger
      */
@@ -50,6 +56,7 @@ class PolitizrUserExtension extends \Twig_Extension
         $router,
         $templating,
         $documentService,
+        $formFactory,
         $globalTools,
         $logger
     ) {
@@ -60,6 +67,9 @@ class PolitizrUserExtension extends \Twig_Extension
         $this->templating = $templating;
 
         $this->documentService = $documentService;
+
+        $this->formFactory = $formFactory;
+        
         $this->globalTools = $globalTools;
 
         $this->logger = $logger;
@@ -168,6 +178,11 @@ class PolitizrUserExtension extends \Twig_Extension
             'profileSuffix'  => new \Twig_SimpleFunction(
                 'profileSuffix',
                 array($this, 'profileSuffix'),
+                array('is_safe' => array('html'))
+            ),
+            'fillLocalization'  => new \Twig_SimpleFunction(
+                'fillLocalization',
+                array($this, 'fillLocalization'),
                 array('is_safe' => array('html'))
             ),
         );
@@ -758,6 +773,35 @@ class PolitizrUserExtension extends \Twig_Extension
         // $this->logger->info('*** profileSuffix');
 
         return $this->globalTools->computeProfileSuffix();
+    }
+
+
+    /**
+     * Display an alert box to fill localization if user doesn't have already
+     *
+     * @param PUser $user
+     * @return string
+     */
+    public function fillLocalization()
+    {
+        // $this->logger->info('*** fillLocalization');
+
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        
+        if (!$user->getPLCityId()) {
+            $form = $this->formFactory->create(new PUserLocalizationType($user), $user);
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:User:_alertFillLocalization.html.twig',
+                array(
+                    'form' => $form->createView(),
+                )
+            );
+
+            return $html;
+        }
+
+        return;
     }
 
     /**

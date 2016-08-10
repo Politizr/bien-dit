@@ -69,13 +69,6 @@ class PUserIdentityType extends AbstractType
             'disabled' => $this->user->getValidated()? true : false ,
             'constraints' => new NotBlank(array('message' => 'Date de naissance obligatoire.')),
         ));
-
-        // Localization type
-        $builder->add('localization', LocalizationChoiceType::class, array(
-            'required' => true,
-            'mapped' => false,
-            'city_id' => $this->user->getPLCityId(),
-        ));
     }
 
     /**

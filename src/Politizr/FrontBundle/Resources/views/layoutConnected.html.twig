@@ -22,6 +22,7 @@
 {% endblock header %}
 
 {% block headerMsg %}
+    {# ID check #}
     {% if app.session.flashbag.has('idcheck/success') and app.session.flashbag.get('idcheck/success')[0] %}
         <div id="alertIdCheckOk">
             <div class="idCheckOkClose">
@@ -55,6 +56,9 @@
             </div>
         </div>
     {% endif %}
+    {% block headerMsgLocalization %}
+        {{  fillLocalization() }}
+    {% endblock %}
 {% endblock %}
 
 {% block main %}
@@ -91,9 +95,9 @@
     {{ parent() }}
 
     {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/xhr.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/global.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/globalConnected.js'
-        '@PolitizrFrontBundle/Resources/public/js/politizr/xhr.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/bubbles.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/autocomplete-tools.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/notification/display.js'
@@ -103,6 +107,7 @@
         '@PolitizrFrontBundle/Resources/public/js/politizr/monitoring/askForUpdate.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/reputation/score.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/reputation/notation.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/localization/edit.js'
         filter='uglifyjs2' %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}

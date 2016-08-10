@@ -17,6 +17,7 @@ use Politizr\Model\PLCityQuery;
 
 /**
  * Localization custom form type
+ * /!\ instanciation must be created by service only
  *
  * @author Lionel Bouzonville
  */

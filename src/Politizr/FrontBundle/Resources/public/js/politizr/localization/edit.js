@@ -67,4 +67,3 @@ function initCities(contextZone, departmentUuid)
         }
     });
 }
-

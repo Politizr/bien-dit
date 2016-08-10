@@ -68,12 +68,11 @@ services:
             - { name: kernel.event_listener, event: b_comment_note_neg }
             - { name: kernel.event_listener, event: b_user_follow }
 
-    politizr.user.activity:
+    politizr.listener.activity:
         class:      Politizr\FrontBundle\Listener\ActivityListener
         arguments:  [ @security.token_storage ]
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onCoreController }
-
 
     politizr.listener.kernel:
         class:      Politizr\FrontBundle\Listener\ExceptionListener
