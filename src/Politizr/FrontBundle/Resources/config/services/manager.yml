@@ -16,6 +16,10 @@ services:
         class: Politizr\FrontBundle\Lib\Manager\TagManager
         arguments: [ @logger ]
 
+    politizr.manager.localization:
+        class: Politizr\FrontBundle\Lib\Manager\LocalizationManager
+        arguments: [ @logger ]
+
     politizr.manager.order:
         class: Politizr\FrontBundle\Lib\Manager\OrderManager
         arguments: [ @logger ]

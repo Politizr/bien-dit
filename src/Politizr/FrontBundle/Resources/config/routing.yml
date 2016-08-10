@@ -46,7 +46,6 @@ RobotsTxt:
     pattern:  /robots.txt
     defaults: { _controller: PolitizrFrontBundle:Public:robotsTxt }
 
-
 # GENERIC XHR
 XhrGeneric:
     pattern:  /xhr/{xhrRoute}/{xhrService}/{xhrMethod}.{xhrType}.json

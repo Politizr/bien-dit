@@ -57,6 +57,9 @@ twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
 
+    form_themes:
+        - 'form/fields.html.twig'
+
     # App variables
 #    globals:
 #      image_path_project:     %image_path_project%
@@ -134,6 +137,7 @@ propel:
         propel.behavior.typehintable.class: "vendor.TypehintableBehavior.src.TypehintableBehavior"
         propel.behavior.equal_nest.class: "vendor.EqualNestBehavior.src.EqualNestBehavior"
         propel.behavior.uuid.class: "vendor.badlamer.propel-uuid-behavior.src.UuidBehavior"
+        propel.behavior.geocodable.class: "path.to.GeocodableBehavior"
 
     dbal:
         default_connection:         default
@@ -589,19 +593,6 @@ bazinga_faker:
 
                 Online:                 { method: boolean, parameters: [ 100 ] }
 
-
-# Géoloc
-bazinga_geocoder:
-    fake_ip:
-        enabled:                        false
-        ip:                             ~
-    providers:
-        geoip:                          []
-        free_geo_ip:                    []
-        google_maps:
-            locale:                     ~
-            region:                     FR
-            use_ssl:                    false
 
 # OAuth Instagram
 hwi_oauth:

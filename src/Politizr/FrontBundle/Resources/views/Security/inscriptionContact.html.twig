@@ -41,6 +41,7 @@
                         {% if (form.email is defined) %}
                             {{ form_row(form.email) }}
                         {% endif %}
+                        {{ form_widget(form.localization) }}
                         <div class="coloredBg">
                             {% if (form.cgu is defined) %}
                                 <div class="control-group">
@@ -64,3 +65,14 @@
         </center>
     </div>
 {% endblock main %}
+
+{% block javascriptFooter %}
+    {{ parent() }}
+
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/localization/edit.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/pages/inscriptionContact.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock javascriptFooter %}

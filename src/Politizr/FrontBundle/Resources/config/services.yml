@@ -1,5 +1,6 @@
 imports:
     - { resource: services/connection.yml }
+    - { resource: services/form.yml }
     - { resource: services/tools.yml }
     - { resource: services/routing.yml }
     - { resource: services/functional.yml }

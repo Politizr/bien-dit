@@ -79,6 +79,15 @@ services:
             - @politizr.manager.tag
             - @logger
 
+    politizr.xhr.localization:
+        class: Politizr\FrontBundle\Lib\Xhr\XhrLocalization
+        arguments:
+            - @security.token_storage
+            - @templating
+            - @form.factory
+            - @politizr.manager.localization
+            - @logger
+
     politizr.xhr.user:
         class: Politizr\FrontBundle\Lib\Xhr\XhrUser
         arguments:
@@ -91,6 +100,7 @@ services:
             - @form.factory
             - @fos_user.util.email_canonicalizer
             - @politizr.manager.user
+            - @politizr.manager.localization
             - @politizr.functional.user
             - @politizr.functional.timeline
             - @politizr.tools.global

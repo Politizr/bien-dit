@@ -136,7 +136,7 @@ ORDER BY nb_tagged_objects desc
 
 
     /**
-     * Get array of [id, tag]
+     * Get array of [uuid, tag]
      *
      * @param integer $tagTypeId
      * @param boolean $used

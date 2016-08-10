@@ -17,6 +17,8 @@ use Politizr\Model\PDDTaggedT;
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDRTaggedT;
 use Politizr\Model\PDReaction;
+use Politizr\Model\PLDepartment;
+use Politizr\Model\PLRegion;
 use Politizr\Model\PTTagType;
 use Politizr\Model\PTag;
 use Politizr\Model\PTagPeer;
@@ -82,6 +84,14 @@ use Politizr\Model\PUser;
  * @method PTagQuery leftJoinPDRTaggedT($relationAlias = null) Adds a LEFT JOIN clause to the query using the PDRTaggedT relation
  * @method PTagQuery rightJoinPDRTaggedT($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PDRTaggedT relation
  * @method PTagQuery innerJoinPDRTaggedT($relationAlias = null) Adds a INNER JOIN clause to the query using the PDRTaggedT relation
+ *
+ * @method PTagQuery leftJoinPLRegion($relationAlias = null) Adds a LEFT JOIN clause to the query using the PLRegion relation
+ * @method PTagQuery rightJoinPLRegion($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PLRegion relation
+ * @method PTagQuery innerJoinPLRegion($relationAlias = null) Adds a INNER JOIN clause to the query using the PLRegion relation
+ *
+ * @method PTagQuery leftJoinPLDepartment($relationAlias = null) Adds a LEFT JOIN clause to the query using the PLDepartment relation
+ * @method PTagQuery rightJoinPLDepartment($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PLDepartment relation
+ * @method PTagQuery innerJoinPLDepartment($relationAlias = null) Adds a INNER JOIN clause to the query using the PLDepartment relation
  *
  * @method PTag findOne(PropelPDO $con = null) Return the first PTag matching the query
  * @method PTag findOneOrCreate(PropelPDO $con = null) Return the first PTag matching the query, or a new PTag object populated from the query conditions when no match is found
@@ -1276,6 +1286,154 @@ abstract class BasePTagQuery extends ModelCriteria
         return $this
             ->joinPDRTaggedT($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'PDRTaggedT', '\Politizr\Model\PDRTaggedTQuery');
+    }
+
+    /**
+     * Filter the query by a related PLRegion object
+     *
+     * @param   PLRegion|PropelObjectCollection $pLRegion  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PTagQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPLRegion($pLRegion, $comparison = null)
+    {
+        if ($pLRegion instanceof PLRegion) {
+            return $this
+                ->addUsingAlias(PTagPeer::ID, $pLRegion->getPTagId(), $comparison);
+        } elseif ($pLRegion instanceof PropelObjectCollection) {
+            return $this
+                ->usePLRegionQuery()
+                ->filterByPrimaryKeys($pLRegion->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPLRegion() only accepts arguments of type PLRegion or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PLRegion relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PTagQuery The current query, for fluid interface
+     */
+    public function joinPLRegion($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PLRegion');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PLRegion');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PLRegion relation PLRegion object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PLRegionQuery A secondary query class using the current class as primary query
+     */
+    public function usePLRegionQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPLRegion($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PLRegion', '\Politizr\Model\PLRegionQuery');
+    }
+
+    /**
+     * Filter the query by a related PLDepartment object
+     *
+     * @param   PLDepartment|PropelObjectCollection $pLDepartment  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PTagQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPLDepartment($pLDepartment, $comparison = null)
+    {
+        if ($pLDepartment instanceof PLDepartment) {
+            return $this
+                ->addUsingAlias(PTagPeer::ID, $pLDepartment->getPTagId(), $comparison);
+        } elseif ($pLDepartment instanceof PropelObjectCollection) {
+            return $this
+                ->usePLDepartmentQuery()
+                ->filterByPrimaryKeys($pLDepartment->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPLDepartment() only accepts arguments of type PLDepartment or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PLDepartment relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PTagQuery The current query, for fluid interface
+     */
+    public function joinPLDepartment($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PLDepartment');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PLDepartment');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PLDepartment relation PLDepartment object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PLDepartmentQuery A secondary query class using the current class as primary query
+     */
+    public function usePLDepartmentQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPLDepartment($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PLDepartment', '\Politizr\Model\PLDepartmentQuery');
     }
 
     /**

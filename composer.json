@@ -33,7 +33,7 @@
 
         "guzzlehttp/guzzle": "^6.2",
 
-        "willdurand/geocoder-bundle": "3.0.*",
+        "willdurand/geocoder-bundle": "^4.1",
 
         "friendsofsymfony/user-bundle": "~2.0@dev",
 

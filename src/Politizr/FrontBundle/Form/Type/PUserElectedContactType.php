@@ -103,6 +103,12 @@ class PUserElectedContactType extends AbstractType
             });
         }
 
+        // Localization type
+        $builder->add('localization', LocalizationChoiceType::class, array(
+            'required' => true,
+            'mapped' => false,
+        ));
+
         if ($this->oAuth) {
             $builder->add('elected', 'checkbox', array(
                 'required' => true,

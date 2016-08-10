@@ -17,6 +17,8 @@ use Politizr\Model\PUserArchiveQuery;
 /**
  * @method PUserArchiveQuery orderById($order = Criteria::ASC) Order by the id column
  * @method PUserArchiveQuery orderByUuid($order = Criteria::ASC) Order by the uuid column
+ * @method PUserArchiveQuery orderByPUStatusId($order = Criteria::ASC) Order by the p_u_status_id column
+ * @method PUserArchiveQuery orderByPLCityId($order = Criteria::ASC) Order by the p_l_city_id column
  * @method PUserArchiveQuery orderByProvider($order = Criteria::ASC) Order by the provider column
  * @method PUserArchiveQuery orderByProviderId($order = Criteria::ASC) Order by the provider_id column
  * @method PUserArchiveQuery orderByNickname($order = Criteria::ASC) Order by the nickname column
@@ -38,7 +40,6 @@ use Politizr\Model\PUserArchiveQuery;
  * @method PUserArchiveQuery orderByCredentialsExpireAt($order = Criteria::ASC) Order by the credentials_expire_at column
  * @method PUserArchiveQuery orderByRoles($order = Criteria::ASC) Order by the roles column
  * @method PUserArchiveQuery orderByLastActivity($order = Criteria::ASC) Order by the last_activity column
- * @method PUserArchiveQuery orderByPUStatusId($order = Criteria::ASC) Order by the p_u_status_id column
  * @method PUserArchiveQuery orderByFileName($order = Criteria::ASC) Order by the file_name column
  * @method PUserArchiveQuery orderByBackFileName($order = Criteria::ASC) Order by the back_file_name column
  * @method PUserArchiveQuery orderByCopyright($order = Criteria::ASC) Order by the copyright column
@@ -72,6 +73,8 @@ use Politizr\Model\PUserArchiveQuery;
  *
  * @method PUserArchiveQuery groupById() Group by the id column
  * @method PUserArchiveQuery groupByUuid() Group by the uuid column
+ * @method PUserArchiveQuery groupByPUStatusId() Group by the p_u_status_id column
+ * @method PUserArchiveQuery groupByPLCityId() Group by the p_l_city_id column
  * @method PUserArchiveQuery groupByProvider() Group by the provider column
  * @method PUserArchiveQuery groupByProviderId() Group by the provider_id column
  * @method PUserArchiveQuery groupByNickname() Group by the nickname column
@@ -93,7 +96,6 @@ use Politizr\Model\PUserArchiveQuery;
  * @method PUserArchiveQuery groupByCredentialsExpireAt() Group by the credentials_expire_at column
  * @method PUserArchiveQuery groupByRoles() Group by the roles column
  * @method PUserArchiveQuery groupByLastActivity() Group by the last_activity column
- * @method PUserArchiveQuery groupByPUStatusId() Group by the p_u_status_id column
  * @method PUserArchiveQuery groupByFileName() Group by the file_name column
  * @method PUserArchiveQuery groupByBackFileName() Group by the back_file_name column
  * @method PUserArchiveQuery groupByCopyright() Group by the copyright column
@@ -133,6 +135,8 @@ use Politizr\Model\PUserArchiveQuery;
  * @method PUserArchive findOneOrCreate(PropelPDO $con = null) Return the first PUserArchive matching the query, or a new PUserArchive object populated from the query conditions when no match is found
  *
  * @method PUserArchive findOneByUuid(string $uuid) Return the first PUserArchive filtered by the uuid column
+ * @method PUserArchive findOneByPUStatusId(int $p_u_status_id) Return the first PUserArchive filtered by the p_u_status_id column
+ * @method PUserArchive findOneByPLCityId(int $p_l_city_id) Return the first PUserArchive filtered by the p_l_city_id column
  * @method PUserArchive findOneByProvider(string $provider) Return the first PUserArchive filtered by the provider column
  * @method PUserArchive findOneByProviderId(string $provider_id) Return the first PUserArchive filtered by the provider_id column
  * @method PUserArchive findOneByNickname(string $nickname) Return the first PUserArchive filtered by the nickname column
@@ -154,7 +158,6 @@ use Politizr\Model\PUserArchiveQuery;
  * @method PUserArchive findOneByCredentialsExpireAt(string $credentials_expire_at) Return the first PUserArchive filtered by the credentials_expire_at column
  * @method PUserArchive findOneByRoles(array $roles) Return the first PUserArchive filtered by the roles column
  * @method PUserArchive findOneByLastActivity(string $last_activity) Return the first PUserArchive filtered by the last_activity column
- * @method PUserArchive findOneByPUStatusId(int $p_u_status_id) Return the first PUserArchive filtered by the p_u_status_id column
  * @method PUserArchive findOneByFileName(string $file_name) Return the first PUserArchive filtered by the file_name column
  * @method PUserArchive findOneByBackFileName(string $back_file_name) Return the first PUserArchive filtered by the back_file_name column
  * @method PUserArchive findOneByCopyright(string $copyright) Return the first PUserArchive filtered by the copyright column
@@ -188,6 +191,8 @@ use Politizr\Model\PUserArchiveQuery;
  *
  * @method array findById(int $id) Return PUserArchive objects filtered by the id column
  * @method array findByUuid(string $uuid) Return PUserArchive objects filtered by the uuid column
+ * @method array findByPUStatusId(int $p_u_status_id) Return PUserArchive objects filtered by the p_u_status_id column
+ * @method array findByPLCityId(int $p_l_city_id) Return PUserArchive objects filtered by the p_l_city_id column
  * @method array findByProvider(string $provider) Return PUserArchive objects filtered by the provider column
  * @method array findByProviderId(string $provider_id) Return PUserArchive objects filtered by the provider_id column
  * @method array findByNickname(string $nickname) Return PUserArchive objects filtered by the nickname column
@@ -209,7 +214,6 @@ use Politizr\Model\PUserArchiveQuery;
  * @method array findByCredentialsExpireAt(string $credentials_expire_at) Return PUserArchive objects filtered by the credentials_expire_at column
  * @method array findByRoles(array $roles) Return PUserArchive objects filtered by the roles column
  * @method array findByLastActivity(string $last_activity) Return PUserArchive objects filtered by the last_activity column
- * @method array findByPUStatusId(int $p_u_status_id) Return PUserArchive objects filtered by the p_u_status_id column
  * @method array findByFileName(string $file_name) Return PUserArchive objects filtered by the file_name column
  * @method array findByBackFileName(string $back_file_name) Return PUserArchive objects filtered by the back_file_name column
  * @method array findByCopyright(string $copyright) Return PUserArchive objects filtered by the copyright column
@@ -345,7 +349,7 @@ abstract class BasePUserArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `last_activity`, `p_u_status_id`, `file_name`, `back_file_name`, `copyright`, `gender`, `firstname`, `name`, `birthday`, `subtitle`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_connected_days`, `nb_views`, `qualified`, `validated`, `nb_id_check`, `online`, `homepage`, `banned`, `banned_nb_days_left`, `banned_nb_total`, `abuse_level`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_user_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_u_status_id`, `p_l_city_id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `last_activity`, `file_name`, `back_file_name`, `copyright`, `gender`, `firstname`, `name`, `birthday`, `subtitle`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_connected_days`, `nb_views`, `qualified`, `validated`, `nb_id_check`, `online`, `homepage`, `banned`, `banned_nb_days_left`, `banned_nb_total`, `abuse_level`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_user_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -503,6 +507,90 @@ abstract class BasePUserArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PUserArchivePeer::UUID, $uuid, $comparison);
+    }
+
+    /**
+     * Filter the query on the p_u_status_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPUStatusId(1234); // WHERE p_u_status_id = 1234
+     * $query->filterByPUStatusId(array(12, 34)); // WHERE p_u_status_id IN (12, 34)
+     * $query->filterByPUStatusId(array('min' => 12)); // WHERE p_u_status_id >= 12
+     * $query->filterByPUStatusId(array('max' => 12)); // WHERE p_u_status_id <= 12
+     * </code>
+     *
+     * @param     mixed $pUStatusId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserArchiveQuery The current query, for fluid interface
+     */
+    public function filterByPUStatusId($pUStatusId = null, $comparison = null)
+    {
+        if (is_array($pUStatusId)) {
+            $useMinMax = false;
+            if (isset($pUStatusId['min'])) {
+                $this->addUsingAlias(PUserArchivePeer::P_U_STATUS_ID, $pUStatusId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($pUStatusId['max'])) {
+                $this->addUsingAlias(PUserArchivePeer::P_U_STATUS_ID, $pUStatusId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PUserArchivePeer::P_U_STATUS_ID, $pUStatusId, $comparison);
+    }
+
+    /**
+     * Filter the query on the p_l_city_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPLCityId(1234); // WHERE p_l_city_id = 1234
+     * $query->filterByPLCityId(array(12, 34)); // WHERE p_l_city_id IN (12, 34)
+     * $query->filterByPLCityId(array('min' => 12)); // WHERE p_l_city_id >= 12
+     * $query->filterByPLCityId(array('max' => 12)); // WHERE p_l_city_id <= 12
+     * </code>
+     *
+     * @param     mixed $pLCityId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserArchiveQuery The current query, for fluid interface
+     */
+    public function filterByPLCityId($pLCityId = null, $comparison = null)
+    {
+        if (is_array($pLCityId)) {
+            $useMinMax = false;
+            if (isset($pLCityId['min'])) {
+                $this->addUsingAlias(PUserArchivePeer::P_L_CITY_ID, $pLCityId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($pLCityId['max'])) {
+                $this->addUsingAlias(PUserArchivePeer::P_L_CITY_ID, $pLCityId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PUserArchivePeer::P_L_CITY_ID, $pLCityId, $comparison);
     }
 
     /**
@@ -1226,48 +1314,6 @@ abstract class BasePUserArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PUserArchivePeer::LAST_ACTIVITY, $lastActivity, $comparison);
-    }
-
-    /**
-     * Filter the query on the p_u_status_id column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByPUStatusId(1234); // WHERE p_u_status_id = 1234
-     * $query->filterByPUStatusId(array(12, 34)); // WHERE p_u_status_id IN (12, 34)
-     * $query->filterByPUStatusId(array('min' => 12)); // WHERE p_u_status_id >= 12
-     * $query->filterByPUStatusId(array('max' => 12)); // WHERE p_u_status_id <= 12
-     * </code>
-     *
-     * @param     mixed $pUStatusId The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PUserArchiveQuery The current query, for fluid interface
-     */
-    public function filterByPUStatusId($pUStatusId = null, $comparison = null)
-    {
-        if (is_array($pUStatusId)) {
-            $useMinMax = false;
-            if (isset($pUStatusId['min'])) {
-                $this->addUsingAlias(PUserArchivePeer::P_U_STATUS_ID, $pUStatusId['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($pUStatusId['max'])) {
-                $this->addUsingAlias(PUserArchivePeer::P_U_STATUS_ID, $pUStatusId['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(PUserArchivePeer::P_U_STATUS_ID, $pUStatusId, $comparison);
     }
 
     /**

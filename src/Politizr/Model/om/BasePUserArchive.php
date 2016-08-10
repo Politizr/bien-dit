@@ -51,6 +51,18 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
     protected $uuid;
 
     /**
+     * The value for the p_u_status_id field.
+     * @var        int
+     */
+    protected $p_u_status_id;
+
+    /**
+     * The value for the p_l_city_id field.
+     * @var        int
+     */
+    protected $p_l_city_id;
+
+    /**
      * The value for the provider field.
      * @var        string
      */
@@ -186,12 +198,6 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
      * @var        string
      */
     protected $last_activity;
-
-    /**
-     * The value for the p_u_status_id field.
-     * @var        int
-     */
-    protected $p_u_status_id;
 
     /**
      * The value for the file_name field.
@@ -441,6 +447,28 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
     {
 
         return $this->uuid;
+    }
+
+    /**
+     * Get the [p_u_status_id] column value.
+     *
+     * @return int
+     */
+    public function getPUStatusId()
+    {
+
+        return $this->p_u_status_id;
+    }
+
+    /**
+     * Get the [p_l_city_id] column value.
+     *
+     * @return int
+     */
+    public function getPLCityId()
+    {
+
+        return $this->p_l_city_id;
     }
 
     /**
@@ -835,17 +863,6 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
 
         return $dt->format($format);
 
-    }
-
-    /**
-     * Get the [p_u_status_id] column value.
-     *
-     * @return int
-     */
-    public function getPUStatusId()
-    {
-
-        return $this->p_u_status_id;
     }
 
     /**
@@ -1374,6 +1391,48 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
     } // setUuid()
 
     /**
+     * Set the value of [p_u_status_id] column.
+     *
+     * @param  int $v new value
+     * @return PUserArchive The current object (for fluent API support)
+     */
+    public function setPUStatusId($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->p_u_status_id !== $v) {
+            $this->p_u_status_id = $v;
+            $this->modifiedColumns[] = PUserArchivePeer::P_U_STATUS_ID;
+        }
+
+
+        return $this;
+    } // setPUStatusId()
+
+    /**
+     * Set the value of [p_l_city_id] column.
+     *
+     * @param  int $v new value
+     * @return PUserArchive The current object (for fluent API support)
+     */
+    public function setPLCityId($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->p_l_city_id !== $v) {
+            $this->p_l_city_id = $v;
+            $this->modifiedColumns[] = PUserArchivePeer::P_L_CITY_ID;
+        }
+
+
+        return $this;
+    } // setPLCityId()
+
+    /**
      * Set the value of [provider] column.
      *
      * @param  string $v new value
@@ -1886,27 +1945,6 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
 
         return $this;
     } // setLastActivity()
-
-    /**
-     * Set the value of [p_u_status_id] column.
-     *
-     * @param  int $v new value
-     * @return PUserArchive The current object (for fluent API support)
-     */
-    public function setPUStatusId($v)
-    {
-        if ($v !== null && is_numeric($v)) {
-            $v = (int) $v;
-        }
-
-        if ($this->p_u_status_id !== $v) {
-            $this->p_u_status_id = $v;
-            $this->modifiedColumns[] = PUserArchivePeer::P_U_STATUS_ID;
-        }
-
-
-        return $this;
-    } // setPUStatusId()
 
     /**
      * Set the value of [file_name] column.
@@ -2659,59 +2697,60 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->uuid = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
-            $this->provider = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-            $this->provider_id = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-            $this->nickname = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-            $this->realname = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->username = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
-            $this->username_canonical = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-            $this->email = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
-            $this->email_canonical = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
-            $this->enabled = ($row[$startcol + 10] !== null) ? (boolean) $row[$startcol + 10] : null;
-            $this->salt = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
-            $this->password = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
-            $this->last_login = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
-            $this->locked = ($row[$startcol + 14] !== null) ? (boolean) $row[$startcol + 14] : null;
-            $this->expired = ($row[$startcol + 15] !== null) ? (boolean) $row[$startcol + 15] : null;
-            $this->expires_at = ($row[$startcol + 16] !== null) ? (string) $row[$startcol + 16] : null;
-            $this->confirmation_token = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
-            $this->password_requested_at = ($row[$startcol + 18] !== null) ? (string) $row[$startcol + 18] : null;
-            $this->credentials_expired = ($row[$startcol + 19] !== null) ? (boolean) $row[$startcol + 19] : null;
-            $this->credentials_expire_at = ($row[$startcol + 20] !== null) ? (string) $row[$startcol + 20] : null;
-            $this->roles = $row[$startcol + 21];
+            $this->p_u_status_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+            $this->p_l_city_id = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
+            $this->provider = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->provider_id = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->nickname = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->realname = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+            $this->username = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+            $this->username_canonical = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+            $this->email = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+            $this->email_canonical = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+            $this->enabled = ($row[$startcol + 12] !== null) ? (boolean) $row[$startcol + 12] : null;
+            $this->salt = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
+            $this->password = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
+            $this->last_login = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
+            $this->locked = ($row[$startcol + 16] !== null) ? (boolean) $row[$startcol + 16] : null;
+            $this->expired = ($row[$startcol + 17] !== null) ? (boolean) $row[$startcol + 17] : null;
+            $this->expires_at = ($row[$startcol + 18] !== null) ? (string) $row[$startcol + 18] : null;
+            $this->confirmation_token = ($row[$startcol + 19] !== null) ? (string) $row[$startcol + 19] : null;
+            $this->password_requested_at = ($row[$startcol + 20] !== null) ? (string) $row[$startcol + 20] : null;
+            $this->credentials_expired = ($row[$startcol + 21] !== null) ? (boolean) $row[$startcol + 21] : null;
+            $this->credentials_expire_at = ($row[$startcol + 22] !== null) ? (string) $row[$startcol + 22] : null;
+            $this->roles = $row[$startcol + 23];
             $this->roles_unserialized = null;
-            $this->last_activity = ($row[$startcol + 22] !== null) ? (string) $row[$startcol + 22] : null;
-            $this->p_u_status_id = ($row[$startcol + 23] !== null) ? (int) $row[$startcol + 23] : null;
-            $this->file_name = ($row[$startcol + 24] !== null) ? (string) $row[$startcol + 24] : null;
-            $this->back_file_name = ($row[$startcol + 25] !== null) ? (string) $row[$startcol + 25] : null;
-            $this->copyright = ($row[$startcol + 26] !== null) ? (string) $row[$startcol + 26] : null;
-            $this->gender = ($row[$startcol + 27] !== null) ? (int) $row[$startcol + 27] : null;
-            $this->firstname = ($row[$startcol + 28] !== null) ? (string) $row[$startcol + 28] : null;
-            $this->name = ($row[$startcol + 29] !== null) ? (string) $row[$startcol + 29] : null;
-            $this->birthday = ($row[$startcol + 30] !== null) ? (string) $row[$startcol + 30] : null;
-            $this->subtitle = ($row[$startcol + 31] !== null) ? (string) $row[$startcol + 31] : null;
-            $this->biography = ($row[$startcol + 32] !== null) ? (string) $row[$startcol + 32] : null;
-            $this->website = ($row[$startcol + 33] !== null) ? (string) $row[$startcol + 33] : null;
-            $this->twitter = ($row[$startcol + 34] !== null) ? (string) $row[$startcol + 34] : null;
-            $this->facebook = ($row[$startcol + 35] !== null) ? (string) $row[$startcol + 35] : null;
-            $this->phone = ($row[$startcol + 36] !== null) ? (string) $row[$startcol + 36] : null;
-            $this->newsletter = ($row[$startcol + 37] !== null) ? (boolean) $row[$startcol + 37] : null;
-            $this->last_connect = ($row[$startcol + 38] !== null) ? (string) $row[$startcol + 38] : null;
-            $this->nb_connected_days = ($row[$startcol + 39] !== null) ? (int) $row[$startcol + 39] : null;
-            $this->nb_views = ($row[$startcol + 40] !== null) ? (int) $row[$startcol + 40] : null;
-            $this->qualified = ($row[$startcol + 41] !== null) ? (boolean) $row[$startcol + 41] : null;
-            $this->validated = ($row[$startcol + 42] !== null) ? (boolean) $row[$startcol + 42] : null;
-            $this->nb_id_check = ($row[$startcol + 43] !== null) ? (int) $row[$startcol + 43] : null;
-            $this->online = ($row[$startcol + 44] !== null) ? (boolean) $row[$startcol + 44] : null;
-            $this->homepage = ($row[$startcol + 45] !== null) ? (boolean) $row[$startcol + 45] : null;
-            $this->banned = ($row[$startcol + 46] !== null) ? (boolean) $row[$startcol + 46] : null;
-            $this->banned_nb_days_left = ($row[$startcol + 47] !== null) ? (int) $row[$startcol + 47] : null;
-            $this->banned_nb_total = ($row[$startcol + 48] !== null) ? (int) $row[$startcol + 48] : null;
-            $this->abuse_level = ($row[$startcol + 49] !== null) ? (int) $row[$startcol + 49] : null;
-            $this->created_at = ($row[$startcol + 50] !== null) ? (string) $row[$startcol + 50] : null;
-            $this->updated_at = ($row[$startcol + 51] !== null) ? (string) $row[$startcol + 51] : null;
-            $this->slug = ($row[$startcol + 52] !== null) ? (string) $row[$startcol + 52] : null;
-            $this->archived_at = ($row[$startcol + 53] !== null) ? (string) $row[$startcol + 53] : null;
+            $this->last_activity = ($row[$startcol + 24] !== null) ? (string) $row[$startcol + 24] : null;
+            $this->file_name = ($row[$startcol + 25] !== null) ? (string) $row[$startcol + 25] : null;
+            $this->back_file_name = ($row[$startcol + 26] !== null) ? (string) $row[$startcol + 26] : null;
+            $this->copyright = ($row[$startcol + 27] !== null) ? (string) $row[$startcol + 27] : null;
+            $this->gender = ($row[$startcol + 28] !== null) ? (int) $row[$startcol + 28] : null;
+            $this->firstname = ($row[$startcol + 29] !== null) ? (string) $row[$startcol + 29] : null;
+            $this->name = ($row[$startcol + 30] !== null) ? (string) $row[$startcol + 30] : null;
+            $this->birthday = ($row[$startcol + 31] !== null) ? (string) $row[$startcol + 31] : null;
+            $this->subtitle = ($row[$startcol + 32] !== null) ? (string) $row[$startcol + 32] : null;
+            $this->biography = ($row[$startcol + 33] !== null) ? (string) $row[$startcol + 33] : null;
+            $this->website = ($row[$startcol + 34] !== null) ? (string) $row[$startcol + 34] : null;
+            $this->twitter = ($row[$startcol + 35] !== null) ? (string) $row[$startcol + 35] : null;
+            $this->facebook = ($row[$startcol + 36] !== null) ? (string) $row[$startcol + 36] : null;
+            $this->phone = ($row[$startcol + 37] !== null) ? (string) $row[$startcol + 37] : null;
+            $this->newsletter = ($row[$startcol + 38] !== null) ? (boolean) $row[$startcol + 38] : null;
+            $this->last_connect = ($row[$startcol + 39] !== null) ? (string) $row[$startcol + 39] : null;
+            $this->nb_connected_days = ($row[$startcol + 40] !== null) ? (int) $row[$startcol + 40] : null;
+            $this->nb_views = ($row[$startcol + 41] !== null) ? (int) $row[$startcol + 41] : null;
+            $this->qualified = ($row[$startcol + 42] !== null) ? (boolean) $row[$startcol + 42] : null;
+            $this->validated = ($row[$startcol + 43] !== null) ? (boolean) $row[$startcol + 43] : null;
+            $this->nb_id_check = ($row[$startcol + 44] !== null) ? (int) $row[$startcol + 44] : null;
+            $this->online = ($row[$startcol + 45] !== null) ? (boolean) $row[$startcol + 45] : null;
+            $this->homepage = ($row[$startcol + 46] !== null) ? (boolean) $row[$startcol + 46] : null;
+            $this->banned = ($row[$startcol + 47] !== null) ? (boolean) $row[$startcol + 47] : null;
+            $this->banned_nb_days_left = ($row[$startcol + 48] !== null) ? (int) $row[$startcol + 48] : null;
+            $this->banned_nb_total = ($row[$startcol + 49] !== null) ? (int) $row[$startcol + 49] : null;
+            $this->abuse_level = ($row[$startcol + 50] !== null) ? (int) $row[$startcol + 50] : null;
+            $this->created_at = ($row[$startcol + 51] !== null) ? (string) $row[$startcol + 51] : null;
+            $this->updated_at = ($row[$startcol + 52] !== null) ? (string) $row[$startcol + 52] : null;
+            $this->slug = ($row[$startcol + 53] !== null) ? (string) $row[$startcol + 53] : null;
+            $this->archived_at = ($row[$startcol + 54] !== null) ? (string) $row[$startcol + 54] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -2721,7 +2760,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 54; // 54 = PUserArchivePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 55; // 55 = PUserArchivePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PUserArchive object", $e);
@@ -2935,6 +2974,12 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PUserArchivePeer::UUID)) {
             $modifiedColumns[':p' . $index++]  = '`uuid`';
         }
+        if ($this->isColumnModified(PUserArchivePeer::P_U_STATUS_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`p_u_status_id`';
+        }
+        if ($this->isColumnModified(PUserArchivePeer::P_L_CITY_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`p_l_city_id`';
+        }
         if ($this->isColumnModified(PUserArchivePeer::PROVIDER)) {
             $modifiedColumns[':p' . $index++]  = '`provider`';
         }
@@ -2997,9 +3042,6 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
         }
         if ($this->isColumnModified(PUserArchivePeer::LAST_ACTIVITY)) {
             $modifiedColumns[':p' . $index++]  = '`last_activity`';
-        }
-        if ($this->isColumnModified(PUserArchivePeer::P_U_STATUS_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`p_u_status_id`';
         }
         if ($this->isColumnModified(PUserArchivePeer::FILE_NAME)) {
             $modifiedColumns[':p' . $index++]  = '`file_name`';
@@ -3108,6 +3150,12 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
                     case '`uuid`':
                         $stmt->bindValue($identifier, $this->uuid, PDO::PARAM_STR);
                         break;
+                    case '`p_u_status_id`':
+                        $stmt->bindValue($identifier, $this->p_u_status_id, PDO::PARAM_INT);
+                        break;
+                    case '`p_l_city_id`':
+                        $stmt->bindValue($identifier, $this->p_l_city_id, PDO::PARAM_INT);
+                        break;
                     case '`provider`':
                         $stmt->bindValue($identifier, $this->provider, PDO::PARAM_STR);
                         break;
@@ -3170,9 +3218,6 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
                         break;
                     case '`last_activity`':
                         $stmt->bindValue($identifier, $this->last_activity, PDO::PARAM_STR);
-                        break;
-                    case '`p_u_status_id`':
-                        $stmt->bindValue($identifier, $this->p_u_status_id, PDO::PARAM_INT);
                         break;
                     case '`file_name`':
                         $stmt->bindValue($identifier, $this->file_name, PDO::PARAM_STR);
@@ -3324,159 +3369,162 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
                 return $this->getUuid();
                 break;
             case 2:
-                return $this->getProvider();
-                break;
-            case 3:
-                return $this->getProviderId();
-                break;
-            case 4:
-                return $this->getNickname();
-                break;
-            case 5:
-                return $this->getRealname();
-                break;
-            case 6:
-                return $this->getUsername();
-                break;
-            case 7:
-                return $this->getUsernameCanonical();
-                break;
-            case 8:
-                return $this->getEmail();
-                break;
-            case 9:
-                return $this->getEmailCanonical();
-                break;
-            case 10:
-                return $this->getEnabled();
-                break;
-            case 11:
-                return $this->getSalt();
-                break;
-            case 12:
-                return $this->getPassword();
-                break;
-            case 13:
-                return $this->getLastLogin();
-                break;
-            case 14:
-                return $this->getLocked();
-                break;
-            case 15:
-                return $this->getExpired();
-                break;
-            case 16:
-                return $this->getExpiresAt();
-                break;
-            case 17:
-                return $this->getConfirmationToken();
-                break;
-            case 18:
-                return $this->getPasswordRequestedAt();
-                break;
-            case 19:
-                return $this->getCredentialsExpired();
-                break;
-            case 20:
-                return $this->getCredentialsExpireAt();
-                break;
-            case 21:
-                return $this->getRoles();
-                break;
-            case 22:
-                return $this->getLastActivity();
-                break;
-            case 23:
                 return $this->getPUStatusId();
                 break;
+            case 3:
+                return $this->getPLCityId();
+                break;
+            case 4:
+                return $this->getProvider();
+                break;
+            case 5:
+                return $this->getProviderId();
+                break;
+            case 6:
+                return $this->getNickname();
+                break;
+            case 7:
+                return $this->getRealname();
+                break;
+            case 8:
+                return $this->getUsername();
+                break;
+            case 9:
+                return $this->getUsernameCanonical();
+                break;
+            case 10:
+                return $this->getEmail();
+                break;
+            case 11:
+                return $this->getEmailCanonical();
+                break;
+            case 12:
+                return $this->getEnabled();
+                break;
+            case 13:
+                return $this->getSalt();
+                break;
+            case 14:
+                return $this->getPassword();
+                break;
+            case 15:
+                return $this->getLastLogin();
+                break;
+            case 16:
+                return $this->getLocked();
+                break;
+            case 17:
+                return $this->getExpired();
+                break;
+            case 18:
+                return $this->getExpiresAt();
+                break;
+            case 19:
+                return $this->getConfirmationToken();
+                break;
+            case 20:
+                return $this->getPasswordRequestedAt();
+                break;
+            case 21:
+                return $this->getCredentialsExpired();
+                break;
+            case 22:
+                return $this->getCredentialsExpireAt();
+                break;
+            case 23:
+                return $this->getRoles();
+                break;
             case 24:
-                return $this->getFileName();
+                return $this->getLastActivity();
                 break;
             case 25:
-                return $this->getBackFileName();
+                return $this->getFileName();
                 break;
             case 26:
-                return $this->getCopyright();
+                return $this->getBackFileName();
                 break;
             case 27:
-                return $this->getGender();
+                return $this->getCopyright();
                 break;
             case 28:
-                return $this->getFirstname();
+                return $this->getGender();
                 break;
             case 29:
-                return $this->getName();
+                return $this->getFirstname();
                 break;
             case 30:
-                return $this->getBirthday();
+                return $this->getName();
                 break;
             case 31:
-                return $this->getSubtitle();
+                return $this->getBirthday();
                 break;
             case 32:
-                return $this->getBiography();
+                return $this->getSubtitle();
                 break;
             case 33:
-                return $this->getWebsite();
+                return $this->getBiography();
                 break;
             case 34:
-                return $this->getTwitter();
+                return $this->getWebsite();
                 break;
             case 35:
-                return $this->getFacebook();
+                return $this->getTwitter();
                 break;
             case 36:
-                return $this->getPhone();
+                return $this->getFacebook();
                 break;
             case 37:
-                return $this->getNewsletter();
+                return $this->getPhone();
                 break;
             case 38:
-                return $this->getLastConnect();
+                return $this->getNewsletter();
                 break;
             case 39:
-                return $this->getNbConnectedDays();
+                return $this->getLastConnect();
                 break;
             case 40:
-                return $this->getNbViews();
+                return $this->getNbConnectedDays();
                 break;
             case 41:
-                return $this->getQualified();
+                return $this->getNbViews();
                 break;
             case 42:
-                return $this->getValidated();
+                return $this->getQualified();
                 break;
             case 43:
-                return $this->getNbIdCheck();
+                return $this->getValidated();
                 break;
             case 44:
-                return $this->getOnline();
+                return $this->getNbIdCheck();
                 break;
             case 45:
-                return $this->getHomepage();
+                return $this->getOnline();
                 break;
             case 46:
-                return $this->getBanned();
+                return $this->getHomepage();
                 break;
             case 47:
-                return $this->getBannedNbDaysLeft();
+                return $this->getBanned();
                 break;
             case 48:
-                return $this->getBannedNbTotal();
+                return $this->getBannedNbDaysLeft();
                 break;
             case 49:
-                return $this->getAbuseLevel();
+                return $this->getBannedNbTotal();
                 break;
             case 50:
-                return $this->getCreatedAt();
+                return $this->getAbuseLevel();
                 break;
             case 51:
-                return $this->getUpdatedAt();
+                return $this->getCreatedAt();
                 break;
             case 52:
-                return $this->getSlug();
+                return $this->getUpdatedAt();
                 break;
             case 53:
+                return $this->getSlug();
+                break;
+            case 54:
                 return $this->getArchivedAt();
                 break;
             default:
@@ -3509,58 +3557,59 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
         $result = array(
             $keys[0] => $this->getId(),
             $keys[1] => $this->getUuid(),
-            $keys[2] => $this->getProvider(),
-            $keys[3] => $this->getProviderId(),
-            $keys[4] => $this->getNickname(),
-            $keys[5] => $this->getRealname(),
-            $keys[6] => $this->getUsername(),
-            $keys[7] => $this->getUsernameCanonical(),
-            $keys[8] => $this->getEmail(),
-            $keys[9] => $this->getEmailCanonical(),
-            $keys[10] => $this->getEnabled(),
-            $keys[11] => $this->getSalt(),
-            $keys[12] => $this->getPassword(),
-            $keys[13] => $this->getLastLogin(),
-            $keys[14] => $this->getLocked(),
-            $keys[15] => $this->getExpired(),
-            $keys[16] => $this->getExpiresAt(),
-            $keys[17] => $this->getConfirmationToken(),
-            $keys[18] => $this->getPasswordRequestedAt(),
-            $keys[19] => $this->getCredentialsExpired(),
-            $keys[20] => $this->getCredentialsExpireAt(),
-            $keys[21] => $this->getRoles(),
-            $keys[22] => $this->getLastActivity(),
-            $keys[23] => $this->getPUStatusId(),
-            $keys[24] => $this->getFileName(),
-            $keys[25] => $this->getBackFileName(),
-            $keys[26] => $this->getCopyright(),
-            $keys[27] => $this->getGender(),
-            $keys[28] => $this->getFirstname(),
-            $keys[29] => $this->getName(),
-            $keys[30] => $this->getBirthday(),
-            $keys[31] => $this->getSubtitle(),
-            $keys[32] => $this->getBiography(),
-            $keys[33] => $this->getWebsite(),
-            $keys[34] => $this->getTwitter(),
-            $keys[35] => $this->getFacebook(),
-            $keys[36] => $this->getPhone(),
-            $keys[37] => $this->getNewsletter(),
-            $keys[38] => $this->getLastConnect(),
-            $keys[39] => $this->getNbConnectedDays(),
-            $keys[40] => $this->getNbViews(),
-            $keys[41] => $this->getQualified(),
-            $keys[42] => $this->getValidated(),
-            $keys[43] => $this->getNbIdCheck(),
-            $keys[44] => $this->getOnline(),
-            $keys[45] => $this->getHomepage(),
-            $keys[46] => $this->getBanned(),
-            $keys[47] => $this->getBannedNbDaysLeft(),
-            $keys[48] => $this->getBannedNbTotal(),
-            $keys[49] => $this->getAbuseLevel(),
-            $keys[50] => $this->getCreatedAt(),
-            $keys[51] => $this->getUpdatedAt(),
-            $keys[52] => $this->getSlug(),
-            $keys[53] => $this->getArchivedAt(),
+            $keys[2] => $this->getPUStatusId(),
+            $keys[3] => $this->getPLCityId(),
+            $keys[4] => $this->getProvider(),
+            $keys[5] => $this->getProviderId(),
+            $keys[6] => $this->getNickname(),
+            $keys[7] => $this->getRealname(),
+            $keys[8] => $this->getUsername(),
+            $keys[9] => $this->getUsernameCanonical(),
+            $keys[10] => $this->getEmail(),
+            $keys[11] => $this->getEmailCanonical(),
+            $keys[12] => $this->getEnabled(),
+            $keys[13] => $this->getSalt(),
+            $keys[14] => $this->getPassword(),
+            $keys[15] => $this->getLastLogin(),
+            $keys[16] => $this->getLocked(),
+            $keys[17] => $this->getExpired(),
+            $keys[18] => $this->getExpiresAt(),
+            $keys[19] => $this->getConfirmationToken(),
+            $keys[20] => $this->getPasswordRequestedAt(),
+            $keys[21] => $this->getCredentialsExpired(),
+            $keys[22] => $this->getCredentialsExpireAt(),
+            $keys[23] => $this->getRoles(),
+            $keys[24] => $this->getLastActivity(),
+            $keys[25] => $this->getFileName(),
+            $keys[26] => $this->getBackFileName(),
+            $keys[27] => $this->getCopyright(),
+            $keys[28] => $this->getGender(),
+            $keys[29] => $this->getFirstname(),
+            $keys[30] => $this->getName(),
+            $keys[31] => $this->getBirthday(),
+            $keys[32] => $this->getSubtitle(),
+            $keys[33] => $this->getBiography(),
+            $keys[34] => $this->getWebsite(),
+            $keys[35] => $this->getTwitter(),
+            $keys[36] => $this->getFacebook(),
+            $keys[37] => $this->getPhone(),
+            $keys[38] => $this->getNewsletter(),
+            $keys[39] => $this->getLastConnect(),
+            $keys[40] => $this->getNbConnectedDays(),
+            $keys[41] => $this->getNbViews(),
+            $keys[42] => $this->getQualified(),
+            $keys[43] => $this->getValidated(),
+            $keys[44] => $this->getNbIdCheck(),
+            $keys[45] => $this->getOnline(),
+            $keys[46] => $this->getHomepage(),
+            $keys[47] => $this->getBanned(),
+            $keys[48] => $this->getBannedNbDaysLeft(),
+            $keys[49] => $this->getBannedNbTotal(),
+            $keys[50] => $this->getAbuseLevel(),
+            $keys[51] => $this->getCreatedAt(),
+            $keys[52] => $this->getUpdatedAt(),
+            $keys[53] => $this->getSlug(),
+            $keys[54] => $this->getArchivedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -3607,167 +3656,170 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
                 $this->setUuid($value);
                 break;
             case 2:
-                $this->setProvider($value);
+                $this->setPUStatusId($value);
                 break;
             case 3:
-                $this->setProviderId($value);
+                $this->setPLCityId($value);
                 break;
             case 4:
-                $this->setNickname($value);
+                $this->setProvider($value);
                 break;
             case 5:
-                $this->setRealname($value);
+                $this->setProviderId($value);
                 break;
             case 6:
-                $this->setUsername($value);
+                $this->setNickname($value);
                 break;
             case 7:
-                $this->setUsernameCanonical($value);
+                $this->setRealname($value);
                 break;
             case 8:
-                $this->setEmail($value);
+                $this->setUsername($value);
                 break;
             case 9:
-                $this->setEmailCanonical($value);
+                $this->setUsernameCanonical($value);
                 break;
             case 10:
-                $this->setEnabled($value);
+                $this->setEmail($value);
                 break;
             case 11:
-                $this->setSalt($value);
+                $this->setEmailCanonical($value);
                 break;
             case 12:
-                $this->setPassword($value);
+                $this->setEnabled($value);
                 break;
             case 13:
-                $this->setLastLogin($value);
+                $this->setSalt($value);
                 break;
             case 14:
-                $this->setLocked($value);
+                $this->setPassword($value);
                 break;
             case 15:
-                $this->setExpired($value);
+                $this->setLastLogin($value);
                 break;
             case 16:
-                $this->setExpiresAt($value);
+                $this->setLocked($value);
                 break;
             case 17:
-                $this->setConfirmationToken($value);
+                $this->setExpired($value);
                 break;
             case 18:
-                $this->setPasswordRequestedAt($value);
+                $this->setExpiresAt($value);
                 break;
             case 19:
-                $this->setCredentialsExpired($value);
+                $this->setConfirmationToken($value);
                 break;
             case 20:
-                $this->setCredentialsExpireAt($value);
+                $this->setPasswordRequestedAt($value);
                 break;
             case 21:
+                $this->setCredentialsExpired($value);
+                break;
+            case 22:
+                $this->setCredentialsExpireAt($value);
+                break;
+            case 23:
                 if (!is_array($value)) {
                     $v = trim(substr($value, 2, -2));
                     $value = $v ? explode(' | ', $v) : array();
                 }
                 $this->setRoles($value);
                 break;
-            case 22:
+            case 24:
                 $this->setLastActivity($value);
                 break;
-            case 23:
-                $this->setPUStatusId($value);
-                break;
-            case 24:
+            case 25:
                 $this->setFileName($value);
                 break;
-            case 25:
+            case 26:
                 $this->setBackFileName($value);
                 break;
-            case 26:
+            case 27:
                 $this->setCopyright($value);
                 break;
-            case 27:
+            case 28:
                 $valueSet = PUserArchivePeer::getValueSet(PUserArchivePeer::GENDER);
                 if (isset($valueSet[$value])) {
                     $value = $valueSet[$value];
                 }
                 $this->setGender($value);
                 break;
-            case 28:
+            case 29:
                 $this->setFirstname($value);
                 break;
-            case 29:
+            case 30:
                 $this->setName($value);
                 break;
-            case 30:
+            case 31:
                 $this->setBirthday($value);
                 break;
-            case 31:
+            case 32:
                 $this->setSubtitle($value);
                 break;
-            case 32:
+            case 33:
                 $this->setBiography($value);
                 break;
-            case 33:
+            case 34:
                 $this->setWebsite($value);
                 break;
-            case 34:
+            case 35:
                 $this->setTwitter($value);
                 break;
-            case 35:
+            case 36:
                 $this->setFacebook($value);
                 break;
-            case 36:
+            case 37:
                 $this->setPhone($value);
                 break;
-            case 37:
+            case 38:
                 $this->setNewsletter($value);
                 break;
-            case 38:
+            case 39:
                 $this->setLastConnect($value);
                 break;
-            case 39:
+            case 40:
                 $this->setNbConnectedDays($value);
                 break;
-            case 40:
+            case 41:
                 $this->setNbViews($value);
                 break;
-            case 41:
+            case 42:
                 $this->setQualified($value);
                 break;
-            case 42:
+            case 43:
                 $this->setValidated($value);
                 break;
-            case 43:
+            case 44:
                 $this->setNbIdCheck($value);
                 break;
-            case 44:
+            case 45:
                 $this->setOnline($value);
                 break;
-            case 45:
+            case 46:
                 $this->setHomepage($value);
                 break;
-            case 46:
+            case 47:
                 $this->setBanned($value);
                 break;
-            case 47:
+            case 48:
                 $this->setBannedNbDaysLeft($value);
                 break;
-            case 48:
+            case 49:
                 $this->setBannedNbTotal($value);
                 break;
-            case 49:
+            case 50:
                 $this->setAbuseLevel($value);
                 break;
-            case 50:
+            case 51:
                 $this->setCreatedAt($value);
                 break;
-            case 51:
+            case 52:
                 $this->setUpdatedAt($value);
                 break;
-            case 52:
+            case 53:
                 $this->setSlug($value);
                 break;
-            case 53:
+            case 54:
                 $this->setArchivedAt($value);
                 break;
         } // switch()
@@ -3796,58 +3848,59 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setUuid($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setProvider($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setProviderId($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setNickname($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setRealname($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setUsername($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setUsernameCanonical($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setEmail($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setEmailCanonical($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setEnabled($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setSalt($arr[$keys[11]]);
-        if (array_key_exists($keys[12], $arr)) $this->setPassword($arr[$keys[12]]);
-        if (array_key_exists($keys[13], $arr)) $this->setLastLogin($arr[$keys[13]]);
-        if (array_key_exists($keys[14], $arr)) $this->setLocked($arr[$keys[14]]);
-        if (array_key_exists($keys[15], $arr)) $this->setExpired($arr[$keys[15]]);
-        if (array_key_exists($keys[16], $arr)) $this->setExpiresAt($arr[$keys[16]]);
-        if (array_key_exists($keys[17], $arr)) $this->setConfirmationToken($arr[$keys[17]]);
-        if (array_key_exists($keys[18], $arr)) $this->setPasswordRequestedAt($arr[$keys[18]]);
-        if (array_key_exists($keys[19], $arr)) $this->setCredentialsExpired($arr[$keys[19]]);
-        if (array_key_exists($keys[20], $arr)) $this->setCredentialsExpireAt($arr[$keys[20]]);
-        if (array_key_exists($keys[21], $arr)) $this->setRoles($arr[$keys[21]]);
-        if (array_key_exists($keys[22], $arr)) $this->setLastActivity($arr[$keys[22]]);
-        if (array_key_exists($keys[23], $arr)) $this->setPUStatusId($arr[$keys[23]]);
-        if (array_key_exists($keys[24], $arr)) $this->setFileName($arr[$keys[24]]);
-        if (array_key_exists($keys[25], $arr)) $this->setBackFileName($arr[$keys[25]]);
-        if (array_key_exists($keys[26], $arr)) $this->setCopyright($arr[$keys[26]]);
-        if (array_key_exists($keys[27], $arr)) $this->setGender($arr[$keys[27]]);
-        if (array_key_exists($keys[28], $arr)) $this->setFirstname($arr[$keys[28]]);
-        if (array_key_exists($keys[29], $arr)) $this->setName($arr[$keys[29]]);
-        if (array_key_exists($keys[30], $arr)) $this->setBirthday($arr[$keys[30]]);
-        if (array_key_exists($keys[31], $arr)) $this->setSubtitle($arr[$keys[31]]);
-        if (array_key_exists($keys[32], $arr)) $this->setBiography($arr[$keys[32]]);
-        if (array_key_exists($keys[33], $arr)) $this->setWebsite($arr[$keys[33]]);
-        if (array_key_exists($keys[34], $arr)) $this->setTwitter($arr[$keys[34]]);
-        if (array_key_exists($keys[35], $arr)) $this->setFacebook($arr[$keys[35]]);
-        if (array_key_exists($keys[36], $arr)) $this->setPhone($arr[$keys[36]]);
-        if (array_key_exists($keys[37], $arr)) $this->setNewsletter($arr[$keys[37]]);
-        if (array_key_exists($keys[38], $arr)) $this->setLastConnect($arr[$keys[38]]);
-        if (array_key_exists($keys[39], $arr)) $this->setNbConnectedDays($arr[$keys[39]]);
-        if (array_key_exists($keys[40], $arr)) $this->setNbViews($arr[$keys[40]]);
-        if (array_key_exists($keys[41], $arr)) $this->setQualified($arr[$keys[41]]);
-        if (array_key_exists($keys[42], $arr)) $this->setValidated($arr[$keys[42]]);
-        if (array_key_exists($keys[43], $arr)) $this->setNbIdCheck($arr[$keys[43]]);
-        if (array_key_exists($keys[44], $arr)) $this->setOnline($arr[$keys[44]]);
-        if (array_key_exists($keys[45], $arr)) $this->setHomepage($arr[$keys[45]]);
-        if (array_key_exists($keys[46], $arr)) $this->setBanned($arr[$keys[46]]);
-        if (array_key_exists($keys[47], $arr)) $this->setBannedNbDaysLeft($arr[$keys[47]]);
-        if (array_key_exists($keys[48], $arr)) $this->setBannedNbTotal($arr[$keys[48]]);
-        if (array_key_exists($keys[49], $arr)) $this->setAbuseLevel($arr[$keys[49]]);
-        if (array_key_exists($keys[50], $arr)) $this->setCreatedAt($arr[$keys[50]]);
-        if (array_key_exists($keys[51], $arr)) $this->setUpdatedAt($arr[$keys[51]]);
-        if (array_key_exists($keys[52], $arr)) $this->setSlug($arr[$keys[52]]);
-        if (array_key_exists($keys[53], $arr)) $this->setArchivedAt($arr[$keys[53]]);
+        if (array_key_exists($keys[2], $arr)) $this->setPUStatusId($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setPLCityId($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setProvider($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setProviderId($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setNickname($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setRealname($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setUsername($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setUsernameCanonical($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setEmail($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setEmailCanonical($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setEnabled($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setSalt($arr[$keys[13]]);
+        if (array_key_exists($keys[14], $arr)) $this->setPassword($arr[$keys[14]]);
+        if (array_key_exists($keys[15], $arr)) $this->setLastLogin($arr[$keys[15]]);
+        if (array_key_exists($keys[16], $arr)) $this->setLocked($arr[$keys[16]]);
+        if (array_key_exists($keys[17], $arr)) $this->setExpired($arr[$keys[17]]);
+        if (array_key_exists($keys[18], $arr)) $this->setExpiresAt($arr[$keys[18]]);
+        if (array_key_exists($keys[19], $arr)) $this->setConfirmationToken($arr[$keys[19]]);
+        if (array_key_exists($keys[20], $arr)) $this->setPasswordRequestedAt($arr[$keys[20]]);
+        if (array_key_exists($keys[21], $arr)) $this->setCredentialsExpired($arr[$keys[21]]);
+        if (array_key_exists($keys[22], $arr)) $this->setCredentialsExpireAt($arr[$keys[22]]);
+        if (array_key_exists($keys[23], $arr)) $this->setRoles($arr[$keys[23]]);
+        if (array_key_exists($keys[24], $arr)) $this->setLastActivity($arr[$keys[24]]);
+        if (array_key_exists($keys[25], $arr)) $this->setFileName($arr[$keys[25]]);
+        if (array_key_exists($keys[26], $arr)) $this->setBackFileName($arr[$keys[26]]);
+        if (array_key_exists($keys[27], $arr)) $this->setCopyright($arr[$keys[27]]);
+        if (array_key_exists($keys[28], $arr)) $this->setGender($arr[$keys[28]]);
+        if (array_key_exists($keys[29], $arr)) $this->setFirstname($arr[$keys[29]]);
+        if (array_key_exists($keys[30], $arr)) $this->setName($arr[$keys[30]]);
+        if (array_key_exists($keys[31], $arr)) $this->setBirthday($arr[$keys[31]]);
+        if (array_key_exists($keys[32], $arr)) $this->setSubtitle($arr[$keys[32]]);
+        if (array_key_exists($keys[33], $arr)) $this->setBiography($arr[$keys[33]]);
+        if (array_key_exists($keys[34], $arr)) $this->setWebsite($arr[$keys[34]]);
+        if (array_key_exists($keys[35], $arr)) $this->setTwitter($arr[$keys[35]]);
+        if (array_key_exists($keys[36], $arr)) $this->setFacebook($arr[$keys[36]]);
+        if (array_key_exists($keys[37], $arr)) $this->setPhone($arr[$keys[37]]);
+        if (array_key_exists($keys[38], $arr)) $this->setNewsletter($arr[$keys[38]]);
+        if (array_key_exists($keys[39], $arr)) $this->setLastConnect($arr[$keys[39]]);
+        if (array_key_exists($keys[40], $arr)) $this->setNbConnectedDays($arr[$keys[40]]);
+        if (array_key_exists($keys[41], $arr)) $this->setNbViews($arr[$keys[41]]);
+        if (array_key_exists($keys[42], $arr)) $this->setQualified($arr[$keys[42]]);
+        if (array_key_exists($keys[43], $arr)) $this->setValidated($arr[$keys[43]]);
+        if (array_key_exists($keys[44], $arr)) $this->setNbIdCheck($arr[$keys[44]]);
+        if (array_key_exists($keys[45], $arr)) $this->setOnline($arr[$keys[45]]);
+        if (array_key_exists($keys[46], $arr)) $this->setHomepage($arr[$keys[46]]);
+        if (array_key_exists($keys[47], $arr)) $this->setBanned($arr[$keys[47]]);
+        if (array_key_exists($keys[48], $arr)) $this->setBannedNbDaysLeft($arr[$keys[48]]);
+        if (array_key_exists($keys[49], $arr)) $this->setBannedNbTotal($arr[$keys[49]]);
+        if (array_key_exists($keys[50], $arr)) $this->setAbuseLevel($arr[$keys[50]]);
+        if (array_key_exists($keys[51], $arr)) $this->setCreatedAt($arr[$keys[51]]);
+        if (array_key_exists($keys[52], $arr)) $this->setUpdatedAt($arr[$keys[52]]);
+        if (array_key_exists($keys[53], $arr)) $this->setSlug($arr[$keys[53]]);
+        if (array_key_exists($keys[54], $arr)) $this->setArchivedAt($arr[$keys[54]]);
     }
 
     /**
@@ -3861,6 +3914,8 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
 
         if ($this->isColumnModified(PUserArchivePeer::ID)) $criteria->add(PUserArchivePeer::ID, $this->id);
         if ($this->isColumnModified(PUserArchivePeer::UUID)) $criteria->add(PUserArchivePeer::UUID, $this->uuid);
+        if ($this->isColumnModified(PUserArchivePeer::P_U_STATUS_ID)) $criteria->add(PUserArchivePeer::P_U_STATUS_ID, $this->p_u_status_id);
+        if ($this->isColumnModified(PUserArchivePeer::P_L_CITY_ID)) $criteria->add(PUserArchivePeer::P_L_CITY_ID, $this->p_l_city_id);
         if ($this->isColumnModified(PUserArchivePeer::PROVIDER)) $criteria->add(PUserArchivePeer::PROVIDER, $this->provider);
         if ($this->isColumnModified(PUserArchivePeer::PROVIDER_ID)) $criteria->add(PUserArchivePeer::PROVIDER_ID, $this->provider_id);
         if ($this->isColumnModified(PUserArchivePeer::NICKNAME)) $criteria->add(PUserArchivePeer::NICKNAME, $this->nickname);
@@ -3882,7 +3937,6 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PUserArchivePeer::CREDENTIALS_EXPIRE_AT)) $criteria->add(PUserArchivePeer::CREDENTIALS_EXPIRE_AT, $this->credentials_expire_at);
         if ($this->isColumnModified(PUserArchivePeer::ROLES)) $criteria->add(PUserArchivePeer::ROLES, $this->roles);
         if ($this->isColumnModified(PUserArchivePeer::LAST_ACTIVITY)) $criteria->add(PUserArchivePeer::LAST_ACTIVITY, $this->last_activity);
-        if ($this->isColumnModified(PUserArchivePeer::P_U_STATUS_ID)) $criteria->add(PUserArchivePeer::P_U_STATUS_ID, $this->p_u_status_id);
         if ($this->isColumnModified(PUserArchivePeer::FILE_NAME)) $criteria->add(PUserArchivePeer::FILE_NAME, $this->file_name);
         if ($this->isColumnModified(PUserArchivePeer::BACK_FILE_NAME)) $criteria->add(PUserArchivePeer::BACK_FILE_NAME, $this->back_file_name);
         if ($this->isColumnModified(PUserArchivePeer::COPYRIGHT)) $criteria->add(PUserArchivePeer::COPYRIGHT, $this->copyright);
@@ -3977,6 +4031,8 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
         $copyObj->setUuid($this->getUuid());
+        $copyObj->setPUStatusId($this->getPUStatusId());
+        $copyObj->setPLCityId($this->getPLCityId());
         $copyObj->setProvider($this->getProvider());
         $copyObj->setProviderId($this->getProviderId());
         $copyObj->setNickname($this->getNickname());
@@ -3998,7 +4054,6 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
         $copyObj->setCredentialsExpireAt($this->getCredentialsExpireAt());
         $copyObj->setRoles($this->getRoles());
         $copyObj->setLastActivity($this->getLastActivity());
-        $copyObj->setPUStatusId($this->getPUStatusId());
         $copyObj->setFileName($this->getFileName());
         $copyObj->setBackFileName($this->getBackFileName());
         $copyObj->setCopyright($this->getCopyright());
@@ -4082,6 +4137,8 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
     {
         $this->id = null;
         $this->uuid = null;
+        $this->p_u_status_id = null;
+        $this->p_l_city_id = null;
         $this->provider = null;
         $this->provider_id = null;
         $this->nickname = null;
@@ -4104,7 +4161,6 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
         $this->roles = null;
         $this->roles_unserialized = null;
         $this->last_activity = null;
-        $this->p_u_status_id = null;
         $this->file_name = null;
         $this->back_file_name = null;
         $this->copyright = null;

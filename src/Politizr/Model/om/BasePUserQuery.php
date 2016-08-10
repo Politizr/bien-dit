@@ -17,6 +17,7 @@ use Politizr\Model\PDDComment;
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDRComment;
 use Politizr\Model\PDReaction;
+use Politizr\Model\PLCity;
 use Politizr\Model\PMAbuseReporting;
 use Politizr\Model\PMAppException;
 use Politizr\Model\PMAskForUpdate;
@@ -60,6 +61,8 @@ use Politizr\Model\PUserQuery;
 /**
  * @method PUserQuery orderById($order = Criteria::ASC) Order by the id column
  * @method PUserQuery orderByUuid($order = Criteria::ASC) Order by the uuid column
+ * @method PUserQuery orderByPUStatusId($order = Criteria::ASC) Order by the p_u_status_id column
+ * @method PUserQuery orderByPLCityId($order = Criteria::ASC) Order by the p_l_city_id column
  * @method PUserQuery orderByProvider($order = Criteria::ASC) Order by the provider column
  * @method PUserQuery orderByProviderId($order = Criteria::ASC) Order by the provider_id column
  * @method PUserQuery orderByNickname($order = Criteria::ASC) Order by the nickname column
@@ -81,7 +84,6 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery orderByCredentialsExpireAt($order = Criteria::ASC) Order by the credentials_expire_at column
  * @method PUserQuery orderByRoles($order = Criteria::ASC) Order by the roles column
  * @method PUserQuery orderByLastActivity($order = Criteria::ASC) Order by the last_activity column
- * @method PUserQuery orderByPUStatusId($order = Criteria::ASC) Order by the p_u_status_id column
  * @method PUserQuery orderByFileName($order = Criteria::ASC) Order by the file_name column
  * @method PUserQuery orderByBackFileName($order = Criteria::ASC) Order by the back_file_name column
  * @method PUserQuery orderByCopyright($order = Criteria::ASC) Order by the copyright column
@@ -114,6 +116,8 @@ use Politizr\Model\PUserQuery;
  *
  * @method PUserQuery groupById() Group by the id column
  * @method PUserQuery groupByUuid() Group by the uuid column
+ * @method PUserQuery groupByPUStatusId() Group by the p_u_status_id column
+ * @method PUserQuery groupByPLCityId() Group by the p_l_city_id column
  * @method PUserQuery groupByProvider() Group by the provider column
  * @method PUserQuery groupByProviderId() Group by the provider_id column
  * @method PUserQuery groupByNickname() Group by the nickname column
@@ -135,7 +139,6 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery groupByCredentialsExpireAt() Group by the credentials_expire_at column
  * @method PUserQuery groupByRoles() Group by the roles column
  * @method PUserQuery groupByLastActivity() Group by the last_activity column
- * @method PUserQuery groupByPUStatusId() Group by the p_u_status_id column
  * @method PUserQuery groupByFileName() Group by the file_name column
  * @method PUserQuery groupByBackFileName() Group by the back_file_name column
  * @method PUserQuery groupByCopyright() Group by the copyright column
@@ -173,6 +176,10 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery leftJoinPUStatus($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUStatus relation
  * @method PUserQuery rightJoinPUStatus($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUStatus relation
  * @method PUserQuery innerJoinPUStatus($relationAlias = null) Adds a INNER JOIN clause to the query using the PUStatus relation
+ *
+ * @method PUserQuery leftJoinPLCity($relationAlias = null) Adds a LEFT JOIN clause to the query using the PLCity relation
+ * @method PUserQuery rightJoinPLCity($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PLCity relation
+ * @method PUserQuery innerJoinPLCity($relationAlias = null) Adds a INNER JOIN clause to the query using the PLCity relation
  *
  * @method PUserQuery leftJoinPTag($relationAlias = null) Adds a LEFT JOIN clause to the query using the PTag relation
  * @method PUserQuery rightJoinPTag($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PTag relation
@@ -318,6 +325,8 @@ use Politizr\Model\PUserQuery;
  * @method PUser findOneOrCreate(PropelPDO $con = null) Return the first PUser matching the query, or a new PUser object populated from the query conditions when no match is found
  *
  * @method PUser findOneByUuid(string $uuid) Return the first PUser filtered by the uuid column
+ * @method PUser findOneByPUStatusId(int $p_u_status_id) Return the first PUser filtered by the p_u_status_id column
+ * @method PUser findOneByPLCityId(int $p_l_city_id) Return the first PUser filtered by the p_l_city_id column
  * @method PUser findOneByProvider(string $provider) Return the first PUser filtered by the provider column
  * @method PUser findOneByProviderId(string $provider_id) Return the first PUser filtered by the provider_id column
  * @method PUser findOneByNickname(string $nickname) Return the first PUser filtered by the nickname column
@@ -339,7 +348,6 @@ use Politizr\Model\PUserQuery;
  * @method PUser findOneByCredentialsExpireAt(string $credentials_expire_at) Return the first PUser filtered by the credentials_expire_at column
  * @method PUser findOneByRoles(array $roles) Return the first PUser filtered by the roles column
  * @method PUser findOneByLastActivity(string $last_activity) Return the first PUser filtered by the last_activity column
- * @method PUser findOneByPUStatusId(int $p_u_status_id) Return the first PUser filtered by the p_u_status_id column
  * @method PUser findOneByFileName(string $file_name) Return the first PUser filtered by the file_name column
  * @method PUser findOneByBackFileName(string $back_file_name) Return the first PUser filtered by the back_file_name column
  * @method PUser findOneByCopyright(string $copyright) Return the first PUser filtered by the copyright column
@@ -372,6 +380,8 @@ use Politizr\Model\PUserQuery;
  *
  * @method array findById(int $id) Return PUser objects filtered by the id column
  * @method array findByUuid(string $uuid) Return PUser objects filtered by the uuid column
+ * @method array findByPUStatusId(int $p_u_status_id) Return PUser objects filtered by the p_u_status_id column
+ * @method array findByPLCityId(int $p_l_city_id) Return PUser objects filtered by the p_l_city_id column
  * @method array findByProvider(string $provider) Return PUser objects filtered by the provider column
  * @method array findByProviderId(string $provider_id) Return PUser objects filtered by the provider_id column
  * @method array findByNickname(string $nickname) Return PUser objects filtered by the nickname column
@@ -393,7 +403,6 @@ use Politizr\Model\PUserQuery;
  * @method array findByCredentialsExpireAt(string $credentials_expire_at) Return PUser objects filtered by the credentials_expire_at column
  * @method array findByRoles(array $roles) Return PUser objects filtered by the roles column
  * @method array findByLastActivity(string $last_activity) Return PUser objects filtered by the last_activity column
- * @method array findByPUStatusId(int $p_u_status_id) Return PUser objects filtered by the p_u_status_id column
  * @method array findByFileName(string $file_name) Return PUser objects filtered by the file_name column
  * @method array findByBackFileName(string $back_file_name) Return PUser objects filtered by the back_file_name column
  * @method array findByCopyright(string $copyright) Return PUser objects filtered by the copyright column
@@ -534,7 +543,7 @@ abstract class BasePUserQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `last_activity`, `p_u_status_id`, `file_name`, `back_file_name`, `copyright`, `gender`, `firstname`, `name`, `birthday`, `subtitle`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_connected_days`, `nb_views`, `qualified`, `validated`, `nb_id_check`, `online`, `homepage`, `banned`, `banned_nb_days_left`, `banned_nb_total`, `abuse_level`, `created_at`, `updated_at`, `slug` FROM `p_user` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_u_status_id`, `p_l_city_id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `last_activity`, `file_name`, `back_file_name`, `copyright`, `gender`, `firstname`, `name`, `birthday`, `subtitle`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_connected_days`, `nb_views`, `qualified`, `validated`, `nb_id_check`, `online`, `homepage`, `banned`, `banned_nb_days_left`, `banned_nb_total`, `abuse_level`, `created_at`, `updated_at`, `slug` FROM `p_user` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -692,6 +701,94 @@ abstract class BasePUserQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PUserPeer::UUID, $uuid, $comparison);
+    }
+
+    /**
+     * Filter the query on the p_u_status_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPUStatusId(1234); // WHERE p_u_status_id = 1234
+     * $query->filterByPUStatusId(array(12, 34)); // WHERE p_u_status_id IN (12, 34)
+     * $query->filterByPUStatusId(array('min' => 12)); // WHERE p_u_status_id >= 12
+     * $query->filterByPUStatusId(array('max' => 12)); // WHERE p_u_status_id <= 12
+     * </code>
+     *
+     * @see       filterByPUStatus()
+     *
+     * @param     mixed $pUStatusId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function filterByPUStatusId($pUStatusId = null, $comparison = null)
+    {
+        if (is_array($pUStatusId)) {
+            $useMinMax = false;
+            if (isset($pUStatusId['min'])) {
+                $this->addUsingAlias(PUserPeer::P_U_STATUS_ID, $pUStatusId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($pUStatusId['max'])) {
+                $this->addUsingAlias(PUserPeer::P_U_STATUS_ID, $pUStatusId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PUserPeer::P_U_STATUS_ID, $pUStatusId, $comparison);
+    }
+
+    /**
+     * Filter the query on the p_l_city_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPLCityId(1234); // WHERE p_l_city_id = 1234
+     * $query->filterByPLCityId(array(12, 34)); // WHERE p_l_city_id IN (12, 34)
+     * $query->filterByPLCityId(array('min' => 12)); // WHERE p_l_city_id >= 12
+     * $query->filterByPLCityId(array('max' => 12)); // WHERE p_l_city_id <= 12
+     * </code>
+     *
+     * @see       filterByPLCity()
+     *
+     * @param     mixed $pLCityId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function filterByPLCityId($pLCityId = null, $comparison = null)
+    {
+        if (is_array($pLCityId)) {
+            $useMinMax = false;
+            if (isset($pLCityId['min'])) {
+                $this->addUsingAlias(PUserPeer::P_L_CITY_ID, $pLCityId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($pLCityId['max'])) {
+                $this->addUsingAlias(PUserPeer::P_L_CITY_ID, $pLCityId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PUserPeer::P_L_CITY_ID, $pLCityId, $comparison);
     }
 
     /**
@@ -1415,50 +1512,6 @@ abstract class BasePUserQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PUserPeer::LAST_ACTIVITY, $lastActivity, $comparison);
-    }
-
-    /**
-     * Filter the query on the p_u_status_id column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByPUStatusId(1234); // WHERE p_u_status_id = 1234
-     * $query->filterByPUStatusId(array(12, 34)); // WHERE p_u_status_id IN (12, 34)
-     * $query->filterByPUStatusId(array('min' => 12)); // WHERE p_u_status_id >= 12
-     * $query->filterByPUStatusId(array('max' => 12)); // WHERE p_u_status_id <= 12
-     * </code>
-     *
-     * @see       filterByPUStatus()
-     *
-     * @param     mixed $pUStatusId The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PUserQuery The current query, for fluid interface
-     */
-    public function filterByPUStatusId($pUStatusId = null, $comparison = null)
-    {
-        if (is_array($pUStatusId)) {
-            $useMinMax = false;
-            if (isset($pUStatusId['min'])) {
-                $this->addUsingAlias(PUserPeer::P_U_STATUS_ID, $pUStatusId['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($pUStatusId['max'])) {
-                $this->addUsingAlias(PUserPeer::P_U_STATUS_ID, $pUStatusId['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(PUserPeer::P_U_STATUS_ID, $pUStatusId, $comparison);
     }
 
     /**
@@ -2496,6 +2549,82 @@ abstract class BasePUserQuery extends ModelCriteria
         return $this
             ->joinPUStatus($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'PUStatus', '\Politizr\Model\PUStatusQuery');
+    }
+
+    /**
+     * Filter the query by a related PLCity object
+     *
+     * @param   PLCity|PropelObjectCollection $pLCity The related object(s) to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PUserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPLCity($pLCity, $comparison = null)
+    {
+        if ($pLCity instanceof PLCity) {
+            return $this
+                ->addUsingAlias(PUserPeer::P_L_CITY_ID, $pLCity->getId(), $comparison);
+        } elseif ($pLCity instanceof PropelObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(PUserPeer::P_L_CITY_ID, $pLCity->toKeyValue('PrimaryKey', 'Id'), $comparison);
+        } else {
+            throw new PropelException('filterByPLCity() only accepts arguments of type PLCity or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PLCity relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function joinPLCity($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PLCity');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PLCity');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PLCity relation PLCity object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PLCityQuery A secondary query class using the current class as primary query
+     */
+    public function usePLCityQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinPLCity($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PLCity', '\Politizr\Model\PLCityQuery');
     }
 
     /**

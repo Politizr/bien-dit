@@ -52,6 +52,7 @@ class XhrUser
     private $formFactory;
     private $emailCanonicalizer;
     private $userManager;
+    private $localizationManager;
     private $userService;
     private $timelineService;
     private $globalTools;
@@ -69,6 +70,7 @@ class XhrUser
      * @param @form.factory
      * @param @fos_user.util.email_canonicalizer
      * @param @politizr.manager.user
+     * @param @politizr.manager.localization
      * @param @politizr.functional.user
      * @param @politizr.functional.timeline
      * @param @politizr.tools.global
@@ -85,6 +87,7 @@ class XhrUser
         $formFactory,
         $emailCanonicalizer,
         $userManager,
+        $localizationManager,
         $userService,
         $timelineService,
         $globalTools,
@@ -105,6 +108,7 @@ class XhrUser
         $this->emailCanonicalizer = $emailCanonicalizer;
 
         $this->userManager = $userManager;
+        $this->localizationManager = $localizationManager;
 
         $this->userService = $userService;
         $this->timelineService = $timelineService;
@@ -479,6 +483,9 @@ class XhrUser
                 $user->setNickname($user->getFirstname() . ' ' . $user->getName());
                 $user->setRealname($user->getFirstname() . ' ' . $user->getName());
                 $user->save();
+
+                // upd localization infos
+                $this->localizationManager->updateUserCity($user, $form->get('localization')->getData()['city']);
             } elseif ($formTypeId == 2) {
                 $this->userManager->updateCanonicalFields($user);
                 $user->save();

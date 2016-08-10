@@ -507,6 +507,7 @@ SELECT DISTINCT
     roles,
     last_activity,
     p_u_status_id,
+    p_l_city_id,
     file_name,
     back_file_name,
     copyright,

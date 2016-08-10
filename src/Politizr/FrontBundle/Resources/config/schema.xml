@@ -489,6 +489,9 @@
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="uuid" type="varchar" size="50" />
 
+        <column name="p_u_status_id" type="integer" required="true" />
+        <column name="p_l_city_id" type="integer" />
+
         <column name="provider" type="varchar" size="255" />
         <column name="provider_id" type="varchar" size="255" />
         <column name="nickname" type="varchar" size="255" />
@@ -515,8 +518,6 @@
 
         <column name="last_activity" type="timestamp" />
         
-        <column name="p_u_status_id" type="integer" required="true" />
-
         <column name="file_name" type="varchar" size="150" />
         <column name="back_file_name" type="varchar" size="150" />
         <column name="copyright" type="longvarchar" />
@@ -556,6 +557,10 @@
 
         <foreign-key foreignTable="p_u_status" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_u_status_id" foreign="id" />
+        </foreign-key>
+
+        <foreign-key foreignTable="p_l_city" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_l_city_id" foreign="id" />
         </foreign-key>
 
         <unique>
@@ -1367,6 +1372,105 @@
         <column name="description" type="clob" />
 
         <column name="online" type="boolean" />
+    </table>
+
+    <table name="p_l_region">
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+        <behavior name="uuid">
+            <parameter name="version" value="4" />
+            <parameter name="permanent" value="false" />
+        </behavior>
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_tag_id" type="integer" required="true" />
+        
+        <column name="uuid" type="varchar" size="50" />
+
+        <foreign-key foreignTable="p_tag" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_tag_id" foreign="id" />
+        </foreign-key>
+
+        <unique>
+            <unique-column name="uuid"/>
+        </unique>
+    </table>
+
+    <table name="p_l_department">
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+        <behavior name="uuid">
+            <parameter name="version" value="4" />
+            <parameter name="permanent" value="false" />
+        </behavior>
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_l_region_id" type="integer" required="true" />
+        <column name="p_tag_id" type="integer" required="true" />
+        
+        <column name="code" type="varchar" size="10" />
+        <column name="uuid" type="varchar" size="50" />
+
+        <foreign-key foreignTable="p_l_region" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_l_region_id" foreign="id" />
+        </foreign-key>
+
+        <foreign-key foreignTable="p_tag" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_tag_id" foreign="id" />
+        </foreign-key>
+
+        <unique>
+            <unique-column name="uuid"/>
+        </unique>
+    </table>
+
+    <table name="p_l_city">
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+        <behavior name="sluggable">
+            <parameter name="slug_pattern" value="{name}" />
+        </behavior>
+        <behavior name="uuid">
+            <parameter name="version" value="4" />
+            <parameter name="permanent" value="false" />
+        </behavior>
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_l_department_id" type="integer" />
+        
+        <column name="name" type="varchar" size="150" />
+        <column name="name_simple" type="varchar" size="150" />
+        <column name="name_real" type="varchar" size="150" />
+        <column name="name_soundex" type="varchar" size="150" />
+        <column name="name_metaphone" type="varchar" size="150" />
+        <column name="zipcode" type="varchar" size="150" />
+        <column name="municipality" type="varchar" size="150" />
+        <column name="municipality_code" type="varchar" size="10" />
+        <column name="district" type="integer" />
+        <column name="canton" type="varchar" size="10" />
+        <column name="amdi" type="integer" />
+        <column name="nb_people_2010" type="integer" />
+        <column name="nb_people_1999" type="integer" />
+        <column name="nb_people_2012" type="integer" />
+        <column name="density_2010" type="integer" />
+        <column name="surface" type="float" />
+        <column name="longitude_deg" type="float" />
+        <column name="latitude_deg" type="float" />
+        <column name="longitude_grd" type="varchar" size="10" />
+        <column name="latitude_grd" type="varchar" size="10" />
+        <column name="longitude_dms" type="varchar" size="10" />
+        <column name="latitude_dms" type="varchar" size="10" />
+        <column name="zmin" type="integer" />
+        <column name="zmax" type="integer" />
+        <column name="uuid" type="varchar" size="50" />
+
+        <foreign-key foreignTable="p_l_department" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_l_department_id" foreign="id" />
+        </foreign-key>
+
+        <unique>
+            <unique-column name="uuid"/>
+        </unique>
     </table>
 
 </database>

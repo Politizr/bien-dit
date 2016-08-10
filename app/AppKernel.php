@@ -46,9 +46,6 @@ class AppKernel extends Kernel
             new Liip\ImagineBundle\LiipImagineBundle(),
             new Liip\UrlAutoConverterBundle\LiipUrlAutoConverterBundle(),
             
-            // Géolocalisation
-            new Bazinga\Bundle\GeocoderBundle\BazingaGeocoderBundle(),
-
             // HTML Purifier
             new Exercise\HTMLPurifierBundle\ExerciseHTMLPurifierBundle(),
 

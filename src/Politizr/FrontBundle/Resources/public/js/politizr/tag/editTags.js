@@ -36,15 +36,6 @@ $("body").on("click", "[action='hideTag']", function() {
     return hideTagAssociation(contextZone);
 });
 
-// accentued characters
-var normalize = function( term ) {
-    var ret = "";
-    for ( var i = 0; i < term.length; i++ ) {
-        ret += accentMap[ term.charAt(i) ] || term.charAt(i);
-    }
-    return ret;
-};
-
 /**
  * Init tag autocompleting for a context zone tag
  *
@@ -87,41 +78,7 @@ function initTagZoneAutoComplete(contextZone)
                 availableTags.push(item);
             });
 
-            return initAutoComplete(contextZone, availableTags);
-        }
-    });
-}
-
-/**
- * Init UI autocomplete
- *
- * @param contextZone
- * @param array availableTags
- */
-function initAutoComplete(contextZone, availableTags)
-{
-    // console.log('*** initAutoComplete');
-    // console.log(contextZone);
-
-    // http://api.jqueryui.com/autocomplete/
-    return contextZone.find('.selectedTag').first().autocomplete({
-        focus: function(event, ui){
-            event.preventDefault();
-            contextZone.find('.selectedTag').first().val(ui.item.label);
-        },
-        source: function( request, response ) {
-            var matcher = new RegExp( "^" + $.ui.autocomplete.escapeRegex( request.term ), "i" );
-            response( $.grep( availableTags, function( value ) {
-                value = value.label || value.value || value;
-                return matcher.test( value ) || matcher.test( normalize( value ) );
-            }));
-        },
-        select: function (event, ui) {
-            event.preventDefault();
-
-            // Affichage de la sélection
-            contextZone.find('.selectedTag').first().val(ui.item.label);     // display the selected text
-            contextZone.find('.selectedTagUuid').first().val(ui.item.value);   // save selected id to hidden input
+            return initAutoComplete(contextZone, availableTags, '.selectedTag', '.selectedTagUuid');
         }
     });
 }

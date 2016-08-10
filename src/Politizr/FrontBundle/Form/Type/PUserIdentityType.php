@@ -70,6 +70,12 @@ class PUserIdentityType extends AbstractType
             'constraints' => new NotBlank(array('message' => 'Date de naissance obligatoire.')),
         ));
 
+        // Localization type
+        $builder->add('localization', LocalizationChoiceType::class, array(
+            'required' => true,
+            'mapped' => false,
+            'city_id' => $this->user->getPLCityId(),
+        ));
     }
 
     /**

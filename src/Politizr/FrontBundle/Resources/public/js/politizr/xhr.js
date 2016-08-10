@@ -152,6 +152,9 @@ var ROUTE_MONITORING_ASK_FOR_UPDATE_CHECK = 'profil/modifier-mes-donnees/check';
 var ROUTE_BUBBLE_USER = 'bubble/user';
 var ROUTE_BUBBLE_TAG = 'bubble/tag';
 
+// LOCALIZATION
+var ROUTE_CITY_LISTING = 'villes/listing';
+
 // ******************************************************** //
 //                  JS FUNCTION KEYS
 // ******************************************************** //

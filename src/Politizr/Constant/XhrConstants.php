@@ -161,6 +161,10 @@ class XhrConstants
     const ROUTE_BUBBLE_USER = 'bubble/user';
     const ROUTE_BUBBLE_TAG = 'bubble/tag';
 
+    // LOCALIZATION
+    const ROUTE_CITY_LISTING = 'villes/listing';
+
+
     // ******************************************************** //
     //                  JS FUNCTION KEYS
     // ******************************************************** //

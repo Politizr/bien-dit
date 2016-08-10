@@ -2,6 +2,8 @@
 namespace Politizr\FrontBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
@@ -13,6 +15,8 @@ use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Politizr\Constant\UserConstants;
+
+use Politizr\FrontBundle\Form\Type\LocalizationChoiceType;
 
 /**
  * Citizen inscription form step 2
@@ -46,7 +50,8 @@ class PUserContactType extends AbstractType
             'choices' => array('Madame' => 'Madame', 'Monsieur' => 'Monsieur'),
             'multiple' => false,
             'expanded' => false,
-            'constraints' => new NotBlank(array('message' => 'Civilité obligatoire.'))
+            'constraints' => new NotBlank(array('message' => 'Civilité obligatoire.')),
+            'attr' => array('class' => 'classicSelect')
         ));
 
         $builder->add('name', 'text', array(
@@ -92,6 +97,12 @@ class PUserContactType extends AbstractType
                 $event->setData($data);
             });
         }
+
+        // Localization type
+        $builder->add('localization', LocalizationChoiceType::class, array(
+            'required' => true,
+            'mapped' => false,
+        ));
 
         if ($this->oAuth) {
             $builder->add('cgu', 'checkbox', array(

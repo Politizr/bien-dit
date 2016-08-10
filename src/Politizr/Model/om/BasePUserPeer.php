@@ -13,6 +13,7 @@ use Politizr\Model\PDDCommentPeer;
 use Politizr\Model\PDDebatePeer;
 use Politizr\Model\PDRCommentPeer;
 use Politizr\Model\PDReactionPeer;
+use Politizr\Model\PLCityPeer;
 use Politizr\Model\PMAbuseReportingPeer;
 use Politizr\Model\PMAppExceptionPeer;
 use Politizr\Model\PMAskForUpdatePeer;
@@ -63,19 +64,25 @@ abstract class BasePUserPeer
     const TM_CLASS = 'Politizr\\Model\\map\\PUserTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 53;
+    const NUM_COLUMNS = 54;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 53;
+    const NUM_HYDRATE_COLUMNS = 54;
 
     /** the column name for the id field */
     const ID = 'p_user.id';
 
     /** the column name for the uuid field */
     const UUID = 'p_user.uuid';
+
+    /** the column name for the p_u_status_id field */
+    const P_U_STATUS_ID = 'p_user.p_u_status_id';
+
+    /** the column name for the p_l_city_id field */
+    const P_L_CITY_ID = 'p_user.p_l_city_id';
 
     /** the column name for the provider field */
     const PROVIDER = 'p_user.provider';
@@ -139,9 +146,6 @@ abstract class BasePUserPeer
 
     /** the column name for the last_activity field */
     const LAST_ACTIVITY = 'p_user.last_activity';
-
-    /** the column name for the p_u_status_id field */
-    const P_U_STATUS_ID = 'p_user.p_u_status_id';
 
     /** the column name for the file_name field */
     const FILE_NAME = 'p_user.file_name';
@@ -253,12 +257,12 @@ abstract class BasePUserPeer
      * e.g. PUserPeer::$fieldNames[PUserPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'Provider', 'ProviderId', 'Nickname', 'Realname', 'Username', 'UsernameCanonical', 'Email', 'EmailCanonical', 'Enabled', 'Salt', 'Password', 'LastLogin', 'Locked', 'Expired', 'ExpiresAt', 'ConfirmationToken', 'PasswordRequestedAt', 'CredentialsExpired', 'CredentialsExpireAt', 'Roles', 'LastActivity', 'PUStatusId', 'FileName', 'BackFileName', 'Copyright', 'Gender', 'Firstname', 'Name', 'Birthday', 'Subtitle', 'Biography', 'Website', 'Twitter', 'Facebook', 'Phone', 'Newsletter', 'LastConnect', 'NbConnectedDays', 'NbViews', 'Qualified', 'Validated', 'NbIdCheck', 'Online', 'Homepage', 'Banned', 'BannedNbDaysLeft', 'BannedNbTotal', 'AbuseLevel', 'CreatedAt', 'UpdatedAt', 'Slug', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'provider', 'providerId', 'nickname', 'realname', 'username', 'usernameCanonical', 'email', 'emailCanonical', 'enabled', 'salt', 'password', 'lastLogin', 'locked', 'expired', 'expiresAt', 'confirmationToken', 'passwordRequestedAt', 'credentialsExpired', 'credentialsExpireAt', 'roles', 'lastActivity', 'pUStatusId', 'fileName', 'backFileName', 'copyright', 'gender', 'firstname', 'name', 'birthday', 'subtitle', 'biography', 'website', 'twitter', 'facebook', 'phone', 'newsletter', 'lastConnect', 'nbConnectedDays', 'nbViews', 'qualified', 'validated', 'nbIdCheck', 'online', 'homepage', 'banned', 'bannedNbDaysLeft', 'bannedNbTotal', 'abuseLevel', 'createdAt', 'updatedAt', 'slug', ),
-        BasePeer::TYPE_COLNAME => array (PUserPeer::ID, PUserPeer::UUID, PUserPeer::PROVIDER, PUserPeer::PROVIDER_ID, PUserPeer::NICKNAME, PUserPeer::REALNAME, PUserPeer::USERNAME, PUserPeer::USERNAME_CANONICAL, PUserPeer::EMAIL, PUserPeer::EMAIL_CANONICAL, PUserPeer::ENABLED, PUserPeer::SALT, PUserPeer::PASSWORD, PUserPeer::LAST_LOGIN, PUserPeer::LOCKED, PUserPeer::EXPIRED, PUserPeer::EXPIRES_AT, PUserPeer::CONFIRMATION_TOKEN, PUserPeer::PASSWORD_REQUESTED_AT, PUserPeer::CREDENTIALS_EXPIRED, PUserPeer::CREDENTIALS_EXPIRE_AT, PUserPeer::ROLES, PUserPeer::LAST_ACTIVITY, PUserPeer::P_U_STATUS_ID, PUserPeer::FILE_NAME, PUserPeer::BACK_FILE_NAME, PUserPeer::COPYRIGHT, PUserPeer::GENDER, PUserPeer::FIRSTNAME, PUserPeer::NAME, PUserPeer::BIRTHDAY, PUserPeer::SUBTITLE, PUserPeer::BIOGRAPHY, PUserPeer::WEBSITE, PUserPeer::TWITTER, PUserPeer::FACEBOOK, PUserPeer::PHONE, PUserPeer::NEWSLETTER, PUserPeer::LAST_CONNECT, PUserPeer::NB_CONNECTED_DAYS, PUserPeer::NB_VIEWS, PUserPeer::QUALIFIED, PUserPeer::VALIDATED, PUserPeer::NB_ID_CHECK, PUserPeer::ONLINE, PUserPeer::HOMEPAGE, PUserPeer::BANNED, PUserPeer::BANNED_NB_DAYS_LEFT, PUserPeer::BANNED_NB_TOTAL, PUserPeer::ABUSE_LEVEL, PUserPeer::CREATED_AT, PUserPeer::UPDATED_AT, PUserPeer::SLUG, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'PROVIDER', 'PROVIDER_ID', 'NICKNAME', 'REALNAME', 'USERNAME', 'USERNAME_CANONICAL', 'EMAIL', 'EMAIL_CANONICAL', 'ENABLED', 'SALT', 'PASSWORD', 'LAST_LOGIN', 'LOCKED', 'EXPIRED', 'EXPIRES_AT', 'CONFIRMATION_TOKEN', 'PASSWORD_REQUESTED_AT', 'CREDENTIALS_EXPIRED', 'CREDENTIALS_EXPIRE_AT', 'ROLES', 'LAST_ACTIVITY', 'P_U_STATUS_ID', 'FILE_NAME', 'BACK_FILE_NAME', 'COPYRIGHT', 'GENDER', 'FIRSTNAME', 'NAME', 'BIRTHDAY', 'SUBTITLE', 'BIOGRAPHY', 'WEBSITE', 'TWITTER', 'FACEBOOK', 'PHONE', 'NEWSLETTER', 'LAST_CONNECT', 'NB_CONNECTED_DAYS', 'NB_VIEWS', 'QUALIFIED', 'VALIDATED', 'NB_ID_CHECK', 'ONLINE', 'HOMEPAGE', 'BANNED', 'BANNED_NB_DAYS_LEFT', 'BANNED_NB_TOTAL', 'ABUSE_LEVEL', 'CREATED_AT', 'UPDATED_AT', 'SLUG', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'provider', 'provider_id', 'nickname', 'realname', 'username', 'username_canonical', 'email', 'email_canonical', 'enabled', 'salt', 'password', 'last_login', 'locked', 'expired', 'expires_at', 'confirmation_token', 'password_requested_at', 'credentials_expired', 'credentials_expire_at', 'roles', 'last_activity', 'p_u_status_id', 'file_name', 'back_file_name', 'copyright', 'gender', 'firstname', 'name', 'birthday', 'subtitle', 'biography', 'website', 'twitter', 'facebook', 'phone', 'newsletter', 'last_connect', 'nb_connected_days', 'nb_views', 'qualified', 'validated', 'nb_id_check', 'online', 'homepage', 'banned', 'banned_nb_days_left', 'banned_nb_total', 'abuse_level', 'created_at', 'updated_at', 'slug', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'PUStatusId', 'PLCityId', 'Provider', 'ProviderId', 'Nickname', 'Realname', 'Username', 'UsernameCanonical', 'Email', 'EmailCanonical', 'Enabled', 'Salt', 'Password', 'LastLogin', 'Locked', 'Expired', 'ExpiresAt', 'ConfirmationToken', 'PasswordRequestedAt', 'CredentialsExpired', 'CredentialsExpireAt', 'Roles', 'LastActivity', 'FileName', 'BackFileName', 'Copyright', 'Gender', 'Firstname', 'Name', 'Birthday', 'Subtitle', 'Biography', 'Website', 'Twitter', 'Facebook', 'Phone', 'Newsletter', 'LastConnect', 'NbConnectedDays', 'NbViews', 'Qualified', 'Validated', 'NbIdCheck', 'Online', 'Homepage', 'Banned', 'BannedNbDaysLeft', 'BannedNbTotal', 'AbuseLevel', 'CreatedAt', 'UpdatedAt', 'Slug', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'pUStatusId', 'pLCityId', 'provider', 'providerId', 'nickname', 'realname', 'username', 'usernameCanonical', 'email', 'emailCanonical', 'enabled', 'salt', 'password', 'lastLogin', 'locked', 'expired', 'expiresAt', 'confirmationToken', 'passwordRequestedAt', 'credentialsExpired', 'credentialsExpireAt', 'roles', 'lastActivity', 'fileName', 'backFileName', 'copyright', 'gender', 'firstname', 'name', 'birthday', 'subtitle', 'biography', 'website', 'twitter', 'facebook', 'phone', 'newsletter', 'lastConnect', 'nbConnectedDays', 'nbViews', 'qualified', 'validated', 'nbIdCheck', 'online', 'homepage', 'banned', 'bannedNbDaysLeft', 'bannedNbTotal', 'abuseLevel', 'createdAt', 'updatedAt', 'slug', ),
+        BasePeer::TYPE_COLNAME => array (PUserPeer::ID, PUserPeer::UUID, PUserPeer::P_U_STATUS_ID, PUserPeer::P_L_CITY_ID, PUserPeer::PROVIDER, PUserPeer::PROVIDER_ID, PUserPeer::NICKNAME, PUserPeer::REALNAME, PUserPeer::USERNAME, PUserPeer::USERNAME_CANONICAL, PUserPeer::EMAIL, PUserPeer::EMAIL_CANONICAL, PUserPeer::ENABLED, PUserPeer::SALT, PUserPeer::PASSWORD, PUserPeer::LAST_LOGIN, PUserPeer::LOCKED, PUserPeer::EXPIRED, PUserPeer::EXPIRES_AT, PUserPeer::CONFIRMATION_TOKEN, PUserPeer::PASSWORD_REQUESTED_AT, PUserPeer::CREDENTIALS_EXPIRED, PUserPeer::CREDENTIALS_EXPIRE_AT, PUserPeer::ROLES, PUserPeer::LAST_ACTIVITY, PUserPeer::FILE_NAME, PUserPeer::BACK_FILE_NAME, PUserPeer::COPYRIGHT, PUserPeer::GENDER, PUserPeer::FIRSTNAME, PUserPeer::NAME, PUserPeer::BIRTHDAY, PUserPeer::SUBTITLE, PUserPeer::BIOGRAPHY, PUserPeer::WEBSITE, PUserPeer::TWITTER, PUserPeer::FACEBOOK, PUserPeer::PHONE, PUserPeer::NEWSLETTER, PUserPeer::LAST_CONNECT, PUserPeer::NB_CONNECTED_DAYS, PUserPeer::NB_VIEWS, PUserPeer::QUALIFIED, PUserPeer::VALIDATED, PUserPeer::NB_ID_CHECK, PUserPeer::ONLINE, PUserPeer::HOMEPAGE, PUserPeer::BANNED, PUserPeer::BANNED_NB_DAYS_LEFT, PUserPeer::BANNED_NB_TOTAL, PUserPeer::ABUSE_LEVEL, PUserPeer::CREATED_AT, PUserPeer::UPDATED_AT, PUserPeer::SLUG, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'P_U_STATUS_ID', 'P_L_CITY_ID', 'PROVIDER', 'PROVIDER_ID', 'NICKNAME', 'REALNAME', 'USERNAME', 'USERNAME_CANONICAL', 'EMAIL', 'EMAIL_CANONICAL', 'ENABLED', 'SALT', 'PASSWORD', 'LAST_LOGIN', 'LOCKED', 'EXPIRED', 'EXPIRES_AT', 'CONFIRMATION_TOKEN', 'PASSWORD_REQUESTED_AT', 'CREDENTIALS_EXPIRED', 'CREDENTIALS_EXPIRE_AT', 'ROLES', 'LAST_ACTIVITY', 'FILE_NAME', 'BACK_FILE_NAME', 'COPYRIGHT', 'GENDER', 'FIRSTNAME', 'NAME', 'BIRTHDAY', 'SUBTITLE', 'BIOGRAPHY', 'WEBSITE', 'TWITTER', 'FACEBOOK', 'PHONE', 'NEWSLETTER', 'LAST_CONNECT', 'NB_CONNECTED_DAYS', 'NB_VIEWS', 'QUALIFIED', 'VALIDATED', 'NB_ID_CHECK', 'ONLINE', 'HOMEPAGE', 'BANNED', 'BANNED_NB_DAYS_LEFT', 'BANNED_NB_TOTAL', 'ABUSE_LEVEL', 'CREATED_AT', 'UPDATED_AT', 'SLUG', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'p_u_status_id', 'p_l_city_id', 'provider', 'provider_id', 'nickname', 'realname', 'username', 'username_canonical', 'email', 'email_canonical', 'enabled', 'salt', 'password', 'last_login', 'locked', 'expired', 'expires_at', 'confirmation_token', 'password_requested_at', 'credentials_expired', 'credentials_expire_at', 'roles', 'last_activity', 'file_name', 'back_file_name', 'copyright', 'gender', 'firstname', 'name', 'birthday', 'subtitle', 'biography', 'website', 'twitter', 'facebook', 'phone', 'newsletter', 'last_connect', 'nb_connected_days', 'nb_views', 'qualified', 'validated', 'nb_id_check', 'online', 'homepage', 'banned', 'banned_nb_days_left', 'banned_nb_total', 'abuse_level', 'created_at', 'updated_at', 'slug', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, )
     );
 
     /**
@@ -268,12 +272,12 @@ abstract class BasePUserPeer
      * e.g. PUserPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'Provider' => 2, 'ProviderId' => 3, 'Nickname' => 4, 'Realname' => 5, 'Username' => 6, 'UsernameCanonical' => 7, 'Email' => 8, 'EmailCanonical' => 9, 'Enabled' => 10, 'Salt' => 11, 'Password' => 12, 'LastLogin' => 13, 'Locked' => 14, 'Expired' => 15, 'ExpiresAt' => 16, 'ConfirmationToken' => 17, 'PasswordRequestedAt' => 18, 'CredentialsExpired' => 19, 'CredentialsExpireAt' => 20, 'Roles' => 21, 'LastActivity' => 22, 'PUStatusId' => 23, 'FileName' => 24, 'BackFileName' => 25, 'Copyright' => 26, 'Gender' => 27, 'Firstname' => 28, 'Name' => 29, 'Birthday' => 30, 'Subtitle' => 31, 'Biography' => 32, 'Website' => 33, 'Twitter' => 34, 'Facebook' => 35, 'Phone' => 36, 'Newsletter' => 37, 'LastConnect' => 38, 'NbConnectedDays' => 39, 'NbViews' => 40, 'Qualified' => 41, 'Validated' => 42, 'NbIdCheck' => 43, 'Online' => 44, 'Homepage' => 45, 'Banned' => 46, 'BannedNbDaysLeft' => 47, 'BannedNbTotal' => 48, 'AbuseLevel' => 49, 'CreatedAt' => 50, 'UpdatedAt' => 51, 'Slug' => 52, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'provider' => 2, 'providerId' => 3, 'nickname' => 4, 'realname' => 5, 'username' => 6, 'usernameCanonical' => 7, 'email' => 8, 'emailCanonical' => 9, 'enabled' => 10, 'salt' => 11, 'password' => 12, 'lastLogin' => 13, 'locked' => 14, 'expired' => 15, 'expiresAt' => 16, 'confirmationToken' => 17, 'passwordRequestedAt' => 18, 'credentialsExpired' => 19, 'credentialsExpireAt' => 20, 'roles' => 21, 'lastActivity' => 22, 'pUStatusId' => 23, 'fileName' => 24, 'backFileName' => 25, 'copyright' => 26, 'gender' => 27, 'firstname' => 28, 'name' => 29, 'birthday' => 30, 'subtitle' => 31, 'biography' => 32, 'website' => 33, 'twitter' => 34, 'facebook' => 35, 'phone' => 36, 'newsletter' => 37, 'lastConnect' => 38, 'nbConnectedDays' => 39, 'nbViews' => 40, 'qualified' => 41, 'validated' => 42, 'nbIdCheck' => 43, 'online' => 44, 'homepage' => 45, 'banned' => 46, 'bannedNbDaysLeft' => 47, 'bannedNbTotal' => 48, 'abuseLevel' => 49, 'createdAt' => 50, 'updatedAt' => 51, 'slug' => 52, ),
-        BasePeer::TYPE_COLNAME => array (PUserPeer::ID => 0, PUserPeer::UUID => 1, PUserPeer::PROVIDER => 2, PUserPeer::PROVIDER_ID => 3, PUserPeer::NICKNAME => 4, PUserPeer::REALNAME => 5, PUserPeer::USERNAME => 6, PUserPeer::USERNAME_CANONICAL => 7, PUserPeer::EMAIL => 8, PUserPeer::EMAIL_CANONICAL => 9, PUserPeer::ENABLED => 10, PUserPeer::SALT => 11, PUserPeer::PASSWORD => 12, PUserPeer::LAST_LOGIN => 13, PUserPeer::LOCKED => 14, PUserPeer::EXPIRED => 15, PUserPeer::EXPIRES_AT => 16, PUserPeer::CONFIRMATION_TOKEN => 17, PUserPeer::PASSWORD_REQUESTED_AT => 18, PUserPeer::CREDENTIALS_EXPIRED => 19, PUserPeer::CREDENTIALS_EXPIRE_AT => 20, PUserPeer::ROLES => 21, PUserPeer::LAST_ACTIVITY => 22, PUserPeer::P_U_STATUS_ID => 23, PUserPeer::FILE_NAME => 24, PUserPeer::BACK_FILE_NAME => 25, PUserPeer::COPYRIGHT => 26, PUserPeer::GENDER => 27, PUserPeer::FIRSTNAME => 28, PUserPeer::NAME => 29, PUserPeer::BIRTHDAY => 30, PUserPeer::SUBTITLE => 31, PUserPeer::BIOGRAPHY => 32, PUserPeer::WEBSITE => 33, PUserPeer::TWITTER => 34, PUserPeer::FACEBOOK => 35, PUserPeer::PHONE => 36, PUserPeer::NEWSLETTER => 37, PUserPeer::LAST_CONNECT => 38, PUserPeer::NB_CONNECTED_DAYS => 39, PUserPeer::NB_VIEWS => 40, PUserPeer::QUALIFIED => 41, PUserPeer::VALIDATED => 42, PUserPeer::NB_ID_CHECK => 43, PUserPeer::ONLINE => 44, PUserPeer::HOMEPAGE => 45, PUserPeer::BANNED => 46, PUserPeer::BANNED_NB_DAYS_LEFT => 47, PUserPeer::BANNED_NB_TOTAL => 48, PUserPeer::ABUSE_LEVEL => 49, PUserPeer::CREATED_AT => 50, PUserPeer::UPDATED_AT => 51, PUserPeer::SLUG => 52, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'PROVIDER' => 2, 'PROVIDER_ID' => 3, 'NICKNAME' => 4, 'REALNAME' => 5, 'USERNAME' => 6, 'USERNAME_CANONICAL' => 7, 'EMAIL' => 8, 'EMAIL_CANONICAL' => 9, 'ENABLED' => 10, 'SALT' => 11, 'PASSWORD' => 12, 'LAST_LOGIN' => 13, 'LOCKED' => 14, 'EXPIRED' => 15, 'EXPIRES_AT' => 16, 'CONFIRMATION_TOKEN' => 17, 'PASSWORD_REQUESTED_AT' => 18, 'CREDENTIALS_EXPIRED' => 19, 'CREDENTIALS_EXPIRE_AT' => 20, 'ROLES' => 21, 'LAST_ACTIVITY' => 22, 'P_U_STATUS_ID' => 23, 'FILE_NAME' => 24, 'BACK_FILE_NAME' => 25, 'COPYRIGHT' => 26, 'GENDER' => 27, 'FIRSTNAME' => 28, 'NAME' => 29, 'BIRTHDAY' => 30, 'SUBTITLE' => 31, 'BIOGRAPHY' => 32, 'WEBSITE' => 33, 'TWITTER' => 34, 'FACEBOOK' => 35, 'PHONE' => 36, 'NEWSLETTER' => 37, 'LAST_CONNECT' => 38, 'NB_CONNECTED_DAYS' => 39, 'NB_VIEWS' => 40, 'QUALIFIED' => 41, 'VALIDATED' => 42, 'NB_ID_CHECK' => 43, 'ONLINE' => 44, 'HOMEPAGE' => 45, 'BANNED' => 46, 'BANNED_NB_DAYS_LEFT' => 47, 'BANNED_NB_TOTAL' => 48, 'ABUSE_LEVEL' => 49, 'CREATED_AT' => 50, 'UPDATED_AT' => 51, 'SLUG' => 52, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'provider' => 2, 'provider_id' => 3, 'nickname' => 4, 'realname' => 5, 'username' => 6, 'username_canonical' => 7, 'email' => 8, 'email_canonical' => 9, 'enabled' => 10, 'salt' => 11, 'password' => 12, 'last_login' => 13, 'locked' => 14, 'expired' => 15, 'expires_at' => 16, 'confirmation_token' => 17, 'password_requested_at' => 18, 'credentials_expired' => 19, 'credentials_expire_at' => 20, 'roles' => 21, 'last_activity' => 22, 'p_u_status_id' => 23, 'file_name' => 24, 'back_file_name' => 25, 'copyright' => 26, 'gender' => 27, 'firstname' => 28, 'name' => 29, 'birthday' => 30, 'subtitle' => 31, 'biography' => 32, 'website' => 33, 'twitter' => 34, 'facebook' => 35, 'phone' => 36, 'newsletter' => 37, 'last_connect' => 38, 'nb_connected_days' => 39, 'nb_views' => 40, 'qualified' => 41, 'validated' => 42, 'nb_id_check' => 43, 'online' => 44, 'homepage' => 45, 'banned' => 46, 'banned_nb_days_left' => 47, 'banned_nb_total' => 48, 'abuse_level' => 49, 'created_at' => 50, 'updated_at' => 51, 'slug' => 52, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'PUStatusId' => 2, 'PLCityId' => 3, 'Provider' => 4, 'ProviderId' => 5, 'Nickname' => 6, 'Realname' => 7, 'Username' => 8, 'UsernameCanonical' => 9, 'Email' => 10, 'EmailCanonical' => 11, 'Enabled' => 12, 'Salt' => 13, 'Password' => 14, 'LastLogin' => 15, 'Locked' => 16, 'Expired' => 17, 'ExpiresAt' => 18, 'ConfirmationToken' => 19, 'PasswordRequestedAt' => 20, 'CredentialsExpired' => 21, 'CredentialsExpireAt' => 22, 'Roles' => 23, 'LastActivity' => 24, 'FileName' => 25, 'BackFileName' => 26, 'Copyright' => 27, 'Gender' => 28, 'Firstname' => 29, 'Name' => 30, 'Birthday' => 31, 'Subtitle' => 32, 'Biography' => 33, 'Website' => 34, 'Twitter' => 35, 'Facebook' => 36, 'Phone' => 37, 'Newsletter' => 38, 'LastConnect' => 39, 'NbConnectedDays' => 40, 'NbViews' => 41, 'Qualified' => 42, 'Validated' => 43, 'NbIdCheck' => 44, 'Online' => 45, 'Homepage' => 46, 'Banned' => 47, 'BannedNbDaysLeft' => 48, 'BannedNbTotal' => 49, 'AbuseLevel' => 50, 'CreatedAt' => 51, 'UpdatedAt' => 52, 'Slug' => 53, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'pUStatusId' => 2, 'pLCityId' => 3, 'provider' => 4, 'providerId' => 5, 'nickname' => 6, 'realname' => 7, 'username' => 8, 'usernameCanonical' => 9, 'email' => 10, 'emailCanonical' => 11, 'enabled' => 12, 'salt' => 13, 'password' => 14, 'lastLogin' => 15, 'locked' => 16, 'expired' => 17, 'expiresAt' => 18, 'confirmationToken' => 19, 'passwordRequestedAt' => 20, 'credentialsExpired' => 21, 'credentialsExpireAt' => 22, 'roles' => 23, 'lastActivity' => 24, 'fileName' => 25, 'backFileName' => 26, 'copyright' => 27, 'gender' => 28, 'firstname' => 29, 'name' => 30, 'birthday' => 31, 'subtitle' => 32, 'biography' => 33, 'website' => 34, 'twitter' => 35, 'facebook' => 36, 'phone' => 37, 'newsletter' => 38, 'lastConnect' => 39, 'nbConnectedDays' => 40, 'nbViews' => 41, 'qualified' => 42, 'validated' => 43, 'nbIdCheck' => 44, 'online' => 45, 'homepage' => 46, 'banned' => 47, 'bannedNbDaysLeft' => 48, 'bannedNbTotal' => 49, 'abuseLevel' => 50, 'createdAt' => 51, 'updatedAt' => 52, 'slug' => 53, ),
+        BasePeer::TYPE_COLNAME => array (PUserPeer::ID => 0, PUserPeer::UUID => 1, PUserPeer::P_U_STATUS_ID => 2, PUserPeer::P_L_CITY_ID => 3, PUserPeer::PROVIDER => 4, PUserPeer::PROVIDER_ID => 5, PUserPeer::NICKNAME => 6, PUserPeer::REALNAME => 7, PUserPeer::USERNAME => 8, PUserPeer::USERNAME_CANONICAL => 9, PUserPeer::EMAIL => 10, PUserPeer::EMAIL_CANONICAL => 11, PUserPeer::ENABLED => 12, PUserPeer::SALT => 13, PUserPeer::PASSWORD => 14, PUserPeer::LAST_LOGIN => 15, PUserPeer::LOCKED => 16, PUserPeer::EXPIRED => 17, PUserPeer::EXPIRES_AT => 18, PUserPeer::CONFIRMATION_TOKEN => 19, PUserPeer::PASSWORD_REQUESTED_AT => 20, PUserPeer::CREDENTIALS_EXPIRED => 21, PUserPeer::CREDENTIALS_EXPIRE_AT => 22, PUserPeer::ROLES => 23, PUserPeer::LAST_ACTIVITY => 24, PUserPeer::FILE_NAME => 25, PUserPeer::BACK_FILE_NAME => 26, PUserPeer::COPYRIGHT => 27, PUserPeer::GENDER => 28, PUserPeer::FIRSTNAME => 29, PUserPeer::NAME => 30, PUserPeer::BIRTHDAY => 31, PUserPeer::SUBTITLE => 32, PUserPeer::BIOGRAPHY => 33, PUserPeer::WEBSITE => 34, PUserPeer::TWITTER => 35, PUserPeer::FACEBOOK => 36, PUserPeer::PHONE => 37, PUserPeer::NEWSLETTER => 38, PUserPeer::LAST_CONNECT => 39, PUserPeer::NB_CONNECTED_DAYS => 40, PUserPeer::NB_VIEWS => 41, PUserPeer::QUALIFIED => 42, PUserPeer::VALIDATED => 43, PUserPeer::NB_ID_CHECK => 44, PUserPeer::ONLINE => 45, PUserPeer::HOMEPAGE => 46, PUserPeer::BANNED => 47, PUserPeer::BANNED_NB_DAYS_LEFT => 48, PUserPeer::BANNED_NB_TOTAL => 49, PUserPeer::ABUSE_LEVEL => 50, PUserPeer::CREATED_AT => 51, PUserPeer::UPDATED_AT => 52, PUserPeer::SLUG => 53, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'P_U_STATUS_ID' => 2, 'P_L_CITY_ID' => 3, 'PROVIDER' => 4, 'PROVIDER_ID' => 5, 'NICKNAME' => 6, 'REALNAME' => 7, 'USERNAME' => 8, 'USERNAME_CANONICAL' => 9, 'EMAIL' => 10, 'EMAIL_CANONICAL' => 11, 'ENABLED' => 12, 'SALT' => 13, 'PASSWORD' => 14, 'LAST_LOGIN' => 15, 'LOCKED' => 16, 'EXPIRED' => 17, 'EXPIRES_AT' => 18, 'CONFIRMATION_TOKEN' => 19, 'PASSWORD_REQUESTED_AT' => 20, 'CREDENTIALS_EXPIRED' => 21, 'CREDENTIALS_EXPIRE_AT' => 22, 'ROLES' => 23, 'LAST_ACTIVITY' => 24, 'FILE_NAME' => 25, 'BACK_FILE_NAME' => 26, 'COPYRIGHT' => 27, 'GENDER' => 28, 'FIRSTNAME' => 29, 'NAME' => 30, 'BIRTHDAY' => 31, 'SUBTITLE' => 32, 'BIOGRAPHY' => 33, 'WEBSITE' => 34, 'TWITTER' => 35, 'FACEBOOK' => 36, 'PHONE' => 37, 'NEWSLETTER' => 38, 'LAST_CONNECT' => 39, 'NB_CONNECTED_DAYS' => 40, 'NB_VIEWS' => 41, 'QUALIFIED' => 42, 'VALIDATED' => 43, 'NB_ID_CHECK' => 44, 'ONLINE' => 45, 'HOMEPAGE' => 46, 'BANNED' => 47, 'BANNED_NB_DAYS_LEFT' => 48, 'BANNED_NB_TOTAL' => 49, 'ABUSE_LEVEL' => 50, 'CREATED_AT' => 51, 'UPDATED_AT' => 52, 'SLUG' => 53, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'p_u_status_id' => 2, 'p_l_city_id' => 3, 'provider' => 4, 'provider_id' => 5, 'nickname' => 6, 'realname' => 7, 'username' => 8, 'username_canonical' => 9, 'email' => 10, 'email_canonical' => 11, 'enabled' => 12, 'salt' => 13, 'password' => 14, 'last_login' => 15, 'locked' => 16, 'expired' => 17, 'expires_at' => 18, 'confirmation_token' => 19, 'password_requested_at' => 20, 'credentials_expired' => 21, 'credentials_expire_at' => 22, 'roles' => 23, 'last_activity' => 24, 'file_name' => 25, 'back_file_name' => 26, 'copyright' => 27, 'gender' => 28, 'firstname' => 29, 'name' => 30, 'birthday' => 31, 'subtitle' => 32, 'biography' => 33, 'website' => 34, 'twitter' => 35, 'facebook' => 36, 'phone' => 37, 'newsletter' => 38, 'last_connect' => 39, 'nb_connected_days' => 40, 'nb_views' => 41, 'qualified' => 42, 'validated' => 43, 'nb_id_check' => 44, 'online' => 45, 'homepage' => 46, 'banned' => 47, 'banned_nb_days_left' => 48, 'banned_nb_total' => 49, 'abuse_level' => 50, 'created_at' => 51, 'updated_at' => 52, 'slug' => 53, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, )
     );
 
     /** The enumerated values for this table */
@@ -402,6 +406,8 @@ abstract class BasePUserPeer
         if (null === $alias) {
             $criteria->addSelectColumn(PUserPeer::ID);
             $criteria->addSelectColumn(PUserPeer::UUID);
+            $criteria->addSelectColumn(PUserPeer::P_U_STATUS_ID);
+            $criteria->addSelectColumn(PUserPeer::P_L_CITY_ID);
             $criteria->addSelectColumn(PUserPeer::PROVIDER);
             $criteria->addSelectColumn(PUserPeer::PROVIDER_ID);
             $criteria->addSelectColumn(PUserPeer::NICKNAME);
@@ -423,7 +429,6 @@ abstract class BasePUserPeer
             $criteria->addSelectColumn(PUserPeer::CREDENTIALS_EXPIRE_AT);
             $criteria->addSelectColumn(PUserPeer::ROLES);
             $criteria->addSelectColumn(PUserPeer::LAST_ACTIVITY);
-            $criteria->addSelectColumn(PUserPeer::P_U_STATUS_ID);
             $criteria->addSelectColumn(PUserPeer::FILE_NAME);
             $criteria->addSelectColumn(PUserPeer::BACK_FILE_NAME);
             $criteria->addSelectColumn(PUserPeer::COPYRIGHT);
@@ -456,6 +461,8 @@ abstract class BasePUserPeer
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.uuid');
+            $criteria->addSelectColumn($alias . '.p_u_status_id');
+            $criteria->addSelectColumn($alias . '.p_l_city_id');
             $criteria->addSelectColumn($alias . '.provider');
             $criteria->addSelectColumn($alias . '.provider_id');
             $criteria->addSelectColumn($alias . '.nickname');
@@ -477,7 +484,6 @@ abstract class BasePUserPeer
             $criteria->addSelectColumn($alias . '.credentials_expire_at');
             $criteria->addSelectColumn($alias . '.roles');
             $criteria->addSelectColumn($alias . '.last_activity');
-            $criteria->addSelectColumn($alias . '.p_u_status_id');
             $criteria->addSelectColumn($alias . '.file_name');
             $criteria->addSelectColumn($alias . '.back_file_name');
             $criteria->addSelectColumn($alias . '.copyright');
@@ -976,6 +982,57 @@ abstract class BasePUserPeer
 
 
     /**
+     * Returns the number of rows matching criteria, joining the related PLCity table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinPLCity(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(PUserPeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            PUserPeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+
+        // Set the correct dbName
+        $criteria->setDbName(PUserPeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(PUserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(PUserPeer::P_L_CITY_ID, PLCityPeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
      * Selects a collection of PUser objects pre-filled with their PUStatus objects.
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
@@ -1043,6 +1100,73 @@ abstract class BasePUserPeer
 
 
     /**
+     * Selects a collection of PUser objects pre-filled with their PLCity objects.
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of PUser objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinPLCity(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(PUserPeer::DATABASE_NAME);
+        }
+
+        PUserPeer::addSelectColumns($criteria);
+        $startcol = PUserPeer::NUM_HYDRATE_COLUMNS;
+        PLCityPeer::addSelectColumns($criteria);
+
+        $criteria->addJoin(PUserPeer::P_L_CITY_ID, PLCityPeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = PUserPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PUserPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+
+                $cls = PUserPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                PUserPeer::addInstanceToPool($obj1, $key1);
+            } // if $obj1 already loaded
+
+            $key2 = PLCityPeer::getPrimaryKeyHashFromRow($row, $startcol);
+            if ($key2 !== null) {
+                $obj2 = PLCityPeer::getInstanceFromPool($key2);
+                if (!$obj2) {
+
+                    $cls = PLCityPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol);
+                    PLCityPeer::addInstanceToPool($obj2, $key2);
+                } // if obj2 already loaded
+
+                // Add the $obj1 (PUser) to $obj2 (PLCity)
+                $obj2->addPUser($obj1);
+
+            } // if joined row was not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
      * Returns the number of rows matching criteria, joining all related tables
      *
      * @param      Criteria $criteria
@@ -1079,6 +1203,8 @@ abstract class BasePUserPeer
         }
 
         $criteria->addJoin(PUserPeer::P_U_STATUS_ID, PUStatusPeer::ID, $join_behavior);
+
+        $criteria->addJoin(PUserPeer::P_L_CITY_ID, PLCityPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -1117,7 +1243,12 @@ abstract class BasePUserPeer
         PUStatusPeer::addSelectColumns($criteria);
         $startcol3 = $startcol2 + PUStatusPeer::NUM_HYDRATE_COLUMNS;
 
+        PLCityPeer::addSelectColumns($criteria);
+        $startcol4 = $startcol3 + PLCityPeer::NUM_HYDRATE_COLUMNS;
+
         $criteria->addJoin(PUserPeer::P_U_STATUS_ID, PUStatusPeer::ID, $join_behavior);
+
+        $criteria->addJoin(PUserPeer::P_L_CITY_ID, PLCityPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
@@ -1153,6 +1284,274 @@ abstract class BasePUserPeer
                 // Add the $obj1 (PUser) to the collection in $obj2 (PUStatus)
                 $obj2->addPUser($obj1);
             } // if joined row not null
+
+            // Add objects for joined PLCity rows
+
+            $key3 = PLCityPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+            if ($key3 !== null) {
+                $obj3 = PLCityPeer::getInstanceFromPool($key3);
+                if (!$obj3) {
+
+                    $cls = PLCityPeer::getOMClass();
+
+                    $obj3 = new $cls();
+                    $obj3->hydrate($row, $startcol3);
+                    PLCityPeer::addInstanceToPool($obj3, $key3);
+                } // if obj3 loaded
+
+                // Add the $obj1 (PUser) to the collection in $obj3 (PLCity)
+                $obj3->addPUser($obj1);
+            } // if joined row not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining the related PUStatus table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinAllExceptPUStatus(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(PUserPeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            PUserPeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY should not affect count
+
+        // Set the correct dbName
+        $criteria->setDbName(PUserPeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(PUserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(PUserPeer::P_L_CITY_ID, PLCityPeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining the related PLCity table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinAllExceptPLCity(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(PUserPeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            PUserPeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY should not affect count
+
+        // Set the correct dbName
+        $criteria->setDbName(PUserPeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(PUserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(PUserPeer::P_U_STATUS_ID, PUStatusPeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
+     * Selects a collection of PUser objects pre-filled with all related objects except PUStatus.
+     *
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of PUser objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinAllExceptPUStatus(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        // $criteria->getDbName() will return the same object if not set to another value
+        // so == check is okay and faster
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(PUserPeer::DATABASE_NAME);
+        }
+
+        PUserPeer::addSelectColumns($criteria);
+        $startcol2 = PUserPeer::NUM_HYDRATE_COLUMNS;
+
+        PLCityPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + PLCityPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(PUserPeer::P_L_CITY_ID, PLCityPeer::ID, $join_behavior);
+
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = PUserPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PUserPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+                $cls = PUserPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                PUserPeer::addInstanceToPool($obj1, $key1);
+            } // if obj1 already loaded
+
+                // Add objects for joined PLCity rows
+
+                $key2 = PLCityPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+                if ($key2 !== null) {
+                    $obj2 = PLCityPeer::getInstanceFromPool($key2);
+                    if (!$obj2) {
+
+                        $cls = PLCityPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol2);
+                    PLCityPeer::addInstanceToPool($obj2, $key2);
+                } // if $obj2 already loaded
+
+                // Add the $obj1 (PUser) to the collection in $obj2 (PLCity)
+                $obj2->addPUser($obj1);
+
+            } // if joined row is not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Selects a collection of PUser objects pre-filled with all related objects except PLCity.
+     *
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of PUser objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinAllExceptPLCity(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        // $criteria->getDbName() will return the same object if not set to another value
+        // so == check is okay and faster
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(PUserPeer::DATABASE_NAME);
+        }
+
+        PUserPeer::addSelectColumns($criteria);
+        $startcol2 = PUserPeer::NUM_HYDRATE_COLUMNS;
+
+        PUStatusPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + PUStatusPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(PUserPeer::P_U_STATUS_ID, PUStatusPeer::ID, $join_behavior);
+
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = PUserPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PUserPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+                $cls = PUserPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                PUserPeer::addInstanceToPool($obj1, $key1);
+            } // if obj1 already loaded
+
+                // Add objects for joined PUStatus rows
+
+                $key2 = PUStatusPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+                if ($key2 !== null) {
+                    $obj2 = PUStatusPeer::getInstanceFromPool($key2);
+                    if (!$obj2) {
+
+                        $cls = PUStatusPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol2);
+                    PUStatusPeer::addInstanceToPool($obj2, $key2);
+                } // if $obj2 already loaded
+
+                // Add the $obj1 (PUser) to the collection in $obj2 (PUStatus)
+                $obj2->addPUser($obj1);
+
+            } // if joined row is not null
 
             $results[] = $obj1;
         }

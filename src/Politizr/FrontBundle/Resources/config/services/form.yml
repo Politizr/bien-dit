@@ -1,0 +1,7 @@
+services:
+    app.form.type.gender:
+        class: Politizr\FrontBundle\Form\Type\LocalizationChoiceType
+        arguments:
+            - @politizr.manager.localization
+        tags:
+            - { name: form.type }

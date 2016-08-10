@@ -32,6 +32,7 @@
                         {{ form_row(formPerso1.firstname, { 'attr': { 'placeholder': 'Prénom' }}) }}
                         {{ form_row(formPerso1.name, { 'attr': { 'placeholder': 'Nom' }}) }}
                         {{ form_row(formPerso1.birthday, { 'attr': { 'placeholder': 'JJ/MM/AAAA' }}) }}
+                        {{ form_widget(formPerso1.localization) }}
                         {{ form_rest(formPerso1) }}
             
                         {% if not app.user.validated %}
@@ -113,6 +114,7 @@
         '@PolitizrFrontBundle/Resources/public/js/politizr/pages/editPerso.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/user/editPerso.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/user/idCheck.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/localization/edit.js'
         filter='uglifyjs2' %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}

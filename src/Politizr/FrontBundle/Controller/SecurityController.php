@@ -16,6 +16,7 @@ use Politizr\Model\PUMandate;
 use Politizr\Model\POrderQuery;
 use Politizr\Model\POPaymentTypeQuery;
 use Politizr\Model\PUserQuery;
+use Politizr\Model\PLCityQuery;
 
 use Politizr\FrontBundle\Form\Type\PUserRegisterType;
 use Politizr\FrontBundle\Form\Type\PUserContactType;
@@ -185,7 +186,7 @@ class SecurityController extends Controller
         $form = $this->createForm(new PUserContactType($withEmail, $oAuth), $user);
         
         return $this->render('PolitizrFrontBundle:Security:inscriptionContact.html.twig', array(
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ));
     }
 
@@ -218,6 +219,9 @@ class SecurityController extends Controller
         if ($form->isValid()) {
             $user = $form->getData();
             $user->save();
+
+            // upd localization infos
+            $this->get('politizr.manager.localization')->updateUserCity($user, $form->get('localization')->getData()['city']);
 
             $this->get('politizr.functional.security')->inscriptionCitizenFinish($user);
 
@@ -350,6 +354,9 @@ class SecurityController extends Controller
         if ($form->isValid()) {
             $user = $form->getData();
             $user->save();
+
+            // upd localization infos
+            $this->get('politizr.manager.localization')->updateUserCity($user, $form->get('localization')->getData()['city']);
 
             return $this->redirect($this->generateUrl('InscriptionElectedMandate'));
         }
