@@ -21,6 +21,10 @@ params:
             label:          Statut
         p_u_status:
             label:          Statut
+        p_l_city_id:
+            label:          Ville
+        p_l_city:
+            label:          Ville
         file_name:
             label:          Image
         copyright:
@@ -170,7 +174,7 @@ builders:
             title:                              "Edition de l'utilisateur {{ PUser.firstname }} {{ PUser.name }}"
             tabs:
                 "Identité":
-                    "Civilité":                 [ [ block_file_name ], [ gender ], [ firstname, name ], [ birthday ] ]
+                    "Civilité":                 [ [ block_file_name ], [ gender ], [ firstname, name ], [ birthday ], [ block_localization ] ]
                     "Contacts":                 [ [ phone, email ], [ website ], [ twitter, facebook ] ]
                 "Connexion":
                     "Connexion":                [ username, plainPassword ]
@@ -213,6 +217,13 @@ builders:
                         attr:                   { class : tinymce }
                 block_file_name:
                     label:                      "Image"
+                    grid_class:                 "col-md-12"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+                    addFormOptions:
+                        mapped:                 false
+                block_localization:
+                    label:                      "Localisation"
                     grid_class:                 "col-md-12"
                     formType:                   hidden
                     dbType:                     VARCHAR
@@ -318,7 +329,7 @@ builders:
             tabs:
                 "Identité":
                     "Type":                     [ qualified ]
-                    "Civilité":                 [ [ block_file_name ], [ gender, firstname, name ], [ birthday ] ]
+                    "Civilité":                 [ [ block_file_name ], [ gender, firstname, name ], [ birthday ], [ block_localization ] ]
                     "Contacts":                 [ [ phone, email ], [ website ], [ twitter, facebook ] ]
                     "Validation IdCheck":       [ block_id_check ]
                 "Descriptif":
@@ -359,6 +370,8 @@ builders:
                     label:                      "Image de fond"
                 block_file_name:
                     label:                      "Image"
+                block_localization:
+                    label:                      "Localisation"
                 block_tags_public:
                     label:                      "Tags publiques"
                 reputationScore:

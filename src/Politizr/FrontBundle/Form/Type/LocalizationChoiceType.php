@@ -47,7 +47,7 @@ class LocalizationChoiceType extends AbstractType
         // Department type list
         $departmentChoices = $this->localizationManager->getDepartmentChoices();
         $builder->add('department', 'choice', array(
-            'label' => 'Votre département',
+            'label' => $options['label_department'],
             'required' => true,
             'choices' => $departmentChoices,
             'choices_as_values' => true,
@@ -61,11 +61,11 @@ class LocalizationChoiceType extends AbstractType
         ));
 
         // see http://symfony.com/doc/2.8/cookbook/form/dynamic_form_modification.html#cookbook-form-events-underlying-data
-        $formModifier = function (FormInterface $form, $departmentUuid = null, $cityUuid = null) {
+        $formModifier = function (FormInterface $form, $departmentUuid = null, $cityUuid = null, $options) {
             // City type list / 30438
             $cityChoices = $this->localizationManager->getCityChoices($departmentUuid);
             $form->add('city', 'choice', array(
-                'label' => 'Votre ville',
+                'label' => $options['label_city'],
                 'required' => true,
                 'choices' => $cityChoices,
                 'choices_as_values' => true,
@@ -81,21 +81,21 @@ class LocalizationChoiceType extends AbstractType
 
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,
-            function (FormEvent $event) use ($formModifier, $departmentUuid, $cityUuid) {
-                $formModifier($event->getForm(), $departmentUuid, $cityUuid);
+            function (FormEvent $event) use ($formModifier, $departmentUuid, $cityUuid, $options) {
+                $formModifier($event->getForm(), $departmentUuid, $cityUuid, $options);
             }
         );
 
         $builder->get('department')->addEventListener(
             FormEvents::POST_SUBMIT,
-            function (FormEvent $event) use ($formModifier, $departmentUuid, $cityUuid) {
+            function (FormEvent $event) use ($formModifier, $departmentUuid, $cityUuid, $options) {
                 // It's important here to fetch $event->getForm()->getData(), as
                 // $event->getData() will get you the client data (that is, the ID)
                 $departmentUuid = $event->getForm()->getData();
         
                 // since we've added the listener to the child, we'll have to pass on
                 // the parent to the callback functions!
-                $formModifier($event->getForm()->getParent(), $departmentUuid, $cityUuid);
+                $formModifier($event->getForm()->getParent(), $departmentUuid, $cityUuid, $options);
             }
         );
     }
@@ -104,6 +104,8 @@ class LocalizationChoiceType extends AbstractType
     {
         $resolver->setDefaults(array(
             'city_id' => null,
+            'label_department' => 'Votre département',
+            'label_city' => 'Votre ville',
         ));
     }
 

@@ -40,6 +40,7 @@ services:
             - @form.factory
             - @politizr.manager.tag
             - @politizr.manager.user
+            - @politizr.manager.localization
             - @politizr.tools.global
             - @logger
 

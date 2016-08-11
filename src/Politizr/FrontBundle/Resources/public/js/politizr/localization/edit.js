@@ -2,20 +2,23 @@
 
 // init select2 & hide cities
 $(function() {
-    $('.select2_choice').select2({
-        language: "fr"
-    });
+    // console.log('*** init edit.js');
 
     $departmentUuid = $('.department_choice').val();
+    // console.log($departmentUuid);
     if ($departmentUuid == '') {
         $('.control-group-city').hide();
     }
+
+    $('select.select2_choice').select2({
+        language: "fr"
+    });
 });
 
 
 // department choice event
 $("body").on("change", ".department_choice", function(e) {
-    console.log('*** click change department');
+    // console.log('*** click change department');
 
     var context = $('#main');
     var departmentUuid = $(this).val();
@@ -40,12 +43,12 @@ $("body").on("change", ".department_choice", function(e) {
  */
 function initCities(contextZone, departmentUuid)
 {
-    console.log('*** initCities');
-    console.log(departmentUuid);
+    // console.log('*** initCities');
+    // console.log(departmentUuid);
 
     var xhrPath = getXhrPath(
         xhrRouteCity,
-        service,
+        'localization',
         'citiesSelectList',
         RETURN_HTML
     );
@@ -62,7 +65,7 @@ function initCities(contextZone, departmentUuid)
             $('#infoBoxHolder .boxError').show();
         } else {
             $('.city_choice').html(data['html']);
-            $('.city_choice').select2();
+            $('select.city_choice').select2();
             $('.control-group-city').show();
         }
     });

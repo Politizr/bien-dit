@@ -44,6 +44,10 @@ var ROUTE_USER_MANDATE_DELETE = 'admin/utilisateur/mandat/delete';
 var ADMIN_ROUTE_USER_VALIDATE_ID = 'admin/utilisateur/validation/carte-identite';
 var ADMIN_ROUTE_USER_VALIDATE_PHOTO_UPLOAD = 'admin/validation/photo-id-upload';
 
+// LOCALIZATION
+var ADMIN_ROUTE_CITY_LISTING = 'admin/villes/listing';
+var ADMIN_ROUTE_USER_CITY = 'admin/utilisateur/ville/update';
+
 
 // Generic function to make an AJAX call
 var xhrCall = function(context, data, url) {

@@ -15,6 +15,23 @@
     </div>
 {% endblock %}
 
+{# User's localization #}
+{% block form_row_block_localization %}
+    <div class="form-group">
+        <label class="control-label">Localisation</label>
+        <div>
+            {% if PUser.PLCity %}
+                {{ PUser.PLCity.NameReal }}
+            {% else %}
+                Aucune ville renseignée
+            {% endif %}
+            <br/>
+            <i>Note: gestion de la localisation depuis l'écran "Montrer"</i>
+        </div>
+    </div>
+{% endblock %}
+
+
 {# User's tag #}
 {% block form_row_block_tags_public %}
     {{ adminUserTags(PUser, null, 1, true, true) }}

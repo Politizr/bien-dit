@@ -12,6 +12,8 @@ use Politizr\Model\PUMandate;
 use Politizr\FrontBundle\Form\Type\PUMandateType;
 use Politizr\FrontBundle\Form\Type\PUserIdCheckType;
 
+use Politizr\AdminBundle\Form\Type\AdminPUserLocalizationType;
+
 /**
  * User admin twig extension
  *
@@ -101,6 +103,13 @@ class PolitizrAdminUserExtension extends \Twig_Extension
             'adminUserReputation'  => new \Twig_SimpleFunction(
                 'adminUserReputation',
                 array($this, 'adminUserReputation'),
+                array(
+                    'is_safe' => array('html')
+                    )
+            ),
+            'adminUserLocalization'  => new \Twig_SimpleFunction(
+                'adminUserLocalization',
+                array($this, 'adminUserLocalization'),
                 array(
                     'is_safe' => array('html')
                     )
@@ -284,6 +293,30 @@ class PolitizrAdminUserExtension extends \Twig_Extension
             'PolitizrAdminBundle:Fragment\\Reputation:user.html.twig',
             array(
                 'user' => $user,
+            )
+        );
+
+        return $html;
+    }
+
+    /**
+     * User's localization
+     *
+     * @param PUser $user
+     * @return string
+     */
+    public function adminUserLocalization(PUser $user)
+    {
+        $this->logger->info('*** adminUserLocalization');
+        // $this->logger->info('$user = '.print_r($user, true));
+
+        $form = $this->formFactory->create(new AdminPUserLocalizationType($user));
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+            'PolitizrAdminBundle:Fragment\\User:_localization.html.twig',
+            array(
+                'form' => $form->createView(),
             )
         );
 

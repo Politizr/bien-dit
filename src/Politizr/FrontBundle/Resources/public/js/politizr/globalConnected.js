@@ -224,7 +224,7 @@ function modalHelpUs() {
 };
 
 // ******************************************************************* //
-//                    LOCALIZATION MSG FORM                            //
+//                   LOCALIZATION ALERT BOX                            //
 // ******************************************************************* //
 
 // User localization vars

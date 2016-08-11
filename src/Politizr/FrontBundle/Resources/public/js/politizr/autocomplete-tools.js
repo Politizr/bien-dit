@@ -19,7 +19,7 @@ var normalize = function( term ) {
  */
 function initAutoComplete(contextZone, items, selectElement, hiddenElement)
 {
-    console.log('*** initAutoComplete');
+    // console.log('*** initAutoComplete');
 
     // http://api.jqueryui.com/autocomplete/
     return contextZone.find(selectElement).first().autocomplete({

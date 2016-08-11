@@ -5,6 +5,10 @@
     {% include 'PolitizrAdminBundle:Fragment:_uploadImage.html.twig' with {'zone': 2, 'fileName': PUser.fileName,'subjectId': PUser.id, 'queryClass': 'Politizr\\Model\\PUserQuery', 'setter': 'setFileName', 'uploadWebPath': constant('Politizr\\Constant\\PathConstants::USER_UPLOAD_WEB_PATH')} %}
 {% endblock %}
 
+{# User's localization #}
+{% block show_column_block_localization %}
+    {{ adminUserLocalization(PUser) }}
+{% endblock %}
 
 {# Contenus #}
 {% block show_column_summary %}
@@ -114,6 +118,7 @@
 
 
 {% block object_actions_script_container %}
+    {# tag js actions & lib #}
     <script>
         var nbZones = 2;
         var service = 'admin';
@@ -125,16 +130,18 @@
     <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/politizr/autocomplete-tools') }}"></script>    
     <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/politizr/tag/editTags.js') }}"></script>  
 
+    {# upload js #}
     <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/jquery.form.min.js') }}"></script>  
     <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/uploadImage.js') }}"></script>  
 
+    {# moderation js #}
     <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/moderation/notification.js') }}"></script>
 
-    {# idcheck js libs #}
+    {# idcheck js #}
     <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/textcounter.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/user/idCheck.js') }}"></script>  
 
-    {# mandate js actions & lib #}
+    {# mandate js #}
     <script>
         // Mandate creation
         $("body").on("click", "[action='mandateCreate']", function(e) {
@@ -157,5 +164,14 @@
             return deleteAdminUserMandate(uuid);
         });
     </script>
-    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/politizr/user/mandates.js') }}"></script>    
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/politizr/user/mandates.js') }}"></script>
+
+
+    {# localization js #}
+    <script>
+        // User localization vars
+        var xhrRouteCity = ADMIN_ROUTE_CITY_LISTING;
+    </script>
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/politizr/localization/edit.js') }}"></script>  
+    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/user/localization.js') }}"></script>  
 {% endblock object_actions_script_container %}

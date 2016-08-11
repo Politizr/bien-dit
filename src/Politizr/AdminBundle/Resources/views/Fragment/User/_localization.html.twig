@@ -1,0 +1,10 @@
+<form name="userLocalization" method="post">
+    {{ form_errors(form) }}
+
+    {{ form_widget(form.localization) }}
+    {{ form_rest(form) }}
+
+    <a action="updateLocalization">
+        Mettre à jour
+    </a>
+</form>

@@ -213,4 +213,8 @@ class XhrConstants
     // ID CHECK
     const ADMIN_ROUTE_USER_VALIDATE_ID = 'admin/utilisateur/validation/carte-identite';
     const ADMIN_ROUTE_USER_VALIDATE_PHOTO_UPLOAD = 'admin/validation/photo-id-upload';
+
+    // LOCALIZATION
+    const ADMIN_ROUTE_CITY_LISTING = 'admin/villes/listing';
+    const ADMIN_ROUTE_USER_CITY = 'admin/utilisateur/ville/update';
 }

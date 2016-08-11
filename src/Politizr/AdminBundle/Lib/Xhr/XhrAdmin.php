@@ -31,6 +31,8 @@ use Politizr\Model\PUMandateQuery;
 use Politizr\AdminBundle\Form\Type\PMUserModeratedType;
 use Politizr\FrontBundle\Form\Type\PUMandateType;
 
+use Politizr\AdminBundle\Form\Type\AdminPUserLocalizationType;
+
 /**
  * XHR service for admin management.
  *
@@ -44,6 +46,7 @@ class XhrAdmin
     private $formFactory;
     private $tagManager;
     private $userManager;
+    private $localizationManager;
     private $globalTools;
     private $logger;
 
@@ -55,6 +58,7 @@ class XhrAdmin
      * @param @form.factory
      * @param @politizr.manager.tag
      * @param @politizr.manager.user
+     * @param @politizr.manager.localization
      * @param @politizr.tools.global
      * @param @logger
      */
@@ -65,6 +69,7 @@ class XhrAdmin
         $formFactory,
         $tagManager,
         $userManager,
+        $localizationManager,
         $globalTools,
         $logger
     ) {
@@ -77,6 +82,7 @@ class XhrAdmin
 
         $this->tagManager = $tagManager;
         $this->userManager = $userManager;
+        $this->localizationManager = $localizationManager;
 
         $this->globalTools = $globalTools;
 
@@ -885,5 +891,36 @@ class XhrAdmin
         return array(
             'fileName' => $fileName
         );
+    }
+
+    /* ######################################################################################################## */
+    /*                                             LOCALIZATION                                                 */
+    /* ######################################################################################################## */
+
+    /**
+     * Update user's city
+     */
+    public function userCity(Request $request)
+    {
+        $this->logger->info('*** userCity');
+
+        $userId = $request->get('admin_user')['p_user_id'];
+        $user = PUserQuery::create()->findPk($userId);
+
+        if (!$user) {
+            throw new InconsistentDataException('User not found');
+        }
+
+        $form = $this->formFactory->create(new AdminPUserLocalizationType($user));
+        $form->bind($request);
+        if ($form->isValid()) {
+            // upd localization infos
+            $this->localizationManager->updateUserCity($user, $form->get('localization')->getData()['city']);
+        } else {
+            $errors = StudioEchoUtils::getAjaxFormErrors($form);
+            throw new BoxErrorException($errors);
+        }
+
+        return true;
     }
 }
