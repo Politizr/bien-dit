@@ -1094,7 +1094,7 @@ class XhrDocument
         }
 
         // Compute relative geo tag ids
-        $tagIds = $this->tagService->computePublicationGeotagRelativeIds($tag->getId(), false, false);
+        $tagIds = $this->tagService->computeGeotagExtendedIds($tag->getId(), false, false);
 
         $documents = $this->documentService->getDocumentsByTagsPaginated(
             $tagIds,

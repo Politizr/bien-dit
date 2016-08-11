@@ -57,13 +57,13 @@ class TagService
      *
      * @return array
      */
-    public function computePublicationGeotagRelativeIds(
+    public function computeGeotagExtendedIds(
         $id,
         $withFranceChildren = true,
         $withRegionChildren = true,
         $withDepartmentChildren = true
     ) {
-        // $this->logger->info('*** computePublicationGeotagRelativeIds');
+        // $this->logger->info('*** computeGeotagExtendedIds');
 
         $ids = array();
         $tag = PTagQuery::create()->findPk($id);

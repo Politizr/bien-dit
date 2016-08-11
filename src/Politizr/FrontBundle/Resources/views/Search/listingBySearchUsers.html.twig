@@ -1,0 +1,67 @@
+{# beta #}
+{% set layout = 'PolitizrFrontBundle::layoutPublic.html.twig' %}
+{% if (isGrantedE() or isGrantedC()) %}
+    {% set layout = 'PolitizrFrontBundle::layoutConnected.html.twig' %}
+{% endif %}
+{% extends layout %}
+
+{% block javascriptHeader %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.svg.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.svgdom.min.js') }}"></script>
+{% endblock %}
+
+{% set metaTitle = 'Mes élu-e-s' %}
+{% set metaDescription = 'Recherchez et classez les dernier-e-s élu-e-s (et citoyen-ne-s!) de Politizr, en utilisant la carte et les nombreux filtres disponibles.' %}
+
+{% block title %}{{ metaTitle }} - {{ parent() }}{% endblock title %}
+{% block description %}{{ metaDescription }}{% endblock description %}
+
+{% block ogTitle %}{{ metaTitle }} - {{ parent() }}{% endblock ogTitle %}
+{% block ogDescription %}{{ metaDescription }}{% endblock ogDescription %}
+
+{% block tcTitle %}{{ metaTitle }} - {{ parent() }}{% endblock tcTitle %}
+{% block tcDescription %}{{ metaDescription }}{% endblock tcDescription %}
+
+{% block content %}
+    <div id="content">
+        <div id="documentListing" class="searchResults withLoaderInside">
+            {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+            <div class="listTop"></div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block sidebarContent %}
+    {% if not app.user %}
+        <div id="mapHolder" class="mapUnlogged">
+            <div class="mapUnloggedText">
+                <h1>Vous devez vous<br>inscrire pour accéder<br>au filtre par zone<br>géographique</h1>
+                <a href="{{ path('InscriptionChoice') }}">Créer un compte</a>
+                <span>100 %<br>gratuit</span>
+            </div>
+            <div class="svg">
+                {% include 'PolitizrFrontBundle:Search\\Map:_france.svg.twig' with { 'current': null } %}
+            </div>
+        </div>
+        <div class="sidebarSearch">
+            <div class="sidebarSearchCategory">
+                {% include 'PolitizrFrontBundle:Search\\Filters:_category.html.twig' %}
+            </div>
+        </div>
+    {% else %}
+        {% include 'PolitizrFrontBundle:Search:_sidebarSearchUsers.html.twig' %}
+    {% endif %}
+{% endblock sidebarContent %}
+
+{% block javascriptFooter %}
+    {{ parent() }}
+
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/localization/map.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/user/listing.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/pages/listingBySearchUsers.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock javascriptFooter %}

@@ -175,13 +175,13 @@ class ListingController extends Controller
     }
 
     /**
-     * Search listing
+     * Search publications listing
      * code beta
      */
-    public function searchAction()
+    public function searchPublicationsAction()
     {
         $logger = $this->get('logger');
-        $logger->info('*** searchAction');
+        $logger->info('*** searchPublicationsAction');
 
         // Map ids
         $franceTag = PTagQuery::create()->findPk(TagConstants::TAG_GEO_FRANCE_ID);
@@ -191,8 +191,36 @@ class ListingController extends Controller
 
         $mapTagUuids = $this->get('politizr.functional.tag')->getRegionUuids();
 
-        return $this->render('PolitizrFrontBundle:Search:listingBySearch.html.twig', array(
-            'search' => true,
+        return $this->render('PolitizrFrontBundle:Search:listingBySearchPublications.html.twig', array(
+            'searchPublications' => true,
+            'franceTag' => $franceTag,
+            'fomTag' => $fomTag,
+            'europeTag' => $europeTag,
+            'worldTag' => $worldTag,
+            'mapTagUuids' => $mapTagUuids,
+            'tags' => array(),
+        ));
+    }
+
+    /**
+     * Search uers listing
+     * code beta
+     */
+    public function searchUsersAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** searchUsersAction');
+
+        // Map ids
+        $franceTag = PTagQuery::create()->findPk(TagConstants::TAG_GEO_FRANCE_ID);
+        $fomTag = PTagQuery::create()->findPk(TagConstants::TAG_GEO_REGION_ID_FOM);
+        $europeTag = PTagQuery::create()->findPk(TagConstants::TAG_GEO_EUROPE_ID);
+        $worldTag = PTagQuery::create()->findPk(TagConstants::TAG_GEO_WORLD_ID);
+
+        $mapTagUuids = $this->get('politizr.functional.tag')->getRegionUuids();
+
+        return $this->render('PolitizrFrontBundle:Search:listingBySearchUsers.html.twig', array(
+            'searchUsers' => true,
             'franceTag' => $franceTag,
             'fomTag' => $fomTag,
             'europeTag' => $europeTag,

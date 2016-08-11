@@ -177,7 +177,21 @@ class PUserQuery extends BasePUserQuery
 
     /**
      *
-     * @param boolean $online
+     * @param array $cityIds
+     * @return PUserQuery
+     */
+    public function filterIfCities($cityIds = null)
+    {
+        if ($cityIds && sizeof($cityIds) > 0) {
+            return $this->filterByPLCityId($cityIds);
+        }
+
+        return $this;
+    }
+
+    /**
+     *
+     * @param array $tagIds
      * @return PUserQuery
      */
     public function filterIfTags($tagIds = null)

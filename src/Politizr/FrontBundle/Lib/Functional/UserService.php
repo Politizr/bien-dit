@@ -25,6 +25,7 @@ class UserService
     private $userManager;
 
     private $tagService;
+    private $localizationService;
 
     private $router;
     
@@ -36,6 +37,7 @@ class UserService
      * @param @security.authorization_checker
      * @param @politizr.manager.user
      * @param @politizr.functional.tag
+     * @param @politizr.functional.localization
      * @param @router
      * @param @logger
      */
@@ -44,6 +46,7 @@ class UserService
         $securityAuthorizationChecker,
         $userManager,
         $tagService,
+        $localizationService,
         $router,
         $logger
     ) {
@@ -53,6 +56,7 @@ class UserService
         $this->userManager = $userManager;
 
         $this->tagService = $tagService;
+        $this->localizationService = $localizationService;
 
         $this->router = $router;
 
@@ -108,7 +112,8 @@ class UserService
             if (!$tag) {
                 throw new InconsistentDataException(sprintf('Tag %s not found', $filters['map']));
             }
-            $tagIds = $this->tagService->computePublicationGeotagRelativeIds($tag->getId());
+            $tagIds = $this->tagService->computeGeotagExtendedIds($tag->getId());
+            $cityIds = $this->localizationService->computeCityIdsFromTagIds($tagIds);
         }
 
         $keywords = array($filterProfile, $filterDate);
@@ -116,7 +121,7 @@ class UserService
         $users = PUserQuery::create()
             ->distinct()
             ->online()
-            ->filterIfTags($tagIds)
+            ->filterIfCities($cityIds)
             ->filterByKeywords($keywords)
             ->orderWithKeyword($filterActivity)
             ->paginate($offset, $count);

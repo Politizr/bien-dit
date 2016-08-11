@@ -160,7 +160,7 @@ class DocumentService
             if (!$tag) {
                 throw new InconsistentDataException(sprintf('Tag %s not found', $filters['map']));
             }
-            $tagIds = $this->tagService->computePublicationGeotagRelativeIds($tag->getId());
+            $tagIds = $this->tagService->computeGeotagExtendedIds($tag->getId());
 
             $inQueryTagIds = implode(',', $tagIds);
             if (empty($inQueryTagIds)) {

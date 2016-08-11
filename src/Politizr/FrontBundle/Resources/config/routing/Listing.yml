@@ -27,9 +27,15 @@ ListingByOrganization:
     requirements:
         _method:        GET
 
-ListingSearch:
-    pattern:  /classement
-    defaults: { _controller: PolitizrFrontBundle:Listing:search }
+ListingSearchPublications:
+    pattern:  /publications
+    defaults: { _controller: PolitizrFrontBundle:Listing:searchPublications }
+    requirements:
+        _method:        GET
+
+ListingSearchUsers:
+    pattern:  /mes-elu-e-s
+    defaults: { _controller: PolitizrFrontBundle:Listing:searchUsers }
     requirements:
         _method:        GET
 

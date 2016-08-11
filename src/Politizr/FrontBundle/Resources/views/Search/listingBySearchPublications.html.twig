@@ -11,7 +11,7 @@
     <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.svgdom.min.js') }}"></script>
 {% endblock %}
 
-{% set metaTitle = 'Classement' %}
+{% set metaTitle = 'Publications' %}
 {% set metaDescription = 'Recherchez et classez les dernières publications de Politizr, en utilisant la carte et les nombreux filtres disponibles.' %}
 
 {% block title %}{{ metaTitle }} - {{ parent() }}{% endblock title %}
@@ -50,7 +50,7 @@
             </div>
         </div>
     {% else %}
-        {% include 'PolitizrFrontBundle:Search:_sidebarSearch.html.twig' %}
+        {% include 'PolitizrFrontBundle:Search:_sidebarSearchPublications.html.twig' %}
     {% endif %}
 {% endblock sidebarContent %}
 
@@ -58,9 +58,9 @@
     {{ parent() }}
 
     {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/localization/map.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/document/listing.js'
-        '@PolitizrFrontBundle/Resources/public/js/politizr/user/listing.js'
-        '@PolitizrFrontBundle/Resources/public/js/politizr/pages/listingBySearch.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/pages/listingBySearchPublications.js'
         filter='uglifyjs2' %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}

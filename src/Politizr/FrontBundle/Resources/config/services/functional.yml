@@ -16,6 +16,7 @@ services:
             - @security.authorization_checker
             - @politizr.manager.user
             - @politizr.functional.tag
+            - @politizr.functional.localization
             - @router
             - @logger
 
@@ -57,5 +58,13 @@ services:
             - @security.token_storage
             - @security.authorization_checker
             - @politizr.manager.tag
+            - @logger
+
+    politizr.functional.localization:
+        class: Politizr\FrontBundle\Lib\Functional\LocalizationService
+        arguments:
+            - @security.token_storage
+            - @security.authorization_checker
+            - @politizr.manager.localization
             - @logger
 

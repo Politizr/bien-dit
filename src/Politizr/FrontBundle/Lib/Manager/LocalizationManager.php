@@ -30,6 +30,45 @@ class LocalizationManager
     /*                                            CRUD OPERATIONS                                               */
     /* ######################################################################################################## */
 
+    /**
+     * Get array of ids of city included in the region tag id
+     *
+     * @param int $regionTagId
+     * @return array
+     */
+    public function getCityIdsByRegionTagId($regionTagId)
+    {
+        $cityIds = PLCityQuery::create()
+            ->select('id')
+            ->usePLDepartmentQuery()
+                ->usePLRegionQuery()
+                    ->filterByPTagId($regionTagId)
+                ->endUse()
+            ->endUse()
+            ->find()
+            ->toArray();
+
+        return $cityIds;
+    }
+
+    /**
+     * Get array of ids of city included in the department tag id
+     *
+     * @param int $departmentTagId
+     * @return array
+     */
+    public function getCityIdsByDepartmentTagId($departmentTagId)
+    {
+        $cityIds = PLCityQuery::create()
+            ->select('id')
+            ->usePLDepartmentQuery()
+                ->filterByPTagId($departmentTagId)
+            ->endUse()
+            ->find()
+            ->toArray();
+
+        return $cityIds;
+    }
 
     /**
      * Get array of [title] => [uuid] departments
