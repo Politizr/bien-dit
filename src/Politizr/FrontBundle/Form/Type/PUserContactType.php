@@ -51,7 +51,6 @@ class PUserContactType extends AbstractType
             'multiple' => false,
             'expanded' => false,
             'constraints' => new NotBlank(array('message' => 'Civilité obligatoire.')),
-            'attr' => array('class' => 'classicSelect')
         ));
 
         $builder->add('name', 'text', array(
