@@ -44,6 +44,9 @@
                     {{ form_start(form, {'action': path('InscriptionElectedContactCheck'), 'method': 'POST'}) }}
                         {{ form_label(form.gender) }}
                         <div class="styledSelect">{{ form_widget(form.gender) }}</div>
+                        {% if form.gender.vars.errors|length %}
+                            <div class="field_error">{{ form_errors(form.gender) }}</div>
+                        {% endif %}
                         {{ form_row(form.name) }}
                         {{ form_row(form.firstname) }}
                         {% if (form.email is defined) %}
