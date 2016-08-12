@@ -34,7 +34,7 @@ ListingSearchPublications:
         _method:        GET
 
 ListingSearchUsers:
-    pattern:  /mes-elu-e-s
+    pattern:  /mes-elus
     defaults: { _controller: PolitizrFrontBundle:Listing:searchUsers }
     requirements:
         _method:        GET

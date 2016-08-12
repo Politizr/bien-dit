@@ -66,6 +66,15 @@ function getCurrentUserFilters() {
 
     var filters = [];
 
+    // city
+    uuid = null;
+    if ($('#cityFilter').is(":visible")) {
+        // console.log('city uuid');
+        uuid = $('#myCityFilter').val();
+        // console.log(uuid);
+    } 
+    filters.push({name: 'cityUuid', value: uuid});
+
     // map
     if ($('.mapBreadcrumbs').find('.current').length) {
         // console.log('sub map uuid');

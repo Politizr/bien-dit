@@ -5,9 +5,12 @@ use Politizr\Exception\InconsistentDataException;
 
 use Politizr\Constant\TagConstants;
 
+use Politizr\Model\PUser;
+
 use Politizr\Model\PLCityQuery;
 use Politizr\Model\PLDepartmentQuery;
 use Politizr\Model\PLRegionQuery;
+use Politizr\Model\PTagQuery;
 
 /**
  * Functional service for localization management.
@@ -74,4 +77,55 @@ class LocalizationService
         return $cityIds;
     }
 
+    /**
+     * Get the tag's department uuid relative to the city id
+     *
+     * @param int $userId
+     * @return string
+     */
+    public function getDepartmentTagUuidByCityId($cityId)
+    {
+        $departmentUuid = null;
+
+        $tag = PTagQuery::create()
+            ->usePLDepartmentQuery()
+                ->usePLCityQuery()
+                    ->filterById($cityId)
+                ->endUse()
+            ->endUse()
+            ->findOne();
+
+        if ($tag) {
+            $departmentUuid = $tag->getUuid();
+        }
+
+        return $departmentUuid;
+    }
+
+    /**
+     * Get the tag's region uuid relative to the city id
+     *
+     * @param int $userId
+     * @return string
+     */
+    public function getRegionTagUuidByCityId($cityId)
+    {
+        $regionUuid = null;
+
+        $tag = PTagQuery::create()
+            ->usePLRegionQuery()
+                ->usePLDepartmentQuery()
+                    ->usePLCityQuery()
+                        ->filterById($cityId)
+                    ->endUse()
+                ->endUse()
+            ->endUse()
+            ->findOne();
+
+        if ($tag) {
+            $regionUuid = $tag->getUuid();
+        }
+
+        return $regionUuid;
+    }
 }

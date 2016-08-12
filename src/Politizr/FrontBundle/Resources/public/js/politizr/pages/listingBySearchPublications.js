@@ -26,6 +26,16 @@ $("body").on("click", "[action='map']", function() {
     });
 });
 
+// Map's selection shortcut
+$("body").on("click", "[action='publicationsMyMap']", function() {
+    // console.log('*** click publicationsMyMap');
+
+    uuid = $(this).attr('uuid');
+
+    return publicationsMapFiltering(uuid);
+});
+
+
 // Publication filter change
 $("body").on("change", ".publicationFilter", function() {
     // console.log('*** change publicationFilter');
@@ -66,3 +76,25 @@ $("body").on("change", ".dateFilter", function() {
     return publicationsByFiltersListing();
 });
 
+
+
+/**
+ * Trigger the map & publication's listing reloading
+ *
+ * @param string
+ */
+function publicationsMapFiltering(uuid) {
+    // console.log('*** publicationsMapFiltering');
+    // console.log(uuid);
+
+    $.when(
+        // update breadcrumb
+        mapBreadcrumb(uuid),
+        // update map
+        mapSchema(uuid)
+    ).done(function(r1, r2) {
+        $('#documentListing .listTop').html('');
+        $("[action='goUp']").trigger("click");
+        return publicationsByFiltersListing();
+    });
+}

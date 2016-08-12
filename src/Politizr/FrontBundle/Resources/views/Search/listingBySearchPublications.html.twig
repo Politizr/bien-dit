@@ -25,6 +25,10 @@
 
 {% block content %}
     <div id="content">
+        <div id="localizationChoiceBox">
+            <a action="publicationsMyMap" uuid="{{ regionUuid }}">Ma région</a>
+            <a action="publicationsMyMap" uuid="{{ departmentUuid }}">Mon département</a>
+        </div>
         <div id="documentListing" class="searchResults withLoaderInside">
             {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
             <div class="listTop"></div>
@@ -42,11 +46,6 @@
             </div>
             <div class="svg">
                 {% include 'PolitizrFrontBundle:Search\\Map:_france.svg.twig' with { 'current': null } %}
-            </div>
-        </div>
-        <div class="sidebarSearch">
-            <div class="sidebarSearchCategory">
-                {% include 'PolitizrFrontBundle:Search\\Filters:_category.html.twig' %}
             </div>
         </div>
     {% else %}

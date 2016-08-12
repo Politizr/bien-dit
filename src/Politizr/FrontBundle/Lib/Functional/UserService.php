@@ -10,6 +10,7 @@ use Politizr\Model\PUser;
 
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PTagQuery;
+use Politizr\Model\PLCityQuery;
 
 /**
  * Functional service for document management.
@@ -86,6 +87,7 @@ class UserService
      * Get filtered paginated documents
      * beta
      *
+     * @param string $cityUuid
      * @param string $geoTagUuid
      * @param string $filterProfile
      * @param string $filterActivity
@@ -95,6 +97,7 @@ class UserService
      * @return PropelCollection[Publication]
      */
     public function getUsersByFilters(
+        $cityUuid,
         $geoTagUuid,
         $filterProfile = ListingConstants::FILTER_KEYWORD_ALL_USERS,
         $filterActivity = ListingConstants::ORDER_BY_KEYWORD_MOST_ACTIVE,
@@ -105,7 +108,13 @@ class UserService
         $users = new \PropelCollection();
 
         $tagIds = [];
-        if ($geoTagUuid) {
+        if ($cityUuid) {
+            $city = PLCityQuery::create()
+                ->filterByUuid($cityUuid)
+                ->findOne();
+
+            $cityIds = [ $city->getId() ];
+        } elseif ($geoTagUuid) {
             $tag = PTagQuery::create()
                 ->filterByUuid($geoTagUuid)
                 ->findOne();

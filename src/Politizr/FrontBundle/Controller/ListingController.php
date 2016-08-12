@@ -191,6 +191,19 @@ class ListingController extends Controller
 
         $mapTagUuids = $this->get('politizr.functional.tag')->getRegionUuids();
 
+        // Current user localization
+        $user = $this->getUser();
+
+        $cityUuid = null;
+        $departmentUuid = null;
+        $regionUuid = null;
+        if ($user) {
+            $city = $user->getPLCity();
+            $cityUuid = $city->getUuid();
+            $departmentUuid = $this->get('politizr.functional.localization')->getDepartmentTagUuidByCityId($city->getId());
+            $regionUuid = $this->get('politizr.functional.localization')->getRegionTagUuidByCityId($city->getId());
+        }
+
         return $this->render('PolitizrFrontBundle:Search:listingBySearchPublications.html.twig', array(
             'searchPublications' => true,
             'franceTag' => $franceTag,
@@ -198,6 +211,9 @@ class ListingController extends Controller
             'europeTag' => $europeTag,
             'worldTag' => $worldTag,
             'mapTagUuids' => $mapTagUuids,
+            'cityUuid' => $cityUuid,
+            'departmentUuid' => $departmentUuid,
+            'regionUuid' => $regionUuid,
             'tags' => array(),
         ));
     }
@@ -211,6 +227,12 @@ class ListingController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** searchUsersAction');
 
+        // Users listing only for connected people
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirect($this->generateUrl('Homepage'));
+        }
+
         // Map ids
         $franceTag = PTagQuery::create()->findPk(TagConstants::TAG_GEO_FRANCE_ID);
         $fomTag = PTagQuery::create()->findPk(TagConstants::TAG_GEO_REGION_ID_FOM);
@@ -219,6 +241,12 @@ class ListingController extends Controller
 
         $mapTagUuids = $this->get('politizr.functional.tag')->getRegionUuids();
 
+        // Current user localization
+        $city = $user->getPLCity();
+        $cityUuid = $city->getUuid();
+        $departmentUuid = $this->get('politizr.functional.localization')->getDepartmentTagUuidByCityId($city->getId());
+        $regionUuid = $this->get('politizr.functional.localization')->getRegionTagUuidByCityId($city->getId());
+
         return $this->render('PolitizrFrontBundle:Search:listingBySearchUsers.html.twig', array(
             'searchUsers' => true,
             'franceTag' => $franceTag,
@@ -226,6 +254,9 @@ class ListingController extends Controller
             'europeTag' => $europeTag,
             'worldTag' => $worldTag,
             'mapTagUuids' => $mapTagUuids,
+            'cityUuid' => $cityUuid,
+            'departmentUuid' => $departmentUuid,
+            'regionUuid' => $regionUuid,
             'tags' => array(),
         ));
     }

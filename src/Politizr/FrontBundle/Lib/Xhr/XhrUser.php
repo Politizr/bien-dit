@@ -118,7 +118,7 @@ class XhrUser
 
         $this->userTwigExtension = $userTwigExtension;
 
-        $this->logger = $logger;
+        // $this->logger = $logger;
     }
 
     /* ######################################################################################################## */
@@ -1137,6 +1137,8 @@ class XhrUser
         // Request arguments
         $offset = $request->get('offset');
         // $this->logger->info('$offset = ' . print_r($offset, true));
+        $cityUuid = $request->get('cityUuid');
+        // $this->logger->info('$cityUuid = ' . print_r($cityUuid, true));
         $geoTagUuid = $request->get('geoTagUuid');
         // $this->logger->info('$geoTagUuid = ' . print_r($geoTagUuid, true));
         $filterProfile = $request->get('filterProfile');
@@ -1162,6 +1164,7 @@ class XhrUser
         }
 
         $users = $this->userService->getUsersByFilters(
+            $cityUuid,
             $geoTagUuid,
             $filterProfile,
             $filterActivity,

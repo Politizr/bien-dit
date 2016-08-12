@@ -11,7 +11,7 @@
     <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.svgdom.min.js') }}"></script>
 {% endblock %}
 
-{% set metaTitle = 'Mes élu-e-s' %}
+{% set metaTitle = 'Mes élus' %}
 {% set metaDescription = 'Recherchez et classez les dernier-e-s élu-e-s (et citoyen-ne-s!) de Politizr, en utilisant la carte et les nombreux filtres disponibles.' %}
 
 {% block title %}{{ metaTitle }} - {{ parent() }}{% endblock title %}
@@ -25,6 +25,11 @@
 
 {% block content %}
     <div id="content">
+        <div id="localizationChoiceBox">
+            <a action="usersMyMap" uuid="{{ regionUuid }}">Ma région</a>
+            <a action="usersMyMap" uuid="{{ departmentUuid }}">Mon département</a>
+            <a action="usersMyCity" uuid="{{ departmentUuid }}">Ma ville</a>
+        </div>
         <div id="documentListing" class="searchResults withLoaderInside">
             {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
             <div class="listTop"></div>
@@ -42,11 +47,6 @@
             </div>
             <div class="svg">
                 {% include 'PolitizrFrontBundle:Search\\Map:_france.svg.twig' with { 'current': null } %}
-            </div>
-        </div>
-        <div class="sidebarSearch">
-            <div class="sidebarSearchCategory">
-                {% include 'PolitizrFrontBundle:Search\\Filters:_category.html.twig' %}
             </div>
         </div>
     {% else %}
