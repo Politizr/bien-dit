@@ -1,0 +1,261 @@
+{% set layout = 'PolitizrFrontBundle::layoutPublic.html.twig' %}
+{% if (isGrantedE() or isGrantedC()) %}
+    {% set layout = 'PolitizrFrontBundle::layoutConnected.html.twig' %}
+{% endif %}
+{% extends layout %}
+
+{% set metaTitle = 'Notre concept' %}
+{% set metaDescription = 'Le concept de Politizr: une nouvelle idée de la démocratie participative s\'invente ici: digitale, participative, concrète, locale et sans frontière.' %}
+
+{% block title %}{{ metaTitle }} - {{ parent() }}{% endblock title %}
+{% block description %}{{ metaDescription }}{% endblock description %}
+
+{% block ogTitle %}{{ metaTitle }} - {{ parent() }}{% endblock ogTitle %}
+{% block ogDescription %}{{ metaDescription }}{% endblock ogDescription %}
+
+{% block tcTitle %}{{ metaTitle }} - {{ parent() }}{% endblock tcTitle %}
+{% block tcDescription %}{{ metaDescription }}{% endblock tcDescription %}
+
+{% block bodyClass %} class="public visitor noHeaderTrigger"{% endblock %}
+
+{% block main %}
+    <div id="animConceptTitle">
+        <div class="center">
+            <h1>Une nouvelle idée de la démocratie s’invente ici :<br>
+                Digitale. Participative. Concrète. Locale et sans frontières. </h1>
+            <h2>
+                Chaque jour, des arguments sont échangés, de nouvelles opinions se dessinent et des décisions sont prises grâce à Politizr. Et vous, changerez-vous d’opinion?
+            </h2>
+        </div>
+    </div>
+    <div id="animConcept">
+        <div class="center">
+            <!-- post vous -->
+            <div id="postCitizen" class="animConceptActivity">
+                <div class="animFadeIn">
+                    <div class="animConceptIcon"><i class="icon-plane"></i></div>
+                    <div class="animConceptActivityContent">
+                        <div class="avatar40"><img src="{{ asset('bundles/politizrfront/images/f-avatarMick.jpg') }}"></div>
+                        <div class="animConceptActivityBio">
+                            <b>Vous</b>
+                        </div>
+                        <div class="animConceptActivityText">
+                            Pourquoi la médiathèque municipale est-elle fermée entre 12h et 14h le mardi ?
+                            <i>En effet, j’aimerai pouvoir profiter...</i>
+                        </div>
+                    </div>  
+                </div>
+                <div class="animConceptSpot"><i class="icon-geomark"></i></div>     
+            </div>  
+            
+            <!-- reco citoyen -->
+            <div id="recoCitizen" class="animConceptActivity">
+                <div class="animFadeIn">
+                    <div class="animConceptIcon"><i class="icon-like-yes"></i></div>
+                    <div class="animConceptActivityContent">
+                        <div class="animConceptMiniText">
+                            Michel recommande votre sujet “Pourquoi la médiathèque...”
+                        </div>  
+                    </div>
+                </div>
+                <div class="animConceptSpot"><i class="icon-geomark"></i></div> 
+            </div>
+            
+            <!-- post opposant -->
+            <div id="postOpposition" class="animConceptActivity">
+                <div class="animFadeIn">
+                    <div class="animConceptIcon"><i class="icon-answer"></i></div>
+                    <div class="animConceptActivityContent">
+                        <div class="avatar40"><img src="{{ asset('bundles/politizrfront/images/f-avatarOpposant.jpg') }}"></div>
+                        <div class="animConceptActivityBio">
+                            
+                            <b>Jean-Marc vous a répondu</b><br><i>Élu municipal, membre de l’opposition</i>
+                        </div>
+                        <div class="animConceptActivityText">
+                            Sacrifier la culture au nom de la gestion comptable : voilà qui pose question en effet ! 
+                            <i>Au cours du dernier conseil municipal...</i>
+                        </div>
+                    </div>  
+                </div>
+                <div class="animConceptSpot"><i class="icon-geomark"></i></div>     
+            </div>  
+                
+            <!-- post maire + reponse opposant-->
+            <div id="postMaire" class="animConceptActivity">
+                <div class="animFadeIn">
+                    <div class="animConceptIcon"><i class="icon-answer"></i></div>
+                    <div class="animConceptActivityContent">
+                        <div class="avatar40"><img src="{{ asset('bundles/politizrfront/images/f-avatarMaire.jpg') }}"></div>
+                        <div class="animConceptActivityBio">
+                            
+                            <b>Charlotte vous a répondu</b><br><i>Maire, présidente de la communauté de communes</i>
+                        </div>
+                        <div class="animConceptActivityText">
+                            Nous ne disposons pas des financements nécessaires pour ouvrir la médiathèque en continu 
+                            <i>Malheureusement, les budgets...</i>
+                        </div>
+                    </div>  
+                </div>
+                <div class="animConceptSpot"><i class="icon-geomark"></i></div>
+                <div class="animFadeIn oppostantAnswer">
+                    <div class="animConceptActivityContent">
+                        <div class="avatar40"><img src="{{ asset('bundles/politizrfront/images/f-avatarOpposant.jpg') }}"></div>
+                        <div class="animConceptActivityBio">                        
+                            <b>Jean-Marc a répondu</b><br><i>Élu municipal, membre de l’opposition</i>
+                        </div>
+                        <div class="animConceptActivityText">
+                            Les budgets doivent être construits en fonction des demandes de nos concitoyens !
+                            <i>Dans notre programme nous proposions...</i>
+                        </div>
+                    </div>  
+                </div>  
+            </div>
+            
+            <!-- comment citoyen -->
+            <div id="comCitizen" class="animConceptActivity">
+                <div class="animFadeIn">
+                    <div class="animConceptIcon"><i class="icon-comment"></i></div>
+                    <div class="animConceptActivityContent">
+                        <div class="animConceptMiniText">
+                            Margot a commentée votre sujet “Pourquoi la médiathèque...”
+                        </div>  
+                    </div>
+                </div>
+                <div class="animConceptSpot"><i class="icon-geomark"></i></div> 
+            </div>
+            
+            <!-- post outsider + like du maire -->
+            <div id="postOutsider" class="animConceptActivity">
+                <div class="animFadeIn">
+                    <div class="animConceptIcon"><i class="icon-answer"></i></div>
+                    <div class="animConceptActivityContent">
+                        <div class="avatar40"><img src="{{ asset('bundles/politizrfront/images/f-avatarOutsider.jpg') }}"></div>
+                        <div class="animConceptActivityBio">
+                            
+                            <b>Vincent vous a répondu</b><br><i>Maire d’un village à l’autre bout de la France</i>
+                        </div>
+                        <div class="animConceptActivityText">
+                            Pour notre médiathèque nous faisons appel au bénévolat pour assurer une ouverture continue
+                            <i>Pendant les heures creuses, des parents d’élèves...</i>
+                        </div>
+                    </div>  
+                </div>
+                <div class="animConceptSpot"><i class="icon-geooutsider"></i></div>     
+                <div class="animFadeIn mayorLike">
+                    <div class="animConceptIcon"><i class="icon-like-yes"></i></div>
+                    <div class="animConceptActivityContent">
+                        <div class="avatar40"><img src="{{ asset('bundles/politizrfront/images/f-avatarMaire.jpg') }}"></div>
+                        <div class="animConceptActivityBio">                                
+                            <b>Charlotte recommande cette réponse</b><br><i>Maire, présidente de la communauté de communes</i>
+                        </div>
+                    </div>  
+                </div>
+            </div>  
+            
+            
+        </div>
+        
+    </div>
+    <div id="topBlocMacbook">
+        <div class="center">
+            <div class="conceptCol conceptLeftCol">
+                <h1>Citoyen + Élu + Ancien Élu</h1>
+                Politizr permet aux citoyen-ne-s d’exprimer leurs points de vue et leur offre un espace de dialogue direct et privilégié avec leurs élu­-e-­s.<br><br>
+                Politizr permet aux élu­-e­-s d’expliquer publiquement leurs actions et de confronter leurs points de vue avec leurs adversaires, pour ainsi co­-construire la décision publique en toute transparence.
+            </div>
+            
+            <div class="conceptCol conceptRightCol">
+                <img src="{{ asset('bundles/politizrfront/images/f-graphTree.svg') }}" width="410">
+                Conçu autour de profils distincts “citoyen” et “élu”, Politizr permet de suivre l’actualité politique à toutes les échelles territoriales et propose une interface performante de rédaction, suivi, notation, commentaires et partage de contenus.
+            </div>
+            
+        </div>
+    </div>
+    <div id="blockMacbook">
+        <div id="macbook"><img src="{{ asset('bundles/politizrfront/images/f-macbook.png') }}"></div>
+    </div>
+    <div id="macbookFloor">
+        <div class="center">
+            <div class="conceptCol conceptLeftCol">
+                <h1>Améliorer la vie locale en développant les débats de proximités dans toute la France</h1>
+            </div>
+            
+            <div class="conceptCol conceptRightCol">
+                <p>Aménagement du territoire, sécurité, économie, environnement, , patrimoine, éducation, ...<br>
+                Nombreux sont les sujets qui attendent d’être révélés et discutés dans votre rue, votre quartier, votre ville, votre département ou votre région.</p>
+                <a href="{{ path('InscriptionChoice') }}">Exprimez-vous et lancez un sujet</a>
+            </div>          
+        </div>
+    </div>
+    
+    <div id="blockMarianne">
+        <div class="center">
+            <div id="bgBlockMarianne">
+                <div id="marianne"></div>
+                <div class="conceptCol conceptLeftCol">
+                    Conseil Municipal, Conseil Départemental (Conseil Général), Conseil Régional, Assemblée Nationale, Sénat ou Présidence de la République : les comptes “élus” sont réservés à toutes les personnes — encore en exercice ou non — ayant été élues au suffrage universel direct ou indirect.
+                </div>
+                
+                <div class="conceptCol conceptRightCol">
+                    Nous avons mis en place un processus de validation sécurisé permettant de certifier l’identité et les mandats des utilisateurs disposant d’un compte “élu”.
+                    <div class="conceptNoteCertif">
+                        <div class="status"><div class="representativeIdChecked"><i class="icon-profil-elu"></i><span>Profil certifié</span></div></div>
+                        <p>Les élu-e- s certifié-e-s sont reconnaissables grâce à ce label présent sur leurs profils.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="blockGraphAssembly">
+        <div class="center">
+            <div class="concept3Col">
+                <img src="{{ asset('bundles/politizrfront/images/f-graph-majorite.svg') }}" width="130">
+                <p>Élu-e-s de la majorité inscrivez-vous pour expliquer ou construire vos décisions avec vos concitoyens.</p>
+            </div>
+            <div class="concept3Col">
+                <img src="{{ asset('bundles/politizrfront/images/f-graph-minorite.svg') }}" width="130">
+                <p>Élu-e-s de l’opposition inscrivez-vous afin de porter la parole de vos électeurs et être force de proposition.</p>
+            </div>
+            <div class="concept3Col">
+                <img src="{{ asset('bundles/politizrfront/images/f-graph-exelu.svg') }}" width="130">
+                <p>Ancien-ne élu-e inscrivez-vous afin de défendre votre bilan et partager votre expérience.</p>
+            </div>
+        </div>
+        <div class="center centerCTA">
+            <a href="{{ path('InscriptionElected') }}">Créer un compte élu</a>
+        </div>
+    </div>
+    
+    <div id="modalVideo" style="display: none;">
+        <div id="modalVideoConcent">
+            <div id="modalVideoClose" action="closeVideoModal">Fermer<i class="icon-cross"></i></div>
+            <iframe width="640" height="360" src="https://www.youtube.com/embed/7WHZpebc9q4?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+        </div>
+        <div id="modalVideoBg" action="closeVideoModal"></div>
+    </div>
+    
+    <div id="blockVideo">
+        <div class="center">
+            <h1>“Facile, intuitif et élégant”</h1>
+            <p>Politizr est disponible sur tous vos terminaux numériques — ordinateurs, smartphones ou tablettes— sans téléchargements.</p>
+            <i class="icon-play" action="openVideoModal"></i>
+        </div>
+    </div>
+
+{% endblock main %}
+
+{% block postMain %}
+    {% include 'PolitizrFrontBundle:Navigation\\Footer:_publicFooter.html.twig' %}
+{% endblock postMain %}
+
+
+{% block javascriptFooter %}
+    {{ parent() }}
+
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/pages/concept.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock javascriptFooter %}

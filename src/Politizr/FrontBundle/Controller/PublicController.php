@@ -66,14 +66,15 @@ class PublicController extends Controller
     }
 
     /**
-     * A propos
+     * Notre concept
+     * code beta
      */
-    public function aboutAction()
+    public function conceptAction()
     {
         $logger = $this->get('logger');
-        $logger->info('*** aboutAction');
+        $logger->info('*** conceptAction');
 
-        return $this->render('PolitizrFrontBundle:Public:about.html.twig', array(
+        return $this->render('PolitizrFrontBundle:Public:concept.html.twig', array(
         ));
     }
 

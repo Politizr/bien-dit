@@ -85,6 +85,63 @@ $("body").on("click", "[action='hideHelper']", function() {
 });
 
 // ******************************************************************* //
+//                          CSS EFFECTS                                //
+// ******************************************************************* //
+
+// transparent header
+$.fn.isVisible = function() {    
+    var rect = this[0].getBoundingClientRect();
+    return (
+        (rect.height > 0 || rect.width > 0) &&
+        rect.bottom >= 0 &&
+        rect.right >= 0 &&
+        rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&
+        rect.left <= (window.innerWidth || document.documentElement.clientWidth)
+    );
+};
+
+function triggerTransparentHeader() {
+    var elementToDetect = $('#publicVideo, #animConcept');  
+    if (elementToDetect.isVisible()) {
+        $("#header").addClass("transparentHeader");
+        $("#triggerVideo").css("height", "calc(100% - 60px)");
+        $("#topBlocMacbook").css("padding-top", "80px");
+        $("body.css700 #triggerVideo").css("height", "calc(100% - 50px)");
+    } else {
+        $("#header").removeClass("transparentHeader");
+        $("#triggerVideo").css("height", "calc(100% + 60px)");
+        $("#topBlocMacbook").css("padding-top", "180px");
+        $("body.css700 #triggerVideo").css("height", "calc(100% + 50px)");
+    }  
+}
+
+var $animation_elements = $('.animFadeIn');
+var $window = $(window);
+
+function check_if_in_view() {
+  var window_height = $window.height();
+  var window_top_position = $window.scrollTop();
+  var window_bottom_position = (window_top_position + window_height);
+
+  $.each($animation_elements, function() {
+    var $element = $(this);
+    var element_height = $element.outerHeight();
+    var element_top_position = $element.offset().top;
+    var element_bottom_position = (element_top_position + element_height);
+
+    //check to see if this current container is within viewport
+    if ((element_bottom_position <= window_bottom_position)) {
+      $element.addClass('animInView');
+    } else {
+      $element.removeClass('animInView');
+    }
+  });
+}
+
+$window.on('scroll resize', check_if_in_view);
+$window.trigger('scroll');
+
+// ******************************************************************* //
 //                     SOCIAL NETWORK SHARING                          //
 // ******************************************************************* //
 $("body").on("click", "[action='shareFB']", function(e) {
