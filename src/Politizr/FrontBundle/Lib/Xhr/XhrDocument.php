@@ -1418,7 +1418,7 @@ class XhrDocument
         }
 
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Document:_bookmarkBox.html.twig',
+            'PolitizrFrontBundle:Document:_bookmarkBoxDocument.html.twig',
             array(
                 'document' => $document,
             )
