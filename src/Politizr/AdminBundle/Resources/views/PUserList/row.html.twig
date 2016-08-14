@@ -7,3 +7,9 @@
 {% block list_td_column_p_u_status_id %}
     {{ PUser.PUStatus }}
 {% endblock list_td_column_p_u_status_id %}
+
+{% block list_td_column_p_l_city_id %}
+    {% if PUser.PLCityId %}
+        {{ PUser.PLCity }} ({{PUser.PLCity.PLDepartment.PTag}})
+    {% endif %}
+{% endblock list_td_column_p_l_city_id %}

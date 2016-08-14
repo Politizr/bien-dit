@@ -117,7 +117,7 @@ builders:
                     "Citoyens":
                         filters: 
                             qualified:          0
-            display:                            [ file_name, gender, name, firstname, qualified, validated, nb_id_check, p_u_status, reputation_score, online, homepage, last_activity, created_at ]
+            display:                            [ file_name, name, firstname, p_l_city_id, qualified, validated, nb_id_check, reputation_score, online, homepage, last_activity, created_at ]
             fields:
                 reputation_score:
                     label:                      Score
@@ -138,7 +138,7 @@ builders:
                     label:    En page d'accueil
     excel:
         params:
-            display:                            [ gender, name, first_name, email, phone, email, website, twitter, facebook, reputation_score, stringifiedGeoTags ]
+            display:                            [ gender, name, first_name, p_l_city, email, phone, email, website, twitter, facebook, reputation_score, stringifiedGeoTags ]
             filename:                           politizr-users
             filetype: ~
             datetime_format: ~
