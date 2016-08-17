@@ -199,9 +199,11 @@ class ListingController extends Controller
         $regionUuid = null;
         if ($user) {
             $city = $user->getPLCity();
-            $cityUuid = $city->getUuid();
-            $departmentUuid = $this->get('politizr.functional.localization')->getDepartmentTagUuidByCityId($city->getId());
-            $regionUuid = $this->get('politizr.functional.localization')->getRegionTagUuidByCityId($city->getId());
+            if ($city) {
+                $cityUuid = $city->getUuid();
+                $departmentUuid = $this->get('politizr.functional.localization')->getDepartmentTagUuidByCityId($city->getId());
+                $regionUuid = $this->get('politizr.functional.localization')->getRegionTagUuidByCityId($city->getId());
+            }
         }
 
         return $this->render('PolitizrFrontBundle:Search:listingBySearchPublications.html.twig', array(
@@ -243,9 +245,15 @@ class ListingController extends Controller
 
         // Current user localization
         $city = $user->getPLCity();
-        $cityUuid = $city->getUuid();
-        $departmentUuid = $this->get('politizr.functional.localization')->getDepartmentTagUuidByCityId($city->getId());
-        $regionUuid = $this->get('politizr.functional.localization')->getRegionTagUuidByCityId($city->getId());
+
+        $cityUuid = null;
+        $departmentUuid = null;
+        $regionUuid = null;
+        if ($city) {
+            $cityUuid = $city->getUuid();
+            $departmentUuid = $this->get('politizr.functional.localization')->getDepartmentTagUuidByCityId($city->getId());
+            $regionUuid = $this->get('politizr.functional.localization')->getRegionTagUuidByCityId($city->getId());
+        }
 
         return $this->render('PolitizrFrontBundle:Search:listingBySearchUsers.html.twig', array(
             'searchUsers' => true,

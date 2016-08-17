@@ -31,20 +31,21 @@ $("body").on("click", "[action='usersMyCity']", function() {
 
     uuid = $(this).attr('uuid');
 
-    $.when(
-        // update breadcrumb
-        mapBreadcrumb(uuid),
-        // update map
-        mapSchema(uuid)
-    ).then(function(r1, r2) {
-        $('#documentListing .listTop').html('');
-        $("[action='goUp']").trigger("click");
-        return usersByFiltersListing();
-    }).done(function(r1) {
-        // remove selected department
-        $("[action='map']").removeClass('current');
-    });
-
+    if (uuid) {
+        $.when(
+            // update breadcrumb
+            mapBreadcrumb(uuid),
+            // update map
+            mapSchema(uuid)
+        ).then(function(r1, r2) {
+            $('#documentListing .listTop').html('');
+            $("[action='goUp']").trigger("click");
+            return usersByFiltersListing();
+        }).done(function(r1) {
+            // remove selected department
+            $("[action='map']").removeClass('current');
+        });
+    }
 });
 
 // Map's selection shortcut
@@ -55,7 +56,9 @@ $("body").on("click", "[action='usersMyMap']", function() {
 
     uuid = $(this).attr('uuid');
 
-    return usersMapFiltering(uuid);
+    if (uuid) {
+        return usersMapFiltering(uuid);
+    }
 });
 
 // Publication filter change

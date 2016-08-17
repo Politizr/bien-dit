@@ -1,1 +1,4 @@
 - redirect permanent /classement => /publications
+
+# .htaccess
+RedirectPermanent /classement https://www.politizr.com/publications

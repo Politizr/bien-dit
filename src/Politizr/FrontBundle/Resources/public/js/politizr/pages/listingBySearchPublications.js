@@ -31,8 +31,9 @@ $("body").on("click", "[action='publicationsMyMap']", function() {
     // console.log('*** click publicationsMyMap');
 
     uuid = $(this).attr('uuid');
-
-    return publicationsMapFiltering(uuid);
+    if (uuid) {
+        return publicationsMapFiltering(uuid);
+    }
 });
 
 
