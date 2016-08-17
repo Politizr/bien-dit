@@ -60,6 +60,7 @@
                     </div>
                 {% endif %}
                 <div id="cardPostText">
+                    {% include 'PolitizrFrontBundle:Navigation\\Helper:_createAccountToFullRead.html.twig' %}
                     {% for paragraph in paragraphs %}
                         <div id="p-{{ loop.index }}" class="paragraph">
                             {% include 'PolitizrFrontBundle:Comment:_paragraph.html.twig' with { 'document': reaction, 'paragraphNo': loop.index } only %}

@@ -16,33 +16,10 @@
     <div id="main">
         <center>
             <div class="column column360">
-                <div class="card">
-                    <h1>citoyen</h1>
-                    <h2>ouvert et gratuit</h2>
-                    <ul class="checkList">
-                        <li>Lancez des sujets de discussion.</li>
-                        <li>Suivez des discussions, des élus, et d’autres utilisateurs par affinités.</li>
-                        <li>Commentez les réponses des élus et des autres utilisateurs.</li>
-                    </ul>
-                    <a href="{{ path('Inscription') }}" class="submit nextStepOrange">Créer un compte</a>
-                </div>
+                {% include 'PolitizrFrontBundle:Public:_cardAdvantagesCitizen.html.twig' %}
             </div><!-- keep comment mark this way : they prevent unwanted space between cols
             --><div class="column column360">
-                <div class="card">
-                    <h1>élu</h1>
-                    <h2>pour les <b>élu-e-s</b> ou <b>ancien-ne-s élu-e-s*</b></h2>
-                    <ul class="checkList">
-                        <li>Lancez des sujets de discussion.</li>
-                        <li>Suivez des discussions, des utilisateurs et d’autres élus par affinités.</li>
-                        <li>Commentez les réponses des utilisateurs et des autres élus.</li>
-                        <li><b>Répondez aux sujets de discussion et aux réponses des autres élu-e-s.</b></li>
-                    </ul>
-                    <a href="{{ path('InscriptionElected') }}" class="submit nextStepOrange">Créer un compte</a>
-                </div>
-                <div class="cardFooter">
-                    <span>*Toute personne physique majeure élue de la République Française ou ancienne élue au suffrage universel direct ou indirect. </span>
-                    {#<span class="securePaiement"><i class="icon-secure-paiement"></i>Paiement 100% sécurisé</span>#}
-                </div>
+                {% include 'PolitizrFrontBundle:Public:_cardAdvantagesElected.html.twig' %}
             </div>
             <div class="footerXcolumns footer2columns">Déjà inscrit-e? <a href="{{ path('Login') }}">Identifiez-vous</a></div>
         </center>

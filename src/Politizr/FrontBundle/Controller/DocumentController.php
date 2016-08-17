@@ -104,9 +104,16 @@ class DocumentController extends Controller
             $uTrackd->save();
         }
 
+        // Cut text if user not logged
+        $description = $debate->getDescription();
+        if (!$visitor) {
+            $description = $this->get('politizr.tools.global')->truncate($description, 600, ['html' => true]);
+        }
+
         // Paragraphs explode
         $utilsManager = $this->get('politizr.tools.global');
-        $paragraphs = $utilsManager->explodeParagraphs($debate->getDescription());
+        $paragraphs = $utilsManager->explodeParagraphs($description);
+
 
         // Debate's reactions
         $reactions = $debate->getChildrenReactions(true, true);
@@ -164,9 +171,15 @@ class DocumentController extends Controller
             $uTrackr->save();
         }
 
+        // Cut text if user not logged
+        $description = $reaction->getDescription();
+        if (!$visitor) {
+            $description = $this->get('politizr.tools.global')->truncate($description, 600, ['html' => true]);
+        }
+
         // Paragraphs explode
         $utilsManager = $this->get('politizr.tools.global');
-        $paragraphs = $utilsManager->explodeParagraphs($reaction->getDescription());
+        $paragraphs = $utilsManager->explodeParagraphs($description);
 
         // Reaction's reactions
         $reactions = $reaction->getChildrenReactions(true, true);
