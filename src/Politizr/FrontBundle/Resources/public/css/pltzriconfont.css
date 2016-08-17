@@ -1,11 +1,11 @@
 @font-face {
   font-family: 'pltzriconfont';
-  src: url('../fonts/pltzriconfont.eot?46295596');
-  src: url('../fonts/pltzriconfont.eot?46295596#iefix') format('embedded-opentype'),
-       url('../fonts/pltzriconfont.woff2?46295596') format('woff2'),
-       url('../fonts/pltzriconfont.woff?46295596') format('woff'),
-       url('../fonts/pltzriconfont.ttf?46295596') format('truetype'),
-       url('../fonts/pltzriconfont.svg?46295596#pltzriconfont') format('svg');
+  src: url('../fonts/pltzriconfont.eot?66830432');
+  src: url('../fonts/pltzriconfont.eot?66830432#iefix') format('embedded-opentype'),
+       url('../fonts/pltzriconfont.woff2?66830432') format('woff2'),
+       url('../fonts/pltzriconfont.woff?66830432') format('woff'),
+       url('../fonts/pltzriconfont.ttf?66830432') format('truetype'),
+       url('../fonts/pltzriconfont.svg?66830432#pltzriconfont') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -15,7 +15,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'pltzriconfont';
-    src: url('../font/pltzriconfont.svg?46295596#pltzriconfont') format('svg');
+    src: url('../font/pltzriconfont.svg?66830432#pltzriconfont') format('svg');
   }
 }
 */
@@ -124,3 +124,7 @@
 .icon-profil-citoyen:before { content: '\e842'; } /* '' */
 .icon-profil-elu:before { content: '\e843'; } /* '' */
 .icon-arbo:before { content: '\e844'; } /* '' */
+.icon-geomark:before { content: '\e845'; } /* '' */
+.icon-play:before { content: '\e846'; } /* '' */
+.icon-cursors:before { content: '\e847'; } /* '' */
+.icon-geooutsider:before { content: '\e848'; } /* '' */
