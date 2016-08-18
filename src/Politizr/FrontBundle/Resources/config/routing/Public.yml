@@ -10,5 +10,5 @@ WhoWeAre:
     defaults: { _controller: PolitizrFrontBundle:Public:whoWeAre }
 
 Concept:
-    pattern:  /notre-concept
+    pattern:  /concept
     defaults: { _controller: PolitizrFrontBundle:Public:concept }

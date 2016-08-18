@@ -19,5 +19,6 @@ $("body").on("click", "[action='openVideoModal']", function() {
 $("body").on("click", "[action='closeVideoModal']", function() {
     $('body').removeClass('noScroll');
     $('#modalVideo').hide();
+    $('#politizrVideo')[0].contentWindow.postMessage('{"event":"command","func":"stopVideo","args":""}', '*');
 });     
 
