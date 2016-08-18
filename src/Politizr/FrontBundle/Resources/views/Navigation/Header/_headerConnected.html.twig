@@ -6,7 +6,7 @@
             <a href="{{ path('Homepage'~profileSuffix()) }}"{% if homepage is defined and homepage %} class="currentPage"{% endif %}>accueil</a>
             <a href="{{ path('ListingByRecommend') }}"{% if top is defined and top %} class="currentPage"{% endif %}>top</a>
             <a href="{{ path('ListingSearchPublications') }}"{% if searchPublications is defined and searchPublications %} class="currentPage"{% endif %}>publications</a>
-            <a href="{{ path('ListingSearchUsers') }}"{% if searchUsers is defined and searchUsers %} class="currentPage"{% endif %}>mes élus</a>
+            <a href="{{ path('ListingSearchUsers') }}"{% if searchUsers is defined and searchUsers %} class="currentPage"{% endif %}>{% if (isGrantedE()) %}les élus{% else %}mes élus{% endif %}</a>
         </div>
     </div>
     <div id="headerRight">
