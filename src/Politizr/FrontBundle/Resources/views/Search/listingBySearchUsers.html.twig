@@ -12,6 +12,9 @@
 {% endblock %}
 
 {% set metaTitle = 'Mes élus' %}
+{% if (isGrantedE()) %}
+    {% set metaTitle = 'Les élus' %}
+{% endif %}
 {% set metaDescription = 'Recherchez et classez les dernier-e-s élu-e-s (et citoyen-ne-s!) de Politizr, en utilisant la carte et les nombreux filtres disponibles.' %}
 
 {% block title %}{{ metaTitle }} - {{ parent() }}{% endblock title %}
