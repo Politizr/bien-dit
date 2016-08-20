@@ -654,7 +654,7 @@ class XhrTag
         // $this->logger->info('$filters = ' . print_r($filters, true));
 
         // top tags
-        $tags = $this->tagService->getMostPopularTags($filters);
+        $tags = $this->tagService->getMostPopularTags($filters, TagConstants::TAG_TYPE_THEME);
 
         $html = $this->templating->render(
             'PolitizrFrontBundle:Tag:_list.html.twig',

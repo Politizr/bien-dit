@@ -41,11 +41,22 @@ class TagManager
      *
      * @see app/sql/topTags.sql
      *
+     * @param integer $tagTypeId
      * @param integer $interval
      * @return string
      */
-    public function createMostPopularTagIdsRawSql($interval = null)
+    public function createMostPopularTagIdsRawSql($tagTypeId = null, $interval = null)
     {
+        $tagTypeDebateSql = '';
+        $tagTypeReactionSql = '';
+        $tagTypeUserSql = '';
+
+        if ($tagTypeId) {
+            $tagTypeDebateSql = "AND p_tag.p_t_tag_type_id = :tagTypeId";
+            $tagTypeReactionSql = "AND p_tag.p_t_tag_type_id = :tagTypeId2";
+            $tagTypeUserSql = "AND p_tag.p_t_tag_type_id = :tagTypeId3";
+        }
+
         $intervalDebateSql = '';
         $intervalReactionSql = '';
         $intervalUserSql = '';
@@ -64,8 +75,10 @@ FROM
 SELECT p_tag_id
 FROM p_d_d_tagged_t
 LEFT JOIN p_d_debate ON p_d_d_tagged_t.p_d_debate_id = p_d_debate.id
+LEFT JOIN p_tag ON p_d_d_tagged_t.p_tag_id = p_tag.id
 WHERE p_d_debate.online = 1
 AND p_d_debate.published = 1
+$tagTypeDebateSql
 $intervalDebateSql
 
 UNION ALL
@@ -73,8 +86,10 @@ UNION ALL
 SELECT p_tag_id
 FROM p_d_r_tagged_t
 LEFT JOIN p_d_reaction ON p_d_r_tagged_t.p_d_reaction_id = p_d_reaction.id
+LEFT JOIN p_tag ON p_d_r_tagged_t.p_tag_id = p_tag.id
 WHERE p_d_reaction.online = 1
 AND p_d_reaction.published = 1
+$tagTypeReactionSql
 $intervalReactionSql
 
 UNION ALL
@@ -82,8 +97,10 @@ UNION ALL
 SELECT p_tag_id
 FROM p_u_tagged_t
 LEFT JOIN p_user ON p_u_tagged_t.p_user_id = p_user.id
+LEFT JOIN p_tag ON p_u_tagged_t.p_tag_id = p_tag.id
 WHERE p_user.online = 1
 AND p_user.p_u_status_id = 1
+$tagTypeUserSql
 $intervalUserSql
 
 ) tables
@@ -102,17 +119,26 @@ ORDER BY nb_tagged_objects desc
     /**
      * Get user's scores evolution as array of (id, created_at, sum_notes)
      *
+     * @param int $tagTypeId
      * @param int $interval
      * @return array
      */
-    public function generateMostPopularTagIds($interval)
+    public function generateMostPopularTagIds($tagTypeId, $interval)
     {
         // $this->logger->info('*** generateMostPopularTagIds');
-        // $this->logger->info('$userIdinterval = ' . print_r($interval, true));
+        // $this->logger->info('$tagTypeId = ' . print_r($tagTypeId, true));
+        // $this->logger->info('$interval = ' . print_r($interval, true));
 
         $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
-        $stmt = $con->prepare($this->createMostPopularTagIdsRawSql($interval));
+        $stmt = $con->prepare($this->createMostPopularTagIdsRawSql($tagTypeId, $interval));
 
+
+        if ($tagTypeId) {
+            $stmt->bindValue(':tagTypeId', $tagTypeId, \PDO::PARAM_INT);
+            $stmt->bindValue(':tagTypeId2', $tagTypeId, \PDO::PARAM_INT);
+            $stmt->bindValue(':tagTypeId3', $tagTypeId, \PDO::PARAM_INT);
+        }
+        
         if ($interval) {
             $stmt->bindValue(':interval', $interval, \PDO::PARAM_INT);
             $stmt->bindValue(':interval2', $interval, \PDO::PARAM_INT);

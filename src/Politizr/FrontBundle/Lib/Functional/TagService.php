@@ -456,12 +456,14 @@ class TagService
      * Get the most popular tags
      *
      * @param string $keywords
+     * @param int $tagTypeId
      * @return array[PTag]
      */
-    public function getMostPopularTags($keywords = null)
+    public function getMostPopularTags($keywords = null, $tagTypeId = null)
     {
         // $this->logger->info('*** getMostPopularTags');
         // $this->logger->info('$keywords = '.print_r($keywords, true));
+        // $this->logger->info('$tagTypeId = '.print_r($tagTypeId, true));
 
         $interval = null;
         if ($keywords && (in_array(ListingConstants::FILTER_KEYWORD_LAST_DAY, $keywords))) {
@@ -472,7 +474,7 @@ class TagService
             $interval = 30;
         }
 
-        $tagIds = $this->tagManager->generateMostPopularTagIds($interval);
+        $tagIds = $this->tagManager->generateMostPopularTagIds($tagTypeId, $interval);
 
         // @todo 1 query with "ORDER BY FIELD(id, 3, 11, 7, 1)"
         // cf. http://stackoverflow.com/questions/34036279/propel-orm-order-by-field
