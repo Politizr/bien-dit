@@ -35,6 +35,7 @@ use Politizr\Model\PUBookmarkDRQuery;
 use Politizr\FrontBundle\Form\Type\PDDCommentType;
 use Politizr\FrontBundle\Form\Type\PDRCommentType;
 use Politizr\FrontBundle\Form\Type\PDDebateType;
+use Politizr\FrontBundle\Form\Type\PDocumentTagTypeType;
 use Politizr\FrontBundle\Form\Type\PDDebatePhotoInfoType;
 use Politizr\FrontBundle\Form\Type\PDReactionType;
 use Politizr\FrontBundle\Form\Type\PDReactionPhotoInfoType;
@@ -291,7 +292,7 @@ class XhrDocument
     public function debateUpdate(Request $request)
     {
         // $this->logger->info('*** debateUpdate');
-        
+
         // Request arguments
         $uuid = $request->get('debate')['uuid'];
         // $this->logger->info('$uuid = ' . print_r($uuid, true));
@@ -310,12 +311,20 @@ class XhrDocument
             throw new InconsistentDataException('Debate '.$uuid.' is published and cannot be edited anymore.');
         }
 
-        $form = $this->formFactory->create(new PDDebateType(), $debate);
-        $form->bind($request);
+        // Debate
+        $formDebate = $this->formFactory->create(new PDDebateType(), $debate);
+        $formDebate->bind($request);
 
         // No validator tests, always save
-        $debate = $form->getData();
+        $debate = $formDebate->getData();
         $debate->save();
+
+        // Debate's tags type
+        $formTagTypes = $this->formFactory->create(new PDocumentTagTypeType());
+        $formTagTypes->bind($request);
+
+        $tags = $formTagTypes->getData()['p_tags'];
+        $this->tagService->updateDebateTags($debate, $tags, TagConstants::TAG_TYPE_TYPE);
 
         return true;
     }
@@ -449,6 +458,13 @@ class XhrDocument
         // No validator tests, always save
         $reaction = $form->getData();
         $reaction->save();
+
+        // Debate's tags type
+        $formTagTypes = $this->formFactory->create(new PDocumentTagTypeType());
+        $formTagTypes->bind($request);
+
+        $tags = $formTagTypes->getData()['p_tags'];
+        $this->tagService->updateReactionTags($reaction, $tags, TagConstants::TAG_TYPE_TYPE);
 
         return true;
     }

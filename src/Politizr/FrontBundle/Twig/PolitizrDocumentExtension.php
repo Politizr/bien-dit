@@ -24,6 +24,8 @@ use Politizr\Model\PUBookmarkDRQuery;
 use Politizr\FrontBundle\Lib\TimelineRow;
 use Politizr\FrontBundle\Lib\Publication;
 
+use Politizr\FrontBundle\Form\Type\PDocumentTagTypeType;
+
 /**
  * Document's twig extension
  *
@@ -38,6 +40,9 @@ class PolitizrDocumentExtension extends \Twig_Extension
     private $templating;
 
     private $timelineService;
+
+    private $formFactory;
+
     private $globalTools;
 
     private $logger;
@@ -48,6 +53,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
      * @router
      * @templating
      * @politizr.functional.timeline
+     * @form.factory
      * @politizr.tools.global
      * @logger
      */
@@ -57,6 +63,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
         $router,
         $templating,
         $timelineService,
+        $formFactory,
         $globalTools,
         $logger
     ) {
@@ -67,6 +74,9 @@ class PolitizrDocumentExtension extends \Twig_Extension
         $this->templating = $templating;
 
         $this->timelineService = $timelineService;
+
+        $this->formFactory = $formFactory;
+
         $this->globalTools = $globalTools;
 
         $this->logger = $logger;
@@ -186,6 +196,11 @@ class PolitizrDocumentExtension extends \Twig_Extension
             new \Twig_SimpleFilter(
                 'bookmark',
                 array($this, 'bookmark'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
+                'editTypeForm',
+                array($this, 'editTypeForm'),
                 array('is_safe' => array('html'))
             ),
         );
@@ -1097,6 +1112,34 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 'document' => $document,
                 'type' => $type,
                 'bookmarked' => $bookmarked,
+            )
+        );
+
+        return $html;
+    }
+
+    /**
+     * User's document edit type form
+     *
+     * @param PDocumentInterface $document
+     * @return string
+     */
+    public function editTypeForm(PDocumentInterface $document)
+    {
+        $this->logger->info('*** editTypeForm');
+        $this->logger->info('$document = '.print_r($document, true));
+
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+
+        $form = $this->formFactory->create(new PDocumentTagTypeType(), $document);
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Document:_editTypeForm.html.twig',
+            array(
+                'document' => $document,
+                'form' => $form->createView(),
             )
         );
 

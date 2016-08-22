@@ -142,15 +142,21 @@ class XhrTag
 
         // Function process
         if (empty($tagTypeId)) {
-            $tagTypeId = null;
-        }
+            $tags = $this->tagManager->getArrayTags();
+        } else {
+            // manage multiple tag types inclusion
+            $tagTypeId = explode('|', $tagTypeId);
 
-        $tags = $this->tagManager->getArrayTags($tagTypeId);
+            $tags = array();
+            foreach ($tagTypeId as $id) {
+                $tags = array_merge($tags, $this->tagManager->getArrayTags($id));
+            }
+        }
 
         // Renvoi de l'ensemble des blocs HTML maj
         return array(
             'tags' => $tags,
-            );
+        );
     }
 
     /* ######################################################################################################## */
@@ -268,7 +274,7 @@ class XhrTag
         $user = $this->securityTokenStorage->getToken()->getUser();
         
         // Function process
-        if (empty($tagTypeId)) {
+        if (empty($tagTypeId) || strpos($tagTypeId, '|')) {
             $tagTypeId = null;
         }
 
@@ -377,7 +383,7 @@ class XhrTag
         $user = $this->securityTokenStorage->getToken()->getUser();
         
         // Function process
-        if (empty($tagTypeId)) {
+        if (empty($tagTypeId) || strpos($tagTypeId, '|')) {
             $tagTypeId = null;
         }
 

@@ -34,6 +34,14 @@
     </div>
     
     <div class="sidebarEditTag">
+        <h5>Type de publication</h5>
+        <div class="notice">
+            <i class="icon-info"></i><b>Cochez le(s) type(s) associé(s) à votre publication.</b>
+        </div>
+        {{ reaction | editTypeForm }}
+    </div>
+    
+    <div class="sidebarEditTag">
         <h5>Thématiques abordées</h5>
         <div class="notice">
             <i class="icon-info"></i><b>5 thématiques maximum.</b><br>
@@ -41,6 +49,6 @@
         </div>
         {# include('includes/helperEditTag.php') #}
 
-        {{ reactionTagsEdit(reaction, null, 1, true) }}
+        {{ reactionTagsEdit(reaction, [ constant('Politizr\\Constant\\TagConstants::TAG_TYPE_GEO'), constant('Politizr\\Constant\\TagConstants::TAG_TYPE_THEME') ], 1, true) }}
     </div>
 </div>

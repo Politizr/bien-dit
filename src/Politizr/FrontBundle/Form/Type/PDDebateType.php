@@ -7,6 +7,10 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+use Politizr\Constant\TagConstants;
+
+use Politizr\Model\PTagQuery;
+
 /**
  * Debate edition form
  * beta

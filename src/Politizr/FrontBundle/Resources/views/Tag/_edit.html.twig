@@ -1,6 +1,6 @@
 {# beta #}
 {% spaceless %}
-<div class="addTag withLoaderInside" id="editTagZone-{{ zoneId }}" tagTypeId="{{ tagTypeId }}" uuid="{{ object.uuid }}" newTag="{{ newTag }}" withHidden="{{ withHidden }}" path="{{ pathCreate }}">
+<div class="addTag withLoaderInside" id="editTagZone-{{ zoneId }}" tagTypeId="{{ tagTypeId | join('|') }}" uuid="{{ object.uuid }}" newTag="{{ newTag }}" withHidden="{{ withHidden }}" path="{{ pathCreate }}">
     {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
 
     <div class="formAddTag">

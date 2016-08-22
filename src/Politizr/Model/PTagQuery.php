@@ -30,7 +30,7 @@ class PTagQuery extends BasePTagQuery
 
     /**
      *
-     * @param boolean $typeId
+     * @param int|array $typeId
      * @return PTagQuery
      */
     public function filterIfTypeId($typeId = null)

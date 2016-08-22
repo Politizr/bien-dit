@@ -268,7 +268,7 @@ class PolitizrTagExtension extends \Twig_Extension
      * Debate's tagged tags
      *
      * @param PDReaction $reaction
-     * @param integer $tagTypeId
+     * @param integer|array $tagTypeId
      * @param integer $zoneId CSS zone id
      * @param boolean $newTag can create new tag
      * @return string

@@ -6,7 +6,15 @@ use Politizr\Exception\InconsistentDataException;
 use Politizr\Constant\TagConstants;
 use Politizr\Constant\ListingConstants;
 
+use Politizr\Model\PDDebate;
+use Politizr\Model\PDReaction;
+use Politizr\Model\PTag;
+
 use Politizr\Model\PTagQuery;
+use Politizr\Model\PDDTaggedTQuery;
+use Politizr\Model\PDRTaggedTQuery;
+
+use \PropelCollection;
 
 /**
  * Functional service for tag management.
@@ -495,5 +503,108 @@ class TagService
         }
 
         return $tags;
+    }
+
+    /**
+     * Update debate tags
+     *
+     * @param PDDebate $debate
+     * @param PropelCollection(PTag) $tags
+     * @param int $tagTypeId
+     */
+    public function updateDebateTags(PDDebate $debate, PropelCollection $tags, $tagTypeId) {
+        // remove existing tags
+        $existingTaggedTags = PDDTaggedTQuery::create()
+            ->_if($tagTypeId)
+                ->usePTagQuery()
+                    ->filterByPTTagTypeId($tagTypeId)
+                ->endUse()
+            ->_endif()
+            ->filterByPDDebateId($debate->getId())
+            ->find();
+
+        foreach ($existingTaggedTags as $taggedTag) {
+            $taggedTag->delete();
+        }
+
+        // add new ones
+        foreach ($tags as $tag) {
+            $this->addDebateTag($debate, $tag);
+        }
+
+        return true;
+    }
+
+    /**
+     * Add a tag to a debate (if not already exist)
+     *
+     * @param PDDebate $debate
+     * @param PTag $tag
+     */
+    public function addDebateTag(PDDebate $debate, PTag $tag)
+    {
+        // associate tag to debate
+        $pddTaggedT = PDDTaggedTQuery::create()
+            ->filterByPDDebateId($debate->getId())
+            ->filterByPTagId($tag->getId())
+            ->findOne();
+
+        if (!$pddTaggedT) {
+            return $this->tagManager->createDebateTag($debate->getId(), $tag->getId());
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Update reaction tags
+     *
+     * @param PDReaction $reaction
+     * @param PropelCollection(PTag) $tags
+     * @param int $tagTypeId
+     */
+    public function updateReactionTags(PDReaction $reaction, PropelCollection $tags, $tagTypeId) {
+        // remove existing tags
+        $existingTaggedTags = PDRTaggedTQuery::create()
+            ->_if($tagTypeId)
+                ->usePTagQuery()
+                    ->filterByPTTagTypeId($tagTypeId)
+                ->endUse()
+            ->_endif()
+            ->filterByPDReactionId($reaction->getId())
+            ->find();
+
+        foreach ($existingTaggedTags as $taggedTag) {
+            $taggedTag->delete();
+        }
+
+        // add new ones
+        foreach ($tags as $tag) {
+            $this->addReactionTag($reaction, $tag);
+        }
+
+        return true;
+    }
+
+    /**
+     * Add a tag to a reaction (if not already exist)
+     *
+     * @param PDReaction $reaction
+     * @param PTag $tag
+     */
+    public function addReactionTag(PDReaction $reaction, PTag $tag)
+    {
+        // associate tag to reaction
+        $pddTaggedT = PDRTaggedTQuery::create()
+            ->filterByPDReactionId($reaction->getId())
+            ->filterByPTagId($tag->getId())
+            ->findOne();
+
+        if (!$pddTaggedT) {
+            return $this->tagManager->createReactionTag($reaction->getId(), $tag->getId());
+        }
+
+        return null;
     }
 }

@@ -115,16 +115,18 @@ function saveDebate()
 
     var localLoader = $('.actionSave').find('.ajaxLoader').first();
 
+    var serializedForms = $("#formDebateUpdate, #formTagType").serialize();
+
     var xhrPath = getXhrPath(
         ROUTE_DEBATE_UPDATE,
         'document',
         'debateUpdate',
         RETURN_BOOLEAN
-        );
+    );
 
     return xhrCall(
         document,
-        $("#formDebateUpdate").serialize(),
+        serializedForms,
         xhrPath,
         localLoader
     ).done(function(data) {
@@ -152,6 +154,8 @@ function saveReaction()
 
     var localLoader = $('.actionSave').find('.ajaxLoader').first();
 
+    var serializedForms = $("#formReactionUpdate, #formTagType").serialize();
+
     var xhrPath = getXhrPath(
         ROUTE_REACTION_UPDATE,
         'document',
@@ -161,7 +165,7 @@ function saveReaction()
     
     return xhrCall(
         document,
-        $("#formReactionUpdate").serialize(),
+        serializedForms,
         xhrPath,
         localLoader
     ).done(function(data) {
