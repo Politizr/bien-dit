@@ -17,6 +17,9 @@ $("body").on("click", "[action='map']", function() {
 
     uuid = $(this).attr('uuid');
 
+    $("[action='usersMyCity']").removeClass('currentPage');
+    $("[action='usersMyMap']").removeClass('currentPage');
+
     $(this).siblings().removeClass('active');
     $(this).addClass('active');
 
@@ -26,6 +29,9 @@ $("body").on("click", "[action='map']", function() {
 // Map's selection city
 $("body").on("click", "[action='usersMyCity']", function() {
     // console.log('*** click usersMyCity');
+
+    $(this).siblings().removeClass('currentPage');
+    $(this).addClass('currentPage');
 
     $('#cityFilter').show();
 
@@ -51,6 +57,9 @@ $("body").on("click", "[action='usersMyCity']", function() {
 // Map's selection shortcut
 $("body").on("click", "[action='usersMyMap']", function() {
     // console.log('*** click usersMyMap');
+
+    $(this).siblings().removeClass('currentPage');
+    $(this).addClass('currentPage');
 
     $('#cityFilter').hide();
 

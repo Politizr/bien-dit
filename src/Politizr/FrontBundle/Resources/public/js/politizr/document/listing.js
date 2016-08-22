@@ -402,6 +402,36 @@ function documentsByTagListing(init, offset) {
 }
 
 /**
+ * Load filtering tab of "organization" listing.
+ * @param uuid
+ * @param targetElement
+ */
+function documentTabsByOrganization(uuid, targetElement) {
+    // console.log('*** documentTabsByOrganization');
+    // console.log(uuid);
+
+    var xhrPath = getXhrPath(
+        ROUTE_ORGANIZATION_DOCUMENT_TABS,
+        'document',
+        'documentTabsByOrganization',
+        RETURN_HTML
+    );
+
+    return xhrCall(
+        document,
+        {'uuid': uuid},
+        xhrPath
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
+            targetElement.html(data['html']);
+        }
+    });
+}
+
+/**
  * Loading of paginated "organization" listing.
  * @param targetElement
  * @param localLoader
@@ -416,8 +446,8 @@ function documentsByOrganizationListing(init, offset) {
 
     targetElement = $('#documentListing .listTop');
     localLoader = $('#documentListing').find('.ajaxLoader').first();
-    uuid = $('.pseudoTabs').attr('uuid');
-    orderBy = $('.pseudoTabs .currentPage').attr('orderBy');
+    uuid = $('.filterTabs').attr('uuid');
+    orderBy = $('.filterTabs .currentPage').attr('orderBy');
 
     // console.log(targetElement);
     // console.log(localLoader);
@@ -425,7 +455,7 @@ function documentsByOrganizationListing(init, offset) {
     // console.log(orderBy);
 
     var xhrPath = getXhrPath(
-        ROUTE_ORGANIZATION_LISTING,
+        ROUTE_ORGANIZATION_DOCUMENT_LISTING,
         'document',
         'documentsByOrganization',
         RETURN_HTML

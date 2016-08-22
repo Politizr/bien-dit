@@ -1132,6 +1132,36 @@ class XhrDocument
     }
 
     /**
+     * Documents tabs by organization
+     * code beta
+     */
+    public function documentTabsByOrganization(Request $request)
+    {
+        // $this->logger->info('*** documentTabsByOrganization');
+        
+        // Request arguments
+        $uuid = $request->get('uuid');
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
+
+        // Retrieve subject
+        $organization = PQOrganizationQuery::create()->filterByUuid($uuid)->findOne();
+        if (!$organization) {
+            throw new InconsistentDataException('Organization '.$uuid.' not found.');
+        }
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Document:_documentTabsByOrganization.html.twig',
+            array(
+                'organization' => $organization,
+            )
+        );
+
+        return array(
+            'html' => $html,
+        );
+    }
+
+    /**
      * Documents by organization
      * code beta
      */

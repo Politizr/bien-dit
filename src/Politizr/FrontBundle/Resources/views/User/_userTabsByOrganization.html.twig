@@ -1,0 +1,14 @@
+<div class="listHeaderByOrg">
+    <div class="listHeader">
+        <h5>Les élu-e-s de la famille politique<div class="org">{{ organization.initials }}</div></h5>
+        <h1>{{ organization.title }}</h1>
+    </div>
+</div>
+<div class="pseudoTabs filterTabs" uuid="{{ organization.uuid }}">
+    <a class="currentPage" action="usersByOrganizationFiltering" orderBy="{{ constant('Politizr\\Constant\\ListingConstants::ORDER_BY_KEYWORD_MOST_ACTIVE') }}">Top</a>
+    <a action="usersByOrganizationFiltering" orderBy="{{ constant('Politizr\\Constant\\ListingConstants::ORDER_BY_KEYWORD_LAST') }}">Les plus récents</a>
+</div>
+<div id="userListing" class="withLoaderInside">
+    {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+    <div class="listTop"></div>
+</div>

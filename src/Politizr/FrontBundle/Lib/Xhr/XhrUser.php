@@ -27,6 +27,7 @@ use Politizr\Model\PRBadgeTypeQuery;
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PUMandateQuery;
 use Politizr\Model\PTagQuery;
+use Politizr\Model\PQOrganizationQuery;
 
 use Politizr\FrontBundle\Form\Type\PUserIdentityType;
 use Politizr\FrontBundle\Form\Type\PUserEmailType;
@@ -1191,6 +1192,95 @@ class XhrUser
                     'offset' => intval($offset) + 1, // + ListingConstants::LISTING_CLASSIC_PAGINATION,
                     'moreResults' => $moreResults,
                     'jsFunctionKey' => XhrConstants::JS_KEY_LISTING_USERS_BY_FILTERS
+                )
+            );
+        }
+
+        return array(
+            'html' => $html,
+        );
+    }
+
+    /**
+     * Users tabs by organization
+     * code beta
+     */
+    public function userTabsByOrganization(Request $request)
+    {
+        // $this->logger->info('*** userTabsByOrganization');
+        
+        // Request arguments
+        $uuid = $request->get('uuid');
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
+
+        // Retrieve subject
+        $organization = PQOrganizationQuery::create()->filterByUuid($uuid)->findOne();
+        if (!$organization) {
+            throw new InconsistentDataException('Organization '.$uuid.' not found.');
+        }
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:User:_userTabsByOrganization.html.twig',
+            array(
+                'organization' => $organization,
+            )
+        );
+
+        return array(
+            'html' => $html,
+        );
+    }
+
+    /**
+     * Documents by organization
+     * code beta
+     */
+    public function usersByOrganization(Request $request)
+    {
+        // $this->logger->info('*** documentsByOrganization');
+        
+        // Request arguments
+        $uuid = $request->get('uuid');
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
+        $orderBy = $request->get('orderBy');
+        // $this->logger->info('$orderBy = ' . print_r($orderBy, true));
+        $offset = $request->get('offset');
+        // $this->logger->info('$offset = ' . print_r($offset, true));
+
+        // Retrieve subject
+        $organization = PQOrganizationQuery::create()->filterByUuid($uuid)->findOne();
+        if (!$organization) {
+            throw new InconsistentDataException('Organization '.$uuid.' not found.');
+        }
+
+        $filterBy = array(ListingConstants::FILTER_KEYWORD_QUALIFIED);
+        $users = $this->userService->getUsersByOrganizationPaginated(
+            $organization->getId(),
+            $filterBy,
+            $orderBy,
+            $offset,
+            ListingConstants::LISTING_CLASSIC_PAGINATION
+        );
+
+        // @todo create function for code above
+        $moreResults = false;
+        if (sizeof($users) == ListingConstants::LISTING_CLASSIC_PAGINATION) {
+            $moreResults = true;
+        }
+
+        if ($offset == 0 && count($users) == 0) {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_noResult.html.twig'
+            );
+        } else {
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:PaginatedList:_users.html.twig',
+                array(
+                    'uuid' => $uuid,
+                    'users' => $users,
+                    'offset' => intval($offset) + ListingConstants::LISTING_CLASSIC_PAGINATION,
+                    'moreResults' => $moreResults,
+                    'jsFunctionKey' => XhrConstants::JS_KEY_LISTING_USERS_BY_ORGANIZATION
                 )
             );
         }

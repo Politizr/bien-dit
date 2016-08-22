@@ -11,6 +11,8 @@ $("body").on("click", "[action='map']", function() {
     // console.log('*** click map');
     uuid = $(this).attr('uuid');
 
+    $("[action='publicationsMyMap']").removeClass('currentPage');
+
     $(this).siblings().removeClass('active');
     $(this).addClass('active');
     
@@ -29,6 +31,9 @@ $("body").on("click", "[action='map']", function() {
 // Map's selection shortcut
 $("body").on("click", "[action='publicationsMyMap']", function() {
     // console.log('*** click publicationsMyMap');
+
+    $(this).siblings().removeClass('currentPage');
+    $(this).addClass('currentPage');
 
     uuid = $(this).attr('uuid');
     if (uuid) {

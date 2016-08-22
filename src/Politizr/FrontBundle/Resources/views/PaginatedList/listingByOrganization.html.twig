@@ -6,7 +6,7 @@
 {% extends layout %}
 
 {% set metaTitle = organization.title %}
-{% set metaDescription = 'Liste des publications de l\'organisation politique "' ~ organization.title ~ '" disponibles sur Politizr.' %}
+{% set metaDescription = 'Liste des publications et des élu-e-s de l\'organisation politique "' ~ organization.title ~ '" disponibles sur Politizr.' %}
 
 {% block title %}{{ metaTitle }} - {{ parent() }}{% endblock title %}
 {% block description %}{{ metaDescription }}{% endblock description %}
@@ -19,21 +19,11 @@
 
 {% block content %}
     <div id="content">
+        <div id="organizationTypeChoiceBox" class="pseudoTabs">
+            <a action="documentsByOrganization" class="currentPage" uuid="{{ organization.uuid }}">Les publications</a>
+            <a action="usersByOrganization" uuid="{{ organization.uuid }}">Les élus</a>
+        </div>
         <div class="list">
-            <div class="listHeaderByOrg">
-                <div class="listHeader">
-                    <h5>Les publications de la famille politique<div class="org">{{ organization.initials }}</div></h5>
-                    <h1>{{ organization.title }}</h1>
-                </div>
-            </div>
-            <div class="pseudoTabs" uuid="{{ organization.uuid }}">
-                <a class="currentPage" action="documentsByOrganizationListing" orderBy="{{ constant('Politizr\\Constant\\ListingConstants::ORDER_BY_KEYWORD_BEST_NOTE') }}">Top</a>
-                <a action="documentsByOrganizationListing" orderBy="{{ constant('Politizr\\Constant\\ListingConstants::ORDER_BY_KEYWORD_LAST') }}">Les plus récentes</a>
-            </div>
-            <div id="documentListing" class="withLoaderInside">
-                {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
-                <div class="listTop"></div>
-            </div>
         </div>
     </div>
 {% endblock content %}
@@ -51,6 +41,7 @@
     {% javascripts
         '@PolitizrFrontBundle/Resources/public/js/politizr/organization/listing.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/document/listing.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/user/listing.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/pages/listingByOrganization.js'
         filter='uglifyjs2' %}
         <script src="{{ asset_url }}"></script>

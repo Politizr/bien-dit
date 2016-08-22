@@ -169,7 +169,7 @@ class ListingController extends Controller
             throw new NotFoundHttpException('Organization "'.$slug.'" not online.');
         }
 
-        return $this->render('PolitizrFrontBundle:Document:listingByOrganization.html.twig', array(
+        return $this->render('PolitizrFrontBundle:PaginatedList:listingByOrganization.html.twig', array(
             'organization' => $organization
         ));
     }

@@ -137,4 +137,32 @@ class UserService
 
         return $users;
     }
+
+    /**
+     * Get paginated users by organization
+     * beta
+     *
+     * @param array $organizationId
+     * @param string $orderBy
+     * @param integer $offset
+     * @param înteger $count
+     * @return PropelCollection PDocument
+     */
+    public function getUsersByOrganizationPaginated($organizationId, $filterBy = null, $orderBy = null, $offset = 0, $count = ListingConstants::LISTING_CLASSIC_PAGINATION)
+    {
+        $users = PUserQuery::create()
+            ->distinct()
+            ->online()
+            ->usePUCurrentQOPUserQuery()
+                ->usePUCurrentQOPQOrganizationQuery()
+                    ->filterById($organizationId)
+                ->endUse()
+            ->endUse()
+            ->filterByKeywords($filterBy)
+            ->orderWithKeyword($orderBy)
+            ->paginate($offset, $count);
+
+        return $users;
+    }
+
 }

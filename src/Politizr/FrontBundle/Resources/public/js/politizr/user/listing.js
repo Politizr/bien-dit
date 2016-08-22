@@ -3,6 +3,7 @@ paginatedFunctions[JS_KEY_LISTING_USERS_DEBATE_FOLLOWERS] = debateFollowersListi
 paginatedFunctions[JS_KEY_LISTING_USERS_USER_FOLLOWERS] = userFollowersListing;
 paginatedFunctions[JS_KEY_LISTING_USERS_USER_SUBSCRIBERS] = userSubscribersListing;
 paginatedFunctions[JS_KEY_LISTING_USERS_BY_FILTERS] = usersByFiltersListing;
+paginatedFunctions[JS_KEY_LISTING_USERS_BY_ORGANIZATION] = usersByOrganizationListing;
 
 
 /**
@@ -423,3 +424,87 @@ function debateFollowersListing(init, offset) {
         localLoader.hide();
     });
 }
+
+/**
+ * Load filtering tab of "user" listing.
+ * @param uuid
+ * @param targetElement
+ */
+function userTabsByOrganization(uuid, targetElement) {
+    // console.log('*** userTabsByOrganization');
+    // console.log(uuid);
+
+    var xhrPath = getXhrPath(
+        ROUTE_ORGANIZATION_USER_TABS,
+        'user',
+        'userTabsByOrganization',
+        RETURN_HTML
+    );
+
+    return xhrCall(
+        document,
+        {'uuid': uuid},
+        xhrPath
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
+            targetElement.html(data['html']);
+        }
+    });
+}
+
+/**
+ * Loading of paginated "organization" listing.
+ * @param targetElement
+ * @param localLoader
+ */
+function usersByOrganizationListing(init, offset) {
+    // console.log('*** usersByOrganizationListing');
+    // console.log(init);
+    // console.log(offset);
+
+    init = (typeof init === "undefined") ? true : init;
+    offset = (typeof offset === "undefined") ? 0 : offset;
+
+    targetElement = $('#userListing .listTop');
+    localLoader = $('#userListing').find('.ajaxLoader').first();
+    uuid = $('.filterTabs').attr('uuid');
+    orderBy = $('.filterTabs .currentPage').attr('orderBy');
+
+    // console.log(targetElement);
+    // console.log(localLoader);
+    // console.log(uuid);
+    // console.log(orderBy);
+
+    var xhrPath = getXhrPath(
+        ROUTE_ORGANIZATION_USER_LISTING,
+        'user',
+        'usersByOrganization',
+        RETURN_HTML
+    );
+
+    return xhrCall(
+        document,
+        {'uuid': uuid, 'orderBy': orderBy, 'offset': offset},
+        xhrPath,
+        localLoader
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
+            $('#listingScrollNav').remove();
+            if (init) {
+                targetElement.html(data['html']);
+            } else {
+                targetElement.append(data['html']);
+            }
+            initPaginateNextWaypoint();
+            fullImgLiquid();
+        }
+        localLoader.hide();
+    });
+}
+

@@ -115,7 +115,11 @@ class XhrConstants
     const ROUTE_TAG_LISTING_USER = 'profil/tags/user';
 
     // ORGANIZATION
+    const ROUTE_ORGANIZATION_DOCUMENT_TABS = 'organisation/documents/tabs';
+    const ROUTE_ORGANIZATION_USER_TABS = 'organisation/profils/tabs';
     const ROUTE_ORGANIZATION_LISTING = 'organisation/listing';
+    const ROUTE_ORGANIZATION_DOCUMENT_LISTING = 'organisation/documents/listing';
+    const ROUTE_ORGANIZATION_USER_LISTING = 'organisation/profils/listing';
 
     // USER
     const ROUTE_USER_MANDATE_CREATE = 'profil/utilisateur/mandat/create';
@@ -170,6 +174,7 @@ class XhrConstants
     // ******************************************************** //
     const JS_KEY_LISTING_DOCUMENTS_BY_TAG = "JS_KEY_LISTING_DOCUMENTS_BY_TAG";
     const JS_KEY_LISTING_DOCUMENTS_BY_ORGANIZATION = "JS_KEY_LISTING_DOCUMENTS_BY_ORGANIZATION";
+    const JS_KEY_LISTING_USERS_BY_ORGANIZATION = "JS_KEY_LISTING_USERS_BY_ORGANIZATION";
     const JS_KEY_LISTING_DOCUMENTS_BY_RECOMMEND = "JS_KEY_LISTING_DOCUMENTS_BY_RECOMMEND";
     const JS_KEY_LISTING_DOCUMENTS_BY_USER_DRAFTS = "JS_KEY_LISTING_DOCUMENTS_BY_USER_DRAFTS";
     const JS_KEY_LISTING_DOCUMENTS_BY_USER_BOOKMARKS = "JS_KEY_LISTING_DOCUMENTS_BY_USER_BOOKMARKS";
