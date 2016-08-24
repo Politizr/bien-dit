@@ -362,7 +362,7 @@ class XhrDocument
                 'title' => $debate->getTitle(),
                 // 'description' => strip_tags($debate->getDescription()),
                 'geoTags' => $debate->getFranceToDepartmentGeoArrayTags(),
-                'allTags' => $debate->getArrayTags(),
+                'themaTags' => $debate->getArrayTags(TagConstants::TAG_TYPE_TYPE),
             ),
             $debate->getPublishConstraints(),
             $errorString
@@ -502,7 +502,7 @@ class XhrDocument
                 'title' => $reaction->getTitle(),
                 // 'description' => strip_tags($reaction->getDescription()),
                 'geoTags' => $reaction->getFranceToDepartmentGeoArrayTags(),
-                'allTags' => $reaction->getArrayTags(),
+                'themaTags' => $reaction->getArrayTags(TagConstants::TAG_TYPE_TYPE),
             ),
             $reaction->getPublishConstraints(),
             $errorString

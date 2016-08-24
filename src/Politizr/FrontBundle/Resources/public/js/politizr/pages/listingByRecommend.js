@@ -8,6 +8,10 @@ $(function() {
         documentsByRecommendListing()
         .then(function() {
             $.when(
+                typeTagListing(
+                    $('.sidebarTypeTags').find('.tagList').first(),
+                    $('.sidebarTypeTags').find('.ajaxLoader').first()
+                ),
                 topTagListing(
                     $('.sidebarTopTags').find('.tagList').first(),
                     $('.sidebarTopTags').find('.ajaxLoader').first()

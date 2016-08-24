@@ -18,6 +18,10 @@ $(function() {
     .then( function() {
             timelineList();
             $.when(
+                typeTagListing(
+                    $('.sidebarTypeTags').find('.tagList').first(),
+                    $('.sidebarTypeTags').find('.ajaxLoader').first()
+                ),
                 topTagListing(
                     $('.sidebarTopTags').find('.tagList').first(),
                     $('.sidebarTopTags').find('.ajaxLoader').first()

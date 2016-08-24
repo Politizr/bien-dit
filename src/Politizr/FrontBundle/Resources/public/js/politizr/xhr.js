@@ -101,6 +101,7 @@ var ROUTE_TAG_USER_HIDE = 'profil/utilisateur/tag/hide';
 var ROUTE_TAG_USER_ASSOCIATE = 'profil/utilisateur/tag/associate';
 
 var ROUTE_TAG_LISTING_TOP = 'tags/top';
+var ROUTE_TAG_LISTING_TYPE = 'tags/type';
 var ROUTE_TAG_LISTING_USER = 'profil/tags/user';
 var ROUTE_TAG_LISTING = 'tags/listing';
 

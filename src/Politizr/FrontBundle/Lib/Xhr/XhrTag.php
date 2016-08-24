@@ -675,6 +675,35 @@ class XhrTag
     }
 
     /**
+     * Type tags
+     * beta
+     */
+    public function typeTags(Request $request)
+    {
+        // $this->logger->info('*** typeTags');
+        
+        // Request arguments
+
+        // top tags
+        $tags = PTagQuery::create()
+            ->filterByPTTagTypeId(TagConstants::TAG_TYPE_TYPE)
+            ->filterByOnline(true)
+            ->orderByTitle()
+            ->find();
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Tag:_list.html.twig',
+            array(
+                'tags' => $tags,
+            )
+        );
+
+        return array(
+            'html' => $html,
+        );
+    }
+
+    /**
      * User followed tags
      * beta
      */

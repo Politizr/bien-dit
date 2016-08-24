@@ -35,19 +35,27 @@ function delayRequest(ev) {
 }
 
 /**
- * Auto save
- * Event = mouseup
+ * Remove "marked as save" and/or auto save
  */
+
+// dlblick editor event
 $('.editable.description').on('dblclick', function() {
     // console.log('dblclick event');
     $('.actionSave').removeClass('saved');
     // delayRequest(this);
 });
 
+// mouseup editor event
 $('.editable.description').on('mouseup', function() {
     // console.log('mouseup event');
     $('.actionSave').removeClass('saved');
     // delayRequest(this);
+});
+
+// change checkbox type event
+$('#formTagType :checkbox').on('change', function() {
+    // console.log('checkbox change');
+    delayRequest(this);
 });
 
 

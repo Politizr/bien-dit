@@ -74,7 +74,7 @@ class PDReaction extends BasePDReaction implements PDocumentInterface
             //     new Length(['min' => 140, 'minMessage' => 'Le corps de la publication doit contenir {{ limit }} caractères minimum.']),
             // ),
             'geoTags' => new Count(['min' => 1, 'minMessage' => 'Saisissez au moins {{ limit }} thématique géographique parmi "France", une région ou un département.']),
-            'allTags' => new Count(['max' => 5, 'maxMessage' => 'Saisissez au maximum {{ limit }} thématiques.']),
+            'themaTags' => new Count(['max' => 5, 'maxMessage' => 'Saisissez au maximum {{ limit }} thématiques.']),
         ));
 
         return $collectionConstraint;

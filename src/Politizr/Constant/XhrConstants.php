@@ -112,6 +112,7 @@ class XhrConstants
 
     const ROUTE_TAG_LISTING = 'tags/listing';
     const ROUTE_TAG_LISTING_TOP = 'tags/top';
+    const ROUTE_TAG_LISTING_TYPE = 'tags/type';
     const ROUTE_TAG_LISTING_USER = 'profil/tags/user';
 
     // ORGANIZATION
