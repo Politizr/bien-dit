@@ -1,4 +1,39 @@
 /**
+ * Update map menu (france / france outre mer)
+ * /!\ only used w. shorcut 'my region' / 'my deparment' / 'my city'
+ *
+ * @param uuid
+ */
+function mapMenu(uuid) {
+    // console.log('*** mapMenu');
+    // console.log(uuid);
+
+    localLoader = $('#mapMenu').find('.ajaxLoader').first();
+
+    var xhrPath = getXhrPath(
+        ROUTE_MAP_BREADCRUMB,
+        'tag',
+        'mapMenu',
+        RETURN_HTML
+    );
+
+    return xhrCall(
+        document,
+        { 'uuid': uuid },
+        xhrPath,
+        localLoader
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
+            $('#mapMenu').html(data['html']);
+        }
+        localLoader.hide();
+    });
+}
+
+/**
  * Update map breadcrumb
  *
  * @param uuid
@@ -31,7 +66,6 @@ function mapBreadcrumb(uuid) {
         localLoader.hide();
     });
 }
-
 
 /**
  * Update map schema

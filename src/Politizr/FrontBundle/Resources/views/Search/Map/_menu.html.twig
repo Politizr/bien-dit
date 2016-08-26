@@ -1,0 +1,4 @@
+{% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+
+<span action="map" uuid="{{ franceTag.uuid }}"{% if not fom %} class="active"{% endif %}>France</span>
+<span action="map" uuid="{{ fomTag.uuid }}"{% if fom %}class="active"{% endif %}>France d'Outre-Mer</span>

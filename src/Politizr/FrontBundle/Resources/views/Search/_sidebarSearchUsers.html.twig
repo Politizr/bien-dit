@@ -2,9 +2,8 @@
 <div class="sidebarSearch">
     <div class="sidebarSearchMap">
         <h5>Zone Géographique</h5>
-        <div class="mapMenu">
-            <span action="map" uuid="{{ franceTag.uuid }}" class="active">France</span>
-            <span action="map" uuid="{{ fomTag.uuid }}">France d'Outre-Mer</span>
+        <div class="mapMenu withLoaderInside" id="mapMenu">
+            {% include 'PolitizrFrontBundle:Search\\Map:_menu.html.twig' with { 'fom': false } %}
         </div>
         <div class="mapBreadcrumbs withLoaderInside" id="mapBreadcrumb">
             {% include 'PolitizrFrontBundle:Search\\Map:_breadcrumb.html.twig' %}

@@ -293,6 +293,18 @@ class TagService
             $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_MAINE_ET_LOIRE;
             $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_SARTHE;
             $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_MAYENNE;
+        } elseif ($regionId == TagConstants::TAG_GEO_REGION_ID_FOM) {
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_GUADELOUPE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_MARTINIQUE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_GUYANE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_LA_REUNION;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_MAYOTTE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_POLYNESIE_FRANCAISE;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_SAINT_BARTHELEMY;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_SAINT_MARTIN;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_SAINT_PIERRE_ET_MIQUELON;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_WALLIS_ET_FUTUNA;
+            $departmentIds[] = TagConstants::TAG_GEO_DEPARTMENT_ID_NOUVELLE_CALEDONIE;
         } else {
             throw new InconsistentDataException(sprintf('Region id %s does not match', $regionId));
         }

@@ -51,8 +51,9 @@ class XhrConstants
     const ROUTE_DOCUMENT_LISTING_FILTERS = 'documents/filters';
     const ROUTE_USER_LISTING_FILTERS = 'utilisateurs/filters';
     const ROUTE_LISTING_FILTERS_CATEGORY = 'filters/category';
-    const ROUTE_MAP_BREADCRUMB = 'documents/breadcrumb';
-    const ROUTE_MAP_SCHEMA = 'documents/schema';
+    const ROUTE_MAP_MENU = 'carte/menu';
+    const ROUTE_MAP_BREADCRUMB = 'carte/breadcrumb';
+    const ROUTE_MAP_SCHEMA = 'carte/schema';
 
     const ROUTE_DOCUMENT_BOOKMARK = 'profil/document/bookmark';
 

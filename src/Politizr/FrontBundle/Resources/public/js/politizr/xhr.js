@@ -39,8 +39,9 @@ var ROUTE_DOCUMENT_LISTING_RECOMMEND_NAV = 'documents/recommend/nav';
 var ROUTE_DOCUMENT_LISTING_FILTERS = 'documents/filters';
 var ROUTE_USER_LISTING_FILTERS = 'utilisateurs/filters';
 var ROUTE_LISTING_FILTERS_CATEGORY = 'filters/category';
-var ROUTE_MAP_BREADCRUMB = 'documents/breadcrumb';
-var ROUTE_MAP_SCHEMA = 'documents/schema';
+var ROUTE_MAP_MENU = 'carte/menu';
+var ROUTE_MAP_BREADCRUMB = 'carte/breadcrumb';
+var ROUTE_MAP_SCHEMA = 'carte/schema';
 
 var ROUTE_DOCUMENT_BOOKMARK = 'profil/document/bookmark';
 

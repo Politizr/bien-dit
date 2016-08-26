@@ -164,6 +164,48 @@ class XhrTag
     /* ######################################################################################################## */
 
     /**
+     * Map menu (france / france outre mer)
+     * /!\ only used w. shorcut 'my region' / 'my deparment' / 'my city'
+     * beta
+     */
+    public function mapMenu(Request $request)
+    {
+        // $this->logger->info('*** mapMenu');
+
+        // Request arguments
+        $uuid = $request->get('uuid');
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
+
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+
+        $franceTag = PTagQuery::create()->findPk(TagConstants::TAG_GEO_FRANCE_ID);
+        $fomTag = PTagQuery::create()->findPk(TagConstants::TAG_GEO_REGION_ID_FOM);
+
+        // check if user is in dom/tom
+        $fom = false;
+        if ($user && $city = $user->getPLCity()) {
+            $department = $city->getPLDepartment();
+            if (in_array($department->getPTagId(), TagConstants::getGeoDepartmentOMIds())) {
+                $fom = true;
+            }
+        }
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Search\\Map:_menu.html.twig',
+            array(
+                'franceTag' => $franceTag,
+                'fomTag' => $fomTag,
+                'fom' => $fom,
+            )
+        );
+
+        return array(
+            'html' => $html,
+        );
+    }
+
+    /**
      * Map breadcrumb
      * beta
      */
@@ -181,7 +223,7 @@ class XhrTag
         }
 
         $tags = array();
-        if (in_array($tag->getId(), TagConstants::getGeoRegionIds())) {
+        if (in_array($tag->getId(), TagConstants::getGeoRegionIds()) && $tag->getId() != TagConstants::TAG_GEO_REGION_ID_FOM) {
             $tags[] = $tag;
         } elseif (in_array($tag->getId(), TagConstants::getGeoDepartmentMetroIds())) {
             $tagRegion = PTagQuery::create()->findPk($tag->getPTParentId());

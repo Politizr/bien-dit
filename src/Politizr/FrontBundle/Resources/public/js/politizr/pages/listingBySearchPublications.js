@@ -37,7 +37,12 @@ $("body").on("click", "[action='publicationsMyMap']", function() {
 
     uuid = $(this).attr('uuid');
     if (uuid) {
-        return publicationsMapFiltering(uuid);
+        $.when(
+            // update menu
+            mapMenu(uuid)
+        ).then(function(r1, r2) {
+            return publicationsMapFiltering(uuid);
+        });
     }
 });
 

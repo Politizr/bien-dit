@@ -39,6 +39,8 @@ $("body").on("click", "[action='usersMyCity']", function() {
 
     if (uuid) {
         $.when(
+            // update menu
+            mapMenu(uuid),
             // update breadcrumb
             mapBreadcrumb(uuid),
             // update map
@@ -66,7 +68,12 @@ $("body").on("click", "[action='usersMyMap']", function() {
     uuid = $(this).attr('uuid');
 
     if (uuid) {
-        return usersMapFiltering(uuid);
+        $.when(
+            // update menu
+            mapMenu(uuid)
+        ).then(function(r1, r2) {
+            return usersMapFiltering(uuid);
+        });
     }
 });
 

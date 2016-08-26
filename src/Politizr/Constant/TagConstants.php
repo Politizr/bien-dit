@@ -172,7 +172,8 @@ class TagConstants
             TagConstants::TAG_GEO_REGION_ID_NPDCP,
             TagConstants::TAG_GEO_REGION_ID_N,
             TagConstants::TAG_GEO_REGION_ID_PDLL,
-            TagConstants::TAG_GEO_REGION_ID_PACA
+            TagConstants::TAG_GEO_REGION_ID_PACA,
+            TagConstants::TAG_GEO_REGION_ID_FOM
         ];
     }
 
