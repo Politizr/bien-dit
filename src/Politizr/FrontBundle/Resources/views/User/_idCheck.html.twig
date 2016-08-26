@@ -6,7 +6,11 @@
         <div class="formBlock">
             {% set uploadAction = path('XhrGeneric', {'xhrRoute': constant('Politizr\\Constant\\XhrConstants::ROUTE_USER_VALIDATE_PHOTO_UPLOAD'), 'xhrService': 'security', 'xhrMethod': 'idCheckPhotoUpload', 'xhrType': constant('Politizr\\Constant\\XhrConstants::RETURN_HTML')}) %}
             <form method="POST" action="{{ uploadAction }}" name="user" id="formIdCheckPhoto" enctype="multipart/form-data">
-                <label>Télécharger une photo de votre Carte Nationale d’Identité</label>
+                <label>Télécharger la photo de votre Carte Nationale d’Identité</label>
+                <div class="notice">
+                    <i class="icon-info"></i><b>Précision</b><br/>
+                    Notre service contrôlant la validité de la carte d'identité, merci de ne pas télécharger uniquement une photo d'identité mais bien la photo de votre carte nationale d'identité.
+                </div>
                 <div class="uploadCNI">
                     <input type="file" name="fileName" id="fileName">
                     <label action="fileSelect" for="fileName">Parcourir</label>
