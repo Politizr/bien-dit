@@ -62,6 +62,7 @@ class PUserQuery extends BasePUserQuery
 
     /**
      * Note: only "positives" actions are counted
+     * cf. http://stackoverflow.com/questions/14549120/mysql-count-left-join-group-by-to-return-zero-rows
      *
      * @return PUserQuery
      */
@@ -70,7 +71,7 @@ class PUserQuery extends BasePUserQuery
         return $this
             ->withColumn('COUNT(p_u_reputation.id)', 'MostActive')
             ->join('PUReputation', \Criteria::LEFT_JOIN)
-            ->addJoinCondition('PUReputation', 'PUReputation.PRActionId IN ?', implode(',', ReputationConstants::getPositivesPRActionsId()), \Criteria::IN)
+            ->addJoinCondition('PUReputation', 'PUReputation.PRActionId IN ('.implode(',', ReputationConstants::getPositivesPRActionsId()).')')
             ->groupBy('Id')
             ->orderBy('MostActive', 'desc');
     }
