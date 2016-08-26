@@ -5,6 +5,7 @@ use Politizr\Exception\InconsistentDataException;
 
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\ListingConstants;
+use Politizr\Constant\UserConstants;
 
 use Politizr\Model\PUser;
 
@@ -132,6 +133,7 @@ class UserService
             ->online()
             ->filterIfCities($cityIds)
             ->filterByKeywords($keywords)
+            ->filterById(UserConstants::USER_ID_ADMIN, \Criteria::NOT_EQUAL)
             ->orderWithKeyword($filterActivity)
             ->paginate($offset, $count);
 
