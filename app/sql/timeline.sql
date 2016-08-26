@@ -163,7 +163,8 @@ WHERE
 
 UNION DISTINCT
 
-#  Actions réputation: note +/- comment / sujet / reponse, suivre un utilisateur, être suivi par un utilisateur
+#  Actions réputation: note +/- comment / sujet / reponse, suivre un utilisateur, être suivi par un utilisateur, suivre / ne plus suivre un utilisateur, suivre / ne plus suivre un débat
+#  upd > être suivi par un utilisateur, suivre / ne plus suivre un utilisateur, suivre / ne plus suivre un débat
 ( SELECT p_u_reputation.p_r_action_id as id, p_u_reputation.p_object_id as target_id, 'null' as target_user_id, p_u_reputation.p_object_name as target_object_name, p_r_action.title as title, p_u_reputation.created_at as published_at, 'Politizr\\Model\\PRAction' as type
 FROM p_r_action
     LEFT JOIN p_u_reputation
@@ -171,7 +172,8 @@ FROM p_r_action
 
 WHERE
     p_u_reputation.p_user_id = 1
-    AND p_r_action.id IN (10, 11, 12, 13, 14, 15, 24, 25, 28, 22, 23)
+    # AND p_r_action.id IN (10, 11, 12, 13, 14, 15, 24, 25, 28, 22, 23)
+    AND p_r_action.id IN (25, 28, 22, 23)
 )
 
 UNION DISTINCT
