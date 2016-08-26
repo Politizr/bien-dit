@@ -16,6 +16,7 @@ use Politizr\Model\PUser;
 
 use Politizr\Model\PUFollowUQuery;
 use Politizr\Model\PUserQuery;
+use Politizr\Model\PDReactionQuery;
 
 use Politizr\FrontBundle\Form\Type\PUserLocalizationType;
 
@@ -688,6 +689,34 @@ class PolitizrUserExtension extends \Twig_Extension
         $score = $user->getReputationScore();
         
         if ($this->securityAuthorizationChecker->isGranted('ROLE_ELECTED') && !$user->isValidated()) {
+            // case: own subject > certification not needed
+            $reaction = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
+            $debate = $reaction->getDebate();
+            if ($debate) {
+                $debateUser = $debate->getPUser();
+                if ($debateUser && $debateUser->getId() == $user->getId()) {
+                    if ($score >= ReputationConstants::ACTION_REACTION_WRITE) {
+                        $html = $this->templating->render(
+                            'PolitizrFrontBundle:Reaction:_publishLink.html.twig',
+                            array(
+                                'uuid' => $uuid,
+                            )
+                        );
+                    } else {
+                        $html = $this->templating->render(
+                            'PolitizrFrontBundle:Reputation:_cannotPublishReaction.html.twig',
+                            array(
+                                'case' => ReputationConstants::SCORE_NOT_REACHED,
+                                'score' => $score,
+                            )
+                        );
+                    }
+
+                    return $html;
+                }
+            }
+
+            // case: other subject > certification needed
             $html = $this->templating->render(
                 'PolitizrFrontBundle:Reputation:_cannotPublishReaction.html.twig',
                 array(
