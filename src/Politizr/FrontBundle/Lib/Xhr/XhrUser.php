@@ -1167,7 +1167,7 @@ class XhrUser
         $users = $this->userService->getUsersByFilters(
             $cityUuid,
             $geoTagUuid,
-            $filterProfile,
+            ListingConstants::FILTER_KEYWORD_QUALIFIED, // $filterProfile,
             $filterActivity,
             $filterDate,
             $offset,
