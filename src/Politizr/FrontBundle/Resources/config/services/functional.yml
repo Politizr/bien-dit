@@ -6,6 +6,7 @@ services:
             - @security.authorization_checker
             - @politizr.manager.document
             - @politizr.functional.tag
+            - @politizr.functional.localization
             - @router
             - @logger
 

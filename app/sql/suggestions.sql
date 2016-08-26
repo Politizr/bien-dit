@@ -49,8 +49,23 @@ WHERE
 
 UNION DISTINCT
 
+( SELECT DISTINCT p_d_debate.*, 0 as nb_users, 2 as unionsorting
+FROM p_d_debate
+    LEFT JOIN p_d_d_tagged_t
+        ON p_d_debate.id = p_d_d_tagged_t.p_d_debate_id
+WHERE
+    p_d_d_tagged_t.p_tag_id IN (17, 31)
+    AND p_d_debate.online = 1
+    AND p_d_debate.published = 1
+    AND p_d_debate.id NOT IN (1,5)
+    AND p_d_debate.p_user_id NOT IN (6,9,60)
+    AND p_d_debate.p_user_id <> 73
+)
+
+UNION DISTINCT
+
 #  Débats les plus populaires
-( SELECT DISTINCT p_d_debate.*, COUNT(p_u_follow_d_d.p_d_debate_id) as nb_users, 2 as unionsorting
+( SELECT DISTINCT p_d_debate.*, COUNT(p_u_follow_d_d.p_d_debate_id) as nb_users, 3 as unionsorting
 FROM p_d_debate
     LEFT JOIN p_u_follow_d_d
         ON p_d_debate.id = p_u_follow_d_d.p_d_debate_id

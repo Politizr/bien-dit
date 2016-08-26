@@ -874,7 +874,7 @@ LIMIT :limit
      *
      * @return string
      */
-    private function createUserSuggestedDebatesRawSql($inQueryDebateIds, $inQueryUserIds)
+    private function createUserSuggestedDebatesRawSql($inQueryGeoTagIds, $inQueryDebateIds, $inQueryUserIds)
     {
         // Requête SQL
         $sql = "
@@ -925,7 +925,22 @@ WHERE
 
 UNION DISTINCT
 
-( SELECT DISTINCT p_d_debate.*, COUNT(p_u_follow_d_d.p_d_debate_id) as nb_users, 2 as unionsorting
+( SELECT DISTINCT p_d_debate.*, 0 as nb_users, 2 as unionsorting
+FROM p_d_debate
+    LEFT JOIN p_d_d_tagged_t
+        ON p_d_debate.id = p_d_d_tagged_t.p_d_debate_id
+WHERE
+    p_d_d_tagged_t.p_tag_id IN ($inQueryGeoTagIds)
+    AND p_d_debate.online = 1
+    AND p_d_debate.published = 1
+    AND p_d_debate.id NOT IN ($inQueryDebateIds)
+    AND p_d_debate.p_user_id NOT IN ($inQueryUserIds)
+    AND p_d_debate.p_user_id <> :p_user_id3
+)
+
+UNION DISTINCT
+
+( SELECT DISTINCT p_d_debate.*, COUNT(p_u_follow_d_d.p_d_debate_id) as nb_users, 3 as unionsorting
 FROM p_d_debate
     LEFT JOIN p_u_follow_d_d
         ON p_d_debate.id = p_u_follow_d_d.p_d_debate_id
@@ -934,7 +949,7 @@ WHERE
     AND p_d_debate.published = 1
     AND p_d_debate.id NOT IN ($inQueryDebateIds)
     AND p_d_debate.p_user_id NOT IN ($inQueryUserIds)
-    AND p_d_debate.p_user_id <> :p_user_id3
+    AND p_d_debate.p_user_id <> :p_user_id4
 GROUP BY p_d_debate.id
 ORDER BY nb_users DESC
 )
@@ -1408,25 +1423,28 @@ GROUP BY p_d_debate_id
      * User's debates' suggestions paginated listing
      *
      * @param integer $userId
+     * @param string $inQueryGeoTagIds
      * @param string $inQueryDebateIds
      * @param string $inQueryUserIds
      * @param int $limit
      * @return PropelCollection[PDDebate]
      */
-    public function generateUserDocumentsSuggestion($userId, $inQueryDebateIds, $inQueryUserIds, $limit)
+    public function generateUserDocumentsSuggestion($userId, $inQueryGeoTagIds, $inQueryDebateIds, $inQueryUserIds, $limit)
     {
         // $this->logger->info('*** generateUserDocumentsSuggestion');
         // $this->logger->info('$userId = ' . print_r($userId, true));
+        // $this->logger->info('$inQueryGeoTagIds = ' . print_r($inQueryGeoTagIds, true));
         // $this->logger->info('$debateIds = ' . print_r($inQueryDebateIds, true));
         // $this->logger->info('$userIds = ' . print_r($inQueryUserIds, true));
         // $this->logger->info('$limit = ' . print_r($limit, true));
 
         $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
-        $stmt = $con->prepare($this->createUserSuggestedDebatesRawSql($inQueryDebateIds, $inQueryUserIds));
+        $stmt = $con->prepare($this->createUserSuggestedDebatesRawSql($inQueryGeoTagIds, $inQueryDebateIds, $inQueryUserIds));
 
         $stmt->bindValue(':p_user_id', $userId, \PDO::PARAM_INT);
         $stmt->bindValue(':p_user_id2', $userId, \PDO::PARAM_INT);
         $stmt->bindValue(':p_user_id3', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_user_id4', $userId, \PDO::PARAM_INT);
         $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
 
         $stmt->execute();

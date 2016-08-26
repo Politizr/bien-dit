@@ -36,6 +36,7 @@ class DocumentService
     private $documentManager;
 
     private $tagService;
+    private $localizationService;
 
     private $router;
     
@@ -47,6 +48,7 @@ class DocumentService
      * @param @security.authorization_checker
      * @param @politizr.manager.document
      * @param @politizr.functional.tag
+     * @param @politizr.functional.localization
      * @param @router
      * @param @logger
      */
@@ -55,6 +57,7 @@ class DocumentService
         $securityAuthorizationChecker,
         $documentManager,
         $tagService,
+        $localizationService,
         $router,
         $logger
     ) {
@@ -64,6 +67,7 @@ class DocumentService
         $this->documentManager = $documentManager;
 
         $this->tagService = $tagService;
+        $this->localizationService = $localizationService;
 
         $this->router = $router;
 
@@ -73,6 +77,25 @@ class DocumentService
     /* ######################################################################################################## */
     /*                                               PRIVATE FUNCTIONS                                          */
     /* ######################################################################################################## */
+
+    /**
+     * Get array of user's PUFollowDD's ids
+     * @todo refactoring duplicate w. TimelineService
+     *
+     * @param integer $userId
+     * @return array
+     */
+    private function getGeoTagExtendedIdsArray($tagId)
+    {
+        $tagIds = $this->tagService->computeGeotagExtendedIds($tagId);
+
+        $inQueryTagIds = implode(',', $tagIds);
+        if (empty($inQueryTagIds)) {
+            $inQueryTagIds = 0;
+        }
+
+        return $inQueryTagIds;
+    }
 
     /**
      * Get array of user's PUFollowDD's ids
@@ -160,12 +183,7 @@ class DocumentService
             if (!$tag) {
                 throw new InconsistentDataException(sprintf('Tag %s not found', $filters['map']));
             }
-            $tagIds = $this->tagService->computeGeotagExtendedIds($tag->getId());
-
-            $inQueryTagIds = implode(',', $tagIds);
-            if (empty($inQueryTagIds)) {
-                $inQueryTagIds = 0;
-            }
+            $inQueryTagsIds = $this->getGeoTagExtendedIdsArray($tag->getId());
         }
 
         // "most views" activity filters only applied to debates and/or reactions:
@@ -329,6 +347,20 @@ class DocumentService
      */
     public function getUserDocumentsSuggestion($userId, $count = ListingConstants::LISTING_SUGGESTION_DOCUMENTS_LIMIT)
     {
+        // Récupération d'un tableau des ids des départements et de la région du user
+        $inQueryGeoTagIds = null;
+        $user = PUserQuery::create()->findPk($userId);
+        $regionId = $this->localizationService->getRegionTagIdByCityId($user->getPLCityId());
+        if ($regionId) {
+            $inQueryGeoTagIds = $this->getGeoTagExtendedIdsArray($regionId);
+        }
+
+        $debateIds = $this->getFollowedDebatesIdsArray($userId);
+        $inQueryDebateIds = implode(',', $debateIds);
+        if (empty($inQueryDebateIds)) {
+            $inQueryDebateIds = 0;
+        }
+
         // Récupération d'un tableau des ids des débats suivis
         $debateIds = $this->getFollowedDebatesIdsArray($userId);
         $inQueryDebateIds = implode(',', $debateIds);
@@ -343,7 +375,7 @@ class DocumentService
             $inQueryUserIds = 0;
         }
 
-        $documents = $this->documentManager->generateUserDocumentsSuggestion($userId, $inQueryDebateIds, $inQueryUserIds, $count);
+        $documents = $this->documentManager->generateUserDocumentsSuggestion($userId, $inQueryGeoTagIds, $inQueryDebateIds, $inQueryUserIds, $count);
 
         return $documents;
     }

@@ -128,4 +128,32 @@ class LocalizationService
 
         return $regionUuid;
     }
+
+
+    /**
+     * Get the tag's region id relative to the city id
+     *
+     * @param int $userId
+     * @return int
+     */
+    public function getRegionTagIdByCityId($cityId)
+    {
+        $regionId = null;
+
+        $tag = PTagQuery::create()
+            ->usePLRegionQuery()
+                ->usePLDepartmentQuery()
+                    ->usePLCityQuery()
+                        ->filterById($cityId)
+                    ->endUse()
+                ->endUse()
+            ->endUse()
+            ->findOne();
+
+        if ($tag) {
+            $regionId = $tag->getId();
+        }
+
+        return $regionId;
+    }
 }
