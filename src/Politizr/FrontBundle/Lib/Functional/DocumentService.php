@@ -183,7 +183,7 @@ class DocumentService
             if (!$tag) {
                 throw new InconsistentDataException(sprintf('Tag %s not found', $filters['map']));
             }
-            $inQueryTagsIds = $this->getGeoTagExtendedIdsArray($tag->getId());
+            $inQueryTagIds = $this->getGeoTagExtendedIdsArray($tag->getId());
         }
 
         // "most views" activity filters only applied to debates and/or reactions:
