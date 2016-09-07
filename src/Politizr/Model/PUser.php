@@ -1119,4 +1119,36 @@ class PUser extends BasePUser implements UserInterface
 
         return false;
     }
+
+    // ************************************************************************************ //
+    //                                          LOCALISATION
+    // ************************************************************************************ //
+
+    /**
+     * Return user's city name
+     *
+     * @param string
+     */
+    public function getCityStr()
+    {
+        if (!$this->getPLCity()) {
+            return null;
+        }
+
+        return $this->getPLCity()->getName();
+    }
+
+    /**
+     * Return user's department name
+     *
+     * @param string
+     */
+    public function getDepartmentStr()
+    {
+        if (!$this->getPLCity()) {
+            return null;
+        }
+
+        return $this->getPLCity()->getPLDepartment()->getPTag()->getTitle();
+    }
 }

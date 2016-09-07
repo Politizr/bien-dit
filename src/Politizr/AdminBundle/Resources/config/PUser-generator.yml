@@ -117,10 +117,14 @@ builders:
                     "Citoyens":
                         filters: 
                             qualified:          0
-            display:                            [ file_name, name, firstname, p_l_city_id, qualified, validated, nb_id_check, reputation_score, online, homepage, last_activity, created_at ]
+            display:                            [ file_name, name, firstname, p_l_city, qualified, validated, nb_id_check, reputation_score, online, homepage, last_activity, created_at ]
             fields:
+                p_l_city:
+                    label:                      Localisation
+                    sortOn:                     PLCity.name
                 reputation_score:
                     label:                      Score
+                    sortable:                   false
             filtersMode:                        modal
             filters:                            [ id, uuid, email, name, qualified, validated, p_u_status, online, homepage, last_activity, created_at ]
             object_actions:
@@ -138,7 +142,7 @@ builders:
                     label:    En page d'accueil
     excel:
         params:
-            display:                            [ gender, name, first_name, p_l_city, email, phone, email, website, twitter, facebook, reputation_score, stringifiedGeoTags ]
+            display:                            [ gender, name, first_name, cityStr, departmentStr, email, phone, email, website, twitter, facebook, reputation_score, stringifiedGeoTags ]
             filename:                           politizr-users
             filetype: ~
             datetime_format: ~

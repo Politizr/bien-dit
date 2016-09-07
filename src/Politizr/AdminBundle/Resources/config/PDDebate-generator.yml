@@ -93,13 +93,19 @@ builders:
                 show:                           ~
                 edit:                           ~
                 delete:                         ~
+            actions:
+                excel:                          ~
             batch_actions:
                 homepage:
                     label:    En page d'accueil
     excel:
-        params: ~
-        filename: ~
-        filetype: ~
+        params:
+            display:                            [ title, p_user, slug, published_at ]
+            filename:                           politizr-subjects
+            filetype: ~
+            datetime_format: ~
+            fields: ~
+            export: ~
     edit:
         params:
             title:                              "Edition du contenu sujet '{{ PDDebate.title }}'"
