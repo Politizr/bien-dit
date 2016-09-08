@@ -258,7 +258,7 @@ $("body").on("click", "button[action='updateLocalization']", function(e) {
             $('#alertLocalization').html('');
             $('#alertLocalization').hide();
         }
-        localLoader.hide();
+        location.reload();
     });
 });
 
