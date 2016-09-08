@@ -559,6 +559,9 @@ class SecurityController extends Controller
         // Finalisation du process d'inscription élu
         $this->get('politizr.functional.security')->inscriptionFinishElected($user);
 
+        // Inscription done
+        $request->getSession()->getFlashBag()->add('inscription/success', true);
+
         // Redirect to page before inscription
         $referer = $this->get('session')->get('inscription/referer');
         if (strpos($referer, 'debat') || // debate detail 

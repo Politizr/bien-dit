@@ -12,6 +12,18 @@
     <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/styleUser.css') }}">
 {% endblock %}
 
+{% block fbScript %}
+    {{ parent() }}
+
+    {% if app.environment == 'prod' and app.session.flashbag.has('inscription/success') %}
+        <script>
+            // CompleteRegistration
+            // Track when a registration form is completed (ex. complete subscription, sign up for a service)
+            fbq('track', 'CompleteRegistration');
+        </script>
+    {% endif %}
+{% endblock %}
+
 {% block bodyClass %} class="user"{% endblock %}
 
 {% block header %}
