@@ -92,10 +92,12 @@ class SecurityController extends Controller
     /**
      * Page d'inscription: choix élu / citoyen
      */
-    public function inscriptionChoiceAction()
+    public function inscriptionChoiceAction(Request $request)
     {
         $logger = $this->get('logger');
         $logger->info('*** inscriptionChoiceAction');
+
+        $this->get('session')->set('inscription/referer', $request->headers->get('referer'));
 
         return $this->render('PolitizrFrontBundle:Public:inscriptionChoice.html.twig', array(
         ));
@@ -227,6 +229,15 @@ class SecurityController extends Controller
 
             // Inscription done
             $request->getSession()->getFlashBag()->add('inscription/success', true);
+
+            // Redirect to page before inscription
+            $referer = $this->get('session')->get('inscription/referer');
+            if (strpos($referer, 'debat') || // debate detail 
+                strpos($referer, 'reaction') || // reaction detail
+                strpos($referer, 'auteur') // user detail
+            ) {
+                return $this->redirect($referer); 
+            }
 
             return $this->redirect($this->generateUrl('GlobalHelper'));
         }
@@ -548,9 +559,16 @@ class SecurityController extends Controller
         // Finalisation du process d'inscription élu
         $this->get('politizr.functional.security')->inscriptionFinishElected($user);
 
-        return $this->redirect($this->generateUrl('GlobalHelper'));
+        // Redirect to page before inscription
+        $referer = $this->get('session')->get('inscription/referer');
+        if (strpos($referer, 'debat') || // debate detail 
+            strpos($referer, 'reaction') || // reaction detail
+            strpos($referer, 'auteur') // user detail
+        ) {
+            return $this->redirect($referer); 
+        }
 
-        return $this->redirect($this->generateUrl('InscriptionElectedIdCheck'));
+        return $this->redirect($this->generateUrl('GlobalHelper'));
     }
 
     /* ######################################################################################################## */
