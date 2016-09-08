@@ -26,8 +26,8 @@
 {% block content %}
     <div id="content">
         <div id="localizationChoiceBox">
-            <a action="publicationsMyMap" uuid="{{ regionUuid }}">Ma région</a>
-            <a action="publicationsMyMap" uuid="{{ departmentUuid }}">Mon département</a>
+            <a action="publicationsMyMap" id="linkMyRegion" uuid="{{ regionUuid }}">Ma région</a>
+            <a action="publicationsMyMap" id="linkMyDepartment" uuid="{{ departmentUuid }}">Mon département</a>
         </div>
         <div id="documentListing" class="searchResults withLoaderInside">
             {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}

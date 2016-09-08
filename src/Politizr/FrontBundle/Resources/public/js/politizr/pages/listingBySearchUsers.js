@@ -3,15 +3,20 @@ $(function() {
     // hide city filter by default
     $('#cityFilter').hide();
 
-    usersByFiltersListing();
-    
+    uuid = $("#linkMyRegion").attr('uuid');
+    if (uuid) {
+        $("#linkMyRegion").trigger("click");
+    } else {
+        publicationsByFiltersListing();
+    }    
+
     stickySidebar();
 });
 
 
 // Map selection
 $("body").on("click", "[action='map']", function() {
-    // console.log('*** click map');
+    console.log('*** click map');
 
     $('#cityFilter').hide();
 
@@ -28,7 +33,7 @@ $("body").on("click", "[action='map']", function() {
 
 // Map's selection city
 $("body").on("click", "[action='usersMyCity']", function() {
-    // console.log('*** click usersMyCity');
+    console.log('*** click usersMyCity');
 
     $(this).siblings().removeClass('currentPage');
     $(this).addClass('currentPage');
@@ -58,7 +63,7 @@ $("body").on("click", "[action='usersMyCity']", function() {
 
 // Map's selection shortcut
 $("body").on("click", "[action='usersMyMap']", function() {
-    // console.log('*** click usersMyMap');
+    console.log('*** click usersMyMap');
 
     $(this).siblings().removeClass('currentPage');
     $(this).addClass('currentPage');
@@ -79,7 +84,7 @@ $("body").on("click", "[action='usersMyMap']", function() {
 
 // Publication filter change
 $("body").on("change", ".publicationFilter", function() {
-    // console.log('*** change publicationFilter');
+    console.log('*** change publicationFilter');
 
     $('#documentListing .listTop').html('');
     $("[action='goUp']").trigger("click");
@@ -89,7 +94,7 @@ $("body").on("change", ".publicationFilter", function() {
 
 // Profile filter change
 $("body").on("change", ".profileFilter", function() {
-    // console.log('*** change profileFilter');
+    console.log('*** change profileFilter');
 
     $('#documentListing .listTop').html('');
     $("[action='goUp']").trigger("click");
@@ -99,7 +104,7 @@ $("body").on("change", ".profileFilter", function() {
 
 // Activity filter change
 $("body").on("change", ".activityFilter", function() {
-    // console.log('*** change activityFilter');
+    console.log('*** change activityFilter');
 
     $('#documentListing .listTop').html('');
     $("[action='goUp']").trigger("click");
@@ -109,7 +114,7 @@ $("body").on("change", ".activityFilter", function() {
 
 // Date filter change
 $("body").on("change", ".dateFilter", function() {
-    // console.log('*** change dateFilter');
+    console.log('*** change dateFilter');
 
     $('#documentListing .listTop').html('');
     $("[action='goUp']").trigger("click");
@@ -125,8 +130,8 @@ $("body").on("change", ".dateFilter", function() {
  * @param string
  */
 function usersMapFiltering(uuid) {
-    // console.log('*** usersMapFiltering');
-    // console.log(uuid);
+    console.log('*** usersMapFiltering');
+    console.log(uuid);
 
     $.when(
         // update breadcrumb

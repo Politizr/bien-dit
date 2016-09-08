@@ -1,6 +1,12 @@
 // beta
 $(function() {
-    publicationsByFiltersListing();
+
+    uuid = $("#linkMyRegion").attr('uuid');
+    if (uuid) {
+        $("#linkMyRegion").trigger("click");
+    } else {
+        publicationsByFiltersListing();
+    }
     
     stickySidebar();
 });

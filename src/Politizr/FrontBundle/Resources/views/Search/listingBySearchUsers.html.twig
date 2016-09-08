@@ -29,8 +29,8 @@
 {% block content %}
     <div id="content">
         <div id="localizationChoiceBox">
-            <a action="usersMyMap" uuid="{{ regionUuid }}">Ma région</a>
-            <a action="usersMyMap" uuid="{{ departmentUuid }}">Mon département</a>
+            <a action="usersMyMap" id="linkMyRegion" uuid="{{ regionUuid }}">Ma région</a>
+            <a action="usersMyMap" id="linkMyDepartment" uuid="{{ departmentUuid }}">Mon département</a>
             {# <a action="usersMyCity" uuid="{{ departmentUuid }}">Ma ville</a> #}
         </div>
         <div id="documentListing" class="searchResults withLoaderInside">
