@@ -20,5 +20,12 @@
         </div>
     {% endif %}
 {% else %}
-    <a class="linkCreateAccount" href="{{ path('InscriptionChoice') }}"><i class="icon-alert"></i>Créer un compte pour participer au débat</a>
+    <div class="like">
+        <a href="{{ path('InscriptionChoice') }}"><div class="likeButton"><i class="icon-like-yes"></i></div></a>
+        {{ object.notePos }}
+    </div>
+    <div class="dislike">
+        {{ object.noteNeg }}
+        <a href="{{ path('InscriptionChoice') }}"><div class="dislikeButton"><i class="icon-like-no"></i></div></a>
+    </div>
 {% endif %}

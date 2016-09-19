@@ -1,6 +1,6 @@
 <div class="sidebarSubject">
     <div class="sidebarAction">
-        {% if app.user and app.user.id != debate.getPUserId %}
+        {% if app.user and app.user.id != debate.getPUserId or not app.user %}
             <div class="sidebarFollow">
                 {% include 'PolitizrFrontBundle:Follow:_actionFollow.html.twig' with { 'subject': debate } only %}
             </div>

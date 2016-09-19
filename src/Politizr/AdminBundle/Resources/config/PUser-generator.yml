@@ -142,7 +142,7 @@ builders:
                     label:    En page d'accueil
     excel:
         params:
-            display:                            [ gender, name, first_name, cityStr, departmentStr, email, phone, email, website, twitter, facebook, reputation_score, stringifiedGeoTags ]
+            display:                            [ gender, name, first_name, cityStr, departmentStr, email, phone, email, website, twitter, facebook, reputation_score, stringifiedGeoTags, newsletter ]
             filename:                           politizr-users
             filetype: ~
             datetime_format: ~

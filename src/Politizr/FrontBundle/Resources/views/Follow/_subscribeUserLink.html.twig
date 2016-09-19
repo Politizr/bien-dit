@@ -13,4 +13,9 @@
             </div>
         {% endif %}
     {% endif %}
+{% else %}
+    <div class="startFollowing">
+        <div class="actionText"><a href="{{ path('InscriptionChoice') }}">&nbsp;Ajouter&nbsp;à&nbsp;mon&nbsp;fil&nbsp;d'actualité</a></div>
+        <i class="icon-add"></i>
+    </div>
 {% endif %}

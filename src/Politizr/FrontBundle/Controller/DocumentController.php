@@ -107,7 +107,7 @@ class DocumentController extends Controller
         // Cut text if user not logged
         $description = $debate->getDescription();
         if (!$visitor) {
-            $description = $this->get('politizr.tools.global')->truncate($description, 600, ['html' => true]);
+            $description = $this->get('politizr.tools.global')->truncate($description, 800, ['html' => true]);
         }
 
         // Paragraphs explode
@@ -174,7 +174,7 @@ class DocumentController extends Controller
         // Cut text if user not logged
         $description = $reaction->getDescription();
         if (!$visitor) {
-            $description = $this->get('politizr.tools.global')->truncate($description, 600, ['html' => true]);
+            $description = $this->get('politizr.tools.global')->truncate($description, 800, ['html' => true]);
         }
 
         // Paragraphs explode

@@ -85,7 +85,7 @@ $("body").on("click", "div[action='notificationCheckAll']", function(e) {
 
 // follow / unfollow debate
 $("body").on("click", "[action='followDebate']", function(e) {
-    // // console.log('*** click followDebate');
+    // console.log('*** click followDebate');
     
     var xhrPath = getXhrPath(
         ROUTE_FOLLOW_DEBATE,
@@ -116,7 +116,7 @@ $("body").on("click", "[action='followDebate']", function(e) {
 
 // follow / unfollow user
 $("body").on("click", "[action='followUser']", function(e) {
-    // // console.log('*** click followUser');
+    // console.log('*** click followUser');
     
     var xhrPath = getXhrPath(
         ROUTE_FOLLOW_USER,
@@ -147,7 +147,7 @@ $("body").on("click", "[action='followUser']", function(e) {
 
 // follow / unfollow tag
 $("body").on("click", "[action='followTag']", function(e) {
-    // // console.log('*** click followTag');
+    // console.log('*** click followTag');
 
     var xhrPath = getXhrPath(
         ROUTE_FOLLOW_TAG,
