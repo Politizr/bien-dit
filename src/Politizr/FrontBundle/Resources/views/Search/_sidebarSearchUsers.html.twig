@@ -6,7 +6,7 @@
             {% include 'PolitizrFrontBundle:Search\\Map:_menu.html.twig' with { 'isFom': false } %}
         </div>
         <div class="mapBreadcrumbs withLoaderInside" id="mapBreadcrumb">
-            {% include 'PolitizrFrontBundle:Search\\Map:_breadcrumb.html.twig' %}
+            {% include 'PolitizrFrontBundle:Search\\Map:_breadcrumb.html.twig' with { 'geoTypeObjects': null } %}
         </div>
         
         <div id="mapHolder" class="withLoaderInside">

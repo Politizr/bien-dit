@@ -50,83 +50,6 @@ class LocalizationService
     /*                                              PUBLIC FUNCTIONS                                            */
     /* ######################################################################################################## */
     
-//     /**
-//      * Depending of tag id, compute relative ids ie. ids of tags where parent_id is set to given id
-//      *
-//      * @param int $id Tag ID
-//      * @param boolean $withFranceChildren
-//      * @param boolean $withRegionChildren
-//      * @param boolean $withDepartmentChildren
-//      *
-//      * @return array
-//      */
-//     public function computeGeotagExtendedIds(
-//         $id,
-//         $withFranceChildren = true,
-//         $withRegionChildren = true,
-//         $withDepartmentChildren = true
-//     ) {
-//         // $this->logger->info('*** computeGeotagExtendedIds');
-// 
-//         $ids = array();
-//         $tag = PLDepartmentQuery::create()->findPk($id);
-// 
-//         if ($withFranceChildren
-//             && $tag->getPTTagTypeId() == LocalizationConstants::TAG_TYPE_GEO
-//             && $id == LocalizationConstants::FRANCE_ID) {
-//             // get region & departements & cities under france
-//             $countryIds = array();
-//             $regionIds = array();
-//             $departmentIds = array();
-//             $cityIds = array();
-// 
-//             $countryIds[] = LocalizationConstants::FRANCE_ID;
-// 
-//             $regionIds = LocalizationConstants::getGeoRegionIds();
-//             foreach ($regionIds as $regionId) {
-//                 $departmentIds = array_merge($departmentIds, $this->getDepartmentsIds($regionId));
-//             }
-//             
-//             $cityIds = array();
-//             foreach ($departmentIds as $departmentId) {
-//                 $cityIds = array_merge($cityIds, $this->getCityIds($departmentId));
-//             }
-// 
-//             $ids = array_merge($countryIds, $regionIds, $departmentIds, $cityIds);
-//         } elseif ($withRegionChildren
-//             && $tag->getPTTagTypeId() == LocalizationConstants::TAG_TYPE_GEO
-//             && in_array($id, LocalizationConstants::getGeoRegionIds())) {
-//             // get departements & cities under region
-//             $regionIds = array();
-//             $departmentIds = array();
-//             $cityIds = array();
-// 
-//             $regionIds[] = $id;
-// 
-//             $departmentIds = $this->getDepartmentsIds($id);
-//             
-//             $cityIds = array();
-//             foreach ($departmentIds as $departmentId) {
-//                 $cityIds = array_merge($cityIds, $this->getCityIds($departmentId));
-//             }
-// 
-//             $ids = array_merge($regionIds, $departmentIds, $cityIds);
-//         } elseif ($withDepartmentChildren
-//             && $tag->getPTTagTypeId() == LocalizationConstants::TAG_TYPE_GEO
-//             && in_array($id, LocalizationConstants::getGeoDepartmentIds())) {
-//             // get cities under department
-//             $departmentIds[] = $id;
-//             
-//             $cityIds = $this->getCityIds($id);
-// 
-//             $ids = array_merge($departmentIds, $cityIds);
-//         } else {
-//             $ids[] = $id;
-//         }
-// 
-//         return $ids;
-//     }
-
     /**
      * Array of key indexed regions uuids
      *
@@ -447,6 +370,67 @@ class LocalizationService
         return $mapUuids;
     }
 
+
+    /**
+     * Get region id from uuid
+     *
+     * @param string $regionUuid
+     * @return int
+     */
+    public function getRegionIdFromRegionUuid($regionUuid)
+    {
+        // $this->logger->info('*** getRegionIdFromRegionUuid');
+        // $this->logger->info('$regionUuid = '.print_r($regionUuid, true));
+
+        $region = PLRegionQuery::create()->filterByUuid($regionUuid)->findOne();
+
+        if ($region) {
+            return $region->getId();
+        }
+
+        return null;
+    }
+
+    /**
+     * Get department id from uuid
+     *
+     * @param string $departmentUuid
+     * @return int
+     */
+    public function getDepartmentIdFromDepartmentUuid($departmentUuid)
+    {
+        // $this->logger->info('*** getDepartmentIdFromDepartmentUuid');
+        // $this->logger->info('$departmentUuid = '.print_r($departmentUuid, true));
+
+        $department = PLDepartmentQuery::create()->filterByUuid($departmentUuid)->findOne();
+
+        if ($department) {
+            return $department->getId();
+        }
+
+        return null;
+    }
+
+    /**
+     * Get city id from uuid
+     *
+     * @param string $cityUuid
+     * @return int
+     */
+    public function getCityIdFromCityUuid($cityUuid)
+    {
+        // $this->logger->info('*** getCityIdFromCityUuid');
+        // $this->logger->info('$cityUuid = '.print_r($cityUuid, true));
+
+        $city = PLCityQuery::create()->filterByUuid($cityUuid)->findOne();
+
+        if ($city) {
+            return $city->getId();
+        }
+
+        return null;
+    }
+
     /**
      * Get city ids of a department
      *
@@ -490,6 +474,26 @@ class LocalizationService
     }
 
     /**
+     * Get department ids of a region
+     *
+     * @param integer $regionId
+     * @return array
+     */
+    public function getDepartmentIdsFromRegionId($regionId)
+    {
+        // $this->logger->info('*** getDepartmentIdsFromRegionId');
+        // $this->logger->info('$regionId = '.print_r($regionId, true));
+
+        $departmentIds = PLDepartmentQuery::create()
+            ->select('Id')
+            ->filterByPLRegionId($regionId)
+            ->find()
+            ->toArray();
+
+        return $departmentIds;
+    }
+
+    /**
      * Compute array of city ids included in geo tag ids
      *
      * @param string $geoUuid
@@ -513,5 +517,26 @@ class LocalizationService
         }
 
         return $cityIds;
+    }
+
+    /**
+     * Compute array of department ids included in geo tag ids
+     *
+     * @param string $geoUuid
+     * @param string $type
+     * @return array
+     */
+    public function computeDepartmentIdsFromGeoUuid($geoUuid, $type)
+    {
+        $departmentIds = array();
+
+        if ($type == LocalizationConstants::TYPE_REGION) {
+            $region = PLRegionQuery::create()->filterByUuid($geoUuid)->findOne();
+            if ($region) {
+                $departmentIds = $this->getDepartmentIdsFromRegionId($region->getId());    
+            }
+        }
+
+        return $departmentIds;
     }
 }

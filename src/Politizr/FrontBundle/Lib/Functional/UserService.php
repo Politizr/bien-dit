@@ -90,6 +90,7 @@ class UserService
      * beta
      *
      * @param string $geoUuid
+     * @param string $type
      * @param string $filterProfile
      * @param string $filterActivity
      * @param string $filterDate

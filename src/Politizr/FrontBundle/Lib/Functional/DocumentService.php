@@ -6,6 +6,7 @@ use Politizr\Exception\InconsistentDataException;
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\ReputationConstants;
 use Politizr\Constant\ListingConstants;
+use Politizr\Constant\LocalizationConstants;
 
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDReaction;
@@ -79,22 +80,45 @@ class DocumentService
     /* ######################################################################################################## */
 
     /**
-     * Get array of user's PUFollowDD's ids
-     * @todo refactoring duplicate w. TimelineService
+     * Compute "inQuery" params for geo
      *
-     * @param integer $userId
+     * @param integer $geoUuid
+     * @param string $type
+     * @param string $inQueryCityIds
+     * @param string $inQueryDepartmentIds
+     * @param int $regionId
+     * @param int $countryId
      * @return array
      */
-    private function getGeoTagExtendedIdsArray($tagId)
+    private function computeGeoInQueriesFromGeoUuid($geoUuid, $type, &$inQueryCityIds, &$inQueryDepartmentIds, &$regionId, &$countryId)
     {
-        $tagIds = $this->tagService->computeGeotagExtendedIds($tagId);
+        if ($type == LocalizationConstants::TYPE_COUNTRY) {
+            $countryId = LocalizationConstants::FRANCE_ID;
+        } elseif ($type == LocalizationConstants::TYPE_REGION) {
+            $regionId = $this->localizationService->getRegionIdFromRegionUuid($geoUuid);
 
-        $inQueryTagIds = implode(',', $tagIds);
-        if (empty($inQueryTagIds)) {
-            $inQueryTagIds = 0;
+            $cityIds = $this->localizationService->computeCityIdsFromGeoUuid($geoUuid, $type);
+            $inQueryCityIds = implode(',', $cityIds);
+            if (empty($inQueryCityIds)) {
+                $inQueryCityIds = 0;
+            }
+
+            $departmentIds = $this->localizationService->computeDepartmentIdsFromGeoUuid($geoUuid, $type);
+            $inQueryDepartmentIds = implode(',', $departmentIds);
+            if (empty($inQueryDepartmentIds)) {
+                $inQueryDepartmentIds = 0;
+            }
+        } elseif ($type == LocalizationConstants::TYPE_DEPARTMENT) {
+            $inQueryDepartmentIds = $this->localizationService->getDepartmentIdFromDepartmentUuid($geoUuid);
+
+            $cityIds = $this->localizationService->computeCityIdsFromGeoUuid($geoUuid, $type);
+            $inQueryCityIds = implode(',', $cityIds);
+            if (empty($inQueryCityIds)) {
+                $inQueryCityIds = 0;
+            }
+        } elseif ($type == LocalizationConstants::TYPE_CITY) {
+            $inQueryCityIds = $this->localizationService->getCityIdFromCityUuid($geoUuid);
         }
-
-        return $inQueryTagIds;
     }
 
     /**
@@ -155,7 +179,8 @@ class DocumentService
      * Get filtered paginated documents
      * beta
      *
-     * @param string $geoTagUuid
+     * @param string $geoUuid
+     * @param string $type
      * @param string $filterPublication
      * @param string $filterProfile
      * @param string $filterActivity
@@ -165,7 +190,8 @@ class DocumentService
      * @return PropelCollection[Publication]
      */
     public function getPublicationsByFilters(
-        $geoTagUuid,
+        $geoUuid,
+        $type,
         $filterPublication = ListingConstants::FILTER_KEYWORD_ALL_PUBLICATIONS,
         $filterProfile = ListingConstants::FILTER_KEYWORD_ALL_USERS,
         $filterActivity = ListingConstants::ORDER_BY_KEYWORD_LAST,
@@ -175,15 +201,12 @@ class DocumentService
     ) {
         $documents = new \PropelCollection();
 
-        $inQueryTagIds = null;
-        if ($geoTagUuid) {
-            $tag = PTagQuery::create()
-                ->filterByUuid($geoTagUuid)
-                ->findOne();
-            if (!$tag) {
-                throw new InconsistentDataException(sprintf('Tag %s not found', $filters['map']));
-            }
-            $inQueryTagIds = $this->getGeoTagExtendedIdsArray($tag->getId());
+        $inQueryCityIds = null;
+        $inQueryDepartmentIds = null;
+        $regionId = null;
+        $countryId = null;
+        if ($geoUuid) {
+            $this->computeGeoInQueriesFromGeoUuid($geoUuid, $type, $inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId);
         }
 
         // "most views" activity filters only applied to debates and/or reactions:
@@ -228,7 +251,10 @@ class DocumentService
         }
 
         $documents = $this->documentManager->generatePublicationsByFiltersPaginated(
-            $inQueryTagIds,
+            $inQueryCityIds,
+            $inQueryDepartmentIds,
+            $regionId,
+            $countryId,
             $filterPublication,
             $filterProfile,
             $filterActivity,

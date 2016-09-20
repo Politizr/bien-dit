@@ -3,14 +3,15 @@
 FROM p_d_debate
     LEFT JOIN p_d_reaction as p_d_reaction_child
         ON p_d_debate.id = p_d_reaction_child.p_d_debate_id
-    LEFT JOIN p_d_d_tagged_t
-        ON p_d_debate.id = p_d_d_tagged_t.p_d_debate_id
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1
     AND p_d_reaction_child.published = 1
     AND p_d_reaction_child.online = true
-    AND p_d_d_tagged_t.p_tag_id IN (8, 31)
+    AND p_d_debate.p_l_city_id IN (1,2,3)
+    OR p_d_debate.p_l_department_id IN (1,2,3) 
+    OR p_d_debate.p_l_region_id = 1
+    OR p_d_debate.p_l_country_id = 1
     # AND p_d_debate.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW() 
 
 GROUP BY id
@@ -23,15 +24,16 @@ UNION DISTINCT
 FROM p_d_reaction
     LEFT JOIN p_d_reaction as p_d_reaction_child
         ON p_d_reaction.id = p_d_reaction_child.parent_reaction_id
-    LEFT JOIN p_d_r_tagged_t
-        ON p_d_reaction.id = p_d_r_tagged_t.p_d_reaction_id
 WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
     AND p_d_reaction.tree_level > 0
     AND p_d_reaction_child.published = 1
     AND p_d_reaction_child.online = true
-    AND p_d_r_tagged_t.p_tag_id IN (8, 31)
+    AND p_d_reaction.p_l_city_id IN (1,2,3)
+    OR p_d_reaction.p_l_department_id IN (1,2,3) 
+    OR p_d_reaction.p_l_region_id = 1
+    OR p_d_reaction.p_l_country_id = 1
     # AND p_d_reaction.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW() 
 
 GROUP BY id

@@ -1334,8 +1334,10 @@ class XhrDocument
         // Request arguments
         $offset = $request->get('offset');
         // $this->logger->info('$offset = ' . print_r($offset, true));
-        $geoTagUuid = $request->get('geoTagUuid');
-        // $this->logger->info('$geoTagUuid = ' . print_r($geoTagUuid, true));
+        $geoUuid = $request->get('geoUuid');
+        // $this->logger->info('$geoUuid = ' . print_r($geoUuid, true));
+        $type = $request->get('type');
+        // $this->logger->info('$type = ' . print_r($type, true));
         $filterPublication = $request->get('filterPublication');
         // $this->logger->info('$filterPublication = ' . print_r($filterPublication, true));
         $filterProfile = $request->get('filterProfile');
@@ -1346,9 +1348,10 @@ class XhrDocument
         // $this->logger->info('$filterDate = ' . print_r($filterDate, true));
 
         // set default values if not set
-        if (empty($geoTagUuid)) {
-            $franceTag = PTagQuery::create()->findPk(TagConstants::TAG_GEO_FRANCE_ID);
-            $geoTagUuid = $franceTag->getUuid();
+        if (empty($geoUuid)) {
+            $france = PLocalizationQuery::create()->findPk(LocalizationConstants::FRANCE_ID);
+            $geoUuid = $france->getUuid();
+            $type = LocalizationConstants::TYPE_COUNTRY;
         }
         if (empty($filterPublication)) {
             $filterPublication = ListingConstants::FILTER_KEYWORD_ALL_PUBLICATIONS;
@@ -1364,7 +1367,8 @@ class XhrDocument
         }
 
         $publications = $this->documentService->getPublicationsByFilters(
-            $geoTagUuid,
+            $geoUuid,
+            $type,
             $filterPublication,
             $filterProfile,
             $filterActivity,

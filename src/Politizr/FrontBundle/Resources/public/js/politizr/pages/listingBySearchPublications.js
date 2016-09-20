@@ -1,6 +1,5 @@
 // beta
 $(function() {
-
     uuid = $("#linkMyRegion").attr('uuid');
     if (uuid) {
         $("#linkMyRegion").trigger("click");
@@ -16,6 +15,7 @@ $(function() {
 $("body").on("click", "[action='map']", function() {
     // console.log('*** click map');
     uuid = $(this).attr('uuid');
+    type = $(this).attr('type');
 
     $("[action='publicationsMyMap']").removeClass('currentPage');
 
@@ -24,9 +24,9 @@ $("body").on("click", "[action='map']", function() {
     
     $.when(
         // update breadcrumb
-        mapBreadcrumb(uuid),
+        mapBreadcrumb(uuid, type),
         // update map
-        mapSchema(uuid)
+        mapSchema(uuid, type)
     ).done(function(r1, r2) {
         $('#documentListing .listTop').html('');
         $("[action='goUp']").trigger("click");
@@ -42,12 +42,13 @@ $("body").on("click", "[action='publicationsMyMap']", function() {
     $(this).addClass('currentPage');
 
     uuid = $(this).attr('uuid');
+    type = $(this).attr('type');
     if (uuid) {
         $.when(
             // update menu
-            mapMenu(uuid)
+            mapMenu(uuid, type)
         ).then(function(r1, r2) {
-            return publicationsMapFiltering(uuid);
+            return publicationsMapFiltering(uuid, type);
         });
     }
 });
@@ -100,15 +101,16 @@ $("body").on("change", ".dateFilter", function() {
  *
  * @param string
  */
-function publicationsMapFiltering(uuid) {
+function publicationsMapFiltering(uuid, type) {
     // console.log('*** publicationsMapFiltering');
     // console.log(uuid);
+    // console.log(type);
 
     $.when(
         // update breadcrumb
-        mapBreadcrumb(uuid),
+        mapBreadcrumb(uuid, type),
         // update map
-        mapSchema(uuid)
+        mapSchema(uuid, type)
     ).done(function(r1, r2) {
         $('#documentListing .listTop').html('');
         $("[action='goUp']").trigger("click");

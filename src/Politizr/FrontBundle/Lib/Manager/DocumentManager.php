@@ -81,26 +81,100 @@ LIMIT :offset, :limit
     }
 
     /**
+     * Compute subrequest for geo ids
+     *
+     * @param string $inQueryCityIds
+     * @param string $inQueryDepartmentIds
+     * @param int $regionId
+     * @param int $countryId
+     */
+    private function computeSubRequestGeoIds(
+        $inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId,
+        & $subRequestCityIds1,
+        & $subRequestDepartmentIds1,
+        & $subRequestRegionIds1,
+        & $subRequestCountryIds1,
+        & $subRequestCityIds2,
+        & $subRequestDepartmentIds2,
+        & $subRequestRegionIds2,
+        & $subRequestCountryIds2
+    ) {
+        if ($inQueryCityIds) {
+            $subRequestCityIds1 = "AND (p_d_debate.p_l_city_id IN ($inQueryCityIds)";
+            $subRequestCityIds2 = "AND (p_d_reaction.p_l_city_id IN ($inQueryCityIds)";
+        }
+        if ($inQueryDepartmentIds) {
+            if ($inQueryCityIds) {
+                $prefix = "OR ";
+            } else {
+                $prefix = "AND (";
+            }
+            $subRequestDepartmentIds1 = $prefix . "p_d_debate.p_l_department_id IN ($inQueryDepartmentIds)";
+            $subRequestDepartmentIds2 = $prefix . "p_d_reaction.p_l_department_id IN ($inQueryDepartmentIds)";
+        }
+        if ($regionId) {
+            if ($inQueryCityIds || $inQueryDepartmentIds) {
+                $prefix = "OR ";
+            } else {
+                $prefix = "AND (";
+            }
+            $subRequestRegionIds1 = $prefix . "p_d_debate.p_l_region_id = $regionId";
+            $subRequestRegionIds2 = $prefix . "p_d_reaction.p_l_region_id = $regionId";
+        }
+        if ($countryId) {
+            if ($inQueryCityIds || $inQueryDepartmentIds || $regionId) {
+                $prefix = "OR ";
+            } else {
+                $prefix = "AND (";
+            }
+            $subRequestCountryIds1 = $prefix . "p_d_debate.p_l_country_id = $countryId";
+            $subRequestCountryIds2 = $prefix . "p_d_reaction.p_l_country_id = $countryId";
+        }
+
+        if ($inQueryCityIds || $inQueryDepartmentIds || $regionId || $countryId) {
+            $subRequestCountryIds1 .= ")";
+            $subRequestCountryIds2 .= ")";
+        }
+    }
+
+    /**
      * Filtered publications
      *
      * @see app/sql/documentsByFilters.sql
      *
-     * @param array $inQueryTagIds
+     * @param string $inQueryCityIds
+     * @param string $inQueryDepartmentIds
+     * @param int $regionId
+     * @param int $countryId
      * @param string $filterPublication
      * @param string $filterProfile
      * @param string $filterActivity
      * @param string $filterDate
      * @return string
      */
-    private function createPublicationsByFiltersRawSql($inQueryTagIds, $filterPublication, $filterProfile, $filterActivity, $filterDate)
+    private function createPublicationsByFiltersRawSql($inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId, $filterPublication, $filterProfile, $filterActivity, $filterDate)
     {
-        // Tag subrequest
-        $subRequestTagIds1 = null;
-        $subRequestTagIds2 = null;
-        if ($inQueryTagIds) {
-            $subRequestTagIds1 = "AND p_d_d_tagged_t.p_tag_id IN ($inQueryTagIds)";
-            $subRequestTagIds2 = "AND p_d_r_tagged_t.p_tag_id IN ($inQueryTagIds)";
-        }
+        // Geo subrequest
+        $subRequestCityIds1 = null;
+        $subRequestDepartmentIds1 = null;
+        $subRequestRegionIds1 = null;
+        $subRequestCountryIds1 = null;
+        $subRequestCityIds2 = null;
+        $subRequestDepartmentIds2 = null;
+        $subRequestRegionIds2 = null;
+        $subRequestCountryIds2 = null;
+
+        $this->computeSubRequestGeoIds(
+            $inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId,
+            $subRequestCityIds1,
+            $subRequestDepartmentIds1,
+            $subRequestRegionIds1,
+            $subRequestCountryIds1,
+            $subRequestCityIds2,
+            $subRequestDepartmentIds2,
+            $subRequestRegionIds2,
+            $subRequestCountryIds2
+        );
 
         // Profile subrequest
         $subRequestFilterProfile = null;
@@ -148,14 +222,15 @@ LIMIT :offset, :limit
 #  Débats publiés
 ( SELECT DISTINCT p_d_debate.id as id, p_d_debate.title as title, p_d_debate.file_name as fileName, p_d_debate.description as description, p_d_debate.slug as slug, p_d_debate.note_pos as note_pos, p_d_debate.note_neg as note_neg, p_d_debate.nb_views as nb_views, p_d_debate.published_at as published_at, p_d_debate.updated_at as updated_at, 'Politizr\\\Model\\\PDDebate' as type
 FROM p_d_debate
-    LEFT JOIN p_d_d_tagged_t
-        ON p_d_debate.id = p_d_d_tagged_t.p_d_debate_id
     LEFT JOIN p_user
         ON p_d_debate.p_user_id = p_user.id
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1 
-    $subRequestTagIds1
+    $subRequestCityIds1
+    $subRequestDepartmentIds1
+    $subRequestRegionIds1
+    $subRequestCountryIds1
     $subRequestFilterDate1
     $subRequestFilterProfile
 )
@@ -165,15 +240,16 @@ WHERE
 #  Réactions publiés
 ( SELECT DISTINCT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.file_name as fileName, p_d_reaction.description as description, p_d_reaction.slug as slug, p_d_reaction.note_pos as note_pos, p_d_reaction.note_neg as note_neg, p_d_reaction.nb_views as nb_views, p_d_reaction.published_at as published_at, p_d_reaction.updated_at as updated_at,'Politizr\\\Model\\\PDReaction' as type
 FROM p_d_reaction
-    LEFT JOIN p_d_r_tagged_t
-        ON p_d_reaction.id = p_d_r_tagged_t.p_d_reaction_id
     LEFT JOIN p_user
         ON p_d_reaction.p_user_id = p_user.id
 WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
     AND p_d_reaction.tree_level > 0
-    $subRequestTagIds2
+    $subRequestCityIds2
+    $subRequestDepartmentIds2
+    $subRequestRegionIds2
+    $subRequestCountryIds2
     $subRequestFilterDate2
     $subRequestFilterProfile
 )
@@ -185,13 +261,14 @@ WHERE
 FROM p_d_d_comment
     LEFT JOIN p_d_debate
         ON p_d_d_comment.p_d_debate_id = p_d_debate.id
-    LEFT JOIN p_d_d_tagged_t
-        ON p_d_debate.id = p_d_d_tagged_t.p_d_debate_id
     LEFT JOIN p_user
         ON p_user.id = p_d_d_comment.p_user_id
 WHERE
     p_d_d_comment.online = 1
-    $subRequestTagIds1
+    $subRequestCityIds1
+    $subRequestDepartmentIds1
+    $subRequestRegionIds1
+    $subRequestCountryIds1
     $subRequestFilterDate3
     $subRequestFilterProfile
 )
@@ -203,13 +280,14 @@ UNION DISTINCT
 FROM p_d_r_comment
     LEFT JOIN p_d_reaction
         ON p_d_r_comment.p_d_reaction_id = p_d_reaction.id
-    LEFT JOIN p_d_r_tagged_t
-        ON p_d_reaction.id = p_d_r_tagged_t.p_d_reaction_id
     LEFT JOIN p_user
         ON p_user.id = p_d_r_comment.p_user_id
 WHERE
     p_d_r_comment.online = 1
-    $subRequestTagIds2
+    $subRequestCityIds2
+    $subRequestDepartmentIds2
+    $subRequestRegionIds2
+    $subRequestCountryIds2
     $subRequestFilterDate4
     $subRequestFilterProfile
 )
@@ -244,23 +322,37 @@ LIMIT :offset, :limit
      *
      * @see app/sql/documentsByFiltersMostFollowed.sql
      *
-     * @param array $inQueryTagIds
+     * @param string $inQueryCityIds
+     * @param string $inQueryDepartmentIds
+     * @param int $regionId
+     * @param int $countryId
      * @param string $filterProfile
      * @param string $filterDate
      * @return string
      */
-    private function createPublicationsByFiltersMostFollowedRawSql($inQueryTagIds, $filterProfile, $filterDate)
+    private function createPublicationsByFiltersMostFollowedRawSql($inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId, $filterProfile, $filterDate)
     {
-        // Tag subrequest
-        $subRequestTagLeftJoin = null;
-        $subRequestTagIds = null;
-        if ($inQueryTagIds) {
-            $subRequestTagLeftJoin = "
-    LEFT JOIN p_d_d_tagged_t
-        ON p_d_debate.id = p_d_d_tagged_t.p_d_debate_id
-";
-            $subRequestTagIds = "AND p_d_d_tagged_t.p_tag_id IN ($inQueryTagIds)";
-        }
+        // Geo subrequest
+        $subRequestCityIds1 = null;
+        $subRequestDepartmentIds1 = null;
+        $subRequestRegionIds1 = null;
+        $subRequestCountryIds1 = null;
+        $subRequestCityIds2 = null;
+        $subRequestDepartmentIds2 = null;
+        $subRequestRegionIds2 = null;
+        $subRequestCountryIds2 = null;
+
+        $this->computeSubRequestGeoIds(
+            $inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId,
+            $subRequestCityIds1,
+            $subRequestDepartmentIds1,
+            $subRequestRegionIds1,
+            $subRequestCountryIds1,
+            $subRequestCityIds2,
+            $subRequestDepartmentIds2,
+            $subRequestRegionIds2,
+            $subRequestCountryIds2
+        );
 
         // Profile subrequest
         $subRequestFilterProfileLeftJoin = null;
@@ -294,12 +386,14 @@ SELECT DISTINCT p_d_debate.id as id, p_d_debate.title as title, p_d_debate.file_
 FROM p_d_debate
     LEFT JOIN p_u_follow_d_d
         ON p_d_debate.id = p_u_follow_d_d.p_d_debate_id
-    $subRequestTagLeftJoin
     $subRequestFilterProfileLeftJoin
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1 
-    $subRequestTagIds
+    $subRequestCityIds1
+    $subRequestDepartmentIds1
+    $subRequestRegionIds1
+    $subRequestCountryIds1
     $subRequestFilterDate
     $subRequestFilterProfile
 
@@ -318,31 +412,38 @@ LIMIT :offset, :limit
      *
      * @see app/sql/documentsByFiltersMostReactions.sql
      *
-     * @param array $inQueryTagIds
+     * @param string $inQueryCityIds
+     * @param string $inQueryDepartmentIds
+     * @param int $regionId
+     * @param int $countryId
      * @param string $filterPublication
      * @param string $filterProfile
      * @param string $filterDate
      * @return string
      */
-    private function createPublicationsByFiltersMostReactionsRawSql($inQueryTagIds, $filterPublication, $filterProfile, $filterDate)
+    private function createPublicationsByFiltersMostReactionsRawSql($inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId, $filterPublication, $filterProfile, $filterDate)
     {
-        // Tag subrequest
-        $subRequestTagLeftJoin1 = null;
-        $subRequestTagLeftJoin2 = null;
-        $subRequestTagIds1 = null;
-        $subRequestTagIds2 = null;
-        if ($inQueryTagIds) {
-            $subRequestTagLeftJoin1 = "
-    LEFT JOIN p_d_d_tagged_t
-        ON p_d_debate.id = p_d_d_tagged_t.p_d_debate_id
-";
-            $subRequestTagLeftJoin2 = "
-    LEFT JOIN p_d_r_tagged_t
-        ON p_d_reaction.id = p_d_r_tagged_t.p_d_reaction_id
-";
-            $subRequestTagIds1 = "AND p_d_d_tagged_t.p_tag_id IN ($inQueryTagIds)";
-            $subRequestTagIds2 = "AND p_d_r_tagged_t.p_tag_id IN ($inQueryTagIds)";
-        }
+        // Geo subrequest
+        $subRequestCityIds1 = null;
+        $subRequestDepartmentIds1 = null;
+        $subRequestRegionIds1 = null;
+        $subRequestCountryIds1 = null;
+        $subRequestCityIds2 = null;
+        $subRequestDepartmentIds2 = null;
+        $subRequestRegionIds2 = null;
+        $subRequestCountryIds2 = null;
+
+        $this->computeSubRequestGeoIds(
+            $inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId,
+            $subRequestCityIds1,
+            $subRequestDepartmentIds1,
+            $subRequestRegionIds1,
+            $subRequestCountryIds1,
+            $subRequestCityIds2,
+            $subRequestDepartmentIds2,
+            $subRequestRegionIds2,
+            $subRequestCountryIds2
+        );
 
         // Profile subrequest
         $subRequestFilterProfileLeftJoin1 = null;
@@ -385,14 +486,16 @@ LIMIT :offset, :limit
 FROM p_d_debate
     LEFT JOIN p_d_reaction as p_d_reaction_child
         ON p_d_debate.id = p_d_reaction_child.p_d_debate_id
-    $subRequestTagLeftJoin1
     $subRequestFilterProfileLeftJoin1
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1
     AND p_d_reaction_child.published = 1
     AND p_d_reaction_child.online = true
-    $subRequestTagIds1
+    $subRequestCityIds1
+    $subRequestDepartmentIds1
+    $subRequestRegionIds1
+    $subRequestCountryIds1
     $subRequestFilterDate1
     $subRequestFilterProfile
 
@@ -405,7 +508,6 @@ GROUP BY id
 FROM p_d_reaction
     LEFT JOIN p_d_reaction as p_d_reaction_child
         ON p_d_reaction.id = p_d_reaction_child.parent_reaction_id
-    $subRequestTagLeftJoin2
     $subRequestFilterProfileLeftJoin2
 WHERE
     p_d_reaction.published = 1
@@ -413,7 +515,10 @@ WHERE
     AND p_d_reaction.tree_level > 0
     AND p_d_reaction_child.published = 1
     AND p_d_reaction_child.online = true
-    $subRequestTagIds2
+    $subRequestCityIds2
+    $subRequestDepartmentIds2
+    $subRequestRegionIds2
+    $subRequestCountryIds2
     $subRequestFilterDate2
     $subRequestFilterProfile
 
@@ -446,31 +551,38 @@ LIMIT :offset, :limit
      *
      * @see app/sql/documentsByFiltersMostComments.sql
      *
-     * @param array $inQueryTagIds
+     * @param string $inQueryCityIds
+     * @param string $inQueryDepartmentIds
+     * @param int $regionId
+     * @param int $countryId
      * @param string $filterPublication
      * @param string $filterProfile
      * @param string $filterDate
      * @return string
      */
-    private function createPublicationsByFiltersMostCommentsRawSql($inQueryTagIds, $filterPublication, $filterProfile, $filterDate)
+    private function createPublicationsByFiltersMostCommentsRawSql($inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId, $filterPublication, $filterProfile, $filterDate)
     {
-        // Tag subrequest
-        $subRequestTagLeftJoin1 = null;
-        $subRequestTagLeftJoin2 = null;
-        $subRequestTagIds1 = null;
-        $subRequestTagIds2 = null;
-        if ($inQueryTagIds) {
-            $subRequestTagLeftJoin1 = "
-    LEFT JOIN p_d_d_tagged_t
-        ON p_d_debate.id = p_d_d_tagged_t.p_d_debate_id
-";
-            $subRequestTagLeftJoin2 = "
-    LEFT JOIN p_d_r_tagged_t
-        ON p_d_reaction.id = p_d_r_tagged_t.p_d_reaction_id
-";
-            $subRequestTagIds1 = "AND p_d_d_tagged_t.p_tag_id IN ($inQueryTagIds)";
-            $subRequestTagIds2 = "AND p_d_r_tagged_t.p_tag_id IN ($inQueryTagIds)";
-        }
+        // Geo subrequest
+        $subRequestCityIds1 = null;
+        $subRequestDepartmentIds1 = null;
+        $subRequestRegionIds1 = null;
+        $subRequestCountryIds1 = null;
+        $subRequestCityIds2 = null;
+        $subRequestDepartmentIds2 = null;
+        $subRequestRegionIds2 = null;
+        $subRequestCountryIds2 = null;
+
+        $this->computeSubRequestGeoIds(
+            $inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId,
+            $subRequestCityIds1,
+            $subRequestDepartmentIds1,
+            $subRequestRegionIds1,
+            $subRequestCountryIds1,
+            $subRequestCityIds2,
+            $subRequestDepartmentIds2,
+            $subRequestRegionIds2,
+            $subRequestCountryIds2
+        );
 
         // Profile subrequest
         $subRequestFilterProfileLeftJoin1 = null;
@@ -509,13 +621,15 @@ LIMIT :offset, :limit
 FROM p_d_debate
     LEFT JOIN p_d_d_comment
         ON p_d_debate.id = p_d_d_comment.p_d_debate_id
-    $subRequestTagLeftJoin1
     $subRequestFilterProfileLeftJoin1
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1
     AND p_d_d_comment.online = true
-    $subRequestTagIds1
+    $subRequestCityIds1
+    $subRequestDepartmentIds1
+    $subRequestRegionIds1
+    $subRequestCountryIds1
     $subRequestFilterDate
     $subRequestFilterProfile
 
@@ -528,14 +642,16 @@ GROUP BY id
 FROM p_d_reaction
     LEFT JOIN p_d_r_comment
         ON p_d_reaction.id = p_d_r_comment.p_d_reaction_id
-    $subRequestTagLeftJoin2
     $subRequestFilterProfileLeftJoin2
 WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
     AND p_d_reaction.tree_level > 0
     AND p_d_r_comment.online = true
-    $subRequestTagIds2
+    $subRequestCityIds2
+    $subRequestDepartmentIds2
+    $subRequestRegionIds2
+    $subRequestCountryIds2
     $subRequestFilterDate
     $subRequestFilterProfile
 
@@ -1148,7 +1264,10 @@ GROUP BY p_d_debate_id
     /**
      * Documents by filters paginated listing
      *
-     * @param string $inQueryTagIds
+     * @param string $inQueryCityIds
+     * @param string $inQueryDepartmentIds
+     * @param int $regionId
+     * @param int $countryId
      * @param string $filterPublication
      * @param string $filterProfile
      * @param string $filterActivity
@@ -1157,10 +1276,13 @@ GROUP BY p_d_debate_id
      * @param integer $limit
      * @return PropelCollection
      */
-    public function generatePublicationsByFiltersPaginated($inQueryTagIds, $filterPublication, $filterProfile, $filterActivity, $filterDate, $offset, $limit)
+    public function generatePublicationsByFiltersPaginated($inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId, $filterPublication, $filterProfile, $filterActivity, $filterDate, $offset, $limit)
     {
         // $this->logger->info('*** generatePublicationsByFiltersPaginated');
-        // $this->logger->info('$inQueryTagIds = ' . print_r($inQueryTagIds, true));
+        // $this->logger->info('$inQueryCityIds = ' . print_r($inQueryCityIds, true));
+        // $this->logger->info('$inQueryDepartmentIds = ' . print_r($inQueryDepartmentIds, true));
+        // $this->logger->info('$regionId = ' . print_r($regionId, true));
+        // $this->logger->info('$countryId = ' . print_r($countryId, true));
         // $this->logger->info('$filterPublication = ' . print_r($filterPublication, true));
         // $this->logger->info('$filterProfile = ' . print_r($filterProfile, true));
         // $this->logger->info('$filterActivity = ' . print_r($filterActivity, true));
@@ -1172,13 +1294,13 @@ GROUP BY p_d_debate_id
 
         // special request construction for "most followed" / "most reactions" / "most comments" filters
         if ($filterActivity == ListingConstants::ORDER_BY_KEYWORD_MOST_FOLLOWED) {
-            $stmt = $con->prepare($this->createPublicationsByFiltersMostFollowedRawSql($inQueryTagIds, $filterProfile, $filterDate));
+            $stmt = $con->prepare($this->createPublicationsByFiltersMostFollowedRawSql($inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId, $filterProfile, $filterDate));
         } elseif ($filterActivity == ListingConstants::ORDER_BY_KEYWORD_MOST_REACTIONS) {
-            $stmt = $con->prepare($this->createPublicationsByFiltersMostReactionsRawSql($inQueryTagIds, $filterPublication, $filterProfile, $filterDate));
+            $stmt = $con->prepare($this->createPublicationsByFiltersMostReactionsRawSql($inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId, $filterPublication, $filterProfile, $filterDate));
         } elseif ($filterActivity == ListingConstants::ORDER_BY_KEYWORD_MOST_COMMENTS) {
-            $stmt = $con->prepare($this->createPublicationsByFiltersMostCommentsRawSql($inQueryTagIds, $filterPublication, $filterProfile, $filterDate));
+            $stmt = $con->prepare($this->createPublicationsByFiltersMostCommentsRawSql($inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId, $filterPublication, $filterProfile, $filterDate));
         } else {
-            $stmt = $con->prepare($this->createPublicationsByFiltersRawSql($inQueryTagIds, $filterPublication, $filterProfile, $filterActivity, $filterDate));
+            $stmt = $con->prepare($this->createPublicationsByFiltersRawSql($inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId, $filterPublication, $filterProfile, $filterActivity, $filterDate));
         }
 
         $stmt->bindValue(':offset', $offset, \PDO::PARAM_INT);

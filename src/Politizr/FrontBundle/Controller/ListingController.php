@@ -219,7 +219,6 @@ class ListingController extends Controller
             'cityUuid' => $cityUuid,
             'departmentUuid' => $departmentUuid,
             'regionUuid' => $regionUuid,
-            'geoTypeObjects' => null,
         ));
     }
 
@@ -273,7 +272,6 @@ class ListingController extends Controller
             'cityUuid' => $cityUuid,
             'departmentUuid' => $departmentUuid,
             'regionUuid' => $regionUuid,
-            'geoTypeObjects' => null,
         ));
     }
 

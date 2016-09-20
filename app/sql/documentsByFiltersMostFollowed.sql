@@ -3,14 +3,15 @@ SELECT DISTINCT p_d_debate.id as id, p_d_debate.title as title, p_d_debate.file_
 FROM p_d_debate
     LEFT JOIN p_u_follow_d_d
         ON p_d_debate.id = p_u_follow_d_d.p_d_debate_id
-    LEFT JOIN p_d_d_tagged_t
-        ON p_d_debate.id = p_d_d_tagged_t.p_d_debate_id
     # LEFT JOIN p_user
     #     ON p_d_debate.p_user_id = p_user.id
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1 
-    AND p_d_d_tagged_t.p_tag_id IN (8, 31)
+    AND p_d_debate.p_l_city_id IN (1,2,3)
+    OR p_d_debate.p_l_department_id IN (1,2,3) 
+    OR p_d_debate.p_l_region_id = 1
+    OR p_d_debate.p_l_country_id = 1
     # AND p_d_debate.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW() 
     # AND p_user.qualified = 1
 
