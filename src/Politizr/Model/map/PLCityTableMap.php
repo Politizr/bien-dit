@@ -82,6 +82,8 @@ class PLCityTableMap extends TableMap
     {
         $this->addRelation('PLDepartment', 'Politizr\\Model\\PLDepartment', RelationMap::MANY_TO_ONE, array('p_l_department_id' => 'id', ), 'SET NULL', 'CASCADE');
         $this->addRelation('PUser', 'Politizr\\Model\\PUser', RelationMap::ONE_TO_MANY, array('id' => 'p_l_city_id', ), 'SET NULL', 'CASCADE', 'PUsers');
+        $this->addRelation('PDDebate', 'Politizr\\Model\\PDDebate', RelationMap::ONE_TO_MANY, array('id' => 'p_l_city_id', ), 'SET NULL', 'CASCADE', 'PDDebates');
+        $this->addRelation('PDReaction', 'Politizr\\Model\\PDReaction', RelationMap::ONE_TO_MANY, array('id' => 'p_l_city_id', ), 'SET NULL', 'CASCADE', 'PDReactions');
     } // buildRelations()
 
     /**

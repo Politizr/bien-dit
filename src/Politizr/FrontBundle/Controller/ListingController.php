@@ -6,14 +6,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-use Politizr\Constant\TagConstants;
+use Politizr\Constant\LocalizationConstants;
 
 use Politizr\Model\PDocumentInterface;
 use Politizr\Model\PUser;
 
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PUserQuery;
-use Politizr\Model\PTagQuery;
+use Politizr\Model\PLCountryQuery;
+use Politizr\Model\PLRegionQuery;
 use Politizr\Model\PQOrganizationQuery;
 
 /**
@@ -184,12 +185,10 @@ class ListingController extends Controller
         $logger->info('*** searchPublicationsAction');
 
         // Map ids
-        $franceTag = PTagQuery::create()->findPk(TagConstants::TAG_GEO_FRANCE_ID);
-        $fomTag = PTagQuery::create()->findPk(TagConstants::TAG_GEO_REGION_ID_FOM);
-        $europeTag = PTagQuery::create()->findPk(TagConstants::TAG_GEO_EUROPE_ID);
-        $worldTag = PTagQuery::create()->findPk(TagConstants::TAG_GEO_WORLD_ID);
+        $france = PLCountryQuery::create()->findPk(LocalizationConstants::FRANCE_ID);
+        $fom = PLRegionQuery::create()->findPk(LocalizationConstants::REGION_ID_FOM);
 
-        $mapTagUuids = $this->get('politizr.functional.tag')->getRegionUuids();
+        $mapUuids = $this->get('politizr.functional.localization')->getRegionUuids();
 
         // Current user localization
         $user = $this->getUser();
@@ -201,22 +200,26 @@ class ListingController extends Controller
             $city = $user->getPLCity();
             if ($city) {
                 $cityUuid = $city->getUuid();
-                $departmentUuid = $this->get('politizr.functional.localization')->getDepartmentTagUuidByCityId($city->getId());
-                $regionUuid = $this->get('politizr.functional.localization')->getRegionTagUuidByCityId($city->getId());
+                $department = $city->getPLDepartment();
+                if ($department) {
+                    $departmentUuid = $department->getUuid();
+                    $region = $department->getPLRegion();
+                    if ($region) {
+                        $regionUuid = $region->getUuid();
+                    }
+                }
             }
         }
 
         return $this->render('PolitizrFrontBundle:Search:listingBySearchPublications.html.twig', array(
             'searchPublications' => true,
-            'franceTag' => $franceTag,
-            'fomTag' => $fomTag,
-            'europeTag' => $europeTag,
-            'worldTag' => $worldTag,
-            'mapTagUuids' => $mapTagUuids,
+            'france' => $france,
+            'fom' => $fom,
+            'mapUuids' => $mapUuids,
             'cityUuid' => $cityUuid,
             'departmentUuid' => $departmentUuid,
             'regionUuid' => $regionUuid,
-            'tags' => array(),
+            'geoTypeObjects' => null,
         ));
     }
 
@@ -236,36 +239,41 @@ class ListingController extends Controller
         }
 
         // Map ids
-        $franceTag = PTagQuery::create()->findPk(TagConstants::TAG_GEO_FRANCE_ID);
-        $fomTag = PTagQuery::create()->findPk(TagConstants::TAG_GEO_REGION_ID_FOM);
-        $europeTag = PTagQuery::create()->findPk(TagConstants::TAG_GEO_EUROPE_ID);
-        $worldTag = PTagQuery::create()->findPk(TagConstants::TAG_GEO_WORLD_ID);
+        $france = PLCountryQuery::create()->findPk(LocalizationConstants::FRANCE_ID);
+        $fom = PLRegionQuery::create()->findPk(LocalizationConstants::REGION_ID_FOM);
 
-        $mapTagUuids = $this->get('politizr.functional.tag')->getRegionUuids();
+        $mapUuids = $this->get('politizr.functional.localization')->getRegionUuids();
 
         // Current user localization
-        $city = $user->getPLCity();
+        $user = $this->getUser();
 
         $cityUuid = null;
         $departmentUuid = null;
         $regionUuid = null;
-        if ($city) {
-            $cityUuid = $city->getUuid();
-            $departmentUuid = $this->get('politizr.functional.localization')->getDepartmentTagUuidByCityId($city->getId());
-            $regionUuid = $this->get('politizr.functional.localization')->getRegionTagUuidByCityId($city->getId());
+        if ($user) {
+            $city = $user->getPLCity();
+            if ($city) {
+                $cityUuid = $city->getUuid();
+                $department = $city->getPLDepartment();
+                if ($department) {
+                    $departmentUuid = $department->getUuid();
+                    $region = $department->getPLRegion();
+                    if ($region) {
+                        $regionUuid = $region->getUuid();
+                    }
+                }
+            }
         }
 
         return $this->render('PolitizrFrontBundle:Search:listingBySearchUsers.html.twig', array(
             'searchUsers' => true,
-            'franceTag' => $franceTag,
-            'fomTag' => $fomTag,
-            'europeTag' => $europeTag,
-            'worldTag' => $worldTag,
-            'mapTagUuids' => $mapTagUuids,
+            'france' => $france,
+            'fom' => $fom,
+            'mapUuids' => $mapUuids,
             'cityUuid' => $cityUuid,
             'departmentUuid' => $departmentUuid,
             'regionUuid' => $regionUuid,
-            'tags' => array(),
+            'geoTypeObjects' => null,
         ));
     }
 

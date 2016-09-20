@@ -11,8 +11,6 @@ use \PropelException;
 use \PropelPDO;
 use Politizr\Model\PDDTaggedTPeer;
 use Politizr\Model\PDRTaggedTPeer;
-use Politizr\Model\PLDepartmentPeer;
-use Politizr\Model\PLRegionPeer;
 use Politizr\Model\PTTagTypePeer;
 use Politizr\Model\PTag;
 use Politizr\Model\PTagPeer;
@@ -434,12 +432,6 @@ abstract class BasePTagPeer
         // Invalidate objects in PDRTaggedTPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PDRTaggedTPeer::clearInstancePool();
-        // Invalidate objects in PLRegionPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PLRegionPeer::clearInstancePool();
-        // Invalidate objects in PLDepartmentPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PLDepartmentPeer::clearInstancePool();
     }
 
     /**

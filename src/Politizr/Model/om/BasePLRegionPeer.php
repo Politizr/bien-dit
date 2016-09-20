@@ -9,10 +9,12 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
+use Politizr\Model\PDDebatePeer;
+use Politizr\Model\PDReactionPeer;
+use Politizr\Model\PLCountryPeer;
 use Politizr\Model\PLDepartmentPeer;
 use Politizr\Model\PLRegion;
 use Politizr\Model\PLRegionPeer;
-use Politizr\Model\PTagPeer;
 use Politizr\Model\map\PLRegionTableMap;
 
 abstract class BasePLRegionPeer
@@ -31,19 +33,22 @@ abstract class BasePLRegionPeer
     const TM_CLASS = 'Politizr\\Model\\map\\PLRegionTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 5;
+    const NUM_COLUMNS = 7;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 5;
+    const NUM_HYDRATE_COLUMNS = 7;
 
     /** the column name for the id field */
     const ID = 'p_l_region.id';
 
-    /** the column name for the p_tag_id field */
-    const P_TAG_ID = 'p_l_region.p_tag_id';
+    /** the column name for the p_l_country_id field */
+    const P_L_COUNTRY_ID = 'p_l_region.p_l_country_id';
+
+    /** the column name for the title field */
+    const TITLE = 'p_l_region.title';
 
     /** the column name for the uuid field */
     const UUID = 'p_l_region.uuid';
@@ -53,6 +58,9 @@ abstract class BasePLRegionPeer
 
     /** the column name for the updated_at field */
     const UPDATED_AT = 'p_l_region.updated_at';
+
+    /** the column name for the slug field */
+    const SLUG = 'p_l_region.slug';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -73,12 +81,12 @@ abstract class BasePLRegionPeer
      * e.g. PLRegionPeer::$fieldNames[PLRegionPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'PTagId', 'Uuid', 'CreatedAt', 'UpdatedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pTagId', 'uuid', 'createdAt', 'updatedAt', ),
-        BasePeer::TYPE_COLNAME => array (PLRegionPeer::ID, PLRegionPeer::P_TAG_ID, PLRegionPeer::UUID, PLRegionPeer::CREATED_AT, PLRegionPeer::UPDATED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_TAG_ID', 'UUID', 'CREATED_AT', 'UPDATED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'p_tag_id', 'uuid', 'created_at', 'updated_at', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'PLCountryId', 'Title', 'Uuid', 'CreatedAt', 'UpdatedAt', 'Slug', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pLCountryId', 'title', 'uuid', 'createdAt', 'updatedAt', 'slug', ),
+        BasePeer::TYPE_COLNAME => array (PLRegionPeer::ID, PLRegionPeer::P_L_COUNTRY_ID, PLRegionPeer::TITLE, PLRegionPeer::UUID, PLRegionPeer::CREATED_AT, PLRegionPeer::UPDATED_AT, PLRegionPeer::SLUG, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_L_COUNTRY_ID', 'TITLE', 'UUID', 'CREATED_AT', 'UPDATED_AT', 'SLUG', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'p_l_country_id', 'title', 'uuid', 'created_at', 'updated_at', 'slug', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -88,12 +96,12 @@ abstract class BasePLRegionPeer
      * e.g. PLRegionPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PTagId' => 1, 'Uuid' => 2, 'CreatedAt' => 3, 'UpdatedAt' => 4, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pTagId' => 1, 'uuid' => 2, 'createdAt' => 3, 'updatedAt' => 4, ),
-        BasePeer::TYPE_COLNAME => array (PLRegionPeer::ID => 0, PLRegionPeer::P_TAG_ID => 1, PLRegionPeer::UUID => 2, PLRegionPeer::CREATED_AT => 3, PLRegionPeer::UPDATED_AT => 4, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_TAG_ID' => 1, 'UUID' => 2, 'CREATED_AT' => 3, 'UPDATED_AT' => 4, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_tag_id' => 1, 'uuid' => 2, 'created_at' => 3, 'updated_at' => 4, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PLCountryId' => 1, 'Title' => 2, 'Uuid' => 3, 'CreatedAt' => 4, 'UpdatedAt' => 5, 'Slug' => 6, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pLCountryId' => 1, 'title' => 2, 'uuid' => 3, 'createdAt' => 4, 'updatedAt' => 5, 'slug' => 6, ),
+        BasePeer::TYPE_COLNAME => array (PLRegionPeer::ID => 0, PLRegionPeer::P_L_COUNTRY_ID => 1, PLRegionPeer::TITLE => 2, PLRegionPeer::UUID => 3, PLRegionPeer::CREATED_AT => 4, PLRegionPeer::UPDATED_AT => 5, PLRegionPeer::SLUG => 6, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_L_COUNTRY_ID' => 1, 'TITLE' => 2, 'UUID' => 3, 'CREATED_AT' => 4, 'UPDATED_AT' => 5, 'SLUG' => 6, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_l_country_id' => 1, 'title' => 2, 'uuid' => 3, 'created_at' => 4, 'updated_at' => 5, 'slug' => 6, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -168,16 +176,20 @@ abstract class BasePLRegionPeer
     {
         if (null === $alias) {
             $criteria->addSelectColumn(PLRegionPeer::ID);
-            $criteria->addSelectColumn(PLRegionPeer::P_TAG_ID);
+            $criteria->addSelectColumn(PLRegionPeer::P_L_COUNTRY_ID);
+            $criteria->addSelectColumn(PLRegionPeer::TITLE);
             $criteria->addSelectColumn(PLRegionPeer::UUID);
             $criteria->addSelectColumn(PLRegionPeer::CREATED_AT);
             $criteria->addSelectColumn(PLRegionPeer::UPDATED_AT);
+            $criteria->addSelectColumn(PLRegionPeer::SLUG);
         } else {
             $criteria->addSelectColumn($alias . '.id');
-            $criteria->addSelectColumn($alias . '.p_tag_id');
+            $criteria->addSelectColumn($alias . '.p_l_country_id');
+            $criteria->addSelectColumn($alias . '.title');
             $criteria->addSelectColumn($alias . '.uuid');
             $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
+            $criteria->addSelectColumn($alias . '.slug');
         }
     }
 
@@ -382,6 +394,12 @@ abstract class BasePLRegionPeer
      */
     public static function clearRelatedInstancePool()
     {
+        // Invalidate objects in PDDebatePeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PDDebatePeer::clearInstancePool();
+        // Invalidate objects in PDReactionPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PDReactionPeer::clearInstancePool();
         // Invalidate objects in PLDepartmentPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PLDepartmentPeer::clearInstancePool();
@@ -483,7 +501,7 @@ abstract class BasePLRegionPeer
 
 
     /**
-     * Returns the number of rows matching criteria, joining the related PTag table
+     * Returns the number of rows matching criteria, joining the related PLCountry table
      *
      * @param      Criteria $criteria
      * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -491,7 +509,7 @@ abstract class BasePLRegionPeer
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
      * @return int Number of matching rows.
      */
-    public static function doCountJoinPTag(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doCountJoinPLCountry(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         // we're going to modify criteria, so copy it first
         $criteria = clone $criteria;
@@ -518,7 +536,7 @@ abstract class BasePLRegionPeer
             $con = Propel::getConnection(PLRegionPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(PLRegionPeer::P_TAG_ID, PTagPeer::ID, $join_behavior);
+        $criteria->addJoin(PLRegionPeer::P_L_COUNTRY_ID, PLCountryPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -534,7 +552,7 @@ abstract class BasePLRegionPeer
 
 
     /**
-     * Selects a collection of PLRegion objects pre-filled with their PTag objects.
+     * Selects a collection of PLRegion objects pre-filled with their PLCountry objects.
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -542,7 +560,7 @@ abstract class BasePLRegionPeer
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
-    public static function doSelectJoinPTag(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doSelectJoinPLCountry(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $criteria = clone $criteria;
 
@@ -553,9 +571,9 @@ abstract class BasePLRegionPeer
 
         PLRegionPeer::addSelectColumns($criteria);
         $startcol = PLRegionPeer::NUM_HYDRATE_COLUMNS;
-        PTagPeer::addSelectColumns($criteria);
+        PLCountryPeer::addSelectColumns($criteria);
 
-        $criteria->addJoin(PLRegionPeer::P_TAG_ID, PTagPeer::ID, $join_behavior);
+        $criteria->addJoin(PLRegionPeer::P_L_COUNTRY_ID, PLCountryPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
@@ -575,19 +593,19 @@ abstract class BasePLRegionPeer
                 PLRegionPeer::addInstanceToPool($obj1, $key1);
             } // if $obj1 already loaded
 
-            $key2 = PTagPeer::getPrimaryKeyHashFromRow($row, $startcol);
+            $key2 = PLCountryPeer::getPrimaryKeyHashFromRow($row, $startcol);
             if ($key2 !== null) {
-                $obj2 = PTagPeer::getInstanceFromPool($key2);
+                $obj2 = PLCountryPeer::getInstanceFromPool($key2);
                 if (!$obj2) {
 
-                    $cls = PTagPeer::getOMClass();
+                    $cls = PLCountryPeer::getOMClass();
 
                     $obj2 = new $cls();
                     $obj2->hydrate($row, $startcol);
-                    PTagPeer::addInstanceToPool($obj2, $key2);
+                    PLCountryPeer::addInstanceToPool($obj2, $key2);
                 } // if obj2 already loaded
 
-                // Add the $obj1 (PLRegion) to $obj2 (PTag)
+                // Add the $obj1 (PLRegion) to $obj2 (PLCountry)
                 $obj2->addPLRegion($obj1);
 
             } // if joined row was not null
@@ -636,7 +654,7 @@ abstract class BasePLRegionPeer
             $con = Propel::getConnection(PLRegionPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(PLRegionPeer::P_TAG_ID, PTagPeer::ID, $join_behavior);
+        $criteria->addJoin(PLRegionPeer::P_L_COUNTRY_ID, PLCountryPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -672,10 +690,10 @@ abstract class BasePLRegionPeer
         PLRegionPeer::addSelectColumns($criteria);
         $startcol2 = PLRegionPeer::NUM_HYDRATE_COLUMNS;
 
-        PTagPeer::addSelectColumns($criteria);
-        $startcol3 = $startcol2 + PTagPeer::NUM_HYDRATE_COLUMNS;
+        PLCountryPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + PLCountryPeer::NUM_HYDRATE_COLUMNS;
 
-        $criteria->addJoin(PLRegionPeer::P_TAG_ID, PTagPeer::ID, $join_behavior);
+        $criteria->addJoin(PLRegionPeer::P_L_COUNTRY_ID, PLCountryPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
@@ -694,21 +712,21 @@ abstract class BasePLRegionPeer
                 PLRegionPeer::addInstanceToPool($obj1, $key1);
             } // if obj1 already loaded
 
-            // Add objects for joined PTag rows
+            // Add objects for joined PLCountry rows
 
-            $key2 = PTagPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+            $key2 = PLCountryPeer::getPrimaryKeyHashFromRow($row, $startcol2);
             if ($key2 !== null) {
-                $obj2 = PTagPeer::getInstanceFromPool($key2);
+                $obj2 = PLCountryPeer::getInstanceFromPool($key2);
                 if (!$obj2) {
 
-                    $cls = PTagPeer::getOMClass();
+                    $cls = PLCountryPeer::getOMClass();
 
                     $obj2 = new $cls();
                     $obj2->hydrate($row, $startcol2);
-                    PTagPeer::addInstanceToPool($obj2, $key2);
+                    PLCountryPeer::addInstanceToPool($obj2, $key2);
                 } // if obj2 loaded
 
-                // Add the $obj1 (PLRegion) to the collection in $obj2 (PTag)
+                // Add the $obj1 (PLRegion) to the collection in $obj2 (PLCountry)
                 $obj2->addPLRegion($obj1);
             } // if joined row not null
 

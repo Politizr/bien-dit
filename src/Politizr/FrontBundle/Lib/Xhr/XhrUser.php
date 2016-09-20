@@ -16,6 +16,7 @@ use Politizr\Constant\ListingConstants;
 use Politizr\Constant\ReputationConstants;
 use Politizr\Constant\XhrConstants;
 use Politizr\Constant\TagConstants;
+use Politizr\Constant\LocalizationConstants;
 
 use Politizr\Model\PUser;
 use Politizr\Model\PUCurrentQO;
@@ -28,6 +29,9 @@ use Politizr\Model\PUserQuery;
 use Politizr\Model\PUMandateQuery;
 use Politizr\Model\PTagQuery;
 use Politizr\Model\PQOrganizationQuery;
+use Politizr\Model\PLCountryQuery;
+use Politizr\Model\PLRegionQuery;
+use Politizr\Model\PLDepartmentQuery;
 
 use Politizr\FrontBundle\Form\Type\PUserIdentityType;
 use Politizr\FrontBundle\Form\Type\PUserEmailType;
@@ -119,7 +123,7 @@ class XhrUser
 
         $this->userTwigExtension = $userTwigExtension;
 
-        // $this->logger = $logger;
+        $this->logger = $logger;
     }
 
     /* ######################################################################################################## */
@@ -1138,10 +1142,10 @@ class XhrUser
         // Request arguments
         $offset = $request->get('offset');
         // $this->logger->info('$offset = ' . print_r($offset, true));
-        $cityUuid = $request->get('cityUuid');
-        // $this->logger->info('$cityUuid = ' . print_r($cityUuid, true));
-        $geoTagUuid = $request->get('geoTagUuid');
-        // $this->logger->info('$geoTagUuid = ' . print_r($geoTagUuid, true));
+        $geoUuid = $request->get('geoUuid');
+        // $this->logger->info('$geoUuid = ' . print_r($geoUuid, true));
+        $type = $request->get('type');
+        // $this->logger->info('$type = ' . print_r($type, true));
         $filterProfile = $request->get('filterProfile');
         // $this->logger->info('$filterProfile = ' . print_r($filterProfile, true));
         $filterActivity = $request->get('filterActivity');
@@ -1150,9 +1154,10 @@ class XhrUser
         // $this->logger->info('$filterDate = ' . print_r($filterDate, true));
 
         // set default values if not set
-        if (empty($geoTagUuid)) {
-            $franceTag = PTagQuery::create()->findPk(TagConstants::TAG_GEO_FRANCE_ID);
-            $geoTagUuid = $franceTag->getUuid();
+        if (empty($geoUuid)) {
+            $france = PLocalizationQuery::create()->findPk(LocalizationConstants::FRANCE_ID);
+            $geoUuid = $france->getUuid();
+            $type = LocalizationConstants::TYPE_COUNTRY;
         }
         if (empty($filterProfile)) {
             $filterProfile = ListingConstants::FILTER_KEYWORD_ALL_USERS;
@@ -1165,8 +1170,8 @@ class XhrUser
         }
 
         $users = $this->userService->getUsersByFilters(
-            $cityUuid,
-            $geoTagUuid,
+            $geoUuid,
+            $type,
             ListingConstants::FILTER_KEYWORD_QUALIFIED, // $filterProfile,
             $filterActivity,
             $filterDate,

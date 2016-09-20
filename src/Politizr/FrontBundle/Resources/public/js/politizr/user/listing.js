@@ -67,27 +67,24 @@ function getCurrentUserFilters() {
 
     var filters = [];
 
-    // city
-    uuid = null;
-    if ($('#cityFilter').is(":visible")) {
-        // console.log('city uuid');
-        uuid = $('#myCityFilter').val();
-        // console.log(uuid);
-    } 
-    filters.push({name: 'cityUuid', value: uuid});
-
     // map
     if ($('.mapBreadcrumbs').find('.current').length) {
         // console.log('sub map uuid');
         uuid = $('.mapBreadcrumbs').find('.current').attr('uuid');
         // console.log(uuid);
+        type = $('.mapBreadcrumbs').find('.current').attr('type');
+        // console.log(type);
     } else {
         // console.log('map uuid');
         uuid = $('.mapMenu').find('.active').attr('uuid');
+        // console.log(uuid);
+        type = $('.mapMenu').find('.active').attr('type');
+        // console.log(type);
     }
 
-    filters.push({name: 'geoTagUuid', value: uuid});
-   
+    filters.push({name: 'geoUuid', value: uuid});
+    filters.push({name: 'type', value: type});
+    
     // profile
     filters.push({name: 'filterProfile', value: $('#profileFilter input:checked').val()});
 

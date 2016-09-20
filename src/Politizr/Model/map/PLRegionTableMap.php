@@ -43,10 +43,12 @@ class PLRegionTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
-        $this->addForeignKey('p_tag_id', 'PTagId', 'INTEGER', 'p_tag', 'id', true, null, null);
+        $this->addForeignKey('p_l_country_id', 'PLCountryId', 'INTEGER', 'p_l_country', 'id', true, null, null);
+        $this->addColumn('title', 'Title', 'VARCHAR', false, 150, null);
         $this->addColumn('uuid', 'Uuid', 'VARCHAR', false, 50, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
+        $this->addColumn('slug', 'Slug', 'VARCHAR', false, 255, null);
         // validators
     } // initialize()
 
@@ -55,7 +57,9 @@ class PLRegionTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('PTag', 'Politizr\\Model\\PTag', RelationMap::MANY_TO_ONE, array('p_tag_id' => 'id', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('PLCountry', 'Politizr\\Model\\PLCountry', RelationMap::MANY_TO_ONE, array('p_l_country_id' => 'id', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('PDDebate', 'Politizr\\Model\\PDDebate', RelationMap::ONE_TO_MANY, array('id' => 'p_l_region_id', ), 'SET NULL', 'CASCADE', 'PDDebates');
+        $this->addRelation('PDReaction', 'Politizr\\Model\\PDReaction', RelationMap::ONE_TO_MANY, array('id' => 'p_l_region_id', ), 'SET NULL', 'CASCADE', 'PDReactions');
         $this->addRelation('PLDepartment', 'Politizr\\Model\\PLDepartment', RelationMap::ONE_TO_MANY, array('id' => 'p_l_region_id', ), 'CASCADE', 'CASCADE', 'PLDepartments');
     } // buildRelations()
 
@@ -76,6 +80,16 @@ class PLRegionTableMap extends TableMap
             'query_cache' =>  array (
   'backend' => 'apc',
   'lifetime' => 3600,
+),
+            'sluggable' =>  array (
+  'add_cleanup' => 'true',
+  'slug_column' => 'slug',
+  'slug_pattern' => '{title}',
+  'replace_pattern' => '/\\W+/',
+  'replacement' => '-',
+  'separator' => '-',
+  'permanent' => 'false',
+  'scope_column' => '',
 ),
             'uuid' =>  array (
   'name' => 'uuid',

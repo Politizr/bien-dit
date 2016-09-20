@@ -6,6 +6,7 @@ use Politizr\Exception\InconsistentDataException;
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\ListingConstants;
 use Politizr\Constant\UserConstants;
+use Politizr\Constant\LocalizationConstants;
 
 use Politizr\Model\PUser;
 
@@ -88,8 +89,7 @@ class UserService
      * Get filtered paginated documents
      * beta
      *
-     * @param string $cityUuid
-     * @param string $geoTagUuid
+     * @param string $geoUuid
      * @param string $filterProfile
      * @param string $filterActivity
      * @param string $filterDate
@@ -98,8 +98,8 @@ class UserService
      * @return PropelCollection[Publication]
      */
     public function getUsersByFilters(
-        $cityUuid,
-        $geoTagUuid,
+        $geoUuid,
+        $type,
         $filterProfile = ListingConstants::FILTER_KEYWORD_ALL_USERS,
         $filterActivity = ListingConstants::ORDER_BY_KEYWORD_MOST_ACTIVE,
         $filterDate = ListingConstants::FILTER_KEYWORD_ALL_DATE,
@@ -108,22 +108,9 @@ class UserService
     ) {
         $users = new \PropelCollection();
 
-        $tagIds = [];
-        if ($cityUuid) {
-            $city = PLCityQuery::create()
-                ->filterByUuid($cityUuid)
-                ->findOne();
-
-            $cityIds = [ $city->getId() ];
-        } elseif ($geoTagUuid) {
-            $tag = PTagQuery::create()
-                ->filterByUuid($geoTagUuid)
-                ->findOne();
-            if (!$tag) {
-                throw new InconsistentDataException(sprintf('Tag %s not found', $filters['map']));
-            }
-            $tagIds = $this->tagService->computeGeotagExtendedIds($tag->getId());
-            $cityIds = $this->localizationService->computeCityIdsFromTagIds($tagIds);
+        $cityIds = [];
+        if ($geoUuid && $type != LocalizationConstants::TYPE_COUNTRY) {
+            $cityIds = $this->localizationService->computeCityIdsFromGeoUuid($geoUuid, $type);
         }
 
         $keywords = array($filterProfile, $filterDate);

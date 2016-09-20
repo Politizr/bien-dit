@@ -15,13 +15,17 @@ use \PropelDateTime;
 use \PropelException;
 use \PropelObjectCollection;
 use \PropelPDO;
+use Politizr\Model\PDDebate;
+use Politizr\Model\PDDebateQuery;
+use Politizr\Model\PDReaction;
+use Politizr\Model\PDReactionQuery;
+use Politizr\Model\PLCountry;
+use Politizr\Model\PLCountryQuery;
 use Politizr\Model\PLDepartment;
 use Politizr\Model\PLDepartmentQuery;
 use Politizr\Model\PLRegion;
 use Politizr\Model\PLRegionPeer;
 use Politizr\Model\PLRegionQuery;
-use Politizr\Model\PTag;
-use Politizr\Model\PTagQuery;
 
 abstract class BasePLRegion extends BaseObject implements Persistent
 {
@@ -51,10 +55,16 @@ abstract class BasePLRegion extends BaseObject implements Persistent
     protected $id;
 
     /**
-     * The value for the p_tag_id field.
+     * The value for the p_l_country_id field.
      * @var        int
      */
-    protected $p_tag_id;
+    protected $p_l_country_id;
+
+    /**
+     * The value for the title field.
+     * @var        string
+     */
+    protected $title;
 
     /**
      * The value for the uuid field.
@@ -75,9 +85,27 @@ abstract class BasePLRegion extends BaseObject implements Persistent
     protected $updated_at;
 
     /**
-     * @var        PTag
+     * The value for the slug field.
+     * @var        string
      */
-    protected $aPTag;
+    protected $slug;
+
+    /**
+     * @var        PLCountry
+     */
+    protected $aPLCountry;
+
+    /**
+     * @var        PropelObjectCollection|PDDebate[] Collection to store aggregation of PDDebate objects.
+     */
+    protected $collPDDebates;
+    protected $collPDDebatesPartial;
+
+    /**
+     * @var        PropelObjectCollection|PDReaction[] Collection to store aggregation of PDReaction objects.
+     */
+    protected $collPDReactions;
+    protected $collPDReactionsPartial;
 
     /**
      * @var        PropelObjectCollection|PLDepartment[] Collection to store aggregation of PLDepartment objects.
@@ -109,6 +137,18 @@ abstract class BasePLRegion extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
+    protected $pDDebatesScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pDReactionsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
     protected $pLDepartmentsScheduledForDeletion = null;
 
     /**
@@ -123,14 +163,25 @@ abstract class BasePLRegion extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [p_tag_id] column value.
+     * Get the [p_l_country_id] column value.
      *
      * @return int
      */
-    public function getPTagId()
+    public function getPLCountryId()
     {
 
-        return $this->p_tag_id;
+        return $this->p_l_country_id;
+    }
+
+    /**
+     * Get the [title] column value.
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+
+        return $this->title;
     }
 
     /**
@@ -225,6 +276,17 @@ abstract class BasePLRegion extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [slug] column value.
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+
+        return $this->slug;
+    }
+
+    /**
      * Set the value of [id] column.
      *
      * @param  int $v new value
@@ -246,29 +308,50 @@ abstract class BasePLRegion extends BaseObject implements Persistent
     } // setId()
 
     /**
-     * Set the value of [p_tag_id] column.
+     * Set the value of [p_l_country_id] column.
      *
      * @param  int $v new value
      * @return PLRegion The current object (for fluent API support)
      */
-    public function setPTagId($v)
+    public function setPLCountryId($v)
     {
         if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
-        if ($this->p_tag_id !== $v) {
-            $this->p_tag_id = $v;
-            $this->modifiedColumns[] = PLRegionPeer::P_TAG_ID;
+        if ($this->p_l_country_id !== $v) {
+            $this->p_l_country_id = $v;
+            $this->modifiedColumns[] = PLRegionPeer::P_L_COUNTRY_ID;
         }
 
-        if ($this->aPTag !== null && $this->aPTag->getId() !== $v) {
-            $this->aPTag = null;
+        if ($this->aPLCountry !== null && $this->aPLCountry->getId() !== $v) {
+            $this->aPLCountry = null;
         }
 
 
         return $this;
-    } // setPTagId()
+    } // setPLCountryId()
+
+    /**
+     * Set the value of [title] column.
+     *
+     * @param  string $v new value
+     * @return PLRegion The current object (for fluent API support)
+     */
+    public function setTitle($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->title !== $v) {
+            $this->title = $v;
+            $this->modifiedColumns[] = PLRegionPeer::TITLE;
+        }
+
+
+        return $this;
+    } // setTitle()
 
     /**
      * Set the value of [uuid] column.
@@ -338,6 +421,27 @@ abstract class BasePLRegion extends BaseObject implements Persistent
     } // setUpdatedAt()
 
     /**
+     * Set the value of [slug] column.
+     *
+     * @param  string $v new value
+     * @return PLRegion The current object (for fluent API support)
+     */
+    public function setSlug($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->slug !== $v) {
+            $this->slug = $v;
+            $this->modifiedColumns[] = PLRegionPeer::SLUG;
+        }
+
+
+        return $this;
+    } // setSlug()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -370,10 +474,12 @@ abstract class BasePLRegion extends BaseObject implements Persistent
         try {
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->p_tag_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
-            $this->uuid = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-            $this->created_at = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-            $this->updated_at = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->p_l_country_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
+            $this->title = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
+            $this->uuid = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+            $this->created_at = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->updated_at = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->slug = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -383,7 +489,7 @@ abstract class BasePLRegion extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 5; // 5 = PLRegionPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 7; // 7 = PLRegionPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PLRegion object", $e);
@@ -406,8 +512,8 @@ abstract class BasePLRegion extends BaseObject implements Persistent
     public function ensureConsistency()
     {
 
-        if ($this->aPTag !== null && $this->p_tag_id !== $this->aPTag->getId()) {
-            $this->aPTag = null;
+        if ($this->aPLCountry !== null && $this->p_l_country_id !== $this->aPLCountry->getId()) {
+            $this->aPLCountry = null;
         }
     } // ensureConsistency
 
@@ -448,7 +554,11 @@ abstract class BasePLRegion extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->aPTag = null;
+            $this->aPLCountry = null;
+            $this->collPDDebates = null;
+
+            $this->collPDReactions = null;
+
             $this->collPLDepartments = null;
 
         } // if (deep)
@@ -521,6 +631,15 @@ abstract class BasePLRegion extends BaseObject implements Persistent
         $isInsert = $this->isNew();
         try {
             $ret = $this->preSave($con);
+            // sluggable behavior
+
+            if ($this->isColumnModified(PLRegionPeer::SLUG) && $this->getSlug()) {
+                $this->setSlug($this->makeSlugUnique($this->getSlug()));
+            } elseif ($this->isColumnModified(PLRegionPeer::TITLE)) {
+                $this->setSlug($this->createSlug());
+            } elseif (!$this->getSlug()) {
+                $this->setSlug($this->createSlug());
+            }
             if ($isInsert) {
                 $ret = $ret && $this->preInsert($con);
                 // timestampable behavior
@@ -580,11 +699,11 @@ abstract class BasePLRegion extends BaseObject implements Persistent
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
-            if ($this->aPTag !== null) {
-                if ($this->aPTag->isModified() || $this->aPTag->isNew()) {
-                    $affectedRows += $this->aPTag->save($con);
+            if ($this->aPLCountry !== null) {
+                if ($this->aPLCountry->isModified() || $this->aPLCountry->isNew()) {
+                    $affectedRows += $this->aPLCountry->save($con);
                 }
-                $this->setPTag($this->aPTag);
+                $this->setPLCountry($this->aPLCountry);
             }
 
             if ($this->isNew() || $this->isModified()) {
@@ -596,6 +715,42 @@ abstract class BasePLRegion extends BaseObject implements Persistent
                 }
                 $affectedRows += 1;
                 $this->resetModified();
+            }
+
+            if ($this->pDDebatesScheduledForDeletion !== null) {
+                if (!$this->pDDebatesScheduledForDeletion->isEmpty()) {
+                    foreach ($this->pDDebatesScheduledForDeletion as $pDDebate) {
+                        // need to save related object because we set the relation to null
+                        $pDDebate->save($con);
+                    }
+                    $this->pDDebatesScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPDDebates !== null) {
+                foreach ($this->collPDDebates as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->pDReactionsScheduledForDeletion !== null) {
+                if (!$this->pDReactionsScheduledForDeletion->isEmpty()) {
+                    foreach ($this->pDReactionsScheduledForDeletion as $pDReaction) {
+                        // need to save related object because we set the relation to null
+                        $pDReaction->save($con);
+                    }
+                    $this->pDReactionsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPDReactions !== null) {
+                foreach ($this->collPDReactions as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
             }
 
             if ($this->pLDepartmentsScheduledForDeletion !== null) {
@@ -644,8 +799,11 @@ abstract class BasePLRegion extends BaseObject implements Persistent
         if ($this->isColumnModified(PLRegionPeer::ID)) {
             $modifiedColumns[':p' . $index++]  = '`id`';
         }
-        if ($this->isColumnModified(PLRegionPeer::P_TAG_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`p_tag_id`';
+        if ($this->isColumnModified(PLRegionPeer::P_L_COUNTRY_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`p_l_country_id`';
+        }
+        if ($this->isColumnModified(PLRegionPeer::TITLE)) {
+            $modifiedColumns[':p' . $index++]  = '`title`';
         }
         if ($this->isColumnModified(PLRegionPeer::UUID)) {
             $modifiedColumns[':p' . $index++]  = '`uuid`';
@@ -655,6 +813,9 @@ abstract class BasePLRegion extends BaseObject implements Persistent
         }
         if ($this->isColumnModified(PLRegionPeer::UPDATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`updated_at`';
+        }
+        if ($this->isColumnModified(PLRegionPeer::SLUG)) {
+            $modifiedColumns[':p' . $index++]  = '`slug`';
         }
 
         $sql = sprintf(
@@ -670,8 +831,11 @@ abstract class BasePLRegion extends BaseObject implements Persistent
                     case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case '`p_tag_id`':
-                        $stmt->bindValue($identifier, $this->p_tag_id, PDO::PARAM_INT);
+                    case '`p_l_country_id`':
+                        $stmt->bindValue($identifier, $this->p_l_country_id, PDO::PARAM_INT);
+                        break;
+                    case '`title`':
+                        $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
                         break;
                     case '`uuid`':
                         $stmt->bindValue($identifier, $this->uuid, PDO::PARAM_STR);
@@ -681,6 +845,9 @@ abstract class BasePLRegion extends BaseObject implements Persistent
                         break;
                     case '`updated_at`':
                         $stmt->bindValue($identifier, $this->updated_at, PDO::PARAM_STR);
+                        break;
+                    case '`slug`':
+                        $stmt->bindValue($identifier, $this->slug, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -746,16 +913,22 @@ abstract class BasePLRegion extends BaseObject implements Persistent
                 return $this->getId();
                 break;
             case 1:
-                return $this->getPTagId();
+                return $this->getPLCountryId();
                 break;
             case 2:
-                return $this->getUuid();
+                return $this->getTitle();
                 break;
             case 3:
-                return $this->getCreatedAt();
+                return $this->getUuid();
                 break;
             case 4:
+                return $this->getCreatedAt();
+                break;
+            case 5:
                 return $this->getUpdatedAt();
+                break;
+            case 6:
+                return $this->getSlug();
                 break;
             default:
                 return null;
@@ -787,10 +960,12 @@ abstract class BasePLRegion extends BaseObject implements Persistent
         $keys = PLRegionPeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getPTagId(),
-            $keys[2] => $this->getUuid(),
-            $keys[3] => $this->getCreatedAt(),
-            $keys[4] => $this->getUpdatedAt(),
+            $keys[1] => $this->getPLCountryId(),
+            $keys[2] => $this->getTitle(),
+            $keys[3] => $this->getUuid(),
+            $keys[4] => $this->getCreatedAt(),
+            $keys[5] => $this->getUpdatedAt(),
+            $keys[6] => $this->getSlug(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -798,8 +973,14 @@ abstract class BasePLRegion extends BaseObject implements Persistent
         }
 
         if ($includeForeignObjects) {
-            if (null !== $this->aPTag) {
-                $result['PTag'] = $this->aPTag->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            if (null !== $this->aPLCountry) {
+                $result['PLCountry'] = $this->aPLCountry->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->collPDDebates) {
+                $result['PDDebates'] = $this->collPDDebates->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collPDReactions) {
+                $result['PDReactions'] = $this->collPDReactions->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collPLDepartments) {
                 $result['PLDepartments'] = $this->collPLDepartments->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -842,16 +1023,22 @@ abstract class BasePLRegion extends BaseObject implements Persistent
                 $this->setId($value);
                 break;
             case 1:
-                $this->setPTagId($value);
+                $this->setPLCountryId($value);
                 break;
             case 2:
-                $this->setUuid($value);
+                $this->setTitle($value);
                 break;
             case 3:
-                $this->setCreatedAt($value);
+                $this->setUuid($value);
                 break;
             case 4:
+                $this->setCreatedAt($value);
+                break;
+            case 5:
                 $this->setUpdatedAt($value);
+                break;
+            case 6:
+                $this->setSlug($value);
                 break;
         } // switch()
     }
@@ -878,10 +1065,12 @@ abstract class BasePLRegion extends BaseObject implements Persistent
         $keys = PLRegionPeer::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setPTagId($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setUuid($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setCreatedAt($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setUpdatedAt($arr[$keys[4]]);
+        if (array_key_exists($keys[1], $arr)) $this->setPLCountryId($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setTitle($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setUuid($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setCreatedAt($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setUpdatedAt($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setSlug($arr[$keys[6]]);
     }
 
     /**
@@ -894,10 +1083,12 @@ abstract class BasePLRegion extends BaseObject implements Persistent
         $criteria = new Criteria(PLRegionPeer::DATABASE_NAME);
 
         if ($this->isColumnModified(PLRegionPeer::ID)) $criteria->add(PLRegionPeer::ID, $this->id);
-        if ($this->isColumnModified(PLRegionPeer::P_TAG_ID)) $criteria->add(PLRegionPeer::P_TAG_ID, $this->p_tag_id);
+        if ($this->isColumnModified(PLRegionPeer::P_L_COUNTRY_ID)) $criteria->add(PLRegionPeer::P_L_COUNTRY_ID, $this->p_l_country_id);
+        if ($this->isColumnModified(PLRegionPeer::TITLE)) $criteria->add(PLRegionPeer::TITLE, $this->title);
         if ($this->isColumnModified(PLRegionPeer::UUID)) $criteria->add(PLRegionPeer::UUID, $this->uuid);
         if ($this->isColumnModified(PLRegionPeer::CREATED_AT)) $criteria->add(PLRegionPeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(PLRegionPeer::UPDATED_AT)) $criteria->add(PLRegionPeer::UPDATED_AT, $this->updated_at);
+        if ($this->isColumnModified(PLRegionPeer::SLUG)) $criteria->add(PLRegionPeer::SLUG, $this->slug);
 
         return $criteria;
     }
@@ -961,10 +1152,12 @@ abstract class BasePLRegion extends BaseObject implements Persistent
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setPTagId($this->getPTagId());
+        $copyObj->setPLCountryId($this->getPLCountryId());
+        $copyObj->setTitle($this->getTitle());
         $copyObj->setUuid($this->getUuid());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
+        $copyObj->setSlug($this->getSlug());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -972,6 +1165,18 @@ abstract class BasePLRegion extends BaseObject implements Persistent
             $copyObj->setNew(false);
             // store object hash to prevent cycle
             $this->startCopy = true;
+
+            foreach ($this->getPDDebates() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPDDebate($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getPDReactions() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPDReaction($relObj->copy($deepCopy));
+                }
+            }
 
             foreach ($this->getPLDepartments() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
@@ -1030,24 +1235,24 @@ abstract class BasePLRegion extends BaseObject implements Persistent
     }
 
     /**
-     * Declares an association between this object and a PTag object.
+     * Declares an association between this object and a PLCountry object.
      *
-     * @param                  PTag $v
+     * @param                  PLCountry $v
      * @return PLRegion The current object (for fluent API support)
      * @throws PropelException
      */
-    public function setPTag(PTag $v = null)
+    public function setPLCountry(PLCountry $v = null)
     {
         if ($v === null) {
-            $this->setPTagId(NULL);
+            $this->setPLCountryId(NULL);
         } else {
-            $this->setPTagId($v->getId());
+            $this->setPLCountryId($v->getId());
         }
 
-        $this->aPTag = $v;
+        $this->aPLCountry = $v;
 
         // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the PTag object, it will not be re-added.
+        // If this object has already been added to the PLCountry object, it will not be re-added.
         if ($v !== null) {
             $v->addPLRegion($this);
         }
@@ -1058,27 +1263,27 @@ abstract class BasePLRegion extends BaseObject implements Persistent
 
 
     /**
-     * Get the associated PTag object
+     * Get the associated PLCountry object
      *
      * @param PropelPDO $con Optional Connection object.
      * @param $doQuery Executes a query to get the object if required
-     * @return PTag The associated PTag object.
+     * @return PLCountry The associated PLCountry object.
      * @throws PropelException
      */
-    public function getPTag(PropelPDO $con = null, $doQuery = true)
+    public function getPLCountry(PropelPDO $con = null, $doQuery = true)
     {
-        if ($this->aPTag === null && ($this->p_tag_id !== null) && $doQuery) {
-            $this->aPTag = PTagQuery::create()->findPk($this->p_tag_id, $con);
+        if ($this->aPLCountry === null && ($this->p_l_country_id !== null) && $doQuery) {
+            $this->aPLCountry = PLCountryQuery::create()->findPk($this->p_l_country_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aPTag->addPLRegions($this);
+                $this->aPLCountry->addPLRegions($this);
              */
         }
 
-        return $this->aPTag;
+        return $this->aPLCountry;
     }
 
 
@@ -1092,9 +1297,690 @@ abstract class BasePLRegion extends BaseObject implements Persistent
      */
     public function initRelation($relationName)
     {
+        if ('PDDebate' == $relationName) {
+            $this->initPDDebates();
+        }
+        if ('PDReaction' == $relationName) {
+            $this->initPDReactions();
+        }
         if ('PLDepartment' == $relationName) {
             $this->initPLDepartments();
         }
+    }
+
+    /**
+     * Clears out the collPDDebates collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PLRegion The current object (for fluent API support)
+     * @see        addPDDebates()
+     */
+    public function clearPDDebates()
+    {
+        $this->collPDDebates = null; // important to set this to null since that means it is uninitialized
+        $this->collPDDebatesPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPDDebates collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPDDebates($v = true)
+    {
+        $this->collPDDebatesPartial = $v;
+    }
+
+    /**
+     * Initializes the collPDDebates collection.
+     *
+     * By default this just sets the collPDDebates collection to an empty array (like clearcollPDDebates());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPDDebates($overrideExisting = true)
+    {
+        if (null !== $this->collPDDebates && !$overrideExisting) {
+            return;
+        }
+        $this->collPDDebates = new PropelObjectCollection();
+        $this->collPDDebates->setModel('PDDebate');
+    }
+
+    /**
+     * Gets an array of PDDebate objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PLRegion is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PDDebate[] List of PDDebate objects
+     * @throws PropelException
+     */
+    public function getPDDebates($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPDDebatesPartial && !$this->isNew();
+        if (null === $this->collPDDebates || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPDDebates) {
+                // return empty collection
+                $this->initPDDebates();
+            } else {
+                $collPDDebates = PDDebateQuery::create(null, $criteria)
+                    ->filterByPLRegion($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPDDebatesPartial && count($collPDDebates)) {
+                      $this->initPDDebates(false);
+
+                      foreach ($collPDDebates as $obj) {
+                        if (false == $this->collPDDebates->contains($obj)) {
+                          $this->collPDDebates->append($obj);
+                        }
+                      }
+
+                      $this->collPDDebatesPartial = true;
+                    }
+
+                    $collPDDebates->getInternalIterator()->rewind();
+
+                    return $collPDDebates;
+                }
+
+                if ($partial && $this->collPDDebates) {
+                    foreach ($this->collPDDebates as $obj) {
+                        if ($obj->isNew()) {
+                            $collPDDebates[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPDDebates = $collPDDebates;
+                $this->collPDDebatesPartial = false;
+            }
+        }
+
+        return $this->collPDDebates;
+    }
+
+    /**
+     * Sets a collection of PDDebate objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pDDebates A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PLRegion The current object (for fluent API support)
+     */
+    public function setPDDebates(PropelCollection $pDDebates, PropelPDO $con = null)
+    {
+        $pDDebatesToDelete = $this->getPDDebates(new Criteria(), $con)->diff($pDDebates);
+
+
+        $this->pDDebatesScheduledForDeletion = $pDDebatesToDelete;
+
+        foreach ($pDDebatesToDelete as $pDDebateRemoved) {
+            $pDDebateRemoved->setPLRegion(null);
+        }
+
+        $this->collPDDebates = null;
+        foreach ($pDDebates as $pDDebate) {
+            $this->addPDDebate($pDDebate);
+        }
+
+        $this->collPDDebates = $pDDebates;
+        $this->collPDDebatesPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PDDebate objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PDDebate objects.
+     * @throws PropelException
+     */
+    public function countPDDebates(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPDDebatesPartial && !$this->isNew();
+        if (null === $this->collPDDebates || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPDDebates) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPDDebates());
+            }
+            $query = PDDebateQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPLRegion($this)
+                ->count($con);
+        }
+
+        return count($this->collPDDebates);
+    }
+
+    /**
+     * Method called to associate a PDDebate object to this object
+     * through the PDDebate foreign key attribute.
+     *
+     * @param    PDDebate $l PDDebate
+     * @return PLRegion The current object (for fluent API support)
+     */
+    public function addPDDebate(PDDebate $l)
+    {
+        if ($this->collPDDebates === null) {
+            $this->initPDDebates();
+            $this->collPDDebatesPartial = true;
+        }
+
+        if (!in_array($l, $this->collPDDebates->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPDDebate($l);
+
+            if ($this->pDDebatesScheduledForDeletion and $this->pDDebatesScheduledForDeletion->contains($l)) {
+                $this->pDDebatesScheduledForDeletion->remove($this->pDDebatesScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PDDebate $pDDebate The pDDebate object to add.
+     */
+    protected function doAddPDDebate($pDDebate)
+    {
+        $this->collPDDebates[]= $pDDebate;
+        $pDDebate->setPLRegion($this);
+    }
+
+    /**
+     * @param	PDDebate $pDDebate The pDDebate object to remove.
+     * @return PLRegion The current object (for fluent API support)
+     */
+    public function removePDDebate($pDDebate)
+    {
+        if ($this->getPDDebates()->contains($pDDebate)) {
+            $this->collPDDebates->remove($this->collPDDebates->search($pDDebate));
+            if (null === $this->pDDebatesScheduledForDeletion) {
+                $this->pDDebatesScheduledForDeletion = clone $this->collPDDebates;
+                $this->pDDebatesScheduledForDeletion->clear();
+            }
+            $this->pDDebatesScheduledForDeletion[]= $pDDebate;
+            $pDDebate->setPLRegion(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PLRegion is new, it will return
+     * an empty collection; or if this PLRegion has previously
+     * been saved, it will retrieve related PDDebates from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PLRegion.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PDDebate[] List of PDDebate objects
+     */
+    public function getPDDebatesJoinPUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PDDebateQuery::create(null, $criteria);
+        $query->joinWith('PUser', $join_behavior);
+
+        return $this->getPDDebates($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PLRegion is new, it will return
+     * an empty collection; or if this PLRegion has previously
+     * been saved, it will retrieve related PDDebates from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PLRegion.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PDDebate[] List of PDDebate objects
+     */
+    public function getPDDebatesJoinPLCity($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PDDebateQuery::create(null, $criteria);
+        $query->joinWith('PLCity', $join_behavior);
+
+        return $this->getPDDebates($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PLRegion is new, it will return
+     * an empty collection; or if this PLRegion has previously
+     * been saved, it will retrieve related PDDebates from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PLRegion.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PDDebate[] List of PDDebate objects
+     */
+    public function getPDDebatesJoinPLDepartment($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PDDebateQuery::create(null, $criteria);
+        $query->joinWith('PLDepartment', $join_behavior);
+
+        return $this->getPDDebates($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PLRegion is new, it will return
+     * an empty collection; or if this PLRegion has previously
+     * been saved, it will retrieve related PDDebates from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PLRegion.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PDDebate[] List of PDDebate objects
+     */
+    public function getPDDebatesJoinPLCountry($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PDDebateQuery::create(null, $criteria);
+        $query->joinWith('PLCountry', $join_behavior);
+
+        return $this->getPDDebates($query, $con);
+    }
+
+    /**
+     * Clears out the collPDReactions collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PLRegion The current object (for fluent API support)
+     * @see        addPDReactions()
+     */
+    public function clearPDReactions()
+    {
+        $this->collPDReactions = null; // important to set this to null since that means it is uninitialized
+        $this->collPDReactionsPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPDReactions collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPDReactions($v = true)
+    {
+        $this->collPDReactionsPartial = $v;
+    }
+
+    /**
+     * Initializes the collPDReactions collection.
+     *
+     * By default this just sets the collPDReactions collection to an empty array (like clearcollPDReactions());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPDReactions($overrideExisting = true)
+    {
+        if (null !== $this->collPDReactions && !$overrideExisting) {
+            return;
+        }
+        $this->collPDReactions = new PropelObjectCollection();
+        $this->collPDReactions->setModel('PDReaction');
+    }
+
+    /**
+     * Gets an array of PDReaction objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PLRegion is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PDReaction[] List of PDReaction objects
+     * @throws PropelException
+     */
+    public function getPDReactions($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPDReactionsPartial && !$this->isNew();
+        if (null === $this->collPDReactions || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPDReactions) {
+                // return empty collection
+                $this->initPDReactions();
+            } else {
+                $collPDReactions = PDReactionQuery::create(null, $criteria)
+                    ->filterByPLRegion($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPDReactionsPartial && count($collPDReactions)) {
+                      $this->initPDReactions(false);
+
+                      foreach ($collPDReactions as $obj) {
+                        if (false == $this->collPDReactions->contains($obj)) {
+                          $this->collPDReactions->append($obj);
+                        }
+                      }
+
+                      $this->collPDReactionsPartial = true;
+                    }
+
+                    $collPDReactions->getInternalIterator()->rewind();
+
+                    return $collPDReactions;
+                }
+
+                if ($partial && $this->collPDReactions) {
+                    foreach ($this->collPDReactions as $obj) {
+                        if ($obj->isNew()) {
+                            $collPDReactions[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPDReactions = $collPDReactions;
+                $this->collPDReactionsPartial = false;
+            }
+        }
+
+        return $this->collPDReactions;
+    }
+
+    /**
+     * Sets a collection of PDReaction objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pDReactions A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PLRegion The current object (for fluent API support)
+     */
+    public function setPDReactions(PropelCollection $pDReactions, PropelPDO $con = null)
+    {
+        $pDReactionsToDelete = $this->getPDReactions(new Criteria(), $con)->diff($pDReactions);
+
+
+        $this->pDReactionsScheduledForDeletion = $pDReactionsToDelete;
+
+        foreach ($pDReactionsToDelete as $pDReactionRemoved) {
+            $pDReactionRemoved->setPLRegion(null);
+        }
+
+        $this->collPDReactions = null;
+        foreach ($pDReactions as $pDReaction) {
+            $this->addPDReaction($pDReaction);
+        }
+
+        $this->collPDReactions = $pDReactions;
+        $this->collPDReactionsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PDReaction objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PDReaction objects.
+     * @throws PropelException
+     */
+    public function countPDReactions(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPDReactionsPartial && !$this->isNew();
+        if (null === $this->collPDReactions || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPDReactions) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPDReactions());
+            }
+            $query = PDReactionQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPLRegion($this)
+                ->count($con);
+        }
+
+        return count($this->collPDReactions);
+    }
+
+    /**
+     * Method called to associate a PDReaction object to this object
+     * through the PDReaction foreign key attribute.
+     *
+     * @param    PDReaction $l PDReaction
+     * @return PLRegion The current object (for fluent API support)
+     */
+    public function addPDReaction(PDReaction $l)
+    {
+        if ($this->collPDReactions === null) {
+            $this->initPDReactions();
+            $this->collPDReactionsPartial = true;
+        }
+
+        if (!in_array($l, $this->collPDReactions->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPDReaction($l);
+
+            if ($this->pDReactionsScheduledForDeletion and $this->pDReactionsScheduledForDeletion->contains($l)) {
+                $this->pDReactionsScheduledForDeletion->remove($this->pDReactionsScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PDReaction $pDReaction The pDReaction object to add.
+     */
+    protected function doAddPDReaction($pDReaction)
+    {
+        $this->collPDReactions[]= $pDReaction;
+        $pDReaction->setPLRegion($this);
+    }
+
+    /**
+     * @param	PDReaction $pDReaction The pDReaction object to remove.
+     * @return PLRegion The current object (for fluent API support)
+     */
+    public function removePDReaction($pDReaction)
+    {
+        if ($this->getPDReactions()->contains($pDReaction)) {
+            $this->collPDReactions->remove($this->collPDReactions->search($pDReaction));
+            if (null === $this->pDReactionsScheduledForDeletion) {
+                $this->pDReactionsScheduledForDeletion = clone $this->collPDReactions;
+                $this->pDReactionsScheduledForDeletion->clear();
+            }
+            $this->pDReactionsScheduledForDeletion[]= $pDReaction;
+            $pDReaction->setPLRegion(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PLRegion is new, it will return
+     * an empty collection; or if this PLRegion has previously
+     * been saved, it will retrieve related PDReactions from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PLRegion.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PDReaction[] List of PDReaction objects
+     */
+    public function getPDReactionsJoinPUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PDReactionQuery::create(null, $criteria);
+        $query->joinWith('PUser', $join_behavior);
+
+        return $this->getPDReactions($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PLRegion is new, it will return
+     * an empty collection; or if this PLRegion has previously
+     * been saved, it will retrieve related PDReactions from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PLRegion.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PDReaction[] List of PDReaction objects
+     */
+    public function getPDReactionsJoinPDDebate($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PDReactionQuery::create(null, $criteria);
+        $query->joinWith('PDDebate', $join_behavior);
+
+        return $this->getPDReactions($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PLRegion is new, it will return
+     * an empty collection; or if this PLRegion has previously
+     * been saved, it will retrieve related PDReactions from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PLRegion.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PDReaction[] List of PDReaction objects
+     */
+    public function getPDReactionsJoinPLCity($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PDReactionQuery::create(null, $criteria);
+        $query->joinWith('PLCity', $join_behavior);
+
+        return $this->getPDReactions($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PLRegion is new, it will return
+     * an empty collection; or if this PLRegion has previously
+     * been saved, it will retrieve related PDReactions from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PLRegion.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PDReaction[] List of PDReaction objects
+     */
+    public function getPDReactionsJoinPLDepartment($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PDReactionQuery::create(null, $criteria);
+        $query->joinWith('PLDepartment', $join_behavior);
+
+        return $this->getPDReactions($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PLRegion is new, it will return
+     * an empty collection; or if this PLRegion has previously
+     * been saved, it will retrieve related PDReactions from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PLRegion.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PDReaction[] List of PDReaction objects
+     */
+    public function getPDReactionsJoinPLCountry($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PDReactionQuery::create(null, $criteria);
+        $query->joinWith('PLCountry', $join_behavior);
+
+        return $this->getPDReactions($query, $con);
     }
 
     /**
@@ -1322,41 +2208,18 @@ abstract class BasePLRegion extends BaseObject implements Persistent
         return $this;
     }
 
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this PLRegion is new, it will return
-     * an empty collection; or if this PLRegion has previously
-     * been saved, it will retrieve related PLDepartments from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in PLRegion.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|PLDepartment[] List of PLDepartment objects
-     */
-    public function getPLDepartmentsJoinPTag($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = PLDepartmentQuery::create(null, $criteria);
-        $query->joinWith('PTag', $join_behavior);
-
-        return $this->getPLDepartments($query, $con);
-    }
-
     /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
     {
         $this->id = null;
-        $this->p_tag_id = null;
+        $this->p_l_country_id = null;
+        $this->title = null;
         $this->uuid = null;
         $this->created_at = null;
         $this->updated_at = null;
+        $this->slug = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
@@ -1379,23 +2242,41 @@ abstract class BasePLRegion extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
+            if ($this->collPDDebates) {
+                foreach ($this->collPDDebates as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collPDReactions) {
+                foreach ($this->collPDReactions as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collPLDepartments) {
                 foreach ($this->collPLDepartments as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->aPTag instanceof Persistent) {
-              $this->aPTag->clearAllReferences($deep);
+            if ($this->aPLCountry instanceof Persistent) {
+              $this->aPLCountry->clearAllReferences($deep);
             }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
+        if ($this->collPDDebates instanceof PropelCollection) {
+            $this->collPDDebates->clearIterator();
+        }
+        $this->collPDDebates = null;
+        if ($this->collPDReactions instanceof PropelCollection) {
+            $this->collPDReactions->clearIterator();
+        }
+        $this->collPDReactions = null;
         if ($this->collPLDepartments instanceof PropelCollection) {
             $this->collPLDepartments->clearIterator();
         }
         $this->collPLDepartments = null;
-        $this->aPTag = null;
+        $this->aPLCountry = null;
     }
 
     /**
@@ -1430,6 +2311,138 @@ abstract class BasePLRegion extends BaseObject implements Persistent
         $this->modifiedColumns[] = PLRegionPeer::UPDATED_AT;
 
         return $this;
+    }
+
+    // sluggable behavior
+
+    /**
+     * Create a unique slug based on the object
+     *
+     * @return string The object slug
+     */
+    protected function createSlug()
+    {
+        $slug = $this->createRawSlug();
+        $slug = $this->limitSlugSize($slug);
+        $slug = $this->makeSlugUnique($slug);
+
+        return $slug;
+    }
+
+    /**
+     * Create the slug from the appropriate columns
+     *
+     * @return string
+     */
+    protected function createRawSlug()
+    {
+        return '' . $this->cleanupSlugPart($this->gettitle()) . '';
+    }
+
+    /**
+     * Cleanup a string to make a slug of it
+     * Removes special characters, replaces blanks with a separator, and trim it
+     *
+     * @param     string $slug        the text to slugify
+     * @param     string $replacement the separator used by slug
+     * @return    string               the slugified text
+     */
+    protected static function cleanupSlugPart($slug, $replacement = '-')
+    {
+        // transliterate
+        if (function_exists('iconv')) {
+            $slug = iconv('utf-8', 'us-ascii//TRANSLIT', $slug);
+        }
+
+        // lowercase
+        if (function_exists('mb_strtolower')) {
+            $slug = mb_strtolower($slug);
+        } else {
+            $slug = strtolower($slug);
+        }
+
+        // remove accents resulting from OSX's iconv
+        $slug = str_replace(array('\'', '`', '^'), '', $slug);
+
+        // replace non letter or digits with separator
+        $slug = preg_replace('/\W+/', $replacement, $slug);
+
+        // trim
+        $slug = trim($slug, $replacement);
+
+        if (empty($slug)) {
+            return 'n-a';
+        }
+
+        return $slug;
+    }
+
+
+    /**
+     * Make sure the slug is short enough to accommodate the column size
+     *
+     * @param    string $slug                   the slug to check
+     * @param    int    $incrementReservedSpace the number of characters to keep empty
+     *
+     * @return string                            the truncated slug
+     */
+    protected static function limitSlugSize($slug, $incrementReservedSpace = 3)
+    {
+        // check length, as suffix could put it over maximum
+        if (strlen($slug) > (255 - $incrementReservedSpace)) {
+            $slug = substr($slug, 0, 255 - $incrementReservedSpace);
+        }
+
+        return $slug;
+    }
+
+
+    /**
+     * Get the slug, ensuring its uniqueness
+     *
+     * @param    string $slug            the slug to check
+     * @param    string $separator       the separator used by slug
+     * @param    int    $alreadyExists   false for the first try, true for the second, and take the high count + 1
+     * @return   string                   the unique slug
+     */
+    protected function makeSlugUnique($slug, $separator = '-', $alreadyExists = false)
+    {
+        if (!$alreadyExists) {
+            $slug2 = $slug;
+        } else {
+            $slug2 = $slug . $separator;
+        }
+
+         $query = PLRegionQuery::create('q')
+        ->where('q.Slug ' . ($alreadyExists ? 'REGEXP' : '=') . ' ?', $alreadyExists ? '^' . $slug2 . '[0-9]+$' : $slug2)->prune($this)
+        ;
+
+        if (!$alreadyExists) {
+            $count = $query->count();
+            if ($count > 0) {
+                return $this->makeSlugUnique($slug, $separator, true);
+            }
+
+            return $slug2;
+        }
+
+        // Already exists
+        $object = $query
+            ->addDescendingOrderByColumn('LENGTH(slug)')
+            ->addDescendingOrderByColumn('slug')
+        ->findOne();
+
+        // First duplicate slug
+        if (null == $object) {
+            return $slug2 . '1';
+        }
+
+        $slugNum = substr($object->getSlug(), strlen($slug) + 1);
+        if ('0' === $slugNum[0]) {
+            $slugNum[0] = 1;
+        }
+
+        return $slug2 . ($slugNum + 1);
     }
 
     // uuid behavior

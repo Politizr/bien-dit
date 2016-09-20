@@ -9,11 +9,12 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
+use Politizr\Model\PDDebatePeer;
+use Politizr\Model\PDReactionPeer;
 use Politizr\Model\PLCityPeer;
 use Politizr\Model\PLDepartment;
 use Politizr\Model\PLDepartmentPeer;
 use Politizr\Model\PLRegionPeer;
-use Politizr\Model\PTagPeer;
 use Politizr\Model\map\PLDepartmentTableMap;
 
 abstract class BasePLDepartmentPeer
@@ -32,13 +33,13 @@ abstract class BasePLDepartmentPeer
     const TM_CLASS = 'Politizr\\Model\\map\\PLDepartmentTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 7;
+    const NUM_COLUMNS = 8;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 7;
+    const NUM_HYDRATE_COLUMNS = 8;
 
     /** the column name for the id field */
     const ID = 'p_l_department.id';
@@ -46,11 +47,11 @@ abstract class BasePLDepartmentPeer
     /** the column name for the p_l_region_id field */
     const P_L_REGION_ID = 'p_l_department.p_l_region_id';
 
-    /** the column name for the p_tag_id field */
-    const P_TAG_ID = 'p_l_department.p_tag_id';
-
     /** the column name for the code field */
     const CODE = 'p_l_department.code';
+
+    /** the column name for the title field */
+    const TITLE = 'p_l_department.title';
 
     /** the column name for the uuid field */
     const UUID = 'p_l_department.uuid';
@@ -60,6 +61,9 @@ abstract class BasePLDepartmentPeer
 
     /** the column name for the updated_at field */
     const UPDATED_AT = 'p_l_department.updated_at';
+
+    /** the column name for the slug field */
+    const SLUG = 'p_l_department.slug';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -80,12 +84,12 @@ abstract class BasePLDepartmentPeer
      * e.g. PLDepartmentPeer::$fieldNames[PLDepartmentPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'PLRegionId', 'PTagId', 'Code', 'Uuid', 'CreatedAt', 'UpdatedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pLRegionId', 'pTagId', 'code', 'uuid', 'createdAt', 'updatedAt', ),
-        BasePeer::TYPE_COLNAME => array (PLDepartmentPeer::ID, PLDepartmentPeer::P_L_REGION_ID, PLDepartmentPeer::P_TAG_ID, PLDepartmentPeer::CODE, PLDepartmentPeer::UUID, PLDepartmentPeer::CREATED_AT, PLDepartmentPeer::UPDATED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_L_REGION_ID', 'P_TAG_ID', 'CODE', 'UUID', 'CREATED_AT', 'UPDATED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'p_l_region_id', 'p_tag_id', 'code', 'uuid', 'created_at', 'updated_at', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'PLRegionId', 'Code', 'Title', 'Uuid', 'CreatedAt', 'UpdatedAt', 'Slug', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pLRegionId', 'code', 'title', 'uuid', 'createdAt', 'updatedAt', 'slug', ),
+        BasePeer::TYPE_COLNAME => array (PLDepartmentPeer::ID, PLDepartmentPeer::P_L_REGION_ID, PLDepartmentPeer::CODE, PLDepartmentPeer::TITLE, PLDepartmentPeer::UUID, PLDepartmentPeer::CREATED_AT, PLDepartmentPeer::UPDATED_AT, PLDepartmentPeer::SLUG, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_L_REGION_ID', 'CODE', 'TITLE', 'UUID', 'CREATED_AT', 'UPDATED_AT', 'SLUG', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'p_l_region_id', 'code', 'title', 'uuid', 'created_at', 'updated_at', 'slug', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
     /**
@@ -95,12 +99,12 @@ abstract class BasePLDepartmentPeer
      * e.g. PLDepartmentPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PLRegionId' => 1, 'PTagId' => 2, 'Code' => 3, 'Uuid' => 4, 'CreatedAt' => 5, 'UpdatedAt' => 6, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pLRegionId' => 1, 'pTagId' => 2, 'code' => 3, 'uuid' => 4, 'createdAt' => 5, 'updatedAt' => 6, ),
-        BasePeer::TYPE_COLNAME => array (PLDepartmentPeer::ID => 0, PLDepartmentPeer::P_L_REGION_ID => 1, PLDepartmentPeer::P_TAG_ID => 2, PLDepartmentPeer::CODE => 3, PLDepartmentPeer::UUID => 4, PLDepartmentPeer::CREATED_AT => 5, PLDepartmentPeer::UPDATED_AT => 6, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_L_REGION_ID' => 1, 'P_TAG_ID' => 2, 'CODE' => 3, 'UUID' => 4, 'CREATED_AT' => 5, 'UPDATED_AT' => 6, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_l_region_id' => 1, 'p_tag_id' => 2, 'code' => 3, 'uuid' => 4, 'created_at' => 5, 'updated_at' => 6, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PLRegionId' => 1, 'Code' => 2, 'Title' => 3, 'Uuid' => 4, 'CreatedAt' => 5, 'UpdatedAt' => 6, 'Slug' => 7, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pLRegionId' => 1, 'code' => 2, 'title' => 3, 'uuid' => 4, 'createdAt' => 5, 'updatedAt' => 6, 'slug' => 7, ),
+        BasePeer::TYPE_COLNAME => array (PLDepartmentPeer::ID => 0, PLDepartmentPeer::P_L_REGION_ID => 1, PLDepartmentPeer::CODE => 2, PLDepartmentPeer::TITLE => 3, PLDepartmentPeer::UUID => 4, PLDepartmentPeer::CREATED_AT => 5, PLDepartmentPeer::UPDATED_AT => 6, PLDepartmentPeer::SLUG => 7, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_L_REGION_ID' => 1, 'CODE' => 2, 'TITLE' => 3, 'UUID' => 4, 'CREATED_AT' => 5, 'UPDATED_AT' => 6, 'SLUG' => 7, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_l_region_id' => 1, 'code' => 2, 'title' => 3, 'uuid' => 4, 'created_at' => 5, 'updated_at' => 6, 'slug' => 7, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
     /**
@@ -176,19 +180,21 @@ abstract class BasePLDepartmentPeer
         if (null === $alias) {
             $criteria->addSelectColumn(PLDepartmentPeer::ID);
             $criteria->addSelectColumn(PLDepartmentPeer::P_L_REGION_ID);
-            $criteria->addSelectColumn(PLDepartmentPeer::P_TAG_ID);
             $criteria->addSelectColumn(PLDepartmentPeer::CODE);
+            $criteria->addSelectColumn(PLDepartmentPeer::TITLE);
             $criteria->addSelectColumn(PLDepartmentPeer::UUID);
             $criteria->addSelectColumn(PLDepartmentPeer::CREATED_AT);
             $criteria->addSelectColumn(PLDepartmentPeer::UPDATED_AT);
+            $criteria->addSelectColumn(PLDepartmentPeer::SLUG);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.p_l_region_id');
-            $criteria->addSelectColumn($alias . '.p_tag_id');
             $criteria->addSelectColumn($alias . '.code');
+            $criteria->addSelectColumn($alias . '.title');
             $criteria->addSelectColumn($alias . '.uuid');
             $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
+            $criteria->addSelectColumn($alias . '.slug');
         }
     }
 
@@ -393,6 +399,12 @@ abstract class BasePLDepartmentPeer
      */
     public static function clearRelatedInstancePool()
     {
+        // Invalidate objects in PDDebatePeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PDDebatePeer::clearInstancePool();
+        // Invalidate objects in PDReactionPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PDReactionPeer::clearInstancePool();
         // Invalidate objects in PLCityPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PLCityPeer::clearInstancePool();
@@ -545,57 +557,6 @@ abstract class BasePLDepartmentPeer
 
 
     /**
-     * Returns the number of rows matching criteria, joining the related PTag table
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return int Number of matching rows.
-     */
-    public static function doCountJoinPTag(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        // we're going to modify criteria, so copy it first
-        $criteria = clone $criteria;
-
-        // We need to set the primary table name, since in the case that there are no WHERE columns
-        // it will be impossible for the BasePeer::createSelectSql() method to determine which
-        // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(PLDepartmentPeer::TABLE_NAME);
-
-        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
-            $criteria->setDistinct();
-        }
-
-        if (!$criteria->hasSelectClause()) {
-            PLDepartmentPeer::addSelectColumns($criteria);
-        }
-
-        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-
-        // Set the correct dbName
-        $criteria->setDbName(PLDepartmentPeer::DATABASE_NAME);
-
-        if ($con === null) {
-            $con = Propel::getConnection(PLDepartmentPeer::DATABASE_NAME, Propel::CONNECTION_READ);
-        }
-
-        $criteria->addJoin(PLDepartmentPeer::P_TAG_ID, PTagPeer::ID, $join_behavior);
-
-        $stmt = BasePeer::doCount($criteria, $con);
-
-        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $count = (int) $row[0];
-        } else {
-            $count = 0; // no rows returned; we infer that means 0 matches.
-        }
-        $stmt->closeCursor();
-
-        return $count;
-    }
-
-
-    /**
      * Selects a collection of PLDepartment objects pre-filled with their PLRegion objects.
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
@@ -663,73 +624,6 @@ abstract class BasePLDepartmentPeer
 
 
     /**
-     * Selects a collection of PLDepartment objects pre-filled with their PTag objects.
-     * @param      Criteria  $criteria
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of PLDepartment objects.
-     * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
-     */
-    public static function doSelectJoinPTag(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $criteria = clone $criteria;
-
-        // Set the correct dbName if it has not been overridden
-        if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(PLDepartmentPeer::DATABASE_NAME);
-        }
-
-        PLDepartmentPeer::addSelectColumns($criteria);
-        $startcol = PLDepartmentPeer::NUM_HYDRATE_COLUMNS;
-        PTagPeer::addSelectColumns($criteria);
-
-        $criteria->addJoin(PLDepartmentPeer::P_TAG_ID, PTagPeer::ID, $join_behavior);
-
-        $stmt = BasePeer::doSelect($criteria, $con);
-        $results = array();
-
-        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = PLDepartmentPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = PLDepartmentPeer::getInstanceFromPool($key1))) {
-                // We no longer rehydrate the object, since this can cause data loss.
-                // See http://www.propelorm.org/ticket/509
-                // $obj1->hydrate($row, 0, true); // rehydrate
-            } else {
-
-                $cls = PLDepartmentPeer::getOMClass();
-
-                $obj1 = new $cls();
-                $obj1->hydrate($row);
-                PLDepartmentPeer::addInstanceToPool($obj1, $key1);
-            } // if $obj1 already loaded
-
-            $key2 = PTagPeer::getPrimaryKeyHashFromRow($row, $startcol);
-            if ($key2 !== null) {
-                $obj2 = PTagPeer::getInstanceFromPool($key2);
-                if (!$obj2) {
-
-                    $cls = PTagPeer::getOMClass();
-
-                    $obj2 = new $cls();
-                    $obj2->hydrate($row, $startcol);
-                    PTagPeer::addInstanceToPool($obj2, $key2);
-                } // if obj2 already loaded
-
-                // Add the $obj1 (PLDepartment) to $obj2 (PTag)
-                $obj2->addPLDepartment($obj1);
-
-            } // if joined row was not null
-
-            $results[] = $obj1;
-        }
-        $stmt->closeCursor();
-
-        return $results;
-    }
-
-
-    /**
      * Returns the number of rows matching criteria, joining all related tables
      *
      * @param      Criteria $criteria
@@ -766,8 +660,6 @@ abstract class BasePLDepartmentPeer
         }
 
         $criteria->addJoin(PLDepartmentPeer::P_L_REGION_ID, PLRegionPeer::ID, $join_behavior);
-
-        $criteria->addJoin(PLDepartmentPeer::P_TAG_ID, PTagPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -806,12 +698,7 @@ abstract class BasePLDepartmentPeer
         PLRegionPeer::addSelectColumns($criteria);
         $startcol3 = $startcol2 + PLRegionPeer::NUM_HYDRATE_COLUMNS;
 
-        PTagPeer::addSelectColumns($criteria);
-        $startcol4 = $startcol3 + PTagPeer::NUM_HYDRATE_COLUMNS;
-
         $criteria->addJoin(PLDepartmentPeer::P_L_REGION_ID, PLRegionPeer::ID, $join_behavior);
-
-        $criteria->addJoin(PLDepartmentPeer::P_TAG_ID, PTagPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
@@ -847,274 +734,6 @@ abstract class BasePLDepartmentPeer
                 // Add the $obj1 (PLDepartment) to the collection in $obj2 (PLRegion)
                 $obj2->addPLDepartment($obj1);
             } // if joined row not null
-
-            // Add objects for joined PTag rows
-
-            $key3 = PTagPeer::getPrimaryKeyHashFromRow($row, $startcol3);
-            if ($key3 !== null) {
-                $obj3 = PTagPeer::getInstanceFromPool($key3);
-                if (!$obj3) {
-
-                    $cls = PTagPeer::getOMClass();
-
-                    $obj3 = new $cls();
-                    $obj3->hydrate($row, $startcol3);
-                    PTagPeer::addInstanceToPool($obj3, $key3);
-                } // if obj3 loaded
-
-                // Add the $obj1 (PLDepartment) to the collection in $obj3 (PTag)
-                $obj3->addPLDepartment($obj1);
-            } // if joined row not null
-
-            $results[] = $obj1;
-        }
-        $stmt->closeCursor();
-
-        return $results;
-    }
-
-
-    /**
-     * Returns the number of rows matching criteria, joining the related PLRegion table
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return int Number of matching rows.
-     */
-    public static function doCountJoinAllExceptPLRegion(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        // we're going to modify criteria, so copy it first
-        $criteria = clone $criteria;
-
-        // We need to set the primary table name, since in the case that there are no WHERE columns
-        // it will be impossible for the BasePeer::createSelectSql() method to determine which
-        // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(PLDepartmentPeer::TABLE_NAME);
-
-        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
-            $criteria->setDistinct();
-        }
-
-        if (!$criteria->hasSelectClause()) {
-            PLDepartmentPeer::addSelectColumns($criteria);
-        }
-
-        $criteria->clearOrderByColumns(); // ORDER BY should not affect count
-
-        // Set the correct dbName
-        $criteria->setDbName(PLDepartmentPeer::DATABASE_NAME);
-
-        if ($con === null) {
-            $con = Propel::getConnection(PLDepartmentPeer::DATABASE_NAME, Propel::CONNECTION_READ);
-        }
-
-        $criteria->addJoin(PLDepartmentPeer::P_TAG_ID, PTagPeer::ID, $join_behavior);
-
-        $stmt = BasePeer::doCount($criteria, $con);
-
-        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $count = (int) $row[0];
-        } else {
-            $count = 0; // no rows returned; we infer that means 0 matches.
-        }
-        $stmt->closeCursor();
-
-        return $count;
-    }
-
-
-    /**
-     * Returns the number of rows matching criteria, joining the related PTag table
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return int Number of matching rows.
-     */
-    public static function doCountJoinAllExceptPTag(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        // we're going to modify criteria, so copy it first
-        $criteria = clone $criteria;
-
-        // We need to set the primary table name, since in the case that there are no WHERE columns
-        // it will be impossible for the BasePeer::createSelectSql() method to determine which
-        // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(PLDepartmentPeer::TABLE_NAME);
-
-        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
-            $criteria->setDistinct();
-        }
-
-        if (!$criteria->hasSelectClause()) {
-            PLDepartmentPeer::addSelectColumns($criteria);
-        }
-
-        $criteria->clearOrderByColumns(); // ORDER BY should not affect count
-
-        // Set the correct dbName
-        $criteria->setDbName(PLDepartmentPeer::DATABASE_NAME);
-
-        if ($con === null) {
-            $con = Propel::getConnection(PLDepartmentPeer::DATABASE_NAME, Propel::CONNECTION_READ);
-        }
-
-        $criteria->addJoin(PLDepartmentPeer::P_L_REGION_ID, PLRegionPeer::ID, $join_behavior);
-
-        $stmt = BasePeer::doCount($criteria, $con);
-
-        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $count = (int) $row[0];
-        } else {
-            $count = 0; // no rows returned; we infer that means 0 matches.
-        }
-        $stmt->closeCursor();
-
-        return $count;
-    }
-
-
-    /**
-     * Selects a collection of PLDepartment objects pre-filled with all related objects except PLRegion.
-     *
-     * @param      Criteria  $criteria
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of PLDepartment objects.
-     * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
-     */
-    public static function doSelectJoinAllExceptPLRegion(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $criteria = clone $criteria;
-
-        // Set the correct dbName if it has not been overridden
-        // $criteria->getDbName() will return the same object if not set to another value
-        // so == check is okay and faster
-        if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(PLDepartmentPeer::DATABASE_NAME);
-        }
-
-        PLDepartmentPeer::addSelectColumns($criteria);
-        $startcol2 = PLDepartmentPeer::NUM_HYDRATE_COLUMNS;
-
-        PTagPeer::addSelectColumns($criteria);
-        $startcol3 = $startcol2 + PTagPeer::NUM_HYDRATE_COLUMNS;
-
-        $criteria->addJoin(PLDepartmentPeer::P_TAG_ID, PTagPeer::ID, $join_behavior);
-
-
-        $stmt = BasePeer::doSelect($criteria, $con);
-        $results = array();
-
-        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = PLDepartmentPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = PLDepartmentPeer::getInstanceFromPool($key1))) {
-                // We no longer rehydrate the object, since this can cause data loss.
-                // See http://www.propelorm.org/ticket/509
-                // $obj1->hydrate($row, 0, true); // rehydrate
-            } else {
-                $cls = PLDepartmentPeer::getOMClass();
-
-                $obj1 = new $cls();
-                $obj1->hydrate($row);
-                PLDepartmentPeer::addInstanceToPool($obj1, $key1);
-            } // if obj1 already loaded
-
-                // Add objects for joined PTag rows
-
-                $key2 = PTagPeer::getPrimaryKeyHashFromRow($row, $startcol2);
-                if ($key2 !== null) {
-                    $obj2 = PTagPeer::getInstanceFromPool($key2);
-                    if (!$obj2) {
-
-                        $cls = PTagPeer::getOMClass();
-
-                    $obj2 = new $cls();
-                    $obj2->hydrate($row, $startcol2);
-                    PTagPeer::addInstanceToPool($obj2, $key2);
-                } // if $obj2 already loaded
-
-                // Add the $obj1 (PLDepartment) to the collection in $obj2 (PTag)
-                $obj2->addPLDepartment($obj1);
-
-            } // if joined row is not null
-
-            $results[] = $obj1;
-        }
-        $stmt->closeCursor();
-
-        return $results;
-    }
-
-
-    /**
-     * Selects a collection of PLDepartment objects pre-filled with all related objects except PTag.
-     *
-     * @param      Criteria  $criteria
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of PLDepartment objects.
-     * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
-     */
-    public static function doSelectJoinAllExceptPTag(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $criteria = clone $criteria;
-
-        // Set the correct dbName if it has not been overridden
-        // $criteria->getDbName() will return the same object if not set to another value
-        // so == check is okay and faster
-        if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(PLDepartmentPeer::DATABASE_NAME);
-        }
-
-        PLDepartmentPeer::addSelectColumns($criteria);
-        $startcol2 = PLDepartmentPeer::NUM_HYDRATE_COLUMNS;
-
-        PLRegionPeer::addSelectColumns($criteria);
-        $startcol3 = $startcol2 + PLRegionPeer::NUM_HYDRATE_COLUMNS;
-
-        $criteria->addJoin(PLDepartmentPeer::P_L_REGION_ID, PLRegionPeer::ID, $join_behavior);
-
-
-        $stmt = BasePeer::doSelect($criteria, $con);
-        $results = array();
-
-        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = PLDepartmentPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = PLDepartmentPeer::getInstanceFromPool($key1))) {
-                // We no longer rehydrate the object, since this can cause data loss.
-                // See http://www.propelorm.org/ticket/509
-                // $obj1->hydrate($row, 0, true); // rehydrate
-            } else {
-                $cls = PLDepartmentPeer::getOMClass();
-
-                $obj1 = new $cls();
-                $obj1->hydrate($row);
-                PLDepartmentPeer::addInstanceToPool($obj1, $key1);
-            } // if obj1 already loaded
-
-                // Add objects for joined PLRegion rows
-
-                $key2 = PLRegionPeer::getPrimaryKeyHashFromRow($row, $startcol2);
-                if ($key2 !== null) {
-                    $obj2 = PLRegionPeer::getInstanceFromPool($key2);
-                    if (!$obj2) {
-
-                        $cls = PLRegionPeer::getOMClass();
-
-                    $obj2 = new $cls();
-                    $obj2->hydrate($row, $startcol2);
-                    PLRegionPeer::addInstanceToPool($obj2, $key2);
-                } // if $obj2 already loaded
-
-                // Add the $obj1 (PLDepartment) to the collection in $obj2 (PLRegion)
-                $obj2->addPLDepartment($obj1);
-
-            } // if joined row is not null
 
             $results[] = $obj1;
         }

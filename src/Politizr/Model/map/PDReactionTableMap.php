@@ -47,6 +47,10 @@ class PDReactionTableMap extends TableMap
         $this->addForeignKey('p_user_id', 'PUserId', 'INTEGER', 'p_user', 'id', false, null, null);
         $this->addForeignKey('p_d_debate_id', 'PDDebateId', 'INTEGER', 'p_d_debate', 'id', true, null, null);
         $this->addColumn('parent_reaction_id', 'ParentReactionId', 'INTEGER', false, null, null);
+        $this->addForeignKey('p_l_city_id', 'PLCityId', 'INTEGER', 'p_l_city', 'id', false, null, null);
+        $this->addForeignKey('p_l_department_id', 'PLDepartmentId', 'INTEGER', 'p_l_department', 'id', false, null, null);
+        $this->addForeignKey('p_l_region_id', 'PLRegionId', 'INTEGER', 'p_l_region', 'id', false, null, null);
+        $this->addForeignKey('p_l_country_id', 'PLCountryId', 'INTEGER', 'p_l_country', 'id', false, null, null);
         $this->addColumn('title', 'Title', 'VARCHAR', false, 100, null);
         $this->addColumn('file_name', 'FileName', 'VARCHAR', false, 150, null);
         $this->addColumn('copyright', 'Copyright', 'LONGVARCHAR', false, null, null);
@@ -79,6 +83,10 @@ class PDReactionTableMap extends TableMap
     {
         $this->addRelation('PUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_ONE, array('p_user_id' => 'id', ), 'SET NULL', 'CASCADE');
         $this->addRelation('PDDebate', 'Politizr\\Model\\PDDebate', RelationMap::MANY_TO_ONE, array('p_d_debate_id' => 'id', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('PLCity', 'Politizr\\Model\\PLCity', RelationMap::MANY_TO_ONE, array('p_l_city_id' => 'id', ), 'SET NULL', 'CASCADE');
+        $this->addRelation('PLDepartment', 'Politizr\\Model\\PLDepartment', RelationMap::MANY_TO_ONE, array('p_l_department_id' => 'id', ), 'SET NULL', 'CASCADE');
+        $this->addRelation('PLRegion', 'Politizr\\Model\\PLRegion', RelationMap::MANY_TO_ONE, array('p_l_region_id' => 'id', ), 'SET NULL', 'CASCADE');
+        $this->addRelation('PLCountry', 'Politizr\\Model\\PLCountry', RelationMap::MANY_TO_ONE, array('p_l_country_id' => 'id', ), 'SET NULL', 'CASCADE');
         $this->addRelation('PuBookmarkDrPDReaction', 'Politizr\\Model\\PUBookmarkDR', RelationMap::ONE_TO_MANY, array('id' => 'p_d_reaction_id', ), 'CASCADE', 'CASCADE', 'PuBookmarkDrPDReactions');
         $this->addRelation('PuTrackDrPDReaction', 'Politizr\\Model\\PUTrackDR', RelationMap::ONE_TO_MANY, array('id' => 'p_d_reaction_id', ), 'CASCADE', 'CASCADE', 'PuTrackDrPDReactions');
         $this->addRelation('PDRComment', 'Politizr\\Model\\PDRComment', RelationMap::ONE_TO_MANY, array('id' => 'p_d_reaction_id', ), 'CASCADE', 'CASCADE', 'PDRComments');

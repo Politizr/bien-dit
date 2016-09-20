@@ -3,23 +3,25 @@
  * /!\ only used w. shorcut 'my region' / 'my deparment' / 'my city'
  *
  * @param uuid
+ * @param type
  */
-function mapMenu(uuid) {
+function mapMenu(uuid, type) {
     // console.log('*** mapMenu');
     // console.log(uuid);
+    // console.log(type);
 
     localLoader = $('#mapMenu').find('.ajaxLoader').first();
 
     var xhrPath = getXhrPath(
         ROUTE_MAP_BREADCRUMB,
-        'tag',
+        'localization',
         'mapMenu',
         RETURN_HTML
     );
 
     return xhrCall(
         document,
-        { 'uuid': uuid },
+        { 'uuid': uuid, 'type': type },
         xhrPath,
         localLoader
     ).done(function(data) {
@@ -37,23 +39,25 @@ function mapMenu(uuid) {
  * Update map breadcrumb
  *
  * @param uuid
+ * @param type
  */
-function mapBreadcrumb(uuid) {
+function mapBreadcrumb(uuid, type) {
     // console.log('*** mapBreadcrumb');
     // console.log(uuid);
+    // console.log(type);
 
     localLoader = $('#mapBreadcrumb').find('.ajaxLoader').first();
 
     var xhrPath = getXhrPath(
         ROUTE_MAP_BREADCRUMB,
-        'tag',
+        'localization',
         'mapBreadcrumb',
         RETURN_HTML
     );
 
     return xhrCall(
         document,
-        { 'uuid': uuid },
+        { 'uuid': uuid, 'type': type },
         xhrPath,
         localLoader
     ).done(function(data) {
@@ -71,23 +75,25 @@ function mapBreadcrumb(uuid) {
  * Update map schema
  *
  * @param uuid
+ * @param type
  */
-function mapSchema(uuid) {
+function mapSchema(uuid, type) {
     // console.log('*** mapSchema');
     // console.log(uuid);
+    // console.log(type);
 
     localLoader = $('#mapHolder').find('.ajaxLoader').first();
 
     var xhrPath = getXhrPath(
         ROUTE_MAP_SCHEMA,
-        'tag',
+        'localization',
         'mapSchema',
         RETURN_HTML
     );
 
     return xhrCall(
         document,
-        { 'uuid': uuid },
+        { 'uuid': uuid, 'type': type },
         xhrPath,
         localLoader
     ).done(function(data) {

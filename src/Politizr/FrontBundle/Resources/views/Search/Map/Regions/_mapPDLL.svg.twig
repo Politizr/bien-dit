@@ -3,7 +3,7 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 width="280px" height="156.695px" viewBox="0 0 280 156.695" enable-background="new 0 0 280 156.695" xml:space="preserve">
-<a action="map" uuid="{{ mapTagUuids['mayenne'] }}">
+<a action="map" type="{{ constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') }}" uuid="{{ mapUuids['mayenne'] }}">
     <path {% if current == 'mayenne' %}class="selected"{% endif %} id="mayenne" fill="#818089" d="M178.802,11.555V8.434l-3.097-1.425c-0.139-0.062-0.24-0.18-0.287-0.322l-2.123-6.461
 	L171.062,0l-0.693,2.697c-0.061,0.239-0.273,0.406-0.521,0.406H159.62l-7.593,3.598c-0.176,0.082-0.375,0.064-0.534-0.042
 	l-2.544-1.722l-2.436,1.624c-0.221,0.147-0.521,0.112-0.701-0.087l-3.602-3.994l-9.055-0.942l-0.097,13.304
@@ -13,7 +13,7 @@
 	c-0.043-0.156-0.015-0.324,0.084-0.456l6.112-8.581l-1.512-3.681c-0.089-0.21-0.033-0.451,0.135-0.604l5.399-4.916l-1.271-2.994
 	c-0.092-0.215-0.033-0.462,0.139-0.615l4.879-4.294l-0.291-7.654c-0.008-0.19,0.085-0.37,0.246-0.473L178.802,11.555z"/>
 </a>
-<a action="map" uuid="{{ mapTagUuids['loireAtlantique'] }}">
+<a action="map" type="{{ constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') }}" uuid="{{ mapUuids['loireAtlantique'] }}">
     <path {% if current == 'loireAtlantique' %}class="selected"{% endif %} id="loireAtlantique" fill="#818089" d="M79.25,96.616l12.298,12.703l12.463,5.322l0.277-10.06
 	c0.008-0.274,0.219-0.502,0.497-0.521l3.859-0.304c0.151-0.007,0.295,0.039,0.409,0.142c0.109,0.104,0.172,0.247,0.172,0.396v3.378
 	l2.065,1.509l2.19-1.95l-0.464-3.057c-0.042-0.274,0.131-0.533,0.396-0.605l3.35-0.859l1.613-2.553
@@ -28,7 +28,7 @@
 	l-7.403,2.825l-0.678,7.169c-0.018,0.195-0.14,0.363-0.32,0.441l-2.216,0.981l5.43,1.976C79.123,96.513,79.195,96.558,79.25,96.616z
 	"/>
 </a>
-<a action="map" uuid="{{ mapTagUuids['vendee'] }}">
+<a action="map" type="{{ constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') }}" uuid="{{ mapUuids['vendee'] }}">
     <path {% if current == 'vendee' %}class="selected"{% endif %} id="vendee" fill="#818089" d="M132.259,153.927l6.426-0.271c0.117-0.004,0.235,0.029,0.333,0.099l2.477,1.743l9.29-4.553
 	l-2.166-1.703c-0.135-0.104-0.215-0.271-0.205-0.442l0.298-8.338l-5.417-20.267l-4.664-4.562c-0.055-0.055-0.098-0.118-0.123-0.19
 	l-2.448-6.262l-11.935-4.279c-0.051-0.017-0.094-0.039-0.135-0.068l-5.01-3.617l-1.42,2.251c-0.072,0.114-0.189,0.196-0.32,0.231
@@ -40,7 +40,7 @@
 	c0.089,0.018,0.169,0.056,0.236,0.109l4.727,3.834l0.599-2.328c0.067-0.268,0.337-0.439,0.606-0.396l3.102,0.48l9.908-3.803
 	c0.207-0.08,0.438-0.025,0.587,0.135c0.15,0.158,0.189,0.395,0.101,0.592L132.259,153.927z"/>
 </a>
-<a action="map" uuid="{{ mapTagUuids['sarthe'] }}">
+<a action="map" type="{{ constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') }}" uuid="{{ mapUuids['sarthe'] }}">
     <path {% if current == 'sarthe' %}class="selected"{% endif %} id="sarthe" fill="#818089" d="M210.346,56.215l3.459-1.153l6.913-11.753l-0.388-5.966l-1.833-2.513
 	c-0.149-0.212-0.136-0.502,0.047-0.69l2.136-2.226l0.422-1.779l-2.217-3.869l-3.412-0.759c-0.108-0.025-0.209-0.085-0.285-0.173
 	l-3.31-3.774l-2.894,1.085c-0.166,0.063-0.353,0.04-0.494-0.06l-8.324-5.681c-0.117-0.082-0.202-0.208-0.227-0.351l-1.674-9.38
@@ -52,7 +52,7 @@
 	c0.113-0.123,0.285-0.175,0.445-0.169l3.067,0.289l8.063-4.684l0.689-2.465l0.273-1.52
 	C210.021,56.437,210.159,56.278,210.346,56.215z"/>
 </a>
-<a action="map" uuid="{{ mapTagUuids['maineEtLoire'] }}">
+<a action="map" type="{{ constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') }}" uuid="{{ mapUuids['maineEtLoire'] }}">
     <path {% if current == 'maineEtLoire' %}class="selected"{% endif %} id="maineEtLoire" fill="#818089" d="M172.061,100.714c0.174-0.002,0.306,0.059,0.41,0.173l2.178,2.345l6.959-6.312
 	c0.004-0.006,0.004-0.012,0.01-0.018l6.59-17.445l1.898-10.453l0.633-2.206h-7.711c-0.101,0-0.2-0.03-0.291-0.084l-5.646-3.604
 	l-3.29,1.317c-0.193,0.08-0.418,0.037-0.572-0.111l-2.338-2.229c-0.099-0.096-0.156-0.226-0.166-0.362l-0.177-3.438l-7.086,0.096

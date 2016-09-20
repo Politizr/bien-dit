@@ -19,6 +19,10 @@ use Politizr\Model\PDDebate;
 use Politizr\Model\PDDebatePeer;
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReaction;
+use Politizr\Model\PLCity;
+use Politizr\Model\PLCountry;
+use Politizr\Model\PLDepartment;
+use Politizr\Model\PLRegion;
 use Politizr\Model\PMDebateHistoric;
 use Politizr\Model\PTag;
 use Politizr\Model\PUBookmarkDD;
@@ -30,6 +34,10 @@ use Politizr\Model\PUser;
  * @method PDDebateQuery orderById($order = Criteria::ASC) Order by the id column
  * @method PDDebateQuery orderByUuid($order = Criteria::ASC) Order by the uuid column
  * @method PDDebateQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
+ * @method PDDebateQuery orderByPLCityId($order = Criteria::ASC) Order by the p_l_city_id column
+ * @method PDDebateQuery orderByPLDepartmentId($order = Criteria::ASC) Order by the p_l_department_id column
+ * @method PDDebateQuery orderByPLRegionId($order = Criteria::ASC) Order by the p_l_region_id column
+ * @method PDDebateQuery orderByPLCountryId($order = Criteria::ASC) Order by the p_l_country_id column
  * @method PDDebateQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method PDDebateQuery orderByFileName($order = Criteria::ASC) Order by the file_name column
  * @method PDDebateQuery orderByCopyright($order = Criteria::ASC) Order by the copyright column
@@ -53,6 +61,10 @@ use Politizr\Model\PUser;
  * @method PDDebateQuery groupById() Group by the id column
  * @method PDDebateQuery groupByUuid() Group by the uuid column
  * @method PDDebateQuery groupByPUserId() Group by the p_user_id column
+ * @method PDDebateQuery groupByPLCityId() Group by the p_l_city_id column
+ * @method PDDebateQuery groupByPLDepartmentId() Group by the p_l_department_id column
+ * @method PDDebateQuery groupByPLRegionId() Group by the p_l_region_id column
+ * @method PDDebateQuery groupByPLCountryId() Group by the p_l_country_id column
  * @method PDDebateQuery groupByTitle() Group by the title column
  * @method PDDebateQuery groupByFileName() Group by the file_name column
  * @method PDDebateQuery groupByCopyright() Group by the copyright column
@@ -80,6 +92,22 @@ use Politizr\Model\PUser;
  * @method PDDebateQuery leftJoinPUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUser relation
  * @method PDDebateQuery rightJoinPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUser relation
  * @method PDDebateQuery innerJoinPUser($relationAlias = null) Adds a INNER JOIN clause to the query using the PUser relation
+ *
+ * @method PDDebateQuery leftJoinPLCity($relationAlias = null) Adds a LEFT JOIN clause to the query using the PLCity relation
+ * @method PDDebateQuery rightJoinPLCity($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PLCity relation
+ * @method PDDebateQuery innerJoinPLCity($relationAlias = null) Adds a INNER JOIN clause to the query using the PLCity relation
+ *
+ * @method PDDebateQuery leftJoinPLDepartment($relationAlias = null) Adds a LEFT JOIN clause to the query using the PLDepartment relation
+ * @method PDDebateQuery rightJoinPLDepartment($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PLDepartment relation
+ * @method PDDebateQuery innerJoinPLDepartment($relationAlias = null) Adds a INNER JOIN clause to the query using the PLDepartment relation
+ *
+ * @method PDDebateQuery leftJoinPLRegion($relationAlias = null) Adds a LEFT JOIN clause to the query using the PLRegion relation
+ * @method PDDebateQuery rightJoinPLRegion($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PLRegion relation
+ * @method PDDebateQuery innerJoinPLRegion($relationAlias = null) Adds a INNER JOIN clause to the query using the PLRegion relation
+ *
+ * @method PDDebateQuery leftJoinPLCountry($relationAlias = null) Adds a LEFT JOIN clause to the query using the PLCountry relation
+ * @method PDDebateQuery rightJoinPLCountry($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PLCountry relation
+ * @method PDDebateQuery innerJoinPLCountry($relationAlias = null) Adds a INNER JOIN clause to the query using the PLCountry relation
  *
  * @method PDDebateQuery leftJoinPuFollowDdPDDebate($relationAlias = null) Adds a LEFT JOIN clause to the query using the PuFollowDdPDDebate relation
  * @method PDDebateQuery rightJoinPuFollowDdPDDebate($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PuFollowDdPDDebate relation
@@ -114,6 +142,10 @@ use Politizr\Model\PUser;
  *
  * @method PDDebate findOneByUuid(string $uuid) Return the first PDDebate filtered by the uuid column
  * @method PDDebate findOneByPUserId(int $p_user_id) Return the first PDDebate filtered by the p_user_id column
+ * @method PDDebate findOneByPLCityId(int $p_l_city_id) Return the first PDDebate filtered by the p_l_city_id column
+ * @method PDDebate findOneByPLDepartmentId(int $p_l_department_id) Return the first PDDebate filtered by the p_l_department_id column
+ * @method PDDebate findOneByPLRegionId(int $p_l_region_id) Return the first PDDebate filtered by the p_l_region_id column
+ * @method PDDebate findOneByPLCountryId(int $p_l_country_id) Return the first PDDebate filtered by the p_l_country_id column
  * @method PDDebate findOneByTitle(string $title) Return the first PDDebate filtered by the title column
  * @method PDDebate findOneByFileName(string $file_name) Return the first PDDebate filtered by the file_name column
  * @method PDDebate findOneByCopyright(string $copyright) Return the first PDDebate filtered by the copyright column
@@ -137,6 +169,10 @@ use Politizr\Model\PUser;
  * @method array findById(int $id) Return PDDebate objects filtered by the id column
  * @method array findByUuid(string $uuid) Return PDDebate objects filtered by the uuid column
  * @method array findByPUserId(int $p_user_id) Return PDDebate objects filtered by the p_user_id column
+ * @method array findByPLCityId(int $p_l_city_id) Return PDDebate objects filtered by the p_l_city_id column
+ * @method array findByPLDepartmentId(int $p_l_department_id) Return PDDebate objects filtered by the p_l_department_id column
+ * @method array findByPLRegionId(int $p_l_region_id) Return PDDebate objects filtered by the p_l_region_id column
+ * @method array findByPLCountryId(int $p_l_country_id) Return PDDebate objects filtered by the p_l_country_id column
  * @method array findByTitle(string $title) Return PDDebate objects filtered by the title column
  * @method array findByFileName(string $file_name) Return PDDebate objects filtered by the file_name column
  * @method array findByCopyright(string $copyright) Return PDDebate objects filtered by the copyright column
@@ -267,7 +303,7 @@ abstract class BasePDDebateQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `title`, `file_name`, `copyright`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `homepage`, `moderated`, `moderated_partial`, `moderated_at`, `created_at`, `updated_at`, `slug` FROM `p_d_debate` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `p_l_city_id`, `p_l_department_id`, `p_l_region_id`, `p_l_country_id`, `title`, `file_name`, `copyright`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `homepage`, `moderated`, `moderated_partial`, `moderated_at`, `created_at`, `updated_at`, `slug` FROM `p_d_debate` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -469,6 +505,182 @@ abstract class BasePDDebateQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDDebatePeer::P_USER_ID, $pUserId, $comparison);
+    }
+
+    /**
+     * Filter the query on the p_l_city_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPLCityId(1234); // WHERE p_l_city_id = 1234
+     * $query->filterByPLCityId(array(12, 34)); // WHERE p_l_city_id IN (12, 34)
+     * $query->filterByPLCityId(array('min' => 12)); // WHERE p_l_city_id >= 12
+     * $query->filterByPLCityId(array('max' => 12)); // WHERE p_l_city_id <= 12
+     * </code>
+     *
+     * @see       filterByPLCity()
+     *
+     * @param     mixed $pLCityId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDDebateQuery The current query, for fluid interface
+     */
+    public function filterByPLCityId($pLCityId = null, $comparison = null)
+    {
+        if (is_array($pLCityId)) {
+            $useMinMax = false;
+            if (isset($pLCityId['min'])) {
+                $this->addUsingAlias(PDDebatePeer::P_L_CITY_ID, $pLCityId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($pLCityId['max'])) {
+                $this->addUsingAlias(PDDebatePeer::P_L_CITY_ID, $pLCityId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PDDebatePeer::P_L_CITY_ID, $pLCityId, $comparison);
+    }
+
+    /**
+     * Filter the query on the p_l_department_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPLDepartmentId(1234); // WHERE p_l_department_id = 1234
+     * $query->filterByPLDepartmentId(array(12, 34)); // WHERE p_l_department_id IN (12, 34)
+     * $query->filterByPLDepartmentId(array('min' => 12)); // WHERE p_l_department_id >= 12
+     * $query->filterByPLDepartmentId(array('max' => 12)); // WHERE p_l_department_id <= 12
+     * </code>
+     *
+     * @see       filterByPLDepartment()
+     *
+     * @param     mixed $pLDepartmentId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDDebateQuery The current query, for fluid interface
+     */
+    public function filterByPLDepartmentId($pLDepartmentId = null, $comparison = null)
+    {
+        if (is_array($pLDepartmentId)) {
+            $useMinMax = false;
+            if (isset($pLDepartmentId['min'])) {
+                $this->addUsingAlias(PDDebatePeer::P_L_DEPARTMENT_ID, $pLDepartmentId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($pLDepartmentId['max'])) {
+                $this->addUsingAlias(PDDebatePeer::P_L_DEPARTMENT_ID, $pLDepartmentId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PDDebatePeer::P_L_DEPARTMENT_ID, $pLDepartmentId, $comparison);
+    }
+
+    /**
+     * Filter the query on the p_l_region_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPLRegionId(1234); // WHERE p_l_region_id = 1234
+     * $query->filterByPLRegionId(array(12, 34)); // WHERE p_l_region_id IN (12, 34)
+     * $query->filterByPLRegionId(array('min' => 12)); // WHERE p_l_region_id >= 12
+     * $query->filterByPLRegionId(array('max' => 12)); // WHERE p_l_region_id <= 12
+     * </code>
+     *
+     * @see       filterByPLRegion()
+     *
+     * @param     mixed $pLRegionId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDDebateQuery The current query, for fluid interface
+     */
+    public function filterByPLRegionId($pLRegionId = null, $comparison = null)
+    {
+        if (is_array($pLRegionId)) {
+            $useMinMax = false;
+            if (isset($pLRegionId['min'])) {
+                $this->addUsingAlias(PDDebatePeer::P_L_REGION_ID, $pLRegionId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($pLRegionId['max'])) {
+                $this->addUsingAlias(PDDebatePeer::P_L_REGION_ID, $pLRegionId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PDDebatePeer::P_L_REGION_ID, $pLRegionId, $comparison);
+    }
+
+    /**
+     * Filter the query on the p_l_country_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPLCountryId(1234); // WHERE p_l_country_id = 1234
+     * $query->filterByPLCountryId(array(12, 34)); // WHERE p_l_country_id IN (12, 34)
+     * $query->filterByPLCountryId(array('min' => 12)); // WHERE p_l_country_id >= 12
+     * $query->filterByPLCountryId(array('max' => 12)); // WHERE p_l_country_id <= 12
+     * </code>
+     *
+     * @see       filterByPLCountry()
+     *
+     * @param     mixed $pLCountryId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDDebateQuery The current query, for fluid interface
+     */
+    public function filterByPLCountryId($pLCountryId = null, $comparison = null)
+    {
+        if (is_array($pLCountryId)) {
+            $useMinMax = false;
+            if (isset($pLCountryId['min'])) {
+                $this->addUsingAlias(PDDebatePeer::P_L_COUNTRY_ID, $pLCountryId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($pLCountryId['max'])) {
+                $this->addUsingAlias(PDDebatePeer::P_L_COUNTRY_ID, $pLCountryId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PDDebatePeer::P_L_COUNTRY_ID, $pLCountryId, $comparison);
     }
 
     /**
@@ -1179,6 +1391,310 @@ abstract class BasePDDebateQuery extends ModelCriteria
         return $this
             ->joinPUser($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'PUser', '\Politizr\Model\PUserQuery');
+    }
+
+    /**
+     * Filter the query by a related PLCity object
+     *
+     * @param   PLCity|PropelObjectCollection $pLCity The related object(s) to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PDDebateQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPLCity($pLCity, $comparison = null)
+    {
+        if ($pLCity instanceof PLCity) {
+            return $this
+                ->addUsingAlias(PDDebatePeer::P_L_CITY_ID, $pLCity->getId(), $comparison);
+        } elseif ($pLCity instanceof PropelObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(PDDebatePeer::P_L_CITY_ID, $pLCity->toKeyValue('PrimaryKey', 'Id'), $comparison);
+        } else {
+            throw new PropelException('filterByPLCity() only accepts arguments of type PLCity or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PLCity relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PDDebateQuery The current query, for fluid interface
+     */
+    public function joinPLCity($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PLCity');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PLCity');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PLCity relation PLCity object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PLCityQuery A secondary query class using the current class as primary query
+     */
+    public function usePLCityQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinPLCity($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PLCity', '\Politizr\Model\PLCityQuery');
+    }
+
+    /**
+     * Filter the query by a related PLDepartment object
+     *
+     * @param   PLDepartment|PropelObjectCollection $pLDepartment The related object(s) to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PDDebateQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPLDepartment($pLDepartment, $comparison = null)
+    {
+        if ($pLDepartment instanceof PLDepartment) {
+            return $this
+                ->addUsingAlias(PDDebatePeer::P_L_DEPARTMENT_ID, $pLDepartment->getId(), $comparison);
+        } elseif ($pLDepartment instanceof PropelObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(PDDebatePeer::P_L_DEPARTMENT_ID, $pLDepartment->toKeyValue('PrimaryKey', 'Id'), $comparison);
+        } else {
+            throw new PropelException('filterByPLDepartment() only accepts arguments of type PLDepartment or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PLDepartment relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PDDebateQuery The current query, for fluid interface
+     */
+    public function joinPLDepartment($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PLDepartment');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PLDepartment');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PLDepartment relation PLDepartment object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PLDepartmentQuery A secondary query class using the current class as primary query
+     */
+    public function usePLDepartmentQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinPLDepartment($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PLDepartment', '\Politizr\Model\PLDepartmentQuery');
+    }
+
+    /**
+     * Filter the query by a related PLRegion object
+     *
+     * @param   PLRegion|PropelObjectCollection $pLRegion The related object(s) to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PDDebateQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPLRegion($pLRegion, $comparison = null)
+    {
+        if ($pLRegion instanceof PLRegion) {
+            return $this
+                ->addUsingAlias(PDDebatePeer::P_L_REGION_ID, $pLRegion->getId(), $comparison);
+        } elseif ($pLRegion instanceof PropelObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(PDDebatePeer::P_L_REGION_ID, $pLRegion->toKeyValue('PrimaryKey', 'Id'), $comparison);
+        } else {
+            throw new PropelException('filterByPLRegion() only accepts arguments of type PLRegion or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PLRegion relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PDDebateQuery The current query, for fluid interface
+     */
+    public function joinPLRegion($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PLRegion');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PLRegion');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PLRegion relation PLRegion object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PLRegionQuery A secondary query class using the current class as primary query
+     */
+    public function usePLRegionQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinPLRegion($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PLRegion', '\Politizr\Model\PLRegionQuery');
+    }
+
+    /**
+     * Filter the query by a related PLCountry object
+     *
+     * @param   PLCountry|PropelObjectCollection $pLCountry The related object(s) to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PDDebateQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPLCountry($pLCountry, $comparison = null)
+    {
+        if ($pLCountry instanceof PLCountry) {
+            return $this
+                ->addUsingAlias(PDDebatePeer::P_L_COUNTRY_ID, $pLCountry->getId(), $comparison);
+        } elseif ($pLCountry instanceof PropelObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(PDDebatePeer::P_L_COUNTRY_ID, $pLCountry->toKeyValue('PrimaryKey', 'Id'), $comparison);
+        } else {
+            throw new PropelException('filterByPLCountry() only accepts arguments of type PLCountry or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PLCountry relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PDDebateQuery The current query, for fluid interface
+     */
+    public function joinPLCountry($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PLCountry');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PLCountry');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PLCountry relation PLCountry object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PLCountryQuery A secondary query class using the current class as primary query
+     */
+    public function usePLCountryQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinPLCountry($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PLCountry', '\Politizr\Model\PLCountryQuery');
     }
 
     /**

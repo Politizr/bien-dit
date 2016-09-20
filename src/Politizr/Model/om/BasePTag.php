@@ -23,10 +23,6 @@ use Politizr\Model\PDRTaggedT;
 use Politizr\Model\PDRTaggedTQuery;
 use Politizr\Model\PDReaction;
 use Politizr\Model\PDReactionQuery;
-use Politizr\Model\PLDepartment;
-use Politizr\Model\PLDepartmentQuery;
-use Politizr\Model\PLRegion;
-use Politizr\Model\PLRegionQuery;
 use Politizr\Model\PTTagType;
 use Politizr\Model\PTTagTypeQuery;
 use Politizr\Model\PTag;
@@ -172,18 +168,6 @@ abstract class BasePTag extends BaseObject implements Persistent
     protected $collPDRTaggedTsPartial;
 
     /**
-     * @var        PropelObjectCollection|PLRegion[] Collection to store aggregation of PLRegion objects.
-     */
-    protected $collPLRegions;
-    protected $collPLRegionsPartial;
-
-    /**
-     * @var        PropelObjectCollection|PLDepartment[] Collection to store aggregation of PLDepartment objects.
-     */
-    protected $collPLDepartments;
-    protected $collPLDepartmentsPartial;
-
-    /**
      * @var        PropelObjectCollection|PUser[] Collection to store aggregation of PUser objects.
      */
     protected $collPuTaggedTPUsers;
@@ -262,18 +246,6 @@ abstract class BasePTag extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $pDRTaggedTsScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
-     */
-    protected $pLRegionsScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
-     */
-    protected $pLDepartmentsScheduledForDeletion = null;
 
     /**
      * Get the [id] column value.
@@ -915,10 +887,6 @@ abstract class BasePTag extends BaseObject implements Persistent
 
             $this->collPDRTaggedTs = null;
 
-            $this->collPLRegions = null;
-
-            $this->collPLDepartments = null;
-
             $this->collPuTaggedTPUsers = null;
             $this->collPDDebates = null;
             $this->collPDReactions = null;
@@ -1249,40 +1217,6 @@ abstract class BasePTag extends BaseObject implements Persistent
                 }
             }
 
-            if ($this->pLRegionsScheduledForDeletion !== null) {
-                if (!$this->pLRegionsScheduledForDeletion->isEmpty()) {
-                    PLRegionQuery::create()
-                        ->filterByPrimaryKeys($this->pLRegionsScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->pLRegionsScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collPLRegions !== null) {
-                foreach ($this->collPLRegions as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
-            if ($this->pLDepartmentsScheduledForDeletion !== null) {
-                if (!$this->pLDepartmentsScheduledForDeletion->isEmpty()) {
-                    PLDepartmentQuery::create()
-                        ->filterByPrimaryKeys($this->pLDepartmentsScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->pLDepartmentsScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collPLDepartments !== null) {
-                foreach ($this->collPLDepartments as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
             $this->alreadyInSave = false;
 
         }
@@ -1557,12 +1491,6 @@ abstract class BasePTag extends BaseObject implements Persistent
             if (null !== $this->collPDRTaggedTs) {
                 $result['PDRTaggedTs'] = $this->collPDRTaggedTs->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
-            if (null !== $this->collPLRegions) {
-                $result['PLRegions'] = $this->collPLRegions->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-            if (null !== $this->collPLDepartments) {
-                $result['PLDepartments'] = $this->collPLDepartments->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
         }
 
         return $result;
@@ -1798,18 +1726,6 @@ abstract class BasePTag extends BaseObject implements Persistent
                 }
             }
 
-            foreach ($this->getPLRegions() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addPLRegion($relObj->copy($deepCopy));
-                }
-            }
-
-            foreach ($this->getPLDepartments() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addPLDepartment($relObj->copy($deepCopy));
-                }
-            }
-
             //unflag object copy
             $this->startCopy = false;
         } // if ($deepCopy)
@@ -2038,12 +1954,6 @@ abstract class BasePTag extends BaseObject implements Persistent
         }
         if ('PDRTaggedT' == $relationName) {
             $this->initPDRTaggedTs();
-        }
-        if ('PLRegion' == $relationName) {
-            $this->initPLRegions();
-        }
-        if ('PLDepartment' == $relationName) {
-            $this->initPLDepartments();
         }
     }
 
@@ -3073,481 +2983,6 @@ abstract class BasePTag extends BaseObject implements Persistent
     }
 
     /**
-     * Clears out the collPLRegions collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return PTag The current object (for fluent API support)
-     * @see        addPLRegions()
-     */
-    public function clearPLRegions()
-    {
-        $this->collPLRegions = null; // important to set this to null since that means it is uninitialized
-        $this->collPLRegionsPartial = null;
-
-        return $this;
-    }
-
-    /**
-     * reset is the collPLRegions collection loaded partially
-     *
-     * @return void
-     */
-    public function resetPartialPLRegions($v = true)
-    {
-        $this->collPLRegionsPartial = $v;
-    }
-
-    /**
-     * Initializes the collPLRegions collection.
-     *
-     * By default this just sets the collPLRegions collection to an empty array (like clearcollPLRegions());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initPLRegions($overrideExisting = true)
-    {
-        if (null !== $this->collPLRegions && !$overrideExisting) {
-            return;
-        }
-        $this->collPLRegions = new PropelObjectCollection();
-        $this->collPLRegions->setModel('PLRegion');
-    }
-
-    /**
-     * Gets an array of PLRegion objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this PTag is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|PLRegion[] List of PLRegion objects
-     * @throws PropelException
-     */
-    public function getPLRegions($criteria = null, PropelPDO $con = null)
-    {
-        $partial = $this->collPLRegionsPartial && !$this->isNew();
-        if (null === $this->collPLRegions || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collPLRegions) {
-                // return empty collection
-                $this->initPLRegions();
-            } else {
-                $collPLRegions = PLRegionQuery::create(null, $criteria)
-                    ->filterByPTag($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    if (false !== $this->collPLRegionsPartial && count($collPLRegions)) {
-                      $this->initPLRegions(false);
-
-                      foreach ($collPLRegions as $obj) {
-                        if (false == $this->collPLRegions->contains($obj)) {
-                          $this->collPLRegions->append($obj);
-                        }
-                      }
-
-                      $this->collPLRegionsPartial = true;
-                    }
-
-                    $collPLRegions->getInternalIterator()->rewind();
-
-                    return $collPLRegions;
-                }
-
-                if ($partial && $this->collPLRegions) {
-                    foreach ($this->collPLRegions as $obj) {
-                        if ($obj->isNew()) {
-                            $collPLRegions[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collPLRegions = $collPLRegions;
-                $this->collPLRegionsPartial = false;
-            }
-        }
-
-        return $this->collPLRegions;
-    }
-
-    /**
-     * Sets a collection of PLRegion objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $pLRegions A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     * @return PTag The current object (for fluent API support)
-     */
-    public function setPLRegions(PropelCollection $pLRegions, PropelPDO $con = null)
-    {
-        $pLRegionsToDelete = $this->getPLRegions(new Criteria(), $con)->diff($pLRegions);
-
-
-        $this->pLRegionsScheduledForDeletion = $pLRegionsToDelete;
-
-        foreach ($pLRegionsToDelete as $pLRegionRemoved) {
-            $pLRegionRemoved->setPTag(null);
-        }
-
-        $this->collPLRegions = null;
-        foreach ($pLRegions as $pLRegion) {
-            $this->addPLRegion($pLRegion);
-        }
-
-        $this->collPLRegions = $pLRegions;
-        $this->collPLRegionsPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related PLRegion objects.
-     *
-     * @param Criteria $criteria
-     * @param boolean $distinct
-     * @param PropelPDO $con
-     * @return int             Count of related PLRegion objects.
-     * @throws PropelException
-     */
-    public function countPLRegions(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        $partial = $this->collPLRegionsPartial && !$this->isNew();
-        if (null === $this->collPLRegions || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collPLRegions) {
-                return 0;
-            }
-
-            if ($partial && !$criteria) {
-                return count($this->getPLRegions());
-            }
-            $query = PLRegionQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByPTag($this)
-                ->count($con);
-        }
-
-        return count($this->collPLRegions);
-    }
-
-    /**
-     * Method called to associate a PLRegion object to this object
-     * through the PLRegion foreign key attribute.
-     *
-     * @param    PLRegion $l PLRegion
-     * @return PTag The current object (for fluent API support)
-     */
-    public function addPLRegion(PLRegion $l)
-    {
-        if ($this->collPLRegions === null) {
-            $this->initPLRegions();
-            $this->collPLRegionsPartial = true;
-        }
-
-        if (!in_array($l, $this->collPLRegions->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddPLRegion($l);
-
-            if ($this->pLRegionsScheduledForDeletion and $this->pLRegionsScheduledForDeletion->contains($l)) {
-                $this->pLRegionsScheduledForDeletion->remove($this->pLRegionsScheduledForDeletion->search($l));
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param	PLRegion $pLRegion The pLRegion object to add.
-     */
-    protected function doAddPLRegion($pLRegion)
-    {
-        $this->collPLRegions[]= $pLRegion;
-        $pLRegion->setPTag($this);
-    }
-
-    /**
-     * @param	PLRegion $pLRegion The pLRegion object to remove.
-     * @return PTag The current object (for fluent API support)
-     */
-    public function removePLRegion($pLRegion)
-    {
-        if ($this->getPLRegions()->contains($pLRegion)) {
-            $this->collPLRegions->remove($this->collPLRegions->search($pLRegion));
-            if (null === $this->pLRegionsScheduledForDeletion) {
-                $this->pLRegionsScheduledForDeletion = clone $this->collPLRegions;
-                $this->pLRegionsScheduledForDeletion->clear();
-            }
-            $this->pLRegionsScheduledForDeletion[]= clone $pLRegion;
-            $pLRegion->setPTag(null);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Clears out the collPLDepartments collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return PTag The current object (for fluent API support)
-     * @see        addPLDepartments()
-     */
-    public function clearPLDepartments()
-    {
-        $this->collPLDepartments = null; // important to set this to null since that means it is uninitialized
-        $this->collPLDepartmentsPartial = null;
-
-        return $this;
-    }
-
-    /**
-     * reset is the collPLDepartments collection loaded partially
-     *
-     * @return void
-     */
-    public function resetPartialPLDepartments($v = true)
-    {
-        $this->collPLDepartmentsPartial = $v;
-    }
-
-    /**
-     * Initializes the collPLDepartments collection.
-     *
-     * By default this just sets the collPLDepartments collection to an empty array (like clearcollPLDepartments());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initPLDepartments($overrideExisting = true)
-    {
-        if (null !== $this->collPLDepartments && !$overrideExisting) {
-            return;
-        }
-        $this->collPLDepartments = new PropelObjectCollection();
-        $this->collPLDepartments->setModel('PLDepartment');
-    }
-
-    /**
-     * Gets an array of PLDepartment objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this PTag is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|PLDepartment[] List of PLDepartment objects
-     * @throws PropelException
-     */
-    public function getPLDepartments($criteria = null, PropelPDO $con = null)
-    {
-        $partial = $this->collPLDepartmentsPartial && !$this->isNew();
-        if (null === $this->collPLDepartments || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collPLDepartments) {
-                // return empty collection
-                $this->initPLDepartments();
-            } else {
-                $collPLDepartments = PLDepartmentQuery::create(null, $criteria)
-                    ->filterByPTag($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    if (false !== $this->collPLDepartmentsPartial && count($collPLDepartments)) {
-                      $this->initPLDepartments(false);
-
-                      foreach ($collPLDepartments as $obj) {
-                        if (false == $this->collPLDepartments->contains($obj)) {
-                          $this->collPLDepartments->append($obj);
-                        }
-                      }
-
-                      $this->collPLDepartmentsPartial = true;
-                    }
-
-                    $collPLDepartments->getInternalIterator()->rewind();
-
-                    return $collPLDepartments;
-                }
-
-                if ($partial && $this->collPLDepartments) {
-                    foreach ($this->collPLDepartments as $obj) {
-                        if ($obj->isNew()) {
-                            $collPLDepartments[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collPLDepartments = $collPLDepartments;
-                $this->collPLDepartmentsPartial = false;
-            }
-        }
-
-        return $this->collPLDepartments;
-    }
-
-    /**
-     * Sets a collection of PLDepartment objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $pLDepartments A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     * @return PTag The current object (for fluent API support)
-     */
-    public function setPLDepartments(PropelCollection $pLDepartments, PropelPDO $con = null)
-    {
-        $pLDepartmentsToDelete = $this->getPLDepartments(new Criteria(), $con)->diff($pLDepartments);
-
-
-        $this->pLDepartmentsScheduledForDeletion = $pLDepartmentsToDelete;
-
-        foreach ($pLDepartmentsToDelete as $pLDepartmentRemoved) {
-            $pLDepartmentRemoved->setPTag(null);
-        }
-
-        $this->collPLDepartments = null;
-        foreach ($pLDepartments as $pLDepartment) {
-            $this->addPLDepartment($pLDepartment);
-        }
-
-        $this->collPLDepartments = $pLDepartments;
-        $this->collPLDepartmentsPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related PLDepartment objects.
-     *
-     * @param Criteria $criteria
-     * @param boolean $distinct
-     * @param PropelPDO $con
-     * @return int             Count of related PLDepartment objects.
-     * @throws PropelException
-     */
-    public function countPLDepartments(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        $partial = $this->collPLDepartmentsPartial && !$this->isNew();
-        if (null === $this->collPLDepartments || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collPLDepartments) {
-                return 0;
-            }
-
-            if ($partial && !$criteria) {
-                return count($this->getPLDepartments());
-            }
-            $query = PLDepartmentQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByPTag($this)
-                ->count($con);
-        }
-
-        return count($this->collPLDepartments);
-    }
-
-    /**
-     * Method called to associate a PLDepartment object to this object
-     * through the PLDepartment foreign key attribute.
-     *
-     * @param    PLDepartment $l PLDepartment
-     * @return PTag The current object (for fluent API support)
-     */
-    public function addPLDepartment(PLDepartment $l)
-    {
-        if ($this->collPLDepartments === null) {
-            $this->initPLDepartments();
-            $this->collPLDepartmentsPartial = true;
-        }
-
-        if (!in_array($l, $this->collPLDepartments->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddPLDepartment($l);
-
-            if ($this->pLDepartmentsScheduledForDeletion and $this->pLDepartmentsScheduledForDeletion->contains($l)) {
-                $this->pLDepartmentsScheduledForDeletion->remove($this->pLDepartmentsScheduledForDeletion->search($l));
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param	PLDepartment $pLDepartment The pLDepartment object to add.
-     */
-    protected function doAddPLDepartment($pLDepartment)
-    {
-        $this->collPLDepartments[]= $pLDepartment;
-        $pLDepartment->setPTag($this);
-    }
-
-    /**
-     * @param	PLDepartment $pLDepartment The pLDepartment object to remove.
-     * @return PTag The current object (for fluent API support)
-     */
-    public function removePLDepartment($pLDepartment)
-    {
-        if ($this->getPLDepartments()->contains($pLDepartment)) {
-            $this->collPLDepartments->remove($this->collPLDepartments->search($pLDepartment));
-            if (null === $this->pLDepartmentsScheduledForDeletion) {
-                $this->pLDepartmentsScheduledForDeletion = clone $this->collPLDepartments;
-                $this->pLDepartmentsScheduledForDeletion->clear();
-            }
-            $this->pLDepartmentsScheduledForDeletion[]= clone $pLDepartment;
-            $pLDepartment->setPTag(null);
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this PTag is new, it will return
-     * an empty collection; or if this PTag has previously
-     * been saved, it will retrieve related PLDepartments from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in PTag.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|PLDepartment[] List of PLDepartment objects
-     */
-    public function getPLDepartmentsJoinPLRegion($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = PLDepartmentQuery::create(null, $criteria);
-        $query->joinWith('PLRegion', $join_behavior);
-
-        return $this->getPLDepartments($query, $con);
-    }
-
-    /**
      * Clears out the collPuTaggedTPUsers collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
@@ -4167,16 +3602,6 @@ abstract class BasePTag extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collPLRegions) {
-                foreach ($this->collPLRegions as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
-            if ($this->collPLDepartments) {
-                foreach ($this->collPLDepartments as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
             if ($this->collPuTaggedTPUsers) {
                 foreach ($this->collPuTaggedTPUsers as $o) {
                     $o->clearAllReferences($deep);
@@ -4221,14 +3646,6 @@ abstract class BasePTag extends BaseObject implements Persistent
             $this->collPDRTaggedTs->clearIterator();
         }
         $this->collPDRTaggedTs = null;
-        if ($this->collPLRegions instanceof PropelCollection) {
-            $this->collPLRegions->clearIterator();
-        }
-        $this->collPLRegions = null;
-        if ($this->collPLDepartments instanceof PropelCollection) {
-            $this->collPLDepartments->clearIterator();
-        }
-        $this->collPLDepartments = null;
         if ($this->collPuTaggedTPUsers instanceof PropelCollection) {
             $this->collPuTaggedTPUsers->clearIterator();
         }

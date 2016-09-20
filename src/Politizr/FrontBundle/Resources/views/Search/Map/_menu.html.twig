@@ -1,4 +1,4 @@
 {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
 
-<span action="map" uuid="{{ franceTag.uuid }}"{% if not fom %} class="active"{% endif %}>France</span>
-<span action="map" uuid="{{ fomTag.uuid }}"{% if fom %}class="active"{% endif %}>France d'Outre-Mer</span>
+<span action="map" type="{{ constant('Politizr\\Constant\\LocalizationConstants::TYPE_COUNTRY') }}" uuid="{{ france.uuid }}"{% if not isFom %} class="active"{% endif %}>France</span>
+<span action="map" type="{{ constant('Politizr\\Constant\\LocalizationConstants::TYPE_REGION') }}" uuid="{{ fom.uuid }}"{% if isFom %}class="active"{% endif %}>France d'Outre-Mer</span>

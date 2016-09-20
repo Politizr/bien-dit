@@ -80,9 +80,7 @@ class LocalizationManager
         // department list
         $departments = PLDepartmentQuery::create()
             ->distinct()
-            ->withColumn('p_tag.title', 'title')
             ->select(array('uuid', 'title'))
-            ->joinPTag()
             ->orderBy('title')
             ->find()
             ->toArray();

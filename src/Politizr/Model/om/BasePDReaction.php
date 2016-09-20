@@ -27,6 +27,14 @@ use Politizr\Model\PDReactionArchive;
 use Politizr\Model\PDReactionArchiveQuery;
 use Politizr\Model\PDReactionPeer;
 use Politizr\Model\PDReactionQuery;
+use Politizr\Model\PLCity;
+use Politizr\Model\PLCityQuery;
+use Politizr\Model\PLCountry;
+use Politizr\Model\PLCountryQuery;
+use Politizr\Model\PLDepartment;
+use Politizr\Model\PLDepartmentQuery;
+use Politizr\Model\PLRegion;
+use Politizr\Model\PLRegionQuery;
 use Politizr\Model\PMReactionHistoric;
 use Politizr\Model\PMReactionHistoricQuery;
 use Politizr\Model\PTag;
@@ -88,6 +96,30 @@ abstract class BasePDReaction extends BaseObject implements Persistent
      * @var        int
      */
     protected $parent_reaction_id;
+
+    /**
+     * The value for the p_l_city_id field.
+     * @var        int
+     */
+    protected $p_l_city_id;
+
+    /**
+     * The value for the p_l_department_id field.
+     * @var        int
+     */
+    protected $p_l_department_id;
+
+    /**
+     * The value for the p_l_region_id field.
+     * @var        int
+     */
+    protected $p_l_region_id;
+
+    /**
+     * The value for the p_l_country_id field.
+     * @var        int
+     */
+    protected $p_l_country_id;
 
     /**
      * The value for the title field.
@@ -232,6 +264,26 @@ abstract class BasePDReaction extends BaseObject implements Persistent
      * @var        PDDebate
      */
     protected $aPDDebate;
+
+    /**
+     * @var        PLCity
+     */
+    protected $aPLCity;
+
+    /**
+     * @var        PLDepartment
+     */
+    protected $aPLDepartment;
+
+    /**
+     * @var        PLRegion
+     */
+    protected $aPLRegion;
+
+    /**
+     * @var        PLCountry
+     */
+    protected $aPLCountry;
 
     /**
      * @var        PropelObjectCollection|PUBookmarkDR[] Collection to store aggregation of PUBookmarkDR objects.
@@ -445,6 +497,50 @@ abstract class BasePDReaction extends BaseObject implements Persistent
     {
 
         return $this->parent_reaction_id;
+    }
+
+    /**
+     * Get the [p_l_city_id] column value.
+     *
+     * @return int
+     */
+    public function getPLCityId()
+    {
+
+        return $this->p_l_city_id;
+    }
+
+    /**
+     * Get the [p_l_department_id] column value.
+     *
+     * @return int
+     */
+    public function getPLDepartmentId()
+    {
+
+        return $this->p_l_department_id;
+    }
+
+    /**
+     * Get the [p_l_region_id] column value.
+     *
+     * @return int
+     */
+    public function getPLRegionId()
+    {
+
+        return $this->p_l_region_id;
+    }
+
+    /**
+     * Get the [p_l_country_id] column value.
+     *
+     * @return int
+     */
+    public function getPLCountryId()
+    {
+
+        return $this->p_l_country_id;
     }
 
     /**
@@ -917,6 +1013,106 @@ abstract class BasePDReaction extends BaseObject implements Persistent
 
         return $this;
     } // setParentReactionId()
+
+    /**
+     * Set the value of [p_l_city_id] column.
+     *
+     * @param  int $v new value
+     * @return PDReaction The current object (for fluent API support)
+     */
+    public function setPLCityId($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->p_l_city_id !== $v) {
+            $this->p_l_city_id = $v;
+            $this->modifiedColumns[] = PDReactionPeer::P_L_CITY_ID;
+        }
+
+        if ($this->aPLCity !== null && $this->aPLCity->getId() !== $v) {
+            $this->aPLCity = null;
+        }
+
+
+        return $this;
+    } // setPLCityId()
+
+    /**
+     * Set the value of [p_l_department_id] column.
+     *
+     * @param  int $v new value
+     * @return PDReaction The current object (for fluent API support)
+     */
+    public function setPLDepartmentId($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->p_l_department_id !== $v) {
+            $this->p_l_department_id = $v;
+            $this->modifiedColumns[] = PDReactionPeer::P_L_DEPARTMENT_ID;
+        }
+
+        if ($this->aPLDepartment !== null && $this->aPLDepartment->getId() !== $v) {
+            $this->aPLDepartment = null;
+        }
+
+
+        return $this;
+    } // setPLDepartmentId()
+
+    /**
+     * Set the value of [p_l_region_id] column.
+     *
+     * @param  int $v new value
+     * @return PDReaction The current object (for fluent API support)
+     */
+    public function setPLRegionId($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->p_l_region_id !== $v) {
+            $this->p_l_region_id = $v;
+            $this->modifiedColumns[] = PDReactionPeer::P_L_REGION_ID;
+        }
+
+        if ($this->aPLRegion !== null && $this->aPLRegion->getId() !== $v) {
+            $this->aPLRegion = null;
+        }
+
+
+        return $this;
+    } // setPLRegionId()
+
+    /**
+     * Set the value of [p_l_country_id] column.
+     *
+     * @param  int $v new value
+     * @return PDReaction The current object (for fluent API support)
+     */
+    public function setPLCountryId($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->p_l_country_id !== $v) {
+            $this->p_l_country_id = $v;
+            $this->modifiedColumns[] = PDReactionPeer::P_L_COUNTRY_ID;
+        }
+
+        if ($this->aPLCountry !== null && $this->aPLCountry->getId() !== $v) {
+            $this->aPLCountry = null;
+        }
+
+
+        return $this;
+    } // setPLCountryId()
 
     /**
      * Set the value of [title] column.
@@ -1481,28 +1677,32 @@ abstract class BasePDReaction extends BaseObject implements Persistent
             $this->p_user_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
             $this->p_d_debate_id = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
             $this->parent_reaction_id = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
-            $this->title = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->file_name = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
-            $this->copyright = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-            $this->description = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
-            $this->note_pos = ($row[$startcol + 9] !== null) ? (int) $row[$startcol + 9] : null;
-            $this->note_neg = ($row[$startcol + 10] !== null) ? (int) $row[$startcol + 10] : null;
-            $this->nb_views = ($row[$startcol + 11] !== null) ? (int) $row[$startcol + 11] : null;
-            $this->published = ($row[$startcol + 12] !== null) ? (boolean) $row[$startcol + 12] : null;
-            $this->published_at = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
-            $this->published_by = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
-            $this->favorite = ($row[$startcol + 15] !== null) ? (boolean) $row[$startcol + 15] : null;
-            $this->online = ($row[$startcol + 16] !== null) ? (boolean) $row[$startcol + 16] : null;
-            $this->homepage = ($row[$startcol + 17] !== null) ? (boolean) $row[$startcol + 17] : null;
-            $this->moderated = ($row[$startcol + 18] !== null) ? (boolean) $row[$startcol + 18] : null;
-            $this->moderated_partial = ($row[$startcol + 19] !== null) ? (boolean) $row[$startcol + 19] : null;
-            $this->moderated_at = ($row[$startcol + 20] !== null) ? (string) $row[$startcol + 20] : null;
-            $this->created_at = ($row[$startcol + 21] !== null) ? (string) $row[$startcol + 21] : null;
-            $this->updated_at = ($row[$startcol + 22] !== null) ? (string) $row[$startcol + 22] : null;
-            $this->slug = ($row[$startcol + 23] !== null) ? (string) $row[$startcol + 23] : null;
-            $this->tree_left = ($row[$startcol + 24] !== null) ? (int) $row[$startcol + 24] : null;
-            $this->tree_right = ($row[$startcol + 25] !== null) ? (int) $row[$startcol + 25] : null;
-            $this->tree_level = ($row[$startcol + 26] !== null) ? (int) $row[$startcol + 26] : null;
+            $this->p_l_city_id = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
+            $this->p_l_department_id = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
+            $this->p_l_region_id = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
+            $this->p_l_country_id = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
+            $this->title = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+            $this->file_name = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+            $this->copyright = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+            $this->description = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+            $this->note_pos = ($row[$startcol + 13] !== null) ? (int) $row[$startcol + 13] : null;
+            $this->note_neg = ($row[$startcol + 14] !== null) ? (int) $row[$startcol + 14] : null;
+            $this->nb_views = ($row[$startcol + 15] !== null) ? (int) $row[$startcol + 15] : null;
+            $this->published = ($row[$startcol + 16] !== null) ? (boolean) $row[$startcol + 16] : null;
+            $this->published_at = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
+            $this->published_by = ($row[$startcol + 18] !== null) ? (string) $row[$startcol + 18] : null;
+            $this->favorite = ($row[$startcol + 19] !== null) ? (boolean) $row[$startcol + 19] : null;
+            $this->online = ($row[$startcol + 20] !== null) ? (boolean) $row[$startcol + 20] : null;
+            $this->homepage = ($row[$startcol + 21] !== null) ? (boolean) $row[$startcol + 21] : null;
+            $this->moderated = ($row[$startcol + 22] !== null) ? (boolean) $row[$startcol + 22] : null;
+            $this->moderated_partial = ($row[$startcol + 23] !== null) ? (boolean) $row[$startcol + 23] : null;
+            $this->moderated_at = ($row[$startcol + 24] !== null) ? (string) $row[$startcol + 24] : null;
+            $this->created_at = ($row[$startcol + 25] !== null) ? (string) $row[$startcol + 25] : null;
+            $this->updated_at = ($row[$startcol + 26] !== null) ? (string) $row[$startcol + 26] : null;
+            $this->slug = ($row[$startcol + 27] !== null) ? (string) $row[$startcol + 27] : null;
+            $this->tree_left = ($row[$startcol + 28] !== null) ? (int) $row[$startcol + 28] : null;
+            $this->tree_right = ($row[$startcol + 29] !== null) ? (int) $row[$startcol + 29] : null;
+            $this->tree_level = ($row[$startcol + 30] !== null) ? (int) $row[$startcol + 30] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -1512,7 +1712,7 @@ abstract class BasePDReaction extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 27; // 27 = PDReactionPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 31; // 31 = PDReactionPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PDReaction object", $e);
@@ -1540,6 +1740,18 @@ abstract class BasePDReaction extends BaseObject implements Persistent
         }
         if ($this->aPDDebate !== null && $this->p_d_debate_id !== $this->aPDDebate->getId()) {
             $this->aPDDebate = null;
+        }
+        if ($this->aPLCity !== null && $this->p_l_city_id !== $this->aPLCity->getId()) {
+            $this->aPLCity = null;
+        }
+        if ($this->aPLDepartment !== null && $this->p_l_department_id !== $this->aPLDepartment->getId()) {
+            $this->aPLDepartment = null;
+        }
+        if ($this->aPLRegion !== null && $this->p_l_region_id !== $this->aPLRegion->getId()) {
+            $this->aPLRegion = null;
+        }
+        if ($this->aPLCountry !== null && $this->p_l_country_id !== $this->aPLCountry->getId()) {
+            $this->aPLCountry = null;
         }
     } // ensureConsistency
 
@@ -1582,6 +1794,10 @@ abstract class BasePDReaction extends BaseObject implements Persistent
 
             $this->aPUser = null;
             $this->aPDDebate = null;
+            $this->aPLCity = null;
+            $this->aPLDepartment = null;
+            $this->aPLRegion = null;
+            $this->aPLCountry = null;
             $this->collPuBookmarkDrPDReactions = null;
 
             $this->collPuTrackDrPDReactions = null;
@@ -1782,6 +1998,34 @@ abstract class BasePDReaction extends BaseObject implements Persistent
                     $affectedRows += $this->aPDDebate->save($con);
                 }
                 $this->setPDDebate($this->aPDDebate);
+            }
+
+            if ($this->aPLCity !== null) {
+                if ($this->aPLCity->isModified() || $this->aPLCity->isNew()) {
+                    $affectedRows += $this->aPLCity->save($con);
+                }
+                $this->setPLCity($this->aPLCity);
+            }
+
+            if ($this->aPLDepartment !== null) {
+                if ($this->aPLDepartment->isModified() || $this->aPLDepartment->isNew()) {
+                    $affectedRows += $this->aPLDepartment->save($con);
+                }
+                $this->setPLDepartment($this->aPLDepartment);
+            }
+
+            if ($this->aPLRegion !== null) {
+                if ($this->aPLRegion->isModified() || $this->aPLRegion->isNew()) {
+                    $affectedRows += $this->aPLRegion->save($con);
+                }
+                $this->setPLRegion($this->aPLRegion);
+            }
+
+            if ($this->aPLCountry !== null) {
+                if ($this->aPLCountry->isModified() || $this->aPLCountry->isNew()) {
+                    $affectedRows += $this->aPLCountry->save($con);
+                }
+                $this->setPLCountry($this->aPLCountry);
             }
 
             if ($this->isNew() || $this->isModified()) {
@@ -2000,6 +2244,18 @@ abstract class BasePDReaction extends BaseObject implements Persistent
         if ($this->isColumnModified(PDReactionPeer::PARENT_REACTION_ID)) {
             $modifiedColumns[':p' . $index++]  = '`parent_reaction_id`';
         }
+        if ($this->isColumnModified(PDReactionPeer::P_L_CITY_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`p_l_city_id`';
+        }
+        if ($this->isColumnModified(PDReactionPeer::P_L_DEPARTMENT_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`p_l_department_id`';
+        }
+        if ($this->isColumnModified(PDReactionPeer::P_L_REGION_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`p_l_region_id`';
+        }
+        if ($this->isColumnModified(PDReactionPeer::P_L_COUNTRY_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`p_l_country_id`';
+        }
         if ($this->isColumnModified(PDReactionPeer::TITLE)) {
             $modifiedColumns[':p' . $index++]  = '`title`';
         }
@@ -2091,6 +2347,18 @@ abstract class BasePDReaction extends BaseObject implements Persistent
                         break;
                     case '`parent_reaction_id`':
                         $stmt->bindValue($identifier, $this->parent_reaction_id, PDO::PARAM_INT);
+                        break;
+                    case '`p_l_city_id`':
+                        $stmt->bindValue($identifier, $this->p_l_city_id, PDO::PARAM_INT);
+                        break;
+                    case '`p_l_department_id`':
+                        $stmt->bindValue($identifier, $this->p_l_department_id, PDO::PARAM_INT);
+                        break;
+                    case '`p_l_region_id`':
+                        $stmt->bindValue($identifier, $this->p_l_region_id, PDO::PARAM_INT);
+                        break;
+                    case '`p_l_country_id`':
+                        $stmt->bindValue($identifier, $this->p_l_country_id, PDO::PARAM_INT);
                         break;
                     case '`title`':
                         $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
@@ -2234,69 +2502,81 @@ abstract class BasePDReaction extends BaseObject implements Persistent
                 return $this->getParentReactionId();
                 break;
             case 5:
-                return $this->getTitle();
+                return $this->getPLCityId();
                 break;
             case 6:
-                return $this->getFileName();
+                return $this->getPLDepartmentId();
                 break;
             case 7:
-                return $this->getCopyright();
+                return $this->getPLRegionId();
                 break;
             case 8:
-                return $this->getDescription();
+                return $this->getPLCountryId();
                 break;
             case 9:
-                return $this->getNotePos();
+                return $this->getTitle();
                 break;
             case 10:
-                return $this->getNoteNeg();
+                return $this->getFileName();
                 break;
             case 11:
-                return $this->getNbViews();
+                return $this->getCopyright();
                 break;
             case 12:
-                return $this->getPublished();
+                return $this->getDescription();
                 break;
             case 13:
-                return $this->getPublishedAt();
+                return $this->getNotePos();
                 break;
             case 14:
-                return $this->getPublishedBy();
+                return $this->getNoteNeg();
                 break;
             case 15:
-                return $this->getFavorite();
+                return $this->getNbViews();
                 break;
             case 16:
-                return $this->getOnline();
+                return $this->getPublished();
                 break;
             case 17:
-                return $this->getHomepage();
+                return $this->getPublishedAt();
                 break;
             case 18:
-                return $this->getModerated();
+                return $this->getPublishedBy();
                 break;
             case 19:
-                return $this->getModeratedPartial();
+                return $this->getFavorite();
                 break;
             case 20:
-                return $this->getModeratedAt();
+                return $this->getOnline();
                 break;
             case 21:
-                return $this->getCreatedAt();
+                return $this->getHomepage();
                 break;
             case 22:
-                return $this->getUpdatedAt();
+                return $this->getModerated();
                 break;
             case 23:
-                return $this->getSlug();
+                return $this->getModeratedPartial();
                 break;
             case 24:
-                return $this->getTreeLeft();
+                return $this->getModeratedAt();
                 break;
             case 25:
-                return $this->getTreeRight();
+                return $this->getCreatedAt();
                 break;
             case 26:
+                return $this->getUpdatedAt();
+                break;
+            case 27:
+                return $this->getSlug();
+                break;
+            case 28:
+                return $this->getTreeLeft();
+                break;
+            case 29:
+                return $this->getTreeRight();
+                break;
+            case 30:
                 return $this->getTreeLevel();
                 break;
             default:
@@ -2333,28 +2613,32 @@ abstract class BasePDReaction extends BaseObject implements Persistent
             $keys[2] => $this->getPUserId(),
             $keys[3] => $this->getPDDebateId(),
             $keys[4] => $this->getParentReactionId(),
-            $keys[5] => $this->getTitle(),
-            $keys[6] => $this->getFileName(),
-            $keys[7] => $this->getCopyright(),
-            $keys[8] => $this->getDescription(),
-            $keys[9] => $this->getNotePos(),
-            $keys[10] => $this->getNoteNeg(),
-            $keys[11] => $this->getNbViews(),
-            $keys[12] => $this->getPublished(),
-            $keys[13] => $this->getPublishedAt(),
-            $keys[14] => $this->getPublishedBy(),
-            $keys[15] => $this->getFavorite(),
-            $keys[16] => $this->getOnline(),
-            $keys[17] => $this->getHomepage(),
-            $keys[18] => $this->getModerated(),
-            $keys[19] => $this->getModeratedPartial(),
-            $keys[20] => $this->getModeratedAt(),
-            $keys[21] => $this->getCreatedAt(),
-            $keys[22] => $this->getUpdatedAt(),
-            $keys[23] => $this->getSlug(),
-            $keys[24] => $this->getTreeLeft(),
-            $keys[25] => $this->getTreeRight(),
-            $keys[26] => $this->getTreeLevel(),
+            $keys[5] => $this->getPLCityId(),
+            $keys[6] => $this->getPLDepartmentId(),
+            $keys[7] => $this->getPLRegionId(),
+            $keys[8] => $this->getPLCountryId(),
+            $keys[9] => $this->getTitle(),
+            $keys[10] => $this->getFileName(),
+            $keys[11] => $this->getCopyright(),
+            $keys[12] => $this->getDescription(),
+            $keys[13] => $this->getNotePos(),
+            $keys[14] => $this->getNoteNeg(),
+            $keys[15] => $this->getNbViews(),
+            $keys[16] => $this->getPublished(),
+            $keys[17] => $this->getPublishedAt(),
+            $keys[18] => $this->getPublishedBy(),
+            $keys[19] => $this->getFavorite(),
+            $keys[20] => $this->getOnline(),
+            $keys[21] => $this->getHomepage(),
+            $keys[22] => $this->getModerated(),
+            $keys[23] => $this->getModeratedPartial(),
+            $keys[24] => $this->getModeratedAt(),
+            $keys[25] => $this->getCreatedAt(),
+            $keys[26] => $this->getUpdatedAt(),
+            $keys[27] => $this->getSlug(),
+            $keys[28] => $this->getTreeLeft(),
+            $keys[29] => $this->getTreeRight(),
+            $keys[30] => $this->getTreeLevel(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -2367,6 +2651,18 @@ abstract class BasePDReaction extends BaseObject implements Persistent
             }
             if (null !== $this->aPDDebate) {
                 $result['PDDebate'] = $this->aPDDebate->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->aPLCity) {
+                $result['PLCity'] = $this->aPLCity->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->aPLDepartment) {
+                $result['PLDepartment'] = $this->aPLDepartment->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->aPLRegion) {
+                $result['PLRegion'] = $this->aPLRegion->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->aPLCountry) {
+                $result['PLCountry'] = $this->aPLCountry->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
             if (null !== $this->collPuBookmarkDrPDReactions) {
                 $result['PuBookmarkDrPDReactions'] = $this->collPuBookmarkDrPDReactions->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -2433,69 +2729,81 @@ abstract class BasePDReaction extends BaseObject implements Persistent
                 $this->setParentReactionId($value);
                 break;
             case 5:
-                $this->setTitle($value);
+                $this->setPLCityId($value);
                 break;
             case 6:
-                $this->setFileName($value);
+                $this->setPLDepartmentId($value);
                 break;
             case 7:
-                $this->setCopyright($value);
+                $this->setPLRegionId($value);
                 break;
             case 8:
-                $this->setDescription($value);
+                $this->setPLCountryId($value);
                 break;
             case 9:
-                $this->setNotePos($value);
+                $this->setTitle($value);
                 break;
             case 10:
-                $this->setNoteNeg($value);
+                $this->setFileName($value);
                 break;
             case 11:
-                $this->setNbViews($value);
+                $this->setCopyright($value);
                 break;
             case 12:
-                $this->setPublished($value);
+                $this->setDescription($value);
                 break;
             case 13:
-                $this->setPublishedAt($value);
+                $this->setNotePos($value);
                 break;
             case 14:
-                $this->setPublishedBy($value);
+                $this->setNoteNeg($value);
                 break;
             case 15:
-                $this->setFavorite($value);
+                $this->setNbViews($value);
                 break;
             case 16:
-                $this->setOnline($value);
+                $this->setPublished($value);
                 break;
             case 17:
-                $this->setHomepage($value);
+                $this->setPublishedAt($value);
                 break;
             case 18:
-                $this->setModerated($value);
+                $this->setPublishedBy($value);
                 break;
             case 19:
-                $this->setModeratedPartial($value);
+                $this->setFavorite($value);
                 break;
             case 20:
-                $this->setModeratedAt($value);
+                $this->setOnline($value);
                 break;
             case 21:
-                $this->setCreatedAt($value);
+                $this->setHomepage($value);
                 break;
             case 22:
-                $this->setUpdatedAt($value);
+                $this->setModerated($value);
                 break;
             case 23:
-                $this->setSlug($value);
+                $this->setModeratedPartial($value);
                 break;
             case 24:
-                $this->setTreeLeft($value);
+                $this->setModeratedAt($value);
                 break;
             case 25:
-                $this->setTreeRight($value);
+                $this->setCreatedAt($value);
                 break;
             case 26:
+                $this->setUpdatedAt($value);
+                break;
+            case 27:
+                $this->setSlug($value);
+                break;
+            case 28:
+                $this->setTreeLeft($value);
+                break;
+            case 29:
+                $this->setTreeRight($value);
+                break;
+            case 30:
                 $this->setTreeLevel($value);
                 break;
         } // switch()
@@ -2527,28 +2835,32 @@ abstract class BasePDReaction extends BaseObject implements Persistent
         if (array_key_exists($keys[2], $arr)) $this->setPUserId($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setPDDebateId($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setParentReactionId($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setTitle($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setFileName($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setCopyright($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setDescription($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setNotePos($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setNoteNeg($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setNbViews($arr[$keys[11]]);
-        if (array_key_exists($keys[12], $arr)) $this->setPublished($arr[$keys[12]]);
-        if (array_key_exists($keys[13], $arr)) $this->setPublishedAt($arr[$keys[13]]);
-        if (array_key_exists($keys[14], $arr)) $this->setPublishedBy($arr[$keys[14]]);
-        if (array_key_exists($keys[15], $arr)) $this->setFavorite($arr[$keys[15]]);
-        if (array_key_exists($keys[16], $arr)) $this->setOnline($arr[$keys[16]]);
-        if (array_key_exists($keys[17], $arr)) $this->setHomepage($arr[$keys[17]]);
-        if (array_key_exists($keys[18], $arr)) $this->setModerated($arr[$keys[18]]);
-        if (array_key_exists($keys[19], $arr)) $this->setModeratedPartial($arr[$keys[19]]);
-        if (array_key_exists($keys[20], $arr)) $this->setModeratedAt($arr[$keys[20]]);
-        if (array_key_exists($keys[21], $arr)) $this->setCreatedAt($arr[$keys[21]]);
-        if (array_key_exists($keys[22], $arr)) $this->setUpdatedAt($arr[$keys[22]]);
-        if (array_key_exists($keys[23], $arr)) $this->setSlug($arr[$keys[23]]);
-        if (array_key_exists($keys[24], $arr)) $this->setTreeLeft($arr[$keys[24]]);
-        if (array_key_exists($keys[25], $arr)) $this->setTreeRight($arr[$keys[25]]);
-        if (array_key_exists($keys[26], $arr)) $this->setTreeLevel($arr[$keys[26]]);
+        if (array_key_exists($keys[5], $arr)) $this->setPLCityId($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setPLDepartmentId($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setPLRegionId($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setPLCountryId($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setTitle($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setFileName($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setCopyright($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setDescription($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setNotePos($arr[$keys[13]]);
+        if (array_key_exists($keys[14], $arr)) $this->setNoteNeg($arr[$keys[14]]);
+        if (array_key_exists($keys[15], $arr)) $this->setNbViews($arr[$keys[15]]);
+        if (array_key_exists($keys[16], $arr)) $this->setPublished($arr[$keys[16]]);
+        if (array_key_exists($keys[17], $arr)) $this->setPublishedAt($arr[$keys[17]]);
+        if (array_key_exists($keys[18], $arr)) $this->setPublishedBy($arr[$keys[18]]);
+        if (array_key_exists($keys[19], $arr)) $this->setFavorite($arr[$keys[19]]);
+        if (array_key_exists($keys[20], $arr)) $this->setOnline($arr[$keys[20]]);
+        if (array_key_exists($keys[21], $arr)) $this->setHomepage($arr[$keys[21]]);
+        if (array_key_exists($keys[22], $arr)) $this->setModerated($arr[$keys[22]]);
+        if (array_key_exists($keys[23], $arr)) $this->setModeratedPartial($arr[$keys[23]]);
+        if (array_key_exists($keys[24], $arr)) $this->setModeratedAt($arr[$keys[24]]);
+        if (array_key_exists($keys[25], $arr)) $this->setCreatedAt($arr[$keys[25]]);
+        if (array_key_exists($keys[26], $arr)) $this->setUpdatedAt($arr[$keys[26]]);
+        if (array_key_exists($keys[27], $arr)) $this->setSlug($arr[$keys[27]]);
+        if (array_key_exists($keys[28], $arr)) $this->setTreeLeft($arr[$keys[28]]);
+        if (array_key_exists($keys[29], $arr)) $this->setTreeRight($arr[$keys[29]]);
+        if (array_key_exists($keys[30], $arr)) $this->setTreeLevel($arr[$keys[30]]);
     }
 
     /**
@@ -2565,6 +2877,10 @@ abstract class BasePDReaction extends BaseObject implements Persistent
         if ($this->isColumnModified(PDReactionPeer::P_USER_ID)) $criteria->add(PDReactionPeer::P_USER_ID, $this->p_user_id);
         if ($this->isColumnModified(PDReactionPeer::P_D_DEBATE_ID)) $criteria->add(PDReactionPeer::P_D_DEBATE_ID, $this->p_d_debate_id);
         if ($this->isColumnModified(PDReactionPeer::PARENT_REACTION_ID)) $criteria->add(PDReactionPeer::PARENT_REACTION_ID, $this->parent_reaction_id);
+        if ($this->isColumnModified(PDReactionPeer::P_L_CITY_ID)) $criteria->add(PDReactionPeer::P_L_CITY_ID, $this->p_l_city_id);
+        if ($this->isColumnModified(PDReactionPeer::P_L_DEPARTMENT_ID)) $criteria->add(PDReactionPeer::P_L_DEPARTMENT_ID, $this->p_l_department_id);
+        if ($this->isColumnModified(PDReactionPeer::P_L_REGION_ID)) $criteria->add(PDReactionPeer::P_L_REGION_ID, $this->p_l_region_id);
+        if ($this->isColumnModified(PDReactionPeer::P_L_COUNTRY_ID)) $criteria->add(PDReactionPeer::P_L_COUNTRY_ID, $this->p_l_country_id);
         if ($this->isColumnModified(PDReactionPeer::TITLE)) $criteria->add(PDReactionPeer::TITLE, $this->title);
         if ($this->isColumnModified(PDReactionPeer::FILE_NAME)) $criteria->add(PDReactionPeer::FILE_NAME, $this->file_name);
         if ($this->isColumnModified(PDReactionPeer::COPYRIGHT)) $criteria->add(PDReactionPeer::COPYRIGHT, $this->copyright);
@@ -2654,6 +2970,10 @@ abstract class BasePDReaction extends BaseObject implements Persistent
         $copyObj->setPUserId($this->getPUserId());
         $copyObj->setPDDebateId($this->getPDDebateId());
         $copyObj->setParentReactionId($this->getParentReactionId());
+        $copyObj->setPLCityId($this->getPLCityId());
+        $copyObj->setPLDepartmentId($this->getPLDepartmentId());
+        $copyObj->setPLRegionId($this->getPLRegionId());
+        $copyObj->setPLCountryId($this->getPLCountryId());
         $copyObj->setTitle($this->getTitle());
         $copyObj->setFileName($this->getFileName());
         $copyObj->setCopyright($this->getCopyright());
@@ -2866,6 +3186,214 @@ abstract class BasePDReaction extends BaseObject implements Persistent
         }
 
         return $this->aPDDebate;
+    }
+
+    /**
+     * Declares an association between this object and a PLCity object.
+     *
+     * @param                  PLCity $v
+     * @return PDReaction The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setPLCity(PLCity $v = null)
+    {
+        if ($v === null) {
+            $this->setPLCityId(NULL);
+        } else {
+            $this->setPLCityId($v->getId());
+        }
+
+        $this->aPLCity = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the PLCity object, it will not be re-added.
+        if ($v !== null) {
+            $v->addPDReaction($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated PLCity object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return PLCity The associated PLCity object.
+     * @throws PropelException
+     */
+    public function getPLCity(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aPLCity === null && ($this->p_l_city_id !== null) && $doQuery) {
+            $this->aPLCity = PLCityQuery::create()->findPk($this->p_l_city_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aPLCity->addPDReactions($this);
+             */
+        }
+
+        return $this->aPLCity;
+    }
+
+    /**
+     * Declares an association between this object and a PLDepartment object.
+     *
+     * @param                  PLDepartment $v
+     * @return PDReaction The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setPLDepartment(PLDepartment $v = null)
+    {
+        if ($v === null) {
+            $this->setPLDepartmentId(NULL);
+        } else {
+            $this->setPLDepartmentId($v->getId());
+        }
+
+        $this->aPLDepartment = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the PLDepartment object, it will not be re-added.
+        if ($v !== null) {
+            $v->addPDReaction($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated PLDepartment object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return PLDepartment The associated PLDepartment object.
+     * @throws PropelException
+     */
+    public function getPLDepartment(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aPLDepartment === null && ($this->p_l_department_id !== null) && $doQuery) {
+            $this->aPLDepartment = PLDepartmentQuery::create()->findPk($this->p_l_department_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aPLDepartment->addPDReactions($this);
+             */
+        }
+
+        return $this->aPLDepartment;
+    }
+
+    /**
+     * Declares an association between this object and a PLRegion object.
+     *
+     * @param                  PLRegion $v
+     * @return PDReaction The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setPLRegion(PLRegion $v = null)
+    {
+        if ($v === null) {
+            $this->setPLRegionId(NULL);
+        } else {
+            $this->setPLRegionId($v->getId());
+        }
+
+        $this->aPLRegion = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the PLRegion object, it will not be re-added.
+        if ($v !== null) {
+            $v->addPDReaction($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated PLRegion object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return PLRegion The associated PLRegion object.
+     * @throws PropelException
+     */
+    public function getPLRegion(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aPLRegion === null && ($this->p_l_region_id !== null) && $doQuery) {
+            $this->aPLRegion = PLRegionQuery::create()->findPk($this->p_l_region_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aPLRegion->addPDReactions($this);
+             */
+        }
+
+        return $this->aPLRegion;
+    }
+
+    /**
+     * Declares an association between this object and a PLCountry object.
+     *
+     * @param                  PLCountry $v
+     * @return PDReaction The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setPLCountry(PLCountry $v = null)
+    {
+        if ($v === null) {
+            $this->setPLCountryId(NULL);
+        } else {
+            $this->setPLCountryId($v->getId());
+        }
+
+        $this->aPLCountry = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the PLCountry object, it will not be re-added.
+        if ($v !== null) {
+            $v->addPDReaction($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated PLCountry object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return PLCountry The associated PLCountry object.
+     * @throws PropelException
+     */
+    public function getPLCountry(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aPLCountry === null && ($this->p_l_country_id !== null) && $doQuery) {
+            $this->aPLCountry = PLCountryQuery::create()->findPk($this->p_l_country_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aPLCountry->addPDReactions($this);
+             */
+        }
+
+        return $this->aPLCountry;
     }
 
 
@@ -4717,6 +5245,10 @@ abstract class BasePDReaction extends BaseObject implements Persistent
         $this->p_user_id = null;
         $this->p_d_debate_id = null;
         $this->parent_reaction_id = null;
+        $this->p_l_city_id = null;
+        $this->p_l_department_id = null;
+        $this->p_l_region_id = null;
+        $this->p_l_country_id = null;
         $this->title = null;
         $this->file_name = null;
         $this->copyright = null;
@@ -4808,6 +5340,18 @@ abstract class BasePDReaction extends BaseObject implements Persistent
             if ($this->aPDDebate instanceof Persistent) {
               $this->aPDDebate->clearAllReferences($deep);
             }
+            if ($this->aPLCity instanceof Persistent) {
+              $this->aPLCity->clearAllReferences($deep);
+            }
+            if ($this->aPLDepartment instanceof Persistent) {
+              $this->aPLDepartment->clearAllReferences($deep);
+            }
+            if ($this->aPLRegion instanceof Persistent) {
+              $this->aPLRegion->clearAllReferences($deep);
+            }
+            if ($this->aPLCountry instanceof Persistent) {
+              $this->aPLCountry->clearAllReferences($deep);
+            }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
@@ -4849,6 +5393,10 @@ abstract class BasePDReaction extends BaseObject implements Persistent
         $this->collPTags = null;
         $this->aPUser = null;
         $this->aPDDebate = null;
+        $this->aPLCity = null;
+        $this->aPLDepartment = null;
+        $this->aPLRegion = null;
+        $this->aPLCountry = null;
     }
 
     /**
@@ -6038,6 +6586,10 @@ abstract class BasePDReaction extends BaseObject implements Persistent
         $this->setPUserId($archive->getPUserId());
         $this->setPDDebateId($archive->getPDDebateId());
         $this->setParentReactionId($archive->getParentReactionId());
+        $this->setPLCityId($archive->getPLCityId());
+        $this->setPLDepartmentId($archive->getPLDepartmentId());
+        $this->setPLRegionId($archive->getPLRegionId());
+        $this->setPLCountryId($archive->getPLCountryId());
         $this->setTitle($archive->getTitle());
         $this->setFileName($archive->getFileName());
         $this->setCopyright($archive->getCopyright());

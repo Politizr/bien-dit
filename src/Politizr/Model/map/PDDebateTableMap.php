@@ -45,6 +45,10 @@ class PDDebateTableMap extends TableMap
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addColumn('uuid', 'Uuid', 'VARCHAR', false, 50, null);
         $this->addForeignKey('p_user_id', 'PUserId', 'INTEGER', 'p_user', 'id', false, null, null);
+        $this->addForeignKey('p_l_city_id', 'PLCityId', 'INTEGER', 'p_l_city', 'id', false, null, null);
+        $this->addForeignKey('p_l_department_id', 'PLDepartmentId', 'INTEGER', 'p_l_department', 'id', false, null, null);
+        $this->addForeignKey('p_l_region_id', 'PLRegionId', 'INTEGER', 'p_l_region', 'id', false, null, null);
+        $this->addForeignKey('p_l_country_id', 'PLCountryId', 'INTEGER', 'p_l_country', 'id', false, null, null);
         $this->addColumn('title', 'Title', 'VARCHAR', false, 100, null);
         $this->addColumn('file_name', 'FileName', 'VARCHAR', false, 150, null);
         $this->addColumn('copyright', 'Copyright', 'LONGVARCHAR', false, null, null);
@@ -73,6 +77,10 @@ class PDDebateTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('PUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_ONE, array('p_user_id' => 'id', ), 'SET NULL', 'CASCADE');
+        $this->addRelation('PLCity', 'Politizr\\Model\\PLCity', RelationMap::MANY_TO_ONE, array('p_l_city_id' => 'id', ), 'SET NULL', 'CASCADE');
+        $this->addRelation('PLDepartment', 'Politizr\\Model\\PLDepartment', RelationMap::MANY_TO_ONE, array('p_l_department_id' => 'id', ), 'SET NULL', 'CASCADE');
+        $this->addRelation('PLRegion', 'Politizr\\Model\\PLRegion', RelationMap::MANY_TO_ONE, array('p_l_region_id' => 'id', ), 'SET NULL', 'CASCADE');
+        $this->addRelation('PLCountry', 'Politizr\\Model\\PLCountry', RelationMap::MANY_TO_ONE, array('p_l_country_id' => 'id', ), 'SET NULL', 'CASCADE');
         $this->addRelation('PuFollowDdPDDebate', 'Politizr\\Model\\PUFollowDD', RelationMap::ONE_TO_MANY, array('id' => 'p_d_debate_id', ), 'CASCADE', 'CASCADE', 'PuFollowDdPDDebates');
         $this->addRelation('PuBookmarkDdPDDebate', 'Politizr\\Model\\PUBookmarkDD', RelationMap::ONE_TO_MANY, array('id' => 'p_d_debate_id', ), 'CASCADE', 'CASCADE', 'PuBookmarkDdPDDebates');
         $this->addRelation('PuTrackDdPDDebate', 'Politizr\\Model\\PUTrackDD', RelationMap::ONE_TO_MANY, array('id' => 'p_d_debate_id', ), 'CASCADE', 'CASCADE', 'PuTrackDdPDDebates');

@@ -924,6 +924,11 @@
         <column name="uuid" type="varchar" size="50" />
         <column name="p_user_id" type="integer" required="false" />
 
+        <column name="p_l_city_id" type="integer" required="false" />
+        <column name="p_l_department_id" type="integer" required="false" />
+        <column name="p_l_region_id" type="integer" required="false" />
+        <column name="p_l_country_id" type="integer" required="false" />
+
         <column name="title" type="varchar" size="100" />
 
         <column name="file_name" type="varchar" size="150" />
@@ -949,6 +954,22 @@
 
         <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />
+        </foreign-key>
+
+        <foreign-key foreignTable="p_l_city" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_l_city_id" foreign="id" />
+        </foreign-key>
+
+        <foreign-key foreignTable="p_l_department" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_l_department_id" foreign="id" />
+        </foreign-key>
+
+        <foreign-key foreignTable="p_l_region" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_l_region_id" foreign="id" />
+        </foreign-key>
+
+        <foreign-key foreignTable="p_l_country" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_l_country_id" foreign="id" />
         </foreign-key>
 
         <unique>
@@ -977,6 +998,11 @@
         <column name="p_user_id" type="integer" required="false" />
         <column name="p_d_debate_id" type="integer" required="true" />
         <column name="parent_reaction_id" type="integer" required="false" />
+
+        <column name="p_l_city_id" type="integer" required="false" />
+        <column name="p_l_department_id" type="integer" required="false" />
+        <column name="p_l_region_id" type="integer" required="false" />
+        <column name="p_l_country_id" type="integer" required="false" />
 
         <column name="title" type="varchar" size="100" />
 
@@ -1009,6 +1035,22 @@
             <reference local="p_d_debate_id" foreign="id" />
         </foreign-key>
 
+        <foreign-key foreignTable="p_l_city" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_l_city_id" foreign="id" />
+        </foreign-key>
+
+        <foreign-key foreignTable="p_l_department" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_l_department_id" foreign="id" />
+        </foreign-key>
+
+        <foreign-key foreignTable="p_l_region" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_l_region_id" foreign="id" />
+        </foreign-key>
+
+        <foreign-key foreignTable="p_l_country" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_l_country_id" foreign="id" />
+        </foreign-key>
+        
         <unique>
             <unique-column name="uuid"/>
         </unique>
@@ -1374,21 +1416,46 @@
         <column name="online" type="boolean" />
     </table>
 
-    <table name="p_l_region">
+    <table name="p_l_country">
         <behavior name="timestampable" />
         <behavior name="query_cache" />
+        <behavior name="sluggable">
+            <parameter name="slug_pattern" value="{title}" />
+        </behavior>
         <behavior name="uuid">
             <parameter name="version" value="4" />
             <parameter name="permanent" value="false" />
         </behavior>
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
-        <column name="p_tag_id" type="integer" required="true" />
         
+        <column name="title" type="varchar" size="150" />
         <column name="uuid" type="varchar" size="50" />
 
-        <foreign-key foreignTable="p_tag" onDelete="CASCADE" onUpdate="CASCADE">
-            <reference local="p_tag_id" foreign="id" />
+        <unique>
+            <unique-column name="uuid"/>
+        </unique>
+    </table>
+
+    <table name="p_l_region">
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+        <behavior name="sluggable">
+            <parameter name="slug_pattern" value="{title}" />
+        </behavior>
+        <behavior name="uuid">
+            <parameter name="version" value="4" />
+            <parameter name="permanent" value="false" />
+        </behavior>
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_l_country_id" type="integer" required="true" />
+        
+        <column name="title" type="varchar" size="150" />
+        <column name="uuid" type="varchar" size="50" />
+
+        <foreign-key foreignTable="p_l_country" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_l_country_id" foreign="id" />
         </foreign-key>
 
         <unique>
@@ -1399,6 +1466,9 @@
     <table name="p_l_department">
         <behavior name="timestampable" />
         <behavior name="query_cache" />
+        <behavior name="sluggable">
+            <parameter name="slug_pattern" value="{title}" />
+        </behavior>
         <behavior name="uuid">
             <parameter name="version" value="4" />
             <parameter name="permanent" value="false" />
@@ -1406,17 +1476,13 @@
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="p_l_region_id" type="integer" required="true" />
-        <column name="p_tag_id" type="integer" required="true" />
         
         <column name="code" type="varchar" size="10" />
+        <column name="title" type="varchar" size="150" />
         <column name="uuid" type="varchar" size="50" />
 
         <foreign-key foreignTable="p_l_region" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_l_region_id" foreign="id" />
-        </foreign-key>
-
-        <foreign-key foreignTable="p_tag" onDelete="CASCADE" onUpdate="CASCADE">
-            <reference local="p_tag_id" foreign="id" />
         </foreign-key>
 
         <unique>

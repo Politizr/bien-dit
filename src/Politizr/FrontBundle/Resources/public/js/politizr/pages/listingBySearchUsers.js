@@ -1,13 +1,10 @@
 // beta
 $(function() {
-    // hide city filter by default
-    $('#cityFilter').hide();
-
     uuid = $("#linkMyRegion").attr('uuid');
     if (uuid) {
         $("#linkMyRegion").trigger("click");
     } else {
-        publicationsByFiltersListing();
+        usersByFiltersListing();
     }    
 
     stickySidebar();
@@ -21,6 +18,7 @@ $("body").on("click", "[action='map']", function() {
     $('#cityFilter').hide();
 
     uuid = $(this).attr('uuid');
+    type = $(this).attr('type');
 
     $("[action='usersMyCity']").removeClass('currentPage');
     $("[action='usersMyMap']").removeClass('currentPage');
@@ -28,38 +26,9 @@ $("body").on("click", "[action='map']", function() {
     $(this).siblings().removeClass('active');
     $(this).addClass('active');
 
-    return usersMapFiltering(uuid);
+    return usersMapFiltering(uuid, type);
 });
 
-// Map's selection city
-$("body").on("click", "[action='usersMyCity']", function() {
-    // console.log('*** click usersMyCity');
-
-    $(this).siblings().removeClass('currentPage');
-    $(this).addClass('currentPage');
-
-    $('#cityFilter').show();
-
-    uuid = $(this).attr('uuid');
-
-    if (uuid) {
-        $.when(
-            // update menu
-            mapMenu(uuid),
-            // update breadcrumb
-            mapBreadcrumb(uuid),
-            // update map
-            mapSchema(uuid)
-        ).then(function(r1, r2) {
-            $('#documentListing .listTop').html('');
-            $("[action='goUp']").trigger("click");
-            return usersByFiltersListing();
-        }).done(function(r1) {
-            // remove selected department
-            $("[action='map']").removeClass('current');
-        });
-    }
-});
 
 // Map's selection shortcut
 $("body").on("click", "[action='usersMyMap']", function() {
@@ -71,13 +40,14 @@ $("body").on("click", "[action='usersMyMap']", function() {
     $('#cityFilter').hide();
 
     uuid = $(this).attr('uuid');
+    type = $(this).attr('type');
 
     if (uuid) {
         $.when(
             // update menu
-            mapMenu(uuid)
+            mapMenu(uuid, type)
         ).then(function(r1, r2) {
-            return usersMapFiltering(uuid);
+            return usersMapFiltering(uuid, type);
         });
     }
 });
@@ -129,15 +99,16 @@ $("body").on("change", ".dateFilter", function() {
  *
  * @param string
  */
-function usersMapFiltering(uuid) {
+function usersMapFiltering(uuid, type) {
     // console.log('*** usersMapFiltering');
     // console.log(uuid);
+    // console.log(type);
 
     $.when(
         // update breadcrumb
-        mapBreadcrumb(uuid),
+        mapBreadcrumb(uuid, type),
         // update map
-        mapSchema(uuid)
+        mapSchema(uuid, type)
     ).done(function(r1, r2) {
         $('#documentListing .listTop').html('');
         $("[action='goUp']").trigger("click");

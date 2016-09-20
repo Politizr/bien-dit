@@ -20,6 +20,10 @@ use Politizr\Model\PDReactionArchiveQuery;
  * @method PDReactionArchiveQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
  * @method PDReactionArchiveQuery orderByPDDebateId($order = Criteria::ASC) Order by the p_d_debate_id column
  * @method PDReactionArchiveQuery orderByParentReactionId($order = Criteria::ASC) Order by the parent_reaction_id column
+ * @method PDReactionArchiveQuery orderByPLCityId($order = Criteria::ASC) Order by the p_l_city_id column
+ * @method PDReactionArchiveQuery orderByPLDepartmentId($order = Criteria::ASC) Order by the p_l_department_id column
+ * @method PDReactionArchiveQuery orderByPLRegionId($order = Criteria::ASC) Order by the p_l_region_id column
+ * @method PDReactionArchiveQuery orderByPLCountryId($order = Criteria::ASC) Order by the p_l_country_id column
  * @method PDReactionArchiveQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method PDReactionArchiveQuery orderByFileName($order = Criteria::ASC) Order by the file_name column
  * @method PDReactionArchiveQuery orderByCopyright($order = Criteria::ASC) Order by the copyright column
@@ -49,6 +53,10 @@ use Politizr\Model\PDReactionArchiveQuery;
  * @method PDReactionArchiveQuery groupByPUserId() Group by the p_user_id column
  * @method PDReactionArchiveQuery groupByPDDebateId() Group by the p_d_debate_id column
  * @method PDReactionArchiveQuery groupByParentReactionId() Group by the parent_reaction_id column
+ * @method PDReactionArchiveQuery groupByPLCityId() Group by the p_l_city_id column
+ * @method PDReactionArchiveQuery groupByPLDepartmentId() Group by the p_l_department_id column
+ * @method PDReactionArchiveQuery groupByPLRegionId() Group by the p_l_region_id column
+ * @method PDReactionArchiveQuery groupByPLCountryId() Group by the p_l_country_id column
  * @method PDReactionArchiveQuery groupByTitle() Group by the title column
  * @method PDReactionArchiveQuery groupByFileName() Group by the file_name column
  * @method PDReactionArchiveQuery groupByCopyright() Group by the copyright column
@@ -84,6 +92,10 @@ use Politizr\Model\PDReactionArchiveQuery;
  * @method PDReactionArchive findOneByPUserId(int $p_user_id) Return the first PDReactionArchive filtered by the p_user_id column
  * @method PDReactionArchive findOneByPDDebateId(int $p_d_debate_id) Return the first PDReactionArchive filtered by the p_d_debate_id column
  * @method PDReactionArchive findOneByParentReactionId(int $parent_reaction_id) Return the first PDReactionArchive filtered by the parent_reaction_id column
+ * @method PDReactionArchive findOneByPLCityId(int $p_l_city_id) Return the first PDReactionArchive filtered by the p_l_city_id column
+ * @method PDReactionArchive findOneByPLDepartmentId(int $p_l_department_id) Return the first PDReactionArchive filtered by the p_l_department_id column
+ * @method PDReactionArchive findOneByPLRegionId(int $p_l_region_id) Return the first PDReactionArchive filtered by the p_l_region_id column
+ * @method PDReactionArchive findOneByPLCountryId(int $p_l_country_id) Return the first PDReactionArchive filtered by the p_l_country_id column
  * @method PDReactionArchive findOneByTitle(string $title) Return the first PDReactionArchive filtered by the title column
  * @method PDReactionArchive findOneByFileName(string $file_name) Return the first PDReactionArchive filtered by the file_name column
  * @method PDReactionArchive findOneByCopyright(string $copyright) Return the first PDReactionArchive filtered by the copyright column
@@ -113,6 +125,10 @@ use Politizr\Model\PDReactionArchiveQuery;
  * @method array findByPUserId(int $p_user_id) Return PDReactionArchive objects filtered by the p_user_id column
  * @method array findByPDDebateId(int $p_d_debate_id) Return PDReactionArchive objects filtered by the p_d_debate_id column
  * @method array findByParentReactionId(int $parent_reaction_id) Return PDReactionArchive objects filtered by the parent_reaction_id column
+ * @method array findByPLCityId(int $p_l_city_id) Return PDReactionArchive objects filtered by the p_l_city_id column
+ * @method array findByPLDepartmentId(int $p_l_department_id) Return PDReactionArchive objects filtered by the p_l_department_id column
+ * @method array findByPLRegionId(int $p_l_region_id) Return PDReactionArchive objects filtered by the p_l_region_id column
+ * @method array findByPLCountryId(int $p_l_country_id) Return PDReactionArchive objects filtered by the p_l_country_id column
  * @method array findByTitle(string $title) Return PDReactionArchive objects filtered by the title column
  * @method array findByFileName(string $file_name) Return PDReactionArchive objects filtered by the file_name column
  * @method array findByCopyright(string $copyright) Return PDReactionArchive objects filtered by the copyright column
@@ -241,7 +257,7 @@ abstract class BasePDReactionArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `p_d_debate_id`, `parent_reaction_id`, `title`, `file_name`, `copyright`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `homepage`, `moderated`, `moderated_partial`, `moderated_at`, `created_at`, `updated_at`, `slug`, `tree_left`, `tree_right`, `tree_level`, `archived_at` FROM `p_d_reaction_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `p_d_debate_id`, `parent_reaction_id`, `p_l_city_id`, `p_l_department_id`, `p_l_region_id`, `p_l_country_id`, `title`, `file_name`, `copyright`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `homepage`, `moderated`, `moderated_partial`, `moderated_at`, `created_at`, `updated_at`, `slug`, `tree_left`, `tree_right`, `tree_level`, `archived_at` FROM `p_d_reaction_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -525,6 +541,174 @@ abstract class BasePDReactionArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDReactionArchivePeer::PARENT_REACTION_ID, $parentReactionId, $comparison);
+    }
+
+    /**
+     * Filter the query on the p_l_city_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPLCityId(1234); // WHERE p_l_city_id = 1234
+     * $query->filterByPLCityId(array(12, 34)); // WHERE p_l_city_id IN (12, 34)
+     * $query->filterByPLCityId(array('min' => 12)); // WHERE p_l_city_id >= 12
+     * $query->filterByPLCityId(array('max' => 12)); // WHERE p_l_city_id <= 12
+     * </code>
+     *
+     * @param     mixed $pLCityId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDReactionArchiveQuery The current query, for fluid interface
+     */
+    public function filterByPLCityId($pLCityId = null, $comparison = null)
+    {
+        if (is_array($pLCityId)) {
+            $useMinMax = false;
+            if (isset($pLCityId['min'])) {
+                $this->addUsingAlias(PDReactionArchivePeer::P_L_CITY_ID, $pLCityId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($pLCityId['max'])) {
+                $this->addUsingAlias(PDReactionArchivePeer::P_L_CITY_ID, $pLCityId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PDReactionArchivePeer::P_L_CITY_ID, $pLCityId, $comparison);
+    }
+
+    /**
+     * Filter the query on the p_l_department_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPLDepartmentId(1234); // WHERE p_l_department_id = 1234
+     * $query->filterByPLDepartmentId(array(12, 34)); // WHERE p_l_department_id IN (12, 34)
+     * $query->filterByPLDepartmentId(array('min' => 12)); // WHERE p_l_department_id >= 12
+     * $query->filterByPLDepartmentId(array('max' => 12)); // WHERE p_l_department_id <= 12
+     * </code>
+     *
+     * @param     mixed $pLDepartmentId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDReactionArchiveQuery The current query, for fluid interface
+     */
+    public function filterByPLDepartmentId($pLDepartmentId = null, $comparison = null)
+    {
+        if (is_array($pLDepartmentId)) {
+            $useMinMax = false;
+            if (isset($pLDepartmentId['min'])) {
+                $this->addUsingAlias(PDReactionArchivePeer::P_L_DEPARTMENT_ID, $pLDepartmentId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($pLDepartmentId['max'])) {
+                $this->addUsingAlias(PDReactionArchivePeer::P_L_DEPARTMENT_ID, $pLDepartmentId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PDReactionArchivePeer::P_L_DEPARTMENT_ID, $pLDepartmentId, $comparison);
+    }
+
+    /**
+     * Filter the query on the p_l_region_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPLRegionId(1234); // WHERE p_l_region_id = 1234
+     * $query->filterByPLRegionId(array(12, 34)); // WHERE p_l_region_id IN (12, 34)
+     * $query->filterByPLRegionId(array('min' => 12)); // WHERE p_l_region_id >= 12
+     * $query->filterByPLRegionId(array('max' => 12)); // WHERE p_l_region_id <= 12
+     * </code>
+     *
+     * @param     mixed $pLRegionId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDReactionArchiveQuery The current query, for fluid interface
+     */
+    public function filterByPLRegionId($pLRegionId = null, $comparison = null)
+    {
+        if (is_array($pLRegionId)) {
+            $useMinMax = false;
+            if (isset($pLRegionId['min'])) {
+                $this->addUsingAlias(PDReactionArchivePeer::P_L_REGION_ID, $pLRegionId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($pLRegionId['max'])) {
+                $this->addUsingAlias(PDReactionArchivePeer::P_L_REGION_ID, $pLRegionId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PDReactionArchivePeer::P_L_REGION_ID, $pLRegionId, $comparison);
+    }
+
+    /**
+     * Filter the query on the p_l_country_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPLCountryId(1234); // WHERE p_l_country_id = 1234
+     * $query->filterByPLCountryId(array(12, 34)); // WHERE p_l_country_id IN (12, 34)
+     * $query->filterByPLCountryId(array('min' => 12)); // WHERE p_l_country_id >= 12
+     * $query->filterByPLCountryId(array('max' => 12)); // WHERE p_l_country_id <= 12
+     * </code>
+     *
+     * @param     mixed $pLCountryId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDReactionArchiveQuery The current query, for fluid interface
+     */
+    public function filterByPLCountryId($pLCountryId = null, $comparison = null)
+    {
+        if (is_array($pLCountryId)) {
+            $useMinMax = false;
+            if (isset($pLCountryId['min'])) {
+                $this->addUsingAlias(PDReactionArchivePeer::P_L_COUNTRY_ID, $pLCountryId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($pLCountryId['max'])) {
+                $this->addUsingAlias(PDReactionArchivePeer::P_L_COUNTRY_ID, $pLCountryId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PDReactionArchivePeer::P_L_COUNTRY_ID, $pLCountryId, $comparison);
     }
 
     /**
