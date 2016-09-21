@@ -726,4 +726,24 @@ class GlobalTools
 
         return $tinyUri;
     }
+
+    /**
+     * Prepare string for injection into MySQL "IN" query
+     *
+     * @param array|int|string $ids
+     * @return string|false
+     */
+    public function getInQuery($ids)
+    {
+        if (is_array($ids)) {
+            $inQueryIds = implode(',', $ids);
+            if (empty($inQueryIds)) {
+                $inQueryIds = 0;
+            }
+        } else {
+            $inQueryIds = $ids;
+        }
+        return $inQueryIds;
+    }
+
 }

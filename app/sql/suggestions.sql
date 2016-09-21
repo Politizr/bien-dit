@@ -6,6 +6,10 @@ SELECT DISTINCT
     id,
     uuid,
     p_user_id,
+    p_l_city_id,
+    p_l_department_id,
+    p_l_region_id,
+    p_l_country_id,
     title,
     file_name,
     copyright,
@@ -26,20 +30,12 @@ SELECT DISTINCT
     slug,
     nb_users
 FROM (
+
+#  Débats ville = user
 ( SELECT DISTINCT p_d_debate.*, 0 as nb_users, 1 as unionsorting
 FROM p_d_debate
-    LEFT JOIN p_d_d_tagged_t
-        ON p_d_debate.id = p_d_d_tagged_t.p_d_debate_id
 WHERE
-	p_d_d_tagged_t.p_tag_id IN (
-        SELECT p_tag.id
-        FROM p_tag
-            LEFT JOIN p_u_tagged_t
-                ON p_tag.id = p_u_tagged_t.p_tag_id
-        WHERE
-            p_tag.online = true
-            AND p_u_tagged_t.p_user_id = 73
-	)
+    p_d_debate.p_l_city_id = 11719
     AND p_d_debate.online = 1
     AND p_d_debate.published = 1
     AND p_d_debate.id NOT IN (1,5)
@@ -49,12 +45,25 @@ WHERE
 
 UNION DISTINCT
 
+#  Débats département = user
 ( SELECT DISTINCT p_d_debate.*, 0 as nb_users, 2 as unionsorting
 FROM p_d_debate
-    LEFT JOIN p_d_d_tagged_t
-        ON p_d_debate.id = p_d_d_tagged_t.p_d_debate_id
 WHERE
-    p_d_d_tagged_t.p_tag_id IN (17, 31)
+    p_d_debate.p_l_department_id = 9
+    AND p_d_debate.online = 1
+    AND p_d_debate.published = 1
+    AND p_d_debate.id NOT IN (1,5)
+    AND p_d_debate.p_user_id NOT IN (6,9,60)
+    AND p_d_debate.p_user_id <> 73
+)
+
+UNION DISTINCT
+
+#  Débats région = user
+( SELECT DISTINCT p_d_debate.*, 0 as nb_users, 3 as unionsorting
+FROM p_d_debate
+WHERE
+    p_d_debate.p_l_region_id = 9
     AND p_d_debate.online = 1
     AND p_d_debate.published = 1
     AND p_d_debate.id NOT IN (1,5)
@@ -65,7 +74,7 @@ WHERE
 UNION DISTINCT
 
 #  Débats les plus populaires
-( SELECT DISTINCT p_d_debate.*, COUNT(p_u_follow_d_d.p_d_debate_id) as nb_users, 3 as unionsorting
+( SELECT DISTINCT p_d_debate.*, COUNT(p_u_follow_d_d.p_d_debate_id) as nb_users, 4 as unionsorting
 FROM p_d_debate
     LEFT JOIN p_u_follow_d_d
         ON p_d_debate.id = p_u_follow_d_d.p_d_debate_id

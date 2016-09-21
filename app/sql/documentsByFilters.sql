@@ -44,10 +44,10 @@ FROM p_d_d_comment
         ON p_user.id = p_d_d_comment.p_user_id
 WHERE
     p_d_d_comment.online = 1
-    AND p_d_debate.p_l_city_id IN (1,2,3)
+    AND (p_d_debate.p_l_city_id IN (1,2,3)
     OR p_d_debate.p_l_department_id IN (1,2,3) 
     OR p_d_debate.p_l_region_id = 1
-    OR p_d_debate.p_l_country_id = 1
+    OR p_d_debate.p_l_country_id = 1)
     # AND p_d_d_tagged_t.p_tag_id IN (8, 31)
     # AND p_user.qualified = 1
     # AND p_d_d_comment.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW() 
@@ -64,10 +64,10 @@ FROM p_d_r_comment
         ON p_user.id = p_d_r_comment.p_user_id
 WHERE
     p_d_r_comment.online = 1
-    AND p_d_reaction.p_l_city_id IN (1,2,3)
+    AND (p_d_reaction.p_l_city_id IN (1,2,3)
     OR p_d_reaction.p_l_department_id IN (1,2,3) 
     OR p_d_reaction.p_l_region_id = 1
-    OR p_d_reaction.p_l_country_id = 1
+    OR p_d_reaction.p_l_country_id = 1)
     # AND p_d_r_tagged_t.p_tag_id IN (8, 31)
     # AND p_user.qualified = 1
     # AND p_d_r_comment.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW() 

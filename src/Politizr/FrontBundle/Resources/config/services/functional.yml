@@ -8,6 +8,7 @@ services:
             - @politizr.functional.tag
             - @politizr.functional.localization
             - @router
+            - @politizr.tools.global
             - @logger
 
     politizr.functional.user:

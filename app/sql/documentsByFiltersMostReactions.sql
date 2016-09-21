@@ -8,10 +8,10 @@ WHERE
     AND p_d_debate.online = 1
     AND p_d_reaction_child.published = 1
     AND p_d_reaction_child.online = true
-    AND p_d_debate.p_l_city_id IN (1,2,3)
+    AND (p_d_debate.p_l_city_id IN (1,2,3)
     OR p_d_debate.p_l_department_id IN (1,2,3) 
     OR p_d_debate.p_l_region_id = 1
-    OR p_d_debate.p_l_country_id = 1
+    OR p_d_debate.p_l_country_id = 1)
     # AND p_d_debate.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW() 
 
 GROUP BY id
@@ -30,10 +30,10 @@ WHERE
     AND p_d_reaction.tree_level > 0
     AND p_d_reaction_child.published = 1
     AND p_d_reaction_child.online = true
-    AND p_d_reaction.p_l_city_id IN (1,2,3)
+    AND (p_d_reaction.p_l_city_id IN (1,2,3)
     OR p_d_reaction.p_l_department_id IN (1,2,3) 
     OR p_d_reaction.p_l_region_id = 1
-    OR p_d_reaction.p_l_country_id = 1
+    OR p_d_reaction.p_l_country_id = 1)
     # AND p_d_reaction.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW() 
 
 GROUP BY id

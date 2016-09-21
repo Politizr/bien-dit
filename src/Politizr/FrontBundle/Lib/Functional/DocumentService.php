@@ -17,6 +17,7 @@ use Politizr\Model\PDReactionQuery;
 use Politizr\Model\PDDCommentQuery;
 use Politizr\Model\PDRCommentQuery;
 use Politizr\Model\PUserQuery;
+use Politizr\Model\PLCityQuery;
 use Politizr\Model\PRBadgeQuery;
 use Politizr\Model\PUReputationQuery;
 use Politizr\Model\PTagQuery;
@@ -40,6 +41,8 @@ class DocumentService
     private $localizationService;
 
     private $router;
+
+    private $globalTools;
     
     private $logger;
 
@@ -51,6 +54,7 @@ class DocumentService
      * @param @politizr.functional.tag
      * @param @politizr.functional.localization
      * @param @router
+     * @param @politizr.tools.global
      * @param @logger
      */
     public function __construct(
@@ -60,6 +64,7 @@ class DocumentService
         $tagService,
         $localizationService,
         $router,
+        $globalTools,
         $logger
     ) {
         $this->securityTokenStorage = $securityTokenStorage;
@@ -72,54 +77,14 @@ class DocumentService
 
         $this->router = $router;
 
+        $this->globalTools = $globalTools;
+
         $this->logger = $logger;
     }
 
     /* ######################################################################################################## */
     /*                                               PRIVATE FUNCTIONS                                          */
     /* ######################################################################################################## */
-
-    /**
-     * Compute "inQuery" params for geo
-     *
-     * @param integer $geoUuid
-     * @param string $type
-     * @param string $inQueryCityIds
-     * @param string $inQueryDepartmentIds
-     * @param int $regionId
-     * @param int $countryId
-     * @return array
-     */
-    private function computeGeoInQueriesFromGeoUuid($geoUuid, $type, &$inQueryCityIds, &$inQueryDepartmentIds, &$regionId, &$countryId)
-    {
-        if ($type == LocalizationConstants::TYPE_COUNTRY) {
-            $countryId = LocalizationConstants::FRANCE_ID;
-        } elseif ($type == LocalizationConstants::TYPE_REGION) {
-            $regionId = $this->localizationService->getRegionIdFromRegionUuid($geoUuid);
-
-            $cityIds = $this->localizationService->computeCityIdsFromGeoUuid($geoUuid, $type);
-            $inQueryCityIds = implode(',', $cityIds);
-            if (empty($inQueryCityIds)) {
-                $inQueryCityIds = 0;
-            }
-
-            $departmentIds = $this->localizationService->computeDepartmentIdsFromGeoUuid($geoUuid, $type);
-            $inQueryDepartmentIds = implode(',', $departmentIds);
-            if (empty($inQueryDepartmentIds)) {
-                $inQueryDepartmentIds = 0;
-            }
-        } elseif ($type == LocalizationConstants::TYPE_DEPARTMENT) {
-            $inQueryDepartmentIds = $this->localizationService->getDepartmentIdFromDepartmentUuid($geoUuid);
-
-            $cityIds = $this->localizationService->computeCityIdsFromGeoUuid($geoUuid, $type);
-            $inQueryCityIds = implode(',', $cityIds);
-            if (empty($inQueryCityIds)) {
-                $inQueryCityIds = 0;
-            }
-        } elseif ($type == LocalizationConstants::TYPE_CITY) {
-            $inQueryCityIds = $this->localizationService->getCityIdFromCityUuid($geoUuid);
-        }
-    }
 
     /**
      * Get array of user's PUFollowDD's ids
@@ -203,10 +168,22 @@ class DocumentService
 
         $inQueryCityIds = null;
         $inQueryDepartmentIds = null;
+        $cityIds = null;
+        $departmentIds = null;
         $regionId = null;
         $countryId = null;
         if ($geoUuid) {
-            $this->computeGeoInQueriesFromGeoUuid($geoUuid, $type, $inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId);
+            $this->localizationService->fillExtendedChildrenGeoIdsFromGeoUuid(
+                $geoUuid,
+                $type,
+                $cityIds,
+                $departmentIds,
+                $regionId,
+                $countryId
+            );
+
+            $inQueryCityIds = $this->globalTools->getInQuery($cityIds);
+            $inQueryDepartmentIds = $this->globalTools->getInQuery($departmentIds);
         }
 
         // "most views" activity filters only applied to debates and/or reactions:
@@ -373,35 +350,44 @@ class DocumentService
      */
     public function getUserDocumentsSuggestion($userId, $count = ListingConstants::LISTING_SUGGESTION_DOCUMENTS_LIMIT)
     {
-        // Récupération d'un tableau des ids des départements et de la région du user
+        // Récupération des ids city/dep/region du user courant
         $inQueryGeoTagIds = null;
         $user = PUserQuery::create()->findPk($userId);
-        $regionId = $this->localizationService->getRegionTagIdByCityId($user->getPLCityId());
-        if ($regionId) {
-            $inQueryGeoTagIds = $this->getGeoTagExtendedIdsArray($regionId);
-        }
 
-        $debateIds = $this->getFollowedDebatesIdsArray($userId);
-        $inQueryDebateIds = implode(',', $debateIds);
-        if (empty($inQueryDebateIds)) {
-            $inQueryDebateIds = 0;
+        $cityId = $user->getPLCityId();
+        $departmentId = null;
+        $regionId = null;
+        if ($cityId) {
+            $city = PLCityQuery::create()->findPk($cityId);
+            if ($city) {
+                $department = $city->getPLDepartment();
+                if ($department) {
+                    $departmentId = $department->getId();
+                    $region = $department->getPLRegion();
+                    if ($region) {
+                        $regionId = $region->getId();
+                    }
+                }
+            }
         }
 
         // Récupération d'un tableau des ids des débats suivis
         $debateIds = $this->getFollowedDebatesIdsArray($userId);
-        $inQueryDebateIds = implode(',', $debateIds);
-        if (empty($inQueryDebateIds)) {
-            $inQueryDebateIds = 0;
-        }
+        $inQueryDebateIds = $this->globalTools->getInQuery($debateIds);
 
         // Récupération d'un tableau des ids des users suivis
         $userIds = $this->getFollowedUsersIdsArray($userId);
-        $inQueryUserIds = implode(',', $userIds);
-        if (empty($inQueryUserIds)) {
-            $inQueryUserIds = 0;
-        }
+        $inQueryUserIds = $this->globalTools->getInQuery($userIds);
 
-        $documents = $this->documentManager->generateUserDocumentsSuggestion($userId, $inQueryGeoTagIds, $inQueryDebateIds, $inQueryUserIds, $count);
+        $documents = $this->documentManager->generateUserDocumentsSuggestion(
+            $userId,
+            $cityId,
+            $departmentId,
+            $regionId,
+            $inQueryDebateIds,
+            $inQueryUserIds,
+            $count
+        );
 
         return $documents;
     }

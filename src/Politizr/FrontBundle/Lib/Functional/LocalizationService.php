@@ -539,4 +539,36 @@ class LocalizationService
 
         return $departmentIds;
     }
+
+    /**
+     * Fill variables for city/dep/region/country with ids depending of geo uuid & type
+     * Rules:
+     * - country > only country
+     * - region > region + departments of region + cities of region
+     * - department > departement + cities of departement
+     * - city > city
+     *
+     * @param integer $geoUuid
+     * @param string $type
+     * @param array|int $cityIds
+     * @param array|int $departmentIds
+     * @param int $regionId
+     * @param int $countryId
+     * @return array
+     */
+    public function fillExtendedChildrenGeoIdsFromGeoUuid($geoUuid, $type, &$cityIds, &$departmentIds, &$regionId, &$countryId)
+    {
+        if ($type == LocalizationConstants::TYPE_COUNTRY) {
+            $countryId = LocalizationConstants::FRANCE_ID;
+        } elseif ($type == LocalizationConstants::TYPE_REGION) {
+            $regionId = $this->getRegionIdFromRegionUuid($geoUuid);
+            $cityIds = $this->computeCityIdsFromGeoUuid($geoUuid, $type);
+            $departmentIds = $this->computeDepartmentIdsFromGeoUuid($geoUuid, $type);
+        } elseif ($type == LocalizationConstants::TYPE_DEPARTMENT) {
+            $departmentIds = $this->getDepartmentIdFromDepartmentUuid($geoUuid);
+            $cityIds = $this->computeCityIdsFromGeoUuid($geoUuid, $type);
+        } elseif ($type == LocalizationConstants::TYPE_CITY) {
+            $cityIds = $this->getCityIdFromCityUuid($geoUuid);
+        }
+    }
 }

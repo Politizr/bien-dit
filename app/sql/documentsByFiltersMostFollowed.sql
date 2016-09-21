@@ -8,10 +8,10 @@ FROM p_d_debate
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1 
-    AND p_d_debate.p_l_city_id IN (1,2,3)
+    AND (p_d_debate.p_l_city_id IN (1,2,3)
     OR p_d_debate.p_l_department_id IN (1,2,3) 
     OR p_d_debate.p_l_region_id = 1
-    OR p_d_debate.p_l_country_id = 1
+    OR p_d_debate.p_l_country_id = 1)
     # AND p_d_debate.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW() 
     # AND p_user.qualified = 1
 

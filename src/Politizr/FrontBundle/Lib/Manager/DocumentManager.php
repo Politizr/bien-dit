@@ -990,7 +990,7 @@ LIMIT :limit
      *
      * @return string
      */
-    private function createUserSuggestedDebatesRawSql($inQueryGeoTagIds, $inQueryDebateIds, $inQueryUserIds)
+    private function createUserSuggestedDebatesRawSql($inQueryDebateIds, $inQueryUserIds)
     {
         // Requête SQL
         $sql = "
@@ -998,6 +998,10 @@ SELECT DISTINCT
     id,
     uuid,
     p_user_id,
+    p_l_city_id,
+    p_l_department_id,
+    p_l_region_id,
+    p_l_country_id,
     title,
     file_name,
     copyright,
@@ -1010,28 +1014,31 @@ SELECT DISTINCT
     published_by,
     favorite,
     online,
-    homepage,
     moderated,
     moderated_partial,
     moderated_at,
     created_at,
     updated_at,
-    slug
+    slug,
+    nb_users
 FROM (
 ( SELECT DISTINCT p_d_debate.*, 0 as nb_users, 1 as unionsorting
 FROM p_d_debate
-    LEFT JOIN p_d_d_tagged_t
-        ON p_d_debate.id = p_d_d_tagged_t.p_d_debate_id
 WHERE
-    p_d_d_tagged_t.p_tag_id IN (
-                SELECT p_tag.id
-                FROM p_tag
-                    LEFT JOIN p_u_tagged_t
-                        ON p_tag.id = p_u_tagged_t.p_tag_id
-                WHERE
-                    p_tag.online = true
-                    AND p_u_tagged_t.p_user_id = :p_user_id
-    )
+    p_d_debate.p_l_city_id = :p_l_city_id
+    AND p_d_debate.online = 1
+    AND p_d_debate.published = 1
+    AND p_d_debate.id NOT IN ($inQueryDebateIds)
+    AND p_d_debate.p_user_id NOT IN ($inQueryUserIds)
+    AND p_d_debate.p_user_id <> :p_user_id
+)
+
+UNION DISTINCT
+
+( SELECT DISTINCT p_d_debate.*, 0 as nb_users, 2 as unionsorting
+FROM p_d_debate
+WHERE
+    p_d_debate.p_l_department_id = :p_l_department_id
     AND p_d_debate.online = 1
     AND p_d_debate.published = 1
     AND p_d_debate.id NOT IN ($inQueryDebateIds)
@@ -1041,12 +1048,10 @@ WHERE
 
 UNION DISTINCT
 
-( SELECT DISTINCT p_d_debate.*, 0 as nb_users, 2 as unionsorting
+( SELECT DISTINCT p_d_debate.*, 0 as nb_users, 3 as unionsorting
 FROM p_d_debate
-    LEFT JOIN p_d_d_tagged_t
-        ON p_d_debate.id = p_d_d_tagged_t.p_d_debate_id
 WHERE
-    p_d_d_tagged_t.p_tag_id IN ($inQueryGeoTagIds)
+    p_d_debate.p_l_region_id = :p_l_region_id
     AND p_d_debate.online = 1
     AND p_d_debate.published = 1
     AND p_d_debate.id NOT IN ($inQueryDebateIds)
@@ -1056,7 +1061,7 @@ WHERE
 
 UNION DISTINCT
 
-( SELECT DISTINCT p_d_debate.*, COUNT(p_u_follow_d_d.p_d_debate_id) as nb_users, 3 as unionsorting
+( SELECT DISTINCT p_d_debate.*, COUNT(p_u_follow_d_d.p_d_debate_id) as nb_users, 4 as unionsorting
 FROM p_d_debate
     LEFT JOIN p_u_follow_d_d
         ON p_d_debate.id = p_u_follow_d_d.p_d_debate_id
@@ -1278,11 +1283,11 @@ GROUP BY p_d_debate_id
      */
     public function generatePublicationsByFiltersPaginated($inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId, $filterPublication, $filterProfile, $filterActivity, $filterDate, $offset, $limit)
     {
-        // $this->logger->info('*** generatePublicationsByFiltersPaginated');
-        // $this->logger->info('$inQueryCityIds = ' . print_r($inQueryCityIds, true));
-        // $this->logger->info('$inQueryDepartmentIds = ' . print_r($inQueryDepartmentIds, true));
-        // $this->logger->info('$regionId = ' . print_r($regionId, true));
-        // $this->logger->info('$countryId = ' . print_r($countryId, true));
+        $this->logger->info('*** generatePublicationsByFiltersPaginated');
+        $this->logger->info('$inQueryCityIds = ' . print_r($inQueryCityIds, true));
+        $this->logger->info('$inQueryDepartmentIds = ' . print_r($inQueryDepartmentIds, true));
+        $this->logger->info('$regionId = ' . print_r($regionId, true));
+        $this->logger->info('$countryId = ' . print_r($countryId, true));
         // $this->logger->info('$filterPublication = ' . print_r($filterPublication, true));
         // $this->logger->info('$filterProfile = ' . print_r($filterProfile, true));
         // $this->logger->info('$filterActivity = ' . print_r($filterActivity, true));
@@ -1545,28 +1550,35 @@ GROUP BY p_d_debate_id
      * User's debates' suggestions paginated listing
      *
      * @param integer $userId
-     * @param string $inQueryGeoTagIds
+     * @param string $cityId
+     * @param string $departmentId
+     * @param string $regionId
      * @param string $inQueryDebateIds
      * @param string $inQueryUserIds
      * @param int $limit
      * @return PropelCollection[PDDebate]
      */
-    public function generateUserDocumentsSuggestion($userId, $inQueryGeoTagIds, $inQueryDebateIds, $inQueryUserIds, $limit)
+    public function generateUserDocumentsSuggestion($userId, $cityId, $departmentId, $regionId, $inQueryDebateIds, $inQueryUserIds, $limit)
     {
         // $this->logger->info('*** generateUserDocumentsSuggestion');
         // $this->logger->info('$userId = ' . print_r($userId, true));
-        // $this->logger->info('$inQueryGeoTagIds = ' . print_r($inQueryGeoTagIds, true));
+        // $this->logger->info('$cityId = ' . print_r($cityId, true));
+        // $this->logger->info('$departmentId = ' . print_r($departmentId, true));
+        // $this->logger->info('$regionId = ' . print_r($regionId, true));
         // $this->logger->info('$debateIds = ' . print_r($inQueryDebateIds, true));
         // $this->logger->info('$userIds = ' . print_r($inQueryUserIds, true));
         // $this->logger->info('$limit = ' . print_r($limit, true));
 
         $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
-        $stmt = $con->prepare($this->createUserSuggestedDebatesRawSql($inQueryGeoTagIds, $inQueryDebateIds, $inQueryUserIds));
+        $stmt = $con->prepare($this->createUserSuggestedDebatesRawSql($inQueryDebateIds, $inQueryUserIds));
 
         $stmt->bindValue(':p_user_id', $userId, \PDO::PARAM_INT);
         $stmt->bindValue(':p_user_id2', $userId, \PDO::PARAM_INT);
         $stmt->bindValue(':p_user_id3', $userId, \PDO::PARAM_INT);
         $stmt->bindValue(':p_user_id4', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_l_city_id', $cityId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_l_department_id', $departmentId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_l_region_id', $regionId, \PDO::PARAM_INT);
         $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
 
         $stmt->execute();
