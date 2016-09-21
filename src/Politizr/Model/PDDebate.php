@@ -73,7 +73,6 @@ class PDDebate extends BasePDDebate implements PDocumentInterface
             //     new NotBlank(['message' => 'La description ne doit pas être vide']),
             //     new Length(['min' => 140, 'minMessage' => 'Le corps de la publication doit contenir au moins {{ limit }} caractères.']),
             // ),
-            'geoTags' => new Count(['min' => 1, 'minMessage' => 'Saisissez au moins {{ limit }} thématique géographique parmi "France", une région ou un département.']),
             'themaTags' => new Count(['max' => 5, 'maxMessage' => 'Saisissez au maximum {{ limit }} thématiques.']),
         ));
 

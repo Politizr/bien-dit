@@ -94,6 +94,29 @@ class LocalizationManager
     }
 
     /**
+     * Get array of [title] => [uuid] departments
+     *
+     * @return array
+     */
+    public function getRegionChoices()
+    {
+        // department list
+        $regions = PLRegionQuery::create()
+            ->distinct()
+            ->select(array('uuid', 'title'))
+            ->orderBy('title')
+            ->find()
+            ->toArray();
+
+        $choices = array();
+        foreach ($regions as $region) {
+            $choices[$region['title']] = $region['uuid'];
+        }
+
+        return $choices;
+    }
+
+    /**
      * Get array of [title] => [uuid] cities
      *
      * @param int departmentUuid
@@ -170,6 +193,34 @@ class LocalizationManager
 
         return $department->getUuid();
     }
+
+    /**
+     * Get region uuid by city id
+     *
+     * @param int $cityId
+     * @return string
+     */
+    public function getRegionUuidByCityId($cityId)
+    {
+        if (!$cityId) {
+            return null;
+        }
+
+        $region = PLRegionQuery::create()
+            ->usePLDepartmentQuery()
+                ->usePLCityQuery()
+                    ->filterById($cityId)
+                ->endUse()
+            ->endUse()
+            ->findOne();
+
+        if (!$region) {
+            return null;
+        }
+
+        return $region->getUuid();
+    }
+
 
     /**
      * Upd user w. his city id

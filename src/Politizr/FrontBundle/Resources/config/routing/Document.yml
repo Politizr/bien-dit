@@ -33,6 +33,13 @@ DebateDraftEditC:
         _method:        GET
         uuid:           ([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})
 
+DebateDraftPublishC:
+    pattern:  /citoyen/mes-brouillons/debat/publier/{uuid}
+    defaults: { _controller: PolitizrFrontBundle:Document:debatePublish }
+    requirements:
+        _method:        GET
+        uuid:           ([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})
+
 ReactionDraftNewC:
     pattern:  /citoyen/mes-brouillons/reaction/nouveau/{debateUuid}/{parentUuid}
     defaults: { _controller: PolitizrFrontBundle:Document:reactionNew }
@@ -44,6 +51,13 @@ ReactionDraftNewC:
 ReactionDraftEditC:
     pattern:  /citoyen/mes-brouillons/reaction/{uuid}
     defaults: { _controller: PolitizrFrontBundle:Document:reactionEdit }
+    requirements:
+        _method:        GET
+        uuid:           ([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})
+
+ReactionDraftPublishC:
+    pattern:  /citoyen/mes-brouillons/reaction/publier/{uuid}
+    defaults: { _controller: PolitizrFrontBundle:Document:reactionPublish }
     requirements:
         _method:        GET
         uuid:           ([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})
@@ -70,6 +84,13 @@ DebateDraftEditE:
         _method:        GET
         uuid:           ([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})
 
+DebateDraftPublishE:
+    pattern:  /elu/mes-brouillons/debat/publier/{uuid}
+    defaults: { _controller: PolitizrFrontBundle:Document:debatePublish }
+    requirements:
+        _method:        GET
+        uuid:           ([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})
+
 ReactionDraftNewE:
     pattern:  /elu/mes-brouillons/reaction/nouveau/{debateUuid}/{parentUuid}
     defaults: { _controller: PolitizrFrontBundle:Document:reactionNew }
@@ -81,6 +102,13 @@ ReactionDraftNewE:
 ReactionDraftEditE:
     pattern:  /elu/mes-brouillons/reaction/{uuid}
     defaults: { _controller: PolitizrFrontBundle:Document:reactionEdit }
+    requirements:
+        _method:        GET
+        uuid:           ([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})
+
+ReactionDraftPublishE:
+    pattern:  /elu/mes-brouillons/reaction/publier/{uuid}
+    defaults: { _controller: PolitizrFrontBundle:Document:reactionPublish }
     requirements:
         _method:        GET
         uuid:           ([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})

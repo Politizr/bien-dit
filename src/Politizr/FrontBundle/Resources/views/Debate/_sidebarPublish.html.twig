@@ -1,0 +1,10 @@
+{# beta #}
+<div class="sidebarPostEdition">    
+    <div class="sidebarPostAction">
+        {{ app.user | isAuthorizedToPublishDebate(debate.uuid) }}
+
+        <div class="secondaryActions">
+            <a href="{{ path('DebateDraftEdit'~profileSuffix(), { 'uuid': debate.uuid }) }}">Retour à l'édition</a>
+        </div>
+    </div>
+</div>

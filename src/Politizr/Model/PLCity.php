@@ -14,4 +14,13 @@ class PLCity extends BasePLCity
     {
         return $this->getNameReal();
     }
+
+    /**
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->getNameReal();
+    }
 }

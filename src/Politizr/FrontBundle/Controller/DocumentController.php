@@ -10,16 +10,19 @@ use Politizr\Exception\InconsistentDataException;
 
 use Politizr\Constant\TagConstants;
 use Politizr\Constant\ListingConstants;
+use Politizr\Constant\LocalizationConstants;
 
 use Politizr\Model\PDocumentInterface;
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
+use Politizr\Model\PLCountryQuery;
 
 use Politizr\Model\PUTrackDD;
 use Politizr\Model\PUTrackDR;
 
 use Politizr\FrontBundle\Form\Type\PDDebateType;
 use Politizr\FrontBundle\Form\Type\PDReactionType;
+use Politizr\FrontBundle\Form\Type\PDDebateLocalizationType;
 
 /**
  * Document controller: debates, reactions, comments
@@ -297,10 +300,35 @@ class DocumentController extends Controller
         $form = $this->createForm(new PDDebateType(), $debate);
 
         return $this->render('PolitizrFrontBundle:Debate:edit.html.twig', array(
-            'profileSuffix' => $this->get('politizr.tools.global')->computeProfileSuffix(),
             'debate' => $debate,
             'form' => $form->createView(),
-            ));
+        ));
+    }
+
+    /**
+     * Debate publish
+     * beta
+     *
+     * @param $uuid
+     */
+    public function debatePublishAction($uuid)
+    {
+        // $logger = $this->get('logger');
+        // $logger->info('*** debatePublishAction');
+        // $logger->info('$uuid = '.print_r($uuid, true));
+
+        $user = $this->getUser();
+
+        $debate = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
+        $this->checkDocumentEditable($debate, $user->getId());
+
+        // get geo user informations
+        $formLocalization = $this->createForm(new PDDebateLocalizationType($user));
+        
+        return $this->render('PolitizrFrontBundle:Debate:publish.html.twig', array(
+            'debate' => $debate,
+            'formLocalization' => $formLocalization->createView(),
+        ));
     }
 
     /* ######################################################################################################## */

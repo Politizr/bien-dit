@@ -5,3 +5,25 @@ services:
             - @politizr.manager.localization
         tags:
             - { name: form.type }
+
+    politizr.form.type.localization.region:
+        class: Politizr\FrontBundle\Form\Type\LocalizationRegionChoiceType
+        arguments:
+            - @politizr.manager.localization
+        tags:
+            - { name: form.type }
+
+    politizr.form.type.localization.department:
+        class: Politizr\FrontBundle\Form\Type\LocalizationDepartmentChoiceType
+        arguments:
+            - @politizr.manager.localization
+        tags:
+            - { name: form.type }
+
+    politizr.form.type.localization.city:
+        class: Politizr\FrontBundle\Form\Type\LocalizationCityChoiceType
+        arguments:
+            - @politizr.manager.localization
+        tags:
+            - { name: form.type }
+

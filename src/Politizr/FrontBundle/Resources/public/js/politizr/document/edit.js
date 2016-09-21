@@ -22,7 +22,7 @@ $('#debate_title, #reaction_title, #debate_copyright, #reaction_copyright, .edit
  *
  */
 function delayRequest(ev) {
-    // console.log('*** autoSaveDelay');
+    console.log('*** autoSaveDelay');
     $('.actionSave').removeClass('saved');
 
     if(delayRequest.timeout) {
@@ -40,28 +40,28 @@ function delayRequest(ev) {
 
 // dlblick editor event
 $('.editable.description').on('dblclick', function() {
-    // console.log('dblclick event');
+    console.log('dblclick event');
     $('.actionSave').removeClass('saved');
     // delayRequest(this);
 });
 
 // mouseup editor event
 $('.editable.description').on('mouseup', function() {
-    // console.log('mouseup event');
+    console.log('mouseup event');
     $('.actionSave').removeClass('saved');
     // delayRequest(this);
 });
 
-// change checkbox type event
-$('#formTagType :checkbox').on('change', function() {
-    // console.log('checkbox change');
-    delayRequest(this);
-});
+// // change checkbox type event
+// $('#formTagType :checkbox').on('change', function() {
+//     console.log('checkbox change');
+//     delayRequest(this);
+// });
 
 
 function triggerSaveDocument()
 {
-    // console.log('*** triggerSaveDocument');
+    console.log('*** triggerSaveDocument');
 
     var documentSave = $('.actionSave').find('a').attr('action');
     return $('[action="'+documentSave+'"]').trigger('click');
@@ -114,10 +114,10 @@ function triggerSaveDocument()
  */
 function saveDebate()
 {
-    // console.log('*** saveDebate');
+    console.log('*** saveDebate');
 
     var description = descriptionEditor.serialize();
-    // console.log(description['element-0']['value']);
+    console.log(description['element-0']['value']);
 
     $('#debate_description').val(description['element-0']['value']);
 
@@ -153,10 +153,10 @@ function saveDebate()
  */
 function saveReaction()
 {
-    // console.log('*** saveReaction');
+    console.log('*** saveReaction');
 
     var description = descriptionEditor.serialize();
-    // console.log(description['element-0']['value']);
+    console.log(description['element-0']['value']);
 
     $('#reaction_description').val(description['element-0']['value']);
 
@@ -190,75 +190,10 @@ function saveReaction()
 /**
  *
  */
-function publishDebate(uuid)
-{
-    // console.log('*** publishDebate');
-    // console.log(uuid);
-
-    var xhrPath = getXhrPath(
-        ROUTE_DEBATE_PUBLISH,
-        'document',
-        'debatePublish',
-        RETURN_URL
-        );
-
-    return xhrCall(
-        document,
-        { 'uuid': uuid },
-        xhrPath,
-        1
-    ).done(function(data) {
-        if (data['error']) {
-            $('#ajaxGlobalLoader').hide();
-            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
-            $('#infoBoxHolder .boxError').show();
-        } else {
-            // redirection
-            window.location = data['redirectUrl'];
-        }
-    });
-}
-
-
-/**
- *
- */
-function publishReaction(uuid)
-{
-    // console.log('*** publishReaction');
-    // console.log(uuid);
-
-    var xhrPath = getXhrPath(
-        ROUTE_REACTION_PUBLISH,
-        'document',
-        'reactionPublish',
-        RETURN_URL
-        );
-    
-    return xhrCall(
-        document,
-        { 'uuid': uuid },
-        xhrPath,
-        1
-    ).done(function(data) {
-        if (data['error']) {
-            $('#ajaxGlobalLoader').hide();
-            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
-            $('#infoBoxHolder .boxError').show();
-        } else {
-            // redirection
-            window.location = data['redirectUrl'];
-        }
-    });
-}
-
-/**
- *
- */
 function deleteDebate(uuid)
 {
-    // console.log('*** deleteDebate');
-    // console.log(uuid);
+    console.log('*** deleteDebate');
+    console.log(uuid);
 
     var xhrPath = getXhrPath(
         ROUTE_DEBATE_DELETE,
@@ -289,8 +224,8 @@ function deleteDebate(uuid)
  */
 function deleteReaction(uuid)
 {
-    // console.log('*** deleteReaction');
-    // console.log(uuid);
+    console.log('*** deleteReaction');
+    console.log(uuid);
 
     var xhrPath = getXhrPath(
         ROUTE_REACTION_DELETE,
