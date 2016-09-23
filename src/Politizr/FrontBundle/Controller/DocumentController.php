@@ -323,7 +323,7 @@ class DocumentController extends Controller
         $this->checkDocumentEditable($debate, $user->getId());
 
         // get geo user informations
-        $formLocalization = $this->createForm(new PDDebateLocalizationType($user));
+        $formLocalization = $this->createForm(new PDDebateLocalizationType($user), $debate);
         
         return $this->render('PolitizrFrontBundle:Debate:publish.html.twig', array(
             'debate' => $debate,

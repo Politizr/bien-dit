@@ -85,6 +85,19 @@ class LocalizationCityChoiceType extends AbstractType
                 $formModifier($event->getForm(), $departmentUuid, $cityUuid, $options);
             }
         );
+        
+        $builder->get('department')->addEventListener(
+            FormEvents::POST_SUBMIT,
+            function (FormEvent $event) use ($formModifier, $departmentUuid, $cityUuid, $options) {
+                // It's important here to fetch $event->getForm()->getData(), as
+                // $event->getData() will get you the client data (that is, the ID)
+                $departmentUuid = $event->getForm()->getData();
+        
+                // since we've added the listener to the child, we'll have to pass on
+                // the parent to the callback functions!
+                $formModifier($event->getForm()->getParent(), $departmentUuid, $cityUuid, $options);
+            }
+        );
     }
 
     public function configureOptions(OptionsResolver $resolver)

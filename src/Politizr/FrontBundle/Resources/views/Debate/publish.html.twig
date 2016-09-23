@@ -12,17 +12,20 @@
             <i class="icon-info"></i><b>Choisissez la zone géographique associée à votre publication.</b>
         </div>
         <form id="geoForm">
-            <input type="checkbox" name="geo" value="city">
-            Choisissez une ville<br/>
-            {{ form_widget(formLocalization.localization_city) }}<br/>
-            <input type="checkbox" name="geo" value="department">
-            et/ou choisissez un département<br/>
-            {{ form_widget(formLocalization.localization_department) }}<br/>
-            <input type="checkbox" name="geo" value="region">
-            et/ou choisissez une région<br/>
-            {{ form_widget(formLocalization.localization_region) }}<br/>
-            <input type="checkbox" name="geo" value="country">
-            et/ou France<br/>
+            {{ form_errors(formLocalization) }}
+
+            {% for geo in formLocalization.geo %}
+                {{ form_row(geo) }}
+                {% if loop.index == 1 %}
+                    {{ form_widget(formLocalization.localization_city) }}<br/>
+                {% elseif loop.index == 2 %}
+                    {{ form_widget(formLocalization.localization_department) }}<br/>
+                {% elseif loop.index == 3 %}
+                    {{ form_widget(formLocalization.localization_region) }}<br/>
+                {% endif %}
+            {% endfor %}
+
+            {{ form_rest(formLocalization) }}
         </form>
 
         <h5>Type de publication</h5>

@@ -33,6 +33,25 @@ class PDDebateLocalizationType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        // Geo type list
+        $choices = array(
+            'Choisissez une ville' => 'city',
+            'et/ou un département' => 'department',
+            'et/ou une région' => 'region',
+            'et/ou France' => 'country',
+        );
+
+        $builder->add('geo', 'choice', array(
+            'label' => 'Géolocalisation de la publication',
+            'required' => true,
+            'mapped' => false,
+            'choices' => $choices,
+            'choices_as_values' => true,
+            'multiple' => false,
+            'expanded' => true,
+            'empty_data'  => null,
+            'constraints' => new NotBlank(array('message' => 'Choix d\'une localisation obligatoire.')),
+        ));
 
         // Localization city type
         $builder->add('localization_city', LocalizationCityChoiceType::class, array(
