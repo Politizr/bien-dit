@@ -40,6 +40,9 @@
                         </div>
                     {% endif %}
                     {{ form_start(form, {'action': path('InscriptionCheck'), 'method': 'POST'}) }}
+                        <div class="notice">
+                            <i class="icon-info"></i><b>Votre e-mail ne sera pas publique.</b>
+                        </div>
                         {{ form_row(form.email) }}
                         {{ form_row(form.plainPassword) }}
                         <div class="coloredBg">

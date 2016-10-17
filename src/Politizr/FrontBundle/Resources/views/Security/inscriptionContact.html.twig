@@ -39,6 +39,9 @@
                         {{ form_row(form.name) }}
                         {{ form_row(form.firstname) }}
                         {% if (form.email is defined) %}
+                            <div class="notice">
+                                <i class="icon-info"></i><b>Votre e-mail ne sera pas publique.</b>
+                            </div>
                             {{ form_row(form.email) }}
                         {% endif %}
                         {{ form_widget(form.localization) }}
