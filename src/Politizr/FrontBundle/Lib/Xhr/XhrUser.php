@@ -1234,7 +1234,7 @@ class XhrUser
      */
     public function usersByOrganization(Request $request)
     {
-        // $this->logger->info('*** documentsByOrganization');
+        // $this->logger->info('*** usersByOrganization');
         
         // Request arguments
         $uuid = $request->get('uuid');

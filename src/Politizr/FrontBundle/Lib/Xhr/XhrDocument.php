@@ -1178,12 +1178,12 @@ class XhrDocument
     }
 
     /**
-     * Documents by organization
+     * Publications by organization
      * code beta
      */
-    public function documentsByOrganization(Request $request)
+    public function publicationsByOrganization(Request $request)
     {
-        // $this->logger->info('*** documentsByOrganization');
+        // $this->logger->info('*** publicationsByOrganization');
         
         // Request arguments
         $uuid = $request->get('uuid');
@@ -1199,7 +1199,7 @@ class XhrDocument
             throw new InconsistentDataException('Organization '.$uuid.' not found.');
         }
 
-        $documents = $this->documentService->getDocumentsByOrganizationPaginated(
+        $publications = $this->documentService->getPublicationsByOrganizationPaginated(
             $organization->getId(),
             $orderBy,
             $offset,
@@ -1208,20 +1208,20 @@ class XhrDocument
 
         // @todo create function for code above
         $moreResults = false;
-        if (sizeof($documents) == ListingConstants::LISTING_CLASSIC_PAGINATION) {
+        if (sizeof($publications) == ListingConstants::LISTING_CLASSIC_PAGINATION) {
             $moreResults = true;
         }
 
-        if ($offset == 0 && count($documents) == 0) {
+        if ($offset == 0 && count($publications) == 0) {
             $html = $this->templating->render(
                 'PolitizrFrontBundle:PaginatedList:_noResult.html.twig'
             );
         } else {
             $html = $this->templating->render(
-                'PolitizrFrontBundle:PaginatedList:_documents.html.twig',
+                'PolitizrFrontBundle:PaginatedList:_publications.html.twig',
                 array(
                     'uuid' => $uuid,
-                    'documents' => $documents,
+                    'publications' => $publications,
                     'offset' => intval($offset) + ListingConstants::LISTING_CLASSIC_PAGINATION,
                     'moreResults' => $moreResults,
                     'jsFunctionKey' => XhrConstants::JS_KEY_LISTING_DOCUMENTS_BY_ORGANIZATION
