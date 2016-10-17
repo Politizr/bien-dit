@@ -487,9 +487,6 @@ class XhrUser
                 $user->setNickname($user->getFirstname() . ' ' . $user->getName());
                 $user->setRealname($user->getFirstname() . ' ' . $user->getName());
                 $user->save();
-
-                // upd localization infos
-                $this->localizationManager->updateUserCity($user, $form->get('localization')->getData()['city']);
             } elseif ($formTypeId == 2) {
                 $this->userManager->updateCanonicalFields($user);
                 $user->save();
