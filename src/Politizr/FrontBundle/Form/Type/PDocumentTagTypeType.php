@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Politizr\Constant\TagConstants;
 
@@ -25,7 +26,13 @@ class PDocumentTagTypeType extends AbstractType
         $builder->add('p_tags', 'model', array(
             'label' => 'Type',
             'class' => 'Politizr\\Model\\PTag',
-            'query' => PTagQuery::create()->filterByPTTagTypeId(TagConstants::TAG_TYPE_TYPE)->filterByOnline(true)->orderByTitle(),
+            'query' => PTagQuery::create()
+                ->filterByPTTagTypeId(TagConstants::TAG_TYPE_TYPE)
+                ->filterByOnline(true)
+                ->_if(!$options['elected_mode'])
+                    ->filterById(TagConstants::TAG_TYPE_ACTION_CONCRETE_ID, \Criteria::NOT_EQUAL)
+                ->_endif()
+                ->orderByTitle(),
             'property' => 'title',
             'index_property' => 'uuid',
             'multiple' => true,
@@ -33,6 +40,13 @@ class PDocumentTagTypeType extends AbstractType
             // 'constraints' => new NotBlank(array('message' => 'Choix d\'un mandat obligatoire.')),
         ));
 
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(array(
+            'elected_mode' => true,
+        ));
     }
 
     /**

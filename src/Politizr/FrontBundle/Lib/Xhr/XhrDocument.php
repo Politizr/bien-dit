@@ -320,7 +320,11 @@ class XhrDocument
         $debate->save();
 
         // Debate's tags type
-        $formTagTypes = $this->formFactory->create(new PDocumentTagTypeType());
+        $formTagTypes = $this->formFactory->create(
+            new PDocumentTagTypeType(), 
+            null, 
+            array('elected_mode' => $user->getQualified())
+        );
         $formTagTypes->bind($request);
 
         $tags = $formTagTypes->getData()['p_tags'];
@@ -460,7 +464,11 @@ class XhrDocument
         $reaction->save();
 
         // Debate's tags type
-        $formTagTypes = $this->formFactory->create(new PDocumentTagTypeType());
+        $formTagTypes = $this->formFactory->create(
+            new PDocumentTagTypeType(), 
+            null, 
+            array('elected_mode' => $user->getQualified())
+        );
         $formTagTypes->bind($request);
 
         $tags = $formTagTypes->getData()['p_tags'];
