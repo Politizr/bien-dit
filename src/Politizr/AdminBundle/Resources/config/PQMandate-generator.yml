@@ -65,7 +65,6 @@ builders:
             fields:
                 p_q_type:
                     dbType:                     model
-                    formType:                   model
                     addFormOptions:
                         multiple:               false
                         required:               false
@@ -88,7 +87,6 @@ builders:
             fields:
                 p_q_type:
                     dbType:                     model
-                    formType:                   model
                     addFormOptions:
                         multiple:               false
                         required:               false
