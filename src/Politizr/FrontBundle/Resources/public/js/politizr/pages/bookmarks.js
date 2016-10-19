@@ -19,7 +19,7 @@ $(function() {
             $('.sidebarTopPosts').find('.documentList').first(),
             $('.sidebarTopPosts').find('.ajaxLoader').first()
         )
-    ).done(function(r1, r2, r3) {
+    ).done(function(r1, r2, r3, r4) {
         stickySidebar();
     });
 });

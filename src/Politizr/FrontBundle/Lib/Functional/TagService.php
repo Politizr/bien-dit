@@ -56,6 +56,18 @@ class TagService
     /* ######################################################################################################## */
     
     /**
+     * Get "alphabetical tags" listing
+     * beta
+     * @return PropelCollection[PTag]
+     */
+    public function getAlphabeticalTagsListing()
+    {
+        $tags = $this->tagManager->generateAlphabeticalTags();
+
+        return $tags;
+    }
+
+    /**
      * Depending of tag id, compute relative ids ie. ids of tags where parent_id is set to given id
      *
      * @param int $id Tag ID

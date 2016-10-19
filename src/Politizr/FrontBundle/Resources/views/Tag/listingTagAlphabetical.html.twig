@@ -1,0 +1,52 @@
+{# beta #}
+{% set layout = 'PolitizrFrontBundle::layoutPublic.html.twig' %}
+{% if (isGrantedE() or isGrantedC()) %}
+    {% set layout = 'PolitizrFrontBundle::layoutConnected.html.twig' %}
+{% endif %}
+{% extends layout %}
+
+{% set metaTitle = 'Toutes les thématiques' %}
+{% set metaDescription = 'Toutes les thématiques contenant des publications sur Politizr.' %}
+
+{% block title %}{{ metaTitle }} - {{ parent() }}{% endblock title %}
+{% block description %}{{ metaDescription }}{% endblock description %}
+
+{% block ogTitle %}{{ metaTitle }} - {{ parent() }}{% endblock ogTitle %}
+{% block ogDescription %}{{ metaDescription }}{% endblock ogDescription %}
+
+{% block tcTitle %}{{ metaTitle }} - {{ parent() }}{% endblock tcTitle %}
+{% block tcDescription %}{{ metaDescription }}{% endblock tcDescription %}
+
+{% block content %}
+    <div id="content">
+        <div class="list">
+            <div class="pageTitle">Toutes les thématiques abordées</div>
+            <div class="tagList">
+                {% for tag in tags %}
+                    {% include 'PolitizrFrontBundle:Tag:_detail.html.twig' with { 'tag': tag } only %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block sidebarContent %}
+    {% if app.user %}
+        {% include 'PolitizrFrontBundle:Tag:_sidebarFollowedTags.html.twig' with {'uuid': app.user.uuid} only %}
+    {% endif %}
+    {% include 'PolitizrFrontBundle:Tag:_sidebarTopTags.html.twig' %}
+    {% include 'PolitizrFrontBundle:Tag:_sidebarTypeTags.html.twig' %}
+    {% include 'PolitizrFrontBundle:Document:_sidebarTopDocuments.html.twig' %}
+{% endblock sidebarContent %}
+
+{% block javascriptFooter %}
+    {{ parent() }}
+
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/tag/listing.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/document/listing.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/pages/listingTagAlphabetical.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock javascriptFooter %}

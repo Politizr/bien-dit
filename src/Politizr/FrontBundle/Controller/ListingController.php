@@ -10,6 +10,7 @@ use Politizr\Constant\TagConstants;
 
 use Politizr\Model\PDocumentInterface;
 use Politizr\Model\PUser;
+use Politizr\Model\PTag;
 
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PUserQuery;
@@ -325,6 +326,26 @@ class ListingController extends Controller
 
         return $this->render('PolitizrFrontBundle:User:listingUserSubscribers.html.twig', array(
             'user' => $user,
+        ));
+    }
+
+    // *************************************************************************************************** //
+    //                                      USER LISTING
+    // *************************************************************************************************** //
+    
+    /**
+     * Tag alphabetical
+     * code beta
+     */
+    public function tagAlphabeticalAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** tagAlphabetical');
+
+        $tags = $this->get('politizr.functional.tag')->getAlphabeticalTagsListing();
+
+        return $this->render('PolitizrFrontBundle:Tag:listingTagAlphabetical.html.twig', array(
+            'tags' => $tags,
         ));
     }
 }

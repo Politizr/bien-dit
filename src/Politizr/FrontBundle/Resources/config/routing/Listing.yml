@@ -67,3 +67,12 @@ ListingUserSubscribers:
     requirements:
         _method:        GET
 
+################################################################################
+#               TAGS
+################################################################################
+ListingTagAlphabetical:
+    pattern:  /thematiques
+    defaults: { _controller: PolitizrFrontBundle:Listing:tagAlphabetical }
+    requirements:
+        _method:        GET
+
