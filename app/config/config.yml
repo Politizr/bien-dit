@@ -596,7 +596,7 @@ bazinga_faker:
 
 # OAuth Instagram
 hwi_oauth:
-    firewall_name:                      oauth
+    firewall_names:                     [oauth]
     resource_owners:
         facebook:       
             type:                       facebook
