@@ -802,7 +802,18 @@ class XhrDocument
             $paragraphContext = 'paragraph';
         }
 
-        $html = $this->templating->render(
+        $form = null;
+        if ($paragraphContext == 'global') {
+            $form = $this->templating->render(
+                'PolitizrFrontBundle:Comment:_isAuthorizedToNewComment.html.twig',
+                array(
+                    'document' => $document,
+                    'formComment' => $formComment->createView(),
+                )
+            );
+        }
+
+        $list = $this->templating->render(
             'PolitizrFrontBundle:Comment:_list.html.twig',
             array(
                 'paragraphContext' => $paragraphContext,
@@ -822,7 +833,8 @@ class XhrDocument
         );
 
         return array(
-            'html' => $html,
+            'form' => $form,
+            'list' => $list,
             'counter' => $counter,
             );
     }

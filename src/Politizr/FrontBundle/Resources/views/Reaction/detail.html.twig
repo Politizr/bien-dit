@@ -73,7 +73,7 @@
                 </div>
             </div>
             <div id="p-0">
-                {% include 'PolitizrFrontBundle:Comment:_global.html.twig' with { 'document': reaction } only %}
+                {% include 'PolitizrFrontBundle:Comment:_global.html.twig' with { 'document': reaction, 'formComment': formComment } only %}
             </div>
 
             {% if reactions | length > 0 %}

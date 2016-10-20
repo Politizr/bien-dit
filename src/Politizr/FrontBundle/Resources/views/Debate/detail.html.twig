@@ -55,7 +55,7 @@
                 </div>
             </div>
             <div id="p-0">
-                {% include 'PolitizrFrontBundle:Comment:_global.html.twig' with { 'document': debate } only %}
+                {% include 'PolitizrFrontBundle:Comment:_global.html.twig' with { 'document': debate, 'formComment': formComment } only %}
             </div>
 
             {% if reactions | length > 0 %}

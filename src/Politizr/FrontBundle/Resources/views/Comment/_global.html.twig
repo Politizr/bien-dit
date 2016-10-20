@@ -1,6 +1,9 @@
 {# beta #}
 <div class="paragraphHolder withLoaderInside" uuid="{{ document.uuid }}" type="{{ document.type }}" noParagraph="0">
     {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+    <div id="addNewGlobalComments">
+        {{ app.user | isAuthorizedToNewComment(formComment, document.uuid) }}
+    </div>
     <div id="globalCommentsButton">
         <div class="counterContent">
             {% include 'PolitizrFrontBundle:Comment:_counter.html.twig' with { 'document': document, 'paragraphNo': 0, 'active': false, 'paragraphContext': 'global' } only %}

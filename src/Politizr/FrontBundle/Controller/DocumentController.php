@@ -15,11 +15,15 @@ use Politizr\Model\PDocumentInterface;
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
 
+use Politizr\Model\PDDComment;
+use Politizr\Model\PDRComment;
 use Politizr\Model\PUTrackDD;
 use Politizr\Model\PUTrackDR;
 
 use Politizr\FrontBundle\Form\Type\PDDebateType;
 use Politizr\FrontBundle\Form\Type\PDReactionType;
+use Politizr\FrontBundle\Form\Type\PDDCommentType;
+use Politizr\FrontBundle\Form\Type\PDRCommentType;
 
 /**
  * Document controller: debates, reactions, comments
@@ -93,6 +97,12 @@ class DocumentController extends Controller
         $debate->setNbViews($debate->getNbViews() + 1);
         $debate->save();
 
+        // Global comment form
+        $formType = new PDDCommentType();
+        $comment = new PDDComment();
+        $comment->setParagraphNo(0);
+        $formComment = $this->createForm($formType, $comment);
+
         // Tracking
         $visitor = $this->getUser();
         if ($visitor) {
@@ -134,6 +144,7 @@ class DocumentController extends Controller
 
         return $this->render('PolitizrFrontBundle:Debate:detail.html.twig', array(
             'debate' => $debate,
+            'formComment' => $formComment->createView(),
             'paragraphs' => $paragraphs,
             'reactions' => $reactions,
             'similars' => $similars,
@@ -159,6 +170,12 @@ class DocumentController extends Controller
 
         $reaction->setNbViews($reaction->getNbViews() + 1);
         $reaction->save();
+
+        // Global comment form
+        $formType = new PDRCommentType();
+        $comment = new PDRComment();
+        $comment->setParagraphNo(0);
+        $formComment = $this->createForm($formType, $comment);
 
         // Tracking
         $visitor = $this->getUser();
@@ -234,6 +251,7 @@ class DocumentController extends Controller
         return $this->render('PolitizrFrontBundle:Reaction:detail.html.twig', array(
             'debate' => $debate,
             'reaction' => $reaction,
+            'formComment' => $formComment->createView(),
             'paragraphs' => $paragraphs,
             'reactions' => $reactions,
             'parentReaction' => $parentReaction,
