@@ -30,6 +30,12 @@ $("body").on("click", "[action='createAccountToComment']", function() {
     return modalCreateAccountToComment();
 });
 
+$("body").on("click", ".commentDescriptionHook", function() {
+    // console.log('*** click commentDescriptionHook');
+
+    return modalCreateAccountToComment();
+});
+
 // open paragraph comments
 $("body").on("click", "[action='comments']", function() {
     // console.log('*** click comments');
