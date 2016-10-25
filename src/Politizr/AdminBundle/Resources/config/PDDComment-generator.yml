@@ -61,10 +61,37 @@ builders:
                 show:                           ~
                 edit:                           ~
                 delete:                         ~
+            actions:
+                new:                            ~
     excel:
         params: ~
         filename: ~
         filetype: ~
+    new:
+        params:
+            title:                              "Création d'un commentaire"
+            display:
+                "Champs principaux":            [ [ description ], [ paragraph_no ], [ online ], [ p_user, p_d_debate ] ]
+            fields:
+                p_user:
+                    dbType:                     model
+                    formType:                   Admingenerator\FormExtensionsBundle\Form\Type\Select2ModelType
+                    addFormOptions:
+                        multiple:               false
+                        required:               true
+                        class:                  Politizr\Model\PUser
+                        query:                  \Politizr\Model\PUserQuery::create()->orderByName()
+                p_d_debate:
+                    dbType:                     model
+                    formType:                   Admingenerator\FormExtensionsBundle\Form\Type\Select2ModelType
+                    addFormOptions:
+                        multiple:               false
+                        required:               true
+                        class:                  Politizr\Model\PDDebate
+                        query:                  \Politizr\Model\PDDebateQuery::create()->online()->orderByTitle()
+            actions:
+              save:                             ~
+              list:                             ~
     edit:
         params:
             title:                              "Edition du commentaire de sujet id-{{ PDDComment.id }}"

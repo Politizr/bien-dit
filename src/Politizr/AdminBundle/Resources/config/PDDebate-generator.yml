@@ -94,6 +94,7 @@ builders:
                 edit:                           ~
                 delete:                         ~
             actions:
+                new:                            ~
                 excel:                          ~
             batch_actions:
                 homepage:
@@ -106,6 +107,23 @@ builders:
             datetime_format: ~
             fields: ~
             export: ~
+    new:
+        params:
+            title:                              "Création d'un débat"
+            display:
+                "Champs principaux":            [ [ title ], [ p_user ] ]
+            fields:
+                p_user:
+                    dbType:                     model
+                    formType:                   Admingenerator\FormExtensionsBundle\Form\Type\Select2ModelType
+                    addFormOptions:
+                        multiple:               false
+                        required:               true
+                        class:                  Politizr\Model\PUser
+                        query:                  \Politizr\Model\PUserQuery::create()->orderByName()
+            actions:
+              save:                             ~
+              list:                             ~
     edit:
         params:
             title:                              "Edition du contenu sujet '{{ PDDebate.title }}'"
