@@ -28,6 +28,8 @@ params:
             label:          Débat associé
         parent_reaction_id:
             label:          ID Réaction associée
+        parent_reaction:
+            label:          Réaction associée
         parent:
             label:          Réaction associée
         file_name:
@@ -104,13 +106,59 @@ builders:
                 show:                           ~
                 edit:                           ~
                 delete:                         ~
+            actions:
+                new:                            ~
+                excel:                          ~
             batch_actions:
                 homepage:
                     label:    En page d'accueil
     excel:
-        params: ~
-        filename: ~
-        filetype: ~
+        params:
+            display:                            [ title, p_user, slug, published_at ]
+            filename:                           politizr-reactions
+            filetype: ~
+            datetime_format: ~
+            fields: ~
+            export: ~
+    new:
+        params:
+            title:                              "Création d'une réaction"
+            display:
+                "Champs principaux":            [ [ title ], [ p_user ], [ p_d_debate, parent_reaction ] ]
+                "Champs secondaires":           [ [ description ] ]
+            fields:
+                p_user:
+                    dbType:                     model
+                    formType:                   Admingenerator\FormExtensionsBundle\Form\Type\Select2ModelType
+                    addFormOptions:
+                        multiple:               false
+                        required:               true
+                        class:                  Politizr\Model\PUser
+                        query:                  \Politizr\Model\PUserQuery::create()->online()->filterByQualified(true)->orderByName()
+                p_d_debate:
+                    dbType:                     model
+                    formType:                   Admingenerator\FormExtensionsBundle\Form\Type\Select2ModelType
+                    addFormOptions:
+                        multiple:               false
+                        required:               true
+                        class:                  Politizr\Model\PDDebate
+                        query:                  \Politizr\Model\PDDebateQuery::create()->online()->orderByTitle()
+                parent_reaction:
+                    dbType:                     model
+                    formType:                   Admingenerator\FormExtensionsBundle\Form\Type\Select2ModelType
+                    addFormOptions:
+                        mapped:                 false
+                        multiple:               false
+                        required:               false
+                        class:                  Politizr\Model\PDReaction
+                        query:                  \Politizr\Model\PDReactionQuery::create()->online()->orderByTitle()
+                description:
+                    grid_class:                 "col-md-12"
+                    addFormOptions:
+                        attr:                   { class : tinymce }
+            actions:
+              save:                             ~
+              list:                             ~
     edit:
         params:
             title:                              "Edition du contenu réponse '{{ PDReaction.getTitle }}'"
@@ -120,7 +168,7 @@ builders:
                 "Objets":
                     "Utilisateur":              [ p_user ]
                     "Sujet":                    [ p_d_debate ]
-                    # "Réaction parente":         [ parent ]
+                    "Réaction parente":         [ parent_reaction ]
                 "Tags":
                     "Tags associés":            [ block_tags ]
                 "Statut":
@@ -148,6 +196,12 @@ builders:
                         read_only:              true
                 p_d_debate:
                     addFormOptions:
+                        disabled:               true
+                        read_only:              true
+                parent_reaction:
+                    dbType:                     model
+                    addFormOptions:
+                        class:                  Politizr\Model\PDReaction
                         disabled:               true
                         read_only:              true
                 block_tags:

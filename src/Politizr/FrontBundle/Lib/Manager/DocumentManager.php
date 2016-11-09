@@ -1833,6 +1833,7 @@ GROUP BY p_d_debate_id
 
             $reaction->setDescription($description);
 
+            $reaction->setOnline(true);
             $reaction->setPublished(true);
             $reaction->setPublishedAt(time());
             $reaction->save();
