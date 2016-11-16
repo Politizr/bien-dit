@@ -42,7 +42,9 @@
                     </div>
                 {% endif %}
                 <div id="cardPostText">
-                    {% include 'PolitizrFrontBundle:Navigation\\Helper:_createAccountToFullRead.html.twig' %}
+                    {% if private %}
+                        {% include 'PolitizrFrontBundle:Navigation\\Helper:_createAccountToFullRead.html.twig' %}
+                    {% endif %}
                     {% for paragraph in paragraphs %}
                         <div id="p-{{ loop.index }}" class="paragraph">
                             {% include 'PolitizrFrontBundle:Comment:_paragraph.html.twig' with { 'document': debate, 'paragraphNo': loop.index } only %}

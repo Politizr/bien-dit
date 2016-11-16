@@ -114,9 +114,10 @@ class DocumentController extends Controller
             $uTrackd->save();
         }
 
-        // Cut text if user not logged
+        // Cut text if user not logged and content setted as not public
+        $private = $this->get('politizr.tools.global')->isPrivateMode($visitor, $this->getParameter('private_mode'));
         $description = $debate->getDescription();
-        if (!$visitor) {
+        if ($private) {
             $description = $this->get('politizr.tools.global')->truncate($description, 800, ['html' => true]);
         }
 
@@ -143,6 +144,7 @@ class DocumentController extends Controller
             ->find();
 
         return $this->render('PolitizrFrontBundle:Debate:detail.html.twig', array(
+            'private' => $private,
             'debate' => $debate,
             'formComment' => $formComment->createView(),
             'paragraphs' => $paragraphs,
@@ -189,8 +191,9 @@ class DocumentController extends Controller
         }
 
         // Cut text if user not logged
+        $private = $this->get('politizr.tools.global')->isPrivateMode($visitor, $this->getParameter('private_mode'));
         $description = $reaction->getDescription();
-        if (!$visitor) {
+        if ($private) {
             $description = $this->get('politizr.tools.global')->truncate($description, 800, ['html' => true]);
         }
 
@@ -249,6 +252,7 @@ class DocumentController extends Controller
             ->find();
 
         return $this->render('PolitizrFrontBundle:Reaction:detail.html.twig', array(
+            'private' => $private,
             'debate' => $debate,
             'reaction' => $reaction,
             'formComment' => $formComment->createView(),

@@ -726,4 +726,26 @@ class GlobalTools
 
         return $tinyUri;
     }
+
+    /**
+     * Check if Politizr is in public or private mode
+     *
+     * @param $visitor PUser current connected user
+     * @param $mode public|private|we
+     * @return boolean
+     */
+    public function isPrivateMode($visitor, $mode) {
+        $private = true;
+        if ($visitor) {
+            $private = false;
+        } elseif ($mode == 'public') {
+            $private = false;
+        } elseif ($mode == 'we') {
+            $dayOfWeek = date('w');
+            if ($dayOfWeek == 0 || $dayOfWeek == 6) {
+                $private = false;
+            }
+        }
+        return $private;
+    }
 }

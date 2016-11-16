@@ -44,3 +44,6 @@ parameters:
     idcheck_wsdl_url: http://www.wsdl.com
     idcheck_login: 123
     idcheck_password: 123
+
+    # Public content: public | private | we
+    private_mode: public
