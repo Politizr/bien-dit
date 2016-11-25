@@ -117,7 +117,7 @@ class ListingController extends Controller
     }
 
     /**
-     * Tag listing w. minimal url
+     * Tag listing w. minimal url or user detail
      * code beta
      */
     public function tagRawAction($slug)
@@ -125,6 +125,10 @@ class ListingController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** tagAction');
         $logger->info('$slug = '.print_r($slug, true));
+
+        if (substr($slug, 0 , 1) == '@') {
+            return $this->redirect($this->generateUrl('UserDetail', array('slug' => substr($slug, 1))));
+        }
 
         return $this->redirect($this->generateUrl('ListingByTag', array('slug' => $slug)));
     }
