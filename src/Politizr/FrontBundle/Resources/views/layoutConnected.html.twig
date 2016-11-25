@@ -92,17 +92,6 @@
     </div>
 {% endblock main %}
 
-{% block footer %}
-    {% block mobileFooter %}
-        <div id="mobileFooter">
-            {% block mobileAction %}
-            {% endblock %}
-            <div id="actionShowMobileSidebar" action="showMobileSidebar"><i class="icon-goleft"></i></div>
-            <div id="actionHideMobileSidebar" action="hideMobileSidebar"><i class="icon-goright"></i></div>
-        </div>    
-    {% endblock mobileFooter %}
-{% endblock footer %}
-
 {% block javascriptFooter %}
     {{ parent() }}
 
