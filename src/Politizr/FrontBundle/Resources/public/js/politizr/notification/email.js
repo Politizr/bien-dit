@@ -24,7 +24,8 @@ function notifEmailSubscribe(uuid, targetElement, localLoader) {
         targetElement,
         { 'uuid': uuid },
         xhrPath,
-        localLoader
+        localLoader,
+        'POST'
     ).done(function(data) {
         if (data['error']) {
             $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
@@ -61,7 +62,8 @@ function notifEmailUnsubscribe(uuid, targetElement, localLoader) {
         targetElement,
         { 'uuid': uuid },
         xhrPath,
-        localLoader
+        localLoader,
+        'POST'
     ).done(function(data) {
         if (data['error']) {
             $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);

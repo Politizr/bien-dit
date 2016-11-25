@@ -50,7 +50,9 @@ var ADMIN_ROUTE_USER_CITY = 'admin/utilisateur/ville/update';
 
 
 // Generic function to make an AJAX call
-var xhrCall = function(context, data, url) {
+var xhrCall = function(context, data, url, type) {
+    type = (typeof type === "undefined") ? 'GET' : type;
+    
     // Return the $.ajax promise
     return $.ajax({
         type: 'POST',

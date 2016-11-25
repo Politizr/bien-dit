@@ -15,7 +15,8 @@ function follow(xhrPath, targetElement, localLoader, uuid, way) {
         document,
         { 'uuid': uuid, 'way': way },
         xhrPath,
-        localLoader
+        localLoader,
+        'POST'
     ).done(function(data) {
         if (data['error']) {
             $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);

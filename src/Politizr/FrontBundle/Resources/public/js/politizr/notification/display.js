@@ -61,7 +61,8 @@ function checkNotificationItem(localLoader, context, uuid) {
         context,
         { 'uuid': uuid },
         xhrPath,
-        localLoader
+        localLoader,
+        'POST'
     ).done(function(data) {
         if (data['error']) {
             $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
@@ -103,7 +104,8 @@ function checkNotificationLink(uuid, targetUrl) {
         document,
         { 'uuid': uuid },
         xhrPath,
-        1
+        1,
+        'POST'
     ).done(function(data) {
         if (data['error']) {
             $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);

@@ -18,7 +18,8 @@ function createUserMandate()
         document,
         $("#formMandateCreate").serialize(),
         xhrPath,
-        localLoader
+        localLoader,
+        'POST'
     ).done(function(data) {
         if (data['error']) {
             $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
@@ -51,7 +52,8 @@ function saveUserMandate(form, localLoader)
         document,
         form.serialize(),
         xhrPath,
-        localLoader
+        localLoader,
+        'POST'
     ).done(function(data) {
         if (data['error']) {
             $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
@@ -83,7 +85,8 @@ function deleteUserMandate(uuid, localLoader)
         document,
         { 'uuid': uuid },
         xhrPath,
-        localLoader
+        localLoader,
+        'POST'
     ).done(function(data) {
         if (data['error']) {
             $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
@@ -113,7 +116,8 @@ function createAdminUserMandate(uuid)
     return xhrCall(
         document,
         $("#formMandateCreate").serialize(),
-        xhrPath
+        xhrPath,
+        'POST'
     ).done(function(data) {
         if (data['error']) {
             $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
@@ -144,7 +148,8 @@ function saveAdminUserMandate(form)
     return xhrCall(
         document,
         form.serialize(),
-        xhrPath
+        xhrPath,
+        'POST'
     ).done(function(data) {
         if (data['error']) {
             $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
@@ -174,7 +179,8 @@ function deleteAdminUserMandate(uuid)
     return xhrCall(
         document,
         { 'uuid': uuid },
-        xhrPath
+        xhrPath,
+        'POST'
     ).done(function(data) {
         if (data['error']) {
             $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);

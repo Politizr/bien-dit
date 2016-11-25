@@ -96,7 +96,8 @@ function createAdminNotification()
     return xhrCall(
         document,
         $("#formNotification").serialize(),
-        xhrPath
+        xhrPath,
+        'POST'
     ).done(function(data) {
         $('#ajaxGlobalLoader').hide();
         if (data['error']) {

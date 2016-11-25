@@ -17,7 +17,8 @@ function lostPasswordCheck(form) {
     return xhrCall(
         document,
         form.serialize(),
-        xhrPath
+        xhrPath,
+        'POST'
     ).done(function(data) {
         if (data['error']) {
             $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);

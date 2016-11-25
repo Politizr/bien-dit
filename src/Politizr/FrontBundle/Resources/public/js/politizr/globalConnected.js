@@ -249,7 +249,8 @@ $("body").on("click", "button[action='updateLocalization']", function(e) {
         document,
         form.serialize(),
         xhrPath,
-        localLoader
+        localLoader,
+        'POST'
     ).done(function(data) {
         if (data['error']) {
             $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);

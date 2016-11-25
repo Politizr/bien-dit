@@ -180,10 +180,12 @@ var JS_KEY_LISTING_USERS_USER_SUBSCRIBERS = "JS_KEY_LISTING_USERS_USER_SUBSCRIBE
 
 
 // Generic function to make an AJAX call
-var xhrCall = function(context, data, url, localLoader) {
+var xhrCall = function(context, data, url, localLoader, type) {
+    type = (typeof type === "undefined") ? 'GET' : type;
+
     // Return the $.ajax promise
     return $.ajax({
-        type: 'POST',
+        type: type,
         data: data,
         dataType: 'json',
         url: url,
