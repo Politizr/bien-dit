@@ -54,10 +54,9 @@ XhrGeneric:
         xhrRoute:       ".+"
         xhrType:        \d
 
-# Catch all URLs to tag listing
-ListingByTagRaw:
+# Listing by tag for all slug
+ListingByTag:
     pattern:  /{slug}
-    defaults: { _controller: PolitizrFrontBundle:Listing:tagRaw }
+    defaults: { _controller: PolitizrFrontBundle:Listing:tag }
     requirements:
         _method:        GET
-
