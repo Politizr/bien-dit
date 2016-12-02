@@ -23,6 +23,7 @@
 {% block main %}
     <div id="main">
         <center>
+            <div class="column column140"></div>
             <div class="column column360">
                 <div class="card">
                     {% if form.vars.errors|length %}
@@ -65,6 +66,11 @@
                 </div>
                 <div class="cardFooter">
                     Tous les champs sont obligatoires<br><br>
+                </div>
+            </div>
+            <div class="column column140">
+                <div class="columnSidebar processGrey">
+                    Si vous le souhaitez, vous pouvez choisir d'utiliser un pseudonyme à la place de vos nom et prénom.
                 </div>
             </div>
         </center>

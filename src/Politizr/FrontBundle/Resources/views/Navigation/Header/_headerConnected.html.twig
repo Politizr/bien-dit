@@ -47,9 +47,10 @@
                 {# <a href="{{ path('EditProfile'~profileSuffix())}}">Modifier mon profil</a> #}
             </div>
             <div id="secondaryMenu">
-                <a href="{{ path('GlobalHelper') }}">Comment ça marche?</a>
+                <a href="{{ path('EditProfile'~profileSuffix()) }}">Mon profil</a>
                 <a href="{{ path('EditPerso'~profileSuffix()) }}">Mon compte</a>
                 <a href="{{ path('EditNotifications'~profileSuffix()) }}">Réglages des notifications</a>
+                <a href="{{ path('GlobalHelper') }}">Comment ça marche?</a>
                 <a href="http://www.politizr.help" target="_blank"><b>Support et assistance</b></a>
                 <div id="deconnect"><a href="{{ path('Logout') }}">Déconnexion</a></div>
             </div>

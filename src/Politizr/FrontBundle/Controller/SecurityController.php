@@ -239,7 +239,7 @@ class SecurityController extends Controller
                 return $this->redirect($referer); 
             }
 
-            return $this->redirect($this->generateUrl('GlobalHelper'));
+            return $this->redirect($this->generateUrl('HomepageC'));
         }
 
         return $this->render('PolitizrFrontBundle:Security:inscriptionContact.html.twig', array(
@@ -571,7 +571,7 @@ class SecurityController extends Controller
             return $this->redirect($referer); 
         }
 
-        return $this->redirect($this->generateUrl('GlobalHelper'));
+        return $this->redirect($this->generateUrl('HomepageE'));
     }
 
     /* ######################################################################################################## */

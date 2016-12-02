@@ -21,7 +21,7 @@ ListingByTagClassic:
     requirements:
         _method:        GET
 
-# ListingByTag catch all URL > final definition cf. routing.yml
+# ListingByTag catch all URLs > cf. routing.yml
 
 ListingByOrganization:
     pattern:  /debats/famille-politique/{slug}
