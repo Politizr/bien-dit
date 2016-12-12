@@ -51,14 +51,12 @@ XhrGeneric:
     pattern:  /xhr/{xhrRoute}/{xhrService}/{xhrMethod}.{xhrType}.json
     defaults: { _controller: PolitizrFrontBundle:Xhr\XhrGeneric:xhr }
     requirements:
-        _method:        POST
         xhrRoute:       ".+"
         xhrType:        \d
 
-# Catch all URLs to tag listing
-ListingByTagRaw:
+# Listing by tag for all slug
+ListingByTag:
     pattern:  /{slug}
-    defaults: { _controller: PolitizrFrontBundle:Listing:tagRaw }
+    defaults: { _controller: PolitizrFrontBundle:Listing:tag }
     requirements:
         _method:        GET
-

@@ -54,6 +54,18 @@ class TagService
     /* ######################################################################################################## */
     /*                                              PUBLIC FUNCTIONS                                            */
     /* ######################################################################################################## */
+    
+    /**
+     * Get "alphabetical tags" listing
+     * beta
+     * @return PropelCollection[PTag]
+     */
+    public function getAlphabeticalTagsListing()
+    {
+        $tags = $this->tagManager->generateAlphabeticalTags();
+
+        return $tags;
+    }
 
     /**
      * Get the most popular tags

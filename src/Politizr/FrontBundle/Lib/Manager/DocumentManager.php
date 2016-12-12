@@ -850,7 +850,7 @@ LIMIT :offset, :limit
 
         // Requête SQL
         $sql = "
-( SELECT p_d_debate.id as id, p_d_debate.title as title, p_d_debate.note_pos as note_pos, p_d_debate.note_neg as note_neg, p_d_debate.published_at as published_at, 'Politizr\\\Model\\\PDDebate' as type
+( SELECT DISTINCT p_d_debate.id as id, p_d_debate.title as title, p_d_debate.file_name as fileName, p_d_debate.description as description, p_d_debate.slug as slug, p_d_debate.note_pos as note_pos, p_d_debate.note_neg as note_neg, p_d_debate.nb_views as nb_views, p_d_debate.published_at as published_at, p_d_debate.updated_at as updated_at, 'Politizr\\\Model\\\PDDebate' as type
 FROM p_d_debate
 WHERE
     p_d_debate.published = 1
@@ -868,7 +868,7 @@ WHERE
 
 UNION DISTINCT
 
-( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.note_pos as note_pos, p_d_reaction.note_neg as note_neg, p_d_reaction.published_at as published_at, 'Politizr\\\Model\\\PDReaction' as type
+( SELECT DISTINCT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.file_name as fileName, p_d_reaction.description as description, p_d_reaction.slug as slug, p_d_reaction.note_pos as note_pos, p_d_reaction.note_neg as note_neg, p_d_reaction.nb_views as nb_views, p_d_reaction.published_at as published_at, p_d_reaction.updated_at as updated_at,'Politizr\\\Model\\\PDReaction' as type
 FROM p_d_reaction
 WHERE
     p_d_reaction.published = 1
@@ -882,6 +882,42 @@ WHERE
         WHERE
             p_user.qualified = 1
             AND p_u_current_q_o.p_q_organization_id = :p_q_organization_id2
+    )
+)
+
+UNION DISTINCT
+
+# Commentaires débats publiés
+( SELECT DISTINCT p_d_d_comment.id as id, \"commentaire\" as title, \"image\" as fileName, p_d_d_comment.description as description, \"slug\" as slug, p_d_d_comment.note_pos as note_pos, p_d_d_comment.note_neg as note_neg, -1 as nb_views, p_d_d_comment.published_at as published_at, p_d_d_comment.updated_at as updated_at, 'Politizr\\\Model\\\PDDComment' as type
+FROM p_d_d_comment
+WHERE
+    p_d_d_comment.online = 1
+    AND p_d_d_comment.p_user_id IN (
+        SELECT p_user.id
+        FROM p_user
+            LEFT JOIN p_u_current_q_o
+                ON p_user.id = p_u_current_q_o.p_user_id
+        WHERE
+            p_user.qualified = 1
+            AND p_u_current_q_o.p_q_organization_id = :p_q_organization_id3
+    )
+)
+
+UNION DISTINCT
+
+# Commentaires réactions publiés
+( SELECT DISTINCT p_d_r_comment.id as id, \"commentaire\" as title, \"image\" as fileName, p_d_r_comment.description as description, \"slug\" as slug, p_d_r_comment.note_pos as note_pos, p_d_r_comment.note_neg as note_neg, -1 as nb_views, p_d_r_comment.published_at as published_at, p_d_r_comment.updated_at as updated_at, 'Politizr\\\Model\\\PDRComment' as type
+FROM p_d_r_comment
+WHERE
+    p_d_r_comment.online = 1
+    AND p_d_r_comment.p_user_id IN (
+        SELECT p_user.id
+        FROM p_user
+            LEFT JOIN p_u_current_q_o
+                ON p_user.id = p_u_current_q_o.p_user_id
+        WHERE
+            p_user.qualified = 1
+            AND p_u_current_q_o.p_q_organization_id = :p_q_organization_id4
     )
 )
 
@@ -1416,11 +1452,11 @@ GROUP BY p_d_debate_id
      * @param integer $orderBy
      * @param integer $offset
      * @param integer $limit
-     * @return PropelCollection[PDDebate|PDReaction]
+     * @return PropelCollection
      */
-    public function generateDocumentsByOrganizationPaginated($organizationId, $orderBy, $offset, $limit)
+    public function generatePublicationsByOrganizationPaginated($organizationId, $orderBy, $offset, $limit)
     {
-        // $this->logger->info('*** generateDocumentsByOrganizationPaginated');
+        // $this->logger->info('*** generatePublicationsByOrganizationPaginated');
         // $this->logger->info('$organizationId = ' . print_r($organizationId, true));
         // $this->logger->info('$orderBy = ' . print_r($orderBy, true));
         // $this->logger->info('$offset = ' . print_r($offset, true));
@@ -1431,6 +1467,8 @@ GROUP BY p_d_debate_id
 
         $stmt->bindValue(':p_q_organization_id', $organizationId, \PDO::PARAM_INT);
         $stmt->bindValue(':p_q_organization_id2', $organizationId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_q_organization_id3', $organizationId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_q_organization_id4', $organizationId, \PDO::PARAM_INT);
 
         $stmt->bindValue(':offset', $offset, \PDO::PARAM_INT);
         $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
@@ -1439,24 +1477,9 @@ GROUP BY p_d_debate_id
 
         $result = $stmt->fetchAll();
 
-        $documents = new \PropelCollection();
-        $i = 0;
-        foreach ($result as $row) {
-            $type = $row['type'];
+        $publications = $this->globalTools->hydratePublication($result);
 
-            if ($type == ObjectTypeConstants::TYPE_DEBATE) {
-                $document = PDDebateQuery::create()->findPk($row['id']);
-            } elseif ($type == ObjectTypeConstants::TYPE_REACTION) {
-                $document = PDReactionQuery::create()->findPk($row['id']);
-            } else {
-                throw new InconsistentDataException(sprintf('Object type %s unknown.', $type));
-            }
-            
-            $documents->set($i, $document);
-            $i++;
-        }
-
-        return $documents;
+        return $publications;
     }
     
     /**
@@ -1944,6 +1967,7 @@ GROUP BY p_d_debate_id
 
             $reaction->setDescription($description);
 
+            $reaction->setOnline(true);
             $reaction->setPublished(true);
             $reaction->setPublishedAt(time());
             $reaction->save();

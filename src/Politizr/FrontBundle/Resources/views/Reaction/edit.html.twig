@@ -7,6 +7,16 @@
 
 {% block content %}
     <div id="content">
+        <div id="modalNoEdition">
+            <div class="noEdition">
+                <div class="alertNoEdition">
+                    <i class="icon-info"></i> L'édition de réponse n'est pas disponible sur mobile.
+                </div>
+                <p>Un brouillon a été sauvegardé. Vous pourrez le modifier ultérieurement.</p>
+                <a href="javascript: history.go(-1)">Retour page précédente</a>
+                <a href="{{ path('Homepage'~profileSuffix()) }}">Retour page d'accueil</a>
+            </div>
+        </div>
         <div class="editionPostCard">
             {% set uploadAction = path('XhrGeneric', {'xhrRoute': constant('Politizr\\Constant\\XhrConstants::ROUTE_DOCUMENT_PHOTO_UPLOAD'), 'xhrService': 'document', 'xhrMethod': 'documentPhotoUpload', 'xhrType': constant('Politizr\\Constant\\XhrConstants::RETURN_URL')}) %}
             <form method="POST" action="{{ uploadAction }}" name="debate" id="formReactionUpdate" class="autoSubmitForm" enctype="multipart/form-data">

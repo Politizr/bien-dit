@@ -90,7 +90,8 @@ function triggerSaveDocument()
         document,
         {'uuid': uuid, 'type': type},
         xhrPath,
-        localLoader
+        localLoader,
+        'POST'
     ).done(function(data) {
         if (data['error']) {
             $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
@@ -136,7 +137,8 @@ function saveDebate()
         document,
         serializedForms,
         xhrPath,
-        localLoader
+        localLoader,
+        'POST'
     ).done(function(data) {
         if (data['error']) {
             $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
@@ -175,7 +177,8 @@ function saveReaction()
         document,
         serializedForms,
         xhrPath,
-        localLoader
+        localLoader,
+        'POST'
     ).done(function(data) {
         if (data['error']) {
             $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
@@ -206,7 +209,8 @@ function deleteDebate(uuid)
         document,
         { 'uuid': uuid },
         xhrPath,
-        1
+        1,
+        'POST'
     ).done(function(data) {
         if (data['error']) {
             $('#ajaxGlobalLoader').hide();
@@ -238,7 +242,8 @@ function deleteReaction(uuid)
         document,
         { 'uuid': uuid },
         xhrPath,
-        1
+        1,
+        'POST'
     ).done(function(data) {
         if (data['error']) {
             $('#ajaxGlobalLoader').hide();

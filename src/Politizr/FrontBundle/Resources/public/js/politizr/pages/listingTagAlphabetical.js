@@ -1,7 +1,5 @@
 // beta
 $(function() {
-    myDraftsByUserListing();
-
     $.when(
         typeTagListing(
             $('.sidebarTypeTags').find('.tagList').first(),
@@ -21,5 +19,5 @@ $(function() {
         )
     ).done(function(r1, r2, r3, r4) {
         stickySidebar();
-    });
+    })
 });

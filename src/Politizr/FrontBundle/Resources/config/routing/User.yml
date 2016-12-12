@@ -1,8 +1,14 @@
 ################################################################################
 #               PUBLIC
 ################################################################################
-UserDetail:
+UserDetailClassic:
     pattern:  /auteur/{slug}
+    defaults: { _controller: PolitizrFrontBundle:User:detailClassic }
+    requirements:
+        _method:        GET
+
+UserDetail:
+    pattern:  /@{slug}
     defaults: { _controller: PolitizrFrontBundle:User:detail }
     requirements:
         _method:        GET

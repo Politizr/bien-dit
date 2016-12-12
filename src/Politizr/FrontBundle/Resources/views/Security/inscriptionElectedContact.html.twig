@@ -42,7 +42,9 @@
                         </div>
                     {% endif %}
                     {{ form_start(form, {'action': path('InscriptionElectedContactCheck'), 'method': 'POST'}) }}
-                        {{ form_label(form.gender) }}
+                        <div class="control-group">
+                            {{ form_label(form.gender) }}
+                        </div>
                         <div class="styledSelect">{{ form_widget(form.gender) }}</div>
                         {% if form.gender.vars.errors|length %}
                             <div class="field_error">{{ form_errors(form.gender) }}</div>
@@ -50,6 +52,9 @@
                         {{ form_row(form.name) }}
                         {{ form_row(form.firstname) }}
                         {% if (form.email is defined) %}
+                            <div class="notice">
+                                <i class="icon-info"></i><b>Votre e-mail ne sera pas publique.</b>
+                            </div>
                             {{ form_row(form.email) }}
                         {% endif %}
                         {{ form_row(form.birthday) }}

@@ -15,11 +15,13 @@ ListingByRecommendMonthYear:
         month:          (janvier|février|mars|avril|mai|juin|juillet|août|septembre|octobre|novembre|décembre)
         year:           ([0-9]{4})
 
-ListingByTag:
+ListingByTagClassic:
     pattern:  /debats/thematique/{slug}
-    defaults: { _controller: PolitizrFrontBundle:Listing:tag }
+    defaults: { _controller: PolitizrFrontBundle:Listing:tagClassic }
     requirements:
         _method:        GET
+
+# ListingByTag catch all URLs > cf. routing.yml
 
 ListingByOrganization:
     pattern:  /debats/famille-politique/{slug}
@@ -64,6 +66,15 @@ ListingUserFollowers:
 ListingUserSubscribers:
     pattern:  /auteur/{slug}/abonnements
     defaults: { _controller: PolitizrFrontBundle:Listing:userSubscribers }
+    requirements:
+        _method:        GET
+
+################################################################################
+#               TAGS
+################################################################################
+ListingTagAlphabetical:
+    pattern:  /thematiques
+    defaults: { _controller: PolitizrFrontBundle:Listing:tagAlphabetical }
     requirements:
         _method:        GET
 

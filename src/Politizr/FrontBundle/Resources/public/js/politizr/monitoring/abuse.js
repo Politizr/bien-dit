@@ -102,7 +102,8 @@ function validateFormAbuse(context, localLoader) {
         context,
         form.serialize(),
         xhrPath,
-        localLoader
+        localLoader,
+        'POST'
     ).done(function(data) {
         if (data['error']) {
             $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);

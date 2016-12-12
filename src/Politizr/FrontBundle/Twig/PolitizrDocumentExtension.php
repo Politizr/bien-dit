@@ -1132,7 +1132,11 @@ class PolitizrDocumentExtension extends \Twig_Extension
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
 
-        $form = $this->formFactory->create(new PDocumentTagTypeType(), $document);
+        $form = $this->formFactory->create(
+            new PDocumentTagTypeType(),
+            $document,
+            array('elected_mode' => $user->getQualified())
+        );
 
         // Construction du rendu du tag
         $html = $this->templating->render(

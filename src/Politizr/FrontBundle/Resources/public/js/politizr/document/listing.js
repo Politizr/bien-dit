@@ -463,7 +463,7 @@ function documentsByOrganizationListing(init, offset) {
     var xhrPath = getXhrPath(
         ROUTE_ORGANIZATION_DOCUMENT_LISTING,
         'document',
-        'documentsByOrganization',
+        'publicationsByOrganization',
         RETURN_HTML
     );
 

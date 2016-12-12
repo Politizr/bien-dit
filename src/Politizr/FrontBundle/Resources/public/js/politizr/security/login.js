@@ -4,8 +4,8 @@
  * Reinit password
  */
 function lostPasswordCheck(form) {
-    // console.log('*** lostPasswordCheck');
-    // console.log(form);
+    // // console.log('*** lostPasswordCheck');
+    // // console.log(form);
 
     var xhrPath = getXhrPath(
         ROUTE_SECURITY_LOST_PASSWORD_CHECK,
@@ -17,7 +17,9 @@ function lostPasswordCheck(form) {
     return xhrCall(
         document,
         form.serialize(),
-        xhrPath
+        xhrPath,
+        1,
+        'POST'
     ).done(function(data) {
         if (data['error']) {
             $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);

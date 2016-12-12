@@ -295,13 +295,13 @@ class DocumentService
      * @param string $orderBy
      * @param integer $offset
      * @param înteger $count
-     * @return PropelCollection PDocument
+     * @return PropelCollection
      */
-    public function getDocumentsByOrganizationPaginated($organizationId, $orderBy = null, $offset = 0, $count = ListingConstants::LISTING_CLASSIC_PAGINATION)
+    public function getPublicationsByOrganizationPaginated($organizationId, $orderBy = null, $offset = 0, $count = ListingConstants::LISTING_CLASSIC_PAGINATION)
     {
-        $documents = $this->documentManager->generateDocumentsByOrganizationPaginated($organizationId, $orderBy, $offset, $count);
+        $publications = $this->documentManager->generatePublicationsByOrganizationPaginated($organizationId, $orderBy, $offset, $count);
 
-        return $documents;
+        return $publications;
     }
 
     /**

@@ -1,6 +1,19 @@
 {# beta #}
 <div class="paragraphHolder withLoaderInside" uuid="{{ document.uuid }}" type="{{ document.type }}" noParagraph="0">
     {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+    <div id="addNewGlobalComments">
+        {% if app.user %}
+            {{ app.user | isAuthorizedToNewComment(formComment, document.uuid) }}
+        {% else %}
+            {# Fake public form #}
+            <form class="formCommentNew">
+                <textarea id="comment_description" name="comment[description]" placeholder="Votre commentaire..." class="commentDescriptionHook"></textarea>
+                <div class="actionsButtons">
+                    <input type="button" class="commentDescriptionHook" value="Publier">
+                </div>
+            </form>
+        {% endif %}
+    </div>
     <div id="globalCommentsButton">
         <div class="counterContent">
             {% include 'PolitizrFrontBundle:Comment:_counter.html.twig' with { 'document': document, 'paragraphNo': 0, 'active': false, 'paragraphContext': 'global' } only %}

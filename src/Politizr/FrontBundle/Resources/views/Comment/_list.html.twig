@@ -1,8 +1,6 @@
 {# beta #}
 {% if app.user %}
-    {% if paragraphContext == 'global' %}
-        {{ app.user | isAuthorizedToNewComment(formComment, document.uuid) }}
-    {% else %}
+    {% if paragraphContext != 'global' %}
         <div class="bubbCommArrow"><i class="icon-arrow-left"></i></div>
         <div class="bubbCommTop">
             <div class="bubblesCommentsHeader">

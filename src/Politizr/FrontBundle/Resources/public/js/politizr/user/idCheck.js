@@ -77,7 +77,8 @@ function validateIdZla(form)
         document,
         form.serialize(),
         xhrPath,
-        1
+        1,
+        'POST'
     ).done(function(data) {
         if (data['error']) {
             $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
@@ -126,7 +127,8 @@ function validateIdPhoto(fileName)
         document,
         { 'fileName': fileName },
         xhrPath,
-        1
+        1,
+        'POST'
     ).done(function(data) {
         if (data['error']) {
             $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);

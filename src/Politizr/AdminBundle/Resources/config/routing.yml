@@ -30,6 +30,13 @@ AdminXhrGeneric:
         xhrRoute:       ".+"
         xhrType:        \d
 
+# ADMIN DEDICATED XHR
+Politizr_AdminBundle_New_UpdPDDebate:
+    pattern:  /PDReaction/xhr/updatePDDebate.json
+    defaults: { _controller: PolitizrAdminBundle:PDReaction\Actions:updatePDReaction }
+    requirements:
+        _method:        POST
+
 # Accueil
 PolitizrAdminHomepage:
     pattern:  /

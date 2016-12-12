@@ -4,6 +4,8 @@ namespace Politizr\AdminBundle\Controller\PDReaction;
 
 use Admingenerated\PolitizrAdminBundle\BasePDReactionController\ActionsController as BaseActionsController;
 
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 use Politizr\Constant\PathConstants;
@@ -15,11 +17,60 @@ use Politizr\Model\PDReaction;
 
 use Politizr\Exception\InconsistentDataException;
 
+
+use Politizr\AdminBundle\Form\Type\PDReaction\SelectReactionType;
+
 /**
  * ActionsController
  */
 class ActionsController extends BaseActionsController
 {
+    /**
+     * XHR
+     */
+    public function updatePDReactionAction(Request $request)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** updatePDReactionAction');
+
+        try {
+            if ($request->isXmlHttpRequest()) {
+                $logger->info('isXmlHttpRequest');
+
+                $debateId = $request->get('debateId');
+                $logger->info('debateId = '.$debateId);
+
+                $form = $this->createForm(new SelectReactionType($debateId));
+                $formView = $form->createView();
+
+                $selectRendering = $this->renderView(
+                    'PolitizrAdminBundle:PDReactionNew:_parent_reaction.html.twig',
+                    array(
+                        'form' => $form->createView()
+                    )
+                );
+
+                $data = array (
+                    'parent_reaction' => $selectRendering
+                );
+
+                $jsonSuccess = array (
+                    'success' => true
+                );
+
+                $jsonResponse = array_merge($jsonSuccess, $data);
+            } else {
+                throw new \Exception('Not a XHR request');
+            }
+        } catch (\Exception $e) {
+            throw $e;
+        }
+
+        // JSON formatted success/error message
+        $response = new Response(json_encode($jsonResponse));
+        return $response;
+    }
+
     /**
      *
      * @param PDReaction $reaction

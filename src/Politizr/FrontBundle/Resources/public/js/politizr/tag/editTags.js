@@ -61,7 +61,8 @@ function initTagZoneAutoComplete(contextZone)
         contextZone,
         { 'tagTypeId': tagTypeId },
         xhrPath,
-        localLoader
+        localLoader,
+        'POST'
     ).done(function(data) {
         $('#ajaxGlobalLoader').hide();
         localLoader.hide();
@@ -119,7 +120,8 @@ function createTagAssociation(contextZone)
         contextZone,
         { 'tagTitle': tagTitle, 'tagUuid': tagUuid, 'tagTypeId': tagTypeId, 'uuid': uuid, 'newTag': newTag, 'withHidden': withHidden },
         addUrl,
-        localLoader
+        localLoader,
+        'POST'
     ).done(function(data) {
         if (data['error']) {
             $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
@@ -163,7 +165,8 @@ function deleteTagAssociation(contextZone)
         contextZone,
         { 'uuid': uuid, 'tagUuid': tagUuid },
         deleteUrl,
-        localLoader
+        localLoader,
+        'POST'
     ).done(function(data) {
         if (data['error']) {
             $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
@@ -200,7 +203,8 @@ function hideTagAssociation(contextZone)
         contextZone,
         { 'uuid': uuid, 'tagUuid': tagUuid },
         hideUrl,
-        localLoader
+        localLoader,
+        'POST'
     ).done(function(data) {
         if (data['error']) {
             $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);

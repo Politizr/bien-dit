@@ -63,8 +63,22 @@ class PTag extends BasePTag
      * @param $queryReaction
      * @return integer
      */
-    public function countDocuments($queryDebate = null, $queryReaction = null)
+    public function countDocuments($onlyPublished = true)
     {
+        $queryDebate = PDDTaggedTQuery::create()
+            ->_if($onlyPublished)
+                ->usePDDebateQuery()
+                    ->filterByPublished(true)
+                ->endUse()
+            ->_endif();
+
+        $queryReaction = PDRTaggedTQuery::create()
+            ->_if($onlyPublished)
+                ->usePDReactionQuery()
+                    ->filterByPublished(true)
+                ->endUse()
+            ->_endif();
+
         return $this->countDebates($queryDebate) + $this->countReactions($queryReaction);
     }
 

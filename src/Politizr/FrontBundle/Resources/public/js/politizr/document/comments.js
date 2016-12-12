@@ -1,6 +1,9 @@
 // beta
 // on document ready
 $(function() {
+    autosize($('.formCommentNew textarea'));
+    commentTextCounter();
+
     if(window.location.hash) {
         var paragraphId = window.location.hash.substr(3);
         // console.log(paragraphId);
@@ -12,7 +15,6 @@ $(function() {
         } else {
             if (paragraphId > 0) {
                 var clickContext = $('#p-'+paragraphId).find("[action='comments']");
-                // console.log(clickContext);
                 clickContext.trigger("click");
             } else {
                 $("[action='globalComments']").trigger("click");
@@ -28,6 +30,12 @@ $("body").on("click", "[action='createAccountToComment']", function() {
     return modalCreateAccountToComment();
 });
 
+$("body").on("click", ".commentDescriptionHook", function() {
+    // console.log('*** click commentDescriptionHook');
+
+    return modalCreateAccountToComment();
+});
+
 // open paragraph comments
 $("body").on("click", "[action='comments']", function() {
     // console.log('*** click comments');
@@ -35,10 +43,7 @@ $("body").on("click", "[action='comments']", function() {
     clearAllComments();
     context = $(this).closest('.paragraphHolder');
     if (context.find('.commentsContent').is(':visible')) {
-        // console.log('visible');
     } else {
-        // console.log('invisible');
-
         $('.bubblesComments').hide();
         $('.commentsCounter').removeClass('activeComment');
 
@@ -53,10 +58,8 @@ $("body").on("click", "[action='globalComments']", function() {
 
     context = $(this).closest('.paragraphHolder');
     if (context.find('.commentsContent').is(':visible')) {
-        // console.log('visible');
         clearAllComments();
     } else {
-        // console.log('invisible');
         clearAllComments();
         $('.bubblesComments').hide();
         $('.commentsCounter').removeClass('activeComment');
@@ -129,7 +132,6 @@ function clearAllComments()
 function loadParagraphContent(context)
 {
     // console.log('*** loadParagraphContent');
-    // console.log(context);
 
     var uuid = context.attr('uuid');
     var type = context.attr('type');
@@ -140,11 +142,8 @@ function loadParagraphContent(context)
     // console.log(noParagraph);
 
     var localLoader = context.find('.ajaxLoader').first();
-    // console.log(localLoader);
     var targetElement = context.find('.commentsContent').first();
-    // console.log(targetElement);
     var targetCounter = context.find('.counterContent').first();
-    // console.log(targetCounter);
 
     var xhrPath = getXhrPath(
         ROUTE_COMMENTS,
@@ -163,7 +162,12 @@ function loadParagraphContent(context)
             $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
             $('#infoBoxHolder .boxError').show();
         } else {
-            targetElement.html(data['html']);
+            // special "global" comments > new form + force show global comments
+            if (noParagraph == 0) {
+                $('#addNewGlobalComments').html(data['form']);
+                context.find('#globalComments').show();
+            }
+            targetElement.html(data['list']);
             targetCounter.html(data['counter']);
             fullImgLiquid();
             autosize($('.formCommentNew textarea'));
@@ -180,14 +184,11 @@ function loadParagraphContent(context)
 function createComment(context)
 {
     // console.log('*** createComment');
-    // console.log(context);
 
     var localLoader = context.find('.formCommentNew').find('.ajaxLoader').first();
-    // console.log(localLoader);
     var targetElement = context.find('.commentsContent').first();
-    // console.log(targetElement);
 
-    var textCount = $('.textCount').text();
+    var textCount = context.find('.textCount').text();
     // console.log(textCount);
 
     if (textCount > 495 || textCount < 0) {
@@ -206,7 +207,6 @@ function createComment(context)
     }
 
     var form = context.find(".formCommentNew").first();
-    // console.log(form);
 
     var xhrPath = getXhrPath(
         ROUTE_COMMENT_CREATE,
@@ -219,13 +219,14 @@ function createComment(context)
         context,
         form.serialize(),
         xhrPath,
-        localLoader
+        localLoader,
+        'POST'
     ).done(function(data) {
         if (data['error']) {
             $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
             $('#infoBoxHolder .boxError').show();
         } else {
-           return loadParagraphContent(context);
+            return loadParagraphContent(context);
         }
         localLoader.hide();
     });

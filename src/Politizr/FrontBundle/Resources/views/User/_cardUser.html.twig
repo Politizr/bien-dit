@@ -4,7 +4,7 @@
         {% include 'PolitizrFrontBundle:User:_summary.html.twig' with { 'user': user, 'withSocialLinks': false, 'withMandates': false } only %}
     </div>
     <div class="coloredBg">
-        <div class="activity">Vous avez rejoint Politizr. Merci et bienvenu-e parmi nous !</div>
+        <div class="activity">Vous avez rejoint Politizr: bienvenue dans notre communauté!</div>
         <h5>{% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': user } only %}</h5>
         <div class="cardInfo">
             Complétez votre <a href="{{ path('EditProfile'~profileSuffix()) }}">profil</a> pour gagner de la visibilité sur notre plateforme.<br>

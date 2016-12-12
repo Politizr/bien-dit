@@ -10,16 +10,16 @@ $(function() {
 });
 
 // mobile
-$("body").on("click", "[action='showMobileSidebar']", function() {
-    $('body.css700 .sticky-wrapper').removeClass("hideSidebarForMobile");
-    $('body.css700 #actionShowMobileSidebar').hide();
-    $('body.css700 #actionHideMobileSidebar').show();
-});
-$("body").on("click", "[action='hideMobileSidebar']", function() {
-    $('body.css700 .sticky-wrapper').addClass("hideSidebarForMobile");
-    $('body.css700 #actionHideMobileSidebar').hide();
-    $('body.css700 #actionShowMobileSidebar').show();
-});
+// $("body").on("click", "[action='showMobileSidebar']", function() {
+//     $('body.css700 .sticky-wrapper').removeClass("hideSidebarForMobile");
+//     $('body.css700 #actionShowMobileSidebar').hide();
+//     $('body.css700 #actionHideMobileSidebar').show();
+// });
+// $("body").on("click", "[action='hideMobileSidebar']", function() {
+//     $('body.css700 .sticky-wrapper').addClass("hideSidebarForMobile");
+//     $('body.css700 #actionHideMobileSidebar').hide();
+//     $('body.css700 #actionShowMobileSidebar').show();
+// });
 
 // Fermeture d'une box
 $('body').on("click", "[action='closeBox']", function(e){
@@ -244,7 +244,7 @@ function createStickySidebar()
         element: $('#sidebar'),
         offset: 'bottom-in-view'
     });
-    $(".sticky-wrapper").addClass("hideSidebarForMobile");
+    // $(".sticky-wrapper").addClass("hideSidebarForMobile");
 
     return sticky;
 }

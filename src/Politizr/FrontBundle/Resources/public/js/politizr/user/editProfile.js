@@ -58,7 +58,8 @@ function triggerSaveDocument()
         document,
         null,
         xhrPath,
-        localLoader
+        localLoader,
+        'POST'
     ).done(function(data) {
         if (data['error']) {
             $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
@@ -96,7 +97,8 @@ function saveUserProfile()
         document,
         $("#formUserProfileUpdate").serialize(),
         xhrPath,
-        localLoader
+        localLoader,
+        'POST'
     ).done(function(data) {
         if (data['error']) {
             $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
@@ -121,7 +123,8 @@ function saveUserOrganization()
         ROUTE_USER_ORGA_UPDATE,
         'user',
         'orgaProfileUpdate',
-        RETURN_BOOLEAN
+        RETURN_BOOLEAN,
+        'POST'
     );
 
     return xhrCall(

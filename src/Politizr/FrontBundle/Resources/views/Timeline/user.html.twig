@@ -12,10 +12,10 @@
 
 {% block preMain %}
     <div id="suggHeader">
-        {% if not app.session.has('showSuggestion') or app.session.get('showSuggestion') == true %}
-            <span id="suggestionMode" mode="show" />
-        {% else %}
+        {% if not app.session.has('showSuggestion') or app.session.get('showSuggestion') != true %}
             <span id="suggestionMode" mode="hide" />
+        {% else %}
+            <span id="suggestionMode" mode="show" />
         {% endif %}
         <div class="center">
             <div id="suggTitle">Sélection de nouvelles publications d'après <a href="{{ path('UserDetail', {'slug': app.user.slug}) }}">les thématiques que vous suivez</a>.<br><b>Retrouvez <a href="{{ path('ListingSearchPublications') }}">ici</a> les dernières publications.</b></div>

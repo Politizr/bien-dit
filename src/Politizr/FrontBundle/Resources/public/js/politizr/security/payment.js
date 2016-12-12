@@ -18,7 +18,8 @@ function validatePayment(targetElement, paymentTypeId) {
     return xhrCall(
         document,
         { 'paymentTypeId': paymentTypeId },
-        xhrPath
+        xhrPath,
+        'POST'
     ).done(function(data) {
         if (data['error']) {
             $('#ajaxGlobalLoader').hide();

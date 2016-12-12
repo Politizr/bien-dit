@@ -3,7 +3,7 @@
     <form id="tagFilter">
         <input type="hidden" name="tagFilterDate[]" value="{{ constant('Politizr\\Constant\\ListingConstants::FILTER_KEYWORD_ALL_DATE') }}" />
     </form>
-    <h5>Thématiques populaires</h5>
+    <h5>Thématiques populaires<a href="{{ path('ListingTagAlphabetical') }}" class="linkListTags">Toutes les thématiques</a></h5>
     <div class="tagList withLoaderInside">
     </div>
 </div>

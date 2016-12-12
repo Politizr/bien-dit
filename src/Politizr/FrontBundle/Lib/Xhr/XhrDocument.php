@@ -320,7 +320,11 @@ class XhrDocument
         $debate->save();
 
         // Debate's tags type
-        $formTagTypes = $this->formFactory->create(new PDocumentTagTypeType());
+        $formTagTypes = $this->formFactory->create(
+            new PDocumentTagTypeType(), 
+            null, 
+            array('elected_mode' => $user->getQualified())
+        );
         $formTagTypes->bind($request);
 
         $tags = $formTagTypes->getData()['p_tags'];
@@ -459,7 +463,11 @@ class XhrDocument
         $reaction->save();
 
         // Debate's tags type
-        $formTagTypes = $this->formFactory->create(new PDocumentTagTypeType());
+        $formTagTypes = $this->formFactory->create(
+            new PDocumentTagTypeType(), 
+            null, 
+            array('elected_mode' => $user->getQualified())
+        );
         $formTagTypes->bind($request);
 
         $tags = $formTagTypes->getData()['p_tags'];
@@ -792,7 +800,18 @@ class XhrDocument
             $paragraphContext = 'paragraph';
         }
 
-        $html = $this->templating->render(
+        $form = null;
+        if ($paragraphContext == 'global') {
+            $form = $this->templating->render(
+                'PolitizrFrontBundle:Comment:_isAuthorizedToNewComment.html.twig',
+                array(
+                    'document' => $document,
+                    'formComment' => $formComment->createView(),
+                )
+            );
+        }
+
+        $list = $this->templating->render(
             'PolitizrFrontBundle:Comment:_list.html.twig',
             array(
                 'paragraphContext' => $paragraphContext,
@@ -812,7 +831,8 @@ class XhrDocument
         );
 
         return array(
-            'html' => $html,
+            'form' => $form,
+            'list' => $list,
             'counter' => $counter,
             );
     }
@@ -1176,12 +1196,12 @@ class XhrDocument
     }
 
     /**
-     * Documents by organization
+     * Publications by organization
      * code beta
      */
-    public function documentsByOrganization(Request $request)
+    public function publicationsByOrganization(Request $request)
     {
-        // $this->logger->info('*** documentsByOrganization');
+        // $this->logger->info('*** publicationsByOrganization');
         
         // Request arguments
         $uuid = $request->get('uuid');
@@ -1197,7 +1217,7 @@ class XhrDocument
             throw new InconsistentDataException('Organization '.$uuid.' not found.');
         }
 
-        $documents = $this->documentService->getDocumentsByOrganizationPaginated(
+        $publications = $this->documentService->getPublicationsByOrganizationPaginated(
             $organization->getId(),
             $orderBy,
             $offset,
@@ -1206,20 +1226,20 @@ class XhrDocument
 
         // @todo create function for code above
         $moreResults = false;
-        if (sizeof($documents) == ListingConstants::LISTING_CLASSIC_PAGINATION) {
+        if (sizeof($publications) == ListingConstants::LISTING_CLASSIC_PAGINATION) {
             $moreResults = true;
         }
 
-        if ($offset == 0 && count($documents) == 0) {
+        if ($offset == 0 && count($publications) == 0) {
             $html = $this->templating->render(
                 'PolitizrFrontBundle:PaginatedList:_noResult.html.twig'
             );
         } else {
             $html = $this->templating->render(
-                'PolitizrFrontBundle:PaginatedList:_documents.html.twig',
+                'PolitizrFrontBundle:PaginatedList:_publications.html.twig',
                 array(
                     'uuid' => $uuid,
-                    'documents' => $documents,
+                    'publications' => $publications,
                     'offset' => intval($offset) + ListingConstants::LISTING_CLASSIC_PAGINATION,
                     'moreResults' => $moreResults,
                     'jsFunctionKey' => XhrConstants::JS_KEY_LISTING_DOCUMENTS_BY_ORGANIZATION

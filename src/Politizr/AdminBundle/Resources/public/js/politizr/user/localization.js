@@ -14,7 +14,8 @@ $("body").on("click", "a[action='updateLocalization']", function(e) {
     return xhrCall(
         document,
         form.serialize(),
-        xhrPath
+        xhrPath,
+        'POST'
     ).done(function(data) {
         console.log(data);
         if (data['success']) {

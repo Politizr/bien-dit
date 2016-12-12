@@ -42,6 +42,15 @@ class UserController extends Controller
     /* ######################################################################################################## */
 
     /**
+     * Redirect 301
+     * @todo w. htaccess
+     */
+    public function detailClassicAction($slug)
+    {
+        return $this->redirect($this->generateUrl('UserDetail', array('slug' => $slug)));
+    }
+
+    /**
      * Detail
      * beta
      */

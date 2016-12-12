@@ -27,7 +27,8 @@ function noteDocument(context, localLoader, uuid, type, way) {
         context.closest('.notation'),
         { 'uuid': uuid, 'type': type, 'way': way },
         xhrPath,
-        localLoader
+        localLoader,
+        'POST'
     ).done(function(data) {
         if (data['error']) {
             $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
