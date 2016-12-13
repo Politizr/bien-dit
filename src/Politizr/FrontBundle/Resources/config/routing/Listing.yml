@@ -30,8 +30,8 @@ ListingByOrganization:
         _method:        GET
 
 ListingSearchPublications:
-    pattern:  /publications
-    defaults: { _controller: PolitizrFrontBundle:Listing:searchPublications }
+    pattern:  /publications/{slug}
+    defaults: { _controller: PolitizrFrontBundle:Listing:searchPublications, slug: null }
     requirements:
         _method:        GET
 

@@ -42,8 +42,6 @@ class PropelMigration_1474371621
 # It "suspends judgement" for fkey relationships until are tables are set.
 SET FOREIGN_KEY_CHECKS = 0;
 
-CREATE INDEX `acl_object_identity_ancestors_I_2` ON `acl_object_identity_ancestors` (`ancestor_id`);
-
 ALTER TABLE `p_d_debate`
     ADD `p_l_city_id` INTEGER AFTER `p_user_id`,
     ADD `p_l_department_id` INTEGER AFTER `p_l_city_id`,

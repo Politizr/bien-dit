@@ -14,8 +14,11 @@ use Politizr\Model\PTag;
 
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PUserQuery;
+use Politizr\Model\PTagQuery;
 use Politizr\Model\PLCountryQuery;
 use Politizr\Model\PLRegionQuery;
+use Politizr\Model\PLDepartmentQuery;
+use Politizr\Model\PLCityQuery;
 use Politizr\Model\PQOrganizationQuery;
 
 /**
@@ -150,6 +153,32 @@ class ListingController extends Controller
         $logger->info('*** tagAction');
         $logger->info('$slug = '.print_r($slug, true));
 
+        // @todo > test si slug appartient à p_l_country / p_l_region / p_l_department / p_l_city
+        // => redirect screen publications + zoom carte ok
+        $country = PLCountryQuery::create()->filterBySlug($slug)->findOne();
+
+        if ($country) {
+            return $this->redirect($this->generateUrl('ListingSearchPublications', array('slug' => $slug)));
+        } else {
+            $region = PLRegionQuery::create()->filterBySlug($slug)->findOne();
+        
+            if ($region) {
+                return $this->redirect($this->generateUrl('ListingSearchPublications', array('slug' => $slug)));
+            } else {
+                $department = PLDepartmentQuery::create()->filterBySlug($slug)->findOne();
+
+                if ($department) {
+                    return $this->redirect($this->generateUrl('ListingSearchPublications', array('slug' => $slug)));
+                } else {
+                    $city = PLCityQuery::create()->filterBySlug($slug)->findOne();
+
+                    if ($city) {
+                        return $this->redirect($this->generateUrl('ListingSearchPublications', array('slug' => $slug)));
+                    }
+                }
+            }
+        }
+
         $tag = PTagQuery::create()->filterBySlug($slug)->findOne();
         if (!$tag) {
             throw new NotFoundHttpException('Tag "'.$slug.'" not found.');
@@ -190,7 +219,7 @@ class ListingController extends Controller
      * Search publications listing
      * code beta
      */
-    public function searchPublicationsAction()
+    public function searchPublicationsAction($slug)
     {
         $logger = $this->get('logger');
         $logger->info('*** searchPublicationsAction');
@@ -201,12 +230,48 @@ class ListingController extends Controller
 
         $mapUuids = $this->get('politizr.functional.localization')->getRegionUuids();
 
-        // Current user localization
+        // preset the map w. given localization
+        $currentUuid = null;
+        $currentType = null;
+        if ($slug) {
+            $country = PLCountryQuery::create()->filterBySlug($slug)->findOne();
+
+            if (!$country) {
+                $region = PLRegionQuery::create()->filterBySlug($slug)->findOne();
+            
+                if (!$region) {
+                    $department = PLDepartmentQuery::create()->filterBySlug($slug)->findOne();
+
+                    if (!$department) {
+                        $city = PLCityQuery::create()->filterBySlug($slug)->findOne();
+
+                        if (!$city) {
+                            throw new NotFoundHttpException('Localization "'.$slug.'" not found.');
+                        } else {
+                            $currentUuid = $city->getUuid();
+                            $currentType = LocalizationConstants::TYPE_CITY;
+                        }
+                    } else {
+                        $currentUuid = $department->getUuid();
+                        $currentType = LocalizationConstants::TYPE_DEPARTMENT;
+                    }
+                } else {
+                    $currentUuid = $region->getUuid();
+                    $currentType = LocalizationConstants::TYPE_REGION;
+                }
+            } else {
+                $currentUuid = $country->getUuid();
+                $currentType = LocalizationConstants::TYPE_COUNTRY;
+            }
+        }
+
+        // Get current user localization
         $user = $this->getUser();
 
         $cityUuid = null;
         $departmentUuid = null;
         $regionUuid = null;
+
         if ($user) {
             $city = $user->getPLCity();
             if ($city) {
@@ -227,6 +292,8 @@ class ListingController extends Controller
             'france' => $france,
             'fom' => $fom,
             'mapUuids' => $mapUuids,
+            'currentUuid' => $currentUuid,
+            'currentType' => $currentType,
             'cityUuid' => $cityUuid,
             'departmentUuid' => $departmentUuid,
             'regionUuid' => $regionUuid,

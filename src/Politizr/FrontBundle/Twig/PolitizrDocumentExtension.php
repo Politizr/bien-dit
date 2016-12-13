@@ -134,6 +134,11 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 array('is_safe' => array('html'))
             ),
             new \Twig_SimpleFilter(
+                'localizations',
+                array($this, 'localizations'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
                 'docTags',
                 array($this, 'docTags'),
                 array('is_safe' => array('html'))
@@ -538,7 +543,31 @@ class PolitizrDocumentExtension extends \Twig_Extension
     }
 
     /**
-     * Debate's tags
+     * Debate's localizations
+     *
+     * @param PDocumentInterface $document
+     * @return string
+     */
+    public function localizations(PDocumentInterface $document)
+    {
+        // $this->logger->info('*** localizations');
+        // $this->logger->info('$document = '.print_r($document, true));
+
+        $localizations = $document->getPLocalizations();
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Document:_localizations.html.twig',
+            array(
+                'localizations' => $localizations,
+            )
+        );
+
+        return $html;
+    }
+
+    /**
+     * Debate's localizations
      *
      * @param PDocumentInterface $document
      * @param integer $tagTypeId

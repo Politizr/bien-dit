@@ -64,4 +64,11 @@ interface PDocumentInterface
      * @return PropelCollection[PTag]
      */
     public function getTags();
+
+    /**
+     * Get the localizations objects
+     *
+     * @return array[PLocalization]
+     */
+    public function getPLocalizations();
 }

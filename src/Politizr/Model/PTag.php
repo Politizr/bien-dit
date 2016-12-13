@@ -2,6 +2,8 @@
 
 namespace Politizr\Model;
 
+use Politizr\FrontBundle\Lib\Tag;
+
 use Politizr\Model\om\BasePTag;
 
 use Politizr\Constant\ObjectTypeConstants;
@@ -13,7 +15,7 @@ use StudioEcho\Lib\StudioEchoUtils;
  *
  * @author Lionel Bouzonville
  */
-class PTag extends BasePTag
+class PTag extends BasePTag implements Tag
 {
     /**
      *
@@ -51,6 +53,15 @@ class PTag extends BasePTag
     {
         return ObjectTypeConstants::TYPE_TAG;
     }
+
+    /**
+     *
+     * @return int
+     */
+    public function getTagType()
+    {
+        return $this->getPTTagTypeId();
+    }
     
     /* ######################################################################################################## */
     /*                                               DOCUMENTS                                                  */
@@ -59,8 +70,7 @@ class PTag extends BasePTag
     /**
      * Sum of count debates & reactions
      *
-     * @param $queryDebate
-     * @param $queryReaction
+     * @param boolean $onlyPublished
      * @return integer
      */
     public function countDocuments($onlyPublished = true)

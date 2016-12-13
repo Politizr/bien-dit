@@ -191,6 +191,34 @@ class PDReaction extends BasePDReaction implements PDocumentInterface
         return parent::getPTags($query);
     }
 
+    /**
+     * @see PDocumentInterface::getPLocalizations
+     */
+    public function getPLocalizations()
+    {
+        $country = parent::getPLCountry();
+        $region = parent::getPLRegion();
+        $department = parent::getPLDepartment();
+        $city = parent::getPLCity();
+
+        $localizations = array();
+
+        if ($country) {
+            $localizations[] = $country;
+        }
+        if ($region) {
+            $localizations[] = $region;
+        }
+        if ($department) {
+            $localizations[] = $department;
+        }
+        if ($city) {
+            $localizations[] = $city;
+        }
+
+        return $localizations;
+    }
+
     /* ######################################################################################################## */
     /*                                                  COMMENTS                                                */
     /* ######################################################################################################## */

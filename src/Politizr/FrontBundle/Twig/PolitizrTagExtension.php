@@ -3,6 +3,7 @@ namespace Politizr\FrontBundle\Twig;
 
 use Politizr\Constant\TagConstants;
 
+use Politizr\FrontBundle\Lib\Tag;
 use Politizr\Model\PTag;
 
 use Politizr\Model\PTagQuery;
@@ -118,10 +119,10 @@ class PolitizrTagExtension extends \Twig_Extension
     /**
      * Tag's number of associated users
      *
-     * @param PTag $tag
+     * @param Tag $tag
      * @return html
      */
-    public function nbUsers(PTag $tag)
+    public function nbUsers(Tag $tag)
     {
         // $this->logger->info('*** nbUsers');
         // $this->logger->info('$tag = '.print_r($tag, true));
@@ -145,7 +146,7 @@ class PolitizrTagExtension extends \Twig_Extension
      * @param PTag $tag
      * @return html
      */
-    public function nbDocuments(PTag $tag)
+    public function nbDocuments(Tag $tag)
     {
         // $this->logger->info('*** nbUsers');
         // $this->logger->info('$tag = '.print_r($tag, true));

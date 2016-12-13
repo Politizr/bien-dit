@@ -169,6 +169,22 @@ class XhrLocalization
                     LocalizationConstants::TYPE_DEPARTMENT => $department
                 );
             }
+        } elseif ($type == LocalizationConstants::TYPE_CITY) {
+            $city = PLCityQuery::create()->filterByUuid($uuid)->findOne();
+            if (!$city) {
+                throw new InconsistentDataException(sprintf('City uuid-%s not found', $uuid));
+            }
+            $department = $city->getPLDepartment();
+
+            if (in_array($department->getId(), LocalizationConstants::getGeoDepartmentMetroIds())) {
+                $region = PLRegionQuery::create()->filterById($department->getPLRegionId())->findOne();
+
+                $geoTypeObjects = array(
+                    LocalizationConstants::TYPE_REGION => $region,
+                    LocalizationConstants::TYPE_DEPARTMENT => $department,
+                    LocalizationConstants::TYPE_CITY => $city
+                );
+            }
         }
 
         $html = $this->templating->render(
@@ -215,6 +231,16 @@ class XhrLocalization
                 throw new InconsistentDataException(sprintf('Department uuid-%s not found', $uuid));
             }
 
+            $geoId = $department->getId();
+            $mapUuids = $this->localizationService->getDepartmentsUuids($department->getPLRegionId());
+        } elseif ($type == LocalizationConstants::TYPE_CITY) {
+            // retrieve department of current city
+            $city = PLCityQuery::create()->filterByUuid($uuid)->findOne();
+            if (!$city) {
+                throw new InconsistentDataException(sprintf('City uuid-%s not found', $uuid));
+            }
+
+            $department = $city->getPLDepartment();
             $geoId = $department->getId();
             $mapUuids = $this->localizationService->getDepartmentsUuids($department->getPLRegionId());
         } else {

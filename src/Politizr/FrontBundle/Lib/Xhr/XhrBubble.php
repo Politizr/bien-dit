@@ -3,8 +3,14 @@ namespace Politizr\FrontBundle\Lib\Xhr;
 
 use Symfony\Component\HttpFoundation\Request;
 
+use Politizr\Constant\ObjectTypeConstants;
+
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PTagQuery;
+use Politizr\Model\PLCountryQuery;
+use Politizr\Model\PLRegionQuery;
+use Politizr\Model\PLDepartmentQuery;
+use Politizr\Model\PLCityQuery;
 
 /**
  * XHR service for bubble management.
@@ -89,6 +95,6 @@ class XhrBubble
 
         return array(
             'html' => $html,
-            );
+        );
     }
 }

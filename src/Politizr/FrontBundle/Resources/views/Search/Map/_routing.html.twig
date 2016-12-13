@@ -59,431 +59,431 @@
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map:_fom.html.twig' with { 'current': null } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_AIN') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_AIN') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapARA.svg.twig' with { 'current': 'ain' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_AISNE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_AISNE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapNPDCP.svg.twig' with { 'current': 'aisne' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_ALLIER') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_ALLIER') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapARA.svg.twig' with { 'current': 'allier' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_ALPES_DE_HAUTE_PROVENCE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_ALPES_DE_HAUTE_PROVENCE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapPACA.svg.twig' with { 'current': 'alpesDeHautesProvence' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_HAUTES_ALPES') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_HAUTES_ALPES') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapPACA.svg.twig' with { 'current': 'hautesAlpes' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_ALPES_MARITIMES') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_ALPES_MARITIMES') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapPACA.svg.twig' with { 'current': 'alpesMaritimes' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_ARDECHE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_ARDECHE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapARA.svg.twig' with { 'current': 'ardeche' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_ARDENNES') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_ARDENNES') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapACAL.svg.twig' with { 'current': 'ardennes' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_ARIEGE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_ARIEGE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapLRMP.svg.twig' with { 'current': 'ariege' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_AUBE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_AUBE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapACAL.svg.twig' with { 'current': 'aube' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_AUDE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_AUDE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapLRMP.svg.twig' with { 'current': 'aude' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_AVEYRON') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_AVEYRON') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapLRMP.svg.twig' with { 'current': 'aveyron' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_BOUCHES_DU_RHONE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_BOUCHES_DU_RHONE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapPACA.svg.twig' with { 'current': 'bouchesDuRhone' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_CALVADOS') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_CALVADOS') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapN.svg.twig' with { 'current': 'calvados' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_CANTAL') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_CANTAL') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapARA.svg.twig' with { 'current': 'cantal' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_CHARENTE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_CHARENTE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapALPC.svg.twig' with { 'current': 'charente' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_CHARENTE_MARITIME') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_CHARENTE_MARITIME') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapALPC.svg.twig' with { 'current': 'charenteMaritime' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_CHER') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_CHER') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapCVDL.svg.twig' with { 'current': 'cher' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_CORREZE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_CORREZE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapALPC.svg.twig' with { 'current': 'correze' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_CORSE_DU_SUD') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_CORSE_DU_SUD') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapC.svg.twig' with { 'current': 'corseDuSud' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_HAUTE_CORSE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_HAUTE_CORSE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapC.svg.twig' with { 'current': 'hauteCorse' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_COTE_D_OR') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_COTE_D_OR') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapBFC.svg.twig' with { 'current': 'coteDOr' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_COTES_D_ARMOR') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_COTES_D_ARMOR') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapB.svg.twig' with { 'current': 'cotesDArmor' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_CREUSE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_CREUSE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapALPC.svg.twig' with { 'current': 'creuse' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_DORDOGNE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_DORDOGNE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapALPC.svg.twig' with { 'current': 'dordogne' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_DOUBS') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_DOUBS') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapBFC.svg.twig' with { 'current': 'doubs' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_DROME') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_DROME') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapARA.svg.twig' with { 'current': 'drome' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_EURE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_EURE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapN.svg.twig' with { 'current': 'eure' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_EURE_ET_LOIR') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_EURE_ET_LOIR') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapCVDL.svg.twig' with { 'current': 'eureEtLoire' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_FINISTERE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_FINISTERE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapB.svg.twig' with { 'current': 'finistere' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_GARD') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_GARD') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapLRMP.svg.twig' with { 'current': 'gard' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_HAUTE_GARONNE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_HAUTE_GARONNE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapLRMP.svg.twig' with { 'current': 'hauteGaronne' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_GERS') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_GERS') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapLRMP.svg.twig' with { 'current': 'gers' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_GIRONDE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_GIRONDE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapALPC.svg.twig' with { 'current': 'gironde' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_HERAULT') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_HERAULT') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapLRMP.svg.twig' with { 'current': 'herault' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_ILLE_ET_VILAINE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_ILLE_ET_VILAINE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapB.svg.twig' with { 'current': 'illeEtVilaine' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_INDRE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_INDRE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapCVDL.svg.twig' with { 'current': 'indre' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_INDRE_ET_LOIRE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_INDRE_ET_LOIRE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapCVDL.svg.twig' with { 'current': 'indreEtLoire' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_ISERE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_ISERE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapARA.svg.twig' with { 'current': 'isere' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_JURA') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_JURA') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapBFC.svg.twig' with { 'current': 'jura' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_LANDES') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_LANDES') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapALPC.svg.twig' with { 'current': 'landes' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_LOIR_ET_CHER') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_LOIR_ET_CHER') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapCVDL.svg.twig' with { 'current': 'loirEtCher' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_LOIRE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_LOIRE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapARA.svg.twig' with { 'current': 'loire' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_HAUTE_LOIRE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_HAUTE_LOIRE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapARA.svg.twig' with { 'current': 'hauteLoire' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_LOIRE_ATLANTIQUE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_LOIRE_ATLANTIQUE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapPDLL.svg.twig' with { 'current': 'loireAtlantique' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_LOIRET') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_LOIRET') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapCVDL.svg.twig' with { 'current': 'loiret' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_LOT') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_LOT') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapLRMP.svg.twig' with { 'current': 'lot' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_LOT_ET_GARONNE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_LOT_ET_GARONNE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapALPC.svg.twig' with { 'current': 'lotEtGaronne' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_LOZERE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_LOZERE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapLRMP.svg.twig' with { 'current': 'lozere' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_MAINE_ET_LOIRE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_MAINE_ET_LOIRE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapPDLL.svg.twig' with { 'current': 'maineEtLoire' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_MANCHE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_MANCHE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapN.svg.twig' with { 'current': 'manche' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_MARNE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_MARNE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapACAL.svg.twig' with { 'current': 'marne' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_HAUTE_MARNE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_HAUTE_MARNE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapACAL.svg.twig' with { 'current': 'hauteMarne' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_MAYENNE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_MAYENNE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapPDLL.svg.twig' with { 'current': 'mayenne' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_MEURTHE_ET_MOSELLE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_MEURTHE_ET_MOSELLE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapACAL.svg.twig' with { 'current': 'meurtheEtMoselle' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_MEUSE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_MEUSE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapACAL.svg.twig' with { 'current': 'meuse' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_MORBIHAN') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_MORBIHAN') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapB.svg.twig' with { 'current': 'morbihan' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_MOSELLE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_MOSELLE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapACAL.svg.twig' with { 'current': 'moselle' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_NIEVRE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_NIEVRE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapBFC.svg.twig' with { 'current': 'nievre' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_NORD') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_NORD') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapNPDCP.svg.twig' with { 'current': 'nord' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_OISE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_OISE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapNPDCP.svg.twig' with { 'current': 'oise' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_ORNE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_ORNE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapN.svg.twig' with { 'current': 'orne' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_PAS_DE_CALAIS') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_PAS_DE_CALAIS') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapNPDCP.svg.twig' with { 'current': 'pasDeCalais' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_PUY_DE_DOME') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_PUY_DE_DOME') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapARA.svg.twig' with { 'current': 'puyDeDome' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_PYRENEES_ATLANTIQUES') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_PYRENEES_ATLANTIQUES') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapALPC.svg.twig' with { 'current': 'pyreneesAtlantiques' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_HAUTES_PYRENEES') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_HAUTES_PYRENEES') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapLRMP.svg.twig' with { 'current': 'hautesPyrenees' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_PYRENEES_ORIENTALES') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_PYRENEES_ORIENTALES') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapLRMP.svg.twig' with { 'current': 'pyreneesOrientales' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_BAS_RHIN') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_BAS_RHIN') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapACAL.svg.twig' with { 'current': 'basRhin' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_HAUT_RHIN') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_HAUT_RHIN') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapACAL.svg.twig' with { 'current': 'hautRhin' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_RHONE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_RHONE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapARA.svg.twig' with { 'current': 'rhone' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_HAUTE_SAONE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_HAUTE_SAONE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapBFC.svg.twig' with { 'current': 'hauteSaone' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_SAONE_ET_LOIRE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_SAONE_ET_LOIRE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapBFC.svg.twig' with { 'current': 'loire' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_SARTHE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_SARTHE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapPDLL.svg.twig' with { 'current': 'sarthe' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_SAVOIE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_SAVOIE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapARA.svg.twig' with { 'current': 'savoie' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_HAUTE_SAVOIE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_HAUTE_SAVOIE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapARA.svg.twig' with { 'current': 'hauteSavoie' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_PARIS') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_PARIS') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapIDF.svg.twig' with { 'current': 'paris' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_SEINE_MARITIME') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_SEINE_MARITIME') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapN.svg.twig' with { 'current': 'seineMaritime' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_SEINE_ET_MARNE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_SEINE_ET_MARNE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapIDF.svg.twig' with { 'current': 'seineEtMarne' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_YVELINES') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_YVELINES') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapIDF.svg.twig' with { 'current': 'yvelines' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_DEUX_SEVRES') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_DEUX_SEVRES') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapALPC.svg.twig' with { 'current': 'deuxSevres' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_SOMME') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_SOMME') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapNPDCP.svg.twig' with { 'current': 'somme' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_TARN') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_TARN') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapLRMP.svg.twig' with { 'current': 'tarn' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_TARN_ET_GARONNE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_TARN_ET_GARONNE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapLRMP.svg.twig' with { 'current': 'tarnEtGaronne' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_VAR') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_VAR') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapPACA.svg.twig' with { 'current': 'var' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_VAUCLUSE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_VAUCLUSE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapPACA.svg.twig' with { 'current': 'vaucluse' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_VENDEE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_VENDEE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapPDLL.svg.twig' with { 'current': 'vendee' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_VIENNE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_VIENNE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapALPC.svg.twig' with { 'current': 'vienne' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_HAUTE_VIENNE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_HAUTE_VIENNE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapALPC.svg.twig' with { 'current': 'hauteVienne' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_VOSGES') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_VOSGES') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapACAL.svg.twig' with { 'current': 'vosges' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_YONNE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_YONNE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapBFC.svg.twig' with { 'current': 'yonne' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_TERRITOIRE_DE_BELFORT') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_TERRITOIRE_DE_BELFORT') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapBFC.svg.twig' with { 'current': 'territoireDeBelfort' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_ESSONNE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_ESSONNE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapIDF.svg.twig' with { 'current': 'essonne' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_HAUTS_DE_SEINE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_HAUTS_DE_SEINE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapIDF.svg.twig' with { 'current': 'hautsDeSeine' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_SEINE_SAINT_DENIS') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_SEINE_SAINT_DENIS') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapIDF.svg.twig' with { 'current': 'seineSaintDenis' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_VAL_DE_MARNE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_VAL_DE_MARNE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapIDF.svg.twig' with { 'current': 'valDeMarne' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_VAL_D_OISE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_VAL_D_OISE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapIDF.svg.twig' with { 'current': 'valDOise' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_GUADELOUPE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_GUADELOUPE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map:_fom.html.twig' with { 'current': 'guadeloupe' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_MARTINIQUE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_MARTINIQUE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map:_fom.html.twig' with { 'current': 'martinique' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_GUYANE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_GUYANE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map:_fom.html.twig' with { 'current': 'guyane' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_LA_REUNION') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_LA_REUNION') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map:_fom.html.twig' with { 'current': 'laReunion' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_MAYOTTE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_MAYOTTE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map:_fom.html.twig' with { 'current': 'mayotte' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_POLYNESIE_FRANCAISE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_POLYNESIE_FRANCAISE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map:_fom.html.twig' with { 'current': 'polynesieFrancaise' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_SAINT_BARTHELEMY') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_SAINT_BARTHELEMY') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map:_fom.html.twig' with { 'current': 'saintBarthelemy' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_SAINT_MARTIN') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_SAINT_MARTIN') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map:_fom.html.twig' with { 'current': 'saintMartin' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_SAINT_PIERRE_ET_MIQUELON') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_SAINT_PIERRE_ET_MIQUELON') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map:_fom.html.twig' with { 'current': 'saintPierreEtMiquelon' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_WALLIS_ET_FUTUNA') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_WALLIS_ET_FUTUNA') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map:_fom.html.twig' with { 'current': 'wallisEtFutuna' } %}
     </div>
-{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_NOUVELLE_CALEDONIE') %}
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_NOUVELLE_CALEDONIE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map:_fom.html.twig' with { 'current': 'nouvelleCaledonie' } %}
     </div>
