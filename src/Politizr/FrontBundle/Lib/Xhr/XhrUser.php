@@ -60,6 +60,7 @@ class XhrUser
     private $userManager;
     private $localizationManager;
     private $userService;
+    private $localizationService;
     private $timelineService;
     private $globalTools;
     private $userTwigExtension;
@@ -78,6 +79,7 @@ class XhrUser
      * @param @politizr.manager.user
      * @param @politizr.manager.localization
      * @param @politizr.functional.user
+     * @param @politizr.functional.localization
      * @param @politizr.functional.timeline
      * @param @politizr.tools.global
      * @param @politizr.twig.user
@@ -95,6 +97,7 @@ class XhrUser
         $userManager,
         $localizationManager,
         $userService,
+        $localizationService,
         $timelineService,
         $globalTools,
         $userTwigExtension,
@@ -117,6 +120,7 @@ class XhrUser
         $this->localizationManager = $localizationManager;
 
         $this->userService = $userService;
+        $this->localizationService = $localizationService;
         $this->timelineService = $timelineService;
 
         $this->globalTools = $globalTools;
@@ -1176,6 +1180,10 @@ class XhrUser
             ListingConstants::LISTING_CLASSIC_PAGINATION
         );
 
+        // update url w. js
+        $localization = $this->localizationService->getPLocalizationFromGeoUuid($geoUuid, $type);
+        $url = $this->router->generate('ListingSearchUsers'.$this->globalTools->computeProfileSuffix(), array('slug' => $localization->getSlug()));
+
         // /!\ PropelPager object
         $moreResults = false;
         if (!$users->isLastPage()) {
@@ -1200,6 +1208,7 @@ class XhrUser
 
         return array(
             'html' => $html,
+            'url' => $url
         );
     }
 

@@ -231,38 +231,13 @@ class ListingController extends Controller
         $mapUuids = $this->get('politizr.functional.localization')->getRegionUuids();
 
         // preset the map w. given localization
+        $localization = $this->get('politizr.functional.localization')->getPLocalizationFromSlug($slug);
+
         $currentUuid = null;
         $currentType = null;
-        if ($slug) {
-            $country = PLCountryQuery::create()->filterBySlug($slug)->findOne();
-
-            if (!$country) {
-                $region = PLRegionQuery::create()->filterBySlug($slug)->findOne();
-            
-                if (!$region) {
-                    $department = PLDepartmentQuery::create()->filterBySlug($slug)->findOne();
-
-                    if (!$department) {
-                        $city = PLCityQuery::create()->filterBySlug($slug)->findOne();
-
-                        if (!$city) {
-                            throw new NotFoundHttpException('Localization "'.$slug.'" not found.');
-                        } else {
-                            $currentUuid = $city->getUuid();
-                            $currentType = LocalizationConstants::TYPE_CITY;
-                        }
-                    } else {
-                        $currentUuid = $department->getUuid();
-                        $currentType = LocalizationConstants::TYPE_DEPARTMENT;
-                    }
-                } else {
-                    $currentUuid = $region->getUuid();
-                    $currentType = LocalizationConstants::TYPE_REGION;
-                }
-            } else {
-                $currentUuid = $country->getUuid();
-                $currentType = LocalizationConstants::TYPE_COUNTRY;
-            }
+        if ($localization) {
+            $currentUuid = $localization->getUuid();
+            $currentType = $localization->getLocType();
         }
 
         // Get current user localization
@@ -304,7 +279,7 @@ class ListingController extends Controller
      * Search uers listing
      * code beta
      */
-    public function searchUsersAction()
+    public function searchUsersAction($slug)
     {
         $logger = $this->get('logger');
         $logger->info('*** searchUsersAction');
@@ -320,6 +295,16 @@ class ListingController extends Controller
         $fom = PLRegionQuery::create()->findPk(LocalizationConstants::REGION_ID_FOM);
 
         $mapUuids = $this->get('politizr.functional.localization')->getRegionUuids();
+
+        // preset the map w. given localization
+        $localization = $this->get('politizr.functional.localization')->getPLocalizationFromSlug($slug);
+
+        $currentUuid = null;
+        $currentType = null;
+        if ($localization) {
+            $currentUuid = $localization->getUuid();
+            $currentType = $localization->getLocType();
+        }
 
         // Current user localization
         $user = $this->getUser();
@@ -347,6 +332,8 @@ class ListingController extends Controller
             'france' => $france,
             'fom' => $fom,
             'mapUuids' => $mapUuids,
+            'currentUuid' => $currentUuid,
+            'currentType' => $currentType,
             'cityUuid' => $cityUuid,
             'departmentUuid' => $departmentUuid,
             'regionUuid' => $regionUuid,

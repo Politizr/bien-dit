@@ -54,6 +54,8 @@ function usersByFiltersListing(init, offset) {
             }
             initPaginateNextWaypoint();
             fullImgLiquid();
+            
+            updateUrl(data['url']);
         }
         localLoader.hide();
     });

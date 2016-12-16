@@ -21,6 +21,7 @@ services:
             - @politizr.manager.user
             - @politizr.manager.document
             - @politizr.functional.document
+            - @politizr.functional.localization
             - @politizr.functional.tag
             - @politizr.tools.global
             - @politizr.twig.document
@@ -103,6 +104,7 @@ services:
             - @politizr.manager.user
             - @politizr.manager.localization
             - @politizr.functional.user
+            - @politizr.functional.localization
             - @politizr.functional.timeline
             - @politizr.tools.global
             - @politizr.twig.user

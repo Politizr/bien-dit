@@ -10,6 +10,7 @@ use Politizr\Model\PUser;
 use Politizr\Model\PLCityQuery;
 use Politizr\Model\PLDepartmentQuery;
 use Politizr\Model\PLRegionQuery;
+use Politizr\Model\PLCountryQuery;
 
 /**
  * Functional service for localization management.
@@ -570,5 +571,64 @@ class LocalizationService
         } elseif ($type == LocalizationConstants::TYPE_CITY) {
             $cityIds = $this->getCityIdFromCityUuid($geoUuid);
         }
+    }
+
+    /**
+     * Return object implementing PLocalization from uuid & type
+     *
+     * @param string $geoUuid
+     * @param string $type
+     * @return PLocalization
+     */
+    public function getPLocalizationFromGeoUuid($geoUuid, $type)
+    {
+        if ($type == LocalizationConstants::TYPE_COUNTRY) {
+            $localization = PLCountryQuery::create()->filterByUuid($geoUuid)->findOne();
+            return $localization;
+        } elseif ($type == LocalizationConstants::TYPE_REGION) {
+            $localization = PLRegionQuery::create()->filterByUuid($geoUuid)->findOne();
+            return $localization;
+        } elseif ($type == LocalizationConstants::TYPE_DEPARTMENT) {
+            $localization = PLDepartmentQuery::create()->filterByUuid($geoUuid)->findOne();
+            return $localization;
+        } elseif ($type == LocalizationConstants::TYPE_CITY) {
+            $localization = PLCityQuery::create()->filterByUuid($geoUuid)->findOne();
+            return $localization;
+        }
+
+        return null;
+    }
+
+    /**
+     * Return object implementing PLocalization from slug
+     *
+     * @param string $slug
+     * @return PLocalization
+     */
+    public function getPLocalizationFromSlug($slug)
+    {
+        if ($slug) {
+            $localization = PLCountryQuery::create()->filterBySlug($slug)->findOne();
+
+            if (!$localization) {
+                $localization = PLRegionQuery::create()->filterBySlug($slug)->findOne();
+            
+                if (!$localization) {
+                    $localization = PLDepartmentQuery::create()->filterBySlug($slug)->findOne();
+
+                    if (!$localization) {
+                        $localization = PLCityQuery::create()->filterBySlug($slug)->findOne();
+
+                        if (!$localization) {
+                            return null;
+                        }
+                    }
+                }
+            }
+        } else {
+            return null;
+        }
+
+        return $localization;
     }
 }

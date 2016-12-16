@@ -4,6 +4,7 @@ namespace Politizr\Model;
 
 use Politizr\FrontBundle\Lib\Tag;
 
+use Politizr\Constant\LocalizationConstants;
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\TagConstants;
 
@@ -20,6 +21,15 @@ class PLCountry extends BasePLCountry implements Tag, PLocalization
     public function __toString()
     {
         return $this->getTitle();
+    }
+
+    /**
+     *
+     * @return string
+     */
+    public function getLocType()
+    {
+        return LocalizationConstants::TYPE_COUNTRY;
     }
 
     /**

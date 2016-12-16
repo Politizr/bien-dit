@@ -4,6 +4,7 @@ namespace Politizr\Model;
 
 use Politizr\FrontBundle\Lib\Tag;
 
+use Politizr\Constant\LocalizationConstants;
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\TagConstants;
 
@@ -29,6 +30,15 @@ class PLCity extends BasePLCity implements Tag, PLocalization
     public function getTitle()
     {
         return $this->getNameReal();
+    }
+
+    /**
+     *
+     * @return string
+     */
+    public function getLocType()
+    {
+        return LocalizationConstants::TYPE_CITY;
     }
 
     /**

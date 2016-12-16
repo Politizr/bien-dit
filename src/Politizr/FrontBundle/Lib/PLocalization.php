@@ -8,4 +8,27 @@ namespace Politizr\FrontBundle\Lib;
  */
 interface PLocalization
 {
+    /**
+     *
+     * @return string
+     */
+    public function getUuid();
+
+    /**
+     *
+     * @return string
+     */
+    public function getLocType();
+
+    /**
+     *
+     * @return string
+     */
+    public function getType();
+
+    /**
+     *
+     * @return string
+     */
+    public function getSlug();
 }

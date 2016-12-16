@@ -1,12 +1,16 @@
 // beta
 $(function() {
-    uuid = $("#linkMyRegion").attr('uuid');
-    if (uuid) {
+    currentUuid = $('#localizationPreload').attr('uuid');
+    userUuid = $("#linkMyRegion").attr('uuid');
+    
+    if (currentUuid) {
+        $("#localizationPreload").trigger("click");
+    } else if (userUuid) {
         $("#linkMyRegion").trigger("click");
     } else {
         usersByFiltersListing();
-    }    
-
+    }
+    
     stickySidebar();
 });
 

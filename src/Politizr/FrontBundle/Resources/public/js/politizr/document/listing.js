@@ -55,6 +55,8 @@ function publicationsByFiltersListing(init, offset) {
             }
             initPaginateNextWaypoint();
             fullImgLiquid();
+
+            updateUrl(data['url']);
         }
         localLoader.hide();
     });
