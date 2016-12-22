@@ -25,6 +25,7 @@ services:
             - @politizr.functional.tag
             - @politizr.tools.global
             - @politizr.twig.document
+            - @politizr.form.type.document_localization
             - @logger
 
     politizr.xhr.modal:

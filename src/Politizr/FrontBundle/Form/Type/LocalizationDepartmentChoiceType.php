@@ -24,7 +24,7 @@ class LocalizationDepartmentChoiceType extends AbstractType
 
     /**
      *
-     * @param @politizr.localization.tag
+     * @param @politizr.manager.localization
      */
     public function __construct(
         $localizationManager
@@ -38,7 +38,11 @@ class LocalizationDepartmentChoiceType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         // prefill
-        $departmentUuid = $this->localizationManager->getDepartmentUuidByCityId($options['city_id']);
+        if ($options['current_uuid']) {
+            $departmentUuid = $options['current_uuid'];
+        } else {
+            $departmentUuid = $this->localizationManager->getDepartmentUuidByCityId($options['user_city_id']);
+        }
 
         // Department type list
         $departmentChoices = $this->localizationManager->getDepartmentChoices();
@@ -51,7 +55,7 @@ class LocalizationDepartmentChoiceType extends AbstractType
             'expanded' => false,
             'placeholder' => 'Choisissez un département',
             'empty_data'  => null,
-            'attr' => array('class' => 'select2_choice department_choice'),
+            'attr' => array('class' => 'select2_choice department'),
             // 'constraints' => new NotBlank(array('message' => 'Choix d\'un département obligatoire.')),
             'data' => $departmentUuid,
         ));
@@ -60,7 +64,8 @@ class LocalizationDepartmentChoiceType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'city_id' => null,
+            'current_uuid' => null,
+            'user_city_id' => null,
             'label_department' => 'Département',
         ));
     }

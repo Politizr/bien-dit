@@ -27,7 +27,7 @@ class LocalizationCityChoiceType extends AbstractType
 
     /**
      *
-     * @param @politizr.localization.tag
+     * @param @politizr.manager.localization
      */
     public function __construct(
         $localizationManager
@@ -41,8 +41,13 @@ class LocalizationCityChoiceType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         // prefill
-        $cityUuid = $this->localizationManager->getCityUuidByCityId($options['city_id']);
-        $departmentUuid = $this->localizationManager->getDepartmentUuidByCityId($options['city_id']);
+        if ($options['current_uuid']) {
+            $cityUuid = $options['current_uuid'];
+            $departmentUuid = $this->localizationManager->getDepartmentUuidByCityUuid($cityUuid);
+        } else {
+            $cityUuid = $this->localizationManager->getCityUuidByCityId($options['user_city_id']);
+            $departmentUuid = $this->localizationManager->getDepartmentUuidByCityId($options['user_city_id']);
+        }
 
         // Department type list
         $departmentChoices = $this->localizationManager->getDepartmentChoices();
@@ -103,7 +108,8 @@ class LocalizationCityChoiceType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'city_id' => null,
+            'current_uuid' => null,
+            'user_city_id' => null,
             'label_department' => 'Département',
             'label_city' => 'Ville',
         ));

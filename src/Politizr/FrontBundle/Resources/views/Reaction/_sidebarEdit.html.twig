@@ -1,7 +1,9 @@
 {# beta #}
 <div class="sidebarPostEdition">    
     <div class="sidebarPostAction">
-        {{ app.user | isAuthorizedToPublishReaction(reaction.uuid) }}
+        <div class="actionPublish">
+            <a action="openModalPublish"><i class="icon-publish"></i>Publier</a>
+        </div>
 
         <div class="actionSave withLoaderInside saved">
             {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
@@ -31,24 +33,5 @@
                 {% endfor %}
             </div>
         </div>  
-    </div>
-    
-    <div class="sidebarEditTag">
-        <h5>Type de publication</h5>
-        <div class="notice">
-            <i class="icon-info"></i><b>Cochez le(s) type(s) associé(s) à votre publication.</b>
-        </div>
-        {{ reaction | editTypeForm }}
-    </div>
-    
-    <div class="sidebarEditTag">
-        <h5>Thématiques abordées</h5>
-        <div class="notice">
-            <i class="icon-info"></i><b>5 thématiques maximum.</b><br>
-            Vous devez saisir au moins <b>une thématique géographique (France, une région ou un département)</b> parmi les thématiques de votre publication.
-        </div>
-        {# include('includes/helperEditTag.php') #}
-
-        {{ reactionTagsEdit(reaction, [ constant('Politizr\\Constant\\TagConstants::TAG_TYPE_GEO'), constant('Politizr\\Constant\\TagConstants::TAG_TYPE_THEME') ], 1, true) }}
     </div>
 </div>

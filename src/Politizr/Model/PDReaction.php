@@ -66,15 +66,15 @@ class PDReaction extends BasePDReaction implements PDocumentInterface
     {
         $collectionConstraint = new Collection(array(
             'title' => array(
-                new NotBlank(['message' => 'Le titre ne doit pas être vide']),
+                new NotBlank(['message' => 'Le titre ne doit pas être vide.']),
                 new Length(['max' => 100, 'maxMessage' => 'Le titre doit contenir {{ limit }} caractères maximum.']),
             ),
-            // 'description' => array(
-            //     new NotBlank(['message' => 'La description ne doit pas être vide']),
-            //     new Length(['min' => 140, 'minMessage' => 'Le corps de la publication doit contenir {{ limit }} caractères minimum.']),
-            // ),
-            'geoTags' => new Count(['min' => 1, 'minMessage' => 'Saisissez au moins {{ limit }} thématique géographique parmi "France", une région ou un département.']),
+            'description' => array(
+                new NotBlank(['message' => 'Le texte de votre document ne doit pas être vide.']),
+                // new Length(['min' => 140, 'minMessage' => 'Le corps de la publication doit contenir {{ limit }} actères minimum.']),
+            ),
             'themaTags' => new Count(['max' => 5, 'maxMessage' => 'Saisissez au maximum {{ limit }} thématiques.']),
+            'localization' => new Count(['min' => 1, 'minMessage' => 'Le document doit être associé à une localisation.']),
         ));
 
         return $collectionConstraint;

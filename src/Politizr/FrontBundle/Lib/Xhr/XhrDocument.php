@@ -39,6 +39,7 @@ use Politizr\FrontBundle\Form\Type\PDocumentTagTypeType;
 use Politizr\FrontBundle\Form\Type\PDDebatePhotoInfoType;
 use Politizr\FrontBundle\Form\Type\PDReactionType;
 use Politizr\FrontBundle\Form\Type\PDReactionPhotoInfoType;
+use Politizr\FrontBundle\Form\Type\PDDebateLocalizationType;
 
 /**
  * XHR service for document management.
@@ -63,6 +64,7 @@ class XhrDocument
     private $tagService;
     private $globalTools;
     private $documentTwigExtension;
+    private $documentLocalizationFormType;
     private $logger;
 
     /**
@@ -82,6 +84,7 @@ class XhrDocument
      * @param @politizr.functional.tag
      * @param @politizr.tools.global
      * @param @politizr.twig.document
+     * @param @politizr.form.type.document_localization
      * @param @logger
      */
     public function __construct(
@@ -100,6 +103,7 @@ class XhrDocument
         $tagService,
         $globalTools,
         $documentTwigExtension,
+        $documentLocalizationFormType,
         $logger
     ) {
         $this->securityTokenStorage = $securityTokenStorage;
@@ -124,6 +128,8 @@ class XhrDocument
         $this->globalTools = $globalTools;
 
         $this->documentTwigExtension = $documentTwigExtension;
+
+        $this->documentLocalizationFormType = $documentLocalizationFormType;
 
         $this->logger = $logger;
     }
@@ -323,17 +329,6 @@ class XhrDocument
         $debate = $formDebate->getData();
         $debate->save();
 
-        // Debate's tags type
-        $formTagTypes = $this->formFactory->create(
-            new PDocumentTagTypeType(), 
-            null, 
-            array('elected_mode' => $user->getQualified())
-        );
-        $formTagTypes->bind($request);
-
-        $tags = $formTagTypes->getData()['p_tags'];
-        $this->tagService->updateDebateTags($debate, $tags, TagConstants::TAG_TYPE_TYPE);
-
         return true;
     }
 
@@ -368,8 +363,9 @@ class XhrDocument
         $valid = $this->globalTools->validateConstraints(
             array(
                 'title' => $debate->getTitle(),
-                // 'description' => strip_tags($debate->getDescription()),
+                'description' => strip_tags($debate->getDescription()),
                 'themaTags' => $debate->getArrayTags(TagConstants::TAG_TYPE_THEME),
+                'localization' => $debate->getPLocalizations(),
             ),
             $debate->getPublishConstraints(),
             $errorString
@@ -466,17 +462,6 @@ class XhrDocument
         $reaction = $form->getData();
         $reaction->save();
 
-        // Debate's tags type
-        $formTagTypes = $this->formFactory->create(
-            new PDocumentTagTypeType(), 
-            null, 
-            array('elected_mode' => $user->getQualified())
-        );
-        $formTagTypes->bind($request);
-
-        $tags = $formTagTypes->getData()['p_tags'];
-        $this->tagService->updateReactionTags($reaction, $tags, TagConstants::TAG_TYPE_TYPE);
-
         return true;
     }
 
@@ -511,8 +496,9 @@ class XhrDocument
         $valid = $this->globalTools->validateConstraints(
             array(
                 'title' => $reaction->getTitle(),
-                // 'description' => strip_tags($reaction->getDescription()),
-                'themaTags' => $debate->getArrayTags(TagConstants::TAG_TYPE_THEME),
+                'description' => strip_tags($reaction->getDescription()),
+                'themaTags' => $reaction->getArrayTags(TagConstants::TAG_TYPE_THEME),
+                'localization' => $reaction->getPLocalizations(),
             ),
             $reaction->getPublishConstraints(),
             $errorString
@@ -584,6 +570,75 @@ class XhrDocument
     /* ######################################################################################################## */
     /*                                 DEBATE & REACTION COMMON EDITION FUNCTIONS                               */
     /* ######################################################################################################## */
+
+    /**
+     * Document attributes update
+     * beta
+     */
+    public function documentAttrUpdate(Request $request)
+    {
+        // $this->logger->info('*** debateAttrUpdate');
+
+        // Request arguments
+        $uuid = $request->get('document_localization')['uuid'];
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
+        $type = $request->get('document_localization')['type'];
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
+
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        
+        // get current document
+        if ($type == ObjectTypeConstants::TYPE_DEBATE) {
+            $document = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
+        } elseif ($type == ObjectTypeConstants::TYPE_REACTION) {
+            $document = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
+        } else {
+            throw new InconsistentDataException('Document '.$type.' unknown.');
+        }
+
+        if (!$document) {
+            throw new InconsistentDataException('Debate '.$uuid.' not found.');
+        }
+        if (!$document->isOwner($user->getId())) {
+            throw new InconsistentDataException('Debate '.$uuid.' is not yours.');
+        }
+        if ($document->getPublished()) {
+            throw new InconsistentDataException('Debate '.$uuid.' is published and cannot be edited anymore.');
+        }
+
+        // Document's localization
+        $formLocalization = $this->formFactory->create(
+            $this->documentLocalizationFormType,
+            $document,
+            array(
+                'user' => $user,
+                'data_class' => $type
+            )
+        );
+        $formLocalization->bind($request);
+        $document = $formLocalization->getData();
+        $document->save();
+
+        // Debate's tags type
+        $formTagTypes = $this->formFactory->create(
+            new PDocumentTagTypeType(), 
+            null, 
+            array('elected_mode' => $user->getQualified())
+        );
+        $formTagTypes->bind($request);
+
+        $tags = $formTagTypes->getData()['p_tags'];
+        if ($type == ObjectTypeConstants::TYPE_DEBATE) {
+            $this->tagService->updateDebateTags($document, $tags, TagConstants::TAG_TYPE_TYPE);
+        } elseif ($type == ObjectTypeConstants::TYPE_REACTION) {
+            $this->tagService->updateReactionTags($document, $tags, TagConstants::TAG_TYPE_TYPE);
+        } else {
+            throw new InconsistentDataException('Document '.$type.' unknown.');
+        }
+
+        return true;
+    }
 
     /**
      * Document's photo upload

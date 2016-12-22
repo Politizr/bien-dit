@@ -6,6 +6,7 @@ use Politizr\Exception\InconsistentDataException;
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\ReputationConstants;
 use Politizr\Constant\ListingConstants;
+use Politizr\Constant\TagConstants;
 
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDReaction;
@@ -1915,7 +1916,7 @@ GROUP BY p_d_debate_id
             $parent = $reaction->getDebate();
         }
 
-        $tags = $parent->getTags();
+        $tags = $parent->getTags(TagConstants::TAG_TYPE_THEME);
         foreach ($tags as $tag) {
             $pdrTaggedT = new PDRTaggedT();
 

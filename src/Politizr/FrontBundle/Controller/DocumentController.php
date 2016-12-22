@@ -11,6 +11,7 @@ use Politizr\Exception\InconsistentDataException;
 use Politizr\Constant\TagConstants;
 use Politizr\Constant\ListingConstants;
 use Politizr\Constant\LocalizationConstants;
+use Politizr\Constant\ObjectTypeConstants;
 
 use Politizr\Model\PDocumentInterface;
 use Politizr\Model\PDDebateQuery;
@@ -319,36 +320,22 @@ class DocumentController extends Controller
         $debate = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
         $this->checkDocumentEditable($debate, $user->getId());
         
-        $form = $this->createForm(new PDDebateType(), $debate);
+        $form = $this->createForm(new PDDebateType(), $debate, array('user' => $user));
+
+        // get geo debate informations
+        $debateLocType = $this->get('politizr.form.type.document_localization');
+        $formLocalization = $this->createForm(
+            $debateLocType,
+            $debate,
+            array(
+                'user' => $user,
+                'data_class' => ObjectTypeConstants::TYPE_DEBATE
+            )
+        );
 
         return $this->render('PolitizrFrontBundle:Debate:edit.html.twig', array(
             'debate' => $debate,
             'form' => $form->createView(),
-        ));
-    }
-
-    /**
-     * Debate publish
-     * beta
-     *
-     * @param $uuid
-     */
-    public function debatePublishAction($uuid)
-    {
-        // $logger = $this->get('logger');
-        // $logger->info('*** debatePublishAction');
-        // $logger->info('$uuid = '.print_r($uuid, true));
-
-        $user = $this->getUser();
-
-        $debate = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
-        $this->checkDocumentEditable($debate, $user->getId());
-
-        // get geo user informations
-        $formLocalization = $this->createForm(new PDDebateLocalizationType($user), $debate);
-        
-        return $this->render('PolitizrFrontBundle:Debate:publish.html.twig', array(
-            'debate' => $debate,
             'formLocalization' => $formLocalization->createView(),
         ));
     }
@@ -437,11 +424,23 @@ class DocumentController extends Controller
         // forms
         $form = $this->createForm(new PDReactionType(), $reaction);
 
+        // get geo reaction informations
+        $reactionLocType = $this->get('politizr.form.type.document_localization');
+        $formLocalization = $this->createForm(
+            $reactionLocType,
+            $reaction,
+            array(
+                'user' => $user,
+                'data_class' => ObjectTypeConstants::TYPE_REACTION
+            )
+        );
+
         return $this->render('PolitizrFrontBundle:Reaction:edit.html.twig', array(
             'reaction' => $reaction,
             'parent' => $parent,
             'paragraphs' => $paragraphs,
             'form' => $form->createView(),
+            'formLocalization' => $formLocalization->createView(),
             ));
     }
 

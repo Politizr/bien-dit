@@ -66,14 +66,15 @@ class PDDebate extends BasePDDebate implements PDocumentInterface
     {
         $collectionConstraint = new Collection(array(
             'title' => array(
-                new NotBlank(['message' => 'Le titre ne doit pas être vide']),
+                new NotBlank(['message' => 'Le titre ne doit pas être vide.']),
                 new Length(['max' => 100, 'maxMessage' => 'Le titre doit contenir {{ limit }} caractères maximum.']),
             ),
-            // 'description' => array(
-            //     new NotBlank(['message' => 'La description ne doit pas être vide']),
-            //     new Length(['min' => 140, 'minMessage' => 'Le corps de la publication doit contenir au moins {{ limit }} caractères.']),
-            // ),
+            'description' => array(
+                new NotBlank(['message' => 'Le texte de votre document ne doit pas être vide.']),
+                // new Length(['min' => 140, 'minMessage' => 'Le corps de la publication doit contenir au moins {{ limit caractères.']),
+            ),
             'themaTags' => new Count(['max' => 5, 'maxMessage' => 'Saisissez au maximum {{ limit }} thématiques.']),
+            'localization' => new Count(['min' => 1, 'minMessage' => 'Le document doit être associé à une localisation.']),
         ));
 
         return $collectionConstraint;

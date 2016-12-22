@@ -17,7 +17,7 @@ $(function() {
 
 // Map selection
 $("body").on("click", "[action='map']", function() {
-    console.log('*** click map');
+    // console.log('*** click map');
     uuid = $(this).attr('uuid');
     type = $(this).attr('type');
 
@@ -40,7 +40,7 @@ $("body").on("click", "[action='map']", function() {
 
 // Map's selection shortcut
 $("body").on("click", "[action='publicationsMyMap']", function() {
-    console.log('*** click publicationsMyMap');
+    // console.log('*** click publicationsMyMap');
 
     $(this).siblings().removeClass('currentPage');
     $(this).addClass('currentPage');
@@ -60,7 +60,7 @@ $("body").on("click", "[action='publicationsMyMap']", function() {
 
 // Publication filter change
 $("body").on("change", ".publicationFilter", function() {
-    console.log('*** change publicationFilter');
+    // console.log('*** change publicationFilter');
 
     $('#documentListing .listTop').html('');
     $("[action='goUp']").trigger("click");
@@ -70,7 +70,7 @@ $("body").on("change", ".publicationFilter", function() {
 
 // Profile filter change
 $("body").on("change", ".profileFilter", function() {
-    console.log('*** change profileFilter');
+    // console.log('*** change profileFilter');
 
     $('#documentListing .listTop').html('');
     $("[action='goUp']").trigger("click");
@@ -80,7 +80,7 @@ $("body").on("change", ".profileFilter", function() {
 
 // Activity filter change
 $("body").on("change", ".activityFilter", function() {
-    console.log('*** change activityFilter');
+    // console.log('*** change activityFilter');
 
     $('#documentListing .listTop').html('');
     $("[action='goUp']").trigger("click");
@@ -90,7 +90,7 @@ $("body").on("change", ".activityFilter", function() {
 
 // Date filter change
 $("body").on("change", ".dateFilter", function() {
-    console.log('*** change dateFilter');
+    // console.log('*** change dateFilter');
 
     $('#documentListing .listTop').html('');
     $("[action='goUp']").trigger("click");
@@ -106,9 +106,9 @@ $("body").on("change", ".dateFilter", function() {
  * @param string
  */
 function publicationsMapFiltering(uuid, type) {
-    console.log('*** publicationsMapFiltering');
-    console.log(uuid);
-    console.log(type);
+    // console.log('*** publicationsMapFiltering');
+    // console.log(uuid);
+    // console.log(type);
 
     $.when(
         // update breadcrumb

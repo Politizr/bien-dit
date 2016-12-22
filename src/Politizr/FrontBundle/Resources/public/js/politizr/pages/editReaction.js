@@ -1,6 +1,12 @@
 // beta
 $(function() {
+    // photo upload management
     $("#formReactionUpdate").ajaxForm(options);
+
+    // modal attributes show/hide
+    $('.modalPublish').hide();
+
+    // sticky sidebar
     stickySidebar();
 });
 
@@ -26,33 +32,62 @@ $("body").on("click", "[action='showTab']:last-of-type", function() {
     $(this).addClass('activeTabHeader');
 });
 
+// Modal show / hide
+$('body').on('click', "[action='openModalPublish']", function(e){
+    // console.log('*** click open modal publish');
+
+    $.when(triggerSaveDocument()).done(function(r1) {
+        $('.modalPublish').show();
+    });
+});
+
+$('body').on('click', "[action='closeModalPublish']", function(e){
+    // console.log('*** click close modal publish');
+
+    $('.modalPublish').hide();
+});
+
+// Modal doc loc management
+// change checkbox type event
+$('#formDocLoc :radio').on('change', function() {
+    // console.log('*** formDocLoc change');
+    saveDocumentAttr();
+});
+
+// change checkbox type event
+$('#formTagType :checkbox').on('change', function() {
+    // console.log('*** formTagType change');
+    saveDocumentAttr();
+});
+
+
+// Publish reaction from attr > final publication
+$('body').on('click', "[action='reactionPublish']", function(e){
+    // console.log('*** click publish reaction');
+    var uuid = $(this).attr('uuid');
+
+    $.when(saveDocumentAttr()).done(function(r1) {
+        return publishReaction(uuid);
+        // var confirmMsg = "Une fois publié, vous ne pourrez plus modifier votre réponse. Voulez-vous publier votre réponse?";
+        // smoke.confirm(confirmMsg, function(e) {
+        //     if (e) {
+        //         return publishReaction(uuid);
+        //     }
+        // }, {
+        //     ok: "Publier",
+        //     cancel: "Annuler"
+        //     // classname: "custom-class",
+        //     // reverseButtons: true
+        // });
+    });
+});
+
 
 // Save reaction
 $("body").on("click", "[action='reactionSave']", function(e) {
     // console.log('*** click reaction save');
 
     return saveReaction();
-});
-
-// Publish reaction
-$('body').on('click', "[action='reactionPublish']", function(e){
-    // console.log('*** click publish reaction');
-
-    // automatic saving before publish
-    $.when(triggerSaveDocument()).done(function(r1) {
-        var uuid = $(this).attr('uuid');
-        var confirmMsg = "Une fois publié, vous ne pourrez plus modifier votre réponse. Voulez-vous publier votre réponse?";
-        smoke.confirm(confirmMsg, function(e) {
-            if (e) {
-                return publishReaction(uuid);
-            }
-        }, {
-            ok: "Publier",
-            cancel: "Annuler"
-            // classname: "custom-class",
-            // reverseButtons: true
-        });
-    });
 });
 
 // Delete reaction

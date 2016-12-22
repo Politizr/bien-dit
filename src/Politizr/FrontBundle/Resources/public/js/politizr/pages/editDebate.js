@@ -1,8 +1,71 @@
-// beta
 $(function() {
+    // photo upload management
     $("#formDebateUpdate").ajaxForm(options);
+
+    // modal attributes show/hide
+    $('.modalPublish').hide();
+
+    // sticky sidebar
     stickySidebar();
 });
+
+// TAG vars
+var nbZones = 1;
+var service = 'tag';
+var xhrRoute = ROUTE_TAG_LISTING;
+var xhrUrlPrefix = '/xhr';
+
+
+// Modal show / hide
+$('body').on('click', "[action='openModalPublish']", function(e){
+    // console.log('*** click open modal publish');
+
+    $.when(triggerSaveDocument()).done(function(r1) {
+        $('.modalPublish').show();
+    });
+});
+
+$('body').on('click', "[action='closeModalPublish']", function(e){
+    // console.log('*** click close modal publish');
+
+    $('.modalPublish').hide();
+});
+
+// Modal doc loc management
+// change checkbox type event
+$('#formDocLoc :radio').on('change', function() {
+    // console.log('*** formDocLoc change');
+    saveDocumentAttr();
+});
+
+// change checkbox type event
+$('#formTagType :checkbox').on('change', function() {
+    // console.log('*** formTagType change');
+    saveDocumentAttr();
+});
+
+
+// Publish debate from attr > final publication
+$('body').on('click', "[action='debatePublish']", function(e){
+    // console.log('*** click publish debate');
+    var uuid = $(this).attr('uuid');
+
+    $.when(saveDocumentAttr()).done(function(r1) {
+        return publishDebate(uuid);
+        // var confirmMsg = "Une fois publié, vous ne pourrez plus modifier votre sujet de discussion. Voulez-vous publier votre sujet?";
+        // smoke.confirm(confirmMsg, function(e) {
+        //     if (e) {
+        //         return publishDebate(uuid);
+        //     }
+        // }, {
+        //     ok: "Publier",
+        //     cancel: "Annuler"
+        //     // classname: "custom-class",
+        //     // reverseButtons: true
+        // });
+    });
+});
+
 
 // Save debate
 $("body").on("click", "[action='debateSave']", function(e) {

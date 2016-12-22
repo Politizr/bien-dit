@@ -55,6 +55,6 @@ class PDocumentTagTypeType extends AbstractType
      */
     public function getName()
     {
-        return 'debate_tag_type';
+        return 'document_tag_type';
     }
 }

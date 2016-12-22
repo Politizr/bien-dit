@@ -170,6 +170,132 @@ class LocalizationManager
     }
 
     /**
+     * Get city id by city uuid
+     *
+     * @param int $cityUuid
+     * @return string
+     */
+    public function getCityIdByCityUuid($cityUuid)
+    {
+        if (!$cityUuid) {
+            return null;
+        }
+
+        $city = PLCityQuery::create()->filterByUuid($cityUuid)->findOne();
+
+        if (!$city) {
+            return null;
+        }
+
+        return $city->getId();
+    }
+
+    /**
+     * Get department uuid by department id
+     *
+     * @param int $departmentId
+     * @return string
+     */
+    public function getDepartmentUuidByDepartmentId($departmentId)
+    {
+        if (!$departmentId) {
+            return null;
+        }
+
+        $department = PLDepartmentQuery::create()->findPk($departmentId);
+
+        if (!$department) {
+            return null;
+        }
+
+        return $department->getUuid();
+    }
+
+    /**
+     * Get department id by department uuid
+     *
+     * @param int $departmentUuid
+     * @return string
+     */
+    public function getDepartmentIdByDepartmentUuid($departmentUuid)
+    {
+        if (!$departmentUuid) {
+            return null;
+        }
+
+        $department = PLDepartmentQuery::create()->filterByUuid($departmentUuid)->findOne();
+
+        if (!$department) {
+            return null;
+        }
+
+        return $department->getId();
+    }
+
+    /**
+     * Get region uuid by region id
+     *
+     * @param int $regionId
+     * @return string
+     */
+    public function getRegionUuidByRegionId($regionId)
+    {
+        if (!$regionId) {
+            return null;
+        }
+
+        $region = PLRegionQuery::create()->findPk($regionId);
+
+        if (!$region) {
+            return null;
+        }
+
+        return $region->getUuid();
+    }
+
+    /**
+     * Get region id by region uuid
+     *
+     * @param int $regionUuid
+     * @return string
+     */
+    public function getRegionIdByRegionUuid($regionUuid)
+    {
+        if (!$regionUuid) {
+            return null;
+        }
+
+        $region = PLRegionQuery::create()->filterByUuid($regionUuid)->findOne();
+
+        if (!$region) {
+            return null;
+        }
+
+        return $region->getId();
+    }
+
+    /**
+     * Get country uuid by country id
+     *
+     * @param int $countryId
+     * @return string
+     */
+    public function getCountryUuidByCountryId($countryId)
+    {
+        if (!$countryId) {
+            return null;
+        }
+
+        $country = PLCountryQuery::create()->findPk($countryId);
+
+        if (!$country) {
+            return null;
+        }
+
+        return $country->getUuid();
+    }
+
+    /**
      * Get department uuid by city id
      *
      * @param int $cityId
@@ -193,6 +319,32 @@ class LocalizationManager
 
         return $department->getUuid();
     }
+
+    /**
+     * Get department uuid by city uuid
+     *
+     * @param string $cityUuid
+     * @return string
+     */
+    public function getDepartmentUuidByCityUuid($cityUuid)
+    {
+        if (!$cityUuid) {
+            return null;
+        }
+
+        $department = PLDepartmentQuery::create()
+            ->usePLCityQuery()
+                ->filterByUuid($cityUuid)
+            ->endUse()
+            ->findOne();
+
+        if (!$department) {
+            return null;
+        }
+
+        return $department->getUuid();
+    }
+
 
     /**
      * Get region uuid by city id

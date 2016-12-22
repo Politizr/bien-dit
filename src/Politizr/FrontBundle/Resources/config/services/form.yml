@@ -1,4 +1,11 @@
 services:
+    politizr.form.type.document_localization:
+        class: Politizr\FrontBundle\Form\Type\DocumentLocalizationType
+        arguments:
+            - @politizr.manager.localization
+        tags:
+            - { name: form.type }
+
     politizr.form.type.localization:
         class: Politizr\FrontBundle\Form\Type\LocalizationChoiceType
         arguments:

@@ -24,7 +24,7 @@ class LocalizationRegionChoiceType extends AbstractType
 
     /**
      *
-     * @param @politizr.localization.tag
+     * @param @politizr.manager.localization
      */
     public function __construct(
         $localizationManager
@@ -38,7 +38,11 @@ class LocalizationRegionChoiceType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         // prefill
-        $regionUuid = $this->localizationManager->getRegionUuidByCityId($options['city_id']);
+        if ($options['current_uuid']) {
+            $regionUuid = $options['current_uuid'];
+        } else {
+            $regionUuid = $this->localizationManager->getRegionUuidByCityId($options['user_city_id']);
+        }
 
         // Region type list
         $regionChoices = $this->localizationManager->getRegionChoices();
@@ -60,7 +64,8 @@ class LocalizationRegionChoiceType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'city_id' => null,
+            'current_uuid' => null,
+            'user_city_id' => null,
             'label_region' => 'Région',
         ));
     }

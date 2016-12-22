@@ -6,6 +6,46 @@
 {% block bodyClass %} class="user edition"{% endblock bodyClass %}
 
 {% block content %}
+    <div class="modalPublish" style="display: none">
+        <a action="closeModalPublish">Fermer</a>
+        <div class="docLocChoice">
+            <h5>Zonage de publication</h5>
+            <div class="notice">
+                <i class="icon-info"></i><b>Cette publication concerne:</b>
+            </div>
+            <form id="formDocLoc">
+                {{ form_errors(formLocalization) }}
+                {% for type in formLocalization.loc_type %}
+                    {{ form_row(type) }}
+                    {% if loop.index == 1 %}
+                        {{ form_widget(formLocalization.localization_city) }}<br/>
+                    {% elseif loop.index == 2 %}
+                        {{ form_widget(formLocalization.localization_department) }}<br/>
+                    {% elseif loop.index == 3 %}
+                        {{ form_widget(formLocalization.localization_region) }}<br/>
+                    {% endif %}
+                {% endfor %}
+                {{ form_rest(formLocalization) }}
+            </form>
+        </div>
+        <div class="docTypes">
+            <h5>Type de publication</h5>
+            <div class="notice">
+                <i class="icon-info"></i><b>Cochez le(s) type(s) associé(s) à votre publication.</b>
+            </div>
+            {{ debate | editTypeForm }}
+        </div>
+        <div class="docTags">
+            <h5>Thématiques abordées</h5>
+            <div class="notice">
+                <i class="icon-info"></i><b>5 thématiques maximum.</b><br>
+            </div>
+            {# include('includes/helperEditTag.php') #}
+
+            {{ debateTagsEdit(debate, constant('Politizr\\Constant\\TagConstants::TAG_TYPE_THEME'), 1, true) }}
+        </div>
+        {{ app.user | isAuthorizedToPublishDebate(debate.uuid) }}
+    </div>
     <div id="content">
         <div id="modalNoEdition">
             <div class="noEdition">
@@ -77,11 +117,13 @@
     {{ parent() }}
 
     {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/smoke.min.js'
         '@PolitizrFrontBundle/Resources/public/js/medium-editor.min.js'
         '@PolitizrFrontBundle/Resources/public/js/jquery.form.min.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/document/medium.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/document/edit.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/document/editPhoto.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/tag/editTags.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/pages/editDebate.js'
         filter='uglifyjs2' %}
         <script src="{{ asset_url }}"></script>

@@ -61,6 +61,7 @@ class PDDebateType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'Politizr\Model\PDDebate',
+            'user' => null,
         ));
     }
 }
