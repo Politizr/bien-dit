@@ -62,6 +62,17 @@ class NotificationConstants
     const ID_S_T_DOCUMENT = 18;
 
     // ******************************************************** //
+    //                SUBSCRIBE / FOLLOWING                     //
+    // ******************************************************** //
+    const ID_L_U_CITY = 20;
+    const ID_L_U_DEPARTMENT = 21;
+    const ID_L_U_REGION = 22;
+
+    const ID_L_D_CITY = 23;
+    const ID_L_D_DEPARTMENT = 24;
+    const ID_L_D_REGION = 25;
+
+    // ******************************************************** //
     //                        ADMIN                             //
     // ******************************************************** //
     const ID_ADM_MESSAGE = 19;
