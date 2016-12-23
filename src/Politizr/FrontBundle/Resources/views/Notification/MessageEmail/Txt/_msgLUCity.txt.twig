@@ -1,0 +1,5 @@
+{% include 'PolitizrFrontBundle:Notification\\MessageEmail\\Txt:_emailAuthorPhoto.txt.twig' with {'author': author, 'authorUrl': authorUrl} only %}
+
+{% include 'PolitizrFrontBundle:Notification\\MessageEmail\\Txt:_emailAuthorName.txt.twig' with {'author': author, 'authorUrl': authorUrl} only %} est élu{% if author and author.gender == 'Madame' %}e{% endif %} de votre ville et vient de s'inscrire. Venez suivre son activité en l'ajoutant à votre fil d'actualité!
+
+{% include 'PolitizrFrontBundle:Notification\\MessageEmail\\Txt:_emailNotificationFooter.txt.twig' with {'url': authorUrl} only %}

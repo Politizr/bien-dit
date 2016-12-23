@@ -52,11 +52,50 @@ class PLRegion extends BasePLRegion implements Tag, PLocalization
 
     /**
      *
+     * @param boolean $online
+     * @param PUserQuery $query
+     * @return PropelCollection[PUser]
+     */
+    public function getUsers($online = true, $query = null)
+    {
+        if (null === $query) {
+            $query = PUserQuery::create();
+        }
+
+        $users = $query
+            ->filterIfOnline($online)
+            ->usePLCityQuery()
+                ->usePLDepartmentQuery()
+                    ->filterByPLRegionId($this->getId())
+                ->endUse()
+            ->endUse()
+            ->find();
+
+        return $users;
+    }
+
+    /**
+     *
+     * @param boolean $online
+     * @param PUserQuery $query
      * @return int
      */
-    public function countUsers()
+    public function countUsers($online = true, $query = null)
     {
-        return null;
+        if (null === $query) {
+            $query = PUserQuery::create();
+        }
+
+        $nbUsers = $query
+            ->filterIfOnline($online)
+            ->usePLCityQuery()
+                ->usePLDepartmentQuery()
+                    ->filterByPLRegionId($this->getId())
+                ->endUse()
+            ->endUse()
+            ->count();
+
+        return $nbUsers;
     }
 
     /**

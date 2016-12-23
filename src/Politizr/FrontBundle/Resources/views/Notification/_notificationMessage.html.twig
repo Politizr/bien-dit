@@ -83,6 +83,18 @@
 %}
     {% include 'PolitizrFrontBundle:Notification\\'~twigFolder~':_msgSTDocument.'~twigExt~'.twig' %}
 {% elseif
+    notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_L_U_CITY')
+%}
+    {% include 'PolitizrFrontBundle:Notification\\'~twigFolder~':_msgLUCity.'~twigExt~'.twig' %}
+{% elseif
+    notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_L_U_DEPARTMENT')
+%}
+    {% include 'PolitizrFrontBundle:Notification\\'~twigFolder~':_msgLUDepartment.'~twigExt~'.twig' %}
+{% elseif
+    notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_L_U_REGION')
+%}
+    {% include 'PolitizrFrontBundle:Notification\\'~twigFolder~':_msgLURegion.'~twigExt~'.twig' %}
+{% elseif
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_ADM_MESSAGE')
 %}
     {% include 'PolitizrFrontBundle:Notification\\'~twigFolder~':_msgAdmMessage.'~twigExt~'.twig' %}

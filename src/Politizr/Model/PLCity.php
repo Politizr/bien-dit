@@ -61,11 +61,36 @@ class PLCity extends BasePLCity implements Tag, PLocalization
 
     /**
      *
+     * @param boolean $online
+     * @param PUserQuery $query
+     * @return PropelCollection[PUser]
+     */
+    public function getUsers($online = true, $query = null)
+    {
+        if (null === $query) {
+            $query = PUserQuery::create();
+        }
+
+        $query->filterIfOnline($online);
+
+        return parent::getPUsers($query);
+    }
+
+    /**
+     *
+     * @param boolean $online
+     * @param PUserQuery $query
      * @return int
      */
-    public function countUsers()
+    public function countUsers($online = true, $query = null)
     {
-        return null;
+        if (null === $query) {
+            $query = PUserQuery::create();
+        }
+
+        $query->filterIfOnline($online);
+
+        return parent::countPUsers($query);
     }
 
     /**

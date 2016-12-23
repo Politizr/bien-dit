@@ -1,5 +1,5 @@
 {# beta #}
-{% include 'PolitizrFrontBundle:Notification:_notificationTitle.html.twig' with { 'notificationId': notif.pNotificationId } %}
+Nouvelle notification
 
 {{ notif.createdAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM à HH'h'mm" ) | capitalize }}
 

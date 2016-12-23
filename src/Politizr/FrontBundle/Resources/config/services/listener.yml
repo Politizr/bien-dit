@@ -31,6 +31,8 @@ services:
             - { name: kernel.event_listener, event: n_user_follow }
             - { name: kernel.event_listener, event: n_badge_win }
             - { name: kernel.event_listener, event: n_user_tag }
+            - { name: kernel.event_listener, event: n_localization_user }
+            - { name: kernel.event_listener, event: n_localization_publication }
             - { name: kernel.event_listener, event: n_admin_message }
 
     politizr.listener.notification_email:

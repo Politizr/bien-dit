@@ -47,6 +47,12 @@ class NotificationManager
             NotificationConstants::ID_S_T_USER,
             NotificationConstants::ID_S_T_DOCUMENT,
             NotificationConstants::ID_ADM_MESSAGE,
+            NotificationConstants::ID_L_U_CITY,
+            NotificationConstants::ID_L_U_DEPARTMENT,
+            NotificationConstants::ID_L_U_REGION,
+            NotificationConstants::ID_L_D_CITY,
+            NotificationConstants::ID_L_D_DEPARTMENT,
+            NotificationConstants::ID_L_D_REGION,
         );
 
         return $notifIds;

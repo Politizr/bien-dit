@@ -73,6 +73,18 @@
 %}
     "{{ title }}" contient une thématique que vous suivez
 {% elseif
+    notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_L_U_CITY')
+%}
+    Un nouvel élu de votre ville vient de s'inscrire
+{% elseif
+    notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_L_U_DEPARTMENT')
+%}
+    Un nouvel élu de votre département vient de s'inscrire
+{% elseif
+    notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_L_U_REGION')
+%}
+    Un nouvel élu de votre région vient de s'inscrire
+{% elseif
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_ADM_MESSAGE')
 %}
     Nouvelle notification du support
