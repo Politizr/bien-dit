@@ -4,18 +4,6 @@
     Comment ça marche ? - {{ parent() }}
 {% endblock title %}
 
-{% block fbScript %}
-    {{ parent() }}
-
-    {% if app.environment == 'prod' and app.session.flashbag.has('inscription/success') %}
-        <script>
-            // CompleteRegistration
-            // Track when a registration form is completed (ex. complete subscription, sign up for a service)
-            fbq('track', 'CompleteRegistration');
-        </script>
-    {% endif %}
-{% endblock %}
-
 {% block bodyClass %} class="demo"{% endblock %}
 
 {% block header %}
