@@ -56,7 +56,7 @@ class PLDepartment extends BasePLDepartment implements Tag, PLocalization
      * @param PUserQuery $query
      * @return PropelCollection[PUser]
      */
-    public function getUsers($online = true, $query = null)
+    public function getUsers($online = null, $query = null)
     {
         if (null === $query) {
             $query = PUserQuery::create();
@@ -78,7 +78,7 @@ class PLDepartment extends BasePLDepartment implements Tag, PLocalization
      * @param PUserQuery $query
      * @return int
      */
-    public function countUsers($online = true, $query = null)
+    public function countUsers($online = null, $query = null)
     {
         if (null === $query) {
             $query = PUserQuery::create();

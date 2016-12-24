@@ -247,11 +247,16 @@ class PDDebate extends BasePDDebate implements PDocumentInterface
      *
      * @param boolean $qualified
      * @param boolean $online
+     * @param PUserQuery $query
      * @return PropelCollection[PUser]
      */
-    public function getFollowers($qualified = null, $online = true)
+    public function getFollowers($qualified = null, $online = true, $query = null)
     {
-        $query = PUserQuery::create()
+        if (null === $query) {
+            $query = PUserQuery::create();
+        }
+
+        $query = $query
             ->filterIfQualified($qualified)
             ->filterIfOnline($online)
             ->setDistinct();

@@ -1186,8 +1186,8 @@ class XhrDocument
             throw new InconsistentDataException('Tag '.$uuid.' not found.');
         }
 
-        // Compute relative geo tag ids
-        $tagIds = $this->tagService->computeGeotagExtendedIds($tag->getId(), false, false);
+        $tagIds = array();
+        $tagIds[] = $tag->getId();
 
         $documents = $this->documentService->getDocumentsByTagsPaginated(
             $tagIds,

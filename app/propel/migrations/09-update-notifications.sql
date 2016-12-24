@@ -27,10 +27,6 @@ INSERT INTO `p_notification` (`id`, `p_n_type_id`, `title`, `description`, `onli
 VALUES (25, 5, 'Lorsqu\'une nouvelle publication correspond à ma région', 'Une nouvelle publication correspond à ma région', 1, '2016-12-22 17:45:59', '2016-12-22 17:45:59');
 
 
-# sf command > app/console politizr:uuids:populate PNotification
-
-
-
 # Subscribe all users to new notifs email
 INSERT INTO `p_u_subscribe_email` (`p_user_id`, `p_notification_id`, `created_at`, `updated_at`) 
 SELECT `id`, 20, NOW(), NOW() from p_user;
@@ -49,3 +45,6 @@ SELECT `id`, 24, NOW(), NOW() from p_user;
 
 INSERT INTO `p_u_subscribe_email` (`p_user_id`, `p_notification_id`, `created_at`, `updated_at`) 
 SELECT `id`, 25, NOW(), NOW() from p_user;
+
+# sf command > app/console politizr:uuids:populate PNotification
+

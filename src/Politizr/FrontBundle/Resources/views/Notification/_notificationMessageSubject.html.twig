@@ -85,6 +85,18 @@
 %}
     Un nouvel élu de votre région vient de s'inscrire
 {% elseif
+    notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_L_D_CITY')
+%}
+    "{{ title }}" est localisé sur votre ville
+{% elseif
+    notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_L_D_DEPARTMENT')
+%}
+    "{{ title }}" est localisé sur votre département
+{% elseif
+    notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_L_D_REGION')
+%}
+    "{{ title }}" est localisé sur votre région
+{% elseif
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_ADM_MESSAGE')
 %}
     Nouvelle notification du support
