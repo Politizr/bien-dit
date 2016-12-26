@@ -9,6 +9,7 @@ use StudioEcho\Lib\StudioEchoUtils;
 use Politizr\Constant\PathConstants;
 use Politizr\Constant\ReputationConstants;
 use Politizr\Constant\QualificationConstants;
+use Politizr\Constant\ObjectTypeConstants;
 
 use Politizr\Exception\InconsistentDataException;
 use Politizr\Exception\BoxErrorException;
@@ -47,6 +48,7 @@ class XhrAdmin
     private $tagManager;
     private $userManager;
     private $localizationManager;
+    private $documentLocalizationFormType;
     private $globalTools;
     private $logger;
 
@@ -59,6 +61,7 @@ class XhrAdmin
      * @param @politizr.manager.tag
      * @param @politizr.manager.user
      * @param @politizr.manager.localization
+     * @param @politizr.form.type.document_localization
      * @param @politizr.tools.global
      * @param @logger
      */
@@ -70,6 +73,7 @@ class XhrAdmin
         $tagManager,
         $userManager,
         $localizationManager,
+        $documentLocalizationFormType,
         $globalTools,
         $logger
     ) {
@@ -83,6 +87,8 @@ class XhrAdmin
         $this->tagManager = $tagManager;
         $this->userManager = $userManager;
         $this->localizationManager = $localizationManager;
+
+        $this->documentLocalizationFormType = $documentLocalizationFormType;
 
         $this->globalTools = $globalTools;
 
@@ -923,4 +929,44 @@ class XhrAdmin
 
         return true;
     }
+
+    /**
+     * Document localization update
+     * beta
+     */
+    public function documentLocalization(Request $request)
+    {
+        // $this->logger->info('*** documentLocalization');
+
+        // Request arguments
+        $uuid = $request->get('document_localization')['uuid'];
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
+        $type = $request->get('document_localization')['type'];
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
+
+        // get current document
+        if ($type == ObjectTypeConstants::TYPE_DEBATE) {
+            $document = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
+        } elseif ($type == ObjectTypeConstants::TYPE_REACTION) {
+            $document = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
+        } else {
+            throw new InconsistentDataException('Document '.$type.' unknown.');
+        }
+
+        // Document's localization
+        $formLocalization = $this->formFactory->create(
+            $this->documentLocalizationFormType,
+            $document,
+            array(
+                'data_class' => $type,
+                'user' => $document->getUser(),
+            )
+        );
+        $formLocalization->bind($request);
+        $document = $formLocalization->getData();
+        $document->save();
+
+        return true;
+    }
+
 }

@@ -1,0 +1,19 @@
+<form name="documentLocalization" method="post">
+    {{ form_errors(form) }}
+
+    {% for type in form.loc_type %}
+        {{ form_row(type) }}
+        {% if loop.index == 1 %}
+            {{ form_widget(form.localization_city) }}<br/>
+        {% elseif loop.index == 2 %}
+            {{ form_widget(form.localization_department) }}<br/>
+        {% elseif loop.index == 3 %}
+            {{ form_widget(form.localization_region) }}<br/>
+        {% endif %}
+    {% endfor %}
+    {{ form_rest(form) }}
+
+    <a action="updateDocLocalization">
+        Mettre à jour
+    </a>
+</form>

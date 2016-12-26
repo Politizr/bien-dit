@@ -19,3 +19,25 @@
 {% block form_row_block_tags %}
     {{ adminReactionTags(PDReaction, null, 1, true) }}
 {% endblock %}
+
+{# Bloc loc #}
+{% block form_row_block_loc %}
+    <div class="form-group">
+        <label class="control-label">Localisation</label>
+        <div>
+            {% if (PDReaction.PLCityId) %}
+                {{ PDReaction.PLCity }}
+            {% elseif (PDReaction.PLDepartmentId) %}
+                {{ PDReaction.PLDepartment }}
+            {% elseif (PDReaction.PLRegionId) %}
+                {{ PDReaction.PLRegion }}
+            {% elseif (PDReaction.PLCountryd) %}
+                {{ PDReaction.PLCountry }}
+            {% else %}
+                Aucune localisation renseignée
+            {% endif %}
+            <br/>
+            <i>Note: gestion de la localisation depuis l'écran "Montrer"</i>
+        </div>
+    </div>
+{% endblock %}

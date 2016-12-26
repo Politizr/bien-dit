@@ -36,6 +36,11 @@
     {{ adminReactionTags(PDReaction, null, 1, mode='show') }}
 {% endblock %}
 
+{# Bloc loc #}
+{% block show_column_block_loc %}
+    {{ adminDocumentLoc(PDReaction, constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION')) }}
+{% endblock %}
+
 {# Block moderation new alert #}
 {% block show_column_block_moderation_alert_new %}
     {{ adminModerationAlertNew(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION'), PDReaction.Id, PDReaction.PUserId) }}
@@ -67,4 +72,12 @@
     <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/uploadImage.js') }}"></script>  
 
     <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/moderation/notification.js') }}"></script>  
+
+    {# localization js #}
+    <script>
+        // User localization vars
+        var xhrRouteCity = ADMIN_ROUTE_CITY_LISTING;
+    </script>
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/politizr/localization/edit.js') }}"></script>  
+    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/document/localization.js') }}"></script>  
 {% endblock object_actions_script_container %}

@@ -48,6 +48,7 @@ var ADMIN_ROUTE_USER_VALIDATE_PHOTO_UPLOAD = 'admin/validation/photo-id-upload';
 var ADMIN_ROUTE_CITY_LISTING = 'admin/villes/listing';
 var ADMIN_ROUTE_USER_CITY = 'admin/utilisateur/ville/update';
 
+var ADMIN_ROUTE_DOC_LOC = 'admin/document/localization/update';
 
 // Generic function to make an AJAX call
 var xhrCall = function(context, data, url, type) {

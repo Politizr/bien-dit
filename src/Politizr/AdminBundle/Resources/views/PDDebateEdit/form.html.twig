@@ -19,3 +19,25 @@
 {% block form_row_block_tags %}
     {{ adminDebateTags(PDDebate, null, 1, true) }}
 {% endblock %}
+
+{# Bloc loc #}
+{% block form_row_block_loc %}
+    <div class="form-group">
+        <label class="control-label">Localisation</label>
+        <div>
+            {% if (PDDebate.PLCityId) %}
+                {{ PDDebate.PLCity }}
+            {% elseif (PDDebate.PLDepartmentId) %}
+                {{ PDDebate.PLDepartment }}
+            {% elseif (PDDebate.PLRegionId) %}
+                {{ PDDebate.PLRegion }}
+            {% elseif (PDDebate.PLCountryd) %}
+                {{ PDDebate.PLCountry }}
+            {% else %}
+                Aucune localisation renseignée
+            {% endif %}
+            <br/>
+            <i>Note: gestion de la localisation depuis l'écran "Montrer"</i>
+        </div>
+    </div>
+{% endblock %}

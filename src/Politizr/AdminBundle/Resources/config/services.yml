@@ -41,6 +41,7 @@ services:
             - @politizr.manager.tag
             - @politizr.manager.user
             - @politizr.manager.localization
+            - @politizr.form.type.document_localization
             - @politizr.tools.global
             - @logger
 
@@ -81,9 +82,14 @@ services:
         arguments: [ @service_container ]
         tags:
             - { name: twig.extension }
+    politzr_admin.twig.localization:
+        class: Politizr\AdminBundle\Twig\PolitizrAdminLocalizationExtension
+        arguments: [ @service_container ]
+        tags:
+            - { name: twig.extension }
 
     # FORM TYPE
-    app.form.type.date_range:
+    politizr_admin.form.type.date_range:
         class: Politizr\AdminBundle\Form\Type\DateRangeType
         tags:
             - { name: form.type, alias: date_range }

@@ -32,6 +32,22 @@ params:
             label:          Réaction associée
         parent:
             label:          Réaction associée
+        p_l_city_id:
+            label:          Ville
+        p_l_city:
+            label:          Ville
+        p_l_department_id:
+            label:          Dép
+        p_l_department:
+            label:          Dép
+        p_l_region_id:
+            label:          Région
+        p_l_region:
+            label:          Région
+        p_l_country_id:
+            label:          Pays
+        p_l_country:
+            label:          Pays
         file_name:
             label:          Image
         copyright:
@@ -86,9 +102,9 @@ builders:
                         filters:                [ notPublished ]
                             # left_value:         1
                             # published:          0
-            display:                            [ file_name, id, p_user_id, p_d_debate_id, parent_reaction_id, tree_level, title, online, homepage, published, published_at, created_at ]
+            display:                            [ file_name, id, p_user_id, p_d_debate_id, parent_reaction_id, p_l_city, p_l_department, p_l_region, p_l_country, title, homepage, published, published_at, created_at ]
             filtersMode:                        modal
-            filters:                            [ id, uuid, p_user_id, p_d_debate_id, parent_reaction_id, tree_level, title, online, homepage, published, published_at, created_at ]
+            filters:                            [ id, uuid, p_user_id, p_l_department, p_l_region, p_l_country, p_d_debate_id, parent_reaction_id, tree_level, title, online, homepage, published, published_at, created_at ]
             fields:
                 PDRTaggedT:
                     dbType:                     model
@@ -171,6 +187,7 @@ builders:
                     "Réaction parente":         [ parent_reaction ]
                 "Tags":
                     "Tags associés":            [ block_tags ]
+                    "Localisation":             [ block_loc ]
                 "Statut":
                     "Publication":              [ [ published ], [ published_by ], [ published_at ] ]
                     "Vues":                     [ nb_views ]
@@ -205,6 +222,13 @@ builders:
                         disabled:               true
                         read_only:              true
                 block_tags:
+                    label:                      "Tags"
+                    grid_class:                 "col-md-12"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+                    addFormOptions:
+                        mapped:                 false
+                block_loc:
                     label:                      "Tags"
                     grid_class:                 "col-md-12"
                     formType:                   hidden
@@ -258,6 +282,7 @@ builders:
                     "Commentaires associés":    [ block_comments ]
                 "Tags":
                     "Tags associés":            [ block_tags ]
+                    "Localisation":             [ block_loc ]
                 "Statut":
                     "Publication":              [ [ published ], [ published_by ], [ published_at ] ]
                     "Vues":                     [ nb_views ]
@@ -286,6 +311,8 @@ builders:
                     label:                      "Commentaires"
                 block_tags:
                     label:                      "Tags"
+                block_loc:
+                    label:                      "Localisation"
                 block_moderation_alert_new:
                     label:                      "Alerte"
                 block_moderation_alert_listing:

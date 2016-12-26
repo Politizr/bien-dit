@@ -10,6 +10,6 @@
 
 {% block list_td_column_p_l_city %}
     {% if PUser.PLCityId %}
-        {{ PUser.PLCity }} ({{PUser.PLCity.PLDepartment.PTag}})
+        {{ PUser.PLCity }} ({{ PUser.PLCity.PLDepartment }})
     {% endif %}
 {% endblock list_td_column_p_l_city %}

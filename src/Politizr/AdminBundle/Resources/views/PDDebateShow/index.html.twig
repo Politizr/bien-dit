@@ -39,6 +39,11 @@
     {{ adminDebateTags(PDDebate, null, 1, mode='show') }}
 {% endblock %}
 
+{# Bloc loc #}
+{% block show_column_block_loc %}
+    {{ adminDocumentLoc(PDDebate, constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE')) }}
+{% endblock %}
+
 {# Bloc followers élus #}
 {% block show_column_block_followers_q %}
     {{ adminDebateFollowersQ(PDDebate) }}
@@ -85,4 +90,12 @@
     <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/uploadImage.js') }}"></script>  
 
     <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/moderation/notification.js') }}"></script>
+
+    {# localization js #}
+    <script>
+        // User localization vars
+        var xhrRouteCity = ADMIN_ROUTE_CITY_LISTING;
+    </script>
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/politizr/localization/edit.js') }}"></script>  
+    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/document/localization.js') }}"></script>  
 {% endblock object_actions_script_container %}

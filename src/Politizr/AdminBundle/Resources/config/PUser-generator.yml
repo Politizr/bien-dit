@@ -25,6 +25,10 @@ params:
             label:          Ville
         p_l_city:
             label:          Ville
+        p_l_department:
+            label:          Département
+        p_l_region:
+            label:          Région
         file_name:
             label:          Image
         copyright:

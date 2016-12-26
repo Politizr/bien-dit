@@ -18,6 +18,22 @@ params:
             label:          Utilisateur
             addFormOptions:
                 query:                  \Politizr\Model\PUserQuery::create()->orderByName() 
+        p_l_city_id:
+            label:          Ville
+        p_l_city:
+            label:          Ville
+        p_l_department_id:
+            label:          Dép
+        p_l_department:
+            label:          Dép
+        p_l_region_id:
+            label:          Région
+        p_l_region:
+            label:          Région
+        p_l_country_id:
+            label:          Pays
+        p_l_country:
+            label:          Pays
         file_name:
             label:          Image
         copyright:
@@ -71,9 +87,9 @@ builders:
                     "Brouillons":
                         filters:
                             published:          0
-            display:                            [ file_name, id, p_user_id, title, count_reactions, online, homepage, published, published_at, created_at ]
+            display:                            [ file_name, id, p_user_id, p_l_city, p_l_department, p_l_region, p_l_country, title, count_reactions, homepage, published, published_at, created_at ]
             filtersMode:                        modal
-            filters:                            [ id, uuid, p_user_id, title, online, homepage, published, published_at, created_at ]
+            filters:                            [ id, uuid, p_user_id, p_l_department, p_l_region, p_l_country, title, online, homepage, published, published_at, created_at ]
             fields:
                 count_reactions:
                     label:                      Réponses
@@ -132,8 +148,9 @@ builders:
                     "Texte":                    [ block_file_name, copyright, title, description ]
                 "Objets":
                     "Utilisateur":              [ p_user ]
-                "Tags":
+                "Thématiques":
                     "Tags associés":            [ block_tags ]
+                    "Localisation":             [ block_loc ]
                 "Statut":
                     "Publication":              [ [ published, published_by, published_at ] ]
                     "Vues":                     [ nb_views ]
@@ -166,6 +183,13 @@ builders:
                     addFormOptions:
                         attr:                   { class : tinymce }
                 block_tags:
+                    label:                      "Tags"
+                    grid_class:                 "col-md-12"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+                    addFormOptions:
+                        mapped:                 false
+                block_loc:
                     label:                      "Tags"
                     grid_class:                 "col-md-12"
                     formType:                   hidden
@@ -210,8 +234,9 @@ builders:
                     "Réactions associées":      [ block_reactions ]
                 "Commentaires":
                     "Commentaires associés":    [ block_comments ]
-                "Tags":
+                "Thématiques":
                     "Tags associés":            [ block_tags ]
+                    "Localisation":             [ block_loc ]
                 "Abonnés":
                     "Utilisateurs":             [ block_followers_q, block_followers_c ]
                 "Statut":
@@ -240,6 +265,8 @@ builders:
                     label:                      "Commentaires"
                 block_tags:
                     label:                      "Tags"
+                block_loc:
+                    label:                      "Localisation"
                 block_followers_q:
                     label:                      "élus"
                 block_followers_c:

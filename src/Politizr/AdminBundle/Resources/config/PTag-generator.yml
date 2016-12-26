@@ -47,9 +47,6 @@ builders:
             sort:                               [ created_at, DESC ]
             scopes:
                 group_1: 
-                    "Géographique":
-                        filters:
-                            p_t_tag_type_id:    1
                     "Type":
                         filters:
                             p_t_tag_type_id:    3
