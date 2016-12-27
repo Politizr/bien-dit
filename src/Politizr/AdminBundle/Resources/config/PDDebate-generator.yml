@@ -87,7 +87,7 @@ builders:
                     "Brouillons":
                         filters:
                             published:          0
-            display:                            [ file_name, id, p_user_id, p_l_city, p_l_department, p_l_region, p_l_country, title, count_reactions, homepage, published, published_at, created_at ]
+            display:                            [ file_name, id, p_user_id, p_l_city_id, p_l_department_id, p_l_region_id, title, count_reactions, homepage, published, published_at, created_at ]
             filtersMode:                        modal
             filters:                            [ id, uuid, p_user_id, p_l_department, p_l_region, p_l_country, title, online, homepage, published, published_at, created_at ]
             fields:

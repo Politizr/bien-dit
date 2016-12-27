@@ -102,7 +102,7 @@ builders:
                         filters:                [ notPublished ]
                             # left_value:         1
                             # published:          0
-            display:                            [ file_name, id, p_user_id, p_d_debate_id, parent_reaction_id, p_l_city, p_l_department, p_l_region, p_l_country, title, homepage, published, published_at, created_at ]
+            display:                            [ file_name, id, p_user_id, p_d_debate_id, parent_reaction_id, p_l_city_id, p_l_department_id, p_l_region_id, title, homepage, published, published_at, created_at ]
             filtersMode:                        modal
             filters:                            [ id, uuid, p_user_id, p_l_department, p_l_region, p_l_country, p_d_debate_id, parent_reaction_id, tree_level, title, online, homepage, published, published_at, created_at ]
             fields:
