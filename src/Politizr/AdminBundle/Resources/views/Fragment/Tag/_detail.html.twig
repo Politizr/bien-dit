@@ -1,6 +1,4 @@
-{% if (tag.ptTagTypeId == constant('\\Politizr\\Constant\\TagConstants::TAG_TYPE_GEO')) %}
-    {% set twbLabel = "success" %}
-{% elseif (tag.ptTagTypeId == constant('\\Politizr\\Constant\\TagConstants::TAG_TYPE_THEME'))%}
+{% if (tag.ptTagTypeId == constant('\\Politizr\\Constant\\TagConstants::TAG_TYPE_THEME'))%}
     {% set twbLabel = "primary" %}
 {% else %}
     {% set twbLabel = "default" %}

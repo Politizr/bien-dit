@@ -679,31 +679,6 @@ class PUser extends BasePUser implements UserInterface
     }
 
     /**
-     * User's stringified geo tags, useful for admin export
-     *
-     * @param integer $tagTypeId
-     * @param boolean $online
-     * @return PropelCollection[PTag]
-     */
-    public function getStringifiedGeoTags()
-    {
-        $tags = $this->getArrayTags(TagConstants::TAG_TYPE_GEO);
-
-        $tagStr = '';
-        $count = 0;
-        foreach ($tags as $tag) {
-            if ($count == sizeof($tags)) {
-                $tagStr .= $tag;
-            } else {
-                $tagStr .= $tag . ', ';
-            }
-            $count++;
-        }
-
-        return $tagStr;
-    }
-
-    /**
      * User's tags
      *
      * @param integer $tagTypeId

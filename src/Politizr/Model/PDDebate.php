@@ -126,26 +126,6 @@ class PDDebate extends BasePDDebate implements PDocumentInterface
     /* ######################################################################################################## */
 
     /**
-     * Debate's array tags / geo tags france, regions, departments
-     * - used by publish constraints
-     *
-     * @return array[string]
-     */
-    public function getFranceToDepartmentGeoArrayTags()
-    {
-        $query = PTagQuery::create()
-            ->select('Title')
-            ->filterIfTypeId(TagConstants::TAG_TYPE_GEO)
-            ->filterIfOnline(true)
-            ->where('p_tag.id <= ?', TagConstants::TAG_GEO_DEPARTMENT_LAST_ID)
-            ->where('p_tag.id >= ?', TagConstants::TAG_GEO_FRANCE_ID)
-            ->orderByTitle()
-            ->setDistinct();
-
-        return parent::getPTags($query)->toArray();
-    }
-
-    /**
      * Debate's array tags
      * - used by elastica indexation
      *

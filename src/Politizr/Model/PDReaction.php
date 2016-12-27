@@ -140,26 +140,6 @@ class PDReaction extends BasePDReaction implements PDocumentInterface
     /* ######################################################################################################## */
 
     /**
-     * Reaction's array tags / geo tags world, europe, france, regions, departments
-     * - used by publish constraints
-     *
-     * @return array[string]
-     */
-    public function getFranceToDepartmentGeoArrayTags()
-    {
-        $query = PTagQuery::create()
-            ->select('Title')
-            ->filterIfTypeId(TagConstants::TAG_TYPE_GEO)
-            ->filterIfOnline(true)
-            ->where('p_tag.id <= ?', TagConstants::TAG_GEO_DEPARTMENT_LAST_ID)
-            ->where('p_tag.id >= ?', TagConstants::TAG_GEO_FRANCE_ID)
-            ->orderByTitle()
-            ->setDistinct();
-
-        return parent::getPTags($query)->toArray();
-    }
-
-    /**
      * Reaction's array tags
      * - used by elastica indexation
      *
