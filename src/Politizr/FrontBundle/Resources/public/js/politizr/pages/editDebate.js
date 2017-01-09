@@ -5,6 +5,9 @@ $(function() {
     // modal attributes show/hide
     $('.modalPublish').hide();
 
+    // modal city/dep/region/country selection show/hide
+    locShowHideAttr();
+
     // sticky sidebar
     stickySidebar();
 });
@@ -15,19 +18,20 @@ var service = 'tag';
 var xhrRoute = ROUTE_TAG_LISTING;
 var xhrUrlPrefix = '/xhr';
 
-
 // Modal show / hide
 $('body').on('click', "[action='openModalPublish']", function(e){
     // console.log('*** click open modal publish');
 
     $.when(triggerSaveDocument()).done(function(r1) {
+        $('body').addClass('noScroll');
         $('.modalPublish').show();
     });
 });
 
-$('body').on('click', "[action='closeModalPublish']", function(e){
+$('body').on('click', "[action='closeModalPublish'], .modalPublishBg", function(e){
     // console.log('*** click close modal publish');
 
+    $('body').removeClass('noScroll');
     $('.modalPublish').hide();
 });
 
@@ -35,6 +39,7 @@ $('body').on('click', "[action='closeModalPublish']", function(e){
 // change checkbox type event
 $('#formDocLoc :radio').on('change', function() {
     // console.log('*** formDocLoc change');
+    locShowHideAttr();
     saveDocumentAttr();
 });
 

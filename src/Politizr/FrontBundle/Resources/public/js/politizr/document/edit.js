@@ -355,3 +355,31 @@ function deleteReaction(uuid)
     });
 }
 
+/**
+ * Show / hide div attributes relative to zone choice
+ */
+function locShowHideAttr() {
+    // console.log('*** locShowHideAttr');
+
+    if ($('#document_localization_loc_type_0').is(':checked')) {
+        // console.log('document_localization_loc_type_0 :checked');
+        $('#document_localization_localization_city').show();
+        $('#document_localization_localization_department').hide();
+        $('#document_localization_localization_region').hide();
+    } else if ($('#document_localization_loc_type_1').is(':checked')) {
+        // console.log('document_localization_loc_type_1 :checked');
+        $('#document_localization_localization_city').hide();
+        $('#document_localization_localization_department').show();
+        $('#document_localization_localization_region').hide();
+    } else if ($('#document_localization_loc_type_2').is(':checked')) {
+        // console.log('document_localization_loc_type_2 :checked');
+        $('#document_localization_localization_city').hide();
+        $('#document_localization_localization_department').hide();
+        $('#document_localization_localization_region').show();
+    } else if ($('#document_localization_loc_type_3').is(':checked')) {
+        // console.log('document_localization_loc_type_3 :checked');
+        $('#document_localization_localization_city').hide();
+        $('#document_localization_localization_department').hide();
+        $('#document_localization_localization_region').hide();
+    }
+}

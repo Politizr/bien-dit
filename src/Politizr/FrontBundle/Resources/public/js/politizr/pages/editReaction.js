@@ -6,6 +6,9 @@ $(function() {
     // modal attributes show/hide
     $('.modalPublish').hide();
 
+    // modal city/dep/region/country selection show/hide
+    locShowHideAttr();
+
     // sticky sidebar
     stickySidebar();
 });
@@ -51,6 +54,7 @@ $('body').on('click', "[action='closeModalPublish']", function(e){
 // change checkbox type event
 $('#formDocLoc :radio').on('change', function() {
     // console.log('*** formDocLoc change');
+    locShowHideAttr();
     saveDocumentAttr();
 });
 
