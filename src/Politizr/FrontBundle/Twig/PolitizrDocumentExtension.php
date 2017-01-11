@@ -323,24 +323,14 @@ class PolitizrDocumentExtension extends \Twig_Extension
     {
         // $this->logger->info('*** nbReactions');
         // $this->logger->info('$document = '.print_r($document, true));
-        // $this->logger->info('$descendants = '.print_r($descendants, true));
-        // $this->logger->info('$onlyElected = '.print_r($onlyElected, true));
 
         $nbReactions = 0;
         switch ($document->getType()) {
             case ObjectTypeConstants::TYPE_DEBATE:
                 $nbDescendantsElected = $document->countReactions(true, true, true);
-                $nbDescendantsTotal = $document->countReactions(true, true, false);
-                
-                // Nb of author reaction if not elected
-                $nbDescendantsNotElected = $nbDescendantsTotal - $nbDescendantsElected;
                 break;
             case ObjectTypeConstants::TYPE_REACTION:
                 $nbDescendantsElected = $document->countDescendantsReactions(true, true, true);
-                $nbDescendantsTotal = $document->countDescendantsReactions(true, true, false);
-
-                // Nb of author reaction if not elected
-                $nbDescendantsNotElected = $nbDescendantsTotal - $nbDescendantsElected;
                 break;
             default:
                 throw new InconsistentDataException(sprintf('Object type %s not managed', $document->getType()));
@@ -348,32 +338,18 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
         // compute labels
         if (1 === $nbDescendantsElected) {
-            $labelDescendantsElected = '1 réponse d\'élu-e';
+            $labelDescendantsElected = '1 réaction d\'élu-e';
         } else {
-            $labelDescendantsElected = $this->globalTools->readeableNumber($nbDescendantsElected).' réponses d\'élu-e-s';
-        }
-        if (1 === $nbDescendantsTotal) {
-            $labelDescendantsTotal = '1';
-        } else {
-            $labelDescendantsTotal = $this->globalTools->readeableNumber($nbDescendantsTotal);
-        }
-        if (1 === $nbDescendantsNotElected) {
-            $labelDescendantsNotElected = '1';
-        } else {
-            $labelDescendantsNotElected = $this->globalTools->readeableNumber($nbDescendantsNotElected);
+            $labelDescendantsElected = $this->globalTools->readeableNumber($nbDescendantsElected).' réactions d\'élu-e-s';
         }
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Reaction:_nbReactions.html.twig',
+            'PolitizrFrontBundle:Document:_nbReactions.html.twig',
             array(
                 'document' => $document,
-                'nbDescendantsTotal' => $nbDescendantsTotal,
-                'labelDescendantsTotal' => $labelDescendantsTotal,
                 'nbDescendantsElected' => $nbDescendantsElected,
                 'labelDescendantsElected' => $labelDescendantsElected,
-                'nbDescendantsNotElected' => $nbDescendantsNotElected,
-                'labelDescendantsNotElected' => $labelDescendantsNotElected,
             )
         );
         
