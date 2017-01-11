@@ -206,10 +206,11 @@ class PDReaction extends BasePDReaction implements PDocumentInterface
     /**
      * @see ObjectTypeConstants::countComments
      */
-    public function countComments($online = true, $paragraphNo = null)
+    public function countComments($online = true, $paragraphNo = null, $onlyElected = false)
     {
         $query = PDRCommentQuery::create()
             ->filterIfOnline($online)
+            ->filterIfOnlyElected($onlyElected)
             ->filterIfParagraphNo($paragraphNo);
         
         return parent::countPDRComments($query);

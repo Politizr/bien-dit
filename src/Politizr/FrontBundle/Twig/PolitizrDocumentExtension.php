@@ -104,8 +104,8 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 array('is_safe' => array('html'))
             ),
             new \Twig_SimpleFilter(
-                'nbReactions',
-                array($this, 'nbReactions'),
+                'nbElectedPublications',
+                array($this, 'nbElectedPublications'),
                 array('is_safe' => array('html'))
             ),
             new \Twig_SimpleFilter(
@@ -314,42 +314,62 @@ class PolitizrDocumentExtension extends \Twig_Extension
     }
 
     /**
-     * Document's number of reactions
+     * Document's number of elected publications
      *
      * @param PDocumentInterface $document
      * @return html
      */
-    public function nbReactions(PDocumentInterface $document)
+    public function nbElectedPublications(PDocumentInterface $document)
     {
-        // $this->logger->info('*** nbReactions');
+        // $this->logger->info('*** nbElectedPublications');
         // $this->logger->info('$document = '.print_r($document, true));
 
-        $nbReactions = 0;
+        $nbElectedPublications = 0;
         switch ($document->getType()) {
             case ObjectTypeConstants::TYPE_DEBATE:
-                $nbDescendantsElected = $document->countReactions(true, true, true);
+                $nbElectedPublications = $document->countReactions(true, true, true);
+
+                // add elected's debate's comments + descendants
+                $nbElectedPublications += $document->countComments(true, null, true);
+                $reactions = $document->getChildrenReactions(true, true);
+                if ($reactions) {
+                    foreach ($reactions as $reaction) {
+                        $nbElectedPublications += $reaction->countComments(true, null, true);
+                    }
+                }
+
                 break;
             case ObjectTypeConstants::TYPE_REACTION:
-                $nbDescendantsElected = $document->countDescendantsReactions(true, true, true);
+                $nbElectedPublications = $document->countDescendantsReactions(true, true, true);
+
+                // add elected's debate's comments + descendants
+                $nbElectedPublications += $document->countComments(true, null, true);
+                $reactions = $document->getChildrenReactions(true, true);
+                if ($reactions) {
+                    foreach ($reactions as $reaction) {
+                        $nbElectedPublications += $reaction->countComments(true, null, true);
+                    }
+                }
+
                 break;
             default:
                 throw new InconsistentDataException(sprintf('Object type %s not managed', $document->getType()));
         }
 
         // compute labels
-        if (1 === $nbDescendantsElected) {
-            $labelDescendantsElected = '1 réaction d\'élu-e';
+        if (1 === $nbElectedPublications) {
+            $labelElectedPublications = '1 réaction d\'élu-e';
         } else {
-            $labelDescendantsElected = $this->globalTools->readeableNumber($nbDescendantsElected).' réactions d\'élu-e-s';
+            $labelElectedPublications = $this->globalTools->readeableNumber($nbElectedPublications).' réactions d\'élu-e-s';
         }
 
         // Construction du rendu du tag
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Document:_nbReactions.html.twig',
+            'PolitizrFrontBundle:Document:_nbElectedPublications.html.twig',
             array(
                 'document' => $document,
-                'nbDescendantsElected' => $nbDescendantsElected,
-                'labelDescendantsElected' => $labelDescendantsElected,
+                'nbElectedPublications' => $nbElectedPublications,
+                'labelElectedPublications' => $labelElectedPublications,
             )
         );
         

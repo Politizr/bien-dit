@@ -70,4 +70,18 @@ class PDRCommentQuery extends BasePDRCommentQuery
                 ->filterByParagraphNo($paragraphNo)
             ->_endif();
     }
+
+    /**
+     *
+     * @param boolean $onlyElected
+     */
+    public function filterIfOnlyElected($onlyElected = null)
+    {
+        return $this
+            ->_if(null !== $onlyElected)
+                ->usePUserQuery()
+                    ->filterByQualified(true)
+                ->endUse()
+            ->_endif();
+    }
 }

@@ -192,10 +192,11 @@ class PDDebate extends BasePDDebate implements PDocumentInterface
     /**
      * @see ObjectTypeConstants::countComments
      */
-    public function countComments($online = true, $paragraphNo = null)
+    public function countComments($online = true, $paragraphNo = null, $onlyElected = null)
     {
         $query = PDDCommentQuery::create()
             ->filterIfOnline($online)
+            ->filterIfOnlyElected($onlyElected)
             ->filterIfParagraphNo($paragraphNo);
         
         return parent::countPDDComments($query);

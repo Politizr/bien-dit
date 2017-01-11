@@ -1,5 +1,5 @@
 {# beta #}
-{% if nbDescendantsElected > 0 %}
+{% if nbElectedPublications > 0 %}
     {% if document.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE') %}
         {% set detailPath = path('DebateDetail', { 'slug': document.slug }) %}
     {% elseif document.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION') %}
@@ -7,8 +7,8 @@
     {% endif %}
 
     <a href="{{ detailPath }}" class="answerCounter">
-        {% if nbDescendantsElected > 0 %}
-            <span><i class="icon-profil-elu"></i>{{ labelDescendantsElected }}</span>
+        {% if nbElectedPublications > 0 %}
+            <span><i class="icon-profil-elu"></i>{{ labelElectedPublications }}</span>
         {% endif %}
     </a>
 {% endif %}

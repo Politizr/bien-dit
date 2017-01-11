@@ -1,5 +1,5 @@
 {% spaceless %}    
     {% for localization in localizations %}
-        {{ localization }}&nbsp;
+        <a href="{{ path('ListingSearchPublications', { 'slug': localization.slug }) }}">{{ localization }}&nbsp;</a>
     {% endfor %}
 {% endspaceless %}
