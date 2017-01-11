@@ -254,6 +254,10 @@ class XhrSecurity
             $zla1 = $form->get('zla1')->getData();
             $zla2 = $form->get('zla2')->getData();
 
+            // uppercase ZLA's fields
+            $zla1 = strtoupper($zla1);
+            $zla2 = strtoupper($zla2);
+
             $checked = $this->idcheck->executeZlaChecking($zla1, $zla2);
 
             // upd nb try
