@@ -969,11 +969,18 @@ LIMIT :offset, :limit
      */
     public function createUserFollowDebate($userId, $debateId)
     {
-        $puFollowDD = new PUFollowDD();
+        $puFollowDD = PUFollowDDQuery::create()
+            ->filterByPUserId($userId)
+            ->filterByPDDebateId($debateId)
+            ->findOne();
 
-        $puFollowDD->setPUserId($userId);
-        $puFollowDD->setPDDebateId($debateId);
-        $puFollowDD->save();
+        if (!$puFollowDD) {
+            $puFollowDD = new PUFollowDD();
+
+            $puFollowDD->setPUserId($userId);
+            $puFollowDD->setPDDebateId($debateId);
+            $puFollowDD->save();
+        }
 
         return $puFollowDD;
     }
@@ -1005,11 +1012,18 @@ LIMIT :offset, :limit
      */
     public function createUserFollowUser($sourceId, $targetId)
     {
-        $puFollowU = new PUFollowU();
+        $puFollowU = PUFollowUQuery::create()
+            ->filterByPUserId($targetId)
+            ->filterByPUserFollowerId($sourceId)
+            ->findOne();
 
-        $puFollowU->setPUserFollowerId($sourceId);
-        $puFollowU->setPUserId($targetId);
-        $puFollowU->save();
+        if (!$puFollowU) {
+            $puFollowU = new PUFollowU();
+
+            $puFollowU->setPUserFollowerId($sourceId);
+            $puFollowU->setPUserId($targetId);
+            $puFollowU->save();
+        }
 
         return $puFollowU;
     }

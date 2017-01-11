@@ -1,5 +1,5 @@
 {% spaceless %}    
     {% for localization in localizations %}
-        <a href="{{ path('ListingSearchPublications', { 'slug': localization.slug }) }}">{{ localization }}&nbsp;</a>
+        <a href="{{ path('ListingSearchPublications', { 'slug': localization.slug }) }}"><i class="icon-geomark"></i>{{ localization }}&nbsp;</a>
     {% endfor %}
 {% endspaceless %}
