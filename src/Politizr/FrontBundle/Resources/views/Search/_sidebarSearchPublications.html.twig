@@ -1,5 +1,13 @@
 {# beta #}
 <div class="sidebarSearch">
+    {% if not app.user %}
+        <div class="mapUnloggedText">
+            <h1>Vous devez vous<br>inscrire pour accéder<br>au filtre par zone<br>géographique</h1>
+            <a href="{{ path('InscriptionChoice') }}">Créer un compte</a>
+            <span>100 %<br>gratuit</span>
+        </div>
+    {% endif %}
+
     <div class="sidebarSearchMap">
         <h5>Zone Géographique</h5>
         <div class="mapMenu withLoaderInside" id="mapMenu">

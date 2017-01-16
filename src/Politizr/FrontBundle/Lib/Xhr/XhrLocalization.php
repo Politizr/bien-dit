@@ -115,7 +115,7 @@ class XhrLocalization
 
         // check if user is in dom/tom
         $isFom = false;
-        if ($user && $city = $user->getPLCity()) {
+        if ($user && !is_string($user) && $city = $user->getPLCity()) {
             $department = $city->getPLDepartment();
             if (in_array($department->getId(), LocalizationConstants::getGeoDepartmentOMIds())) {
                 $isFom = true;

@@ -14,6 +14,7 @@ use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\PathConstants;
 use Politizr\Constant\ListingConstants;
 use Politizr\Constant\TagConstants;
+use Politizr\Constant\LocalizationConstants;
 
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDReaction;
@@ -31,6 +32,7 @@ use Politizr\Model\PQOrganizationQuery;
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PUBookmarkDDQuery;
 use Politizr\Model\PUBookmarkDRQuery;
+use Politizr\Model\PLCountryQuery;
 
 use Politizr\FrontBundle\Form\Type\PDDCommentType;
 use Politizr\FrontBundle\Form\Type\PDRCommentType;
@@ -1426,7 +1428,7 @@ class XhrDocument
 
         // set default values if not set
         if (empty($geoUuid)) {
-            $france = PLocalizationQuery::create()->findPk(LocalizationConstants::FRANCE_ID);
+            $france = PLCountryQuery::create()->findPk(LocalizationConstants::FRANCE_ID);
             $geoUuid = $france->getUuid();
             $type = LocalizationConstants::TYPE_COUNTRY;
         }
