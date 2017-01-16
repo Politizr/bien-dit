@@ -7,44 +7,49 @@
 
 {% block content %}
     <div class="modalPublish" style="display: none">
-        <a action="closeModalPublish">Fermer</a>
-        <div class="docLocChoice">
-            <h5>Zonage de publication</h5>
-            <div class="notice">
-                <i class="icon-info"></i><b>Cette publication concerne:</b>
-            </div>
-            <form id="formDocLoc">
-                {{ form_errors(formLocalization) }}
-                {% for type in formLocalization.loc_type %}
-                    {{ form_row(type) }}
-                    {% if loop.index == 1 %}
-                        {{ form_widget(formLocalization.localization_city) }}<br/>
-                    {% elseif loop.index == 2 %}
-                        {{ form_widget(formLocalization.localization_department) }}<br/>
-                    {% elseif loop.index == 3 %}
-                        {{ form_widget(formLocalization.localization_region) }}<br/>
-                    {% endif %}
-                {% endfor %}
-                {{ form_rest(formLocalization) }}
-            </form>
-        </div>
-        <div class="docTypes">
-            <h5>Type de publication</h5>
-            <div class="notice">
-                <i class="icon-info"></i><b>Cochez le(s) type(s) associé(s) à votre publication.</b>
-            </div>
-            {{ reaction | editTypeForm }}
-        </div>
-        <div class="docTags">
-            <h5>Thématiques abordées</h5>
-            <div class="notice">
-                <i class="icon-info"></i><b>5 thématiques maximum.</b><br>
-            </div>
-            {# include('includes/helperEditTag.php') #}
+        <div class="modalPublishContent">
+            <div class="modalPublishContentHeader"><span>Qualifiez votre publication</span><a action="closeModalPublish"><i class="icon-cross"></i></a></div>
+            <div class="modalPublishScrollable">
+                <div class="docLocChoice">
+                    <h5>1. Zonage de publication</h5>
+                    <div class="notice">
+                        <i class="icon-info"></i><b>Cette publication concerne:</b>
+                    </div>
+                    <form id="formDocLoc">
+                        {{ form_errors(formLocalization) }}
+                        {% for type in formLocalization.loc_type %}
+                            {{ form_row(type) }}
+                            {% if loop.index == 1 %}
+                                {{ form_widget(formLocalization.localization_city) }}<br/>
+                            {% elseif loop.index == 2 %}
+                                {{ form_widget(formLocalization.localization_department) }}<br/>
+                            {% elseif loop.index == 3 %}
+                                {{ form_widget(formLocalization.localization_region) }}<br/>
+                            {% endif %}
+                        {% endfor %}
+                        {{ form_rest(formLocalization) }}
+                    </form>
+                </div>
+                <div class="docTypes">
+                    <h5>2. Type de publication</h5>
+                    <div class="notice">
+                        <i class="icon-info"></i><b>Cochez le(s) type(s) associé(s) à votre publication.</b>
+                    </div>
+                    {{ reaction | editTypeForm }}
+                </div>
+                <div class="docTags">
+                    <h5>3. Thématiques abordées</h5>
+                    <div class="notice">
+                        <i class="icon-info"></i><b>5 thématiques maximum.</b><br>
+                    </div>
+                    {# include('includes/helperEditTag.php') #}
 
-            {{ reactionTagsEdit(reaction, constant('Politizr\\Constant\\TagConstants::TAG_TYPE_THEME'), 1, true) }}
+                    {{ reactionTagsEdit(reaction, constant('Politizr\\Constant\\TagConstants::TAG_TYPE_THEME'), 1, true) }}
+                </div>
+            </div>
+            {{ app.user | isAuthorizedToPublishDebate(reaction.uuid) }}
+            <div class="modalPublishBg"></div>
         </div>
-        {{ app.user | isAuthorizedToPublishReaction(reaction.uuid) }}
     </div>
     <div id="content">
         <div id="modalNoEdition">
