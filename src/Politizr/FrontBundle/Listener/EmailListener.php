@@ -200,7 +200,9 @@ class EmailListener
         // $this->logger->info('*** onNotificationEmail');
 
         $puNotifications = $event->getSubject();
-        $userEmail = $event->getArgument('user_email');
+        $user = $event->getArgument('user');
+
+        $userEmail = $user->getEmail();
 
         try {
             $subject = $this->templating->render(
@@ -217,12 +219,14 @@ class EmailListener
                 'PolitizrFrontBundle:Email:notification.html.twig',
                 array(
                     'notif' => $puNotifications,
+                    'qualified' => $user->isQualified(),
                 )
             );
             $txtBody = $this->templating->render(
                 'PolitizrFrontBundle:Email:notification.txt.twig',
                 array(
                     'notif' => $puNotifications,
+                    'qualified' => $user->isQualified(),
                 )
             );
 

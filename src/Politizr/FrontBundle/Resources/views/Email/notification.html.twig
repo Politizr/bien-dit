@@ -33,7 +33,7 @@
                         <!-- footer -->
                         <tr>
                             <td colspan="2" style="text-align: center; padding: 40px 0; color:#9d9d9d; font-size: 10px;">
-                                Vous pouvez régler vos paramètres de notifications depuis <a href="{% if (isGrantedE()) %}{{ url('EditNotificationsE') }}{% else %}{{ url('EditNotificationsC') }}{% endif %}" style="color:#9d9d9d; text-decoration: underline;"><span style="color:#9d9d9d;">votre compte Politizr</span></a>.
+                                Vous pouvez régler vos paramètres de notifications depuis <a href="{% if (qualified) %}{{ url('EditNotificationsE') }}{% else %}{{ url('EditNotificationsC') }}{% endif %}" style="color:#9d9d9d; text-decoration: underline;"><span style="color:#9d9d9d;">votre compte Politizr</span></a>.
                             </td>
                         </tr>
 

@@ -54,7 +54,7 @@ class NotificationEmailListener
 
         // Envoi de l'email
         if ($isSubscriber) {
-            $event = new GenericEvent($puNotification, array('user_email' => $user->getEmail(),));
+            $event = new GenericEvent($puNotification, array('user' => $user,));
             $dispatcher =  $this->eventDispatcher->dispatch('notification_email', $event);
         }
     }
