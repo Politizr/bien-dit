@@ -98,7 +98,6 @@ function saveDocumentAttr()
     });
 }
 
-
 /**
  *
  */
@@ -121,7 +120,6 @@ function publishDebate(uuid)
         1
     ).done(function(data) {
         if (data['error']) {
-            $('.modalPublish').hide();
             $('#ajaxGlobalLoader').hide();
             $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
             $('#infoBoxHolder .boxError').show();
@@ -131,7 +129,6 @@ function publishDebate(uuid)
         }
     });
 }
-
 
 /**
  *
@@ -155,7 +152,6 @@ function publishReaction(uuid)
         1
     ).done(function(data) {
         if (data['error']) {
-            $('.modalPublish').hide();
             $('#ajaxGlobalLoader').hide();
             $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
             $('#infoBoxHolder .boxError').show();
@@ -165,7 +161,6 @@ function publishReaction(uuid)
         }
     });
 }
-
 
 /**
  *
