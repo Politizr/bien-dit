@@ -53,6 +53,142 @@ class PublicController extends Controller
     }
 
     /**
+     * Landing Page
+     */
+    public function landingPageAction($theme)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** landingPageAction');
+
+        $documents = null;
+        $users = null;
+
+        $documentsQuery = PDDebateQuery::create()
+            ->limit(9)
+            ->online()
+            ->orderByMostViews()
+            ;
+        $usersQuery = PUserQuery::create()
+            ->limit(6)
+            ->online()
+            ->orderByMostActive()
+            ;
+
+        if ($theme == 'civictech') {
+            $documents = $documentsQuery
+                ->usePDDTaggedTQuery()
+                    ->usePTagQuery()
+                        ->filterBySlug('civic-tech')
+                    ->endUse()
+                ->endUse()
+                ->find();
+            $users = $usersQuery
+                ->usePuTaggedTPUserQuery()
+                    ->usePuTaggedTPTagQuery()
+                        ->filterBySlug('civic-tech')
+                    ->endUse()
+                ->endUse()
+                ->find();
+            $template = 'civictech.html.twig';
+        } elseif ($theme == 'elu-local')  {
+            $documents = $documentsQuery
+                ->usePDDTaggedTQuery()
+                    ->usePTagQuery()
+                        ->filterBySlug('elus-locaux')
+                        ->_or()
+                        ->filterBySlug('statut-de-l-elu')
+                    ->endUse()
+                ->endUse()
+                ->find();
+            $users = $usersQuery
+                ->usePuTaggedTPUserQuery()
+                    ->usePuTaggedTPTagQuery()
+                        ->filterBySlug('elus-locaux')
+                        ->_or()
+                        ->filterBySlug('statut-de-l-elu')
+                    ->endUse()
+                ->endUse()
+                ->find();
+            $template = 'eluLocal.html.twig';
+        } elseif ($theme == 'dialogue-citoyen')  {
+            $documents = $documentsQuery
+                ->usePDDTaggedTQuery()
+                    ->usePTagQuery()
+                        ->filterBySlug('citoyen')
+                        ->_or()
+                        ->filterBySlug('citoyenneté')
+                    ->endUse()
+                ->endUse()
+                ->find();
+            $users = $usersQuery
+                ->usePuTaggedTPUserQuery()
+                    ->usePuTaggedTPTagQuery()
+                        ->filterBySlug('citoyen')
+                        ->_or()
+                        ->filterBySlug('citoyenneté')
+                    ->endUse()
+                ->endUse()
+                ->find();
+            $template = 'dialogueCitoyen.html.twig';
+        } elseif ($theme == 'democratie-locale')  {
+            $documents = $documentsQuery
+                ->usePDDTaggedTQuery()
+                    ->usePTagQuery()
+                        ->filterBySlug('democratie-locale')
+                    ->endUse()
+                ->endUse()
+                ->find();
+            $users = $usersQuery
+                ->usePuTaggedTPUserQuery()
+                    ->usePuTaggedTPTagQuery()
+                        ->filterBySlug('democratie-locale')
+                    ->endUse()
+                ->endUse()
+                ->find();
+            $template = 'democratieLocale.html.twig';
+        } elseif ($theme == 'democratie-participative')  {
+            $documents = $documentsQuery
+                ->usePDDTaggedTQuery()
+                    ->usePTagQuery()
+                        ->filterBySlug('democratie-participative')
+                    ->endUse()
+                ->endUse()
+                ->find();
+            $users = $usersQuery
+                ->usePuTaggedTPUserQuery()
+                    ->usePuTaggedTPTagQuery()
+                        ->filterBySlug('democratie-participative')
+                    ->endUse()
+                ->endUse()
+                ->find();
+            $template = 'democratieParticipative.html.twig';
+        } elseif ($theme == 'reseau-social-politique')  {
+            $documents = $documentsQuery
+                ->usePDDTaggedTQuery()
+                    ->usePTagQuery()
+                        ->filterBySlug('%democratie%')
+                    ->endUse()
+                ->endUse()
+                ->find();
+            $users = $usersQuery
+                ->usePuTaggedTPUserQuery()
+                    ->usePuTaggedTPTagQuery()
+                        ->filterBySlug('%democratie%')
+                    ->endUse()
+                ->endUse()
+                ->find();
+            $template = 'reseauSocial.html.twig';
+        } else {
+            return $this->redirect($this->generateUrl('Homepage'));
+        }
+
+        return $this->render('PolitizrFrontBundle:Public\LandingPage:'.$template, array(
+            'documents' => $documents,
+            'users' => $users,
+        ));
+    }
+
+    /**
      * Qui sommes nous
      * code beta
      */

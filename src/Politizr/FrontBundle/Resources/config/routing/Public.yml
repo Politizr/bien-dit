@@ -12,3 +12,9 @@ WhoWeAre:
 Concept:
     pattern:  /concept
     defaults: { _controller: PolitizrFrontBundle:Public:concept }
+
+LandingPage:
+    pattern:  /lp/{theme}
+    defaults: { _controller: PolitizrFrontBundle:Public:landingPage, theme: null }
+    requirements:
+        _method:        GET

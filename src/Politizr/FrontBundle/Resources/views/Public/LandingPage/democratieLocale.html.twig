@@ -1,0 +1,105 @@
+{% set layout = 'PolitizrFrontBundle::layoutPublic.html.twig' %}
+{% extends layout %}
+{% set headerRight = false %}
+
+{% set metaTitle = 'Démocratie locale' %}
+{% set metaDescription = 'Politizr propose un outil numérique de démocratie locale et multi-locale.' %}
+
+{% block title %}{{ metaTitle }} - {{ parent() }}{% endblock title %}
+{% block description %}{{ metaDescription }}{% endblock description %}
+
+{% block ogTitle %}{{ metaTitle }} - {{ parent() }}{% endblock ogTitle %}
+{% block ogDescription %}{{ metaDescription }}{% endblock ogDescription %}
+
+{% block tcTitle %}{{ metaTitle }} - {{ parent() }}{% endblock tcTitle %}
+{% block tcDescription %}{{ metaDescription }}{% endblock tcDescription %}
+
+{% block bodyClass %} class="public visitor noHeaderTrigger"{% endblock %}
+
+{% block main %}
+    <div id="lpHeader">
+        <div class="center">
+            <h1>Politizr invente une démocratie locale<br> et numérique à toutes les échelles territoriales.</h1>
+            <h2>
+                Politizr vous propose des échanges entre citoyen-ne-s et élu-e-s à toutes les échelles territoriales.<br> Et vous, changerez-vous d’opinion?
+            </h2>
+            <div class="centerCTA">
+                <a href="{{ path('InscriptionChoice') }}">Créer un compte</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="postSelection">
+        <div class="center">
+            <h1>Les discussions en cours</h1>
+            <h2>La démocratie locale dans les débats</h2>
+            
+            {% for document in documents %}
+                {% if loop.first or loop.index0 is divisible by(3) %}
+                    <div class="cardColumn">
+                {% endif %}
+                    {% include 'PolitizrFrontBundle:Document:_cardPublic.html.twig' %}
+                {% if loop.last or loop.index is divisible by(3) %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+            
+            <div id="morePosts"><a href="{{ path('ListingSearchPublications') }}">Toutes les discussions en cours</a></div>
+        </div>
+    </div>
+    
+    <div id="profileSelection">
+        <div class="center">
+            <h1>Rejoignez la communauté Politizr</h1>
+            <h2>La démocratie locale avec des citoyen-nes et élu-es de toute la France sur Politizr:<br>
+            <a href="{{ path('InscriptionChoice') }}">inscrivez-vous et participez aux débats!</a></h2>
+            
+            {% for user in users %}
+                {% if loop.first or loop.index0 is divisible by(2) %}
+                    <div class="cardColumn">
+                {% endif %}
+                    {% include 'PolitizrFrontBundle:User:_cardPublic.html.twig' %}
+                {% if loop.last or loop.index is divisible by(2) %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div id="blockMarianne">
+        <div class="center">
+            <div id="bgBlockMarianne">
+                <div id="marianne"></div>
+                <div class="conceptCol conceptLeftCol">
+                    Politizr est un site web de <b>démocratie locale</b> et même <b>multi-locale</b>. Parlez-nous de votre territoire et venez profiter des expériences et des retours d'autres territoires sur votre sujet.
+                </div>
+                
+                <div class="conceptCol conceptRightCol">
+                    Nous travaillons à améliorer la <b>démocratie représentative</b> en proposant un espace de discussion qui favorise les <b>échanges structurées et argumentées</b> dans un temps long propice à la qualité du débat.
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="blockGraphAssembly">
+        <div class="center centerCTA">
+            <a href="{{ path('InscriptionChoice') }}">Créer un compte</a>
+        </div>
+    </div>
+    
+{% endblock main %}
+
+{% block postMain %}
+    {% include 'PolitizrFrontBundle:Navigation\\Footer:_publicFooter.html.twig' %}
+{% endblock postMain %}
+
+
+{% block javascriptFooter %}
+    {{ parent() }}
+
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/pages/landingPage.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock javascriptFooter %}

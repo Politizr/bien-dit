@@ -1,0 +1,104 @@
+{% set layout = 'PolitizrFrontBundle::layoutPublic.html.twig' %}
+{% extends layout %}
+{% set headerRight = false %}
+
+{% set metaTitle = 'Réseau Social Politique' %}
+{% set metaDescription = 'Politizr est un réseau social politique qui connecte élu-e-s et citoyen-ne-s.' %}
+
+{% block title %}{{ metaTitle }} - {{ parent() }}{% endblock title %}
+{% block description %}{{ metaDescription }}{% endblock description %}
+
+{% block ogTitle %}{{ metaTitle }} - {{ parent() }}{% endblock ogTitle %}
+{% block ogDescription %}{{ metaDescription }}{% endblock ogDescription %}
+
+{% block tcTitle %}{{ metaTitle }} - {{ parent() }}{% endblock tcTitle %}
+{% block tcDescription %}{{ metaDescription }}{% endblock tcDescription %}
+
+{% block bodyClass %} class="public visitor noHeaderTrigger"{% endblock %}
+
+{% block main %}
+    <div id="lpHeader">
+        <div class="center">
+            <h1>Politizr est un réseau social politique<br> qui renforce le lien entre élus et citoyens.</h1>
+            <h2>
+                Politizr propose de suivre des élus, des citoyens et des débats sur tous les sujets et à toutes les échelles territoriales. Et vous, changerez-vous d’opinion?
+            </h2>
+            <div class="centerCTA">
+                <a href="{{ path('InscriptionChoice') }}">Créer un compte</a>
+            </div>
+        </div>
+    </div>
+    <div id="postSelection">
+        <div class="center">
+            <h1>Les discussions en cours</h1>
+            <h2>Citoyen-ne-s et élu-e-s échangent sur les sujets politiques</h2>
+            
+            {% for document in documents %}
+                {% if loop.first or loop.index0 is divisible by(3) %}
+                    <div class="cardColumn">
+                {% endif %}
+                    {% include 'PolitizrFrontBundle:Document:_cardPublic.html.twig' %}
+                {% if loop.last or loop.index is divisible by(3) %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+            
+            <div id="morePosts"><a href="{{ path('ListingSearchPublications') }}">Toutes les discussions en cours</a></div>
+        </div>
+    </div>
+    
+    <div id="profileSelection">
+        <div class="center">
+            <h1>Rejoignez la communauté Politizr</h1>
+            <h2>Rejoignez les citoyen-nes et élu-es sur le plus grand réseau social dédié à la politique:<br>
+            <a href="{{ path('InscriptionChoice') }}">inscrivez-vous et participez aux débats!</a></h2>
+            
+            {% for user in users %}
+                {% if loop.first or loop.index0 is divisible by(2) %}
+                    <div class="cardColumn">
+                {% endif %}
+                    {% include 'PolitizrFrontBundle:User:_cardPublic.html.twig' %}
+                {% if loop.last or loop.index is divisible by(2) %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+
+    <div id="blockMarianne">
+        <div class="center">
+            <div id="bgBlockMarianne">
+                <div id="marianne"></div>
+                <div class="conceptCol conceptLeftCol">
+                    Politizr est un <b>réseau social politique</b> organisé et structuré spécifiquement pour les échanges de qualité. Venez rejoindre gratuitement les <b>nombreux élu-e-s et citoyen-ne-s déjà inscrits</b> pour débattre de <b>sujets politiques locaux ou nationaux</b>.
+                </div>
+                
+                <div class="conceptCol conceptRightCol">
+                    Nous travaillons à améliorer la <b>démocratie représentative</b> en proposant un espace de discussion qui favorise les <b>échanges structurées et argumentées</b> dans un temps long propice à la qualité du débat.
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="blockGraphAssembly">
+        <div class="center centerCTA">
+            <a href="{{ path('InscriptionChoice') }}">Créer un compte</a>
+        </div>
+    </div>
+    
+{% endblock main %}
+
+{% block postMain %}
+    {% include 'PolitizrFrontBundle:Navigation\\Footer:_publicFooter.html.twig' %}
+{% endblock postMain %}
+
+{% block javascriptFooter %}
+    {{ parent() }}
+
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/pages/landingPage.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock javascriptFooter %}
