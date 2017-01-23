@@ -15,7 +15,7 @@
 {% block fbScript %}
     {{ parent() }}
 
-    {% if app.environment == 'prod' and app.session.flashbag.has('inscription/success') %}
+    {% if app.environment == 'prod' and app.session.flashbag.get('inscription/success') %}
         <script>
             // CompleteRegistration
             // Track when a registration form is completed (ex. complete subscription, sign up for a service)
