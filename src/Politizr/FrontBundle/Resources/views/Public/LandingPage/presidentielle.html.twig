@@ -2,8 +2,8 @@
 {% extends layout %}
 {% set headerRight = false %}
 
-{% set metaTitle = 'Démocratie participative' %}
-{% set metaDescription = 'Politizr propose un outil numérique de démocratie participative à destination des institutions.' %}
+{% set metaTitle = 'Primaires et Présidentielle 2017' %}
+{% set metaDescription = 'Tous les avis sur les primaires et les débats sur la Présidentielle 2017 en France.' %}
 
 {% block title %}{{ metaTitle }} - {{ parent() }}{% endblock title %}
 {% block description %}{{ metaDescription }}{% endblock description %}
@@ -19,9 +19,9 @@
 {% block main %}
     <div id="lpHeader">
         <div class="center">
-            <h1>La démocratie participative avec Politizr</h1>
+            <h1>Toute la campagne présidentielle 2017 sur Politizr</h1>
             <h2>
-                Politizr est une plateforme web de démocratie participative pour les citoyen-ne-s et les élu-e-s.<br>Et nous proposons aussi un service de démocratie parcipative pour les institutions.
+                Primaires citoyennes, primaire écolo, primaire de la droite ou primaire de la gauche...<br> Exprimez vos analyses sur la campagne présidentielle 2017 et venez en débattre!
             </h2>
             <div class="centerCTA">
                 <a href="{{ path('InscriptionChoice') }}">Inscription</a>
@@ -32,7 +32,7 @@
     <div id="postSelection">
         <div class="center">
             <h1>Les discussions en cours</h1>
-            <h2>La démocratie participative pour vivifier la démocratie?</h2>
+            <h2>La présidentielle 2017 et les primaires</h2>
             
             {% for document in documents %}
                 {% if loop.first or loop.index0 is divisible by(3) %}
@@ -44,14 +44,14 @@
                 {% endif %}
             {% endfor %}
             
-            <div id="morePosts"><a href="{{ path('ListingByTag', {'slug' : 'democratie-participative'}) }}">Toutes les discussions en cours</a></div>
+            <div id="morePosts"><a href="{{ path('ListingByTag', {'slug' : 'presidentielle-2017'}) }}">Toutes les discussions en cours</a></div>
         </div>
     </div>
     
     <div id="profileSelection">
         <div class="center">
             <h1>Rejoignez la communauté Politizr</h1>
-            <h2>Venez discuter de démocratie participative avec des citoyen-nes et élu-es de toute la France:<br>
+            <h2>Les élu-e-s et citoyen-ne-s qui s'intéressent à la présidentielle et au processus des primaires:<br>
             <a href="{{ path('InscriptionChoice') }}">inscrivez-vous et participez aux débats!</a></h2>
             
             {% for user in users %}
@@ -71,7 +71,7 @@
             <div id="bgBlockMarianne">
                 <div id="marianne"></div>
                 <div class="conceptCol conceptLeftCol">
-                    Politizr renforce le lien entre les citoyens et leurs élus grâce à une <b>plateforme conviviale</b>. Si vous êtes une <b>institution</b>, contactez-nous pour découvrir notre offre dédiée pour introduire de la <b>démocratie participative à l'échelle de votre territoire</b>.
+                    Politizr est un site web de <b>débat politique</b> à l'échelle nationale et locale. Venez discuter et échanger vos analyses sur la campagne présidentielle française de 2017.
                 </div>
                 
                 <div class="conceptCol conceptRightCol">
@@ -83,7 +83,7 @@
     
     <div id="blockGraphAssembly">
         <div class="center centerCTA">
-            <a href="mailto: contact@politizr.com">Contactez-nous</a>
+            <a href="{{ path('InscriptionChoice') }}">Créer un compte</a>
         </div>
     </div>
     
@@ -92,6 +92,7 @@
 {% block postMain %}
     {% include 'PolitizrFrontBundle:Navigation\\Footer:_publicFooter.html.twig' %}
 {% endblock postMain %}
+
 
 {% block javascriptFooter %}
     {{ parent() }}

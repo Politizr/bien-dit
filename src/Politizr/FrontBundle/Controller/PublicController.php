@@ -178,6 +178,22 @@ class PublicController extends Controller
                 ->endUse()
                 ->find();
             $template = 'reseauSocial.html.twig';
+        } elseif ($theme == 'primaires-presidentielle-2017')  {
+            $documents = $documentsQuery
+                ->usePDDTaggedTQuery()
+                    ->usePTagQuery()
+                        ->filterBySlug('presidentielle-2017')
+                    ->endUse()
+                ->endUse()
+                ->find();
+            $users = $usersQuery
+                ->usePuTaggedTPUserQuery()
+                    ->usePuTaggedTPTagQuery()
+                        ->filterBySlug('presidentielle-2017')
+                    ->endUse()
+                ->endUse()
+                ->find();
+            $template = 'presidentielle.html.twig';
         } else {
             return $this->redirect($this->generateUrl('Homepage'));
         }
@@ -333,6 +349,15 @@ class PublicController extends Controller
         foreach ($contents as $content) {
             $url = $this->generateUrl('UserDetail', array(
                 'slug' => $content->getSlug(),
+                ));
+            $urls[] = $this->generateUrlItem($url, 'weekly', '0.3');
+        }
+
+        // landing pages
+        $keywords = [ 'civictech', 'elu-local', 'dialogue-citoyen', 'democratie-locale', 'democratie-participative', 'reseau-social-politique', 'primaires-presidentielle-2017'];
+        foreach ($keywords as $keyword) {
+            $url = $this->generateUrl('LandingPage', array(
+                'theme' => $keyword
                 ));
             $urls[] = $this->generateUrlItem($url, 'weekly', '0.3');
         }
