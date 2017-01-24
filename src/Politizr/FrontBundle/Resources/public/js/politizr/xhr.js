@@ -31,7 +31,7 @@ var ROUTE_DOCUMENT_LISTING_MY_BOOKMARKS = 'profil/mes-favoris';
 var ROUTE_DOCUMENT_LISTING_USER_PUBLICATIONS = 'profil/publications';
 
 var ROUTE_DOCUMENT_LISTING_TOP = 'documents/top';
-var ROUTE_DOCUMENT_LISTING_SUGGESTION = '/profil/documents/suggestions';
+var ROUTE_DOCUMENT_LISTING_SUGGESTION = '/espace/profil/documents/suggestions';
 
 var ROUTE_DOCUMENT_LISTING_RECOMMEND = 'documents/recommend';
 var ROUTE_DOCUMENT_LISTING_RECOMMEND_NAV = 'documents/recommend/nav';

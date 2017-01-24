@@ -23,18 +23,18 @@ ReactionDetail:
 #               CITIZEN
 ################################################################################
 DebateDraftNewC:
-    pattern:  /citoyen/mes-brouillons/debat/nouveau
+    pattern:  /espace/citoyen/mes-brouillons/debat/nouveau
     defaults: { _controller: PolitizrFrontBundle:Document:debateNew }
 
 DebateDraftEditC:
-    pattern:  /citoyen/mes-brouillons/debat/{uuid}
+    pattern:  /espace/citoyen/mes-brouillons/debat/{uuid}
     defaults: { _controller: PolitizrFrontBundle:Document:debateEdit }
     requirements:
         _method:        GET
         uuid:           ([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})
 
 ReactionDraftNewC:
-    pattern:  /citoyen/mes-brouillons/reaction/nouveau/{debateUuid}/{parentUuid}
+    pattern:  /espace/citoyen/mes-brouillons/reaction/nouveau/{debateUuid}/{parentUuid}
     defaults: { _controller: PolitizrFrontBundle:Document:reactionNew }
     requirements:
         _method:        GET
@@ -42,36 +42,36 @@ ReactionDraftNewC:
         parentUuid:     ([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})|()
 
 ReactionDraftEditC:
-    pattern:  /citoyen/mes-brouillons/reaction/{uuid}
+    pattern:  /espace/citoyen/mes-brouillons/reaction/{uuid}
     defaults: { _controller: PolitizrFrontBundle:Document:reactionEdit }
     requirements:
         _method:        GET
         uuid:           ([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})
 
 DraftsC:
-    pattern:  /citoyen/mes-brouillons
+    pattern:  /espace/citoyen/mes-brouillons
     defaults: { _controller: PolitizrFrontBundle:Document:drafts }
 
 BookmarksC:
-    pattern:  /citoyen/mes-favoris
+    pattern:  /espace/citoyen/mes-favoris
     defaults: { _controller: PolitizrFrontBundle:Document:bookmarks }
 
 ################################################################################
 #               ELECTED
 ################################################################################
 DebateDraftNewE:
-    pattern:  /elu/mes-brouillons/debat/nouveau
+    pattern:  /espace/elu/mes-brouillons/debat/nouveau
     defaults: { _controller: PolitizrFrontBundle:Document:debateNew }
 
 DebateDraftEditE:
-    pattern:  /elu/mes-brouillons/debat/{uuid}
+    pattern:  /espace/elu/mes-brouillons/debat/{uuid}
     defaults: { _controller: PolitizrFrontBundle:Document:debateEdit }
     requirements:
         _method:        GET
         uuid:           ([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})
 
 ReactionDraftNewE:
-    pattern:  /elu/mes-brouillons/reaction/nouveau/{debateUuid}/{parentUuid}
+    pattern:  /espace/elu/mes-brouillons/reaction/nouveau/{debateUuid}/{parentUuid}
     defaults: { _controller: PolitizrFrontBundle:Document:reactionNew }
     requirements:
         _method:        GET
@@ -79,17 +79,17 @@ ReactionDraftNewE:
         parentUuid:     ([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})|()
 
 ReactionDraftEditE:
-    pattern:  /elu/mes-brouillons/reaction/{uuid}
+    pattern:  /espace/elu/mes-brouillons/reaction/{uuid}
     defaults: { _controller: PolitizrFrontBundle:Document:reactionEdit }
     requirements:
         _method:        GET
         uuid:           ([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})
 
 DraftsE:
-    pattern:  /elu/mes-brouillons
+    pattern:  /espace/elu/mes-brouillons
     defaults: { _controller: PolitizrFrontBundle:Document:drafts }
 
 BookmarksE:
-    pattern:  /elu/mes-favoris
+    pattern:  /espace/elu/mes-favoris
     defaults: { _controller: PolitizrFrontBundle:Document:bookmarks }
 

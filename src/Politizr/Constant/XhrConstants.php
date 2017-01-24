@@ -43,7 +43,7 @@ class XhrConstants
     const ROUTE_DOCUMENT_LISTING_USER_PUBLICATIONS = 'profil/publications';
 
     const ROUTE_DOCUMENT_LISTING_TOP = 'documents/top';
-    const ROUTE_DOCUMENT_LISTING_SUGGESTION = '/profil/documents/suggestions';
+    const ROUTE_DOCUMENT_LISTING_SUGGESTION = '/espace/profil/documents/suggestions';
 
     const ROUTE_DOCUMENT_LISTING_RECOMMEND = 'documents/recommend';
     const ROUTE_DOCUMENT_LISTING_RECOMMEND_NAV = 'documents/recommend/nav';
