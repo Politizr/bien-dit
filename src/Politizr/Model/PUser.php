@@ -1124,6 +1124,6 @@ class PUser extends BasePUser implements UserInterface
             return null;
         }
 
-        return $this->getPLCity()->getPLDepartment()->getPTag()->getTitle();
+        return $this->getPLCity()->getPLDepartment()->getTitle();
     }
 }
