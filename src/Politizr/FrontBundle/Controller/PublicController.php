@@ -74,7 +74,7 @@ class PublicController extends Controller
             ->orderByMostActive()
             ;
 
-        if ($theme == 'civictech') {
+        if ($theme == 'civic-tech') {
             $documents = $documentsQuery
                 ->usePDDTaggedTQuery()
                     ->usePTagQuery()
@@ -194,6 +194,11 @@ class PublicController extends Controller
                 ->endUse()
                 ->find();
             $template = 'presidentielle.html.twig';
+        } elseif ($theme == 'charlotte-marchandise-franquet')  {
+            $documents = $documentsQuery
+                ->filterByPUserId(315)
+                ->find();
+            $template = 'charlotte.html.twig';
         } else {
             return $this->redirect($this->generateUrl('Homepage'));
         }
@@ -354,7 +359,7 @@ class PublicController extends Controller
         }
 
         // landing pages
-        $keywords = [ 'civictech', 'elu-local', 'dialogue-citoyen', 'democratie-locale', 'democratie-participative', 'reseau-social-politique', 'primaires-presidentielle-2017'];
+        $keywords = [ 'civic-tech', 'elu-local', 'dialogue-citoyen', 'democratie-locale', 'democratie-participative', 'reseau-social-politique', 'primaires-presidentielle-2017', 'charlotte-marchandise-franquet'];
         foreach ($keywords as $keyword) {
             $url = $this->generateUrl('LandingPage', array(
                 'theme' => $keyword
