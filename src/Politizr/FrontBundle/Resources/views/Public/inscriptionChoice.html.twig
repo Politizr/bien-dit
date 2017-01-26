@@ -25,3 +25,13 @@
         </center>
     </div>
 {% endblock main %}
+
+{% block javascriptFooter %}
+    {{ parent() }}
+
+    {% if app.environment == 'prod' %}
+        <script type="text/javascript">
+            mixpanel.track("Page choix type d'inscription");
+        </script>
+    {% endif %}
+{% endblock javascriptFooter %}

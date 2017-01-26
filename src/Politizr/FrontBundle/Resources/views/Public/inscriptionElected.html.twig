@@ -72,3 +72,13 @@
         </center>
     </div>
 {% endblock main %}
+
+{% block javascriptFooter %}
+    {{ parent() }}
+
+    {% if app.environment == 'prod' %}
+        <script type="text/javascript">
+            mixpanel.track("Page d'inscription élu étape 1");
+        </script>
+    {% endif %}
+{% endblock javascriptFooter %}
