@@ -2,6 +2,9 @@
 {# common "connected" layout #}
 {% extends 'PolitizrFrontBundle::baseFront.html.twig' %}
 
+{# useful to remove flash bag #}
+{% set inscriptionComplete = app.session.flashbag.get('inscription/success') %}
+
 {% block title %}{{ app.user | typeGender }} {{ app.user }} - Politizr{% endblock title %}
 
 {% block description %}Politizr est une plateforme neutre et indépendante permettant aux élus et anciens élus de débattre publiquement des sujets proposés par leurs concitoyens.{% endblock description %}
@@ -15,14 +18,14 @@
 {% block fbScript %}
     {{ parent() }}
 
-    {% if app.environment == 'prod' and app.session.flashbag.get('inscription/success') %}
+    {% if app.environment == 'prod' and inscriptionComplete %}
         <script>
             // CompleteRegistration
             // Track when a registration form is completed (ex. complete subscription, sign up for a service)
             fbq('track', 'CompleteRegistration');
         </script>
 
-        <!-- Google Code for Inscription Politizr Conversion Page -->
+        {# Google Code for Inscription Politizr Conversion Page #}
         <script type="text/javascript">
             /* <![CDATA[ */
             var google_conversion_id = 872060456;
@@ -42,6 +45,26 @@
         </noscript>
     {% endif %}
 {% endblock %}
+
+
+{% block mixPanel %}
+    {{ parent() }}
+
+    {% if app.environment == 'prod' and inscriptionComplete %}
+        {# Mix Panel Customer info #}
+        <script type="text/javascript">
+            mixpanel.people.set({
+                "$email": "{{ app.user.email }}",
+                "$created": "{{ app.user.createdAt | date('d/m/Y H:i:s') }}",
+                "gender": "{{ app.user.gender }}",
+                "firstname": "{{ app.user.firstname }}",
+                "name": "{{ app.user.name }}",
+                "qualified": "{{ app.user.qualified }}"
+            });
+        </script>
+    {% endif %}
+{% endblock %}
+
 
 {% block bodyClass %} class="user"{% endblock %}
 
@@ -141,4 +164,20 @@
         </script>
     {% endif %}
     #}
+
+    <script type="text/javascript">
+        mixpanel.identify("{{ app.user.uuid }}");
+
+        {% if app.environment == 'prod' %}
+            {# Mix Panel Customer info #}
+                mixpanel.people.set({
+                    "$email": "{{ app.user.email }}",
+                    "$created": "{{ app.user.createdAt | date('d/m/Y H:i:s') }}",
+                    "gender": "{{ app.user.gender }}",
+                    "firstname": "{{ app.user.firstname }}",
+                    "name": "{{ app.user.name }}",
+                    "qualified": "{{ app.user.qualified }}"
+                });
+        {% endif %}
+    </script>
 {% endblock javascriptFooter %}
