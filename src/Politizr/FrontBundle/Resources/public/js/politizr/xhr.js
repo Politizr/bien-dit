@@ -17,6 +17,7 @@ var ROUTE_SHOW_HIDE_SUGGESTION = 'profil/suggestion';
 var ROUTE_FOLLOW_DEBATE = 'profil/suivre/debat';
 var ROUTE_FOLLOW_USER = 'profil/suivre/utilisateur';
 var ROUTE_FOLLOW_TAG = 'profil/suivre/thematique';
+var ROUTE_FOLLOW_RELATIVE_DEBATE = 'profil/suivre/debat/relatif';
 
 // COMMENTS
 var ROUTE_COMMENTS = 'commentaires';

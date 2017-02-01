@@ -29,6 +29,7 @@ class XhrConstants
     const ROUTE_FOLLOW_DEBATE = 'profil/suivre/debat';
     const ROUTE_FOLLOW_USER = 'profil/suivre/utilisateur';
     const ROUTE_FOLLOW_TAG = 'profil/suivre/thematique';
+    const ROUTE_FOLLOW_RELATIVE_DEBATE = 'profil/suivre/debat/relatif';
 
     // COMMENTS
     const ROUTE_COMMENTS = 'commentaires';

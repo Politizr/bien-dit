@@ -980,9 +980,11 @@ LIMIT :offset, :limit
             $puFollowDD->setPUserId($userId);
             $puFollowDD->setPDDebateId($debateId);
             $puFollowDD->save();
+            
+            return $puFollowDD;
         }
 
-        return $puFollowDD;
+        return null;
     }
 
     /**
@@ -1023,9 +1025,10 @@ LIMIT :offset, :limit
             $puFollowU->setPUserFollowerId($sourceId);
             $puFollowU->setPUserId($targetId);
             $puFollowU->save();
+           return $puFollowU;
         }
 
-        return $puFollowU;
+        return null;
     }
 
     /**

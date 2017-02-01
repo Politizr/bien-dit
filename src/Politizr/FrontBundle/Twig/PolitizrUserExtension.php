@@ -612,9 +612,10 @@ class PolitizrUserExtension extends \Twig_Extension
      * @param PUser $user
      * @param FormView $formComment
      * @param string $uuid Associated document's uuid
+     * @param string $type Associated document's type
      * @return string
      */
-    public function isAuthorizedToNewComment(PUser $user, FormView $formComment, $uuid)
+    public function isAuthorizedToNewComment(PUser $user, FormView $formComment, $uuid, $type)
     {
         // $this->logger->info('*** isAuthorizedToNewComment');
         // $this->logger->info('$user = '.print_r($user, true));
@@ -627,6 +628,7 @@ class PolitizrUserExtension extends \Twig_Extension
                 array(
                     'formComment' => $formComment,
                     'uuid' => $uuid,
+                    'type' => $type,
                 )
             );
         } else {

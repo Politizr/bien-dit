@@ -16,7 +16,7 @@ $(function() {
 
 // bookmark
 $("body").on("click", "[action='bookmark']", function(e) {
-    // console.log('*** click bookmark');
+    console.log('*** click bookmark');
     
     var targetElement = $(this).closest('.bookmarkBox');
     var localLoader = $(this).closest('.bookmarkBox').find('.ajaxLoader').first();
@@ -48,7 +48,7 @@ $("body").on("click", "[action='toggleNotifBox']", function() {
 
 // check notification
 $("body").on("click", "i[action='notificationCheck']", function(e) {
-    // console.log('*** click i notificationCheck');
+    console.log('*** click i notificationCheck');
 
     e.preventDefault();
 
@@ -60,7 +60,7 @@ $("body").on("click", "i[action='notificationCheck']", function(e) {
 });
 
 $("body").on("click", "a[action='notificationCheck']", function(e) {
-    // console.log('*** click a notificationCheck');
+    console.log('*** click a notificationCheck');
 
     e.preventDefault();
 
@@ -71,7 +71,7 @@ $("body").on("click", "a[action='notificationCheck']", function(e) {
 });
 
 $("body").on("click", "div[action='notificationCheckAll']", function(e) {
-    // console.log('*** click notificationCheckAll');
+    console.log('*** click notificationCheckAll');
 
     var localLoader = $(this).closest('#notifBox').find('.ajaxLoader').first();
     
@@ -85,7 +85,7 @@ $("body").on("click", "div[action='notificationCheckAll']", function(e) {
 
 // follow / unfollow debate
 $("body").on("click", "[action='followDebate']", function(e) {
-    // console.log('*** click followDebate');
+    console.log('*** click followDebate');
     
     var xhrPath = getXhrPath(
         ROUTE_FOLLOW_DEBATE,
@@ -116,7 +116,7 @@ $("body").on("click", "[action='followDebate']", function(e) {
 
 // follow / unfollow user
 $("body").on("click", "[action='followUser']", function(e) {
-    // console.log('*** click followUser');
+    console.log('*** click followUser');
     
     var xhrPath = getXhrPath(
         ROUTE_FOLLOW_USER,
@@ -147,7 +147,7 @@ $("body").on("click", "[action='followUser']", function(e) {
 
 // follow / unfollow tag
 $("body").on("click", "[action='followTag']", function(e) {
-    // console.log('*** click followTag');
+    console.log('*** click followTag');
 
     var xhrPath = getXhrPath(
         ROUTE_FOLLOW_TAG,
@@ -171,8 +171,30 @@ $("body").on("click", "[action='followTag']", function(e) {
                 $('.sidebarFollowedTags').find('.ajaxLoader').first()
             );
         }
-    });    
+    });
 });
+
+/**
+ * Automaticly add debate to subscribing user debate
+ */
+function followRelativeDebate(uuid, type) {
+    console.log('*** followRelativeDebate');
+
+    var xhrPath = getXhrPath(
+        ROUTE_FOLLOW_RELATIVE_DEBATE,
+        'document',
+        'followRelativeDebate',
+        RETURN_BOOLEAN
+    );
+
+    return xhrCall(
+        document,
+        { 'uuid': uuid, 'type': type },
+        xhrPath
+    ).done(function(data) {
+        console.log(data);
+    });
+}
 
 // ******************************************************************* //
 //                            NOTATION                                 //
@@ -180,14 +202,19 @@ $("body").on("click", "[action='followTag']", function(e) {
 
 // notation
 $("body").on("click", "[action='note']", function(e) {
-    // console.log('*** click note');
+    console.log('*** click note');
     
     var localLoader = $(this).closest('.notation').find('.ajaxLoader').first();
     var uuid = $(this).attr('uuid');
     var type = $(this).attr('type');
     var way = $(this).attr('way');
 
-    return noteDocument($(this), localLoader, uuid, type, way);
+    $.when(
+        noteDocument($(this), localLoader, uuid, type, way)
+    ).done(function(data) {
+        // follow debate
+        followRelativeDebate(uuid, type)
+    });
 });
 
 // ******************************************************************* //
@@ -198,7 +225,7 @@ $("body").on("click", "[action='note']", function(e) {
  * Modal help us
  */
 function modalHelpUs() {
-    // console.log('*** modalHelpUs');
+    console.log('*** modalHelpUs');
 
     $('body').addClass('noScroll');
 
@@ -233,7 +260,7 @@ var xhrRouteCity = ROUTE_CITY_LISTING;
 
 // user profile perso update
 $("body").on("click", "button[action='updateLocalization']", function(e) {
-    // console.log('click updateLocalization');
+    console.log('click updateLocalization');
 
     var form = $(this).closest('form');
     var localLoader = $(this).closest('.formBlock').find('.ajaxLoader').first();

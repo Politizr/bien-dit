@@ -191,6 +191,54 @@ class XhrDocument
     }
 
     /**
+     * Follow automaticaly a debate, relative to another interactive action (note, comment), by current user
+     * beta
+     */
+    public function followRelativeDebate(Request $request)
+    {
+        // $this->logger->info('*** followRelativeDebate');
+        
+        // Request arguments
+        $uuid = $request->get('uuid');
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
+        $type = $request->get('type');
+        // $this->logger->info('$type = ' . print_r($type, true));
+
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        
+        if ($type == ObjectTypeConstants::TYPE_DEBATE) {
+            $debate = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
+        } elseif ($type == ObjectTypeConstants::TYPE_REACTION) {
+            $reaction = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
+            $debate = $reaction->getPDDebate();
+        } elseif ($type == ObjectTypeConstants::TYPE_DEBATE_COMMENT) {
+            $comment = PDDCommentQuery::create()->filterByUuid($uuid)->findOne();
+            $debate = $comment->getPDDebate();
+        } elseif ($type == ObjectTypeConstants::TYPE_REACTION_COMMENT) {
+            $comment = PDRCommentQuery::create()->filterByUuid($uuid)->findOne();
+            $reaction = $comment->getPDReaction();
+            $debate = $reaction->getPDDebate();
+        } else {
+            throw new InconsistentDataException(sprintf('Type %s not managed', $type));
+        }
+
+        if (!$debate) {
+            throw new InconsistentDataException(sprintf('Relative Debate %s not found', $uuid));
+        }
+
+        $this->userManager->createUserFollowDebate($user->getId(), $debate->getId());
+
+        // Events > upd only reputation
+        $event = new GenericEvent($debate, array('user_id' => $user->getId(),));
+        $dispatcher = $this->eventDispatcher->dispatch('r_debate_follow', $event);
+        // $event = new GenericEvent($debate, array('author_user_id' => $user->getId(),));
+        // $dispatcher = $this->eventDispatcher->dispatch('n_debate_follow', $event);
+
+        return true;
+    }
+
+    /**
      * Notation plus/minus of debate, reaction or comment
      * beta
      * @todo refactoring

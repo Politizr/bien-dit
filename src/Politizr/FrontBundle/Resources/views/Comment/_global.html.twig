@@ -3,7 +3,7 @@
     {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
     <div id="addNewGlobalComments">
         {% if app.user %}
-            {{ app.user | isAuthorizedToNewComment(formComment, document.uuid) }}
+            {{ app.user | isAuthorizedToNewComment(formComment, document.uuid, document.type) }}
         {% else %}
             {# Fake public form #}
             <form class="formCommentNew">

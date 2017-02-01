@@ -166,18 +166,18 @@
     #}
 
     <script type="text/javascript">
-        mixpanel.identify("{{ app.user.uuid }}");
-
         {% if app.environment == 'prod' %}
+            mixpanel.identify("{{ app.user.uuid }}");
+            
             {# Mix Panel Customer info #}
-                mixpanel.people.set({
-                    "$email": "{{ app.user.email }}",
-                    "$created": "{{ app.user.createdAt | date('d/m/Y H:i:s') }}",
-                    "gender": "{{ app.user.gender }}",
-                    "firstname": "{{ app.user.firstname }}",
-                    "name": "{{ app.user.name }}",
-                    "qualified": "{{ app.user.qualified }}"
-                });
+            mixpanel.people.set({
+                "$email": "{{ app.user.email }}",
+                "$created": "{{ app.user.createdAt | date('d/m/Y H:i:s') }}",
+                "gender": "{{ app.user.gender }}",
+                "firstname": "{{ app.user.firstname }}",
+                "name": "{{ app.user.name }}",
+                "qualified": "{{ app.user.qualified }}"
+            });
         {% endif %}
     </script>
 {% endblock javascriptFooter %}
