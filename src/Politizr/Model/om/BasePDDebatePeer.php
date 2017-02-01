@@ -9,6 +9,7 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
+use Politizr\Model\PCTopicPeer;
 use Politizr\Model\PDDCommentPeer;
 use Politizr\Model\PDDTaggedTPeer;
 use Politizr\Model\PDDebate;
@@ -41,13 +42,13 @@ abstract class BasePDDebatePeer
     const TM_CLASS = 'Politizr\\Model\\map\\PDDebateTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 26;
+    const NUM_COLUMNS = 27;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 26;
+    const NUM_HYDRATE_COLUMNS = 27;
 
     /** the column name for the id field */
     const ID = 'p_d_debate.id';
@@ -69,6 +70,9 @@ abstract class BasePDDebatePeer
 
     /** the column name for the p_l_country_id field */
     const P_L_COUNTRY_ID = 'p_d_debate.p_l_country_id';
+
+    /** the column name for the p_c_topic_id field */
+    const P_C_TOPIC_ID = 'p_d_debate.p_c_topic_id';
 
     /** the column name for the title field */
     const TITLE = 'p_d_debate.title';
@@ -146,12 +150,12 @@ abstract class BasePDDebatePeer
      * e.g. PDDebatePeer::$fieldNames[PDDebatePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'PUserId', 'PLCityId', 'PLDepartmentId', 'PLRegionId', 'PLCountryId', 'Title', 'FileName', 'Copyright', 'Description', 'NotePos', 'NoteNeg', 'NbViews', 'Published', 'PublishedAt', 'PublishedBy', 'Favorite', 'Online', 'Homepage', 'Moderated', 'ModeratedPartial', 'ModeratedAt', 'CreatedAt', 'UpdatedAt', 'Slug', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'pUserId', 'pLCityId', 'pLDepartmentId', 'pLRegionId', 'pLCountryId', 'title', 'fileName', 'copyright', 'description', 'notePos', 'noteNeg', 'nbViews', 'published', 'publishedAt', 'publishedBy', 'favorite', 'online', 'homepage', 'moderated', 'moderatedPartial', 'moderatedAt', 'createdAt', 'updatedAt', 'slug', ),
-        BasePeer::TYPE_COLNAME => array (PDDebatePeer::ID, PDDebatePeer::UUID, PDDebatePeer::P_USER_ID, PDDebatePeer::P_L_CITY_ID, PDDebatePeer::P_L_DEPARTMENT_ID, PDDebatePeer::P_L_REGION_ID, PDDebatePeer::P_L_COUNTRY_ID, PDDebatePeer::TITLE, PDDebatePeer::FILE_NAME, PDDebatePeer::COPYRIGHT, PDDebatePeer::DESCRIPTION, PDDebatePeer::NOTE_POS, PDDebatePeer::NOTE_NEG, PDDebatePeer::NB_VIEWS, PDDebatePeer::PUBLISHED, PDDebatePeer::PUBLISHED_AT, PDDebatePeer::PUBLISHED_BY, PDDebatePeer::FAVORITE, PDDebatePeer::ONLINE, PDDebatePeer::HOMEPAGE, PDDebatePeer::MODERATED, PDDebatePeer::MODERATED_PARTIAL, PDDebatePeer::MODERATED_AT, PDDebatePeer::CREATED_AT, PDDebatePeer::UPDATED_AT, PDDebatePeer::SLUG, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'P_USER_ID', 'P_L_CITY_ID', 'P_L_DEPARTMENT_ID', 'P_L_REGION_ID', 'P_L_COUNTRY_ID', 'TITLE', 'FILE_NAME', 'COPYRIGHT', 'DESCRIPTION', 'NOTE_POS', 'NOTE_NEG', 'NB_VIEWS', 'PUBLISHED', 'PUBLISHED_AT', 'PUBLISHED_BY', 'FAVORITE', 'ONLINE', 'HOMEPAGE', 'MODERATED', 'MODERATED_PARTIAL', 'MODERATED_AT', 'CREATED_AT', 'UPDATED_AT', 'SLUG', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'p_user_id', 'p_l_city_id', 'p_l_department_id', 'p_l_region_id', 'p_l_country_id', 'title', 'file_name', 'copyright', 'description', 'note_pos', 'note_neg', 'nb_views', 'published', 'published_at', 'published_by', 'favorite', 'online', 'homepage', 'moderated', 'moderated_partial', 'moderated_at', 'created_at', 'updated_at', 'slug', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'PUserId', 'PLCityId', 'PLDepartmentId', 'PLRegionId', 'PLCountryId', 'PCTopicId', 'Title', 'FileName', 'Copyright', 'Description', 'NotePos', 'NoteNeg', 'NbViews', 'Published', 'PublishedAt', 'PublishedBy', 'Favorite', 'Online', 'Homepage', 'Moderated', 'ModeratedPartial', 'ModeratedAt', 'CreatedAt', 'UpdatedAt', 'Slug', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'pUserId', 'pLCityId', 'pLDepartmentId', 'pLRegionId', 'pLCountryId', 'pCTopicId', 'title', 'fileName', 'copyright', 'description', 'notePos', 'noteNeg', 'nbViews', 'published', 'publishedAt', 'publishedBy', 'favorite', 'online', 'homepage', 'moderated', 'moderatedPartial', 'moderatedAt', 'createdAt', 'updatedAt', 'slug', ),
+        BasePeer::TYPE_COLNAME => array (PDDebatePeer::ID, PDDebatePeer::UUID, PDDebatePeer::P_USER_ID, PDDebatePeer::P_L_CITY_ID, PDDebatePeer::P_L_DEPARTMENT_ID, PDDebatePeer::P_L_REGION_ID, PDDebatePeer::P_L_COUNTRY_ID, PDDebatePeer::P_C_TOPIC_ID, PDDebatePeer::TITLE, PDDebatePeer::FILE_NAME, PDDebatePeer::COPYRIGHT, PDDebatePeer::DESCRIPTION, PDDebatePeer::NOTE_POS, PDDebatePeer::NOTE_NEG, PDDebatePeer::NB_VIEWS, PDDebatePeer::PUBLISHED, PDDebatePeer::PUBLISHED_AT, PDDebatePeer::PUBLISHED_BY, PDDebatePeer::FAVORITE, PDDebatePeer::ONLINE, PDDebatePeer::HOMEPAGE, PDDebatePeer::MODERATED, PDDebatePeer::MODERATED_PARTIAL, PDDebatePeer::MODERATED_AT, PDDebatePeer::CREATED_AT, PDDebatePeer::UPDATED_AT, PDDebatePeer::SLUG, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'P_USER_ID', 'P_L_CITY_ID', 'P_L_DEPARTMENT_ID', 'P_L_REGION_ID', 'P_L_COUNTRY_ID', 'P_C_TOPIC_ID', 'TITLE', 'FILE_NAME', 'COPYRIGHT', 'DESCRIPTION', 'NOTE_POS', 'NOTE_NEG', 'NB_VIEWS', 'PUBLISHED', 'PUBLISHED_AT', 'PUBLISHED_BY', 'FAVORITE', 'ONLINE', 'HOMEPAGE', 'MODERATED', 'MODERATED_PARTIAL', 'MODERATED_AT', 'CREATED_AT', 'UPDATED_AT', 'SLUG', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'p_user_id', 'p_l_city_id', 'p_l_department_id', 'p_l_region_id', 'p_l_country_id', 'p_c_topic_id', 'title', 'file_name', 'copyright', 'description', 'note_pos', 'note_neg', 'nb_views', 'published', 'published_at', 'published_by', 'favorite', 'online', 'homepage', 'moderated', 'moderated_partial', 'moderated_at', 'created_at', 'updated_at', 'slug', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, )
     );
 
     /**
@@ -161,12 +165,12 @@ abstract class BasePDDebatePeer
      * e.g. PDDebatePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'PUserId' => 2, 'PLCityId' => 3, 'PLDepartmentId' => 4, 'PLRegionId' => 5, 'PLCountryId' => 6, 'Title' => 7, 'FileName' => 8, 'Copyright' => 9, 'Description' => 10, 'NotePos' => 11, 'NoteNeg' => 12, 'NbViews' => 13, 'Published' => 14, 'PublishedAt' => 15, 'PublishedBy' => 16, 'Favorite' => 17, 'Online' => 18, 'Homepage' => 19, 'Moderated' => 20, 'ModeratedPartial' => 21, 'ModeratedAt' => 22, 'CreatedAt' => 23, 'UpdatedAt' => 24, 'Slug' => 25, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'pUserId' => 2, 'pLCityId' => 3, 'pLDepartmentId' => 4, 'pLRegionId' => 5, 'pLCountryId' => 6, 'title' => 7, 'fileName' => 8, 'copyright' => 9, 'description' => 10, 'notePos' => 11, 'noteNeg' => 12, 'nbViews' => 13, 'published' => 14, 'publishedAt' => 15, 'publishedBy' => 16, 'favorite' => 17, 'online' => 18, 'homepage' => 19, 'moderated' => 20, 'moderatedPartial' => 21, 'moderatedAt' => 22, 'createdAt' => 23, 'updatedAt' => 24, 'slug' => 25, ),
-        BasePeer::TYPE_COLNAME => array (PDDebatePeer::ID => 0, PDDebatePeer::UUID => 1, PDDebatePeer::P_USER_ID => 2, PDDebatePeer::P_L_CITY_ID => 3, PDDebatePeer::P_L_DEPARTMENT_ID => 4, PDDebatePeer::P_L_REGION_ID => 5, PDDebatePeer::P_L_COUNTRY_ID => 6, PDDebatePeer::TITLE => 7, PDDebatePeer::FILE_NAME => 8, PDDebatePeer::COPYRIGHT => 9, PDDebatePeer::DESCRIPTION => 10, PDDebatePeer::NOTE_POS => 11, PDDebatePeer::NOTE_NEG => 12, PDDebatePeer::NB_VIEWS => 13, PDDebatePeer::PUBLISHED => 14, PDDebatePeer::PUBLISHED_AT => 15, PDDebatePeer::PUBLISHED_BY => 16, PDDebatePeer::FAVORITE => 17, PDDebatePeer::ONLINE => 18, PDDebatePeer::HOMEPAGE => 19, PDDebatePeer::MODERATED => 20, PDDebatePeer::MODERATED_PARTIAL => 21, PDDebatePeer::MODERATED_AT => 22, PDDebatePeer::CREATED_AT => 23, PDDebatePeer::UPDATED_AT => 24, PDDebatePeer::SLUG => 25, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'P_USER_ID' => 2, 'P_L_CITY_ID' => 3, 'P_L_DEPARTMENT_ID' => 4, 'P_L_REGION_ID' => 5, 'P_L_COUNTRY_ID' => 6, 'TITLE' => 7, 'FILE_NAME' => 8, 'COPYRIGHT' => 9, 'DESCRIPTION' => 10, 'NOTE_POS' => 11, 'NOTE_NEG' => 12, 'NB_VIEWS' => 13, 'PUBLISHED' => 14, 'PUBLISHED_AT' => 15, 'PUBLISHED_BY' => 16, 'FAVORITE' => 17, 'ONLINE' => 18, 'HOMEPAGE' => 19, 'MODERATED' => 20, 'MODERATED_PARTIAL' => 21, 'MODERATED_AT' => 22, 'CREATED_AT' => 23, 'UPDATED_AT' => 24, 'SLUG' => 25, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'p_user_id' => 2, 'p_l_city_id' => 3, 'p_l_department_id' => 4, 'p_l_region_id' => 5, 'p_l_country_id' => 6, 'title' => 7, 'file_name' => 8, 'copyright' => 9, 'description' => 10, 'note_pos' => 11, 'note_neg' => 12, 'nb_views' => 13, 'published' => 14, 'published_at' => 15, 'published_by' => 16, 'favorite' => 17, 'online' => 18, 'homepage' => 19, 'moderated' => 20, 'moderated_partial' => 21, 'moderated_at' => 22, 'created_at' => 23, 'updated_at' => 24, 'slug' => 25, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'PUserId' => 2, 'PLCityId' => 3, 'PLDepartmentId' => 4, 'PLRegionId' => 5, 'PLCountryId' => 6, 'PCTopicId' => 7, 'Title' => 8, 'FileName' => 9, 'Copyright' => 10, 'Description' => 11, 'NotePos' => 12, 'NoteNeg' => 13, 'NbViews' => 14, 'Published' => 15, 'PublishedAt' => 16, 'PublishedBy' => 17, 'Favorite' => 18, 'Online' => 19, 'Homepage' => 20, 'Moderated' => 21, 'ModeratedPartial' => 22, 'ModeratedAt' => 23, 'CreatedAt' => 24, 'UpdatedAt' => 25, 'Slug' => 26, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'pUserId' => 2, 'pLCityId' => 3, 'pLDepartmentId' => 4, 'pLRegionId' => 5, 'pLCountryId' => 6, 'pCTopicId' => 7, 'title' => 8, 'fileName' => 9, 'copyright' => 10, 'description' => 11, 'notePos' => 12, 'noteNeg' => 13, 'nbViews' => 14, 'published' => 15, 'publishedAt' => 16, 'publishedBy' => 17, 'favorite' => 18, 'online' => 19, 'homepage' => 20, 'moderated' => 21, 'moderatedPartial' => 22, 'moderatedAt' => 23, 'createdAt' => 24, 'updatedAt' => 25, 'slug' => 26, ),
+        BasePeer::TYPE_COLNAME => array (PDDebatePeer::ID => 0, PDDebatePeer::UUID => 1, PDDebatePeer::P_USER_ID => 2, PDDebatePeer::P_L_CITY_ID => 3, PDDebatePeer::P_L_DEPARTMENT_ID => 4, PDDebatePeer::P_L_REGION_ID => 5, PDDebatePeer::P_L_COUNTRY_ID => 6, PDDebatePeer::P_C_TOPIC_ID => 7, PDDebatePeer::TITLE => 8, PDDebatePeer::FILE_NAME => 9, PDDebatePeer::COPYRIGHT => 10, PDDebatePeer::DESCRIPTION => 11, PDDebatePeer::NOTE_POS => 12, PDDebatePeer::NOTE_NEG => 13, PDDebatePeer::NB_VIEWS => 14, PDDebatePeer::PUBLISHED => 15, PDDebatePeer::PUBLISHED_AT => 16, PDDebatePeer::PUBLISHED_BY => 17, PDDebatePeer::FAVORITE => 18, PDDebatePeer::ONLINE => 19, PDDebatePeer::HOMEPAGE => 20, PDDebatePeer::MODERATED => 21, PDDebatePeer::MODERATED_PARTIAL => 22, PDDebatePeer::MODERATED_AT => 23, PDDebatePeer::CREATED_AT => 24, PDDebatePeer::UPDATED_AT => 25, PDDebatePeer::SLUG => 26, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'P_USER_ID' => 2, 'P_L_CITY_ID' => 3, 'P_L_DEPARTMENT_ID' => 4, 'P_L_REGION_ID' => 5, 'P_L_COUNTRY_ID' => 6, 'P_C_TOPIC_ID' => 7, 'TITLE' => 8, 'FILE_NAME' => 9, 'COPYRIGHT' => 10, 'DESCRIPTION' => 11, 'NOTE_POS' => 12, 'NOTE_NEG' => 13, 'NB_VIEWS' => 14, 'PUBLISHED' => 15, 'PUBLISHED_AT' => 16, 'PUBLISHED_BY' => 17, 'FAVORITE' => 18, 'ONLINE' => 19, 'HOMEPAGE' => 20, 'MODERATED' => 21, 'MODERATED_PARTIAL' => 22, 'MODERATED_AT' => 23, 'CREATED_AT' => 24, 'UPDATED_AT' => 25, 'SLUG' => 26, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'p_user_id' => 2, 'p_l_city_id' => 3, 'p_l_department_id' => 4, 'p_l_region_id' => 5, 'p_l_country_id' => 6, 'p_c_topic_id' => 7, 'title' => 8, 'file_name' => 9, 'copyright' => 10, 'description' => 11, 'note_pos' => 12, 'note_neg' => 13, 'nb_views' => 14, 'published' => 15, 'published_at' => 16, 'published_by' => 17, 'favorite' => 18, 'online' => 19, 'homepage' => 20, 'moderated' => 21, 'moderated_partial' => 22, 'moderated_at' => 23, 'created_at' => 24, 'updated_at' => 25, 'slug' => 26, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, )
     );
 
     /**
@@ -247,6 +251,7 @@ abstract class BasePDDebatePeer
             $criteria->addSelectColumn(PDDebatePeer::P_L_DEPARTMENT_ID);
             $criteria->addSelectColumn(PDDebatePeer::P_L_REGION_ID);
             $criteria->addSelectColumn(PDDebatePeer::P_L_COUNTRY_ID);
+            $criteria->addSelectColumn(PDDebatePeer::P_C_TOPIC_ID);
             $criteria->addSelectColumn(PDDebatePeer::TITLE);
             $criteria->addSelectColumn(PDDebatePeer::FILE_NAME);
             $criteria->addSelectColumn(PDDebatePeer::COPYRIGHT);
@@ -274,6 +279,7 @@ abstract class BasePDDebatePeer
             $criteria->addSelectColumn($alias . '.p_l_department_id');
             $criteria->addSelectColumn($alias . '.p_l_region_id');
             $criteria->addSelectColumn($alias . '.p_l_country_id');
+            $criteria->addSelectColumn($alias . '.p_c_topic_id');
             $criteria->addSelectColumn($alias . '.title');
             $criteria->addSelectColumn($alias . '.file_name');
             $criteria->addSelectColumn($alias . '.copyright');
@@ -871,6 +877,57 @@ abstract class BasePDDebatePeer
 
 
     /**
+     * Returns the number of rows matching criteria, joining the related PCTopic table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinPCTopic(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(PDDebatePeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            PDDebatePeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+
+        // Set the correct dbName
+        $criteria->setDbName(PDDebatePeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(PDDebatePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(PDDebatePeer::P_C_TOPIC_ID, PCTopicPeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
      * Selects a collection of PDDebate objects pre-filled with their PUser objects.
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
@@ -1206,6 +1263,73 @@ abstract class BasePDDebatePeer
 
 
     /**
+     * Selects a collection of PDDebate objects pre-filled with their PCTopic objects.
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of PDDebate objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinPCTopic(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(PDDebatePeer::DATABASE_NAME);
+        }
+
+        PDDebatePeer::addSelectColumns($criteria);
+        $startcol = PDDebatePeer::NUM_HYDRATE_COLUMNS;
+        PCTopicPeer::addSelectColumns($criteria);
+
+        $criteria->addJoin(PDDebatePeer::P_C_TOPIC_ID, PCTopicPeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = PDDebatePeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PDDebatePeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+
+                $cls = PDDebatePeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                PDDebatePeer::addInstanceToPool($obj1, $key1);
+            } // if $obj1 already loaded
+
+            $key2 = PCTopicPeer::getPrimaryKeyHashFromRow($row, $startcol);
+            if ($key2 !== null) {
+                $obj2 = PCTopicPeer::getInstanceFromPool($key2);
+                if (!$obj2) {
+
+                    $cls = PCTopicPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol);
+                    PCTopicPeer::addInstanceToPool($obj2, $key2);
+                } // if obj2 already loaded
+
+                // Add the $obj1 (PDDebate) to $obj2 (PCTopic)
+                $obj2->addPDDebate($obj1);
+
+            } // if joined row was not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
      * Returns the number of rows matching criteria, joining all related tables
      *
      * @param      Criteria $criteria
@@ -1250,6 +1374,8 @@ abstract class BasePDDebatePeer
         $criteria->addJoin(PDDebatePeer::P_L_REGION_ID, PLRegionPeer::ID, $join_behavior);
 
         $criteria->addJoin(PDDebatePeer::P_L_COUNTRY_ID, PLCountryPeer::ID, $join_behavior);
+
+        $criteria->addJoin(PDDebatePeer::P_C_TOPIC_ID, PCTopicPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -1300,6 +1426,9 @@ abstract class BasePDDebatePeer
         PLCountryPeer::addSelectColumns($criteria);
         $startcol7 = $startcol6 + PLCountryPeer::NUM_HYDRATE_COLUMNS;
 
+        PCTopicPeer::addSelectColumns($criteria);
+        $startcol8 = $startcol7 + PCTopicPeer::NUM_HYDRATE_COLUMNS;
+
         $criteria->addJoin(PDDebatePeer::P_USER_ID, PUserPeer::ID, $join_behavior);
 
         $criteria->addJoin(PDDebatePeer::P_L_CITY_ID, PLCityPeer::ID, $join_behavior);
@@ -1309,6 +1438,8 @@ abstract class BasePDDebatePeer
         $criteria->addJoin(PDDebatePeer::P_L_REGION_ID, PLRegionPeer::ID, $join_behavior);
 
         $criteria->addJoin(PDDebatePeer::P_L_COUNTRY_ID, PLCountryPeer::ID, $join_behavior);
+
+        $criteria->addJoin(PDDebatePeer::P_C_TOPIC_ID, PCTopicPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
@@ -1417,6 +1548,24 @@ abstract class BasePDDebatePeer
                 $obj6->addPDDebate($obj1);
             } // if joined row not null
 
+            // Add objects for joined PCTopic rows
+
+            $key7 = PCTopicPeer::getPrimaryKeyHashFromRow($row, $startcol7);
+            if ($key7 !== null) {
+                $obj7 = PCTopicPeer::getInstanceFromPool($key7);
+                if (!$obj7) {
+
+                    $cls = PCTopicPeer::getOMClass();
+
+                    $obj7 = new $cls();
+                    $obj7->hydrate($row, $startcol7);
+                    PCTopicPeer::addInstanceToPool($obj7, $key7);
+                } // if obj7 loaded
+
+                // Add the $obj1 (PDDebate) to the collection in $obj7 (PCTopic)
+                $obj7->addPDDebate($obj1);
+            } // if joined row not null
+
             $results[] = $obj1;
         }
         $stmt->closeCursor();
@@ -1468,6 +1617,8 @@ abstract class BasePDDebatePeer
         $criteria->addJoin(PDDebatePeer::P_L_REGION_ID, PLRegionPeer::ID, $join_behavior);
 
         $criteria->addJoin(PDDebatePeer::P_L_COUNTRY_ID, PLCountryPeer::ID, $join_behavior);
+
+        $criteria->addJoin(PDDebatePeer::P_C_TOPIC_ID, PCTopicPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -1526,6 +1677,8 @@ abstract class BasePDDebatePeer
 
         $criteria->addJoin(PDDebatePeer::P_L_COUNTRY_ID, PLCountryPeer::ID, $join_behavior);
 
+        $criteria->addJoin(PDDebatePeer::P_C_TOPIC_ID, PCTopicPeer::ID, $join_behavior);
+
         $stmt = BasePeer::doCount($criteria, $con);
 
         if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -1582,6 +1735,8 @@ abstract class BasePDDebatePeer
         $criteria->addJoin(PDDebatePeer::P_L_REGION_ID, PLRegionPeer::ID, $join_behavior);
 
         $criteria->addJoin(PDDebatePeer::P_L_COUNTRY_ID, PLCountryPeer::ID, $join_behavior);
+
+        $criteria->addJoin(PDDebatePeer::P_C_TOPIC_ID, PCTopicPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -1640,6 +1795,8 @@ abstract class BasePDDebatePeer
 
         $criteria->addJoin(PDDebatePeer::P_L_COUNTRY_ID, PLCountryPeer::ID, $join_behavior);
 
+        $criteria->addJoin(PDDebatePeer::P_C_TOPIC_ID, PCTopicPeer::ID, $join_behavior);
+
         $stmt = BasePeer::doCount($criteria, $con);
 
         if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -1697,6 +1854,67 @@ abstract class BasePDDebatePeer
 
         $criteria->addJoin(PDDebatePeer::P_L_REGION_ID, PLRegionPeer::ID, $join_behavior);
 
+        $criteria->addJoin(PDDebatePeer::P_C_TOPIC_ID, PCTopicPeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining the related PCTopic table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinAllExceptPCTopic(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(PDDebatePeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            PDDebatePeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY should not affect count
+
+        // Set the correct dbName
+        $criteria->setDbName(PDDebatePeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(PDDebatePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(PDDebatePeer::P_USER_ID, PUserPeer::ID, $join_behavior);
+
+        $criteria->addJoin(PDDebatePeer::P_L_CITY_ID, PLCityPeer::ID, $join_behavior);
+
+        $criteria->addJoin(PDDebatePeer::P_L_DEPARTMENT_ID, PLDepartmentPeer::ID, $join_behavior);
+
+        $criteria->addJoin(PDDebatePeer::P_L_REGION_ID, PLRegionPeer::ID, $join_behavior);
+
+        $criteria->addJoin(PDDebatePeer::P_L_COUNTRY_ID, PLCountryPeer::ID, $join_behavior);
+
         $stmt = BasePeer::doCount($criteria, $con);
 
         if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -1746,6 +1964,9 @@ abstract class BasePDDebatePeer
         PLCountryPeer::addSelectColumns($criteria);
         $startcol6 = $startcol5 + PLCountryPeer::NUM_HYDRATE_COLUMNS;
 
+        PCTopicPeer::addSelectColumns($criteria);
+        $startcol7 = $startcol6 + PCTopicPeer::NUM_HYDRATE_COLUMNS;
+
         $criteria->addJoin(PDDebatePeer::P_L_CITY_ID, PLCityPeer::ID, $join_behavior);
 
         $criteria->addJoin(PDDebatePeer::P_L_DEPARTMENT_ID, PLDepartmentPeer::ID, $join_behavior);
@@ -1753,6 +1974,8 @@ abstract class BasePDDebatePeer
         $criteria->addJoin(PDDebatePeer::P_L_REGION_ID, PLRegionPeer::ID, $join_behavior);
 
         $criteria->addJoin(PDDebatePeer::P_L_COUNTRY_ID, PLCountryPeer::ID, $join_behavior);
+
+        $criteria->addJoin(PDDebatePeer::P_C_TOPIC_ID, PCTopicPeer::ID, $join_behavior);
 
 
         $stmt = BasePeer::doSelect($criteria, $con);
@@ -1848,6 +2071,25 @@ abstract class BasePDDebatePeer
 
             } // if joined row is not null
 
+                // Add objects for joined PCTopic rows
+
+                $key6 = PCTopicPeer::getPrimaryKeyHashFromRow($row, $startcol6);
+                if ($key6 !== null) {
+                    $obj6 = PCTopicPeer::getInstanceFromPool($key6);
+                    if (!$obj6) {
+
+                        $cls = PCTopicPeer::getOMClass();
+
+                    $obj6 = new $cls();
+                    $obj6->hydrate($row, $startcol6);
+                    PCTopicPeer::addInstanceToPool($obj6, $key6);
+                } // if $obj6 already loaded
+
+                // Add the $obj1 (PDDebate) to the collection in $obj6 (PCTopic)
+                $obj6->addPDDebate($obj1);
+
+            } // if joined row is not null
+
             $results[] = $obj1;
         }
         $stmt->closeCursor();
@@ -1892,6 +2134,9 @@ abstract class BasePDDebatePeer
         PLCountryPeer::addSelectColumns($criteria);
         $startcol6 = $startcol5 + PLCountryPeer::NUM_HYDRATE_COLUMNS;
 
+        PCTopicPeer::addSelectColumns($criteria);
+        $startcol7 = $startcol6 + PCTopicPeer::NUM_HYDRATE_COLUMNS;
+
         $criteria->addJoin(PDDebatePeer::P_USER_ID, PUserPeer::ID, $join_behavior);
 
         $criteria->addJoin(PDDebatePeer::P_L_DEPARTMENT_ID, PLDepartmentPeer::ID, $join_behavior);
@@ -1899,6 +2144,8 @@ abstract class BasePDDebatePeer
         $criteria->addJoin(PDDebatePeer::P_L_REGION_ID, PLRegionPeer::ID, $join_behavior);
 
         $criteria->addJoin(PDDebatePeer::P_L_COUNTRY_ID, PLCountryPeer::ID, $join_behavior);
+
+        $criteria->addJoin(PDDebatePeer::P_C_TOPIC_ID, PCTopicPeer::ID, $join_behavior);
 
 
         $stmt = BasePeer::doSelect($criteria, $con);
@@ -1994,6 +2241,25 @@ abstract class BasePDDebatePeer
 
             } // if joined row is not null
 
+                // Add objects for joined PCTopic rows
+
+                $key6 = PCTopicPeer::getPrimaryKeyHashFromRow($row, $startcol6);
+                if ($key6 !== null) {
+                    $obj6 = PCTopicPeer::getInstanceFromPool($key6);
+                    if (!$obj6) {
+
+                        $cls = PCTopicPeer::getOMClass();
+
+                    $obj6 = new $cls();
+                    $obj6->hydrate($row, $startcol6);
+                    PCTopicPeer::addInstanceToPool($obj6, $key6);
+                } // if $obj6 already loaded
+
+                // Add the $obj1 (PDDebate) to the collection in $obj6 (PCTopic)
+                $obj6->addPDDebate($obj1);
+
+            } // if joined row is not null
+
             $results[] = $obj1;
         }
         $stmt->closeCursor();
@@ -2038,6 +2304,9 @@ abstract class BasePDDebatePeer
         PLCountryPeer::addSelectColumns($criteria);
         $startcol6 = $startcol5 + PLCountryPeer::NUM_HYDRATE_COLUMNS;
 
+        PCTopicPeer::addSelectColumns($criteria);
+        $startcol7 = $startcol6 + PCTopicPeer::NUM_HYDRATE_COLUMNS;
+
         $criteria->addJoin(PDDebatePeer::P_USER_ID, PUserPeer::ID, $join_behavior);
 
         $criteria->addJoin(PDDebatePeer::P_L_CITY_ID, PLCityPeer::ID, $join_behavior);
@@ -2045,6 +2314,8 @@ abstract class BasePDDebatePeer
         $criteria->addJoin(PDDebatePeer::P_L_REGION_ID, PLRegionPeer::ID, $join_behavior);
 
         $criteria->addJoin(PDDebatePeer::P_L_COUNTRY_ID, PLCountryPeer::ID, $join_behavior);
+
+        $criteria->addJoin(PDDebatePeer::P_C_TOPIC_ID, PCTopicPeer::ID, $join_behavior);
 
 
         $stmt = BasePeer::doSelect($criteria, $con);
@@ -2140,6 +2411,25 @@ abstract class BasePDDebatePeer
 
             } // if joined row is not null
 
+                // Add objects for joined PCTopic rows
+
+                $key6 = PCTopicPeer::getPrimaryKeyHashFromRow($row, $startcol6);
+                if ($key6 !== null) {
+                    $obj6 = PCTopicPeer::getInstanceFromPool($key6);
+                    if (!$obj6) {
+
+                        $cls = PCTopicPeer::getOMClass();
+
+                    $obj6 = new $cls();
+                    $obj6->hydrate($row, $startcol6);
+                    PCTopicPeer::addInstanceToPool($obj6, $key6);
+                } // if $obj6 already loaded
+
+                // Add the $obj1 (PDDebate) to the collection in $obj6 (PCTopic)
+                $obj6->addPDDebate($obj1);
+
+            } // if joined row is not null
+
             $results[] = $obj1;
         }
         $stmt->closeCursor();
@@ -2184,6 +2474,9 @@ abstract class BasePDDebatePeer
         PLCountryPeer::addSelectColumns($criteria);
         $startcol6 = $startcol5 + PLCountryPeer::NUM_HYDRATE_COLUMNS;
 
+        PCTopicPeer::addSelectColumns($criteria);
+        $startcol7 = $startcol6 + PCTopicPeer::NUM_HYDRATE_COLUMNS;
+
         $criteria->addJoin(PDDebatePeer::P_USER_ID, PUserPeer::ID, $join_behavior);
 
         $criteria->addJoin(PDDebatePeer::P_L_CITY_ID, PLCityPeer::ID, $join_behavior);
@@ -2191,6 +2484,8 @@ abstract class BasePDDebatePeer
         $criteria->addJoin(PDDebatePeer::P_L_DEPARTMENT_ID, PLDepartmentPeer::ID, $join_behavior);
 
         $criteria->addJoin(PDDebatePeer::P_L_COUNTRY_ID, PLCountryPeer::ID, $join_behavior);
+
+        $criteria->addJoin(PDDebatePeer::P_C_TOPIC_ID, PCTopicPeer::ID, $join_behavior);
 
 
         $stmt = BasePeer::doSelect($criteria, $con);
@@ -2286,6 +2581,25 @@ abstract class BasePDDebatePeer
 
             } // if joined row is not null
 
+                // Add objects for joined PCTopic rows
+
+                $key6 = PCTopicPeer::getPrimaryKeyHashFromRow($row, $startcol6);
+                if ($key6 !== null) {
+                    $obj6 = PCTopicPeer::getInstanceFromPool($key6);
+                    if (!$obj6) {
+
+                        $cls = PCTopicPeer::getOMClass();
+
+                    $obj6 = new $cls();
+                    $obj6->hydrate($row, $startcol6);
+                    PCTopicPeer::addInstanceToPool($obj6, $key6);
+                } // if $obj6 already loaded
+
+                // Add the $obj1 (PDDebate) to the collection in $obj6 (PCTopic)
+                $obj6->addPDDebate($obj1);
+
+            } // if joined row is not null
+
             $results[] = $obj1;
         }
         $stmt->closeCursor();
@@ -2330,6 +2644,9 @@ abstract class BasePDDebatePeer
         PLRegionPeer::addSelectColumns($criteria);
         $startcol6 = $startcol5 + PLRegionPeer::NUM_HYDRATE_COLUMNS;
 
+        PCTopicPeer::addSelectColumns($criteria);
+        $startcol7 = $startcol6 + PCTopicPeer::NUM_HYDRATE_COLUMNS;
+
         $criteria->addJoin(PDDebatePeer::P_USER_ID, PUserPeer::ID, $join_behavior);
 
         $criteria->addJoin(PDDebatePeer::P_L_CITY_ID, PLCityPeer::ID, $join_behavior);
@@ -2337,6 +2654,8 @@ abstract class BasePDDebatePeer
         $criteria->addJoin(PDDebatePeer::P_L_DEPARTMENT_ID, PLDepartmentPeer::ID, $join_behavior);
 
         $criteria->addJoin(PDDebatePeer::P_L_REGION_ID, PLRegionPeer::ID, $join_behavior);
+
+        $criteria->addJoin(PDDebatePeer::P_C_TOPIC_ID, PCTopicPeer::ID, $join_behavior);
 
 
         $stmt = BasePeer::doSelect($criteria, $con);
@@ -2429,6 +2748,195 @@ abstract class BasePDDebatePeer
 
                 // Add the $obj1 (PDDebate) to the collection in $obj5 (PLRegion)
                 $obj5->addPDDebate($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined PCTopic rows
+
+                $key6 = PCTopicPeer::getPrimaryKeyHashFromRow($row, $startcol6);
+                if ($key6 !== null) {
+                    $obj6 = PCTopicPeer::getInstanceFromPool($key6);
+                    if (!$obj6) {
+
+                        $cls = PCTopicPeer::getOMClass();
+
+                    $obj6 = new $cls();
+                    $obj6->hydrate($row, $startcol6);
+                    PCTopicPeer::addInstanceToPool($obj6, $key6);
+                } // if $obj6 already loaded
+
+                // Add the $obj1 (PDDebate) to the collection in $obj6 (PCTopic)
+                $obj6->addPDDebate($obj1);
+
+            } // if joined row is not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Selects a collection of PDDebate objects pre-filled with all related objects except PCTopic.
+     *
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of PDDebate objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinAllExceptPCTopic(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        // $criteria->getDbName() will return the same object if not set to another value
+        // so == check is okay and faster
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(PDDebatePeer::DATABASE_NAME);
+        }
+
+        PDDebatePeer::addSelectColumns($criteria);
+        $startcol2 = PDDebatePeer::NUM_HYDRATE_COLUMNS;
+
+        PUserPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + PUserPeer::NUM_HYDRATE_COLUMNS;
+
+        PLCityPeer::addSelectColumns($criteria);
+        $startcol4 = $startcol3 + PLCityPeer::NUM_HYDRATE_COLUMNS;
+
+        PLDepartmentPeer::addSelectColumns($criteria);
+        $startcol5 = $startcol4 + PLDepartmentPeer::NUM_HYDRATE_COLUMNS;
+
+        PLRegionPeer::addSelectColumns($criteria);
+        $startcol6 = $startcol5 + PLRegionPeer::NUM_HYDRATE_COLUMNS;
+
+        PLCountryPeer::addSelectColumns($criteria);
+        $startcol7 = $startcol6 + PLCountryPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(PDDebatePeer::P_USER_ID, PUserPeer::ID, $join_behavior);
+
+        $criteria->addJoin(PDDebatePeer::P_L_CITY_ID, PLCityPeer::ID, $join_behavior);
+
+        $criteria->addJoin(PDDebatePeer::P_L_DEPARTMENT_ID, PLDepartmentPeer::ID, $join_behavior);
+
+        $criteria->addJoin(PDDebatePeer::P_L_REGION_ID, PLRegionPeer::ID, $join_behavior);
+
+        $criteria->addJoin(PDDebatePeer::P_L_COUNTRY_ID, PLCountryPeer::ID, $join_behavior);
+
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = PDDebatePeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PDDebatePeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+                $cls = PDDebatePeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                PDDebatePeer::addInstanceToPool($obj1, $key1);
+            } // if obj1 already loaded
+
+                // Add objects for joined PUser rows
+
+                $key2 = PUserPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+                if ($key2 !== null) {
+                    $obj2 = PUserPeer::getInstanceFromPool($key2);
+                    if (!$obj2) {
+
+                        $cls = PUserPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol2);
+                    PUserPeer::addInstanceToPool($obj2, $key2);
+                } // if $obj2 already loaded
+
+                // Add the $obj1 (PDDebate) to the collection in $obj2 (PUser)
+                $obj2->addPDDebate($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined PLCity rows
+
+                $key3 = PLCityPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+                if ($key3 !== null) {
+                    $obj3 = PLCityPeer::getInstanceFromPool($key3);
+                    if (!$obj3) {
+
+                        $cls = PLCityPeer::getOMClass();
+
+                    $obj3 = new $cls();
+                    $obj3->hydrate($row, $startcol3);
+                    PLCityPeer::addInstanceToPool($obj3, $key3);
+                } // if $obj3 already loaded
+
+                // Add the $obj1 (PDDebate) to the collection in $obj3 (PLCity)
+                $obj3->addPDDebate($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined PLDepartment rows
+
+                $key4 = PLDepartmentPeer::getPrimaryKeyHashFromRow($row, $startcol4);
+                if ($key4 !== null) {
+                    $obj4 = PLDepartmentPeer::getInstanceFromPool($key4);
+                    if (!$obj4) {
+
+                        $cls = PLDepartmentPeer::getOMClass();
+
+                    $obj4 = new $cls();
+                    $obj4->hydrate($row, $startcol4);
+                    PLDepartmentPeer::addInstanceToPool($obj4, $key4);
+                } // if $obj4 already loaded
+
+                // Add the $obj1 (PDDebate) to the collection in $obj4 (PLDepartment)
+                $obj4->addPDDebate($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined PLRegion rows
+
+                $key5 = PLRegionPeer::getPrimaryKeyHashFromRow($row, $startcol5);
+                if ($key5 !== null) {
+                    $obj5 = PLRegionPeer::getInstanceFromPool($key5);
+                    if (!$obj5) {
+
+                        $cls = PLRegionPeer::getOMClass();
+
+                    $obj5 = new $cls();
+                    $obj5->hydrate($row, $startcol5);
+                    PLRegionPeer::addInstanceToPool($obj5, $key5);
+                } // if $obj5 already loaded
+
+                // Add the $obj1 (PDDebate) to the collection in $obj5 (PLRegion)
+                $obj5->addPDDebate($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined PLCountry rows
+
+                $key6 = PLCountryPeer::getPrimaryKeyHashFromRow($row, $startcol6);
+                if ($key6 !== null) {
+                    $obj6 = PLCountryPeer::getInstanceFromPool($key6);
+                    if (!$obj6) {
+
+                        $cls = PLCountryPeer::getOMClass();
+
+                    $obj6 = new $cls();
+                    $obj6->hydrate($row, $startcol6);
+                    PLCountryPeer::addInstanceToPool($obj6, $key6);
+                } // if $obj6 already loaded
+
+                // Add the $obj1 (PDDebate) to the collection in $obj6 (PLCountry)
+                $obj6->addPDDebate($obj1);
 
             } // if joined row is not null
 

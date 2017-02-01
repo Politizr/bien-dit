@@ -24,6 +24,7 @@ use Politizr\Model\PDReactionArchiveQuery;
  * @method PDReactionArchiveQuery orderByPLDepartmentId($order = Criteria::ASC) Order by the p_l_department_id column
  * @method PDReactionArchiveQuery orderByPLRegionId($order = Criteria::ASC) Order by the p_l_region_id column
  * @method PDReactionArchiveQuery orderByPLCountryId($order = Criteria::ASC) Order by the p_l_country_id column
+ * @method PDReactionArchiveQuery orderByPCTopicId($order = Criteria::ASC) Order by the p_c_topic_id column
  * @method PDReactionArchiveQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method PDReactionArchiveQuery orderByFileName($order = Criteria::ASC) Order by the file_name column
  * @method PDReactionArchiveQuery orderByCopyright($order = Criteria::ASC) Order by the copyright column
@@ -57,6 +58,7 @@ use Politizr\Model\PDReactionArchiveQuery;
  * @method PDReactionArchiveQuery groupByPLDepartmentId() Group by the p_l_department_id column
  * @method PDReactionArchiveQuery groupByPLRegionId() Group by the p_l_region_id column
  * @method PDReactionArchiveQuery groupByPLCountryId() Group by the p_l_country_id column
+ * @method PDReactionArchiveQuery groupByPCTopicId() Group by the p_c_topic_id column
  * @method PDReactionArchiveQuery groupByTitle() Group by the title column
  * @method PDReactionArchiveQuery groupByFileName() Group by the file_name column
  * @method PDReactionArchiveQuery groupByCopyright() Group by the copyright column
@@ -96,6 +98,7 @@ use Politizr\Model\PDReactionArchiveQuery;
  * @method PDReactionArchive findOneByPLDepartmentId(int $p_l_department_id) Return the first PDReactionArchive filtered by the p_l_department_id column
  * @method PDReactionArchive findOneByPLRegionId(int $p_l_region_id) Return the first PDReactionArchive filtered by the p_l_region_id column
  * @method PDReactionArchive findOneByPLCountryId(int $p_l_country_id) Return the first PDReactionArchive filtered by the p_l_country_id column
+ * @method PDReactionArchive findOneByPCTopicId(int $p_c_topic_id) Return the first PDReactionArchive filtered by the p_c_topic_id column
  * @method PDReactionArchive findOneByTitle(string $title) Return the first PDReactionArchive filtered by the title column
  * @method PDReactionArchive findOneByFileName(string $file_name) Return the first PDReactionArchive filtered by the file_name column
  * @method PDReactionArchive findOneByCopyright(string $copyright) Return the first PDReactionArchive filtered by the copyright column
@@ -129,6 +132,7 @@ use Politizr\Model\PDReactionArchiveQuery;
  * @method array findByPLDepartmentId(int $p_l_department_id) Return PDReactionArchive objects filtered by the p_l_department_id column
  * @method array findByPLRegionId(int $p_l_region_id) Return PDReactionArchive objects filtered by the p_l_region_id column
  * @method array findByPLCountryId(int $p_l_country_id) Return PDReactionArchive objects filtered by the p_l_country_id column
+ * @method array findByPCTopicId(int $p_c_topic_id) Return PDReactionArchive objects filtered by the p_c_topic_id column
  * @method array findByTitle(string $title) Return PDReactionArchive objects filtered by the title column
  * @method array findByFileName(string $file_name) Return PDReactionArchive objects filtered by the file_name column
  * @method array findByCopyright(string $copyright) Return PDReactionArchive objects filtered by the copyright column
@@ -257,7 +261,7 @@ abstract class BasePDReactionArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `p_d_debate_id`, `parent_reaction_id`, `p_l_city_id`, `p_l_department_id`, `p_l_region_id`, `p_l_country_id`, `title`, `file_name`, `copyright`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `homepage`, `moderated`, `moderated_partial`, `moderated_at`, `created_at`, `updated_at`, `slug`, `tree_left`, `tree_right`, `tree_level`, `archived_at` FROM `p_d_reaction_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `p_d_debate_id`, `parent_reaction_id`, `p_l_city_id`, `p_l_department_id`, `p_l_region_id`, `p_l_country_id`, `p_c_topic_id`, `title`, `file_name`, `copyright`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `homepage`, `moderated`, `moderated_partial`, `moderated_at`, `created_at`, `updated_at`, `slug`, `tree_left`, `tree_right`, `tree_level`, `archived_at` FROM `p_d_reaction_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -709,6 +713,48 @@ abstract class BasePDReactionArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDReactionArchivePeer::P_L_COUNTRY_ID, $pLCountryId, $comparison);
+    }
+
+    /**
+     * Filter the query on the p_c_topic_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPCTopicId(1234); // WHERE p_c_topic_id = 1234
+     * $query->filterByPCTopicId(array(12, 34)); // WHERE p_c_topic_id IN (12, 34)
+     * $query->filterByPCTopicId(array('min' => 12)); // WHERE p_c_topic_id >= 12
+     * $query->filterByPCTopicId(array('max' => 12)); // WHERE p_c_topic_id <= 12
+     * </code>
+     *
+     * @param     mixed $pCTopicId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDReactionArchiveQuery The current query, for fluid interface
+     */
+    public function filterByPCTopicId($pCTopicId = null, $comparison = null)
+    {
+        if (is_array($pCTopicId)) {
+            $useMinMax = false;
+            if (isset($pCTopicId['min'])) {
+                $this->addUsingAlias(PDReactionArchivePeer::P_C_TOPIC_ID, $pCTopicId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($pCTopicId['max'])) {
+                $this->addUsingAlias(PDReactionArchivePeer::P_C_TOPIC_ID, $pCTopicId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PDReactionArchivePeer::P_C_TOPIC_ID, $pCTopicId, $comparison);
     }
 
     /**

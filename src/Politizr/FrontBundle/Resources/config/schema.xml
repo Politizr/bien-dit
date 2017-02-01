@@ -929,6 +929,8 @@
         <column name="p_l_region_id" type="integer" required="false" />
         <column name="p_l_country_id" type="integer" required="false" />
 
+        <column name="p_c_topic_id" type="integer" required="false" />
+
         <column name="title" type="varchar" size="100" />
 
         <column name="file_name" type="varchar" size="150" />
@@ -972,6 +974,10 @@
             <reference local="p_l_country_id" foreign="id" />
         </foreign-key>
 
+        <foreign-key foreignTable="p_c_topic" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_c_topic_id" foreign="id" />
+        </foreign-key>
+        
         <unique>
             <unique-column name="uuid"/>
         </unique>
@@ -1003,6 +1009,8 @@
         <column name="p_l_department_id" type="integer" required="false" />
         <column name="p_l_region_id" type="integer" required="false" />
         <column name="p_l_country_id" type="integer" required="false" />
+
+        <column name="p_c_topic_id" type="integer" required="false" />
 
         <column name="title" type="varchar" size="100" />
 
@@ -1049,6 +1057,10 @@
 
         <foreign-key foreignTable="p_l_country" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="p_l_country_id" foreign="id" />
+        </foreign-key>
+        
+        <foreign-key foreignTable="p_c_topic" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_c_topic_id" foreign="id" />
         </foreign-key>
         
         <unique>
@@ -1169,6 +1181,92 @@
             <reference local="p_tag_id" foreign="id" />
         </foreign-key>
     </table>
+
+
+
+
+
+
+    <table name="p_circle">
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+        <behavior name="sluggable">
+            <parameter name="slug_pattern" value="{title}" />
+        </behavior>
+        <behavior name="uuid">
+            <parameter name="version" value="4" />
+            <parameter name="permanent" value="false" />
+        </behavior>
+        <behavior name="archivable" />
+
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="uuid" type="varchar" size="50" />
+
+        <column name="title" type="varchar" size="100" />
+
+        <column name="summary" type="longvarchar" />
+        <column name="description" type="clob" />
+
+        <column name="url" type="varchar" size="150" />
+
+        <column name="online" type="boolean" />
+        <column name="only_elected" type="boolean" />
+
+        <unique>
+            <unique-column name="uuid"/>
+        </unique>
+    </table>
+
+    <table name="p_c_topic">
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+        <behavior name="sluggable">
+            <parameter name="slug_pattern" value="{title}" />
+        </behavior>
+        <behavior name="uuid">
+            <parameter name="version" value="4" />
+            <parameter name="permanent" value="false" />
+        </behavior>
+        <behavior name="archivable" />
+
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="uuid" type="varchar" size="50" />
+        <column name="p_circle_id" type="integer" required="true" />
+
+        <column name="title" type="varchar" size="100" />
+
+        <column name="summary" type="longvarchar" />
+        <column name="description" type="clob" />
+
+        <column name="online" type="boolean" />
+
+        <foreign-key foreignTable="p_circle" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_circle_id" foreign="id" />
+        </foreign-key>
+
+        <unique>
+            <unique-column name="uuid"/>
+        </unique>
+    </table>
+
+    <table name="p_c_group_l_c" isCrossRef="true">
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_circle_id" type="integer" required="true" />
+        <column name="p_l_city_id" type="integer" required="true" />
+
+        <foreign-key foreignTable="p_circle" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_circle_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="p_l_city" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_l_city_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+
+
 
 
 

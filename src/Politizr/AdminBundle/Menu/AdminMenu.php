@@ -78,6 +78,19 @@ class AdminMenu extends AdmingeneratorMenuBuilder
             'Politizr_AdminBundle_PDRComment_list'
         );
 
+        // Groupes
+        $circle = $this->addDropdown($menu, 'Groupes');
+        $this->addLinkRoute(
+            $circle,
+            'Groupe',
+            'Politizr_AdminBundle_PCircle_list'
+        );
+        $this->addLinkRoute(
+            $circle,
+            'Discussions',
+            'Politizr_AdminBundle_PCTopic_list'
+        );
+
         // Tags
         $tags = $this->addLinkRoute($menu, 'Tag', 'Politizr_AdminBundle_PTag_list');
 

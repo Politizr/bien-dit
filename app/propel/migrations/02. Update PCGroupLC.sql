@@ -1,0 +1,1 @@
+# Insertion dans p_c_group_l_c de toutes les villes d'ariège

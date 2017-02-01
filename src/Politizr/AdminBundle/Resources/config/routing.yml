@@ -137,6 +137,17 @@ Politizr_AdminBundle_PDRComment:
     type:     admingenerator
     prefix:   /PDRComment
 
+# Groupes
+Politizr_AdminBundle_PCircle:
+    resource: "@PolitizrAdminBundle/Controller/PCircle/"
+    type:     admingenerator
+    prefix:   /PCircle
+
+Politizr_AdminBundle_PCTopic:
+    resource: "@PolitizrAdminBundle/Controller/PCTopic/"
+    type:     admingenerator
+    prefix:   /PCTopic
+
 
 # Tags
 Politizr_AdminBundle_PTag:

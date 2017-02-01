@@ -13,6 +13,8 @@ use \PropelCollection;
 use \PropelException;
 use \PropelObjectCollection;
 use \PropelPDO;
+use Politizr\Model\PCGroupLC;
+use Politizr\Model\PCircle;
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDReaction;
 use Politizr\Model\PLCity;
@@ -103,6 +105,10 @@ use Politizr\Model\PUser;
  * @method PLCityQuery leftJoinPDReaction($relationAlias = null) Adds a LEFT JOIN clause to the query using the PDReaction relation
  * @method PLCityQuery rightJoinPDReaction($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PDReaction relation
  * @method PLCityQuery innerJoinPDReaction($relationAlias = null) Adds a INNER JOIN clause to the query using the PDReaction relation
+ *
+ * @method PLCityQuery leftJoinPCGroupLC($relationAlias = null) Adds a LEFT JOIN clause to the query using the PCGroupLC relation
+ * @method PLCityQuery rightJoinPCGroupLC($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PCGroupLC relation
+ * @method PLCityQuery innerJoinPCGroupLC($relationAlias = null) Adds a INNER JOIN clause to the query using the PCGroupLC relation
  *
  * @method PLCity findOne(PropelPDO $con = null) Return the first PLCity matching the query
  * @method PLCity findOneOrCreate(PropelPDO $con = null) Return the first PLCity matching the query, or a new PLCity object populated from the query conditions when no match is found
@@ -1729,6 +1735,97 @@ abstract class BasePLCityQuery extends ModelCriteria
         return $this
             ->joinPDReaction($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'PDReaction', '\Politizr\Model\PDReactionQuery');
+    }
+
+    /**
+     * Filter the query by a related PCGroupLC object
+     *
+     * @param   PCGroupLC|PropelObjectCollection $pCGroupLC  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PLCityQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPCGroupLC($pCGroupLC, $comparison = null)
+    {
+        if ($pCGroupLC instanceof PCGroupLC) {
+            return $this
+                ->addUsingAlias(PLCityPeer::ID, $pCGroupLC->getPLCityId(), $comparison);
+        } elseif ($pCGroupLC instanceof PropelObjectCollection) {
+            return $this
+                ->usePCGroupLCQuery()
+                ->filterByPrimaryKeys($pCGroupLC->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPCGroupLC() only accepts arguments of type PCGroupLC or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PCGroupLC relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PLCityQuery The current query, for fluid interface
+     */
+    public function joinPCGroupLC($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PCGroupLC');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PCGroupLC');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PCGroupLC relation PCGroupLC object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PCGroupLCQuery A secondary query class using the current class as primary query
+     */
+    public function usePCGroupLCQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPCGroupLC($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PCGroupLC', '\Politizr\Model\PCGroupLCQuery');
+    }
+
+    /**
+     * Filter the query by a related PCircle object
+     * using the p_c_group_l_c table as cross reference
+     *
+     * @param   PCircle $pCircle the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return   PLCityQuery The current query, for fluid interface
+     */
+    public function filterByPCircle($pCircle, $comparison = Criteria::EQUAL)
+    {
+        return $this
+            ->usePCGroupLCQuery()
+            ->filterByPCircle($pCircle, $comparison)
+            ->endUse();
     }
 
     /**

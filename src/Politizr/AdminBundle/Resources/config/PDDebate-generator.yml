@@ -34,6 +34,10 @@ params:
             label:          Pays
         p_l_country:
             label:          Pays
+        p_c_topic_id:
+            label:          Discussions (groupe)
+        p_c_topic:
+            label:          Discussions (groupe)
         file_name:
             label:          Image
         copyright:
@@ -87,9 +91,9 @@ builders:
                     "Brouillons":
                         filters:
                             published:          0
-            display:                            [ file_name, id, p_user_id, p_l_city_id, p_l_department_id, p_l_region_id, title, count_reactions, homepage, published, published_at, created_at ]
+            display:                            [ file_name, id, p_user_id, p_c_topic, p_l_city_id, p_l_department_id, p_l_region_id, title, count_reactions, homepage, published, published_at, created_at ]
             filtersMode:                        modal
-            filters:                            [ id, uuid, p_user_id, p_l_department, p_l_region, p_l_country, title, online, homepage, published, published_at, created_at ]
+            filters:                            [ id, uuid, p_user_id, p_c_topic, p_l_department, p_l_region, p_l_country, title, online, homepage, published, published_at, created_at ]
             fields:
                 count_reactions:
                     label:                      Réponses
@@ -148,6 +152,7 @@ builders:
                     "Texte":                    [ block_file_name, copyright, title, description ]
                 "Objets":
                     "Utilisateur":              [ p_user ]
+                    "Discussions de groupe":    [ p_c_topic ]
                 "Thématiques":
                     "Tags associés":            [ block_tags ]
                     "Localisation":             [ block_loc ]
@@ -178,6 +183,14 @@ builders:
                     addFormOptions:
                         disabled:               true
                         read_only:              true
+                p_c_topic:
+                    dbType:                     model
+                    formType:                   Admingenerator\FormExtensionsBundle\Form\Type\Select2ModelType
+                    addFormOptions:
+                        multiple:               false
+                        required:               false
+                        class:                  Politizr\Model\PCTopic
+                        query:                  \Politizr\Model\PCTopicQuery::create()->orderByPCircleId()
                 description:
                     grid_class:                 "col-md-12"
                     addFormOptions:
@@ -230,6 +243,7 @@ builders:
                     "Texte":                    [ block_file_name, copyright, title, description ]
                 "Objets":
                     "Utilisateur":              [ block_p_user ]
+                    "Discussions de groupe":    [ block_p_c_topic ]
                 "Réactions":
                     "Réactions associées":      [ block_reactions ]
                 "Commentaires":
@@ -259,6 +273,8 @@ builders:
                     label:                      "Image"
                 block_p_user:
                     label:                      "Auteur"
+                block_p_c_topic:
+                    label:                      "Discussions"
                 block_reactions:
                     label:                      "Réactions"
                 block_comments:

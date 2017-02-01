@@ -15,6 +15,10 @@
     {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_USER'), PDDebate.PUserId) }}
 {% endblock %}
 
+{% block show_column_block_p_c_topic %}
+    {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_TOPIC'), PDDebate.PCTopicId) }}
+{% endblock %}
+
 {# Contenus #}
 {% block show_column_summary %}
     {{ PDDebate.getSummary | purify }}

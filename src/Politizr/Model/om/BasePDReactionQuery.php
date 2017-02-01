@@ -13,6 +13,7 @@ use \PropelCollection;
 use \PropelException;
 use \PropelObjectCollection;
 use \PropelPDO;
+use Politizr\Model\PCTopic;
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDRComment;
 use Politizr\Model\PDRTaggedT;
@@ -39,6 +40,7 @@ use Politizr\Model\PUser;
  * @method PDReactionQuery orderByPLDepartmentId($order = Criteria::ASC) Order by the p_l_department_id column
  * @method PDReactionQuery orderByPLRegionId($order = Criteria::ASC) Order by the p_l_region_id column
  * @method PDReactionQuery orderByPLCountryId($order = Criteria::ASC) Order by the p_l_country_id column
+ * @method PDReactionQuery orderByPCTopicId($order = Criteria::ASC) Order by the p_c_topic_id column
  * @method PDReactionQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method PDReactionQuery orderByFileName($order = Criteria::ASC) Order by the file_name column
  * @method PDReactionQuery orderByCopyright($order = Criteria::ASC) Order by the copyright column
@@ -71,6 +73,7 @@ use Politizr\Model\PUser;
  * @method PDReactionQuery groupByPLDepartmentId() Group by the p_l_department_id column
  * @method PDReactionQuery groupByPLRegionId() Group by the p_l_region_id column
  * @method PDReactionQuery groupByPLCountryId() Group by the p_l_country_id column
+ * @method PDReactionQuery groupByPCTopicId() Group by the p_c_topic_id column
  * @method PDReactionQuery groupByTitle() Group by the title column
  * @method PDReactionQuery groupByFileName() Group by the file_name column
  * @method PDReactionQuery groupByCopyright() Group by the copyright column
@@ -122,6 +125,10 @@ use Politizr\Model\PUser;
  * @method PDReactionQuery rightJoinPLCountry($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PLCountry relation
  * @method PDReactionQuery innerJoinPLCountry($relationAlias = null) Adds a INNER JOIN clause to the query using the PLCountry relation
  *
+ * @method PDReactionQuery leftJoinPCTopic($relationAlias = null) Adds a LEFT JOIN clause to the query using the PCTopic relation
+ * @method PDReactionQuery rightJoinPCTopic($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PCTopic relation
+ * @method PDReactionQuery innerJoinPCTopic($relationAlias = null) Adds a INNER JOIN clause to the query using the PCTopic relation
+ *
  * @method PDReactionQuery leftJoinPuBookmarkDrPDReaction($relationAlias = null) Adds a LEFT JOIN clause to the query using the PuBookmarkDrPDReaction relation
  * @method PDReactionQuery rightJoinPuBookmarkDrPDReaction($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PuBookmarkDrPDReaction relation
  * @method PDReactionQuery innerJoinPuBookmarkDrPDReaction($relationAlias = null) Adds a INNER JOIN clause to the query using the PuBookmarkDrPDReaction relation
@@ -153,6 +160,7 @@ use Politizr\Model\PUser;
  * @method PDReaction findOneByPLDepartmentId(int $p_l_department_id) Return the first PDReaction filtered by the p_l_department_id column
  * @method PDReaction findOneByPLRegionId(int $p_l_region_id) Return the first PDReaction filtered by the p_l_region_id column
  * @method PDReaction findOneByPLCountryId(int $p_l_country_id) Return the first PDReaction filtered by the p_l_country_id column
+ * @method PDReaction findOneByPCTopicId(int $p_c_topic_id) Return the first PDReaction filtered by the p_c_topic_id column
  * @method PDReaction findOneByTitle(string $title) Return the first PDReaction filtered by the title column
  * @method PDReaction findOneByFileName(string $file_name) Return the first PDReaction filtered by the file_name column
  * @method PDReaction findOneByCopyright(string $copyright) Return the first PDReaction filtered by the copyright column
@@ -185,6 +193,7 @@ use Politizr\Model\PUser;
  * @method array findByPLDepartmentId(int $p_l_department_id) Return PDReaction objects filtered by the p_l_department_id column
  * @method array findByPLRegionId(int $p_l_region_id) Return PDReaction objects filtered by the p_l_region_id column
  * @method array findByPLCountryId(int $p_l_country_id) Return PDReaction objects filtered by the p_l_country_id column
+ * @method array findByPCTopicId(int $p_c_topic_id) Return PDReaction objects filtered by the p_c_topic_id column
  * @method array findByTitle(string $title) Return PDReaction objects filtered by the title column
  * @method array findByFileName(string $file_name) Return PDReaction objects filtered by the file_name column
  * @method array findByCopyright(string $copyright) Return PDReaction objects filtered by the copyright column
@@ -318,7 +327,7 @@ abstract class BasePDReactionQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `p_d_debate_id`, `parent_reaction_id`, `p_l_city_id`, `p_l_department_id`, `p_l_region_id`, `p_l_country_id`, `title`, `file_name`, `copyright`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `homepage`, `moderated`, `moderated_partial`, `moderated_at`, `created_at`, `updated_at`, `slug`, `tree_left`, `tree_right`, `tree_level` FROM `p_d_reaction` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `p_d_debate_id`, `parent_reaction_id`, `p_l_city_id`, `p_l_department_id`, `p_l_region_id`, `p_l_country_id`, `p_c_topic_id`, `title`, `file_name`, `copyright`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `homepage`, `moderated`, `moderated_partial`, `moderated_at`, `created_at`, `updated_at`, `slug`, `tree_left`, `tree_right`, `tree_level` FROM `p_d_reaction` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -782,6 +791,50 @@ abstract class BasePDReactionQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDReactionPeer::P_L_COUNTRY_ID, $pLCountryId, $comparison);
+    }
+
+    /**
+     * Filter the query on the p_c_topic_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPCTopicId(1234); // WHERE p_c_topic_id = 1234
+     * $query->filterByPCTopicId(array(12, 34)); // WHERE p_c_topic_id IN (12, 34)
+     * $query->filterByPCTopicId(array('min' => 12)); // WHERE p_c_topic_id >= 12
+     * $query->filterByPCTopicId(array('max' => 12)); // WHERE p_c_topic_id <= 12
+     * </code>
+     *
+     * @see       filterByPCTopic()
+     *
+     * @param     mixed $pCTopicId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDReactionQuery The current query, for fluid interface
+     */
+    public function filterByPCTopicId($pCTopicId = null, $comparison = null)
+    {
+        if (is_array($pCTopicId)) {
+            $useMinMax = false;
+            if (isset($pCTopicId['min'])) {
+                $this->addUsingAlias(PDReactionPeer::P_C_TOPIC_ID, $pCTopicId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($pCTopicId['max'])) {
+                $this->addUsingAlias(PDReactionPeer::P_C_TOPIC_ID, $pCTopicId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PDReactionPeer::P_C_TOPIC_ID, $pCTopicId, $comparison);
     }
 
     /**
@@ -1998,6 +2051,82 @@ abstract class BasePDReactionQuery extends ModelCriteria
         return $this
             ->joinPLCountry($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'PLCountry', '\Politizr\Model\PLCountryQuery');
+    }
+
+    /**
+     * Filter the query by a related PCTopic object
+     *
+     * @param   PCTopic|PropelObjectCollection $pCTopic The related object(s) to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PDReactionQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPCTopic($pCTopic, $comparison = null)
+    {
+        if ($pCTopic instanceof PCTopic) {
+            return $this
+                ->addUsingAlias(PDReactionPeer::P_C_TOPIC_ID, $pCTopic->getId(), $comparison);
+        } elseif ($pCTopic instanceof PropelObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(PDReactionPeer::P_C_TOPIC_ID, $pCTopic->toKeyValue('PrimaryKey', 'Id'), $comparison);
+        } else {
+            throw new PropelException('filterByPCTopic() only accepts arguments of type PCTopic or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PCTopic relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PDReactionQuery The current query, for fluid interface
+     */
+    public function joinPCTopic($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PCTopic');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PCTopic');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PCTopic relation PCTopic object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PCTopicQuery A secondary query class using the current class as primary query
+     */
+    public function usePCTopicQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinPCTopic($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PCTopic', '\Politizr\Model\PCTopicQuery');
     }
 
     /**

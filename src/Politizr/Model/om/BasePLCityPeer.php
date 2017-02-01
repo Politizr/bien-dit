@@ -9,6 +9,7 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
+use Politizr\Model\PCGroupLCPeer;
 use Politizr\Model\PDDebatePeer;
 use Politizr\Model\PDReactionPeer;
 use Politizr\Model\PLCity;
@@ -518,6 +519,9 @@ abstract class BasePLCityPeer
         // Invalidate objects in PDReactionPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PDReactionPeer::clearInstancePool();
+        // Invalidate objects in PCGroupLCPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PCGroupLCPeer::clearInstancePool();
     }
 
     /**

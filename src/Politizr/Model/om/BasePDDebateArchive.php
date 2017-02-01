@@ -81,6 +81,12 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
     protected $p_l_country_id;
 
     /**
+     * The value for the p_c_topic_id field.
+     * @var        int
+     */
+    protected $p_c_topic_id;
+
+    /**
      * The value for the title field.
      * @var        string
      */
@@ -319,6 +325,17 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
     {
 
         return $this->p_l_country_id;
+    }
+
+    /**
+     * Get the [p_c_topic_id] column value.
+     *
+     * @return int
+     */
+    public function getPCTopicId()
+    {
+
+        return $this->p_c_topic_id;
     }
 
     /**
@@ -832,6 +849,27 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
 
         return $this;
     } // setPLCountryId()
+
+    /**
+     * Set the value of [p_c_topic_id] column.
+     *
+     * @param  int $v new value
+     * @return PDDebateArchive The current object (for fluent API support)
+     */
+    public function setPCTopicId($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->p_c_topic_id !== $v) {
+            $this->p_c_topic_id = $v;
+            $this->modifiedColumns[] = PDDebateArchivePeer::P_C_TOPIC_ID;
+        }
+
+
+        return $this;
+    } // setPCTopicId()
 
     /**
      * Set the value of [title] column.
@@ -1358,26 +1396,27 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
             $this->p_l_department_id = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
             $this->p_l_region_id = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
             $this->p_l_country_id = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
-            $this->title = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-            $this->file_name = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
-            $this->copyright = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
-            $this->description = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
-            $this->note_pos = ($row[$startcol + 11] !== null) ? (int) $row[$startcol + 11] : null;
-            $this->note_neg = ($row[$startcol + 12] !== null) ? (int) $row[$startcol + 12] : null;
-            $this->nb_views = ($row[$startcol + 13] !== null) ? (int) $row[$startcol + 13] : null;
-            $this->published = ($row[$startcol + 14] !== null) ? (boolean) $row[$startcol + 14] : null;
-            $this->published_at = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
-            $this->published_by = ($row[$startcol + 16] !== null) ? (string) $row[$startcol + 16] : null;
-            $this->favorite = ($row[$startcol + 17] !== null) ? (boolean) $row[$startcol + 17] : null;
-            $this->online = ($row[$startcol + 18] !== null) ? (boolean) $row[$startcol + 18] : null;
-            $this->homepage = ($row[$startcol + 19] !== null) ? (boolean) $row[$startcol + 19] : null;
-            $this->moderated = ($row[$startcol + 20] !== null) ? (boolean) $row[$startcol + 20] : null;
-            $this->moderated_partial = ($row[$startcol + 21] !== null) ? (boolean) $row[$startcol + 21] : null;
-            $this->moderated_at = ($row[$startcol + 22] !== null) ? (string) $row[$startcol + 22] : null;
-            $this->created_at = ($row[$startcol + 23] !== null) ? (string) $row[$startcol + 23] : null;
-            $this->updated_at = ($row[$startcol + 24] !== null) ? (string) $row[$startcol + 24] : null;
-            $this->slug = ($row[$startcol + 25] !== null) ? (string) $row[$startcol + 25] : null;
-            $this->archived_at = ($row[$startcol + 26] !== null) ? (string) $row[$startcol + 26] : null;
+            $this->p_c_topic_id = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
+            $this->title = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+            $this->file_name = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+            $this->copyright = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+            $this->description = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+            $this->note_pos = ($row[$startcol + 12] !== null) ? (int) $row[$startcol + 12] : null;
+            $this->note_neg = ($row[$startcol + 13] !== null) ? (int) $row[$startcol + 13] : null;
+            $this->nb_views = ($row[$startcol + 14] !== null) ? (int) $row[$startcol + 14] : null;
+            $this->published = ($row[$startcol + 15] !== null) ? (boolean) $row[$startcol + 15] : null;
+            $this->published_at = ($row[$startcol + 16] !== null) ? (string) $row[$startcol + 16] : null;
+            $this->published_by = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
+            $this->favorite = ($row[$startcol + 18] !== null) ? (boolean) $row[$startcol + 18] : null;
+            $this->online = ($row[$startcol + 19] !== null) ? (boolean) $row[$startcol + 19] : null;
+            $this->homepage = ($row[$startcol + 20] !== null) ? (boolean) $row[$startcol + 20] : null;
+            $this->moderated = ($row[$startcol + 21] !== null) ? (boolean) $row[$startcol + 21] : null;
+            $this->moderated_partial = ($row[$startcol + 22] !== null) ? (boolean) $row[$startcol + 22] : null;
+            $this->moderated_at = ($row[$startcol + 23] !== null) ? (string) $row[$startcol + 23] : null;
+            $this->created_at = ($row[$startcol + 24] !== null) ? (string) $row[$startcol + 24] : null;
+            $this->updated_at = ($row[$startcol + 25] !== null) ? (string) $row[$startcol + 25] : null;
+            $this->slug = ($row[$startcol + 26] !== null) ? (string) $row[$startcol + 26] : null;
+            $this->archived_at = ($row[$startcol + 27] !== null) ? (string) $row[$startcol + 27] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -1387,7 +1426,7 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 27; // 27 = PDDebateArchivePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 28; // 28 = PDDebateArchivePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PDDebateArchive object", $e);
@@ -1616,6 +1655,9 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PDDebateArchivePeer::P_L_COUNTRY_ID)) {
             $modifiedColumns[':p' . $index++]  = '`p_l_country_id`';
         }
+        if ($this->isColumnModified(PDDebateArchivePeer::P_C_TOPIC_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`p_c_topic_id`';
+        }
         if ($this->isColumnModified(PDDebateArchivePeer::TITLE)) {
             $modifiedColumns[':p' . $index++]  = '`title`';
         }
@@ -1707,6 +1749,9 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
                         break;
                     case '`p_l_country_id`':
                         $stmt->bindValue($identifier, $this->p_l_country_id, PDO::PARAM_INT);
+                        break;
+                    case '`p_c_topic_id`':
+                        $stmt->bindValue($identifier, $this->p_c_topic_id, PDO::PARAM_INT);
                         break;
                     case '`title`':
                         $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
@@ -1843,63 +1888,66 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
                 return $this->getPLCountryId();
                 break;
             case 7:
-                return $this->getTitle();
+                return $this->getPCTopicId();
                 break;
             case 8:
-                return $this->getFileName();
+                return $this->getTitle();
                 break;
             case 9:
-                return $this->getCopyright();
+                return $this->getFileName();
                 break;
             case 10:
-                return $this->getDescription();
+                return $this->getCopyright();
                 break;
             case 11:
-                return $this->getNotePos();
+                return $this->getDescription();
                 break;
             case 12:
-                return $this->getNoteNeg();
+                return $this->getNotePos();
                 break;
             case 13:
-                return $this->getNbViews();
+                return $this->getNoteNeg();
                 break;
             case 14:
-                return $this->getPublished();
+                return $this->getNbViews();
                 break;
             case 15:
-                return $this->getPublishedAt();
+                return $this->getPublished();
                 break;
             case 16:
-                return $this->getPublishedBy();
+                return $this->getPublishedAt();
                 break;
             case 17:
-                return $this->getFavorite();
+                return $this->getPublishedBy();
                 break;
             case 18:
-                return $this->getOnline();
+                return $this->getFavorite();
                 break;
             case 19:
-                return $this->getHomepage();
+                return $this->getOnline();
                 break;
             case 20:
-                return $this->getModerated();
+                return $this->getHomepage();
                 break;
             case 21:
-                return $this->getModeratedPartial();
+                return $this->getModerated();
                 break;
             case 22:
-                return $this->getModeratedAt();
+                return $this->getModeratedPartial();
                 break;
             case 23:
-                return $this->getCreatedAt();
+                return $this->getModeratedAt();
                 break;
             case 24:
-                return $this->getUpdatedAt();
+                return $this->getCreatedAt();
                 break;
             case 25:
-                return $this->getSlug();
+                return $this->getUpdatedAt();
                 break;
             case 26:
+                return $this->getSlug();
+                break;
+            case 27:
                 return $this->getArchivedAt();
                 break;
             default:
@@ -1937,26 +1985,27 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
             $keys[4] => $this->getPLDepartmentId(),
             $keys[5] => $this->getPLRegionId(),
             $keys[6] => $this->getPLCountryId(),
-            $keys[7] => $this->getTitle(),
-            $keys[8] => $this->getFileName(),
-            $keys[9] => $this->getCopyright(),
-            $keys[10] => $this->getDescription(),
-            $keys[11] => $this->getNotePos(),
-            $keys[12] => $this->getNoteNeg(),
-            $keys[13] => $this->getNbViews(),
-            $keys[14] => $this->getPublished(),
-            $keys[15] => $this->getPublishedAt(),
-            $keys[16] => $this->getPublishedBy(),
-            $keys[17] => $this->getFavorite(),
-            $keys[18] => $this->getOnline(),
-            $keys[19] => $this->getHomepage(),
-            $keys[20] => $this->getModerated(),
-            $keys[21] => $this->getModeratedPartial(),
-            $keys[22] => $this->getModeratedAt(),
-            $keys[23] => $this->getCreatedAt(),
-            $keys[24] => $this->getUpdatedAt(),
-            $keys[25] => $this->getSlug(),
-            $keys[26] => $this->getArchivedAt(),
+            $keys[7] => $this->getPCTopicId(),
+            $keys[8] => $this->getTitle(),
+            $keys[9] => $this->getFileName(),
+            $keys[10] => $this->getCopyright(),
+            $keys[11] => $this->getDescription(),
+            $keys[12] => $this->getNotePos(),
+            $keys[13] => $this->getNoteNeg(),
+            $keys[14] => $this->getNbViews(),
+            $keys[15] => $this->getPublished(),
+            $keys[16] => $this->getPublishedAt(),
+            $keys[17] => $this->getPublishedBy(),
+            $keys[18] => $this->getFavorite(),
+            $keys[19] => $this->getOnline(),
+            $keys[20] => $this->getHomepage(),
+            $keys[21] => $this->getModerated(),
+            $keys[22] => $this->getModeratedPartial(),
+            $keys[23] => $this->getModeratedAt(),
+            $keys[24] => $this->getCreatedAt(),
+            $keys[25] => $this->getUpdatedAt(),
+            $keys[26] => $this->getSlug(),
+            $keys[27] => $this->getArchivedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -2018,63 +2067,66 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
                 $this->setPLCountryId($value);
                 break;
             case 7:
-                $this->setTitle($value);
+                $this->setPCTopicId($value);
                 break;
             case 8:
-                $this->setFileName($value);
+                $this->setTitle($value);
                 break;
             case 9:
-                $this->setCopyright($value);
+                $this->setFileName($value);
                 break;
             case 10:
-                $this->setDescription($value);
+                $this->setCopyright($value);
                 break;
             case 11:
-                $this->setNotePos($value);
+                $this->setDescription($value);
                 break;
             case 12:
-                $this->setNoteNeg($value);
+                $this->setNotePos($value);
                 break;
             case 13:
-                $this->setNbViews($value);
+                $this->setNoteNeg($value);
                 break;
             case 14:
-                $this->setPublished($value);
+                $this->setNbViews($value);
                 break;
             case 15:
-                $this->setPublishedAt($value);
+                $this->setPublished($value);
                 break;
             case 16:
-                $this->setPublishedBy($value);
+                $this->setPublishedAt($value);
                 break;
             case 17:
-                $this->setFavorite($value);
+                $this->setPublishedBy($value);
                 break;
             case 18:
-                $this->setOnline($value);
+                $this->setFavorite($value);
                 break;
             case 19:
-                $this->setHomepage($value);
+                $this->setOnline($value);
                 break;
             case 20:
-                $this->setModerated($value);
+                $this->setHomepage($value);
                 break;
             case 21:
-                $this->setModeratedPartial($value);
+                $this->setModerated($value);
                 break;
             case 22:
-                $this->setModeratedAt($value);
+                $this->setModeratedPartial($value);
                 break;
             case 23:
-                $this->setCreatedAt($value);
+                $this->setModeratedAt($value);
                 break;
             case 24:
-                $this->setUpdatedAt($value);
+                $this->setCreatedAt($value);
                 break;
             case 25:
-                $this->setSlug($value);
+                $this->setUpdatedAt($value);
                 break;
             case 26:
+                $this->setSlug($value);
+                break;
+            case 27:
                 $this->setArchivedAt($value);
                 break;
         } // switch()
@@ -2108,26 +2160,27 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
         if (array_key_exists($keys[4], $arr)) $this->setPLDepartmentId($arr[$keys[4]]);
         if (array_key_exists($keys[5], $arr)) $this->setPLRegionId($arr[$keys[5]]);
         if (array_key_exists($keys[6], $arr)) $this->setPLCountryId($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setTitle($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setFileName($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setCopyright($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setDescription($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setNotePos($arr[$keys[11]]);
-        if (array_key_exists($keys[12], $arr)) $this->setNoteNeg($arr[$keys[12]]);
-        if (array_key_exists($keys[13], $arr)) $this->setNbViews($arr[$keys[13]]);
-        if (array_key_exists($keys[14], $arr)) $this->setPublished($arr[$keys[14]]);
-        if (array_key_exists($keys[15], $arr)) $this->setPublishedAt($arr[$keys[15]]);
-        if (array_key_exists($keys[16], $arr)) $this->setPublishedBy($arr[$keys[16]]);
-        if (array_key_exists($keys[17], $arr)) $this->setFavorite($arr[$keys[17]]);
-        if (array_key_exists($keys[18], $arr)) $this->setOnline($arr[$keys[18]]);
-        if (array_key_exists($keys[19], $arr)) $this->setHomepage($arr[$keys[19]]);
-        if (array_key_exists($keys[20], $arr)) $this->setModerated($arr[$keys[20]]);
-        if (array_key_exists($keys[21], $arr)) $this->setModeratedPartial($arr[$keys[21]]);
-        if (array_key_exists($keys[22], $arr)) $this->setModeratedAt($arr[$keys[22]]);
-        if (array_key_exists($keys[23], $arr)) $this->setCreatedAt($arr[$keys[23]]);
-        if (array_key_exists($keys[24], $arr)) $this->setUpdatedAt($arr[$keys[24]]);
-        if (array_key_exists($keys[25], $arr)) $this->setSlug($arr[$keys[25]]);
-        if (array_key_exists($keys[26], $arr)) $this->setArchivedAt($arr[$keys[26]]);
+        if (array_key_exists($keys[7], $arr)) $this->setPCTopicId($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setTitle($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setFileName($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setCopyright($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setDescription($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setNotePos($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setNoteNeg($arr[$keys[13]]);
+        if (array_key_exists($keys[14], $arr)) $this->setNbViews($arr[$keys[14]]);
+        if (array_key_exists($keys[15], $arr)) $this->setPublished($arr[$keys[15]]);
+        if (array_key_exists($keys[16], $arr)) $this->setPublishedAt($arr[$keys[16]]);
+        if (array_key_exists($keys[17], $arr)) $this->setPublishedBy($arr[$keys[17]]);
+        if (array_key_exists($keys[18], $arr)) $this->setFavorite($arr[$keys[18]]);
+        if (array_key_exists($keys[19], $arr)) $this->setOnline($arr[$keys[19]]);
+        if (array_key_exists($keys[20], $arr)) $this->setHomepage($arr[$keys[20]]);
+        if (array_key_exists($keys[21], $arr)) $this->setModerated($arr[$keys[21]]);
+        if (array_key_exists($keys[22], $arr)) $this->setModeratedPartial($arr[$keys[22]]);
+        if (array_key_exists($keys[23], $arr)) $this->setModeratedAt($arr[$keys[23]]);
+        if (array_key_exists($keys[24], $arr)) $this->setCreatedAt($arr[$keys[24]]);
+        if (array_key_exists($keys[25], $arr)) $this->setUpdatedAt($arr[$keys[25]]);
+        if (array_key_exists($keys[26], $arr)) $this->setSlug($arr[$keys[26]]);
+        if (array_key_exists($keys[27], $arr)) $this->setArchivedAt($arr[$keys[27]]);
     }
 
     /**
@@ -2146,6 +2199,7 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PDDebateArchivePeer::P_L_DEPARTMENT_ID)) $criteria->add(PDDebateArchivePeer::P_L_DEPARTMENT_ID, $this->p_l_department_id);
         if ($this->isColumnModified(PDDebateArchivePeer::P_L_REGION_ID)) $criteria->add(PDDebateArchivePeer::P_L_REGION_ID, $this->p_l_region_id);
         if ($this->isColumnModified(PDDebateArchivePeer::P_L_COUNTRY_ID)) $criteria->add(PDDebateArchivePeer::P_L_COUNTRY_ID, $this->p_l_country_id);
+        if ($this->isColumnModified(PDDebateArchivePeer::P_C_TOPIC_ID)) $criteria->add(PDDebateArchivePeer::P_C_TOPIC_ID, $this->p_c_topic_id);
         if ($this->isColumnModified(PDDebateArchivePeer::TITLE)) $criteria->add(PDDebateArchivePeer::TITLE, $this->title);
         if ($this->isColumnModified(PDDebateArchivePeer::FILE_NAME)) $criteria->add(PDDebateArchivePeer::FILE_NAME, $this->file_name);
         if ($this->isColumnModified(PDDebateArchivePeer::COPYRIGHT)) $criteria->add(PDDebateArchivePeer::COPYRIGHT, $this->copyright);
@@ -2235,6 +2289,7 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
         $copyObj->setPLDepartmentId($this->getPLDepartmentId());
         $copyObj->setPLRegionId($this->getPLRegionId());
         $copyObj->setPLCountryId($this->getPLCountryId());
+        $copyObj->setPCTopicId($this->getPCTopicId());
         $copyObj->setTitle($this->getTitle());
         $copyObj->setFileName($this->getFileName());
         $copyObj->setCopyright($this->getCopyright());
@@ -2313,6 +2368,7 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
         $this->p_l_department_id = null;
         $this->p_l_region_id = null;
         $this->p_l_country_id = null;
+        $this->p_c_topic_id = null;
         $this->title = null;
         $this->file_name = null;
         $this->copyright = null;
