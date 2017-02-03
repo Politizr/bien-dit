@@ -47,7 +47,7 @@
                     {{ reactionTagsEdit(reaction, constant('Politizr\\Constant\\TagConstants::TAG_TYPE_THEME'), 1, true) }}
                 </div>
             </div>
-            {{ app.user | isAuthorizedToPublishDebate(reaction.uuid) }}
+            {{ app.user | isAuthorizedToPublishReaction(reaction.uuid) }}
             <div class="modalPublishBg"></div>
         </div>
     </div>
