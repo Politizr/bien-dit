@@ -111,7 +111,7 @@ $("body").on("click", "[action='followDebate']", function(e) {
             refreshTimeline();
             stickySidebar();
         }
-    });    
+    });
 });
 
 // follow / unfollow user

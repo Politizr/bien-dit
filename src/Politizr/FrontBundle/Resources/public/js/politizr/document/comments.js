@@ -6,10 +6,10 @@ $(function() {
 
     if(window.location.hash) {
         var paragraphId = window.location.hash.substr(3);
-        console.log(paragraphId);
+        // console.log(paragraphId);
 
         var commentMode = $('#commentMode').attr('mode');
-        console.log(commentMode);
+        // console.log(commentMode);
         if (commentMode === 'public') {
             $("[action='createAccountToComment']").trigger("click");
         } else {
@@ -25,20 +25,20 @@ $(function() {
 
 // public mode
 $("body").on("click", "[action='createAccountToComment']", function() {
-    console.log('*** click comments');
+    // console.log('*** click comments');
 
     return modalCreateAccountToComment();
 });
 
 $("body").on("click", ".commentDescriptionHook", function() {
-    console.log('*** click commentDescriptionHook');
+    // console.log('*** click commentDescriptionHook');
 
     return modalCreateAccountToComment();
 });
 
 // open paragraph comments
 $("body").on("click", "[action='comments']", function() {
-    console.log('*** click comments');
+    // console.log('*** click comments');
 
     clearAllComments();
     context = $(this).closest('.paragraphHolder');
@@ -54,7 +54,7 @@ $("body").on("click", "[action='comments']", function() {
 });
 
 $("body").on("click", "[action='globalComments']", function() {
-    console.log('*** click globalComments');
+    // console.log('*** click globalComments');
 
     context = $(this).closest('.paragraphHolder');
     if (context.find('.commentsContent').is(':visible')) {
@@ -72,20 +72,20 @@ $("body").on("click", "[action='globalComments']", function() {
 
 // close comments
 $("body").on("click", "[action='closeComments']", function() {
-    console.log('*** click closeComments');
+    // console.log('*** click closeComments');
     clearAllComments();
 });
 
 // création d'un commentaire
 $("body").on("click", "input[action='createComment']", function(e) {
-    console.log('*** click createComment');
+    // console.log('*** click createComment');
     
     var context = $(this).closest('.paragraphHolder');
 
     var uuid = $(this).closest('.formCommentNew').find("input[name='uuid']").val();
     var type = $(this).closest('.formCommentNew').find("input[name='type']").val();
-    console.log(uuid);
-    console.log(type);
+    // console.log(uuid);
+    // console.log(type);
 
     $.when(
         createComment(context)
@@ -99,7 +99,7 @@ $("body").on("click", "input[action='createComment']", function(e) {
  * Modal create account to comment
  */
 function modalCreateAccountToComment() {
-    console.log('*** modalCreateAccountToComment');
+    // console.log('*** modalCreateAccountToComment');
 
     $('body').addClass('noScroll');
 
@@ -142,15 +142,15 @@ function clearAllComments()
  */
 function loadParagraphContent(context)
 {
-    console.log('*** loadParagraphContent');
+    // console.log('*** loadParagraphContent');
 
     var uuid = context.attr('uuid');
     var type = context.attr('type');
     var noParagraph = context.attr('noParagraph');
 
-    console.log(uuid);
-    console.log(type);
-    console.log(noParagraph);
+    // console.log(uuid);
+    // console.log(type);
+    // console.log(noParagraph);
 
     var localLoader = context.find('.ajaxLoader').first();
     var targetElement = context.find('.commentsContent').first();
@@ -194,13 +194,13 @@ function loadParagraphContent(context)
  */
 function createComment(context)
 {
-    console.log('*** createComment');
+    // console.log('*** createComment');
 
     var localLoader = context.find('.formCommentNew').find('.ajaxLoader').first();
     var targetElement = context.find('.commentsContent').first();
 
     var textCount = context.find('.textCount').text();
-    console.log(textCount);
+    // console.log(textCount);
 
     if (textCount > 495 || textCount < 0) {
         if (textCount > 495) {
@@ -248,7 +248,7 @@ function createComment(context)
  * Character counting for comment
  */
 function commentTextCounter() {
-    console.log('*** commentTextCounter');
+    // console.log('*** commentTextCounter');
 
     $('#comment_description').textcounter({
         type                     : "character",            // "character" or "word"

@@ -163,14 +163,16 @@ class XhrDocument
             $this->userManager->createUserFollowDebate($user->getId(), $debate->getId());
 
             // Events
+            // upd > no emails events
             $event = new GenericEvent($debate, array('user_id' => $user->getId(),));
             $dispatcher = $this->eventDispatcher->dispatch('r_debate_follow', $event);
-            $event = new GenericEvent($debate, array('author_user_id' => $user->getId(),));
-            $dispatcher = $this->eventDispatcher->dispatch('n_debate_follow', $event);
+            // $event = new GenericEvent($debate, array('author_user_id' => $user->getId(),));
+            // $dispatcher = $this->eventDispatcher->dispatch('n_debate_follow', $event);
         } elseif ('unfollow' == $way) {
             $this->userManager->deleteUserFollowDebate($user->getId(), $debate->getId());
 
             // Events
+            // upd > no events reputation nor emails because of "followRelativeDebate" concepts
             $event = new GenericEvent($debate, array('user_id' => $user->getId(),));
             $dispatcher = $this->eventDispatcher->dispatch('r_debate_unfollow', $event);
         } else {
@@ -229,7 +231,8 @@ class XhrDocument
 
         $this->userManager->createUserFollowDebate($user->getId(), $debate->getId());
 
-        // Events > upd only reputation
+        // Events
+        // upd > no emails events
         $event = new GenericEvent($debate, array('user_id' => $user->getId(),));
         $dispatcher = $this->eventDispatcher->dispatch('r_debate_follow', $event);
         // $event = new GenericEvent($debate, array('author_user_id' => $user->getId(),));
@@ -278,7 +281,19 @@ class XhrDocument
         // related to issue #178 > control user <> subject
         $canUserNoteDocument = $this->documentService->canUserNoteDocument($user, $subject, $way);
         if (!$canUserNoteDocument) {
-            throw new InconsistentDataException('You can\'t note this publication.');
+            // throw new InconsistentDataException('You can\'t note this publication.');
+
+            // Rendering
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:Reputation:_noteAction.html.twig',
+                array(
+                    'subject' => $subject
+                )
+            );
+
+            return array(
+                'html' => $html
+            );
         }
 
         // update note
