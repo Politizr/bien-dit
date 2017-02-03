@@ -5,10 +5,11 @@
                 <div class="footerColumnTitle">Pour en savoir plus</div>
                 <a href="{{ path('Concept') }}">Le concept</a>
                 <a href="{{ path('WhoWeAre') }}">Qui sommes-nous ?</a>
-                <a href="http://goo.gl/jp16az" target="_blank">Goodies</a>
-                {# <a href="#">La charte Politizr</a> #}
-                {# <a href="#">Espace presse</a> #}
-                <a class="publicFooterHelpLink" href="http://politizr.help" target="_blank"><i class="icon-info"></i>Support et assistance</a>       
+
+                <a href="{{ path('LandingPage', { 'theme': 'civic-tech'}) }}">Civic Tech</a>
+                <a href="{{ path('LandingPage', { 'theme': 'dialogue-citoyen'}) }}">Dialogue Citoyen</a>
+                <a href="{{ path('LandingPage', { 'theme': 'democratie-locale'}) }}">Démocratie Locale</a>
+                <a href="{{ path('LandingPage', { 'theme': 'democratie-participative'}) }}">Démocratie Participative</a>
             </div>
             
             <div class="footerColumn">
@@ -17,6 +18,8 @@
                 <div id="publicPolitizrPhone"><img src="{{ asset('bundles/politizrfront/images/f-phone.svg') }}">05 64 88 01 71</div>
                 <span>16 avenue de Dalou,<br>
                 09120 Varilhes - France</span>
+
+                <a class="publicFooterHelpLink" href="http://politizr.help" target="_blank"><i class="icon-info"></i>Support et assistance</a>       
             </div>
             
             <div id="publicFooterBadges"></div>

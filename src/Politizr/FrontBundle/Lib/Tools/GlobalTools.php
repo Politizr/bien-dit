@@ -18,6 +18,7 @@ use Politizr\FrontBundle\Form\Type\PUMandateType;
 
 use Politizr\Constant\QualificationConstants;
 
+use Politizr\Model\PUser;
 use Politizr\Model\PUMandateQuery;
 
 use StudioEcho\Lib\StudioEchoUtils;
@@ -750,10 +751,11 @@ class GlobalTools
      * Check if Politizr is in public or private mode
      *
      * @param $visitor PUser current connected user
-     * @param $mode public|private|we
+     * @param DateTime Document publication date
+     * @param $mode public|private|we|<nb of days>
      * @return boolean
      */
-    public function isPrivateMode($visitor, $mode) {
+    public function isPrivateMode($visitor, \DateTime $publishedAt, $mode) {
         $private = true;
         if ($visitor) {
             $private = false;
@@ -762,6 +764,12 @@ class GlobalTools
         } elseif ($mode == 'we') {
             $dayOfWeek = date('w');
             if ($dayOfWeek == 0 || $dayOfWeek == 6) {
+                $private = false;
+            }
+        } elseif (is_int($mode)) {
+            $now = new \DateTime();
+            $diff = $now->diff($publishedAt);
+            if ($diff->days > $mode) {
                 $private = false;
             }
         }

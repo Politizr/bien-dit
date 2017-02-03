@@ -45,5 +45,5 @@ parameters:
     idcheck_login: 123
     idcheck_password: 123
 
-    # Public content: public | private | we
+    # Public content: public | private | we | 30
     private_mode: public
