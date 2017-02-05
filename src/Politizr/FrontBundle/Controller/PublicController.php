@@ -195,7 +195,11 @@ class PublicController extends Controller
                 ->find();
             $template = 'presidentielle.html.twig';
         } elseif ($theme == 'charlotte-marchandise-franquet')  {
-            $documents = $documentsQuery
+            $documents = PDDebateQuery::create()
+                ->limit(12)
+                ->online()
+                ->orderByPublishedAt('desc')
+                // ->orderByMostViews()
                 ->filterByPUserId(315)
                 ->find();
             $template = 'charlotte.html.twig';

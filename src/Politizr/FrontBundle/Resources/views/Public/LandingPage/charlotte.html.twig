@@ -35,11 +35,11 @@
             <h2>Sa vie d'élue et sa campagne présidentielle</h2>
             
             {% for document in documents %}
-                {% if loop.first or loop.index0 is divisible by(3) %}
+                {% if loop.first or loop.index0 is divisible by(4) %}
                     <div class="cardColumn">
                 {% endif %}
                     {% include 'PolitizrFrontBundle:Document:_cardPublic.html.twig' %}
-                {% if loop.last or loop.index is divisible by(3) %}
+                {% if loop.last or loop.index is divisible by(4) %}
                     </div>
                 {% endif %}
             {% endfor %}
