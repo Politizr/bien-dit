@@ -160,6 +160,7 @@ builders:
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
                     "En ligne":                 [ online ]
+                    "Notification":             [ block_notifications ]
                     "Mise en avant":            [ homepage ]
                     "Création":                 [ [ created_at, updated_at ] ]
             fields:
@@ -187,6 +188,13 @@ builders:
                     grid_class:                 "col-md-12"
                     formType:                   hidden
                     dbType:                     VARCHAR
+                    addFormOptions:
+                        mapped:                 false
+                block_notifications:
+                    label:                      "Envoi des notifications"
+                    grid_class:                 "col-md-12"
+                    formType:                   checkbox
+                    dbType:                     INTEGER
                     addFormOptions:
                         mapped:                 false
                 block_loc:
