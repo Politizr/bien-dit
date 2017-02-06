@@ -38,6 +38,12 @@
 {% block javascriptFooter %}
     {{ parent() }}
 
+    {% if (app.environment == 'prod') %}
+        <script type="text/javascript">
+            mixpanel.track("Publications et users pour le parti {{ organization.title }}");
+        </script>
+    {% endif %}
+
     {% javascripts
         '@PolitizrFrontBundle/Resources/public/js/politizr/organization/listing.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/document/listing.js'

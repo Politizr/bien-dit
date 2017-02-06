@@ -97,6 +97,12 @@
 {% block javascriptFooter %}
     {{ parent() }}
 
+    {% if (app.environment == 'prod') %}
+        <script type="text/javascript">
+            mixpanel.track("LP Démocratie locale");
+        </script>
+    {% endif %}
+
     {% javascripts
         '@PolitizrFrontBundle/Resources/public/js/politizr/pages/landingPage.js'
         filter='uglifyjs2' %}

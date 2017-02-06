@@ -121,6 +121,12 @@
 {% block javascriptFooter %}
     {{ parent() }}
 
+    {% if (app.environment == 'prod') %}
+        <script type="text/javascript">
+            mixpanel.track("Édition d'un sujet");
+        </script>
+    {% endif %}
+
     {% javascripts
         '@PolitizrFrontBundle/Resources/public/js/smoke.min.js'
         '@PolitizrFrontBundle/Resources/public/js/medium-editor.min.js'

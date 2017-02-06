@@ -53,7 +53,7 @@
 {% block javascriptFooter %}
     {{ parent() }}
 
-    {% if app.environment == 'prod' %}
+    {% if (app.environment == 'prod') %}
         <script type="text/javascript">
             mixpanel.track("Accueil connecté");
         </script>
