@@ -229,6 +229,11 @@ class XhrDocument
             throw new InconsistentDataException(sprintf('Relative Debate %s not found', $uuid));
         }
 
+        // No link if user is author
+        if ($debate->getPUserId() == $user->getId()) {
+            return true;
+        }
+
         $this->userManager->createUserFollowDebate($user->getId(), $debate->getId());
 
         // Events
