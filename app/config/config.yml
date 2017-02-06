@@ -318,87 +318,87 @@ liip_imagine:
 
         # FRONT / GENERAL
         facebook_share:
-            quality:              100
+            quality:              80
             filters:
                 thumbnail:         { size: [1200, 630], mode: inbound }
 
         twitter_share:
-            quality:              100
+            quality:              80
             filters:
                 thumbnail:         { size: [500, 500], mode: inbound }
 
         debate_header:
-            quality:              100
+            quality:              80
             filters:
                 relative_resize:  { widen: 700 }
 
         debate_half_header:
-            quality:              100
+            quality:              80
             filters:
                 relative_resize:  { widen: 300 }
 
         debate_list:
-            quality:              100
+            quality:              80
             filters:
                 relative_resize:  { widen: 700 }
 
         debate_timeline:
-            quality:              100
+            quality:              80
             filters:
                 relative_resize:  { widen: 600 }
 
         debate_abuse:
-            quality:              100
+            quality:              80
             filters:
                 relative_resize:  { widen: 200 }
 
         reaction_header:
-            quality:              100
+            quality:              80
             filters:
                 relative_resize:  { widen: 700 }
 
         user_bio_back:
-            quality:              100
+            quality:              80
             filters:
                 relative_resize:  { widen: 700 }
 
         user_bio:
-            quality:              100
+            quality:              90
             filters:
                 relative_resize:  { widen: 60 }
 
         user_15:
-            quality:              100
+            quality:              90
             filters:
                 relative_resize:  { widen: 20 }
 
         user_30:
-            quality:              100
+            quality:              90
             filters:
                 relative_resize:  { widen: 50 }
 
         user_40:
-            quality:              100
+            quality:              90
             filters:
                 relative_resize:  { widen: 60 }
 
         user_60:
-            quality:              100
+            quality:              90
             filters:
                 relative_resize:  { widen: 80 }
 
         user_follower:
-            quality:              100
+            quality:              90
             filters:
                 relative_resize:  { widen: 40 }
 
         organization_mini:
-            quality:              100
+            quality:              90
             filters:
                 relative_resize:  { widen: 30 }
 
         organization_detail:
-            quality:              100
+            quality:              90
             filters:
                 relative_resize:  { heighten: 80 }
 
