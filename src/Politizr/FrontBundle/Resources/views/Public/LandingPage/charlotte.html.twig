@@ -2,8 +2,8 @@
 {% extends layout %}
 {% set headerRight = false %}
 
-{% set metaTitle = 'Les publications de Charlotte Marchandise' %}
-{% set metaDescription = 'Retrouvez toutes les publications de Charlotte Marchandise, candidate à la primaire citoyenne de LaPrimaire.org et adjointe à la Mairie de Rennes.' %}
+{% set metaTitle = 'Charlotte Marchandise Présidentielle 2017' %}
+{% set metaDescription = 'Suivez la campagne présidentielle 2017 de Charlotte Marchandise sur Politizr, et posez-lui vos questions.' %}
 
 {% block title %}{{ metaTitle }} - {{ parent() }}{% endblock title %}
 {% block description %}{{ metaDescription }}{% endblock description %}
@@ -19,40 +19,43 @@
 {% block main %}
     <div id="lpHeader">
         <div class="center">
-            <h1>Les publications de Charlotte Marchandise sont sur Politizr</h1>
+            <h1>Suivez la présidentielle de Charlotte Marchandise sur Politizr</h1>
             <h2>
-                Venez découvrir son programme et discuter avec Charlotte Marchandise-Franquet, candidate à l'élection présidentielle 2017 désignée par <a href="http://laprimaire.org" target="_blank">LaPrimaire.org</a>.
+                Venez découvrir son programme et échanger avec Charlotte Marchandise, candidate à l'élection présidentielle 2017 désignée par <a href="http://laprimaire.org" target="_blank">LaPrimaire.org</a>.
             </h2>
             <div class="centerCTA">
                 <a href="{{ path('InscriptionChoice') }}">Inscription</a>
+                <br/><br/><i>L'inscription est gratuite (et le restera toujours!)</i>
+                <br/><br/>
             </div>
         </div>
     </div>
 
+    <div id="profileSelection">
+        <div class="center">
+            <h1>Posez vos questions, Charlotte Marchandise vous répond!</h1>
+            <h2><a href="{{ path('InscriptionChoice') }}">Inscrivez-vous</a> et créez un nouveau sujet en utilisant la thématique <a href="{{ path('ListingByTag', {'slug' : 'charlotte-2017'}) }}">"Charlotte 2017"</a><br>
+                OU<br/>
+            <a href="mailto: support@politizr.com?subject=Question Charlotte 2017">Envoyez directement votre question au support Politizr</a></h2>
+        </div>
+    </div>
+    
     <div id="postSelection">
         <div class="center">
             <h1>Les publications les plus récentes</h1>
-            <h2>Retrouvez les publications autour de sa campagne présidentielle et de sa vie d'élue</h2>
+            <h2>Retrouvez les publications autour de sa campagne présidentielle</h2>
             
             {% for document in documents %}
-                {% if loop.first or loop.index0 is divisible by(4) %}
+                {% if loop.first or loop.index0 is divisible by(3) %}
                     <div class="cardColumn">
                 {% endif %}
                     {% include 'PolitizrFrontBundle:Document:_cardPublic.html.twig' %}
-                {% if loop.last or loop.index is divisible by(4) %}
+                {% if loop.last or loop.index is divisible by(3) %}
                     </div>
                 {% endif %}
             {% endfor %}
             
-            <div id="morePosts"><a href="{{ path('UserDetail', {'slug' : 'charlotte-marchandise-franquet'}) }}">Toutes les publications de Charlotte Marchandise-Franquet</a></div>
-        </div>
-    </div>
-    
-    <div id="profileSelection">
-        <div class="center">
-            <h1>Rejoignez la communauté Politizr</h1>
-            <h2>Citoyen-nes ou élu-es de toute la France suivent l'actualité de la CivicTech sur Politizr:<br>
-            <a href="{{ path('InscriptionChoice') }}">inscrivez-vous et participez aux débats!</a></h2>
+            <div id="morePosts"><a href="{{ path('UserDetail', {'slug' : 'charlotte-marchandise'}) }}">Toutes les publications de Charlotte Marchandise</a></div>
         </div>
     </div>
     
@@ -61,11 +64,12 @@
             <div id="bgBlockMarianne">
                 <div id="marianne"></div>
                 <div class="conceptCol conceptLeftCol">
-                    Politizr est un acteur français de la <a href="https://fr.wikipedia.org/wiki/Civic_tech" target="_blank"><b>Civic Tech</b></a>, ou technologie civique, qui représente l’ensemble des procédés, outils et technologies qui permettent d’<b>améliorer le système politique</b>.
+                    Politizr est un acteur français de la <b>Civic Tech</b> et propose un <b>service gratuit</b> pour favoriser le dialogue entre élu-e-s et citoyen-ne-s.<br><br>
+                    <b>Vous êtes candidat-e aux légistatives 2017? <a href="mailto: support@politizr.com?subject=Offre candidat législative">Contactez-nous</a> pour découvrir nos services!</b>
                 </div>
                 
                 <div class="conceptCol conceptRightCol">
-                    Nous travaillons à améliorer la <b>démocratie représentative</b> en proposant un espace de discussion qui favorise les <b>échanges structurées et argumentées</b> dans un temps long propice à la qualité du débat.
+                    Nous améliorons la <b>démocratie représentative</b> en proposant un espace de discussion qui favorise les <b>échanges structurées et argumentées</b> entre citoyen-ne-s et élu-e-s sur tous les sujets de société et de la vie quotidienne.
                 </div>
             </div>
         </div>
@@ -73,7 +77,8 @@
     
     <div id="blockGraphAssembly">
         <div class="center centerCTA">
-            <a href="{{ path('InscriptionChoice') }}">Créer un compte</a>
+            <a href="{{ path('InscriptionChoice') }}">Inscription</a>
+            <br/><br/><i>L'inscription est gratuite (et le restera toujours!)</i>
         </div>
     </div>
     

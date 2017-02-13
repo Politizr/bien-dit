@@ -194,11 +194,16 @@ class PublicController extends Controller
                 ->endUse()
                 ->find();
             $template = 'presidentielle.html.twig';
-        } elseif ($theme == 'charlotte-marchandise-franquet')  {
+        } elseif ($theme == 'charlotte-marchandise')  {
             $documents = PDDebateQuery::create()
                 ->limit(12)
                 ->online()
                 ->orderByPublishedAt('desc')
+                ->usePDDTaggedTQuery()
+                    ->usePTagQuery()
+                        ->filterBySlug('presidentielle-2017')
+                    ->endUse()
+                ->endUse()
                 // ->orderByMostViews()
                 ->filterByPUserId(315)
                 ->find();

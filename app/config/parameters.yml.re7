@@ -45,3 +45,9 @@ parameters:
     idcheck_wsdl_url: ***
     idcheck_login: ***
     idcheck_password: ***
+
+    # Public content: public | private | we | 30
+    private_mode: private
+
+    public_user_ids: [ 3, 315 ]
+    

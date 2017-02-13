@@ -18,6 +18,7 @@ use Politizr\FrontBundle\Form\Type\PUMandateType;
 
 use Politizr\Constant\QualificationConstants;
 
+use Politizr\Model\PDocumentInterface;
 use Politizr\Model\PUser;
 use Politizr\Model\PUMandateQuery;
 
@@ -751,13 +752,18 @@ class GlobalTools
      * Check if Politizr is in public or private mode
      *
      * @param $visitor PUser current connected user
-     * @param DateTime Document publication date
+     * @param PDocumentInterface Document
      * @param $mode public|private|we|<nb of days>
      * @return boolean
      */
-    public function isPrivateMode($visitor, \DateTime $publishedAt, $mode) {
+    public function isPrivateMode($visitor, PDocumentInterface $document, $mode, $userIds) {
         $private = true;
+        $publishedAt = $document->getPublishedAt();
+        $docUserId =  $document->getPUserId();
+
         if ($visitor) {
+            $private = false;
+        } elseif (in_array($docUserId, $userIds)) {
             $private = false;
         } elseif ($mode == 'public') {
             $private = false;

@@ -119,7 +119,7 @@ class DocumentController extends Controller
         }
 
         // Cut text if user not logged and content setted as not public
-        $private = $this->get('politizr.tools.global')->isPrivateMode($visitor, $debate->getPublishedAt(), $this->getParameter('private_mode'));
+        $private = $this->get('politizr.tools.global')->isPrivateMode($visitor, $debate, $this->getParameter('private_mode'), $this->getParameter('public_user_ids'));
         $description = $debate->getDescription();
         if ($private) {
             $description = $this->get('politizr.tools.global')->truncate($description, 800, ['html' => true]);
@@ -195,7 +195,7 @@ class DocumentController extends Controller
         }
 
         // Cut text if user not logged
-        // $private = $this->get('politizr.tools.global')->isPrivateMode($visitor, $reaction->getPublishedAt(), $this->getParameter('private_mode'));
+        // $private = $this->get('politizr.tools.global')->isPrivateMode($visitor, $reaction, $this->getParameter('private_mode'), $this->getParameter('public_user_ids'));
         $private = $visitor?false:true;
         $description = $reaction->getDescription();
         if ($private) {

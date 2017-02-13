@@ -47,3 +47,6 @@ parameters:
 
     # Public content: public | private | we | 30
     private_mode: public
+
+    public_user_ids: [ 3, 315 ]
+    
