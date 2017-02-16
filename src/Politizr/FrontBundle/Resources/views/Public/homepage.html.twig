@@ -42,18 +42,18 @@
     <div id="videoFooter">
         <div class="center">
             <div id="yellowBlock">
-                <span>Politizr est une plateforme indépendante et neutre permettant aux <b>élu-e-s</b> de débattre publiquement des sujets proposés par leurs <b>concitoyen-ne-s</b>.</span>
+                <span>Politizr est un espace indépendant et neutre permettant aux <b>élu-e-s</b> de discuter publiquement des sujets proposés par leurs <b>concitoyen-ne-s</b>.</span>
                 <a href="{{ path('InscriptionChoice') }}">Exprimez-vous et lancez un débat</a>
             </div>
             <div id="blueBlock">
-                <span>Des débats politiques<br>de proximité <b>aux quatre<br>coins de la France !</b></span>
+                <span>Des échanges entre <br>citoyen-ne-s et élu-e-s aux<b><br>quatre coins de la France !</b></span>
             </div>
         </div>
     </div>
     <div id="postSelection">
         <div class="center">
             <h1>Les discussions en cours</h1>
-            <h2>Parce que le débat est l'essence de la démocratie!</h2>
+            <h2>Venez exprimer votre point de vue sur votre vie quotidienne</h2>
             
             {% for document in documents %}
                 {% if loop.first or loop.index0 is divisible by(3) %}
@@ -72,7 +72,7 @@
     <div id="profileSelection">
         <div class="center">
             <h1>Rejoignez la communauté Politizr</h1>
-            <h2>Citoyen-nes ou élu-es de toute la France partagent leurs points de vue en toute transparence sur la plateforme:<br>
+            <h2>Citoyen-ne-s ou élu-e-s de toute la France partagent leurs points de vue en toute transparence:<br>
             <a href="{{ path('InscriptionChoice') }}">inscrivez-vous et participez aux débats!</a></h2>
             
             {% for user in users %}
