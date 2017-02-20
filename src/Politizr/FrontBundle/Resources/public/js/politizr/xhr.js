@@ -162,6 +162,10 @@ var ROUTE_BUBBLE_TAG = 'bubble/tag';
 // LOCALIZATION
 var ROUTE_CITY_LISTING = 'villes/listing';
 
+// PUBLIC
+var ROUTE_PUBLIC_DIRECT_MESSAGE = 'direct/message';
+
+
 // ******************************************************** //
 //                  JS FUNCTION KEYS
 // ******************************************************** //

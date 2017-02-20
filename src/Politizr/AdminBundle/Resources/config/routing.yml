@@ -137,6 +137,11 @@ Politizr_AdminBundle_PDRComment:
     type:     admingenerator
     prefix:   /PDRComment
 
+Politizr_AdminBundle_PDDirect:
+    resource: "@PolitizrAdminBundle/Controller/PDDirect/"
+    type:     admingenerator
+    prefix:   /PDDirect
+
 
 # Tags
 Politizr_AdminBundle_PTag:

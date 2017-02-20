@@ -1170,7 +1170,18 @@
         </foreign-key>
     </table>
 
+    <table name="p_d_direct">
+        <behavior name="timestampable" />
+        <behavior name="archivable" />
 
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+
+        <column name="name" type="varchar" size="250" />
+        <column name="city" type="varchar" size="250" />
+        <column name="email" type="varchar" size="250" />
+        
+        <column name="description" type="longvarchar" />
+    </table>
 
 
     <table name="p_m_moderation_type">

@@ -4,7 +4,9 @@ services:
         arguments:
         arguments:
             - @security.token_storage
+            - @event_dispatcher
             - @templating
+            - @form.factory
             - @logger
 
     politizr.xhr.document:

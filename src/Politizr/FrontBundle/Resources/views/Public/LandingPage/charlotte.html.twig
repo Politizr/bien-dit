@@ -34,9 +34,27 @@
     <div id="profileSelection">
         <div class="center">
             <h1>Posez vos questions, Charlotte Marchandise vous répond!</h1>
-            <h2><a href="{{ path('InscriptionChoice') }}">Inscrivez-vous</a> et créez un nouveau sujet en utilisant la thématique <a href="{{ path('ListingByTag', {'slug' : 'charlotte-2017'}) }}">"Charlotte 2017"</a><br>
-                OU<br/>
-            <a href="mailto: support@politizr.com?subject=Question Charlotte 2017">Envoyez directement votre question au support Politizr</a></h2>
+
+            <div class="formBlock withLoaderInside">
+                {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+
+                <form name="directMessage" id="formDirectMessage">
+                    {{ form_errors(form) }}
+
+                    {{ form_row(form.name, { 'attr': { 'placeholder': 'Prénom et Nom' }}) }}
+                    {{ form_row(form.city, { 'attr': { 'placeholder': 'Département et Ville' }}) }}
+                    {{ form_row(form.email, { 'attr': { 'placeholder': 'Email' }}) }}
+                    {{ form_row(form.description, { 'attr': { 'placeholder': 'Votre question' }}) }}
+
+                    {{ form_rest(form) }}
+                    <button type="button" action="submitDirectMessage">
+                        Envoyer
+                    </button>
+                </form>
+            </div>
+            <div class="morePosts">
+                Consultez les <a href="{{ path('ListingByTag', {'slug' : 'charlotte-2017'}) }}">questions</a> posées.
+            </div>
         </div>
     </div>
     
@@ -77,6 +95,8 @@
     
     <div id="blockGraphAssembly">
         <div class="center centerCTA">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/GTfnBdXoN34" frameborder="0" allowfullscreen></iframe>
+            <br/>
             <a href="{{ path('InscriptionChoice') }}">Inscription</a>
             <br/><br/><i>L'inscription est gratuite (et le restera toujours!)</i>
         </div>

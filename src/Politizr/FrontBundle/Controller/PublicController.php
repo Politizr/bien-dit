@@ -10,11 +10,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Politizr\Constant\ListingConstants;
 
+use Politizr\Model\PDDirect;
+
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PTagQuery;
 use Politizr\Model\PQOrganizationQuery;
+
+use Politizr\FrontBundle\Form\Type\PDDirectType;
 
 use Eko\FeedBundle\Field\Item\MediaItemField;
 
@@ -62,6 +66,7 @@ class PublicController extends Controller
 
         $documents = null;
         $users = null;
+        $form = null;
 
         $documentsQuery = PDDebateQuery::create()
             ->limit(9)
@@ -195,6 +200,9 @@ class PublicController extends Controller
                 ->find();
             $template = 'presidentielle.html.twig';
         } elseif ($theme == 'charlotte-marchandise')  {
+            $directMessage = new PDDirect();
+            $form = $this->createForm(new PDDirectType(), $directMessage);
+
             $documents = PDDebateQuery::create()
                 ->limit(12)
                 ->online()
@@ -215,6 +223,7 @@ class PublicController extends Controller
         return $this->render('PolitizrFrontBundle:Public\LandingPage:'.$template, array(
             'documents' => $documents,
             'users' => $users,
+            'form' => $form?$form->createView():null,
         ));
     }
 

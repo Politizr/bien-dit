@@ -171,6 +171,8 @@ class XhrConstants
     // LOCALIZATION
     const ROUTE_CITY_LISTING = 'villes/listing';
 
+    // PUBLIC
+    const ROUTE_PUBLIC_DIRECT_MESSAGE = 'direct/message';
 
     // ******************************************************** //
     //                  JS FUNCTION KEYS

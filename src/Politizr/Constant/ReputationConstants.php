@@ -272,7 +272,7 @@ class ReputationConstants
             ReputationConstants::ACTION_ID_U_AUTHOR_USER_FOLLOW,
             ReputationConstants::ACTION_ID_U_AUTHOR_USER_UNFOLLOW,
             ReputationConstants::ACTION_ID_U_TARGET_USER_FOLLOW,
-            ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_FOLLOW,
+            // ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_FOLLOW,
             ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_UNFOLLOW,
         ];
     }

@@ -63,6 +63,11 @@ class AdminMenu extends AdmingeneratorMenuBuilder
             'Réponse',
             'Politizr_AdminBundle_PDReaction_list'
         );
+        $this->addLinkRoute(
+            $reputation,
+            'Message direct',
+            'Politizr_AdminBundle_PDDirect_list'
+        );
 
 
         // Commentaires

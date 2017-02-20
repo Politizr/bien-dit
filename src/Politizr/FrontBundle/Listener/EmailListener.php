@@ -349,4 +349,49 @@ class EmailListener
             throw new SendEmailException($e->getMessage(), $e);
         }
     }
+
+
+    /**
+     * Direct message email
+     *
+     * @param GenericEvent
+     */
+    public function onDirectMessageEmail(GenericEvent $event)
+    {
+        // $this->logger->info('*** onDirectMessageEmail');
+
+        $directMessage = $event->getSubject();
+        try {
+            $htmlBody = $this->templating->render(
+                'PolitizrFrontBundle:Email:directMessage.html.twig',
+                array(
+                    'directMessage' => $directMessage,
+                )
+            );
+
+            $message = \Swift_Message::newInstance()
+                    ->setSubject('Message direct')
+                    ->setFrom(array($this->supportEmail => 'Support@Politizr'))
+                    ->setTo(array($this->supportEmail => 'Support@Politizr'))
+                    // ->setBcc(array('lionel@politizr.com'))
+                    ->setBody($htmlBody, 'text/html', 'utf-8')
+            ;
+            $message->getHeaders()->addTextHeader('X-CMail-GroupName', 'DirectMessage');
+
+            // Envoi email
+            $failedRecipients = array();
+            $send = $this->mailer->send($message, $failedRecipients);
+
+            // $this->logger->info('send = '.print_r($send, true));
+            if (!$send) {
+                throw new \Exception('email non envoyé - code retour = '.$send.' - adresse(s) en échec = '.print_r($failedRecipients, true));
+            }
+        } catch (\Exception $e) {
+            if (null !== $this->logger) {
+                $this->logger->err('Exception - message = '.$e->getMessage());
+            }
+            
+            throw new SendEmailException($e->getMessage(), $e);
+        }
+    }
 }
