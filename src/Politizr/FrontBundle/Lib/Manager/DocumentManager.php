@@ -1051,6 +1051,7 @@ SELECT DISTINCT
     published_by,
     favorite,
     online,
+    homepage,
     moderated,
     moderated_partial,
     moderated_at,

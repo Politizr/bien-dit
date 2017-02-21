@@ -31,7 +31,7 @@
         </div>
     </div>
 
-    <div id="profileSelection">
+    <div id="profileSelection" class="askQuestion">
         <div class="center">
             <h1>Posez vos questions, Charlotte Marchandise vous répond!</h1>
 
@@ -47,14 +47,18 @@
                     {{ form_row(form.description, { 'attr': { 'placeholder': 'Votre question' }}) }}
 
                     {{ form_rest(form) }}
-                    <button type="button" action="submitDirectMessage">
-                        Envoyer
-                    </button>
+                    <div class="buttonDirectMessage">
+                        <button type="button" action="submitDirectMessage">
+                            Envoyer
+                        </button>
+                    </div>
                 </form>
             </div>
+            {#
             <div class="morePosts">
                 Consultez les <a href="{{ path('ListingByTag', {'slug' : 'charlotte-2017'}) }}">questions</a> posées.
             </div>
+            #}
         </div>
     </div>
     

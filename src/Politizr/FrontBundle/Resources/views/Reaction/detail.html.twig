@@ -70,6 +70,11 @@
                         </div>
                     {% endfor %}
                 </div>
+
+                {% if reactions | length > 0 %}
+                    {% include 'PolitizrFrontBundle:Reaction:_listReactionsToPost.html.twig' with { 'document': reaction, 'reactions': reactions } only %}
+                {% endif %}
+
                 <div id="cardPostTextFooter">
                     {{ reaction | footer }}
                 </div>
@@ -77,10 +82,6 @@
             <div id="p-0">
                 {% include 'PolitizrFrontBundle:Comment:_global.html.twig' with { 'document': reaction, 'formComment': formComment } only %}
             </div>
-
-            {% if reactions | length > 0 %}
-                {% include 'PolitizrFrontBundle:Reaction:_listReactionsToPost.html.twig' with { 'document': reaction, 'reactions': reactions } only %}
-            {% endif %}
 
             <div class="postTags">
                 <h5>Thématiques abordées</h5>

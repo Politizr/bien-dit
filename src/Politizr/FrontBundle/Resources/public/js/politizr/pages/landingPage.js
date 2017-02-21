@@ -10,7 +10,7 @@ $(function(){
 
 // user profile perso update
 $("body").on("click", "button[action='submitDirectMessage']", function(e) {
-    console.log('click submitDirectMessage');
+    // console.log('click submitDirectMessage');
 
     var form = $(this).closest('form');
     var localLoader = $(this).closest('.formBlock').find('.ajaxLoader').first();

@@ -6,9 +6,9 @@
  */
 function sendDirectMessage(form, localLoader)
 {
-    console.log('*** sendDirectMessage');
-    console.log(form);
-    console.log(localLoader);
+    // console.log('*** sendDirectMessage');
+    // console.log(form);
+    // console.log(localLoader);
 
     var xhrPath = getXhrPath(
         ROUTE_PUBLIC_DIRECT_MESSAGE,

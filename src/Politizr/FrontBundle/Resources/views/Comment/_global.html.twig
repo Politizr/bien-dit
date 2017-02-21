@@ -15,11 +15,13 @@
         {% endif %}
     </div>
     <div id="globalCommentsButton">
+        {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
         <div class="counterContent">
             {% include 'PolitizrFrontBundle:Comment:_counter.html.twig' with { 'document': document, 'paragraphNo': 0, 'active': false, 'paragraphContext': 'global' } only %}
         </div>
     </div>
     <div id="globalComments" style="display: none;">
+        <h5>Commentaires</h5>
         <div class="commentsContent"></div>
     </div>
 </div>
