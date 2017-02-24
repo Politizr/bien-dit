@@ -53,24 +53,36 @@ class DocumentLocalizationType extends AbstractType
         ));
         
         // Preset the localization list
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($user) {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($user, $options) {
             $form = $event->getForm();
             $document = $event->getData();
 
-            $currentType = LocalizationConstants::TYPE_CITY;
-            $currentUuid = null;
-            if ($cityId = $document->getPLCityId()) {
+            if ($options['force_geoloc_type'] && $options['force_geoloc_id']) {
+                $currentType = $options['force_geoloc_type'];
+                $currentUuid = null;
+                if ($currentType == LocalizationConstants::TYPE_CITY) {
+                    $currentUuid = $this->localizationManager->getCityUuidByCityId($options['force_geoloc_id']);
+                } elseif ($currentType == LocalizationConstants::TYPE_DEPARTMENT) {
+                    $currentUuid = $this->localizationManager->getDepartmentUuidByDepartmentId($departmentId);
+                } elseif ($currentType == LocalizationConstants::TYPE_REGION) {
+                    $currentUuid = $this->localizationManager->getRegionUuidByRegionId($regionId);
+                }
+            } else {
                 $currentType = LocalizationConstants::TYPE_CITY;
-                $currentUuid = $this->localizationManager->getCityUuidByCityId($cityId);
-            } elseif ($departmentId = $document->getPLDepartmentId()) {
-                $currentType = LocalizationConstants::TYPE_DEPARTMENT;
-                $currentUuid = $this->localizationManager->getDepartmentUuidByDepartmentId($departmentId);
-            } elseif ($regionId = $document->getPLRegionId()) {
-                $currentType = LocalizationConstants::TYPE_REGION;
-                $currentUuid = $this->localizationManager->getRegionUuidByRegionId($regionId);
-            } elseif ($countryId = $document->getPLCountryId()) {
-                $currentType = LocalizationConstants::TYPE_COUNTRY;
-                // $currentUuid = $this->localizationManager->getCountryUuidByCountryId($countryId);
+                $currentUuid = null;
+                if ($cityId = $document->getPLCityId()) {
+                    $currentType = LocalizationConstants::TYPE_CITY;
+                    $currentUuid = $this->localizationManager->getCityUuidByCityId($cityId);
+                } elseif ($departmentId = $document->getPLDepartmentId()) {
+                    $currentType = LocalizationConstants::TYPE_DEPARTMENT;
+                    $currentUuid = $this->localizationManager->getDepartmentUuidByDepartmentId($departmentId);
+                } elseif ($regionId = $document->getPLRegionId()) {
+                    $currentType = LocalizationConstants::TYPE_REGION;
+                    $currentUuid = $this->localizationManager->getRegionUuidByRegionId($regionId);
+                } elseif ($countryId = $document->getPLCountryId()) {
+                    $currentType = LocalizationConstants::TYPE_COUNTRY;
+                    // $currentUuid = $this->localizationManager->getCountryUuidByCountryId($countryId);
+                }
             }
 
             // Geo type list
@@ -176,6 +188,8 @@ class DocumentLocalizationType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => 'Politizr\Model\PDocumentInterface',
             'user' => null,
+            'force_geoloc_type' => null,
+            'force_geoloc_id' => null,
         ));
     }
 }

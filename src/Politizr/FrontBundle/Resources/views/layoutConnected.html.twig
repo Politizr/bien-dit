@@ -113,6 +113,28 @@
     {% block headerMsgLocalization %}
         {{  fillLocalization() }}
     {% endblock %}
+
+    {% if not app.session.has('showOp') or app.session.get('showOp') != false %}
+        <div id="opCharlotte" class="miniHeader">
+            <div class="center">
+                <div class="imgCharlotte"></div>
+                <div class="txtCharlotte">
+                    <h1>Présidentielles 2017</h1>
+                    Posez vos questions à <a href="{{ path('UserDetail', { slug: 'charlotte-marchandise' }) }}">Charlotte Marchandise</a>,<br>
+                    candidate citoyenne désignée par <a href="https://laprimaire.org" target="_blank">LaPrimaire.org</a><br>
+                    <br>
+                    <span>
+                        <i>42 ans, Adjointe à la Mairie de Rennes</i><br>
+                        <a class="ctaCharlotte" href="{{ path('DebateDraftNew'~profileSuffix(), { type: 'op-charlotte' }) }}">J'ai une question!</a>
+                        <a class="ctaCharlotte" action="closeOp">Non merci...</a>
+                    </span>
+                </div>
+            </div>
+            <div class="bgLeftCharlotte"></div>
+            <div class="bgRightCharlotte"></div>
+        </div>
+    {% endif %}
+
 {% endblock %}
 
 {% block main %}

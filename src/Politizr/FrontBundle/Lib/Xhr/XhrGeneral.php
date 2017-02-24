@@ -80,6 +80,20 @@ class XhrGeneral
     }
 
     /**
+     * Hide OP slide
+     * beta
+     */
+    public function hideOp(Request $request)
+    {
+        // $this->logger->info('*** hideOp');
+
+        // Request arguments
+        $request->getSession()->set('showOp', false);
+
+        return true;
+    }
+
+    /**
      * Direct message send
      * beta
      */

@@ -4,6 +4,8 @@ namespace Politizr\FrontBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
+
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use Politizr\Exception\InconsistentDataException;
@@ -279,29 +281,38 @@ class DocumentController extends Controller
      * Create new debate
      * beta
      */
-    public function debateNewAction()
+    public function debateNewAction(Request $request)
     {
         // $logger = $this->get('logger');
         // $logger->info('*** debateNewAction');
+
 
         $user = $this->getUser();
         if (!$user) {
             throw new InconsistentDataException('Current user not found.');
         }
 
+        // unplug / conflicts w. "op"
         // search "as new" already created debate
-        $debate = PDDebateQuery::create()
-                    ->filterByPUserId($user->getId())
-                    ->where('p_d_debate.created_at = p_d_debate.updated_at')
-                    ->findOne();
+        // $debate = PDDebateQuery::create()
+        //             ->filterByPUserId($user->getId())
+        //             ->where('p_d_debate.created_at = p_d_debate.updated_at')
+        //             ->findOne();
 
+        $debate = null;
         if (!$debate) {
             $debate = $this->get('politizr.functional.document')->createDebate();
         }
 
-        return $this->redirect($this->generateUrl('DebateDraftEdit'.$this->get('politizr.tools.global')->computeProfileSuffix(), array(
-            'uuid' => $debate->getUuid()
-        )));
+        return $this->redirect(
+            $this->generateUrl(
+                'DebateDraftEdit'.$this->get('politizr.tools.global')->computeProfileSuffix(),
+                array(
+                    'uuid' => $debate->getUuid(),
+                    'type' => $request->get('type')
+                )
+            )
+        );
     }
 
     /**
@@ -310,11 +321,21 @@ class DocumentController extends Controller
      *
      * @param $uuid
      */
-    public function debateEditAction($uuid)
+    public function debateEditAction(Request $request, $uuid)
     {
         // $logger = $this->get('logger');
         // $logger->info('*** debateEditAction');
         // $logger->info('$uuid = '.print_r($uuid, true));
+
+        $opCharlotte = $request->get('type');
+
+        $forceGeolocType = null;
+        $forceGeolocId = null;
+        if ($opCharlotte) {
+            $request->getSession()->set('showOp', false);
+            $forceGeolocType = LocalizationConstants::TYPE_COUNTRY;
+            $forceGeolocId = LocalizationConstants::FRANCE_ID;
+        }
 
         $user = $this->getUser();
 
@@ -329,10 +350,20 @@ class DocumentController extends Controller
             $debateLocType,
             $debate,
             array(
+                'data_class' => ObjectTypeConstants::TYPE_DEBATE,
                 'user' => $user,
-                'data_class' => ObjectTypeConstants::TYPE_DEBATE
+                'force_geoloc_type' => $forceGeolocType,
+                'force_geoloc_id' => $forceGeolocId,
             )
         );
+
+        // op tag
+        if ($opCharlotte) {
+            $opCharlotteTagIds = [ 369, 868, 666 ];
+            foreach ($opCharlotteTagIds as $tagId) {
+                $this->get('politizr.manager.tag')->createDebateTag($debate->getId(), $tagId);
+            }
+        }
 
         return $this->render('PolitizrFrontBundle:Debate:edit.html.twig', array(
             'debate' => $debate,

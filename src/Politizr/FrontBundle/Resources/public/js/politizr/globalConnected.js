@@ -291,3 +291,35 @@ $("body").on("click", "button[action='updateLocalization']", function(e) {
 });
 
 
+// ******************************************************************* //
+//                       OP CHARLOTTE                                  //
+// ******************************************************************* //
+
+$("body").on("click", "a[action='closeOp']", function(e) {
+    // console.log('*** click closeOp');
+
+    return closeOp();
+});
+
+/**
+ * Modal help us
+ */
+function closeOp() {
+    // console.log('*** closeOp');
+
+    var xhrPath = getXhrPath(
+        ROUTE_MODAL_HELP_US,
+        'general',
+        'hideOp',
+        RETURN_BOOLEAN
+    );
+
+    return xhrCall(
+        document,
+        null,
+        xhrPath
+    ).done(function(data) {
+        $('#opCharlotte').hide();
+    });
+};
+

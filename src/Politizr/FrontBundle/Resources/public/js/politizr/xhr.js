@@ -84,6 +84,9 @@ var ROUTE_MODAL_CGU = 'conditions-generales-d-utilisation';
 var ROUTE_MODAL_CGV = 'conditions-generales-de-vente';
 var ROUTE_MODAL_CHARTE = 'charte-politizr';
 
+// OP
+var ROUTE_OP_CLOSE = 'op/close';
+
 // NOTATION
 var ROUTE_NOTE = 'profil/noter';
 
