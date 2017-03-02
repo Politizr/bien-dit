@@ -23,7 +23,9 @@
             {% endif %}
         </div>
     </div>
-    <h5>Les derniers commentaires sur Facebook</h5>
+    {% if comments|length > 0 %}
+        <h5>Les derniers commentaires sur Facebook</h5>
+    {% endif %}
     {% for comment in comments %}
         <div class="commentFB">
             <div class="commentFB_Avatar"><img src="{{ comment['author']['picture'] }}"></div>
