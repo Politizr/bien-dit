@@ -39,6 +39,7 @@ use Politizr\Model\PUser;
  * @method PDReactionQuery orderByPLDepartmentId($order = Criteria::ASC) Order by the p_l_department_id column
  * @method PDReactionQuery orderByPLRegionId($order = Criteria::ASC) Order by the p_l_region_id column
  * @method PDReactionQuery orderByPLCountryId($order = Criteria::ASC) Order by the p_l_country_id column
+ * @method PDReactionQuery orderByFbAdId($order = Criteria::ASC) Order by the fb_ad_id column
  * @method PDReactionQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method PDReactionQuery orderByFileName($order = Criteria::ASC) Order by the file_name column
  * @method PDReactionQuery orderByCopyright($order = Criteria::ASC) Order by the copyright column
@@ -71,6 +72,7 @@ use Politizr\Model\PUser;
  * @method PDReactionQuery groupByPLDepartmentId() Group by the p_l_department_id column
  * @method PDReactionQuery groupByPLRegionId() Group by the p_l_region_id column
  * @method PDReactionQuery groupByPLCountryId() Group by the p_l_country_id column
+ * @method PDReactionQuery groupByFbAdId() Group by the fb_ad_id column
  * @method PDReactionQuery groupByTitle() Group by the title column
  * @method PDReactionQuery groupByFileName() Group by the file_name column
  * @method PDReactionQuery groupByCopyright() Group by the copyright column
@@ -153,6 +155,7 @@ use Politizr\Model\PUser;
  * @method PDReaction findOneByPLDepartmentId(int $p_l_department_id) Return the first PDReaction filtered by the p_l_department_id column
  * @method PDReaction findOneByPLRegionId(int $p_l_region_id) Return the first PDReaction filtered by the p_l_region_id column
  * @method PDReaction findOneByPLCountryId(int $p_l_country_id) Return the first PDReaction filtered by the p_l_country_id column
+ * @method PDReaction findOneByFbAdId(string $fb_ad_id) Return the first PDReaction filtered by the fb_ad_id column
  * @method PDReaction findOneByTitle(string $title) Return the first PDReaction filtered by the title column
  * @method PDReaction findOneByFileName(string $file_name) Return the first PDReaction filtered by the file_name column
  * @method PDReaction findOneByCopyright(string $copyright) Return the first PDReaction filtered by the copyright column
@@ -185,6 +188,7 @@ use Politizr\Model\PUser;
  * @method array findByPLDepartmentId(int $p_l_department_id) Return PDReaction objects filtered by the p_l_department_id column
  * @method array findByPLRegionId(int $p_l_region_id) Return PDReaction objects filtered by the p_l_region_id column
  * @method array findByPLCountryId(int $p_l_country_id) Return PDReaction objects filtered by the p_l_country_id column
+ * @method array findByFbAdId(string $fb_ad_id) Return PDReaction objects filtered by the fb_ad_id column
  * @method array findByTitle(string $title) Return PDReaction objects filtered by the title column
  * @method array findByFileName(string $file_name) Return PDReaction objects filtered by the file_name column
  * @method array findByCopyright(string $copyright) Return PDReaction objects filtered by the copyright column
@@ -318,7 +322,7 @@ abstract class BasePDReactionQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `p_d_debate_id`, `parent_reaction_id`, `p_l_city_id`, `p_l_department_id`, `p_l_region_id`, `p_l_country_id`, `title`, `file_name`, `copyright`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `homepage`, `moderated`, `moderated_partial`, `moderated_at`, `created_at`, `updated_at`, `slug`, `tree_left`, `tree_right`, `tree_level` FROM `p_d_reaction` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `p_d_debate_id`, `parent_reaction_id`, `p_l_city_id`, `p_l_department_id`, `p_l_region_id`, `p_l_country_id`, `fb_ad_id`, `title`, `file_name`, `copyright`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `homepage`, `moderated`, `moderated_partial`, `moderated_at`, `created_at`, `updated_at`, `slug`, `tree_left`, `tree_right`, `tree_level` FROM `p_d_reaction` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -782,6 +786,35 @@ abstract class BasePDReactionQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDReactionPeer::P_L_COUNTRY_ID, $pLCountryId, $comparison);
+    }
+
+    /**
+     * Filter the query on the fb_ad_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByFbAdId('fooValue');   // WHERE fb_ad_id = 'fooValue'
+     * $query->filterByFbAdId('%fooValue%'); // WHERE fb_ad_id LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $fbAdId The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDReactionQuery The current query, for fluid interface
+     */
+    public function filterByFbAdId($fbAdId = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($fbAdId)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $fbAdId)) {
+                $fbAdId = str_replace('*', '%', $fbAdId);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PDReactionPeer::FB_AD_ID, $fbAdId, $comparison);
     }
 
     /**

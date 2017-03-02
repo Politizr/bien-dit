@@ -1,0 +1,34 @@
+<div class="embedFB">
+    <div class="impactFB">
+        <h5><i class="icon-social-fb"></i>Impact sur Facebook</h5>
+        <b>{{ impressions }} personnes atteintes</b> • {{ interactions }} interactions • {{ nbComments }} commentaires • {{ nbEmotions }} réactions • {{ nbShares }} partages
+        <div class="likesFB">
+            {% if emotions['like'] %}
+                <div class="likeFB">{{ emotions['like'] }}</div>
+            {% endif %}
+            {% if emotions['love'] %}
+                <div class="loveFB">{{ emotions['love'] }}</div>
+            {% endif %}
+            {% if emotions['wow'] %}
+                <div class="wowFB">{{ emotions['wow'] }}</div>
+            {% endif %}
+            {% if emotions['haha'] %}
+                <div class="hahaFB">{{ emotions['haha'] }}</div>
+            {% endif %}
+            {% if emotions['sorry'] %}
+                <div class="sorryFB">{{ emotions['sorry'] }}</div>
+            {% endif %}
+            {% if emotions['anger'] %}
+                <div class="angerFB">{{ emotions['anger'] }}</div>
+            {% endif %}
+        </div>
+    </div>
+    <h5>Les derniers commentaires sur Facebook</h5>
+    {% for comment in comments %}
+        <div class="commentFB">
+            <div class="commentFB_Avatar"><img src="{{ comment['author']['picture'] }}"></div>
+            <div class="commentFB_Text"><span>{{ comment['author']['name'] }}</span>{{ comment['message'] }}</div>
+        </div>
+    {% endfor %}
+    <a href="https://www.facebook.com/Politizr/posts/{{ fbAdId }}" target="_blank">Voir la publication Facebook</a>
+</div>

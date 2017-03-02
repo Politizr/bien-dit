@@ -122,6 +122,12 @@ abstract class BasePDReaction extends BaseObject implements Persistent
     protected $p_l_country_id;
 
     /**
+     * The value for the fb_ad_id field.
+     * @var        string
+     */
+    protected $fb_ad_id;
+
+    /**
      * The value for the title field.
      * @var        string
      */
@@ -541,6 +547,17 @@ abstract class BasePDReaction extends BaseObject implements Persistent
     {
 
         return $this->p_l_country_id;
+    }
+
+    /**
+     * Get the [fb_ad_id] column value.
+     *
+     * @return string
+     */
+    public function getFbAdId()
+    {
+
+        return $this->fb_ad_id;
     }
 
     /**
@@ -1115,6 +1132,27 @@ abstract class BasePDReaction extends BaseObject implements Persistent
     } // setPLCountryId()
 
     /**
+     * Set the value of [fb_ad_id] column.
+     *
+     * @param  string $v new value
+     * @return PDReaction The current object (for fluent API support)
+     */
+    public function setFbAdId($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->fb_ad_id !== $v) {
+            $this->fb_ad_id = $v;
+            $this->modifiedColumns[] = PDReactionPeer::FB_AD_ID;
+        }
+
+
+        return $this;
+    } // setFbAdId()
+
+    /**
      * Set the value of [title] column.
      *
      * @param  string $v new value
@@ -1681,28 +1719,29 @@ abstract class BasePDReaction extends BaseObject implements Persistent
             $this->p_l_department_id = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
             $this->p_l_region_id = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
             $this->p_l_country_id = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
-            $this->title = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
-            $this->file_name = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
-            $this->copyright = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
-            $this->description = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
-            $this->note_pos = ($row[$startcol + 13] !== null) ? (int) $row[$startcol + 13] : null;
-            $this->note_neg = ($row[$startcol + 14] !== null) ? (int) $row[$startcol + 14] : null;
-            $this->nb_views = ($row[$startcol + 15] !== null) ? (int) $row[$startcol + 15] : null;
-            $this->published = ($row[$startcol + 16] !== null) ? (boolean) $row[$startcol + 16] : null;
-            $this->published_at = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
-            $this->published_by = ($row[$startcol + 18] !== null) ? (string) $row[$startcol + 18] : null;
-            $this->favorite = ($row[$startcol + 19] !== null) ? (boolean) $row[$startcol + 19] : null;
-            $this->online = ($row[$startcol + 20] !== null) ? (boolean) $row[$startcol + 20] : null;
-            $this->homepage = ($row[$startcol + 21] !== null) ? (boolean) $row[$startcol + 21] : null;
-            $this->moderated = ($row[$startcol + 22] !== null) ? (boolean) $row[$startcol + 22] : null;
-            $this->moderated_partial = ($row[$startcol + 23] !== null) ? (boolean) $row[$startcol + 23] : null;
-            $this->moderated_at = ($row[$startcol + 24] !== null) ? (string) $row[$startcol + 24] : null;
-            $this->created_at = ($row[$startcol + 25] !== null) ? (string) $row[$startcol + 25] : null;
-            $this->updated_at = ($row[$startcol + 26] !== null) ? (string) $row[$startcol + 26] : null;
-            $this->slug = ($row[$startcol + 27] !== null) ? (string) $row[$startcol + 27] : null;
-            $this->tree_left = ($row[$startcol + 28] !== null) ? (int) $row[$startcol + 28] : null;
-            $this->tree_right = ($row[$startcol + 29] !== null) ? (int) $row[$startcol + 29] : null;
-            $this->tree_level = ($row[$startcol + 30] !== null) ? (int) $row[$startcol + 30] : null;
+            $this->fb_ad_id = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+            $this->title = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+            $this->file_name = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+            $this->copyright = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+            $this->description = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
+            $this->note_pos = ($row[$startcol + 14] !== null) ? (int) $row[$startcol + 14] : null;
+            $this->note_neg = ($row[$startcol + 15] !== null) ? (int) $row[$startcol + 15] : null;
+            $this->nb_views = ($row[$startcol + 16] !== null) ? (int) $row[$startcol + 16] : null;
+            $this->published = ($row[$startcol + 17] !== null) ? (boolean) $row[$startcol + 17] : null;
+            $this->published_at = ($row[$startcol + 18] !== null) ? (string) $row[$startcol + 18] : null;
+            $this->published_by = ($row[$startcol + 19] !== null) ? (string) $row[$startcol + 19] : null;
+            $this->favorite = ($row[$startcol + 20] !== null) ? (boolean) $row[$startcol + 20] : null;
+            $this->online = ($row[$startcol + 21] !== null) ? (boolean) $row[$startcol + 21] : null;
+            $this->homepage = ($row[$startcol + 22] !== null) ? (boolean) $row[$startcol + 22] : null;
+            $this->moderated = ($row[$startcol + 23] !== null) ? (boolean) $row[$startcol + 23] : null;
+            $this->moderated_partial = ($row[$startcol + 24] !== null) ? (boolean) $row[$startcol + 24] : null;
+            $this->moderated_at = ($row[$startcol + 25] !== null) ? (string) $row[$startcol + 25] : null;
+            $this->created_at = ($row[$startcol + 26] !== null) ? (string) $row[$startcol + 26] : null;
+            $this->updated_at = ($row[$startcol + 27] !== null) ? (string) $row[$startcol + 27] : null;
+            $this->slug = ($row[$startcol + 28] !== null) ? (string) $row[$startcol + 28] : null;
+            $this->tree_left = ($row[$startcol + 29] !== null) ? (int) $row[$startcol + 29] : null;
+            $this->tree_right = ($row[$startcol + 30] !== null) ? (int) $row[$startcol + 30] : null;
+            $this->tree_level = ($row[$startcol + 31] !== null) ? (int) $row[$startcol + 31] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -1712,7 +1751,7 @@ abstract class BasePDReaction extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 31; // 31 = PDReactionPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 32; // 32 = PDReactionPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PDReaction object", $e);
@@ -2256,6 +2295,9 @@ abstract class BasePDReaction extends BaseObject implements Persistent
         if ($this->isColumnModified(PDReactionPeer::P_L_COUNTRY_ID)) {
             $modifiedColumns[':p' . $index++]  = '`p_l_country_id`';
         }
+        if ($this->isColumnModified(PDReactionPeer::FB_AD_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`fb_ad_id`';
+        }
         if ($this->isColumnModified(PDReactionPeer::TITLE)) {
             $modifiedColumns[':p' . $index++]  = '`title`';
         }
@@ -2359,6 +2401,9 @@ abstract class BasePDReaction extends BaseObject implements Persistent
                         break;
                     case '`p_l_country_id`':
                         $stmt->bindValue($identifier, $this->p_l_country_id, PDO::PARAM_INT);
+                        break;
+                    case '`fb_ad_id`':
+                        $stmt->bindValue($identifier, $this->fb_ad_id, PDO::PARAM_STR);
                         break;
                     case '`title`':
                         $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
@@ -2514,69 +2559,72 @@ abstract class BasePDReaction extends BaseObject implements Persistent
                 return $this->getPLCountryId();
                 break;
             case 9:
-                return $this->getTitle();
+                return $this->getFbAdId();
                 break;
             case 10:
-                return $this->getFileName();
+                return $this->getTitle();
                 break;
             case 11:
-                return $this->getCopyright();
+                return $this->getFileName();
                 break;
             case 12:
-                return $this->getDescription();
+                return $this->getCopyright();
                 break;
             case 13:
-                return $this->getNotePos();
+                return $this->getDescription();
                 break;
             case 14:
-                return $this->getNoteNeg();
+                return $this->getNotePos();
                 break;
             case 15:
-                return $this->getNbViews();
+                return $this->getNoteNeg();
                 break;
             case 16:
-                return $this->getPublished();
+                return $this->getNbViews();
                 break;
             case 17:
-                return $this->getPublishedAt();
+                return $this->getPublished();
                 break;
             case 18:
-                return $this->getPublishedBy();
+                return $this->getPublishedAt();
                 break;
             case 19:
-                return $this->getFavorite();
+                return $this->getPublishedBy();
                 break;
             case 20:
-                return $this->getOnline();
+                return $this->getFavorite();
                 break;
             case 21:
-                return $this->getHomepage();
+                return $this->getOnline();
                 break;
             case 22:
-                return $this->getModerated();
+                return $this->getHomepage();
                 break;
             case 23:
-                return $this->getModeratedPartial();
+                return $this->getModerated();
                 break;
             case 24:
-                return $this->getModeratedAt();
+                return $this->getModeratedPartial();
                 break;
             case 25:
-                return $this->getCreatedAt();
+                return $this->getModeratedAt();
                 break;
             case 26:
-                return $this->getUpdatedAt();
+                return $this->getCreatedAt();
                 break;
             case 27:
-                return $this->getSlug();
+                return $this->getUpdatedAt();
                 break;
             case 28:
-                return $this->getTreeLeft();
+                return $this->getSlug();
                 break;
             case 29:
-                return $this->getTreeRight();
+                return $this->getTreeLeft();
                 break;
             case 30:
+                return $this->getTreeRight();
+                break;
+            case 31:
                 return $this->getTreeLevel();
                 break;
             default:
@@ -2617,28 +2665,29 @@ abstract class BasePDReaction extends BaseObject implements Persistent
             $keys[6] => $this->getPLDepartmentId(),
             $keys[7] => $this->getPLRegionId(),
             $keys[8] => $this->getPLCountryId(),
-            $keys[9] => $this->getTitle(),
-            $keys[10] => $this->getFileName(),
-            $keys[11] => $this->getCopyright(),
-            $keys[12] => $this->getDescription(),
-            $keys[13] => $this->getNotePos(),
-            $keys[14] => $this->getNoteNeg(),
-            $keys[15] => $this->getNbViews(),
-            $keys[16] => $this->getPublished(),
-            $keys[17] => $this->getPublishedAt(),
-            $keys[18] => $this->getPublishedBy(),
-            $keys[19] => $this->getFavorite(),
-            $keys[20] => $this->getOnline(),
-            $keys[21] => $this->getHomepage(),
-            $keys[22] => $this->getModerated(),
-            $keys[23] => $this->getModeratedPartial(),
-            $keys[24] => $this->getModeratedAt(),
-            $keys[25] => $this->getCreatedAt(),
-            $keys[26] => $this->getUpdatedAt(),
-            $keys[27] => $this->getSlug(),
-            $keys[28] => $this->getTreeLeft(),
-            $keys[29] => $this->getTreeRight(),
-            $keys[30] => $this->getTreeLevel(),
+            $keys[9] => $this->getFbAdId(),
+            $keys[10] => $this->getTitle(),
+            $keys[11] => $this->getFileName(),
+            $keys[12] => $this->getCopyright(),
+            $keys[13] => $this->getDescription(),
+            $keys[14] => $this->getNotePos(),
+            $keys[15] => $this->getNoteNeg(),
+            $keys[16] => $this->getNbViews(),
+            $keys[17] => $this->getPublished(),
+            $keys[18] => $this->getPublishedAt(),
+            $keys[19] => $this->getPublishedBy(),
+            $keys[20] => $this->getFavorite(),
+            $keys[21] => $this->getOnline(),
+            $keys[22] => $this->getHomepage(),
+            $keys[23] => $this->getModerated(),
+            $keys[24] => $this->getModeratedPartial(),
+            $keys[25] => $this->getModeratedAt(),
+            $keys[26] => $this->getCreatedAt(),
+            $keys[27] => $this->getUpdatedAt(),
+            $keys[28] => $this->getSlug(),
+            $keys[29] => $this->getTreeLeft(),
+            $keys[30] => $this->getTreeRight(),
+            $keys[31] => $this->getTreeLevel(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -2741,69 +2790,72 @@ abstract class BasePDReaction extends BaseObject implements Persistent
                 $this->setPLCountryId($value);
                 break;
             case 9:
-                $this->setTitle($value);
+                $this->setFbAdId($value);
                 break;
             case 10:
-                $this->setFileName($value);
+                $this->setTitle($value);
                 break;
             case 11:
-                $this->setCopyright($value);
+                $this->setFileName($value);
                 break;
             case 12:
-                $this->setDescription($value);
+                $this->setCopyright($value);
                 break;
             case 13:
-                $this->setNotePos($value);
+                $this->setDescription($value);
                 break;
             case 14:
-                $this->setNoteNeg($value);
+                $this->setNotePos($value);
                 break;
             case 15:
-                $this->setNbViews($value);
+                $this->setNoteNeg($value);
                 break;
             case 16:
-                $this->setPublished($value);
+                $this->setNbViews($value);
                 break;
             case 17:
-                $this->setPublishedAt($value);
+                $this->setPublished($value);
                 break;
             case 18:
-                $this->setPublishedBy($value);
+                $this->setPublishedAt($value);
                 break;
             case 19:
-                $this->setFavorite($value);
+                $this->setPublishedBy($value);
                 break;
             case 20:
-                $this->setOnline($value);
+                $this->setFavorite($value);
                 break;
             case 21:
-                $this->setHomepage($value);
+                $this->setOnline($value);
                 break;
             case 22:
-                $this->setModerated($value);
+                $this->setHomepage($value);
                 break;
             case 23:
-                $this->setModeratedPartial($value);
+                $this->setModerated($value);
                 break;
             case 24:
-                $this->setModeratedAt($value);
+                $this->setModeratedPartial($value);
                 break;
             case 25:
-                $this->setCreatedAt($value);
+                $this->setModeratedAt($value);
                 break;
             case 26:
-                $this->setUpdatedAt($value);
+                $this->setCreatedAt($value);
                 break;
             case 27:
-                $this->setSlug($value);
+                $this->setUpdatedAt($value);
                 break;
             case 28:
-                $this->setTreeLeft($value);
+                $this->setSlug($value);
                 break;
             case 29:
-                $this->setTreeRight($value);
+                $this->setTreeLeft($value);
                 break;
             case 30:
+                $this->setTreeRight($value);
+                break;
+            case 31:
                 $this->setTreeLevel($value);
                 break;
         } // switch()
@@ -2839,28 +2891,29 @@ abstract class BasePDReaction extends BaseObject implements Persistent
         if (array_key_exists($keys[6], $arr)) $this->setPLDepartmentId($arr[$keys[6]]);
         if (array_key_exists($keys[7], $arr)) $this->setPLRegionId($arr[$keys[7]]);
         if (array_key_exists($keys[8], $arr)) $this->setPLCountryId($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setTitle($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setFileName($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setCopyright($arr[$keys[11]]);
-        if (array_key_exists($keys[12], $arr)) $this->setDescription($arr[$keys[12]]);
-        if (array_key_exists($keys[13], $arr)) $this->setNotePos($arr[$keys[13]]);
-        if (array_key_exists($keys[14], $arr)) $this->setNoteNeg($arr[$keys[14]]);
-        if (array_key_exists($keys[15], $arr)) $this->setNbViews($arr[$keys[15]]);
-        if (array_key_exists($keys[16], $arr)) $this->setPublished($arr[$keys[16]]);
-        if (array_key_exists($keys[17], $arr)) $this->setPublishedAt($arr[$keys[17]]);
-        if (array_key_exists($keys[18], $arr)) $this->setPublishedBy($arr[$keys[18]]);
-        if (array_key_exists($keys[19], $arr)) $this->setFavorite($arr[$keys[19]]);
-        if (array_key_exists($keys[20], $arr)) $this->setOnline($arr[$keys[20]]);
-        if (array_key_exists($keys[21], $arr)) $this->setHomepage($arr[$keys[21]]);
-        if (array_key_exists($keys[22], $arr)) $this->setModerated($arr[$keys[22]]);
-        if (array_key_exists($keys[23], $arr)) $this->setModeratedPartial($arr[$keys[23]]);
-        if (array_key_exists($keys[24], $arr)) $this->setModeratedAt($arr[$keys[24]]);
-        if (array_key_exists($keys[25], $arr)) $this->setCreatedAt($arr[$keys[25]]);
-        if (array_key_exists($keys[26], $arr)) $this->setUpdatedAt($arr[$keys[26]]);
-        if (array_key_exists($keys[27], $arr)) $this->setSlug($arr[$keys[27]]);
-        if (array_key_exists($keys[28], $arr)) $this->setTreeLeft($arr[$keys[28]]);
-        if (array_key_exists($keys[29], $arr)) $this->setTreeRight($arr[$keys[29]]);
-        if (array_key_exists($keys[30], $arr)) $this->setTreeLevel($arr[$keys[30]]);
+        if (array_key_exists($keys[9], $arr)) $this->setFbAdId($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setTitle($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setFileName($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setCopyright($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setDescription($arr[$keys[13]]);
+        if (array_key_exists($keys[14], $arr)) $this->setNotePos($arr[$keys[14]]);
+        if (array_key_exists($keys[15], $arr)) $this->setNoteNeg($arr[$keys[15]]);
+        if (array_key_exists($keys[16], $arr)) $this->setNbViews($arr[$keys[16]]);
+        if (array_key_exists($keys[17], $arr)) $this->setPublished($arr[$keys[17]]);
+        if (array_key_exists($keys[18], $arr)) $this->setPublishedAt($arr[$keys[18]]);
+        if (array_key_exists($keys[19], $arr)) $this->setPublishedBy($arr[$keys[19]]);
+        if (array_key_exists($keys[20], $arr)) $this->setFavorite($arr[$keys[20]]);
+        if (array_key_exists($keys[21], $arr)) $this->setOnline($arr[$keys[21]]);
+        if (array_key_exists($keys[22], $arr)) $this->setHomepage($arr[$keys[22]]);
+        if (array_key_exists($keys[23], $arr)) $this->setModerated($arr[$keys[23]]);
+        if (array_key_exists($keys[24], $arr)) $this->setModeratedPartial($arr[$keys[24]]);
+        if (array_key_exists($keys[25], $arr)) $this->setModeratedAt($arr[$keys[25]]);
+        if (array_key_exists($keys[26], $arr)) $this->setCreatedAt($arr[$keys[26]]);
+        if (array_key_exists($keys[27], $arr)) $this->setUpdatedAt($arr[$keys[27]]);
+        if (array_key_exists($keys[28], $arr)) $this->setSlug($arr[$keys[28]]);
+        if (array_key_exists($keys[29], $arr)) $this->setTreeLeft($arr[$keys[29]]);
+        if (array_key_exists($keys[30], $arr)) $this->setTreeRight($arr[$keys[30]]);
+        if (array_key_exists($keys[31], $arr)) $this->setTreeLevel($arr[$keys[31]]);
     }
 
     /**
@@ -2881,6 +2934,7 @@ abstract class BasePDReaction extends BaseObject implements Persistent
         if ($this->isColumnModified(PDReactionPeer::P_L_DEPARTMENT_ID)) $criteria->add(PDReactionPeer::P_L_DEPARTMENT_ID, $this->p_l_department_id);
         if ($this->isColumnModified(PDReactionPeer::P_L_REGION_ID)) $criteria->add(PDReactionPeer::P_L_REGION_ID, $this->p_l_region_id);
         if ($this->isColumnModified(PDReactionPeer::P_L_COUNTRY_ID)) $criteria->add(PDReactionPeer::P_L_COUNTRY_ID, $this->p_l_country_id);
+        if ($this->isColumnModified(PDReactionPeer::FB_AD_ID)) $criteria->add(PDReactionPeer::FB_AD_ID, $this->fb_ad_id);
         if ($this->isColumnModified(PDReactionPeer::TITLE)) $criteria->add(PDReactionPeer::TITLE, $this->title);
         if ($this->isColumnModified(PDReactionPeer::FILE_NAME)) $criteria->add(PDReactionPeer::FILE_NAME, $this->file_name);
         if ($this->isColumnModified(PDReactionPeer::COPYRIGHT)) $criteria->add(PDReactionPeer::COPYRIGHT, $this->copyright);
@@ -2974,6 +3028,7 @@ abstract class BasePDReaction extends BaseObject implements Persistent
         $copyObj->setPLDepartmentId($this->getPLDepartmentId());
         $copyObj->setPLRegionId($this->getPLRegionId());
         $copyObj->setPLCountryId($this->getPLCountryId());
+        $copyObj->setFbAdId($this->getFbAdId());
         $copyObj->setTitle($this->getTitle());
         $copyObj->setFileName($this->getFileName());
         $copyObj->setCopyright($this->getCopyright());
@@ -5249,6 +5304,7 @@ abstract class BasePDReaction extends BaseObject implements Persistent
         $this->p_l_department_id = null;
         $this->p_l_region_id = null;
         $this->p_l_country_id = null;
+        $this->fb_ad_id = null;
         $this->title = null;
         $this->file_name = null;
         $this->copyright = null;
@@ -6590,6 +6646,7 @@ abstract class BasePDReaction extends BaseObject implements Persistent
         $this->setPLDepartmentId($archive->getPLDepartmentId());
         $this->setPLRegionId($archive->getPLRegionId());
         $this->setPLCountryId($archive->getPLCountryId());
+        $this->setFbAdId($archive->getFbAdId());
         $this->setTitle($archive->getTitle());
         $this->setFileName($archive->getFileName());
         $this->setCopyright($archive->getCopyright());

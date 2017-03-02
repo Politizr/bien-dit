@@ -34,6 +34,8 @@ params:
             label:          Pays
         p_l_country:
             label:          Pays
+        fb_ad_id:
+            label:          ID Pub Facebook
         file_name:
             label:          Image
         copyright:
@@ -161,7 +163,7 @@ builders:
                     "Identifiants":             [ [ id, uuid, slug ] ]
                     "En ligne":                 [ online ]
                     "Notification":             [ block_notifications ]
-                    "Mise en avant":            [ homepage ]
+                    "Mise en avant":            [ [ homepage, fb_ad_id ] ]
                     "Création":                 [ [ created_at, updated_at ] ]
             fields:
                 block_file_name:
@@ -258,7 +260,7 @@ builders:
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
                     "En ligne":                 [ online ]
-                    "Mise en avant":            [ homepage ]
+                    "Mise en avant":            [ [ homepage, fb_ad_id ] ]
                     "Création":                 [ [ created_at, updated_at ] ]
                 "Front":
                     "Rendu":                    [ block_front ]

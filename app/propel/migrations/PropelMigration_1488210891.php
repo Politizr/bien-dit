@@ -2,10 +2,10 @@
 
 /**
  * Data object containing the SQL and PHP code to migrate the database
- * up to version 1487500808.
- * Generated on 2017-02-19 11:40:08 by lionel
+ * up to version 1488210891.
+ * Generated on 2017-02-27 16:54:51 by lionel
  */
-class PropelMigration_1487500808
+class PropelMigration_1488210891
 {
 
     public function preUp($manager)
@@ -42,30 +42,17 @@ class PropelMigration_1487500808
 # It "suspends judgement" for fkey relationships until are tables are set.
 SET FOREIGN_KEY_CHECKS = 0;
 
-CREATE TABLE `p_d_direct`
-(
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(250),
-    `city` VARCHAR(250),
-    `email` VARCHAR(250),
-    `description` TEXT,
-    `created_at` DATETIME,
-    `updated_at` DATETIME,
-    PRIMARY KEY (`id`)
-) ENGINE=InnoDB;
+ALTER TABLE `p_d_debate`
+    ADD `fb_ad_id` VARCHAR(150) AFTER `p_l_country_id`;
 
-CREATE TABLE `p_d_direct_archive`
-(
-    `id` INTEGER NOT NULL,
-    `name` VARCHAR(250),
-    `city` VARCHAR(250),
-    `email` VARCHAR(250),
-    `description` TEXT,
-    `created_at` DATETIME,
-    `updated_at` DATETIME,
-    `archived_at` DATETIME,
-    PRIMARY KEY (`id`)
-) ENGINE=InnoDB;
+ALTER TABLE `p_d_debate_archive`
+    ADD `fb_ad_id` VARCHAR(150) AFTER `p_l_country_id`;
+
+ALTER TABLE `p_d_reaction`
+    ADD `fb_ad_id` VARCHAR(150) AFTER `p_l_country_id`;
+
+ALTER TABLE `p_d_reaction_archive`
+    ADD `fb_ad_id` VARCHAR(150) AFTER `p_l_country_id`;
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;
@@ -87,15 +74,19 @@ SET FOREIGN_KEY_CHECKS = 1;
 # It "suspends judgement" for fkey relationships until are tables are set.
 SET FOREIGN_KEY_CHECKS = 0;
 
-DROP TABLE IF EXISTS `p_d_direct`;
-
-DROP TABLE IF EXISTS `p_d_direct_archive`;
-
 DROP INDEX `acl_object_identity_ancestors_I_2` ON `acl_object_identity_ancestors`;
 
 DROP INDEX `fos_group_U_1` ON `fos_group`;
 
 DROP INDEX `fos_user_U_3` ON `fos_user`;
+
+ALTER TABLE `p_d_debate` DROP `fb_ad_id`;
+
+ALTER TABLE `p_d_debate_archive` DROP `fb_ad_id`;
+
+ALTER TABLE `p_d_reaction` DROP `fb_ad_id`;
+
+ALTER TABLE `p_d_reaction_archive` DROP `fb_ad_id`;
 
 CREATE TABLE `p_c_group_l_c`
 (

@@ -929,6 +929,8 @@
         <column name="p_l_region_id" type="integer" required="false" />
         <column name="p_l_country_id" type="integer" required="false" />
 
+        <column name="fb_ad_id" type="varchar" size="150" />
+
         <column name="title" type="varchar" size="100" />
 
         <column name="file_name" type="varchar" size="150" />
@@ -1003,6 +1005,8 @@
         <column name="p_l_department_id" type="integer" required="false" />
         <column name="p_l_region_id" type="integer" required="false" />
         <column name="p_l_country_id" type="integer" required="false" />
+
+        <column name="fb_ad_id" type="varchar" size="150" />
 
         <column name="title" type="varchar" size="100" />
 

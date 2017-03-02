@@ -1039,6 +1039,7 @@ SELECT DISTINCT
     p_l_department_id,
     p_l_region_id,
     p_l_country_id,
+    fb_ad_id,
     title,
     file_name,
     copyright,

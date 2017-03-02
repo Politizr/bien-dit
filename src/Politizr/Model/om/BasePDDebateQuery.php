@@ -38,6 +38,7 @@ use Politizr\Model\PUser;
  * @method PDDebateQuery orderByPLDepartmentId($order = Criteria::ASC) Order by the p_l_department_id column
  * @method PDDebateQuery orderByPLRegionId($order = Criteria::ASC) Order by the p_l_region_id column
  * @method PDDebateQuery orderByPLCountryId($order = Criteria::ASC) Order by the p_l_country_id column
+ * @method PDDebateQuery orderByFbAdId($order = Criteria::ASC) Order by the fb_ad_id column
  * @method PDDebateQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method PDDebateQuery orderByFileName($order = Criteria::ASC) Order by the file_name column
  * @method PDDebateQuery orderByCopyright($order = Criteria::ASC) Order by the copyright column
@@ -65,6 +66,7 @@ use Politizr\Model\PUser;
  * @method PDDebateQuery groupByPLDepartmentId() Group by the p_l_department_id column
  * @method PDDebateQuery groupByPLRegionId() Group by the p_l_region_id column
  * @method PDDebateQuery groupByPLCountryId() Group by the p_l_country_id column
+ * @method PDDebateQuery groupByFbAdId() Group by the fb_ad_id column
  * @method PDDebateQuery groupByTitle() Group by the title column
  * @method PDDebateQuery groupByFileName() Group by the file_name column
  * @method PDDebateQuery groupByCopyright() Group by the copyright column
@@ -146,6 +148,7 @@ use Politizr\Model\PUser;
  * @method PDDebate findOneByPLDepartmentId(int $p_l_department_id) Return the first PDDebate filtered by the p_l_department_id column
  * @method PDDebate findOneByPLRegionId(int $p_l_region_id) Return the first PDDebate filtered by the p_l_region_id column
  * @method PDDebate findOneByPLCountryId(int $p_l_country_id) Return the first PDDebate filtered by the p_l_country_id column
+ * @method PDDebate findOneByFbAdId(string $fb_ad_id) Return the first PDDebate filtered by the fb_ad_id column
  * @method PDDebate findOneByTitle(string $title) Return the first PDDebate filtered by the title column
  * @method PDDebate findOneByFileName(string $file_name) Return the first PDDebate filtered by the file_name column
  * @method PDDebate findOneByCopyright(string $copyright) Return the first PDDebate filtered by the copyright column
@@ -173,6 +176,7 @@ use Politizr\Model\PUser;
  * @method array findByPLDepartmentId(int $p_l_department_id) Return PDDebate objects filtered by the p_l_department_id column
  * @method array findByPLRegionId(int $p_l_region_id) Return PDDebate objects filtered by the p_l_region_id column
  * @method array findByPLCountryId(int $p_l_country_id) Return PDDebate objects filtered by the p_l_country_id column
+ * @method array findByFbAdId(string $fb_ad_id) Return PDDebate objects filtered by the fb_ad_id column
  * @method array findByTitle(string $title) Return PDDebate objects filtered by the title column
  * @method array findByFileName(string $file_name) Return PDDebate objects filtered by the file_name column
  * @method array findByCopyright(string $copyright) Return PDDebate objects filtered by the copyright column
@@ -303,7 +307,7 @@ abstract class BasePDDebateQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `p_l_city_id`, `p_l_department_id`, `p_l_region_id`, `p_l_country_id`, `title`, `file_name`, `copyright`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `homepage`, `moderated`, `moderated_partial`, `moderated_at`, `created_at`, `updated_at`, `slug` FROM `p_d_debate` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `p_l_city_id`, `p_l_department_id`, `p_l_region_id`, `p_l_country_id`, `fb_ad_id`, `title`, `file_name`, `copyright`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `homepage`, `moderated`, `moderated_partial`, `moderated_at`, `created_at`, `updated_at`, `slug` FROM `p_d_debate` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -681,6 +685,35 @@ abstract class BasePDDebateQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDDebatePeer::P_L_COUNTRY_ID, $pLCountryId, $comparison);
+    }
+
+    /**
+     * Filter the query on the fb_ad_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByFbAdId('fooValue');   // WHERE fb_ad_id = 'fooValue'
+     * $query->filterByFbAdId('%fooValue%'); // WHERE fb_ad_id LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $fbAdId The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDDebateQuery The current query, for fluid interface
+     */
+    public function filterByFbAdId($fbAdId = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($fbAdId)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $fbAdId)) {
+                $fbAdId = str_replace('*', '%', $fbAdId);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PDDebatePeer::FB_AD_ID, $fbAdId, $comparison);
     }
 
     /**

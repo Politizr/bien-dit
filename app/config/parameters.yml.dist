@@ -30,6 +30,9 @@ parameters:
     facebook_client_id: 123
     facebook_client_secret: 123
     facebook_scope: public_profile,email
+    facebook_page_id: 123
+    facebook_graph_version: v2.8
+    facebook_access_token: 123456789
 
     #Twitter
     twitter_api_key: 123

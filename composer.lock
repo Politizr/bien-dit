@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "57d1e7bd6df399afa16f0492475fd1b8",
-    "content-hash": "b4abcada0fa4ca5c89e87e42929a803e",
+    "hash": "2d2f5ed2a0ff3a291fc44f29cb222457",
+    "content-hash": "c14208ddcf408a6d8c48607398d9bd21",
     "packages": [
         {
             "name": "badlamer/propel-uuid-behavior",
@@ -673,7 +673,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Elao/WebProfilerExtraBundle/zipball/247a1ac8c088e955385b1aab11eb52ebfdd1bbe5",
+                "url": "https://api.github.com/repos/Elao/WebProfilerExtraBundle/zipball/befa5280d2b9a01587404e219b02af4f9272c6bf",
                 "reference": "247a1ac8c088e955385b1aab11eb52ebfdd1bbe5",
                 "shasum": ""
             },
@@ -965,17 +965,17 @@
             "time": "2016-07-16 12:58:58"
         },
         {
-            "name": "facebook/php-sdk-v4",
-            "version": "5.4.1",
+            "name": "facebook/graph-sdk",
+            "version": "5.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/facebook/php-graph-sdk.git",
-                "reference": "a5a6b6cc493d8dc417f588c7c0bdfc6396198350"
+                "reference": "5d0c4865e80e231d48a4571841bd018828fe58e1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/facebook/php-graph-sdk/zipball/a5a6b6cc493d8dc417f588c7c0bdfc6396198350",
-                "reference": "a5a6b6cc493d8dc417f588c7c0bdfc6396198350",
+                "url": "https://api.github.com/repos/facebook/php-graph-sdk/zipball/5d0c4865e80e231d48a4571841bd018828fe58e1",
+                "reference": "5d0c4865e80e231d48a4571841bd018828fe58e1",
                 "shasum": ""
             },
             "require": {
@@ -987,7 +987,8 @@
                 "phpunit/phpunit": "~4.0"
             },
             "suggest": {
-                "guzzlehttp/guzzle": "Allows for implementation of the Guzzle HTTP client"
+                "guzzlehttp/guzzle": "Allows for implementation of the Guzzle HTTP client",
+                "paragonie/random_compat": "Provides a better CSPRNG option in PHP 5"
             },
             "type": "library",
             "extra": {
@@ -1019,8 +1020,7 @@
                 "facebook",
                 "sdk"
             ],
-            "abandoned": "facebook/graph-sdk",
-            "time": "2016-10-18 19:19:03"
+            "time": "2017-01-19 15:42:20"
         },
         {
             "name": "firebase/php-jwt",
@@ -1075,7 +1075,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/4393a98891a03fb7628c546aee4e5ced699c83de",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/8a8f79e41277ad78f134578dd05424f7e658925d",
                 "reference": "4393a98891a03fb7628c546aee4e5ced699c83de",
                 "shasum": ""
             },
@@ -2607,7 +2607,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipUrlAutoConverterBundle/zipball/536dd001fc2d1d6fd257551fd77247f9fb271404",
+                "url": "https://api.github.com/repos/liip/LiipUrlAutoConverterBundle/zipball/a8cbdaf30b553a971be78d180994be2f013adf25",
                 "reference": "536dd001fc2d1d6fd257551fd77247f9fb271404",
                 "shasum": ""
             },
@@ -4836,7 +4836,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony2admingenerator/FormExtensionsBundle/zipball/46e0fc9440c13cb0e4efc95f09a24aff67d8e467",
+                "url": "https://api.github.com/repos/symfony2admingenerator/FormExtensionsBundle/zipball/c588c937fa481ff3abfd88ae40573cbdd4e3388a",
                 "reference": "46e0fc9440c13cb0e4efc95f09a24aff67d8e467",
                 "shasum": ""
             },

@@ -47,7 +47,7 @@
         "willdurand/faker-bundle": "@stable",
 
         "hwi/oauth-bundle": "~0.4",
-        "facebook/php-sdk-v4": "~5.0",
+        "facebook/graph-sdk": "^5.4",
         "j7mbo/twitter-api-php": "~1.0",
         "google/apiclient": "^2.0.0@RC",
         

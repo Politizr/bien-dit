@@ -49,6 +49,7 @@ class PDDebateTableMap extends TableMap
         $this->addForeignKey('p_l_department_id', 'PLDepartmentId', 'INTEGER', 'p_l_department', 'id', false, null, null);
         $this->addForeignKey('p_l_region_id', 'PLRegionId', 'INTEGER', 'p_l_region', 'id', false, null, null);
         $this->addForeignKey('p_l_country_id', 'PLCountryId', 'INTEGER', 'p_l_country', 'id', false, null, null);
+        $this->addColumn('fb_ad_id', 'FbAdId', 'VARCHAR', false, 150, null);
         $this->addColumn('title', 'Title', 'VARCHAR', false, 100, null);
         $this->addColumn('file_name', 'FileName', 'VARCHAR', false, 150, null);
         $this->addColumn('copyright', 'Copyright', 'LONGVARCHAR', false, null, null);
