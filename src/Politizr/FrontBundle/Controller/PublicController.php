@@ -204,7 +204,7 @@ class PublicController extends Controller
             $form = $this->createForm(new PDDirectType(), $directMessage);
 
             $documents = PDDebateQuery::create()
-                ->limit(12)
+                ->limit(9)
                 ->online()
                 ->orderByPublishedAt('desc')
                 ->usePDDTaggedTQuery()

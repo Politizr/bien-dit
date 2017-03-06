@@ -1,7 +1,7 @@
 <div class="embedFB">
     <div class="impactFB">
         <h5><i class="icon-social-fb"></i>Impact sur Facebook</h5>
-        <b>{{ impressions }} personnes atteintes</b> • {{ interactions }} interactions • {{ nbComments }} commentaires • {{ nbEmotions }} réactions • {{ nbShares }} partages
+        {% if impressions > 0 %}<b>{{ impressions }} personnes atteintes</b> • {% endif %}{% if interactions > 0 %}{{ interactions }} interactions • {% endif %}{% if nbComments > 0 %}{{ nbComments }} commentaires • {% endif %}{% if nbEmotions > 0 %}{{ nbEmotions }} réactions • {% endif %}{% if nbShares > 0 %}{{ nbShares }} partages{% endif %}
         <div class="likesFB">
             {% if emotions['like'] %}
                 <div class="likeFB">{{ emotions['like'] }}</div>
