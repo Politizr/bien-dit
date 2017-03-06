@@ -122,17 +122,19 @@ LIMIT :offset, :limit
             $subRequestRegionIds1 = $prefix . "p_d_debate.p_l_region_id = $regionId";
             $subRequestRegionIds2 = $prefix . "p_d_reaction.p_l_region_id = $regionId";
         }
-        if ($countryId) {
-            if ($inQueryCityIds || $inQueryDepartmentIds || $regionId) {
-                $prefix = "OR ";
-            } else {
-                $prefix = "AND (";
-            }
-            $subRequestCountryIds1 = $prefix . "p_d_debate.p_l_country_id = $countryId";
-            $subRequestCountryIds2 = $prefix . "p_d_reaction.p_l_country_id = $countryId";
-        }
 
-        if ($inQueryCityIds || $inQueryDepartmentIds || $regionId || $countryId) {
+        // upd > default = all publications
+        // if ($countryId) {
+        //     if ($inQueryCityIds || $inQueryDepartmentIds || $regionId) {
+        //         $prefix = "OR ";
+        //     } else {
+        //         $prefix = "AND (";
+        //     }
+        //     $subRequestCountryIds1 = $prefix . "p_d_debate.p_l_country_id = $countryId";
+        //     $subRequestCountryIds2 = $prefix . "p_d_reaction.p_l_country_id = $countryId";
+        // }
+
+        if ($inQueryCityIds || $inQueryDepartmentIds || $regionId /* || $countryId */) {
             $subRequestCountryIds1 .= ")";
             $subRequestCountryIds2 .= ")";
         }

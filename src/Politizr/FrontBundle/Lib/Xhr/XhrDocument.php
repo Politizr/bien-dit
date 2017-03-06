@@ -1495,11 +1495,12 @@ class XhrDocument
         // $this->logger->info('$filterDate = ' . print_r($filterDate, true));
 
         // set default values if not set
-        if (empty($geoUuid)) {
-            $france = PLCountryQuery::create()->findPk(LocalizationConstants::FRANCE_ID);
-            $geoUuid = $france->getUuid();
-            $type = LocalizationConstants::TYPE_COUNTRY;
-        }
+        // upd > default = all
+        // if (empty($geoUuid)) {
+        //     $france = PLCountryQuery::create()->findPk(LocalizationConstants::FRANCE_ID);
+        //     $geoUuid = $france->getUuid();
+        //     $type = LocalizationConstants::TYPE_COUNTRY;
+        // }
         if (empty($filterPublication)) {
             $filterPublication = ListingConstants::FILTER_KEYWORD_ALL_PUBLICATIONS;
         }
