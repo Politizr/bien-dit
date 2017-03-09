@@ -130,6 +130,12 @@
                     </form>
                 </div>
             </div>
+
+            <div id="boxDeleteAccount">
+                <div class="notice">
+                    <i class="icon-info"></i><a target="{{ path('DeleteAccount') }}" action="deleteAccount">Supprimer mon compte</a>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock content %}
@@ -148,6 +154,7 @@
     {% endif %}
 
     {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/smoke.min.js'
         '@PolitizrFrontBundle/Resources/public/js/jquery.form.min.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/pages/editPerso.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/user/editPerso.js'

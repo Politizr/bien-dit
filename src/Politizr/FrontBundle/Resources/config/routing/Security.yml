@@ -15,6 +15,10 @@ InscriptionChoice:
     pattern:  /inscription
     defaults: { _controller: PolitizrFrontBundle:Security:inscriptionChoice }
 
+DeleteAccount:
+    pattern:  /w/supprimer-mon-compte
+    defaults: { _controller: PolitizrFrontBundle:Security:deleteAccount }
+
 
 ################################################################################
 #               ROUTING CREATION PROFIL CITOYEN

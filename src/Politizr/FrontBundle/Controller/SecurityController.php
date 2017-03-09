@@ -610,4 +610,25 @@ class SecurityController extends Controller
         // Redirection
         return $this->redirect($redirectUrl);
     }
+
+    /* ######################################################################################################## */
+    /*                                              SUPPRESSION COMPTE                                          */
+    /* ######################################################################################################## */
+
+    /**
+     *  Suppression du compte
+     */
+    public function deleteAccountAction(Request $request)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** deleteAccount');
+
+        $user = $this->getUser();
+        $user->delete();
+
+        $this->get('security.context')->setToken(null);
+        $this->get('request')->getSession()->invalidate();
+            
+        return $this->redirect($this->generateUrl('Homepage'));
+    }
 }
