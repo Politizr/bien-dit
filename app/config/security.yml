@@ -92,6 +92,6 @@ security:
         - { path: ^/v, role: ROLE_ELECTED_INSCRIPTION, host: "%host.public%" }                    # Process d'inscription elu
         - { path: ^/espace/citoyen, role: ROLE_CITIZEN, host: "%host.public%" }                          # Espace citoyen
         - { path: ^/espace/elu, role: ROLE_ELECTED, host: "%host.public%" }                              # Espace élu
-        - { path: ^/espace/profil, role: ROLE_PROFILE_COMPLETED, host: "%host.public%" }                 # Profil citoyen ou élu complet
+        - { path: ^/w, role: ROLE_PROFILE_COMPLETED, host: "%host.public%" }                 # Profil citoyen ou élu complet
         - { path: ^/oauth, roles: IS_AUTHENTICATED_ANONYMOUSLY, host: "%host.public%" }
         - { path: ^/oauth/target, roles: ROLE_OAUTH_USER , host: "%host.public%"}                  # Process d'inscription OAuth

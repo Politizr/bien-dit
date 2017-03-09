@@ -23,28 +23,28 @@ class XhrConstants
     // ******************************************************** //
 
     // GENERAL
-    const ROUTE_SHOW_HIDE_SUGGESTION = 'profil/suggestion';
+    const ROUTE_SHOW_HIDE_SUGGESTION = 'w/suggestion';
 
     // FOLLOW
-    const ROUTE_FOLLOW_DEBATE = 'profil/suivre/debat';
-    const ROUTE_FOLLOW_USER = 'profil/suivre/utilisateur';
-    const ROUTE_FOLLOW_TAG = 'profil/suivre/thematique';
-    const ROUTE_FOLLOW_RELATIVE_DEBATE = 'profil/suivre/debat/relatif';
+    const ROUTE_FOLLOW_DEBATE = 'w/suivre/debat';
+    const ROUTE_FOLLOW_USER = 'w/suivre/utilisateur';
+    const ROUTE_FOLLOW_TAG = 'w/suivre/thematique';
+    const ROUTE_FOLLOW_RELATIVE_DEBATE = 'w/suivre/debat/relatif';
 
     // COMMENTS
     const ROUTE_COMMENTS = 'commentaires';
-    const ROUTE_COMMENT_CREATE = 'profil/commentaire/nouveau';
+    const ROUTE_COMMENT_CREATE = 'w/commentaire/nouveau';
 
     // DOCUMENTS
-    const ROUTE_DOCUMENT_PHOTO_UPLOAD = 'profil/document/photo/upload';
-    const ROUTE_DOCUMENT_PHOTO_DELETE = 'profil/document/photo/delete';
+    const ROUTE_DOCUMENT_PHOTO_UPLOAD = 'w/document/photo/upload';
+    const ROUTE_DOCUMENT_PHOTO_DELETE = 'w/document/photo/delete';
 
-    const ROUTE_DOCUMENT_LISTING_MY_DRAFTS = 'profil/mes-documents/brouillons';
-    const ROUTE_DOCUMENT_LISTING_MY_BOOKMARKS = 'profil/mes-favoris';
-    const ROUTE_DOCUMENT_LISTING_USER_PUBLICATIONS = 'profil/publications';
+    const ROUTE_DOCUMENT_LISTING_MY_DRAFTS = 'w/mes-documents/brouillons';
+    const ROUTE_DOCUMENT_LISTING_MY_BOOKMARKS = 'w/mes-favoris';
+    const ROUTE_DOCUMENT_LISTING_USER_PUBLICATIONS = 'w/publications';
 
     const ROUTE_DOCUMENT_LISTING_TOP = 'documents/top';
-    const ROUTE_DOCUMENT_LISTING_SUGGESTION = '/espace/profil/documents/suggestions';
+    const ROUTE_DOCUMENT_LISTING_SUGGESTION = 'w/documents/suggestions';
 
     const ROUTE_DOCUMENT_LISTING_RECOMMEND = 'documents/recommend';
     const ROUTE_DOCUMENT_LISTING_RECOMMEND_NAV = 'documents/recommend/nav';
@@ -56,36 +56,36 @@ class XhrConstants
     const ROUTE_MAP_BREADCRUMB = 'carte/breadcrumb';
     const ROUTE_MAP_SCHEMA = 'carte/schema';
 
-    const ROUTE_DOCUMENT_BOOKMARK = 'profil/document/bookmark';
+    const ROUTE_DOCUMENT_BOOKMARK = 'w/document/bookmark';
 
     // DEBATES
-    const ROUTE_DEBATE_UPDATE = 'profil/debat/update';
-    const ROUTE_DEBATE_PUBLISH = 'profil/debat/publier';
-    const ROUTE_DEBATE_DELETE = 'profil/debat/supprimer';
-    const ROUTE_DEBATE_PHOTO_INFO_UPDATE = 'profil/debat/infos/photo/update';
+    const ROUTE_DEBATE_UPDATE = 'w/debat/update';
+    const ROUTE_DEBATE_PUBLISH = 'w/debat/publier';
+    const ROUTE_DEBATE_DELETE = 'w/debat/supprimer';
+    const ROUTE_DEBATE_PHOTO_INFO_UPDATE = 'w/debat/infos/photo/update';
 
     // REACTIONS
-    const ROUTE_REACTION_UPDATE = 'profil/reaction/update';
-    const ROUTE_REACTION_PUBLISH = 'profil/reaction/publier';
-    const ROUTE_REACTION_DELETE = 'profil/reaction/supprimer';
-    const ROUTE_REACTION_PHOTO_INFO_UPDATE = 'profil/reaction/infos/photo/update';
+    const ROUTE_REACTION_UPDATE = 'w/reaction/update';
+    const ROUTE_REACTION_PUBLISH = 'w/reaction/publier';
+    const ROUTE_REACTION_DELETE = 'w/reaction/supprimer';
+    const ROUTE_REACTION_PHOTO_INFO_UPDATE = 'w/reaction/infos/photo/update';
 
     const ROUTE_REACTION_LISTING_DEBATE_FIRST_CHILD = 'reactions/debat';
 
     // NOTIFICATIONS
-    const ROUTE_NOTIF_LOADING = 'profil/notif/chargement';
-    const ROUTE_NOTIF_CHECK = 'profil/notif/marque-vu';
-    const ROUTE_NOTIF_CHECK_ALL = 'profil/notif/tout-marque-vu';
-    const ROUTE_NOTIF_EMAIL_SUBSCRIBE = 'profil/notif/email/activer';
-    const ROUTE_NOTIF_EMAIL_UNSUBSCRIBE = 'profil/notif/email/desactiver';
-    const ROUTE_NOTIF_CONTEXT_DEBATE_SUBSCRIBE = 'profil/notif/debat/contexte/activer';
-    const ROUTE_NOTIF_CONTEXT_DEBATE_UNSUBSCRIBE = 'profil/notif/debat/contexte/desactiver';
-    const ROUTE_NOTIF_CONTEXT_USER_SUBSCRIBE = 'profil/notif/utilisateur/contexte/activer';
-    const ROUTE_NOTIF_CONTEXT_USER_UNSUBSCRIBE = 'profil/notif/utilisateur/contexte/desactiver';
+    const ROUTE_NOTIF_LOADING = 'w/notif/chargement';
+    const ROUTE_NOTIF_CHECK = 'w/notif/marque-vu';
+    const ROUTE_NOTIF_CHECK_ALL = 'w/notif/tout-marque-vu';
+    const ROUTE_NOTIF_EMAIL_SUBSCRIBE = 'w/notif/email/activer';
+    const ROUTE_NOTIF_EMAIL_UNSUBSCRIBE = 'w/notif/email/desactiver';
+    const ROUTE_NOTIF_CONTEXT_DEBATE_SUBSCRIBE = 'w/notif/debat/contexte/activer';
+    const ROUTE_NOTIF_CONTEXT_DEBATE_UNSUBSCRIBE = 'w/notif/debat/contexte/desactiver';
+    const ROUTE_NOTIF_CONTEXT_USER_SUBSCRIBE = 'w/notif/utilisateur/contexte/activer';
+    const ROUTE_NOTIF_CONTEXT_USER_UNSUBSCRIBE = 'w/notif/utilisateur/contexte/desactiver';
 
     // REPUTATION COUNTER
-    const ROUTE_SCORE_COUNTER = 'profil/reputation/score';
-    const ROUTE_BADGES_COUNTER = 'profil/reputation/badges';
+    const ROUTE_SCORE_COUNTER = 'w/reputation/score';
+    const ROUTE_BADGES_COUNTER = 'w/reputation/badges';
 
     // MODAL
     const ROUTE_MODAL_HELP_US = 'politizr-needs-you';
@@ -98,7 +98,7 @@ class XhrConstants
     const ROUTE_OP_CLOSE = 'op/close';
 
     // NOTATION
-    const ROUTE_NOTE = 'profil/noter';
+    const ROUTE_NOTE = 'w/noter';
 
     // SECURITY
     const ROUTE_SECURITY_LOGIN = 'login';
@@ -106,19 +106,19 @@ class XhrConstants
     const ROUTE_SECURITY_PAYMENT_PROCESS = 'v/paiement';
 
     // TAGS
-    const ROUTE_TAG_DEBATE_CREATE = 'profil/debat/tag/create';
-    const ROUTE_TAG_DEBATE_DELETE = 'profil/debat/tag/delete';
-    const ROUTE_TAG_REACTION_CREATE = 'profil/reaction/tag/create';
-    const ROUTE_TAG_REACTION_DELETE = 'profil/reaction/tag/delete';
-    const ROUTE_TAG_USER_CREATE = 'profil/utilisateur/tag/create';
-    const ROUTE_TAG_USER_DELETE = 'profil/utilisateur/tag/delete';
-    const ROUTE_TAG_USER_HIDE = 'profil/utilisateur/tag/hide';
-    const ROUTE_TAG_USER_ASSOCIATE = 'profil/utilisateur/tag/associate';
+    const ROUTE_TAG_DEBATE_CREATE = 'w/debat/tag/create';
+    const ROUTE_TAG_DEBATE_DELETE = 'w/debat/tag/delete';
+    const ROUTE_TAG_REACTION_CREATE = 'w/reaction/tag/create';
+    const ROUTE_TAG_REACTION_DELETE = 'w/reaction/tag/delete';
+    const ROUTE_TAG_USER_CREATE = 'w/utilisateur/tag/create';
+    const ROUTE_TAG_USER_DELETE = 'w/utilisateur/tag/delete';
+    const ROUTE_TAG_USER_HIDE = 'w/utilisateur/tag/hide';
+    const ROUTE_TAG_USER_ASSOCIATE = 'w/utilisateur/tag/associate';
 
     const ROUTE_TAG_LISTING = 'tags/listing';
     const ROUTE_TAG_LISTING_TOP = 'tags/top';
     const ROUTE_TAG_LISTING_TYPE = 'tags/type';
-    const ROUTE_TAG_LISTING_USER = 'profil/tags/user';
+    const ROUTE_TAG_LISTING_USER = 'w/tags/user';
 
     // ORGANIZATION
     const ROUTE_ORGANIZATION_DOCUMENT_TABS = 'organisation/documents/tabs';
@@ -128,19 +128,19 @@ class XhrConstants
     const ROUTE_ORGANIZATION_USER_LISTING = 'organisation/profils/listing';
 
     // USER
-    const ROUTE_USER_MANDATE_CREATE = 'profil/utilisateur/mandat/create';
-    const ROUTE_USER_MANDATE_UPDATE = 'profil/utilisateur/mandat/update';
-    const ROUTE_USER_MANDATE_DELETE = 'profil/utilisateur/mandat/delete';
-    const ROUTE_USER_PROFILE_UPDATE = 'profil/utilisateur/update';
-    const ROUTE_USER_ORGA_UPDATE = 'profil/utilisateur/orga/update';
-    const ROUTE_USER_AFFINITIES_UPDATE = 'profil/utilisateur/affinitees/update';
-    const ROUTE_USER_PERSO_UPDATE = 'profil/utilisateur/perso/update';
+    const ROUTE_USER_MANDATE_CREATE = 'w/utilisateur/mandat/create';
+    const ROUTE_USER_MANDATE_UPDATE = 'w/utilisateur/mandat/update';
+    const ROUTE_USER_MANDATE_DELETE = 'w/utilisateur/mandat/delete';
+    const ROUTE_USER_PROFILE_UPDATE = 'w/utilisateur/update';
+    const ROUTE_USER_ORGA_UPDATE = 'w/utilisateur/orga/update';
+    const ROUTE_USER_AFFINITIES_UPDATE = 'w/utilisateur/affinitees/update';
+    const ROUTE_USER_PERSO_UPDATE = 'w/utilisateur/perso/update';
 
     const ROUTE_USER_VALIDATE_ID = 'utilisateur/validation/carte-identite';
     const ROUTE_USER_VALIDATE_PHOTO_UPLOAD = 'utilisateur/validation/photo-id-upload';
     
-    const ROUTE_USER_PHOTO_UPLOAD = 'profil/photo/upload';
-    const ROUTE_USER_PHOTO_DELETE = 'profil/photo/delete';
+    const ROUTE_USER_PHOTO_UPLOAD = 'w/photo/upload';
+    const ROUTE_USER_PHOTO_DELETE = 'w/photo/delete';
 
     const ROUTE_USER_LISTING_LAST_DEBATE_FOLLOWERS = 'debat/derniers-abonnes';
     const ROUTE_USER_LISTING_DEBATE_FOLLOWERS = 'debat/abonnes';
@@ -158,14 +158,14 @@ class XhrConstants
     const ROUTE_USER_LISTING_BADGES = 'auteur/badges';
 
     // TIMELINE
-    const ROUTE_TIMELINE_MINE = 'profil/timeline';
+    const ROUTE_TIMELINE_MINE = 'w/timeline';
     const ROUTE_TIMELINE_USER = 'user/timeline';
 
     // MONITORING
-    const ROUTE_MONITORING_ABUSE = 'profil/signaler-un-abus';
-    const ROUTE_MONITORING_ABUSE_CHECK = 'profil/signaler-un-abus/check';
-    const ROUTE_MONITORING_ASK_FOR_UPDATE = 'profil/modifier-mes-donnees';
-    const ROUTE_MONITORING_ASK_FOR_UPDATE_CHECK = 'profil/modifier-mes-donnees/check';
+    const ROUTE_MONITORING_ABUSE = 'w/signaler-un-abus';
+    const ROUTE_MONITORING_ABUSE_CHECK = 'w/signaler-un-abus/check';
+    const ROUTE_MONITORING_ASK_FOR_UPDATE = 'w/modifier-mes-donnees';
+    const ROUTE_MONITORING_ASK_FOR_UPDATE_CHECK = 'w/modifier-mes-donnees/check';
 
     // BUBBLES
     const ROUTE_BUBBLE_USER = 'bubble/user';
