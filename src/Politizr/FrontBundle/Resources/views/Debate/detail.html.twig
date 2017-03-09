@@ -26,7 +26,7 @@
             {% include 'PolitizrFrontBundle:User:_summary.html.twig' with { 'user': debate.user, 'withSocialLinks': false, 'withMandates': false } only %}
             <h5>{% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': debate } only %}</h5>
             <div class="postStats">
-                {% include 'PolitizrFrontBundle:Document:_statsMini.html.twig' with { 'document': debate } only %}
+                {% include 'PolitizrFrontBundle:Document:_statsMini.html.twig' with { 'document': debate, 'facebook': true } only %}
             </div>
             
             <div id="cardPost">

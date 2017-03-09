@@ -2,5 +2,9 @@
 <div class="statTime"><i class="icon-time"></i>{{ document | readingTime }}</div>
 <div class="statViews"><i class="icon-graph"></i>{{ document | nbViews }}</div>
 <div class="statComments"><i class="icon-comment"></i>{{ document | nbComments }}</div>
-{{ document | facebookInsights }}
+{% if facebook %}
+    {{ document | facebookInsights }}
+{% elseif document.fbAdId %}
+    <div class="statFB"><i class="icon-social-fb"></i>Statistiques Facebook disponible dans le détail</div>
+{% endif %}
 <div class="statLoc">{{ document | localizations }}</div>

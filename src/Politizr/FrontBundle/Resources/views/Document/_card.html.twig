@@ -22,7 +22,7 @@
             {{ document | itemContextReaction() }}
         {% endif %}
         <div class="postStats">
-            {% include 'PolitizrFrontBundle:Document:_statsMini.html.twig' with { 'document': document } only %}
+            {% include 'PolitizrFrontBundle:Document:_statsMini.html.twig' with { 'document': document, 'facebook': false } only %}
         </div>
 
         {{ document | nbElectedPublications }}
