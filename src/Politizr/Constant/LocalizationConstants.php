@@ -39,6 +39,7 @@ class LocalizationConstants
     const REGION_ID_PDLL = 12;
     const REGION_ID_PACA = 13;
     const REGION_ID_FOM = 14;
+    const REGION_ID_WORLD = 15;
 
     // p_l_department
     const DEPARTMENT_ID_AIN = 1;
@@ -150,6 +151,18 @@ class LocalizationConstants
     const DEPARTMENT_ID_WALLIS_ET_FUTUNA = 106;
     const DEPARTMENT_ID_NOUVELLE_CALEDONIE = 107;
 
+    const DEPARTMENT_ID_WORLD_1 = 108;
+    const DEPARTMENT_ID_WORLD_2 = 109;
+    const DEPARTMENT_ID_WORLD_3 = 110;
+    const DEPARTMENT_ID_WORLD_4 = 111;
+    const DEPARTMENT_ID_WORLD_5 = 112;
+    const DEPARTMENT_ID_WORLD_6 = 113;
+    const DEPARTMENT_ID_WORLD_7 = 114;
+    const DEPARTMENT_ID_WORLD_8 = 115;
+    const DEPARTMENT_ID_WORLD_9 = 116;
+    const DEPARTMENT_ID_WORLD_10 = 117;
+    const DEPARTMENT_ID_WORLD_11 = 118;
+
 
     /**
      * Return array of region ids
@@ -172,7 +185,8 @@ class LocalizationConstants
             LocalizationConstants::REGION_ID_N,
             LocalizationConstants::REGION_ID_PDLL,
             LocalizationConstants::REGION_ID_PACA,
-            LocalizationConstants::REGION_ID_FOM
+            LocalizationConstants::REGION_ID_FOM,
+            LocalizationConstants::REGION_ID_WORLD,
         ];
     }
 
@@ -302,6 +316,28 @@ class LocalizationConstants
             LocalizationConstants::DEPARTMENT_ID_SAINT_PIERRE_ET_MIQUELON,
             LocalizationConstants::DEPARTMENT_ID_WALLIS_ET_FUTUNA,
             LocalizationConstants::DEPARTMENT_ID_NOUVELLE_CALEDONIE,
+        ];
+    }
+
+    /**
+     * Return array of out of france circonscriptions ids
+     *
+     * @return array
+     */
+    public static function getOutOfFranceDepartmentIds()
+    {
+        return [
+            LocalizationConstants::DEPARTMENT_ID_WORLD_1,
+            LocalizationConstants::DEPARTMENT_ID_WORLD_2,
+            LocalizationConstants::DEPARTMENT_ID_WORLD_3,
+            LocalizationConstants::DEPARTMENT_ID_WORLD_4,
+            LocalizationConstants::DEPARTMENT_ID_WORLD_5,
+            LocalizationConstants::DEPARTMENT_ID_WORLD_6,
+            LocalizationConstants::DEPARTMENT_ID_WORLD_7,
+            LocalizationConstants::DEPARTMENT_ID_WORLD_8,
+            LocalizationConstants::DEPARTMENT_ID_WORLD_9,
+            LocalizationConstants::DEPARTMENT_ID_WORLD_10,
+            LocalizationConstants::DEPARTMENT_ID_WORLD_11,
         ];
     }
 

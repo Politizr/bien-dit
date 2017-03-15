@@ -7,6 +7,8 @@ use Politizr\Model\PLCityQuery;
 
 use Politizr\Model\PUser;
 
+use  Politizr\Constant\LocalizationConstants;
+
 /**
  * DB manager service for localization.
  *
@@ -42,6 +44,32 @@ class LocalizationManager
             ->distinct()
             ->select(array('uuid', 'title'))
             ->orderBy('title')
+            ->filterById(LocalizationConstants::getOutOfFranceDepartmentIds(), ' NOT IN ')
+            ->find()
+            ->toArray();
+
+        $choices = array();
+        foreach ($departments as $department) {
+            $choices[$department['title']] = $department['uuid'];
+        }
+
+        return $choices;
+    }
+
+    /**
+     * Get array of [title] => [uuid] cities
+     *
+     * @param int departmentUuid
+     * @return array
+     */
+    public function getCirconscriptionsChoices()
+    {
+        // department out of france list
+        $departments = PLDepartmentQuery::create()
+            ->distinct()
+            ->select(array('uuid', 'title'))
+            ->orderBy('id')
+            ->filterById(LocalizationConstants::getOutOfFranceDepartmentIds())
             ->find()
             ->toArray();
 

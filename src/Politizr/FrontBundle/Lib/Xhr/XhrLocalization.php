@@ -88,6 +88,23 @@ class XhrLocalization
         );
     }
 
+    /**
+     * Refresh select out of france departments widget
+     * beta
+     */
+    public function circonscriptionsSelectList(Request $request)
+    {
+        $circonscriptions = $this->localizationManager->getCirconscriptionsChoices();
+        $optionValues[] = '<option value="">Choisissez votre circonscription</option>';
+        foreach ($circonscriptions as $circonscriptionName => $circonscriptionUuid) {
+            $optionValues[] = '<option value="' . $circonscriptionUuid . '">' . $circonscriptionName . '</option>';
+        }
+
+        return array(
+            'html' => $optionValues
+        );
+    }
+
     /* ######################################################################################################## */
     /*                                               MAP TAG FUNCTIONS                                          */
     /* ######################################################################################################## */

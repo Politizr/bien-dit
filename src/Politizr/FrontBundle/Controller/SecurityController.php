@@ -223,7 +223,7 @@ class SecurityController extends Controller
             $user->save();
 
             // upd localization infos
-            $this->get('politizr.manager.localization')->updateUserCity($user, $form->get('localization')->getData()['city']);
+            // $this->get('politizr.manager.localization')->updateUserCity($user, $form->get('localization')->getData()['city']);
 
             $this->get('politizr.functional.security')->inscriptionCitizenFinish($user);
 

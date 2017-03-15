@@ -43,11 +43,37 @@ class LocalizationChoiceType extends AbstractType
         // prefill
         $cityUuid = $this->localizationManager->getCityUuidByCityId($options['city_id']);
         $departmentUuid = $this->localizationManager->getDepartmentUuidByCityId($options['city_id']);
+        $outOfFrance = null;
 
-        // Department type list
+        // Français hors de France
+        $builder->add('out_of_france', 'checkbox', array(
+            'label' => 'Français établi hors de France',
+            'mapped' => false,
+            'attr' => array('class' => 'out_of_france'),
+        ));
+
+        // Department (out of france) type list
+        $circonscriptionChoices = $this->localizationManager->getCirconscriptionsChoices();
+        $builder->add('circonscription', 'choice', array(
+            'label' => $options['label_circonscription'],
+            'mapped' => false,
+            'required' => true,
+            'choices' => $circonscriptionChoices,
+            'choices_as_values' => true,
+            'multiple' => false,
+            'expanded' => false,
+            'placeholder' => 'Choisissez votre circonscription',
+            'empty_data'  => null,
+            'attr' => array('class' => 'select2_choice circonscription_choice'),
+            'constraints' => new NotBlank(array('message' => 'Choix d\'une circonscription obligatoire.')),
+            'data' => $departmentUuid,
+        ));
+
+        // Department (france) type list
         $departmentChoices = $this->localizationManager->getDepartmentChoices();
         $builder->add('department', 'choice', array(
             'label' => $options['label_department'],
+            'mapped' => false,
             'required' => true,
             'choices' => $departmentChoices,
             'choices_as_values' => true,
@@ -60,12 +86,14 @@ class LocalizationChoiceType extends AbstractType
             'data' => $departmentUuid,
         ));
 
+        // FORM MODIFIERS
         // see http://symfony.com/doc/2.8/cookbook/form/dynamic_form_modification.html#cookbook-form-events-underlying-data
-        $formModifier = function (FormInterface $form, $departmentUuid = null, $cityUuid = null, $options) {
+        $formCityModifier = function (FormInterface $form, $departmentUuid = null, $cityUuid = null, $options) {
             // City type list / 30438
             $cityChoices = $this->localizationManager->getCityChoices($departmentUuid);
             $form->add('city', 'choice', array(
                 'label' => $options['label_city'],
+                'mapped' => false,
                 'required' => true,
                 'choices' => $cityChoices,
                 'choices_as_values' => true,
@@ -79,23 +107,73 @@ class LocalizationChoiceType extends AbstractType
             ));
         };
 
+        $updateFieldsModifier = function (FormInterface $form, $outOfFrance = null, $departmentChoices, $circonscriptionChoices, $departmentUuid, $cityUuid, $options) {
+            if ($outOfFrance) {
+                $cityChoices = $this->localizationManager->getCityChoices($departmentUuid);
+                $form->add('department', 'choice', array(
+                    'label' => $options['label_department'],
+                    'mapped' => false,
+                    'required' => false,
+                    'choices' => $departmentChoices,
+                    'choices_as_values' => true,
+                    'multiple' => false,
+                    'expanded' => false,
+                    'placeholder' => 'Choisissez votre département',
+                    'empty_data'  => null,
+                    'attr' => array('class' => 'select2_choice department_choice'),
+                    'data' => $departmentUuid,
+                ));
+                $form->add('city', 'choice', array(
+                    'label' => $options['label_city'],
+                    'mapped' => false,
+                    'required' => false,
+                    'choices' => $cityChoices,
+                    'choices_as_values' => true,
+                    'multiple' => false,
+                    'expanded' => false,
+                    'placeholder' => 'Choisissez votre ville',
+                    'empty_data'  => null,
+                    'attr' => array('class' => 'select2_choice city_choice'),
+                    'data' => $cityUuid,
+                ));
+            } else {        
+                $form->add('circonscription', 'choice', array(
+                    'label' => $options['label_circonscription'],
+                    'mapped' => false,
+                    'required' => false,
+                    'choices' => $circonscriptionChoices,
+                    'choices_as_values' => true,
+                    'multiple' => false,
+                    'expanded' => false,
+                    'placeholder' => 'Choisissez votre circonscription',
+                    'empty_data'  => null,
+                    'attr' => array('class' => 'select2_choice circonscription_choice'),
+                    'data' => $departmentUuid,
+                ));
+            }
+        };
+
+        // EVENT LISTENERS
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,
-            function (FormEvent $event) use ($formModifier, $departmentUuid, $cityUuid, $options) {
-                $formModifier($event->getForm(), $departmentUuid, $cityUuid, $options);
+            function (FormEvent $event) use ($formCityModifier, $departmentUuid, $cityUuid, $options) {
+                $formCityModifier($event->getForm(), $departmentUuid, $cityUuid, $options);
+            }
+        );
+
+        $builder->get('out_of_france')->addEventListener(
+            FormEvents::PRE_SUBMIT,
+            function (FormEvent $event) use ($updateFieldsModifier, $departmentChoices, $circonscriptionChoices, $departmentUuid, $cityUuid, $options) {
+                $outOfFrance = $event->getForm()->getData();
+                $updateFieldsModifier($event->getForm()->getParent(), $outOfFrance, $departmentChoices, $circonscriptionChoices, $departmentUuid, $cityUuid, $options);
             }
         );
 
         $builder->get('department')->addEventListener(
             FormEvents::POST_SUBMIT,
-            function (FormEvent $event) use ($formModifier, $departmentUuid, $cityUuid, $options) {
-                // It's important here to fetch $event->getForm()->getData(), as
-                // $event->getData() will get you the client data (that is, the ID)
+            function (FormEvent $event) use ($formCityModifier, $departmentUuid, $cityUuid, $options) {
                 $departmentUuid = $event->getForm()->getData();
-        
-                // since we've added the listener to the child, we'll have to pass on
-                // the parent to the callback functions!
-                $formModifier($event->getForm()->getParent(), $departmentUuid, $cityUuid, $options);
+                $formCityModifier($event->getForm()->getParent(), $departmentUuid, $cityUuid, $options);
             }
         );
     }
@@ -105,6 +183,7 @@ class LocalizationChoiceType extends AbstractType
         $resolver->setDefaults(array(
             'city_id' => null,
             'label_department' => 'Votre département',
+            'label_circonscription' => 'Votre circonscription',
             'label_city' => 'Votre ville',
         ));
     }

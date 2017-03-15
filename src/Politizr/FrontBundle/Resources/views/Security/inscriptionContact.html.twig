@@ -31,7 +31,7 @@
                             {{ form_errors(form) }}
                         </div>
                     {% endif %}
-                    {{ form_start(form, {'action': path('InscriptionContactCheck'), 'method': 'POST'}) }}
+                    {{ form_start(form, {'action': path('InscriptionContactCheck'), 'method': 'POST', 'attr': { 'novalidate': 'novalidate'}}) }}
                         <div class="control-group">
                             {{ form_label(form.gender) }}
                         </div>
