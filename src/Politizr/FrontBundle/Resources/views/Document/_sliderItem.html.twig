@@ -30,7 +30,7 @@
         <div class="suggItemRightTop">
             <div class="suggItemRightTopHolder">
                 <div class="postStats">
-                    {% include 'PolitizrFrontBundle:Document:_statsMini.html.twig' with { 'document': document, 'facebook': true } only %}
+                    {% include 'PolitizrFrontBundle:Document:_statsMini.html.twig' with { 'document': document, 'facebook': false } only %}
                 </div>
                 {{ document | nbElectedPublications }}
                 <h5>{% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': document } only %}</h5>
