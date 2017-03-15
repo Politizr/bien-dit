@@ -361,6 +361,29 @@ class LocalizationManager
         return $region->getUuid();
     }
 
+    /**
+     * Check if city is out of france (circonscription)
+     *
+     * @param int $cityId
+     * @return boolean
+     */
+    public function isOutOfFranceByCityId($cityId)
+    {
+        if (!$cityId) {
+            return false;
+        }
+
+        $city = PLCityQuery::create()->findPk($cityId);
+        if (!$city) {
+            return false;
+        }
+
+        if (in_array($city->getPLDepartmentId(), LocalizationConstants::getOutOfFranceDepartmentIds())) {
+            return true;
+        }
+
+        return false;
+    }
 
     /**
      * Upd user w. his city id

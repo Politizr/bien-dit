@@ -46,3 +46,5 @@ VALUES
 ('116', 'ville-maghreb-afrique-de-l-ouest', 'VILLE DANS MAGHREB, AFRIQUE DE L\'OUEST', 'ville dans maghreb, afrique de l\'ouest', 'Ville dans Maghreb, Afrique de l\'Ouest', now(), now()),
 ('117', 'ville-partie-du-moyen-orient-et-de-l-afrique', 'VILLE DANS PARTIE DU MOYEN-ORIENT ET DE L\'AFRIQUE', 'ville dans partie du moyen-orient et de l\'afrique', 'Ville dans Partie du Moyen-Orient et de l\'Afrique', now(), now()),
 ('118', 'ville-asie-incl-russie-et-oceanie', 'VILLE DANS ASIE (INCL. RUSSIE) ET OCÉANIE', 'ville dans asie (incl. russie) et océanie', 'Ville dans Asie (incl. Russie) et Océanie', now(), now());
+
+# app/console politizr:uuids:populate PLCity

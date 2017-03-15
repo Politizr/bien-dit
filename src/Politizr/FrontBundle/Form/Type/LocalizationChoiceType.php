@@ -43,13 +43,14 @@ class LocalizationChoiceType extends AbstractType
         // prefill
         $cityUuid = $this->localizationManager->getCityUuidByCityId($options['city_id']);
         $departmentUuid = $this->localizationManager->getDepartmentUuidByCityId($options['city_id']);
-        $outOfFrance = null;
+        $outOfFrance = $this->localizationManager->isOutOfFranceByCityId($options['city_id']);
 
         // Français hors de France
         $builder->add('out_of_france', 'checkbox', array(
             'label' => 'Français établi hors de France',
             'mapped' => false,
             'attr' => array('class' => 'out_of_france'),
+            'data' => $outOfFrance,
         ));
 
         // Department (out of france) type list
@@ -107,6 +108,7 @@ class LocalizationChoiceType extends AbstractType
             ));
         };
 
+        // set required false / out of france checkbox
         $updateFieldsModifier = function (FormInterface $form, $outOfFrance = null, $departmentChoices, $circonscriptionChoices, $departmentUuid, $cityUuid, $options) {
             if ($outOfFrance) {
                 $cityChoices = $this->localizationManager->getCityChoices($departmentUuid);
@@ -162,7 +164,7 @@ class LocalizationChoiceType extends AbstractType
         );
 
         $builder->get('out_of_france')->addEventListener(
-            FormEvents::PRE_SUBMIT,
+            FormEvents::POST_SUBMIT,
             function (FormEvent $event) use ($updateFieldsModifier, $departmentChoices, $circonscriptionChoices, $departmentUuid, $cityUuid, $options) {
                 $outOfFrance = $event->getForm()->getData();
                 $updateFieldsModifier($event->getForm()->getParent(), $outOfFrance, $departmentChoices, $circonscriptionChoices, $departmentUuid, $cityUuid, $options);

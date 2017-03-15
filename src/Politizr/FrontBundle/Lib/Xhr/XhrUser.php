@@ -509,7 +509,7 @@ class XhrUser
                 }
             } elseif ($formTypeId == 4) {
                 // upd localization infos
-                $this->localizationManager->updateUserCity($user, $form->get('localization')->getData()['city']);
+                $this->localizationService->updateUserGeoloc($user, $form);
             }
         } else {
             $errors = StudioEchoUtils::getAjaxFormErrors($form);

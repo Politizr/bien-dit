@@ -453,6 +453,30 @@ class LocalizationService
     }
 
     /**
+     * Get city id of a circonscription/department uuid
+     *
+     * @param integer $departmentId
+     * @return string
+     */
+    public function getCityUuidFromCirconscriptionUuid($circonscriptionUuid)
+    {
+        // $this->logger->info('*** getCityUuidFromCirconscriptionUuid');
+        // $this->logger->info('$circonscriptionUuid = '.print_r($circonscriptionUuid, true));
+
+        $city = PLCityQuery::create()
+            ->usePLDepartmentQuery()
+                ->filterByUuid($circonscriptionUuid)
+            ->endUse()
+            ->findOne();
+
+        if ($city) {
+            return $city->getUuid();
+        }
+
+        return null;
+    }
+
+    /**
      * Get city ids of a region
      *
      * @param integer $regionId
@@ -630,5 +654,23 @@ class LocalizationService
         }
 
         return $localization;
+    }
+
+    /**
+     * Manage user city update
+     *
+     * @param PUser $user
+     * @param Form $formGeoloc LocalizationChoiceType
+     * @return PUser
+     */
+    public function updateUserGeoloc($user, $formGeoloc)
+    {
+        if ($formGeoloc['localization']['out_of_france']->getData()) {
+            $circonscriptionUuid = $formGeoloc['localization']['circonscription']->getData();
+            $cityUuid = $this->getCityUuidFromCirconscriptionUuid($circonscriptionUuid);
+            return $this->localizationManager->updateUserCity($user, $cityUuid);
+        } else {
+            return $this->localizationManager->updateUserCity($user, $formGeoloc['localization']['city']->getData());
+        }
     }
 }
