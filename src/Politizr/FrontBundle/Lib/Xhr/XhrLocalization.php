@@ -94,7 +94,7 @@ class XhrLocalization
      */
     public function circonscriptionsSelectList(Request $request)
     {
-        $circonscriptions = $this->localizationManager->getCirconscriptionsChoices();
+        $circonscriptions = $this->localizationManager->getCirconscriptionChoices();
         $optionValues[] = '<option value="">Choisissez votre circonscription</option>';
         foreach ($circonscriptions as $circonscriptionName => $circonscriptionUuid) {
             $optionValues[] = '<option value="' . $circonscriptionUuid . '">' . $circonscriptionName . '</option>';

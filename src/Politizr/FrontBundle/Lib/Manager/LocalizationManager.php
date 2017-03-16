@@ -62,7 +62,7 @@ class LocalizationManager
      * @param int departmentUuid
      * @return array
      */
-    public function getCirconscriptionsChoices()
+    public function getCirconscriptionChoices()
     {
         // department out of france list
         $departments = PLDepartmentQuery::create()

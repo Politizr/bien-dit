@@ -15,6 +15,7 @@ class LocalizationConstants
     const TYPE_COUNTRY = 'country';
     const TYPE_REGION = 'region';
     const TYPE_DEPARTMENT = 'department';
+    const TYPE_CIRCONSCRIPTION = 'circonscription';
     const TYPE_CITY = 'city';
 
     // ************************************************************************************ //

@@ -25,6 +25,10 @@
                                 {{ form_widget(formLocalization.localization_department) }}<br/>
                             {% elseif loop.index == 3 %}
                                 {{ form_widget(formLocalization.localization_region) }}<br/>
+                            {% elseif loop.index == 4 %}
+                                &nbsp;
+                            {% elseif loop.index == 5 %}
+                                {{ form_widget(formLocalization.localization_circonscription) }}<br/>
                             {% endif %}
                         {% endfor %}
                         {{ form_rest(formLocalization) }}

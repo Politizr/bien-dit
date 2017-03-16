@@ -54,7 +54,7 @@ class LocalizationChoiceType extends AbstractType
         ));
 
         // Department (out of france) type list
-        $circonscriptionChoices = $this->localizationManager->getCirconscriptionsChoices();
+        $circonscriptionChoices = $this->localizationManager->getCirconscriptionChoices();
         $builder->add('circonscription', 'choice', array(
             'label' => $options['label_circonscription'],
             'mapped' => false,

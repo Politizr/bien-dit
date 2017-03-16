@@ -1,30 +1,13 @@
 // beta
-
-// init select2 & hide cities
 $(function() {
     console.log('*** init edit.js');
 
-    if ($('.out_of_france').is(':checked')) {
-        console.log('outOfFrance checked');
-        $('.control-group-department').hide();
-        $('.control-group-city').hide();
-        departmentUuid = $('.circonscription_choice').val();
-        console.log(departmentUuid);
+    if ($('.modalPublishContent').length) {
+        initPublishContext();
     } else {
-        console.log('outOfFrance unchecked');
-        $('.control-group-circonscription').hide();
-        departmentUuid = $('.department_choice').val();
-        console.log(departmentUuid);
-        if (departmentUuid == '') {
-            $('.control-group-city').hide();
-        }
+        initUserContext();
     }
-
-    $('select.select2_choice').select2({
-        language: "fr",
-    });
 });
-
 
 // department choice event
 $("body").on("change", ".department_choice", function(e) {
@@ -70,6 +53,72 @@ $("body").on("change", ".out_of_france", function(e) {
 });
 
 /**
+ * Select box initialization in publish debate/response context
+ */
+function initPublishContext()
+{
+    console.log('*** initPublishContext');
+
+    departmentUuid = $('.department_choice').val();
+    console.log(departmentUuid);
+    if (departmentUuid == '') {
+        $('.control-group-city').hide();
+    }
+
+    // select2 init depending of context
+    var select2Options = initContextSelect2Options();
+    $('select.select2_choice').select2(select2Options);
+}
+
+/**
+ * Select box initialization in publish user edit context
+ */
+function initUserContext()
+{
+    console.log('*** initUserContext');
+    
+    if ($('.out_of_france').is(':checked')) {
+        console.log('outOfFrance checked');
+        $('.control-group-department').hide();
+        $('.control-group-city').hide();
+        departmentUuid = $('.circonscription_choice').val();
+        console.log(departmentUuid);
+    } else {
+        console.log('outOfFrance unchecked');
+        $('.control-group-circonscription').hide();
+        departmentUuid = $('.department_choice').val();
+        console.log(departmentUuid);
+        if (departmentUuid == '') {
+            $('.control-group-city').hide();
+        }
+    }
+
+    // select2 init depending of context
+    var select2Options = initContextSelect2Options();
+    $('select.select2_choice').select2(select2Options);
+}
+
+/**
+ * Init select2options: important to manage "dropdownParent" in case of use in modal
+ *
+ * @return array
+ */
+function initContextSelect2Options()
+{
+    var select2Options = {
+        language: "fr",
+    };
+    if ($('.modalPublishContent').length) {
+        select2Options = {
+            language: "fr",
+            dropdownParent: $('.modalPublishContent')
+        };
+    }
+
+    return select2Options;
+}
+
+/**
  * Refresh city selection by department
  *
  * @param contextZone
@@ -99,7 +148,9 @@ function initCities(contextZone, departmentUuid)
             $('#infoBoxHolder .boxError').show();
         } else {
             $('.city_choice').html(data['html']);
-            $('select.city_choice').select2();
+            // select2 init depending of context
+            var select2Options = initContextSelect2Options();
+            $('select.city_choice').select2(select2Options);
             $('.control-group-city').show();
         }
     });
@@ -133,7 +184,9 @@ function initOutOfFranceDepartments(contextZone)
             $('#infoBoxHolder .boxError').show();
         } else {
             $('.circonscription_choice').html(data['html']);
-            $('select.circonscription_choice').select2();
+            // select2 init depending of context
+            var select2Options = initContextSelect2Options();
+            $('select.circonscription_choice').select2(select2Options);
             $('.control-group-circonscription').show();
         }
     });

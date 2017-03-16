@@ -361,20 +361,30 @@ function locShowHideAttr() {
         $('#document_localization_localization_city').show();
         $('#document_localization_localization_department').hide();
         $('#document_localization_localization_region').hide();
+        $('#document_localization_localization_circonscription').hide();
     } else if ($('#document_localization_loc_type_1').is(':checked')) {
         // console.log('document_localization_loc_type_1 :checked');
         $('#document_localization_localization_city').hide();
         $('#document_localization_localization_department').show();
         $('#document_localization_localization_region').hide();
+        $('#document_localization_localization_circonscription').hide();
     } else if ($('#document_localization_loc_type_2').is(':checked')) {
         // console.log('document_localization_loc_type_2 :checked');
         $('#document_localization_localization_city').hide();
         $('#document_localization_localization_department').hide();
         $('#document_localization_localization_region').show();
+        $('#document_localization_localization_circonscription').hide();
     } else if ($('#document_localization_loc_type_3').is(':checked')) {
         // console.log('document_localization_loc_type_3 :checked');
         $('#document_localization_localization_city').hide();
         $('#document_localization_localization_department').hide();
         $('#document_localization_localization_region').hide();
+        $('#document_localization_localization_circonscription').hide();
+    } else if ($('#document_localization_loc_type_4').is(':checked')) {
+        // console.log('document_localization_loc_type_4 :checked');
+        $('#document_localization_localization_city').hide();
+        $('#document_localization_localization_department').hide();
+        $('#document_localization_localization_region').hide();
+        $('#document_localization_localization_circonscription').show();
     }
 }
