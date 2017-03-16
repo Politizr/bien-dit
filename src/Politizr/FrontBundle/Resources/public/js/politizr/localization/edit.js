@@ -21,7 +21,7 @@ $(function() {
     }
 
     $('select.select2_choice').select2({
-        language: "fr"
+        language: "fr",
     });
 });
 
