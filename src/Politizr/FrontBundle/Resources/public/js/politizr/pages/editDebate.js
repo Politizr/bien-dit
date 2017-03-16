@@ -10,6 +10,12 @@ $(function() {
 
     // sticky sidebar
     stickySidebar();
+
+
+    $('select.select2_choice').select2({
+        language: "fr",
+        dropdownParent: $('.modalPublishContent')
+    });
 });
 
 // TAG vars
