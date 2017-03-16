@@ -69,7 +69,7 @@ class PUserContactType extends AbstractType
 
         $builder->add('newsletter', 'checkbox', array(
             'required' => false,
-            'label' => 'Je souhaite recevoir les news de Politizr'
+            'label' => 'Je m\'inscris à la newsletter de Politizr'
         ));
 
         if ($this->withEmail) {
