@@ -10,11 +10,11 @@ $(function() {
         $('.control-group-city').hide();
     }
 
-    $('select.select2_choice').select2({
-        language: "fr",
-    });
+    // select2 init depending of context
+    var select2Options = initContextSelect2Options();
+    // console.log(select2Options);
+    $('select.select2_choice').select2(select2Options);
 });
-
 
 // department choice event
 $("body").on("change", ".department_choice", function(e) {
@@ -33,6 +33,25 @@ $("body").on("change", ".department_choice", function(e) {
     return initCities(context, departmentUuid);
 });
 
+/**
+ * Init select2options: important to manage "dropdownParent" in case of use in modal
+ *
+ * @return array
+ */
+function initContextSelect2Options()
+{
+    var select2Options = {
+        language: "fr",
+    };
+    if ($('.modalPublishContent').length) {
+        select2Options = {
+            language: "fr",
+            dropdownParent: $('.modalPublishContent')
+        };
+    }
+
+    return select2Options;
+}
 
 /**
  * Refresh city selection by department
@@ -65,7 +84,10 @@ function initCities(contextZone, departmentUuid)
             $('#infoBoxHolder .boxError').show();
         } else {
             $('.city_choice').html(data['html']);
-            $('select.city_choice').select2();
+            // select2 init depending of context
+            var select2Options = initContextSelect2Options();
+            // console.log(select2Options);
+            $('select.city_choice').select2(select2Options);
             $('.control-group-city').show();
         }
     });
