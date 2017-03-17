@@ -3,7 +3,7 @@
     <div class="sidebarSearchMap">
         <h5>Zone Géographique</h5>
         <div class="mapMenu withLoaderInside" id="mapMenu">
-            {% include 'PolitizrFrontBundle:Search\\Map:_menu.html.twig' with { 'isFom': false } %}
+            {% include 'PolitizrFrontBundle:Search\\Map:_menu.html.twig' with { 'isFom': false, 'isWorld': false } %}
         </div>
         <div class="mapBreadcrumbs withLoaderInside" id="mapBreadcrumb">
             {% include 'PolitizrFrontBundle:Search\\Map:_breadcrumb.html.twig' with { 'geoTypeObjects': null } %}

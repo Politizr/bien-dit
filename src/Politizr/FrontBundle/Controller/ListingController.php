@@ -227,6 +227,7 @@ class ListingController extends Controller
         // Map ids
         $france = PLCountryQuery::create()->findPk(LocalizationConstants::FRANCE_ID);
         $fom = PLRegionQuery::create()->findPk(LocalizationConstants::REGION_ID_FOM);
+        $world = PLRegionQuery::create()->findPk(LocalizationConstants::REGION_ID_WORLD);
 
         $mapUuids = $this->get('politizr.functional.localization')->getRegionUuids();
 
@@ -266,6 +267,7 @@ class ListingController extends Controller
             'searchPublications' => true,
             'france' => $france,
             'fom' => $fom,
+            'world' => $world,
             'mapUuids' => $mapUuids,
             'currentUuid' => $currentUuid,
             'currentType' => $currentType,
@@ -293,6 +295,7 @@ class ListingController extends Controller
         // Map ids
         $france = PLCountryQuery::create()->findPk(LocalizationConstants::FRANCE_ID);
         $fom = PLRegionQuery::create()->findPk(LocalizationConstants::REGION_ID_FOM);
+        $world = PLRegionQuery::create()->findPk(LocalizationConstants::REGION_ID_WORLD);
 
         $mapUuids = $this->get('politizr.functional.localization')->getRegionUuids();
 
@@ -331,6 +334,7 @@ class ListingController extends Controller
             'searchUsers' => true,
             'france' => $france,
             'fom' => $fom,
+            'world' => $world,
             'mapUuids' => $mapUuids,
             'currentUuid' => $currentUuid,
             'currentType' => $currentType,

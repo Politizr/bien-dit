@@ -1,4 +1,5 @@
 {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
 
-<span action="map" type="{{ constant('Politizr\\Constant\\LocalizationConstants::TYPE_COUNTRY') }}" uuid="{{ france.uuid }}"{% if not isFom %} class="active"{% endif %}>France</span>
-<span action="map" type="{{ constant('Politizr\\Constant\\LocalizationConstants::TYPE_REGION') }}" uuid="{{ fom.uuid }}"{% if isFom %}class="active"{% endif %}>France d'Outre-Mer</span>
+<span action="map" type="{{ constant('Politizr\\Constant\\LocalizationConstants::TYPE_COUNTRY') }}" uuid="{{ france.uuid }}"{% if not isFom and not isWorld %} class="active"{% endif %}>France</span>
+<span action="map" type="{{ constant('Politizr\\Constant\\LocalizationConstants::TYPE_REGION') }}" uuid="{{ fom.uuid }}"{% if isFom %}class="active"{% endif %}>Outre-Mer</span>
+<span action="map" type="{{ constant('Politizr\\Constant\\LocalizationConstants::TYPE_REGION') }}" uuid="{{ world.uuid }}"{% if isWorld %}class="active"{% endif %}>Hors de France</span>

@@ -110,7 +110,7 @@ class XhrLocalization
     /* ######################################################################################################## */
 
     /**
-     * Map menu (france / france outre mer)
+     * Map menu (france / outre mer / hors de france )
      * /!\ only used w. shorcut 'my region' / 'my department' / 'my city'
      * beta
      */
@@ -129,13 +129,18 @@ class XhrLocalization
 
         $france = PLCountryQuery::create()->findPk(LocalizationConstants::FRANCE_ID);
         $fom = PLRegionQuery::create()->findPk(LocalizationConstants::REGION_ID_FOM);
+        $world = PLRegionQuery::create()->findPk(LocalizationConstants::REGION_ID_WORLD);
 
-        // check if user is in dom/tom
         $isFom = false;
+        $isWorld = false;
+        
         if ($user && !is_string($user) && $city = $user->getPLCity()) {
             $department = $city->getPLDepartment();
+            // check if user is in dom/tom or out of france
             if (in_array($department->getId(), LocalizationConstants::getGeoDepartmentOMIds())) {
                 $isFom = true;
+            } elseif (in_array($department->getId(), LocalizationConstants::getOutOfFranceDepartmentIds())) {
+                $isWorld = true;
             }
         }
 
@@ -144,7 +149,9 @@ class XhrLocalization
             array(
                 'france' => $france,
                 'fom' => $fom,
+                'world' => $world,
                 'isFom' => $isFom,
+                'isWorld' => $isWorld,
             )
         );
 
@@ -172,18 +179,27 @@ class XhrLocalization
         if ($type == LocalizationConstants::TYPE_REGION) {
             $region = PLRegionQuery::create()->filterByUuid($uuid)->findOne();
 
-            if ($region && $region->getId() != LocalizationConstants::REGION_ID_FOM) {
+            // special cases: domtom & out of france
+            if ($region && $region->getId() != LocalizationConstants::REGION_ID_FOM && $region->getId() != LocalizationConstants::REGION_ID_WORLD) {
                 $geoTypeObjects = array(LocalizationConstants::TYPE_REGION => $region);
             }
         } elseif ($type == LocalizationConstants::TYPE_DEPARTMENT) {
             $department = PLDepartmentQuery::create()->filterByUuid($uuid)->findOne();
 
+            // special cases: domtom & out of france
             if ($department && in_array($department->getId(), LocalizationConstants::getGeoDepartmentMetroIds())) {
                 $region = PLRegionQuery::create()->filterById($department->getPLRegionId())->findOne();
 
                 $geoTypeObjects = array(
                     LocalizationConstants::TYPE_REGION => $region,
-                    LocalizationConstants::TYPE_DEPARTMENT => $department
+                    LocalizationConstants::TYPE_DEPARTMENT => $department,
+                );
+            } elseif ($department && in_array($department->getId(), LocalizationConstants::getOutOfFranceDepartmentIds())) {
+                $region = PLRegionQuery::create()->filterById($department->getPLRegionId())->findOne();
+
+                $geoTypeObjects = array(
+                    LocalizationConstants::TYPE_REGION => $region,
+                    LocalizationConstants::TYPE_DEPARTMENT => $department,
                 );
             }
         } elseif ($type == LocalizationConstants::TYPE_CITY) {
@@ -193,13 +209,22 @@ class XhrLocalization
             }
             $department = $city->getPLDepartment();
 
+            // special cases: domtom & out of france
             if (in_array($department->getId(), LocalizationConstants::getGeoDepartmentMetroIds())) {
                 $region = PLRegionQuery::create()->filterById($department->getPLRegionId())->findOne();
 
                 $geoTypeObjects = array(
                     LocalizationConstants::TYPE_REGION => $region,
                     LocalizationConstants::TYPE_DEPARTMENT => $department,
-                    LocalizationConstants::TYPE_CITY => $city
+                    LocalizationConstants::TYPE_CITY => $city,
+                );
+            } elseif ($department && in_array($department->getId(), LocalizationConstants::getOutOfFranceDepartmentIds())) {
+                $region = PLRegionQuery::create()->filterById($department->getPLRegionId())->findOne();
+
+                $geoTypeObjects = array(
+                    LocalizationConstants::TYPE_REGION => $region,
+                    LocalizationConstants::TYPE_DEPARTMENT => $department,
+                    LocalizationConstants::TYPE_CITY => $city,
                 );
             }
         }
