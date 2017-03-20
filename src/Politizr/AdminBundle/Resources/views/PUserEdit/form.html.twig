@@ -40,3 +40,9 @@
 {% block form_row_block_reputation %}
     {{ adminUserReputation(PUser) }}
 {% endblock %}
+
+{# Bloc notifications #}
+{% block form_row_block_notifications %}
+    {{ form_row(form['block_notifications']) }}
+    <i class="fa fa-exclamation-triangle" aria-hidden="true">&nbsp;Note: cochez cette case déclenche l'envoi des notifications liées à son <b>inscription</b> ("Un nouvel élu vient de s'inscrire")</i>
+{% endblock %}
