@@ -765,8 +765,8 @@ class SecurityService
         // Events
         $dispatcher =  $this->eventDispatcher->dispatch('welcome_email', new GenericEvent($user));
 
-        $event = new GenericEvent($user);
-        $dispatcher = $this->eventDispatcher->dispatch('n_localization_user', $event);
+        // $event = new GenericEvent($user);
+        // $dispatcher = $this->eventDispatcher->dispatch('n_localization_user', $event);
     }
 
     /**
