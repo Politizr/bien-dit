@@ -6,6 +6,7 @@ services:
             - @security.authorization_checker
             - @security.context
             - @request_stack
+            - @session
             - @form.factory
             - @validator
             - @liip_imagine.controller

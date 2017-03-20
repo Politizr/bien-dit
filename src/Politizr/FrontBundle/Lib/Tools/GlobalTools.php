@@ -35,6 +35,7 @@ class GlobalTools
     private $securityContext;
 
     private $requestStack;
+    private $session;
 
     private $formFactory;
     private $validator;
@@ -49,6 +50,7 @@ class GlobalTools
      * @param @security.authorization_checker
      * @param @security.context
      * @param @request_stack
+     * @param @session
      * @param @form.factory
      * @param @validator
      * @param @liip_imagine.controller
@@ -59,6 +61,7 @@ class GlobalTools
         $securityAuthorizationChecker,
         $securityContext,
         $requestStack,
+        $session,
         $formFactory,
         $validator,
         $liipImagineController,
@@ -69,6 +72,7 @@ class GlobalTools
         $this->securityContext = $securityContext;
 
         $this->requestStack = $requestStack;
+        $this->session = $session;
         
         $this->formFactory = $formFactory;
 
@@ -756,7 +760,8 @@ class GlobalTools
      * @param $mode public|private|we|<nb of days>
      * @return boolean
      */
-    public function isPrivateMode($visitor, PDocumentInterface $document, $mode, $userIds) {
+    public function isPrivateMode($visitor, PDocumentInterface $document, $mode, $userIds)
+    {
         $private = true;
         $publishedAt = $document->getPublishedAt();
         $docUserId =  $document->getPUserId();
@@ -780,5 +785,27 @@ class GlobalTools
             }
         }
         return $private;
+    }
+
+    /**
+     * Post inscription/login URL if set else null
+     *
+     * @return string
+     */
+    public function getRefererUrl()
+    {
+        $referer = $this->session->get('inscription/referer');
+
+        // remove from session
+        $this->session->remove('inscription/referer');
+
+        if (strpos($referer, 'debat') || // debate detail 
+            strpos($referer, 'reaction') || // reaction detail
+            strpos($referer, 'auteur') // user detail
+        ) {
+            return $referer; 
+        }
+
+        return null;
     }
 }
