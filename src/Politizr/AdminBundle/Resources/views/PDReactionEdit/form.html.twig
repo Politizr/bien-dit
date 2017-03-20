@@ -41,3 +41,9 @@
         </div>
     </div>
 {% endblock %}
+
+{# Bloc notifications #}
+{% block form_row_block_notifications %}
+    {{ form_row(form['block_notifications']) }}
+    <i class="fa fa-exclamation-triangle" aria-hidden="true">&nbsp;Note: cochez cette case déclenche l'envoi des notifications liées à sa <b>publication</b></i>
+{% endblock %}
