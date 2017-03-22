@@ -143,13 +143,7 @@ class PublicController extends Controller
                     ->endUse()
                 ->endUse()
                 ->find();
-            $users = $usersQuery
-                ->usePuTaggedTPUserQuery()
-                    ->usePuTaggedTPTagQuery()
-                        ->filterBySlug('democratie-locale')
-                    ->endUse()
-                ->endUse()
-                ->find();
+            
             $template = 'democratieLocale.html.twig';
         } elseif ($theme == 'democratie-participative')  {
             $documents = $documentsQuery

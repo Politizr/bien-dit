@@ -21,7 +21,7 @@
         <div class="center">
             <h1>Politizr invente une démocratie locale<br> et numérique à toutes les échelles territoriales.</h1>
             <h2>
-                Politizr vous propose des échanges entre citoyen-ne-s et élu-e-s à toutes les échelles territoriales.<br> Et vous, changerez-vous d’opinion?
+                Politizr est une plateforme web de démocratie locale pour les citoyen-ne-s et les élu-e-s.<br>Et nous proposons aussi un service de démocratie locale pour les institutions.
             </h2>
             <div class="centerCTA">
                 <a href="{{ path('InscriptionChoice') }}">Inscription</a>
@@ -47,35 +47,17 @@
             <div id="morePosts"><a href="{{ path('ListingByTag', {'slug' : 'democratie-locale'}) }}">Toutes les discussions en cours</a></div>
         </div>
     </div>
-    
-    <div id="profileSelection">
-        <div class="center">
-            <h1>Rejoignez la communauté Politizr</h1>
-            <h2>La démocratie locale avec des citoyen-nes et élu-es de toute la France sur Politizr:<br>
-            <a href="{{ path('InscriptionChoice') }}">inscrivez-vous et participez aux débats!</a></h2>
-            
-            {% for user in users %}
-                {% if loop.first or loop.index0 is divisible by(2) %}
-                    <div class="cardColumn">
-                {% endif %}
-                    {% include 'PolitizrFrontBundle:User:_cardPublic.html.twig' %}
-                {% if loop.last or loop.index is divisible by(2) %}
-                    </div>
-                {% endif %}
-            {% endfor %}
-        </div>
-    </div>
 
     <div id="blockMarianne">
         <div class="center">
             <div id="bgBlockMarianne">
                 <div id="marianne"></div>
                 <div class="conceptCol conceptLeftCol">
-                    Politizr est un site web de <b>démocratie locale</b> et même <b>multi-locale</b>. Parlez-nous de votre territoire et venez profiter des expériences et des retours d'autres territoires sur votre sujet.
+                    Politizr est un site web de <b>démocratie locale</b> favorisant <b>les échanges constructifs</b> entre citoyen-ne-s et élu-e-s. Nous proposons une inscription individuelle gratuite et des offres payantes pour les institutions, contactez-nous!
                 </div>
                 
                 <div class="conceptCol conceptRightCol">
-                    Nous travaillons à améliorer la <b>démocratie représentative</b> en proposant un espace de discussion qui favorise les <b>échanges structurées et argumentées</b> dans un temps long propice à la qualité du débat.
+                    Nous travaillons à améliorer la <b>démocratie locale</b> en proposant un espace de discussion qui favorise les <b>échanges structurées et argumentées</b> dans un temps long propice à la qualité du débat.
                 </div>
             </div>
         </div>
@@ -83,7 +65,7 @@
     
     <div id="blockGraphAssembly">
         <div class="center centerCTA">
-            <a href="{{ path('InscriptionChoice') }}">Créer un compte</a>
+            <a href="mailto: contact@politizr.com">Contactez-nous</a>
         </div>
     </div>
     
