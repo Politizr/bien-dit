@@ -1906,7 +1906,7 @@ GROUP BY p_d_debate_id
     }
 
     /**
-     * Init reaction's tags by default = parent's ones
+     * Init reaction's tags by default = parent's family ones
      *
      * @param PDReaction $reaction
      * @return PDReaction
@@ -1920,7 +1920,8 @@ GROUP BY p_d_debate_id
             $parent = $reaction->getDebate();
         }
 
-        $tags = $parent->getTags(TagConstants::TAG_TYPE_THEME);
+        // Init family tags
+        $tags = $parent->getTags(TagConstants::TAG_TYPE_FAMILY);
         foreach ($tags as $tag) {
             $pdrTaggedT = new PDRTaggedT();
 

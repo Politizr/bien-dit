@@ -18,6 +18,10 @@ $(function() {
     .then( function() {
             timelineList();
             $.when(
+                // familyTagListing(
+                //     $('.sidebarFamilyTags').find('.tagList').first(),
+                //     $('.sidebarFamilyTags').find('.ajaxLoader').first()
+                // ),
                 typeTagListing(
                     $('.sidebarTypeTags').find('.tagList').first(),
                     $('.sidebarTypeTags').find('.ajaxLoader').first()

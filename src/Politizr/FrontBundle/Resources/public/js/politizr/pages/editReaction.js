@@ -59,7 +59,7 @@ $('#formDocLoc :radio').on('change', function() {
 });
 
 // change checkbox type event
-$('#formTagType :checkbox').on('change', function() {
+$('#formTagType :checkbox, #formTagFamily :checkbox').on('change', function() {
     // console.log('*** formTagType change');
     saveDocumentAttr();
 });

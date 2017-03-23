@@ -50,6 +50,9 @@ builders:
                     "Type":
                         filters:
                             p_t_tag_type_id:    3
+                    "Famille":
+                        filters:
+                            p_t_tag_type_id:    4
                     "Thématique":
                         default:                true
                         filters:

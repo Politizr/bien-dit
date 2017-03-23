@@ -107,6 +107,7 @@ var ROUTE_TAG_USER_ASSOCIATE = 'w/utilisateur/tag/associate';
 
 var ROUTE_TAG_LISTING_TOP = 'tags/top';
 var ROUTE_TAG_LISTING_TYPE = 'tags/type';
+var ROUTE_TAG_LISTING_FAMILY = 'tags/family';
 var ROUTE_TAG_LISTING_USER = 'w/tags/user';
 var ROUTE_TAG_LISTING = 'tags/listing';
 

@@ -52,9 +52,42 @@ function typeTagListing(targetElement, localLoader) {
     // console.log(localLoader);
     
     var xhrPath = getXhrPath(
-        ROUTE_TAG_LISTING_TOP,
+        ROUTE_TAG_LISTING_TYPE,
         'tag',
         'typeTags',
+        RETURN_HTML
+    );
+
+    return xhrCall(
+        document,
+        null,
+        xhrPath,
+        localLoader
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
+            targetElement.html(data['html']);
+        }
+        localLoader.hide();
+    });
+}
+
+/**
+ * Loading of "family" tag listing.
+ * @param targetElement
+ * @param localLoader
+ */
+function familyTagListing(targetElement, localLoader) {
+    // console.log('*** familyTagListing');
+    // console.log(targetElement);
+    // console.log(localLoader);
+    
+    var xhrPath = getXhrPath(
+        ROUTE_TAG_LISTING_FAMILY,
+        'tag',
+        'familyTags',
         RETURN_HTML
     );
 

@@ -38,6 +38,7 @@ use Politizr\FrontBundle\Form\Type\PDDCommentType;
 use Politizr\FrontBundle\Form\Type\PDRCommentType;
 use Politizr\FrontBundle\Form\Type\PDDebateType;
 use Politizr\FrontBundle\Form\Type\PDocumentTagTypeType;
+use Politizr\FrontBundle\Form\Type\PDocumentTagFamilyType;
 use Politizr\FrontBundle\Form\Type\PDDebatePhotoInfoType;
 use Politizr\FrontBundle\Form\Type\PDReactionType;
 use Politizr\FrontBundle\Form\Type\PDReactionPhotoInfoType;
@@ -653,7 +654,7 @@ class XhrDocument
         $uuid = $request->get('document_localization')['uuid'];
         // $this->logger->info('$uuid = ' . print_r($uuid, true));
         $type = $request->get('document_localization')['type'];
-        // $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$type = ' . print_r($type, true));
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -690,19 +691,35 @@ class XhrDocument
         $document = $formLocalization->getData();
         $document->save();
 
-        // Debate's tags type
-        $formTagTypes = $this->formFactory->create(
+        // Document's tags type
+        $formTagType = $this->formFactory->create(
             new PDocumentTagTypeType(), 
             null, 
             array('elected_mode' => $user->getQualified())
         );
-        $formTagTypes->bind($request);
+        $formTagType->bind($request);
 
-        $tags = $formTagTypes->getData()['p_tags'];
+        $tags = $formTagType->getData()['p_tags'];
         if ($type == ObjectTypeConstants::TYPE_DEBATE) {
             $this->tagService->updateDebateTags($document, $tags, TagConstants::TAG_TYPE_TYPE);
         } elseif ($type == ObjectTypeConstants::TYPE_REACTION) {
             $this->tagService->updateReactionTags($document, $tags, TagConstants::TAG_TYPE_TYPE);
+        } else {
+            throw new InconsistentDataException('Document '.$type.' unknown.');
+        }
+
+        // Document's tags family
+        $formTagFamily = $this->formFactory->create(
+            new PDocumentTagFamilyType(), 
+            null
+        );
+        $formTagFamily->bind($request);
+
+        $tags = $formTagFamily->getData()['p_tags'];
+        if ($type == ObjectTypeConstants::TYPE_DEBATE) {
+            $this->tagService->updateDebateTags($document, $tags, TagConstants::TAG_TYPE_FAMILY);
+        } elseif ($type == ObjectTypeConstants::TYPE_REACTION) {
+            $this->tagService->updateReactionTags($document, $tags, TagConstants::TAG_TYPE_FAMILY);
         } else {
             throw new InconsistentDataException('Document '.$type.' unknown.');
         }
