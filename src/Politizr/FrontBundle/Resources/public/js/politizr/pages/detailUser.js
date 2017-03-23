@@ -27,3 +27,14 @@ $(function() {
         stickySidebar();
     });
 });
+
+// Tag filtering
+$("body").on("click", "[action='filterByTag']", function(e) {
+    // console.log('*** click filterByTag');
+
+    $('.filterByTags .tag a').removeAttr('class');
+    $(this).attr('class', 'active');
+
+    $(".currentPage[action='publicationsByUserListing']").trigger("click");
+});
+

@@ -249,13 +249,14 @@ class DocumentService
      *
      * @param array $userId
      * @param string $orderBy
+     * @param string $tagId
      * @param integer $offset
      * @param înteger $count
      * @return PropelCollection[Publication]
      */
-    public function getUserPublicationsPaginatedListing($userId, $orderBy, $offset = 0, $count = ListingConstants::LISTING_CLASSIC_PAGINATION)
+    public function getUserPublicationsPaginatedListing($userId, $orderBy, $tagId = null, $offset = 0, $count = ListingConstants::LISTING_CLASSIC_PAGINATION)
     {
-        $documents = $this->documentManager->generatePublicationsByUserPaginated($userId, $orderBy, $offset, $count);
+        $documents = $this->documentManager->generatePublicationsByUserPaginated($userId, $orderBy, $tagId, $offset, $count);
 
         return $documents;
     }

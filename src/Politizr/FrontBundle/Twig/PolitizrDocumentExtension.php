@@ -584,7 +584,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
     }
 
     /**
-     * Debate's localizations
+     * Debate's tags
      *
      * @param PDocumentInterface $document
      * @param integer $tagTypeId

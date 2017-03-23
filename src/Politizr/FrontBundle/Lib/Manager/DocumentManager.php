@@ -724,50 +724,92 @@ LIMIT :limit
      * @see app/sql/userDocuments.sql
      *
      * @param string $orderBy
+     * @param integer $tagId
      * @return string
      */
-    private function createPublicationsByUserRawSql($orderBy = ListingConstants::ORDER_BY_KEYWORD_BEST_NOTE)
+    private function createPublicationsByUserRawSql($orderBy = ListingConstants::ORDER_BY_KEYWORD_BEST_NOTE, $tagId = null)
     {
         $orderByReq = "ORDER BY note_pos DESC, note_neg ASC";
         if ($orderBy == ListingConstants::ORDER_BY_KEYWORD_LAST) {
             $orderByReq = "ORDER BY published_at DESC";
         }
 
+        // Tag filtering subrequest
+        $subRequestTagLeftJoin1 = null;
+        $subRequestTagLeftJoin2 = null;
+        $subRequestTagLeftJoin3 = null;
+        $subRequestTagLeftJoin4 = null;
+        $subRequestTagWhere1 = null;
+        $subRequestTagWhere2 = null;
+        $subRequestTagWhere3 = null;
+        $subRequestTagWhere4 = null;
+        if ($tagId) {
+            $subRequestTagLeftJoin1 = "
+    LEFT JOIN p_d_d_tagged_t
+        ON p_d_debate.id = p_d_d_tagged_t.p_d_debate_id
+";
+            $subRequestTagLeftJoin2 = "
+    LEFT JOIN p_d_r_tagged_t
+        ON p_d_reaction.id = p_d_r_tagged_t.p_d_reaction_id
+";
+            $subRequestTagLeftJoin3 = "
+    LEFT JOIN p_d_d_tagged_t
+        ON p_d_d_comment.p_d_debate_id = p_d_d_tagged_t.p_d_debate_id
+";
+            $subRequestTagLeftJoin4 = "
+    LEFT JOIN p_d_r_tagged_t
+        ON p_d_r_comment.p_d_reaction_id = p_d_r_tagged_t.p_d_reaction_id
+";
+            $subRequestTagWhere1 = "AND p_d_d_tagged_t.p_tag_id = $tagId";
+            $subRequestTagWhere2 = "AND p_d_r_tagged_t.p_tag_id = $tagId";
+            $subRequestTagWhere3 = "AND p_d_d_tagged_t.p_tag_id = $tagId";
+            $subRequestTagWhere4 = "AND p_d_r_tagged_t.p_tag_id = $tagId";
+        }
 
         $sql = "
-( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.file_name as fileName, p_d_reaction.description as description, p_d_reaction.slug as slug, p_d_reaction.published_at as published_at, p_d_reaction.updated_at as updated_at, p_d_reaction.note_pos as note_pos, p_d_reaction.note_neg as note_neg, 'Politizr\\\Model\\\PDReaction' as type
-FROM p_d_reaction
+( SELECT p_d_debate.id as id, p_d_debate.title as title, p_d_debate.file_name as fileName, p_d_debate.description as description, p_d_debate.slug as slug, p_d_debate.published_at as published_at, p_d_debate.updated_at as updated_at, p_d_debate.note_pos as note_pos, p_d_debate.note_neg as note_neg, 'Politizr\\\Model\\\PDDebate' as type
+FROM p_d_debate
+$subRequestTagLeftJoin1
 WHERE
     p_user_id = :p_user_id
-    AND p_d_reaction.published = 1
-    AND p_d_reaction.online = 1
+    AND p_d_debate.published = 1
+    AND p_d_debate.online = 1
+    $subRequestTagWhere1
 )
 
 UNION DISTINCT
 
-( SELECT p_d_debate.id as id, p_d_debate.title as title, p_d_debate.file_name as fileName, p_d_debate.description as description, p_d_debate.slug as slug, p_d_debate.published_at as published_at, p_d_debate.updated_at as updated_at, p_d_debate.note_pos as note_pos, p_d_debate.note_neg as note_neg, 'Politizr\\\Model\\\PDDebate' as type
-FROM p_d_debate
+( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.file_name as fileName, p_d_reaction.description as description, p_d_reaction.slug as slug, p_d_reaction.published_at as published_at, p_d_reaction.updated_at as updated_at, p_d_reaction.note_pos as note_pos, p_d_reaction.note_neg as note_neg, 'Politizr\\\Model\\\PDReaction' as type
+FROM p_d_reaction
+$subRequestTagLeftJoin2
 WHERE
     p_user_id = :p_user_id2
-    AND p_d_debate.published = 1
-    AND p_d_debate.online = 1
+    AND p_d_reaction.published = 1
+    AND p_d_reaction.online = 1
+    $subRequestTagWhere2
 )
 
 UNION DISTINCT
 
 ( SELECT p_d_d_comment.id as id, \"commentaire\" as title, \"image\" as fileName, p_d_d_comment.description as description, \"slug\" as slug, p_d_d_comment.published_at as published_at, p_d_d_comment.updated_at as updated_at, p_d_d_comment.note_pos as note_pos, p_d_d_comment.note_neg as note_neg, 'Politizr\\\Model\\\PDDComment' as type
 FROM p_d_d_comment
+$subRequestTagLeftJoin3
 WHERE
     p_d_d_comment.online = 1
-    AND p_d_d_comment.p_user_id = :p_user_id3 )
+    AND p_d_d_comment.p_user_id = :p_user_id3
+    $subRequestTagWhere3
+)
 
 UNION DISTINCT
 
 ( SELECT p_d_r_comment.id as id, \"commentaire\" as title, \"image\" as fileName, p_d_r_comment.description as description, \"slug\" as slug, p_d_r_comment.published_at as published_at, p_d_r_comment.updated_at as updated_at, p_d_r_comment.note_pos as note_pos, p_d_r_comment.note_neg as note_neg, 'Politizr\\\Model\\\PDRComment' as type
 FROM p_d_r_comment
+$subRequestTagLeftJoin4
 WHERE
     p_d_r_comment.online = 1
-    AND p_d_r_comment.p_user_id = :p_user_id4 )
+    AND p_d_r_comment.p_user_id = :p_user_id4
+    $subRequestTagWhere4
+)
 
 $orderByReq
 
@@ -1366,20 +1408,22 @@ GROUP BY p_d_debate_id
      *
      * @param integer $userId
      * @param integer $orderBy
+     * @param integer $tagId
      * @param integer $offset
      * @param integer $limit
      * @return PropelCollection
      */
-    public function generatePublicationsByUserPaginated($userId, $orderBy, $offset, $limit)
+    public function generatePublicationsByUserPaginated($userId, $orderBy, $tagId, $offset, $limit)
     {
         // $this->logger->info('*** generatePublicationsByUserPaginated');
         // $this->logger->info('$userId = ' . print_r($userId, true));
         // $this->logger->info('$orderBy = ' . print_r($orderBy, true));
+        // $this->logger->info('$tagId = ' . print_r($tagId, true));
         // $this->logger->info('$offset = ' . print_r($offset, true));
         // $this->logger->info('$limit = ' . print_r($limit, true));
 
         $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
-        $stmt = $con->prepare($this->createPublicationsByUserRawSql($orderBy));
+        $stmt = $con->prepare($this->createPublicationsByUserRawSql($orderBy, $tagId));
 
         $stmt->bindValue(':p_user_id', $userId, \PDO::PARAM_INT);
         $stmt->bindValue(':p_user_id2', $userId, \PDO::PARAM_INT);

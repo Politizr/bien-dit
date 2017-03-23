@@ -118,6 +118,11 @@ class PolitizrUserExtension extends \Twig_Extension
                 array('is_safe' => array('html'))
             ),
             new \Twig_SimpleFilter(
+                'userPublicationsTags',
+                array($this, 'userPublicationsTags'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
                 'linkSubscribeUser',
                 array($this, 'linkSubscribeUser'),
                 array('is_safe' => array('html'))
@@ -350,13 +355,12 @@ class PolitizrUserExtension extends \Twig_Extension
      *
      * @param PUser $user
      * @param integer $tagTypeId
-     * @param string $modalDefaultType debate|reaction|user
      * @return string
      */
     public function userTags(PUser $user, $tagTypeId = null)
     {
         // $this->logger->info('*** userTags');
-        // $this->logger->info('$uiser = '.print_r($user, true));
+        // $this->logger->info('$user = '.print_r($user, true));
         // $this->logger->info('$pTTagType = '.print_r($pTTagType, true));
 
         // get current user
@@ -372,6 +376,61 @@ class PolitizrUserExtension extends \Twig_Extension
         // Construction du rendu du tag
         $html = $this->templating->render(
             'PolitizrFrontBundle:Tag:_list.html.twig',
+            array(
+                'tags' => $tags,
+            )
+        );
+
+        return $html;
+    }
+
+   /**
+     * Display user's publication tags
+     *
+     * @param PUser $user
+     * @param integer $tagTypeId
+     * @return string
+     */
+    public function userPublicationsTags(PUser $user, $tagTypeId = null)
+    {
+        // $this->logger->info('*** userPublicationsTags');
+        // $this->logger->info('$user = '.print_r($user, true));
+        // $this->logger->info('$pTTagType = '.print_r($pTTagType, true));
+
+        // get current user
+        $currentUser = $this->securityTokenStorage->getToken()->getUser();
+        
+        $tags = array();
+
+        $debates = $user->getDebates();
+        foreach ($debates as $debate) {
+            $documentTags = $debate->getIndexedArrayTags($tagTypeId);
+            $tags = array_replace($tags, $documentTags);
+        }
+
+        $reactions = $user->getReactions();
+        foreach ($reactions as $reaction) {
+            $documentTags = $reaction->getIndexedArrayTags($tagTypeId);
+            $tags = array_replace($tags, $documentTags);
+        }
+
+        $comments = $user->getDComments();
+        foreach ($comments as $comment) {
+            $document = $comment->getPDocument();
+            $documentTags = $document->getIndexedArrayTags($tagTypeId);
+            $tags = array_replace($tags, $documentTags);
+        }
+
+        $comments = $user->getRComments();
+        foreach ($comments as $comment) {
+            $document = $comment->getPDocument();
+            $documentTags = $document->getIndexedArrayTags($tagTypeId);
+            $tags = array_replace($tags, $documentTags);
+        }
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Tag:_filterList.html.twig',
             array(
                 'tags' => $tags,
             )

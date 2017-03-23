@@ -1408,22 +1408,33 @@ class XhrDocument
         
         // Request arguments
         $uuid = $request->get('uuid');
-        // $this->logger->info('$uuid = ' . print_r($uuid, true));
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
         $orderBy = $request->get('orderBy');
-        // $this->logger->info('$orderBy = ' . print_r($orderBy, true));
+        $this->logger->info('$orderBy = ' . print_r($orderBy, true));
+        $tagUuid = $request->get('tagUuid');
+        $this->logger->info('$tagUuid = ' . print_r($tagUuid, true));
         $offset = $request->get('offset');
-        // $this->logger->info('$offset = ' . print_r($offset, true));
+        $this->logger->info('$offset = ' . print_r($offset, true));
 
 
         $user = PUserQuery::create()->filterByUuid($uuid)->findOne();
         if (!$user) {
             throw new InconsistentDataException(sprintf('User %s not found', $uuid));
         }
+        $tagId = null;
+        if ($tagUuid) {
+            $tag = PTagQuery::create()->filterByUuid($tagUuid)->findOne();
+            if (!$tag) {
+                throw new InconsistentDataException(sprintf('Tag %s not found', $tagUuid));
+            }
+            $tagId = $tag->getId();
+        }
 
         // get publications
         $publications = $this->documentService->getUserPublicationsPaginatedListing(
             $user->getId(),
             $orderBy,
+            $tagId,
             $offset,
             ListingConstants::LISTING_CLASSIC_PAGINATION
         );

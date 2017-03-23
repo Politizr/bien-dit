@@ -127,7 +127,6 @@ class PDDebate extends BasePDDebate implements PDocumentInterface
 
     /**
      * Debate's array tags
-     * - used by elastica indexation
      *
      * @return array[string]
      */
@@ -141,6 +140,22 @@ class PDDebate extends BasePDDebate implements PDocumentInterface
             ->setDistinct();
 
         return parent::getPTags($query)->toArray();
+    }
+
+    /**
+     * Debate's array tags
+     *
+     * @return array[id => string]
+     */
+    public function getIndexedArrayTags($tagTypeId = null, $online = true)
+    {
+        $query = PTagQuery::create()
+            ->filterIfTypeId($tagTypeId)
+            ->filterIfOnline($online)
+            ->orderByTitle()
+            ->setDistinct();
+
+        return parent::getPTags($query)->toKeyValue('Uuid', 'Title');
     }
 
     /**
