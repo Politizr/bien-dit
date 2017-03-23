@@ -11,8 +11,8 @@ UPDATE `p_tag` SET `p_t_tag_type_id`=4, `title`='Économie', `updated_at`='2017-
 WHERE p_tag.id=433;
 UPDATE `p_tag` SET `p_t_tag_type_id`=4, `title`='Éducation', `updated_at`='2017-03-23 09:48:02' 
 WHERE p_tag.id=651;
-UPDATE `p_tag` SET `p_t_tag_type_id`=4, `title`='Patrimoine, culture et loisirs', `moderated`=0, `updated_at`='2017-03-23 09:49:04', `slug`='patrimoine-culture-et-loisirs' 
-WHERE p_tag.id=839;
+UPDATE `p_tag` SET `p_t_tag_type_id`=4, `title`='Culture et loisirs', `moderated`=0, `updated_at`='2017-03-23 09:49:04', `slug`='patrimoine-culture-et-loisirs' 
+WHERE p_tag.id=254;
 UPDATE `p_tag` SET `p_t_tag_type_id`=4, `moderated`=0, `updated_at`='2017-03-23 09:50:08' 
 WHERE p_tag.id=652;
 UPDATE `p_tag` SET `p_t_tag_type_id`=4, `title`='Sécurité', `moderated`=0, `updated_at`='2017-03-23 09:51:29' 
@@ -23,5 +23,5 @@ UPDATE `p_tag` SET `p_t_tag_type_id`=4, `title`='Technologie', `moderated`=0, `u
 WHERE p_tag.id=514;
 UPDATE `p_tag` SET `p_t_tag_type_id`=4, `title`='Transport', `moderated`=0, `updated_at`='2017-03-23 09:54:59', `slug`='transport' 
 WHERE p_tag.id=252;
-UPDATE `p_tag` SET `p_t_tag_type_id`=4, `moderated`=0, `updated_at`='2017-03-23 09:56:00' 
+UPDATE `p_tag` SET `p_t_tag_type_id`=4, `title`='Urbanisme et patrimoine', `moderated`=0, `updated_at`='2017-03-23 09:56:00' 
 WHERE p_tag.id=407;
