@@ -18,33 +18,71 @@
 
 {% block main %}
     <div id="lpHeader">
-        <div class="center">
-            <h1>Politizr invente une démocratie locale<br> et numérique à toutes les échelles territoriales.</h1>
-            <h2>
-                Politizr est une plateforme web de démocratie locale pour les citoyen-ne-s et les élu-e-s.<br>Et nous proposons aussi un service de démocratie locale pour les institutions.
-            </h2>
-            <div class="centerCTA">
-                <a href="{{ path('InscriptionChoice') }}">Inscription</a>
-            </div>
+        <h1>La démocratie locale avec Politizr</h1>
+        <h2>Plateforme web de démocratie locale pour les citoyens et leurs élus</h2>
+        <p>
+            Élus ou citoyen, profitez d'un <b>espace d'échange unique et adapté</b>: exprimez-vous <b>simplement et gratuitement</b> sur des sujets relatifs à <b>votre territoire</b> pour permettre à vos élus de prendre <b>les bonnes décisions en toute transparence</b>.
+        </p>
+        <p>&nbsp;</p>
+        <div id="publicAdvantages">
+            <center>
+                <div class="column column360">
+                    <div class="card">
+                        <h2>Vous êtes citoyen?</h2>
+                        <ul class="checkList">
+                            <li>Discutez directement avec vos élus.</li>
+                            <li>Commentez et notez toutes les discussions ouvertes.</li>
+                            <li>Partagez votre opinion auprès de vos concitoyens et élus.</li>
+                            <li>Participez à des échanges suivant vos centres d'intérêt.</li>
+                            <li>Mesurez l'impact Facebook de vos publications sur votre territoire.</li>
+                            <li>Accédez à l'ensemble des publications au niveau local et national.</li>
+                        </ul>
+                    </div>
+                </div><!-- keep comment mark this way : they prevent unwanted space between cols
+                --><div class="column column360">
+                    <div class="card">
+                        <h2>Vous êtes élu?</h2>
+                        <ul class="checkList">
+                            <li>Expliquez vos actions à vos concitoyens.</li>
+                            <li>Répondez aux questions et aux opinions de vos concitoyens.</li>
+                            <li>Faîtes profiter d'autres élus de vos retours d'expérience.</li>
+                            <li>Participez à des échanges suivant vos centres d'intérêt.</li>
+                            <li>Mesurez l'impact Facebook de vos publications sur votre territoire.</li>
+                            <li>Accédez à l'ensemble des publications au niveau local et national.</li>
+                        </ul>
+                    </div>
+                </div>
+            </center>
+        </div>
+        <div class="centerCTA">
+            <a href="{{ path('InscriptionChoice') }}">Inscription</a>
         </div>
     </div>
-
-    <div id="postSelection">
-        <div class="center">
-            <h1>Les discussions en cours</h1>
-            <h2>La démocratie locale dans les débats</h2>
-            
-            {% for document in documents %}
-                {% if loop.first or loop.index0 is divisible by(3) %}
-                    <div class="cardColumn">
-                {% endif %}
-                    {% include 'PolitizrFrontBundle:Document:_cardPublic.html.twig' %}
-                {% if loop.last or loop.index is divisible by(3) %}
+    <div id="lpHeader">
+        <h1>Politizr Territoire</h1>
+        <h2>Une offre spécialement conçue pour les collectivités</h2>
+        <p>
+            En complément à cette version indépendante, gratuite, ouverte et transversale à destination des citoyens et des élus, Politizr déploie pour <b>les collectivités locales</b> des espaces de <b>démocratie locale locale</b> réservés aux habitants et aux élus d’un <b>territoire défini</b>.
+        </p>
+        <p>&nbsp;</p>
+        <div id="collAdvantages">
+            <center>
+                <div class="column column360">
+                    <div class="card">
+                        <h2>Vous êtes une collectivité?</h2>
+                        <ul class="checkList">
+                            <li>Proposez des sujets à la discussion.</li>
+                            <li>Espace privé accessible uniquement aux habitants de la collectivité.</li>
+                            <li>Réponse personnalisée des élus aux propositions et questions pertinentes.</li>
+                            <li>Création des supports promotionnels liés à l'opération.</li>
+                        </ul>
                     </div>
-                {% endif %}
-            {% endfor %}
-            
-            <div id="morePosts"><a href="{{ path('ListingByTag', {'slug' : 'democratie-locale'}) }}">Toutes les discussions en cours</a></div>
+                </div>
+            </center>
+        </div>
+        <p><br/>Pour en savoir plus:</p>
+        <div class="centerCTA">
+            <a><b>09 50 42 09 34</b></a>
         </div>
     </div>
 
@@ -53,20 +91,18 @@
             <div id="bgBlockMarianne">
                 <div id="marianne"></div>
                 <div class="conceptCol conceptLeftCol">
-                    Politizr est un site web de <b>démocratie locale</b> favorisant <b>les échanges constructifs</b> entre citoyen-ne-s et élu-e-s. Nous proposons une inscription individuelle gratuite et des offres payantes pour les institutions, contactez-nous!
+                    Politizr est un site web de <b>démocratie locale</b> favorisant <b>les échanges constructifs</b> entre citoyens et élus. Nous proposons une inscription individuelle gratuite et des offres payantes pour les collectivités locales.
                 </div>
                 
                 <div class="conceptCol conceptRightCol">
-                    Nous travaillons à améliorer la <b>démocratie locale</b> en proposant un espace de discussion qui favorise les <b>échanges structurées et argumentées</b> dans un temps long propice à la qualité du débat.
+                    Nous travaillons à améliorer la <b>démocratie représentative</b> en proposant un espace de discussion qui favorise les <b>échanges structurées et argumentées</b> dans un temps long propice à la qualité du débat.
                 </div>
             </div>
         </div>
     </div>
     
     <div id="blockGraphAssembly">
-        <div class="center centerCTA">
-            <a href="mailto: contact@politizr.com">Contactez-nous</a>
-        </div>
+        &nbsp;
     </div>
     
 {% endblock main %}
