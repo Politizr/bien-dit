@@ -1,9 +1,14 @@
 {# beta #}
-<div class="tag">
-    <a action="filterByTag" class="active">Tous</a>
-</div>
-{% for uuid, title in tags %}
-    <div class="tag">
-        <a action="filterByTag" uuid="{{ uuid }}">{{ title }}</a>
+<div class="filterByTags">
+    <div class="tagList">
+        <div class="tag">
+            <a action="filterByTag" class="active">Tous</a>
+        </div>
+        {% for uuid, title in tags %}
+            <div class="tag">
+                <a action="filterByTag" uuid="{{ uuid }}">{{ title }}</a>
+            </div>
+        {% endfor %}
+        </div>
     </div>
-{% endfor %}
+</div>

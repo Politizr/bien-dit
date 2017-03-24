@@ -7,9 +7,13 @@ $(function() {
             $('.sidebarTypeTags').find('.tagList').first(),
             $('.sidebarTypeTags').find('.ajaxLoader').first()
         ),
-        topTagListing(
-            $('.sidebarTopTags').find('.tagList').first(),
-            $('.sidebarTopTags').find('.ajaxLoader').first()
+        // topTagListing(
+        //     $('.sidebarTopTags').find('.tagList').first(),
+        //     $('.sidebarTopTags').find('.ajaxLoader').first()
+        // ),
+        familyTagListing(
+            $('.sidebarFamilyTags').find('.tagList').first(),
+            $('.sidebarFamilyTags').find('.ajaxLoader').first()
         ),
         userTagListing(
             $('.sidebarFollowedTags').find('.tagList').first(),

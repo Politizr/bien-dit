@@ -5,11 +5,9 @@
         <a class="currentPage" action="publicationsByUserListing" filter="{{ constant('Politizr\\Constant\\ListingConstants::ORDER_BY_KEYWORD_BEST_NOTE') }}">Top</a>
         <a action="publicationsByUserListing" filter="{{ constant('Politizr\\Constant\\ListingConstants::ORDER_BY_KEYWORD_LAST') }}">Les plus récentes</a>
     </div>
-    <div class="filterByTags">
-        <div class="tagList">
-            {{ user | userPublicationsTags(constant('Politizr\\Constant\\TagConstants::TAG_TYPE_FAMILY')) }}
-        </div>
-    </div>
+    {% if app.user %}
+        {{ user | userPublicationsTags(constant('Politizr\\Constant\\TagConstants::TAG_TYPE_FAMILY')) }}
+    {% endif %}
     <div id="documentListing" class="withLoaderInside">
         {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
         <div class="listTop"></div>
