@@ -210,6 +210,11 @@ class PublicController extends Controller
                 ->filterByPUserId(315)
                 ->find();
             $template = 'charlotte.html.twig';
+        } elseif ($theme == 'offre-candidat-legislatives-2017')  {
+            $directMessage = new PDDirect();
+            $form = $this->createForm(new PDDirectType(), $directMessage);
+
+            $template = 'offreCandidat.html.twig';
         } else {
             return $this->redirect($this->generateUrl('Homepage'));
         }
