@@ -332,7 +332,7 @@ class NotificationListener
             $department = $document->getPLDepartment();
             $region = $department->getPLRegion();
         } elseif ($regionId = $document->getPLRegionId()) {
-            $region = $department->getPLRegion();
+            $region = $document->getPLRegion();
         }
 
         // retrieve users of city
