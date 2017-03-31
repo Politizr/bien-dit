@@ -1198,6 +1198,16 @@ class XhrDocument
         $documents = $this->documentService->getUserDocumentsSuggestion($user->getId(), ListingConstants::LISTING_SUGGESTION_DOCUMENTS_LIMIT);
         // $documents = $this->documentService->getDocumentsLastPublished(ListingConstants::LISTING_SUGGESTION_DOCUMENTS_LIMIT);
 
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Document:_sliderSuggestions.html.twig',
+            array(
+                'documents' => $documents
+            )
+        );
+
+        return array(
+            'html' => $html,
+        );
     }
 
     /**
