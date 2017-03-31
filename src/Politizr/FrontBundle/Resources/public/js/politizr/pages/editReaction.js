@@ -9,6 +9,9 @@ $(function() {
     // modal city/dep/region/country selection show/hide
     locShowHideAttr();
 
+    // showTab / default "mode comparé"
+    $("[action='showTab']:last-of-type").trigger('click');
+
     // sticky sidebar
     stickySidebar();
 });
@@ -47,6 +50,12 @@ $('body').on('click', "[action='openModalPublish']", function(e){
 $('body').on('click', "[action='closeModalPublish']", function(e){
     // console.log('*** click close modal publish');
 
+    var uuid = $('input[name="uuid"]').val();
+    // console.log(uuid);
+    
+    updateReactionTagsZone(uuid);
+
+    $('body').removeClass('noScroll');
     $('.modalPublish').hide();
 });
 

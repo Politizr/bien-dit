@@ -496,6 +496,43 @@ class XhrDocument
         );
     }
 
+    /**
+     * Debate update tags zone
+     * beta
+     */
+    public function updateDebateTagsZone(Request $request)
+    {
+        // Request arguments
+        $uuid = $request->get('uuid');
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
+
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        
+        $debate = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
+        if (!$debate) {
+            throw new InconsistentDataException('Debate '.$uuid.' not found.');
+        }
+        if ($debate->getPublished()) {
+            throw new InconsistentDataException('Debate '.$uuid.' is published and cannot be edited anymore.');
+        }
+        if (!$debate->isOwner($user->getId())) {
+            throw new InconsistentDataException('Debate '.$uuid.' is not yours.');
+        }
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Tag:_docTags.html.twig',
+            array(
+                'document' => $debate,
+                'displayOnly' => true
+            )
+        );
+
+        return array(
+            'html' => $html,
+        );
+    }
+
     /* ######################################################################################################## */
     /*                                                  REACTION EDITION                                        */
     /* ######################################################################################################## */
@@ -635,6 +672,43 @@ class XhrDocument
         // Renvoi de l'url de redirection
         return array(
             'redirectUrl' => $this->router->generate('Drafts'.$this->globalTools->computeProfileSuffix()),
+        );
+    }
+
+    /**
+     * Debate update tags zone
+     * beta
+     */
+    public function updateReactionTagsZone(Request $request)
+    {
+        // Request arguments
+        $uuid = $request->get('uuid');
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
+
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        
+        $reaction = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
+        if (!$reaction) {
+            throw new InconsistentDataException('Reaction '.$uuid.' not found.');
+        }
+        if ($reaction->getPublished()) {
+            throw new InconsistentDataException('Reaction '.$uuid.' is published and cannot be edited anymore.');
+        }
+        if (!$reaction->isOwner($user->getId())) {
+            throw new InconsistentDataException('Reaction '.$uuid.' is not yours.');
+        }
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Tag:_docTags.html.twig',
+            array(
+                'document' => $reaction,
+                'displayOnly' => true
+            )
+        );
+
+        return array(
+            'html' => $html,
         );
     }
 
@@ -1124,16 +1198,6 @@ class XhrDocument
         $documents = $this->documentService->getUserDocumentsSuggestion($user->getId(), ListingConstants::LISTING_SUGGESTION_DOCUMENTS_LIMIT);
         // $documents = $this->documentService->getDocumentsLastPublished(ListingConstants::LISTING_SUGGESTION_DOCUMENTS_LIMIT);
 
-        $html = $this->templating->render(
-            'PolitizrFrontBundle:Document:_sliderSuggestions.html.twig',
-            array(
-                'documents' => $documents
-            )
-        );
-
-        return array(
-            'html' => $html,
-        );
     }
 
     /**

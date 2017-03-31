@@ -114,7 +114,16 @@
                 {{ form_rest(form) }}
             </form>
         </div>
-    </div>
+        <div class="postTags">
+            <div class="formBlockHeader">
+                <label>Thématiques abordées</label>
+                {% include 'PolitizrFrontBundle:Navigation\\Helper:_addTagToPublication.html.twig' %}
+            </div>
+            <div class="tagList">
+                {{ debate | docTags(true) }}
+            </div>
+        </div>
+   </div>
 {% endblock content %}
 
 {% block sidebarContent %}

@@ -46,21 +46,21 @@ var ROUTE_MAP_SCHEMA = 'carte/schema';
 
 var ROUTE_DOCUMENT_BOOKMARK = '$w/document/bookmark';
 
-
 // DEBATES
 var ROUTE_DEBATE_UPDATE = '$w/debat/update';
 var ROUTE_DEBATE_PUBLISH = '$w/debat/publier';
 var ROUTE_DEBATE_DELETE = '$w/debat/supprimer';
 var ROUTE_DEBATE_PHOTO_INFO_UPDATE = '$w/debat/infos/photo/update';
+var ROUTE_DEBATE_DOC_TAGS = '$w/debate/tags/update';
 
 // REACTIONS
 var ROUTE_REACTION_UPDATE = '$w/reaction/update';
 var ROUTE_REACTION_PUBLISH = '$w/reaction/publier';
 var ROUTE_REACTION_DELETE = '$w/reaction/supprimer';
 var ROUTE_REACTION_PHOTO_INFO_UPDATE = '$w/reaction/infos/photo/update';
+var ROUTE_REACTION_DOC_TAGS = '$w/reaction/tags/update';
 
 var ROUTE_REACTION_LISTING_DEBATE_FIRST_CHILD = 'reactions/debat';
-
 
 // NOTIFICATIONS
 var ROUTE_NOTIF_LOADING = '$w/notif/chargement';

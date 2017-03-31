@@ -63,12 +63,14 @@ class XhrConstants
     const ROUTE_DEBATE_PUBLISH = '$w/debat/publier';
     const ROUTE_DEBATE_DELETE = '$w/debat/supprimer';
     const ROUTE_DEBATE_PHOTO_INFO_UPDATE = '$w/debat/infos/photo/update';
+    const ROUTE_DEBATE_DOC_TAGS = '$w/debate/tags/update';
 
     // REACTIONS
     const ROUTE_REACTION_UPDATE = '$w/reaction/update';
     const ROUTE_REACTION_PUBLISH = '$w/reaction/publier';
     const ROUTE_REACTION_DELETE = '$w/reaction/supprimer';
     const ROUTE_REACTION_PHOTO_INFO_UPDATE = '$w/reaction/infos/photo/update';
+    const ROUTE_REACTION_DOC_TAGS = '$w/reaction/tags/update';
 
     const ROUTE_REACTION_LISTING_DEBATE_FIRST_CHILD = 'reactions/debat';
 

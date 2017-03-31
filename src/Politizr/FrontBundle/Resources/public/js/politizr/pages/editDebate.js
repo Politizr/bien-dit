@@ -31,6 +31,11 @@ $('body').on('click', "[action='openModalPublish']", function(e){
 $('body').on('click', "[action='closeModalPublish'], .modalPublishBg", function(e){
     // console.log('*** click close modal publish');
 
+    var uuid = $('input[name="uuid"]').val();
+    // console.log(uuid);
+    
+    updateDebateTagsZone(uuid);
+
     $('body').removeClass('noScroll');
     $('.modalPublish').hide();
 });

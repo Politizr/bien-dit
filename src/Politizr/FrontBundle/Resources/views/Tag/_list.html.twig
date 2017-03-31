@@ -1,7 +1,10 @@
 {# beta #}
 {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+{% if displayOnly is not defined %}    
+    {% set displayOnly = false %}
+{% endif %}
 {% for tag in tags %}
-    {% include 'PolitizrFrontBundle:Tag:_detail.html.twig' with { 'tag': tag } %}
+    {% include 'PolitizrFrontBundle:Tag:_detail.html.twig' with { 'tag': tag, 'displayOnly': displayOnly } %}
 {% else %}
     {% include 'PolitizrFrontBundle:PaginatedList:_noResult.html.twig' %}
 {% endfor %}

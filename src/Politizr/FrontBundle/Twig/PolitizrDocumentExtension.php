@@ -587,15 +587,15 @@ class PolitizrDocumentExtension extends \Twig_Extension
      * Debate's tags
      *
      * @param PDocumentInterface $document
+     * @param boolean $displayOnly deactivate link & bubble on tags if true
      * @param integer $tagTypeId
-     * @param boolean $withHidden display hidden tags
      * @return string
      */
-    public function docTags(PDocumentInterface $document, $tagTypeId = null, $withHidden = false)
+    public function docTags(PDocumentInterface $document, $displayOnly = false, $tagTypeId = null)
     {
-        // // $this->logger->info('*** doctags');
-        // // $this->logger->info('$document = '.print_r($document, true));
-        // // $this->logger->info('$tagTypeId = '.print_r($tagTypeId, true));
+        // $this->logger->info('*** doctags');
+        // $this->logger->info('$document = '.print_r($document, true));
+        // $this->logger->info('$tagTypeId = '.print_r($tagTypeId, true));
 
         $tags = $document->getTags($tagTypeId);
 
@@ -604,6 +604,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
             'PolitizrFrontBundle:Tag:_list.html.twig',
             array(
                 'tags' => $tags,
+                'displayOnly' => $displayOnly,
             )
         );
 
