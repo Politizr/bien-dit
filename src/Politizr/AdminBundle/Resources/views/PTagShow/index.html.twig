@@ -1,5 +1,32 @@
 {% extends_admingenerated "PolitizrAdminBundle:PTagShow:index.html.twig" %}
 
+{# Objets #}
+{% block show_column_block_p_user %}
+    {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_USER'), PTag.PUserId) }}
+{% endblock %}
+
+{% block show_column_block_p_owner %}
+    {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_USER'), PTag.POwnerId) }}
+{% endblock %}
+
+{# Scope #}
+{% block show_column_block_cities %}
+    <div id="selectedCities">
+    </div>
+{% endblock %}
+
+{% block show_column_block_cities_add %}
+    <form id="selectCities">
+        <label>Code INSEE</label>
+        <input type="hidden" id="tagId" name="tagId" value="{{ PTag.id }}">
+        <input type="text" name="codeInsee">
+        <a action="searchLocalizations">Chercher</a>
+    </form>
+    <div id="searchResult">
+    </div>
+{% endblock %}
+
+
 {# Debates tags block #}
 {% block show_column_block_debates %}
     {{ adminTagDebates(PTag) }}
@@ -14,3 +41,7 @@
 {% block show_column_block_users %}
     {{ adminTagUsers(PTag) }}
 {% endblock %}
+
+{% block object_actions_script_container %}
+    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/tag/localization.js') }}"></script>
+{% endblock object_actions_script_container %}

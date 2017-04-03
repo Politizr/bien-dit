@@ -47,8 +47,11 @@ var ADMIN_ROUTE_USER_VALIDATE_PHOTO_UPLOAD = 'admin/validation/photo-id-upload';
 // LOCALIZATION
 var ADMIN_ROUTE_CITY_LISTING = 'admin/villes/listing';
 var ADMIN_ROUTE_USER_CITY = 'admin/utilisateur/ville/update';
-
 var ADMIN_ROUTE_DOC_LOC = 'admin/document/localization/update';
+var ADMIN_ROUTE_TAG_CITIES = 'admin/tag/villes';
+var ADMIN_ROUTE_TAG_CITIES_SEARCH_LISTING = 'admin/tag/villes/recherche';
+var ADMIN_ROUTE_ADD_TAG_CITY = 'admin/tag/ville/create';
+var ADMIN_ROUTE_DELETE_TAG_CITY = 'admin/tag/ville/delete';
 
 // Generic function to make an AJAX call
 var xhrCall = function(context, data, url, type) {

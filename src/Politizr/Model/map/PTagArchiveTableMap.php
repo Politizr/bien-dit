@@ -47,6 +47,7 @@ class PTagArchiveTableMap extends TableMap
         $this->addColumn('p_t_tag_type_id', 'PTTagTypeId', 'INTEGER', true, null, null);
         $this->addColumn('p_t_parent_id', 'PTParentId', 'INTEGER', false, null, null);
         $this->addColumn('p_user_id', 'PUserId', 'INTEGER', false, null, null);
+        $this->addColumn('p_owner_id', 'POwnerId', 'INTEGER', false, null, null);
         $this->addColumn('title', 'Title', 'VARCHAR', false, 150, null);
         $this->addColumn('moderated', 'Moderated', 'BOOLEAN', false, 1, null);
         $this->addColumn('moderated_at', 'ModeratedAt', 'TIMESTAMP', false, null, null);

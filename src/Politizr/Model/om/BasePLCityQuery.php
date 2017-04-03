@@ -19,6 +19,8 @@ use Politizr\Model\PLCity;
 use Politizr\Model\PLCityPeer;
 use Politizr\Model\PLCityQuery;
 use Politizr\Model\PLDepartment;
+use Politizr\Model\PTScopePLC;
+use Politizr\Model\PTag;
 use Politizr\Model\PUser;
 
 /**
@@ -91,6 +93,10 @@ use Politizr\Model\PUser;
  * @method PLCityQuery leftJoinPLDepartment($relationAlias = null) Adds a LEFT JOIN clause to the query using the PLDepartment relation
  * @method PLCityQuery rightJoinPLDepartment($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PLDepartment relation
  * @method PLCityQuery innerJoinPLDepartment($relationAlias = null) Adds a INNER JOIN clause to the query using the PLDepartment relation
+ *
+ * @method PLCityQuery leftJoinPTScopePLC($relationAlias = null) Adds a LEFT JOIN clause to the query using the PTScopePLC relation
+ * @method PLCityQuery rightJoinPTScopePLC($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PTScopePLC relation
+ * @method PLCityQuery innerJoinPTScopePLC($relationAlias = null) Adds a INNER JOIN clause to the query using the PTScopePLC relation
  *
  * @method PLCityQuery leftJoinPUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUser relation
  * @method PLCityQuery rightJoinPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUser relation
@@ -1510,6 +1516,80 @@ abstract class BasePLCityQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query by a related PTScopePLC object
+     *
+     * @param   PTScopePLC|PropelObjectCollection $pTScopePLC  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PLCityQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPTScopePLC($pTScopePLC, $comparison = null)
+    {
+        if ($pTScopePLC instanceof PTScopePLC) {
+            return $this
+                ->addUsingAlias(PLCityPeer::ID, $pTScopePLC->getPLCityId(), $comparison);
+        } elseif ($pTScopePLC instanceof PropelObjectCollection) {
+            return $this
+                ->usePTScopePLCQuery()
+                ->filterByPrimaryKeys($pTScopePLC->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPTScopePLC() only accepts arguments of type PTScopePLC or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PTScopePLC relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PLCityQuery The current query, for fluid interface
+     */
+    public function joinPTScopePLC($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PTScopePLC');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PTScopePLC');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PTScopePLC relation PTScopePLC object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PTScopePLCQuery A secondary query class using the current class as primary query
+     */
+    public function usePTScopePLCQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPTScopePLC($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PTScopePLC', '\Politizr\Model\PTScopePLCQuery');
+    }
+
+    /**
      * Filter the query by a related PUser object
      *
      * @param   PUser|PropelObjectCollection $pUser  the related object to use as filter
@@ -1729,6 +1809,23 @@ abstract class BasePLCityQuery extends ModelCriteria
         return $this
             ->joinPDReaction($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'PDReaction', '\Politizr\Model\PDReactionQuery');
+    }
+
+    /**
+     * Filter the query by a related PTag object
+     * using the p_t_scope_p_l_c table as cross reference
+     *
+     * @param   PTag $pTag the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return   PLCityQuery The current query, for fluid interface
+     */
+    public function filterByPTag($pTag, $comparison = Criteria::EQUAL)
+    {
+        return $this
+            ->usePTScopePLCQuery()
+            ->filterByPTag($pTag, $comparison)
+            ->endUse();
     }
 
     /**

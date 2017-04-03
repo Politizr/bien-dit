@@ -24,6 +24,10 @@ use Politizr\Model\PLCityPeer;
 use Politizr\Model\PLCityQuery;
 use Politizr\Model\PLDepartment;
 use Politizr\Model\PLDepartmentQuery;
+use Politizr\Model\PTScopePLC;
+use Politizr\Model\PTScopePLCQuery;
+use Politizr\Model\PTag;
+use Politizr\Model\PTagQuery;
 use Politizr\Model\PUser;
 use Politizr\Model\PUserQuery;
 
@@ -234,6 +238,12 @@ abstract class BasePLCity extends BaseObject implements Persistent
     protected $aPLDepartment;
 
     /**
+     * @var        PropelObjectCollection|PTScopePLC[] Collection to store aggregation of PTScopePLC objects.
+     */
+    protected $collPTScopePLCs;
+    protected $collPTScopePLCsPartial;
+
+    /**
      * @var        PropelObjectCollection|PUser[] Collection to store aggregation of PUser objects.
      */
     protected $collPUsers;
@@ -250,6 +260,11 @@ abstract class BasePLCity extends BaseObject implements Persistent
      */
     protected $collPDReactions;
     protected $collPDReactionsPartial;
+
+    /**
+     * @var        PropelObjectCollection|PTag[] Collection to store aggregation of PTag objects.
+     */
+    protected $collPTags;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -270,6 +285,18 @@ abstract class BasePLCity extends BaseObject implements Persistent
      * @var        boolean
      */
     protected $alreadyInClearAllReferencesDeep = false;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pTagsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pTScopePLCsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -1452,12 +1479,15 @@ abstract class BasePLCity extends BaseObject implements Persistent
         if ($deep) {  // also de-associate any related objects?
 
             $this->aPLDepartment = null;
+            $this->collPTScopePLCs = null;
+
             $this->collPUsers = null;
 
             $this->collPDDebates = null;
 
             $this->collPDReactions = null;
 
+            $this->collPTags = null;
         } // if (deep)
     }
 
@@ -1612,6 +1642,49 @@ abstract class BasePLCity extends BaseObject implements Persistent
                 }
                 $affectedRows += 1;
                 $this->resetModified();
+            }
+
+            if ($this->pTagsScheduledForDeletion !== null) {
+                if (!$this->pTagsScheduledForDeletion->isEmpty()) {
+                    $pks = array();
+                    $pk = $this->getPrimaryKey();
+                    foreach ($this->pTagsScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
+                        $pks[] = array($remotePk, $pk);
+                    }
+                    PTScopePLCQuery::create()
+                        ->filterByPrimaryKeys($pks)
+                        ->delete($con);
+                    $this->pTagsScheduledForDeletion = null;
+                }
+
+                foreach ($this->getPTags() as $pTag) {
+                    if ($pTag->isModified()) {
+                        $pTag->save($con);
+                    }
+                }
+            } elseif ($this->collPTags) {
+                foreach ($this->collPTags as $pTag) {
+                    if ($pTag->isModified()) {
+                        $pTag->save($con);
+                    }
+                }
+            }
+
+            if ($this->pTScopePLCsScheduledForDeletion !== null) {
+                if (!$this->pTScopePLCsScheduledForDeletion->isEmpty()) {
+                    PTScopePLCQuery::create()
+                        ->filterByPrimaryKeys($this->pTScopePLCsScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->pTScopePLCsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPTScopePLCs !== null) {
+                foreach ($this->collPTScopePLCs as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
             }
 
             if ($this->pUsersScheduledForDeletion !== null) {
@@ -2104,6 +2177,9 @@ abstract class BasePLCity extends BaseObject implements Persistent
             if (null !== $this->aPLDepartment) {
                 $result['PLDepartment'] = $this->aPLDepartment->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
+            if (null !== $this->collPTScopePLCs) {
+                $result['PTScopePLCs'] = $this->collPTScopePLCs->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
             if (null !== $this->collPUsers) {
                 $result['PUsers'] = $this->collPUsers->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
@@ -2432,6 +2508,12 @@ abstract class BasePLCity extends BaseObject implements Persistent
             // store object hash to prevent cycle
             $this->startCopy = true;
 
+            foreach ($this->getPTScopePLCs() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPTScopePLC($relObj->copy($deepCopy));
+                }
+            }
+
             foreach ($this->getPUsers() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addPUser($relObj->copy($deepCopy));
@@ -2563,6 +2645,9 @@ abstract class BasePLCity extends BaseObject implements Persistent
      */
     public function initRelation($relationName)
     {
+        if ('PTScopePLC' == $relationName) {
+            $this->initPTScopePLCs();
+        }
         if ('PUser' == $relationName) {
             $this->initPUsers();
         }
@@ -2572,6 +2657,256 @@ abstract class BasePLCity extends BaseObject implements Persistent
         if ('PDReaction' == $relationName) {
             $this->initPDReactions();
         }
+    }
+
+    /**
+     * Clears out the collPTScopePLCs collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PLCity The current object (for fluent API support)
+     * @see        addPTScopePLCs()
+     */
+    public function clearPTScopePLCs()
+    {
+        $this->collPTScopePLCs = null; // important to set this to null since that means it is uninitialized
+        $this->collPTScopePLCsPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPTScopePLCs collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPTScopePLCs($v = true)
+    {
+        $this->collPTScopePLCsPartial = $v;
+    }
+
+    /**
+     * Initializes the collPTScopePLCs collection.
+     *
+     * By default this just sets the collPTScopePLCs collection to an empty array (like clearcollPTScopePLCs());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPTScopePLCs($overrideExisting = true)
+    {
+        if (null !== $this->collPTScopePLCs && !$overrideExisting) {
+            return;
+        }
+        $this->collPTScopePLCs = new PropelObjectCollection();
+        $this->collPTScopePLCs->setModel('PTScopePLC');
+    }
+
+    /**
+     * Gets an array of PTScopePLC objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PLCity is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PTScopePLC[] List of PTScopePLC objects
+     * @throws PropelException
+     */
+    public function getPTScopePLCs($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPTScopePLCsPartial && !$this->isNew();
+        if (null === $this->collPTScopePLCs || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPTScopePLCs) {
+                // return empty collection
+                $this->initPTScopePLCs();
+            } else {
+                $collPTScopePLCs = PTScopePLCQuery::create(null, $criteria)
+                    ->filterByPLCity($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPTScopePLCsPartial && count($collPTScopePLCs)) {
+                      $this->initPTScopePLCs(false);
+
+                      foreach ($collPTScopePLCs as $obj) {
+                        if (false == $this->collPTScopePLCs->contains($obj)) {
+                          $this->collPTScopePLCs->append($obj);
+                        }
+                      }
+
+                      $this->collPTScopePLCsPartial = true;
+                    }
+
+                    $collPTScopePLCs->getInternalIterator()->rewind();
+
+                    return $collPTScopePLCs;
+                }
+
+                if ($partial && $this->collPTScopePLCs) {
+                    foreach ($this->collPTScopePLCs as $obj) {
+                        if ($obj->isNew()) {
+                            $collPTScopePLCs[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPTScopePLCs = $collPTScopePLCs;
+                $this->collPTScopePLCsPartial = false;
+            }
+        }
+
+        return $this->collPTScopePLCs;
+    }
+
+    /**
+     * Sets a collection of PTScopePLC objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pTScopePLCs A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PLCity The current object (for fluent API support)
+     */
+    public function setPTScopePLCs(PropelCollection $pTScopePLCs, PropelPDO $con = null)
+    {
+        $pTScopePLCsToDelete = $this->getPTScopePLCs(new Criteria(), $con)->diff($pTScopePLCs);
+
+
+        $this->pTScopePLCsScheduledForDeletion = $pTScopePLCsToDelete;
+
+        foreach ($pTScopePLCsToDelete as $pTScopePLCRemoved) {
+            $pTScopePLCRemoved->setPLCity(null);
+        }
+
+        $this->collPTScopePLCs = null;
+        foreach ($pTScopePLCs as $pTScopePLC) {
+            $this->addPTScopePLC($pTScopePLC);
+        }
+
+        $this->collPTScopePLCs = $pTScopePLCs;
+        $this->collPTScopePLCsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PTScopePLC objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PTScopePLC objects.
+     * @throws PropelException
+     */
+    public function countPTScopePLCs(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPTScopePLCsPartial && !$this->isNew();
+        if (null === $this->collPTScopePLCs || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPTScopePLCs) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPTScopePLCs());
+            }
+            $query = PTScopePLCQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPLCity($this)
+                ->count($con);
+        }
+
+        return count($this->collPTScopePLCs);
+    }
+
+    /**
+     * Method called to associate a PTScopePLC object to this object
+     * through the PTScopePLC foreign key attribute.
+     *
+     * @param    PTScopePLC $l PTScopePLC
+     * @return PLCity The current object (for fluent API support)
+     */
+    public function addPTScopePLC(PTScopePLC $l)
+    {
+        if ($this->collPTScopePLCs === null) {
+            $this->initPTScopePLCs();
+            $this->collPTScopePLCsPartial = true;
+        }
+
+        if (!in_array($l, $this->collPTScopePLCs->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPTScopePLC($l);
+
+            if ($this->pTScopePLCsScheduledForDeletion and $this->pTScopePLCsScheduledForDeletion->contains($l)) {
+                $this->pTScopePLCsScheduledForDeletion->remove($this->pTScopePLCsScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PTScopePLC $pTScopePLC The pTScopePLC object to add.
+     */
+    protected function doAddPTScopePLC($pTScopePLC)
+    {
+        $this->collPTScopePLCs[]= $pTScopePLC;
+        $pTScopePLC->setPLCity($this);
+    }
+
+    /**
+     * @param	PTScopePLC $pTScopePLC The pTScopePLC object to remove.
+     * @return PLCity The current object (for fluent API support)
+     */
+    public function removePTScopePLC($pTScopePLC)
+    {
+        if ($this->getPTScopePLCs()->contains($pTScopePLC)) {
+            $this->collPTScopePLCs->remove($this->collPTScopePLCs->search($pTScopePLC));
+            if (null === $this->pTScopePLCsScheduledForDeletion) {
+                $this->pTScopePLCsScheduledForDeletion = clone $this->collPTScopePLCs;
+                $this->pTScopePLCsScheduledForDeletion->clear();
+            }
+            $this->pTScopePLCsScheduledForDeletion[]= clone $pTScopePLC;
+            $pTScopePLC->setPLCity(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PLCity is new, it will return
+     * an empty collection; or if this PLCity has previously
+     * been saved, it will retrieve related PTScopePLCs from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PLCity.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PTScopePLC[] List of PTScopePLC objects
+     */
+    public function getPTScopePLCsJoinPTag($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PTScopePLCQuery::create(null, $criteria);
+        $query->joinWith('PTag', $join_behavior);
+
+        return $this->getPTScopePLCs($query, $con);
     }
 
     /**
@@ -3500,6 +3835,193 @@ abstract class BasePLCity extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collPTags collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PLCity The current object (for fluent API support)
+     * @see        addPTags()
+     */
+    public function clearPTags()
+    {
+        $this->collPTags = null; // important to set this to null since that means it is uninitialized
+        $this->collPTagsPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * Initializes the collPTags collection.
+     *
+     * By default this just sets the collPTags collection to an empty collection (like clearPTags());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @return void
+     */
+    public function initPTags()
+    {
+        $this->collPTags = new PropelObjectCollection();
+        $this->collPTags->setModel('PTag');
+    }
+
+    /**
+     * Gets a collection of PTag objects related by a many-to-many relationship
+     * to the current object by way of the p_t_scope_p_l_c cross-reference table.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PLCity is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return PropelObjectCollection|PTag[] List of PTag objects
+     */
+    public function getPTags($criteria = null, PropelPDO $con = null)
+    {
+        if (null === $this->collPTags || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPTags) {
+                // return empty collection
+                $this->initPTags();
+            } else {
+                $collPTags = PTagQuery::create(null, $criteria)
+                    ->filterByPLCity($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    return $collPTags;
+                }
+                $this->collPTags = $collPTags;
+            }
+        }
+
+        return $this->collPTags;
+    }
+
+    /**
+     * Sets a collection of PTag objects related by a many-to-many relationship
+     * to the current object by way of the p_t_scope_p_l_c cross-reference table.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pTags A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PLCity The current object (for fluent API support)
+     */
+    public function setPTags(PropelCollection $pTags, PropelPDO $con = null)
+    {
+        $this->clearPTags();
+        $currentPTags = $this->getPTags(null, $con);
+
+        $this->pTagsScheduledForDeletion = $currentPTags->diff($pTags);
+
+        foreach ($pTags as $pTag) {
+            if (!$currentPTags->contains($pTag)) {
+                $this->doAddPTag($pTag);
+            }
+        }
+
+        $this->collPTags = $pTags;
+
+        return $this;
+    }
+
+    /**
+     * Gets the number of PTag objects related by a many-to-many relationship
+     * to the current object by way of the p_t_scope_p_l_c cross-reference table.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param boolean $distinct Set to true to force count distinct
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return int the number of related PTag objects
+     */
+    public function countPTags($criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        if (null === $this->collPTags || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPTags) {
+                return 0;
+            } else {
+                $query = PTagQuery::create(null, $criteria);
+                if ($distinct) {
+                    $query->distinct();
+                }
+
+                return $query
+                    ->filterByPLCity($this)
+                    ->count($con);
+            }
+        } else {
+            return count($this->collPTags);
+        }
+    }
+
+    /**
+     * Associate a PTag object to this object
+     * through the p_t_scope_p_l_c cross reference table.
+     *
+     * @param  PTag $pTag The PTScopePLC object to relate
+     * @return PLCity The current object (for fluent API support)
+     */
+    public function addPTag(PTag $pTag)
+    {
+        if ($this->collPTags === null) {
+            $this->initPTags();
+        }
+
+        if (!$this->collPTags->contains($pTag)) { // only add it if the **same** object is not already associated
+            $this->doAddPTag($pTag);
+            $this->collPTags[] = $pTag;
+
+            if ($this->pTagsScheduledForDeletion and $this->pTagsScheduledForDeletion->contains($pTag)) {
+                $this->pTagsScheduledForDeletion->remove($this->pTagsScheduledForDeletion->search($pTag));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PTag $pTag The pTag object to add.
+     */
+    protected function doAddPTag(PTag $pTag)
+    {
+        // set the back reference to this object directly as using provided method either results
+        // in endless loop or in multiple relations
+        if (!$pTag->getPLCities()->contains($this)) { $pTScopePLC = new PTScopePLC();
+            $pTScopePLC->setPTag($pTag);
+            $this->addPTScopePLC($pTScopePLC);
+
+            $foreignCollection = $pTag->getPLCities();
+            $foreignCollection[] = $this;
+        }
+    }
+
+    /**
+     * Remove a PTag object to this object
+     * through the p_t_scope_p_l_c cross reference table.
+     *
+     * @param PTag $pTag The PTScopePLC object to relate
+     * @return PLCity The current object (for fluent API support)
+     */
+    public function removePTag(PTag $pTag)
+    {
+        if ($this->getPTags()->contains($pTag)) {
+            $this->collPTags->remove($this->collPTags->search($pTag));
+            if (null === $this->pTagsScheduledForDeletion) {
+                $this->pTagsScheduledForDeletion = clone $this->collPTags;
+                $this->pTagsScheduledForDeletion->clear();
+            }
+            $this->pTagsScheduledForDeletion[]= $pTag;
+        }
+
+        return $this;
+    }
+
+    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
@@ -3556,6 +4078,11 @@ abstract class BasePLCity extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
+            if ($this->collPTScopePLCs) {
+                foreach ($this->collPTScopePLCs as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collPUsers) {
                 foreach ($this->collPUsers as $o) {
                     $o->clearAllReferences($deep);
@@ -3571,6 +4098,11 @@ abstract class BasePLCity extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collPTags) {
+                foreach ($this->collPTags as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->aPLDepartment instanceof Persistent) {
               $this->aPLDepartment->clearAllReferences($deep);
             }
@@ -3578,6 +4110,10 @@ abstract class BasePLCity extends BaseObject implements Persistent
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
+        if ($this->collPTScopePLCs instanceof PropelCollection) {
+            $this->collPTScopePLCs->clearIterator();
+        }
+        $this->collPTScopePLCs = null;
         if ($this->collPUsers instanceof PropelCollection) {
             $this->collPUsers->clearIterator();
         }
@@ -3590,6 +4126,10 @@ abstract class BasePLCity extends BaseObject implements Persistent
             $this->collPDReactions->clearIterator();
         }
         $this->collPDReactions = null;
+        if ($this->collPTags instanceof PropelCollection) {
+            $this->collPTags->clearIterator();
+        }
+        $this->collPTags = null;
         $this->aPLDepartment = null;
     }
 

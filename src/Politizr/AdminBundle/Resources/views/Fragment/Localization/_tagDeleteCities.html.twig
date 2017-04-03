@@ -1,0 +1,6 @@
+{% for city in cities %}
+    <div class="cityTagItem">
+        <strong>{{ city.nameReal }}</strong> ({{ city.zipcode }}) - INSEE / {{ city.municipalityCode }}&nbsp;
+        <a action="deleteTagCity" tagId="{{ tagId }}" cityId="{{ city.id }}">Supprimer</a>
+    </div>
+{% endfor %}

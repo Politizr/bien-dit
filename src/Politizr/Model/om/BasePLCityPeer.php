@@ -14,6 +14,7 @@ use Politizr\Model\PDReactionPeer;
 use Politizr\Model\PLCity;
 use Politizr\Model\PLCityPeer;
 use Politizr\Model\PLDepartmentPeer;
+use Politizr\Model\PTScopePLCPeer;
 use Politizr\Model\PUserPeer;
 use Politizr\Model\map\PLCityTableMap;
 
@@ -509,6 +510,9 @@ abstract class BasePLCityPeer
      */
     public static function clearRelatedInstancePool()
     {
+        // Invalidate objects in PTScopePLCPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PTScopePLCPeer::clearInstancePool();
         // Invalidate objects in PUserPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PUserPeer::clearInstancePool();

@@ -7,11 +7,13 @@ use Politizr\Model\PTag;
 use Politizr\Model\PDDTaggedT;
 use Politizr\Model\PDRTaggedT;
 use Politizr\Model\PUTaggedT;
+use Politizr\Model\PTScopePLC;
 
 use Politizr\Model\PTagQuery;
 use Politizr\Model\PDDTaggedTQuery;
 use Politizr\Model\PDRTaggedTQuery;
 use Politizr\Model\PUTaggedTQuery;
+use Politizr\Model\PTScopePLCQuery;
 
 /**
  * DB manager service for tag.
@@ -403,6 +405,55 @@ ORDER BY title ASC
             ->filterByPTagId($tagId)
             ->delete();
         
+        return $result;
+    }
+
+    /* ######################################################################################################## */
+    /*                                    RELATED TABLES OPERATIONS                                             */
+    /* ######################################################################################################## */
+
+    /**
+     * Create a new PTScopePLC association
+     *
+     * @param integer $tagId
+     * @param integer $cityId
+     * @return PTScopePLC
+     */
+    public function createTagCityScope($tagId, $cityId)
+    {
+        $scope = PTScopePLCQuery::create()
+            ->filterByPTagId($tagId)
+            ->filterByPLCityId($cityId)
+            ->findOne();
+
+        if (!$scope) {
+            $scope = new PTScopePLC();
+
+            $scope->setPTagId($tagId);
+            $scope->setPLCityId($cityId);
+            $scope->save();
+            
+            return $scope;
+        }
+
+        return null;
+    }
+
+    /**
+     * Delete PTScopePLC
+     *
+     * @param integer $tagId
+     * @param integer $cityId
+     * @return integer
+     */
+    public function deleteTagCityScope($tagId, $cityId)
+    {
+        // Suppression élément(s)
+        $result = PTScopePLCQuery::create()
+            ->filterByPTagId($tagId)
+            ->filterByPLCityId($cityId)
+            ->delete();
+
         return $result;
     }
 }

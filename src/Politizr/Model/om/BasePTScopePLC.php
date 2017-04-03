@@ -13,22 +13,26 @@ use \Propel;
 use \PropelDateTime;
 use \PropelException;
 use \PropelPDO;
-use Politizr\Model\PTagArchive;
-use Politizr\Model\PTagArchivePeer;
-use Politizr\Model\PTagArchiveQuery;
+use Politizr\Model\PLCity;
+use Politizr\Model\PLCityQuery;
+use Politizr\Model\PTScopePLC;
+use Politizr\Model\PTScopePLCPeer;
+use Politizr\Model\PTScopePLCQuery;
+use Politizr\Model\PTag;
+use Politizr\Model\PTagQuery;
 
-abstract class BasePTagArchive extends BaseObject implements Persistent
+abstract class BasePTScopePLC extends BaseObject implements Persistent
 {
     /**
      * Peer class name
      */
-    const PEER = 'Politizr\\Model\\PTagArchivePeer';
+    const PEER = 'Politizr\\Model\\PTScopePLCPeer';
 
     /**
      * The Peer class.
      * Instance provides a convenient way of calling static methods on a class
      * that calling code may not be able to identify.
-     * @var        PTagArchivePeer
+     * @var        PTScopePLCPeer
      */
     protected static $peer;
 
@@ -45,58 +49,16 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
     protected $id;
 
     /**
-     * The value for the uuid field.
-     * @var        string
-     */
-    protected $uuid;
-
-    /**
-     * The value for the p_t_tag_type_id field.
+     * The value for the p_tag_id field.
      * @var        int
      */
-    protected $p_t_tag_type_id;
+    protected $p_tag_id;
 
     /**
-     * The value for the p_t_parent_id field.
+     * The value for the p_l_city_id field.
      * @var        int
      */
-    protected $p_t_parent_id;
-
-    /**
-     * The value for the p_user_id field.
-     * @var        int
-     */
-    protected $p_user_id;
-
-    /**
-     * The value for the p_owner_id field.
-     * @var        int
-     */
-    protected $p_owner_id;
-
-    /**
-     * The value for the title field.
-     * @var        string
-     */
-    protected $title;
-
-    /**
-     * The value for the moderated field.
-     * @var        boolean
-     */
-    protected $moderated;
-
-    /**
-     * The value for the moderated_at field.
-     * @var        string
-     */
-    protected $moderated_at;
-
-    /**
-     * The value for the online field.
-     * @var        boolean
-     */
-    protected $online;
+    protected $p_l_city_id;
 
     /**
      * The value for the created_at field.
@@ -111,16 +73,14 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
     protected $updated_at;
 
     /**
-     * The value for the slug field.
-     * @var        string
+     * @var        PTag
      */
-    protected $slug;
+    protected $aPTag;
 
     /**
-     * The value for the archived_at field.
-     * @var        string
+     * @var        PLCity
      */
-    protected $archived_at;
+    protected $aPLCity;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -154,131 +114,25 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [uuid] column value.
-     *
-     * @return string
-     */
-    public function getUuid()
-    {
-
-        return $this->uuid;
-    }
-
-    /**
-     * Get the [p_t_tag_type_id] column value.
+     * Get the [p_tag_id] column value.
      *
      * @return int
      */
-    public function getPTTagTypeId()
+    public function getPTagId()
     {
 
-        return $this->p_t_tag_type_id;
+        return $this->p_tag_id;
     }
 
     /**
-     * Get the [p_t_parent_id] column value.
+     * Get the [p_l_city_id] column value.
      *
      * @return int
      */
-    public function getPTParentId()
+    public function getPLCityId()
     {
 
-        return $this->p_t_parent_id;
-    }
-
-    /**
-     * Get the [p_user_id] column value.
-     *
-     * @return int
-     */
-    public function getPUserId()
-    {
-
-        return $this->p_user_id;
-    }
-
-    /**
-     * Get the [p_owner_id] column value.
-     *
-     * @return int
-     */
-    public function getPOwnerId()
-    {
-
-        return $this->p_owner_id;
-    }
-
-    /**
-     * Get the [title] column value.
-     *
-     * @return string
-     */
-    public function getTitle()
-    {
-
-        return $this->title;
-    }
-
-    /**
-     * Get the [moderated] column value.
-     *
-     * @return boolean
-     */
-    public function getModerated()
-    {
-
-        return $this->moderated;
-    }
-
-    /**
-     * Get the [optionally formatted] temporal [moderated_at] column value.
-     *
-     *
-     * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *				 If format is null, then the raw DateTime object will be returned.
-     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
-     * @throws PropelException - if unable to parse/validate the date/time value.
-     */
-    public function getModeratedAt($format = null)
-    {
-        if ($this->moderated_at === null) {
-            return null;
-        }
-
-        if ($this->moderated_at === '0000-00-00 00:00:00') {
-            // while technically this is not a default value of null,
-            // this seems to be closest in meaning.
-            return null;
-        }
-
-        try {
-            $dt = new DateTime($this->moderated_at);
-        } catch (Exception $x) {
-            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->moderated_at, true), $x);
-        }
-
-        if ($format === null) {
-            // Because propel.useDateTimeClass is true, we return a DateTime object.
-            return $dt;
-        }
-
-        if (strpos($format, '%') !== false) {
-            return strftime($format, $dt->format('U'));
-        }
-
-        return $dt->format($format);
-
-    }
-
-    /**
-     * Get the [online] column value.
-     *
-     * @return boolean
-     */
-    public function getOnline()
-    {
-
-        return $this->online;
+        return $this->p_l_city_id;
     }
 
     /**
@@ -362,61 +216,10 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [slug] column value.
-     *
-     * @return string
-     */
-    public function getSlug()
-    {
-
-        return $this->slug;
-    }
-
-    /**
-     * Get the [optionally formatted] temporal [archived_at] column value.
-     *
-     *
-     * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *				 If format is null, then the raw DateTime object will be returned.
-     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
-     * @throws PropelException - if unable to parse/validate the date/time value.
-     */
-    public function getArchivedAt($format = null)
-    {
-        if ($this->archived_at === null) {
-            return null;
-        }
-
-        if ($this->archived_at === '0000-00-00 00:00:00') {
-            // while technically this is not a default value of null,
-            // this seems to be closest in meaning.
-            return null;
-        }
-
-        try {
-            $dt = new DateTime($this->archived_at);
-        } catch (Exception $x) {
-            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->archived_at, true), $x);
-        }
-
-        if ($format === null) {
-            // Because propel.useDateTimeClass is true, we return a DateTime object.
-            return $dt;
-        }
-
-        if (strpos($format, '%') !== false) {
-            return strftime($format, $dt->format('U'));
-        }
-
-        return $dt->format($format);
-
-    }
-
-    /**
      * Set the value of [id] column.
      *
      * @param  int $v new value
-     * @return PTagArchive The current object (for fluent API support)
+     * @return PTScopePLC The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -426,7 +229,7 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
 
         if ($this->id !== $v) {
             $this->id = $v;
-            $this->modifiedColumns[] = PTagArchivePeer::ID;
+            $this->modifiedColumns[] = PTScopePLCPeer::ID;
         }
 
 
@@ -434,218 +237,61 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
     } // setId()
 
     /**
-     * Set the value of [uuid] column.
-     *
-     * @param  string $v new value
-     * @return PTagArchive The current object (for fluent API support)
-     */
-    public function setUuid($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->uuid !== $v) {
-            $this->uuid = $v;
-            $this->modifiedColumns[] = PTagArchivePeer::UUID;
-        }
-
-
-        return $this;
-    } // setUuid()
-
-    /**
-     * Set the value of [p_t_tag_type_id] column.
+     * Set the value of [p_tag_id] column.
      *
      * @param  int $v new value
-     * @return PTagArchive The current object (for fluent API support)
+     * @return PTScopePLC The current object (for fluent API support)
      */
-    public function setPTTagTypeId($v)
+    public function setPTagId($v)
     {
         if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
-        if ($this->p_t_tag_type_id !== $v) {
-            $this->p_t_tag_type_id = $v;
-            $this->modifiedColumns[] = PTagArchivePeer::P_T_TAG_TYPE_ID;
+        if ($this->p_tag_id !== $v) {
+            $this->p_tag_id = $v;
+            $this->modifiedColumns[] = PTScopePLCPeer::P_TAG_ID;
+        }
+
+        if ($this->aPTag !== null && $this->aPTag->getId() !== $v) {
+            $this->aPTag = null;
         }
 
 
         return $this;
-    } // setPTTagTypeId()
+    } // setPTagId()
 
     /**
-     * Set the value of [p_t_parent_id] column.
+     * Set the value of [p_l_city_id] column.
      *
      * @param  int $v new value
-     * @return PTagArchive The current object (for fluent API support)
+     * @return PTScopePLC The current object (for fluent API support)
      */
-    public function setPTParentId($v)
+    public function setPLCityId($v)
     {
         if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
-        if ($this->p_t_parent_id !== $v) {
-            $this->p_t_parent_id = $v;
-            $this->modifiedColumns[] = PTagArchivePeer::P_T_PARENT_ID;
+        if ($this->p_l_city_id !== $v) {
+            $this->p_l_city_id = $v;
+            $this->modifiedColumns[] = PTScopePLCPeer::P_L_CITY_ID;
+        }
+
+        if ($this->aPLCity !== null && $this->aPLCity->getId() !== $v) {
+            $this->aPLCity = null;
         }
 
 
         return $this;
-    } // setPTParentId()
-
-    /**
-     * Set the value of [p_user_id] column.
-     *
-     * @param  int $v new value
-     * @return PTagArchive The current object (for fluent API support)
-     */
-    public function setPUserId($v)
-    {
-        if ($v !== null && is_numeric($v)) {
-            $v = (int) $v;
-        }
-
-        if ($this->p_user_id !== $v) {
-            $this->p_user_id = $v;
-            $this->modifiedColumns[] = PTagArchivePeer::P_USER_ID;
-        }
-
-
-        return $this;
-    } // setPUserId()
-
-    /**
-     * Set the value of [p_owner_id] column.
-     *
-     * @param  int $v new value
-     * @return PTagArchive The current object (for fluent API support)
-     */
-    public function setPOwnerId($v)
-    {
-        if ($v !== null && is_numeric($v)) {
-            $v = (int) $v;
-        }
-
-        if ($this->p_owner_id !== $v) {
-            $this->p_owner_id = $v;
-            $this->modifiedColumns[] = PTagArchivePeer::P_OWNER_ID;
-        }
-
-
-        return $this;
-    } // setPOwnerId()
-
-    /**
-     * Set the value of [title] column.
-     *
-     * @param  string $v new value
-     * @return PTagArchive The current object (for fluent API support)
-     */
-    public function setTitle($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->title !== $v) {
-            $this->title = $v;
-            $this->modifiedColumns[] = PTagArchivePeer::TITLE;
-        }
-
-
-        return $this;
-    } // setTitle()
-
-    /**
-     * Sets the value of the [moderated] column.
-     * Non-boolean arguments are converted using the following rules:
-     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
-     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
-     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     *
-     * @param boolean|integer|string $v The new value
-     * @return PTagArchive The current object (for fluent API support)
-     */
-    public function setModerated($v)
-    {
-        if ($v !== null) {
-            if (is_string($v)) {
-                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
-            } else {
-                $v = (boolean) $v;
-            }
-        }
-
-        if ($this->moderated !== $v) {
-            $this->moderated = $v;
-            $this->modifiedColumns[] = PTagArchivePeer::MODERATED;
-        }
-
-
-        return $this;
-    } // setModerated()
-
-    /**
-     * Sets the value of [moderated_at] column to a normalized version of the date/time value specified.
-     *
-     * @param mixed $v string, integer (timestamp), or DateTime value.
-     *               Empty strings are treated as null.
-     * @return PTagArchive The current object (for fluent API support)
-     */
-    public function setModeratedAt($v)
-    {
-        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->moderated_at !== null || $dt !== null) {
-            $currentDateAsString = ($this->moderated_at !== null && $tmpDt = new DateTime($this->moderated_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
-            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
-            if ($currentDateAsString !== $newDateAsString) {
-                $this->moderated_at = $newDateAsString;
-                $this->modifiedColumns[] = PTagArchivePeer::MODERATED_AT;
-            }
-        } // if either are not null
-
-
-        return $this;
-    } // setModeratedAt()
-
-    /**
-     * Sets the value of the [online] column.
-     * Non-boolean arguments are converted using the following rules:
-     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
-     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
-     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     *
-     * @param boolean|integer|string $v The new value
-     * @return PTagArchive The current object (for fluent API support)
-     */
-    public function setOnline($v)
-    {
-        if ($v !== null) {
-            if (is_string($v)) {
-                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
-            } else {
-                $v = (boolean) $v;
-            }
-        }
-
-        if ($this->online !== $v) {
-            $this->online = $v;
-            $this->modifiedColumns[] = PTagArchivePeer::ONLINE;
-        }
-
-
-        return $this;
-    } // setOnline()
+    } // setPLCityId()
 
     /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
      *               Empty strings are treated as null.
-     * @return PTagArchive The current object (for fluent API support)
+     * @return PTScopePLC The current object (for fluent API support)
      */
     public function setCreatedAt($v)
     {
@@ -655,7 +301,7 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
             $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
             if ($currentDateAsString !== $newDateAsString) {
                 $this->created_at = $newDateAsString;
-                $this->modifiedColumns[] = PTagArchivePeer::CREATED_AT;
+                $this->modifiedColumns[] = PTScopePLCPeer::CREATED_AT;
             }
         } // if either are not null
 
@@ -668,7 +314,7 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
      *               Empty strings are treated as null.
-     * @return PTagArchive The current object (for fluent API support)
+     * @return PTScopePLC The current object (for fluent API support)
      */
     public function setUpdatedAt($v)
     {
@@ -678,57 +324,13 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
             $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
             if ($currentDateAsString !== $newDateAsString) {
                 $this->updated_at = $newDateAsString;
-                $this->modifiedColumns[] = PTagArchivePeer::UPDATED_AT;
+                $this->modifiedColumns[] = PTScopePLCPeer::UPDATED_AT;
             }
         } // if either are not null
 
 
         return $this;
     } // setUpdatedAt()
-
-    /**
-     * Set the value of [slug] column.
-     *
-     * @param  string $v new value
-     * @return PTagArchive The current object (for fluent API support)
-     */
-    public function setSlug($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->slug !== $v) {
-            $this->slug = $v;
-            $this->modifiedColumns[] = PTagArchivePeer::SLUG;
-        }
-
-
-        return $this;
-    } // setSlug()
-
-    /**
-     * Sets the value of [archived_at] column to a normalized version of the date/time value specified.
-     *
-     * @param mixed $v string, integer (timestamp), or DateTime value.
-     *               Empty strings are treated as null.
-     * @return PTagArchive The current object (for fluent API support)
-     */
-    public function setArchivedAt($v)
-    {
-        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->archived_at !== null || $dt !== null) {
-            $currentDateAsString = ($this->archived_at !== null && $tmpDt = new DateTime($this->archived_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
-            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
-            if ($currentDateAsString !== $newDateAsString) {
-                $this->archived_at = $newDateAsString;
-                $this->modifiedColumns[] = PTagArchivePeer::ARCHIVED_AT;
-            }
-        } // if either are not null
-
-
-        return $this;
-    } // setArchivedAt()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -763,19 +365,10 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
         try {
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->uuid = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
-            $this->p_t_tag_type_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
-            $this->p_t_parent_id = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
-            $this->p_user_id = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
-            $this->p_owner_id = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
-            $this->title = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
-            $this->moderated = ($row[$startcol + 7] !== null) ? (boolean) $row[$startcol + 7] : null;
-            $this->moderated_at = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
-            $this->online = ($row[$startcol + 9] !== null) ? (boolean) $row[$startcol + 9] : null;
-            $this->created_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
-            $this->updated_at = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
-            $this->slug = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
-            $this->archived_at = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
+            $this->p_tag_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
+            $this->p_l_city_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+            $this->created_at = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+            $this->updated_at = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -785,10 +378,10 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 14; // 14 = PTagArchivePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 5; // 5 = PTScopePLCPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException("Error populating PTagArchive object", $e);
+            throw new PropelException("Error populating PTScopePLC object", $e);
         }
     }
 
@@ -808,6 +401,12 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
     public function ensureConsistency()
     {
 
+        if ($this->aPTag !== null && $this->p_tag_id !== $this->aPTag->getId()) {
+            $this->aPTag = null;
+        }
+        if ($this->aPLCity !== null && $this->p_l_city_id !== $this->aPLCity->getId()) {
+            $this->aPLCity = null;
+        }
     } // ensureConsistency
 
     /**
@@ -831,13 +430,13 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(PTagArchivePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PTScopePLCPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $stmt = PTagArchivePeer::doSelectStmt($this->buildPkeyCriteria(), $con);
+        $stmt = PTScopePLCPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
         $row = $stmt->fetch(PDO::FETCH_NUM);
         $stmt->closeCursor();
         if (!$row) {
@@ -847,6 +446,8 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->aPTag = null;
+            $this->aPLCity = null;
         } // if (deep)
     }
 
@@ -867,12 +468,12 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(PTagArchivePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PTScopePLCPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
         try {
-            $deleteQuery = PTagArchiveQuery::create()
+            $deleteQuery = PTScopePLCQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -910,7 +511,7 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(PTagArchivePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PTScopePLCPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
@@ -919,8 +520,19 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
             $ret = $this->preSave($con);
             if ($isInsert) {
                 $ret = $ret && $this->preInsert($con);
+                // timestampable behavior
+                if (!$this->isColumnModified(PTScopePLCPeer::CREATED_AT)) {
+                    $this->setCreatedAt(time());
+                }
+                if (!$this->isColumnModified(PTScopePLCPeer::UPDATED_AT)) {
+                    $this->setUpdatedAt(time());
+                }
             } else {
                 $ret = $ret && $this->preUpdate($con);
+                // timestampable behavior
+                if ($this->isModified() && !$this->isColumnModified(PTScopePLCPeer::UPDATED_AT)) {
+                    $this->setUpdatedAt(time());
+                }
             }
             if ($ret) {
                 $affectedRows = $this->doSave($con);
@@ -930,7 +542,7 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                PTagArchivePeer::addInstanceToPool($this);
+                PTScopePLCPeer::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -959,6 +571,25 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
         $affectedRows = 0; // initialize var to track total num of affected rows
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
+
+            // We call the save method on the following object(s) if they
+            // were passed to this object by their corresponding set
+            // method.  This object relates to these object(s) by a
+            // foreign key reference.
+
+            if ($this->aPTag !== null) {
+                if ($this->aPTag->isModified() || $this->aPTag->isNew()) {
+                    $affectedRows += $this->aPTag->save($con);
+                }
+                $this->setPTag($this->aPTag);
+            }
+
+            if ($this->aPLCity !== null) {
+                if ($this->aPLCity->isModified() || $this->aPLCity->isNew()) {
+                    $affectedRows += $this->aPLCity->save($con);
+                }
+                $this->setPLCity($this->aPLCity);
+            }
 
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
@@ -991,53 +622,30 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
         $modifiedColumns = array();
         $index = 0;
 
+        $this->modifiedColumns[] = PTScopePLCPeer::ID;
+        if (null !== $this->id) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . PTScopePLCPeer::ID . ')');
+        }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(PTagArchivePeer::ID)) {
+        if ($this->isColumnModified(PTScopePLCPeer::ID)) {
             $modifiedColumns[':p' . $index++]  = '`id`';
         }
-        if ($this->isColumnModified(PTagArchivePeer::UUID)) {
-            $modifiedColumns[':p' . $index++]  = '`uuid`';
+        if ($this->isColumnModified(PTScopePLCPeer::P_TAG_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`p_tag_id`';
         }
-        if ($this->isColumnModified(PTagArchivePeer::P_T_TAG_TYPE_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`p_t_tag_type_id`';
+        if ($this->isColumnModified(PTScopePLCPeer::P_L_CITY_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`p_l_city_id`';
         }
-        if ($this->isColumnModified(PTagArchivePeer::P_T_PARENT_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`p_t_parent_id`';
-        }
-        if ($this->isColumnModified(PTagArchivePeer::P_USER_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`p_user_id`';
-        }
-        if ($this->isColumnModified(PTagArchivePeer::P_OWNER_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`p_owner_id`';
-        }
-        if ($this->isColumnModified(PTagArchivePeer::TITLE)) {
-            $modifiedColumns[':p' . $index++]  = '`title`';
-        }
-        if ($this->isColumnModified(PTagArchivePeer::MODERATED)) {
-            $modifiedColumns[':p' . $index++]  = '`moderated`';
-        }
-        if ($this->isColumnModified(PTagArchivePeer::MODERATED_AT)) {
-            $modifiedColumns[':p' . $index++]  = '`moderated_at`';
-        }
-        if ($this->isColumnModified(PTagArchivePeer::ONLINE)) {
-            $modifiedColumns[':p' . $index++]  = '`online`';
-        }
-        if ($this->isColumnModified(PTagArchivePeer::CREATED_AT)) {
+        if ($this->isColumnModified(PTScopePLCPeer::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`created_at`';
         }
-        if ($this->isColumnModified(PTagArchivePeer::UPDATED_AT)) {
+        if ($this->isColumnModified(PTScopePLCPeer::UPDATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`updated_at`';
-        }
-        if ($this->isColumnModified(PTagArchivePeer::SLUG)) {
-            $modifiedColumns[':p' . $index++]  = '`slug`';
-        }
-        if ($this->isColumnModified(PTagArchivePeer::ARCHIVED_AT)) {
-            $modifiedColumns[':p' . $index++]  = '`archived_at`';
         }
 
         $sql = sprintf(
-            'INSERT INTO `p_tag_archive` (%s) VALUES (%s)',
+            'INSERT INTO `p_t_scope_p_l_c` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -1049,44 +657,17 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
                     case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case '`uuid`':
-                        $stmt->bindValue($identifier, $this->uuid, PDO::PARAM_STR);
+                    case '`p_tag_id`':
+                        $stmt->bindValue($identifier, $this->p_tag_id, PDO::PARAM_INT);
                         break;
-                    case '`p_t_tag_type_id`':
-                        $stmt->bindValue($identifier, $this->p_t_tag_type_id, PDO::PARAM_INT);
-                        break;
-                    case '`p_t_parent_id`':
-                        $stmt->bindValue($identifier, $this->p_t_parent_id, PDO::PARAM_INT);
-                        break;
-                    case '`p_user_id`':
-                        $stmt->bindValue($identifier, $this->p_user_id, PDO::PARAM_INT);
-                        break;
-                    case '`p_owner_id`':
-                        $stmt->bindValue($identifier, $this->p_owner_id, PDO::PARAM_INT);
-                        break;
-                    case '`title`':
-                        $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
-                        break;
-                    case '`moderated`':
-                        $stmt->bindValue($identifier, (int) $this->moderated, PDO::PARAM_INT);
-                        break;
-                    case '`moderated_at`':
-                        $stmt->bindValue($identifier, $this->moderated_at, PDO::PARAM_STR);
-                        break;
-                    case '`online`':
-                        $stmt->bindValue($identifier, (int) $this->online, PDO::PARAM_INT);
+                    case '`p_l_city_id`':
+                        $stmt->bindValue($identifier, $this->p_l_city_id, PDO::PARAM_INT);
                         break;
                     case '`created_at`':
                         $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
                         break;
                     case '`updated_at`':
                         $stmt->bindValue($identifier, $this->updated_at, PDO::PARAM_STR);
-                        break;
-                    case '`slug`':
-                        $stmt->bindValue($identifier, $this->slug, PDO::PARAM_STR);
-                        break;
-                    case '`archived_at`':
-                        $stmt->bindValue($identifier, $this->archived_at, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -1095,6 +676,13 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
             Propel::log($e->getMessage(), Propel::LOG_ERR);
             throw new PropelException(sprintf('Unable to execute INSERT statement [%s]', $sql), $e);
         }
+
+        try {
+            $pk = $con->lastInsertId();
+        } catch (Exception $e) {
+            throw new PropelException('Unable to get autoincrement id.', $e);
+        }
+        $this->setId($pk);
 
         $this->setNew(false);
     }
@@ -1125,7 +713,7 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
      */
     public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = PTagArchivePeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = PTScopePLCPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -1145,43 +733,16 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
                 return $this->getId();
                 break;
             case 1:
-                return $this->getUuid();
+                return $this->getPTagId();
                 break;
             case 2:
-                return $this->getPTTagTypeId();
+                return $this->getPLCityId();
                 break;
             case 3:
-                return $this->getPTParentId();
-                break;
-            case 4:
-                return $this->getPUserId();
-                break;
-            case 5:
-                return $this->getPOwnerId();
-                break;
-            case 6:
-                return $this->getTitle();
-                break;
-            case 7:
-                return $this->getModerated();
-                break;
-            case 8:
-                return $this->getModeratedAt();
-                break;
-            case 9:
-                return $this->getOnline();
-                break;
-            case 10:
                 return $this->getCreatedAt();
                 break;
-            case 11:
+            case 4:
                 return $this->getUpdatedAt();
-                break;
-            case 12:
-                return $this->getSlug();
-                break;
-            case 13:
-                return $this->getArchivedAt();
                 break;
             default:
                 return null;
@@ -1200,37 +761,37 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
      *                    Defaults to BasePeer::TYPE_PHPNAME.
      * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to true.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
+     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
+    public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
-        if (isset($alreadyDumpedObjects['PTagArchive'][$this->getPrimaryKey()])) {
+        if (isset($alreadyDumpedObjects['PTScopePLC'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['PTagArchive'][$this->getPrimaryKey()] = true;
-        $keys = PTagArchivePeer::getFieldNames($keyType);
+        $alreadyDumpedObjects['PTScopePLC'][$this->getPrimaryKey()] = true;
+        $keys = PTScopePLCPeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getUuid(),
-            $keys[2] => $this->getPTTagTypeId(),
-            $keys[3] => $this->getPTParentId(),
-            $keys[4] => $this->getPUserId(),
-            $keys[5] => $this->getPOwnerId(),
-            $keys[6] => $this->getTitle(),
-            $keys[7] => $this->getModerated(),
-            $keys[8] => $this->getModeratedAt(),
-            $keys[9] => $this->getOnline(),
-            $keys[10] => $this->getCreatedAt(),
-            $keys[11] => $this->getUpdatedAt(),
-            $keys[12] => $this->getSlug(),
-            $keys[13] => $this->getArchivedAt(),
+            $keys[1] => $this->getPTagId(),
+            $keys[2] => $this->getPLCityId(),
+            $keys[3] => $this->getCreatedAt(),
+            $keys[4] => $this->getUpdatedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
         }
 
+        if ($includeForeignObjects) {
+            if (null !== $this->aPTag) {
+                $result['PTag'] = $this->aPTag->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->aPLCity) {
+                $result['PLCity'] = $this->aPLCity->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+        }
 
         return $result;
     }
@@ -1248,7 +809,7 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
      */
     public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = PTagArchivePeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = PTScopePLCPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
 
         $this->setByPosition($pos, $value);
     }
@@ -1268,43 +829,16 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
                 $this->setId($value);
                 break;
             case 1:
-                $this->setUuid($value);
+                $this->setPTagId($value);
                 break;
             case 2:
-                $this->setPTTagTypeId($value);
+                $this->setPLCityId($value);
                 break;
             case 3:
-                $this->setPTParentId($value);
-                break;
-            case 4:
-                $this->setPUserId($value);
-                break;
-            case 5:
-                $this->setPOwnerId($value);
-                break;
-            case 6:
-                $this->setTitle($value);
-                break;
-            case 7:
-                $this->setModerated($value);
-                break;
-            case 8:
-                $this->setModeratedAt($value);
-                break;
-            case 9:
-                $this->setOnline($value);
-                break;
-            case 10:
                 $this->setCreatedAt($value);
                 break;
-            case 11:
+            case 4:
                 $this->setUpdatedAt($value);
-                break;
-            case 12:
-                $this->setSlug($value);
-                break;
-            case 13:
-                $this->setArchivedAt($value);
                 break;
         } // switch()
     }
@@ -1328,22 +862,13 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
      */
     public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
     {
-        $keys = PTagArchivePeer::getFieldNames($keyType);
+        $keys = PTScopePLCPeer::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setUuid($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setPTTagTypeId($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setPTParentId($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setPUserId($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setPOwnerId($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setTitle($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setModerated($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setModeratedAt($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setOnline($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setCreatedAt($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setUpdatedAt($arr[$keys[11]]);
-        if (array_key_exists($keys[12], $arr)) $this->setSlug($arr[$keys[12]]);
-        if (array_key_exists($keys[13], $arr)) $this->setArchivedAt($arr[$keys[13]]);
+        if (array_key_exists($keys[1], $arr)) $this->setPTagId($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setPLCityId($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setCreatedAt($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setUpdatedAt($arr[$keys[4]]);
     }
 
     /**
@@ -1353,22 +878,13 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(PTagArchivePeer::DATABASE_NAME);
+        $criteria = new Criteria(PTScopePLCPeer::DATABASE_NAME);
 
-        if ($this->isColumnModified(PTagArchivePeer::ID)) $criteria->add(PTagArchivePeer::ID, $this->id);
-        if ($this->isColumnModified(PTagArchivePeer::UUID)) $criteria->add(PTagArchivePeer::UUID, $this->uuid);
-        if ($this->isColumnModified(PTagArchivePeer::P_T_TAG_TYPE_ID)) $criteria->add(PTagArchivePeer::P_T_TAG_TYPE_ID, $this->p_t_tag_type_id);
-        if ($this->isColumnModified(PTagArchivePeer::P_T_PARENT_ID)) $criteria->add(PTagArchivePeer::P_T_PARENT_ID, $this->p_t_parent_id);
-        if ($this->isColumnModified(PTagArchivePeer::P_USER_ID)) $criteria->add(PTagArchivePeer::P_USER_ID, $this->p_user_id);
-        if ($this->isColumnModified(PTagArchivePeer::P_OWNER_ID)) $criteria->add(PTagArchivePeer::P_OWNER_ID, $this->p_owner_id);
-        if ($this->isColumnModified(PTagArchivePeer::TITLE)) $criteria->add(PTagArchivePeer::TITLE, $this->title);
-        if ($this->isColumnModified(PTagArchivePeer::MODERATED)) $criteria->add(PTagArchivePeer::MODERATED, $this->moderated);
-        if ($this->isColumnModified(PTagArchivePeer::MODERATED_AT)) $criteria->add(PTagArchivePeer::MODERATED_AT, $this->moderated_at);
-        if ($this->isColumnModified(PTagArchivePeer::ONLINE)) $criteria->add(PTagArchivePeer::ONLINE, $this->online);
-        if ($this->isColumnModified(PTagArchivePeer::CREATED_AT)) $criteria->add(PTagArchivePeer::CREATED_AT, $this->created_at);
-        if ($this->isColumnModified(PTagArchivePeer::UPDATED_AT)) $criteria->add(PTagArchivePeer::UPDATED_AT, $this->updated_at);
-        if ($this->isColumnModified(PTagArchivePeer::SLUG)) $criteria->add(PTagArchivePeer::SLUG, $this->slug);
-        if ($this->isColumnModified(PTagArchivePeer::ARCHIVED_AT)) $criteria->add(PTagArchivePeer::ARCHIVED_AT, $this->archived_at);
+        if ($this->isColumnModified(PTScopePLCPeer::ID)) $criteria->add(PTScopePLCPeer::ID, $this->id);
+        if ($this->isColumnModified(PTScopePLCPeer::P_TAG_ID)) $criteria->add(PTScopePLCPeer::P_TAG_ID, $this->p_tag_id);
+        if ($this->isColumnModified(PTScopePLCPeer::P_L_CITY_ID)) $criteria->add(PTScopePLCPeer::P_L_CITY_ID, $this->p_l_city_id);
+        if ($this->isColumnModified(PTScopePLCPeer::CREATED_AT)) $criteria->add(PTScopePLCPeer::CREATED_AT, $this->created_at);
+        if ($this->isColumnModified(PTScopePLCPeer::UPDATED_AT)) $criteria->add(PTScopePLCPeer::UPDATED_AT, $this->updated_at);
 
         return $criteria;
     }
@@ -1383,8 +899,8 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
      */
     public function buildPkeyCriteria()
     {
-        $criteria = new Criteria(PTagArchivePeer::DATABASE_NAME);
-        $criteria->add(PTagArchivePeer::ID, $this->id);
+        $criteria = new Criteria(PTScopePLCPeer::DATABASE_NAME);
+        $criteria->add(PTScopePLCPeer::ID, $this->id);
 
         return $criteria;
     }
@@ -1425,26 +941,29 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param object $copyObj An object of PTagArchive (or compatible) type.
+     * @param object $copyObj An object of PTScopePLC (or compatible) type.
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setUuid($this->getUuid());
-        $copyObj->setPTTagTypeId($this->getPTTagTypeId());
-        $copyObj->setPTParentId($this->getPTParentId());
-        $copyObj->setPUserId($this->getPUserId());
-        $copyObj->setPOwnerId($this->getPOwnerId());
-        $copyObj->setTitle($this->getTitle());
-        $copyObj->setModerated($this->getModerated());
-        $copyObj->setModeratedAt($this->getModeratedAt());
-        $copyObj->setOnline($this->getOnline());
+        $copyObj->setPTagId($this->getPTagId());
+        $copyObj->setPLCityId($this->getPLCityId());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
-        $copyObj->setSlug($this->getSlug());
-        $copyObj->setArchivedAt($this->getArchivedAt());
+
+        if ($deepCopy && !$this->startCopy) {
+            // important: temporarily setNew(false) because this affects the behavior of
+            // the getter/setter methods for fkey referrer objects.
+            $copyObj->setNew(false);
+            // store object hash to prevent cycle
+            $this->startCopy = true;
+
+            //unflag object copy
+            $this->startCopy = false;
+        } // if ($deepCopy)
+
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
@@ -1460,7 +979,7 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
      * objects.
      *
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return PTagArchive Clone of current object.
+     * @return PTScopePLC Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1480,15 +999,119 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
      * same instance for all member of this class. The method could therefore
      * be static, but this would prevent one from overriding the behavior.
      *
-     * @return PTagArchivePeer
+     * @return PTScopePLCPeer
      */
     public function getPeer()
     {
         if (self::$peer === null) {
-            self::$peer = new PTagArchivePeer();
+            self::$peer = new PTScopePLCPeer();
         }
 
         return self::$peer;
+    }
+
+    /**
+     * Declares an association between this object and a PTag object.
+     *
+     * @param                  PTag $v
+     * @return PTScopePLC The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setPTag(PTag $v = null)
+    {
+        if ($v === null) {
+            $this->setPTagId(NULL);
+        } else {
+            $this->setPTagId($v->getId());
+        }
+
+        $this->aPTag = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the PTag object, it will not be re-added.
+        if ($v !== null) {
+            $v->addPTScopePLC($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated PTag object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return PTag The associated PTag object.
+     * @throws PropelException
+     */
+    public function getPTag(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aPTag === null && ($this->p_tag_id !== null) && $doQuery) {
+            $this->aPTag = PTagQuery::create()->findPk($this->p_tag_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aPTag->addPTScopePLCs($this);
+             */
+        }
+
+        return $this->aPTag;
+    }
+
+    /**
+     * Declares an association between this object and a PLCity object.
+     *
+     * @param                  PLCity $v
+     * @return PTScopePLC The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setPLCity(PLCity $v = null)
+    {
+        if ($v === null) {
+            $this->setPLCityId(NULL);
+        } else {
+            $this->setPLCityId($v->getId());
+        }
+
+        $this->aPLCity = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the PLCity object, it will not be re-added.
+        if ($v !== null) {
+            $v->addPTScopePLC($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated PLCity object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return PLCity The associated PLCity object.
+     * @throws PropelException
+     */
+    public function getPLCity(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aPLCity === null && ($this->p_l_city_id !== null) && $doQuery) {
+            $this->aPLCity = PLCityQuery::create()->findPk($this->p_l_city_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aPLCity->addPTScopePLCs($this);
+             */
+        }
+
+        return $this->aPLCity;
     }
 
     /**
@@ -1497,19 +1120,10 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
     public function clear()
     {
         $this->id = null;
-        $this->uuid = null;
-        $this->p_t_tag_type_id = null;
-        $this->p_t_parent_id = null;
-        $this->p_user_id = null;
-        $this->p_owner_id = null;
-        $this->title = null;
-        $this->moderated = null;
-        $this->moderated_at = null;
-        $this->online = null;
+        $this->p_tag_id = null;
+        $this->p_l_city_id = null;
         $this->created_at = null;
         $this->updated_at = null;
-        $this->slug = null;
-        $this->archived_at = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
@@ -1532,10 +1146,18 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
+            if ($this->aPTag instanceof Persistent) {
+              $this->aPTag->clearAllReferences($deep);
+            }
+            if ($this->aPLCity instanceof Persistent) {
+              $this->aPLCity->clearAllReferences($deep);
+            }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
+        $this->aPTag = null;
+        $this->aPLCity = null;
     }
 
     /**
@@ -1545,7 +1167,7 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
      */
     public function __toString()
     {
-        return (string) $this->exportTo(PTagArchivePeer::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(PTScopePLCPeer::DEFAULT_STRING_FORMAT);
     }
 
     /**
@@ -1556,6 +1178,20 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
     public function isAlreadyInSave()
     {
         return $this->alreadyInSave;
+    }
+
+    // timestampable behavior
+
+    /**
+     * Mark the current object so that the update date doesn't get updated during next save
+     *
+     * @return     PTScopePLC The current object (for fluent API support)
+     */
+    public function keepUpdateDateUnchanged()
+    {
+        $this->modifiedColumns[] = PTScopePLCPeer::UPDATED_AT;
+
+        return $this;
     }
 
 }

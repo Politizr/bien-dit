@@ -20,6 +20,7 @@ use Politizr\Model\PTagArchiveQuery;
  * @method PTagArchiveQuery orderByPTTagTypeId($order = Criteria::ASC) Order by the p_t_tag_type_id column
  * @method PTagArchiveQuery orderByPTParentId($order = Criteria::ASC) Order by the p_t_parent_id column
  * @method PTagArchiveQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
+ * @method PTagArchiveQuery orderByPOwnerId($order = Criteria::ASC) Order by the p_owner_id column
  * @method PTagArchiveQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method PTagArchiveQuery orderByModerated($order = Criteria::ASC) Order by the moderated column
  * @method PTagArchiveQuery orderByModeratedAt($order = Criteria::ASC) Order by the moderated_at column
@@ -34,6 +35,7 @@ use Politizr\Model\PTagArchiveQuery;
  * @method PTagArchiveQuery groupByPTTagTypeId() Group by the p_t_tag_type_id column
  * @method PTagArchiveQuery groupByPTParentId() Group by the p_t_parent_id column
  * @method PTagArchiveQuery groupByPUserId() Group by the p_user_id column
+ * @method PTagArchiveQuery groupByPOwnerId() Group by the p_owner_id column
  * @method PTagArchiveQuery groupByTitle() Group by the title column
  * @method PTagArchiveQuery groupByModerated() Group by the moderated column
  * @method PTagArchiveQuery groupByModeratedAt() Group by the moderated_at column
@@ -54,6 +56,7 @@ use Politizr\Model\PTagArchiveQuery;
  * @method PTagArchive findOneByPTTagTypeId(int $p_t_tag_type_id) Return the first PTagArchive filtered by the p_t_tag_type_id column
  * @method PTagArchive findOneByPTParentId(int $p_t_parent_id) Return the first PTagArchive filtered by the p_t_parent_id column
  * @method PTagArchive findOneByPUserId(int $p_user_id) Return the first PTagArchive filtered by the p_user_id column
+ * @method PTagArchive findOneByPOwnerId(int $p_owner_id) Return the first PTagArchive filtered by the p_owner_id column
  * @method PTagArchive findOneByTitle(string $title) Return the first PTagArchive filtered by the title column
  * @method PTagArchive findOneByModerated(boolean $moderated) Return the first PTagArchive filtered by the moderated column
  * @method PTagArchive findOneByModeratedAt(string $moderated_at) Return the first PTagArchive filtered by the moderated_at column
@@ -68,6 +71,7 @@ use Politizr\Model\PTagArchiveQuery;
  * @method array findByPTTagTypeId(int $p_t_tag_type_id) Return PTagArchive objects filtered by the p_t_tag_type_id column
  * @method array findByPTParentId(int $p_t_parent_id) Return PTagArchive objects filtered by the p_t_parent_id column
  * @method array findByPUserId(int $p_user_id) Return PTagArchive objects filtered by the p_user_id column
+ * @method array findByPOwnerId(int $p_owner_id) Return PTagArchive objects filtered by the p_owner_id column
  * @method array findByTitle(string $title) Return PTagArchive objects filtered by the title column
  * @method array findByModerated(boolean $moderated) Return PTagArchive objects filtered by the moderated column
  * @method array findByModeratedAt(string $moderated_at) Return PTagArchive objects filtered by the moderated_at column
@@ -181,7 +185,7 @@ abstract class BasePTagArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `p_t_tag_type_id`, `p_t_parent_id`, `p_user_id`, `title`, `moderated`, `moderated_at`, `online`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_tag_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_t_tag_type_id`, `p_t_parent_id`, `p_user_id`, `p_owner_id`, `title`, `moderated`, `moderated_at`, `online`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_tag_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -465,6 +469,48 @@ abstract class BasePTagArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PTagArchivePeer::P_USER_ID, $pUserId, $comparison);
+    }
+
+    /**
+     * Filter the query on the p_owner_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPOwnerId(1234); // WHERE p_owner_id = 1234
+     * $query->filterByPOwnerId(array(12, 34)); // WHERE p_owner_id IN (12, 34)
+     * $query->filterByPOwnerId(array('min' => 12)); // WHERE p_owner_id >= 12
+     * $query->filterByPOwnerId(array('max' => 12)); // WHERE p_owner_id <= 12
+     * </code>
+     *
+     * @param     mixed $pOwnerId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PTagArchiveQuery The current query, for fluid interface
+     */
+    public function filterByPOwnerId($pOwnerId = null, $comparison = null)
+    {
+        if (is_array($pOwnerId)) {
+            $useMinMax = false;
+            if (isset($pOwnerId['min'])) {
+                $this->addUsingAlias(PTagArchivePeer::P_OWNER_ID, $pOwnerId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($pOwnerId['max'])) {
+                $this->addUsingAlias(PTagArchivePeer::P_OWNER_ID, $pOwnerId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PTagArchivePeer::P_OWNER_ID, $pOwnerId, $comparison);
     }
 
     /**

@@ -28,6 +28,7 @@ use Politizr\Model\PDRTaggedTQuery;
 use Politizr\Model\PUTaggedTQuery;
 use Politizr\Model\PMUserModeratedQuery;
 use Politizr\Model\PUMandateQuery;
+use Politizr\Model\PLCityQuery;
 
 use Politizr\AdminBundle\Form\Type\PMUserModeratedType;
 use Politizr\FrontBundle\Form\Type\PUMandateType;
@@ -969,4 +970,118 @@ class XhrAdmin
         return true;
     }
 
+    /**
+     * Search cities by INSEE code
+     */
+    public function getCitiesByTagId(Request $request)
+    {
+        $this->logger->info('*** getCitiesByInsee');
+
+        // Request arguments
+        $tagId = $request->get('tagId');
+
+        $cities = PLCityQuery::create()
+            ->distinct()
+            ->usePTScopePLCQuery()
+                ->filterByPTagId($tagId)
+            ->endUse()
+            ->find();
+
+        if (count($cities) == 0) {
+            $html = $this->templating->render(
+                'PolitizrAdminBundle:Fragment:_noResult.html.twig',
+                array(
+                )
+            );
+        } else {
+            $html = $this->templating->render(
+                'PolitizrAdminBundle:Fragment\\Localization:_tagDeleteCities.html.twig',
+                array(
+                    'cities' => $cities,
+                    'tagId' => $tagId,
+                )
+            );
+        }
+
+        // Renvoi de l'ensemble des blocs HTML maj
+        return array(
+            'html' => $html
+        );
+    }
+
+    /**
+     * Search cities by INSEE code
+     */
+    public function getCitiesByInsee(Request $request)
+    {
+        $this->logger->info('*** getCitiesByInsee');
+
+        // Request arguments
+        $tagId = $request->get('tagId');
+        $inseeCode = $request->get('codeInsee');
+
+        $query = PLCityQuery::create()
+            ->filterByMunicipalityCode($inseeCode, ' like ');
+
+        $nbResult = $query->count();
+        if ($nbResult == 0) {
+            $html = $this->templating->render(
+                'PolitizrAdminBundle:Fragment:_noResult.html.twig',
+                array(
+                )
+            );
+        } elseif ($nbResult > 50) {
+            $html = $this->templating->render(
+                'PolitizrAdminBundle:Fragment:_tooMuchResults.html.twig',
+                array(
+                )
+            );
+        } else {
+            $cities = $query->find();
+            $html = $this->templating->render(
+                'PolitizrAdminBundle:Fragment\\Localization:_tagAddCities.html.twig',
+                array(
+                    'cities' => $cities,
+                    'tagId' => $tagId,
+                )
+            );
+        }
+
+        // Renvoi de l'ensemble des blocs HTML maj
+        return array(
+            'html' => $html
+        );
+    }
+
+    /**
+     * Add tag / city relation
+     */
+    public function addTagCityRelation(Request $request)
+    {
+        $this->logger->info('*** addTagCityRelation');
+
+        // Request arguments
+        $tagId = $request->get('tagId');
+        $cityId = $request->get('cityId');
+
+        $this->tagManager->createTagCityScope($tagId, $cityId);        
+
+        return true;
+    }
+
+    /**
+     * Delete tag / city relation
+     */
+    public function deleteTagCityRelation(Request $request)
+    {
+        $this->logger->info('*** deleteTagCityRelation');
+
+        // Request arguments
+        $tagId = $request->get('tagId');
+        $cityId = $request->get('cityId');
+
+        $this->tagManager->deleteTagCityScope($tagId, $cityId);        
+
+        return true;
+    }
 }

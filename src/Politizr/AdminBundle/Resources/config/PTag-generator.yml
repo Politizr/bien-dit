@@ -23,6 +23,14 @@ params:
                 query:          \Politizr\Model\PTagQuery::create()->filterByPTTagTypeId(1)->where("p_tag.id > ?", 22)->where("p_tag.id < ?", 129)->orderById() 
                 # group_by:       p_t_parent_id
                 # property:       title
+        p_user_id:
+            label:          ID Créé par
+        p_user:
+            label:          Créé par
+        p_owner_id:
+            label:          ID propriétaire
+        p_owner:
+            label:          Propriétaire
         title:
             label:          Titre
         moderated:
@@ -57,6 +65,9 @@ builders:
                         default:                true
                         filters:
                             p_t_tag_type_id:    2
+                    "Privé":
+                        filters:
+                            p_t_tag_type_id:    5
             display:                            [ title, p_t_tag_type, PTagRelatedByPTParentId, countDebates, countReactions, countUsers, created_at, online ]
             filtersMode:                        modal
             filters:                            [ title, p_t_tag_type_id, PTagRelatedByPTParentId, p_t_tag_type, online, created_at ]
@@ -82,7 +93,7 @@ builders:
         params:
             title:                              "Création d'un tag"
             display:
-                "Champs principaux":            [ p_t_tag_type, PTagRelatedByPTParentId, title ]
+                "Champs principaux":            [ p_t_tag_type, PTagRelatedByPTParentId, p_owner, title ]
             fields:
                 p_t_tag_type:
                     addFormOptions:
@@ -90,6 +101,14 @@ builders:
                 PTagRelatedByPTParentId:
                     addFormOptions:
                         required:               false
+                p_owner:
+                    dbType:                     model
+                    formType:                   Admingenerator\FormExtensionsBundle\Form\Type\Select2ModelType
+                    addFormOptions:
+                        multiple:               false
+                        required:               true
+                        class:                  Politizr\Model\PUser
+                        query:                  \Politizr\Model\PUserQuery::create()->orderByName()
             actions:
               save:                             ~
               list:                             ~
@@ -99,12 +118,23 @@ builders:
             tabs:
                 "Contenu":
                     "Texte":                    [ [ title ] ]
+                "Objets":
+                    "Auteur":                   [ p_user ]
+                    "Propriétaire":             [ p_owner ]
                 "Modération":
                     "Portée":                   [ [ moderated, moderated_at ] ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
                     "Création":                 [ [ p_t_tag_type ], [ PTagRelatedByPTParentId ], [ online ], [ created_at, updated_at ] ]
             fields:
+                p_user:
+                    addFormOptions:
+                        disabled:               true
+                        read_only:              true
+                p_owner:
+                    addFormOptions:
+                        disabled:               true
+                        read_only:              true
                 p_t_tag_type:
                     addFormOptions:
                         query:                  \Politizr\Model\PTTagTypeQuery::create()->orderByTitle()
@@ -134,6 +164,12 @@ builders:
             tabs:
                 "Contenu":
                     "Texte":                    [ [ title ] ]
+                "Objets":
+                    "Utilisateur":              [ block_p_user ]
+                    "Propriétaire":             [ block_p_owner ]
+                "Scope":
+                    "Villes associés":          [ block_cities ]
+                    "Ajouter des villes":       [ block_cities_add ]
                 "Publication":
                     "Débats":                   [ block_debates ]
                     "Réactions":                [ block_reactions ]
@@ -145,6 +181,14 @@ builders:
                     "Identifiants":             [ [ id, uuid, slug ] ]
                     "Création":                 [ [ p_t_tag_type ], [ PTagRelatedByPTParentId ], [ online ], [ created_at, updated_at ] ]
             fields:
+                block_p_user:
+                    label:                      "Auteur"
+                block_p_owner:
+                    label:                      "Propriétaire"
+                block_cities:
+                    label:                      "Villes"
+                block_cities_add:
+                    label:                      "Recherche"
                 block_debates:
                     label:                      "Taggés"
                 block_reactions:

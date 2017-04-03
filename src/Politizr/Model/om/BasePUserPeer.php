@@ -720,6 +720,9 @@ abstract class BasePUserPeer
         // Invalidate objects in PTagPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PTagPeer::clearInstancePool();
+        // Invalidate objects in PTagPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PTagPeer::clearInstancePool();
         // Invalidate objects in POrderPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         POrderPeer::clearInstancePool();

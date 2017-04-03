@@ -233,4 +233,7 @@ class XhrConstants
     // LOCALIZATION
     const ADMIN_ROUTE_CITY_LISTING = 'admin/villes/listing';
     const ADMIN_ROUTE_USER_CITY = 'admin/utilisateur/ville/update';
+    const ADMIN_ROUTE_DOC_LOC = 'admin/document/localization/update';
+    const ADMIN_ROUTE_TAG_CITIES = 'admin/tag/villes';
+    const ADMIN_ROUTE_TAG_CITIES_SEARCH_LISTING = 'admin/tag/villes/recherche';
 }
