@@ -219,6 +219,8 @@ class XhrConstants
     const ADMIN_ROUTE_TAG_USER_CREATE = 'admin/utilisateur/tag/create';
     const ADMIN_ROUTE_TAG_USER_DELETE = 'admin/utilisateur/tag/delete';
     const ADMIN_ROUTE_TAG_USER_HIDE = 'admin/utilisateur/tag/hide';
+    const ADMIN_ROUTE_TAG_OPERATION_CREATE = 'admin/operation/tag/create';
+    const ADMIN_ROUTE_TAG_OPERATION_DELETE = 'admin/operation/tag/delete';
 
     // REPUTATION
     const ADMIN_ROUTE_USER_REPUTATION_EVOLUTION = 'admin/utilisateur/reputation/update';

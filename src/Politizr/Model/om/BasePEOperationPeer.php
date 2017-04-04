@@ -9,7 +9,7 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
-use Politizr\Model\PEOPresetPTagPeer;
+use Politizr\Model\PEOPresetPTPeer;
 use Politizr\Model\PEOScopePLCPeer;
 use Politizr\Model\PEOperation;
 use Politizr\Model\PEOperationPeer;
@@ -416,9 +416,9 @@ abstract class BasePEOperationPeer
         // Invalidate objects in PEOScopePLCPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PEOScopePLCPeer::clearInstancePool();
-        // Invalidate objects in PEOPresetPTagPeer instance pool,
+        // Invalidate objects in PEOPresetPTPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PEOPresetPTagPeer::clearInstancePool();
+        PEOPresetPTPeer::clearInstancePool();
     }
 
     /**

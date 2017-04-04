@@ -105,4 +105,19 @@ class PEOperation extends BasePEOperation
             unlink(__DIR__ . PEOperation::UPLOAD_PATH . $this->file_name);
         }
     }
+    // ******************* END SIMPLE UPLOAD MANAGEMENT **************** //
+
+    /**
+     * @see PDocumentInterface::getTags
+     */
+    public function getTags($tagTypeId = null, $online = true)
+    {
+        $query = PTagQuery::create()
+            ->filterIfTypeId($tagTypeId)
+            ->filterIfOnline($online)
+            // ->orderByTitle()
+            ->setDistinct();
+
+        return parent::getPTags($query);
+    }
 }

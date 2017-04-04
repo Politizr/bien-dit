@@ -13,58 +13,58 @@ use \PropelCollection;
 use \PropelException;
 use \PropelObjectCollection;
 use \PropelPDO;
-use Politizr\Model\PEOPresetPTag;
-use Politizr\Model\PEOPresetPTagPeer;
-use Politizr\Model\PEOPresetPTagQuery;
+use Politizr\Model\PEOPresetPT;
+use Politizr\Model\PEOPresetPTPeer;
+use Politizr\Model\PEOPresetPTQuery;
 use Politizr\Model\PEOperation;
 use Politizr\Model\PTag;
 
 /**
- * @method PEOPresetPTagQuery orderById($order = Criteria::ASC) Order by the id column
- * @method PEOPresetPTagQuery orderByPEOperationId($order = Criteria::ASC) Order by the p_e_operation_id column
- * @method PEOPresetPTagQuery orderByPTagId($order = Criteria::ASC) Order by the p_tag_id column
- * @method PEOPresetPTagQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
- * @method PEOPresetPTagQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
+ * @method PEOPresetPTQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method PEOPresetPTQuery orderByPEOperationId($order = Criteria::ASC) Order by the p_e_operation_id column
+ * @method PEOPresetPTQuery orderByPTagId($order = Criteria::ASC) Order by the p_tag_id column
+ * @method PEOPresetPTQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
+ * @method PEOPresetPTQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  *
- * @method PEOPresetPTagQuery groupById() Group by the id column
- * @method PEOPresetPTagQuery groupByPEOperationId() Group by the p_e_operation_id column
- * @method PEOPresetPTagQuery groupByPTagId() Group by the p_tag_id column
- * @method PEOPresetPTagQuery groupByCreatedAt() Group by the created_at column
- * @method PEOPresetPTagQuery groupByUpdatedAt() Group by the updated_at column
+ * @method PEOPresetPTQuery groupById() Group by the id column
+ * @method PEOPresetPTQuery groupByPEOperationId() Group by the p_e_operation_id column
+ * @method PEOPresetPTQuery groupByPTagId() Group by the p_tag_id column
+ * @method PEOPresetPTQuery groupByCreatedAt() Group by the created_at column
+ * @method PEOPresetPTQuery groupByUpdatedAt() Group by the updated_at column
  *
- * @method PEOPresetPTagQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method PEOPresetPTagQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method PEOPresetPTagQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method PEOPresetPTQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method PEOPresetPTQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method PEOPresetPTQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method PEOPresetPTagQuery leftJoinPEOperation($relationAlias = null) Adds a LEFT JOIN clause to the query using the PEOperation relation
- * @method PEOPresetPTagQuery rightJoinPEOperation($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PEOperation relation
- * @method PEOPresetPTagQuery innerJoinPEOperation($relationAlias = null) Adds a INNER JOIN clause to the query using the PEOperation relation
+ * @method PEOPresetPTQuery leftJoinPEOperation($relationAlias = null) Adds a LEFT JOIN clause to the query using the PEOperation relation
+ * @method PEOPresetPTQuery rightJoinPEOperation($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PEOperation relation
+ * @method PEOPresetPTQuery innerJoinPEOperation($relationAlias = null) Adds a INNER JOIN clause to the query using the PEOperation relation
  *
- * @method PEOPresetPTagQuery leftJoinPTag($relationAlias = null) Adds a LEFT JOIN clause to the query using the PTag relation
- * @method PEOPresetPTagQuery rightJoinPTag($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PTag relation
- * @method PEOPresetPTagQuery innerJoinPTag($relationAlias = null) Adds a INNER JOIN clause to the query using the PTag relation
+ * @method PEOPresetPTQuery leftJoinPTag($relationAlias = null) Adds a LEFT JOIN clause to the query using the PTag relation
+ * @method PEOPresetPTQuery rightJoinPTag($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PTag relation
+ * @method PEOPresetPTQuery innerJoinPTag($relationAlias = null) Adds a INNER JOIN clause to the query using the PTag relation
  *
- * @method PEOPresetPTag findOne(PropelPDO $con = null) Return the first PEOPresetPTag matching the query
- * @method PEOPresetPTag findOneOrCreate(PropelPDO $con = null) Return the first PEOPresetPTag matching the query, or a new PEOPresetPTag object populated from the query conditions when no match is found
+ * @method PEOPresetPT findOne(PropelPDO $con = null) Return the first PEOPresetPT matching the query
+ * @method PEOPresetPT findOneOrCreate(PropelPDO $con = null) Return the first PEOPresetPT matching the query, or a new PEOPresetPT object populated from the query conditions when no match is found
  *
- * @method PEOPresetPTag findOneByPEOperationId(int $p_e_operation_id) Return the first PEOPresetPTag filtered by the p_e_operation_id column
- * @method PEOPresetPTag findOneByPTagId(int $p_tag_id) Return the first PEOPresetPTag filtered by the p_tag_id column
- * @method PEOPresetPTag findOneByCreatedAt(string $created_at) Return the first PEOPresetPTag filtered by the created_at column
- * @method PEOPresetPTag findOneByUpdatedAt(string $updated_at) Return the first PEOPresetPTag filtered by the updated_at column
+ * @method PEOPresetPT findOneByPEOperationId(int $p_e_operation_id) Return the first PEOPresetPT filtered by the p_e_operation_id column
+ * @method PEOPresetPT findOneByPTagId(int $p_tag_id) Return the first PEOPresetPT filtered by the p_tag_id column
+ * @method PEOPresetPT findOneByCreatedAt(string $created_at) Return the first PEOPresetPT filtered by the created_at column
+ * @method PEOPresetPT findOneByUpdatedAt(string $updated_at) Return the first PEOPresetPT filtered by the updated_at column
  *
- * @method array findById(int $id) Return PEOPresetPTag objects filtered by the id column
- * @method array findByPEOperationId(int $p_e_operation_id) Return PEOPresetPTag objects filtered by the p_e_operation_id column
- * @method array findByPTagId(int $p_tag_id) Return PEOPresetPTag objects filtered by the p_tag_id column
- * @method array findByCreatedAt(string $created_at) Return PEOPresetPTag objects filtered by the created_at column
- * @method array findByUpdatedAt(string $updated_at) Return PEOPresetPTag objects filtered by the updated_at column
+ * @method array findById(int $id) Return PEOPresetPT objects filtered by the id column
+ * @method array findByPEOperationId(int $p_e_operation_id) Return PEOPresetPT objects filtered by the p_e_operation_id column
+ * @method array findByPTagId(int $p_tag_id) Return PEOPresetPT objects filtered by the p_tag_id column
+ * @method array findByCreatedAt(string $created_at) Return PEOPresetPT objects filtered by the created_at column
+ * @method array findByUpdatedAt(string $updated_at) Return PEOPresetPT objects filtered by the updated_at column
  */
-abstract class BasePEOPresetPTagQuery extends ModelCriteria
+abstract class BasePEOPresetPTQuery extends ModelCriteria
 {
     // query_cache behavior
     protected $queryKey = '';
 
     /**
-     * Initializes internal state of BasePEOPresetPTagQuery object.
+     * Initializes internal state of BasePEOPresetPTQuery object.
      *
      * @param     string $dbName The dabase name
      * @param     string $modelName The phpName of a model, e.g. 'Book'
@@ -76,25 +76,25 @@ abstract class BasePEOPresetPTagQuery extends ModelCriteria
             $dbName = 'default';
         }
         if (null === $modelName) {
-            $modelName = 'Politizr\\Model\\PEOPresetPTag';
+            $modelName = 'Politizr\\Model\\PEOPresetPT';
         }
         parent::__construct($dbName, $modelName, $modelAlias);
     }
 
     /**
-     * Returns a new PEOPresetPTagQuery object.
+     * Returns a new PEOPresetPTQuery object.
      *
      * @param     string $modelAlias The alias of a model in the query
-     * @param   PEOPresetPTagQuery|Criteria $criteria Optional Criteria to build the query from
+     * @param   PEOPresetPTQuery|Criteria $criteria Optional Criteria to build the query from
      *
-     * @return PEOPresetPTagQuery
+     * @return PEOPresetPTQuery
      */
     public static function create($modelAlias = null, $criteria = null)
     {
-        if ($criteria instanceof PEOPresetPTagQuery) {
+        if ($criteria instanceof PEOPresetPTQuery) {
             return $criteria;
         }
-        $query = new PEOPresetPTagQuery(null, null, $modelAlias);
+        $query = new PEOPresetPTQuery(null, null, $modelAlias);
 
         if ($criteria instanceof Criteria) {
             $query->mergeWith($criteria);
@@ -115,19 +115,19 @@ abstract class BasePEOPresetPTagQuery extends ModelCriteria
      * @param mixed $key Primary key to use for the query
      * @param     PropelPDO $con an optional connection object
      *
-     * @return   PEOPresetPTag|PEOPresetPTag[]|mixed the result, formatted by the current formatter
+     * @return   PEOPresetPT|PEOPresetPT[]|mixed the result, formatted by the current formatter
      */
     public function findPk($key, $con = null)
     {
         if ($key === null) {
             return null;
         }
-        if ((null !== ($obj = PEOPresetPTagPeer::getInstanceFromPool((string) $key))) && !$this->formatter) {
+        if ((null !== ($obj = PEOPresetPTPeer::getInstanceFromPool((string) $key))) && !$this->formatter) {
             // the object is already in the instance pool
             return $obj;
         }
         if ($con === null) {
-            $con = Propel::getConnection(PEOPresetPTagPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PEOPresetPTPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
         $this->basePreSelect($con);
         if ($this->formatter || $this->modelAlias || $this->with || $this->select
@@ -145,7 +145,7 @@ abstract class BasePEOPresetPTagQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return                 PEOPresetPTag A model object, or null if the key is not found
+     * @return                 PEOPresetPT A model object, or null if the key is not found
      * @throws PropelException
      */
      public function findOneById($key, $con = null)
@@ -160,12 +160,12 @@ abstract class BasePEOPresetPTagQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return                 PEOPresetPTag A model object, or null if the key is not found
+     * @return                 PEOPresetPT A model object, or null if the key is not found
      * @throws PropelException
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_e_operation_id`, `p_tag_id`, `created_at`, `updated_at` FROM `p_e_o_preset_p_tag` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_e_operation_id`, `p_tag_id`, `created_at`, `updated_at` FROM `p_e_o_preset_p_t` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -176,9 +176,9 @@ abstract class BasePEOPresetPTagQuery extends ModelCriteria
         }
         $obj = null;
         if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $obj = new PEOPresetPTag();
+            $obj = new PEOPresetPT();
             $obj->hydrate($row);
-            PEOPresetPTagPeer::addInstanceToPool($obj, (string) $key);
+            PEOPresetPTPeer::addInstanceToPool($obj, (string) $key);
         }
         $stmt->closeCursor();
 
@@ -191,7 +191,7 @@ abstract class BasePEOPresetPTagQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return PEOPresetPTag|PEOPresetPTag[]|mixed the result, formatted by the current formatter
+     * @return PEOPresetPT|PEOPresetPT[]|mixed the result, formatted by the current formatter
      */
     protected function findPkComplex($key, $con)
     {
@@ -212,7 +212,7 @@ abstract class BasePEOPresetPTagQuery extends ModelCriteria
      * @param     array $keys Primary keys to use for the query
      * @param     PropelPDO $con an optional connection object
      *
-     * @return PropelObjectCollection|PEOPresetPTag[]|mixed the list of results, formatted by the current formatter
+     * @return PropelObjectCollection|PEOPresetPT[]|mixed the list of results, formatted by the current formatter
      */
     public function findPks($keys, $con = null)
     {
@@ -233,12 +233,12 @@ abstract class BasePEOPresetPTagQuery extends ModelCriteria
      *
      * @param     mixed $key Primary key to use for the query
      *
-     * @return PEOPresetPTagQuery The current query, for fluid interface
+     * @return PEOPresetPTQuery The current query, for fluid interface
      */
     public function filterByPrimaryKey($key)
     {
 
-        return $this->addUsingAlias(PEOPresetPTagPeer::ID, $key, Criteria::EQUAL);
+        return $this->addUsingAlias(PEOPresetPTPeer::ID, $key, Criteria::EQUAL);
     }
 
     /**
@@ -246,12 +246,12 @@ abstract class BasePEOPresetPTagQuery extends ModelCriteria
      *
      * @param     array $keys The list of primary key to use for the query
      *
-     * @return PEOPresetPTagQuery The current query, for fluid interface
+     * @return PEOPresetPTQuery The current query, for fluid interface
      */
     public function filterByPrimaryKeys($keys)
     {
 
-        return $this->addUsingAlias(PEOPresetPTagPeer::ID, $keys, Criteria::IN);
+        return $this->addUsingAlias(PEOPresetPTPeer::ID, $keys, Criteria::IN);
     }
 
     /**
@@ -271,18 +271,18 @@ abstract class BasePEOPresetPTagQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return PEOPresetPTagQuery The current query, for fluid interface
+     * @return PEOPresetPTQuery The current query, for fluid interface
      */
     public function filterById($id = null, $comparison = null)
     {
         if (is_array($id)) {
             $useMinMax = false;
             if (isset($id['min'])) {
-                $this->addUsingAlias(PEOPresetPTagPeer::ID, $id['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(PEOPresetPTPeer::ID, $id['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($id['max'])) {
-                $this->addUsingAlias(PEOPresetPTagPeer::ID, $id['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(PEOPresetPTPeer::ID, $id['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -293,7 +293,7 @@ abstract class BasePEOPresetPTagQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PEOPresetPTagPeer::ID, $id, $comparison);
+        return $this->addUsingAlias(PEOPresetPTPeer::ID, $id, $comparison);
     }
 
     /**
@@ -315,18 +315,18 @@ abstract class BasePEOPresetPTagQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return PEOPresetPTagQuery The current query, for fluid interface
+     * @return PEOPresetPTQuery The current query, for fluid interface
      */
     public function filterByPEOperationId($pEOperationId = null, $comparison = null)
     {
         if (is_array($pEOperationId)) {
             $useMinMax = false;
             if (isset($pEOperationId['min'])) {
-                $this->addUsingAlias(PEOPresetPTagPeer::P_E_OPERATION_ID, $pEOperationId['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(PEOPresetPTPeer::P_E_OPERATION_ID, $pEOperationId['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($pEOperationId['max'])) {
-                $this->addUsingAlias(PEOPresetPTagPeer::P_E_OPERATION_ID, $pEOperationId['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(PEOPresetPTPeer::P_E_OPERATION_ID, $pEOperationId['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -337,7 +337,7 @@ abstract class BasePEOPresetPTagQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PEOPresetPTagPeer::P_E_OPERATION_ID, $pEOperationId, $comparison);
+        return $this->addUsingAlias(PEOPresetPTPeer::P_E_OPERATION_ID, $pEOperationId, $comparison);
     }
 
     /**
@@ -359,18 +359,18 @@ abstract class BasePEOPresetPTagQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return PEOPresetPTagQuery The current query, for fluid interface
+     * @return PEOPresetPTQuery The current query, for fluid interface
      */
     public function filterByPTagId($pTagId = null, $comparison = null)
     {
         if (is_array($pTagId)) {
             $useMinMax = false;
             if (isset($pTagId['min'])) {
-                $this->addUsingAlias(PEOPresetPTagPeer::P_TAG_ID, $pTagId['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(PEOPresetPTPeer::P_TAG_ID, $pTagId['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($pTagId['max'])) {
-                $this->addUsingAlias(PEOPresetPTagPeer::P_TAG_ID, $pTagId['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(PEOPresetPTPeer::P_TAG_ID, $pTagId['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -381,7 +381,7 @@ abstract class BasePEOPresetPTagQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PEOPresetPTagPeer::P_TAG_ID, $pTagId, $comparison);
+        return $this->addUsingAlias(PEOPresetPTPeer::P_TAG_ID, $pTagId, $comparison);
     }
 
     /**
@@ -402,18 +402,18 @@ abstract class BasePEOPresetPTagQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return PEOPresetPTagQuery The current query, for fluid interface
+     * @return PEOPresetPTQuery The current query, for fluid interface
      */
     public function filterByCreatedAt($createdAt = null, $comparison = null)
     {
         if (is_array($createdAt)) {
             $useMinMax = false;
             if (isset($createdAt['min'])) {
-                $this->addUsingAlias(PEOPresetPTagPeer::CREATED_AT, $createdAt['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(PEOPresetPTPeer::CREATED_AT, $createdAt['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($createdAt['max'])) {
-                $this->addUsingAlias(PEOPresetPTagPeer::CREATED_AT, $createdAt['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(PEOPresetPTPeer::CREATED_AT, $createdAt['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -424,7 +424,7 @@ abstract class BasePEOPresetPTagQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PEOPresetPTagPeer::CREATED_AT, $createdAt, $comparison);
+        return $this->addUsingAlias(PEOPresetPTPeer::CREATED_AT, $createdAt, $comparison);
     }
 
     /**
@@ -445,18 +445,18 @@ abstract class BasePEOPresetPTagQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return PEOPresetPTagQuery The current query, for fluid interface
+     * @return PEOPresetPTQuery The current query, for fluid interface
      */
     public function filterByUpdatedAt($updatedAt = null, $comparison = null)
     {
         if (is_array($updatedAt)) {
             $useMinMax = false;
             if (isset($updatedAt['min'])) {
-                $this->addUsingAlias(PEOPresetPTagPeer::UPDATED_AT, $updatedAt['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(PEOPresetPTPeer::UPDATED_AT, $updatedAt['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($updatedAt['max'])) {
-                $this->addUsingAlias(PEOPresetPTagPeer::UPDATED_AT, $updatedAt['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(PEOPresetPTPeer::UPDATED_AT, $updatedAt['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -467,7 +467,7 @@ abstract class BasePEOPresetPTagQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PEOPresetPTagPeer::UPDATED_AT, $updatedAt, $comparison);
+        return $this->addUsingAlias(PEOPresetPTPeer::UPDATED_AT, $updatedAt, $comparison);
     }
 
     /**
@@ -476,21 +476,21 @@ abstract class BasePEOPresetPTagQuery extends ModelCriteria
      * @param   PEOperation|PropelObjectCollection $pEOperation The related object(s) to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return                 PEOPresetPTagQuery The current query, for fluid interface
+     * @return                 PEOPresetPTQuery The current query, for fluid interface
      * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByPEOperation($pEOperation, $comparison = null)
     {
         if ($pEOperation instanceof PEOperation) {
             return $this
-                ->addUsingAlias(PEOPresetPTagPeer::P_E_OPERATION_ID, $pEOperation->getId(), $comparison);
+                ->addUsingAlias(PEOPresetPTPeer::P_E_OPERATION_ID, $pEOperation->getId(), $comparison);
         } elseif ($pEOperation instanceof PropelObjectCollection) {
             if (null === $comparison) {
                 $comparison = Criteria::IN;
             }
 
             return $this
-                ->addUsingAlias(PEOPresetPTagPeer::P_E_OPERATION_ID, $pEOperation->toKeyValue('PrimaryKey', 'Id'), $comparison);
+                ->addUsingAlias(PEOPresetPTPeer::P_E_OPERATION_ID, $pEOperation->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
             throw new PropelException('filterByPEOperation() only accepts arguments of type PEOperation or PropelCollection');
         }
@@ -502,7 +502,7 @@ abstract class BasePEOPresetPTagQuery extends ModelCriteria
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return PEOPresetPTagQuery The current query, for fluid interface
+     * @return PEOPresetPTQuery The current query, for fluid interface
      */
     public function joinPEOperation($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
@@ -552,21 +552,21 @@ abstract class BasePEOPresetPTagQuery extends ModelCriteria
      * @param   PTag|PropelObjectCollection $pTag The related object(s) to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return                 PEOPresetPTagQuery The current query, for fluid interface
+     * @return                 PEOPresetPTQuery The current query, for fluid interface
      * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByPTag($pTag, $comparison = null)
     {
         if ($pTag instanceof PTag) {
             return $this
-                ->addUsingAlias(PEOPresetPTagPeer::P_TAG_ID, $pTag->getId(), $comparison);
+                ->addUsingAlias(PEOPresetPTPeer::P_TAG_ID, $pTag->getId(), $comparison);
         } elseif ($pTag instanceof PropelObjectCollection) {
             if (null === $comparison) {
                 $comparison = Criteria::IN;
             }
 
             return $this
-                ->addUsingAlias(PEOPresetPTagPeer::P_TAG_ID, $pTag->toKeyValue('PrimaryKey', 'Id'), $comparison);
+                ->addUsingAlias(PEOPresetPTPeer::P_TAG_ID, $pTag->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
             throw new PropelException('filterByPTag() only accepts arguments of type PTag or PropelCollection');
         }
@@ -578,7 +578,7 @@ abstract class BasePEOPresetPTagQuery extends ModelCriteria
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return PEOPresetPTagQuery The current query, for fluid interface
+     * @return PEOPresetPTQuery The current query, for fluid interface
      */
     public function joinPTag($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
@@ -625,14 +625,14 @@ abstract class BasePEOPresetPTagQuery extends ModelCriteria
     /**
      * Exclude object from result
      *
-     * @param   PEOPresetPTag $pEOPresetPTag Object to remove from the list of results
+     * @param   PEOPresetPT $pEOPresetPT Object to remove from the list of results
      *
-     * @return PEOPresetPTagQuery The current query, for fluid interface
+     * @return PEOPresetPTQuery The current query, for fluid interface
      */
-    public function prune($pEOPresetPTag = null)
+    public function prune($pEOPresetPT = null)
     {
-        if ($pEOPresetPTag) {
-            $this->addUsingAlias(PEOPresetPTagPeer::ID, $pEOPresetPTag->getId(), Criteria::NOT_EQUAL);
+        if ($pEOPresetPT) {
+            $this->addUsingAlias(PEOPresetPTPeer::ID, $pEOPresetPT->getId(), Criteria::NOT_EQUAL);
         }
 
         return $this;
@@ -645,31 +645,31 @@ abstract class BasePEOPresetPTagQuery extends ModelCriteria
      *
      * @param      int $nbDays Maximum age of the latest update in days
      *
-     * @return     PEOPresetPTagQuery The current query, for fluid interface
+     * @return     PEOPresetPTQuery The current query, for fluid interface
      */
     public function recentlyUpdated($nbDays = 7)
     {
-        return $this->addUsingAlias(PEOPresetPTagPeer::UPDATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+        return $this->addUsingAlias(PEOPresetPTPeer::UPDATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
     }
 
     /**
      * Order by update date desc
      *
-     * @return     PEOPresetPTagQuery The current query, for fluid interface
+     * @return     PEOPresetPTQuery The current query, for fluid interface
      */
     public function lastUpdatedFirst()
     {
-        return $this->addDescendingOrderByColumn(PEOPresetPTagPeer::UPDATED_AT);
+        return $this->addDescendingOrderByColumn(PEOPresetPTPeer::UPDATED_AT);
     }
 
     /**
      * Order by update date asc
      *
-     * @return     PEOPresetPTagQuery The current query, for fluid interface
+     * @return     PEOPresetPTQuery The current query, for fluid interface
      */
     public function firstUpdatedFirst()
     {
-        return $this->addAscendingOrderByColumn(PEOPresetPTagPeer::UPDATED_AT);
+        return $this->addAscendingOrderByColumn(PEOPresetPTPeer::UPDATED_AT);
     }
 
     /**
@@ -677,31 +677,31 @@ abstract class BasePEOPresetPTagQuery extends ModelCriteria
      *
      * @param      int $nbDays Maximum age of in days
      *
-     * @return     PEOPresetPTagQuery The current query, for fluid interface
+     * @return     PEOPresetPTQuery The current query, for fluid interface
      */
     public function recentlyCreated($nbDays = 7)
     {
-        return $this->addUsingAlias(PEOPresetPTagPeer::CREATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+        return $this->addUsingAlias(PEOPresetPTPeer::CREATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
     }
 
     /**
      * Order by create date desc
      *
-     * @return     PEOPresetPTagQuery The current query, for fluid interface
+     * @return     PEOPresetPTQuery The current query, for fluid interface
      */
     public function lastCreatedFirst()
     {
-        return $this->addDescendingOrderByColumn(PEOPresetPTagPeer::CREATED_AT);
+        return $this->addDescendingOrderByColumn(PEOPresetPTPeer::CREATED_AT);
     }
 
     /**
      * Order by create date asc
      *
-     * @return     PEOPresetPTagQuery The current query, for fluid interface
+     * @return     PEOPresetPTQuery The current query, for fluid interface
      */
     public function firstCreatedFirst()
     {
-        return $this->addAscendingOrderByColumn(PEOPresetPTagPeer::CREATED_AT);
+        return $this->addAscendingOrderByColumn(PEOPresetPTPeer::CREATED_AT);
     }
     // query_cache behavior
 
@@ -742,8 +742,8 @@ abstract class BasePEOPresetPTagQuery extends ModelCriteria
         }
         $this->configureSelectColumns();
 
-        $dbMap = Propel::getDatabaseMap(PEOPresetPTagPeer::DATABASE_NAME);
-        $db = Propel::getDB(PEOPresetPTagPeer::DATABASE_NAME);
+        $dbMap = Propel::getDatabaseMap(PEOPresetPTPeer::DATABASE_NAME);
+        $db = Propel::getDB(PEOPresetPTPeer::DATABASE_NAME);
 
         $key = $this->getQueryKey();
         if ($key && $this->cacheContains($key)) {

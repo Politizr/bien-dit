@@ -23,8 +23,8 @@ use Politizr\Model\PDRTaggedT;
 use Politizr\Model\PDRTaggedTQuery;
 use Politizr\Model\PDReaction;
 use Politizr\Model\PDReactionQuery;
-use Politizr\Model\PEOPresetPTag;
-use Politizr\Model\PEOPresetPTagQuery;
+use Politizr\Model\PEOPresetPT;
+use Politizr\Model\PEOPresetPTQuery;
 use Politizr\Model\PEOperation;
 use Politizr\Model\PEOperationQuery;
 use Politizr\Model\PTTagType;
@@ -165,10 +165,10 @@ abstract class BasePTag extends BaseObject implements Persistent
     protected $collPTagsRelatedByIdPartial;
 
     /**
-     * @var        PropelObjectCollection|PEOPresetPTag[] Collection to store aggregation of PEOPresetPTag objects.
+     * @var        PropelObjectCollection|PEOPresetPT[] Collection to store aggregation of PEOPresetPT objects.
      */
-    protected $collPEOPresetPTags;
-    protected $collPEOPresetPTagsPartial;
+    protected $collPEOPresetPTs;
+    protected $collPEOPresetPTsPartial;
 
     /**
      * @var        PropelObjectCollection|PUTaggedT[] Collection to store aggregation of PUTaggedT objects.
@@ -265,7 +265,7 @@ abstract class BasePTag extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
-    protected $pEOPresetPTagsScheduledForDeletion = null;
+    protected $pEOPresetPTsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -960,7 +960,7 @@ abstract class BasePTag extends BaseObject implements Persistent
             $this->aPOwner = null;
             $this->collPTagsRelatedById = null;
 
-            $this->collPEOPresetPTags = null;
+            $this->collPEOPresetPTs = null;
 
             $this->collPuTaggedTPTags = null;
 
@@ -1166,7 +1166,7 @@ abstract class BasePTag extends BaseObject implements Persistent
                     foreach ($this->pEOperationsScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
                         $pks[] = array($remotePk, $pk);
                     }
-                    PEOPresetPTagQuery::create()
+                    PEOPresetPTQuery::create()
                         ->filterByPrimaryKeys($pks)
                         ->delete($con);
                     $this->pEOperationsScheduledForDeletion = null;
@@ -1281,17 +1281,17 @@ abstract class BasePTag extends BaseObject implements Persistent
                 }
             }
 
-            if ($this->pEOPresetPTagsScheduledForDeletion !== null) {
-                if (!$this->pEOPresetPTagsScheduledForDeletion->isEmpty()) {
-                    PEOPresetPTagQuery::create()
-                        ->filterByPrimaryKeys($this->pEOPresetPTagsScheduledForDeletion->getPrimaryKeys(false))
+            if ($this->pEOPresetPTsScheduledForDeletion !== null) {
+                if (!$this->pEOPresetPTsScheduledForDeletion->isEmpty()) {
+                    PEOPresetPTQuery::create()
+                        ->filterByPrimaryKeys($this->pEOPresetPTsScheduledForDeletion->getPrimaryKeys(false))
                         ->delete($con);
-                    $this->pEOPresetPTagsScheduledForDeletion = null;
+                    $this->pEOPresetPTsScheduledForDeletion = null;
                 }
             }
 
-            if ($this->collPEOPresetPTags !== null) {
-                foreach ($this->collPEOPresetPTags as $referrerFK) {
+            if ($this->collPEOPresetPTs !== null) {
+                foreach ($this->collPEOPresetPTs as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -1627,8 +1627,8 @@ abstract class BasePTag extends BaseObject implements Persistent
             if (null !== $this->collPTagsRelatedById) {
                 $result['PTagsRelatedById'] = $this->collPTagsRelatedById->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
-            if (null !== $this->collPEOPresetPTags) {
-                $result['PEOPresetPTags'] = $this->collPEOPresetPTags->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            if (null !== $this->collPEOPresetPTs) {
+                $result['PEOPresetPTs'] = $this->collPEOPresetPTs->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collPuTaggedTPTags) {
                 $result['PuTaggedTPTags'] = $this->collPuTaggedTPTags->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -1862,9 +1862,9 @@ abstract class BasePTag extends BaseObject implements Persistent
                 }
             }
 
-            foreach ($this->getPEOPresetPTags() as $relObj) {
+            foreach ($this->getPEOPresetPTs() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addPEOPresetPTag($relObj->copy($deepCopy));
+                    $copyObj->addPEOPresetPT($relObj->copy($deepCopy));
                 }
             }
 
@@ -2158,8 +2158,8 @@ abstract class BasePTag extends BaseObject implements Persistent
         if ('PTagRelatedById' == $relationName) {
             $this->initPTagsRelatedById();
         }
-        if ('PEOPresetPTag' == $relationName) {
-            $this->initPEOPresetPTags();
+        if ('PEOPresetPT' == $relationName) {
+            $this->initPEOPresetPTs();
         }
         if ('PuTaggedTPTag' == $relationName) {
             $this->initPuTaggedTPTags();
@@ -2473,36 +2473,36 @@ abstract class BasePTag extends BaseObject implements Persistent
     }
 
     /**
-     * Clears out the collPEOPresetPTags collection
+     * Clears out the collPEOPresetPTs collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return PTag The current object (for fluent API support)
-     * @see        addPEOPresetPTags()
+     * @see        addPEOPresetPTs()
      */
-    public function clearPEOPresetPTags()
+    public function clearPEOPresetPTs()
     {
-        $this->collPEOPresetPTags = null; // important to set this to null since that means it is uninitialized
-        $this->collPEOPresetPTagsPartial = null;
+        $this->collPEOPresetPTs = null; // important to set this to null since that means it is uninitialized
+        $this->collPEOPresetPTsPartial = null;
 
         return $this;
     }
 
     /**
-     * reset is the collPEOPresetPTags collection loaded partially
+     * reset is the collPEOPresetPTs collection loaded partially
      *
      * @return void
      */
-    public function resetPartialPEOPresetPTags($v = true)
+    public function resetPartialPEOPresetPTs($v = true)
     {
-        $this->collPEOPresetPTagsPartial = $v;
+        $this->collPEOPresetPTsPartial = $v;
     }
 
     /**
-     * Initializes the collPEOPresetPTags collection.
+     * Initializes the collPEOPresetPTs collection.
      *
-     * By default this just sets the collPEOPresetPTags collection to an empty array (like clearcollPEOPresetPTags());
+     * By default this just sets the collPEOPresetPTs collection to an empty array (like clearcollPEOPresetPTs());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
@@ -2511,17 +2511,17 @@ abstract class BasePTag extends BaseObject implements Persistent
      *
      * @return void
      */
-    public function initPEOPresetPTags($overrideExisting = true)
+    public function initPEOPresetPTs($overrideExisting = true)
     {
-        if (null !== $this->collPEOPresetPTags && !$overrideExisting) {
+        if (null !== $this->collPEOPresetPTs && !$overrideExisting) {
             return;
         }
-        $this->collPEOPresetPTags = new PropelObjectCollection();
-        $this->collPEOPresetPTags->setModel('PEOPresetPTag');
+        $this->collPEOPresetPTs = new PropelObjectCollection();
+        $this->collPEOPresetPTs->setModel('PEOPresetPT');
     }
 
     /**
-     * Gets an array of PEOPresetPTag objects which contain a foreign key that references this object.
+     * Gets an array of PEOPresetPT objects which contain a foreign key that references this object.
      *
      * If the $criteria is not null, it is used to always fetch the results from the database.
      * Otherwise the results are fetched from the database the first time, then cached.
@@ -2531,107 +2531,107 @@ abstract class BasePTag extends BaseObject implements Persistent
      *
      * @param Criteria $criteria optional Criteria object to narrow the query
      * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|PEOPresetPTag[] List of PEOPresetPTag objects
+     * @return PropelObjectCollection|PEOPresetPT[] List of PEOPresetPT objects
      * @throws PropelException
      */
-    public function getPEOPresetPTags($criteria = null, PropelPDO $con = null)
+    public function getPEOPresetPTs($criteria = null, PropelPDO $con = null)
     {
-        $partial = $this->collPEOPresetPTagsPartial && !$this->isNew();
-        if (null === $this->collPEOPresetPTags || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collPEOPresetPTags) {
+        $partial = $this->collPEOPresetPTsPartial && !$this->isNew();
+        if (null === $this->collPEOPresetPTs || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPEOPresetPTs) {
                 // return empty collection
-                $this->initPEOPresetPTags();
+                $this->initPEOPresetPTs();
             } else {
-                $collPEOPresetPTags = PEOPresetPTagQuery::create(null, $criteria)
+                $collPEOPresetPTs = PEOPresetPTQuery::create(null, $criteria)
                     ->filterByPTag($this)
                     ->find($con);
                 if (null !== $criteria) {
-                    if (false !== $this->collPEOPresetPTagsPartial && count($collPEOPresetPTags)) {
-                      $this->initPEOPresetPTags(false);
+                    if (false !== $this->collPEOPresetPTsPartial && count($collPEOPresetPTs)) {
+                      $this->initPEOPresetPTs(false);
 
-                      foreach ($collPEOPresetPTags as $obj) {
-                        if (false == $this->collPEOPresetPTags->contains($obj)) {
-                          $this->collPEOPresetPTags->append($obj);
+                      foreach ($collPEOPresetPTs as $obj) {
+                        if (false == $this->collPEOPresetPTs->contains($obj)) {
+                          $this->collPEOPresetPTs->append($obj);
                         }
                       }
 
-                      $this->collPEOPresetPTagsPartial = true;
+                      $this->collPEOPresetPTsPartial = true;
                     }
 
-                    $collPEOPresetPTags->getInternalIterator()->rewind();
+                    $collPEOPresetPTs->getInternalIterator()->rewind();
 
-                    return $collPEOPresetPTags;
+                    return $collPEOPresetPTs;
                 }
 
-                if ($partial && $this->collPEOPresetPTags) {
-                    foreach ($this->collPEOPresetPTags as $obj) {
+                if ($partial && $this->collPEOPresetPTs) {
+                    foreach ($this->collPEOPresetPTs as $obj) {
                         if ($obj->isNew()) {
-                            $collPEOPresetPTags[] = $obj;
+                            $collPEOPresetPTs[] = $obj;
                         }
                     }
                 }
 
-                $this->collPEOPresetPTags = $collPEOPresetPTags;
-                $this->collPEOPresetPTagsPartial = false;
+                $this->collPEOPresetPTs = $collPEOPresetPTs;
+                $this->collPEOPresetPTsPartial = false;
             }
         }
 
-        return $this->collPEOPresetPTags;
+        return $this->collPEOPresetPTs;
     }
 
     /**
-     * Sets a collection of PEOPresetPTag objects related by a one-to-many relationship
+     * Sets a collection of PEOPresetPT objects related by a one-to-many relationship
      * to the current object.
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param PropelCollection $pEOPresetPTags A Propel collection.
+     * @param PropelCollection $pEOPresetPTs A Propel collection.
      * @param PropelPDO $con Optional connection object
      * @return PTag The current object (for fluent API support)
      */
-    public function setPEOPresetPTags(PropelCollection $pEOPresetPTags, PropelPDO $con = null)
+    public function setPEOPresetPTs(PropelCollection $pEOPresetPTs, PropelPDO $con = null)
     {
-        $pEOPresetPTagsToDelete = $this->getPEOPresetPTags(new Criteria(), $con)->diff($pEOPresetPTags);
+        $pEOPresetPTsToDelete = $this->getPEOPresetPTs(new Criteria(), $con)->diff($pEOPresetPTs);
 
 
-        $this->pEOPresetPTagsScheduledForDeletion = $pEOPresetPTagsToDelete;
+        $this->pEOPresetPTsScheduledForDeletion = $pEOPresetPTsToDelete;
 
-        foreach ($pEOPresetPTagsToDelete as $pEOPresetPTagRemoved) {
-            $pEOPresetPTagRemoved->setPTag(null);
+        foreach ($pEOPresetPTsToDelete as $pEOPresetPTRemoved) {
+            $pEOPresetPTRemoved->setPTag(null);
         }
 
-        $this->collPEOPresetPTags = null;
-        foreach ($pEOPresetPTags as $pEOPresetPTag) {
-            $this->addPEOPresetPTag($pEOPresetPTag);
+        $this->collPEOPresetPTs = null;
+        foreach ($pEOPresetPTs as $pEOPresetPT) {
+            $this->addPEOPresetPT($pEOPresetPT);
         }
 
-        $this->collPEOPresetPTags = $pEOPresetPTags;
-        $this->collPEOPresetPTagsPartial = false;
+        $this->collPEOPresetPTs = $pEOPresetPTs;
+        $this->collPEOPresetPTsPartial = false;
 
         return $this;
     }
 
     /**
-     * Returns the number of related PEOPresetPTag objects.
+     * Returns the number of related PEOPresetPT objects.
      *
      * @param Criteria $criteria
      * @param boolean $distinct
      * @param PropelPDO $con
-     * @return int             Count of related PEOPresetPTag objects.
+     * @return int             Count of related PEOPresetPT objects.
      * @throws PropelException
      */
-    public function countPEOPresetPTags(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    public function countPEOPresetPTs(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        $partial = $this->collPEOPresetPTagsPartial && !$this->isNew();
-        if (null === $this->collPEOPresetPTags || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collPEOPresetPTags) {
+        $partial = $this->collPEOPresetPTsPartial && !$this->isNew();
+        if (null === $this->collPEOPresetPTs || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPEOPresetPTs) {
                 return 0;
             }
 
             if ($partial && !$criteria) {
-                return count($this->getPEOPresetPTags());
+                return count($this->getPEOPresetPTs());
             }
-            $query = PEOPresetPTagQuery::create(null, $criteria);
+            $query = PEOPresetPTQuery::create(null, $criteria);
             if ($distinct) {
                 $query->distinct();
             }
@@ -2641,28 +2641,28 @@ abstract class BasePTag extends BaseObject implements Persistent
                 ->count($con);
         }
 
-        return count($this->collPEOPresetPTags);
+        return count($this->collPEOPresetPTs);
     }
 
     /**
-     * Method called to associate a PEOPresetPTag object to this object
-     * through the PEOPresetPTag foreign key attribute.
+     * Method called to associate a PEOPresetPT object to this object
+     * through the PEOPresetPT foreign key attribute.
      *
-     * @param    PEOPresetPTag $l PEOPresetPTag
+     * @param    PEOPresetPT $l PEOPresetPT
      * @return PTag The current object (for fluent API support)
      */
-    public function addPEOPresetPTag(PEOPresetPTag $l)
+    public function addPEOPresetPT(PEOPresetPT $l)
     {
-        if ($this->collPEOPresetPTags === null) {
-            $this->initPEOPresetPTags();
-            $this->collPEOPresetPTagsPartial = true;
+        if ($this->collPEOPresetPTs === null) {
+            $this->initPEOPresetPTs();
+            $this->collPEOPresetPTsPartial = true;
         }
 
-        if (!in_array($l, $this->collPEOPresetPTags->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddPEOPresetPTag($l);
+        if (!in_array($l, $this->collPEOPresetPTs->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPEOPresetPT($l);
 
-            if ($this->pEOPresetPTagsScheduledForDeletion and $this->pEOPresetPTagsScheduledForDeletion->contains($l)) {
-                $this->pEOPresetPTagsScheduledForDeletion->remove($this->pEOPresetPTagsScheduledForDeletion->search($l));
+            if ($this->pEOPresetPTsScheduledForDeletion and $this->pEOPresetPTsScheduledForDeletion->contains($l)) {
+                $this->pEOPresetPTsScheduledForDeletion->remove($this->pEOPresetPTsScheduledForDeletion->search($l));
             }
         }
 
@@ -2670,28 +2670,28 @@ abstract class BasePTag extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PEOPresetPTag $pEOPresetPTag The pEOPresetPTag object to add.
+     * @param	PEOPresetPT $pEOPresetPT The pEOPresetPT object to add.
      */
-    protected function doAddPEOPresetPTag($pEOPresetPTag)
+    protected function doAddPEOPresetPT($pEOPresetPT)
     {
-        $this->collPEOPresetPTags[]= $pEOPresetPTag;
-        $pEOPresetPTag->setPTag($this);
+        $this->collPEOPresetPTs[]= $pEOPresetPT;
+        $pEOPresetPT->setPTag($this);
     }
 
     /**
-     * @param	PEOPresetPTag $pEOPresetPTag The pEOPresetPTag object to remove.
+     * @param	PEOPresetPT $pEOPresetPT The pEOPresetPT object to remove.
      * @return PTag The current object (for fluent API support)
      */
-    public function removePEOPresetPTag($pEOPresetPTag)
+    public function removePEOPresetPT($pEOPresetPT)
     {
-        if ($this->getPEOPresetPTags()->contains($pEOPresetPTag)) {
-            $this->collPEOPresetPTags->remove($this->collPEOPresetPTags->search($pEOPresetPTag));
-            if (null === $this->pEOPresetPTagsScheduledForDeletion) {
-                $this->pEOPresetPTagsScheduledForDeletion = clone $this->collPEOPresetPTags;
-                $this->pEOPresetPTagsScheduledForDeletion->clear();
+        if ($this->getPEOPresetPTs()->contains($pEOPresetPT)) {
+            $this->collPEOPresetPTs->remove($this->collPEOPresetPTs->search($pEOPresetPT));
+            if (null === $this->pEOPresetPTsScheduledForDeletion) {
+                $this->pEOPresetPTsScheduledForDeletion = clone $this->collPEOPresetPTs;
+                $this->pEOPresetPTsScheduledForDeletion->clear();
             }
-            $this->pEOPresetPTagsScheduledForDeletion[]= clone $pEOPresetPTag;
-            $pEOPresetPTag->setPTag(null);
+            $this->pEOPresetPTsScheduledForDeletion[]= clone $pEOPresetPT;
+            $pEOPresetPT->setPTag(null);
         }
 
         return $this;
@@ -2703,7 +2703,7 @@ abstract class BasePTag extends BaseObject implements Persistent
      * an identical criteria, it returns the collection.
      * Otherwise if this PTag is new, it will return
      * an empty collection; or if this PTag has previously
-     * been saved, it will retrieve related PEOPresetPTags from storage.
+     * been saved, it will retrieve related PEOPresetPTs from storage.
      *
      * This method is protected by default in order to keep the public
      * api reasonable.  You can provide public methods for those you
@@ -2712,14 +2712,14 @@ abstract class BasePTag extends BaseObject implements Persistent
      * @param Criteria $criteria optional Criteria object to narrow the query
      * @param PropelPDO $con optional connection object
      * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|PEOPresetPTag[] List of PEOPresetPTag objects
+     * @return PropelObjectCollection|PEOPresetPT[] List of PEOPresetPT objects
      */
-    public function getPEOPresetPTagsJoinPEOperation($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public function getPEOPresetPTsJoinPEOperation($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
-        $query = PEOPresetPTagQuery::create(null, $criteria);
+        $query = PEOPresetPTQuery::create(null, $criteria);
         $query->joinWith('PEOperation', $join_behavior);
 
-        return $this->getPEOPresetPTags($query, $con);
+        return $this->getPEOPresetPTs($query, $con);
     }
 
     /**
@@ -3506,7 +3506,7 @@ abstract class BasePTag extends BaseObject implements Persistent
 
     /**
      * Gets a collection of PEOperation objects related by a many-to-many relationship
-     * to the current object by way of the p_e_o_preset_p_tag cross-reference table.
+     * to the current object by way of the p_e_o_preset_p_t cross-reference table.
      *
      * If the $criteria is not null, it is used to always fetch the results from the database.
      * Otherwise the results are fetched from the database the first time, then cached.
@@ -3541,7 +3541,7 @@ abstract class BasePTag extends BaseObject implements Persistent
 
     /**
      * Sets a collection of PEOperation objects related by a many-to-many relationship
-     * to the current object by way of the p_e_o_preset_p_tag cross-reference table.
+     * to the current object by way of the p_e_o_preset_p_t cross-reference table.
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
@@ -3569,7 +3569,7 @@ abstract class BasePTag extends BaseObject implements Persistent
 
     /**
      * Gets the number of PEOperation objects related by a many-to-many relationship
-     * to the current object by way of the p_e_o_preset_p_tag cross-reference table.
+     * to the current object by way of the p_e_o_preset_p_t cross-reference table.
      *
      * @param Criteria $criteria Optional query object to filter the query
      * @param boolean $distinct Set to true to force count distinct
@@ -3599,9 +3599,9 @@ abstract class BasePTag extends BaseObject implements Persistent
 
     /**
      * Associate a PEOperation object to this object
-     * through the p_e_o_preset_p_tag cross reference table.
+     * through the p_e_o_preset_p_t cross reference table.
      *
-     * @param  PEOperation $pEOperation The PEOPresetPTag object to relate
+     * @param  PEOperation $pEOperation The PEOPresetPT object to relate
      * @return PTag The current object (for fluent API support)
      */
     public function addPEOperation(PEOperation $pEOperation)
@@ -3629,9 +3629,9 @@ abstract class BasePTag extends BaseObject implements Persistent
     {
         // set the back reference to this object directly as using provided method either results
         // in endless loop or in multiple relations
-        if (!$pEOperation->getPTags()->contains($this)) { $pEOPresetPTag = new PEOPresetPTag();
-            $pEOPresetPTag->setPEOperation($pEOperation);
-            $this->addPEOPresetPTag($pEOPresetPTag);
+        if (!$pEOperation->getPTags()->contains($this)) { $pEOPresetPT = new PEOPresetPT();
+            $pEOPresetPT->setPEOperation($pEOperation);
+            $this->addPEOPresetPT($pEOPresetPT);
 
             $foreignCollection = $pEOperation->getPTags();
             $foreignCollection[] = $this;
@@ -3640,9 +3640,9 @@ abstract class BasePTag extends BaseObject implements Persistent
 
     /**
      * Remove a PEOperation object to this object
-     * through the p_e_o_preset_p_tag cross reference table.
+     * through the p_e_o_preset_p_t cross reference table.
      *
-     * @param PEOperation $pEOperation The PEOPresetPTag object to relate
+     * @param PEOperation $pEOperation The PEOPresetPT object to relate
      * @return PTag The current object (for fluent API support)
      */
     public function removePEOperation(PEOperation $pEOperation)
@@ -4265,8 +4265,8 @@ abstract class BasePTag extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collPEOPresetPTags) {
-                foreach ($this->collPEOPresetPTags as $o) {
+            if ($this->collPEOPresetPTs) {
+                foreach ($this->collPEOPresetPTs as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -4325,10 +4325,10 @@ abstract class BasePTag extends BaseObject implements Persistent
             $this->collPTagsRelatedById->clearIterator();
         }
         $this->collPTagsRelatedById = null;
-        if ($this->collPEOPresetPTags instanceof PropelCollection) {
-            $this->collPEOPresetPTags->clearIterator();
+        if ($this->collPEOPresetPTs instanceof PropelCollection) {
+            $this->collPEOPresetPTs->clearIterator();
         }
-        $this->collPEOPresetPTags = null;
+        $this->collPEOPresetPTs = null;
         if ($this->collPuTaggedTPTags instanceof PropelCollection) {
             $this->collPuTaggedTPTags->clearIterator();
         }

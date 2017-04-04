@@ -45,6 +45,7 @@ builders:
             actions:
                 new:                            ~
             object_actions:
+                show:                           ~
                 edit:                           ~
                 delete:                         ~
     excel:
@@ -77,6 +78,8 @@ builders:
                     "Texte":                    [ title, description ]
                 "Objets":
                     "Client":                   [ p_user ]
+                "Thématiques":
+                    "Tags associés":            [ block_tags ]
                 "Scope":
                     "Villes associés":          [ block_cities ]
                     "Ajouter des villes":       [ block_cities_add ]
@@ -101,6 +104,13 @@ builders:
                     grid_class:                 "col-md-12"
                     addFormOptions:
                         attr:                   { class : tinymce }
+                block_tags:
+                    label:                      "Tags"
+                    grid_class:                 "col-md-12"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+                    addFormOptions:
+                        mapped:                 false
                 block_cities:
                     label:                      "Villes"
                     grid_class:                 "col-md-12"
@@ -141,6 +151,8 @@ builders:
                     "Texte":                    [ title, description ]
                 "Objets":
                     "Client":                   [ block_p_user ]
+                "Thématiques":
+                    "Tags associés":            [ block_tags ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
                     "Options":                  [ geo_scoped ]
@@ -149,6 +161,8 @@ builders:
             fields:
                 block_p_user:
                     label:                      "Client"
+                block_tags:
+                    label:                      "Tags"
             actions:
                 list:                           ~
                 edit:                           ~

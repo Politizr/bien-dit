@@ -2,10 +2,10 @@
 
 /**
  * Data object containing the SQL and PHP code to migrate the database
- * up to version 1491314848.
- * Generated on 2017-04-04 16:07:28 by lionel
+ * up to version 1491322874.
+ * Generated on 2017-04-04 18:21:14 by lionel
  */
-class PropelMigration_1491314848
+class PropelMigration_1491322874
 {
 
     public function preUp($manager)
@@ -116,7 +116,7 @@ CREATE TABLE `p_e_o_scope_p_l_c`
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
-CREATE TABLE `p_e_o_preset_p_tag`
+CREATE TABLE `p_e_o_preset_p_t`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `p_e_operation_id` INTEGER NOT NULL,
@@ -124,14 +124,14 @@ CREATE TABLE `p_e_o_preset_p_tag`
     `created_at` DATETIME,
     `updated_at` DATETIME,
     PRIMARY KEY (`id`),
-    INDEX `p_e_o_preset_p_tag_FI_1` (`p_e_operation_id`),
-    INDEX `p_e_o_preset_p_tag_FI_2` (`p_tag_id`),
-    CONSTRAINT `p_e_o_preset_p_tag_FK_1`
+    INDEX `p_e_o_preset_p_t_FI_1` (`p_e_operation_id`),
+    INDEX `p_e_o_preset_p_t_FI_2` (`p_tag_id`),
+    CONSTRAINT `p_e_o_preset_p_t_FK_1`
         FOREIGN KEY (`p_e_operation_id`)
         REFERENCES `p_e_operation` (`id`)
         ON UPDATE CASCADE
         ON DELETE CASCADE,
-    CONSTRAINT `p_e_o_preset_p_tag_FK_2`
+    CONSTRAINT `p_e_o_preset_p_t_FK_2`
         FOREIGN KEY (`p_tag_id`)
         REFERENCES `p_tag` (`id`)
         ON UPDATE CASCADE
@@ -182,7 +182,7 @@ DROP TABLE IF EXISTS `p_e_operation`;
 
 DROP TABLE IF EXISTS `p_e_o_scope_p_l_c`;
 
-DROP TABLE IF EXISTS `p_e_o_preset_p_tag`;
+DROP TABLE IF EXISTS `p_e_o_preset_p_t`;
 
 DROP TABLE IF EXISTS `p_e_operation_archive`;
 

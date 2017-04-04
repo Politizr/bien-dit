@@ -8,6 +8,13 @@
 {% endblock %}
 
 {% block generic_actions_script_container %}
-    {{ parent() }}
+    <script>
+        var nbZones = 1;
+        var service = 'admin';
+        var xhrRoute = ADMIN_ROUTE_TAG_LISTING;
+    </script>
+
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/politizr/autocomplete-tools.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/politizr/tag/editTags.js') }}"></script>  
     <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/operation/localization.js') }}"></script>
 {% endblock %}

@@ -29,6 +29,8 @@ use Politizr\Model\PUTaggedTQuery;
 use Politizr\Model\PMUserModeratedQuery;
 use Politizr\Model\PUMandateQuery;
 use Politizr\Model\PLCityQuery;
+use Politizr\Model\PEOPresetPTQuery;
+use Politizr\Model\PEOperationQuery;
 
 use Politizr\AdminBundle\Form\Type\PMUserModeratedType;
 use Politizr\FrontBundle\Form\Type\PUMandateType;
@@ -49,6 +51,7 @@ class XhrAdmin
     private $tagManager;
     private $userManager;
     private $localizationManager;
+    private $electionManager;
     private $documentLocalizationFormType;
     private $globalTools;
     private $logger;
@@ -216,7 +219,7 @@ class XhrAdmin
     }
 
     /* ######################################################################################################## */
-    /*                                                      DEBATE                                              */
+    /*                                                DEBATE + TAG                                              */
     /* ######################################################################################################## */
 
     /**
@@ -311,7 +314,7 @@ class XhrAdmin
     }
 
     /* ######################################################################################################## */
-    /*                                                    REACTION                                              */
+    /*                                              REACTION + TAG                                              */
     /* ######################################################################################################## */
 
     /**
@@ -406,7 +409,7 @@ class XhrAdmin
     }
 
     /* ######################################################################################################## */
-    /*                                                     USER                                                 */
+    /*                                               USER + TAG                                                 */
     /* ######################################################################################################## */
 
     /**
@@ -539,6 +542,105 @@ class XhrAdmin
 
         return $withHidden;
     }
+
+    /* ######################################################################################################## */
+    /*                                            OPERATION + TAGS                                              */
+    /* ######################################################################################################## */
+
+    /**
+     * Operation's tag creation
+     */
+    public function operationAddTag(Request $request)
+    {
+        $this->logger->info('*** operationAddTag');
+
+        // Request arguments
+        $tagTitle = $request->get('tagTitle');
+        $this->logger->info('$tagTitle = ' . print_r($tagTitle, true));
+        $tagUuid = $request->get('tagUuid');
+        $this->logger->info('$tagUuid = ' . print_r($tagUuid, true));
+        $tagTypeId = $request->get('tagTypeId');
+        $this->logger->info('$tagTypeId = ' . print_r($tagTypeId, true));
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        $newTag = $request->get('newTag');
+        $this->logger->info('$newTag = ' . print_r($newTag, true));
+
+        // Function process
+        if (empty($tagTypeId)) {
+            $tagTypeId = null;
+        }
+
+        // Retrieve subject
+        $subject = PEOperationQuery::create()->filterByUuid($uuid)->findOne();
+
+        $tag = $this->retrieveOrCreateTag($tagUuid, $tagTitle, $tagTypeId, null, $newTag);
+
+        // associate tag to operation
+        $presetPT = PEOPresetPTQuery::create()
+            ->filterByPEOperationId($subject->getId())
+            ->filterByPTagId($tag->getId())
+            ->findOne();
+
+        if ($presetPT) {
+            $created = false;
+            $htmlTag = null;
+        } else {
+            $created = true;
+            $this->tagManager->createOperationTag($subject->getId(), $tag->getId());
+
+            $xhrPathDelete = $this->templating->render(
+                'PolitizrAdminBundle:Fragment\\Xhr:_xhrPath.html.twig',
+                array(
+                    'xhrRoute' => 'ADMIN_ROUTE_TAG_OPERATION_DELETE',
+                    'xhrService' => 'admin',
+                    'xhrMethod' => 'operationDeleteTag',
+                    'xhrType' => 'RETURN_BOOLEAN',
+                )
+            );
+
+            $htmlTag = $this->templating->render(
+                'PolitizrAdminBundle:Fragment\\Tag:_detailEditable.html.twig',
+                array(
+                    'uuid' => $uuid,
+                    'tag' => $tag,
+                    'withHidden' => false,
+                    'pathDelete' => $xhrPathDelete
+                )
+            );
+        }
+
+        return array(
+            'created' => $created,
+            'htmlTag' => $htmlTag
+            );
+    }
+
+    /**
+     * Operation's tag deletion
+     */
+    public function operationDeleteTag(Request $request)
+    {
+        $this->logger->info('*** operationDeleteTag');
+        
+        // Request arguments
+        $tagUuid = $request->get('tagUuid');
+        $this->logger->info('$tagUuid = ' . print_r($tagUuid, true));
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
+
+        $tag = PTagQuery::create()->filterByUuid($tagUuid)->findOne();
+        $subject = PEOperationQuery::create()->filterByUuid($uuid)->findOne();
+
+        // Function process
+        $this->tagManager->deleteOperationTag($subject->getId(), $tag->getId());
+
+        return true;
+    }
+
+    /* ######################################################################################################## */
+    /*                                                   MANDATES                                               */
+    /* ######################################################################################################## */
 
     /**
      * User's mandate creation

@@ -13,26 +13,26 @@ use \Propel;
 use \PropelDateTime;
 use \PropelException;
 use \PropelPDO;
-use Politizr\Model\PEOPresetPTag;
-use Politizr\Model\PEOPresetPTagPeer;
-use Politizr\Model\PEOPresetPTagQuery;
+use Politizr\Model\PEOPresetPT;
+use Politizr\Model\PEOPresetPTPeer;
+use Politizr\Model\PEOPresetPTQuery;
 use Politizr\Model\PEOperation;
 use Politizr\Model\PEOperationQuery;
 use Politizr\Model\PTag;
 use Politizr\Model\PTagQuery;
 
-abstract class BasePEOPresetPTag extends BaseObject implements Persistent
+abstract class BasePEOPresetPT extends BaseObject implements Persistent
 {
     /**
      * Peer class name
      */
-    const PEER = 'Politizr\\Model\\PEOPresetPTagPeer';
+    const PEER = 'Politizr\\Model\\PEOPresetPTPeer';
 
     /**
      * The Peer class.
      * Instance provides a convenient way of calling static methods on a class
      * that calling code may not be able to identify.
-     * @var        PEOPresetPTagPeer
+     * @var        PEOPresetPTPeer
      */
     protected static $peer;
 
@@ -219,7 +219,7 @@ abstract class BasePEOPresetPTag extends BaseObject implements Persistent
      * Set the value of [id] column.
      *
      * @param  int $v new value
-     * @return PEOPresetPTag The current object (for fluent API support)
+     * @return PEOPresetPT The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -229,7 +229,7 @@ abstract class BasePEOPresetPTag extends BaseObject implements Persistent
 
         if ($this->id !== $v) {
             $this->id = $v;
-            $this->modifiedColumns[] = PEOPresetPTagPeer::ID;
+            $this->modifiedColumns[] = PEOPresetPTPeer::ID;
         }
 
 
@@ -240,7 +240,7 @@ abstract class BasePEOPresetPTag extends BaseObject implements Persistent
      * Set the value of [p_e_operation_id] column.
      *
      * @param  int $v new value
-     * @return PEOPresetPTag The current object (for fluent API support)
+     * @return PEOPresetPT The current object (for fluent API support)
      */
     public function setPEOperationId($v)
     {
@@ -250,7 +250,7 @@ abstract class BasePEOPresetPTag extends BaseObject implements Persistent
 
         if ($this->p_e_operation_id !== $v) {
             $this->p_e_operation_id = $v;
-            $this->modifiedColumns[] = PEOPresetPTagPeer::P_E_OPERATION_ID;
+            $this->modifiedColumns[] = PEOPresetPTPeer::P_E_OPERATION_ID;
         }
 
         if ($this->aPEOperation !== null && $this->aPEOperation->getId() !== $v) {
@@ -265,7 +265,7 @@ abstract class BasePEOPresetPTag extends BaseObject implements Persistent
      * Set the value of [p_tag_id] column.
      *
      * @param  int $v new value
-     * @return PEOPresetPTag The current object (for fluent API support)
+     * @return PEOPresetPT The current object (for fluent API support)
      */
     public function setPTagId($v)
     {
@@ -275,7 +275,7 @@ abstract class BasePEOPresetPTag extends BaseObject implements Persistent
 
         if ($this->p_tag_id !== $v) {
             $this->p_tag_id = $v;
-            $this->modifiedColumns[] = PEOPresetPTagPeer::P_TAG_ID;
+            $this->modifiedColumns[] = PEOPresetPTPeer::P_TAG_ID;
         }
 
         if ($this->aPTag !== null && $this->aPTag->getId() !== $v) {
@@ -291,7 +291,7 @@ abstract class BasePEOPresetPTag extends BaseObject implements Persistent
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
      *               Empty strings are treated as null.
-     * @return PEOPresetPTag The current object (for fluent API support)
+     * @return PEOPresetPT The current object (for fluent API support)
      */
     public function setCreatedAt($v)
     {
@@ -301,7 +301,7 @@ abstract class BasePEOPresetPTag extends BaseObject implements Persistent
             $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
             if ($currentDateAsString !== $newDateAsString) {
                 $this->created_at = $newDateAsString;
-                $this->modifiedColumns[] = PEOPresetPTagPeer::CREATED_AT;
+                $this->modifiedColumns[] = PEOPresetPTPeer::CREATED_AT;
             }
         } // if either are not null
 
@@ -314,7 +314,7 @@ abstract class BasePEOPresetPTag extends BaseObject implements Persistent
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
      *               Empty strings are treated as null.
-     * @return PEOPresetPTag The current object (for fluent API support)
+     * @return PEOPresetPT The current object (for fluent API support)
      */
     public function setUpdatedAt($v)
     {
@@ -324,7 +324,7 @@ abstract class BasePEOPresetPTag extends BaseObject implements Persistent
             $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
             if ($currentDateAsString !== $newDateAsString) {
                 $this->updated_at = $newDateAsString;
-                $this->modifiedColumns[] = PEOPresetPTagPeer::UPDATED_AT;
+                $this->modifiedColumns[] = PEOPresetPTPeer::UPDATED_AT;
             }
         } // if either are not null
 
@@ -378,10 +378,10 @@ abstract class BasePEOPresetPTag extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 5; // 5 = PEOPresetPTagPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 5; // 5 = PEOPresetPTPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException("Error populating PEOPresetPTag object", $e);
+            throw new PropelException("Error populating PEOPresetPT object", $e);
         }
     }
 
@@ -430,13 +430,13 @@ abstract class BasePEOPresetPTag extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(PEOPresetPTagPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PEOPresetPTPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $stmt = PEOPresetPTagPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
+        $stmt = PEOPresetPTPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
         $row = $stmt->fetch(PDO::FETCH_NUM);
         $stmt->closeCursor();
         if (!$row) {
@@ -468,12 +468,12 @@ abstract class BasePEOPresetPTag extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(PEOPresetPTagPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PEOPresetPTPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
         try {
-            $deleteQuery = PEOPresetPTagQuery::create()
+            $deleteQuery = PEOPresetPTQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -511,7 +511,7 @@ abstract class BasePEOPresetPTag extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(PEOPresetPTagPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PEOPresetPTPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
@@ -521,16 +521,16 @@ abstract class BasePEOPresetPTag extends BaseObject implements Persistent
             if ($isInsert) {
                 $ret = $ret && $this->preInsert($con);
                 // timestampable behavior
-                if (!$this->isColumnModified(PEOPresetPTagPeer::CREATED_AT)) {
+                if (!$this->isColumnModified(PEOPresetPTPeer::CREATED_AT)) {
                     $this->setCreatedAt(time());
                 }
-                if (!$this->isColumnModified(PEOPresetPTagPeer::UPDATED_AT)) {
+                if (!$this->isColumnModified(PEOPresetPTPeer::UPDATED_AT)) {
                     $this->setUpdatedAt(time());
                 }
             } else {
                 $ret = $ret && $this->preUpdate($con);
                 // timestampable behavior
-                if ($this->isModified() && !$this->isColumnModified(PEOPresetPTagPeer::UPDATED_AT)) {
+                if ($this->isModified() && !$this->isColumnModified(PEOPresetPTPeer::UPDATED_AT)) {
                     $this->setUpdatedAt(time());
                 }
             }
@@ -542,7 +542,7 @@ abstract class BasePEOPresetPTag extends BaseObject implements Persistent
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                PEOPresetPTagPeer::addInstanceToPool($this);
+                PEOPresetPTPeer::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -622,30 +622,30 @@ abstract class BasePEOPresetPTag extends BaseObject implements Persistent
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[] = PEOPresetPTagPeer::ID;
+        $this->modifiedColumns[] = PEOPresetPTPeer::ID;
         if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . PEOPresetPTagPeer::ID . ')');
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . PEOPresetPTPeer::ID . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(PEOPresetPTagPeer::ID)) {
+        if ($this->isColumnModified(PEOPresetPTPeer::ID)) {
             $modifiedColumns[':p' . $index++]  = '`id`';
         }
-        if ($this->isColumnModified(PEOPresetPTagPeer::P_E_OPERATION_ID)) {
+        if ($this->isColumnModified(PEOPresetPTPeer::P_E_OPERATION_ID)) {
             $modifiedColumns[':p' . $index++]  = '`p_e_operation_id`';
         }
-        if ($this->isColumnModified(PEOPresetPTagPeer::P_TAG_ID)) {
+        if ($this->isColumnModified(PEOPresetPTPeer::P_TAG_ID)) {
             $modifiedColumns[':p' . $index++]  = '`p_tag_id`';
         }
-        if ($this->isColumnModified(PEOPresetPTagPeer::CREATED_AT)) {
+        if ($this->isColumnModified(PEOPresetPTPeer::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`created_at`';
         }
-        if ($this->isColumnModified(PEOPresetPTagPeer::UPDATED_AT)) {
+        if ($this->isColumnModified(PEOPresetPTPeer::UPDATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`updated_at`';
         }
 
         $sql = sprintf(
-            'INSERT INTO `p_e_o_preset_p_tag` (%s) VALUES (%s)',
+            'INSERT INTO `p_e_o_preset_p_t` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -713,7 +713,7 @@ abstract class BasePEOPresetPTag extends BaseObject implements Persistent
      */
     public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = PEOPresetPTagPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = PEOPresetPTPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -767,11 +767,11 @@ abstract class BasePEOPresetPTag extends BaseObject implements Persistent
      */
     public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
-        if (isset($alreadyDumpedObjects['PEOPresetPTag'][$this->getPrimaryKey()])) {
+        if (isset($alreadyDumpedObjects['PEOPresetPT'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['PEOPresetPTag'][$this->getPrimaryKey()] = true;
-        $keys = PEOPresetPTagPeer::getFieldNames($keyType);
+        $alreadyDumpedObjects['PEOPresetPT'][$this->getPrimaryKey()] = true;
+        $keys = PEOPresetPTPeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
             $keys[1] => $this->getPEOperationId(),
@@ -809,7 +809,7 @@ abstract class BasePEOPresetPTag extends BaseObject implements Persistent
      */
     public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = PEOPresetPTagPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = PEOPresetPTPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
 
         $this->setByPosition($pos, $value);
     }
@@ -862,7 +862,7 @@ abstract class BasePEOPresetPTag extends BaseObject implements Persistent
      */
     public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
     {
-        $keys = PEOPresetPTagPeer::getFieldNames($keyType);
+        $keys = PEOPresetPTPeer::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setPEOperationId($arr[$keys[1]]);
@@ -878,13 +878,13 @@ abstract class BasePEOPresetPTag extends BaseObject implements Persistent
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(PEOPresetPTagPeer::DATABASE_NAME);
+        $criteria = new Criteria(PEOPresetPTPeer::DATABASE_NAME);
 
-        if ($this->isColumnModified(PEOPresetPTagPeer::ID)) $criteria->add(PEOPresetPTagPeer::ID, $this->id);
-        if ($this->isColumnModified(PEOPresetPTagPeer::P_E_OPERATION_ID)) $criteria->add(PEOPresetPTagPeer::P_E_OPERATION_ID, $this->p_e_operation_id);
-        if ($this->isColumnModified(PEOPresetPTagPeer::P_TAG_ID)) $criteria->add(PEOPresetPTagPeer::P_TAG_ID, $this->p_tag_id);
-        if ($this->isColumnModified(PEOPresetPTagPeer::CREATED_AT)) $criteria->add(PEOPresetPTagPeer::CREATED_AT, $this->created_at);
-        if ($this->isColumnModified(PEOPresetPTagPeer::UPDATED_AT)) $criteria->add(PEOPresetPTagPeer::UPDATED_AT, $this->updated_at);
+        if ($this->isColumnModified(PEOPresetPTPeer::ID)) $criteria->add(PEOPresetPTPeer::ID, $this->id);
+        if ($this->isColumnModified(PEOPresetPTPeer::P_E_OPERATION_ID)) $criteria->add(PEOPresetPTPeer::P_E_OPERATION_ID, $this->p_e_operation_id);
+        if ($this->isColumnModified(PEOPresetPTPeer::P_TAG_ID)) $criteria->add(PEOPresetPTPeer::P_TAG_ID, $this->p_tag_id);
+        if ($this->isColumnModified(PEOPresetPTPeer::CREATED_AT)) $criteria->add(PEOPresetPTPeer::CREATED_AT, $this->created_at);
+        if ($this->isColumnModified(PEOPresetPTPeer::UPDATED_AT)) $criteria->add(PEOPresetPTPeer::UPDATED_AT, $this->updated_at);
 
         return $criteria;
     }
@@ -899,8 +899,8 @@ abstract class BasePEOPresetPTag extends BaseObject implements Persistent
      */
     public function buildPkeyCriteria()
     {
-        $criteria = new Criteria(PEOPresetPTagPeer::DATABASE_NAME);
-        $criteria->add(PEOPresetPTagPeer::ID, $this->id);
+        $criteria = new Criteria(PEOPresetPTPeer::DATABASE_NAME);
+        $criteria->add(PEOPresetPTPeer::ID, $this->id);
 
         return $criteria;
     }
@@ -941,7 +941,7 @@ abstract class BasePEOPresetPTag extends BaseObject implements Persistent
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param object $copyObj An object of PEOPresetPTag (or compatible) type.
+     * @param object $copyObj An object of PEOPresetPT (or compatible) type.
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
@@ -979,7 +979,7 @@ abstract class BasePEOPresetPTag extends BaseObject implements Persistent
      * objects.
      *
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return PEOPresetPTag Clone of current object.
+     * @return PEOPresetPT Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -999,12 +999,12 @@ abstract class BasePEOPresetPTag extends BaseObject implements Persistent
      * same instance for all member of this class. The method could therefore
      * be static, but this would prevent one from overriding the behavior.
      *
-     * @return PEOPresetPTagPeer
+     * @return PEOPresetPTPeer
      */
     public function getPeer()
     {
         if (self::$peer === null) {
-            self::$peer = new PEOPresetPTagPeer();
+            self::$peer = new PEOPresetPTPeer();
         }
 
         return self::$peer;
@@ -1014,7 +1014,7 @@ abstract class BasePEOPresetPTag extends BaseObject implements Persistent
      * Declares an association between this object and a PEOperation object.
      *
      * @param                  PEOperation $v
-     * @return PEOPresetPTag The current object (for fluent API support)
+     * @return PEOPresetPT The current object (for fluent API support)
      * @throws PropelException
      */
     public function setPEOperation(PEOperation $v = null)
@@ -1030,7 +1030,7 @@ abstract class BasePEOPresetPTag extends BaseObject implements Persistent
         // Add binding for other direction of this n:n relationship.
         // If this object has already been added to the PEOperation object, it will not be re-added.
         if ($v !== null) {
-            $v->addPEOPresetPTag($this);
+            $v->addPEOPresetPT($this);
         }
 
 
@@ -1055,7 +1055,7 @@ abstract class BasePEOPresetPTag extends BaseObject implements Persistent
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aPEOperation->addPEOPresetPTags($this);
+                $this->aPEOperation->addPEOPresetPTs($this);
              */
         }
 
@@ -1066,7 +1066,7 @@ abstract class BasePEOPresetPTag extends BaseObject implements Persistent
      * Declares an association between this object and a PTag object.
      *
      * @param                  PTag $v
-     * @return PEOPresetPTag The current object (for fluent API support)
+     * @return PEOPresetPT The current object (for fluent API support)
      * @throws PropelException
      */
     public function setPTag(PTag $v = null)
@@ -1082,7 +1082,7 @@ abstract class BasePEOPresetPTag extends BaseObject implements Persistent
         // Add binding for other direction of this n:n relationship.
         // If this object has already been added to the PTag object, it will not be re-added.
         if ($v !== null) {
-            $v->addPEOPresetPTag($this);
+            $v->addPEOPresetPT($this);
         }
 
 
@@ -1107,7 +1107,7 @@ abstract class BasePEOPresetPTag extends BaseObject implements Persistent
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aPTag->addPEOPresetPTags($this);
+                $this->aPTag->addPEOPresetPTs($this);
              */
         }
 
@@ -1167,7 +1167,7 @@ abstract class BasePEOPresetPTag extends BaseObject implements Persistent
      */
     public function __toString()
     {
-        return (string) $this->exportTo(PEOPresetPTagPeer::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(PEOPresetPTPeer::DEFAULT_STRING_FORMAT);
     }
 
     /**
@@ -1185,11 +1185,11 @@ abstract class BasePEOPresetPTag extends BaseObject implements Persistent
     /**
      * Mark the current object so that the update date doesn't get updated during next save
      *
-     * @return     PEOPresetPTag The current object (for fluent API support)
+     * @return     PEOPresetPT The current object (for fluent API support)
      */
     public function keepUpdateDateUnchanged()
     {
-        $this->modifiedColumns[] = PEOPresetPTagPeer::UPDATED_AT;
+        $this->modifiedColumns[] = PEOPresetPTPeer::UPDATED_AT;
 
         return $this;
     }

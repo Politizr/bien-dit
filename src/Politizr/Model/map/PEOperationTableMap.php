@@ -63,7 +63,7 @@ class PEOperationTableMap extends TableMap
     {
         $this->addRelation('PUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_ONE, array('p_user_id' => 'id', ), 'CASCADE', 'CASCADE');
         $this->addRelation('PEOScopePLC', 'Politizr\\Model\\PEOScopePLC', RelationMap::ONE_TO_MANY, array('id' => 'p_e_operation_id', ), 'CASCADE', 'CASCADE', 'PEOScopePLCs');
-        $this->addRelation('PEOPresetPTag', 'Politizr\\Model\\PEOPresetPTag', RelationMap::ONE_TO_MANY, array('id' => 'p_e_operation_id', ), 'CASCADE', 'CASCADE', 'PEOPresetPTags');
+        $this->addRelation('PEOPresetPT', 'Politizr\\Model\\PEOPresetPT', RelationMap::ONE_TO_MANY, array('id' => 'p_e_operation_id', ), 'CASCADE', 'CASCADE', 'PEOPresetPTs');
         $this->addRelation('PLCity', 'Politizr\\Model\\PLCity', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PLCities');
         $this->addRelation('PTag', 'Politizr\\Model\\PTag', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PTags');
     } // buildRelations()

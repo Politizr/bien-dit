@@ -7,7 +7,7 @@ use \TableMap;
 
 
 /**
- * This class defines the structure of the 'p_e_o_preset_p_tag' table.
+ * This class defines the structure of the 'p_e_o_preset_p_t' table.
  *
  *
  *
@@ -18,13 +18,13 @@ use \TableMap;
  *
  * @package    propel.generator.src.Politizr.Model.map
  */
-class PEOPresetPTagTableMap extends TableMap
+class PEOPresetPTTableMap extends TableMap
 {
 
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'src.Politizr.Model.map.PEOPresetPTagTableMap';
+    const CLASS_NAME = 'src.Politizr.Model.map.PEOPresetPTTableMap';
 
     /**
      * Initialize the table attributes, columns and validators
@@ -36,9 +36,9 @@ class PEOPresetPTagTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('p_e_o_preset_p_tag');
-        $this->setPhpName('PEOPresetPTag');
-        $this->setClassname('Politizr\\Model\\PEOPresetPTag');
+        $this->setName('p_e_o_preset_p_t');
+        $this->setPhpName('PEOPresetPT');
+        $this->setClassname('Politizr\\Model\\PEOPresetPT');
         $this->setPackage('src.Politizr.Model');
         $this->setUseIdGenerator(true);
         $this->setIsCrossRef(true);
@@ -81,4 +81,4 @@ class PEOPresetPTagTableMap extends TableMap
         );
     } // getBehaviors()
 
-} // PEOPresetPTagTableMap
+} // PEOPresetPTTableMap

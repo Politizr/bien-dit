@@ -27,6 +27,8 @@ var ADMIN_ROUTE_TAG_REACTION_DELETE = 'admin/reaction/tag/delete';
 var ADMIN_ROUTE_TAG_USER_CREATE = 'admin/utilisateur/tag/create';
 var ADMIN_ROUTE_TAG_USER_DELETE = 'admin/utilisateur/tag/delete';
 var ADMIN_ROUTE_TAG_USER_HIDE = 'admin/utilisateur/tag/hide';
+var ADMIN_ROUTE_TAG_OPERATION_CREATE = 'admin/operation/tag/create';
+var ADMIN_ROUTE_TAG_OPERATION_DELETE = 'admin/operation/tag/delete';
 
 // REPUTATION
 var ADMIN_ROUTE_USER_REPUTATION_EVOLUTION = 'admin/utilisateur/reputation/update';

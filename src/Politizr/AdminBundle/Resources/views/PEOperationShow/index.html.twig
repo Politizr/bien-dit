@@ -5,3 +5,7 @@
     {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_USER'), PEOperation.PUserId) }}
 {% endblock %}
 
+{# Bloc tags #}
+{% block show_column_block_tags %}
+    {{ adminOperationTags(PEOperation, null, 1, mode='show') }}
+{% endblock %}

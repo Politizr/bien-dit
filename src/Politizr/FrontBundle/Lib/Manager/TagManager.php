@@ -8,12 +8,14 @@ use Politizr\Model\PDDTaggedT;
 use Politizr\Model\PDRTaggedT;
 use Politizr\Model\PUTaggedT;
 use Politizr\Model\PTScopePLC;
+use Politizr\Model\PEOPresetPT;
 
 use Politizr\Model\PTagQuery;
 use Politizr\Model\PDDTaggedTQuery;
 use Politizr\Model\PDRTaggedTQuery;
 use Politizr\Model\PUTaggedTQuery;
 use Politizr\Model\PTScopePLCQuery;
+use Politizr\Model\PEOPresetPTQuery;
 
 /**
  * DB manager service for tag.
@@ -300,6 +302,10 @@ ORDER BY title ASC
         return $tag;
     }
 
+    /* ######################################################################################################## */
+    /*                                    RELATED TABLES OPERATIONS                                             */
+    /* ######################################################################################################## */
+
     /**
      * Create a new PDDTaggedT
      *
@@ -339,6 +345,25 @@ ORDER BY title ASC
     }
 
     /**
+     * Create a new PEOPresetPT
+     *
+     * @param integer $debateId
+     * @param integer $tagId
+     * @return PDDTaggedT
+     */
+    public function createOperationTag($operationId, $tagId)
+    {
+        $presetPT = new PEOPresetPT();
+
+        $presetPT->setPEOperationId($operationId);
+        $presetPT->setPTagId($tagId);
+
+        $presetPT->save();
+
+        return $presetPT;
+    }
+
+    /**
      * Delete a PDDTaggedT
      *
      * @param integer $debateId
@@ -366,6 +391,23 @@ ORDER BY title ASC
     {
         $result = PDRTaggedTQuery::create()
             ->filterByPDReactionId($reactionId)
+            ->filterByPTagId($tagId)
+            ->delete();
+
+        return $result;
+    }
+
+    /**
+     * Delete a PEOPresetPT
+     *
+     * @param integer $operationId
+     * @param integer $tagId
+     * @return integer
+     */
+    public function deleteOperationTag($operationId, $tagId)
+    {
+        $result = PEOPresetPTQuery::create()
+            ->filterByPEOperationId($operationId)
             ->filterByPTagId($tagId)
             ->delete();
 
@@ -407,10 +449,6 @@ ORDER BY title ASC
         
         return $result;
     }
-
-    /* ######################################################################################################## */
-    /*                                    RELATED TABLES OPERATIONS                                             */
-    /* ######################################################################################################## */
 
     /**
      * Create a new PTScopePLC association

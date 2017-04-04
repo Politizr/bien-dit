@@ -1,5 +1,10 @@
 {% extends_admingenerated "PolitizrAdminBundle:PEOperationEdit:form.html.twig" %}
 
+{# Bloc tags #}
+{% block form_row_block_tags %}
+    {{ adminOperationTags(PEOperation, null, 1, true) }}
+{% endblock %}
+
 {# Scope #}
 {% block form_row_block_cities %}
     <div class="form-group">

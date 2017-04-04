@@ -106,7 +106,7 @@
         </foreign-key>
     </table>
 
-    <table name="p_e_o_preset_p_tag" isCrossRef="true">
+    <table name="p_e_o_preset_p_t" isCrossRef="true">
         <behavior name="timestampable" />
         <behavior name="query_cache" />
 

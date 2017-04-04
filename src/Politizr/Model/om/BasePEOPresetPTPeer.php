@@ -9,26 +9,26 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
-use Politizr\Model\PEOPresetPTag;
-use Politizr\Model\PEOPresetPTagPeer;
+use Politizr\Model\PEOPresetPT;
+use Politizr\Model\PEOPresetPTPeer;
 use Politizr\Model\PEOperationPeer;
 use Politizr\Model\PTagPeer;
-use Politizr\Model\map\PEOPresetPTagTableMap;
+use Politizr\Model\map\PEOPresetPTTableMap;
 
-abstract class BasePEOPresetPTagPeer
+abstract class BasePEOPresetPTPeer
 {
 
     /** the default database name for this class */
     const DATABASE_NAME = 'default';
 
     /** the table name for this class */
-    const TABLE_NAME = 'p_e_o_preset_p_tag';
+    const TABLE_NAME = 'p_e_o_preset_p_t';
 
     /** the related Propel class for this table */
-    const OM_CLASS = 'Politizr\\Model\\PEOPresetPTag';
+    const OM_CLASS = 'Politizr\\Model\\PEOPresetPT';
 
     /** the related TableMap class for this table */
-    const TM_CLASS = 'Politizr\\Model\\map\\PEOPresetPTagTableMap';
+    const TM_CLASS = 'Politizr\\Model\\map\\PEOPresetPTTableMap';
 
     /** The total number of columns. */
     const NUM_COLUMNS = 5;
@@ -40,28 +40,28 @@ abstract class BasePEOPresetPTagPeer
     const NUM_HYDRATE_COLUMNS = 5;
 
     /** the column name for the id field */
-    const ID = 'p_e_o_preset_p_tag.id';
+    const ID = 'p_e_o_preset_p_t.id';
 
     /** the column name for the p_e_operation_id field */
-    const P_E_OPERATION_ID = 'p_e_o_preset_p_tag.p_e_operation_id';
+    const P_E_OPERATION_ID = 'p_e_o_preset_p_t.p_e_operation_id';
 
     /** the column name for the p_tag_id field */
-    const P_TAG_ID = 'p_e_o_preset_p_tag.p_tag_id';
+    const P_TAG_ID = 'p_e_o_preset_p_t.p_tag_id';
 
     /** the column name for the created_at field */
-    const CREATED_AT = 'p_e_o_preset_p_tag.created_at';
+    const CREATED_AT = 'p_e_o_preset_p_t.created_at';
 
     /** the column name for the updated_at field */
-    const UPDATED_AT = 'p_e_o_preset_p_tag.updated_at';
+    const UPDATED_AT = 'p_e_o_preset_p_t.updated_at';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
 
     /**
-     * An identity map to hold any loaded instances of PEOPresetPTag objects.
+     * An identity map to hold any loaded instances of PEOPresetPT objects.
      * This must be public so that other peer classes can access this when hydrating from JOIN
      * queries.
-     * @var        array PEOPresetPTag[]
+     * @var        array PEOPresetPT[]
      */
     public static $instances = array();
 
@@ -70,12 +70,12 @@ abstract class BasePEOPresetPTagPeer
      * holds an array of fieldnames
      *
      * first dimension keys are the type constants
-     * e.g. PEOPresetPTagPeer::$fieldNames[PEOPresetPTagPeer::TYPE_PHPNAME][0] = 'Id'
+     * e.g. PEOPresetPTPeer::$fieldNames[PEOPresetPTPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
         BasePeer::TYPE_PHPNAME => array ('Id', 'PEOperationId', 'PTagId', 'CreatedAt', 'UpdatedAt', ),
         BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pEOperationId', 'pTagId', 'createdAt', 'updatedAt', ),
-        BasePeer::TYPE_COLNAME => array (PEOPresetPTagPeer::ID, PEOPresetPTagPeer::P_E_OPERATION_ID, PEOPresetPTagPeer::P_TAG_ID, PEOPresetPTagPeer::CREATED_AT, PEOPresetPTagPeer::UPDATED_AT, ),
+        BasePeer::TYPE_COLNAME => array (PEOPresetPTPeer::ID, PEOPresetPTPeer::P_E_OPERATION_ID, PEOPresetPTPeer::P_TAG_ID, PEOPresetPTPeer::CREATED_AT, PEOPresetPTPeer::UPDATED_AT, ),
         BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_E_OPERATION_ID', 'P_TAG_ID', 'CREATED_AT', 'UPDATED_AT', ),
         BasePeer::TYPE_FIELDNAME => array ('id', 'p_e_operation_id', 'p_tag_id', 'created_at', 'updated_at', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
@@ -85,12 +85,12 @@ abstract class BasePEOPresetPTagPeer
      * holds an array of keys for quick access to the fieldnames array
      *
      * first dimension keys are the type constants
-     * e.g. PEOPresetPTagPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
+     * e.g. PEOPresetPTPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
         BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PEOperationId' => 1, 'PTagId' => 2, 'CreatedAt' => 3, 'UpdatedAt' => 4, ),
         BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pEOperationId' => 1, 'pTagId' => 2, 'createdAt' => 3, 'updatedAt' => 4, ),
-        BasePeer::TYPE_COLNAME => array (PEOPresetPTagPeer::ID => 0, PEOPresetPTagPeer::P_E_OPERATION_ID => 1, PEOPresetPTagPeer::P_TAG_ID => 2, PEOPresetPTagPeer::CREATED_AT => 3, PEOPresetPTagPeer::UPDATED_AT => 4, ),
+        BasePeer::TYPE_COLNAME => array (PEOPresetPTPeer::ID => 0, PEOPresetPTPeer::P_E_OPERATION_ID => 1, PEOPresetPTPeer::P_TAG_ID => 2, PEOPresetPTPeer::CREATED_AT => 3, PEOPresetPTPeer::UPDATED_AT => 4, ),
         BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_E_OPERATION_ID' => 1, 'P_TAG_ID' => 2, 'CREATED_AT' => 3, 'UPDATED_AT' => 4, ),
         BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_e_operation_id' => 1, 'p_tag_id' => 2, 'created_at' => 3, 'updated_at' => 4, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
@@ -108,10 +108,10 @@ abstract class BasePEOPresetPTagPeer
      */
     public static function translateFieldName($name, $fromType, $toType)
     {
-        $toNames = PEOPresetPTagPeer::getFieldNames($toType);
-        $key = isset(PEOPresetPTagPeer::$fieldKeys[$fromType][$name]) ? PEOPresetPTagPeer::$fieldKeys[$fromType][$name] : null;
+        $toNames = PEOPresetPTPeer::getFieldNames($toType);
+        $key = isset(PEOPresetPTPeer::$fieldKeys[$fromType][$name]) ? PEOPresetPTPeer::$fieldKeys[$fromType][$name] : null;
         if ($key === null) {
-            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(PEOPresetPTagPeer::$fieldKeys[$fromType], true));
+            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(PEOPresetPTPeer::$fieldKeys[$fromType], true));
         }
 
         return $toNames[$key];
@@ -128,11 +128,11 @@ abstract class BasePEOPresetPTagPeer
      */
     public static function getFieldNames($type = BasePeer::TYPE_PHPNAME)
     {
-        if (!array_key_exists($type, PEOPresetPTagPeer::$fieldNames)) {
+        if (!array_key_exists($type, PEOPresetPTPeer::$fieldNames)) {
             throw new PropelException('Method getFieldNames() expects the parameter $type to be one of the class constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME, BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. ' . $type . ' was given.');
         }
 
-        return PEOPresetPTagPeer::$fieldNames[$type];
+        return PEOPresetPTPeer::$fieldNames[$type];
     }
 
     /**
@@ -144,12 +144,12 @@ abstract class BasePEOPresetPTagPeer
      *		$c->addJoin(TablePeer::alias("alias1", TablePeer::PRIMARY_KEY_COLUMN), TablePeer::PRIMARY_KEY_COLUMN);
      * </code>
      * @param      string $alias The alias for the current table.
-     * @param      string $column The column name for current table. (i.e. PEOPresetPTagPeer::COLUMN_NAME).
+     * @param      string $column The column name for current table. (i.e. PEOPresetPTPeer::COLUMN_NAME).
      * @return string
      */
     public static function alias($alias, $column)
     {
-        return str_replace(PEOPresetPTagPeer::TABLE_NAME.'.', $alias.'.', $column);
+        return str_replace(PEOPresetPTPeer::TABLE_NAME.'.', $alias.'.', $column);
     }
 
     /**
@@ -167,11 +167,11 @@ abstract class BasePEOPresetPTagPeer
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(PEOPresetPTagPeer::ID);
-            $criteria->addSelectColumn(PEOPresetPTagPeer::P_E_OPERATION_ID);
-            $criteria->addSelectColumn(PEOPresetPTagPeer::P_TAG_ID);
-            $criteria->addSelectColumn(PEOPresetPTagPeer::CREATED_AT);
-            $criteria->addSelectColumn(PEOPresetPTagPeer::UPDATED_AT);
+            $criteria->addSelectColumn(PEOPresetPTPeer::ID);
+            $criteria->addSelectColumn(PEOPresetPTPeer::P_E_OPERATION_ID);
+            $criteria->addSelectColumn(PEOPresetPTPeer::P_TAG_ID);
+            $criteria->addSelectColumn(PEOPresetPTPeer::CREATED_AT);
+            $criteria->addSelectColumn(PEOPresetPTPeer::UPDATED_AT);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.p_e_operation_id');
@@ -197,21 +197,21 @@ abstract class BasePEOPresetPTagPeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(PEOPresetPTagPeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(PEOPresetPTPeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            PEOPresetPTagPeer::addSelectColumns($criteria);
+            PEOPresetPTPeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-        $criteria->setDbName(PEOPresetPTagPeer::DATABASE_NAME); // Set the correct dbName
+        $criteria->setDbName(PEOPresetPTPeer::DATABASE_NAME); // Set the correct dbName
 
         if ($con === null) {
-            $con = Propel::getConnection(PEOPresetPTagPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PEOPresetPTPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
         // BasePeer returns a PDOStatement
         $stmt = BasePeer::doCount($criteria, $con);
@@ -230,7 +230,7 @@ abstract class BasePEOPresetPTagPeer
      *
      * @param      Criteria $criteria object used to create the SELECT statement.
      * @param      PropelPDO $con
-     * @return PEOPresetPTag
+     * @return PEOPresetPT
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
@@ -238,7 +238,7 @@ abstract class BasePEOPresetPTagPeer
     {
         $critcopy = clone $criteria;
         $critcopy->setLimit(1);
-        $objects = PEOPresetPTagPeer::doSelect($critcopy, $con);
+        $objects = PEOPresetPTPeer::doSelect($critcopy, $con);
         if ($objects) {
             return $objects[0];
         }
@@ -256,7 +256,7 @@ abstract class BasePEOPresetPTagPeer
      */
     public static function doSelect(Criteria $criteria, PropelPDO $con = null)
     {
-        return PEOPresetPTagPeer::populateObjects(PEOPresetPTagPeer::doSelectStmt($criteria, $con));
+        return PEOPresetPTPeer::populateObjects(PEOPresetPTPeer::doSelectStmt($criteria, $con));
     }
     /**
      * Prepares the Criteria object and uses the parent doSelect() method to execute a PDOStatement.
@@ -274,16 +274,16 @@ abstract class BasePEOPresetPTagPeer
     public static function doSelectStmt(Criteria $criteria, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PEOPresetPTagPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PEOPresetPTPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         if (!$criteria->hasSelectClause()) {
             $criteria = clone $criteria;
-            PEOPresetPTagPeer::addSelectColumns($criteria);
+            PEOPresetPTPeer::addSelectColumns($criteria);
         }
 
         // Set the correct dbName
-        $criteria->setDbName(PEOPresetPTagPeer::DATABASE_NAME);
+        $criteria->setDbName(PEOPresetPTPeer::DATABASE_NAME);
 
         // BasePeer returns a PDOStatement
         return BasePeer::doSelect($criteria, $con);
@@ -297,7 +297,7 @@ abstract class BasePEOPresetPTagPeer
      * to the cache in order to ensure that the same objects are always returned by doSelect*()
      * and retrieveByPK*() calls.
      *
-     * @param PEOPresetPTag $obj A PEOPresetPTag object.
+     * @param PEOPresetPT $obj A PEOPresetPT object.
      * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
      */
     public static function addInstanceToPool($obj, $key = null)
@@ -306,7 +306,7 @@ abstract class BasePEOPresetPTagPeer
             if ($key === null) {
                 $key = (string) $obj->getId();
             } // if key === null
-            PEOPresetPTagPeer::$instances[$key] = $obj;
+            PEOPresetPTPeer::$instances[$key] = $obj;
         }
     }
 
@@ -318,7 +318,7 @@ abstract class BasePEOPresetPTagPeer
      * methods in your stub classes -- you may need to explicitly remove objects
      * from the cache in order to prevent returning objects that no longer exist.
      *
-     * @param      mixed $value A PEOPresetPTag object or a primary key value.
+     * @param      mixed $value A PEOPresetPT object or a primary key value.
      *
      * @return void
      * @throws PropelException - if the value is invalid.
@@ -326,17 +326,17 @@ abstract class BasePEOPresetPTagPeer
     public static function removeInstanceFromPool($value)
     {
         if (Propel::isInstancePoolingEnabled() && $value !== null) {
-            if (is_object($value) && $value instanceof PEOPresetPTag) {
+            if (is_object($value) && $value instanceof PEOPresetPT) {
                 $key = (string) $value->getId();
             } elseif (is_scalar($value)) {
                 // assume we've been passed a primary key
                 $key = (string) $value;
             } else {
-                $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or PEOPresetPTag object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
+                $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or PEOPresetPT object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
                 throw $e;
             }
 
-            unset(PEOPresetPTagPeer::$instances[$key]);
+            unset(PEOPresetPTPeer::$instances[$key]);
         }
     } // removeInstanceFromPool()
 
@@ -347,14 +347,14 @@ abstract class BasePEOPresetPTagPeer
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
      * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-     * @return PEOPresetPTag Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+     * @return PEOPresetPT Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
      * @see        getPrimaryKeyHash()
      */
     public static function getInstanceFromPool($key)
     {
         if (Propel::isInstancePoolingEnabled()) {
-            if (isset(PEOPresetPTagPeer::$instances[$key])) {
-                return PEOPresetPTagPeer::$instances[$key];
+            if (isset(PEOPresetPTPeer::$instances[$key])) {
+                return PEOPresetPTPeer::$instances[$key];
             }
         }
 
@@ -369,15 +369,15 @@ abstract class BasePEOPresetPTagPeer
     public static function clearInstancePool($and_clear_all_references = false)
     {
       if ($and_clear_all_references) {
-        foreach (PEOPresetPTagPeer::$instances as $instance) {
+        foreach (PEOPresetPTPeer::$instances as $instance) {
           $instance->clearAllReferences(true);
         }
       }
-        PEOPresetPTagPeer::$instances = array();
+        PEOPresetPTPeer::$instances = array();
     }
 
     /**
-     * Method to invalidate the instance pool of all tables related to p_e_o_preset_p_tag
+     * Method to invalidate the instance pool of all tables related to p_e_o_preset_p_t
      * by a foreign key with ON DELETE CASCADE
      */
     public static function clearRelatedInstancePool()
@@ -431,11 +431,11 @@ abstract class BasePEOPresetPTagPeer
         $results = array();
 
         // set the class once to avoid overhead in the loop
-        $cls = PEOPresetPTagPeer::getOMClass();
+        $cls = PEOPresetPTPeer::getOMClass();
         // populate the object(s)
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key = PEOPresetPTagPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj = PEOPresetPTagPeer::getInstanceFromPool($key))) {
+            $key = PEOPresetPTPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj = PEOPresetPTPeer::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
@@ -444,7 +444,7 @@ abstract class BasePEOPresetPTagPeer
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                PEOPresetPTagPeer::addInstanceToPool($obj, $key);
+                PEOPresetPTPeer::addInstanceToPool($obj, $key);
             } // if key exists
         }
         $stmt->closeCursor();
@@ -458,21 +458,21 @@ abstract class BasePEOPresetPTagPeer
      * @param      int $startcol The 0-based offset for reading from the resultset row.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
-     * @return array (PEOPresetPTag object, last column rank)
+     * @return array (PEOPresetPT object, last column rank)
      */
     public static function populateObject($row, $startcol = 0)
     {
-        $key = PEOPresetPTagPeer::getPrimaryKeyHashFromRow($row, $startcol);
-        if (null !== ($obj = PEOPresetPTagPeer::getInstanceFromPool($key))) {
+        $key = PEOPresetPTPeer::getPrimaryKeyHashFromRow($row, $startcol);
+        if (null !== ($obj = PEOPresetPTPeer::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $startcol, true); // rehydrate
-            $col = $startcol + PEOPresetPTagPeer::NUM_HYDRATE_COLUMNS;
+            $col = $startcol + PEOPresetPTPeer::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = PEOPresetPTagPeer::OM_CLASS;
+            $cls = PEOPresetPTPeer::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $startcol);
-            PEOPresetPTagPeer::addInstanceToPool($obj, $key);
+            PEOPresetPTPeer::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -496,26 +496,26 @@ abstract class BasePEOPresetPTagPeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(PEOPresetPTagPeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(PEOPresetPTPeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            PEOPresetPTagPeer::addSelectColumns($criteria);
+            PEOPresetPTPeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(PEOPresetPTagPeer::DATABASE_NAME);
+        $criteria->setDbName(PEOPresetPTPeer::DATABASE_NAME);
 
         if ($con === null) {
-            $con = Propel::getConnection(PEOPresetPTagPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PEOPresetPTPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(PEOPresetPTagPeer::P_E_OPERATION_ID, PEOperationPeer::ID, $join_behavior);
+        $criteria->addJoin(PEOPresetPTPeer::P_E_OPERATION_ID, PEOperationPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -547,26 +547,26 @@ abstract class BasePEOPresetPTagPeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(PEOPresetPTagPeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(PEOPresetPTPeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            PEOPresetPTagPeer::addSelectColumns($criteria);
+            PEOPresetPTPeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(PEOPresetPTagPeer::DATABASE_NAME);
+        $criteria->setDbName(PEOPresetPTPeer::DATABASE_NAME);
 
         if ($con === null) {
-            $con = Propel::getConnection(PEOPresetPTagPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PEOPresetPTPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(PEOPresetPTagPeer::P_TAG_ID, PTagPeer::ID, $join_behavior);
+        $criteria->addJoin(PEOPresetPTPeer::P_TAG_ID, PTagPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -582,11 +582,11 @@ abstract class BasePEOPresetPTagPeer
 
 
     /**
-     * Selects a collection of PEOPresetPTag objects pre-filled with their PEOperation objects.
+     * Selects a collection of PEOPresetPT objects pre-filled with their PEOperation objects.
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of PEOPresetPTag objects.
+     * @return array           Array of PEOPresetPT objects.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
@@ -596,31 +596,31 @@ abstract class BasePEOPresetPTagPeer
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(PEOPresetPTagPeer::DATABASE_NAME);
+            $criteria->setDbName(PEOPresetPTPeer::DATABASE_NAME);
         }
 
-        PEOPresetPTagPeer::addSelectColumns($criteria);
-        $startcol = PEOPresetPTagPeer::NUM_HYDRATE_COLUMNS;
+        PEOPresetPTPeer::addSelectColumns($criteria);
+        $startcol = PEOPresetPTPeer::NUM_HYDRATE_COLUMNS;
         PEOperationPeer::addSelectColumns($criteria);
 
-        $criteria->addJoin(PEOPresetPTagPeer::P_E_OPERATION_ID, PEOperationPeer::ID, $join_behavior);
+        $criteria->addJoin(PEOPresetPTPeer::P_E_OPERATION_ID, PEOperationPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
 
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = PEOPresetPTagPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = PEOPresetPTagPeer::getInstanceFromPool($key1))) {
+            $key1 = PEOPresetPTPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PEOPresetPTPeer::getInstanceFromPool($key1))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj1->hydrate($row, 0, true); // rehydrate
             } else {
 
-                $cls = PEOPresetPTagPeer::getOMClass();
+                $cls = PEOPresetPTPeer::getOMClass();
 
                 $obj1 = new $cls();
                 $obj1->hydrate($row);
-                PEOPresetPTagPeer::addInstanceToPool($obj1, $key1);
+                PEOPresetPTPeer::addInstanceToPool($obj1, $key1);
             } // if $obj1 already loaded
 
             $key2 = PEOperationPeer::getPrimaryKeyHashFromRow($row, $startcol);
@@ -635,8 +635,8 @@ abstract class BasePEOPresetPTagPeer
                     PEOperationPeer::addInstanceToPool($obj2, $key2);
                 } // if obj2 already loaded
 
-                // Add the $obj1 (PEOPresetPTag) to $obj2 (PEOperation)
-                $obj2->addPEOPresetPTag($obj1);
+                // Add the $obj1 (PEOPresetPT) to $obj2 (PEOperation)
+                $obj2->addPEOPresetPT($obj1);
 
             } // if joined row was not null
 
@@ -649,11 +649,11 @@ abstract class BasePEOPresetPTagPeer
 
 
     /**
-     * Selects a collection of PEOPresetPTag objects pre-filled with their PTag objects.
+     * Selects a collection of PEOPresetPT objects pre-filled with their PTag objects.
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of PEOPresetPTag objects.
+     * @return array           Array of PEOPresetPT objects.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
@@ -663,31 +663,31 @@ abstract class BasePEOPresetPTagPeer
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(PEOPresetPTagPeer::DATABASE_NAME);
+            $criteria->setDbName(PEOPresetPTPeer::DATABASE_NAME);
         }
 
-        PEOPresetPTagPeer::addSelectColumns($criteria);
-        $startcol = PEOPresetPTagPeer::NUM_HYDRATE_COLUMNS;
+        PEOPresetPTPeer::addSelectColumns($criteria);
+        $startcol = PEOPresetPTPeer::NUM_HYDRATE_COLUMNS;
         PTagPeer::addSelectColumns($criteria);
 
-        $criteria->addJoin(PEOPresetPTagPeer::P_TAG_ID, PTagPeer::ID, $join_behavior);
+        $criteria->addJoin(PEOPresetPTPeer::P_TAG_ID, PTagPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
 
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = PEOPresetPTagPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = PEOPresetPTagPeer::getInstanceFromPool($key1))) {
+            $key1 = PEOPresetPTPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PEOPresetPTPeer::getInstanceFromPool($key1))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj1->hydrate($row, 0, true); // rehydrate
             } else {
 
-                $cls = PEOPresetPTagPeer::getOMClass();
+                $cls = PEOPresetPTPeer::getOMClass();
 
                 $obj1 = new $cls();
                 $obj1->hydrate($row);
-                PEOPresetPTagPeer::addInstanceToPool($obj1, $key1);
+                PEOPresetPTPeer::addInstanceToPool($obj1, $key1);
             } // if $obj1 already loaded
 
             $key2 = PTagPeer::getPrimaryKeyHashFromRow($row, $startcol);
@@ -702,8 +702,8 @@ abstract class BasePEOPresetPTagPeer
                     PTagPeer::addInstanceToPool($obj2, $key2);
                 } // if obj2 already loaded
 
-                // Add the $obj1 (PEOPresetPTag) to $obj2 (PTag)
-                $obj2->addPEOPresetPTag($obj1);
+                // Add the $obj1 (PEOPresetPT) to $obj2 (PTag)
+                $obj2->addPEOPresetPT($obj1);
 
             } // if joined row was not null
 
@@ -732,28 +732,28 @@ abstract class BasePEOPresetPTagPeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(PEOPresetPTagPeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(PEOPresetPTPeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            PEOPresetPTagPeer::addSelectColumns($criteria);
+            PEOPresetPTPeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(PEOPresetPTagPeer::DATABASE_NAME);
+        $criteria->setDbName(PEOPresetPTPeer::DATABASE_NAME);
 
         if ($con === null) {
-            $con = Propel::getConnection(PEOPresetPTagPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PEOPresetPTPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(PEOPresetPTagPeer::P_E_OPERATION_ID, PEOperationPeer::ID, $join_behavior);
+        $criteria->addJoin(PEOPresetPTPeer::P_E_OPERATION_ID, PEOperationPeer::ID, $join_behavior);
 
-        $criteria->addJoin(PEOPresetPTagPeer::P_TAG_ID, PTagPeer::ID, $join_behavior);
+        $criteria->addJoin(PEOPresetPTPeer::P_TAG_ID, PTagPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -768,12 +768,12 @@ abstract class BasePEOPresetPTagPeer
     }
 
     /**
-     * Selects a collection of PEOPresetPTag objects pre-filled with all related objects.
+     * Selects a collection of PEOPresetPT objects pre-filled with all related objects.
      *
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of PEOPresetPTag objects.
+     * @return array           Array of PEOPresetPT objects.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
@@ -783,11 +783,11 @@ abstract class BasePEOPresetPTagPeer
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(PEOPresetPTagPeer::DATABASE_NAME);
+            $criteria->setDbName(PEOPresetPTPeer::DATABASE_NAME);
         }
 
-        PEOPresetPTagPeer::addSelectColumns($criteria);
-        $startcol2 = PEOPresetPTagPeer::NUM_HYDRATE_COLUMNS;
+        PEOPresetPTPeer::addSelectColumns($criteria);
+        $startcol2 = PEOPresetPTPeer::NUM_HYDRATE_COLUMNS;
 
         PEOperationPeer::addSelectColumns($criteria);
         $startcol3 = $startcol2 + PEOperationPeer::NUM_HYDRATE_COLUMNS;
@@ -795,25 +795,25 @@ abstract class BasePEOPresetPTagPeer
         PTagPeer::addSelectColumns($criteria);
         $startcol4 = $startcol3 + PTagPeer::NUM_HYDRATE_COLUMNS;
 
-        $criteria->addJoin(PEOPresetPTagPeer::P_E_OPERATION_ID, PEOperationPeer::ID, $join_behavior);
+        $criteria->addJoin(PEOPresetPTPeer::P_E_OPERATION_ID, PEOperationPeer::ID, $join_behavior);
 
-        $criteria->addJoin(PEOPresetPTagPeer::P_TAG_ID, PTagPeer::ID, $join_behavior);
+        $criteria->addJoin(PEOPresetPTPeer::P_TAG_ID, PTagPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
 
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = PEOPresetPTagPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = PEOPresetPTagPeer::getInstanceFromPool($key1))) {
+            $key1 = PEOPresetPTPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PEOPresetPTPeer::getInstanceFromPool($key1))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj1->hydrate($row, 0, true); // rehydrate
             } else {
-                $cls = PEOPresetPTagPeer::getOMClass();
+                $cls = PEOPresetPTPeer::getOMClass();
 
                 $obj1 = new $cls();
                 $obj1->hydrate($row);
-                PEOPresetPTagPeer::addInstanceToPool($obj1, $key1);
+                PEOPresetPTPeer::addInstanceToPool($obj1, $key1);
             } // if obj1 already loaded
 
             // Add objects for joined PEOperation rows
@@ -830,8 +830,8 @@ abstract class BasePEOPresetPTagPeer
                     PEOperationPeer::addInstanceToPool($obj2, $key2);
                 } // if obj2 loaded
 
-                // Add the $obj1 (PEOPresetPTag) to the collection in $obj2 (PEOperation)
-                $obj2->addPEOPresetPTag($obj1);
+                // Add the $obj1 (PEOPresetPT) to the collection in $obj2 (PEOperation)
+                $obj2->addPEOPresetPT($obj1);
             } // if joined row not null
 
             // Add objects for joined PTag rows
@@ -848,8 +848,8 @@ abstract class BasePEOPresetPTagPeer
                     PTagPeer::addInstanceToPool($obj3, $key3);
                 } // if obj3 loaded
 
-                // Add the $obj1 (PEOPresetPTag) to the collection in $obj3 (PTag)
-                $obj3->addPEOPresetPTag($obj1);
+                // Add the $obj1 (PEOPresetPT) to the collection in $obj3 (PTag)
+                $obj3->addPEOPresetPT($obj1);
             } // if joined row not null
 
             $results[] = $obj1;
@@ -877,26 +877,26 @@ abstract class BasePEOPresetPTagPeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(PEOPresetPTagPeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(PEOPresetPTPeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            PEOPresetPTagPeer::addSelectColumns($criteria);
+            PEOPresetPTPeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY should not affect count
 
         // Set the correct dbName
-        $criteria->setDbName(PEOPresetPTagPeer::DATABASE_NAME);
+        $criteria->setDbName(PEOPresetPTPeer::DATABASE_NAME);
 
         if ($con === null) {
-            $con = Propel::getConnection(PEOPresetPTagPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PEOPresetPTPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(PEOPresetPTagPeer::P_TAG_ID, PTagPeer::ID, $join_behavior);
+        $criteria->addJoin(PEOPresetPTPeer::P_TAG_ID, PTagPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -928,26 +928,26 @@ abstract class BasePEOPresetPTagPeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(PEOPresetPTagPeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(PEOPresetPTPeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            PEOPresetPTagPeer::addSelectColumns($criteria);
+            PEOPresetPTPeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY should not affect count
 
         // Set the correct dbName
-        $criteria->setDbName(PEOPresetPTagPeer::DATABASE_NAME);
+        $criteria->setDbName(PEOPresetPTPeer::DATABASE_NAME);
 
         if ($con === null) {
-            $con = Propel::getConnection(PEOPresetPTagPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PEOPresetPTPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(PEOPresetPTagPeer::P_E_OPERATION_ID, PEOperationPeer::ID, $join_behavior);
+        $criteria->addJoin(PEOPresetPTPeer::P_E_OPERATION_ID, PEOperationPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -963,12 +963,12 @@ abstract class BasePEOPresetPTagPeer
 
 
     /**
-     * Selects a collection of PEOPresetPTag objects pre-filled with all related objects except PEOperation.
+     * Selects a collection of PEOPresetPT objects pre-filled with all related objects except PEOperation.
      *
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of PEOPresetPTag objects.
+     * @return array           Array of PEOPresetPT objects.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
@@ -980,33 +980,33 @@ abstract class BasePEOPresetPTagPeer
         // $criteria->getDbName() will return the same object if not set to another value
         // so == check is okay and faster
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(PEOPresetPTagPeer::DATABASE_NAME);
+            $criteria->setDbName(PEOPresetPTPeer::DATABASE_NAME);
         }
 
-        PEOPresetPTagPeer::addSelectColumns($criteria);
-        $startcol2 = PEOPresetPTagPeer::NUM_HYDRATE_COLUMNS;
+        PEOPresetPTPeer::addSelectColumns($criteria);
+        $startcol2 = PEOPresetPTPeer::NUM_HYDRATE_COLUMNS;
 
         PTagPeer::addSelectColumns($criteria);
         $startcol3 = $startcol2 + PTagPeer::NUM_HYDRATE_COLUMNS;
 
-        $criteria->addJoin(PEOPresetPTagPeer::P_TAG_ID, PTagPeer::ID, $join_behavior);
+        $criteria->addJoin(PEOPresetPTPeer::P_TAG_ID, PTagPeer::ID, $join_behavior);
 
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
 
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = PEOPresetPTagPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = PEOPresetPTagPeer::getInstanceFromPool($key1))) {
+            $key1 = PEOPresetPTPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PEOPresetPTPeer::getInstanceFromPool($key1))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj1->hydrate($row, 0, true); // rehydrate
             } else {
-                $cls = PEOPresetPTagPeer::getOMClass();
+                $cls = PEOPresetPTPeer::getOMClass();
 
                 $obj1 = new $cls();
                 $obj1->hydrate($row);
-                PEOPresetPTagPeer::addInstanceToPool($obj1, $key1);
+                PEOPresetPTPeer::addInstanceToPool($obj1, $key1);
             } // if obj1 already loaded
 
                 // Add objects for joined PTag rows
@@ -1023,8 +1023,8 @@ abstract class BasePEOPresetPTagPeer
                     PTagPeer::addInstanceToPool($obj2, $key2);
                 } // if $obj2 already loaded
 
-                // Add the $obj1 (PEOPresetPTag) to the collection in $obj2 (PTag)
-                $obj2->addPEOPresetPTag($obj1);
+                // Add the $obj1 (PEOPresetPT) to the collection in $obj2 (PTag)
+                $obj2->addPEOPresetPT($obj1);
 
             } // if joined row is not null
 
@@ -1037,12 +1037,12 @@ abstract class BasePEOPresetPTagPeer
 
 
     /**
-     * Selects a collection of PEOPresetPTag objects pre-filled with all related objects except PTag.
+     * Selects a collection of PEOPresetPT objects pre-filled with all related objects except PTag.
      *
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of PEOPresetPTag objects.
+     * @return array           Array of PEOPresetPT objects.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
@@ -1054,33 +1054,33 @@ abstract class BasePEOPresetPTagPeer
         // $criteria->getDbName() will return the same object if not set to another value
         // so == check is okay and faster
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(PEOPresetPTagPeer::DATABASE_NAME);
+            $criteria->setDbName(PEOPresetPTPeer::DATABASE_NAME);
         }
 
-        PEOPresetPTagPeer::addSelectColumns($criteria);
-        $startcol2 = PEOPresetPTagPeer::NUM_HYDRATE_COLUMNS;
+        PEOPresetPTPeer::addSelectColumns($criteria);
+        $startcol2 = PEOPresetPTPeer::NUM_HYDRATE_COLUMNS;
 
         PEOperationPeer::addSelectColumns($criteria);
         $startcol3 = $startcol2 + PEOperationPeer::NUM_HYDRATE_COLUMNS;
 
-        $criteria->addJoin(PEOPresetPTagPeer::P_E_OPERATION_ID, PEOperationPeer::ID, $join_behavior);
+        $criteria->addJoin(PEOPresetPTPeer::P_E_OPERATION_ID, PEOperationPeer::ID, $join_behavior);
 
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
 
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = PEOPresetPTagPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = PEOPresetPTagPeer::getInstanceFromPool($key1))) {
+            $key1 = PEOPresetPTPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PEOPresetPTPeer::getInstanceFromPool($key1))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj1->hydrate($row, 0, true); // rehydrate
             } else {
-                $cls = PEOPresetPTagPeer::getOMClass();
+                $cls = PEOPresetPTPeer::getOMClass();
 
                 $obj1 = new $cls();
                 $obj1->hydrate($row);
-                PEOPresetPTagPeer::addInstanceToPool($obj1, $key1);
+                PEOPresetPTPeer::addInstanceToPool($obj1, $key1);
             } // if obj1 already loaded
 
                 // Add objects for joined PEOperation rows
@@ -1097,8 +1097,8 @@ abstract class BasePEOPresetPTagPeer
                     PEOperationPeer::addInstanceToPool($obj2, $key2);
                 } // if $obj2 already loaded
 
-                // Add the $obj1 (PEOPresetPTag) to the collection in $obj2 (PEOperation)
-                $obj2->addPEOPresetPTag($obj1);
+                // Add the $obj1 (PEOPresetPT) to the collection in $obj2 (PEOperation)
+                $obj2->addPEOPresetPT($obj1);
 
             } // if joined row is not null
 
@@ -1118,7 +1118,7 @@ abstract class BasePEOPresetPTagPeer
      */
     public static function getTableMap()
     {
-        return Propel::getDatabaseMap(PEOPresetPTagPeer::DATABASE_NAME)->getTable(PEOPresetPTagPeer::TABLE_NAME);
+        return Propel::getDatabaseMap(PEOPresetPTPeer::DATABASE_NAME)->getTable(PEOPresetPTPeer::TABLE_NAME);
     }
 
     /**
@@ -1126,9 +1126,9 @@ abstract class BasePEOPresetPTagPeer
      */
     public static function buildTableMap()
     {
-      $dbMap = Propel::getDatabaseMap(BasePEOPresetPTagPeer::DATABASE_NAME);
-      if (!$dbMap->hasTable(BasePEOPresetPTagPeer::TABLE_NAME)) {
-        $dbMap->addTableObject(new \Politizr\Model\map\PEOPresetPTagTableMap());
+      $dbMap = Propel::getDatabaseMap(BasePEOPresetPTPeer::DATABASE_NAME);
+      if (!$dbMap->hasTable(BasePEOPresetPTPeer::TABLE_NAME)) {
+        $dbMap->addTableObject(new \Politizr\Model\map\PEOPresetPTTableMap());
       }
     }
 
@@ -1140,13 +1140,13 @@ abstract class BasePEOPresetPTagPeer
      */
     public static function getOMClass($row = 0, $colnum = 0)
     {
-        return PEOPresetPTagPeer::OM_CLASS;
+        return PEOPresetPTPeer::OM_CLASS;
     }
 
     /**
-     * Performs an INSERT on the database, given a PEOPresetPTag or Criteria object.
+     * Performs an INSERT on the database, given a PEOPresetPT or Criteria object.
      *
-     * @param      mixed $values Criteria or PEOPresetPTag object containing data that is used to create the INSERT statement.
+     * @param      mixed $values Criteria or PEOPresetPT object containing data that is used to create the INSERT statement.
      * @param      PropelPDO $con the PropelPDO connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -1155,22 +1155,22 @@ abstract class BasePEOPresetPTagPeer
     public static function doInsert($values, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PEOPresetPTagPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PEOPresetPTPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
         } else {
-            $criteria = $values->buildCriteria(); // build Criteria from PEOPresetPTag object
+            $criteria = $values->buildCriteria(); // build Criteria from PEOPresetPT object
         }
 
-        if ($criteria->containsKey(PEOPresetPTagPeer::ID) && $criteria->keyContainsValue(PEOPresetPTagPeer::ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.PEOPresetPTagPeer::ID.')');
+        if ($criteria->containsKey(PEOPresetPTPeer::ID) && $criteria->keyContainsValue(PEOPresetPTPeer::ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.PEOPresetPTPeer::ID.')');
         }
 
 
         // Set the correct dbName
-        $criteria->setDbName(PEOPresetPTagPeer::DATABASE_NAME);
+        $criteria->setDbName(PEOPresetPTPeer::DATABASE_NAME);
 
         try {
             // use transaction because $criteria could contain info
@@ -1187,9 +1187,9 @@ abstract class BasePEOPresetPTagPeer
     }
 
     /**
-     * Performs an UPDATE on the database, given a PEOPresetPTag or Criteria object.
+     * Performs an UPDATE on the database, given a PEOPresetPT or Criteria object.
      *
-     * @param      mixed $values Criteria or PEOPresetPTag object containing data that is used to create the UPDATE statement.
+     * @param      mixed $values Criteria or PEOPresetPT object containing data that is used to create the UPDATE statement.
      * @param      PropelPDO $con The connection to use (specify PropelPDO connection object to exert more control over transactions).
      * @return int             The number of affected rows (if supported by underlying database driver).
      * @throws PropelException Any exceptions caught during processing will be
@@ -1198,35 +1198,35 @@ abstract class BasePEOPresetPTagPeer
     public static function doUpdate($values, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PEOPresetPTagPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PEOPresetPTPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
-        $selectCriteria = new Criteria(PEOPresetPTagPeer::DATABASE_NAME);
+        $selectCriteria = new Criteria(PEOPresetPTPeer::DATABASE_NAME);
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
 
-            $comparison = $criteria->getComparison(PEOPresetPTagPeer::ID);
-            $value = $criteria->remove(PEOPresetPTagPeer::ID);
+            $comparison = $criteria->getComparison(PEOPresetPTPeer::ID);
+            $value = $criteria->remove(PEOPresetPTPeer::ID);
             if ($value) {
-                $selectCriteria->add(PEOPresetPTagPeer::ID, $value, $comparison);
+                $selectCriteria->add(PEOPresetPTPeer::ID, $value, $comparison);
             } else {
-                $selectCriteria->setPrimaryTableName(PEOPresetPTagPeer::TABLE_NAME);
+                $selectCriteria->setPrimaryTableName(PEOPresetPTPeer::TABLE_NAME);
             }
 
-        } else { // $values is PEOPresetPTag object
+        } else { // $values is PEOPresetPT object
             $criteria = $values->buildCriteria(); // gets full criteria
             $selectCriteria = $values->buildPkeyCriteria(); // gets criteria w/ primary key(s)
         }
 
         // set the correct dbName
-        $criteria->setDbName(PEOPresetPTagPeer::DATABASE_NAME);
+        $criteria->setDbName(PEOPresetPTPeer::DATABASE_NAME);
 
         return BasePeer::doUpdate($selectCriteria, $criteria, $con);
     }
 
     /**
-     * Deletes all rows from the p_e_o_preset_p_tag table.
+     * Deletes all rows from the p_e_o_preset_p_t table.
      *
      * @param      PropelPDO $con the connection to use
      * @return int             The number of affected rows (if supported by underlying database driver).
@@ -1235,19 +1235,19 @@ abstract class BasePEOPresetPTagPeer
     public static function doDeleteAll(PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PEOPresetPTagPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PEOPresetPTPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
         $affectedRows = 0; // initialize var to track total num of affected rows
         try {
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-            $affectedRows += BasePeer::doDeleteAll(PEOPresetPTagPeer::TABLE_NAME, $con, PEOPresetPTagPeer::DATABASE_NAME);
+            $affectedRows += BasePeer::doDeleteAll(PEOPresetPTPeer::TABLE_NAME, $con, PEOPresetPTPeer::DATABASE_NAME);
             // Because this db requires some delete cascade/set null emulation, we have to
             // clear the cached instance *after* the emulation has happened (since
             // instances get re-added by the select statement contained therein).
-            PEOPresetPTagPeer::clearInstancePool();
-            PEOPresetPTagPeer::clearRelatedInstancePool();
+            PEOPresetPTPeer::clearInstancePool();
+            PEOPresetPTPeer::clearRelatedInstancePool();
             $con->commit();
 
             return $affectedRows;
@@ -1258,9 +1258,9 @@ abstract class BasePEOPresetPTagPeer
     }
 
     /**
-     * Performs a DELETE on the database, given a PEOPresetPTag or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a PEOPresetPT or Criteria object OR a primary key value.
      *
-     * @param      mixed $values Criteria or PEOPresetPTag object or primary key or array of primary keys
+     * @param      mixed $values Criteria or PEOPresetPT object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param      PropelPDO $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -1271,32 +1271,32 @@ abstract class BasePEOPresetPTagPeer
      public static function doDelete($values, PropelPDO $con = null)
      {
         if ($con === null) {
-            $con = Propel::getConnection(PEOPresetPTagPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PEOPresetPTPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         if ($values instanceof Criteria) {
             // invalidate the cache for all objects of this type, since we have no
             // way of knowing (without running a query) what objects should be invalidated
             // from the cache based on this Criteria.
-            PEOPresetPTagPeer::clearInstancePool();
+            PEOPresetPTPeer::clearInstancePool();
             // rename for clarity
             $criteria = clone $values;
-        } elseif ($values instanceof PEOPresetPTag) { // it's a model object
+        } elseif ($values instanceof PEOPresetPT) { // it's a model object
             // invalidate the cache for this single object
-            PEOPresetPTagPeer::removeInstanceFromPool($values);
+            PEOPresetPTPeer::removeInstanceFromPool($values);
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(PEOPresetPTagPeer::DATABASE_NAME);
-            $criteria->add(PEOPresetPTagPeer::ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(PEOPresetPTPeer::DATABASE_NAME);
+            $criteria->add(PEOPresetPTPeer::ID, (array) $values, Criteria::IN);
             // invalidate the cache for this object(s)
             foreach ((array) $values as $singleval) {
-                PEOPresetPTagPeer::removeInstanceFromPool($singleval);
+                PEOPresetPTPeer::removeInstanceFromPool($singleval);
             }
         }
 
         // Set the correct dbName
-        $criteria->setDbName(PEOPresetPTagPeer::DATABASE_NAME);
+        $criteria->setDbName(PEOPresetPTPeer::DATABASE_NAME);
 
         $affectedRows = 0; // initialize var to track total num of affected rows
 
@@ -1306,7 +1306,7 @@ abstract class BasePEOPresetPTagPeer
             $con->beginTransaction();
 
             $affectedRows += BasePeer::doDelete($criteria, $con);
-            PEOPresetPTagPeer::clearRelatedInstancePool();
+            PEOPresetPTPeer::clearRelatedInstancePool();
             $con->commit();
 
             return $affectedRows;
@@ -1317,13 +1317,13 @@ abstract class BasePEOPresetPTagPeer
     }
 
     /**
-     * Validates all modified columns of given PEOPresetPTag object.
+     * Validates all modified columns of given PEOPresetPT object.
      * If parameter $columns is either a single column name or an array of column names
      * than only those columns are validated.
      *
      * NOTICE: This does not apply to primary or foreign keys for now.
      *
-     * @param PEOPresetPTag $obj The object to validate.
+     * @param PEOPresetPT $obj The object to validate.
      * @param      mixed $cols Column name or array of column names.
      *
      * @return mixed TRUE if all columns are valid or the error message of the first invalid column.
@@ -1333,8 +1333,8 @@ abstract class BasePEOPresetPTagPeer
         $columns = array();
 
         if ($cols) {
-            $dbMap = Propel::getDatabaseMap(PEOPresetPTagPeer::DATABASE_NAME);
-            $tableMap = $dbMap->getTable(PEOPresetPTagPeer::TABLE_NAME);
+            $dbMap = Propel::getDatabaseMap(PEOPresetPTPeer::DATABASE_NAME);
+            $tableMap = $dbMap->getTable(PEOPresetPTPeer::TABLE_NAME);
 
             if (! is_array($cols)) {
                 $cols = array($cols);
@@ -1350,7 +1350,7 @@ abstract class BasePEOPresetPTagPeer
 
         }
 
-        return BasePeer::doValidate(PEOPresetPTagPeer::DATABASE_NAME, PEOPresetPTagPeer::TABLE_NAME, $columns);
+        return BasePeer::doValidate(PEOPresetPTPeer::DATABASE_NAME, PEOPresetPTPeer::TABLE_NAME, $columns);
     }
 
     /**
@@ -1358,23 +1358,23 @@ abstract class BasePEOPresetPTagPeer
      *
      * @param int $pk the primary key.
      * @param      PropelPDO $con the connection to use
-     * @return PEOPresetPTag
+     * @return PEOPresetPT
      */
     public static function retrieveByPK($pk, PropelPDO $con = null)
     {
 
-        if (null !== ($obj = PEOPresetPTagPeer::getInstanceFromPool((string) $pk))) {
+        if (null !== ($obj = PEOPresetPTPeer::getInstanceFromPool((string) $pk))) {
             return $obj;
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(PEOPresetPTagPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PEOPresetPTPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria = new Criteria(PEOPresetPTagPeer::DATABASE_NAME);
-        $criteria->add(PEOPresetPTagPeer::ID, $pk);
+        $criteria = new Criteria(PEOPresetPTPeer::DATABASE_NAME);
+        $criteria->add(PEOPresetPTPeer::ID, $pk);
 
-        $v = PEOPresetPTagPeer::doSelect($criteria, $con);
+        $v = PEOPresetPTPeer::doSelect($criteria, $con);
 
         return !empty($v) > 0 ? $v[0] : null;
     }
@@ -1384,31 +1384,31 @@ abstract class BasePEOPresetPTagPeer
      *
      * @param      array $pks List of primary keys
      * @param      PropelPDO $con the connection to use
-     * @return PEOPresetPTag[]
+     * @return PEOPresetPT[]
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
     public static function retrieveByPKs($pks, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PEOPresetPTagPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PEOPresetPTPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         $objs = null;
         if (empty($pks)) {
             $objs = array();
         } else {
-            $criteria = new Criteria(PEOPresetPTagPeer::DATABASE_NAME);
-            $criteria->add(PEOPresetPTagPeer::ID, $pks, Criteria::IN);
-            $objs = PEOPresetPTagPeer::doSelect($criteria, $con);
+            $criteria = new Criteria(PEOPresetPTPeer::DATABASE_NAME);
+            $criteria->add(PEOPresetPTPeer::ID, $pks, Criteria::IN);
+            $objs = PEOPresetPTPeer::doSelect($criteria, $con);
         }
 
         return $objs;
     }
 
-} // BasePEOPresetPTagPeer
+} // BasePEOPresetPTPeer
 
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-BasePEOPresetPTagPeer::buildTableMap();
+BasePEOPresetPTPeer::buildTableMap();
 

@@ -13,7 +13,7 @@ use \PropelCollection;
 use \PropelException;
 use \PropelObjectCollection;
 use \PropelPDO;
-use Politizr\Model\PEOPresetPTag;
+use Politizr\Model\PEOPresetPT;
 use Politizr\Model\PEOScopePLC;
 use Politizr\Model\PEOperation;
 use Politizr\Model\PEOperationPeer;
@@ -59,9 +59,9 @@ use Politizr\Model\PUser;
  * @method PEOperationQuery rightJoinPEOScopePLC($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PEOScopePLC relation
  * @method PEOperationQuery innerJoinPEOScopePLC($relationAlias = null) Adds a INNER JOIN clause to the query using the PEOScopePLC relation
  *
- * @method PEOperationQuery leftJoinPEOPresetPTag($relationAlias = null) Adds a LEFT JOIN clause to the query using the PEOPresetPTag relation
- * @method PEOperationQuery rightJoinPEOPresetPTag($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PEOPresetPTag relation
- * @method PEOperationQuery innerJoinPEOPresetPTag($relationAlias = null) Adds a INNER JOIN clause to the query using the PEOPresetPTag relation
+ * @method PEOperationQuery leftJoinPEOPresetPT($relationAlias = null) Adds a LEFT JOIN clause to the query using the PEOPresetPT relation
+ * @method PEOperationQuery rightJoinPEOPresetPT($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PEOPresetPT relation
+ * @method PEOperationQuery innerJoinPEOPresetPT($relationAlias = null) Adds a INNER JOIN clause to the query using the PEOPresetPT relation
  *
  * @method PEOperation findOne(PropelPDO $con = null) Return the first PEOperation matching the query
  * @method PEOperation findOneOrCreate(PropelPDO $con = null) Return the first PEOperation matching the query, or a new PEOperation object populated from the query conditions when no match is found
@@ -810,41 +810,41 @@ abstract class BasePEOperationQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related PEOPresetPTag object
+     * Filter the query by a related PEOPresetPT object
      *
-     * @param   PEOPresetPTag|PropelObjectCollection $pEOPresetPTag  the related object to use as filter
+     * @param   PEOPresetPT|PropelObjectCollection $pEOPresetPT  the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return                 PEOperationQuery The current query, for fluid interface
      * @throws PropelException - if the provided filter is invalid.
      */
-    public function filterByPEOPresetPTag($pEOPresetPTag, $comparison = null)
+    public function filterByPEOPresetPT($pEOPresetPT, $comparison = null)
     {
-        if ($pEOPresetPTag instanceof PEOPresetPTag) {
+        if ($pEOPresetPT instanceof PEOPresetPT) {
             return $this
-                ->addUsingAlias(PEOperationPeer::ID, $pEOPresetPTag->getPEOperationId(), $comparison);
-        } elseif ($pEOPresetPTag instanceof PropelObjectCollection) {
+                ->addUsingAlias(PEOperationPeer::ID, $pEOPresetPT->getPEOperationId(), $comparison);
+        } elseif ($pEOPresetPT instanceof PropelObjectCollection) {
             return $this
-                ->usePEOPresetPTagQuery()
-                ->filterByPrimaryKeys($pEOPresetPTag->getPrimaryKeys())
+                ->usePEOPresetPTQuery()
+                ->filterByPrimaryKeys($pEOPresetPT->getPrimaryKeys())
                 ->endUse();
         } else {
-            throw new PropelException('filterByPEOPresetPTag() only accepts arguments of type PEOPresetPTag or PropelCollection');
+            throw new PropelException('filterByPEOPresetPT() only accepts arguments of type PEOPresetPT or PropelCollection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the PEOPresetPTag relation
+     * Adds a JOIN clause to the query using the PEOPresetPT relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return PEOperationQuery The current query, for fluid interface
      */
-    public function joinPEOPresetPTag($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinPEOPresetPT($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('PEOPresetPTag');
+        $relationMap = $tableMap->getRelation('PEOPresetPT');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -859,14 +859,14 @@ abstract class BasePEOperationQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'PEOPresetPTag');
+            $this->addJoinObject($join, 'PEOPresetPT');
         }
 
         return $this;
     }
 
     /**
-     * Use the PEOPresetPTag relation PEOPresetPTag object
+     * Use the PEOPresetPT relation PEOPresetPT object
      *
      * @see       useQuery()
      *
@@ -874,13 +874,13 @@ abstract class BasePEOperationQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return   \Politizr\Model\PEOPresetPTagQuery A secondary query class using the current class as primary query
+     * @return   \Politizr\Model\PEOPresetPTQuery A secondary query class using the current class as primary query
      */
-    public function usePEOPresetPTagQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function usePEOPresetPTQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
-            ->joinPEOPresetPTag($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'PEOPresetPTag', '\Politizr\Model\PEOPresetPTagQuery');
+            ->joinPEOPresetPT($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PEOPresetPT', '\Politizr\Model\PEOPresetPTQuery');
     }
 
     /**
@@ -902,7 +902,7 @@ abstract class BasePEOperationQuery extends ModelCriteria
 
     /**
      * Filter the query by a related PTag object
-     * using the p_e_o_preset_p_tag table as cross reference
+     * using the p_e_o_preset_p_t table as cross reference
      *
      * @param   PTag $pTag the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
@@ -912,7 +912,7 @@ abstract class BasePEOperationQuery extends ModelCriteria
     public function filterByPTag($pTag, $comparison = Criteria::EQUAL)
     {
         return $this
-            ->usePEOPresetPTagQuery()
+            ->usePEOPresetPTQuery()
             ->filterByPTag($pTag, $comparison)
             ->endUse();
     }
