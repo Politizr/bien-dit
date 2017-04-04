@@ -13,58 +13,58 @@ use \PropelCollection;
 use \PropelException;
 use \PropelObjectCollection;
 use \PropelPDO;
-use Politizr\Model\PLCity;
-use Politizr\Model\PTScopePLC;
-use Politizr\Model\PTScopePLCPeer;
-use Politizr\Model\PTScopePLCQuery;
+use Politizr\Model\PEOPresetPTag;
+use Politizr\Model\PEOPresetPTagPeer;
+use Politizr\Model\PEOPresetPTagQuery;
+use Politizr\Model\PEOperation;
 use Politizr\Model\PTag;
 
 /**
- * @method PTScopePLCQuery orderById($order = Criteria::ASC) Order by the id column
- * @method PTScopePLCQuery orderByPTagId($order = Criteria::ASC) Order by the p_tag_id column
- * @method PTScopePLCQuery orderByPLCityId($order = Criteria::ASC) Order by the p_l_city_id column
- * @method PTScopePLCQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
- * @method PTScopePLCQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
+ * @method PEOPresetPTagQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method PEOPresetPTagQuery orderByPEOperationId($order = Criteria::ASC) Order by the p_e_operation_id column
+ * @method PEOPresetPTagQuery orderByPTagId($order = Criteria::ASC) Order by the p_tag_id column
+ * @method PEOPresetPTagQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
+ * @method PEOPresetPTagQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  *
- * @method PTScopePLCQuery groupById() Group by the id column
- * @method PTScopePLCQuery groupByPTagId() Group by the p_tag_id column
- * @method PTScopePLCQuery groupByPLCityId() Group by the p_l_city_id column
- * @method PTScopePLCQuery groupByCreatedAt() Group by the created_at column
- * @method PTScopePLCQuery groupByUpdatedAt() Group by the updated_at column
+ * @method PEOPresetPTagQuery groupById() Group by the id column
+ * @method PEOPresetPTagQuery groupByPEOperationId() Group by the p_e_operation_id column
+ * @method PEOPresetPTagQuery groupByPTagId() Group by the p_tag_id column
+ * @method PEOPresetPTagQuery groupByCreatedAt() Group by the created_at column
+ * @method PEOPresetPTagQuery groupByUpdatedAt() Group by the updated_at column
  *
- * @method PTScopePLCQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method PTScopePLCQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method PTScopePLCQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method PEOPresetPTagQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method PEOPresetPTagQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method PEOPresetPTagQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method PTScopePLCQuery leftJoinPTag($relationAlias = null) Adds a LEFT JOIN clause to the query using the PTag relation
- * @method PTScopePLCQuery rightJoinPTag($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PTag relation
- * @method PTScopePLCQuery innerJoinPTag($relationAlias = null) Adds a INNER JOIN clause to the query using the PTag relation
+ * @method PEOPresetPTagQuery leftJoinPEOperation($relationAlias = null) Adds a LEFT JOIN clause to the query using the PEOperation relation
+ * @method PEOPresetPTagQuery rightJoinPEOperation($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PEOperation relation
+ * @method PEOPresetPTagQuery innerJoinPEOperation($relationAlias = null) Adds a INNER JOIN clause to the query using the PEOperation relation
  *
- * @method PTScopePLCQuery leftJoinPLCity($relationAlias = null) Adds a LEFT JOIN clause to the query using the PLCity relation
- * @method PTScopePLCQuery rightJoinPLCity($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PLCity relation
- * @method PTScopePLCQuery innerJoinPLCity($relationAlias = null) Adds a INNER JOIN clause to the query using the PLCity relation
+ * @method PEOPresetPTagQuery leftJoinPTag($relationAlias = null) Adds a LEFT JOIN clause to the query using the PTag relation
+ * @method PEOPresetPTagQuery rightJoinPTag($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PTag relation
+ * @method PEOPresetPTagQuery innerJoinPTag($relationAlias = null) Adds a INNER JOIN clause to the query using the PTag relation
  *
- * @method PTScopePLC findOne(PropelPDO $con = null) Return the first PTScopePLC matching the query
- * @method PTScopePLC findOneOrCreate(PropelPDO $con = null) Return the first PTScopePLC matching the query, or a new PTScopePLC object populated from the query conditions when no match is found
+ * @method PEOPresetPTag findOne(PropelPDO $con = null) Return the first PEOPresetPTag matching the query
+ * @method PEOPresetPTag findOneOrCreate(PropelPDO $con = null) Return the first PEOPresetPTag matching the query, or a new PEOPresetPTag object populated from the query conditions when no match is found
  *
- * @method PTScopePLC findOneByPTagId(int $p_tag_id) Return the first PTScopePLC filtered by the p_tag_id column
- * @method PTScopePLC findOneByPLCityId(int $p_l_city_id) Return the first PTScopePLC filtered by the p_l_city_id column
- * @method PTScopePLC findOneByCreatedAt(string $created_at) Return the first PTScopePLC filtered by the created_at column
- * @method PTScopePLC findOneByUpdatedAt(string $updated_at) Return the first PTScopePLC filtered by the updated_at column
+ * @method PEOPresetPTag findOneByPEOperationId(int $p_e_operation_id) Return the first PEOPresetPTag filtered by the p_e_operation_id column
+ * @method PEOPresetPTag findOneByPTagId(int $p_tag_id) Return the first PEOPresetPTag filtered by the p_tag_id column
+ * @method PEOPresetPTag findOneByCreatedAt(string $created_at) Return the first PEOPresetPTag filtered by the created_at column
+ * @method PEOPresetPTag findOneByUpdatedAt(string $updated_at) Return the first PEOPresetPTag filtered by the updated_at column
  *
- * @method array findById(int $id) Return PTScopePLC objects filtered by the id column
- * @method array findByPTagId(int $p_tag_id) Return PTScopePLC objects filtered by the p_tag_id column
- * @method array findByPLCityId(int $p_l_city_id) Return PTScopePLC objects filtered by the p_l_city_id column
- * @method array findByCreatedAt(string $created_at) Return PTScopePLC objects filtered by the created_at column
- * @method array findByUpdatedAt(string $updated_at) Return PTScopePLC objects filtered by the updated_at column
+ * @method array findById(int $id) Return PEOPresetPTag objects filtered by the id column
+ * @method array findByPEOperationId(int $p_e_operation_id) Return PEOPresetPTag objects filtered by the p_e_operation_id column
+ * @method array findByPTagId(int $p_tag_id) Return PEOPresetPTag objects filtered by the p_tag_id column
+ * @method array findByCreatedAt(string $created_at) Return PEOPresetPTag objects filtered by the created_at column
+ * @method array findByUpdatedAt(string $updated_at) Return PEOPresetPTag objects filtered by the updated_at column
  */
-abstract class BasePTScopePLCQuery extends ModelCriteria
+abstract class BasePEOPresetPTagQuery extends ModelCriteria
 {
     // query_cache behavior
     protected $queryKey = '';
 
     /**
-     * Initializes internal state of BasePTScopePLCQuery object.
+     * Initializes internal state of BasePEOPresetPTagQuery object.
      *
      * @param     string $dbName The dabase name
      * @param     string $modelName The phpName of a model, e.g. 'Book'
@@ -76,25 +76,25 @@ abstract class BasePTScopePLCQuery extends ModelCriteria
             $dbName = 'default';
         }
         if (null === $modelName) {
-            $modelName = 'Politizr\\Model\\PTScopePLC';
+            $modelName = 'Politizr\\Model\\PEOPresetPTag';
         }
         parent::__construct($dbName, $modelName, $modelAlias);
     }
 
     /**
-     * Returns a new PTScopePLCQuery object.
+     * Returns a new PEOPresetPTagQuery object.
      *
      * @param     string $modelAlias The alias of a model in the query
-     * @param   PTScopePLCQuery|Criteria $criteria Optional Criteria to build the query from
+     * @param   PEOPresetPTagQuery|Criteria $criteria Optional Criteria to build the query from
      *
-     * @return PTScopePLCQuery
+     * @return PEOPresetPTagQuery
      */
     public static function create($modelAlias = null, $criteria = null)
     {
-        if ($criteria instanceof PTScopePLCQuery) {
+        if ($criteria instanceof PEOPresetPTagQuery) {
             return $criteria;
         }
-        $query = new PTScopePLCQuery(null, null, $modelAlias);
+        $query = new PEOPresetPTagQuery(null, null, $modelAlias);
 
         if ($criteria instanceof Criteria) {
             $query->mergeWith($criteria);
@@ -115,19 +115,19 @@ abstract class BasePTScopePLCQuery extends ModelCriteria
      * @param mixed $key Primary key to use for the query
      * @param     PropelPDO $con an optional connection object
      *
-     * @return   PTScopePLC|PTScopePLC[]|mixed the result, formatted by the current formatter
+     * @return   PEOPresetPTag|PEOPresetPTag[]|mixed the result, formatted by the current formatter
      */
     public function findPk($key, $con = null)
     {
         if ($key === null) {
             return null;
         }
-        if ((null !== ($obj = PTScopePLCPeer::getInstanceFromPool((string) $key))) && !$this->formatter) {
+        if ((null !== ($obj = PEOPresetPTagPeer::getInstanceFromPool((string) $key))) && !$this->formatter) {
             // the object is already in the instance pool
             return $obj;
         }
         if ($con === null) {
-            $con = Propel::getConnection(PTScopePLCPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PEOPresetPTagPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
         $this->basePreSelect($con);
         if ($this->formatter || $this->modelAlias || $this->with || $this->select
@@ -145,7 +145,7 @@ abstract class BasePTScopePLCQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return                 PTScopePLC A model object, or null if the key is not found
+     * @return                 PEOPresetPTag A model object, or null if the key is not found
      * @throws PropelException
      */
      public function findOneById($key, $con = null)
@@ -160,12 +160,12 @@ abstract class BasePTScopePLCQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return                 PTScopePLC A model object, or null if the key is not found
+     * @return                 PEOPresetPTag A model object, or null if the key is not found
      * @throws PropelException
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_tag_id`, `p_l_city_id`, `created_at`, `updated_at` FROM `p_t_scope_p_l_c` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_e_operation_id`, `p_tag_id`, `created_at`, `updated_at` FROM `p_e_o_preset_p_tag` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -176,9 +176,9 @@ abstract class BasePTScopePLCQuery extends ModelCriteria
         }
         $obj = null;
         if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $obj = new PTScopePLC();
+            $obj = new PEOPresetPTag();
             $obj->hydrate($row);
-            PTScopePLCPeer::addInstanceToPool($obj, (string) $key);
+            PEOPresetPTagPeer::addInstanceToPool($obj, (string) $key);
         }
         $stmt->closeCursor();
 
@@ -191,7 +191,7 @@ abstract class BasePTScopePLCQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return PTScopePLC|PTScopePLC[]|mixed the result, formatted by the current formatter
+     * @return PEOPresetPTag|PEOPresetPTag[]|mixed the result, formatted by the current formatter
      */
     protected function findPkComplex($key, $con)
     {
@@ -212,7 +212,7 @@ abstract class BasePTScopePLCQuery extends ModelCriteria
      * @param     array $keys Primary keys to use for the query
      * @param     PropelPDO $con an optional connection object
      *
-     * @return PropelObjectCollection|PTScopePLC[]|mixed the list of results, formatted by the current formatter
+     * @return PropelObjectCollection|PEOPresetPTag[]|mixed the list of results, formatted by the current formatter
      */
     public function findPks($keys, $con = null)
     {
@@ -233,12 +233,12 @@ abstract class BasePTScopePLCQuery extends ModelCriteria
      *
      * @param     mixed $key Primary key to use for the query
      *
-     * @return PTScopePLCQuery The current query, for fluid interface
+     * @return PEOPresetPTagQuery The current query, for fluid interface
      */
     public function filterByPrimaryKey($key)
     {
 
-        return $this->addUsingAlias(PTScopePLCPeer::ID, $key, Criteria::EQUAL);
+        return $this->addUsingAlias(PEOPresetPTagPeer::ID, $key, Criteria::EQUAL);
     }
 
     /**
@@ -246,12 +246,12 @@ abstract class BasePTScopePLCQuery extends ModelCriteria
      *
      * @param     array $keys The list of primary key to use for the query
      *
-     * @return PTScopePLCQuery The current query, for fluid interface
+     * @return PEOPresetPTagQuery The current query, for fluid interface
      */
     public function filterByPrimaryKeys($keys)
     {
 
-        return $this->addUsingAlias(PTScopePLCPeer::ID, $keys, Criteria::IN);
+        return $this->addUsingAlias(PEOPresetPTagPeer::ID, $keys, Criteria::IN);
     }
 
     /**
@@ -271,18 +271,18 @@ abstract class BasePTScopePLCQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return PTScopePLCQuery The current query, for fluid interface
+     * @return PEOPresetPTagQuery The current query, for fluid interface
      */
     public function filterById($id = null, $comparison = null)
     {
         if (is_array($id)) {
             $useMinMax = false;
             if (isset($id['min'])) {
-                $this->addUsingAlias(PTScopePLCPeer::ID, $id['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(PEOPresetPTagPeer::ID, $id['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($id['max'])) {
-                $this->addUsingAlias(PTScopePLCPeer::ID, $id['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(PEOPresetPTagPeer::ID, $id['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -293,7 +293,51 @@ abstract class BasePTScopePLCQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PTScopePLCPeer::ID, $id, $comparison);
+        return $this->addUsingAlias(PEOPresetPTagPeer::ID, $id, $comparison);
+    }
+
+    /**
+     * Filter the query on the p_e_operation_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPEOperationId(1234); // WHERE p_e_operation_id = 1234
+     * $query->filterByPEOperationId(array(12, 34)); // WHERE p_e_operation_id IN (12, 34)
+     * $query->filterByPEOperationId(array('min' => 12)); // WHERE p_e_operation_id >= 12
+     * $query->filterByPEOperationId(array('max' => 12)); // WHERE p_e_operation_id <= 12
+     * </code>
+     *
+     * @see       filterByPEOperation()
+     *
+     * @param     mixed $pEOperationId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PEOPresetPTagQuery The current query, for fluid interface
+     */
+    public function filterByPEOperationId($pEOperationId = null, $comparison = null)
+    {
+        if (is_array($pEOperationId)) {
+            $useMinMax = false;
+            if (isset($pEOperationId['min'])) {
+                $this->addUsingAlias(PEOPresetPTagPeer::P_E_OPERATION_ID, $pEOperationId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($pEOperationId['max'])) {
+                $this->addUsingAlias(PEOPresetPTagPeer::P_E_OPERATION_ID, $pEOperationId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PEOPresetPTagPeer::P_E_OPERATION_ID, $pEOperationId, $comparison);
     }
 
     /**
@@ -315,18 +359,18 @@ abstract class BasePTScopePLCQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return PTScopePLCQuery The current query, for fluid interface
+     * @return PEOPresetPTagQuery The current query, for fluid interface
      */
     public function filterByPTagId($pTagId = null, $comparison = null)
     {
         if (is_array($pTagId)) {
             $useMinMax = false;
             if (isset($pTagId['min'])) {
-                $this->addUsingAlias(PTScopePLCPeer::P_TAG_ID, $pTagId['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(PEOPresetPTagPeer::P_TAG_ID, $pTagId['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($pTagId['max'])) {
-                $this->addUsingAlias(PTScopePLCPeer::P_TAG_ID, $pTagId['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(PEOPresetPTagPeer::P_TAG_ID, $pTagId['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -337,51 +381,7 @@ abstract class BasePTScopePLCQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PTScopePLCPeer::P_TAG_ID, $pTagId, $comparison);
-    }
-
-    /**
-     * Filter the query on the p_l_city_id column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByPLCityId(1234); // WHERE p_l_city_id = 1234
-     * $query->filterByPLCityId(array(12, 34)); // WHERE p_l_city_id IN (12, 34)
-     * $query->filterByPLCityId(array('min' => 12)); // WHERE p_l_city_id >= 12
-     * $query->filterByPLCityId(array('max' => 12)); // WHERE p_l_city_id <= 12
-     * </code>
-     *
-     * @see       filterByPLCity()
-     *
-     * @param     mixed $pLCityId The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PTScopePLCQuery The current query, for fluid interface
-     */
-    public function filterByPLCityId($pLCityId = null, $comparison = null)
-    {
-        if (is_array($pLCityId)) {
-            $useMinMax = false;
-            if (isset($pLCityId['min'])) {
-                $this->addUsingAlias(PTScopePLCPeer::P_L_CITY_ID, $pLCityId['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($pLCityId['max'])) {
-                $this->addUsingAlias(PTScopePLCPeer::P_L_CITY_ID, $pLCityId['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(PTScopePLCPeer::P_L_CITY_ID, $pLCityId, $comparison);
+        return $this->addUsingAlias(PEOPresetPTagPeer::P_TAG_ID, $pTagId, $comparison);
     }
 
     /**
@@ -402,18 +402,18 @@ abstract class BasePTScopePLCQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return PTScopePLCQuery The current query, for fluid interface
+     * @return PEOPresetPTagQuery The current query, for fluid interface
      */
     public function filterByCreatedAt($createdAt = null, $comparison = null)
     {
         if (is_array($createdAt)) {
             $useMinMax = false;
             if (isset($createdAt['min'])) {
-                $this->addUsingAlias(PTScopePLCPeer::CREATED_AT, $createdAt['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(PEOPresetPTagPeer::CREATED_AT, $createdAt['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($createdAt['max'])) {
-                $this->addUsingAlias(PTScopePLCPeer::CREATED_AT, $createdAt['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(PEOPresetPTagPeer::CREATED_AT, $createdAt['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -424,7 +424,7 @@ abstract class BasePTScopePLCQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PTScopePLCPeer::CREATED_AT, $createdAt, $comparison);
+        return $this->addUsingAlias(PEOPresetPTagPeer::CREATED_AT, $createdAt, $comparison);
     }
 
     /**
@@ -445,18 +445,18 @@ abstract class BasePTScopePLCQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return PTScopePLCQuery The current query, for fluid interface
+     * @return PEOPresetPTagQuery The current query, for fluid interface
      */
     public function filterByUpdatedAt($updatedAt = null, $comparison = null)
     {
         if (is_array($updatedAt)) {
             $useMinMax = false;
             if (isset($updatedAt['min'])) {
-                $this->addUsingAlias(PTScopePLCPeer::UPDATED_AT, $updatedAt['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(PEOPresetPTagPeer::UPDATED_AT, $updatedAt['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($updatedAt['max'])) {
-                $this->addUsingAlias(PTScopePLCPeer::UPDATED_AT, $updatedAt['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(PEOPresetPTagPeer::UPDATED_AT, $updatedAt['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -467,7 +467,83 @@ abstract class BasePTScopePLCQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PTScopePLCPeer::UPDATED_AT, $updatedAt, $comparison);
+        return $this->addUsingAlias(PEOPresetPTagPeer::UPDATED_AT, $updatedAt, $comparison);
+    }
+
+    /**
+     * Filter the query by a related PEOperation object
+     *
+     * @param   PEOperation|PropelObjectCollection $pEOperation The related object(s) to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PEOPresetPTagQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPEOperation($pEOperation, $comparison = null)
+    {
+        if ($pEOperation instanceof PEOperation) {
+            return $this
+                ->addUsingAlias(PEOPresetPTagPeer::P_E_OPERATION_ID, $pEOperation->getId(), $comparison);
+        } elseif ($pEOperation instanceof PropelObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(PEOPresetPTagPeer::P_E_OPERATION_ID, $pEOperation->toKeyValue('PrimaryKey', 'Id'), $comparison);
+        } else {
+            throw new PropelException('filterByPEOperation() only accepts arguments of type PEOperation or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PEOperation relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PEOPresetPTagQuery The current query, for fluid interface
+     */
+    public function joinPEOperation($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PEOperation');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PEOperation');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PEOperation relation PEOperation object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PEOperationQuery A secondary query class using the current class as primary query
+     */
+    public function usePEOperationQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPEOperation($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PEOperation', '\Politizr\Model\PEOperationQuery');
     }
 
     /**
@@ -476,21 +552,21 @@ abstract class BasePTScopePLCQuery extends ModelCriteria
      * @param   PTag|PropelObjectCollection $pTag The related object(s) to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return                 PTScopePLCQuery The current query, for fluid interface
+     * @return                 PEOPresetPTagQuery The current query, for fluid interface
      * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByPTag($pTag, $comparison = null)
     {
         if ($pTag instanceof PTag) {
             return $this
-                ->addUsingAlias(PTScopePLCPeer::P_TAG_ID, $pTag->getId(), $comparison);
+                ->addUsingAlias(PEOPresetPTagPeer::P_TAG_ID, $pTag->getId(), $comparison);
         } elseif ($pTag instanceof PropelObjectCollection) {
             if (null === $comparison) {
                 $comparison = Criteria::IN;
             }
 
             return $this
-                ->addUsingAlias(PTScopePLCPeer::P_TAG_ID, $pTag->toKeyValue('PrimaryKey', 'Id'), $comparison);
+                ->addUsingAlias(PEOPresetPTagPeer::P_TAG_ID, $pTag->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
             throw new PropelException('filterByPTag() only accepts arguments of type PTag or PropelCollection');
         }
@@ -502,7 +578,7 @@ abstract class BasePTScopePLCQuery extends ModelCriteria
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return PTScopePLCQuery The current query, for fluid interface
+     * @return PEOPresetPTagQuery The current query, for fluid interface
      */
     public function joinPTag($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
@@ -547,92 +623,16 @@ abstract class BasePTScopePLCQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related PLCity object
-     *
-     * @param   PLCity|PropelObjectCollection $pLCity The related object(s) to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return                 PTScopePLCQuery The current query, for fluid interface
-     * @throws PropelException - if the provided filter is invalid.
-     */
-    public function filterByPLCity($pLCity, $comparison = null)
-    {
-        if ($pLCity instanceof PLCity) {
-            return $this
-                ->addUsingAlias(PTScopePLCPeer::P_L_CITY_ID, $pLCity->getId(), $comparison);
-        } elseif ($pLCity instanceof PropelObjectCollection) {
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-
-            return $this
-                ->addUsingAlias(PTScopePLCPeer::P_L_CITY_ID, $pLCity->toKeyValue('PrimaryKey', 'Id'), $comparison);
-        } else {
-            throw new PropelException('filterByPLCity() only accepts arguments of type PLCity or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the PLCity relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return PTScopePLCQuery The current query, for fluid interface
-     */
-    public function joinPLCity($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('PLCity');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'PLCity');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the PLCity relation PLCity object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   \Politizr\Model\PLCityQuery A secondary query class using the current class as primary query
-     */
-    public function usePLCityQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinPLCity($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'PLCity', '\Politizr\Model\PLCityQuery');
-    }
-
-    /**
      * Exclude object from result
      *
-     * @param   PTScopePLC $pTScopePLC Object to remove from the list of results
+     * @param   PEOPresetPTag $pEOPresetPTag Object to remove from the list of results
      *
-     * @return PTScopePLCQuery The current query, for fluid interface
+     * @return PEOPresetPTagQuery The current query, for fluid interface
      */
-    public function prune($pTScopePLC = null)
+    public function prune($pEOPresetPTag = null)
     {
-        if ($pTScopePLC) {
-            $this->addUsingAlias(PTScopePLCPeer::ID, $pTScopePLC->getId(), Criteria::NOT_EQUAL);
+        if ($pEOPresetPTag) {
+            $this->addUsingAlias(PEOPresetPTagPeer::ID, $pEOPresetPTag->getId(), Criteria::NOT_EQUAL);
         }
 
         return $this;
@@ -645,31 +645,31 @@ abstract class BasePTScopePLCQuery extends ModelCriteria
      *
      * @param      int $nbDays Maximum age of the latest update in days
      *
-     * @return     PTScopePLCQuery The current query, for fluid interface
+     * @return     PEOPresetPTagQuery The current query, for fluid interface
      */
     public function recentlyUpdated($nbDays = 7)
     {
-        return $this->addUsingAlias(PTScopePLCPeer::UPDATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+        return $this->addUsingAlias(PEOPresetPTagPeer::UPDATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
     }
 
     /**
      * Order by update date desc
      *
-     * @return     PTScopePLCQuery The current query, for fluid interface
+     * @return     PEOPresetPTagQuery The current query, for fluid interface
      */
     public function lastUpdatedFirst()
     {
-        return $this->addDescendingOrderByColumn(PTScopePLCPeer::UPDATED_AT);
+        return $this->addDescendingOrderByColumn(PEOPresetPTagPeer::UPDATED_AT);
     }
 
     /**
      * Order by update date asc
      *
-     * @return     PTScopePLCQuery The current query, for fluid interface
+     * @return     PEOPresetPTagQuery The current query, for fluid interface
      */
     public function firstUpdatedFirst()
     {
-        return $this->addAscendingOrderByColumn(PTScopePLCPeer::UPDATED_AT);
+        return $this->addAscendingOrderByColumn(PEOPresetPTagPeer::UPDATED_AT);
     }
 
     /**
@@ -677,31 +677,31 @@ abstract class BasePTScopePLCQuery extends ModelCriteria
      *
      * @param      int $nbDays Maximum age of in days
      *
-     * @return     PTScopePLCQuery The current query, for fluid interface
+     * @return     PEOPresetPTagQuery The current query, for fluid interface
      */
     public function recentlyCreated($nbDays = 7)
     {
-        return $this->addUsingAlias(PTScopePLCPeer::CREATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+        return $this->addUsingAlias(PEOPresetPTagPeer::CREATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
     }
 
     /**
      * Order by create date desc
      *
-     * @return     PTScopePLCQuery The current query, for fluid interface
+     * @return     PEOPresetPTagQuery The current query, for fluid interface
      */
     public function lastCreatedFirst()
     {
-        return $this->addDescendingOrderByColumn(PTScopePLCPeer::CREATED_AT);
+        return $this->addDescendingOrderByColumn(PEOPresetPTagPeer::CREATED_AT);
     }
 
     /**
      * Order by create date asc
      *
-     * @return     PTScopePLCQuery The current query, for fluid interface
+     * @return     PEOPresetPTagQuery The current query, for fluid interface
      */
     public function firstCreatedFirst()
     {
-        return $this->addAscendingOrderByColumn(PTScopePLCPeer::CREATED_AT);
+        return $this->addAscendingOrderByColumn(PEOPresetPTagPeer::CREATED_AT);
     }
     // query_cache behavior
 
@@ -742,8 +742,8 @@ abstract class BasePTScopePLCQuery extends ModelCriteria
         }
         $this->configureSelectColumns();
 
-        $dbMap = Propel::getDatabaseMap(PTScopePLCPeer::DATABASE_NAME);
-        $db = Propel::getDB(PTScopePLCPeer::DATABASE_NAME);
+        $dbMap = Propel::getDatabaseMap(PEOPresetPTagPeer::DATABASE_NAME);
+        $db = Propel::getDB(PEOPresetPTagPeer::DATABASE_NAME);
 
         $key = $this->getQueryKey();
         if ($key && $this->cacheContains($key)) {

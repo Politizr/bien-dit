@@ -1,0 +1,7 @@
+{% extends_admingenerated "PolitizrAdminBundle:PEOperationShow:index.html.twig" %}
+
+{# Objets #}
+{% block show_column_block_p_user %}
+    {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_USER'), PEOperation.PUserId) }}
+{% endblock %}
+

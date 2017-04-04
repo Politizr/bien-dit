@@ -7,7 +7,7 @@ use \TableMap;
 
 
 /**
- * This class defines the structure of the 'p_t_scope_p_l_c' table.
+ * This class defines the structure of the 'p_e_o_scope_p_l_c' table.
  *
  *
  *
@@ -18,13 +18,13 @@ use \TableMap;
  *
  * @package    propel.generator.src.Politizr.Model.map
  */
-class PTScopePLCTableMap extends TableMap
+class PEOScopePLCTableMap extends TableMap
 {
 
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'src.Politizr.Model.map.PTScopePLCTableMap';
+    const CLASS_NAME = 'src.Politizr.Model.map.PEOScopePLCTableMap';
 
     /**
      * Initialize the table attributes, columns and validators
@@ -36,15 +36,15 @@ class PTScopePLCTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('p_t_scope_p_l_c');
-        $this->setPhpName('PTScopePLC');
-        $this->setClassname('Politizr\\Model\\PTScopePLC');
+        $this->setName('p_e_o_scope_p_l_c');
+        $this->setPhpName('PEOScopePLC');
+        $this->setClassname('Politizr\\Model\\PEOScopePLC');
         $this->setPackage('src.Politizr.Model');
         $this->setUseIdGenerator(true);
         $this->setIsCrossRef(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
-        $this->addForeignKey('p_tag_id', 'PTagId', 'INTEGER', 'p_tag', 'id', true, null, null);
+        $this->addForeignKey('p_e_operation_id', 'PEOperationId', 'INTEGER', 'p_e_operation', 'id', true, null, null);
         $this->addForeignKey('p_l_city_id', 'PLCityId', 'INTEGER', 'p_l_city', 'id', true, null, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
@@ -56,7 +56,7 @@ class PTScopePLCTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('PTag', 'Politizr\\Model\\PTag', RelationMap::MANY_TO_ONE, array('p_tag_id' => 'id', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('PEOperation', 'Politizr\\Model\\PEOperation', RelationMap::MANY_TO_ONE, array('p_e_operation_id' => 'id', ), 'CASCADE', 'CASCADE');
         $this->addRelation('PLCity', 'Politizr\\Model\\PLCity', RelationMap::MANY_TO_ONE, array('p_l_city_id' => 'id', ), 'CASCADE', 'CASCADE');
     } // buildRelations()
 
@@ -81,4 +81,4 @@ class PTScopePLCTableMap extends TableMap
         );
     } // getBehaviors()
 
-} // PTScopePLCTableMap
+} // PEOScopePLCTableMap

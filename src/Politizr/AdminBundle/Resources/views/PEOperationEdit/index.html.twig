@@ -1,0 +1,13 @@
+{% extends_admingenerated "PolitizrAdminBundle:PEOperationEdit:index.html.twig" %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {# TinyMCE #}
+    {% include "PolitizrAdminBundle::tinymce-full.html.twig" %}
+{% endblock %}
+
+{% block generic_actions_script_container %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/operation/localization.js') }}"></script>
+{% endblock %}

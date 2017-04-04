@@ -13,26 +13,26 @@ use \Propel;
 use \PropelDateTime;
 use \PropelException;
 use \PropelPDO;
-use Politizr\Model\PLCity;
-use Politizr\Model\PLCityQuery;
-use Politizr\Model\PTScopePLC;
-use Politizr\Model\PTScopePLCPeer;
-use Politizr\Model\PTScopePLCQuery;
+use Politizr\Model\PEOPresetPTag;
+use Politizr\Model\PEOPresetPTagPeer;
+use Politizr\Model\PEOPresetPTagQuery;
+use Politizr\Model\PEOperation;
+use Politizr\Model\PEOperationQuery;
 use Politizr\Model\PTag;
 use Politizr\Model\PTagQuery;
 
-abstract class BasePTScopePLC extends BaseObject implements Persistent
+abstract class BasePEOPresetPTag extends BaseObject implements Persistent
 {
     /**
      * Peer class name
      */
-    const PEER = 'Politizr\\Model\\PTScopePLCPeer';
+    const PEER = 'Politizr\\Model\\PEOPresetPTagPeer';
 
     /**
      * The Peer class.
      * Instance provides a convenient way of calling static methods on a class
      * that calling code may not be able to identify.
-     * @var        PTScopePLCPeer
+     * @var        PEOPresetPTagPeer
      */
     protected static $peer;
 
@@ -49,16 +49,16 @@ abstract class BasePTScopePLC extends BaseObject implements Persistent
     protected $id;
 
     /**
+     * The value for the p_e_operation_id field.
+     * @var        int
+     */
+    protected $p_e_operation_id;
+
+    /**
      * The value for the p_tag_id field.
      * @var        int
      */
     protected $p_tag_id;
-
-    /**
-     * The value for the p_l_city_id field.
-     * @var        int
-     */
-    protected $p_l_city_id;
 
     /**
      * The value for the created_at field.
@@ -73,14 +73,14 @@ abstract class BasePTScopePLC extends BaseObject implements Persistent
     protected $updated_at;
 
     /**
+     * @var        PEOperation
+     */
+    protected $aPEOperation;
+
+    /**
      * @var        PTag
      */
     protected $aPTag;
-
-    /**
-     * @var        PLCity
-     */
-    protected $aPLCity;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -114,6 +114,17 @@ abstract class BasePTScopePLC extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [p_e_operation_id] column value.
+     *
+     * @return int
+     */
+    public function getPEOperationId()
+    {
+
+        return $this->p_e_operation_id;
+    }
+
+    /**
      * Get the [p_tag_id] column value.
      *
      * @return int
@@ -122,17 +133,6 @@ abstract class BasePTScopePLC extends BaseObject implements Persistent
     {
 
         return $this->p_tag_id;
-    }
-
-    /**
-     * Get the [p_l_city_id] column value.
-     *
-     * @return int
-     */
-    public function getPLCityId()
-    {
-
-        return $this->p_l_city_id;
     }
 
     /**
@@ -219,7 +219,7 @@ abstract class BasePTScopePLC extends BaseObject implements Persistent
      * Set the value of [id] column.
      *
      * @param  int $v new value
-     * @return PTScopePLC The current object (for fluent API support)
+     * @return PEOPresetPTag The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -229,7 +229,7 @@ abstract class BasePTScopePLC extends BaseObject implements Persistent
 
         if ($this->id !== $v) {
             $this->id = $v;
-            $this->modifiedColumns[] = PTScopePLCPeer::ID;
+            $this->modifiedColumns[] = PEOPresetPTagPeer::ID;
         }
 
 
@@ -237,10 +237,35 @@ abstract class BasePTScopePLC extends BaseObject implements Persistent
     } // setId()
 
     /**
+     * Set the value of [p_e_operation_id] column.
+     *
+     * @param  int $v new value
+     * @return PEOPresetPTag The current object (for fluent API support)
+     */
+    public function setPEOperationId($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->p_e_operation_id !== $v) {
+            $this->p_e_operation_id = $v;
+            $this->modifiedColumns[] = PEOPresetPTagPeer::P_E_OPERATION_ID;
+        }
+
+        if ($this->aPEOperation !== null && $this->aPEOperation->getId() !== $v) {
+            $this->aPEOperation = null;
+        }
+
+
+        return $this;
+    } // setPEOperationId()
+
+    /**
      * Set the value of [p_tag_id] column.
      *
      * @param  int $v new value
-     * @return PTScopePLC The current object (for fluent API support)
+     * @return PEOPresetPTag The current object (for fluent API support)
      */
     public function setPTagId($v)
     {
@@ -250,7 +275,7 @@ abstract class BasePTScopePLC extends BaseObject implements Persistent
 
         if ($this->p_tag_id !== $v) {
             $this->p_tag_id = $v;
-            $this->modifiedColumns[] = PTScopePLCPeer::P_TAG_ID;
+            $this->modifiedColumns[] = PEOPresetPTagPeer::P_TAG_ID;
         }
 
         if ($this->aPTag !== null && $this->aPTag->getId() !== $v) {
@@ -262,36 +287,11 @@ abstract class BasePTScopePLC extends BaseObject implements Persistent
     } // setPTagId()
 
     /**
-     * Set the value of [p_l_city_id] column.
-     *
-     * @param  int $v new value
-     * @return PTScopePLC The current object (for fluent API support)
-     */
-    public function setPLCityId($v)
-    {
-        if ($v !== null && is_numeric($v)) {
-            $v = (int) $v;
-        }
-
-        if ($this->p_l_city_id !== $v) {
-            $this->p_l_city_id = $v;
-            $this->modifiedColumns[] = PTScopePLCPeer::P_L_CITY_ID;
-        }
-
-        if ($this->aPLCity !== null && $this->aPLCity->getId() !== $v) {
-            $this->aPLCity = null;
-        }
-
-
-        return $this;
-    } // setPLCityId()
-
-    /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
      *               Empty strings are treated as null.
-     * @return PTScopePLC The current object (for fluent API support)
+     * @return PEOPresetPTag The current object (for fluent API support)
      */
     public function setCreatedAt($v)
     {
@@ -301,7 +301,7 @@ abstract class BasePTScopePLC extends BaseObject implements Persistent
             $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
             if ($currentDateAsString !== $newDateAsString) {
                 $this->created_at = $newDateAsString;
-                $this->modifiedColumns[] = PTScopePLCPeer::CREATED_AT;
+                $this->modifiedColumns[] = PEOPresetPTagPeer::CREATED_AT;
             }
         } // if either are not null
 
@@ -314,7 +314,7 @@ abstract class BasePTScopePLC extends BaseObject implements Persistent
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
      *               Empty strings are treated as null.
-     * @return PTScopePLC The current object (for fluent API support)
+     * @return PEOPresetPTag The current object (for fluent API support)
      */
     public function setUpdatedAt($v)
     {
@@ -324,7 +324,7 @@ abstract class BasePTScopePLC extends BaseObject implements Persistent
             $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
             if ($currentDateAsString !== $newDateAsString) {
                 $this->updated_at = $newDateAsString;
-                $this->modifiedColumns[] = PTScopePLCPeer::UPDATED_AT;
+                $this->modifiedColumns[] = PEOPresetPTagPeer::UPDATED_AT;
             }
         } // if either are not null
 
@@ -365,8 +365,8 @@ abstract class BasePTScopePLC extends BaseObject implements Persistent
         try {
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->p_tag_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
-            $this->p_l_city_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+            $this->p_e_operation_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
+            $this->p_tag_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
             $this->created_at = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
             $this->updated_at = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
             $this->resetModified();
@@ -378,10 +378,10 @@ abstract class BasePTScopePLC extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 5; // 5 = PTScopePLCPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 5; // 5 = PEOPresetPTagPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException("Error populating PTScopePLC object", $e);
+            throw new PropelException("Error populating PEOPresetPTag object", $e);
         }
     }
 
@@ -401,11 +401,11 @@ abstract class BasePTScopePLC extends BaseObject implements Persistent
     public function ensureConsistency()
     {
 
+        if ($this->aPEOperation !== null && $this->p_e_operation_id !== $this->aPEOperation->getId()) {
+            $this->aPEOperation = null;
+        }
         if ($this->aPTag !== null && $this->p_tag_id !== $this->aPTag->getId()) {
             $this->aPTag = null;
-        }
-        if ($this->aPLCity !== null && $this->p_l_city_id !== $this->aPLCity->getId()) {
-            $this->aPLCity = null;
         }
     } // ensureConsistency
 
@@ -430,13 +430,13 @@ abstract class BasePTScopePLC extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(PTScopePLCPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PEOPresetPTagPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $stmt = PTScopePLCPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
+        $stmt = PEOPresetPTagPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
         $row = $stmt->fetch(PDO::FETCH_NUM);
         $stmt->closeCursor();
         if (!$row) {
@@ -446,8 +446,8 @@ abstract class BasePTScopePLC extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->aPEOperation = null;
             $this->aPTag = null;
-            $this->aPLCity = null;
         } // if (deep)
     }
 
@@ -468,12 +468,12 @@ abstract class BasePTScopePLC extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(PTScopePLCPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PEOPresetPTagPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
         try {
-            $deleteQuery = PTScopePLCQuery::create()
+            $deleteQuery = PEOPresetPTagQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -511,7 +511,7 @@ abstract class BasePTScopePLC extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(PTScopePLCPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PEOPresetPTagPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
@@ -521,16 +521,16 @@ abstract class BasePTScopePLC extends BaseObject implements Persistent
             if ($isInsert) {
                 $ret = $ret && $this->preInsert($con);
                 // timestampable behavior
-                if (!$this->isColumnModified(PTScopePLCPeer::CREATED_AT)) {
+                if (!$this->isColumnModified(PEOPresetPTagPeer::CREATED_AT)) {
                     $this->setCreatedAt(time());
                 }
-                if (!$this->isColumnModified(PTScopePLCPeer::UPDATED_AT)) {
+                if (!$this->isColumnModified(PEOPresetPTagPeer::UPDATED_AT)) {
                     $this->setUpdatedAt(time());
                 }
             } else {
                 $ret = $ret && $this->preUpdate($con);
                 // timestampable behavior
-                if ($this->isModified() && !$this->isColumnModified(PTScopePLCPeer::UPDATED_AT)) {
+                if ($this->isModified() && !$this->isColumnModified(PEOPresetPTagPeer::UPDATED_AT)) {
                     $this->setUpdatedAt(time());
                 }
             }
@@ -542,7 +542,7 @@ abstract class BasePTScopePLC extends BaseObject implements Persistent
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                PTScopePLCPeer::addInstanceToPool($this);
+                PEOPresetPTagPeer::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -577,18 +577,18 @@ abstract class BasePTScopePLC extends BaseObject implements Persistent
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
+            if ($this->aPEOperation !== null) {
+                if ($this->aPEOperation->isModified() || $this->aPEOperation->isNew()) {
+                    $affectedRows += $this->aPEOperation->save($con);
+                }
+                $this->setPEOperation($this->aPEOperation);
+            }
+
             if ($this->aPTag !== null) {
                 if ($this->aPTag->isModified() || $this->aPTag->isNew()) {
                     $affectedRows += $this->aPTag->save($con);
                 }
                 $this->setPTag($this->aPTag);
-            }
-
-            if ($this->aPLCity !== null) {
-                if ($this->aPLCity->isModified() || $this->aPLCity->isNew()) {
-                    $affectedRows += $this->aPLCity->save($con);
-                }
-                $this->setPLCity($this->aPLCity);
             }
 
             if ($this->isNew() || $this->isModified()) {
@@ -622,30 +622,30 @@ abstract class BasePTScopePLC extends BaseObject implements Persistent
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[] = PTScopePLCPeer::ID;
+        $this->modifiedColumns[] = PEOPresetPTagPeer::ID;
         if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . PTScopePLCPeer::ID . ')');
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . PEOPresetPTagPeer::ID . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(PTScopePLCPeer::ID)) {
+        if ($this->isColumnModified(PEOPresetPTagPeer::ID)) {
             $modifiedColumns[':p' . $index++]  = '`id`';
         }
-        if ($this->isColumnModified(PTScopePLCPeer::P_TAG_ID)) {
+        if ($this->isColumnModified(PEOPresetPTagPeer::P_E_OPERATION_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`p_e_operation_id`';
+        }
+        if ($this->isColumnModified(PEOPresetPTagPeer::P_TAG_ID)) {
             $modifiedColumns[':p' . $index++]  = '`p_tag_id`';
         }
-        if ($this->isColumnModified(PTScopePLCPeer::P_L_CITY_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`p_l_city_id`';
-        }
-        if ($this->isColumnModified(PTScopePLCPeer::CREATED_AT)) {
+        if ($this->isColumnModified(PEOPresetPTagPeer::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`created_at`';
         }
-        if ($this->isColumnModified(PTScopePLCPeer::UPDATED_AT)) {
+        if ($this->isColumnModified(PEOPresetPTagPeer::UPDATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`updated_at`';
         }
 
         $sql = sprintf(
-            'INSERT INTO `p_t_scope_p_l_c` (%s) VALUES (%s)',
+            'INSERT INTO `p_e_o_preset_p_tag` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -657,11 +657,11 @@ abstract class BasePTScopePLC extends BaseObject implements Persistent
                     case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
+                    case '`p_e_operation_id`':
+                        $stmt->bindValue($identifier, $this->p_e_operation_id, PDO::PARAM_INT);
+                        break;
                     case '`p_tag_id`':
                         $stmt->bindValue($identifier, $this->p_tag_id, PDO::PARAM_INT);
-                        break;
-                    case '`p_l_city_id`':
-                        $stmt->bindValue($identifier, $this->p_l_city_id, PDO::PARAM_INT);
                         break;
                     case '`created_at`':
                         $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
@@ -713,7 +713,7 @@ abstract class BasePTScopePLC extends BaseObject implements Persistent
      */
     public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = PTScopePLCPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = PEOPresetPTagPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -733,10 +733,10 @@ abstract class BasePTScopePLC extends BaseObject implements Persistent
                 return $this->getId();
                 break;
             case 1:
-                return $this->getPTagId();
+                return $this->getPEOperationId();
                 break;
             case 2:
-                return $this->getPLCityId();
+                return $this->getPTagId();
                 break;
             case 3:
                 return $this->getCreatedAt();
@@ -767,15 +767,15 @@ abstract class BasePTScopePLC extends BaseObject implements Persistent
      */
     public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
-        if (isset($alreadyDumpedObjects['PTScopePLC'][$this->getPrimaryKey()])) {
+        if (isset($alreadyDumpedObjects['PEOPresetPTag'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['PTScopePLC'][$this->getPrimaryKey()] = true;
-        $keys = PTScopePLCPeer::getFieldNames($keyType);
+        $alreadyDumpedObjects['PEOPresetPTag'][$this->getPrimaryKey()] = true;
+        $keys = PEOPresetPTagPeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getPTagId(),
-            $keys[2] => $this->getPLCityId(),
+            $keys[1] => $this->getPEOperationId(),
+            $keys[2] => $this->getPTagId(),
             $keys[3] => $this->getCreatedAt(),
             $keys[4] => $this->getUpdatedAt(),
         );
@@ -785,11 +785,11 @@ abstract class BasePTScopePLC extends BaseObject implements Persistent
         }
 
         if ($includeForeignObjects) {
+            if (null !== $this->aPEOperation) {
+                $result['PEOperation'] = $this->aPEOperation->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
             if (null !== $this->aPTag) {
                 $result['PTag'] = $this->aPTag->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
-            if (null !== $this->aPLCity) {
-                $result['PLCity'] = $this->aPLCity->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
         }
 
@@ -809,7 +809,7 @@ abstract class BasePTScopePLC extends BaseObject implements Persistent
      */
     public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = PTScopePLCPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = PEOPresetPTagPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
 
         $this->setByPosition($pos, $value);
     }
@@ -829,10 +829,10 @@ abstract class BasePTScopePLC extends BaseObject implements Persistent
                 $this->setId($value);
                 break;
             case 1:
-                $this->setPTagId($value);
+                $this->setPEOperationId($value);
                 break;
             case 2:
-                $this->setPLCityId($value);
+                $this->setPTagId($value);
                 break;
             case 3:
                 $this->setCreatedAt($value);
@@ -862,11 +862,11 @@ abstract class BasePTScopePLC extends BaseObject implements Persistent
      */
     public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
     {
-        $keys = PTScopePLCPeer::getFieldNames($keyType);
+        $keys = PEOPresetPTagPeer::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setPTagId($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setPLCityId($arr[$keys[2]]);
+        if (array_key_exists($keys[1], $arr)) $this->setPEOperationId($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setPTagId($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setCreatedAt($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setUpdatedAt($arr[$keys[4]]);
     }
@@ -878,13 +878,13 @@ abstract class BasePTScopePLC extends BaseObject implements Persistent
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(PTScopePLCPeer::DATABASE_NAME);
+        $criteria = new Criteria(PEOPresetPTagPeer::DATABASE_NAME);
 
-        if ($this->isColumnModified(PTScopePLCPeer::ID)) $criteria->add(PTScopePLCPeer::ID, $this->id);
-        if ($this->isColumnModified(PTScopePLCPeer::P_TAG_ID)) $criteria->add(PTScopePLCPeer::P_TAG_ID, $this->p_tag_id);
-        if ($this->isColumnModified(PTScopePLCPeer::P_L_CITY_ID)) $criteria->add(PTScopePLCPeer::P_L_CITY_ID, $this->p_l_city_id);
-        if ($this->isColumnModified(PTScopePLCPeer::CREATED_AT)) $criteria->add(PTScopePLCPeer::CREATED_AT, $this->created_at);
-        if ($this->isColumnModified(PTScopePLCPeer::UPDATED_AT)) $criteria->add(PTScopePLCPeer::UPDATED_AT, $this->updated_at);
+        if ($this->isColumnModified(PEOPresetPTagPeer::ID)) $criteria->add(PEOPresetPTagPeer::ID, $this->id);
+        if ($this->isColumnModified(PEOPresetPTagPeer::P_E_OPERATION_ID)) $criteria->add(PEOPresetPTagPeer::P_E_OPERATION_ID, $this->p_e_operation_id);
+        if ($this->isColumnModified(PEOPresetPTagPeer::P_TAG_ID)) $criteria->add(PEOPresetPTagPeer::P_TAG_ID, $this->p_tag_id);
+        if ($this->isColumnModified(PEOPresetPTagPeer::CREATED_AT)) $criteria->add(PEOPresetPTagPeer::CREATED_AT, $this->created_at);
+        if ($this->isColumnModified(PEOPresetPTagPeer::UPDATED_AT)) $criteria->add(PEOPresetPTagPeer::UPDATED_AT, $this->updated_at);
 
         return $criteria;
     }
@@ -899,8 +899,8 @@ abstract class BasePTScopePLC extends BaseObject implements Persistent
      */
     public function buildPkeyCriteria()
     {
-        $criteria = new Criteria(PTScopePLCPeer::DATABASE_NAME);
-        $criteria->add(PTScopePLCPeer::ID, $this->id);
+        $criteria = new Criteria(PEOPresetPTagPeer::DATABASE_NAME);
+        $criteria->add(PEOPresetPTagPeer::ID, $this->id);
 
         return $criteria;
     }
@@ -941,15 +941,15 @@ abstract class BasePTScopePLC extends BaseObject implements Persistent
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param object $copyObj An object of PTScopePLC (or compatible) type.
+     * @param object $copyObj An object of PEOPresetPTag (or compatible) type.
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
+        $copyObj->setPEOperationId($this->getPEOperationId());
         $copyObj->setPTagId($this->getPTagId());
-        $copyObj->setPLCityId($this->getPLCityId());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
 
@@ -979,7 +979,7 @@ abstract class BasePTScopePLC extends BaseObject implements Persistent
      * objects.
      *
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return PTScopePLC Clone of current object.
+     * @return PEOPresetPTag Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -999,22 +999,74 @@ abstract class BasePTScopePLC extends BaseObject implements Persistent
      * same instance for all member of this class. The method could therefore
      * be static, but this would prevent one from overriding the behavior.
      *
-     * @return PTScopePLCPeer
+     * @return PEOPresetPTagPeer
      */
     public function getPeer()
     {
         if (self::$peer === null) {
-            self::$peer = new PTScopePLCPeer();
+            self::$peer = new PEOPresetPTagPeer();
         }
 
         return self::$peer;
     }
 
     /**
+     * Declares an association between this object and a PEOperation object.
+     *
+     * @param                  PEOperation $v
+     * @return PEOPresetPTag The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setPEOperation(PEOperation $v = null)
+    {
+        if ($v === null) {
+            $this->setPEOperationId(NULL);
+        } else {
+            $this->setPEOperationId($v->getId());
+        }
+
+        $this->aPEOperation = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the PEOperation object, it will not be re-added.
+        if ($v !== null) {
+            $v->addPEOPresetPTag($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated PEOperation object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return PEOperation The associated PEOperation object.
+     * @throws PropelException
+     */
+    public function getPEOperation(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aPEOperation === null && ($this->p_e_operation_id !== null) && $doQuery) {
+            $this->aPEOperation = PEOperationQuery::create()->findPk($this->p_e_operation_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aPEOperation->addPEOPresetPTags($this);
+             */
+        }
+
+        return $this->aPEOperation;
+    }
+
+    /**
      * Declares an association between this object and a PTag object.
      *
      * @param                  PTag $v
-     * @return PTScopePLC The current object (for fluent API support)
+     * @return PEOPresetPTag The current object (for fluent API support)
      * @throws PropelException
      */
     public function setPTag(PTag $v = null)
@@ -1030,7 +1082,7 @@ abstract class BasePTScopePLC extends BaseObject implements Persistent
         // Add binding for other direction of this n:n relationship.
         // If this object has already been added to the PTag object, it will not be re-added.
         if ($v !== null) {
-            $v->addPTScopePLC($this);
+            $v->addPEOPresetPTag($this);
         }
 
 
@@ -1055,63 +1107,11 @@ abstract class BasePTScopePLC extends BaseObject implements Persistent
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aPTag->addPTScopePLCs($this);
+                $this->aPTag->addPEOPresetPTags($this);
              */
         }
 
         return $this->aPTag;
-    }
-
-    /**
-     * Declares an association between this object and a PLCity object.
-     *
-     * @param                  PLCity $v
-     * @return PTScopePLC The current object (for fluent API support)
-     * @throws PropelException
-     */
-    public function setPLCity(PLCity $v = null)
-    {
-        if ($v === null) {
-            $this->setPLCityId(NULL);
-        } else {
-            $this->setPLCityId($v->getId());
-        }
-
-        $this->aPLCity = $v;
-
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the PLCity object, it will not be re-added.
-        if ($v !== null) {
-            $v->addPTScopePLC($this);
-        }
-
-
-        return $this;
-    }
-
-
-    /**
-     * Get the associated PLCity object
-     *
-     * @param PropelPDO $con Optional Connection object.
-     * @param $doQuery Executes a query to get the object if required
-     * @return PLCity The associated PLCity object.
-     * @throws PropelException
-     */
-    public function getPLCity(PropelPDO $con = null, $doQuery = true)
-    {
-        if ($this->aPLCity === null && ($this->p_l_city_id !== null) && $doQuery) {
-            $this->aPLCity = PLCityQuery::create()->findPk($this->p_l_city_id, $con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aPLCity->addPTScopePLCs($this);
-             */
-        }
-
-        return $this->aPLCity;
     }
 
     /**
@@ -1120,8 +1120,8 @@ abstract class BasePTScopePLC extends BaseObject implements Persistent
     public function clear()
     {
         $this->id = null;
+        $this->p_e_operation_id = null;
         $this->p_tag_id = null;
-        $this->p_l_city_id = null;
         $this->created_at = null;
         $this->updated_at = null;
         $this->alreadyInSave = false;
@@ -1146,18 +1146,18 @@ abstract class BasePTScopePLC extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
+            if ($this->aPEOperation instanceof Persistent) {
+              $this->aPEOperation->clearAllReferences($deep);
+            }
             if ($this->aPTag instanceof Persistent) {
               $this->aPTag->clearAllReferences($deep);
-            }
-            if ($this->aPLCity instanceof Persistent) {
-              $this->aPLCity->clearAllReferences($deep);
             }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
+        $this->aPEOperation = null;
         $this->aPTag = null;
-        $this->aPLCity = null;
     }
 
     /**
@@ -1167,7 +1167,7 @@ abstract class BasePTScopePLC extends BaseObject implements Persistent
      */
     public function __toString()
     {
-        return (string) $this->exportTo(PTScopePLCPeer::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(PEOPresetPTagPeer::DEFAULT_STRING_FORMAT);
     }
 
     /**
@@ -1185,11 +1185,11 @@ abstract class BasePTScopePLC extends BaseObject implements Persistent
     /**
      * Mark the current object so that the update date doesn't get updated during next save
      *
-     * @return     PTScopePLC The current object (for fluent API support)
+     * @return     PEOPresetPTag The current object (for fluent API support)
      */
     public function keepUpdateDateUnchanged()
     {
-        $this->modifiedColumns[] = PTScopePLCPeer::UPDATED_AT;
+        $this->modifiedColumns[] = PEOPresetPTagPeer::UPDATED_AT;
 
         return $this;
     }

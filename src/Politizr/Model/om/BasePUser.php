@@ -23,6 +23,8 @@ use Politizr\Model\PDRComment;
 use Politizr\Model\PDRCommentQuery;
 use Politizr\Model\PDReaction;
 use Politizr\Model\PDReactionQuery;
+use Politizr\Model\PEOperation;
+use Politizr\Model\PEOperationQuery;
 use Politizr\Model\PLCity;
 use Politizr\Model\PLCityQuery;
 use Politizr\Model\PMAbuseReporting;
@@ -485,6 +487,12 @@ abstract class BasePUser extends BaseObject implements Persistent
     protected $collPOwnersPartial;
 
     /**
+     * @var        PropelObjectCollection|PEOperation[] Collection to store aggregation of PEOperation objects.
+     */
+    protected $collPEOperations;
+    protected $collPEOperationsPartial;
+
+    /**
      * @var        PropelObjectCollection|POrder[] Collection to store aggregation of POrder objects.
      */
     protected $collPOrders;
@@ -902,6 +910,12 @@ abstract class BasePUser extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $pOwnersScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pEOperationsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -3484,6 +3498,8 @@ abstract class BasePUser extends BaseObject implements Persistent
 
             $this->collPOwners = null;
 
+            $this->collPEOperations = null;
+
             $this->collPOrders = null;
 
             $this->collPuFollowDdPUsers = null;
@@ -4161,6 +4177,23 @@ abstract class BasePUser extends BaseObject implements Persistent
 
             if ($this->collPOwners !== null) {
                 foreach ($this->collPOwners as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->pEOperationsScheduledForDeletion !== null) {
+                if (!$this->pEOperationsScheduledForDeletion->isEmpty()) {
+                    PEOperationQuery::create()
+                        ->filterByPrimaryKeys($this->pEOperationsScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->pEOperationsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPEOperations !== null) {
+                foreach ($this->collPEOperations as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -5444,6 +5477,9 @@ abstract class BasePUser extends BaseObject implements Persistent
             if (null !== $this->collPOwners) {
                 $result['POwners'] = $this->collPOwners->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
+            if (null !== $this->collPEOperations) {
+                $result['PEOperations'] = $this->collPEOperations->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
             if (null !== $this->collPOrders) {
                 $result['POrders'] = $this->collPOrders->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
@@ -6029,6 +6065,12 @@ abstract class BasePUser extends BaseObject implements Persistent
                 }
             }
 
+            foreach ($this->getPEOperations() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPEOperation($relObj->copy($deepCopy));
+                }
+            }
+
             foreach ($this->getPOrders() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addPOrder($relObj->copy($deepCopy));
@@ -6403,6 +6445,9 @@ abstract class BasePUser extends BaseObject implements Persistent
         }
         if ('POwner' == $relationName) {
             $this->initPOwners();
+        }
+        if ('PEOperation' == $relationName) {
+            $this->initPEOperations();
         }
         if ('POrder' == $relationName) {
             $this->initPOrders();
@@ -7056,6 +7101,231 @@ abstract class BasePUser extends BaseObject implements Persistent
         $query->joinWith('PTagRelatedByPTParentId', $join_behavior);
 
         return $this->getPOwners($query, $con);
+    }
+
+    /**
+     * Clears out the collPEOperations collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PUser The current object (for fluent API support)
+     * @see        addPEOperations()
+     */
+    public function clearPEOperations()
+    {
+        $this->collPEOperations = null; // important to set this to null since that means it is uninitialized
+        $this->collPEOperationsPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPEOperations collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPEOperations($v = true)
+    {
+        $this->collPEOperationsPartial = $v;
+    }
+
+    /**
+     * Initializes the collPEOperations collection.
+     *
+     * By default this just sets the collPEOperations collection to an empty array (like clearcollPEOperations());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPEOperations($overrideExisting = true)
+    {
+        if (null !== $this->collPEOperations && !$overrideExisting) {
+            return;
+        }
+        $this->collPEOperations = new PropelObjectCollection();
+        $this->collPEOperations->setModel('PEOperation');
+    }
+
+    /**
+     * Gets an array of PEOperation objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PUser is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PEOperation[] List of PEOperation objects
+     * @throws PropelException
+     */
+    public function getPEOperations($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPEOperationsPartial && !$this->isNew();
+        if (null === $this->collPEOperations || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPEOperations) {
+                // return empty collection
+                $this->initPEOperations();
+            } else {
+                $collPEOperations = PEOperationQuery::create(null, $criteria)
+                    ->filterByPUser($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPEOperationsPartial && count($collPEOperations)) {
+                      $this->initPEOperations(false);
+
+                      foreach ($collPEOperations as $obj) {
+                        if (false == $this->collPEOperations->contains($obj)) {
+                          $this->collPEOperations->append($obj);
+                        }
+                      }
+
+                      $this->collPEOperationsPartial = true;
+                    }
+
+                    $collPEOperations->getInternalIterator()->rewind();
+
+                    return $collPEOperations;
+                }
+
+                if ($partial && $this->collPEOperations) {
+                    foreach ($this->collPEOperations as $obj) {
+                        if ($obj->isNew()) {
+                            $collPEOperations[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPEOperations = $collPEOperations;
+                $this->collPEOperationsPartial = false;
+            }
+        }
+
+        return $this->collPEOperations;
+    }
+
+    /**
+     * Sets a collection of PEOperation objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pEOperations A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PUser The current object (for fluent API support)
+     */
+    public function setPEOperations(PropelCollection $pEOperations, PropelPDO $con = null)
+    {
+        $pEOperationsToDelete = $this->getPEOperations(new Criteria(), $con)->diff($pEOperations);
+
+
+        $this->pEOperationsScheduledForDeletion = $pEOperationsToDelete;
+
+        foreach ($pEOperationsToDelete as $pEOperationRemoved) {
+            $pEOperationRemoved->setPUser(null);
+        }
+
+        $this->collPEOperations = null;
+        foreach ($pEOperations as $pEOperation) {
+            $this->addPEOperation($pEOperation);
+        }
+
+        $this->collPEOperations = $pEOperations;
+        $this->collPEOperationsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PEOperation objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PEOperation objects.
+     * @throws PropelException
+     */
+    public function countPEOperations(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPEOperationsPartial && !$this->isNew();
+        if (null === $this->collPEOperations || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPEOperations) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPEOperations());
+            }
+            $query = PEOperationQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPUser($this)
+                ->count($con);
+        }
+
+        return count($this->collPEOperations);
+    }
+
+    /**
+     * Method called to associate a PEOperation object to this object
+     * through the PEOperation foreign key attribute.
+     *
+     * @param    PEOperation $l PEOperation
+     * @return PUser The current object (for fluent API support)
+     */
+    public function addPEOperation(PEOperation $l)
+    {
+        if ($this->collPEOperations === null) {
+            $this->initPEOperations();
+            $this->collPEOperationsPartial = true;
+        }
+
+        if (!in_array($l, $this->collPEOperations->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPEOperation($l);
+
+            if ($this->pEOperationsScheduledForDeletion and $this->pEOperationsScheduledForDeletion->contains($l)) {
+                $this->pEOperationsScheduledForDeletion->remove($this->pEOperationsScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PEOperation $pEOperation The pEOperation object to add.
+     */
+    protected function doAddPEOperation($pEOperation)
+    {
+        $this->collPEOperations[]= $pEOperation;
+        $pEOperation->setPUser($this);
+    }
+
+    /**
+     * @param	PEOperation $pEOperation The pEOperation object to remove.
+     * @return PUser The current object (for fluent API support)
+     */
+    public function removePEOperation($pEOperation)
+    {
+        if ($this->getPEOperations()->contains($pEOperation)) {
+            $this->collPEOperations->remove($this->collPEOperations->search($pEOperation));
+            if (null === $this->pEOperationsScheduledForDeletion) {
+                $this->pEOperationsScheduledForDeletion = clone $this->collPEOperations;
+                $this->pEOperationsScheduledForDeletion->clear();
+            }
+            $this->pEOperationsScheduledForDeletion[]= clone $pEOperation;
+            $pEOperation->setPUser(null);
+        }
+
+        return $this;
     }
 
     /**
@@ -18543,6 +18813,11 @@ abstract class BasePUser extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collPEOperations) {
+                foreach ($this->collPEOperations as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collPOrders) {
                 foreach ($this->collPOrders as $o) {
                     $o->clearAllReferences($deep);
@@ -18819,6 +19094,10 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->collPOwners->clearIterator();
         }
         $this->collPOwners = null;
+        if ($this->collPEOperations instanceof PropelCollection) {
+            $this->collPEOperations->clearIterator();
+        }
+        $this->collPEOperations = null;
         if ($this->collPOrders instanceof PropelCollection) {
             $this->collPOrders->clearIterator();
         }

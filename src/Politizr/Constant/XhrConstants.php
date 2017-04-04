@@ -5,6 +5,7 @@ namespace Politizr\Constant;
 /**
  * XHR constants
  * /!\ to sync w. js/politizr/xhr.js
+ * @todo is this pure bullshit? route expose in "xhr.js" only?
  *
  * @author Lionel Bouzonville
  */
@@ -234,6 +235,10 @@ class XhrConstants
     const ADMIN_ROUTE_CITY_LISTING = 'admin/villes/listing';
     const ADMIN_ROUTE_USER_CITY = 'admin/utilisateur/ville/update';
     const ADMIN_ROUTE_DOC_LOC = 'admin/document/localization/update';
-    const ADMIN_ROUTE_TAG_CITIES = 'admin/tag/villes';
-    const ADMIN_ROUTE_TAG_CITIES_SEARCH_LISTING = 'admin/tag/villes/recherche';
+
+    // OPERATION
+    const ADMIN_ROUTE_OPERATION_CITIES = 'admin/tag/villes';
+    const ADMIN_ROUTE_OPERATION_CITIES_SEARCH_LISTING = 'admin/tag/villes/recherche';
+    const ADMIN_ROUTE_ADD_OPERATION_CITY = 'admin/tag/ville/create';
+    const ADMIN_ROUTE_DELETE_OPERATION_CITY = 'admin/tag/ville/delete';
 }

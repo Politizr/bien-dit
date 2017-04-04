@@ -167,9 +167,6 @@ builders:
                 "Objets":
                     "Utilisateur":              [ block_p_user ]
                     "Propriétaire":             [ block_p_owner ]
-                "Scope":
-                    "Villes associés":          [ block_cities ]
-                    "Ajouter des villes":       [ block_cities_add ]
                 "Publication":
                     "Débats":                   [ block_debates ]
                     "Réactions":                [ block_reactions ]
@@ -185,10 +182,6 @@ builders:
                     label:                      "Auteur"
                 block_p_owner:
                     label:                      "Propriétaire"
-                block_cities:
-                    label:                      "Villes"
-                block_cities_add:
-                    label:                      "Recherche"
                 block_debates:
                     label:                      "Taggés"
                 block_reactions:

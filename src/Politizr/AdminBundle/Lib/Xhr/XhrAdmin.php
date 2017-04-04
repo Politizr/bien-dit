@@ -62,6 +62,7 @@ class XhrAdmin
      * @param @politizr.manager.tag
      * @param @politizr.manager.user
      * @param @politizr.manager.localization
+     * @param @politizr.manager.election
      * @param @politizr.form.type.document_localization
      * @param @politizr.tools.global
      * @param @logger
@@ -74,6 +75,7 @@ class XhrAdmin
         $tagManager,
         $userManager,
         $localizationManager,
+        $electionManager,
         $documentLocalizationFormType,
         $globalTools,
         $logger
@@ -88,6 +90,7 @@ class XhrAdmin
         $this->tagManager = $tagManager;
         $this->userManager = $userManager;
         $this->localizationManager = $localizationManager;
+        $this->electionManager = $electionManager;
 
         $this->documentLocalizationFormType = $documentLocalizationFormType;
 
@@ -970,20 +973,24 @@ class XhrAdmin
         return true;
     }
 
+    /* ######################################################################################################## */
+    /*                                               OPERATION                                                  */
+    /* ######################################################################################################## */
+
     /**
      * Search cities by INSEE code
      */
-    public function getCitiesByTagId(Request $request)
+    public function getCitiesByOperationId(Request $request)
     {
-        $this->logger->info('*** getCitiesByInsee');
+        $this->logger->info('*** getCitiesByOperationId');
 
         // Request arguments
-        $tagId = $request->get('tagId');
+        $operationId = $request->get('operationId');
 
         $cities = PLCityQuery::create()
             ->distinct()
-            ->usePTScopePLCQuery()
-                ->filterByPTagId($tagId)
+            ->usePEOScopePLCQuery()
+                ->filterByPEOperationId($operationId)
             ->endUse()
             ->find();
 
@@ -995,10 +1002,10 @@ class XhrAdmin
             );
         } else {
             $html = $this->templating->render(
-                'PolitizrAdminBundle:Fragment\\Localization:_tagDeleteCities.html.twig',
+                'PolitizrAdminBundle:Fragment\\Localization:_operationDeleteCities.html.twig',
                 array(
                     'cities' => $cities,
-                    'tagId' => $tagId,
+                    'operationId' => $operationId,
                 )
             );
         }
@@ -1017,7 +1024,7 @@ class XhrAdmin
         $this->logger->info('*** getCitiesByInsee');
 
         // Request arguments
-        $tagId = $request->get('tagId');
+        $operationId = $request->get('operationId');
         $inseeCode = $request->get('codeInsee');
 
         $query = PLCityQuery::create()
@@ -1039,10 +1046,10 @@ class XhrAdmin
         } else {
             $cities = $query->find();
             $html = $this->templating->render(
-                'PolitizrAdminBundle:Fragment\\Localization:_tagAddCities.html.twig',
+                'PolitizrAdminBundle:Fragment\\Localization:_operationAddCities.html.twig',
                 array(
                     'cities' => $cities,
-                    'tagId' => $tagId,
+                    'operationId' => $operationId,
                 )
             );
         }
@@ -1054,33 +1061,33 @@ class XhrAdmin
     }
 
     /**
-     * Add tag / city relation
+     * Add operation / city relation
      */
-    public function addTagCityRelation(Request $request)
+    public function addOperationCityRelation(Request $request)
     {
-        $this->logger->info('*** addTagCityRelation');
+        $this->logger->info('*** addOperationCityRelation');
 
         // Request arguments
-        $tagId = $request->get('tagId');
+        $operationId = $request->get('operationId');
         $cityId = $request->get('cityId');
 
-        $this->tagManager->createTagCityScope($tagId, $cityId);        
+        $this->electionManager->createOperationCityScope($operationId, $cityId);        
 
         return true;
     }
 
     /**
-     * Delete tag / city relation
+     * Delete operation / city relation
      */
-    public function deleteTagCityRelation(Request $request)
+    public function deleteOperationCityRelation(Request $request)
     {
-        $this->logger->info('*** deleteTagCityRelation');
+        $this->logger->info('*** deleteOperationCityRelation');
 
         // Request arguments
-        $tagId = $request->get('tagId');
+        $operationId = $request->get('operationId');
         $cityId = $request->get('cityId');
 
-        $this->tagManager->deleteTagCityScope($tagId, $cityId);        
+        $this->electionManager->deleteOperationCityScope($operationId, $cityId);        
 
         return true;
     }

@@ -2,10 +2,10 @@
 
 /**
  * Data object containing the SQL and PHP code to migrate the database
- * up to version 1491237397.
- * Generated on 2017-04-03 18:36:37 by lionel
+ * up to version 1491314848.
+ * Generated on 2017-04-04 16:07:28 by lionel
  */
-class PropelMigration_1491237397
+class PropelMigration_1491314848
 {
 
     public function preUp($manager)
@@ -70,26 +70,92 @@ CREATE INDEX `p_tag_archive_I_5` ON `p_tag_archive` (`uuid`);
 
 CREATE INDEX `p_tag_archive_I_6` ON `p_tag_archive` (`slug`);
 
-CREATE TABLE `p_t_scope_p_l_c`
+CREATE TABLE `p_e_operation`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `p_tag_id` INTEGER NOT NULL,
+    `uuid` VARCHAR(50),
+    `p_user_id` INTEGER NOT NULL,
+    `title` VARCHAR(150),
+    `description` TEXT,
+    `file_name` VARCHAR(150),
+    `geo_scoped` TINYINT(1),
+    `online` TINYINT(1),
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    `slug` VARCHAR(255),
+    PRIMARY KEY (`id`),
+    UNIQUE INDEX `p_e_operation_U_1` (`uuid`),
+    UNIQUE INDEX `p_e_operation_slug` (`slug`(255)),
+    INDEX `p_e_operation_FI_1` (`p_user_id`),
+    CONSTRAINT `p_e_operation_FK_1`
+        FOREIGN KEY (`p_user_id`)
+        REFERENCES `p_user` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE `p_e_o_scope_p_l_c`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `p_e_operation_id` INTEGER NOT NULL,
     `p_l_city_id` INTEGER NOT NULL,
     `created_at` DATETIME,
     `updated_at` DATETIME,
     PRIMARY KEY (`id`),
-    INDEX `p_t_scope_p_l_c_FI_1` (`p_tag_id`),
-    INDEX `p_t_scope_p_l_c_FI_2` (`p_l_city_id`),
-    CONSTRAINT `p_t_scope_p_l_c_FK_1`
-        FOREIGN KEY (`p_tag_id`)
-        REFERENCES `p_tag` (`id`)
+    INDEX `p_e_o_scope_p_l_c_FI_1` (`p_e_operation_id`),
+    INDEX `p_e_o_scope_p_l_c_FI_2` (`p_l_city_id`),
+    CONSTRAINT `p_e_o_scope_p_l_c_FK_1`
+        FOREIGN KEY (`p_e_operation_id`)
+        REFERENCES `p_e_operation` (`id`)
         ON UPDATE CASCADE
         ON DELETE CASCADE,
-    CONSTRAINT `p_t_scope_p_l_c_FK_2`
+    CONSTRAINT `p_e_o_scope_p_l_c_FK_2`
         FOREIGN KEY (`p_l_city_id`)
         REFERENCES `p_l_city` (`id`)
         ON UPDATE CASCADE
         ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE `p_e_o_preset_p_tag`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `p_e_operation_id` INTEGER NOT NULL,
+    `p_tag_id` INTEGER NOT NULL,
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    PRIMARY KEY (`id`),
+    INDEX `p_e_o_preset_p_tag_FI_1` (`p_e_operation_id`),
+    INDEX `p_e_o_preset_p_tag_FI_2` (`p_tag_id`),
+    CONSTRAINT `p_e_o_preset_p_tag_FK_1`
+        FOREIGN KEY (`p_e_operation_id`)
+        REFERENCES `p_e_operation` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `p_e_o_preset_p_tag_FK_2`
+        FOREIGN KEY (`p_tag_id`)
+        REFERENCES `p_tag` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE `p_e_operation_archive`
+(
+    `id` INTEGER NOT NULL,
+    `uuid` VARCHAR(50),
+    `p_user_id` INTEGER NOT NULL,
+    `title` VARCHAR(150),
+    `description` TEXT,
+    `file_name` VARCHAR(150),
+    `geo_scoped` TINYINT(1),
+    `online` TINYINT(1),
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    `slug` VARCHAR(255),
+    `archived_at` DATETIME,
+    PRIMARY KEY (`id`),
+    INDEX `p_e_operation_archive_I_1` (`p_user_id`),
+    INDEX `p_e_operation_archive_I_2` (`uuid`),
+    INDEX `p_e_operation_archive_I_3` (`slug`(255))
 ) ENGINE=InnoDB;
 
 # This restores the fkey checks, after having unset them earlier
@@ -112,7 +178,13 @@ SET FOREIGN_KEY_CHECKS = 1;
 # It "suspends judgement" for fkey relationships until are tables are set.
 SET FOREIGN_KEY_CHECKS = 0;
 
-DROP TABLE IF EXISTS `p_t_scope_p_l_c`;
+DROP TABLE IF EXISTS `p_e_operation`;
+
+DROP TABLE IF EXISTS `p_e_o_scope_p_l_c`;
+
+DROP TABLE IF EXISTS `p_e_o_preset_p_tag`;
+
+DROP TABLE IF EXISTS `p_e_operation_archive`;
 
 DROP INDEX `acl_object_identity_ancestors_I_2` ON `acl_object_identity_ancestors`;
 
