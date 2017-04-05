@@ -21,7 +21,7 @@ params:
         description:
             label:          Description
         file_name:
-            label:          Logo
+            label:          Bandeau
         geo_scoped:
             label:          Accès limité
         online:
@@ -153,6 +153,8 @@ builders:
                     "Client":                   [ block_p_user ]
                 "Thématiques":
                     "Tags associés":            [ block_tags ]
+                "Scope":
+                    "Villes associés":          [ block_cities ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
                     "Options":                  [ geo_scoped ]
@@ -163,6 +165,8 @@ builders:
                     label:                      "Client"
                 block_tags:
                     label:                      "Tags"
+                block_cities:
+                    label:                      "Villes"
             actions:
                 list:                           ~
                 edit:                           ~

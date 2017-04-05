@@ -1,5 +1,7 @@
 {% extends_admingenerated "PolitizrAdminBundle:PEOperationList:row.html.twig" %}
 
 {% block list_td_column_file_name %}
-    <img src="{{ asset('/uploads/organizations/'~PEOperation.fileName) | imagine_filter('admin_list_thumb') }}" alt="{{ PEOperation.title }}">
+    {% if PEOperation.fileName %}
+        <img src="{{ asset('/uploads/users/'~PEOperation.fileName) | imagine_filter('admin_banner_thumb') }}" alt="{{ PEOperation.title }}">
+    {% endif %}
 {% endblock list_td_column_file_name %}

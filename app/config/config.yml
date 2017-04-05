@@ -284,8 +284,8 @@ liip_imagine:
     resolvers:
         default:
             web_path:
-              web_root:     %kernel.root_dir%/../web
-              cache_prefix: /uploads/cache
+                web_root:     %kernel.root_dir%/../web
+                cache_prefix: /uploads/cache
 
 #    loaders:
 #        default:
@@ -303,18 +303,21 @@ liip_imagine:
     filter_sets:
         # ADMIN
         admin_list_thumb:
-            quality:              100
+            quality:              80
             filters:
                 relative_resize:  { widen: 100 }
         admin_show_thumb:
-            quality:              100
+            quality:              80
             filters:
                 relative_resize:  { widen: 250 }
         admin_organization:
-            quality:              100
+            quality:              80
             filters:
                 relative_resize:  { widen: 50 }
-
+        admin_banner_thumb:
+            quality:              80
+            filters:
+                relative_resize:  { widen: 250 }
 
         # FRONT / GENERAL
         facebook_share:

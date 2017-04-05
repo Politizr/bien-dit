@@ -9,3 +9,8 @@
 {% block show_column_block_tags %}
     {{ adminOperationTags(PEOperation, null, 1, mode='show') }}
 {% endblock %}
+
+{# Bloc scope #}
+{% block show_column_block_cities %}
+    {{ adminOperationCities(PEOperation) }}
+{% endblock %}
