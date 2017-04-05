@@ -41,7 +41,7 @@ services:
             - @politizr.manager.tag
             - @politizr.manager.user
             - @politizr.manager.localization
-            - @politizr.manager.election
+            - @politizr.manager.event
             - @politizr.form.type.document_localization
             - @politizr.tools.global
             - @logger

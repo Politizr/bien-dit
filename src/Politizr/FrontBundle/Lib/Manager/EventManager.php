@@ -5,11 +5,11 @@ use Politizr\Model\PEOScopePLCQuery;
 use Politizr\Model\PEOScopePLC;
 
 /**
- * DB manager service for operation.
+ * DB manager service for events / op.
  *
  * @author Lionel Bouzonville
  */
-class ElectionManager
+class EventManager
 {
     private $logger;
 

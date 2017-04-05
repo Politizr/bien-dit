@@ -524,7 +524,8 @@ class XhrDocument
             'PolitizrFrontBundle:Tag:_docTags.html.twig',
             array(
                 'document' => $debate,
-                'displayOnly' => true
+                'displayOnly' => true,
+                'tagTypeId' => null,
             )
         );
 
@@ -703,7 +704,8 @@ class XhrDocument
             'PolitizrFrontBundle:Tag:_docTags.html.twig',
             array(
                 'document' => $reaction,
-                'displayOnly' => true
+                'displayOnly' => true,
+                'tagTypeId' => null,
             )
         );
 

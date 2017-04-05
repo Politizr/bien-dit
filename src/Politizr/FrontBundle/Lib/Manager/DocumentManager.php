@@ -22,17 +22,25 @@ use Politizr\Model\PDReactionQuery;
  */
 class DocumentManager
 {
+    private $tagManager;
+
     private $globalTools;
 
     private $logger;
 
     /**
      *
+     * @param @politizr.manager.tag
      * @param @politizr.tools.global
      * @param @logger
      */
-    public function __construct($globalTools, $logger)
-    {
+    public function __construct(
+        $tagManager,
+        $globalTools,
+        $logger
+    ) {
+        $this->tagManager = $tagManager;
+
         $this->globalTools = $globalTools;
         
         $this->logger = $logger;
@@ -1964,15 +1972,10 @@ GROUP BY p_d_debate_id
             $parent = $reaction->getDebate();
         }
 
-        // Init family tags
-        $tags = $parent->getTags(TagConstants::TAG_TYPE_FAMILY);
+        // Init private & family tags
+        $tags = $parent->getTags([TagConstants::TAG_TYPE_PRIVATE, TagConstants::TAG_TYPE_FAMILY]);
         foreach ($tags as $tag) {
-            $pdrTaggedT = new PDRTaggedT();
-
-            $pdrTaggedT->setPTagId($tag->getId());
-            $pdrTaggedT->setPDReactionId($reaction->getId());
-
-            $pdrTaggedT->save();
+            $this->tagManager->createReactionTag($reaction->getId(), $tag->getId());
         }
 
         return $reaction;

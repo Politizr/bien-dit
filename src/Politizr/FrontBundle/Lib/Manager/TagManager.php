@@ -315,14 +315,23 @@ ORDER BY title ASC
      */
     public function createDebateTag($debateId, $tagId)
     {
-        $pddTaggedT = new PDDTaggedT();
+        $debateTag = PDDTaggedTQuery::create()
+            ->filterByPTagId($tagId)
+            ->filterByPDDebateId($debateId)
+            ->findOne();
 
-        $pddTaggedT->setPDDebateId($debateId);
-        $pddTaggedT->setPTagId($tagId);
+        if (!$debateTag) {
+            $pddTaggedT = new PDDTaggedT();
 
-        $pddTaggedT->save();
+            $pddTaggedT->setPDDebateId($debateId);
+            $pddTaggedT->setPTagId($tagId);
 
-        return $pddTaggedT;
+            $pddTaggedT->save();
+
+            return $pddTaggedT;
+        }
+
+        return null;
     }
 
     /**
@@ -334,14 +343,23 @@ ORDER BY title ASC
      */
     public function createReactionTag($reactionId, $tagId)
     {
-        $pdrTaggedT = new PDRTaggedT();
+        $reactionTag = PDRTaggedTQuery::create()
+            ->filterByPTagId($tagId)
+            ->filterByPDReactionId($reactionId)
+            ->findOne();
 
-        $pdrTaggedT->setPDReactionId($reactionId);
-        $pdrTaggedT->setPTagId($tagId);
+        if (!$reactionTag) {
+            $pdrTaggedT = new PDRTaggedT();
 
-        $pdrTaggedT->save();
+            $pdrTaggedT->setPDReactionId($reactionId);
+            $pdrTaggedT->setPTagId($tagId);
 
-        return $pdrTaggedT;
+            $pdrTaggedT->save();
+
+            return $pdrTaggedT;
+        }
+
+        return null;
     }
 
     /**
@@ -353,14 +371,23 @@ ORDER BY title ASC
      */
     public function createOperationTag($operationId, $tagId)
     {
-        $presetPT = new PEOPresetPT();
+        $presetTag = PEOPresetPTQuery::create()
+            ->filterByPTagId($tagId)
+            ->filterByPEOperationId($operationId)
+            ->findOne();
 
-        $presetPT->setPEOperationId($operationId);
-        $presetPT->setPTagId($tagId);
+        if (!$presetTag) {
+            $presetPT = new PEOPresetPT();
 
-        $presetPT->save();
+            $presetPT->setPEOperationId($operationId);
+            $presetPT->setPTagId($tagId);
 
-        return $presetPT;
+            $presetPT->save();
+
+            return $presetPT;
+        }
+
+        return null;
     }
 
     /**

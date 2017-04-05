@@ -51,7 +51,7 @@ class XhrAdmin
     private $tagManager;
     private $userManager;
     private $localizationManager;
-    private $electionManager;
+    private $eventManager;
     private $documentLocalizationFormType;
     private $globalTools;
     private $logger;
@@ -65,7 +65,7 @@ class XhrAdmin
      * @param @politizr.manager.tag
      * @param @politizr.manager.user
      * @param @politizr.manager.localization
-     * @param @politizr.manager.election
+     * @param @politizr.manager.event
      * @param @politizr.form.type.document_localization
      * @param @politizr.tools.global
      * @param @logger
@@ -78,7 +78,7 @@ class XhrAdmin
         $tagManager,
         $userManager,
         $localizationManager,
-        $electionManager,
+        $eventManager,
         $documentLocalizationFormType,
         $globalTools,
         $logger
@@ -93,7 +93,7 @@ class XhrAdmin
         $this->tagManager = $tagManager;
         $this->userManager = $userManager;
         $this->localizationManager = $localizationManager;
-        $this->electionManager = $electionManager;
+        $this->eventManager = $eventManager;
 
         $this->documentLocalizationFormType = $documentLocalizationFormType;
 
@@ -1173,7 +1173,7 @@ class XhrAdmin
         $operationId = $request->get('operationId');
         $cityId = $request->get('cityId');
 
-        $this->electionManager->createOperationCityScope($operationId, $cityId);        
+        $this->eventManager->createOperationCityScope($operationId, $cityId);        
 
         return true;
     }
@@ -1189,7 +1189,7 @@ class XhrAdmin
         $operationId = $request->get('operationId');
         $cityId = $request->get('cityId');
 
-        $this->electionManager->deleteOperationCityScope($operationId, $cityId);        
+        $this->eventManager->deleteOperationCityScope($operationId, $cityId);        
 
         return true;
     }

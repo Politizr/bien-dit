@@ -8,6 +8,7 @@ use Politizr\Constant\ReputationConstants;
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\UserConstants;
 use Politizr\Constant\PathConstants;
+use Politizr\Constant\TagConstants;
 
 use Politizr\Model\PDocumentInterface;
 use Politizr\Model\PDDebate;
@@ -665,25 +666,26 @@ class PolitizrUserExtension extends \Twig_Extension
         // $this->logger->info('$user = '.print_r($user, true));
         // $this->logger->info('$document = '.print_r($document, true));
 
-        // elected profile can react
-        if ($this->securityAuthorizationChecker->isGranted('ROLE_ELECTED')) {
+        // elected profile can react if document ha no private tags
+        if (!$document->isWithPrivateTag() && $this->securityAuthorizationChecker->isGranted('ROLE_ELECTED')) {
             return true;
+        }
+
+        // owner of private tag can react
+        if ($document->isWithPrivateTag()) {
+            $tags = $document->getTags(TagConstants::TAG_TYPE_PRIVATE);
+            foreach ($tags as $tag) {
+                $tagOwner = $tag->getPOwner();
+                if ($tagOwner && $tagOwner->getId() == $user->getId()) {
+                    return true;
+                }
+            }
         }
 
         // author of the debate can react
         // + min reputation to reach
-
-        $debateUser = null;
-        if ($document->getType() == ObjectTypeConstants::TYPE_DEBATE) {
-            $debateUser = $document->getUser();
-        } else {
-            $debate = $document->getDebate();
-            $debateUser = $debate->getUser();
-        }
-
-        $id = $user->getId();
         $score = $user->getReputationScore();
-        if ($debateUser && $debateUser->getId() === $id && $score >= ReputationConstants::ACTION_REACTION_WRITE) {
+        if ($document->isDebateOwner($user->getId()) && $score >= ReputationConstants::ACTION_REACTION_WRITE) {
             return true;
         }
 

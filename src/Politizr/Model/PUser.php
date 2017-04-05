@@ -1126,4 +1126,41 @@ class PUser extends BasePUser implements UserInterface
 
         return $this->getPLCity()->getPLDepartment()->getTitle();
     }
+
+    // ************************************************************************************ //
+    //                                          OPERATION
+    // ************************************************************************************ //
+
+    /**
+     * Get user associated operations 
+     *
+     * @param boolean $online
+     * @return boolean
+     */
+    public function getOperations($online = true)
+    {
+        $query = PEOperationQuery::create()
+            ->filterIfOnline($online);
+
+        return parent::getPEOperations($query);
+    }
+
+    /**
+     * Is user associated with an operation 
+     *
+     * @param boolean $online
+     * @return boolean
+     */
+    public function isWithOperation($online = true)
+    {
+        $query = PEOperationQuery::create()
+            ->filterIfOnline($online);
+
+        $nbResults = parent::countPEOperations($query);
+        if ($nbResults > 0) {
+            return true;
+        }
+
+        return false;
+    }
 }

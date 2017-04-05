@@ -39,7 +39,6 @@
                 </div>
                 <div class="docTags">
                     <h5>3. Thématiques abordées</h5>
-                    {# include('includes/helperEditTag.php') #}
                     <div class="notice">
                         <i class="icon-info"></i><b>Cochez la(les) rubrique(s) associée(s) à votre publication.</b>
                     </div>
@@ -120,7 +119,6 @@
                 {% include 'PolitizrFrontBundle:Navigation\\Helper:_addTagToPublication.html.twig' %}
             </div>
             <div class="tagList">
-                {{ debate | docTags(true) }}
             </div>
         </div>
    </div>

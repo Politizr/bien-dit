@@ -12,6 +12,11 @@ $(function() {
     // showTab / default "mode comparé"
     $("[action='showTab']:last-of-type").trigger('click');
 
+    var uuid = $('input[name="uuid"]').val();
+    // console.log(uuid);
+    
+    updateReactionTagsZone(uuid);
+
     // sticky sidebar
     stickySidebar();
 });

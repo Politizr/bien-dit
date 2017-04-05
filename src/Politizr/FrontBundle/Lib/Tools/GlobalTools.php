@@ -762,29 +762,41 @@ class GlobalTools
      */
     public function isPrivateMode($visitor, PDocumentInterface $document, $mode, $userIds)
     {
-        $private = true;
         $publishedAt = $document->getPublishedAt();
-        $docUserId =  $document->getPUserId();
+        $author =  $document->getPUser();
 
+        // public if
         if ($visitor) {
-            $private = false;
-        } elseif (in_array($docUserId, $userIds)) {
-            $private = false;
+            // user is connected
+            return false;
+        } elseif (in_array($author->getId(), $userIds)) {
+            // author in list of public users
+            return false;
+        } elseif ($author->isWithOperation()) {
+            // author has subscribe an "OP"
+            return false;
+        } elseif ($document->isWithPrivateTag()) {
+            // document has private tag
+            return false;
         } elseif ($mode == 'public') {
-            $private = false;
+            // app in public mode
+            return false;
         } elseif ($mode == 'we') {
+            // app in we mode and datetime is we
             $dayOfWeek = date('w');
             if ($dayOfWeek == 0 || $dayOfWeek == 6) {
-                $private = false;
+                return false;
             }
         } elseif (is_int($mode)) {
+            // app in X days mode and document is older than X days
             $now = new \DateTime();
             $diff = $now->diff($publishedAt);
             if ($diff->days > $mode) {
-                $private = false;
+                return false;
             }
         }
-        return $private;
+
+        return true;
     }
 
     /**

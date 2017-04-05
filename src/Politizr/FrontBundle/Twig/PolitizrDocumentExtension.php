@@ -6,6 +6,7 @@ use Politizr\Exception\InconsistentDataException;
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\PathConstants;
 use Politizr\Constant\ReputationConstants;
+use Politizr\Constant\TagConstants;
 
 use Politizr\Model\PDocumentInterface;
 use Politizr\Model\PDDebate;
@@ -588,7 +589,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
      *
      * @param PDocumentInterface $document
      * @param boolean $displayOnly deactivate link & bubble on tags if true
-     * @param integer $tagTypeId
+     * @param integer|array $tagTypeId
      * @return string
      */
     public function docTags(PDocumentInterface $document, $displayOnly = false, $tagTypeId = null)
@@ -1089,11 +1090,30 @@ class PolitizrDocumentExtension extends \Twig_Extension
         }
 
         $qualified = false;
+        $private = false;
+        $privateOwner = false;
         $owner = false;
         if ($user) {
-            if ($user->isQualified()) {
+            // qualified?
+            if ($this->securityAuthorizationChecker->isGranted('ROLE_ELECTED')) {
                 $qualified = true;
-            } elseif ($document->isDebateOwner($user->getId())) {
+            }
+
+            // private & privateOwner?
+            if ($document->isWithPrivateTag()) {
+                $private = true;
+                $tags = $document->getTags(TagConstants::TAG_TYPE_PRIVATE);
+                foreach ($tags as $tag) {
+                    $tagOwner = $tag->getPOwner();
+                    if ($tagOwner && $tagOwner->getId() == $user->getId()) {
+                        $privateOwner = true;
+                    }
+                }
+            }
+
+            // debate owner?
+            $score = $user->getReputationScore();
+            if ($document->isDebateOwner($user->getId()) && $score >= ReputationConstants::ACTION_REACTION_WRITE) {
                 $owner = true;
             }
         }
@@ -1104,6 +1124,8 @@ class PolitizrDocumentExtension extends \Twig_Extension
             array(
                 'document' => $document,
                 'qualified' => $qualified,
+                'private' => $private,
+                'privateOwner' => $privateOwner,
                 'owner' => $owner,
             )
         );

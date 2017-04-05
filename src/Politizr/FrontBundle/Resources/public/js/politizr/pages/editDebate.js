@@ -8,6 +8,11 @@ $(function() {
     // modal city/dep/region/country selection show/hide
     locShowHideAttr();
 
+    var uuid = $('input[name="uuid"]').val();
+    // console.log(uuid);
+    
+    updateDebateTagsZone(uuid);
+
     // sticky sidebar
     stickySidebar();
 });

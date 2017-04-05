@@ -49,7 +49,7 @@ class AdminMenu extends AdmingeneratorMenuBuilder
         $orders = $this->addDropdown($menu, 'Commande');
         $this->addLinkRoute(
             $orders,
-            'Offre candidat',
+            'Opération',
             'Politizr_AdminBundle_PEOperation_list'
         );
         $this->addLinkRoute(

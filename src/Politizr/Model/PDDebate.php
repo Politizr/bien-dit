@@ -173,6 +173,24 @@ class PDDebate extends BasePDDebate implements PDocumentInterface
     }
 
     /**
+     * @see PDocumentInterface::isWithPrivateTag
+     */
+    public function isWithPrivateTag()
+    {
+        $query = PTagQuery::create()
+            ->filterByPTTagTypeId(TagConstants::TAG_TYPE_PRIVATE)
+            ->setDistinct();
+
+        $nbResults = parent::countPTags($query);
+        
+        if ($nbResults > 0) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * @see PDocumentInterface::getPLocalizations
      */
     public function getPLocalizations()
