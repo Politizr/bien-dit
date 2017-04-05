@@ -13,10 +13,12 @@ use Politizr\Model\PDocumentInterface;
 use Politizr\Model\PDDebate;
 use Politizr\Model\PUNotification;
 use Politizr\Model\PUser;
+use Politizr\Model\PEOperation;
 
 use Politizr\Model\PUFollowUQuery;
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PDReactionQuery;
+use Politizr\Model\PEOperationQuery;
 
 use Politizr\FrontBundle\Form\Type\PUserLocalizationType;
 
@@ -123,6 +125,11 @@ class PolitizrUserExtension extends \Twig_Extension
                 array('is_safe' => array('html'))
             ),
             new \Twig_SimpleFilter(
+                'userOperation',
+                array($this, 'userOperation'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
                 'linkSubscribeUser',
                 array($this, 'linkSubscribeUser'),
                 array('is_safe' => array('html'))
@@ -160,6 +167,11 @@ class PolitizrUserExtension extends \Twig_Extension
             new \Twig_SimpleFilter(
                 'isAuthorizedToPublishReaction',
                 array($this, 'isAuthorizedToPublishReaction'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
+                'isAuthorizedToAskOperation',
+                array($this, 'isAuthorizedToAskOperation'),
                 array('is_safe' => array('html'))
             ),
         );
@@ -433,6 +445,38 @@ class PolitizrUserExtension extends \Twig_Extension
             'PolitizrFrontBundle:Tag:_filterList.html.twig',
             array(
                 'tags' => $tags,
+            )
+        );
+
+        return $html;
+    }
+
+   /**
+     * Display user's operation
+     *
+     * @param PUser $user
+     * @return string
+     */
+    public function userOperation(PUser $user)
+    {
+        // $this->logger->info('*** userOperation');
+        // $this->logger->info('$user = '.print_r($user, true));
+
+        // get op for user
+        $operation = PEOperationQuery::create()
+            ->filterByOnline(true)
+            ->filterByPUserId($user->getId())
+            ->findOne();
+
+        if (!$operation) {
+            return null;
+        }
+
+        // Construction du rendu du tag            
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:User:_opBanner.html.twig',
+            array(
+                'operation' => $operation,
             )
         );
 
@@ -803,6 +847,31 @@ class PolitizrUserExtension extends \Twig_Extension
         }
 
         return $html;
+    }
+
+    /**
+     * Check if user is authorized to create a new subject for an operation
+     *
+     * @param PUser $user
+     * @param PEOperation $operation
+     * @return boolean
+     */
+    public function isAuthorizedToAskOperation(PUser $user, PEOperation $operation)
+    {
+        // $this->logger->info('*** isAuthorizedToAskOperation');
+        // $this->logger->info('$user = '.print_r($user, true));
+        // $this->logger->info('$operation = '.print_r($operation, true));
+        
+        if (!$operation->getGeoScoped()) {
+            return true;
+        } else {
+            $cities = $operation->getPLCities()->toKeyValue('Id', 'Title');
+            if (array_key_exists($user->getPLCityId(), $cities)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /* ######################################################################################################## */

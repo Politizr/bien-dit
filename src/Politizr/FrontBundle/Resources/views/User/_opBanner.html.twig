@@ -1,0 +1,18 @@
+<div id="op" class="miniHeader">
+    <div class="center">
+        <div class="imgOp">
+            <img src="{{ asset('/uploads/users/'~operation.fileName) | imagine_filter('user_operation') }}" alt="{{ operation.title }}">
+        </div>
+        <div class="txtOp">
+            {{ operation.description | purify }}
+            {% if app.user and app.user | isAuthorizedToAskOperation(operation) %}
+                <span>
+                    <a class="ctaOp" href="{{ path('DebateDraftNew'~profileSuffix(), { op: operation.uuid }) }}">J'ai une question!</a>
+                    {# <a action="closeOp">Non merci...</a> #}
+                </span>
+            {% endif %}
+        </div>
+    </div>
+    <div class="bgLeftOp"></div>
+    <div class="bgRightOp"></div>
+</div>

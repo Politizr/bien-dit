@@ -40,7 +40,7 @@ builders:
             title:                              Liste des opérations
             max_per_page:                       50
             sort:                               [ created_at, DESC ]
-            display:                            [ file_name, title, p_user, created_at ]
+            display:                            [ file_name, title, p_user, online, geo_scoped, created_at ]
             filters:                            [ title ]
             actions:
                 new:                            ~
