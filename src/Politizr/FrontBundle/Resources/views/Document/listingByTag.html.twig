@@ -17,6 +17,13 @@
 {% block tcTitle %}{{ metaTitle }} - {{ parent() }}{% endblock tcTitle %}
 {% block tcDescription %}{{ metaDescription }}{% endblock tcDescription %}
 
+{% block headerMsg %}
+    {{ parent() }}
+
+    {% if tag.tagType == constant('Politizr\\Constant\\TagConstants::TAG_TYPE_PRIVATE') and tag.owner is not null %}
+        {{ tag.owner | userOperation }}
+    {% endif %}
+{% endblock %}
 
 {% block content %}
     <div id="content">
