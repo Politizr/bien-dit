@@ -1,11 +1,11 @@
 {# beta #}
 {% if displayOnly is not defined or displayOnly == false %}
-    <div class="tag">
+    <div class="tag {{ tag | tagTypeClass }}">
         <a href="{{ path('ListingByTag', {'slug': tag.slug}) }}" action="bubbleTag" uuid="{{ tag.uuid }}">{{ tag.title }}</a>
         {% include 'PolitizrFrontBundle:Tag:_bubbleTag.html.twig' %}
     </div>
 {% else %}
-    <div class="tag">
+    <div class="tag {{ tag | tagTypeClass }}">
         <a uuid="{{ tag.uuid }}">{{ tag.title }}</a>
     </div>
 {% endif %}

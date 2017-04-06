@@ -79,6 +79,11 @@ class PolitizrTagExtension extends \Twig_Extension
                 array($this, 'linkSubscribeTag'),
                 array('is_safe' => array('html'))
             ),
+            new \Twig_SimpleFilter(
+                'tagTypeClass',
+                array($this, 'tagTypeClass'),
+                array('is_safe' => array('html'))
+            ),
         );
     }
 
@@ -194,6 +199,32 @@ class PolitizrTagExtension extends \Twig_Extension
         );
 
         return $html;
+    }
+
+    /**
+     * Return css tag class depending of tag type
+     *
+     * @param PTag $tag
+     * @return string
+     */
+    public function tagTypeClass(PTag $tag)
+    {
+        // $this->logger->info('*** tagTypeClass');
+        // $this->logger->info('$tag = '.print_r($tag, true));
+
+        $tagTypeClass = "default";
+        if ($tag->getTagType() == TagConstants::TAG_TYPE_THEME) {
+            $tagTypeClass = "theme";
+        } elseif ($tag->getTagType() == TagConstants::TAG_TYPE_TYPE) {
+            $tagTypeClass = "type";
+        } elseif ($tag->getTagType() == TagConstants::TAG_TYPE_FAMILY) {
+            $tagTypeClass = "family";
+        } elseif ($tag->getTagType() == TagConstants::TAG_TYPE_PRIVATE) {
+            $tagTypeClass = "private";
+        }
+        
+        return $tagTypeClass;
+
     }
 
     /* ######################################################################################################## */

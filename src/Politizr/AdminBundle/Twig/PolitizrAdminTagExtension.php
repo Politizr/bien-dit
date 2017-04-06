@@ -4,6 +4,7 @@ namespace Politizr\AdminBundle\Twig;
 use Politizr\Exception\InconsistentDataException;
 
 use Politizr\Constant\ObjectTypeConstants;
+use Politizr\Constant\TagConstants;
 
 use Politizr\Model\PUser;
 use Politizr\Model\PDDebate;
