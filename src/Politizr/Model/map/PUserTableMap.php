@@ -110,7 +110,9 @@ class PUserTableMap extends TableMap
     {
         $this->addRelation('PUStatus', 'Politizr\\Model\\PUStatus', RelationMap::MANY_TO_ONE, array('p_u_status_id' => 'id', ), 'CASCADE', 'CASCADE');
         $this->addRelation('PLCity', 'Politizr\\Model\\PLCity', RelationMap::MANY_TO_ONE, array('p_l_city_id' => 'id', ), 'SET NULL', 'CASCADE');
-        $this->addRelation('PTag', 'Politizr\\Model\\PTag', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'SET NULL', 'CASCADE', 'PTags');
+        $this->addRelation('PUser', 'Politizr\\Model\\PTag', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'SET NULL', 'CASCADE', 'PUsers');
+        $this->addRelation('POwner', 'Politizr\\Model\\PTag', RelationMap::ONE_TO_MANY, array('id' => 'p_owner_id', ), 'SET NULL', 'CASCADE', 'POwners');
+        $this->addRelation('PEOperation', 'Politizr\\Model\\PEOperation', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', 'CASCADE', 'PEOperations');
         $this->addRelation('POrder', 'Politizr\\Model\\POrder', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'SET NULL', 'CASCADE', 'POrders');
         $this->addRelation('PuFollowDdPUser', 'Politizr\\Model\\PUFollowDD', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', 'CASCADE', 'PuFollowDdPUsers');
         $this->addRelation('PuBookmarkDdPUser', 'Politizr\\Model\\PUBookmarkDD', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', 'CASCADE', 'PuBookmarkDdPUsers');

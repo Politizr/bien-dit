@@ -18,6 +18,7 @@
         <column name="p_t_tag_type_id" type="integer" required="true" />
         <column name="p_t_parent_id" type="integer" required="false" />
         <column name="p_user_id" type="integer" required="false" />
+        <column name="p_owner_id" type="integer" required="false" />
         
         <column name="title" type="varchar" size="150" />
 
@@ -32,8 +33,11 @@
         <foreign-key foreignTable="p_tag" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="p_t_parent_id" foreign="id" />
         </foreign-key>
-        <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
+        <foreign-key foreignTable="p_user" phpName="PUser" refPhpName="PUser" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="p_user" phpName="POwner" refPhpName="POwner" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_owner_id" foreign="id" />
         </foreign-key>
 
         <unique>
@@ -50,6 +54,72 @@
         <column name="title" type="varchar" size="150" />
 
         <column name="description" type="longvarchar" />
+    </table>
+
+
+
+    <table name="p_e_operation">
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+        <behavior name="sluggable">
+            <parameter name="slug_pattern" value="{title}" />
+        </behavior>
+        <behavior name="uuid">
+            <parameter name="version" value="4" />
+            <parameter name="permanent" value="false" />
+        </behavior>
+        <behavior name="archivable" />
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="uuid" type="varchar" size="50" />
+        <column name="p_user_id" type="integer" required="true" />
+        
+        <column name="title" type="varchar" size="150" />
+        <column name="description" type="longvarchar" />
+        <column name="file_name" type="varchar" size="150" />
+
+        <column name="geo_scoped" type="boolean" />
+        <column name="online" type="boolean" />
+
+        <foreign-key foreignTable="p_user" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_user_id" foreign="id" />
+        </foreign-key>        
+
+        <unique>
+            <unique-column name="uuid"/>
+        </unique>
+    </table>
+
+    <table name="p_e_o_scope_p_l_c" isCrossRef="true">
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_e_operation_id" type="integer" required="true" />
+        <column name="p_l_city_id" type="integer" required="true" />
+
+        <foreign-key foreignTable="p_e_operation" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_e_operation_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="p_l_city" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_l_city_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+    <table name="p_e_o_preset_p_t" isCrossRef="true">
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_e_operation_id" type="integer" required="true" />
+        <column name="p_tag_id" type="integer" required="true" />
+
+        <foreign-key foreignTable="p_e_operation" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_e_operation_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="p_tag" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_tag_id" foreign="id" />
+        </foreign-key>
     </table>
 
 

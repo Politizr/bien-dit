@@ -1,5 +1,9 @@
 {% if (tag.ptTagTypeId == constant('\\Politizr\\Constant\\TagConstants::TAG_TYPE_THEME'))%}
     {% set twbLabel = "primary" %}
+{% elseif (tag.ptTagTypeId == constant('\\Politizr\\Constant\\TagConstants::TAG_TYPE_FAMILY'))%}
+    {% set twbLabel = "success" %}
+{% elseif (tag.ptTagTypeId == constant('\\Politizr\\Constant\\TagConstants::TAG_TYPE_PRIVATE'))%}
+    {% set twbLabel = "warning" %}
 {% else %}
     {% set twbLabel = "default" %}
 {% endif %}

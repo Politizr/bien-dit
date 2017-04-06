@@ -102,6 +102,11 @@ Politizr_AdminBundle_User:
 
 
 # Commandes
+Politizr_AdminBundle_PEOperation:
+    resource: "@PolitizrAdminBundle/Controller/PEOperation/"
+    type:     admingenerator
+    prefix:   /PEOperation
+
 Politizr_AdminBundle_POrder:
     resource: "@PolitizrAdminBundle/Controller/POrder/"
     type:     admingenerator

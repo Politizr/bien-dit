@@ -18,51 +18,71 @@
 
 {% block main %}
     <div id="lpHeader">
-        <div class="center">
-            <h1>La démocratie participative avec Politizr</h1>
-            <h2>
-                Politizr est une plateforme web de démocratie participative pour les citoyen-ne-s et les élu-e-s.<br>Et nous proposons aussi un service de démocratie parcipative pour les institutions.
-            </h2>
-            <div class="centerCTA">
-                <a href="{{ path('InscriptionChoice') }}">Inscription</a>
-            </div>
+        <h1>La démocratie participative avec Politizr</h1>
+        <h2>Plateforme web de démocratie participative pour les citoyens et leurs élus</h2>
+        <p>
+            Élus ou citoyen, profitez d'un <b>espace d'échange unique et adapté</b>: exprimez-vous <b>simplement et gratuitement</b> sur des sujets relatifs à <b>votre territoire</b> pour permettre à vos élus de prendre <b>les bonnes décisions en toute transparence</b>.
+        </p>
+        <p>&nbsp;</p>
+        <div id="publicAdvantages">
+            <center>
+                <div class="column column360">
+                    <div class="card">
+                        <h2>Vous êtes citoyen?</h2>
+                        <ul class="checkList">
+                            <li>Discutez <b>directement</b> avec vos <b>élu-e-s</b>.</li>
+                            <li><b>Commentez et notez</b> toutes les discussions ouvertes.</li>
+                            <li>Partagez <b>votre opinion</b> auprès de vos <b>concitoyen-ne-s et élu-e-s</b>.</li>
+                            <li>Participez à des échanges suivant vos <b>centres d'intérêt</b>.</li>
+                            <li>Accédez à l'ensemble des publications aux niveaux <b>local et national</b>.</li>
+                            <li><i class="icon-social-fb"></i>&nbsp;Visualisez <b>l'impact Facebook</b> de vos publications sur <b>votre territoire</b>.</li>
+                        </ul>
+                    </div>
+                </div><!-- keep comment mark this way : they prevent unwanted space between cols
+                --><div class="column column360">
+                    <div class="card">
+                        <h2>Vous êtes élu?</h2>
+                        <ul class="checkList">
+                            <li>Expliquez <b>vos actions</b> à vos concitoyen-ne-s.</li>
+                            <li>Répondez aux <b>questions</b> et aux <b>opinions</b> de vos concitoyen-ne-s.</li>
+                            <li>Faîtes profiter d'autres élu-e-s de vos <b>retours d'expérience</b>.</li>
+                            <li>Participez à des échanges suivant vos <b>centres d'intérêt</b>.</li>
+                            <li>Accédez à l'ensemble des publications aux niveaux <b>local et national</b>.</li>
+                            <li><i class="icon-social-fb"></i>&nbsp;Visualisez <b>l'impact Facebook</b> de vos publications sur <b>votre territoire</b>.</li>
+                        </ul>
+                    </div>
+                </div>
+            </center>
+        </div>
+        <div class="centerCTA">
+            <a href="{{ path('InscriptionChoice') }}">Inscription</a>
         </div>
     </div>
-
-    <div id="postSelection">
-        <div class="center">
-            <h1>Les discussions en cours</h1>
-            <h2>La démocratie participative pour vivifier la démocratie?</h2>
-            
-            {% for document in documents %}
-                {% if loop.first or loop.index0 is divisible by(3) %}
-                    <div class="cardColumn">
-                {% endif %}
-                    {% include 'PolitizrFrontBundle:Document:_cardPublic.html.twig' %}
-                {% if loop.last or loop.index is divisible by(3) %}
+    <div id="lpHeader">
+        <h1>Politizr Territoire</h1>
+        <h2>Une offre spécialement conçue pour les collectivités</h2>
+        <p>
+            En complément à cette version indépendante, gratuite, ouverte et transversale à destination des citoyens et des élus, Politizr déploie pour <b>les collectivités locales</b> des espaces de <b>démocratie participative locale</b> réservés aux habitants et aux élus d’un <b>territoire défini</b>.
+        </p>
+        <p>&nbsp;</p>
+        <div id="collAdvantages">
+            <center>
+                <div class="column column360">
+                    <div class="card">
+                        <h2>Vous êtes une collectivité?</h2>
+                        <ul class="checkList">
+                            <li><b>Proposez</b> des sujets à la discussion.</li>
+                            <li><b>Espace privé</b> accessible uniquement <b>aux habitants de la collectivité</b>.</li>
+                            <li><b>Réponse personnalisée des élus</b> aux propositions et questions pertinentes.</li>
+                            <li>Création des <b>supports promotionnels</b> liés à l'opération.</li>
+                        </ul>
                     </div>
-                {% endif %}
-            {% endfor %}
-            
-            <div id="morePosts"><a href="{{ path('ListingByTag', {'slug' : 'democratie-participative'}) }}">Toutes les discussions en cours</a></div>
+                </div>
+            </center>
         </div>
-    </div>
-    
-    <div id="profileSelection">
-        <div class="center">
-            <h1>Rejoignez la communauté Politizr</h1>
-            <h2>Venez discuter de démocratie participative avec des citoyen-nes et élu-es de toute la France:<br>
-            <a href="{{ path('InscriptionChoice') }}">inscrivez-vous et participez aux débats!</a></h2>
-            
-            {% for user in users %}
-                {% if loop.first or loop.index0 is divisible by(2) %}
-                    <div class="cardColumn">
-                {% endif %}
-                    {% include 'PolitizrFrontBundle:User:_cardPublic.html.twig' %}
-                {% if loop.last or loop.index is divisible by(2) %}
-                    </div>
-                {% endif %}
-            {% endfor %}
+        <p><br/>Pour en savoir plus:</p>
+        <div class="centerCTA">
+            <a><b>09 50 42 09 34</b></a>
         </div>
     </div>
 
@@ -71,7 +91,7 @@
             <div id="bgBlockMarianne">
                 <div id="marianne"></div>
                 <div class="conceptCol conceptLeftCol">
-                    Politizr renforce le lien entre les citoyens et leurs élus grâce à une <b>plateforme conviviale</b>. Si vous êtes une <b>institution</b>, contactez-nous pour découvrir notre offre dédiée pour introduire de la <b>démocratie participative à l'échelle de votre territoire</b>.
+                    Politizr est un site web de <b>démocratie participative</b> favorisant <b>les échanges constructifs</b> entre citoyens et élus. Nous proposons une inscription individuelle gratuite et des offres payantes pour les collectivités locales.
                 </div>
                 
                 <div class="conceptCol conceptRightCol">
@@ -82,9 +102,7 @@
     </div>
     
     <div id="blockGraphAssembly">
-        <div class="center centerCTA">
-            <a href="mailto: contact@politizr.com">Contactez-nous</a>
-        </div>
+        &nbsp;
     </div>
     
 {% endblock main %}

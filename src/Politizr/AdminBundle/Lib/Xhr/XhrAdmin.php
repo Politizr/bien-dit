@@ -28,6 +28,9 @@ use Politizr\Model\PDRTaggedTQuery;
 use Politizr\Model\PUTaggedTQuery;
 use Politizr\Model\PMUserModeratedQuery;
 use Politizr\Model\PUMandateQuery;
+use Politizr\Model\PLCityQuery;
+use Politizr\Model\PEOPresetPTQuery;
+use Politizr\Model\PEOperationQuery;
 
 use Politizr\AdminBundle\Form\Type\PMUserModeratedType;
 use Politizr\FrontBundle\Form\Type\PUMandateType;
@@ -48,6 +51,7 @@ class XhrAdmin
     private $tagManager;
     private $userManager;
     private $localizationManager;
+    private $eventManager;
     private $documentLocalizationFormType;
     private $globalTools;
     private $logger;
@@ -61,6 +65,7 @@ class XhrAdmin
      * @param @politizr.manager.tag
      * @param @politizr.manager.user
      * @param @politizr.manager.localization
+     * @param @politizr.manager.event
      * @param @politizr.form.type.document_localization
      * @param @politizr.tools.global
      * @param @logger
@@ -73,6 +78,7 @@ class XhrAdmin
         $tagManager,
         $userManager,
         $localizationManager,
+        $eventManager,
         $documentLocalizationFormType,
         $globalTools,
         $logger
@@ -87,6 +93,7 @@ class XhrAdmin
         $this->tagManager = $tagManager;
         $this->userManager = $userManager;
         $this->localizationManager = $localizationManager;
+        $this->eventManager = $eventManager;
 
         $this->documentLocalizationFormType = $documentLocalizationFormType;
 
@@ -212,7 +219,7 @@ class XhrAdmin
     }
 
     /* ######################################################################################################## */
-    /*                                                      DEBATE                                              */
+    /*                                                DEBATE + TAG                                              */
     /* ######################################################################################################## */
 
     /**
@@ -307,7 +314,7 @@ class XhrAdmin
     }
 
     /* ######################################################################################################## */
-    /*                                                    REACTION                                              */
+    /*                                              REACTION + TAG                                              */
     /* ######################################################################################################## */
 
     /**
@@ -402,7 +409,7 @@ class XhrAdmin
     }
 
     /* ######################################################################################################## */
-    /*                                                     USER                                                 */
+    /*                                               USER + TAG                                                 */
     /* ######################################################################################################## */
 
     /**
@@ -535,6 +542,105 @@ class XhrAdmin
 
         return $withHidden;
     }
+
+    /* ######################################################################################################## */
+    /*                                            OPERATION + TAGS                                              */
+    /* ######################################################################################################## */
+
+    /**
+     * Operation's tag creation
+     */
+    public function operationAddTag(Request $request)
+    {
+        $this->logger->info('*** operationAddTag');
+
+        // Request arguments
+        $tagTitle = $request->get('tagTitle');
+        $this->logger->info('$tagTitle = ' . print_r($tagTitle, true));
+        $tagUuid = $request->get('tagUuid');
+        $this->logger->info('$tagUuid = ' . print_r($tagUuid, true));
+        $tagTypeId = $request->get('tagTypeId');
+        $this->logger->info('$tagTypeId = ' . print_r($tagTypeId, true));
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
+        $newTag = $request->get('newTag');
+        $this->logger->info('$newTag = ' . print_r($newTag, true));
+
+        // Function process
+        if (empty($tagTypeId)) {
+            $tagTypeId = null;
+        }
+
+        // Retrieve subject
+        $subject = PEOperationQuery::create()->filterByUuid($uuid)->findOne();
+
+        $tag = $this->retrieveOrCreateTag($tagUuid, $tagTitle, $tagTypeId, null, $newTag);
+
+        // associate tag to operation
+        $presetPT = PEOPresetPTQuery::create()
+            ->filterByPEOperationId($subject->getId())
+            ->filterByPTagId($tag->getId())
+            ->findOne();
+
+        if ($presetPT) {
+            $created = false;
+            $htmlTag = null;
+        } else {
+            $created = true;
+            $this->tagManager->createOperationTag($subject->getId(), $tag->getId());
+
+            $xhrPathDelete = $this->templating->render(
+                'PolitizrAdminBundle:Fragment\\Xhr:_xhrPath.html.twig',
+                array(
+                    'xhrRoute' => 'ADMIN_ROUTE_TAG_OPERATION_DELETE',
+                    'xhrService' => 'admin',
+                    'xhrMethod' => 'operationDeleteTag',
+                    'xhrType' => 'RETURN_BOOLEAN',
+                )
+            );
+
+            $htmlTag = $this->templating->render(
+                'PolitizrAdminBundle:Fragment\\Tag:_detailEditable.html.twig',
+                array(
+                    'uuid' => $uuid,
+                    'tag' => $tag,
+                    'withHidden' => false,
+                    'pathDelete' => $xhrPathDelete
+                )
+            );
+        }
+
+        return array(
+            'created' => $created,
+            'htmlTag' => $htmlTag
+            );
+    }
+
+    /**
+     * Operation's tag deletion
+     */
+    public function operationDeleteTag(Request $request)
+    {
+        $this->logger->info('*** operationDeleteTag');
+        
+        // Request arguments
+        $tagUuid = $request->get('tagUuid');
+        $this->logger->info('$tagUuid = ' . print_r($tagUuid, true));
+        $uuid = $request->get('uuid');
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
+
+        $tag = PTagQuery::create()->filterByUuid($tagUuid)->findOne();
+        $subject = PEOperationQuery::create()->filterByUuid($uuid)->findOne();
+
+        // Function process
+        $this->tagManager->deleteOperationTag($subject->getId(), $tag->getId());
+
+        return true;
+    }
+
+    /* ######################################################################################################## */
+    /*                                                   MANDATES                                               */
+    /* ######################################################################################################## */
 
     /**
      * User's mandate creation
@@ -969,4 +1075,122 @@ class XhrAdmin
         return true;
     }
 
+    /* ######################################################################################################## */
+    /*                                               OPERATION                                                  */
+    /* ######################################################################################################## */
+
+    /**
+     * Search cities by INSEE code
+     */
+    public function getCitiesByOperationId(Request $request)
+    {
+        $this->logger->info('*** getCitiesByOperationId');
+
+        // Request arguments
+        $operationId = $request->get('operationId');
+
+        $cities = PLCityQuery::create()
+            ->distinct()
+            ->usePEOScopePLCQuery()
+                ->filterByPEOperationId($operationId)
+            ->endUse()
+            ->find();
+
+        if (count($cities) == 0) {
+            $html = $this->templating->render(
+                'PolitizrAdminBundle:Fragment:_noResult.html.twig',
+                array(
+                )
+            );
+        } else {
+            $html = $this->templating->render(
+                'PolitizrAdminBundle:Fragment\\Localization:_operationDeleteCities.html.twig',
+                array(
+                    'cities' => $cities,
+                    'operationId' => $operationId,
+                )
+            );
+        }
+
+        // Renvoi de l'ensemble des blocs HTML maj
+        return array(
+            'html' => $html
+        );
+    }
+
+    /**
+     * Search cities by INSEE code
+     */
+    public function getCitiesByInsee(Request $request)
+    {
+        $this->logger->info('*** getCitiesByInsee');
+
+        // Request arguments
+        $operationId = $request->get('operationId');
+        $inseeCode = $request->get('codeInsee');
+
+        $query = PLCityQuery::create()
+            ->filterByMunicipalityCode($inseeCode, ' like ');
+
+        $nbResult = $query->count();
+        if ($nbResult == 0) {
+            $html = $this->templating->render(
+                'PolitizrAdminBundle:Fragment:_noResult.html.twig',
+                array(
+                )
+            );
+        } elseif ($nbResult > 50) {
+            $html = $this->templating->render(
+                'PolitizrAdminBundle:Fragment:_tooMuchResults.html.twig',
+                array(
+                )
+            );
+        } else {
+            $cities = $query->find();
+            $html = $this->templating->render(
+                'PolitizrAdminBundle:Fragment\\Localization:_operationAddCities.html.twig',
+                array(
+                    'cities' => $cities,
+                    'operationId' => $operationId,
+                )
+            );
+        }
+
+        // Renvoi de l'ensemble des blocs HTML maj
+        return array(
+            'html' => $html
+        );
+    }
+
+    /**
+     * Add operation / city relation
+     */
+    public function addOperationCityRelation(Request $request)
+    {
+        $this->logger->info('*** addOperationCityRelation');
+
+        // Request arguments
+        $operationId = $request->get('operationId');
+        $cityId = $request->get('cityId');
+
+        $this->eventManager->createOperationCityScope($operationId, $cityId);        
+
+        return true;
+    }
+
+    /**
+     * Delete operation / city relation
+     */
+    public function deleteOperationCityRelation(Request $request)
+    {
+        $this->logger->info('*** deleteOperationCityRelation');
+
+        // Request arguments
+        $operationId = $request->get('operationId');
+        $cityId = $request->get('cityId');
+
+        $this->eventManager->deleteOperationCityScope($operationId, $cityId);        
+
+        return true;
+    }
 }

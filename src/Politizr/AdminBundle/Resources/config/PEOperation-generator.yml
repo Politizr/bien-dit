@@ -1,0 +1,179 @@
+generator:                  admingenerator.generator.propel
+params:
+    model:                  Politizr\Model\PEOperation
+    namespace_prefix:       Politizr
+    concurrency_lock:       ~
+    bundle_name:            AdminBundle
+    pk_requirement:         ~
+    fields:
+        id:
+            label:          ID
+        uuid:
+            label:          UUID
+        slug:
+            label:          Slug
+        p_user_id:
+            label:          ID Utilisateur
+        p_user:
+            label:          Utilisateur
+        title:
+            label:          Titre
+        description:
+            label:          Description
+        file_name:
+            label:          Bandeau
+        geo_scoped:
+            label:          Accès limité
+        online:
+            label:          En ligne
+        created_at:
+            label:          Création
+        updated_at:
+            label:          Mis à jour
+    object_actions:
+        delete:             ~
+    batch_actions:
+        delete:             ~
+builders:
+    list:
+        params:
+            title:                              Liste des opérations
+            max_per_page:                       50
+            sort:                               [ created_at, DESC ]
+            display:                            [ file_name, title, p_user, online, geo_scoped, created_at ]
+            filters:                            [ title ]
+            actions:
+                new:                            ~
+            object_actions:
+                show:                           ~
+                edit:                           ~
+                delete:                         ~
+    excel:
+        params: ~
+        filename: ~
+        filetype: ~
+    new:
+        params:
+            title:                              "Création d'une opération"
+            display:
+                "Champs principaux":            [ title, p_user ]
+            fields:
+                p_user:
+                    dbType:                     model
+                    formType:                   Admingenerator\FormExtensionsBundle\Form\Type\Select2ModelType
+                    addFormOptions:
+                        multiple:               false
+                        required:               true
+                        class:                  Politizr\Model\PUser
+                        query:                  \Politizr\Model\PUserQuery::create()->orderByName()
+            actions:
+              save:                             ~
+              list:                             ~
+    edit:
+        params:
+            title:                              "Edition de l'opération '{{ PEOperation.title }}'"
+            tabs:
+                "Contenu":
+                    "Bandeau":                  [ uploadedFileName ]
+                    "Texte":                    [ title, description ]
+                "Objets":
+                    "Client":                   [ p_user ]
+                "Thématiques":
+                    "Tags associés":            [ block_tags ]
+                "Scope":
+                    "Villes associés":          [ block_cities ]
+                    "Ajouter des villes":       [ block_cities_add ]
+                "Attributs":
+                    "Identifiants":             [ [ id, uuid, slug ] ]
+                    "Options":                  [ geo_scoped ]
+                    "En ligne":                 [ online ]
+                    "Création":                 [ [ created_at, updated_at ] ]
+            fields:
+                uploadedFileName:
+                    dbType:                     VARCHAR
+                    label:                      Photo
+                    formType:                   Admingenerator\FormExtensionsBundle\Form\Type\SingleUploadType
+                    addFormOptions:
+                        deleteable:             fileName
+                        data_class:             Symfony\Component\HttpFoundation\File\File
+                p_user:
+                    addFormOptions:
+                        disabled:               true
+                        read_only:              true
+                description:
+                    grid_class:                 "col-md-12"
+                    addFormOptions:
+                        attr:                   { class : tinymce }
+                block_tags:
+                    label:                      "Tags"
+                    grid_class:                 "col-md-12"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+                    addFormOptions:
+                        mapped:                 false
+                block_cities:
+                    label:                      "Villes"
+                    grid_class:                 "col-md-12"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+                    addFormOptions:
+                        mapped:                 false
+                block_cities_add:
+                    label:                      "Recherche"
+                    grid_class:                 "col-md-12"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+                    addFormOptions:
+                        mapped:                 false
+                id:
+                    addFormOptions:
+                        read_only:              true
+                uuid:
+                    addFormOptions:
+                        read_only:              true
+                created_at:
+                    addFormOptions:
+                      widget:                   single_text
+                updated_at:
+                    addFormOptions:
+                      widget:                   single_text
+            actions:
+                save:                           ~
+                show:                           ~
+                list:                           ~
+                delete:                         ~
+    show:
+        params:
+            title:                              "Visualisation de l'opération '{{ PEOperation.title }}'"
+            tabs:
+                "Contenu":
+                    "Bandeau":                  [ file_name ]
+                    "Texte":                    [ title, description ]
+                "Objets":
+                    "Client":                   [ block_p_user ]
+                "Thématiques":
+                    "Tags associés":            [ block_tags ]
+                "Scope":
+                    "Villes associés":          [ block_cities ]
+                "Attributs":
+                    "Identifiants":             [ [ id, uuid, slug ] ]
+                    "Options":                  [ geo_scoped ]
+                    "En ligne":                 [ online ]
+                    "Création":                 [ [ created_at, updated_at ] ]
+            fields:
+                block_p_user:
+                    label:                      "Client"
+                block_tags:
+                    label:                      "Tags"
+                block_cities:
+                    label:                      "Villes"
+            actions:
+                list:                           ~
+                edit:                           ~
+                delete:                         ~
+    actions:
+        params:
+            object_actions:
+                delete: ~
+            batch_actions:
+                delete: ~

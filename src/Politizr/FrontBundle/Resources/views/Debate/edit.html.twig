@@ -39,15 +39,17 @@
                     <div class="notice">
                         <i class="icon-info"></i><b>Cochez le(s) type(s) associé(s) à votre publication.</b>
                     </div>
-                    {{ debate | editTypeForm }}
+                    {{ debate | editTagTypeForm }}
                 </div>
                 <div class="docTags">
                     <h5>3. Thématiques abordées</h5>
                     <div class="notice">
-                        <i class="icon-info"></i><b>5 thématiques maximum.</b><br>
+                        <i class="icon-info"></i><b>Cochez la(les) rubrique(s) associée(s) à votre publication.</b>
                     </div>
-                    {# include('includes/helperEditTag.php') #}
-
+                    {{ debate | editTagFamilyForm }}
+                    <div class="notice">
+                        <i class="icon-info"></i><b>5 thématiques libres maximum supplémentaires.</b><br>
+                    </div>
                     {{ debateTagsEdit(debate, constant('Politizr\\Constant\\TagConstants::TAG_TYPE_THEME'), 1, true) }}
                 </div>
             </div>
@@ -115,7 +117,15 @@
                 {{ form_rest(form) }}
             </form>
         </div>
-    </div>
+        <div class="postTags">
+            <div class="formBlockHeader">
+                <label>Thématiques abordées</label>
+                {% include 'PolitizrFrontBundle:Navigation\\Helper:_addTagToPublication.html.twig' %}
+            </div>
+            <div class="tagList">
+            </div>
+        </div>
+   </div>
 {% endblock content %}
 
 {% block sidebarContent %}

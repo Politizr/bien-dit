@@ -46,7 +46,17 @@ class AdminMenu extends AdmingeneratorMenuBuilder
         }
 
         // Order
-        $orders = $this->addLinkRoute($menu, 'Commande', 'Politizr_AdminBundle_POrder_list');
+        $orders = $this->addDropdown($menu, 'Commande');
+        $this->addLinkRoute(
+            $orders,
+            'Opération',
+            'Politizr_AdminBundle_PEOperation_list'
+        );
+        $this->addLinkRoute(
+            $orders,
+            'Premium',
+            'Politizr_AdminBundle_POrder_list'
+        );
 
         // User
         $users = $this->addLinkRoute($menu, 'Utilisateur', 'Politizr_AdminBundle_PUser_list');

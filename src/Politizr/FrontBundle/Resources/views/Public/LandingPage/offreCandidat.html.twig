@@ -1,0 +1,122 @@
+{% set layout = 'PolitizrFrontBundle::layoutPublic.html.twig' %}
+{% extends layout %}
+{% set headerRight = false %}
+
+{% set metaTitle = 'Offre Candidat' %}
+{% set metaDescription = 'Politizr propose une offre à destination des candidats pour les législatives 2017!' %}
+
+{% block title %}{{ metaTitle }} - {{ parent() }}{% endblock title %}
+{% block description %}{{ metaDescription }}{% endblock description %}
+
+{% block ogTitle %}{{ metaTitle }} - {{ parent() }}{% endblock ogTitle %}
+{% block ogDescription %}{{ metaDescription }}{% endblock ogDescription %}
+
+{% block tcTitle %}{{ metaTitle }} - {{ parent() }}{% endblock tcTitle %}
+{% block tcDescription %}{{ metaDescription }}{% endblock tcDescription %}
+
+{% block bodyClass %} class="public visitor"{% endblock %}
+
+{% block main %}
+    <div id="lpHeader">
+        <div class="center">
+            <h1>Une touche de Civic Tech dans votre campagne législative?</h1>
+            <h2>
+                A l’occasion des élections législatives 2017, la startup française <b>POLITIZR</b> propose aux candidats de tester sa plateforme d’Avril à Juin via une opération inédite.
+            </h2>
+        </div>
+    </div>
+
+    <div id="postSelection">
+        <div class="center">
+            <div class="lpImg">
+                <img src="{{ asset('bundles/politizrfront/images/lp/lp-legislatives.jpg') }}" alt="lp-legislatives" width="600" height="337">
+            </div>
+        </div>
+        <div class="center">
+            C’est l’occasion pour vous de montrer votre <b>connaissance des dossiers</b> et votre <b>ouverture à l’échange</b> en engageant <b>des discussions de fond avec vos électeurs potentiels</b> sur une plateforme portée par un acteur reconnu des "Civic Tech" en France.
+            <ul class="lpUl">Cette offre contient:
+                <li>un <b>bandeau “spécial élection”</b> sur votre page de profil reprenant la charte graphique de votre campagne et un lien <b>“Posez votre question”</b> permettant aux citoyens d’amorcer une discussion,</li>
+                <li>la mise en place d’une <b>thématique dédiée et réservée</b> à votre usage vous permettant d’être <b>le seul à dialoguer avec les citoyens</b> l’utilisant,</li>
+                <li>la limitation de l’utilisation de cette thématique aux seuls <b>habitants de votre circonscription</b>,</li>
+                <li>une <b>visibilité publique</b> pour tous les contenus associés à votre campagne (pas d’inscription préalable nécessaire pour “lire la suite”),</li>
+                <li><i class="icon-social-fb"></i>&nbsp;la promotion de l’opération sur <b>Facebook</b> au niveau de <b>votre circonscription</b>,</li>
+                <li>la <b>modération</b> des contenus inappropriés et contraire à notre charte,</li>
+                <li>un <b>support de notre équipe</b> pour la mise en ligne.</li>
+            </ul>
+            <b>Tarif: 90€HT pour 3 mois (Avril, Mai, Juin).</b>
+        </div>
+    </div>
+
+    <div id="profileSelection" class="askQuestion">
+        <div class="center">
+            <h1>Contactez-nous pour plus d'informations</h1>
+            <div class="formBlock withLoaderInside">
+                {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+
+                <form name="directMessage" id="formDirectMessage">
+                    {{ form_errors(form) }}
+
+                    {{ form_row(form.name, { 'attr': { 'placeholder': 'Prénom et Nom' }}) }}
+                    {{ form_row(form.email, { 'attr': { 'placeholder': 'Email' }}) }}
+                    {{ form_row(form.city, { 'attr': { 'placeholder': 'Téléphone' }}) }}
+                    {{ form_row(form.description, { 'attr': { 'placeholder': 'Votre message' }}) }}
+
+                    {{ form_rest(form) }}
+                    <div class="buttonDirectMessage">
+                        <button type="button" action="submitDirectMessage">
+                            Envoyer
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div id="lpHeader">
+                <div class="centerCTA">
+                    <a href="tel:0950420934">ou par téléphone au 09. 50. 42. 09. 34</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="blockMarianne">
+        <div class="center">
+            <div id="bgBlockMarianne">
+                <div id="marianne"></div>
+                <div class="conceptCol conceptLeftCol">
+                    Politizr permet à <b>tous les élu-e-s locaux - du conseiller municipal au député -</b> de venir s'exprimer directement et publiquement de tous les sujets avec <b>leurs concitoyen-ne-s</b>.
+                </div>
+                
+                <div class="conceptCol conceptRightCol">
+                    Nous travaillons à améliorer la <b>démocratie représentative</b> en proposant un espace de discussion qui favorise les <b>échanges structurées et argumentées</b> dans un temps long propice à la qualité du débat.
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="blockGraphAssembly">
+        <div class="center centerCTA">
+            <a href="{{ path('InscriptionChoice') }}">Créer un compte</a>
+        </div>
+    </div>
+    
+{% endblock main %}
+
+{% block postMain %}
+    {% include 'PolitizrFrontBundle:Navigation\\Footer:_publicFooter.html.twig' %}
+{% endblock postMain %}
+
+
+{% block javascriptFooter %}
+    {{ parent() }}
+
+    {% if (app.environment == 'prod') %}
+        <script type="text/javascript">
+            mixpanel.track("LP élu local");
+        </script>
+    {% endif %}
+
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/pages/landingPage.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock javascriptFooter %}

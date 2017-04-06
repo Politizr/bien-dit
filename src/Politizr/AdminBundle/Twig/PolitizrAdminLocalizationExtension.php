@@ -6,6 +6,9 @@ use Politizr\Exception\InconsistentDataException;
 use Politizr\Constant\ObjectTypeConstants;
 
 use Politizr\Model\PDocumentInterface;
+use Politizr\Model\PEOperation;
+
+use Politizr\Model\PLCityQuery;
 
 /**
  * Document admin twig extension
@@ -53,6 +56,13 @@ class PolitizrAdminLocalizationExtension extends \Twig_Extension
                     'is_safe' => array('html')
                     )
             ),
+            'adminOperationCities'  => new \Twig_SimpleFunction(
+                'adminOperationCities',
+                array($this, 'adminOperationCities'),
+                array(
+                    'is_safe' => array('html')
+                    )
+            ),
         );
     }
 
@@ -94,6 +104,35 @@ class PolitizrAdminLocalizationExtension extends \Twig_Extension
         return $html;
     }
 
+
+    /**
+     * Operation's cities
+     *
+     * @param PEOperation $operation
+     * @return string
+     */
+    public function adminOperationCities(PEOperation $operation)
+    {
+        $this->logger->info('*** adminOperationCities');
+        // $this->logger->info('$operation = '.print_r($operation, true));
+        // $this->logger->info('$type = '.print_r($type, true));
+
+        $cities = PLCityQuery::create()
+            ->distinct()
+            ->usePEOScopePLCQuery()
+                ->filterByPEOperationId($operation->getId())
+            ->endUse()
+            ->find();
+
+        $html = $this->templating->render(
+            'PolitizrAdminBundle:Fragment\\Localization:_cities.html.twig',
+            array(
+                'cities' => $cities,
+            )
+        );
+
+        return $html;
+    }
 
 
     public function getName()

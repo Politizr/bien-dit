@@ -35,6 +35,7 @@ class GlobalTools
     private $securityContext;
 
     private $requestStack;
+    private $session;
 
     private $formFactory;
     private $validator;
@@ -49,6 +50,7 @@ class GlobalTools
      * @param @security.authorization_checker
      * @param @security.context
      * @param @request_stack
+     * @param @session
      * @param @form.factory
      * @param @validator
      * @param @liip_imagine.controller
@@ -59,6 +61,7 @@ class GlobalTools
         $securityAuthorizationChecker,
         $securityContext,
         $requestStack,
+        $session,
         $formFactory,
         $validator,
         $liipImagineController,
@@ -69,6 +72,7 @@ class GlobalTools
         $this->securityContext = $securityContext;
 
         $this->requestStack = $requestStack;
+        $this->session = $session;
         
         $this->formFactory = $formFactory;
 
@@ -756,29 +760,64 @@ class GlobalTools
      * @param $mode public|private|we|<nb of days>
      * @return boolean
      */
-    public function isPrivateMode($visitor, PDocumentInterface $document, $mode, $userIds) {
-        $private = true;
+    public function isPrivateMode($visitor, PDocumentInterface $document, $mode, $userIds)
+    {
         $publishedAt = $document->getPublishedAt();
-        $docUserId =  $document->getPUserId();
+        $author =  $document->getPUser();
 
+        // public if
         if ($visitor) {
-            $private = false;
-        } elseif (in_array($docUserId, $userIds)) {
-            $private = false;
+            // user is connected
+            return false;
+        } elseif (in_array($author->getId(), $userIds)) {
+            // author in list of public users
+            return false;
+        } elseif ($author->isWithOperation()) {
+            // author has subscribe an "OP"
+            return false;
+        } elseif ($document->isWithPrivateTag()) {
+            // document has private tag
+            return false;
         } elseif ($mode == 'public') {
-            $private = false;
+            // app in public mode
+            return false;
         } elseif ($mode == 'we') {
+            // app in we mode and datetime is we
             $dayOfWeek = date('w');
             if ($dayOfWeek == 0 || $dayOfWeek == 6) {
-                $private = false;
+                return false;
             }
         } elseif (is_int($mode)) {
+            // app in X days mode and document is older than X days
             $now = new \DateTime();
             $diff = $now->diff($publishedAt);
             if ($diff->days > $mode) {
-                $private = false;
+                return false;
             }
         }
-        return $private;
+
+        return true;
+    }
+
+    /**
+     * Post inscription/login URL if set else null
+     *
+     * @return string
+     */
+    public function getRefererUrl()
+    {
+        $referer = $this->session->get('inscription/referer');
+
+        // remove from session
+        $this->session->remove('inscription/referer');
+
+        if (strpos($referer, 'debat') || // debate detail 
+            strpos($referer, 'reaction') || // reaction detail
+            strpos($referer, 'auteur') // user detail
+        ) {
+            return $referer; 
+        }
+
+        return null;
     }
 }

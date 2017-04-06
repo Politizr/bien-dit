@@ -121,11 +121,13 @@ function publicationsByUserListing(init, offset) {
     localLoader = $('#documentListing').find('.ajaxLoader').first();
     uuid = $('.pseudoTabs').attr('uuid');
     orderBy = $('.pseudoTabs .currentPage').attr('filter');
+    tagUuid = $('.tag a[class=active]').attr('uuid');
 
     // console.log(targetElement);
     // console.log(localLoader);
     // console.log(uuid);
     // console.log(orderBy);
+    // console.log(tagUuid);
 
     var xhrPath = getXhrPath(
         ROUTE_DOCUMENT_LISTING_USER_PUBLICATIONS,
@@ -136,7 +138,7 @@ function publicationsByUserListing(init, offset) {
 
     return xhrCall(
         document,
-        {'uuid': uuid, 'orderBy': orderBy, 'offset': offset},
+        {'uuid': uuid, 'orderBy': orderBy, 'tagUuid': tagUuid, 'offset': offset},
         xhrPath,
         localLoader
     ).done(function(data) {

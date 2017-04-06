@@ -50,10 +50,12 @@ class SecurityController extends Controller
      * Login
      * http://symfony.com/doc/current/cookbook/security/form_login_setup.html
      */
-    public function loginAction()
+    public function loginAction(Request $request)
     {
         $logger = $this->get('logger');
         $logger->info('*** loginAction');
+
+        $this->get('session')->set('inscription/referer', $request->headers->get('referer'));
 
         $authenticationUtils = $this->get('security.authentication_utils');
 
@@ -231,12 +233,9 @@ class SecurityController extends Controller
             $request->getSession()->getFlashBag()->add('inscription/success', true);
 
             // Redirect to page before inscription
-            $referer = $this->get('session')->get('inscription/referer');
-            if (strpos($referer, 'debat') || // debate detail 
-                strpos($referer, 'reaction') || // reaction detail
-                strpos($referer, 'auteur') // user detail
-            ) {
-                return $this->redirect($referer); 
+            $refererUrl = $this->get('politizr.tools.global')->getRefererUrl();
+            if ($refererUrl) {
+                return $this->redirect($refererUrl);
             }
 
             return $this->redirect($this->generateUrl('HomepageC'));
@@ -563,12 +562,9 @@ class SecurityController extends Controller
         $request->getSession()->getFlashBag()->add('inscription/success', true);
 
         // Redirect to page before inscription
-        $referer = $this->get('session')->get('inscription/referer');
-        if (strpos($referer, 'debat') || // debate detail 
-            strpos($referer, 'reaction') || // reaction detail
-            strpos($referer, 'auteur') // user detail
-        ) {
-            return $this->redirect($referer); 
+        $refererUrl = $this->get('politizr.tools.global')->getRefererUrl();
+        if ($refererUrl) {
+            return $this->redirect($refererUrl);
         }
 
         return $this->redirect($this->generateUrl('HomepageE'));

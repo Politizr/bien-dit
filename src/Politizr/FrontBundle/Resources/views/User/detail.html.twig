@@ -19,6 +19,12 @@
 {% block tcDescription %}{{ metaDescription }}{% endblock tcDescription %}
 {% block tcImage %}{{ user | tcImage(app.request.getSchemeAndHttpHost()) }}{% endblock tcImage %}
 
+{% block headerMsg %}
+    {{ parent() }}
+
+    {{ user | userOperation }}
+{% endblock %}
+
 {% block content %}
     <div id="content" class="withLoaderInside">
         {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}

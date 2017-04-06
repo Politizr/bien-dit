@@ -38,6 +38,7 @@ use Politizr\FrontBundle\Form\Type\PDDCommentType;
 use Politizr\FrontBundle\Form\Type\PDRCommentType;
 use Politizr\FrontBundle\Form\Type\PDDebateType;
 use Politizr\FrontBundle\Form\Type\PDocumentTagTypeType;
+use Politizr\FrontBundle\Form\Type\PDocumentTagFamilyType;
 use Politizr\FrontBundle\Form\Type\PDDebatePhotoInfoType;
 use Politizr\FrontBundle\Form\Type\PDReactionType;
 use Politizr\FrontBundle\Form\Type\PDReactionPhotoInfoType;
@@ -495,6 +496,44 @@ class XhrDocument
         );
     }
 
+    /**
+     * Debate update tags zone
+     * beta
+     */
+    public function updateDebateTagsZone(Request $request)
+    {
+        // Request arguments
+        $uuid = $request->get('uuid');
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
+
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        
+        $debate = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
+        if (!$debate) {
+            throw new InconsistentDataException('Debate '.$uuid.' not found.');
+        }
+        if ($debate->getPublished()) {
+            throw new InconsistentDataException('Debate '.$uuid.' is published and cannot be edited anymore.');
+        }
+        if (!$debate->isOwner($user->getId())) {
+            throw new InconsistentDataException('Debate '.$uuid.' is not yours.');
+        }
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Tag:_docTags.html.twig',
+            array(
+                'document' => $debate,
+                'displayOnly' => true,
+                'tagTypeId' => null,
+            )
+        );
+
+        return array(
+            'html' => $html,
+        );
+    }
+
     /* ######################################################################################################## */
     /*                                                  REACTION EDITION                                        */
     /* ######################################################################################################## */
@@ -637,6 +676,44 @@ class XhrDocument
         );
     }
 
+    /**
+     * Debate update tags zone
+     * beta
+     */
+    public function updateReactionTagsZone(Request $request)
+    {
+        // Request arguments
+        $uuid = $request->get('uuid');
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
+
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        
+        $reaction = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
+        if (!$reaction) {
+            throw new InconsistentDataException('Reaction '.$uuid.' not found.');
+        }
+        if ($reaction->getPublished()) {
+            throw new InconsistentDataException('Reaction '.$uuid.' is published and cannot be edited anymore.');
+        }
+        if (!$reaction->isOwner($user->getId())) {
+            throw new InconsistentDataException('Reaction '.$uuid.' is not yours.');
+        }
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Tag:_docTags.html.twig',
+            array(
+                'document' => $reaction,
+                'displayOnly' => true,
+                'tagTypeId' => null,
+            )
+        );
+
+        return array(
+            'html' => $html,
+        );
+    }
+
     /* ######################################################################################################## */
     /*                                 DEBATE & REACTION COMMON EDITION FUNCTIONS                               */
     /* ######################################################################################################## */
@@ -653,7 +730,7 @@ class XhrDocument
         $uuid = $request->get('document_localization')['uuid'];
         // $this->logger->info('$uuid = ' . print_r($uuid, true));
         $type = $request->get('document_localization')['type'];
-        // $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$type = ' . print_r($type, true));
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -690,19 +767,35 @@ class XhrDocument
         $document = $formLocalization->getData();
         $document->save();
 
-        // Debate's tags type
-        $formTagTypes = $this->formFactory->create(
+        // Document's tags type
+        $formTagType = $this->formFactory->create(
             new PDocumentTagTypeType(), 
             null, 
             array('elected_mode' => $user->getQualified())
         );
-        $formTagTypes->bind($request);
+        $formTagType->bind($request);
 
-        $tags = $formTagTypes->getData()['p_tags'];
+        $tags = $formTagType->getData()['p_tags'];
         if ($type == ObjectTypeConstants::TYPE_DEBATE) {
             $this->tagService->updateDebateTags($document, $tags, TagConstants::TAG_TYPE_TYPE);
         } elseif ($type == ObjectTypeConstants::TYPE_REACTION) {
             $this->tagService->updateReactionTags($document, $tags, TagConstants::TAG_TYPE_TYPE);
+        } else {
+            throw new InconsistentDataException('Document '.$type.' unknown.');
+        }
+
+        // Document's tags family
+        $formTagFamily = $this->formFactory->create(
+            new PDocumentTagFamilyType(), 
+            null
+        );
+        $formTagFamily->bind($request);
+
+        $tags = $formTagFamily->getData()['p_tags'];
+        if ($type == ObjectTypeConstants::TYPE_DEBATE) {
+            $this->tagService->updateDebateTags($document, $tags, TagConstants::TAG_TYPE_FAMILY);
+        } elseif ($type == ObjectTypeConstants::TYPE_REACTION) {
+            $this->tagService->updateReactionTags($document, $tags, TagConstants::TAG_TYPE_FAMILY);
         } else {
             throw new InconsistentDataException('Document '.$type.' unknown.');
         }
@@ -1391,22 +1484,33 @@ class XhrDocument
         
         // Request arguments
         $uuid = $request->get('uuid');
-        // $this->logger->info('$uuid = ' . print_r($uuid, true));
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
         $orderBy = $request->get('orderBy');
-        // $this->logger->info('$orderBy = ' . print_r($orderBy, true));
+        $this->logger->info('$orderBy = ' . print_r($orderBy, true));
+        $tagUuid = $request->get('tagUuid');
+        $this->logger->info('$tagUuid = ' . print_r($tagUuid, true));
         $offset = $request->get('offset');
-        // $this->logger->info('$offset = ' . print_r($offset, true));
+        $this->logger->info('$offset = ' . print_r($offset, true));
 
 
         $user = PUserQuery::create()->filterByUuid($uuid)->findOne();
         if (!$user) {
             throw new InconsistentDataException(sprintf('User %s not found', $uuid));
         }
+        $tagId = null;
+        if ($tagUuid) {
+            $tag = PTagQuery::create()->filterByUuid($tagUuid)->findOne();
+            if (!$tag) {
+                throw new InconsistentDataException(sprintf('Tag %s not found', $tagUuid));
+            }
+            $tagId = $tag->getId();
+        }
 
         // get publications
         $publications = $this->documentService->getUserPublicationsPaginatedListing(
             $user->getId(),
             $orderBy,
+            $tagId,
             $offset,
             ListingConstants::LISTING_CLASSIC_PAGINATION
         );

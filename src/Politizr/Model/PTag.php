@@ -63,6 +63,15 @@ class PTag extends BasePTag implements Tag
         return $this->getPTTagTypeId();
     }
     
+    /**
+     *
+     * @return PUser
+     */
+    public function getOwner()
+    {
+        return $this->getPOwner();
+    }
+    
     /* ######################################################################################################## */
     /*                                               DOCUMENTS                                                  */
     /* ######################################################################################################## */

@@ -23,6 +23,8 @@ use Politizr\Model\PDRComment;
 use Politizr\Model\PDRCommentQuery;
 use Politizr\Model\PDReaction;
 use Politizr\Model\PDReactionQuery;
+use Politizr\Model\PEOperation;
+use Politizr\Model\PEOperationQuery;
 use Politizr\Model\PLCity;
 use Politizr\Model\PLCityQuery;
 use Politizr\Model\PMAbuseReporting;
@@ -475,8 +477,20 @@ abstract class BasePUser extends BaseObject implements Persistent
     /**
      * @var        PropelObjectCollection|PTag[] Collection to store aggregation of PTag objects.
      */
-    protected $collPTags;
-    protected $collPTagsPartial;
+    protected $collPUsers;
+    protected $collPUsersPartial;
+
+    /**
+     * @var        PropelObjectCollection|PTag[] Collection to store aggregation of PTag objects.
+     */
+    protected $collPOwners;
+    protected $collPOwnersPartial;
+
+    /**
+     * @var        PropelObjectCollection|PEOperation[] Collection to store aggregation of PEOperation objects.
+     */
+    protected $collPEOperations;
+    protected $collPEOperationsPartial;
 
     /**
      * @var        PropelObjectCollection|POrder[] Collection to store aggregation of POrder objects.
@@ -889,7 +903,19 @@ abstract class BasePUser extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
-    protected $pTagsScheduledForDeletion = null;
+    protected $pUsersScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pOwnersScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pEOperationsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -3468,7 +3494,11 @@ abstract class BasePUser extends BaseObject implements Persistent
 
             $this->aPUStatus = null;
             $this->aPLCity = null;
-            $this->collPTags = null;
+            $this->collPUsers = null;
+
+            $this->collPOwners = null;
+
+            $this->collPEOperations = null;
 
             $this->collPOrders = null;
 
@@ -4117,18 +4147,53 @@ abstract class BasePUser extends BaseObject implements Persistent
                 }
             }
 
-            if ($this->pTagsScheduledForDeletion !== null) {
-                if (!$this->pTagsScheduledForDeletion->isEmpty()) {
-                    foreach ($this->pTagsScheduledForDeletion as $pTag) {
+            if ($this->pUsersScheduledForDeletion !== null) {
+                if (!$this->pUsersScheduledForDeletion->isEmpty()) {
+                    foreach ($this->pUsersScheduledForDeletion as $pUser) {
                         // need to save related object because we set the relation to null
-                        $pTag->save($con);
+                        $pUser->save($con);
                     }
-                    $this->pTagsScheduledForDeletion = null;
+                    $this->pUsersScheduledForDeletion = null;
                 }
             }
 
-            if ($this->collPTags !== null) {
-                foreach ($this->collPTags as $referrerFK) {
+            if ($this->collPUsers !== null) {
+                foreach ($this->collPUsers as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->pOwnersScheduledForDeletion !== null) {
+                if (!$this->pOwnersScheduledForDeletion->isEmpty()) {
+                    foreach ($this->pOwnersScheduledForDeletion as $pOwner) {
+                        // need to save related object because we set the relation to null
+                        $pOwner->save($con);
+                    }
+                    $this->pOwnersScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPOwners !== null) {
+                foreach ($this->collPOwners as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->pEOperationsScheduledForDeletion !== null) {
+                if (!$this->pEOperationsScheduledForDeletion->isEmpty()) {
+                    PEOperationQuery::create()
+                        ->filterByPrimaryKeys($this->pEOperationsScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->pEOperationsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPEOperations !== null) {
+                foreach ($this->collPEOperations as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -5406,8 +5471,14 @@ abstract class BasePUser extends BaseObject implements Persistent
             if (null !== $this->aPLCity) {
                 $result['PLCity'] = $this->aPLCity->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
-            if (null !== $this->collPTags) {
-                $result['PTags'] = $this->collPTags->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            if (null !== $this->collPUsers) {
+                $result['PUsers'] = $this->collPUsers->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collPOwners) {
+                $result['POwners'] = $this->collPOwners->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collPEOperations) {
+                $result['PEOperations'] = $this->collPEOperations->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collPOrders) {
                 $result['POrders'] = $this->collPOrders->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -5982,9 +6053,21 @@ abstract class BasePUser extends BaseObject implements Persistent
             // store object hash to prevent cycle
             $this->startCopy = true;
 
-            foreach ($this->getPTags() as $relObj) {
+            foreach ($this->getPUsers() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addPTag($relObj->copy($deepCopy));
+                    $copyObj->addPUser($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getPOwners() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPOwner($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getPEOperations() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPEOperation($relObj->copy($deepCopy));
                 }
             }
 
@@ -6357,8 +6440,14 @@ abstract class BasePUser extends BaseObject implements Persistent
      */
     public function initRelation($relationName)
     {
-        if ('PTag' == $relationName) {
-            $this->initPTags();
+        if ('PUser' == $relationName) {
+            $this->initPUsers();
+        }
+        if ('POwner' == $relationName) {
+            $this->initPOwners();
+        }
+        if ('PEOperation' == $relationName) {
+            $this->initPEOperations();
         }
         if ('POrder' == $relationName) {
             $this->initPOrders();
@@ -6465,36 +6554,36 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * Clears out the collPTags collection
+     * Clears out the collPUsers collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return PUser The current object (for fluent API support)
-     * @see        addPTags()
+     * @see        addPUsers()
      */
-    public function clearPTags()
+    public function clearPUsers()
     {
-        $this->collPTags = null; // important to set this to null since that means it is uninitialized
-        $this->collPTagsPartial = null;
+        $this->collPUsers = null; // important to set this to null since that means it is uninitialized
+        $this->collPUsersPartial = null;
 
         return $this;
     }
 
     /**
-     * reset is the collPTags collection loaded partially
+     * reset is the collPUsers collection loaded partially
      *
      * @return void
      */
-    public function resetPartialPTags($v = true)
+    public function resetPartialPUsers($v = true)
     {
-        $this->collPTagsPartial = $v;
+        $this->collPUsersPartial = $v;
     }
 
     /**
-     * Initializes the collPTags collection.
+     * Initializes the collPUsers collection.
      *
-     * By default this just sets the collPTags collection to an empty array (like clearcollPTags());
+     * By default this just sets the collPUsers collection to an empty array (like clearcollPUsers());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
@@ -6503,13 +6592,13 @@ abstract class BasePUser extends BaseObject implements Persistent
      *
      * @return void
      */
-    public function initPTags($overrideExisting = true)
+    public function initPUsers($overrideExisting = true)
     {
-        if (null !== $this->collPTags && !$overrideExisting) {
+        if (null !== $this->collPUsers && !$overrideExisting) {
             return;
         }
-        $this->collPTags = new PropelObjectCollection();
-        $this->collPTags->setModel('PTag');
+        $this->collPUsers = new PropelObjectCollection();
+        $this->collPUsers->setModel('PTag');
     }
 
     /**
@@ -6526,79 +6615,79 @@ abstract class BasePUser extends BaseObject implements Persistent
      * @return PropelObjectCollection|PTag[] List of PTag objects
      * @throws PropelException
      */
-    public function getPTags($criteria = null, PropelPDO $con = null)
+    public function getPUsers($criteria = null, PropelPDO $con = null)
     {
-        $partial = $this->collPTagsPartial && !$this->isNew();
-        if (null === $this->collPTags || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collPTags) {
+        $partial = $this->collPUsersPartial && !$this->isNew();
+        if (null === $this->collPUsers || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPUsers) {
                 // return empty collection
-                $this->initPTags();
+                $this->initPUsers();
             } else {
-                $collPTags = PTagQuery::create(null, $criteria)
+                $collPUsers = PTagQuery::create(null, $criteria)
                     ->filterByPUser($this)
                     ->find($con);
                 if (null !== $criteria) {
-                    if (false !== $this->collPTagsPartial && count($collPTags)) {
-                      $this->initPTags(false);
+                    if (false !== $this->collPUsersPartial && count($collPUsers)) {
+                      $this->initPUsers(false);
 
-                      foreach ($collPTags as $obj) {
-                        if (false == $this->collPTags->contains($obj)) {
-                          $this->collPTags->append($obj);
+                      foreach ($collPUsers as $obj) {
+                        if (false == $this->collPUsers->contains($obj)) {
+                          $this->collPUsers->append($obj);
                         }
                       }
 
-                      $this->collPTagsPartial = true;
+                      $this->collPUsersPartial = true;
                     }
 
-                    $collPTags->getInternalIterator()->rewind();
+                    $collPUsers->getInternalIterator()->rewind();
 
-                    return $collPTags;
+                    return $collPUsers;
                 }
 
-                if ($partial && $this->collPTags) {
-                    foreach ($this->collPTags as $obj) {
+                if ($partial && $this->collPUsers) {
+                    foreach ($this->collPUsers as $obj) {
                         if ($obj->isNew()) {
-                            $collPTags[] = $obj;
+                            $collPUsers[] = $obj;
                         }
                     }
                 }
 
-                $this->collPTags = $collPTags;
-                $this->collPTagsPartial = false;
+                $this->collPUsers = $collPUsers;
+                $this->collPUsersPartial = false;
             }
         }
 
-        return $this->collPTags;
+        return $this->collPUsers;
     }
 
     /**
-     * Sets a collection of PTag objects related by a one-to-many relationship
+     * Sets a collection of PUser objects related by a one-to-many relationship
      * to the current object.
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param PropelCollection $pTags A Propel collection.
+     * @param PropelCollection $pUsers A Propel collection.
      * @param PropelPDO $con Optional connection object
      * @return PUser The current object (for fluent API support)
      */
-    public function setPTags(PropelCollection $pTags, PropelPDO $con = null)
+    public function setPUsers(PropelCollection $pUsers, PropelPDO $con = null)
     {
-        $pTagsToDelete = $this->getPTags(new Criteria(), $con)->diff($pTags);
+        $pUsersToDelete = $this->getPUsers(new Criteria(), $con)->diff($pUsers);
 
 
-        $this->pTagsScheduledForDeletion = $pTagsToDelete;
+        $this->pUsersScheduledForDeletion = $pUsersToDelete;
 
-        foreach ($pTagsToDelete as $pTagRemoved) {
-            $pTagRemoved->setPUser(null);
+        foreach ($pUsersToDelete as $pUserRemoved) {
+            $pUserRemoved->setPUser(null);
         }
 
-        $this->collPTags = null;
-        foreach ($pTags as $pTag) {
-            $this->addPTag($pTag);
+        $this->collPUsers = null;
+        foreach ($pUsers as $pUser) {
+            $this->addPUser($pUser);
         }
 
-        $this->collPTags = $pTags;
-        $this->collPTagsPartial = false;
+        $this->collPUsers = $pUsers;
+        $this->collPUsersPartial = false;
 
         return $this;
     }
@@ -6612,16 +6701,16 @@ abstract class BasePUser extends BaseObject implements Persistent
      * @return int             Count of related PTag objects.
      * @throws PropelException
      */
-    public function countPTags(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    public function countPUsers(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        $partial = $this->collPTagsPartial && !$this->isNew();
-        if (null === $this->collPTags || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collPTags) {
+        $partial = $this->collPUsersPartial && !$this->isNew();
+        if (null === $this->collPUsers || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPUsers) {
                 return 0;
             }
 
             if ($partial && !$criteria) {
-                return count($this->getPTags());
+                return count($this->getPUsers());
             }
             $query = PTagQuery::create(null, $criteria);
             if ($distinct) {
@@ -6633,7 +6722,7 @@ abstract class BasePUser extends BaseObject implements Persistent
                 ->count($con);
         }
 
-        return count($this->collPTags);
+        return count($this->collPUsers);
     }
 
     /**
@@ -6643,18 +6732,18 @@ abstract class BasePUser extends BaseObject implements Persistent
      * @param    PTag $l PTag
      * @return PUser The current object (for fluent API support)
      */
-    public function addPTag(PTag $l)
+    public function addPUser(PTag $l)
     {
-        if ($this->collPTags === null) {
-            $this->initPTags();
-            $this->collPTagsPartial = true;
+        if ($this->collPUsers === null) {
+            $this->initPUsers();
+            $this->collPUsersPartial = true;
         }
 
-        if (!in_array($l, $this->collPTags->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddPTag($l);
+        if (!in_array($l, $this->collPUsers->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPUser($l);
 
-            if ($this->pTagsScheduledForDeletion and $this->pTagsScheduledForDeletion->contains($l)) {
-                $this->pTagsScheduledForDeletion->remove($this->pTagsScheduledForDeletion->search($l));
+            if ($this->pUsersScheduledForDeletion and $this->pUsersScheduledForDeletion->contains($l)) {
+                $this->pUsersScheduledForDeletion->remove($this->pUsersScheduledForDeletion->search($l));
             }
         }
 
@@ -6662,28 +6751,28 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PTag $pTag The pTag object to add.
+     * @param	PUser $pUser The pUser object to add.
      */
-    protected function doAddPTag($pTag)
+    protected function doAddPUser($pUser)
     {
-        $this->collPTags[]= $pTag;
-        $pTag->setPUser($this);
+        $this->collPUsers[]= $pUser;
+        $pUser->setPUser($this);
     }
 
     /**
-     * @param	PTag $pTag The pTag object to remove.
+     * @param	PUser $pUser The pUser object to remove.
      * @return PUser The current object (for fluent API support)
      */
-    public function removePTag($pTag)
+    public function removePUser($pUser)
     {
-        if ($this->getPTags()->contains($pTag)) {
-            $this->collPTags->remove($this->collPTags->search($pTag));
-            if (null === $this->pTagsScheduledForDeletion) {
-                $this->pTagsScheduledForDeletion = clone $this->collPTags;
-                $this->pTagsScheduledForDeletion->clear();
+        if ($this->getPUsers()->contains($pUser)) {
+            $this->collPUsers->remove($this->collPUsers->search($pUser));
+            if (null === $this->pUsersScheduledForDeletion) {
+                $this->pUsersScheduledForDeletion = clone $this->collPUsers;
+                $this->pUsersScheduledForDeletion->clear();
             }
-            $this->pTagsScheduledForDeletion[]= $pTag;
-            $pTag->setPUser(null);
+            $this->pUsersScheduledForDeletion[]= $pUser;
+            $pUser->setPUser(null);
         }
 
         return $this;
@@ -6695,7 +6784,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      * an identical criteria, it returns the collection.
      * Otherwise if this PUser is new, it will return
      * an empty collection; or if this PUser has previously
-     * been saved, it will retrieve related PTags from storage.
+     * been saved, it will retrieve related PUsers from storage.
      *
      * This method is protected by default in order to keep the public
      * api reasonable.  You can provide public methods for those you
@@ -6706,12 +6795,12 @@ abstract class BasePUser extends BaseObject implements Persistent
      * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|PTag[] List of PTag objects
      */
-    public function getPTagsJoinPTTagType($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public function getPUsersJoinPTTagType($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $query = PTagQuery::create(null, $criteria);
         $query->joinWith('PTTagType', $join_behavior);
 
-        return $this->getPTags($query, $con);
+        return $this->getPUsers($query, $con);
     }
 
 
@@ -6720,7 +6809,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      * an identical criteria, it returns the collection.
      * Otherwise if this PUser is new, it will return
      * an empty collection; or if this PUser has previously
-     * been saved, it will retrieve related PTags from storage.
+     * been saved, it will retrieve related PUsers from storage.
      *
      * This method is protected by default in order to keep the public
      * api reasonable.  You can provide public methods for those you
@@ -6731,12 +6820,512 @@ abstract class BasePUser extends BaseObject implements Persistent
      * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|PTag[] List of PTag objects
      */
-    public function getPTagsJoinPTagRelatedByPTParentId($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public function getPUsersJoinPTagRelatedByPTParentId($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $query = PTagQuery::create(null, $criteria);
         $query->joinWith('PTagRelatedByPTParentId', $join_behavior);
 
-        return $this->getPTags($query, $con);
+        return $this->getPUsers($query, $con);
+    }
+
+    /**
+     * Clears out the collPOwners collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PUser The current object (for fluent API support)
+     * @see        addPOwners()
+     */
+    public function clearPOwners()
+    {
+        $this->collPOwners = null; // important to set this to null since that means it is uninitialized
+        $this->collPOwnersPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPOwners collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPOwners($v = true)
+    {
+        $this->collPOwnersPartial = $v;
+    }
+
+    /**
+     * Initializes the collPOwners collection.
+     *
+     * By default this just sets the collPOwners collection to an empty array (like clearcollPOwners());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPOwners($overrideExisting = true)
+    {
+        if (null !== $this->collPOwners && !$overrideExisting) {
+            return;
+        }
+        $this->collPOwners = new PropelObjectCollection();
+        $this->collPOwners->setModel('PTag');
+    }
+
+    /**
+     * Gets an array of PTag objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PUser is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PTag[] List of PTag objects
+     * @throws PropelException
+     */
+    public function getPOwners($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPOwnersPartial && !$this->isNew();
+        if (null === $this->collPOwners || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPOwners) {
+                // return empty collection
+                $this->initPOwners();
+            } else {
+                $collPOwners = PTagQuery::create(null, $criteria)
+                    ->filterByPOwner($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPOwnersPartial && count($collPOwners)) {
+                      $this->initPOwners(false);
+
+                      foreach ($collPOwners as $obj) {
+                        if (false == $this->collPOwners->contains($obj)) {
+                          $this->collPOwners->append($obj);
+                        }
+                      }
+
+                      $this->collPOwnersPartial = true;
+                    }
+
+                    $collPOwners->getInternalIterator()->rewind();
+
+                    return $collPOwners;
+                }
+
+                if ($partial && $this->collPOwners) {
+                    foreach ($this->collPOwners as $obj) {
+                        if ($obj->isNew()) {
+                            $collPOwners[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPOwners = $collPOwners;
+                $this->collPOwnersPartial = false;
+            }
+        }
+
+        return $this->collPOwners;
+    }
+
+    /**
+     * Sets a collection of POwner objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pOwners A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PUser The current object (for fluent API support)
+     */
+    public function setPOwners(PropelCollection $pOwners, PropelPDO $con = null)
+    {
+        $pOwnersToDelete = $this->getPOwners(new Criteria(), $con)->diff($pOwners);
+
+
+        $this->pOwnersScheduledForDeletion = $pOwnersToDelete;
+
+        foreach ($pOwnersToDelete as $pOwnerRemoved) {
+            $pOwnerRemoved->setPOwner(null);
+        }
+
+        $this->collPOwners = null;
+        foreach ($pOwners as $pOwner) {
+            $this->addPOwner($pOwner);
+        }
+
+        $this->collPOwners = $pOwners;
+        $this->collPOwnersPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PTag objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PTag objects.
+     * @throws PropelException
+     */
+    public function countPOwners(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPOwnersPartial && !$this->isNew();
+        if (null === $this->collPOwners || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPOwners) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPOwners());
+            }
+            $query = PTagQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPOwner($this)
+                ->count($con);
+        }
+
+        return count($this->collPOwners);
+    }
+
+    /**
+     * Method called to associate a PTag object to this object
+     * through the PTag foreign key attribute.
+     *
+     * @param    PTag $l PTag
+     * @return PUser The current object (for fluent API support)
+     */
+    public function addPOwner(PTag $l)
+    {
+        if ($this->collPOwners === null) {
+            $this->initPOwners();
+            $this->collPOwnersPartial = true;
+        }
+
+        if (!in_array($l, $this->collPOwners->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPOwner($l);
+
+            if ($this->pOwnersScheduledForDeletion and $this->pOwnersScheduledForDeletion->contains($l)) {
+                $this->pOwnersScheduledForDeletion->remove($this->pOwnersScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	POwner $pOwner The pOwner object to add.
+     */
+    protected function doAddPOwner($pOwner)
+    {
+        $this->collPOwners[]= $pOwner;
+        $pOwner->setPOwner($this);
+    }
+
+    /**
+     * @param	POwner $pOwner The pOwner object to remove.
+     * @return PUser The current object (for fluent API support)
+     */
+    public function removePOwner($pOwner)
+    {
+        if ($this->getPOwners()->contains($pOwner)) {
+            $this->collPOwners->remove($this->collPOwners->search($pOwner));
+            if (null === $this->pOwnersScheduledForDeletion) {
+                $this->pOwnersScheduledForDeletion = clone $this->collPOwners;
+                $this->pOwnersScheduledForDeletion->clear();
+            }
+            $this->pOwnersScheduledForDeletion[]= $pOwner;
+            $pOwner->setPOwner(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PUser is new, it will return
+     * an empty collection; or if this PUser has previously
+     * been saved, it will retrieve related POwners from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PUser.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PTag[] List of PTag objects
+     */
+    public function getPOwnersJoinPTTagType($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PTagQuery::create(null, $criteria);
+        $query->joinWith('PTTagType', $join_behavior);
+
+        return $this->getPOwners($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PUser is new, it will return
+     * an empty collection; or if this PUser has previously
+     * been saved, it will retrieve related POwners from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PUser.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PTag[] List of PTag objects
+     */
+    public function getPOwnersJoinPTagRelatedByPTParentId($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PTagQuery::create(null, $criteria);
+        $query->joinWith('PTagRelatedByPTParentId', $join_behavior);
+
+        return $this->getPOwners($query, $con);
+    }
+
+    /**
+     * Clears out the collPEOperations collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PUser The current object (for fluent API support)
+     * @see        addPEOperations()
+     */
+    public function clearPEOperations()
+    {
+        $this->collPEOperations = null; // important to set this to null since that means it is uninitialized
+        $this->collPEOperationsPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPEOperations collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPEOperations($v = true)
+    {
+        $this->collPEOperationsPartial = $v;
+    }
+
+    /**
+     * Initializes the collPEOperations collection.
+     *
+     * By default this just sets the collPEOperations collection to an empty array (like clearcollPEOperations());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPEOperations($overrideExisting = true)
+    {
+        if (null !== $this->collPEOperations && !$overrideExisting) {
+            return;
+        }
+        $this->collPEOperations = new PropelObjectCollection();
+        $this->collPEOperations->setModel('PEOperation');
+    }
+
+    /**
+     * Gets an array of PEOperation objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PUser is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PEOperation[] List of PEOperation objects
+     * @throws PropelException
+     */
+    public function getPEOperations($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPEOperationsPartial && !$this->isNew();
+        if (null === $this->collPEOperations || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPEOperations) {
+                // return empty collection
+                $this->initPEOperations();
+            } else {
+                $collPEOperations = PEOperationQuery::create(null, $criteria)
+                    ->filterByPUser($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPEOperationsPartial && count($collPEOperations)) {
+                      $this->initPEOperations(false);
+
+                      foreach ($collPEOperations as $obj) {
+                        if (false == $this->collPEOperations->contains($obj)) {
+                          $this->collPEOperations->append($obj);
+                        }
+                      }
+
+                      $this->collPEOperationsPartial = true;
+                    }
+
+                    $collPEOperations->getInternalIterator()->rewind();
+
+                    return $collPEOperations;
+                }
+
+                if ($partial && $this->collPEOperations) {
+                    foreach ($this->collPEOperations as $obj) {
+                        if ($obj->isNew()) {
+                            $collPEOperations[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPEOperations = $collPEOperations;
+                $this->collPEOperationsPartial = false;
+            }
+        }
+
+        return $this->collPEOperations;
+    }
+
+    /**
+     * Sets a collection of PEOperation objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pEOperations A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PUser The current object (for fluent API support)
+     */
+    public function setPEOperations(PropelCollection $pEOperations, PropelPDO $con = null)
+    {
+        $pEOperationsToDelete = $this->getPEOperations(new Criteria(), $con)->diff($pEOperations);
+
+
+        $this->pEOperationsScheduledForDeletion = $pEOperationsToDelete;
+
+        foreach ($pEOperationsToDelete as $pEOperationRemoved) {
+            $pEOperationRemoved->setPUser(null);
+        }
+
+        $this->collPEOperations = null;
+        foreach ($pEOperations as $pEOperation) {
+            $this->addPEOperation($pEOperation);
+        }
+
+        $this->collPEOperations = $pEOperations;
+        $this->collPEOperationsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PEOperation objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PEOperation objects.
+     * @throws PropelException
+     */
+    public function countPEOperations(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPEOperationsPartial && !$this->isNew();
+        if (null === $this->collPEOperations || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPEOperations) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPEOperations());
+            }
+            $query = PEOperationQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPUser($this)
+                ->count($con);
+        }
+
+        return count($this->collPEOperations);
+    }
+
+    /**
+     * Method called to associate a PEOperation object to this object
+     * through the PEOperation foreign key attribute.
+     *
+     * @param    PEOperation $l PEOperation
+     * @return PUser The current object (for fluent API support)
+     */
+    public function addPEOperation(PEOperation $l)
+    {
+        if ($this->collPEOperations === null) {
+            $this->initPEOperations();
+            $this->collPEOperationsPartial = true;
+        }
+
+        if (!in_array($l, $this->collPEOperations->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPEOperation($l);
+
+            if ($this->pEOperationsScheduledForDeletion and $this->pEOperationsScheduledForDeletion->contains($l)) {
+                $this->pEOperationsScheduledForDeletion->remove($this->pEOperationsScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PEOperation $pEOperation The pEOperation object to add.
+     */
+    protected function doAddPEOperation($pEOperation)
+    {
+        $this->collPEOperations[]= $pEOperation;
+        $pEOperation->setPUser($this);
+    }
+
+    /**
+     * @param	PEOperation $pEOperation The pEOperation object to remove.
+     * @return PUser The current object (for fluent API support)
+     */
+    public function removePEOperation($pEOperation)
+    {
+        if ($this->getPEOperations()->contains($pEOperation)) {
+            $this->collPEOperations->remove($this->collPEOperations->search($pEOperation));
+            if (null === $this->pEOperationsScheduledForDeletion) {
+                $this->pEOperationsScheduledForDeletion = clone $this->collPEOperations;
+                $this->pEOperationsScheduledForDeletion->clear();
+            }
+            $this->pEOperationsScheduledForDeletion[]= clone $pEOperation;
+            $pEOperation->setPUser(null);
+        }
+
+        return $this;
     }
 
     /**
@@ -18214,8 +18803,18 @@ abstract class BasePUser extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
-            if ($this->collPTags) {
-                foreach ($this->collPTags as $o) {
+            if ($this->collPUsers) {
+                foreach ($this->collPUsers as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collPOwners) {
+                foreach ($this->collPOwners as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collPEOperations) {
+                foreach ($this->collPEOperations as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -18487,10 +19086,18 @@ abstract class BasePUser extends BaseObject implements Persistent
         $this->listEqualNestPUFollowUsPKs = null;
         $this->collEqualNestPUFollowUs = null;
 
-        if ($this->collPTags instanceof PropelCollection) {
-            $this->collPTags->clearIterator();
+        if ($this->collPUsers instanceof PropelCollection) {
+            $this->collPUsers->clearIterator();
         }
-        $this->collPTags = null;
+        $this->collPUsers = null;
+        if ($this->collPOwners instanceof PropelCollection) {
+            $this->collPOwners->clearIterator();
+        }
+        $this->collPOwners = null;
+        if ($this->collPEOperations instanceof PropelCollection) {
+            $this->collPEOperations->clearIterator();
+        }
+        $this->collPEOperations = null;
         if ($this->collPOrders instanceof PropelCollection) {
             $this->collPOrders->clearIterator();
         }

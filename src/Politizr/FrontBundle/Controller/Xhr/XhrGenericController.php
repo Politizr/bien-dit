@@ -16,7 +16,7 @@ use Politizr\Constant\XhrConstants;
 class XhrGenericController extends Controller
 {
     /**
-     * Manage every POST XHR request
+     * Manage every XHR request
      *
      * @param Request $request
      * @param string $xhrRoute url rewriting

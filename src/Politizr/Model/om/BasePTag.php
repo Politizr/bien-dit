@@ -23,6 +23,10 @@ use Politizr\Model\PDRTaggedT;
 use Politizr\Model\PDRTaggedTQuery;
 use Politizr\Model\PDReaction;
 use Politizr\Model\PDReactionQuery;
+use Politizr\Model\PEOPresetPT;
+use Politizr\Model\PEOPresetPTQuery;
+use Politizr\Model\PEOperation;
+use Politizr\Model\PEOperationQuery;
 use Politizr\Model\PTTagType;
 use Politizr\Model\PTTagTypeQuery;
 use Politizr\Model\PTag;
@@ -87,6 +91,12 @@ abstract class BasePTag extends BaseObject implements Persistent
     protected $p_user_id;
 
     /**
+     * The value for the p_owner_id field.
+     * @var        int
+     */
+    protected $p_owner_id;
+
+    /**
      * The value for the title field.
      * @var        string
      */
@@ -144,10 +154,21 @@ abstract class BasePTag extends BaseObject implements Persistent
     protected $aPUser;
 
     /**
+     * @var        PUser
+     */
+    protected $aPOwner;
+
+    /**
      * @var        PropelObjectCollection|PTag[] Collection to store aggregation of PTag objects.
      */
     protected $collPTagsRelatedById;
     protected $collPTagsRelatedByIdPartial;
+
+    /**
+     * @var        PropelObjectCollection|PEOPresetPT[] Collection to store aggregation of PEOPresetPT objects.
+     */
+    protected $collPEOPresetPTs;
+    protected $collPEOPresetPTsPartial;
 
     /**
      * @var        PropelObjectCollection|PUTaggedT[] Collection to store aggregation of PUTaggedT objects.
@@ -166,6 +187,11 @@ abstract class BasePTag extends BaseObject implements Persistent
      */
     protected $collPDRTaggedTs;
     protected $collPDRTaggedTsPartial;
+
+    /**
+     * @var        PropelObjectCollection|PEOperation[] Collection to store aggregation of PEOperation objects.
+     */
+    protected $collPEOperations;
 
     /**
      * @var        PropelObjectCollection|PUser[] Collection to store aggregation of PUser objects.
@@ -209,6 +235,12 @@ abstract class BasePTag extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
+    protected $pEOperationsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
     protected $puTaggedTPUsersScheduledForDeletion = null;
 
     /**
@@ -228,6 +260,12 @@ abstract class BasePTag extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $pTagsRelatedByIdScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pEOPresetPTsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -300,6 +338,17 @@ abstract class BasePTag extends BaseObject implements Persistent
     {
 
         return $this->p_user_id;
+    }
+
+    /**
+     * Get the [p_owner_id] column value.
+     *
+     * @return int
+     */
+    public function getPOwnerId()
+    {
+
+        return $this->p_owner_id;
     }
 
     /**
@@ -584,6 +633,31 @@ abstract class BasePTag extends BaseObject implements Persistent
     } // setPUserId()
 
     /**
+     * Set the value of [p_owner_id] column.
+     *
+     * @param  int $v new value
+     * @return PTag The current object (for fluent API support)
+     */
+    public function setPOwnerId($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->p_owner_id !== $v) {
+            $this->p_owner_id = $v;
+            $this->modifiedColumns[] = PTagPeer::P_OWNER_ID;
+        }
+
+        if ($this->aPOwner !== null && $this->aPOwner->getId() !== $v) {
+            $this->aPOwner = null;
+        }
+
+
+        return $this;
+    } // setPOwnerId()
+
+    /**
      * Set the value of [title] column.
      *
      * @param  string $v new value
@@ -789,13 +863,14 @@ abstract class BasePTag extends BaseObject implements Persistent
             $this->p_t_tag_type_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
             $this->p_t_parent_id = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
             $this->p_user_id = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
-            $this->title = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->moderated = ($row[$startcol + 6] !== null) ? (boolean) $row[$startcol + 6] : null;
-            $this->moderated_at = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-            $this->online = ($row[$startcol + 8] !== null) ? (boolean) $row[$startcol + 8] : null;
-            $this->created_at = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
-            $this->updated_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
-            $this->slug = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+            $this->p_owner_id = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
+            $this->title = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->moderated = ($row[$startcol + 7] !== null) ? (boolean) $row[$startcol + 7] : null;
+            $this->moderated_at = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+            $this->online = ($row[$startcol + 9] !== null) ? (boolean) $row[$startcol + 9] : null;
+            $this->created_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+            $this->updated_at = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+            $this->slug = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -805,7 +880,7 @@ abstract class BasePTag extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 12; // 12 = PTagPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 13; // 13 = PTagPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PTag object", $e);
@@ -836,6 +911,9 @@ abstract class BasePTag extends BaseObject implements Persistent
         }
         if ($this->aPUser !== null && $this->p_user_id !== $this->aPUser->getId()) {
             $this->aPUser = null;
+        }
+        if ($this->aPOwner !== null && $this->p_owner_id !== $this->aPOwner->getId()) {
+            $this->aPOwner = null;
         }
     } // ensureConsistency
 
@@ -879,7 +957,10 @@ abstract class BasePTag extends BaseObject implements Persistent
             $this->aPTTagType = null;
             $this->aPTagRelatedByPTParentId = null;
             $this->aPUser = null;
+            $this->aPOwner = null;
             $this->collPTagsRelatedById = null;
+
+            $this->collPEOPresetPTs = null;
 
             $this->collPuTaggedTPTags = null;
 
@@ -887,6 +968,7 @@ abstract class BasePTag extends BaseObject implements Persistent
 
             $this->collPDRTaggedTs = null;
 
+            $this->collPEOperations = null;
             $this->collPuTaggedTPUsers = null;
             $this->collPDDebates = null;
             $this->collPDReactions = null;
@@ -1059,6 +1141,13 @@ abstract class BasePTag extends BaseObject implements Persistent
                 $this->setPUser($this->aPUser);
             }
 
+            if ($this->aPOwner !== null) {
+                if ($this->aPOwner->isModified() || $this->aPOwner->isNew()) {
+                    $affectedRows += $this->aPOwner->save($con);
+                }
+                $this->setPOwner($this->aPOwner);
+            }
+
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -1068,6 +1157,32 @@ abstract class BasePTag extends BaseObject implements Persistent
                 }
                 $affectedRows += 1;
                 $this->resetModified();
+            }
+
+            if ($this->pEOperationsScheduledForDeletion !== null) {
+                if (!$this->pEOperationsScheduledForDeletion->isEmpty()) {
+                    $pks = array();
+                    $pk = $this->getPrimaryKey();
+                    foreach ($this->pEOperationsScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
+                        $pks[] = array($remotePk, $pk);
+                    }
+                    PEOPresetPTQuery::create()
+                        ->filterByPrimaryKeys($pks)
+                        ->delete($con);
+                    $this->pEOperationsScheduledForDeletion = null;
+                }
+
+                foreach ($this->getPEOperations() as $pEOperation) {
+                    if ($pEOperation->isModified()) {
+                        $pEOperation->save($con);
+                    }
+                }
+            } elseif ($this->collPEOperations) {
+                foreach ($this->collPEOperations as $pEOperation) {
+                    if ($pEOperation->isModified()) {
+                        $pEOperation->save($con);
+                    }
+                }
             }
 
             if ($this->puTaggedTPUsersScheduledForDeletion !== null) {
@@ -1166,6 +1281,23 @@ abstract class BasePTag extends BaseObject implements Persistent
                 }
             }
 
+            if ($this->pEOPresetPTsScheduledForDeletion !== null) {
+                if (!$this->pEOPresetPTsScheduledForDeletion->isEmpty()) {
+                    PEOPresetPTQuery::create()
+                        ->filterByPrimaryKeys($this->pEOPresetPTsScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->pEOPresetPTsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPEOPresetPTs !== null) {
+                foreach ($this->collPEOPresetPTs as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
             if ($this->puTaggedTPTagsScheduledForDeletion !== null) {
                 if (!$this->puTaggedTPTagsScheduledForDeletion->isEmpty()) {
                     PUTaggedTQuery::create()
@@ -1258,6 +1390,9 @@ abstract class BasePTag extends BaseObject implements Persistent
         if ($this->isColumnModified(PTagPeer::P_USER_ID)) {
             $modifiedColumns[':p' . $index++]  = '`p_user_id`';
         }
+        if ($this->isColumnModified(PTagPeer::P_OWNER_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`p_owner_id`';
+        }
         if ($this->isColumnModified(PTagPeer::TITLE)) {
             $modifiedColumns[':p' . $index++]  = '`title`';
         }
@@ -1304,6 +1439,9 @@ abstract class BasePTag extends BaseObject implements Persistent
                         break;
                     case '`p_user_id`':
                         $stmt->bindValue($identifier, $this->p_user_id, PDO::PARAM_INT);
+                        break;
+                    case '`p_owner_id`':
+                        $stmt->bindValue($identifier, $this->p_owner_id, PDO::PARAM_INT);
                         break;
                     case '`title`':
                         $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
@@ -1402,24 +1540,27 @@ abstract class BasePTag extends BaseObject implements Persistent
                 return $this->getPUserId();
                 break;
             case 5:
-                return $this->getTitle();
+                return $this->getPOwnerId();
                 break;
             case 6:
-                return $this->getModerated();
+                return $this->getTitle();
                 break;
             case 7:
-                return $this->getModeratedAt();
+                return $this->getModerated();
                 break;
             case 8:
-                return $this->getOnline();
+                return $this->getModeratedAt();
                 break;
             case 9:
-                return $this->getCreatedAt();
+                return $this->getOnline();
                 break;
             case 10:
-                return $this->getUpdatedAt();
+                return $this->getCreatedAt();
                 break;
             case 11:
+                return $this->getUpdatedAt();
+                break;
+            case 12:
                 return $this->getSlug();
                 break;
             default:
@@ -1456,13 +1597,14 @@ abstract class BasePTag extends BaseObject implements Persistent
             $keys[2] => $this->getPTTagTypeId(),
             $keys[3] => $this->getPTParentId(),
             $keys[4] => $this->getPUserId(),
-            $keys[5] => $this->getTitle(),
-            $keys[6] => $this->getModerated(),
-            $keys[7] => $this->getModeratedAt(),
-            $keys[8] => $this->getOnline(),
-            $keys[9] => $this->getCreatedAt(),
-            $keys[10] => $this->getUpdatedAt(),
-            $keys[11] => $this->getSlug(),
+            $keys[5] => $this->getPOwnerId(),
+            $keys[6] => $this->getTitle(),
+            $keys[7] => $this->getModerated(),
+            $keys[8] => $this->getModeratedAt(),
+            $keys[9] => $this->getOnline(),
+            $keys[10] => $this->getCreatedAt(),
+            $keys[11] => $this->getUpdatedAt(),
+            $keys[12] => $this->getSlug(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1479,8 +1621,14 @@ abstract class BasePTag extends BaseObject implements Persistent
             if (null !== $this->aPUser) {
                 $result['PUser'] = $this->aPUser->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
+            if (null !== $this->aPOwner) {
+                $result['POwner'] = $this->aPOwner->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
             if (null !== $this->collPTagsRelatedById) {
                 $result['PTagsRelatedById'] = $this->collPTagsRelatedById->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collPEOPresetPTs) {
+                $result['PEOPresetPTs'] = $this->collPEOPresetPTs->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collPuTaggedTPTags) {
                 $result['PuTaggedTPTags'] = $this->collPuTaggedTPTags->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -1541,24 +1689,27 @@ abstract class BasePTag extends BaseObject implements Persistent
                 $this->setPUserId($value);
                 break;
             case 5:
-                $this->setTitle($value);
+                $this->setPOwnerId($value);
                 break;
             case 6:
-                $this->setModerated($value);
+                $this->setTitle($value);
                 break;
             case 7:
-                $this->setModeratedAt($value);
+                $this->setModerated($value);
                 break;
             case 8:
-                $this->setOnline($value);
+                $this->setModeratedAt($value);
                 break;
             case 9:
-                $this->setCreatedAt($value);
+                $this->setOnline($value);
                 break;
             case 10:
-                $this->setUpdatedAt($value);
+                $this->setCreatedAt($value);
                 break;
             case 11:
+                $this->setUpdatedAt($value);
+                break;
+            case 12:
                 $this->setSlug($value);
                 break;
         } // switch()
@@ -1590,13 +1741,14 @@ abstract class BasePTag extends BaseObject implements Persistent
         if (array_key_exists($keys[2], $arr)) $this->setPTTagTypeId($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setPTParentId($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setPUserId($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setTitle($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setModerated($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setModeratedAt($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setOnline($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setCreatedAt($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setUpdatedAt($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setSlug($arr[$keys[11]]);
+        if (array_key_exists($keys[5], $arr)) $this->setPOwnerId($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setTitle($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setModerated($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setModeratedAt($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setOnline($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setCreatedAt($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setUpdatedAt($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setSlug($arr[$keys[12]]);
     }
 
     /**
@@ -1613,6 +1765,7 @@ abstract class BasePTag extends BaseObject implements Persistent
         if ($this->isColumnModified(PTagPeer::P_T_TAG_TYPE_ID)) $criteria->add(PTagPeer::P_T_TAG_TYPE_ID, $this->p_t_tag_type_id);
         if ($this->isColumnModified(PTagPeer::P_T_PARENT_ID)) $criteria->add(PTagPeer::P_T_PARENT_ID, $this->p_t_parent_id);
         if ($this->isColumnModified(PTagPeer::P_USER_ID)) $criteria->add(PTagPeer::P_USER_ID, $this->p_user_id);
+        if ($this->isColumnModified(PTagPeer::P_OWNER_ID)) $criteria->add(PTagPeer::P_OWNER_ID, $this->p_owner_id);
         if ($this->isColumnModified(PTagPeer::TITLE)) $criteria->add(PTagPeer::TITLE, $this->title);
         if ($this->isColumnModified(PTagPeer::MODERATED)) $criteria->add(PTagPeer::MODERATED, $this->moderated);
         if ($this->isColumnModified(PTagPeer::MODERATED_AT)) $criteria->add(PTagPeer::MODERATED_AT, $this->moderated_at);
@@ -1687,6 +1840,7 @@ abstract class BasePTag extends BaseObject implements Persistent
         $copyObj->setPTTagTypeId($this->getPTTagTypeId());
         $copyObj->setPTParentId($this->getPTParentId());
         $copyObj->setPUserId($this->getPUserId());
+        $copyObj->setPOwnerId($this->getPOwnerId());
         $copyObj->setTitle($this->getTitle());
         $copyObj->setModerated($this->getModerated());
         $copyObj->setModeratedAt($this->getModeratedAt());
@@ -1705,6 +1859,12 @@ abstract class BasePTag extends BaseObject implements Persistent
             foreach ($this->getPTagsRelatedById() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addPTagRelatedById($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getPEOPresetPTs() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPEOPresetPT($relObj->copy($deepCopy));
                 }
             }
 
@@ -1900,7 +2060,7 @@ abstract class BasePTag extends BaseObject implements Persistent
         // Add binding for other direction of this n:n relationship.
         // If this object has already been added to the PUser object, it will not be re-added.
         if ($v !== null) {
-            $v->addPTag($this);
+            $v->addPUser($this);
         }
 
 
@@ -1925,11 +2085,63 @@ abstract class BasePTag extends BaseObject implements Persistent
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aPUser->addPTags($this);
+                $this->aPUser->addPUsers($this);
              */
         }
 
         return $this->aPUser;
+    }
+
+    /**
+     * Declares an association between this object and a PUser object.
+     *
+     * @param                  PUser $v
+     * @return PTag The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setPOwner(PUser $v = null)
+    {
+        if ($v === null) {
+            $this->setPOwnerId(NULL);
+        } else {
+            $this->setPOwnerId($v->getId());
+        }
+
+        $this->aPOwner = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the PUser object, it will not be re-added.
+        if ($v !== null) {
+            $v->addPOwner($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated PUser object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return PUser The associated PUser object.
+     * @throws PropelException
+     */
+    public function getPOwner(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aPOwner === null && ($this->p_owner_id !== null) && $doQuery) {
+            $this->aPOwner = PUserQuery::create()->findPk($this->p_owner_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aPOwner->addPOwners($this);
+             */
+        }
+
+        return $this->aPOwner;
     }
 
 
@@ -1945,6 +2157,9 @@ abstract class BasePTag extends BaseObject implements Persistent
     {
         if ('PTagRelatedById' == $relationName) {
             $this->initPTagsRelatedById();
+        }
+        if ('PEOPresetPT' == $relationName) {
+            $this->initPEOPresetPTs();
         }
         if ('PuTaggedTPTag' == $relationName) {
             $this->initPuTaggedTPTags();
@@ -2230,6 +2445,281 @@ abstract class BasePTag extends BaseObject implements Persistent
         $query->joinWith('PUser', $join_behavior);
 
         return $this->getPTagsRelatedById($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PTag is new, it will return
+     * an empty collection; or if this PTag has previously
+     * been saved, it will retrieve related PTagsRelatedById from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PTag.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PTag[] List of PTag objects
+     */
+    public function getPTagsRelatedByIdJoinPOwner($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PTagQuery::create(null, $criteria);
+        $query->joinWith('POwner', $join_behavior);
+
+        return $this->getPTagsRelatedById($query, $con);
+    }
+
+    /**
+     * Clears out the collPEOPresetPTs collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PTag The current object (for fluent API support)
+     * @see        addPEOPresetPTs()
+     */
+    public function clearPEOPresetPTs()
+    {
+        $this->collPEOPresetPTs = null; // important to set this to null since that means it is uninitialized
+        $this->collPEOPresetPTsPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPEOPresetPTs collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPEOPresetPTs($v = true)
+    {
+        $this->collPEOPresetPTsPartial = $v;
+    }
+
+    /**
+     * Initializes the collPEOPresetPTs collection.
+     *
+     * By default this just sets the collPEOPresetPTs collection to an empty array (like clearcollPEOPresetPTs());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPEOPresetPTs($overrideExisting = true)
+    {
+        if (null !== $this->collPEOPresetPTs && !$overrideExisting) {
+            return;
+        }
+        $this->collPEOPresetPTs = new PropelObjectCollection();
+        $this->collPEOPresetPTs->setModel('PEOPresetPT');
+    }
+
+    /**
+     * Gets an array of PEOPresetPT objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PTag is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PEOPresetPT[] List of PEOPresetPT objects
+     * @throws PropelException
+     */
+    public function getPEOPresetPTs($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPEOPresetPTsPartial && !$this->isNew();
+        if (null === $this->collPEOPresetPTs || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPEOPresetPTs) {
+                // return empty collection
+                $this->initPEOPresetPTs();
+            } else {
+                $collPEOPresetPTs = PEOPresetPTQuery::create(null, $criteria)
+                    ->filterByPTag($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPEOPresetPTsPartial && count($collPEOPresetPTs)) {
+                      $this->initPEOPresetPTs(false);
+
+                      foreach ($collPEOPresetPTs as $obj) {
+                        if (false == $this->collPEOPresetPTs->contains($obj)) {
+                          $this->collPEOPresetPTs->append($obj);
+                        }
+                      }
+
+                      $this->collPEOPresetPTsPartial = true;
+                    }
+
+                    $collPEOPresetPTs->getInternalIterator()->rewind();
+
+                    return $collPEOPresetPTs;
+                }
+
+                if ($partial && $this->collPEOPresetPTs) {
+                    foreach ($this->collPEOPresetPTs as $obj) {
+                        if ($obj->isNew()) {
+                            $collPEOPresetPTs[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPEOPresetPTs = $collPEOPresetPTs;
+                $this->collPEOPresetPTsPartial = false;
+            }
+        }
+
+        return $this->collPEOPresetPTs;
+    }
+
+    /**
+     * Sets a collection of PEOPresetPT objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pEOPresetPTs A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PTag The current object (for fluent API support)
+     */
+    public function setPEOPresetPTs(PropelCollection $pEOPresetPTs, PropelPDO $con = null)
+    {
+        $pEOPresetPTsToDelete = $this->getPEOPresetPTs(new Criteria(), $con)->diff($pEOPresetPTs);
+
+
+        $this->pEOPresetPTsScheduledForDeletion = $pEOPresetPTsToDelete;
+
+        foreach ($pEOPresetPTsToDelete as $pEOPresetPTRemoved) {
+            $pEOPresetPTRemoved->setPTag(null);
+        }
+
+        $this->collPEOPresetPTs = null;
+        foreach ($pEOPresetPTs as $pEOPresetPT) {
+            $this->addPEOPresetPT($pEOPresetPT);
+        }
+
+        $this->collPEOPresetPTs = $pEOPresetPTs;
+        $this->collPEOPresetPTsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PEOPresetPT objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PEOPresetPT objects.
+     * @throws PropelException
+     */
+    public function countPEOPresetPTs(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPEOPresetPTsPartial && !$this->isNew();
+        if (null === $this->collPEOPresetPTs || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPEOPresetPTs) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPEOPresetPTs());
+            }
+            $query = PEOPresetPTQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPTag($this)
+                ->count($con);
+        }
+
+        return count($this->collPEOPresetPTs);
+    }
+
+    /**
+     * Method called to associate a PEOPresetPT object to this object
+     * through the PEOPresetPT foreign key attribute.
+     *
+     * @param    PEOPresetPT $l PEOPresetPT
+     * @return PTag The current object (for fluent API support)
+     */
+    public function addPEOPresetPT(PEOPresetPT $l)
+    {
+        if ($this->collPEOPresetPTs === null) {
+            $this->initPEOPresetPTs();
+            $this->collPEOPresetPTsPartial = true;
+        }
+
+        if (!in_array($l, $this->collPEOPresetPTs->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPEOPresetPT($l);
+
+            if ($this->pEOPresetPTsScheduledForDeletion and $this->pEOPresetPTsScheduledForDeletion->contains($l)) {
+                $this->pEOPresetPTsScheduledForDeletion->remove($this->pEOPresetPTsScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PEOPresetPT $pEOPresetPT The pEOPresetPT object to add.
+     */
+    protected function doAddPEOPresetPT($pEOPresetPT)
+    {
+        $this->collPEOPresetPTs[]= $pEOPresetPT;
+        $pEOPresetPT->setPTag($this);
+    }
+
+    /**
+     * @param	PEOPresetPT $pEOPresetPT The pEOPresetPT object to remove.
+     * @return PTag The current object (for fluent API support)
+     */
+    public function removePEOPresetPT($pEOPresetPT)
+    {
+        if ($this->getPEOPresetPTs()->contains($pEOPresetPT)) {
+            $this->collPEOPresetPTs->remove($this->collPEOPresetPTs->search($pEOPresetPT));
+            if (null === $this->pEOPresetPTsScheduledForDeletion) {
+                $this->pEOPresetPTsScheduledForDeletion = clone $this->collPEOPresetPTs;
+                $this->pEOPresetPTsScheduledForDeletion->clear();
+            }
+            $this->pEOPresetPTsScheduledForDeletion[]= clone $pEOPresetPT;
+            $pEOPresetPT->setPTag(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PTag is new, it will return
+     * an empty collection; or if this PTag has previously
+     * been saved, it will retrieve related PEOPresetPTs from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PTag.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PEOPresetPT[] List of PEOPresetPT objects
+     */
+    public function getPEOPresetPTsJoinPEOperation($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PEOPresetPTQuery::create(null, $criteria);
+        $query->joinWith('PEOperation', $join_behavior);
+
+        return $this->getPEOPresetPTs($query, $con);
     }
 
     /**
@@ -2983,6 +3473,193 @@ abstract class BasePTag extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collPEOperations collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PTag The current object (for fluent API support)
+     * @see        addPEOperations()
+     */
+    public function clearPEOperations()
+    {
+        $this->collPEOperations = null; // important to set this to null since that means it is uninitialized
+        $this->collPEOperationsPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * Initializes the collPEOperations collection.
+     *
+     * By default this just sets the collPEOperations collection to an empty collection (like clearPEOperations());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @return void
+     */
+    public function initPEOperations()
+    {
+        $this->collPEOperations = new PropelObjectCollection();
+        $this->collPEOperations->setModel('PEOperation');
+    }
+
+    /**
+     * Gets a collection of PEOperation objects related by a many-to-many relationship
+     * to the current object by way of the p_e_o_preset_p_t cross-reference table.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PTag is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return PropelObjectCollection|PEOperation[] List of PEOperation objects
+     */
+    public function getPEOperations($criteria = null, PropelPDO $con = null)
+    {
+        if (null === $this->collPEOperations || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPEOperations) {
+                // return empty collection
+                $this->initPEOperations();
+            } else {
+                $collPEOperations = PEOperationQuery::create(null, $criteria)
+                    ->filterByPTag($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    return $collPEOperations;
+                }
+                $this->collPEOperations = $collPEOperations;
+            }
+        }
+
+        return $this->collPEOperations;
+    }
+
+    /**
+     * Sets a collection of PEOperation objects related by a many-to-many relationship
+     * to the current object by way of the p_e_o_preset_p_t cross-reference table.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pEOperations A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PTag The current object (for fluent API support)
+     */
+    public function setPEOperations(PropelCollection $pEOperations, PropelPDO $con = null)
+    {
+        $this->clearPEOperations();
+        $currentPEOperations = $this->getPEOperations(null, $con);
+
+        $this->pEOperationsScheduledForDeletion = $currentPEOperations->diff($pEOperations);
+
+        foreach ($pEOperations as $pEOperation) {
+            if (!$currentPEOperations->contains($pEOperation)) {
+                $this->doAddPEOperation($pEOperation);
+            }
+        }
+
+        $this->collPEOperations = $pEOperations;
+
+        return $this;
+    }
+
+    /**
+     * Gets the number of PEOperation objects related by a many-to-many relationship
+     * to the current object by way of the p_e_o_preset_p_t cross-reference table.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param boolean $distinct Set to true to force count distinct
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return int the number of related PEOperation objects
+     */
+    public function countPEOperations($criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        if (null === $this->collPEOperations || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPEOperations) {
+                return 0;
+            } else {
+                $query = PEOperationQuery::create(null, $criteria);
+                if ($distinct) {
+                    $query->distinct();
+                }
+
+                return $query
+                    ->filterByPTag($this)
+                    ->count($con);
+            }
+        } else {
+            return count($this->collPEOperations);
+        }
+    }
+
+    /**
+     * Associate a PEOperation object to this object
+     * through the p_e_o_preset_p_t cross reference table.
+     *
+     * @param  PEOperation $pEOperation The PEOPresetPT object to relate
+     * @return PTag The current object (for fluent API support)
+     */
+    public function addPEOperation(PEOperation $pEOperation)
+    {
+        if ($this->collPEOperations === null) {
+            $this->initPEOperations();
+        }
+
+        if (!$this->collPEOperations->contains($pEOperation)) { // only add it if the **same** object is not already associated
+            $this->doAddPEOperation($pEOperation);
+            $this->collPEOperations[] = $pEOperation;
+
+            if ($this->pEOperationsScheduledForDeletion and $this->pEOperationsScheduledForDeletion->contains($pEOperation)) {
+                $this->pEOperationsScheduledForDeletion->remove($this->pEOperationsScheduledForDeletion->search($pEOperation));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PEOperation $pEOperation The pEOperation object to add.
+     */
+    protected function doAddPEOperation(PEOperation $pEOperation)
+    {
+        // set the back reference to this object directly as using provided method either results
+        // in endless loop or in multiple relations
+        if (!$pEOperation->getPTags()->contains($this)) { $pEOPresetPT = new PEOPresetPT();
+            $pEOPresetPT->setPEOperation($pEOperation);
+            $this->addPEOPresetPT($pEOPresetPT);
+
+            $foreignCollection = $pEOperation->getPTags();
+            $foreignCollection[] = $this;
+        }
+    }
+
+    /**
+     * Remove a PEOperation object to this object
+     * through the p_e_o_preset_p_t cross reference table.
+     *
+     * @param PEOperation $pEOperation The PEOPresetPT object to relate
+     * @return PTag The current object (for fluent API support)
+     */
+    public function removePEOperation(PEOperation $pEOperation)
+    {
+        if ($this->getPEOperations()->contains($pEOperation)) {
+            $this->collPEOperations->remove($this->collPEOperations->search($pEOperation));
+            if (null === $this->pEOperationsScheduledForDeletion) {
+                $this->pEOperationsScheduledForDeletion = clone $this->collPEOperations;
+                $this->pEOperationsScheduledForDeletion->clear();
+            }
+            $this->pEOperationsScheduledForDeletion[]= $pEOperation;
+        }
+
+        return $this;
+    }
+
+    /**
      * Clears out the collPuTaggedTPUsers collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
@@ -3553,6 +4230,7 @@ abstract class BasePTag extends BaseObject implements Persistent
         $this->p_t_tag_type_id = null;
         $this->p_t_parent_id = null;
         $this->p_user_id = null;
+        $this->p_owner_id = null;
         $this->title = null;
         $this->moderated = null;
         $this->moderated_at = null;
@@ -3587,6 +4265,11 @@ abstract class BasePTag extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collPEOPresetPTs) {
+                foreach ($this->collPEOPresetPTs as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collPuTaggedTPTags) {
                 foreach ($this->collPuTaggedTPTags as $o) {
                     $o->clearAllReferences($deep);
@@ -3599,6 +4282,11 @@ abstract class BasePTag extends BaseObject implements Persistent
             }
             if ($this->collPDRTaggedTs) {
                 foreach ($this->collPDRTaggedTs as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collPEOperations) {
+                foreach ($this->collPEOperations as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -3626,6 +4314,9 @@ abstract class BasePTag extends BaseObject implements Persistent
             if ($this->aPUser instanceof Persistent) {
               $this->aPUser->clearAllReferences($deep);
             }
+            if ($this->aPOwner instanceof Persistent) {
+              $this->aPOwner->clearAllReferences($deep);
+            }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
@@ -3634,6 +4325,10 @@ abstract class BasePTag extends BaseObject implements Persistent
             $this->collPTagsRelatedById->clearIterator();
         }
         $this->collPTagsRelatedById = null;
+        if ($this->collPEOPresetPTs instanceof PropelCollection) {
+            $this->collPEOPresetPTs->clearIterator();
+        }
+        $this->collPEOPresetPTs = null;
         if ($this->collPuTaggedTPTags instanceof PropelCollection) {
             $this->collPuTaggedTPTags->clearIterator();
         }
@@ -3646,6 +4341,10 @@ abstract class BasePTag extends BaseObject implements Persistent
             $this->collPDRTaggedTs->clearIterator();
         }
         $this->collPDRTaggedTs = null;
+        if ($this->collPEOperations instanceof PropelCollection) {
+            $this->collPEOperations->clearIterator();
+        }
+        $this->collPEOperations = null;
         if ($this->collPuTaggedTPUsers instanceof PropelCollection) {
             $this->collPuTaggedTPUsers->clearIterator();
         }
@@ -3661,6 +4360,7 @@ abstract class BasePTag extends BaseObject implements Persistent
         $this->aPTTagType = null;
         $this->aPTagRelatedByPTParentId = null;
         $this->aPUser = null;
+        $this->aPOwner = null;
     }
 
     /**
@@ -3941,6 +4641,7 @@ abstract class BasePTag extends BaseObject implements Persistent
         $this->setPTTagTypeId($archive->getPTTagTypeId());
         $this->setPTParentId($archive->getPTParentId());
         $this->setPUserId($archive->getPUserId());
+        $this->setPOwnerId($archive->getPOwnerId());
         $this->setTitle($archive->getTitle());
         $this->setModerated($archive->getModerated());
         $this->setModeratedAt($archive->getModeratedAt());

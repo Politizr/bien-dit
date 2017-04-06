@@ -24,8 +24,8 @@
     <div id="publicVideo">
         <div id="videoOverlay">
             <div id="videoText">
-                <h1>Changerez-vous d'opinion ?</h1>
-                <h2>Exprimez vos opinions. Faites réagir vos élu-e-s.<br> Devenez acteur de votre territoire!</h2>
+                <h1>Élus ou Citoyens?<br/>Bienvenue sur un lieu d'échange unique et adapté</h1>
+                <h2>Politizr est un espace <b>indépendant, neutre et gratuit</b><br/>permettant aux <b>élu-e-s</b> de discuter publiquement des sujets proposés par leurs <b>concitoyen-ne-s</b></h2>
                 <a href="{{ path('InscriptionChoice') }}">Créer un compte</a>
                 <a href="{{ path('Concept') }}">En savoir plus</a>
             </div>
@@ -42,14 +42,17 @@
     <div id="videoFooter">
         <div class="center">
             <div id="yellowBlock">
-                <span>Politizr est un espace <b>indépendant, neutre et gratuit</b> permettant aux <b>élu-e-s</b> de discuter publiquement des sujets proposés par leurs <b>concitoyen-ne-s</b>.</span>
-                <a href="{{ path('InscriptionChoice') }}">Exprimez-vous et lancez un débat</a>
+                <span>
+                    Exprimez-vous <b>simplement et gratuitement</b> sur des sujets relatifs à <b>votre territoire</b><br> pour permettre à <b>vos élus</b> de prendre les <b>bonnes décisions en toute transparence</b>.
+                </span>
+                <a href="{{ path('InscriptionChoice') }}">J'ai quelque chose à dire</a>
             </div>
             <div id="blueBlock">
-                <span>Des échanges entre <br>citoyen-ne-s et élu-e-s aux<b><br>quatre coins de la France !</b></span>
+                <span>Des <b>échanges constructifs</b> entre citoyen-ne-s et élu-e-s<br>aux <b>quatre coins de la France</b>.</span>
             </div>
         </div>
     </div>
+
     <div id="postSelection">
         <div class="center">
             <h1>Les discussions en cours</h1>
@@ -86,7 +89,7 @@
             {% endfor %}
         </div>
     </div>
-
+    {#
     <div id="opCharlotte">
         <div class="center">
             <div class="imgCharlotte"></div>
@@ -108,6 +111,7 @@
         <div class="bgLeftCharlotte"></div>
         <div class="bgRightCharlotte"></div>
     </div>
+    #}
 {% endblock main %}
 
 {% block postMain %}

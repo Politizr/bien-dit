@@ -19,6 +19,7 @@ use Politizr\Model\PDocumentInterface;
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
 use Politizr\Model\PLCountryQuery;
+use Politizr\Model\PEOperationQuery;
 
 use Politizr\Model\PDDComment;
 use Politizr\Model\PDRComment;
@@ -139,7 +140,7 @@ class DocumentController extends Controller
         $similars = PDDebateQuery::create()
             ->filterById($debate->getId(), \Criteria::NOT_EQUAL)
             ->usePDDTaggedTQuery()
-                ->filterByPTag($debate->getTags(TagConstants::TAG_TYPE_THEME), \Criteria::IN)
+                ->filterByPTag($debate->getTags([TagConstants::TAG_TYPE_THEME, TagConstants::TAG_TYPE_FAMILY]), \Criteria::IN)
             ->endUse()
             ->distinct()
             ->filterByOnline(true)
@@ -197,8 +198,8 @@ class DocumentController extends Controller
         }
 
         // Cut text if user not logged
-        // $private = $this->get('politizr.tools.global')->isPrivateMode($visitor, $reaction, $this->getParameter('private_mode'), $this->getParameter('public_user_ids'));
-        $private = $visitor?false:true;
+        $private = $this->get('politizr.tools.global')->isPrivateMode($visitor, $reaction, $this->getParameter('private_mode'), $this->getParameter('public_user_ids'));
+
         $description = $reaction->getDescription();
         if ($private) {
             $description = $this->get('politizr.tools.global')->truncate($description, 800, ['html' => true]);
@@ -248,7 +249,7 @@ class DocumentController extends Controller
         $similars = PDDebateQuery::create()
             ->filterById($reaction->getPDDebateId(), \Criteria::NOT_EQUAL)
             ->usePDDTaggedTQuery()
-                ->filterByPTag($reaction->getTags(TagConstants::TAG_TYPE_THEME), \Criteria::IN)
+                ->filterByPTag($reaction->getTags([TagConstants::TAG_TYPE_THEME, TagConstants::TAG_TYPE_FAMILY]), \Criteria::IN)
             ->endUse()
             ->distinct()
             ->filterByOnline(true)
@@ -309,7 +310,7 @@ class DocumentController extends Controller
                 'DebateDraftEdit'.$this->get('politizr.tools.global')->computeProfileSuffix(),
                 array(
                     'uuid' => $debate->getUuid(),
-                    'type' => $request->get('type')
+                    'op' => $request->get('op')
                 )
             )
         );
@@ -327,22 +328,23 @@ class DocumentController extends Controller
         // $logger->info('*** debateEditAction');
         // $logger->info('$uuid = '.print_r($uuid, true));
 
-        $opCharlotte = $request->get('type');
-
-        $forceGeolocType = null;
-        $forceGeolocId = null;
-        if ($opCharlotte) {
-            $request->getSession()->set('showOp', false);
-            $forceGeolocType = LocalizationConstants::TYPE_COUNTRY;
-            $forceGeolocId = LocalizationConstants::FRANCE_ID;
-        }
-
         $user = $this->getUser();
 
         $debate = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
         $this->checkDocumentEditable($debate, $user->getId());
         
         $form = $this->createForm(new PDDebateType(), $debate, array('user' => $user));
+
+        $opUuid = $request->get('op');
+        $operation = null;
+        if ($opUuid) {
+            $operation = PEOperationQuery::create()
+                ->filterByUuid($opUuid)
+                ->findOne();
+            if (!$operation) {
+                throw new InconsistentDataException(sprintf('Operation %s not found.', $opUuid));
+            }
+        }
 
         // get geo debate informations
         $debateLocType = $this->get('politizr.form.type.document_localization');
@@ -352,16 +354,14 @@ class DocumentController extends Controller
             array(
                 'data_class' => ObjectTypeConstants::TYPE_DEBATE,
                 'user' => $user,
-                'force_geoloc_type' => $forceGeolocType,
-                'force_geoloc_id' => $forceGeolocId,
             )
         );
 
-        // op tag
-        if ($opCharlotte) {
-            $opCharlotteTagIds = [ 369, 868, 666 ];
-            foreach ($opCharlotteTagIds as $tagId) {
-                $this->get('politizr.manager.tag')->createDebateTag($debate->getId(), $tagId);
+        // op preset tags
+        if ($operation) {
+            $tags = $operation->getPTags();
+            foreach ($tags as $tag) {
+                $this->get('politizr.manager.tag')->createDebateTag($debate->getId(), $tag->getId());
             }
         }
 
@@ -473,7 +473,7 @@ class DocumentController extends Controller
             'paragraphs' => $paragraphs,
             'form' => $form->createView(),
             'formLocalization' => $formLocalization->createView(),
-            ));
+        ));
     }
 
     /* ######################################################################################################## */

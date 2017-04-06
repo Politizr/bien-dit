@@ -1,0 +1,6 @@
+{% for city in cities %}
+    <div class="cityOperationItem">
+        <strong>{{ city.nameReal }}</strong> ({{ city.zipcode }}) - INSEE / {{ city.municipalityCode }}&nbsp;
+        <a action="addOperationCity" operationId="{{ operationId }}" cityId="{{ city.id }}">Ajouter</a>
+    </div>
+{% endfor %}

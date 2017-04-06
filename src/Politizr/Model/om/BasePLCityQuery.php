@@ -15,6 +15,8 @@ use \PropelObjectCollection;
 use \PropelPDO;
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDReaction;
+use Politizr\Model\PEOScopePLC;
+use Politizr\Model\PEOperation;
 use Politizr\Model\PLCity;
 use Politizr\Model\PLCityPeer;
 use Politizr\Model\PLCityQuery;
@@ -91,6 +93,10 @@ use Politizr\Model\PUser;
  * @method PLCityQuery leftJoinPLDepartment($relationAlias = null) Adds a LEFT JOIN clause to the query using the PLDepartment relation
  * @method PLCityQuery rightJoinPLDepartment($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PLDepartment relation
  * @method PLCityQuery innerJoinPLDepartment($relationAlias = null) Adds a INNER JOIN clause to the query using the PLDepartment relation
+ *
+ * @method PLCityQuery leftJoinPEOScopePLC($relationAlias = null) Adds a LEFT JOIN clause to the query using the PEOScopePLC relation
+ * @method PLCityQuery rightJoinPEOScopePLC($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PEOScopePLC relation
+ * @method PLCityQuery innerJoinPEOScopePLC($relationAlias = null) Adds a INNER JOIN clause to the query using the PEOScopePLC relation
  *
  * @method PLCityQuery leftJoinPUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUser relation
  * @method PLCityQuery rightJoinPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUser relation
@@ -1510,6 +1516,80 @@ abstract class BasePLCityQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query by a related PEOScopePLC object
+     *
+     * @param   PEOScopePLC|PropelObjectCollection $pEOScopePLC  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PLCityQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPEOScopePLC($pEOScopePLC, $comparison = null)
+    {
+        if ($pEOScopePLC instanceof PEOScopePLC) {
+            return $this
+                ->addUsingAlias(PLCityPeer::ID, $pEOScopePLC->getPLCityId(), $comparison);
+        } elseif ($pEOScopePLC instanceof PropelObjectCollection) {
+            return $this
+                ->usePEOScopePLCQuery()
+                ->filterByPrimaryKeys($pEOScopePLC->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPEOScopePLC() only accepts arguments of type PEOScopePLC or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PEOScopePLC relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PLCityQuery The current query, for fluid interface
+     */
+    public function joinPEOScopePLC($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PEOScopePLC');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PEOScopePLC');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PEOScopePLC relation PEOScopePLC object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PEOScopePLCQuery A secondary query class using the current class as primary query
+     */
+    public function usePEOScopePLCQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPEOScopePLC($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PEOScopePLC', '\Politizr\Model\PEOScopePLCQuery');
+    }
+
+    /**
      * Filter the query by a related PUser object
      *
      * @param   PUser|PropelObjectCollection $pUser  the related object to use as filter
@@ -1729,6 +1809,23 @@ abstract class BasePLCityQuery extends ModelCriteria
         return $this
             ->joinPDReaction($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'PDReaction', '\Politizr\Model\PDReactionQuery');
+    }
+
+    /**
+     * Filter the query by a related PEOperation object
+     * using the p_e_o_scope_p_l_c table as cross reference
+     *
+     * @param   PEOperation $pEOperation the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return   PLCityQuery The current query, for fluid interface
+     */
+    public function filterByPEOperation($pEOperation, $comparison = Criteria::EQUAL)
+    {
+        return $this
+            ->usePEOScopePLCQuery()
+            ->filterByPEOperation($pEOperation, $comparison)
+            ->endUse();
     }
 
     /**

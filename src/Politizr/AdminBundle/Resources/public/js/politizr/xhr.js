@@ -27,6 +27,8 @@ var ADMIN_ROUTE_TAG_REACTION_DELETE = 'admin/reaction/tag/delete';
 var ADMIN_ROUTE_TAG_USER_CREATE = 'admin/utilisateur/tag/create';
 var ADMIN_ROUTE_TAG_USER_DELETE = 'admin/utilisateur/tag/delete';
 var ADMIN_ROUTE_TAG_USER_HIDE = 'admin/utilisateur/tag/hide';
+var ADMIN_ROUTE_TAG_OPERATION_CREATE = 'admin/operation/tag/create';
+var ADMIN_ROUTE_TAG_OPERATION_DELETE = 'admin/operation/tag/delete';
 
 // REPUTATION
 var ADMIN_ROUTE_USER_REPUTATION_EVOLUTION = 'admin/utilisateur/reputation/update';
@@ -47,8 +49,13 @@ var ADMIN_ROUTE_USER_VALIDATE_PHOTO_UPLOAD = 'admin/validation/photo-id-upload';
 // LOCALIZATION
 var ADMIN_ROUTE_CITY_LISTING = 'admin/villes/listing';
 var ADMIN_ROUTE_USER_CITY = 'admin/utilisateur/ville/update';
-
 var ADMIN_ROUTE_DOC_LOC = 'admin/document/localization/update';
+
+// OPERATION
+var ADMIN_ROUTE_OPERATION_CITIES = 'admin/operation/villes';
+var ADMIN_ROUTE_OPERATION_CITIES_SEARCH_LISTING = 'admin/operation/villes/recherche';
+var ADMIN_ROUTE_ADD_OPERATION_CITY = 'admin/operation/ville/create';
+var ADMIN_ROUTE_DELETE_OPERATION_CITY = 'admin/operation/ville/delete';
 
 // Generic function to make an AJAX call
 var xhrCall = function(context, data, url, type) {

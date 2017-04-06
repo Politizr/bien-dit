@@ -45,7 +45,8 @@
     {% if app.user %}
         {% include 'PolitizrFrontBundle:Tag:_sidebarFollowedTags.html.twig' with {'uuid': app.user.uuid} only %}
     {% endif %}
-    {% include 'PolitizrFrontBundle:Tag:_sidebarTopTags.html.twig' %}
+    {# include 'PolitizrFrontBundle:Tag:_sidebarTopTags.html.twig' #}
+    {% include 'PolitizrFrontBundle:Tag:_sidebarFamilyTags.html.twig' %}
     {% include 'PolitizrFrontBundle:Tag:_sidebarTypeTags.html.twig' %}
     {% include 'PolitizrFrontBundle:Document:_sidebarTopDocuments.html.twig' %}
 {% endblock sidebarContent %}

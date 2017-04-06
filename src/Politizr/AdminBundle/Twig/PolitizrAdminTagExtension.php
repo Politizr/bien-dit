@@ -4,11 +4,13 @@ namespace Politizr\AdminBundle\Twig;
 use Politizr\Exception\InconsistentDataException;
 
 use Politizr\Constant\ObjectTypeConstants;
+use Politizr\Constant\TagConstants;
 
 use Politizr\Model\PUser;
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDReaction;
 use Politizr\Model\PTag;
+use Politizr\Model\PEOperation;
 
 /**
  * Tag admin twig extension
@@ -67,6 +69,13 @@ class PolitizrAdminTagExtension extends \Twig_Extension
             'adminReactionTags'  => new \Twig_SimpleFunction(
                 'adminReactionTags',
                 array($this, 'adminReactionTags'),
+                array(
+                    'is_safe' => array('html')
+                    )
+            ),
+            'adminOperationTags'  => new \Twig_SimpleFunction(
+                'adminOperationTags',
+                array($this, 'adminOperationTags'),
                 array(
                     'is_safe' => array('html')
                     )
@@ -309,6 +318,73 @@ class PolitizrAdminTagExtension extends \Twig_Extension
                 'PolitizrAdminBundle:Fragment\\Tag:_list.html.twig',
                 array(
                     'tags' => $reaction->getTags($tagTypeId, null),
+                    )
+            );
+        }
+
+        return $html;
+    }
+
+    /**
+     * Operation's associated tags management
+     *
+     * @param PEOperation $operation
+     * @param int $tagTypeId
+     * @param int $zoneId CSS zone id
+     * @param boolean $newTag new tag creation authorized
+     * @param string $mode edit (default) / show
+     * @return string
+     */
+    public function adminOperationTags(PEOperation $operation, $tagTypeId, $zoneId = 1, $newTag = false, $mode = 'edit')
+    {
+        $this->logger->info('*** adminOperationTags');
+        // $this->logger->info('$operation = '.print_r($operation, true));
+        // $this->logger->info('$tagTypeId = '.print_r($tagTypeId, true));
+        // $this->logger->info('$zoneId = '.print_r($zoneId, true));
+        // $this->logger->info('$newTag = '.print_r($newTag, true));
+
+        if ('edit' === $mode) {
+            // Construction des chemins XHR
+            $xhrPathCreate = $this->templating->render(
+                'PolitizrAdminBundle:Fragment\\Xhr:_xhrPath.html.twig',
+                array(
+                    'xhrRoute' => 'ADMIN_ROUTE_TAG_OPERATION_CREATE',
+                    'xhrService' => 'admin',
+                    'xhrMethod' => 'operationAddTag',
+                    'xhrType' => 'RETURN_HTML',
+                )
+            );
+
+            $xhrPathDelete = $this->templating->render(
+                'PolitizrAdminBundle:Fragment\\Xhr:_xhrPath.html.twig',
+                array(
+                    'xhrRoute' => 'ADMIN_ROUTE_TAG_OPERATION_DELETE',
+                    'xhrService' => 'admin',
+                    'xhrMethod' => 'operationDeleteTag',
+                    'xhrType' => 'RETURN_BOOLEAN',
+                )
+            );
+
+            // Construction du rendu du tag
+            $html = $this->templating->render(
+                'PolitizrAdminBundle:Fragment\\Tag:_edit.html.twig',
+                array(
+                    'object' => $operation,
+                    'tagTypeId' => $tagTypeId,
+                    'zoneId' => $zoneId,
+                    'newTag' => $newTag,
+                    'withHidden' => false,
+                    'tags' => $operation->getTags($tagTypeId, null),
+                    'pathCreate' => $xhrPathCreate,
+                    'pathDelete' => $xhrPathDelete,
+                )
+            );
+        } else {
+            // Construction du rendu du tag
+            $html = $this->templating->render(
+                'PolitizrAdminBundle:Fragment\\Tag:_list.html.twig',
+                array(
+                    'tags' => $operation->getTags($tagTypeId, null),
                     )
             );
         }

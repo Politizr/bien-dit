@@ -573,7 +573,7 @@ class XhrTag
         // $this->logger->info('$filters = ' . print_r($filters, true));
 
         // top tags
-        $tags = $this->tagService->getMostPopularTags($filters, TagConstants::TAG_TYPE_THEME);
+        $tags = $this->tagService->getMostPopularTags($filters, TagConstants::TAG_TYPE_FAMILY);
 
         $html = $this->templating->render(
             'PolitizrFrontBundle:Tag:_list.html.twig',
@@ -600,6 +600,35 @@ class XhrTag
         // top tags
         $tags = PTagQuery::create()
             ->filterByPTTagTypeId(TagConstants::TAG_TYPE_TYPE)
+            ->filterByOnline(true)
+            ->orderByTitle()
+            ->find();
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Tag:_list.html.twig',
+            array(
+                'tags' => $tags,
+            )
+        );
+
+        return array(
+            'html' => $html,
+        );
+    }
+
+    /**
+     * Family tags
+     * beta
+     */
+    public function familyTags(Request $request)
+    {
+        // $this->logger->info('*** familyTags');
+        
+        // Request arguments
+
+        // top tags
+        $tags = PTagQuery::create()
+            ->filterByPTTagTypeId(TagConstants::TAG_TYPE_FAMILY)
             ->filterByOnline(true)
             ->orderByTitle()
             ->find();

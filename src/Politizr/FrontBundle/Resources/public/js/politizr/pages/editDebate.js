@@ -8,6 +8,11 @@ $(function() {
     // modal city/dep/region/country selection show/hide
     locShowHideAttr();
 
+    var uuid = $('input[name="uuid"]').val();
+    // console.log(uuid);
+    
+    updateDebateTagsZone(uuid);
+
     // sticky sidebar
     stickySidebar();
 });
@@ -31,6 +36,11 @@ $('body').on('click', "[action='openModalPublish']", function(e){
 $('body').on('click', "[action='closeModalPublish'], .modalPublishBg", function(e){
     console.log('*** click close modal publish');
 
+    var uuid = $('input[name="uuid"]').val();
+    // console.log(uuid);
+    
+    updateDebateTagsZone(uuid);
+
     $('body').removeClass('noScroll');
     $('.modalPublish').hide();
 });
@@ -44,8 +54,8 @@ $('#formDocLoc :radio').on('change', function() {
 });
 
 // change checkbox type event
-$('#formTagType :checkbox').on('change', function() {
-    console.log('*** formTagType change');
+$('#formTagType :checkbox, #formTagFamily :checkbox').on('change', function() {
+    // console.log('*** formTagType change');
     saveDocumentAttr();
 });
 

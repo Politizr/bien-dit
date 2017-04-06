@@ -73,7 +73,7 @@ class PDDebate extends BasePDDebate implements PDocumentInterface
                 new NotBlank(['message' => 'Le texte de votre document ne doit pas être vide.']),
                 // new Length(['min' => 140, 'minMessage' => 'Le corps de la publication doit contenir au moins {{ limit caractères.']),
             ),
-            'themaTags' => new Count(['max' => 5, 'maxMessage' => 'Saisissez au maximum {{ limit }} thématiques.']),
+            'themaTags' => new Count(['max' => 5, 'maxMessage' => 'Saisissez au maximum {{ limit }} thématiques libres.']),
             'localization' => new Count(['min' => 1, 'minMessage' => 'Le document doit être associé à une localisation.']),
         ));
 
@@ -127,7 +127,6 @@ class PDDebate extends BasePDDebate implements PDocumentInterface
 
     /**
      * Debate's array tags
-     * - used by elastica indexation
      *
      * @return array[string]
      */
@@ -144,6 +143,22 @@ class PDDebate extends BasePDDebate implements PDocumentInterface
     }
 
     /**
+     * Debate's array tags
+     *
+     * @return array[id => string]
+     */
+    public function getIndexedArrayTags($tagTypeId = null, $online = true)
+    {
+        $query = PTagQuery::create()
+            ->filterIfTypeId($tagTypeId)
+            ->filterIfOnline($online)
+            ->orderByTitle()
+            ->setDistinct();
+
+        return parent::getPTags($query)->toKeyValue('Uuid', 'Title');
+    }
+
+    /**
      * @see PDocumentInterface::getTags
      */
     public function getTags($tagTypeId = null, $online = true)
@@ -155,6 +170,24 @@ class PDDebate extends BasePDDebate implements PDocumentInterface
             ->setDistinct();
 
         return parent::getPTags($query);
+    }
+
+    /**
+     * @see PDocumentInterface::isWithPrivateTag
+     */
+    public function isWithPrivateTag()
+    {
+        $query = PTagQuery::create()
+            ->filterByPTTagTypeId(TagConstants::TAG_TYPE_PRIVATE)
+            ->setDistinct();
+
+        $nbResults = parent::countPTags($query);
+        
+        if ($nbResults > 0) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

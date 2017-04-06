@@ -3,7 +3,7 @@
         <span>
             <a href="{{ path('InscriptionChoice') }}">Inscrivez-vous</a> pour participer au débat.
         </span> 
-    {% elseif qualified %}
+    {% elseif qualified and not private %}
         <span class="withActionAnswer">
             <b>En tant qu'{{ app.user | typeGender | lower }}, vous pouvez publier une réponse à cette publication.</b><br> 
             Cette fonctionnalité est exclusivement réservée aux élu-e-s et au citoyen-ne auteur du sujet si sa réputation est d'au moins {{ constant('Politizr\\Constant\\ReputationConstants::ACTION_REACTION_WRITE') }} points.
@@ -12,6 +12,13 @@
     {% elseif owner %}
         <span class="withActionAnswer">             
             En tant qu'auteur du sujet original, vous pouvez publier une réponse à cette publication.
+        </span>
+        {% include 'PolitizrFrontBundle:Reaction:_actionNew.html.twig' with { 'document': document } only %}
+    {% elseif qualified and private and not privateOwner %}
+            Cette conversation est réservée mais vous pouvez vous exprimer en publiant votre commentaire sur ce sujet.
+    {% elseif private and privateOwner %}
+        <span class="withActionAnswer">             
+            <b>Vous bénéficiez d'une offre permettant d'être le seul à pouvoir publier une réponse à cette publication.</b>
         </span>
         {% include 'PolitizrFrontBundle:Reaction:_actionNew.html.twig' with { 'document': document } only %}
     {% else %}

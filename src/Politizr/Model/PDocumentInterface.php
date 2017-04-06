@@ -61,9 +61,11 @@ interface PDocumentInterface
     /**
      * Get the tagged tags objects
      *
+     * @param int|array $tagTypeId
+     * @param boolean $online
      * @return PropelCollection[PTag]
      */
-    public function getTags();
+    public function getTags($tagTypeId = null, $online = true);
 
     /**
      * Get the localizations objects
@@ -71,4 +73,12 @@ interface PDocumentInterface
      * @return array[PLocalization]
      */
     public function getPLocalizations();
+
+    /**
+     * Is document associated with a private tag
+     *
+     * @return boolean
+     */
+    public function isWithPrivateTag();
+
 }

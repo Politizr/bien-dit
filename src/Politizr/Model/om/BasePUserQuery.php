@@ -17,6 +17,7 @@ use Politizr\Model\PDDComment;
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDRComment;
 use Politizr\Model\PDReaction;
+use Politizr\Model\PEOperation;
 use Politizr\Model\PLCity;
 use Politizr\Model\PMAbuseReporting;
 use Politizr\Model\PMAppException;
@@ -181,9 +182,17 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery rightJoinPLCity($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PLCity relation
  * @method PUserQuery innerJoinPLCity($relationAlias = null) Adds a INNER JOIN clause to the query using the PLCity relation
  *
- * @method PUserQuery leftJoinPTag($relationAlias = null) Adds a LEFT JOIN clause to the query using the PTag relation
- * @method PUserQuery rightJoinPTag($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PTag relation
- * @method PUserQuery innerJoinPTag($relationAlias = null) Adds a INNER JOIN clause to the query using the PTag relation
+ * @method PUserQuery leftJoinPUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUser relation
+ * @method PUserQuery rightJoinPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUser relation
+ * @method PUserQuery innerJoinPUser($relationAlias = null) Adds a INNER JOIN clause to the query using the PUser relation
+ *
+ * @method PUserQuery leftJoinPOwner($relationAlias = null) Adds a LEFT JOIN clause to the query using the POwner relation
+ * @method PUserQuery rightJoinPOwner($relationAlias = null) Adds a RIGHT JOIN clause to the query using the POwner relation
+ * @method PUserQuery innerJoinPOwner($relationAlias = null) Adds a INNER JOIN clause to the query using the POwner relation
+ *
+ * @method PUserQuery leftJoinPEOperation($relationAlias = null) Adds a LEFT JOIN clause to the query using the PEOperation relation
+ * @method PUserQuery rightJoinPEOperation($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PEOperation relation
+ * @method PUserQuery innerJoinPEOperation($relationAlias = null) Adds a INNER JOIN clause to the query using the PEOperation relation
  *
  * @method PUserQuery leftJoinPOrder($relationAlias = null) Adds a LEFT JOIN clause to the query using the POrder relation
  * @method PUserQuery rightJoinPOrder($relationAlias = null) Adds a RIGHT JOIN clause to the query using the POrder relation
@@ -2636,33 +2645,33 @@ abstract class BasePUserQuery extends ModelCriteria
      * @return                 PUserQuery The current query, for fluid interface
      * @throws PropelException - if the provided filter is invalid.
      */
-    public function filterByPTag($pTag, $comparison = null)
+    public function filterByPUser($pTag, $comparison = null)
     {
         if ($pTag instanceof PTag) {
             return $this
                 ->addUsingAlias(PUserPeer::ID, $pTag->getPUserId(), $comparison);
         } elseif ($pTag instanceof PropelObjectCollection) {
             return $this
-                ->usePTagQuery()
+                ->usePUserQuery()
                 ->filterByPrimaryKeys($pTag->getPrimaryKeys())
                 ->endUse();
         } else {
-            throw new PropelException('filterByPTag() only accepts arguments of type PTag or PropelCollection');
+            throw new PropelException('filterByPUser() only accepts arguments of type PTag or PropelCollection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the PTag relation
+     * Adds a JOIN clause to the query using the PUser relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return PUserQuery The current query, for fluid interface
      */
-    public function joinPTag($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function joinPUser($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('PTag');
+        $relationMap = $tableMap->getRelation('PUser');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -2677,14 +2686,14 @@ abstract class BasePUserQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'PTag');
+            $this->addJoinObject($join, 'PUser');
         }
 
         return $this;
     }
 
     /**
-     * Use the PTag relation PTag object
+     * Use the PUser relation PTag object
      *
      * @see       useQuery()
      *
@@ -2694,11 +2703,159 @@ abstract class BasePUserQuery extends ModelCriteria
      *
      * @return   \Politizr\Model\PTagQuery A secondary query class using the current class as primary query
      */
-    public function usePTagQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function usePUserQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
-            ->joinPTag($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'PTag', '\Politizr\Model\PTagQuery');
+            ->joinPUser($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PUser', '\Politizr\Model\PTagQuery');
+    }
+
+    /**
+     * Filter the query by a related PTag object
+     *
+     * @param   PTag|PropelObjectCollection $pTag  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PUserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPOwner($pTag, $comparison = null)
+    {
+        if ($pTag instanceof PTag) {
+            return $this
+                ->addUsingAlias(PUserPeer::ID, $pTag->getPOwnerId(), $comparison);
+        } elseif ($pTag instanceof PropelObjectCollection) {
+            return $this
+                ->usePOwnerQuery()
+                ->filterByPrimaryKeys($pTag->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPOwner() only accepts arguments of type PTag or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the POwner relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function joinPOwner($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('POwner');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'POwner');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the POwner relation PTag object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PTagQuery A secondary query class using the current class as primary query
+     */
+    public function usePOwnerQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinPOwner($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'POwner', '\Politizr\Model\PTagQuery');
+    }
+
+    /**
+     * Filter the query by a related PEOperation object
+     *
+     * @param   PEOperation|PropelObjectCollection $pEOperation  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PUserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPEOperation($pEOperation, $comparison = null)
+    {
+        if ($pEOperation instanceof PEOperation) {
+            return $this
+                ->addUsingAlias(PUserPeer::ID, $pEOperation->getPUserId(), $comparison);
+        } elseif ($pEOperation instanceof PropelObjectCollection) {
+            return $this
+                ->usePEOperationQuery()
+                ->filterByPrimaryKeys($pEOperation->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPEOperation() only accepts arguments of type PEOperation or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PEOperation relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function joinPEOperation($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PEOperation');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PEOperation');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PEOperation relation PEOperation object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PEOperationQuery A secondary query class using the current class as primary query
+     */
+    public function usePEOperationQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPEOperation($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PEOperation', '\Politizr\Model\PEOperationQuery');
     }
 
     /**

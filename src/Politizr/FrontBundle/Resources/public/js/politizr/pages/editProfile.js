@@ -91,7 +91,7 @@ function biographyTextCounter() {
     $('#user_biography').textcounter({
         type                     : "character",            // "character" or "word"
         min                      : 5,                      // minimum number of characters/words
-        max                      : 140,                    // maximum number of characters/words, -1 for unlimited, 'auto' to use maxlength attribute
+        max                      : 280,                    // maximum number of characters/words, -1 for unlimited, 'auto' to use maxlength attribute
         countContainerElement    : "div",                  // HTML element to wrap the text count in
         countContainerClass      : "bioCountWrapper",   // class applied to the countContainerElement
         textCountClass           : "textCount",           // class applied to the counter length
@@ -100,7 +100,7 @@ function biographyTextCounter() {
         counterText              : "Caractères: ",        // counter text
         errorTextElement         : "div",                  // error text element
         minimumErrorText         : "Minimum: 5 caractères",      // error message for minimum not met,
-        maximumErrorText         : "Maximum: 140 caractères",     // error message for maximum range exceeded,
+        maximumErrorText         : "Maximum: 280 caractères",     // error message for maximum range exceeded,
         displayErrorText         : true,                   // display error text messages for minimum/maximum values
         stopInputAtMaximum       : false,                   // stop further text input if maximum reached
         countSpaces              : true,                  // count spaces as character (only for "character" type)

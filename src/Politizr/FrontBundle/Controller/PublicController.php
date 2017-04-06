@@ -143,13 +143,7 @@ class PublicController extends Controller
                     ->endUse()
                 ->endUse()
                 ->find();
-            $users = $usersQuery
-                ->usePuTaggedTPUserQuery()
-                    ->usePuTaggedTPTagQuery()
-                        ->filterBySlug('democratie-locale')
-                    ->endUse()
-                ->endUse()
-                ->find();
+            
             $template = 'democratieLocale.html.twig';
         } elseif ($theme == 'democratie-participative')  {
             $documents = $documentsQuery
@@ -216,6 +210,11 @@ class PublicController extends Controller
                 ->filterByPUserId(315)
                 ->find();
             $template = 'charlotte.html.twig';
+        } elseif ($theme == 'offre-candidat-legislatives-2017')  {
+            $directMessage = new PDDirect();
+            $form = $this->createForm(new PDDirectType(), $directMessage);
+
+            $template = 'offreCandidat.html.twig';
         } else {
             return $this->redirect($this->generateUrl('Homepage'));
         }
@@ -259,6 +258,7 @@ class PublicController extends Controller
     public function rssFeedAction()
     {
         $publications = $this->get('politizr.functional.document')->getPublicationsByFilters(
+            null,
             null,
             ListingConstants::FILTER_KEYWORD_DEBATES_AND_REACTIONS,
             ListingConstants::FILTER_KEYWORD_ALL_USERS,

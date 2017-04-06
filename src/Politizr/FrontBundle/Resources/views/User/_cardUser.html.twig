@@ -8,6 +8,7 @@
         <h5>{% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': user } only %}</h5>
         <div class="cardInfo">
             Complétez votre <a href="{{ path('EditProfile'~profileSuffix()) }}">profil</a> pour gagner de la visibilité sur notre plateforme.<br>
+            Rendez-vous sur l'écran des <a href="{{ path('EditNotifications'~profileSuffix()) }}">notifications</a> pour ajuster vos alertes emails.<br>
             Le <a href="mailto: support@politizr.com">support</a> est à votre disposition pour toutes questions ou remarques.<br>
             Au plaisir de vous lire,<br>
             — L’équipe Politizr

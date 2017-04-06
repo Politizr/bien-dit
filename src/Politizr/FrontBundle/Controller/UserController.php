@@ -101,6 +101,12 @@ class UserController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** timelineAction');
 
+        // Redirect to page before login
+        $refererUrl = $this->get('politizr.tools.global')->getRefererUrl();
+        if ($refererUrl) {
+            return $this->redirect($refererUrl);
+        }
+
         return $this->render('PolitizrFrontBundle:Timeline:user.html.twig', array(
             'homepage' => true,
         ));

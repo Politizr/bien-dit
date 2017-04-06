@@ -8,15 +8,18 @@ use Politizr\Constant\ReputationConstants;
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\UserConstants;
 use Politizr\Constant\PathConstants;
+use Politizr\Constant\TagConstants;
 
 use Politizr\Model\PDocumentInterface;
 use Politizr\Model\PDDebate;
 use Politizr\Model\PUNotification;
 use Politizr\Model\PUser;
+use Politizr\Model\PEOperation;
 
 use Politizr\Model\PUFollowUQuery;
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PDReactionQuery;
+use Politizr\Model\PEOperationQuery;
 
 use Politizr\FrontBundle\Form\Type\PUserLocalizationType;
 
@@ -118,6 +121,16 @@ class PolitizrUserExtension extends \Twig_Extension
                 array('is_safe' => array('html'))
             ),
             new \Twig_SimpleFilter(
+                'userPublicationsTags',
+                array($this, 'userPublicationsTags'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
+                'userOperation',
+                array($this, 'userOperation'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
                 'linkSubscribeUser',
                 array($this, 'linkSubscribeUser'),
                 array('is_safe' => array('html'))
@@ -155,6 +168,11 @@ class PolitizrUserExtension extends \Twig_Extension
             new \Twig_SimpleFilter(
                 'isAuthorizedToPublishReaction',
                 array($this, 'isAuthorizedToPublishReaction'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
+                'isAuthorizedToAskOperation',
+                array($this, 'isAuthorizedToAskOperation'),
                 array('is_safe' => array('html'))
             ),
         );
@@ -350,13 +368,12 @@ class PolitizrUserExtension extends \Twig_Extension
      *
      * @param PUser $user
      * @param integer $tagTypeId
-     * @param string $modalDefaultType debate|reaction|user
      * @return string
      */
     public function userTags(PUser $user, $tagTypeId = null)
     {
         // $this->logger->info('*** userTags');
-        // $this->logger->info('$uiser = '.print_r($user, true));
+        // $this->logger->info('$user = '.print_r($user, true));
         // $this->logger->info('$pTTagType = '.print_r($pTTagType, true));
 
         // get current user
@@ -374,6 +391,93 @@ class PolitizrUserExtension extends \Twig_Extension
             'PolitizrFrontBundle:Tag:_list.html.twig',
             array(
                 'tags' => $tags,
+            )
+        );
+
+        return $html;
+    }
+
+   /**
+     * Display user's publication tags
+     *
+     * @param PUser $user
+     * @param integer $tagTypeId
+     * @return string
+     */
+    public function userPublicationsTags(PUser $user, $tagTypeId = null)
+    {
+        // $this->logger->info('*** userPublicationsTags');
+        // $this->logger->info('$user = '.print_r($user, true));
+        // $this->logger->info('$pTTagType = '.print_r($pTTagType, true));
+
+        // get current user
+        $currentUser = $this->securityTokenStorage->getToken()->getUser();
+        
+        $tags = array();
+
+        $debates = $user->getDebates();
+        foreach ($debates as $debate) {
+            $documentTags = $debate->getIndexedArrayTags($tagTypeId);
+            $tags = array_replace($tags, $documentTags);
+        }
+
+        $reactions = $user->getReactions();
+        foreach ($reactions as $reaction) {
+            $documentTags = $reaction->getIndexedArrayTags($tagTypeId);
+            $tags = array_replace($tags, $documentTags);
+        }
+
+        $comments = $user->getDComments();
+        foreach ($comments as $comment) {
+            $document = $comment->getPDocument();
+            $documentTags = $document->getIndexedArrayTags($tagTypeId);
+            $tags = array_replace($tags, $documentTags);
+        }
+
+        $comments = $user->getRComments();
+        foreach ($comments as $comment) {
+            $document = $comment->getPDocument();
+            $documentTags = $document->getIndexedArrayTags($tagTypeId);
+            $tags = array_replace($tags, $documentTags);
+        }
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Tag:_filterList.html.twig',
+            array(
+                'tags' => $tags,
+            )
+        );
+
+        return $html;
+    }
+
+   /**
+     * Display user's operation
+     *
+     * @param PUser $user
+     * @return string
+     */
+    public function userOperation(PUser $user)
+    {
+        // $this->logger->info('*** userOperation');
+        // $this->logger->info('$user = '.print_r($user, true));
+
+        // get op for user
+        $operation = PEOperationQuery::create()
+            ->filterByOnline(true)
+            ->filterByPUserId($user->getId())
+            ->findOne();
+
+        if (!$operation) {
+            return null;
+        }
+
+        // Construction du rendu du tag            
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:User:_opBanner.html.twig',
+            array(
+                'operation' => $operation,
             )
         );
 
@@ -562,25 +666,26 @@ class PolitizrUserExtension extends \Twig_Extension
         // $this->logger->info('$user = '.print_r($user, true));
         // $this->logger->info('$document = '.print_r($document, true));
 
-        // elected profile can react
-        if ($this->securityAuthorizationChecker->isGranted('ROLE_ELECTED')) {
+        // elected profile can react if document ha no private tags
+        if (!$document->isWithPrivateTag() && $this->securityAuthorizationChecker->isGranted('ROLE_ELECTED')) {
             return true;
+        }
+
+        // owner of private tag can react
+        if ($document->isWithPrivateTag()) {
+            $tags = $document->getTags(TagConstants::TAG_TYPE_PRIVATE);
+            foreach ($tags as $tag) {
+                $tagOwner = $tag->getPOwner();
+                if ($tagOwner && $tagOwner->getId() == $user->getId()) {
+                    return true;
+                }
+            }
         }
 
         // author of the debate can react
         // + min reputation to reach
-
-        $debateUser = null;
-        if ($document->getType() == ObjectTypeConstants::TYPE_DEBATE) {
-            $debateUser = $document->getUser();
-        } else {
-            $debate = $document->getDebate();
-            $debateUser = $debate->getUser();
-        }
-
-        $id = $user->getId();
         $score = $user->getReputationScore();
-        if ($debateUser && $debateUser->getId() === $id && $score >= ReputationConstants::ACTION_REACTION_WRITE) {
+        if ($document->isDebateOwner($user->getId()) && $score >= ReputationConstants::ACTION_REACTION_WRITE) {
             return true;
         }
 
@@ -744,6 +849,31 @@ class PolitizrUserExtension extends \Twig_Extension
         }
 
         return $html;
+    }
+
+    /**
+     * Check if user is authorized to create a new subject for an operation
+     *
+     * @param PUser $user
+     * @param PEOperation $operation
+     * @return boolean
+     */
+    public function isAuthorizedToAskOperation(PUser $user, PEOperation $operation)
+    {
+        // $this->logger->info('*** isAuthorizedToAskOperation');
+        // $this->logger->info('$user = '.print_r($user, true));
+        // $this->logger->info('$operation = '.print_r($operation, true));
+        
+        if (!$operation->getGeoScoped()) {
+            return true;
+        } else {
+            $cities = $operation->getPLCities()->toKeyValue('Id', 'Title');
+            if (array_key_exists($user->getPLCityId(), $cities)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /* ######################################################################################################## */

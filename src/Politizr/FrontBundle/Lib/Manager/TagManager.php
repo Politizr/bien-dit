@@ -7,11 +7,15 @@ use Politizr\Model\PTag;
 use Politizr\Model\PDDTaggedT;
 use Politizr\Model\PDRTaggedT;
 use Politizr\Model\PUTaggedT;
+use Politizr\Model\PTScopePLC;
+use Politizr\Model\PEOPresetPT;
 
 use Politizr\Model\PTagQuery;
 use Politizr\Model\PDDTaggedTQuery;
 use Politizr\Model\PDRTaggedTQuery;
 use Politizr\Model\PUTaggedTQuery;
+use Politizr\Model\PTScopePLCQuery;
+use Politizr\Model\PEOPresetPTQuery;
 
 /**
  * DB manager service for tag.
@@ -298,6 +302,10 @@ ORDER BY title ASC
         return $tag;
     }
 
+    /* ######################################################################################################## */
+    /*                                    RELATED TABLES OPERATIONS                                             */
+    /* ######################################################################################################## */
+
     /**
      * Create a new PDDTaggedT
      *
@@ -307,14 +315,23 @@ ORDER BY title ASC
      */
     public function createDebateTag($debateId, $tagId)
     {
-        $pddTaggedT = new PDDTaggedT();
+        $debateTag = PDDTaggedTQuery::create()
+            ->filterByPTagId($tagId)
+            ->filterByPDDebateId($debateId)
+            ->findOne();
 
-        $pddTaggedT->setPDDebateId($debateId);
-        $pddTaggedT->setPTagId($tagId);
+        if (!$debateTag) {
+            $pddTaggedT = new PDDTaggedT();
 
-        $pddTaggedT->save();
+            $pddTaggedT->setPDDebateId($debateId);
+            $pddTaggedT->setPTagId($tagId);
 
-        return $pddTaggedT;
+            $pddTaggedT->save();
+
+            return $pddTaggedT;
+        }
+
+        return null;
     }
 
     /**
@@ -326,14 +343,51 @@ ORDER BY title ASC
      */
     public function createReactionTag($reactionId, $tagId)
     {
-        $pdrTaggedT = new PDRTaggedT();
+        $reactionTag = PDRTaggedTQuery::create()
+            ->filterByPTagId($tagId)
+            ->filterByPDReactionId($reactionId)
+            ->findOne();
 
-        $pdrTaggedT->setPDReactionId($reactionId);
-        $pdrTaggedT->setPTagId($tagId);
+        if (!$reactionTag) {
+            $pdrTaggedT = new PDRTaggedT();
 
-        $pdrTaggedT->save();
+            $pdrTaggedT->setPDReactionId($reactionId);
+            $pdrTaggedT->setPTagId($tagId);
 
-        return $pdrTaggedT;
+            $pdrTaggedT->save();
+
+            return $pdrTaggedT;
+        }
+
+        return null;
+    }
+
+    /**
+     * Create a new PEOPresetPT
+     *
+     * @param integer $debateId
+     * @param integer $tagId
+     * @return PDDTaggedT
+     */
+    public function createOperationTag($operationId, $tagId)
+    {
+        $presetTag = PEOPresetPTQuery::create()
+            ->filterByPTagId($tagId)
+            ->filterByPEOperationId($operationId)
+            ->findOne();
+
+        if (!$presetTag) {
+            $presetPT = new PEOPresetPT();
+
+            $presetPT->setPEOperationId($operationId);
+            $presetPT->setPTagId($tagId);
+
+            $presetPT->save();
+
+            return $presetPT;
+        }
+
+        return null;
     }
 
     /**
@@ -364,6 +418,23 @@ ORDER BY title ASC
     {
         $result = PDRTaggedTQuery::create()
             ->filterByPDReactionId($reactionId)
+            ->filterByPTagId($tagId)
+            ->delete();
+
+        return $result;
+    }
+
+    /**
+     * Delete a PEOPresetPT
+     *
+     * @param integer $operationId
+     * @param integer $tagId
+     * @return integer
+     */
+    public function deleteOperationTag($operationId, $tagId)
+    {
+        $result = PEOPresetPTQuery::create()
+            ->filterByPEOperationId($operationId)
             ->filterByPTagId($tagId)
             ->delete();
 
@@ -403,6 +474,51 @@ ORDER BY title ASC
             ->filterByPTagId($tagId)
             ->delete();
         
+        return $result;
+    }
+
+    /**
+     * Create a new PTScopePLC association
+     *
+     * @param integer $tagId
+     * @param integer $cityId
+     * @return PTScopePLC
+     */
+    public function createTagCityScope($tagId, $cityId)
+    {
+        $scope = PTScopePLCQuery::create()
+            ->filterByPTagId($tagId)
+            ->filterByPLCityId($cityId)
+            ->findOne();
+
+        if (!$scope) {
+            $scope = new PTScopePLC();
+
+            $scope->setPTagId($tagId);
+            $scope->setPLCityId($cityId);
+            $scope->save();
+            
+            return $scope;
+        }
+
+        return null;
+    }
+
+    /**
+     * Delete PTScopePLC
+     *
+     * @param integer $tagId
+     * @param integer $cityId
+     * @return integer
+     */
+    public function deleteTagCityScope($tagId, $cityId)
+    {
+        // Suppression élément(s)
+        $result = PTScopePLCQuery::create()
+            ->filterByPTagId($tagId)
+            ->filterByPLCityId($cityId)
+            ->delete();
+
         return $result;
     }
 }
