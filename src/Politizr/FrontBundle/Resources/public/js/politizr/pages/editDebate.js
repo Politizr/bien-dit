@@ -9,7 +9,7 @@ $(function() {
     locShowHideAttr();
 
     var uuid = $('input[name="uuid"]').val();
-    // console.log(uuid);
+    // // console.log(uuid);
     
     updateDebateTagsZone(uuid);
 
@@ -25,7 +25,7 @@ var xhrUrlPrefix = '/xhr';
 
 // Modal show / hide
 $('body').on('click', "[action='openModalPublish']", function(e){
-    console.log('*** click open modal publish');
+    // console.log('*** click open modal publish');
 
     $.when(triggerSaveDocument()).done(function(r1) {
         $('body').addClass('noScroll');
@@ -34,10 +34,10 @@ $('body').on('click', "[action='openModalPublish']", function(e){
 });
 
 $('body').on('click', "[action='closeModalPublish'], .modalPublishBg", function(e){
-    console.log('*** click close modal publish');
+    // console.log('*** click close modal publish');
 
     var uuid = $('input[name="uuid"]').val();
-    // console.log(uuid);
+    // // console.log(uuid);
     
     updateDebateTagsZone(uuid);
 
@@ -48,7 +48,7 @@ $('body').on('click', "[action='closeModalPublish'], .modalPublishBg", function(
 // Modal doc loc management
 // change checkbox type event
 $('#formDocLoc :radio').on('change', function() {
-    console.log('*** formDocLoc change');
+    // console.log('*** formDocLoc change');
     locShowHideAttr();
     saveDocumentAttr();
 });
@@ -62,7 +62,7 @@ $('#formTagType :checkbox, #formTagFamily :checkbox').on('change', function() {
 
 // Publish debate from attr > final publication
 $('body').on('click', "[action='debatePublish']", function(e){
-    console.log('*** click publish debate');
+    // console.log('*** click publish debate');
     var uuid = $(this).attr('uuid');
 
     $.when(saveDocumentAttr()).done(function(r1) {
@@ -84,14 +84,14 @@ $('body').on('click', "[action='debatePublish']", function(e){
 
 // Save debate
 $("body").on("click", "[action='debateSave']", function(e) {
-    console.log('*** click debate save');
+    // console.log('*** click debate save');
 
     return saveDebate();
 });
 
 // Delete debate
 $('body').on('click', "[action='debateDelete']", function(e){
-    console.log('*** click delete debate');
+    // console.log('*** click delete debate');
 
     var uuid = $(this).attr('uuid');
     var confirmMsg = "Êtes-vous sûr de vouloir supprimer votre brouillon?";
@@ -111,20 +111,20 @@ $('body').on('click', "[action='debateDelete']", function(e){
 
 // Clic bouton upload photo local
 $("body").on("click", "[action='fileSelect']", function() {
-    console.log('click file select');
+    // console.log('click file select');
     $("#fileName").trigger('click');
     return false;
 });
 
 // Upload simple
 $("body").on("change", "#fileName", function() {
-    console.log('change file name');
+    // console.log('change file name');
     $('#formDebateUpdate').submit();
 });
 
 // Delete photo
 $('body').on('click', "[action='fileDelete']", function(e){
-    console.log('*** click file delete');
+    // console.log('*** click file delete');
 
     var uuid = $(this).attr('uuid');
     var type = $(this).attr('type');
