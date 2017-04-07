@@ -1,7 +1,7 @@
-<div id="op" class="miniHeader {{ operation.uuid }}">
+<div id="op" class="miniHeader op-{{ operation.uuid }}">
     <div class="center">
         <div class="imgOp">
-            <img src="{{ asset('/uploads/users/'~operation.fileName) | imagine_filter('user_operation') }}" alt="{{ operation.title }}">
+            <img src="{{ asset('/uploads/users/'~operation.fileName) }}" alt="{{ operation.title }}">
         </div>
         <div class="txtOp">
             {{ operation.description | purify }}
