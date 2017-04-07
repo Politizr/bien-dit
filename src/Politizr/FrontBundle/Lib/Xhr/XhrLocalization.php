@@ -179,26 +179,24 @@ class XhrLocalization
         if ($type == LocalizationConstants::TYPE_REGION) {
             $region = PLRegionQuery::create()->filterByUuid($uuid)->findOne();
 
-            // special cases: domtom & out of france
             if ($region && $region->getId() != LocalizationConstants::REGION_ID_FOM && $region->getId() != LocalizationConstants::REGION_ID_WORLD) {
+                // special cases: domtom & out of france > no region display
                 $geoTypeObjects = array(LocalizationConstants::TYPE_REGION => $region);
             }
         } elseif ($type == LocalizationConstants::TYPE_DEPARTMENT) {
             $department = PLDepartmentQuery::create()->filterByUuid($uuid)->findOne();
 
-            // special cases: domtom & out of france
             if ($department && in_array($department->getId(), LocalizationConstants::getGeoDepartmentMetroIds())) {
+                // classic france metro case
                 $region = PLRegionQuery::create()->filterById($department->getPLRegionId())->findOne();
 
                 $geoTypeObjects = array(
                     LocalizationConstants::TYPE_REGION => $region,
                     LocalizationConstants::TYPE_DEPARTMENT => $department,
                 );
-            } elseif ($department && in_array($department->getId(), LocalizationConstants::getOutOfFranceDepartmentIds())) {
-                $region = PLRegionQuery::create()->filterById($department->getPLRegionId())->findOne();
-
+            } else {
+                // special cases: domtom & out of france > no region display
                 $geoTypeObjects = array(
-                    LocalizationConstants::TYPE_REGION => $region,
                     LocalizationConstants::TYPE_DEPARTMENT => $department,
                 );
             }
@@ -209,8 +207,8 @@ class XhrLocalization
             }
             $department = $city->getPLDepartment();
 
-            // special cases: domtom & out of france
-            if (in_array($department->getId(), LocalizationConstants::getGeoDepartmentMetroIds())) {
+            if ($department && in_array($department->getId(), LocalizationConstants::getGeoDepartmentMetroIds())) {
+                // classic france metro case
                 $region = PLRegionQuery::create()->filterById($department->getPLRegionId())->findOne();
 
                 $geoTypeObjects = array(
@@ -218,13 +216,20 @@ class XhrLocalization
                     LocalizationConstants::TYPE_DEPARTMENT => $department,
                     LocalizationConstants::TYPE_CITY => $city,
                 );
-            } elseif ($department && in_array($department->getId(), LocalizationConstants::getOutOfFranceDepartmentIds())) {
+            } elseif ($department && in_array($department->getId(), LocalizationConstants::getGeoDepartmentOMIds())) {
+                // special case: domtom > no region display
                 $region = PLRegionQuery::create()->filterById($department->getPLRegionId())->findOne();
 
                 $geoTypeObjects = array(
-                    LocalizationConstants::TYPE_REGION => $region,
                     LocalizationConstants::TYPE_DEPARTMENT => $department,
                     LocalizationConstants::TYPE_CITY => $city,
+                );
+            } elseif ($department && in_array($department->getId(), LocalizationConstants::getOutOfFranceDepartmentIds())) {
+                // special case: out of france > no region & no city display
+                $region = PLRegionQuery::create()->filterById($department->getPLRegionId())->findOne();
+
+                $geoTypeObjects = array(
+                    LocalizationConstants::TYPE_DEPARTMENT => $department,
                 );
             }
         }
