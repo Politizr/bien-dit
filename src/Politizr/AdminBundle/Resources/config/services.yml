@@ -38,6 +38,7 @@ services:
             - @event_dispatcher
             - @templating
             - @form.factory
+            - @politizr.functional.localization
             - @politizr.manager.tag
             - @politizr.manager.user
             - @politizr.manager.localization

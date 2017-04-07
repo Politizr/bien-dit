@@ -48,6 +48,7 @@ class XhrAdmin
     private $eventDispatcher;
     private $templating;
     private $formFactory;
+    private $localizationService;
     private $tagManager;
     private $userManager;
     private $localizationManager;
@@ -62,6 +63,7 @@ class XhrAdmin
      * @param @event_dispatcher
      * @param @templating
      * @param @form.factory
+     * @param @politizr.functional.localization
      * @param @politizr.manager.tag
      * @param @politizr.manager.user
      * @param @politizr.manager.localization
@@ -75,6 +77,7 @@ class XhrAdmin
         $eventDispatcher,
         $templating,
         $formFactory,
+        $localizationService,
         $tagManager,
         $userManager,
         $localizationManager,
@@ -89,6 +92,8 @@ class XhrAdmin
         
         $this->templating = $templating;
         $this->formFactory = $formFactory;
+
+        $this->localizationService = $localizationService;
 
         $this->tagManager = $tagManager;
         $this->userManager = $userManager;
@@ -1027,7 +1032,8 @@ class XhrAdmin
         $form->bind($request);
         if ($form->isValid()) {
             // upd localization infos
-            $this->localizationManager->updateUserCity($user, $form->get('localization')->getData()['city']);
+            // $this->localizationManager->updateUserCity($user, $form->get('localization')->getData()['city']);
+            $this->localizationService->updateUserGeoloc($user, $form);
         } else {
             $errors = StudioEchoUtils::getAjaxFormErrors($form);
             throw new BoxErrorException($errors);
