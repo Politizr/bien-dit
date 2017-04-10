@@ -813,7 +813,7 @@ class GlobalTools
 
         if (strpos($referer, 'debat') || // debate detail 
             strpos($referer, 'reaction') || // reaction detail
-            strpos($referer, 'auteur') // user detail
+            strpos($referer, '@') // user detail
         ) {
             return $referer; 
         }

@@ -128,9 +128,6 @@ builders:
                 id:
                     addFormOptions:
                         read_only:              true
-                uuid:
-                    addFormOptions:
-                        read_only:              true
                 created_at:
                     addFormOptions:
                       widget:                   single_text
