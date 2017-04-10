@@ -21,6 +21,7 @@ use Politizr\Model\PUReputationQuery;
 use Politizr\Model\PUFollowDDQuery;
 use Politizr\Model\PUBookmarkDDQuery;
 use Politizr\Model\PUBookmarkDRQuery;
+use Politizr\Model\PEOperationQuery;
 
 use Politizr\FrontBundle\Lib\TimelineRow;
 use Politizr\FrontBundle\Lib\Publication;
@@ -227,6 +228,11 @@ class PolitizrDocumentExtension extends \Twig_Extension
             new \Twig_SimpleFilter(
                 'facebookComments',
                 array($this, 'facebookComments'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
+                'documentOperation',
+                array($this, 'documentOperation'),
                 array('is_safe' => array('html'))
             ),
         );
@@ -1336,6 +1342,51 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
         return $html;
     }
+
+   /**
+     * Display user's operation
+     *
+     * @param PDocument $subject
+     * @return string
+     */
+    public function documentOperation(PDocumentInterface $document)
+    {
+        // $this->logger->info('*** userOperation');
+        // $this->logger->info('$user = '.print_r($user, true));
+
+        $user = $document->getUser();
+
+        // get op for user
+        $operation = PEOperationQuery::create()
+            ->filterByOnline(true)
+            ->filterByPUserId($user->getId())
+            ->findOne();
+
+        if (!$operation) {
+            $tags = $document->getTags(TagConstants::TAG_TYPE_PRIVATE)->toKeyValue('Id', 'Title');
+            $operation = PEOperationQuery::create()
+                ->filterByOnline(true)
+                ->usePEOPresetPTQuery()
+                    ->filterByPTagId(array_keys($tags))
+                ->endUse()
+                ->findOne();
+        }
+
+        if (!$operation) {
+            return null;
+        }
+
+        // Construction du rendu du tag            
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:User:_opBanner.html.twig',
+            array(
+                'operation' => $operation,
+            )
+        );
+
+        return $html;
+    }
+
 
     /* ######################################################################################################## */
     /*                                             FONCTIONS                                                    */

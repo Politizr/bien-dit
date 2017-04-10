@@ -38,6 +38,12 @@
     } only %}
 {% endblock %}
 
+{% block headerMsg %}
+    {{ parent() }}
+
+    {{ reaction | documentOperation }}
+{% endblock %}
+
 {% block content %}
     <div id="content">
         <div class="post">

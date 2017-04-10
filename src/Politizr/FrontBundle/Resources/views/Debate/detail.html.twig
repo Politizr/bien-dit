@@ -20,6 +20,12 @@
 {% block tcDescription %}{{ metaDescription }}{% endblock tcDescription %}
 {% block tcImage %}{{ debate | tcImage(app.request.getSchemeAndHttpHost()) }}{% endblock tcImage %}
 
+{% block headerMsg %}
+    {{ parent() }}
+
+    {{ debate | documentOperation }}
+{% endblock %}
+
 {% block content %}
     <div id="content">
         <div class="post">
