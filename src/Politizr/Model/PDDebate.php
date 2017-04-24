@@ -48,6 +48,13 @@ class PDDebate extends BasePDDebate implements PDocumentInterface
         return ObjectTypeConstants::TYPE_DEBATE;
     }
 
+    /**
+     * @see PDocumentInterface::getDebateId
+     */
+    public function getDebateId()
+    {
+        return $this->getId();
+    }
 
     /**
      * @see PDocumentInterface::isDisplayed

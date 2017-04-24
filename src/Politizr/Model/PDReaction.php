@@ -48,6 +48,19 @@ class PDReaction extends BasePDReaction implements PDocumentInterface
         return ObjectTypeConstants::TYPE_REACTION;
     }
 
+    /**
+     * @see PDocumentInterface::getDebateId
+     */
+    public function getDebateId()
+    {
+        $debate = $this->getDebate();
+
+        if (!$debate) {
+            return null;
+        }
+        
+        return $debate->getId();
+    }
 
     /**
      * @see PDocumentInterface::isDisplayed

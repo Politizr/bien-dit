@@ -137,18 +137,7 @@ class DocumentController extends Controller
         $reactions = $debate->getChildrenReactions(true, true);
 
         // Debate's similar debates
-        $similars = PDDebateQuery::create()
-            ->filterById($debate->getId(), \Criteria::NOT_EQUAL)
-            ->usePDDTaggedTQuery()
-                ->filterByPTag($debate->getTags([TagConstants::TAG_TYPE_THEME, TagConstants::TAG_TYPE_FAMILY]), \Criteria::IN)
-            ->endUse()
-            ->distinct()
-            ->filterByOnline(true)
-            ->filterByPublished(true)
-            ->limit(ListingConstants::LISTING_DEBATE_SIMILARS)
-            ->orderByNotePos('desc')
-            ->orderByNoteNeg('asc')
-            ->find();
+        $similars = $this->get('politizr.functional.document')->getSimilarDebates($debate);
 
         return $this->render('PolitizrFrontBundle:Debate:detail.html.twig', array(
             'private' => $private,
@@ -246,18 +235,7 @@ class DocumentController extends Controller
         }
 
         // Reaction's similar debates
-        $similars = PDDebateQuery::create()
-            ->filterById($reaction->getPDDebateId(), \Criteria::NOT_EQUAL)
-            ->usePDDTaggedTQuery()
-                ->filterByPTag($reaction->getTags([TagConstants::TAG_TYPE_THEME, TagConstants::TAG_TYPE_FAMILY]), \Criteria::IN)
-            ->endUse()
-            ->distinct()
-            ->filterByOnline(true)
-            ->filterByPublished(true)
-            ->limit(ListingConstants::LISTING_DEBATE_SIMILARS)
-            ->orderByNotePos('desc')
-            ->orderByNoteNeg('asc')
-            ->find();
+        $similars = $this->get('politizr.functional.document')->getSimilarDebates($reaction);
 
         return $this->render('PolitizrFrontBundle:Reaction:detail.html.twig', array(
             'private' => $private,

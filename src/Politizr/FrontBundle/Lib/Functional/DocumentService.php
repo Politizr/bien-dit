@@ -7,7 +7,9 @@ use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\ReputationConstants;
 use Politizr\Constant\ListingConstants;
 use Politizr\Constant\LocalizationConstants;
+use Politizr\Constant\TagConstants;
 
+use Politizr\Model\PDocumentInterface;
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDReaction;
 use Politizr\Model\PUser;
@@ -464,6 +466,47 @@ class DocumentService
         $count = $this->documentManager->generateNbUserDebateFirstReaction($userId);
 
         return $count;
+    }
+
+    /**
+     * Return "similars" debates based on tags
+     *
+     * @param PDocumentInterface $document
+     * @return PropelCollection[PDDebate]
+     */
+    public function getSimilarDebates(PDocumentInterface $document)
+    {
+        if (!$document) {
+            return null;
+        }
+
+        $similars = PDDebateQuery::create()
+            ->filterById($document->getDebateId(), \Criteria::NOT_EQUAL)
+            ->usePDDTaggedTQuery()
+                ->filterByPTag($document->getTags(TagConstants::TAG_TYPE_THEME))
+            ->endUse()
+            ->distinct()
+            ->online()
+            ->limit(ListingConstants::LISTING_DEBATE_SIMILARS)
+            ->orderByNotePos('desc')
+            ->orderByNoteNeg('asc')
+            ->find();
+
+        if (count($similars) == 0) {
+            $similars = PDDebateQuery::create()
+                ->filterById($document->getDebateId(), \Criteria::NOT_EQUAL)
+                ->usePDDTaggedTQuery()
+                    ->filterByPTag($document->getTags(TagConstants::TAG_TYPE_FAMILY))
+                ->endUse()
+                ->distinct()
+                ->online()
+                ->limit(ListingConstants::LISTING_DEBATE_SIMILARS)
+                ->orderByNotePos('desc')
+                ->orderByNoteNeg('asc')
+                ->find();
+        }
+
+        return $similars;
     }
 
     /* ######################################################################################################## */

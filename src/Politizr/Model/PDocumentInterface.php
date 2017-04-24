@@ -40,6 +40,13 @@ interface PDocumentInterface
     public function getType();
 
     /**
+     * Return debate id > id (PDDebate) or reaction's PDDebate id
+     *
+     * @return int
+     */
+    public function getDebateId();
+
+    /**
      * Filter the document's comments
      *
      * @param boolean $online
