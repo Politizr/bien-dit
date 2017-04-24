@@ -91,6 +91,7 @@ LIMIT :offset, :limit
      * @param array $inQueryReputationIds2 IN stmt values
      * @param array $inQueryReputationIds3 IN stmt values
      * @param array $inQueryReputationIds4 IN stmt values
+     * @param array $inQueryReputationIds5 IN stmt values
      * @return string
      */
     public function createMyTimelineRawSql(
@@ -101,7 +102,8 @@ LIMIT :offset, :limit
         $inQueryReputationIds,
         $inQueryReputationIds2,
         $inQueryReputationIds3,
-        $inQueryReputationIds4
+        $inQueryReputationIds4,
+        $inQueryReputationIds5
     ) {
         $sql = "
 #  Débats publiés
@@ -408,6 +410,19 @@ WHERE
     p_user.id = :p_user_id12
 )
 
+UNION DISTINCT
+
+#  Actions réputation des users suivis: note + comment / sujet / reponse, suivre un utilisateur
+( SELECT p_u_reputation.p_r_action_id as id, p_u_reputation.p_object_id as target_id, p_user_id as target_user_id, p_u_reputation.p_object_name as target_object_name, p_r_action.title as title, p_u_reputation.created_at as published_at, 'Politizr\\\Model\\\PRAction' as type
+FROM p_r_action
+    LEFT JOIN p_u_reputation
+        ON p_r_action.id = p_u_reputation.p_r_action_id
+
+WHERE
+    p_u_reputation.p_user_id IN ($inQueryUserIds)
+    AND p_r_action.id IN ($inQueryReputationIds5)
+)
+
 ORDER BY published_at DESC
 LIMIT :offset, :count
         ";
@@ -629,6 +644,7 @@ LIMIT :offset, :limit
      * @param string $inQueryReputationIds2
      * @param string $inQueryReputationIds3
      * @param string $inQueryReputationIds4
+     * @param string $inQueryReputationIds5
      * @param integer $offset
      * @param integer $count
      * @return string
@@ -643,6 +659,7 @@ LIMIT :offset, :limit
         $inQueryReputationIds2,
         $inQueryReputationIds3,
         $inQueryReputationIds4,
+        $inQueryReputationIds5,
         $offset,
         $count
     ) {
@@ -656,6 +673,7 @@ LIMIT :offset, :limit
         // $this->logger->info('$inQueryReputationIds2 = ' . print_r($inQueryReputationIds2, true));
         // $this->logger->info('$inQueryReputationIds3 = ' . print_r($inQueryReputationIds3, true));
         // $this->logger->info('$inQueryReputationIds4 = ' . print_r($inQueryReputationIds4, true));
+        // $this->logger->info('$inQueryReputationIds5 = ' . print_r($inQueryReputationIds5, true));
         // $this->logger->info('$offset = ' . print_r($offset, true));
         // $this->logger->info('$count = ' . print_r($count, true));
 
@@ -668,7 +686,8 @@ LIMIT :offset, :limit
             $inQueryReputationIds,
             $inQueryReputationIds2,
             $inQueryReputationIds3,
-            $inQueryReputationIds4
+            $inQueryReputationIds4,
+            $inQueryReputationIds5
         ));
 
         $stmt->bindValue(':p_user_id', $userId, \PDO::PARAM_INT);

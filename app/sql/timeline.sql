@@ -309,4 +309,17 @@ WHERE
     p_user.id = 1
 )
 
+UNION DISTINCT
+
+#  Actions réputation des users suivis: note + comment / sujet / reponse, suivre un utilisateur
+( SELECT p_u_reputation.p_r_action_id as id, p_u_reputation.p_object_id as target_id, p_user_id as target_user_id, p_u_reputation.p_object_name as target_object_name, p_r_action.title as title, p_u_reputation.created_at as published_at, 'Politizr\\Model\\PRAction' as type
+FROM p_r_action
+    LEFT JOIN p_u_reputation
+        ON p_r_action.id = p_u_reputation.p_r_action_id
+
+WHERE
+    p_u_reputation.p_user_id IN (865, 324)
+    AND p_r_action.id IN (10, 12, 14, 24)
+)
+
 ORDER BY published_at DESC

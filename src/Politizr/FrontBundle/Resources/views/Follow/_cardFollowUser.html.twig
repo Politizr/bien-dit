@@ -4,7 +4,7 @@
     <div class="coloredBg">
         <div class="activity cardFollowing">
             {% if way == 'up' %}
-                Vous suivez {{ followUser }} : ses publications s’affichent dans votre fil d’actualité.
+                {% if app.user.id == user.id %}Vous suivez {{ followUser }} : ses publications s’affichent dans votre fil d’actualité.{% else %}{{ user }} a suivi {{ followUser }}.{% endif %}
             {% else %}
                 Vous ne suivez plus {{ followUser }} : ses publications ne s’affichent plus dans votre fil d’actualité.
             {% endif %}
