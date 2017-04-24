@@ -3,7 +3,7 @@
 {% if
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_D_COMMENT_PUBLISH') 
 %}
-    {{ author }} a publié un commentaire
+    {{ author|purify }} a publié un commentaire
 {% elseif
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_D_NOTE_POS')
 %}
@@ -15,7 +15,7 @@
 {% elseif
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_D_D_REACTION_PUBLISH')
 %}
-    {{ author }} a répondu {% if document %}à "{{ document.title }}"{% endif %}
+    {{ author|purify }} a répondu {% if document %}à "{{ document.title|purify }}"{% endif %}
 {% elseif
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_D_D_FOLLOWED')
 %}
@@ -23,7 +23,7 @@
 {% elseif
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_D_R_REACTION_PUBLISH')
 %}
-    {{ author }} a répondu {% if document %}à "{{ document.title }}"{% endif %}
+    {{ author|purify }} a répondu {% if document %}à "{{ document.title|purify }}"{% endif %}
 {% elseif
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_D_C_NOTE_POS')
 %}
@@ -35,31 +35,31 @@
 {% elseif
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_S_U_DEBATE_PUBLISH')
 %}
-    {{ author }} a publié "{{ title }}"
+    {{ author|purify }} a publié "{{ title|purify }}"
 {% elseif
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_S_U_REACTION_PUBLISH')
 %}
-    {{ author }} a répondu "{{ title }}"
+    {{ author|purify }} a répondu "{{ title|purify }}"
 {% elseif
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_S_U_COMMENT_PUBLISH')
 %}
-    {{ author }} a publié un commentaire
+    {{ author|purify }} a publié un commentaire
 {% elseif
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_S_D_REACTION_PUBLISH')
 %}
-    Une réponse a été publiée {% if document %}sur "{{ document.title }}"{% endif %}
+    Une réponse a été publiée {% if document %}sur "{{ document.title|purify }}"{% endif %}
 {% elseif
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_S_D_D_COMMENT_PUBLISH')
 %}
-    Un commentaire a été publié {% if document %}sur "{{ document.title }}"{% endif %}
+    Un commentaire a été publié {% if document %}sur "{{ document.title|purify }}"{% endif %}
 {% elseif
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_S_D_R_COMMENT_PUBLISH')
 %}
-    Un commentaire a été publié  {% if document %}sur "{{ document.title }}"{% endif %}
+    Un commentaire a été publié  {% if document %}sur "{{ document.title|purify }}"{% endif %}
 {% elseif
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_U_FOLLOWED')
 %}
-    {{ author }} s'est abonné{% if author and author.gender == 'Madame' %}e{% endif %} à votre profil
+    {{ author|purify }} s'est abonné{% if author and author.gender == 'Madame' %}e{% endif %} à votre profil
 {% elseif
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_U_BADGE')
 %}
@@ -71,7 +71,7 @@
 {% elseif
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_S_T_DOCUMENT')
 %}
-    "{{ title }}" contient une thématique que vous suivez
+    "{{ title|purify }}" contient une thématique que vous suivez
 {% elseif
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_L_U_CITY')
 %}
@@ -87,15 +87,15 @@
 {% elseif
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_L_D_CITY')
 %}
-    "{{ title }}" est localisé sur votre ville
+    "{{ title|purify }}" est localisé sur votre ville
 {% elseif
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_L_D_DEPARTMENT')
 %}
-    "{{ title }}" est localisé sur votre département
+    "{{ title|purify }}" est localisé sur votre département
 {% elseif
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_L_D_REGION')
 %}
-    "{{ title }}" est localisé sur votre région
+    "{{ title|purify }}" est localisé sur votre région
 {% elseif
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_ADM_MESSAGE')
 %}
