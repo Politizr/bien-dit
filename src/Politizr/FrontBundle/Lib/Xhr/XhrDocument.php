@@ -1766,7 +1766,9 @@ class XhrDocument
 
         $fbAdId = $document->getFbAdId();
         if (!$fbAdId) {
-            return null;
+            return array(
+                'html' => null
+            );
         }
 
         try {
@@ -1822,7 +1824,9 @@ class XhrDocument
 
         $fbAdId = $document->getFbAdId();
         if (!$fbAdId) {
-            return null;
+            return array(
+                'html' => null
+            );
         }
 
         try {
