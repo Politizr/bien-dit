@@ -36,7 +36,6 @@ services:
             - @router
             - @templating
             - @politizr.functional.timeline
-            - @politizr.functional.facebook
             - @form.factory
             - @politizr.tools.global
             - @logger

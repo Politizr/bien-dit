@@ -43,7 +43,6 @@ class PolitizrDocumentExtension extends \Twig_Extension
     private $templating;
 
     private $timelineService;
-    private $facebookService;
 
     private $formFactory;
 
@@ -57,7 +56,6 @@ class PolitizrDocumentExtension extends \Twig_Extension
      * @router
      * @templating
      * @politizr.functional.timeline
-     * @politizr.functional.facebook
      * @form.factory
      * @politizr.tools.global
      * @logger
@@ -68,7 +66,6 @@ class PolitizrDocumentExtension extends \Twig_Extension
         $router,
         $templating,
         $timelineService,
-        $facebookService,
         $formFactory,
         $globalTools,
         $logger
@@ -80,7 +77,6 @@ class PolitizrDocumentExtension extends \Twig_Extension
         $this->templating = $templating;
 
         $this->timelineService = $timelineService;
-        $this->facebookService = $facebookService;
 
         $this->formFactory = $formFactory;
 
@@ -218,16 +214,6 @@ class PolitizrDocumentExtension extends \Twig_Extension
             new \Twig_SimpleFilter(
                 'editTagFamilyForm',
                 array($this, 'editTagFamilyForm'),
-                array('is_safe' => array('html'))
-            ),
-            new \Twig_SimpleFilter(
-                'facebookInsights',
-                array($this, 'facebookInsights'),
-                array('is_safe' => array('html'))
-            ),
-            new \Twig_SimpleFilter(
-                'facebookComments',
-                array($this, 'facebookComments'),
                 array('is_safe' => array('html'))
             ),
             new \Twig_SimpleFilter(
@@ -1250,93 +1236,6 @@ class PolitizrDocumentExtension extends \Twig_Extension
             array(
                 'document' => $document,
                 'form' => $form->createView(),
-            )
-        );
-
-        return $html;
-    }
-
-    /**
-     * Facebook's document insights
-     *
-     * @param PDocumentInterface $document
-     * @return string
-     */
-    public function facebookInsights(PDocumentInterface $document)
-    {
-        // $this->logger->info('*** facebookInsights');
-        // $this->logger->info('$document = '.print_r($document, true));
-
-        $fbAdId = $document->getFbAdId();
-        if (!$fbAdId) {
-            return null;
-        }
-
-        try {
-            $impressions = $this->facebookService->getImpressions($fbAdId);
-            $interactions = $this->facebookService->getInteractions($fbAdId);
-            $nbEmotions = $this->facebookService->getNbEmotions($fbAdId);
-            $nbComments = $this->facebookService->getNbComments($fbAdId);
-            $nbShares = $this->facebookService->getNbShares($fbAdId);
-        } catch (\Exception $e) {
-            return null;
-        }
-
-        // Construction du rendu du tag
-        $html = $this->templating->render(
-            'PolitizrFrontBundle:Document:_facebookInsights.html.twig',
-            array(
-                'impressions' => $impressions,
-                'interactions' => $interactions,
-                'nbEmotions' => $nbEmotions,
-                'nbComments' => $nbComments,
-                'nbShares' => $nbShares,
-            )
-        );
-
-        return $html;
-    }
-
-    /**
-     * Facebook comments
-     *
-     * @param PDocumentInterface $document
-     * @return string
-     */
-    public function facebookComments(PDocumentInterface $document)
-    {
-        // $this->logger->info('*** facebookInsights');
-        // $this->logger->info('$document = '.print_r($document, true));
-
-        $fbAdId = $document->getFbAdId();
-        if (!$fbAdId) {
-            return null;
-        }
-
-        try {
-            $impressions = $this->facebookService->getImpressions($fbAdId);
-            $interactions = $this->facebookService->getInteractions($fbAdId);
-            $emotions = $this->facebookService->getEmotions($fbAdId);
-            $nbComments = $this->facebookService->getNbComments($fbAdId);
-            $comments = $this->facebookService->getComments($fbAdId);
-            $nbEmotions = $this->facebookService->getNbEmotions($fbAdId);
-            $nbShares = $this->facebookService->getNbShares($fbAdId);
-        } catch (\Exception $e) {
-            return null;
-        }
-
-        // Construction du rendu du tag
-        $html = $this->templating->render(
-            'PolitizrFrontBundle:Document:_facebookComments.html.twig',
-            array(
-                'fbAdId' => $fbAdId,
-                'impressions' => $impressions,
-                'interactions' => $interactions,
-                'emotions' => $emotions,
-                'nbComments' => $nbComments,
-                'comments' => $comments,
-                'nbEmotions' => $nbEmotions,
-                'nbShares' => $nbShares,
             )
         );
 

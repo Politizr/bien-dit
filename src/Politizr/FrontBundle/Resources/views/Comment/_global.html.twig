@@ -23,6 +23,8 @@
     <div id="globalComments" style="display: none;">
         <h5>Commentaires</h5>
         <div class="commentsContent"></div>
-        {{ document | facebookComments }}
+        <div class="embedFB withLoaderInside" uuid="{{ document.uuid }}" type="{{ document.type }}">
+            {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+        </div>
     </div>
 </div>

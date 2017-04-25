@@ -46,6 +46,9 @@ var ROUTE_MAP_SCHEMA = 'carte/schema';
 
 var ROUTE_DOCUMENT_BOOKMARK = '$w/document/bookmark';
 
+var ROUTE_FB_COMMENTS = 'fb/commentaires';
+var ROUTE_FB_INSIGHTS= 'fb/insights';
+
 // DEBATES
 var ROUTE_DEBATE_UPDATE = '$w/debat/update';
 var ROUTE_DEBATE_PUBLISH = '$w/debat/publier';

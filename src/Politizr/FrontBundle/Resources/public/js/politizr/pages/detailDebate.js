@@ -1,5 +1,8 @@
 // beta
 $(function() {
+    loadFbInsights();
+    loadFbComments();
+
     $.when(
         lastDebateFollowersListing(
             $('.sidebarSubjectFollowers').find('#subjectFollowers').first(),

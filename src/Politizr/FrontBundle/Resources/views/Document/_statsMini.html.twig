@@ -3,7 +3,9 @@
 <div class="statViews"><i class="icon-graph"></i>{{ document | nbViews }}</div>
 <div class="statComments"><i class="icon-comment"></i>{{ document | nbComments }}</div>
 {% if facebook %}
-    {{ document | facebookInsights }}
+    <div class="statFB withLoaderInside" uuid="{{ document.uuid }}" type="{{ document.type }}">
+        {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+    </div>
 {% elseif document.fbAdId %}
     <div class="statFB"><i class="icon-social-fb"></i>Statistiques Facebook disponibles dans le détail</div>
 {% endif %}

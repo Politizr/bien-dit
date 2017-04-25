@@ -65,6 +65,7 @@ class XhrDocument
     private $documentService;
     private $localizationService;
     private $tagService;
+    private $facebookService;
     private $globalTools;
     private $documentTwigExtension;
     private $documentLocalizationFormType;
@@ -85,6 +86,7 @@ class XhrDocument
      * @param @politizr.functional.document
      * @param @politizr.functional.localization
      * @param @politizr.functional.tag
+     * @param @politizr.functional.facebook
      * @param @politizr.tools.global
      * @param @politizr.twig.document
      * @param @politizr.form.type.document_localization
@@ -104,6 +106,7 @@ class XhrDocument
         $documentService,
         $localizationService,
         $tagService,
+        $facebookService,
         $globalTools,
         $documentTwigExtension,
         $documentLocalizationFormType,
@@ -127,6 +130,7 @@ class XhrDocument
         $this->documentService = $documentService;
         $this->localizationService = $localizationService;
         $this->tagService = $tagService;
+        $this->facebookService = $facebookService;
 
         $this->globalTools = $globalTools;
 
@@ -1736,4 +1740,120 @@ class XhrDocument
         );
     }
 
+    /**
+     * Facebook's document insights
+     *
+     * @param PDocumentInterface $document
+     * @return string
+     */
+    public function facebookInsights(Request $request)
+    {
+        // $this->logger->info('*** facebookInsights');
+
+        // Request arguments
+        $uuid = $request->get('uuid');
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
+        $type = $request->get('type');
+        // $this->logger->info('$type = ' . print_r($type, true));
+
+        if ($type == ObjectTypeConstants::TYPE_DEBATE) {
+            $document = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
+        } elseif ($type == ObjectTypeConstants::TYPE_REACTION) {
+            $document = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
+        } else {
+            throw new InconsistentDataException(sprintf('Object type %s not managed', $document->getType()));
+        }
+
+        $fbAdId = $document->getFbAdId();
+        if (!$fbAdId) {
+            return null;
+        }
+
+        try {
+            $impressions = $this->facebookService->getImpressions($fbAdId);
+            $interactions = $this->facebookService->getInteractions($fbAdId);
+            $nbEmotions = $this->facebookService->getNbEmotions($fbAdId);
+            $nbComments = $this->facebookService->getNbComments($fbAdId);
+            $nbShares = $this->facebookService->getNbShares($fbAdId);
+        } catch (\Exception $e) {
+            return null;
+        }
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Document:_facebookInsights.html.twig',
+            array(
+                'impressions' => $impressions,
+                'interactions' => $interactions,
+                'nbEmotions' => $nbEmotions,
+                'nbComments' => $nbComments,
+                'nbShares' => $nbShares,
+            )
+        );
+
+        return array(
+            'html' => $html,
+        );
+    }
+
+    /**
+     * Facebook comments
+     *
+     * @param PDocumentInterface $document
+     * @return string
+     */
+    public function facebookComments(Request $request)
+    {
+        // $this->logger->info('*** facebookComments');
+
+        // Request arguments
+        $uuid = $request->get('uuid');
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
+        $type = $request->get('type');
+        // $this->logger->info('$type = ' . print_r($type, true));
+
+        if ($type == ObjectTypeConstants::TYPE_DEBATE) {
+            $document = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
+        } elseif ($type == ObjectTypeConstants::TYPE_REACTION) {
+            $document = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
+        } else {
+            throw new InconsistentDataException(sprintf('Object type %s not managed', $document->getType()));
+        }
+
+        $fbAdId = $document->getFbAdId();
+        if (!$fbAdId) {
+            return null;
+        }
+
+        try {
+            $impressions = $this->facebookService->getImpressions($fbAdId);
+            $interactions = $this->facebookService->getInteractions($fbAdId);
+            $emotions = $this->facebookService->getEmotions($fbAdId);
+            $nbComments = $this->facebookService->getNbComments($fbAdId);
+            $comments = $this->facebookService->getComments($fbAdId);
+            $nbEmotions = $this->facebookService->getNbEmotions($fbAdId);
+            $nbShares = $this->facebookService->getNbShares($fbAdId);
+        } catch (\Exception $e) {
+            return null;
+        }
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Document:_facebookComments.html.twig',
+            array(
+                'fbAdId' => $fbAdId,
+                'impressions' => $impressions,
+                'interactions' => $interactions,
+                'emotions' => $emotions,
+                'nbComments' => $nbComments,
+                'comments' => $comments,
+                'nbEmotions' => $nbEmotions,
+                'nbShares' => $nbShares,
+            )
+        );
+
+        return array(
+            'html' => $html,
+        );
+    }
 }

@@ -59,6 +59,9 @@ class XhrConstants
 
     const ROUTE_DOCUMENT_BOOKMARK = '$w/document/bookmark';
 
+    const ROUTE_FB_COMMENTS = 'fb/commentaires';
+    const ROUTE_FB_INSIGHTS= 'fb/insights';
+
     // DEBATES
     const ROUTE_DEBATE_UPDATE = '$w/debat/update';
     const ROUTE_DEBATE_PUBLISH = '$w/debat/publier';
