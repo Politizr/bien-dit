@@ -9,6 +9,7 @@ use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\UserConstants;
 use Politizr\Constant\PathConstants;
 use Politizr\Constant\TagConstants;
+use Politizr\Constant\LocalizationConstants;
 
 use Politizr\Model\PDocumentInterface;
 use Politizr\Model\PDDebate;
@@ -173,6 +174,11 @@ class PolitizrUserExtension extends \Twig_Extension
             new \Twig_SimpleFilter(
                 'isAuthorizedToAskOperation',
                 array($this, 'isAuthorizedToAskOperation'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
+                'localization',
+                array($this, 'localization'),
                 array('is_safe' => array('html'))
             ),
         );
@@ -874,6 +880,40 @@ class PolitizrUserExtension extends \Twig_Extension
         }
 
         return false;
+    }
+
+    /**
+     * Display user's localization
+     *
+     * @param PUser $user
+     * @return string
+     */
+    public function localization(PUser $user)
+    {
+        // $this->logger->info('*** localization');
+        // $this->logger->info('$user = '.print_r($user, true));
+
+        $department = null;
+        $city = $user->getPLCity();
+        if ($city) {
+            $department = $city->getPLDepartment();
+        }
+
+        $outOfFrance = false;
+        if ($department && in_array($department->getId(), LocalizationConstants::getOutOfFranceDepartmentIds())) {
+            $outOfFrance = true;
+        }
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:User:_localization.html.twig',
+            array(
+                'city' => $city,
+                'department' => $department,
+                'outOfFrance' => $outOfFrance,
+            )
+        );
+
+        return $html;
     }
 
     /* ######################################################################################################## */

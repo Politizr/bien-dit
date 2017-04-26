@@ -1,0 +1,5 @@
+{% spaceless %}
+    {% if city and department %}
+        <span class="profileBioGeo">&nbsp;—&nbsp;<i class="icon-geomark"></i>{% if not outOfFrance %}<a href="{{ path('ListingSearchPublications', { 'slug': city.slug }) }}">{{ city }}</a> ({% endif %}<a href="{{ path('ListingSearchPublications', { 'slug': department.slug }) }}">{{ department }}</a>{% if not outOfFrance %}){% endif %}</span>
+    {% endif %}
+{% endspaceless %}
