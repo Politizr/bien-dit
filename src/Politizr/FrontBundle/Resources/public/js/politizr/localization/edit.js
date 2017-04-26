@@ -1,6 +1,6 @@
 // beta
 $(function() {
-    console.log('*** init edit.js');
+    // console.log('*** init edit.js');
 
     if ($('.modalPublishContent').length) {
         initPublishContext();
@@ -11,7 +11,7 @@ $(function() {
 
 // department choice event
 $("body").on("change", ".department_choice", function(e) {
-    console.log('*** click change department');
+    // console.log('*** click change department');
 
     var context = $('#main');
     var departmentUuid = $(this).val();
@@ -28,22 +28,22 @@ $("body").on("change", ".department_choice", function(e) {
 
 // out of france checkbox
 $("body").on("change", ".out_of_france", function(e) {
-    console.log('*** click out of france');
+    // console.log('*** click out of france');
 
     var context = $('#main');
 
     if (this.checked) {
-        console.log('checked');
+        // console.log('checked');
         $('.control-group-department').hide();
         $('.control-group-city').hide();
 
         return initOutOfFranceDepartments(context);
     } else {
-        console.log('unchecked');
+        // console.log('unchecked');
         $('.control-group-circonscription').hide();
         $('.control-group-department').show();
         $departmentUuid = $('.department_choice').val();
-        console.log($departmentUuid);
+        // console.log($departmentUuid);
         if ($departmentUuid != '') {
             $('.control-group-city').show();
         }
@@ -57,10 +57,10 @@ $("body").on("change", ".out_of_france", function(e) {
  */
 function initPublishContext()
 {
-    console.log('*** initPublishContext');
+    // console.log('*** initPublishContext');
 
     departmentUuid = $('.department_choice').val();
-    console.log(departmentUuid);
+    // console.log(departmentUuid);
     if (departmentUuid == '') {
         $('.control-group-city').hide();
     }
@@ -75,19 +75,19 @@ function initPublishContext()
  */
 function initUserContext()
 {
-    console.log('*** initUserContext');
+    // console.log('*** initUserContext');
     
     if ($('.out_of_france').is(':checked')) {
-        console.log('outOfFrance checked');
+        // console.log('outOfFrance checked');
         $('.control-group-department').hide();
         $('.control-group-city').hide();
         departmentUuid = $('.circonscription_choice').val();
-        console.log(departmentUuid);
+        // console.log(departmentUuid);
     } else {
-        console.log('outOfFrance unchecked');
+        // console.log('outOfFrance unchecked');
         $('.control-group-circonscription').hide();
         departmentUuid = $('.department_choice').val();
-        console.log(departmentUuid);
+        // console.log(departmentUuid);
         if (departmentUuid == '') {
             $('.control-group-city').hide();
         }
@@ -126,8 +126,8 @@ function initContextSelect2Options()
  */
 function initCities(contextZone, departmentUuid)
 {
-    console.log('*** initCities');
-    console.log(departmentUuid);
+    // console.log('*** initCities');
+    // console.log(departmentUuid);
 
     var xhrPath = getXhrPath(
         xhrRouteCity,
@@ -163,7 +163,7 @@ function initCities(contextZone, departmentUuid)
  */
 function initOutOfFranceDepartments(contextZone)
 {
-    console.log('*** initOutOfFranceDepartments');
+    // console.log('*** initOutOfFranceDepartments');
 
     var xhrPath = getXhrPath(
         xhrRouteCity,

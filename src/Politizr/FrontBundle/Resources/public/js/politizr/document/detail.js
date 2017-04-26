@@ -4,7 +4,7 @@
  * Load Facebook insights
  */
 function loadFbInsights() {
-    console.log('*** loadFbInsights');
+    // console.log('*** loadFbInsights');
 
     var targetElement = $('.statFB');
     var localLoader = $('.statFB').find('.ajaxLoader').first();
@@ -18,7 +18,7 @@ function loadFbInsights() {
  * Load Facebook comments
  */
 function loadFbComments() {
-    console.log('*** loadFbComments');
+    // console.log('*** loadFbComments');
 
     var targetElement = $('.embedFB');
     var localLoader = $('.embedFB').find('.ajaxLoader').first();
