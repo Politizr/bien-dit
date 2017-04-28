@@ -1,3 +1,7 @@
+{% set questionLabel = "J'ai une question!" %}
+{% if publicOp %}
+    {% set questionLabel = "Je m'exprime!" %}
+{% endif %}
 <div id="op" class="miniHeader op-{{ operation.uuid }}">
     <div class="center">
         <div class="imgOp">
@@ -7,8 +11,11 @@
             {{ operation.description | purify }}
             {% if app.user and app.user | isAuthorizedToAskOperation(operation) %}
                 <span>
-                    <a class="ctaOp" href="{{ path('DebateDraftNew'~profileSuffix(), { op: operation.uuid }) }}">J'ai une question!</a>
-                    {# <a action="closeOp">Non merci...</a> #}
+                    <a class="ctaOp" href="{{ path('DebateDraftNew'~profileSuffix(), { op: operation.uuid }) }}">{{ questionLabel }}</a>
+                </span>
+            {% elseif not app.user %}
+                <span>
+                    <a class="ctaOp" href="{{ path('InscriptionChoice') }}">{{ questionLabel }}</a>
                 </span>
             {% endif %}
         </div>
