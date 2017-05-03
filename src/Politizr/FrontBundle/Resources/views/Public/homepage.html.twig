@@ -53,6 +53,23 @@
         </div>
     </div>
 
+    <div id="bannerPromo" class="bannerPromoAxelle">
+        <div class="center">
+            <div class="imgBannerPromo"></div>
+            <div class="txtBannerPromo">
+                <h1>Législatives 2017</h1>
+                <p>A l’occasion des élections législatives 2017, POLITIZR propose aux candidats de tester sa plateforme en engageant des discussions de fond avec les électeurs sur une plateforme portée par un acteur reconnu des "Civic Tech" en France.</p>
+                <br/>
+                <p><i>Parmi nos premiers utilisateurs, <b>Axelle LEMAIRE, ancienne secrétaire d'État chargée du Numérique</b>, est candidate à l’élection législative en Europe du Nord, dans la 3e circonscription des Français de l’étranger.</i></p>
+                <span>
+                    <a class="ctaBannerPromo" href="{{ path('LandingPage', { 'theme': 'offre-candidat-legislatives-2017'}) }}">En savoir plus</a>
+                </span>
+            </div>
+        </div>
+        <div class="bgLeftBannerPromo"></div>
+        <div class="bgRightBannerPromo"></div>
+    </div>
+
     <div id="postSelection">
         <div class="center">
             <h1>Les discussions en cours</h1>
@@ -89,29 +106,6 @@
             {% endfor %}
         </div>
     </div>
-    {#
-    <div id="opCharlotte">
-        <div class="center">
-            <div class="imgCharlotte"></div>
-            <div class="txtCharlotte">
-                <h1>Présidentielles 2017</h1>
-                Posez vos questions à <a href="{{ path('LandingPage', { theme: 'charlotte-marchandise' }) }}">Charlotte Marchandise</a>,<br>
-                candidate citoyenne désignée par <a href="https://laprimaire.org" target="_blank">LaPrimaire.org</a><br>
-                <br>
-                <span>
-                    <i>42 ans, Formatrice (35 - Ille-et-Vilaine)</i><br>
-                    <i>Son programme en 3 priorités:</i><br>
-                    Priorité 1 : <b>“2 ans pour une nouvelle constitution par et avec le peuple” </b><br>
-                    Priorité 2 : <b>“Lutter contre les inégalités : un revenu de base universel”</b><br>
-                    Priorité 3 : <b>“Transition énergétique écologique économique”</b><br>
-                    <a class="ctaCharlotte" href="{{ path('LandingPage', { theme: 'charlotte-marchandise' }) }}">J'ai une question!</a>
-                </span>
-            </div>
-        </div>
-        <div class="bgLeftCharlotte"></div>
-        <div class="bgRightCharlotte"></div>
-    </div>
-    #}
 {% endblock main %}
 
 {% block postMain %}
