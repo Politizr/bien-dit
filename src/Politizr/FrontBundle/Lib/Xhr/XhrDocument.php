@@ -1767,7 +1767,7 @@ class XhrDocument
         $fbAdId = $document->getFbAdId();
         if (!$fbAdId) {
             return array(
-                'html' => null
+                'html' => ''
             );
         }
 
@@ -1778,7 +1778,10 @@ class XhrDocument
             $nbComments = $this->facebookService->getNbComments($fbAdId);
             $nbShares = $this->facebookService->getNbShares($fbAdId);
         } catch (\Exception $e) {
-            return null;
+            $this->logger->error('Exception FB - msg = '.print_r($e->getMessage(), true));
+            return array(
+                'html' => ''
+            );
         }
 
         // Construction du rendu du tag
@@ -1825,7 +1828,7 @@ class XhrDocument
         $fbAdId = $document->getFbAdId();
         if (!$fbAdId) {
             return array(
-                'html' => null
+                'html' => ''
             );
         }
 
@@ -1838,7 +1841,9 @@ class XhrDocument
             $nbEmotions = $this->facebookService->getNbEmotions($fbAdId);
             $nbShares = $this->facebookService->getNbShares($fbAdId);
         } catch (\Exception $e) {
-            return null;
+            return array(
+                'html' => ''
+            );
         }
 
         // Construction du rendu du tag

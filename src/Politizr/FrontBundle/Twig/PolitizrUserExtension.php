@@ -21,6 +21,7 @@ use Politizr\Model\PUFollowUQuery;
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PDReactionQuery;
 use Politizr\Model\PEOperationQuery;
+use Politizr\Model\PTagQuery;
 
 use Politizr\FrontBundle\Form\Type\PUserLocalizationType;
 

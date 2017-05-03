@@ -252,7 +252,7 @@ class FacebookService
      */
     public function getNbComments($fbAdId)
     {
-        $nbComments = array();
+        $nbComments = '';
 
         try {
             // Comments > Comments
@@ -269,7 +269,9 @@ class FacebookService
             );
             $response = $this->facebookClient->sendRequest($request);
             $graphEdge = $response->getGraphEdge();
-            $nbComments = $graphEdge->getMetaData()['summary']['total_count'];
+            if ($graphEdge->getMetaData() && isset($graphEdge->getMetaData()['summary']) && isset($graphEdge->getMetaData()['summary']['total_count'])) {
+                $nbComments = $graphEdge->getMetaData()['summary']['total_count'];
+            }
         } catch (FacebookResponseException $e) {
             // When Graph returns an error
             throw new InconsistentDataException(sprintf('FacebookResponseException - msg = %s', $e->getMessage()));
@@ -291,7 +293,7 @@ class FacebookService
      */
     public function getNbShares($fbAdId)
     {
-        $nbShares = array();
+        $nbShares = '';
 
         try {
             // Comments > Comments
@@ -304,7 +306,9 @@ class FacebookService
             );
             $response = $this->facebookClient->sendRequest($request);
             $data = $response->getDecodedBody();
-            $nbShares = $data['shares']['count'];
+            if ($data && isset($data['shares']) && isset($data['shares']['count'])) {
+                $nbShares = $data['shares']['count'];
+            }
         } catch (FacebookResponseException $e) {
             throw new InconsistentDataException(sprintf('FacebookResponseException - msg = %s', $e->getMessage()));
         } catch (FacebookSDKException $e) {
@@ -385,7 +389,9 @@ class FacebookService
             );
             $response = $this->facebookClient->sendRequest($request);
             $data = $response->getDecodedBody();
-            $picture = $data['data']['url'];
+            if ($data && isset($data['data']) && isset($data['data']['url'])) {
+                $picture = $data['data']['url'];
+            }
         } catch (FacebookResponseException $e) {
             // When Graph returns an error
             throw new InconsistentDataException(sprintf('FacebookResponseException - msg = %s', $e->getMessage()));

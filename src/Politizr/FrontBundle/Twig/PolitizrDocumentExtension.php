@@ -1261,14 +1261,8 @@ class PolitizrDocumentExtension extends \Twig_Extension
             ->filterByPUserId($user->getId())
             ->findOne();
 
-        // if op has private tags > "Offre candidat" else > "Opération publique"
-        $tags = $document->getTags(TagConstants::TAG_TYPE_PRIVATE)->toKeyValue('Id', 'Title');
-        $publicOp = true;
-        if (count($tags) > 0) {
-            $publicOp = false;
-        }
-
         if (!$operation) {
+            $tags = $document->getTags(TagConstants::TAG_TYPE_PRIVATE)->toKeyValue('Id', 'Title');
             $operation = PEOperationQuery::create()
                 ->filterByOnline(true)
                 ->usePEOPresetPTQuery()
@@ -1286,7 +1280,6 @@ class PolitizrDocumentExtension extends \Twig_Extension
             'PolitizrFrontBundle:User:_opBanner.html.twig',
             array(
                 'operation' => $operation,
-                'publicOp' => $publicOp,
             )
         );
 
