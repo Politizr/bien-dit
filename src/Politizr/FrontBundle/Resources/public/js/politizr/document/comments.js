@@ -4,11 +4,14 @@ $(function() {
     autosize($('.formCommentNew textarea'));
     commentTextCounter();
 
+    var commentMode = $('#commentMode').attr('mode');
+    // console.log(commentMode);
+
+    // inscription popup or preopen comment by paragraph
     if(window.location.hash) {
         var paragraphId = window.location.hash.substr(3);
         // console.log(paragraphId);
 
-        var commentMode = $('#commentMode').attr('mode');
         // console.log(commentMode);
         if (commentMode === 'public') {
             $("[action='createAccountToComment']").trigger("click");
@@ -16,9 +19,19 @@ $(function() {
             if (paragraphId > 0) {
                 var clickContext = $('#p-'+paragraphId).find("[action='comments']");
                 clickContext.trigger("click");
+                $(document).scrollTop( $('#p-'+paragraphId).offset().top );  
             } else {
-                $("[action='globalComments']").trigger("click");
+                // open global comments
+                if (commentMode === 'connected') {
+                    $("[action='globalComments']").trigger("click");
+                    $(document).scrollTop( $('#p-0').offset().top );
+                }
             }
+        }
+    } else {
+        // open global comments
+        if (commentMode === 'connected') {
+            $("[action='globalComments']").trigger("click");
         }
     }
 });
@@ -183,7 +196,7 @@ function loadParagraphContent(context)
             fullImgLiquid();
             autosize($('.formCommentNew textarea'));
             commentTextCounter();
-            $('#comment_description').focus();
+            // $('#comment_description').focus();
         }
         localLoader.hide();
     });
