@@ -10,27 +10,6 @@
     <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.cycle2.swipe.min.js') }}"></script>
 {% endblock %}
 
-{% block preMain %}
-    <div id="suggHeader">
-        {% if not app.session.has('showSuggestion') or app.session.get('showSuggestion') != true %}
-            <span id="suggestionMode" mode="hide" />
-        {% else %}
-            <span id="suggestionMode" mode="show" />
-        {% endif %}
-        <div class="center">
-            <div id="suggTitle">Sélection de nouvelles publications d'après <a href="{{ path('UserDetail', {'slug': app.user.slug}) }}">les thématiques que vous suivez</a>.<br><b>Retrouvez <a href="{{ path('ListingSearchPublications') }}">ici</a> les dernières publications.</b></div>
-            <div class="toggleSugg hideSugg" action="hideSugg" style="display: none">Masquer</div>
-            <div class="toggleSugg showSugg" action="showSugg" style="display: none">Afficher</div>
-        </div>
-    </div>
-    <div id="suggestions">
-        <div class="center">
-            <div class="documentList withLoaderInside"></div>
-        </div>
-        <div id="suggBg"></div>
-    </div>
-{% endblock preMain %}
-
 {% block content %}
     <div id="content">
         <div class="myfeed withLoaderInside">

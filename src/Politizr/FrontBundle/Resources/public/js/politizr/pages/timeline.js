@@ -1,48 +1,30 @@
 // beta
 $(function() {
-    var mode = $('#suggestionMode').attr('mode');
-    if (mode == 'show') {
-        $('#suggestions').show();
-        $('.hideSugg').show();
-        $('.showSugg').hide();
-    } else {
-        $('#suggestions').hide();
-        $('.hideSugg').hide();
-        $('.showSugg').show();
-    }
-
-    suggestionDocumentListing(
-        $('#suggestions').find('.documentList').first(),
-        $('#suggestions').find('.ajaxLoader').first()
-    )
-    .then( function() {
-            timelineList();
-            $.when(
-                familyTagListing(
-                    $('.sidebarFamilyTags').find('.tagList').first(),
-                    $('.sidebarFamilyTags').find('.ajaxLoader').first()
-                ),
-                typeTagListing(
-                    $('.sidebarTypeTags').find('.tagList').first(),
-                    $('.sidebarTypeTags').find('.ajaxLoader').first()
-                ),
-                // topTagListing(
-                //     $('.sidebarTopTags').find('.tagList').first(),
-                //     $('.sidebarTopTags').find('.ajaxLoader').first()
-                // ),
-                userTagListing(
-                    $('.sidebarFollowedTags').find('.tagList').first(),
-                    $('.sidebarFollowedTags').find('.ajaxLoader').first()
-                ),
-                topDocumentListing(
-                    $('.sidebarTopPosts').find('.documentList').first(),
-                    $('.sidebarTopPosts').find('.ajaxLoader').first()
-                )
-            ).done(function(r1, r2, r3, r4) {
-                stickySidebar();
-            })
-        }
-    );
+    timelineList();
+    $.when(
+        familyTagListing(
+            $('.sidebarFamilyTags').find('.tagList').first(),
+            $('.sidebarFamilyTags').find('.ajaxLoader').first()
+        ),
+        typeTagListing(
+            $('.sidebarTypeTags').find('.tagList').first(),
+            $('.sidebarTypeTags').find('.ajaxLoader').first()
+        ),
+        // topTagListing(
+        //     $('.sidebarTopTags').find('.tagList').first(),
+        //     $('.sidebarTopTags').find('.ajaxLoader').first()
+        // ),
+        userTagListing(
+            $('.sidebarFollowedTags').find('.tagList').first(),
+            $('.sidebarFollowedTags').find('.ajaxLoader').first()
+        ),
+        topDocumentListing(
+            $('.sidebarTopPosts').find('.documentList').first(),
+            $('.sidebarTopPosts').find('.ajaxLoader').first()
+        )
+    ).done(function(r1, r2, r3, r4) {
+        stickySidebar();
+    })
 });
 
 // toggle suggestion 
