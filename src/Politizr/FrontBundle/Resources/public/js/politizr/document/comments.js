@@ -78,6 +78,7 @@ $("body").on("click", "[action='globalComments']", function() {
         $('.commentsCounter').removeClass('activeComment');
 
         context.find('#globalComments').toggle();
+        $(document).scrollTop( $('#p-0').offset().top );
 
         return loadParagraphContent(context);
     }
