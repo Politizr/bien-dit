@@ -31,7 +31,8 @@ $(function() {
     } else {
         // open global comments
         if (commentMode === 'connected') {
-            $("[action='globalComments']").trigger("click");
+            $('#globalComments').toggle();
+            loadParagraphContent($('#globalComments').closest('.paragraphHolder'));
         }
     }
 });
