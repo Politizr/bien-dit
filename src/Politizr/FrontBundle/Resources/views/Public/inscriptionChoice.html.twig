@@ -21,7 +21,11 @@
             --><div class="column column360">
                 {% include 'PolitizrFrontBundle:Public:_cardAdvantagesElected.html.twig' %}
             </div>
-            <div class="footerXcolumns footer2columns">Déjà inscrit-e? <a href="{{ path('Login') }}">Identifiez-vous</a></div>
+            <div class="footerXcolumns footer2columns">
+                Candidat-e aux législatives? <a href="{{ path('LandingPage', { 'theme': 'offre-candidat-legislatives-2017'}) }}">Profitez de notre offre!</a>
+                <br/>
+                Déjà inscrit-e? <a href="{{ path('Login') }}">Identifiez-vous</a>
+            </div>
         </center>
     </div>
 {% endblock main %}
