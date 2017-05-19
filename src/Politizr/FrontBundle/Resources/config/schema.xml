@@ -80,6 +80,7 @@
 
         <column name="geo_scoped" type="boolean" />
         <column name="online" type="boolean" />
+        <column name="timeline" type="boolean" />
 
         <foreign-key foreignTable="p_user" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />

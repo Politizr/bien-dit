@@ -10,6 +10,12 @@
     <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.cycle2.swipe.min.js') }}"></script>
 {% endblock %}
 
+{% block headerMsg %}
+    {{ parent() }}
+
+    {% include 'PolitizrFrontBundle:Timeline:_opBanners.html.twig' with {'operations': operations} only %}
+{% endblock %}
+
 {% block content %}
     <div id="content">
         <div class="myfeed withLoaderInside">

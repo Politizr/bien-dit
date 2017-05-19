@@ -14,6 +14,7 @@ use Politizr\Model\PUserQuery;
 use Politizr\Model\PNTypeQuery;
 use Politizr\Model\PUSubscribeEmailQuery;
 use Politizr\Model\PUCurrentQOQuery;
+use Politizr\Model\PEOperationQuery;
 
 use Politizr\Model\PUCurrentQO;
 use Politizr\Model\PUMandate;
@@ -107,8 +108,21 @@ class UserController extends Controller
             return $this->redirect($refererUrl);
         }
 
+        // get actives ops for current user
+        $user = $this->getUser();
+        $operations = PEOperationQuery::create()
+            ->filterByOnline(true)
+            ->filterByTimeline(true)
+            ->filterByGeoScoped(false)
+            ->_or()
+            ->usePEOScopePLCQuery(null, "LEFT JOIN")
+                ->filterByPLCityId($user->getPLCityId())
+            ->endUse()
+            ->find();
+
         return $this->render('PolitizrFrontBundle:Timeline:user.html.twig', array(
             'homepage' => true,
+            'operations' => $operations
         ));
     }
 

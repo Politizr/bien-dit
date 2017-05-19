@@ -87,6 +87,12 @@ abstract class BasePEOperationArchive extends BaseObject implements Persistent
     protected $online;
 
     /**
+     * The value for the timeline field.
+     * @var        boolean
+     */
+    protected $timeline;
+
+    /**
      * The value for the created_at field.
      * @var        string
      */
@@ -216,6 +222,17 @@ abstract class BasePEOperationArchive extends BaseObject implements Persistent
     {
 
         return $this->online;
+    }
+
+    /**
+     * Get the [timeline] column value.
+     *
+     * @return boolean
+     */
+    public function getTimeline()
+    {
+
+        return $this->timeline;
     }
 
     /**
@@ -534,6 +551,35 @@ abstract class BasePEOperationArchive extends BaseObject implements Persistent
     } // setOnline()
 
     /**
+     * Sets the value of the [timeline] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return PEOperationArchive The current object (for fluent API support)
+     */
+    public function setTimeline($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->timeline !== $v) {
+            $this->timeline = $v;
+            $this->modifiedColumns[] = PEOperationArchivePeer::TIMELINE;
+        }
+
+
+        return $this;
+    } // setTimeline()
+
+    /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
@@ -663,10 +709,11 @@ abstract class BasePEOperationArchive extends BaseObject implements Persistent
             $this->file_name = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
             $this->geo_scoped = ($row[$startcol + 6] !== null) ? (boolean) $row[$startcol + 6] : null;
             $this->online = ($row[$startcol + 7] !== null) ? (boolean) $row[$startcol + 7] : null;
-            $this->created_at = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
-            $this->updated_at = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
-            $this->slug = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
-            $this->archived_at = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+            $this->timeline = ($row[$startcol + 8] !== null) ? (boolean) $row[$startcol + 8] : null;
+            $this->created_at = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+            $this->updated_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+            $this->slug = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+            $this->archived_at = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -676,7 +723,7 @@ abstract class BasePEOperationArchive extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 12; // 12 = PEOperationArchivePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 13; // 13 = PEOperationArchivePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PEOperationArchive object", $e);
@@ -908,6 +955,9 @@ abstract class BasePEOperationArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PEOperationArchivePeer::ONLINE)) {
             $modifiedColumns[':p' . $index++]  = '`online`';
         }
+        if ($this->isColumnModified(PEOperationArchivePeer::TIMELINE)) {
+            $modifiedColumns[':p' . $index++]  = '`timeline`';
+        }
         if ($this->isColumnModified(PEOperationArchivePeer::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`created_at`';
         }
@@ -954,6 +1004,9 @@ abstract class BasePEOperationArchive extends BaseObject implements Persistent
                         break;
                     case '`online`':
                         $stmt->bindValue($identifier, (int) $this->online, PDO::PARAM_INT);
+                        break;
+                    case '`timeline`':
+                        $stmt->bindValue($identifier, (int) $this->timeline, PDO::PARAM_INT);
                         break;
                     case '`created_at`':
                         $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
@@ -1045,15 +1098,18 @@ abstract class BasePEOperationArchive extends BaseObject implements Persistent
                 return $this->getOnline();
                 break;
             case 8:
-                return $this->getCreatedAt();
+                return $this->getTimeline();
                 break;
             case 9:
-                return $this->getUpdatedAt();
+                return $this->getCreatedAt();
                 break;
             case 10:
-                return $this->getSlug();
+                return $this->getUpdatedAt();
                 break;
             case 11:
+                return $this->getSlug();
+                break;
+            case 12:
                 return $this->getArchivedAt();
                 break;
             default:
@@ -1092,10 +1148,11 @@ abstract class BasePEOperationArchive extends BaseObject implements Persistent
             $keys[5] => $this->getFileName(),
             $keys[6] => $this->getGeoScoped(),
             $keys[7] => $this->getOnline(),
-            $keys[8] => $this->getCreatedAt(),
-            $keys[9] => $this->getUpdatedAt(),
-            $keys[10] => $this->getSlug(),
-            $keys[11] => $this->getArchivedAt(),
+            $keys[8] => $this->getTimeline(),
+            $keys[9] => $this->getCreatedAt(),
+            $keys[10] => $this->getUpdatedAt(),
+            $keys[11] => $this->getSlug(),
+            $keys[12] => $this->getArchivedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1160,15 +1217,18 @@ abstract class BasePEOperationArchive extends BaseObject implements Persistent
                 $this->setOnline($value);
                 break;
             case 8:
-                $this->setCreatedAt($value);
+                $this->setTimeline($value);
                 break;
             case 9:
-                $this->setUpdatedAt($value);
+                $this->setCreatedAt($value);
                 break;
             case 10:
-                $this->setSlug($value);
+                $this->setUpdatedAt($value);
                 break;
             case 11:
+                $this->setSlug($value);
+                break;
+            case 12:
                 $this->setArchivedAt($value);
                 break;
         } // switch()
@@ -1203,10 +1263,11 @@ abstract class BasePEOperationArchive extends BaseObject implements Persistent
         if (array_key_exists($keys[5], $arr)) $this->setFileName($arr[$keys[5]]);
         if (array_key_exists($keys[6], $arr)) $this->setGeoScoped($arr[$keys[6]]);
         if (array_key_exists($keys[7], $arr)) $this->setOnline($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setCreatedAt($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setUpdatedAt($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setSlug($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setArchivedAt($arr[$keys[11]]);
+        if (array_key_exists($keys[8], $arr)) $this->setTimeline($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setCreatedAt($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setUpdatedAt($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setSlug($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setArchivedAt($arr[$keys[12]]);
     }
 
     /**
@@ -1226,6 +1287,7 @@ abstract class BasePEOperationArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PEOperationArchivePeer::FILE_NAME)) $criteria->add(PEOperationArchivePeer::FILE_NAME, $this->file_name);
         if ($this->isColumnModified(PEOperationArchivePeer::GEO_SCOPED)) $criteria->add(PEOperationArchivePeer::GEO_SCOPED, $this->geo_scoped);
         if ($this->isColumnModified(PEOperationArchivePeer::ONLINE)) $criteria->add(PEOperationArchivePeer::ONLINE, $this->online);
+        if ($this->isColumnModified(PEOperationArchivePeer::TIMELINE)) $criteria->add(PEOperationArchivePeer::TIMELINE, $this->timeline);
         if ($this->isColumnModified(PEOperationArchivePeer::CREATED_AT)) $criteria->add(PEOperationArchivePeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(PEOperationArchivePeer::UPDATED_AT)) $criteria->add(PEOperationArchivePeer::UPDATED_AT, $this->updated_at);
         if ($this->isColumnModified(PEOperationArchivePeer::SLUG)) $criteria->add(PEOperationArchivePeer::SLUG, $this->slug);
@@ -1300,6 +1362,7 @@ abstract class BasePEOperationArchive extends BaseObject implements Persistent
         $copyObj->setFileName($this->getFileName());
         $copyObj->setGeoScoped($this->getGeoScoped());
         $copyObj->setOnline($this->getOnline());
+        $copyObj->setTimeline($this->getTimeline());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
         $copyObj->setSlug($this->getSlug());
@@ -1363,6 +1426,7 @@ abstract class BasePEOperationArchive extends BaseObject implements Persistent
         $this->file_name = null;
         $this->geo_scoped = null;
         $this->online = null;
+        $this->timeline = null;
         $this->created_at = null;
         $this->updated_at = null;
         $this->slug = null;

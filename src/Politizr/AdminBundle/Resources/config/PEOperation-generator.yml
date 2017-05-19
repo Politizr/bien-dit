@@ -24,6 +24,8 @@ params:
             label:          Bandeau
         geo_scoped:
             label:          Accès limité
+        timeline:
+            label:          Mise en timeline
         online:
             label:          En ligne
         created_at:
@@ -40,7 +42,7 @@ builders:
             title:                              Liste des opérations
             max_per_page:                       50
             sort:                               [ created_at, DESC ]
-            display:                            [ file_name, title, p_user, online, geo_scoped, created_at ]
+            display:                            [ file_name, title, p_user, timeline, online, geo_scoped, created_at ]
             filters:                            [ title ]
             actions:
                 new:                            ~
@@ -85,7 +87,7 @@ builders:
                     "Ajouter des villes":       [ block_cities_add ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
-                    "Options":                  [ geo_scoped ]
+                    "Options":                  [ [ geo_scoped, timeline ] ]
                     "En ligne":                 [ online ]
                     "Création":                 [ [ created_at, updated_at ] ]
             fields:
@@ -154,7 +156,7 @@ builders:
                     "Villes associés":          [ block_cities ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
-                    "Options":                  [ geo_scoped ]
+                    "Options":                  [ [ geo_scoped, timeline ] ]
                     "En ligne":                 [ online ]
                     "Création":                 [ [ created_at, updated_at ] ]
             fields:

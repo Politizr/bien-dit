@@ -31,6 +31,7 @@ use Politizr\Model\PUser;
  * @method PEOperationQuery orderByFileName($order = Criteria::ASC) Order by the file_name column
  * @method PEOperationQuery orderByGeoScoped($order = Criteria::ASC) Order by the geo_scoped column
  * @method PEOperationQuery orderByOnline($order = Criteria::ASC) Order by the online column
+ * @method PEOperationQuery orderByTimeline($order = Criteria::ASC) Order by the timeline column
  * @method PEOperationQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PEOperationQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  * @method PEOperationQuery orderBySlug($order = Criteria::ASC) Order by the slug column
@@ -43,6 +44,7 @@ use Politizr\Model\PUser;
  * @method PEOperationQuery groupByFileName() Group by the file_name column
  * @method PEOperationQuery groupByGeoScoped() Group by the geo_scoped column
  * @method PEOperationQuery groupByOnline() Group by the online column
+ * @method PEOperationQuery groupByTimeline() Group by the timeline column
  * @method PEOperationQuery groupByCreatedAt() Group by the created_at column
  * @method PEOperationQuery groupByUpdatedAt() Group by the updated_at column
  * @method PEOperationQuery groupBySlug() Group by the slug column
@@ -73,6 +75,7 @@ use Politizr\Model\PUser;
  * @method PEOperation findOneByFileName(string $file_name) Return the first PEOperation filtered by the file_name column
  * @method PEOperation findOneByGeoScoped(boolean $geo_scoped) Return the first PEOperation filtered by the geo_scoped column
  * @method PEOperation findOneByOnline(boolean $online) Return the first PEOperation filtered by the online column
+ * @method PEOperation findOneByTimeline(boolean $timeline) Return the first PEOperation filtered by the timeline column
  * @method PEOperation findOneByCreatedAt(string $created_at) Return the first PEOperation filtered by the created_at column
  * @method PEOperation findOneByUpdatedAt(string $updated_at) Return the first PEOperation filtered by the updated_at column
  * @method PEOperation findOneBySlug(string $slug) Return the first PEOperation filtered by the slug column
@@ -85,6 +88,7 @@ use Politizr\Model\PUser;
  * @method array findByFileName(string $file_name) Return PEOperation objects filtered by the file_name column
  * @method array findByGeoScoped(boolean $geo_scoped) Return PEOperation objects filtered by the geo_scoped column
  * @method array findByOnline(boolean $online) Return PEOperation objects filtered by the online column
+ * @method array findByTimeline(boolean $timeline) Return PEOperation objects filtered by the timeline column
  * @method array findByCreatedAt(string $created_at) Return PEOperation objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PEOperation objects filtered by the updated_at column
  * @method array findBySlug(string $slug) Return PEOperation objects filtered by the slug column
@@ -199,7 +203,7 @@ abstract class BasePEOperationQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `title`, `description`, `file_name`, `geo_scoped`, `online`, `created_at`, `updated_at`, `slug` FROM `p_e_operation` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `title`, `description`, `file_name`, `geo_scoped`, `online`, `timeline`, `created_at`, `updated_at`, `slug` FROM `p_e_operation` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -542,6 +546,33 @@ abstract class BasePEOperationQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PEOperationPeer::ONLINE, $online, $comparison);
+    }
+
+    /**
+     * Filter the query on the timeline column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByTimeline(true); // WHERE timeline = true
+     * $query->filterByTimeline('yes'); // WHERE timeline = true
+     * </code>
+     *
+     * @param     boolean|string $timeline The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PEOperationQuery The current query, for fluid interface
+     */
+    public function filterByTimeline($timeline = null, $comparison = null)
+    {
+        if (is_string($timeline)) {
+            $timeline = in_array(strtolower($timeline), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PEOperationPeer::TIMELINE, $timeline, $comparison);
     }
 
     /**

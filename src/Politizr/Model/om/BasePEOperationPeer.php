@@ -32,13 +32,13 @@ abstract class BasePEOperationPeer
     const TM_CLASS = 'Politizr\\Model\\map\\PEOperationTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 11;
+    const NUM_COLUMNS = 12;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 11;
+    const NUM_HYDRATE_COLUMNS = 12;
 
     /** the column name for the id field */
     const ID = 'p_e_operation.id';
@@ -63,6 +63,9 @@ abstract class BasePEOperationPeer
 
     /** the column name for the online field */
     const ONLINE = 'p_e_operation.online';
+
+    /** the column name for the timeline field */
+    const TIMELINE = 'p_e_operation.timeline';
 
     /** the column name for the created_at field */
     const CREATED_AT = 'p_e_operation.created_at';
@@ -92,12 +95,12 @@ abstract class BasePEOperationPeer
      * e.g. PEOperationPeer::$fieldNames[PEOperationPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'PUserId', 'Title', 'Description', 'FileName', 'GeoScoped', 'Online', 'CreatedAt', 'UpdatedAt', 'Slug', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'pUserId', 'title', 'description', 'fileName', 'geoScoped', 'online', 'createdAt', 'updatedAt', 'slug', ),
-        BasePeer::TYPE_COLNAME => array (PEOperationPeer::ID, PEOperationPeer::UUID, PEOperationPeer::P_USER_ID, PEOperationPeer::TITLE, PEOperationPeer::DESCRIPTION, PEOperationPeer::FILE_NAME, PEOperationPeer::GEO_SCOPED, PEOperationPeer::ONLINE, PEOperationPeer::CREATED_AT, PEOperationPeer::UPDATED_AT, PEOperationPeer::SLUG, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'P_USER_ID', 'TITLE', 'DESCRIPTION', 'FILE_NAME', 'GEO_SCOPED', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', 'SLUG', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'p_user_id', 'title', 'description', 'file_name', 'geo_scoped', 'online', 'created_at', 'updated_at', 'slug', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'PUserId', 'Title', 'Description', 'FileName', 'GeoScoped', 'Online', 'Timeline', 'CreatedAt', 'UpdatedAt', 'Slug', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'pUserId', 'title', 'description', 'fileName', 'geoScoped', 'online', 'timeline', 'createdAt', 'updatedAt', 'slug', ),
+        BasePeer::TYPE_COLNAME => array (PEOperationPeer::ID, PEOperationPeer::UUID, PEOperationPeer::P_USER_ID, PEOperationPeer::TITLE, PEOperationPeer::DESCRIPTION, PEOperationPeer::FILE_NAME, PEOperationPeer::GEO_SCOPED, PEOperationPeer::ONLINE, PEOperationPeer::TIMELINE, PEOperationPeer::CREATED_AT, PEOperationPeer::UPDATED_AT, PEOperationPeer::SLUG, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'P_USER_ID', 'TITLE', 'DESCRIPTION', 'FILE_NAME', 'GEO_SCOPED', 'ONLINE', 'TIMELINE', 'CREATED_AT', 'UPDATED_AT', 'SLUG', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'p_user_id', 'title', 'description', 'file_name', 'geo_scoped', 'online', 'timeline', 'created_at', 'updated_at', 'slug', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, )
     );
 
     /**
@@ -107,12 +110,12 @@ abstract class BasePEOperationPeer
      * e.g. PEOperationPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'PUserId' => 2, 'Title' => 3, 'Description' => 4, 'FileName' => 5, 'GeoScoped' => 6, 'Online' => 7, 'CreatedAt' => 8, 'UpdatedAt' => 9, 'Slug' => 10, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'pUserId' => 2, 'title' => 3, 'description' => 4, 'fileName' => 5, 'geoScoped' => 6, 'online' => 7, 'createdAt' => 8, 'updatedAt' => 9, 'slug' => 10, ),
-        BasePeer::TYPE_COLNAME => array (PEOperationPeer::ID => 0, PEOperationPeer::UUID => 1, PEOperationPeer::P_USER_ID => 2, PEOperationPeer::TITLE => 3, PEOperationPeer::DESCRIPTION => 4, PEOperationPeer::FILE_NAME => 5, PEOperationPeer::GEO_SCOPED => 6, PEOperationPeer::ONLINE => 7, PEOperationPeer::CREATED_AT => 8, PEOperationPeer::UPDATED_AT => 9, PEOperationPeer::SLUG => 10, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'P_USER_ID' => 2, 'TITLE' => 3, 'DESCRIPTION' => 4, 'FILE_NAME' => 5, 'GEO_SCOPED' => 6, 'ONLINE' => 7, 'CREATED_AT' => 8, 'UPDATED_AT' => 9, 'SLUG' => 10, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'p_user_id' => 2, 'title' => 3, 'description' => 4, 'file_name' => 5, 'geo_scoped' => 6, 'online' => 7, 'created_at' => 8, 'updated_at' => 9, 'slug' => 10, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'PUserId' => 2, 'Title' => 3, 'Description' => 4, 'FileName' => 5, 'GeoScoped' => 6, 'Online' => 7, 'Timeline' => 8, 'CreatedAt' => 9, 'UpdatedAt' => 10, 'Slug' => 11, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'pUserId' => 2, 'title' => 3, 'description' => 4, 'fileName' => 5, 'geoScoped' => 6, 'online' => 7, 'timeline' => 8, 'createdAt' => 9, 'updatedAt' => 10, 'slug' => 11, ),
+        BasePeer::TYPE_COLNAME => array (PEOperationPeer::ID => 0, PEOperationPeer::UUID => 1, PEOperationPeer::P_USER_ID => 2, PEOperationPeer::TITLE => 3, PEOperationPeer::DESCRIPTION => 4, PEOperationPeer::FILE_NAME => 5, PEOperationPeer::GEO_SCOPED => 6, PEOperationPeer::ONLINE => 7, PEOperationPeer::TIMELINE => 8, PEOperationPeer::CREATED_AT => 9, PEOperationPeer::UPDATED_AT => 10, PEOperationPeer::SLUG => 11, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'P_USER_ID' => 2, 'TITLE' => 3, 'DESCRIPTION' => 4, 'FILE_NAME' => 5, 'GEO_SCOPED' => 6, 'ONLINE' => 7, 'TIMELINE' => 8, 'CREATED_AT' => 9, 'UPDATED_AT' => 10, 'SLUG' => 11, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'p_user_id' => 2, 'title' => 3, 'description' => 4, 'file_name' => 5, 'geo_scoped' => 6, 'online' => 7, 'timeline' => 8, 'created_at' => 9, 'updated_at' => 10, 'slug' => 11, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, )
     );
 
     /**
@@ -194,6 +197,7 @@ abstract class BasePEOperationPeer
             $criteria->addSelectColumn(PEOperationPeer::FILE_NAME);
             $criteria->addSelectColumn(PEOperationPeer::GEO_SCOPED);
             $criteria->addSelectColumn(PEOperationPeer::ONLINE);
+            $criteria->addSelectColumn(PEOperationPeer::TIMELINE);
             $criteria->addSelectColumn(PEOperationPeer::CREATED_AT);
             $criteria->addSelectColumn(PEOperationPeer::UPDATED_AT);
             $criteria->addSelectColumn(PEOperationPeer::SLUG);
@@ -206,6 +210,7 @@ abstract class BasePEOperationPeer
             $criteria->addSelectColumn($alias . '.file_name');
             $criteria->addSelectColumn($alias . '.geo_scoped');
             $criteria->addSelectColumn($alias . '.online');
+            $criteria->addSelectColumn($alias . '.timeline');
             $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
             $criteria->addSelectColumn($alias . '.slug');
