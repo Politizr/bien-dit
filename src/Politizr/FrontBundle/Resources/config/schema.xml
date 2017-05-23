@@ -1032,10 +1032,6 @@
             <reference local="p_user_id" foreign="id" />
         </foreign-key>
 
-        <foreign-key foreignTable="p_e_operation" onDelete="SETNULL" onUpdate="CASCADE">
-            <reference local="p_e_operation_id" foreign="id" />
-        </foreign-key>
-
         <foreign-key foreignTable="p_l_city" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="p_l_city_id" foreign="id" />
         </foreign-key>
@@ -1050,6 +1046,10 @@
 
         <foreign-key foreignTable="p_l_country" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="p_l_country_id" foreign="id" />
+        </foreign-key>
+
+        <foreign-key foreignTable="p_e_operation" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_e_operation_id" foreign="id" />
         </foreign-key>
 
         <unique>

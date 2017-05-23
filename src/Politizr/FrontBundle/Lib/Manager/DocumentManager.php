@@ -1087,6 +1087,7 @@ SELECT DISTINCT
     id,
     uuid,
     p_user_id,
+    p_e_operation_id,
     p_l_city_id,
     p_l_department_id,
     p_l_region_id,
