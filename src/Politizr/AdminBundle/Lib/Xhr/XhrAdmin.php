@@ -1145,7 +1145,7 @@ class XhrAdmin
                 array(
                 )
             );
-        } elseif ($nbResult > 50) {
+        } elseif ($nbResult > 100) {
             $html = $this->templating->render(
                 'PolitizrAdminBundle:Fragment:_tooMuchResults.html.twig',
                 array(
