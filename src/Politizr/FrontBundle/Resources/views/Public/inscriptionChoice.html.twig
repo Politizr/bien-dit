@@ -10,6 +10,14 @@
 {% block header %}
     {% include 'PolitizrFrontBundle:Navigation\\Header:_headerInscription.html.twig' with { 'type': 'choice' } %}
     <div id="headerTrigger"></div>
+    <div id="alertIdCheck">
+        <div class="center">
+            <div id="localizationMsg">
+                <h1>Vous êtes candidat-e aux élections législatives de 2017?</h1>
+                <a href="{{ path('LandingPage', { 'theme': 'offre-candidat-legislatives-2017'}) }}"><b>Cliquez ici pour profiter de notre offre!</b></a>
+            </div>
+        </div>
+    </div>
 {% endblock header %}
 
 {% block main %}
@@ -22,8 +30,6 @@
                 {% include 'PolitizrFrontBundle:Public:_cardAdvantagesElected.html.twig' %}
             </div>
             <div class="footerXcolumns footer2columns">
-                Candidat-e aux législatives? <a href="{{ path('LandingPage', { 'theme': 'offre-candidat-legislatives-2017'}) }}">Profitez de notre offre!</a>
-                <br/>
                 Déjà inscrit-e? <a href="{{ path('Login') }}">Identifiez-vous</a>
             </div>
         </center>
