@@ -221,6 +221,11 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 array($this, 'documentOperation'),
                 array('is_safe' => array('html'))
             ),
+            new \Twig_SimpleFilter(
+                'editDocumentOperation',
+                array($this, 'editDocumentOperation'),
+                array('is_safe' => array('html'))
+            ),
         );
     }
 
@@ -1243,8 +1248,8 @@ class PolitizrDocumentExtension extends \Twig_Extension
      */
     public function documentOperation(PDocumentInterface $document)
     {
-        // $this->logger->info('*** userOperation');
-        // $this->logger->info('$user = '.print_r($user, true));
+        // $this->logger->info('*** documentOperation');
+        // $this->logger->info('$user = '.print_r($document, true));
 
         $user = $document->getUser();
 
@@ -1254,14 +1259,10 @@ class PolitizrDocumentExtension extends \Twig_Extension
             ->filterByPUserId($user->getId())
             ->findOne();
 
+        // if none, check if document has op
         if (!$operation) {
-            $tags = $document->getTags(TagConstants::TAG_TYPE_PRIVATE)->toKeyValue('Id', 'Title');
-            $operation = PEOperationQuery::create()
-                ->filterByOnline(true)
-                ->usePEOPresetPTQuery()
-                    ->filterByPTagId(array_keys($tags))
-                ->endUse()
-                ->findOne();
+            $debate = $document->getDebate();
+            $operation = $debate->getPEOperation();
         }
 
         if (!$operation) {
@@ -1279,6 +1280,40 @@ class PolitizrDocumentExtension extends \Twig_Extension
         return $html;
     }
 
+   /**
+     * Display edition's operation context
+     *
+     * @param PDocument $subject
+     * @return string
+     */
+    public function editDocumentOperation(PDocumentInterface $document)
+    {
+        // $this->logger->info('*** editDocumentOperation');
+        // $this->logger->info('$user = '.print_r($document, true));
+
+        $debate = $document->getDebate();
+        $operation = $debate->getPEOperation();
+
+        // Classic banner
+        $html = null;
+        // $html = $this->templating->render(
+        //     'PolitizrFrontBundle:Document:_bannerEdit.html.twig',
+        //     array(
+        //     )
+        // );
+
+        if ($operation) {
+            // Construction du rendu du tag            
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:Document:_opBannerEdit.html.twig',
+                array(
+                    'operation' => $operation,
+                )
+            );
+        }
+
+        return $html;
+    }
 
     /* ######################################################################################################## */
     /*                                             FONCTIONS                                                    */

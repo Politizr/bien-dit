@@ -20,6 +20,7 @@ use Politizr\Model\PEOperationArchiveQuery;
  * @method PEOperationArchiveQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
  * @method PEOperationArchiveQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method PEOperationArchiveQuery orderByDescription($order = Criteria::ASC) Order by the description column
+ * @method PEOperationArchiveQuery orderByEditingDescription($order = Criteria::ASC) Order by the editing_description column
  * @method PEOperationArchiveQuery orderByFileName($order = Criteria::ASC) Order by the file_name column
  * @method PEOperationArchiveQuery orderByGeoScoped($order = Criteria::ASC) Order by the geo_scoped column
  * @method PEOperationArchiveQuery orderByOnline($order = Criteria::ASC) Order by the online column
@@ -34,6 +35,7 @@ use Politizr\Model\PEOperationArchiveQuery;
  * @method PEOperationArchiveQuery groupByPUserId() Group by the p_user_id column
  * @method PEOperationArchiveQuery groupByTitle() Group by the title column
  * @method PEOperationArchiveQuery groupByDescription() Group by the description column
+ * @method PEOperationArchiveQuery groupByEditingDescription() Group by the editing_description column
  * @method PEOperationArchiveQuery groupByFileName() Group by the file_name column
  * @method PEOperationArchiveQuery groupByGeoScoped() Group by the geo_scoped column
  * @method PEOperationArchiveQuery groupByOnline() Group by the online column
@@ -54,6 +56,7 @@ use Politizr\Model\PEOperationArchiveQuery;
  * @method PEOperationArchive findOneByPUserId(int $p_user_id) Return the first PEOperationArchive filtered by the p_user_id column
  * @method PEOperationArchive findOneByTitle(string $title) Return the first PEOperationArchive filtered by the title column
  * @method PEOperationArchive findOneByDescription(string $description) Return the first PEOperationArchive filtered by the description column
+ * @method PEOperationArchive findOneByEditingDescription(string $editing_description) Return the first PEOperationArchive filtered by the editing_description column
  * @method PEOperationArchive findOneByFileName(string $file_name) Return the first PEOperationArchive filtered by the file_name column
  * @method PEOperationArchive findOneByGeoScoped(boolean $geo_scoped) Return the first PEOperationArchive filtered by the geo_scoped column
  * @method PEOperationArchive findOneByOnline(boolean $online) Return the first PEOperationArchive filtered by the online column
@@ -68,6 +71,7 @@ use Politizr\Model\PEOperationArchiveQuery;
  * @method array findByPUserId(int $p_user_id) Return PEOperationArchive objects filtered by the p_user_id column
  * @method array findByTitle(string $title) Return PEOperationArchive objects filtered by the title column
  * @method array findByDescription(string $description) Return PEOperationArchive objects filtered by the description column
+ * @method array findByEditingDescription(string $editing_description) Return PEOperationArchive objects filtered by the editing_description column
  * @method array findByFileName(string $file_name) Return PEOperationArchive objects filtered by the file_name column
  * @method array findByGeoScoped(boolean $geo_scoped) Return PEOperationArchive objects filtered by the geo_scoped column
  * @method array findByOnline(boolean $online) Return PEOperationArchive objects filtered by the online column
@@ -181,7 +185,7 @@ abstract class BasePEOperationArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `title`, `description`, `file_name`, `geo_scoped`, `online`, `timeline`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_e_operation_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `title`, `description`, `editing_description`, `file_name`, `geo_scoped`, `online`, `timeline`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_e_operation_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -439,6 +443,35 @@ abstract class BasePEOperationArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PEOperationArchivePeer::DESCRIPTION, $description, $comparison);
+    }
+
+    /**
+     * Filter the query on the editing_description column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByEditingDescription('fooValue');   // WHERE editing_description = 'fooValue'
+     * $query->filterByEditingDescription('%fooValue%'); // WHERE editing_description LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $editingDescription The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PEOperationArchiveQuery The current query, for fluid interface
+     */
+    public function filterByEditingDescription($editingDescription = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($editingDescription)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $editingDescription)) {
+                $editingDescription = str_replace('*', '%', $editingDescription);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PEOperationArchivePeer::EDITING_DESCRIPTION, $editingDescription, $comparison);
     }
 
     /**

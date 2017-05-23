@@ -5,6 +5,12 @@
 
 {% block bodyClass %} class="user edition"{% endblock bodyClass %}
 
+{% block headerMsg %}
+    {{ parent() }}
+
+    {{ debate | editDocumentOperation }}
+{% endblock %}
+
 {% block content %}
     <div class="modalPublish" style="display: none">
         <div class="modalPublishContent">

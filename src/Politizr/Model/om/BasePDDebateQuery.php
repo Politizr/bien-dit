@@ -19,6 +19,7 @@ use Politizr\Model\PDDebate;
 use Politizr\Model\PDDebatePeer;
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReaction;
+use Politizr\Model\PEOperation;
 use Politizr\Model\PLCity;
 use Politizr\Model\PLCountry;
 use Politizr\Model\PLDepartment;
@@ -34,6 +35,7 @@ use Politizr\Model\PUser;
  * @method PDDebateQuery orderById($order = Criteria::ASC) Order by the id column
  * @method PDDebateQuery orderByUuid($order = Criteria::ASC) Order by the uuid column
  * @method PDDebateQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
+ * @method PDDebateQuery orderByPEOperationId($order = Criteria::ASC) Order by the p_e_operation_id column
  * @method PDDebateQuery orderByPLCityId($order = Criteria::ASC) Order by the p_l_city_id column
  * @method PDDebateQuery orderByPLDepartmentId($order = Criteria::ASC) Order by the p_l_department_id column
  * @method PDDebateQuery orderByPLRegionId($order = Criteria::ASC) Order by the p_l_region_id column
@@ -62,6 +64,7 @@ use Politizr\Model\PUser;
  * @method PDDebateQuery groupById() Group by the id column
  * @method PDDebateQuery groupByUuid() Group by the uuid column
  * @method PDDebateQuery groupByPUserId() Group by the p_user_id column
+ * @method PDDebateQuery groupByPEOperationId() Group by the p_e_operation_id column
  * @method PDDebateQuery groupByPLCityId() Group by the p_l_city_id column
  * @method PDDebateQuery groupByPLDepartmentId() Group by the p_l_department_id column
  * @method PDDebateQuery groupByPLRegionId() Group by the p_l_region_id column
@@ -94,6 +97,10 @@ use Politizr\Model\PUser;
  * @method PDDebateQuery leftJoinPUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUser relation
  * @method PDDebateQuery rightJoinPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUser relation
  * @method PDDebateQuery innerJoinPUser($relationAlias = null) Adds a INNER JOIN clause to the query using the PUser relation
+ *
+ * @method PDDebateQuery leftJoinPEOperation($relationAlias = null) Adds a LEFT JOIN clause to the query using the PEOperation relation
+ * @method PDDebateQuery rightJoinPEOperation($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PEOperation relation
+ * @method PDDebateQuery innerJoinPEOperation($relationAlias = null) Adds a INNER JOIN clause to the query using the PEOperation relation
  *
  * @method PDDebateQuery leftJoinPLCity($relationAlias = null) Adds a LEFT JOIN clause to the query using the PLCity relation
  * @method PDDebateQuery rightJoinPLCity($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PLCity relation
@@ -144,6 +151,7 @@ use Politizr\Model\PUser;
  *
  * @method PDDebate findOneByUuid(string $uuid) Return the first PDDebate filtered by the uuid column
  * @method PDDebate findOneByPUserId(int $p_user_id) Return the first PDDebate filtered by the p_user_id column
+ * @method PDDebate findOneByPEOperationId(int $p_e_operation_id) Return the first PDDebate filtered by the p_e_operation_id column
  * @method PDDebate findOneByPLCityId(int $p_l_city_id) Return the first PDDebate filtered by the p_l_city_id column
  * @method PDDebate findOneByPLDepartmentId(int $p_l_department_id) Return the first PDDebate filtered by the p_l_department_id column
  * @method PDDebate findOneByPLRegionId(int $p_l_region_id) Return the first PDDebate filtered by the p_l_region_id column
@@ -172,6 +180,7 @@ use Politizr\Model\PUser;
  * @method array findById(int $id) Return PDDebate objects filtered by the id column
  * @method array findByUuid(string $uuid) Return PDDebate objects filtered by the uuid column
  * @method array findByPUserId(int $p_user_id) Return PDDebate objects filtered by the p_user_id column
+ * @method array findByPEOperationId(int $p_e_operation_id) Return PDDebate objects filtered by the p_e_operation_id column
  * @method array findByPLCityId(int $p_l_city_id) Return PDDebate objects filtered by the p_l_city_id column
  * @method array findByPLDepartmentId(int $p_l_department_id) Return PDDebate objects filtered by the p_l_department_id column
  * @method array findByPLRegionId(int $p_l_region_id) Return PDDebate objects filtered by the p_l_region_id column
@@ -307,7 +316,7 @@ abstract class BasePDDebateQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `p_l_city_id`, `p_l_department_id`, `p_l_region_id`, `p_l_country_id`, `fb_ad_id`, `title`, `file_name`, `copyright`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `homepage`, `moderated`, `moderated_partial`, `moderated_at`, `created_at`, `updated_at`, `slug` FROM `p_d_debate` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `p_e_operation_id`, `p_l_city_id`, `p_l_department_id`, `p_l_region_id`, `p_l_country_id`, `fb_ad_id`, `title`, `file_name`, `copyright`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `homepage`, `moderated`, `moderated_partial`, `moderated_at`, `created_at`, `updated_at`, `slug` FROM `p_d_debate` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -509,6 +518,50 @@ abstract class BasePDDebateQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDDebatePeer::P_USER_ID, $pUserId, $comparison);
+    }
+
+    /**
+     * Filter the query on the p_e_operation_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPEOperationId(1234); // WHERE p_e_operation_id = 1234
+     * $query->filterByPEOperationId(array(12, 34)); // WHERE p_e_operation_id IN (12, 34)
+     * $query->filterByPEOperationId(array('min' => 12)); // WHERE p_e_operation_id >= 12
+     * $query->filterByPEOperationId(array('max' => 12)); // WHERE p_e_operation_id <= 12
+     * </code>
+     *
+     * @see       filterByPEOperation()
+     *
+     * @param     mixed $pEOperationId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDDebateQuery The current query, for fluid interface
+     */
+    public function filterByPEOperationId($pEOperationId = null, $comparison = null)
+    {
+        if (is_array($pEOperationId)) {
+            $useMinMax = false;
+            if (isset($pEOperationId['min'])) {
+                $this->addUsingAlias(PDDebatePeer::P_E_OPERATION_ID, $pEOperationId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($pEOperationId['max'])) {
+                $this->addUsingAlias(PDDebatePeer::P_E_OPERATION_ID, $pEOperationId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PDDebatePeer::P_E_OPERATION_ID, $pEOperationId, $comparison);
     }
 
     /**
@@ -1424,6 +1477,82 @@ abstract class BasePDDebateQuery extends ModelCriteria
         return $this
             ->joinPUser($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'PUser', '\Politizr\Model\PUserQuery');
+    }
+
+    /**
+     * Filter the query by a related PEOperation object
+     *
+     * @param   PEOperation|PropelObjectCollection $pEOperation The related object(s) to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PDDebateQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPEOperation($pEOperation, $comparison = null)
+    {
+        if ($pEOperation instanceof PEOperation) {
+            return $this
+                ->addUsingAlias(PDDebatePeer::P_E_OPERATION_ID, $pEOperation->getId(), $comparison);
+        } elseif ($pEOperation instanceof PropelObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(PDDebatePeer::P_E_OPERATION_ID, $pEOperation->toKeyValue('PrimaryKey', 'Id'), $comparison);
+        } else {
+            throw new PropelException('filterByPEOperation() only accepts arguments of type PEOperation or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PEOperation relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PDDebateQuery The current query, for fluid interface
+     */
+    public function joinPEOperation($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PEOperation');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PEOperation');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PEOperation relation PEOperation object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PEOperationQuery A secondary query class using the current class as primary query
+     */
+    public function usePEOperationQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinPEOperation($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PEOperation', '\Politizr\Model\PEOperationQuery');
     }
 
     /**

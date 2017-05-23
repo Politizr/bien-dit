@@ -139,9 +139,7 @@ class PDReaction extends BasePDReaction implements PDocumentInterface
     /* ######################################################################################################## */
 
     /**
-     * Renvoit le débat associé à la réaction
-     *
-     * @return     PDDebate     Objet débat
+     * @see PDocumentInterface::getDebate
      */
     public function getDebate()
     {

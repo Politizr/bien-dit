@@ -45,6 +45,7 @@ class PDDebateArchiveTableMap extends TableMap
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addColumn('uuid', 'Uuid', 'VARCHAR', false, 50, null);
         $this->addColumn('p_user_id', 'PUserId', 'INTEGER', false, null, null);
+        $this->addColumn('p_e_operation_id', 'PEOperationId', 'INTEGER', false, null, null);
         $this->addColumn('p_l_city_id', 'PLCityId', 'INTEGER', false, null, null);
         $this->addColumn('p_l_department_id', 'PLDepartmentId', 'INTEGER', false, null, null);
         $this->addColumn('p_l_region_id', 'PLRegionId', 'INTEGER', false, null, null);

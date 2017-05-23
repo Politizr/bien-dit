@@ -18,6 +18,7 @@ use Politizr\Model\PDDebateArchiveQuery;
  * @method PDDebateArchiveQuery orderById($order = Criteria::ASC) Order by the id column
  * @method PDDebateArchiveQuery orderByUuid($order = Criteria::ASC) Order by the uuid column
  * @method PDDebateArchiveQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
+ * @method PDDebateArchiveQuery orderByPEOperationId($order = Criteria::ASC) Order by the p_e_operation_id column
  * @method PDDebateArchiveQuery orderByPLCityId($order = Criteria::ASC) Order by the p_l_city_id column
  * @method PDDebateArchiveQuery orderByPLDepartmentId($order = Criteria::ASC) Order by the p_l_department_id column
  * @method PDDebateArchiveQuery orderByPLRegionId($order = Criteria::ASC) Order by the p_l_region_id column
@@ -47,6 +48,7 @@ use Politizr\Model\PDDebateArchiveQuery;
  * @method PDDebateArchiveQuery groupById() Group by the id column
  * @method PDDebateArchiveQuery groupByUuid() Group by the uuid column
  * @method PDDebateArchiveQuery groupByPUserId() Group by the p_user_id column
+ * @method PDDebateArchiveQuery groupByPEOperationId() Group by the p_e_operation_id column
  * @method PDDebateArchiveQuery groupByPLCityId() Group by the p_l_city_id column
  * @method PDDebateArchiveQuery groupByPLDepartmentId() Group by the p_l_department_id column
  * @method PDDebateArchiveQuery groupByPLRegionId() Group by the p_l_region_id column
@@ -82,6 +84,7 @@ use Politizr\Model\PDDebateArchiveQuery;
  *
  * @method PDDebateArchive findOneByUuid(string $uuid) Return the first PDDebateArchive filtered by the uuid column
  * @method PDDebateArchive findOneByPUserId(int $p_user_id) Return the first PDDebateArchive filtered by the p_user_id column
+ * @method PDDebateArchive findOneByPEOperationId(int $p_e_operation_id) Return the first PDDebateArchive filtered by the p_e_operation_id column
  * @method PDDebateArchive findOneByPLCityId(int $p_l_city_id) Return the first PDDebateArchive filtered by the p_l_city_id column
  * @method PDDebateArchive findOneByPLDepartmentId(int $p_l_department_id) Return the first PDDebateArchive filtered by the p_l_department_id column
  * @method PDDebateArchive findOneByPLRegionId(int $p_l_region_id) Return the first PDDebateArchive filtered by the p_l_region_id column
@@ -111,6 +114,7 @@ use Politizr\Model\PDDebateArchiveQuery;
  * @method array findById(int $id) Return PDDebateArchive objects filtered by the id column
  * @method array findByUuid(string $uuid) Return PDDebateArchive objects filtered by the uuid column
  * @method array findByPUserId(int $p_user_id) Return PDDebateArchive objects filtered by the p_user_id column
+ * @method array findByPEOperationId(int $p_e_operation_id) Return PDDebateArchive objects filtered by the p_e_operation_id column
  * @method array findByPLCityId(int $p_l_city_id) Return PDDebateArchive objects filtered by the p_l_city_id column
  * @method array findByPLDepartmentId(int $p_l_department_id) Return PDDebateArchive objects filtered by the p_l_department_id column
  * @method array findByPLRegionId(int $p_l_region_id) Return PDDebateArchive objects filtered by the p_l_region_id column
@@ -241,7 +245,7 @@ abstract class BasePDDebateArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `p_l_city_id`, `p_l_department_id`, `p_l_region_id`, `p_l_country_id`, `fb_ad_id`, `title`, `file_name`, `copyright`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `homepage`, `moderated`, `moderated_partial`, `moderated_at`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_d_debate_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `p_e_operation_id`, `p_l_city_id`, `p_l_department_id`, `p_l_region_id`, `p_l_country_id`, `fb_ad_id`, `title`, `file_name`, `copyright`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `homepage`, `moderated`, `moderated_partial`, `moderated_at`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_d_debate_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -441,6 +445,48 @@ abstract class BasePDDebateArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDDebateArchivePeer::P_USER_ID, $pUserId, $comparison);
+    }
+
+    /**
+     * Filter the query on the p_e_operation_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPEOperationId(1234); // WHERE p_e_operation_id = 1234
+     * $query->filterByPEOperationId(array(12, 34)); // WHERE p_e_operation_id IN (12, 34)
+     * $query->filterByPEOperationId(array('min' => 12)); // WHERE p_e_operation_id >= 12
+     * $query->filterByPEOperationId(array('max' => 12)); // WHERE p_e_operation_id <= 12
+     * </code>
+     *
+     * @param     mixed $pEOperationId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDDebateArchiveQuery The current query, for fluid interface
+     */
+    public function filterByPEOperationId($pEOperationId = null, $comparison = null)
+    {
+        if (is_array($pEOperationId)) {
+            $useMinMax = false;
+            if (isset($pEOperationId['min'])) {
+                $this->addUsingAlias(PDDebateArchivePeer::P_E_OPERATION_ID, $pEOperationId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($pEOperationId['max'])) {
+                $this->addUsingAlias(PDDebateArchivePeer::P_E_OPERATION_ID, $pEOperationId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PDDebateArchivePeer::P_E_OPERATION_ID, $pEOperationId, $comparison);
     }
 
     /**

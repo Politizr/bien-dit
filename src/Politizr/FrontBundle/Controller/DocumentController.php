@@ -283,12 +283,32 @@ class DocumentController extends Controller
             $debate = $this->get('politizr.functional.document')->createDebate();
         }
 
+        // manage OP
+        $opUuid = $request->get('op');
+        $operation = null;
+        if ($opUuid) {
+            $operation = PEOperationQuery::create()
+                ->filterByUuid($opUuid)
+                ->findOne();
+            if (!$operation) {
+                throw new InconsistentDataException(sprintf('Operation %s not found.', $opUuid));
+            }
+
+            $debate->setPEOperationId($operation->getId());
+            $debate->save();
+
+            // op preset tags
+            $tags = $operation->getPTags();
+            foreach ($tags as $tag) {
+                $this->get('politizr.manager.tag')->createDebateTag($debate->getId(), $tag->getId());
+            }
+        }
+
         return $this->redirect(
             $this->generateUrl(
                 'DebateDraftEdit'.$this->get('politizr.tools.global')->computeProfileSuffix(),
                 array(
-                    'uuid' => $debate->getUuid(),
-                    'op' => $request->get('op')
+                    'uuid' => $debate->getUuid()
                 )
             )
         );
@@ -313,17 +333,6 @@ class DocumentController extends Controller
         
         $form = $this->createForm(new PDDebateType(), $debate, array('user' => $user));
 
-        $opUuid = $request->get('op');
-        $operation = null;
-        if ($opUuid) {
-            $operation = PEOperationQuery::create()
-                ->filterByUuid($opUuid)
-                ->findOne();
-            if (!$operation) {
-                throw new InconsistentDataException(sprintf('Operation %s not found.', $opUuid));
-            }
-        }
-
         // get geo debate informations
         $debateLocType = $this->get('politizr.form.type.document_localization');
         $formLocalization = $this->createForm(
@@ -334,14 +343,6 @@ class DocumentController extends Controller
                 'user' => $user,
             )
         );
-
-        // op preset tags
-        if ($operation) {
-            $tags = $operation->getPTags();
-            foreach ($tags as $tag) {
-                $this->get('politizr.manager.tag')->createDebateTag($debate->getId(), $tag->getId());
-            }
-        }
 
         return $this->render('PolitizrFrontBundle:Debate:edit.html.twig', array(
             'debate' => $debate,

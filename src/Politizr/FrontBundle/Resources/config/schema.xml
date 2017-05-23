@@ -76,6 +76,7 @@
         
         <column name="title" type="varchar" size="150" />
         <column name="description" type="longvarchar" />
+        <column name="editing_description" type="longvarchar" />
         <column name="file_name" type="varchar" size="150" />
 
         <column name="geo_scoped" type="boolean" />
@@ -995,6 +996,8 @@
         <column name="uuid" type="varchar" size="50" />
         <column name="p_user_id" type="integer" required="false" />
 
+        <column name="p_e_operation_id" type="integer" required="false" />
+
         <column name="p_l_city_id" type="integer" required="false" />
         <column name="p_l_department_id" type="integer" required="false" />
         <column name="p_l_region_id" type="integer" required="false" />
@@ -1027,6 +1030,10 @@
 
         <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />
+        </foreign-key>
+
+        <foreign-key foreignTable="p_e_operation" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_e_operation_id" foreign="id" />
         </foreign-key>
 
         <foreign-key foreignTable="p_l_city" onDelete="SETNULL" onUpdate="CASCADE">

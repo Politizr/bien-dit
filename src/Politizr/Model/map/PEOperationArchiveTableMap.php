@@ -47,6 +47,7 @@ class PEOperationArchiveTableMap extends TableMap
         $this->addColumn('p_user_id', 'PUserId', 'INTEGER', true, null, null);
         $this->addColumn('title', 'Title', 'VARCHAR', false, 150, null);
         $this->addColumn('description', 'Description', 'LONGVARCHAR', false, null, null);
+        $this->addColumn('editing_description', 'EditingDescription', 'LONGVARCHAR', false, null, null);
         $this->addColumn('file_name', 'FileName', 'VARCHAR', false, 150, null);
         $this->addColumn('geo_scoped', 'GeoScoped', 'BOOLEAN', false, 1, null);
         $this->addColumn('online', 'Online', 'BOOLEAN', false, 1, null);

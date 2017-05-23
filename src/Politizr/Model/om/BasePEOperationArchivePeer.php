@@ -29,13 +29,13 @@ abstract class BasePEOperationArchivePeer
     const TM_CLASS = 'Politizr\\Model\\map\\PEOperationArchiveTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 13;
+    const NUM_COLUMNS = 14;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 13;
+    const NUM_HYDRATE_COLUMNS = 14;
 
     /** the column name for the id field */
     const ID = 'p_e_operation_archive.id';
@@ -51,6 +51,9 @@ abstract class BasePEOperationArchivePeer
 
     /** the column name for the description field */
     const DESCRIPTION = 'p_e_operation_archive.description';
+
+    /** the column name for the editing_description field */
+    const EDITING_DESCRIPTION = 'p_e_operation_archive.editing_description';
 
     /** the column name for the file_name field */
     const FILE_NAME = 'p_e_operation_archive.file_name';
@@ -95,12 +98,12 @@ abstract class BasePEOperationArchivePeer
      * e.g. PEOperationArchivePeer::$fieldNames[PEOperationArchivePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'PUserId', 'Title', 'Description', 'FileName', 'GeoScoped', 'Online', 'Timeline', 'CreatedAt', 'UpdatedAt', 'Slug', 'ArchivedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'pUserId', 'title', 'description', 'fileName', 'geoScoped', 'online', 'timeline', 'createdAt', 'updatedAt', 'slug', 'archivedAt', ),
-        BasePeer::TYPE_COLNAME => array (PEOperationArchivePeer::ID, PEOperationArchivePeer::UUID, PEOperationArchivePeer::P_USER_ID, PEOperationArchivePeer::TITLE, PEOperationArchivePeer::DESCRIPTION, PEOperationArchivePeer::FILE_NAME, PEOperationArchivePeer::GEO_SCOPED, PEOperationArchivePeer::ONLINE, PEOperationArchivePeer::TIMELINE, PEOperationArchivePeer::CREATED_AT, PEOperationArchivePeer::UPDATED_AT, PEOperationArchivePeer::SLUG, PEOperationArchivePeer::ARCHIVED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'P_USER_ID', 'TITLE', 'DESCRIPTION', 'FILE_NAME', 'GEO_SCOPED', 'ONLINE', 'TIMELINE', 'CREATED_AT', 'UPDATED_AT', 'SLUG', 'ARCHIVED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'p_user_id', 'title', 'description', 'file_name', 'geo_scoped', 'online', 'timeline', 'created_at', 'updated_at', 'slug', 'archived_at', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'PUserId', 'Title', 'Description', 'EditingDescription', 'FileName', 'GeoScoped', 'Online', 'Timeline', 'CreatedAt', 'UpdatedAt', 'Slug', 'ArchivedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'pUserId', 'title', 'description', 'editingDescription', 'fileName', 'geoScoped', 'online', 'timeline', 'createdAt', 'updatedAt', 'slug', 'archivedAt', ),
+        BasePeer::TYPE_COLNAME => array (PEOperationArchivePeer::ID, PEOperationArchivePeer::UUID, PEOperationArchivePeer::P_USER_ID, PEOperationArchivePeer::TITLE, PEOperationArchivePeer::DESCRIPTION, PEOperationArchivePeer::EDITING_DESCRIPTION, PEOperationArchivePeer::FILE_NAME, PEOperationArchivePeer::GEO_SCOPED, PEOperationArchivePeer::ONLINE, PEOperationArchivePeer::TIMELINE, PEOperationArchivePeer::CREATED_AT, PEOperationArchivePeer::UPDATED_AT, PEOperationArchivePeer::SLUG, PEOperationArchivePeer::ARCHIVED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'P_USER_ID', 'TITLE', 'DESCRIPTION', 'EDITING_DESCRIPTION', 'FILE_NAME', 'GEO_SCOPED', 'ONLINE', 'TIMELINE', 'CREATED_AT', 'UPDATED_AT', 'SLUG', 'ARCHIVED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'p_user_id', 'title', 'description', 'editing_description', 'file_name', 'geo_scoped', 'online', 'timeline', 'created_at', 'updated_at', 'slug', 'archived_at', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, )
     );
 
     /**
@@ -110,12 +113,12 @@ abstract class BasePEOperationArchivePeer
      * e.g. PEOperationArchivePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'PUserId' => 2, 'Title' => 3, 'Description' => 4, 'FileName' => 5, 'GeoScoped' => 6, 'Online' => 7, 'Timeline' => 8, 'CreatedAt' => 9, 'UpdatedAt' => 10, 'Slug' => 11, 'ArchivedAt' => 12, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'pUserId' => 2, 'title' => 3, 'description' => 4, 'fileName' => 5, 'geoScoped' => 6, 'online' => 7, 'timeline' => 8, 'createdAt' => 9, 'updatedAt' => 10, 'slug' => 11, 'archivedAt' => 12, ),
-        BasePeer::TYPE_COLNAME => array (PEOperationArchivePeer::ID => 0, PEOperationArchivePeer::UUID => 1, PEOperationArchivePeer::P_USER_ID => 2, PEOperationArchivePeer::TITLE => 3, PEOperationArchivePeer::DESCRIPTION => 4, PEOperationArchivePeer::FILE_NAME => 5, PEOperationArchivePeer::GEO_SCOPED => 6, PEOperationArchivePeer::ONLINE => 7, PEOperationArchivePeer::TIMELINE => 8, PEOperationArchivePeer::CREATED_AT => 9, PEOperationArchivePeer::UPDATED_AT => 10, PEOperationArchivePeer::SLUG => 11, PEOperationArchivePeer::ARCHIVED_AT => 12, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'P_USER_ID' => 2, 'TITLE' => 3, 'DESCRIPTION' => 4, 'FILE_NAME' => 5, 'GEO_SCOPED' => 6, 'ONLINE' => 7, 'TIMELINE' => 8, 'CREATED_AT' => 9, 'UPDATED_AT' => 10, 'SLUG' => 11, 'ARCHIVED_AT' => 12, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'p_user_id' => 2, 'title' => 3, 'description' => 4, 'file_name' => 5, 'geo_scoped' => 6, 'online' => 7, 'timeline' => 8, 'created_at' => 9, 'updated_at' => 10, 'slug' => 11, 'archived_at' => 12, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'PUserId' => 2, 'Title' => 3, 'Description' => 4, 'EditingDescription' => 5, 'FileName' => 6, 'GeoScoped' => 7, 'Online' => 8, 'Timeline' => 9, 'CreatedAt' => 10, 'UpdatedAt' => 11, 'Slug' => 12, 'ArchivedAt' => 13, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'pUserId' => 2, 'title' => 3, 'description' => 4, 'editingDescription' => 5, 'fileName' => 6, 'geoScoped' => 7, 'online' => 8, 'timeline' => 9, 'createdAt' => 10, 'updatedAt' => 11, 'slug' => 12, 'archivedAt' => 13, ),
+        BasePeer::TYPE_COLNAME => array (PEOperationArchivePeer::ID => 0, PEOperationArchivePeer::UUID => 1, PEOperationArchivePeer::P_USER_ID => 2, PEOperationArchivePeer::TITLE => 3, PEOperationArchivePeer::DESCRIPTION => 4, PEOperationArchivePeer::EDITING_DESCRIPTION => 5, PEOperationArchivePeer::FILE_NAME => 6, PEOperationArchivePeer::GEO_SCOPED => 7, PEOperationArchivePeer::ONLINE => 8, PEOperationArchivePeer::TIMELINE => 9, PEOperationArchivePeer::CREATED_AT => 10, PEOperationArchivePeer::UPDATED_AT => 11, PEOperationArchivePeer::SLUG => 12, PEOperationArchivePeer::ARCHIVED_AT => 13, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'P_USER_ID' => 2, 'TITLE' => 3, 'DESCRIPTION' => 4, 'EDITING_DESCRIPTION' => 5, 'FILE_NAME' => 6, 'GEO_SCOPED' => 7, 'ONLINE' => 8, 'TIMELINE' => 9, 'CREATED_AT' => 10, 'UPDATED_AT' => 11, 'SLUG' => 12, 'ARCHIVED_AT' => 13, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'p_user_id' => 2, 'title' => 3, 'description' => 4, 'editing_description' => 5, 'file_name' => 6, 'geo_scoped' => 7, 'online' => 8, 'timeline' => 9, 'created_at' => 10, 'updated_at' => 11, 'slug' => 12, 'archived_at' => 13, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, )
     );
 
     /**
@@ -194,6 +197,7 @@ abstract class BasePEOperationArchivePeer
             $criteria->addSelectColumn(PEOperationArchivePeer::P_USER_ID);
             $criteria->addSelectColumn(PEOperationArchivePeer::TITLE);
             $criteria->addSelectColumn(PEOperationArchivePeer::DESCRIPTION);
+            $criteria->addSelectColumn(PEOperationArchivePeer::EDITING_DESCRIPTION);
             $criteria->addSelectColumn(PEOperationArchivePeer::FILE_NAME);
             $criteria->addSelectColumn(PEOperationArchivePeer::GEO_SCOPED);
             $criteria->addSelectColumn(PEOperationArchivePeer::ONLINE);
@@ -208,6 +212,7 @@ abstract class BasePEOperationArchivePeer
             $criteria->addSelectColumn($alias . '.p_user_id');
             $criteria->addSelectColumn($alias . '.title');
             $criteria->addSelectColumn($alias . '.description');
+            $criteria->addSelectColumn($alias . '.editing_description');
             $criteria->addSelectColumn($alias . '.file_name');
             $criteria->addSelectColumn($alias . '.geo_scoped');
             $criteria->addSelectColumn($alias . '.online');

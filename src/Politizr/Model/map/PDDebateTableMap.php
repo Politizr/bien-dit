@@ -45,6 +45,7 @@ class PDDebateTableMap extends TableMap
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addColumn('uuid', 'Uuid', 'VARCHAR', false, 50, null);
         $this->addForeignKey('p_user_id', 'PUserId', 'INTEGER', 'p_user', 'id', false, null, null);
+        $this->addForeignKey('p_e_operation_id', 'PEOperationId', 'INTEGER', 'p_e_operation', 'id', false, null, null);
         $this->addForeignKey('p_l_city_id', 'PLCityId', 'INTEGER', 'p_l_city', 'id', false, null, null);
         $this->addForeignKey('p_l_department_id', 'PLDepartmentId', 'INTEGER', 'p_l_department', 'id', false, null, null);
         $this->addForeignKey('p_l_region_id', 'PLRegionId', 'INTEGER', 'p_l_region', 'id', false, null, null);
@@ -78,6 +79,7 @@ class PDDebateTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('PUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_ONE, array('p_user_id' => 'id', ), 'SET NULL', 'CASCADE');
+        $this->addRelation('PEOperation', 'Politizr\\Model\\PEOperation', RelationMap::MANY_TO_ONE, array('p_e_operation_id' => 'id', ), 'SET NULL', 'CASCADE');
         $this->addRelation('PLCity', 'Politizr\\Model\\PLCity', RelationMap::MANY_TO_ONE, array('p_l_city_id' => 'id', ), 'SET NULL', 'CASCADE');
         $this->addRelation('PLDepartment', 'Politizr\\Model\\PLDepartment', RelationMap::MANY_TO_ONE, array('p_l_department_id' => 'id', ), 'SET NULL', 'CASCADE');
         $this->addRelation('PLRegion', 'Politizr\\Model\\PLRegion', RelationMap::MANY_TO_ONE, array('p_l_region_id' => 'id', ), 'SET NULL', 'CASCADE');

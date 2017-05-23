@@ -47,6 +47,13 @@ interface PDocumentInterface
     public function getDebateId();
 
     /**
+     * Return debate > "this" or reaction's PDDebate
+     *
+     * @return PDDebate
+     */
+    public function getDebate();
+
+    /**
      * Filter the document's comments
      *
      * @param boolean $online

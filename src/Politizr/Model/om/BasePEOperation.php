@@ -15,6 +15,8 @@ use \PropelDateTime;
 use \PropelException;
 use \PropelObjectCollection;
 use \PropelPDO;
+use Politizr\Model\PDDebate;
+use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PEOPresetPT;
 use Politizr\Model\PEOPresetPTQuery;
 use Politizr\Model\PEOScopePLC;
@@ -83,6 +85,12 @@ abstract class BasePEOperation extends BaseObject implements Persistent
     protected $description;
 
     /**
+     * The value for the editing_description field.
+     * @var        string
+     */
+    protected $editing_description;
+
+    /**
      * The value for the file_name field.
      * @var        string
      */
@@ -142,6 +150,12 @@ abstract class BasePEOperation extends BaseObject implements Persistent
     protected $collPEOPresetPTsPartial;
 
     /**
+     * @var        PropelObjectCollection|PDDebate[] Collection to store aggregation of PDDebate objects.
+     */
+    protected $collPDDebates;
+    protected $collPDDebatesPartial;
+
+    /**
      * @var        PropelObjectCollection|PLCity[] Collection to store aggregation of PLCity objects.
      */
     protected $collPLCities;
@@ -199,6 +213,12 @@ abstract class BasePEOperation extends BaseObject implements Persistent
     protected $pEOPresetPTsScheduledForDeletion = null;
 
     /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pDDebatesScheduledForDeletion = null;
+
+    /**
      * Get the [id] column value.
      *
      * @return int
@@ -251,6 +271,17 @@ abstract class BasePEOperation extends BaseObject implements Persistent
     {
 
         return $this->description;
+    }
+
+    /**
+     * Get the [editing_description] column value.
+     *
+     * @return string
+     */
+    public function getEditingDescription()
+    {
+
+        return $this->editing_description;
     }
 
     /**
@@ -498,6 +529,27 @@ abstract class BasePEOperation extends BaseObject implements Persistent
     } // setDescription()
 
     /**
+     * Set the value of [editing_description] column.
+     *
+     * @param  string $v new value
+     * @return PEOperation The current object (for fluent API support)
+     */
+    public function setEditingDescription($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->editing_description !== $v) {
+            $this->editing_description = $v;
+            $this->modifiedColumns[] = PEOperationPeer::EDITING_DESCRIPTION;
+        }
+
+
+        return $this;
+    } // setEditingDescription()
+
+    /**
      * Set the value of [file_name] column.
      *
      * @param  string $v new value
@@ -709,13 +761,14 @@ abstract class BasePEOperation extends BaseObject implements Persistent
             $this->p_user_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
             $this->title = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
             $this->description = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-            $this->file_name = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->geo_scoped = ($row[$startcol + 6] !== null) ? (boolean) $row[$startcol + 6] : null;
-            $this->online = ($row[$startcol + 7] !== null) ? (boolean) $row[$startcol + 7] : null;
-            $this->timeline = ($row[$startcol + 8] !== null) ? (boolean) $row[$startcol + 8] : null;
-            $this->created_at = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
-            $this->updated_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
-            $this->slug = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+            $this->editing_description = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->file_name = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->geo_scoped = ($row[$startcol + 7] !== null) ? (boolean) $row[$startcol + 7] : null;
+            $this->online = ($row[$startcol + 8] !== null) ? (boolean) $row[$startcol + 8] : null;
+            $this->timeline = ($row[$startcol + 9] !== null) ? (boolean) $row[$startcol + 9] : null;
+            $this->created_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+            $this->updated_at = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+            $this->slug = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -725,7 +778,7 @@ abstract class BasePEOperation extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 12; // 12 = PEOperationPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 13; // 13 = PEOperationPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PEOperation object", $e);
@@ -794,6 +847,8 @@ abstract class BasePEOperation extends BaseObject implements Persistent
             $this->collPEOScopePLCs = null;
 
             $this->collPEOPresetPTs = null;
+
+            $this->collPDDebates = null;
 
             $this->collPLCities = null;
             $this->collPTags = null;
@@ -1049,6 +1104,24 @@ abstract class BasePEOperation extends BaseObject implements Persistent
                 }
             }
 
+            if ($this->pDDebatesScheduledForDeletion !== null) {
+                if (!$this->pDDebatesScheduledForDeletion->isEmpty()) {
+                    foreach ($this->pDDebatesScheduledForDeletion as $pDDebate) {
+                        // need to save related object because we set the relation to null
+                        $pDDebate->save($con);
+                    }
+                    $this->pDDebatesScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPDDebates !== null) {
+                foreach ($this->collPDDebates as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
             $this->alreadyInSave = false;
 
         }
@@ -1089,6 +1162,9 @@ abstract class BasePEOperation extends BaseObject implements Persistent
         }
         if ($this->isColumnModified(PEOperationPeer::DESCRIPTION)) {
             $modifiedColumns[':p' . $index++]  = '`description`';
+        }
+        if ($this->isColumnModified(PEOperationPeer::EDITING_DESCRIPTION)) {
+            $modifiedColumns[':p' . $index++]  = '`editing_description`';
         }
         if ($this->isColumnModified(PEOperationPeer::FILE_NAME)) {
             $modifiedColumns[':p' . $index++]  = '`file_name`';
@@ -1136,6 +1212,9 @@ abstract class BasePEOperation extends BaseObject implements Persistent
                         break;
                     case '`description`':
                         $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
+                        break;
+                    case '`editing_description`':
+                        $stmt->bindValue($identifier, $this->editing_description, PDO::PARAM_STR);
                         break;
                     case '`file_name`':
                         $stmt->bindValue($identifier, $this->file_name, PDO::PARAM_STR);
@@ -1234,24 +1313,27 @@ abstract class BasePEOperation extends BaseObject implements Persistent
                 return $this->getDescription();
                 break;
             case 5:
-                return $this->getFileName();
+                return $this->getEditingDescription();
                 break;
             case 6:
-                return $this->getGeoScoped();
+                return $this->getFileName();
                 break;
             case 7:
-                return $this->getOnline();
+                return $this->getGeoScoped();
                 break;
             case 8:
-                return $this->getTimeline();
+                return $this->getOnline();
                 break;
             case 9:
-                return $this->getCreatedAt();
+                return $this->getTimeline();
                 break;
             case 10:
-                return $this->getUpdatedAt();
+                return $this->getCreatedAt();
                 break;
             case 11:
+                return $this->getUpdatedAt();
+                break;
+            case 12:
                 return $this->getSlug();
                 break;
             default:
@@ -1288,13 +1370,14 @@ abstract class BasePEOperation extends BaseObject implements Persistent
             $keys[2] => $this->getPUserId(),
             $keys[3] => $this->getTitle(),
             $keys[4] => $this->getDescription(),
-            $keys[5] => $this->getFileName(),
-            $keys[6] => $this->getGeoScoped(),
-            $keys[7] => $this->getOnline(),
-            $keys[8] => $this->getTimeline(),
-            $keys[9] => $this->getCreatedAt(),
-            $keys[10] => $this->getUpdatedAt(),
-            $keys[11] => $this->getSlug(),
+            $keys[5] => $this->getEditingDescription(),
+            $keys[6] => $this->getFileName(),
+            $keys[7] => $this->getGeoScoped(),
+            $keys[8] => $this->getOnline(),
+            $keys[9] => $this->getTimeline(),
+            $keys[10] => $this->getCreatedAt(),
+            $keys[11] => $this->getUpdatedAt(),
+            $keys[12] => $this->getSlug(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1310,6 +1393,9 @@ abstract class BasePEOperation extends BaseObject implements Persistent
             }
             if (null !== $this->collPEOPresetPTs) {
                 $result['PEOPresetPTs'] = $this->collPEOPresetPTs->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collPDDebates) {
+                $result['PDDebates'] = $this->collPDDebates->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -1361,24 +1447,27 @@ abstract class BasePEOperation extends BaseObject implements Persistent
                 $this->setDescription($value);
                 break;
             case 5:
-                $this->setFileName($value);
+                $this->setEditingDescription($value);
                 break;
             case 6:
-                $this->setGeoScoped($value);
+                $this->setFileName($value);
                 break;
             case 7:
-                $this->setOnline($value);
+                $this->setGeoScoped($value);
                 break;
             case 8:
-                $this->setTimeline($value);
+                $this->setOnline($value);
                 break;
             case 9:
-                $this->setCreatedAt($value);
+                $this->setTimeline($value);
                 break;
             case 10:
-                $this->setUpdatedAt($value);
+                $this->setCreatedAt($value);
                 break;
             case 11:
+                $this->setUpdatedAt($value);
+                break;
+            case 12:
                 $this->setSlug($value);
                 break;
         } // switch()
@@ -1410,13 +1499,14 @@ abstract class BasePEOperation extends BaseObject implements Persistent
         if (array_key_exists($keys[2], $arr)) $this->setPUserId($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setTitle($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setDescription($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setFileName($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setGeoScoped($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setOnline($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setTimeline($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setCreatedAt($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setUpdatedAt($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setSlug($arr[$keys[11]]);
+        if (array_key_exists($keys[5], $arr)) $this->setEditingDescription($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setFileName($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setGeoScoped($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setOnline($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setTimeline($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setCreatedAt($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setUpdatedAt($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setSlug($arr[$keys[12]]);
     }
 
     /**
@@ -1433,6 +1523,7 @@ abstract class BasePEOperation extends BaseObject implements Persistent
         if ($this->isColumnModified(PEOperationPeer::P_USER_ID)) $criteria->add(PEOperationPeer::P_USER_ID, $this->p_user_id);
         if ($this->isColumnModified(PEOperationPeer::TITLE)) $criteria->add(PEOperationPeer::TITLE, $this->title);
         if ($this->isColumnModified(PEOperationPeer::DESCRIPTION)) $criteria->add(PEOperationPeer::DESCRIPTION, $this->description);
+        if ($this->isColumnModified(PEOperationPeer::EDITING_DESCRIPTION)) $criteria->add(PEOperationPeer::EDITING_DESCRIPTION, $this->editing_description);
         if ($this->isColumnModified(PEOperationPeer::FILE_NAME)) $criteria->add(PEOperationPeer::FILE_NAME, $this->file_name);
         if ($this->isColumnModified(PEOperationPeer::GEO_SCOPED)) $criteria->add(PEOperationPeer::GEO_SCOPED, $this->geo_scoped);
         if ($this->isColumnModified(PEOperationPeer::ONLINE)) $criteria->add(PEOperationPeer::ONLINE, $this->online);
@@ -1507,6 +1598,7 @@ abstract class BasePEOperation extends BaseObject implements Persistent
         $copyObj->setPUserId($this->getPUserId());
         $copyObj->setTitle($this->getTitle());
         $copyObj->setDescription($this->getDescription());
+        $copyObj->setEditingDescription($this->getEditingDescription());
         $copyObj->setFileName($this->getFileName());
         $copyObj->setGeoScoped($this->getGeoScoped());
         $copyObj->setOnline($this->getOnline());
@@ -1531,6 +1623,12 @@ abstract class BasePEOperation extends BaseObject implements Persistent
             foreach ($this->getPEOPresetPTs() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addPEOPresetPT($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getPDDebates() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPDDebate($relObj->copy($deepCopy));
                 }
             }
 
@@ -1652,6 +1750,9 @@ abstract class BasePEOperation extends BaseObject implements Persistent
         }
         if ('PEOPresetPT' == $relationName) {
             $this->initPEOPresetPTs();
+        }
+        if ('PDDebate' == $relationName) {
+            $this->initPDDebates();
         }
     }
 
@@ -2156,6 +2257,356 @@ abstract class BasePEOperation extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collPDDebates collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PEOperation The current object (for fluent API support)
+     * @see        addPDDebates()
+     */
+    public function clearPDDebates()
+    {
+        $this->collPDDebates = null; // important to set this to null since that means it is uninitialized
+        $this->collPDDebatesPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPDDebates collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPDDebates($v = true)
+    {
+        $this->collPDDebatesPartial = $v;
+    }
+
+    /**
+     * Initializes the collPDDebates collection.
+     *
+     * By default this just sets the collPDDebates collection to an empty array (like clearcollPDDebates());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPDDebates($overrideExisting = true)
+    {
+        if (null !== $this->collPDDebates && !$overrideExisting) {
+            return;
+        }
+        $this->collPDDebates = new PropelObjectCollection();
+        $this->collPDDebates->setModel('PDDebate');
+    }
+
+    /**
+     * Gets an array of PDDebate objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PEOperation is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PDDebate[] List of PDDebate objects
+     * @throws PropelException
+     */
+    public function getPDDebates($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPDDebatesPartial && !$this->isNew();
+        if (null === $this->collPDDebates || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPDDebates) {
+                // return empty collection
+                $this->initPDDebates();
+            } else {
+                $collPDDebates = PDDebateQuery::create(null, $criteria)
+                    ->filterByPEOperation($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPDDebatesPartial && count($collPDDebates)) {
+                      $this->initPDDebates(false);
+
+                      foreach ($collPDDebates as $obj) {
+                        if (false == $this->collPDDebates->contains($obj)) {
+                          $this->collPDDebates->append($obj);
+                        }
+                      }
+
+                      $this->collPDDebatesPartial = true;
+                    }
+
+                    $collPDDebates->getInternalIterator()->rewind();
+
+                    return $collPDDebates;
+                }
+
+                if ($partial && $this->collPDDebates) {
+                    foreach ($this->collPDDebates as $obj) {
+                        if ($obj->isNew()) {
+                            $collPDDebates[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPDDebates = $collPDDebates;
+                $this->collPDDebatesPartial = false;
+            }
+        }
+
+        return $this->collPDDebates;
+    }
+
+    /**
+     * Sets a collection of PDDebate objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pDDebates A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PEOperation The current object (for fluent API support)
+     */
+    public function setPDDebates(PropelCollection $pDDebates, PropelPDO $con = null)
+    {
+        $pDDebatesToDelete = $this->getPDDebates(new Criteria(), $con)->diff($pDDebates);
+
+
+        $this->pDDebatesScheduledForDeletion = $pDDebatesToDelete;
+
+        foreach ($pDDebatesToDelete as $pDDebateRemoved) {
+            $pDDebateRemoved->setPEOperation(null);
+        }
+
+        $this->collPDDebates = null;
+        foreach ($pDDebates as $pDDebate) {
+            $this->addPDDebate($pDDebate);
+        }
+
+        $this->collPDDebates = $pDDebates;
+        $this->collPDDebatesPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PDDebate objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PDDebate objects.
+     * @throws PropelException
+     */
+    public function countPDDebates(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPDDebatesPartial && !$this->isNew();
+        if (null === $this->collPDDebates || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPDDebates) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPDDebates());
+            }
+            $query = PDDebateQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPEOperation($this)
+                ->count($con);
+        }
+
+        return count($this->collPDDebates);
+    }
+
+    /**
+     * Method called to associate a PDDebate object to this object
+     * through the PDDebate foreign key attribute.
+     *
+     * @param    PDDebate $l PDDebate
+     * @return PEOperation The current object (for fluent API support)
+     */
+    public function addPDDebate(PDDebate $l)
+    {
+        if ($this->collPDDebates === null) {
+            $this->initPDDebates();
+            $this->collPDDebatesPartial = true;
+        }
+
+        if (!in_array($l, $this->collPDDebates->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPDDebate($l);
+
+            if ($this->pDDebatesScheduledForDeletion and $this->pDDebatesScheduledForDeletion->contains($l)) {
+                $this->pDDebatesScheduledForDeletion->remove($this->pDDebatesScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PDDebate $pDDebate The pDDebate object to add.
+     */
+    protected function doAddPDDebate($pDDebate)
+    {
+        $this->collPDDebates[]= $pDDebate;
+        $pDDebate->setPEOperation($this);
+    }
+
+    /**
+     * @param	PDDebate $pDDebate The pDDebate object to remove.
+     * @return PEOperation The current object (for fluent API support)
+     */
+    public function removePDDebate($pDDebate)
+    {
+        if ($this->getPDDebates()->contains($pDDebate)) {
+            $this->collPDDebates->remove($this->collPDDebates->search($pDDebate));
+            if (null === $this->pDDebatesScheduledForDeletion) {
+                $this->pDDebatesScheduledForDeletion = clone $this->collPDDebates;
+                $this->pDDebatesScheduledForDeletion->clear();
+            }
+            $this->pDDebatesScheduledForDeletion[]= $pDDebate;
+            $pDDebate->setPEOperation(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PEOperation is new, it will return
+     * an empty collection; or if this PEOperation has previously
+     * been saved, it will retrieve related PDDebates from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PEOperation.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PDDebate[] List of PDDebate objects
+     */
+    public function getPDDebatesJoinPUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PDDebateQuery::create(null, $criteria);
+        $query->joinWith('PUser', $join_behavior);
+
+        return $this->getPDDebates($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PEOperation is new, it will return
+     * an empty collection; or if this PEOperation has previously
+     * been saved, it will retrieve related PDDebates from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PEOperation.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PDDebate[] List of PDDebate objects
+     */
+    public function getPDDebatesJoinPLCity($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PDDebateQuery::create(null, $criteria);
+        $query->joinWith('PLCity', $join_behavior);
+
+        return $this->getPDDebates($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PEOperation is new, it will return
+     * an empty collection; or if this PEOperation has previously
+     * been saved, it will retrieve related PDDebates from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PEOperation.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PDDebate[] List of PDDebate objects
+     */
+    public function getPDDebatesJoinPLDepartment($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PDDebateQuery::create(null, $criteria);
+        $query->joinWith('PLDepartment', $join_behavior);
+
+        return $this->getPDDebates($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PEOperation is new, it will return
+     * an empty collection; or if this PEOperation has previously
+     * been saved, it will retrieve related PDDebates from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PEOperation.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PDDebate[] List of PDDebate objects
+     */
+    public function getPDDebatesJoinPLRegion($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PDDebateQuery::create(null, $criteria);
+        $query->joinWith('PLRegion', $join_behavior);
+
+        return $this->getPDDebates($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PEOperation is new, it will return
+     * an empty collection; or if this PEOperation has previously
+     * been saved, it will retrieve related PDDebates from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PEOperation.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PDDebate[] List of PDDebate objects
+     */
+    public function getPDDebatesJoinPLCountry($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PDDebateQuery::create(null, $criteria);
+        $query->joinWith('PLCountry', $join_behavior);
+
+        return $this->getPDDebates($query, $con);
+    }
+
+    /**
      * Clears out the collPLCities collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
@@ -2539,6 +2990,7 @@ abstract class BasePEOperation extends BaseObject implements Persistent
         $this->p_user_id = null;
         $this->title = null;
         $this->description = null;
+        $this->editing_description = null;
         $this->file_name = null;
         $this->geo_scoped = null;
         $this->online = null;
@@ -2578,6 +3030,11 @@ abstract class BasePEOperation extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collPDDebates) {
+                foreach ($this->collPDDebates as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collPLCities) {
                 foreach ($this->collPLCities as $o) {
                     $o->clearAllReferences($deep);
@@ -2603,6 +3060,10 @@ abstract class BasePEOperation extends BaseObject implements Persistent
             $this->collPEOPresetPTs->clearIterator();
         }
         $this->collPEOPresetPTs = null;
+        if ($this->collPDDebates instanceof PropelCollection) {
+            $this->collPDDebates->clearIterator();
+        }
+        $this->collPDDebates = null;
         if ($this->collPLCities instanceof PropelCollection) {
             $this->collPLCities->clearIterator();
         }
@@ -2892,6 +3353,7 @@ abstract class BasePEOperation extends BaseObject implements Persistent
         $this->setPUserId($archive->getPUserId());
         $this->setTitle($archive->getTitle());
         $this->setDescription($archive->getDescription());
+        $this->setEditingDescription($archive->getEditingDescription());
         $this->setFileName($archive->getFileName());
         $this->setGeoScoped($archive->getGeoScoped());
         $this->setOnline($archive->getOnline());

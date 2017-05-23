@@ -47,6 +47,7 @@ class PEOperationTableMap extends TableMap
         $this->addForeignKey('p_user_id', 'PUserId', 'INTEGER', 'p_user', 'id', true, null, null);
         $this->addColumn('title', 'Title', 'VARCHAR', false, 150, null);
         $this->addColumn('description', 'Description', 'LONGVARCHAR', false, null, null);
+        $this->addColumn('editing_description', 'EditingDescription', 'LONGVARCHAR', false, null, null);
         $this->addColumn('file_name', 'FileName', 'VARCHAR', false, 150, null);
         $this->addColumn('geo_scoped', 'GeoScoped', 'BOOLEAN', false, 1, null);
         $this->addColumn('online', 'Online', 'BOOLEAN', false, 1, null);
@@ -65,6 +66,7 @@ class PEOperationTableMap extends TableMap
         $this->addRelation('PUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_ONE, array('p_user_id' => 'id', ), 'CASCADE', 'CASCADE');
         $this->addRelation('PEOScopePLC', 'Politizr\\Model\\PEOScopePLC', RelationMap::ONE_TO_MANY, array('id' => 'p_e_operation_id', ), 'CASCADE', 'CASCADE', 'PEOScopePLCs');
         $this->addRelation('PEOPresetPT', 'Politizr\\Model\\PEOPresetPT', RelationMap::ONE_TO_MANY, array('id' => 'p_e_operation_id', ), 'CASCADE', 'CASCADE', 'PEOPresetPTs');
+        $this->addRelation('PDDebate', 'Politizr\\Model\\PDDebate', RelationMap::ONE_TO_MANY, array('id' => 'p_e_operation_id', ), 'SET NULL', 'CASCADE', 'PDDebates');
         $this->addRelation('PLCity', 'Politizr\\Model\\PLCity', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PLCities');
         $this->addRelation('PTag', 'Politizr\\Model\\PTag', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PTags');
     } // buildRelations()

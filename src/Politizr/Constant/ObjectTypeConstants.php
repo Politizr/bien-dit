@@ -24,6 +24,7 @@ class ObjectTypeConstants
     const TYPE_ABUSE = 'Politizr\Model\PMAbuseReporting';
     const TYPE_ASK_FOR_UPDATE = 'Politizr\Model\PMAskForUpdate';
     const TYPE_ACTION = 'Politizr\Model\PRAction';
+    const TYPE_OPERATION = 'Politizr\Model\PEOperation';
 
     const CONTEXT_DEBATE = 'debate';
     const CONTEXT_REACTION = 'reaction';

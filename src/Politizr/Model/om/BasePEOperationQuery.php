@@ -13,6 +13,7 @@ use \PropelCollection;
 use \PropelException;
 use \PropelObjectCollection;
 use \PropelPDO;
+use Politizr\Model\PDDebate;
 use Politizr\Model\PEOPresetPT;
 use Politizr\Model\PEOScopePLC;
 use Politizr\Model\PEOperation;
@@ -28,6 +29,7 @@ use Politizr\Model\PUser;
  * @method PEOperationQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
  * @method PEOperationQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method PEOperationQuery orderByDescription($order = Criteria::ASC) Order by the description column
+ * @method PEOperationQuery orderByEditingDescription($order = Criteria::ASC) Order by the editing_description column
  * @method PEOperationQuery orderByFileName($order = Criteria::ASC) Order by the file_name column
  * @method PEOperationQuery orderByGeoScoped($order = Criteria::ASC) Order by the geo_scoped column
  * @method PEOperationQuery orderByOnline($order = Criteria::ASC) Order by the online column
@@ -41,6 +43,7 @@ use Politizr\Model\PUser;
  * @method PEOperationQuery groupByPUserId() Group by the p_user_id column
  * @method PEOperationQuery groupByTitle() Group by the title column
  * @method PEOperationQuery groupByDescription() Group by the description column
+ * @method PEOperationQuery groupByEditingDescription() Group by the editing_description column
  * @method PEOperationQuery groupByFileName() Group by the file_name column
  * @method PEOperationQuery groupByGeoScoped() Group by the geo_scoped column
  * @method PEOperationQuery groupByOnline() Group by the online column
@@ -65,6 +68,10 @@ use Politizr\Model\PUser;
  * @method PEOperationQuery rightJoinPEOPresetPT($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PEOPresetPT relation
  * @method PEOperationQuery innerJoinPEOPresetPT($relationAlias = null) Adds a INNER JOIN clause to the query using the PEOPresetPT relation
  *
+ * @method PEOperationQuery leftJoinPDDebate($relationAlias = null) Adds a LEFT JOIN clause to the query using the PDDebate relation
+ * @method PEOperationQuery rightJoinPDDebate($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PDDebate relation
+ * @method PEOperationQuery innerJoinPDDebate($relationAlias = null) Adds a INNER JOIN clause to the query using the PDDebate relation
+ *
  * @method PEOperation findOne(PropelPDO $con = null) Return the first PEOperation matching the query
  * @method PEOperation findOneOrCreate(PropelPDO $con = null) Return the first PEOperation matching the query, or a new PEOperation object populated from the query conditions when no match is found
  *
@@ -72,6 +79,7 @@ use Politizr\Model\PUser;
  * @method PEOperation findOneByPUserId(int $p_user_id) Return the first PEOperation filtered by the p_user_id column
  * @method PEOperation findOneByTitle(string $title) Return the first PEOperation filtered by the title column
  * @method PEOperation findOneByDescription(string $description) Return the first PEOperation filtered by the description column
+ * @method PEOperation findOneByEditingDescription(string $editing_description) Return the first PEOperation filtered by the editing_description column
  * @method PEOperation findOneByFileName(string $file_name) Return the first PEOperation filtered by the file_name column
  * @method PEOperation findOneByGeoScoped(boolean $geo_scoped) Return the first PEOperation filtered by the geo_scoped column
  * @method PEOperation findOneByOnline(boolean $online) Return the first PEOperation filtered by the online column
@@ -85,6 +93,7 @@ use Politizr\Model\PUser;
  * @method array findByPUserId(int $p_user_id) Return PEOperation objects filtered by the p_user_id column
  * @method array findByTitle(string $title) Return PEOperation objects filtered by the title column
  * @method array findByDescription(string $description) Return PEOperation objects filtered by the description column
+ * @method array findByEditingDescription(string $editing_description) Return PEOperation objects filtered by the editing_description column
  * @method array findByFileName(string $file_name) Return PEOperation objects filtered by the file_name column
  * @method array findByGeoScoped(boolean $geo_scoped) Return PEOperation objects filtered by the geo_scoped column
  * @method array findByOnline(boolean $online) Return PEOperation objects filtered by the online column
@@ -203,7 +212,7 @@ abstract class BasePEOperationQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `title`, `description`, `file_name`, `geo_scoped`, `online`, `timeline`, `created_at`, `updated_at`, `slug` FROM `p_e_operation` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `title`, `description`, `editing_description`, `file_name`, `geo_scoped`, `online`, `timeline`, `created_at`, `updated_at`, `slug` FROM `p_e_operation` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -463,6 +472,35 @@ abstract class BasePEOperationQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PEOperationPeer::DESCRIPTION, $description, $comparison);
+    }
+
+    /**
+     * Filter the query on the editing_description column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByEditingDescription('fooValue');   // WHERE editing_description = 'fooValue'
+     * $query->filterByEditingDescription('%fooValue%'); // WHERE editing_description LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $editingDescription The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PEOperationQuery The current query, for fluid interface
+     */
+    public function filterByEditingDescription($editingDescription = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($editingDescription)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $editingDescription)) {
+                $editingDescription = str_replace('*', '%', $editingDescription);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PEOperationPeer::EDITING_DESCRIPTION, $editingDescription, $comparison);
     }
 
     /**
@@ -912,6 +950,80 @@ abstract class BasePEOperationQuery extends ModelCriteria
         return $this
             ->joinPEOPresetPT($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'PEOPresetPT', '\Politizr\Model\PEOPresetPTQuery');
+    }
+
+    /**
+     * Filter the query by a related PDDebate object
+     *
+     * @param   PDDebate|PropelObjectCollection $pDDebate  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PEOperationQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPDDebate($pDDebate, $comparison = null)
+    {
+        if ($pDDebate instanceof PDDebate) {
+            return $this
+                ->addUsingAlias(PEOperationPeer::ID, $pDDebate->getPEOperationId(), $comparison);
+        } elseif ($pDDebate instanceof PropelObjectCollection) {
+            return $this
+                ->usePDDebateQuery()
+                ->filterByPrimaryKeys($pDDebate->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPDDebate() only accepts arguments of type PDDebate or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PDDebate relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PEOperationQuery The current query, for fluid interface
+     */
+    public function joinPDDebate($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PDDebate');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PDDebate');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PDDebate relation PDDebate object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PDDebateQuery A secondary query class using the current class as primary query
+     */
+    public function usePDDebateQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinPDDebate($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PDDebate', '\Politizr\Model\PDDebateQuery');
     }
 
     /**

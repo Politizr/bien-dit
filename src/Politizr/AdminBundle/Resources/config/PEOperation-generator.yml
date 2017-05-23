@@ -20,6 +20,8 @@ params:
             label:          Titre
         description:
             label:          Description
+        editing_description:
+            label:          Description (dans l'édition)
         file_name:
             label:          Bandeau
         geo_scoped:
@@ -42,7 +44,7 @@ builders:
             title:                              Liste des opérations
             max_per_page:                       50
             sort:                               [ created_at, DESC ]
-            display:                            [ file_name, title, p_user, timeline, online, geo_scoped, created_at ]
+            display:                            [ file_name, title, p_user, timeline, geo_scoped, online, created_at ]
             filters:                            [ title ]
             actions:
                 new:                            ~
@@ -77,7 +79,7 @@ builders:
             tabs:
                 "Contenu":
                     "Bandeau":                  [ uploadedFileName ]
-                    "Texte":                    [ title, description ]
+                    "Texte":                    [ title, description, editing_description ]
                 "Objets":
                     "Client":                   [ p_user ]
                 "Thématiques":
@@ -103,6 +105,10 @@ builders:
                         disabled:               true
                         read_only:              true
                 description:
+                    grid_class:                 "col-md-12"
+                    addFormOptions:
+                        attr:                   { class : tinymce }
+                editing_description:
                     grid_class:                 "col-md-12"
                     addFormOptions:
                         attr:                   { class : tinymce }
@@ -147,7 +153,7 @@ builders:
             tabs:
                 "Contenu":
                     "Bandeau":                  [ file_name ]
-                    "Texte":                    [ title, description ]
+                    "Texte":                    [ title, description, editing_description ]
                 "Objets":
                     "Client":                   [ block_p_user ]
                 "Thématiques":

@@ -18,6 +18,10 @@ params:
             label:          Utilisateur
             addFormOptions:
                 query:                  \Politizr\Model\PUserQuery::create()->orderByName() 
+        p_e_operation_id:
+            label:          OP
+        p_e_operation:
+            label:          OP
         p_l_city_id:
             label:          Ville
         p_l_city:
@@ -91,7 +95,7 @@ builders:
                             published:          0
             display:                            [ file_name, id, p_user_id, p_l_city_id, p_l_department_id, p_l_region_id, title, count_reactions, homepage, published, published_at, created_at ]
             filtersMode:                        modal
-            filters:                            [ id, uuid, p_user_id, p_l_department, p_l_region, p_l_country, title, online, homepage, published, published_at, created_at ]
+            filters:                            [ id, uuid, p_user_id, p_e_operation, p_l_department, p_l_region, p_l_country, title, online, homepage, published, published_at, created_at ]
             fields:
                 count_reactions:
                     label:                      Réponses
@@ -129,7 +133,7 @@ builders:
         params:
             title:                              "Création d'un débat"
             display:
-                "Champs principaux":            [ [ title ], [ p_user ] ]
+                "Champs principaux":            [ [ title ], [ p_user ], [ p_e_operation ] ]
             fields:
                 p_user:
                     dbType:                     model
@@ -139,6 +143,14 @@ builders:
                         required:               true
                         class:                  Politizr\Model\PUser
                         query:                  \Politizr\Model\PUserQuery::create()->orderByName()
+                p_e_operation:
+                    dbType:                     model
+                    formType:                   Admingenerator\FormExtensionsBundle\Form\Type\Select2ModelType
+                    addFormOptions:
+                        multiple:               false
+                        required:               false
+                        class:                  Politizr\Model\PEOperation
+                        query:                  \Politizr\Model\PEOperationQuery::create()->orderByTitle()
             actions:
               save:                             ~
               list:                             ~
@@ -150,6 +162,7 @@ builders:
                     "Texte":                    [ block_file_name, copyright, title, description ]
                 "Objets":
                     "Utilisateur":              [ p_user ]
+                    "Opération":                [ p_e_operation ]
                 "Thématiques":
                     "Tags associés":            [ block_tags ]
                     "Localisation":             [ block_loc ]
@@ -181,6 +194,14 @@ builders:
                     addFormOptions:
                         disabled:               true
                         read_only:              true
+                p_e_operation:
+                    dbType:                     model
+                    formType:                   Admingenerator\FormExtensionsBundle\Form\Type\Select2ModelType
+                    addFormOptions:
+                        multiple:               false
+                        required:               false
+                        class:                  Politizr\Model\PEOperation
+                        query:                  \Politizr\Model\PEOperationQuery::create()->orderByTitle()
                 description:
                     grid_class:                 "col-md-12"
                     addFormOptions:
@@ -240,6 +261,7 @@ builders:
                     "Texte":                    [ block_file_name, copyright, title, description ]
                 "Objets":
                     "Utilisateur":              [ block_p_user ]
+                    "Opération":                [ p_e_operation ]
                 "Réactions":
                     "Réactions associées":      [ block_reactions ]
                 "Commentaires":

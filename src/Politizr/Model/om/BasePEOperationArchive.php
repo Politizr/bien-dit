@@ -69,6 +69,12 @@ abstract class BasePEOperationArchive extends BaseObject implements Persistent
     protected $description;
 
     /**
+     * The value for the editing_description field.
+     * @var        string
+     */
+    protected $editing_description;
+
+    /**
      * The value for the file_name field.
      * @var        string
      */
@@ -189,6 +195,17 @@ abstract class BasePEOperationArchive extends BaseObject implements Persistent
     {
 
         return $this->description;
+    }
+
+    /**
+     * Get the [editing_description] column value.
+     *
+     * @return string
+     */
+    public function getEditingDescription()
+    {
+
+        return $this->editing_description;
     }
 
     /**
@@ -472,6 +489,27 @@ abstract class BasePEOperationArchive extends BaseObject implements Persistent
     } // setDescription()
 
     /**
+     * Set the value of [editing_description] column.
+     *
+     * @param  string $v new value
+     * @return PEOperationArchive The current object (for fluent API support)
+     */
+    public function setEditingDescription($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->editing_description !== $v) {
+            $this->editing_description = $v;
+            $this->modifiedColumns[] = PEOperationArchivePeer::EDITING_DESCRIPTION;
+        }
+
+
+        return $this;
+    } // setEditingDescription()
+
+    /**
      * Set the value of [file_name] column.
      *
      * @param  string $v new value
@@ -706,14 +744,15 @@ abstract class BasePEOperationArchive extends BaseObject implements Persistent
             $this->p_user_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
             $this->title = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
             $this->description = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-            $this->file_name = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->geo_scoped = ($row[$startcol + 6] !== null) ? (boolean) $row[$startcol + 6] : null;
-            $this->online = ($row[$startcol + 7] !== null) ? (boolean) $row[$startcol + 7] : null;
-            $this->timeline = ($row[$startcol + 8] !== null) ? (boolean) $row[$startcol + 8] : null;
-            $this->created_at = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
-            $this->updated_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
-            $this->slug = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
-            $this->archived_at = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+            $this->editing_description = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->file_name = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->geo_scoped = ($row[$startcol + 7] !== null) ? (boolean) $row[$startcol + 7] : null;
+            $this->online = ($row[$startcol + 8] !== null) ? (boolean) $row[$startcol + 8] : null;
+            $this->timeline = ($row[$startcol + 9] !== null) ? (boolean) $row[$startcol + 9] : null;
+            $this->created_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+            $this->updated_at = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+            $this->slug = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+            $this->archived_at = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -723,7 +762,7 @@ abstract class BasePEOperationArchive extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 13; // 13 = PEOperationArchivePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 14; // 14 = PEOperationArchivePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PEOperationArchive object", $e);
@@ -946,6 +985,9 @@ abstract class BasePEOperationArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PEOperationArchivePeer::DESCRIPTION)) {
             $modifiedColumns[':p' . $index++]  = '`description`';
         }
+        if ($this->isColumnModified(PEOperationArchivePeer::EDITING_DESCRIPTION)) {
+            $modifiedColumns[':p' . $index++]  = '`editing_description`';
+        }
         if ($this->isColumnModified(PEOperationArchivePeer::FILE_NAME)) {
             $modifiedColumns[':p' . $index++]  = '`file_name`';
         }
@@ -995,6 +1037,9 @@ abstract class BasePEOperationArchive extends BaseObject implements Persistent
                         break;
                     case '`description`':
                         $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
+                        break;
+                    case '`editing_description`':
+                        $stmt->bindValue($identifier, $this->editing_description, PDO::PARAM_STR);
                         break;
                     case '`file_name`':
                         $stmt->bindValue($identifier, $this->file_name, PDO::PARAM_STR);
@@ -1089,27 +1134,30 @@ abstract class BasePEOperationArchive extends BaseObject implements Persistent
                 return $this->getDescription();
                 break;
             case 5:
-                return $this->getFileName();
+                return $this->getEditingDescription();
                 break;
             case 6:
-                return $this->getGeoScoped();
+                return $this->getFileName();
                 break;
             case 7:
-                return $this->getOnline();
+                return $this->getGeoScoped();
                 break;
             case 8:
-                return $this->getTimeline();
+                return $this->getOnline();
                 break;
             case 9:
-                return $this->getCreatedAt();
+                return $this->getTimeline();
                 break;
             case 10:
-                return $this->getUpdatedAt();
+                return $this->getCreatedAt();
                 break;
             case 11:
-                return $this->getSlug();
+                return $this->getUpdatedAt();
                 break;
             case 12:
+                return $this->getSlug();
+                break;
+            case 13:
                 return $this->getArchivedAt();
                 break;
             default:
@@ -1145,14 +1193,15 @@ abstract class BasePEOperationArchive extends BaseObject implements Persistent
             $keys[2] => $this->getPUserId(),
             $keys[3] => $this->getTitle(),
             $keys[4] => $this->getDescription(),
-            $keys[5] => $this->getFileName(),
-            $keys[6] => $this->getGeoScoped(),
-            $keys[7] => $this->getOnline(),
-            $keys[8] => $this->getTimeline(),
-            $keys[9] => $this->getCreatedAt(),
-            $keys[10] => $this->getUpdatedAt(),
-            $keys[11] => $this->getSlug(),
-            $keys[12] => $this->getArchivedAt(),
+            $keys[5] => $this->getEditingDescription(),
+            $keys[6] => $this->getFileName(),
+            $keys[7] => $this->getGeoScoped(),
+            $keys[8] => $this->getOnline(),
+            $keys[9] => $this->getTimeline(),
+            $keys[10] => $this->getCreatedAt(),
+            $keys[11] => $this->getUpdatedAt(),
+            $keys[12] => $this->getSlug(),
+            $keys[13] => $this->getArchivedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1208,27 +1257,30 @@ abstract class BasePEOperationArchive extends BaseObject implements Persistent
                 $this->setDescription($value);
                 break;
             case 5:
-                $this->setFileName($value);
+                $this->setEditingDescription($value);
                 break;
             case 6:
-                $this->setGeoScoped($value);
+                $this->setFileName($value);
                 break;
             case 7:
-                $this->setOnline($value);
+                $this->setGeoScoped($value);
                 break;
             case 8:
-                $this->setTimeline($value);
+                $this->setOnline($value);
                 break;
             case 9:
-                $this->setCreatedAt($value);
+                $this->setTimeline($value);
                 break;
             case 10:
-                $this->setUpdatedAt($value);
+                $this->setCreatedAt($value);
                 break;
             case 11:
-                $this->setSlug($value);
+                $this->setUpdatedAt($value);
                 break;
             case 12:
+                $this->setSlug($value);
+                break;
+            case 13:
                 $this->setArchivedAt($value);
                 break;
         } // switch()
@@ -1260,14 +1312,15 @@ abstract class BasePEOperationArchive extends BaseObject implements Persistent
         if (array_key_exists($keys[2], $arr)) $this->setPUserId($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setTitle($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setDescription($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setFileName($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setGeoScoped($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setOnline($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setTimeline($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setCreatedAt($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setUpdatedAt($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setSlug($arr[$keys[11]]);
-        if (array_key_exists($keys[12], $arr)) $this->setArchivedAt($arr[$keys[12]]);
+        if (array_key_exists($keys[5], $arr)) $this->setEditingDescription($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setFileName($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setGeoScoped($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setOnline($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setTimeline($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setCreatedAt($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setUpdatedAt($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setSlug($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setArchivedAt($arr[$keys[13]]);
     }
 
     /**
@@ -1284,6 +1337,7 @@ abstract class BasePEOperationArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PEOperationArchivePeer::P_USER_ID)) $criteria->add(PEOperationArchivePeer::P_USER_ID, $this->p_user_id);
         if ($this->isColumnModified(PEOperationArchivePeer::TITLE)) $criteria->add(PEOperationArchivePeer::TITLE, $this->title);
         if ($this->isColumnModified(PEOperationArchivePeer::DESCRIPTION)) $criteria->add(PEOperationArchivePeer::DESCRIPTION, $this->description);
+        if ($this->isColumnModified(PEOperationArchivePeer::EDITING_DESCRIPTION)) $criteria->add(PEOperationArchivePeer::EDITING_DESCRIPTION, $this->editing_description);
         if ($this->isColumnModified(PEOperationArchivePeer::FILE_NAME)) $criteria->add(PEOperationArchivePeer::FILE_NAME, $this->file_name);
         if ($this->isColumnModified(PEOperationArchivePeer::GEO_SCOPED)) $criteria->add(PEOperationArchivePeer::GEO_SCOPED, $this->geo_scoped);
         if ($this->isColumnModified(PEOperationArchivePeer::ONLINE)) $criteria->add(PEOperationArchivePeer::ONLINE, $this->online);
@@ -1359,6 +1413,7 @@ abstract class BasePEOperationArchive extends BaseObject implements Persistent
         $copyObj->setPUserId($this->getPUserId());
         $copyObj->setTitle($this->getTitle());
         $copyObj->setDescription($this->getDescription());
+        $copyObj->setEditingDescription($this->getEditingDescription());
         $copyObj->setFileName($this->getFileName());
         $copyObj->setGeoScoped($this->getGeoScoped());
         $copyObj->setOnline($this->getOnline());
@@ -1423,6 +1478,7 @@ abstract class BasePEOperationArchive extends BaseObject implements Persistent
         $this->p_user_id = null;
         $this->title = null;
         $this->description = null;
+        $this->editing_description = null;
         $this->file_name = null;
         $this->geo_scoped = null;
         $this->online = null;

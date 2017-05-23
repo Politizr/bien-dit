@@ -111,6 +111,7 @@ class UserController extends Controller
         // get actives ops for current user
         $user = $this->getUser();
         $operations = PEOperationQuery::create()
+            ->distinct()
             ->filterByOnline(true)
             ->filterByTimeline(true)
             ->filterByGeoScoped(false)

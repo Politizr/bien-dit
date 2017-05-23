@@ -57,6 +57,14 @@ class PDDebate extends BasePDDebate implements PDocumentInterface
     }
 
     /**
+     * @see PDocumentInterface::getDebate
+     */
+    public function getDebate()
+    {
+        return $this;
+    }
+
+    /**
      * @see PDocumentInterface::isDisplayed
      */
     public function isDisplayed()
