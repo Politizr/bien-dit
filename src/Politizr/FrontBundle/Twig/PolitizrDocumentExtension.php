@@ -1254,10 +1254,13 @@ class PolitizrDocumentExtension extends \Twig_Extension
         $user = $document->getUser();
 
         // get op for user
-        $operation = PEOperationQuery::create()
-            ->filterByOnline(true)
-            ->filterByPUserId($user->getId())
-            ->findOne();
+        $operation = null;
+        if ($user) {
+            $operation = PEOperationQuery::create()
+                ->filterByOnline(true)
+                ->filterByPUserId($user->getId())
+                ->findOne();
+        }
 
         // if none, check if document has op
         if (!$operation) {

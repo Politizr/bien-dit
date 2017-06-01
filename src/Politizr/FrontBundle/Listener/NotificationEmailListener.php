@@ -43,19 +43,21 @@ class NotificationEmailListener
 
         $puNotification = $event->getSubject();
 
-        // Récupération du user destinataire de l'email
-        $user = $this->getDestPUser($puNotification);
+        if ($puNotification) {
+            // Récupération du user destinataire de l'email
+            $user = $this->getDestPUser($puNotification);
 
-        // Contrôle user courant en ligne
-        // $isOnline = $this->isOnline($user);
+            // Contrôle user courant en ligne
+            // $isOnline = $this->isOnline($user);
 
-        // Contrôle user courant abonné à cette notification
-        $isSubscriber = $this->isSubscriber($puNotification, $user);
+            // Contrôle user courant abonné à cette notification
+            $isSubscriber = $this->isSubscriber($puNotification, $user);
 
-        // Envoi de l'email
-        if ($isSubscriber) {
-            $event = new GenericEvent($puNotification, array('user' => $user,));
-            $dispatcher =  $this->eventDispatcher->dispatch('notification_email', $event);
+            // Envoi de l'email
+            if ($isSubscriber) {
+                $event = new GenericEvent($puNotification, array('user' => $user,));
+                $dispatcher =  $this->eventDispatcher->dispatch('notification_email', $event);
+            }
         }
     }
 

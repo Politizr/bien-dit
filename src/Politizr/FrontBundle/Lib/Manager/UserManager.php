@@ -1125,21 +1125,18 @@ LIMIT :offset, :limit
     }
 
     /**
-     * Create PUSubscribeEmail between a user and every PNotification
+     * Create PUSubscribeEmail between a user and PNotification
      *
      * @param integer $userId
-     * @param integer $debateId
-     * @return PUFollowDD
+     * @param array $notificationIds
      */
-    public function createAllUserSubscribeEmail($userId)
+    public function createUserNotificationsSubscribeEmail($userId, $notificationIds)
     {
-        $notifications = PNotificationQuery::create()->find();
-
-        foreach ($notifications as $notif) {
+        foreach ($notificationIds as $notificationId) {
             $puSubscribeEmail = new PUSubscribeEmail();
 
             $puSubscribeEmail->setPUserId($userId);
-            $puSubscribeEmail->setPNotificationId($notif->getId());
+            $puSubscribeEmail->setPNotificationId($notificationId);
 
             $puSubscribeEmail->save();
         }

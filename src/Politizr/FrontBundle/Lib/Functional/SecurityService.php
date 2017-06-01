@@ -21,6 +21,7 @@ use Politizr\Constant\OrderConstants;
 use Politizr\Constant\UserConstants;
 use Politizr\Constant\PathConstants;
 use Politizr\Constant\ReputationConstants;
+use Politizr\Constant\NotificationConstants;
 
 use Politizr\Model\PUser;
 
@@ -696,7 +697,7 @@ class SecurityService
         $user->updateReputation(ReputationConstants::ACTION_CITIZEN_INSCRIPTION);
 
         // notification subscription > all by default
-        $this->userManager->createAllUserSubscribeEmail($user->getId());
+        $this->userManager->createUserNotificationsSubscribeEmail($user->getId(), NotificationConstants::getDefaultNotificationSubscribeIds());
 
         // (re)connect user
         $this->doPublicConnection($user);
@@ -758,7 +759,7 @@ class SecurityService
         $user->save();
         
         // notification subscription > all by default
-        $this->userManager->createAllUserSubscribeEmail($user->getId());
+        $this->userManager->createUserNotificationsSubscribeEmail($user->getId(), NotificationConstants::getDefaultNotificationSubscribeIds());
 
         $this->doPublicConnection($user);
 

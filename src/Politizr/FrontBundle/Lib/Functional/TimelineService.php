@@ -326,7 +326,7 @@ class TimelineService
         }
 
         // special case: author is current user and action is from a following user > we don't show "up" note to avoid duplicate notification
-        if ($userId && $author->getId() == $currentUser->getId()) {
+        if ($userId && $author && $author->getId() == $currentUser->getId()) {
             return null;
         }
 

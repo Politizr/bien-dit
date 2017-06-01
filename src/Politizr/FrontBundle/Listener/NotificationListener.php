@@ -752,17 +752,20 @@ class NotificationListener
         // $this->logger->info('objectName = '.print_r($objectName, true));
         // $this->logger->info('objectId = '.print_r($objectId, true));
 
-        $notif = new PUNotification();
+        $notif = null;
+        if ($userId) {
+            $notif = new PUNotification();
 
-        $notif->setPUserId($userId);
-        $notif->setPNotificationId($notificationId);
-        $notif->setPObjectName($objectName);
-        $notif->setPObjectId($objectId);
-        $notif->setPAuthorUserId($authorUserId);
-        $notif->setDescription($description);
-        $notif->setChecked(false);
-        
-        $notif->save();
+            $notif->setPUserId($userId);
+            $notif->setPNotificationId($notificationId);
+            $notif->setPObjectName($objectName);
+            $notif->setPObjectId($objectId);
+            $notif->setPAuthorUserId($authorUserId);
+            $notif->setDescription($description);
+            $notif->setChecked(false);
+            
+            $notif->save();
+        }
 
         return $notif;
     }
