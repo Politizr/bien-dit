@@ -132,7 +132,6 @@ class DocumentController extends Controller
         $utilsManager = $this->get('politizr.tools.global');
         $paragraphs = $utilsManager->explodeParagraphs($description);
 
-
         // Debate's reactions
         $reactions = $debate->getChildrenReactions(true, true);
 

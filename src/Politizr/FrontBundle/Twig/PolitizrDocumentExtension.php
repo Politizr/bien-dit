@@ -1268,7 +1268,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
             $operation = $debate->getPEOperation();
         }
 
-        if (!$operation) {
+        if (!$operation || $operation->getOnline() != true) {
             return null;
         }
 

@@ -268,7 +268,7 @@ class GlobalTools
         // }
 
         $paragraphs = array();
-        $count = preg_match_all('/<p[^>]*>(.*?)<\/p>|<h\d[^>]*>(.*?)<\/h\d>|<ul[^>]*>(.*?)<\/ul>|<blockquote[^>]*>(.*?)<\/blockquote>/is', $htmlText, $matches);
+        $count = preg_match_all('/<p[^>]*>(.*?)<\/p>|<h\d[^>]*>(.*?)<\/h\d>|<ul[^>]*>(.*?)<\/ul>|<blockquote[^>]*>(.*?)<\/blockquote>|<iframe[^>]*>(.*?)<\/iframe>/is', $htmlText, $matches);
         for ($i = 0; $i < $count; ++$i) {
             if (!$onlyP) {
                 $paragraphs[] = $matches[0][$i];

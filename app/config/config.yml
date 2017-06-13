@@ -632,8 +632,10 @@ hwi_oauth:
 # HTMLPurifierBundle
 exercise_html_purifier:
     default:
-        # Cache.SerializerPath: '%kernel.cache_dir%/htmlpurifier'
         Cache.SerializerPath: "%kernel.root_dir%/cache/htmlpurifier"
+    # custom:
+    #     HTML.SafeIframe: true
+    #     URI.SafeIframeRegexp: '%^(https?:)?//(www\.youtube(?:-nocookie)?\.com/embed/%'
 
 # Liip URL autoconverter
 liip_url_auto_converter:
