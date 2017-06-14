@@ -146,7 +146,7 @@ builders:
                     label:    En page d'accueil
     excel:
         params:
-            display:                            [ qualified, gender, name, first_name, cityStr, departmentStr, email, phone, email, website, twitter, facebook, reputation_score, newsletter ]
+            display:                            [ qualified, gender, name, first_name, cityStr, departmentStr, birthday, email, phone, email, website, twitter, facebook, reputation_score, newsletter, provider, provider_id ]
             filename:                           politizr-users
             filetype: ~
             datetime_format: ~
