@@ -1,8 +1,5 @@
 // beta
 $(function() {
-    loadFbInsights();
-    loadFbComments();
-
     $.when(
         lastDebateFollowersListing(
             $('.sidebarSubjectFollowers').find('#subjectFollowers').first(),
@@ -11,6 +8,9 @@ $(function() {
         )
     ).done(function(r1) {
         stickySidebar();
+
+        loadFbInsights();
+        loadFbComments();
     });
 
     $('.paragraph p').selectionSharer();
