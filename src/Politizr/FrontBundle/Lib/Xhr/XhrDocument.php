@@ -439,7 +439,7 @@ class XhrDocument
             array(
                 'title' => $debate->getTitle(),
                 'description' => strip_tags($debate->getDescription()),
-                'themaTags' => $debate->getArrayTags(TagConstants::TAG_TYPE_THEME),
+                'tags' => $debate->getArrayTags([TagConstants::TAG_TYPE_FAMILY, TagConstants::TAG_TYPE_THEME]),
                 'localization' => $debate->getPLocalizations(),
             ),
             $debate->getPublishConstraints(),
@@ -610,7 +610,7 @@ class XhrDocument
             array(
                 'title' => $reaction->getTitle(),
                 'description' => strip_tags($reaction->getDescription()),
-                'themaTags' => $reaction->getArrayTags(TagConstants::TAG_TYPE_THEME),
+                'tags' => $reaction->getArrayTags([TagConstants::TAG_TYPE_FAMILY, TagConstants::TAG_TYPE_THEME]),
                 'localization' => $reaction->getPLocalizations(),
             ),
             $reaction->getPublishConstraints(),

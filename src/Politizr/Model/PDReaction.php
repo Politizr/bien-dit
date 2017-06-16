@@ -86,7 +86,7 @@ class PDReaction extends BasePDReaction implements PDocumentInterface
                 new NotBlank(['message' => 'Le texte de votre document ne doit pas être vide.']),
                 // new Length(['min' => 140, 'minMessage' => 'Le corps de la publication doit contenir {{ limit }} actères minimum.']),
             ),
-            'themaTags' => new Count(['max' => 5, 'maxMessage' => 'Saisissez au maximum {{ limit }} thématiques libres.']),
+            'tags' => new Count(['max' => 5, 'maxMessage' => 'Saisissez au maximum {{ limit }} thématiques.']),
             'localization' => new Count(['min' => 1, 'minMessage' => 'Le document doit être associé à une localisation.']),
         ));
 
