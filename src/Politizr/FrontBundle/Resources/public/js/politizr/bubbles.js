@@ -34,7 +34,7 @@ function loadBubble(xhrPath, context, uuid, localLoader) {
  * Profile bubble
  */
 $("body").on("mouseenter", "[action='bubbleProfile']", function() {
-    console.log('*** mouseenter bubbleProfile');
+    // console.log('*** mouseenter bubbleProfile');
 
     $("#suggSlide.cycle-slideshow").css("overflow", "visible"); // In #suggestion : cycle2 hide the overflow during scrollHoriz, hiding the tag bubbles. This line forces it back to visible.
     $("#siblingsSlide.cycle-slideshow").css("overflow", "visible"); // In #suggestion : cycle2 hide the overflow during scrollHoriz, hiding the tag bubbles. This line forces it back to visible.
@@ -48,7 +48,7 @@ $("body").on("mouseenter", "[action='bubbleProfile']", function() {
     );
 
     var uuid = $(this).attr('uuid');
-    console.log('uuid = '+uuid);
+    // console.log('uuid = '+uuid);
 
     var localLoader = context.find('.ajaxLoader').first();
 
@@ -56,7 +56,7 @@ $("body").on("mouseenter", "[action='bubbleProfile']", function() {
 });
 
 $("body").on("mouseleave", ".bubblesProfile, .profileNameHolder, .avatar40", function() {
-    console.log('*** mouseleave bubblesProfile');
+    // console.log('*** mouseleave bubblesProfile');
 
     clearTimeout(timeoutId);
     $(".bubblesProfile").clearQueue().hide();
@@ -66,7 +66,7 @@ $("body").on("mouseleave", ".bubblesProfile, .profileNameHolder, .avatar40", fun
  * Tag bubble
  */
 $("body").on("mouseenter", "[action='bubbleTag']", function() {
-    console.log('*** mouseenter bubbleTag');
+    // console.log('*** mouseenter bubbleTag');
 
     $("#suggSlide.cycle-slideshow").css("overflow", "visible"); // In #suggestion : cycle2 hide the overflow during scrollHoriz, hiding the tag bubbles. This line forces it back to visible.
 
@@ -79,7 +79,7 @@ $("body").on("mouseenter", "[action='bubbleTag']", function() {
     );
 
     var uuid = $(this).attr('uuid');
-    console.log('uuid = '+uuid);
+    // console.log('uuid = '+uuid);
 
     var localLoader = context.find('.ajaxLoader').first();
 
@@ -87,7 +87,7 @@ $("body").on("mouseenter", "[action='bubbleTag']", function() {
 });
 
 $("body").on("mouseleave", ".bubblesTag, .tag", function() {
-    console.log('*** mouseleave bubblesTag');
+    // console.log('*** mouseleave bubblesTag');
 
     clearTimeout(timeoutId);
     $(".bubblesTag").clearQueue().hide();
@@ -95,14 +95,14 @@ $("body").on("mouseleave", ".bubblesTag, .tag", function() {
 
 // Bubbles help
 $("body").on("click", "[action='toogleHelperBubble']", function(e) {
-    console.log('*** action toogleHelperBubble');
+    // console.log('*** action toogleHelperBubble');
 
     if ($(this).closest('.helper').find('.bubblesHelper').is(':visible')) {
-        console.log('bubblesHelper visible');
+        // console.log('bubblesHelper visible');
         $('.bubblesHelper').hide();
         $('.helperTitle').removeClass("activeHelper");
     } else {
-        console.log('bubblesHelper not visible');
+        // console.log('bubblesHelper not visible');
         $('.bubblesHelper').hide();
         $('.helperTitle').removeClass("activeHelper");
         $(this).next('.bubblesHelper').toggle(); // do the toggle       
