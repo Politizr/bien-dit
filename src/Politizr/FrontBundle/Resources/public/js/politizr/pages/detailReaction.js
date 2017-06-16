@@ -4,6 +4,8 @@ $(function() {
     loadFbComments();
 
     stickySidebar();
+
+    $('.paragraph p').selectionSharer();
 });
 
 

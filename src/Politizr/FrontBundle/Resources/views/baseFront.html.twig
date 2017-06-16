@@ -10,6 +10,9 @@
         <meta name="description" content="{% block description %}{% endblock description %}">
 
         {% block metaopengraph %}
+            <meta property="fb:app_id" content="{{ facebook.client_id }}" />
+            <meta property="fb:admins" content="{{ facebook.admin_ids }}"/>
+
             {% block ogImage %}<meta property="og:image" content="{{ app.request.getSchemeAndHttpHost() ~ '/bundles/politizrfront/images/share_facebook.jpg' }}" />{% endblock ogImage %}
             <meta property="og:locale" content="fr_FR" />
             <meta property="og:type" content="article" />

@@ -12,4 +12,6 @@ $(function() {
     ).done(function(r1) {
         stickySidebar();
     });
+
+    $('.paragraph p').selectionSharer();
 });

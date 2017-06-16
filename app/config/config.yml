@@ -66,6 +66,7 @@ twig:
 #      image_path_diaporama:   %image_path_diaporama%
     globals:
         facebook:
+            admin_ids:          %facebook_admin_ids%
             client_id:          %facebook_client_id%
             client_secret:      %facebook_client_secret%
             scope:              %facebook_scope%

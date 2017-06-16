@@ -20,6 +20,11 @@
 {% block tcDescription %}{{ metaDescription }}{% endblock tcDescription %}
 {% block tcImage %}{{ reaction | tcImage(app.request.getSchemeAndHttpHost()) }}{% endblock tcImage %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/selection-sharer.css') }}" />
+{% endblock %}
+
 {% block javascriptHeader %}
     {{ parent() }}
 
@@ -75,7 +80,6 @@
                             {{ paragraph | purify }}
                         </div>
                     {% endfor %}
-                    <div class="fb-quote"></div>
                 </div>
 
                 {% if reactions | length > 0 %}
@@ -118,6 +122,7 @@
         </script>
     {% endif %}
 
+    <script src="{{ asset('bundles/politizrfront/js/politizr/selection-sharer.js') }}"></script>
     {% javascripts
         '@PolitizrFrontBundle/Resources/public/js/smoke.min.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/document/detail.js'
