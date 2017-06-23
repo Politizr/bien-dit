@@ -4,10 +4,10 @@ namespace Politizr\FrontBundle\Lib\Manager;
 use Politizr\Constant\NotificationConstants;
 
 use Politizr\Model\PUNotification;
-use Politizr\Model\PUSubscribeEmail;
+use Politizr\Model\PUSubscribePNE;
 
 use Politizr\Model\PUNotificationQuery;
-use Politizr\Model\PUSubscribeEmailQuery;
+use Politizr\Model\PUSubscribePNEQuery;
 
 /**
  * DB manager service for notification.
@@ -125,18 +125,18 @@ class NotificationManager
     }
 
     /**
-     * Create a new PUSubscribeEmail
+     * Create a new PUSubscribePNE
      *
      * @param integer $userId
-     * @param integer $notificationId
-     * @return PUSubscribeEmail
+     * @param integer $pnEmailId
+     * @return PUSubscribePNE
      */
-    public function createUserSubscribeEmail($userId, $notificationId)
+    public function createUserSubscribeEmail($userId, $pnEmailId)
     {
-        $subscribeEmail = new PUSubscribeEmail();
+        $subscribeEmail = new PUSubscribePNE();
 
         $subscribeEmail->setPUserId($userId);
-        $subscribeEmail->setPNotificationId($notificationId);
+        $subscribeEmail->setPNEmailId($pnEmailId);
 
         $subscribeEmail->save();
 
@@ -144,16 +144,16 @@ class NotificationManager
     }
 
     /**
-     * Delete user's email notification subscribe PUSubscribeEmail
+     * Delete user's email notification subscribe PUSubscribePNE
      *
      * @param integer $userId
-     * @param integer $notificationId
+     * @param integer $pnEmailId
      * @return integer
      */
-    public function deleteUserSubscribeEmail($userId, $notificationId)
+    public function deleteUserSubscribeEmail($userId, $pnEmailId)
     {
-        $result = PUSubscribeEmailQuery::create()
-            ->filterByPNotificationId($notificationId)
+        $result = PUSubscribePNEQuery::create()
+            ->filterByPNEmailId($pnEmailId)
             ->filterByPUserId($userId)
             ->delete();
 

@@ -246,11 +246,6 @@ abstract class BasePDDebate extends BaseObject implements Persistent
     protected $aPUser;
 
     /**
-     * @var        PEOperation
-     */
-    protected $aPEOperation;
-
-    /**
      * @var        PLCity
      */
     protected $aPLCity;
@@ -269,6 +264,11 @@ abstract class BasePDDebate extends BaseObject implements Persistent
      * @var        PLCountry
      */
     protected $aPLCountry;
+
+    /**
+     * @var        PEOperation
+     */
+    protected $aPEOperation;
 
     /**
      * @var        PropelObjectCollection|PUFollowDD[] Collection to store aggregation of PUFollowDD objects.
@@ -1693,11 +1693,11 @@ abstract class BasePDDebate extends BaseObject implements Persistent
         if ($deep) {  // also de-associate any related objects?
 
             $this->aPUser = null;
-            $this->aPEOperation = null;
             $this->aPLCity = null;
             $this->aPLDepartment = null;
             $this->aPLRegion = null;
             $this->aPLCountry = null;
+            $this->aPEOperation = null;
             $this->collPuFollowDdPDDebates = null;
 
             $this->collPuBookmarkDdPDDebates = null;
@@ -1871,13 +1871,6 @@ abstract class BasePDDebate extends BaseObject implements Persistent
                 $this->setPUser($this->aPUser);
             }
 
-            if ($this->aPEOperation !== null) {
-                if ($this->aPEOperation->isModified() || $this->aPEOperation->isNew()) {
-                    $affectedRows += $this->aPEOperation->save($con);
-                }
-                $this->setPEOperation($this->aPEOperation);
-            }
-
             if ($this->aPLCity !== null) {
                 if ($this->aPLCity->isModified() || $this->aPLCity->isNew()) {
                     $affectedRows += $this->aPLCity->save($con);
@@ -1904,6 +1897,13 @@ abstract class BasePDDebate extends BaseObject implements Persistent
                     $affectedRows += $this->aPLCountry->save($con);
                 }
                 $this->setPLCountry($this->aPLCountry);
+            }
+
+            if ($this->aPEOperation !== null) {
+                if ($this->aPEOperation->isModified() || $this->aPEOperation->isNew()) {
+                    $affectedRows += $this->aPEOperation->save($con);
+                }
+                $this->setPEOperation($this->aPEOperation);
             }
 
             if ($this->isNew() || $this->isModified()) {
@@ -2557,9 +2557,6 @@ abstract class BasePDDebate extends BaseObject implements Persistent
             if (null !== $this->aPUser) {
                 $result['PUser'] = $this->aPUser->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
-            if (null !== $this->aPEOperation) {
-                $result['PEOperation'] = $this->aPEOperation->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
             if (null !== $this->aPLCity) {
                 $result['PLCity'] = $this->aPLCity->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
@@ -2571,6 +2568,9 @@ abstract class BasePDDebate extends BaseObject implements Persistent
             }
             if (null !== $this->aPLCountry) {
                 $result['PLCountry'] = $this->aPLCountry->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->aPEOperation) {
+                $result['PEOperation'] = $this->aPEOperation->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
             if (null !== $this->collPuFollowDdPDDebates) {
                 $result['PuFollowDdPDDebates'] = $this->collPuFollowDdPDDebates->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -3045,58 +3045,6 @@ abstract class BasePDDebate extends BaseObject implements Persistent
     }
 
     /**
-     * Declares an association between this object and a PEOperation object.
-     *
-     * @param                  PEOperation $v
-     * @return PDDebate The current object (for fluent API support)
-     * @throws PropelException
-     */
-    public function setPEOperation(PEOperation $v = null)
-    {
-        if ($v === null) {
-            $this->setPEOperationId(NULL);
-        } else {
-            $this->setPEOperationId($v->getId());
-        }
-
-        $this->aPEOperation = $v;
-
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the PEOperation object, it will not be re-added.
-        if ($v !== null) {
-            $v->addPDDebate($this);
-        }
-
-
-        return $this;
-    }
-
-
-    /**
-     * Get the associated PEOperation object
-     *
-     * @param PropelPDO $con Optional Connection object.
-     * @param $doQuery Executes a query to get the object if required
-     * @return PEOperation The associated PEOperation object.
-     * @throws PropelException
-     */
-    public function getPEOperation(PropelPDO $con = null, $doQuery = true)
-    {
-        if ($this->aPEOperation === null && ($this->p_e_operation_id !== null) && $doQuery) {
-            $this->aPEOperation = PEOperationQuery::create()->findPk($this->p_e_operation_id, $con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aPEOperation->addPDDebates($this);
-             */
-        }
-
-        return $this->aPEOperation;
-    }
-
-    /**
      * Declares an association between this object and a PLCity object.
      *
      * @param                  PLCity $v
@@ -3302,6 +3250,58 @@ abstract class BasePDDebate extends BaseObject implements Persistent
         }
 
         return $this->aPLCountry;
+    }
+
+    /**
+     * Declares an association between this object and a PEOperation object.
+     *
+     * @param                  PEOperation $v
+     * @return PDDebate The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setPEOperation(PEOperation $v = null)
+    {
+        if ($v === null) {
+            $this->setPEOperationId(NULL);
+        } else {
+            $this->setPEOperationId($v->getId());
+        }
+
+        $this->aPEOperation = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the PEOperation object, it will not be re-added.
+        if ($v !== null) {
+            $v->addPDDebate($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated PEOperation object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return PEOperation The associated PEOperation object.
+     * @throws PropelException
+     */
+    public function getPEOperation(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aPEOperation === null && ($this->p_e_operation_id !== null) && $doQuery) {
+            $this->aPEOperation = PEOperationQuery::create()->findPk($this->p_e_operation_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aPEOperation->addPDDebates($this);
+             */
+        }
+
+        return $this->aPEOperation;
     }
 
 
@@ -6050,9 +6050,6 @@ abstract class BasePDDebate extends BaseObject implements Persistent
             if ($this->aPUser instanceof Persistent) {
               $this->aPUser->clearAllReferences($deep);
             }
-            if ($this->aPEOperation instanceof Persistent) {
-              $this->aPEOperation->clearAllReferences($deep);
-            }
             if ($this->aPLCity instanceof Persistent) {
               $this->aPLCity->clearAllReferences($deep);
             }
@@ -6064,6 +6061,9 @@ abstract class BasePDDebate extends BaseObject implements Persistent
             }
             if ($this->aPLCountry instanceof Persistent) {
               $this->aPLCountry->clearAllReferences($deep);
+            }
+            if ($this->aPEOperation instanceof Persistent) {
+              $this->aPEOperation->clearAllReferences($deep);
             }
 
             $this->alreadyInClearAllReferencesDeep = false;
@@ -6114,11 +6114,11 @@ abstract class BasePDDebate extends BaseObject implements Persistent
         }
         $this->collPTags = null;
         $this->aPUser = null;
-        $this->aPEOperation = null;
         $this->aPLCity = null;
         $this->aPLDepartment = null;
         $this->aPLRegion = null;
         $this->aPLCountry = null;
+        $this->aPEOperation = null;
     }
 
     /**

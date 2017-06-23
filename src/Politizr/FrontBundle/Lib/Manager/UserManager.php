@@ -11,7 +11,7 @@ use Politizr\Model\PUser;
 use Politizr\Model\PUFollowDD;
 use Politizr\Model\PUFollowU;
 use Politizr\Model\PUMandate;
-use Politizr\Model\PUSubscribeEmail;
+use Politizr\Model\PUSubscribePNE;
 
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PUFollowDDQuery;
@@ -1125,20 +1125,20 @@ LIMIT :offset, :limit
     }
 
     /**
-     * Create PUSubscribeEmail between a user and PNotification
+     * Create PUSubscribePNE
      *
      * @param integer $userId
-     * @param array $notificationIds
+     * @param array $emailIds
      */
-    public function createUserNotificationsSubscribeEmail($userId, $notificationIds)
+    public function createUserSubscribeNotifEmail($userId, $emailIds)
     {
-        foreach ($notificationIds as $notificationId) {
-            $puSubscribeEmail = new PUSubscribeEmail();
+        foreach ($emailIds as $emailId) {
+            $puSubscribePne = new PUSubscribePNE();
 
-            $puSubscribeEmail->setPUserId($userId);
-            $puSubscribeEmail->setPNotificationId($notificationId);
+            $puSubscribePne->setPUserId($userId);
+            $puSubscribePne->setPNEmailId($emailId);
 
-            $puSubscribeEmail->save();
+            $puSubscribePne->save();
         }
     }
 }

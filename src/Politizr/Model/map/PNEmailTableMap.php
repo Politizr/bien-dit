@@ -7,7 +7,7 @@ use \TableMap;
 
 
 /**
- * This class defines the structure of the 'p_notification' table.
+ * This class defines the structure of the 'p_n_email' table.
  *
  *
  *
@@ -18,13 +18,13 @@ use \TableMap;
  *
  * @package    propel.generator.src.Politizr.Model.map
  */
-class PNotificationTableMap extends TableMap
+class PNEmailTableMap extends TableMap
 {
 
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'src.Politizr.Model.map.PNotificationTableMap';
+    const CLASS_NAME = 'src.Politizr.Model.map.PNEmailTableMap';
 
     /**
      * Initialize the table attributes, columns and validators
@@ -36,18 +36,16 @@ class PNotificationTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('p_notification');
-        $this->setPhpName('PNotification');
-        $this->setClassname('Politizr\\Model\\PNotification');
+        $this->setName('p_n_email');
+        $this->setPhpName('PNEmail');
+        $this->setClassname('Politizr\\Model\\PNEmail');
         $this->setPackage('src.Politizr.Model');
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addColumn('uuid', 'Uuid', 'VARCHAR', false, 50, null);
-        $this->addForeignKey('p_n_type_id', 'PNTypeId', 'INTEGER', 'p_n_type', 'id', true, null, null);
         $this->addColumn('title', 'Title', 'VARCHAR', false, 250, null);
         $this->addColumn('description', 'Description', 'LONGVARCHAR', false, null, null);
-        $this->addColumn('online', 'Online', 'BOOLEAN', false, 1, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
         // validators
@@ -58,9 +56,8 @@ class PNotificationTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('PNType', 'Politizr\\Model\\PNType', RelationMap::MANY_TO_ONE, array('p_n_type_id' => 'id', ), 'CASCADE', 'CASCADE');
-        $this->addRelation('PUNotificationPNotification', 'Politizr\\Model\\PUNotification', RelationMap::ONE_TO_MANY, array('id' => 'p_notification_id', ), 'CASCADE', 'CASCADE', 'PUNotificationPNotifications');
-        $this->addRelation('PUNotificationPUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PUNotificationPUsers');
+        $this->addRelation('PUSubscribePNE', 'Politizr\\Model\\PUSubscribePNE', RelationMap::ONE_TO_MANY, array('id' => 'p_n_email_id', ), 'CASCADE', 'CASCADE', 'PUSubscribePNEs');
+        $this->addRelation('PUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PUsers');
     } // buildRelations()
 
     /**
@@ -77,10 +74,6 @@ class PNotificationTableMap extends TableMap
   'update_column' => 'updated_at',
   'disable_updated_at' => 'false',
 ),
-            'query_cache' =>  array (
-  'backend' => 'apc',
-  'lifetime' => 3600,
-),
             'uuid' =>  array (
   'name' => 'uuid',
   'version' => '4',
@@ -91,4 +84,4 @@ class PNotificationTableMap extends TableMap
         );
     } // getBehaviors()
 
-} // PNotificationTableMap
+} // PNEmailTableMap

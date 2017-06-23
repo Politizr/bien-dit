@@ -9,14 +9,6 @@ namespace Politizr\Constant;
 class NotificationConstants
 {
     // ******************************************************** //
-    //                      NOTIFS TYPES                        //
-    // ******************************************************** //
-    const TYPE_SCREEN = 1;
-    const TYPE_EMAIL = 2;
-    const TYPE_EMAIL_TXT = 3;
-    const TYPE_EMAIL_SUBJECT = 4;
-
-    // ******************************************************** //
     //                      DOCUMENTS                           //
     // ******************************************************** //
     const ID_D_COMMENT_PUBLISH = 1;
@@ -76,39 +68,4 @@ class NotificationConstants
     //                        ADMIN                             //
     // ******************************************************** //
     const ID_ADM_MESSAGE = 19;
-
-
-    /**
-     * Return array of region ids
-     *
-     * @return array
-     */
-    public static function getDefaultNotificationSubscribeIds()
-    {
-        return [
-            NotificationConstants::ID_D_COMMENT_PUBLISH,
-            NotificationConstants::ID_D_NOTE_POS,
-            NotificationConstants::ID_D_NOTE_NEG,
-            NotificationConstants::ID_D_D_REACTION_PUBLISH,
-            NotificationConstants::ID_D_D_FOLLOWED,
-            NotificationConstants::ID_D_R_REACTION_PUBLISH,
-            NotificationConstants::ID_D_C_NOTE_POS,
-            NotificationConstants::ID_D_C_NOTE_NEG,
-            NotificationConstants::ID_U_FOLLOWED,
-            NotificationConstants::ID_U_BADGE,
-            NotificationConstants::ID_S_U_DEBATE_PUBLISH,
-            NotificationConstants::ID_S_U_REACTION_PUBLISH,
-            NotificationConstants::ID_S_U_COMMENT_PUBLISH,
-            NotificationConstants::ID_S_D_REACTION_PUBLISH,
-            NotificationConstants::ID_S_D_D_COMMENT_PUBLISH,
-            NotificationConstants::ID_S_D_R_COMMENT_PUBLISH,
-            NotificationConstants::ID_L_U_CITY,
-            NotificationConstants::ID_L_U_DEPARTMENT,
-            NotificationConstants::ID_L_U_REGION,
-            NotificationConstants::ID_L_D_CITY,
-            NotificationConstants::ID_L_D_DEPARTMENT,
-            NotificationConstants::ID_ADM_MESSAGE
-        ];
-    }
-
 }

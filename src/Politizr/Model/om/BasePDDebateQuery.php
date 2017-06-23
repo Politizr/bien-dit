@@ -98,10 +98,6 @@ use Politizr\Model\PUser;
  * @method PDDebateQuery rightJoinPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUser relation
  * @method PDDebateQuery innerJoinPUser($relationAlias = null) Adds a INNER JOIN clause to the query using the PUser relation
  *
- * @method PDDebateQuery leftJoinPEOperation($relationAlias = null) Adds a LEFT JOIN clause to the query using the PEOperation relation
- * @method PDDebateQuery rightJoinPEOperation($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PEOperation relation
- * @method PDDebateQuery innerJoinPEOperation($relationAlias = null) Adds a INNER JOIN clause to the query using the PEOperation relation
- *
  * @method PDDebateQuery leftJoinPLCity($relationAlias = null) Adds a LEFT JOIN clause to the query using the PLCity relation
  * @method PDDebateQuery rightJoinPLCity($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PLCity relation
  * @method PDDebateQuery innerJoinPLCity($relationAlias = null) Adds a INNER JOIN clause to the query using the PLCity relation
@@ -117,6 +113,10 @@ use Politizr\Model\PUser;
  * @method PDDebateQuery leftJoinPLCountry($relationAlias = null) Adds a LEFT JOIN clause to the query using the PLCountry relation
  * @method PDDebateQuery rightJoinPLCountry($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PLCountry relation
  * @method PDDebateQuery innerJoinPLCountry($relationAlias = null) Adds a INNER JOIN clause to the query using the PLCountry relation
+ *
+ * @method PDDebateQuery leftJoinPEOperation($relationAlias = null) Adds a LEFT JOIN clause to the query using the PEOperation relation
+ * @method PDDebateQuery rightJoinPEOperation($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PEOperation relation
+ * @method PDDebateQuery innerJoinPEOperation($relationAlias = null) Adds a INNER JOIN clause to the query using the PEOperation relation
  *
  * @method PDDebateQuery leftJoinPuFollowDdPDDebate($relationAlias = null) Adds a LEFT JOIN clause to the query using the PuFollowDdPDDebate relation
  * @method PDDebateQuery rightJoinPuFollowDdPDDebate($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PuFollowDdPDDebate relation
@@ -1480,82 +1480,6 @@ abstract class BasePDDebateQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related PEOperation object
-     *
-     * @param   PEOperation|PropelObjectCollection $pEOperation The related object(s) to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return                 PDDebateQuery The current query, for fluid interface
-     * @throws PropelException - if the provided filter is invalid.
-     */
-    public function filterByPEOperation($pEOperation, $comparison = null)
-    {
-        if ($pEOperation instanceof PEOperation) {
-            return $this
-                ->addUsingAlias(PDDebatePeer::P_E_OPERATION_ID, $pEOperation->getId(), $comparison);
-        } elseif ($pEOperation instanceof PropelObjectCollection) {
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-
-            return $this
-                ->addUsingAlias(PDDebatePeer::P_E_OPERATION_ID, $pEOperation->toKeyValue('PrimaryKey', 'Id'), $comparison);
-        } else {
-            throw new PropelException('filterByPEOperation() only accepts arguments of type PEOperation or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the PEOperation relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return PDDebateQuery The current query, for fluid interface
-     */
-    public function joinPEOperation($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('PEOperation');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'PEOperation');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the PEOperation relation PEOperation object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   \Politizr\Model\PEOperationQuery A secondary query class using the current class as primary query
-     */
-    public function usePEOperationQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        return $this
-            ->joinPEOperation($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'PEOperation', '\Politizr\Model\PEOperationQuery');
-    }
-
-    /**
      * Filter the query by a related PLCity object
      *
      * @param   PLCity|PropelObjectCollection $pLCity The related object(s) to use as filter
@@ -1857,6 +1781,82 @@ abstract class BasePDDebateQuery extends ModelCriteria
         return $this
             ->joinPLCountry($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'PLCountry', '\Politizr\Model\PLCountryQuery');
+    }
+
+    /**
+     * Filter the query by a related PEOperation object
+     *
+     * @param   PEOperation|PropelObjectCollection $pEOperation The related object(s) to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PDDebateQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPEOperation($pEOperation, $comparison = null)
+    {
+        if ($pEOperation instanceof PEOperation) {
+            return $this
+                ->addUsingAlias(PDDebatePeer::P_E_OPERATION_ID, $pEOperation->getId(), $comparison);
+        } elseif ($pEOperation instanceof PropelObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(PDDebatePeer::P_E_OPERATION_ID, $pEOperation->toKeyValue('PrimaryKey', 'Id'), $comparison);
+        } else {
+            throw new PropelException('filterByPEOperation() only accepts arguments of type PEOperation or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PEOperation relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PDDebateQuery The current query, for fluid interface
+     */
+    public function joinPEOperation($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PEOperation');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PEOperation');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PEOperation relation PEOperation object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PEOperationQuery A secondary query class using the current class as primary query
+     */
+    public function usePEOperationQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinPEOperation($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PEOperation', '\Politizr\Model\PEOperationQuery');
     }
 
     /**

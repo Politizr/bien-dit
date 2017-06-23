@@ -4,6 +4,7 @@ namespace Politizr\FrontBundle\Twig;
 use Symfony\Component\Form\FormView;
 
 use Politizr\Constant\NotificationConstants;
+use Politizr\Constant\EmailConstants;
 use Politizr\Constant\ReputationConstants;
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\UserConstants;
@@ -145,6 +146,11 @@ class PolitizrUserExtension extends \Twig_Extension
             new \Twig_SimpleFilter(
                 'linkedNotification',
                 array($this, 'linkedNotification'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
+                'linkedNotificationEmail',
+                array($this, 'linkedNotificationEmail'),
                 array('is_safe' => array('html'))
             ),
             new \Twig_SimpleFilter(
@@ -568,25 +574,18 @@ class PolitizrUserExtension extends \Twig_Extension
 
     }
 
-
     /**
-     * Notification HTML rendering
+     * Screen notification HTML rendering
      *
      * @param PUNotification $notification
      * @param int $type NotificationConstants
      * @return html
      */
-    public function linkedNotification(PUNotification $notification, $type = NotificationConstants::TYPE_SCREEN)
+    public function linkedNotification(PUNotification $notification)
     {
         // $this->logger->info('*** linkedNotification');
         // $this->logger->info('$notification = '.print_r($notification, true));
         // $this->logger->info('$type = '.print_r($type, true));
-
-        // absolute URL for email notif
-        $absolute = false;
-        if (NotificationConstants::TYPE_EMAIL === $type) {
-            $absolute = true;
-        }
 
         // Update attributes depending of context
         $attr = $this->documentService->computeDocumentContextAttributes(
@@ -605,14 +604,68 @@ class PolitizrUserExtension extends \Twig_Extension
 
         $authorUrl = null;
         if ($author) {
-            $authorUrl = $this->router->generate('UserDetail', array('slug' => $author->getSlug()), $absolute);
+            $authorUrl = $this->router->generate('UserDetail', array('slug' => $author->getSlug()));
+        }
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Notification:_notificationScreen.html.twig',
+            array(
+                'notification' => $notification,
+                'notificationId' => $notification->getPNotificationId(),
+                'subject' => $subject,
+                'title' => $title,
+                'url' => $url,
+                'author' => $author,
+                'authorUrl' => $authorUrl,
+                'document' => $document,
+                'documentUrl' => $documentUrl,
+            )
+        );
+
+        return $html;
+    }
+
+    /**
+     * Email notification HTML rendering
+     *
+     * @param PUNotification $notification
+     * @param int pnEmailId Email ID notification
+     * @param int $type EmailConstants
+     * @return html
+     */
+    public function linkedNotificationEmail(PUNotification $notification, $pnEmailId, $type = EmailConstants::TYPE_EMAIL)
+    {
+        // $this->logger->info('*** linkedNotificationEmail');
+        // $this->logger->info('$notification = '.print_r($notification, true));
+        // $this->logger->info('$pnEmailId = '.print_r($pnEmailId, true));
+        // $this->logger->info('$type = '.print_r($type, true));
+
+        // Update attributes depending of context
+        $attr = $this->documentService->computeDocumentContextAttributes(
+            $notification->getPObjectName(),
+            $notification->getPObjectId()
+        );
+
+        $subject = $attr['subject'];
+        $title = $attr['title'];
+        $url = $attr['url'];
+        $document = $attr['document'];
+        $documentUrl = $attr['documentUrl'];
+
+        // Récupération de l'auteur de l'interaction
+        $author = PUserQuery::create()->findPk($notification->getPAuthorUserId());
+
+        $authorUrl = null;
+        if ($author) {
+            $authorUrl = $this->router->generate('UserDetail', array('slug' => $author->getSlug()), true);
         }
 
         // Screen / Email rendering
-        if (NotificationConstants::TYPE_EMAIL === $type || NotificationConstants::TYPE_EMAIL_TXT === $type) {
+        if (EmailConstants::TYPE_EMAIL === $type || EmailConstants::TYPE_EMAIL_TXT === $type) {
             $html = $this->templating->render(
-                'PolitizrFrontBundle:Notification:_notificationMessage.html.twig',
+                'PolitizrFrontBundle:Notification:_notificationEmailBody.html.twig',
                 array(
+                    'pnEmailId' => $pnEmailId,
                     'type' => $type,
                     'notification' => $notification,
                     'notificationId' => $notification->getPNotificationId(),
@@ -625,25 +678,11 @@ class PolitizrUserExtension extends \Twig_Extension
                     'documentUrl' => $documentUrl,
                 )
             );
-        } elseif (NotificationConstants::TYPE_EMAIL_SUBJECT === $type) {
+        } elseif (EmailConstants::TYPE_EMAIL_SUBJECT === $type) {
             $html = $this->templating->render(
-                'PolitizrFrontBundle:Notification:_notificationMessageSubject.html.twig',
+                'PolitizrFrontBundle:Notification:_notificationEmailSubject.html.twig',
                 array(
-                    'notification' => $notification,
-                    'notificationId' => $notification->getPNotificationId(),
-                    'subject' => $subject,
-                    'title' => $title,
-                    'url' => $url,
-                    'author' => $author,
-                    'authorUrl' => $authorUrl,
-                    'document' => $document,
-                    'documentUrl' => $documentUrl,
-                )
-            );
-        } else {
-            $html = $this->templating->render(
-                'PolitizrFrontBundle:Notification:_notificationScreen.html.twig',
-                array(
+                    'pnEmailId' => $pnEmailId,
                     'notification' => $notification,
                     'notificationId' => $notification->getPNotificationId(),
                     'subject' => $subject,

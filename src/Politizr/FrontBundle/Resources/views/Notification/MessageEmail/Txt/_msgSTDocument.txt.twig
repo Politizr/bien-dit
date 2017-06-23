@@ -1,9 +1,0 @@
-{% include 'PolitizrFrontBundle:Notification\\MessageEmail\\Txt:_emailNotificationHeader.txt.twig' with {'document': document} only %}
-
-{% include 'PolitizrFrontBundle:Notification\\MessageEmail\\Txt:_emailAuthorPhoto.txt.twig' with {'author': author, 'authorUrl': authorUrl } only %}
-
-{% include 'PolitizrFrontBundle:Notification\\MessageEmail\\Txt:_emailAuthorName.txt.twig' with {'author': author, 'authorUrl': authorUrl } only %}
-
-a publié un {% include 'PolitizrFrontBundle:Notification\\MessageEmail:_emailContent.html.twig' with {'url': url, 'description': title} only %} qui contient une thématique que vous suivez.
-
-{% include 'PolitizrFrontBundle:Notification\\MessageEmail\\Txt:_emailNotificationFooter.txt.twig' with {'url': url} only %}

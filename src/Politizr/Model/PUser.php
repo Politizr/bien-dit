@@ -1072,30 +1072,6 @@ class PUser extends BasePUser implements UserInterface
     }
 
     // ************************************************************************************ //
-    //                                          NOTIFICATIONS
-    // ************************************************************************************ //
-
-    /**
-     * Check if user subscribe to notif email
-     *
-     * @param int $notification
-     * @return boolean
-     */
-    public function isEmailNotificationSubscriber($notificationId)
-    {
-        $isSubscriber = PUSubscribeEmailQuery::create()
-            ->filterByPNotificationId($notificationId)
-            ->filterByPUserId($this->getId())
-            ->findOne();
-
-        if ($isSubscriber) {
-            return true;
-        }
-
-        return false;
-    }
-
-    // ************************************************************************************ //
     //                                          LOCALISATION
     // ************************************************************************************ //
 
