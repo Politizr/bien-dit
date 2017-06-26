@@ -39,7 +39,6 @@ class TimelineService
      *
      * @param @security.token_storage
      * @param @security.authorization_checker
-     * @param @templating
      * @param @politizr.manager.user
      * @param @politizr.manager.document
      * @param @logger
@@ -47,7 +46,6 @@ class TimelineService
     public function __construct(
         $securityTokenStorage,
         $securityAuthorizationChecker,
-        $templating,
         $userManager,
         $documentManager,
         $logger
@@ -55,12 +53,20 @@ class TimelineService
         $this->securityTokenStorage = $securityTokenStorage;
         $this->securityAuthorizationChecker =$securityAuthorizationChecker;
 
-        $this->templating = $templating;
-
         $this->userManager = $userManager;
         $this->documentManager = $documentManager;
         
         $this->logger = $logger;
+    }
+
+    /**
+     * Inject Twig templating service w. setter to avoid circular reference exception
+     * 
+     * @param @templating
+     */
+    public function setTemplatingService($templating)
+    {
+        $this->templating = $templating;
     }
 
     /* ######################################################################################################## */

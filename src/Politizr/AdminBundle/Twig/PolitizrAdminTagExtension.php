@@ -19,27 +19,30 @@ use Politizr\Model\PEOperation;
  */
 class PolitizrAdminTagExtension extends \Twig_Extension
 {
-    private $logger;
+    private $documentService;
 
     private $formFactory;
-
-    protected $documentService;
     private $router;
-    private $templating;
+    private $logger;
 
     /**
      *
+     * @param politizr.functional.document
+     * @param form.factory
+     * @param router
+     * @param logger
      */
-    public function __construct($serviceContainer)
-    {
-        $this->logger = $serviceContainer->get('logger');
-
-        $this->formFactory = $serviceContainer->get('form.factory');
-
-        $this->documentService = $serviceContainer->get('politizr.functional.document');
-
-        $this->router = $serviceContainer->get('router');
-        $this->templating = $serviceContainer->get('templating');
+    public function __construct(
+        $documentService,
+        $formFactory,
+        $router,
+        $logger
+    ) {
+        $this->documentService = $documentService;
+        
+        $this->formFactory = $formFactory;
+        $this->router = $router;
+        $this->logger = $logger;
     }
 
     /* ######################################################################################################## */
@@ -55,51 +58,37 @@ class PolitizrAdminTagExtension extends \Twig_Extension
             'adminUserTags'  => new \Twig_SimpleFunction(
                 'adminUserTags',
                 array($this, 'adminUserTags'),
-                array(
-                    'is_safe' => array('html')
-                )
+                array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             'adminDebateTags'  => new \Twig_SimpleFunction(
                 'adminDebateTags',
                 array($this, 'adminDebateTags'),
-                array(
-                    'is_safe' => array('html')
-                    )
+                array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             'adminReactionTags'  => new \Twig_SimpleFunction(
                 'adminReactionTags',
                 array($this, 'adminReactionTags'),
-                array(
-                    'is_safe' => array('html')
-                    )
+                array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             'adminOperationTags'  => new \Twig_SimpleFunction(
                 'adminOperationTags',
                 array($this, 'adminOperationTags'),
-                array(
-                    'is_safe' => array('html')
-                    )
+                array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             'adminTagDebates'  => new \Twig_SimpleFunction(
                 'adminTagDebates',
                 array($this, 'adminTagDebates'),
-                array(
-                    'is_safe' => array('html')
-                    )
+                array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             'adminTagReactions'  => new \Twig_SimpleFunction(
                 'adminTagReactions',
                 array($this, 'adminTagReactions'),
-                array(
-                    'is_safe' => array('html')
-                    )
+                array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             'adminTagUsers'  => new \Twig_SimpleFunction(
                 'adminTagUsers',
                 array($this, 'adminTagUsers'),
-                array(
-                    'is_safe' => array('html')
-                    )
+                array('is_safe' => array('html'), 'needs_environment' => true)
             ),
         );
     }
@@ -122,7 +111,7 @@ class PolitizrAdminTagExtension extends \Twig_Extension
      * @param boolean $withHidden manage hidden tag's property
      * @return string
      */
-    public function adminUserTags(PUser $user, $tagTypeId = null, $zoneId = 1, $newTag = true, $withHidden = true, $mode = 'edit')
+    public function adminUserTags(\Twig_Environment $env, PUser $user, $tagTypeId = null, $zoneId = 1, $newTag = true, $withHidden = true, $mode = 'edit')
     {
         $this->logger->info('*** adminUserTags');
         // $this->logger->info('$tagTypeId = '.print_r($tagTypeId, true));
@@ -133,7 +122,7 @@ class PolitizrAdminTagExtension extends \Twig_Extension
 
         if ('edit' === $mode) {
             // Construction des chemins XHR
-            $xhrPathCreate = $this->templating->render(
+            $xhrPathCreate = $env->render(
                 'PolitizrAdminBundle:Fragment\\Xhr:_xhrPath.html.twig',
                 array(
                     'xhrRoute' => 'ADMIN_ROUTE_TAG_USER_CREATE',
@@ -143,7 +132,7 @@ class PolitizrAdminTagExtension extends \Twig_Extension
                 )
             );
 
-            $xhrPathHide = $this->templating->render(
+            $xhrPathHide = $env->render(
                 'PolitizrAdminBundle:Fragment\\Xhr:_xhrPath.html.twig',
                 array(
                     'xhrRoute' => 'ADMIN_ROUTE_TAG_USER_HIDE',
@@ -153,7 +142,7 @@ class PolitizrAdminTagExtension extends \Twig_Extension
                 )
             );
 
-            $xhrPathDelete = $this->templating->render(
+            $xhrPathDelete = $env->render(
                 'PolitizrAdminBundle:Fragment\\Xhr:_xhrPath.html.twig',
                 array(
                     'xhrRoute' => 'ADMIN_ROUTE_TAG_USER_DELETE',
@@ -164,7 +153,7 @@ class PolitizrAdminTagExtension extends \Twig_Extension
             );
 
             // Construction du rendu du tag
-            $html = $this->templating->render(
+            $html = $env->render(
                 'PolitizrAdminBundle:Fragment\\Tag:_edit.html.twig',
                 array(
                     'object' => $user,
@@ -180,7 +169,7 @@ class PolitizrAdminTagExtension extends \Twig_Extension
             );
         } else {
             // Construction du rendu du tag
-            $html = $this->templating->render(
+            $html = $env->render(
                 'PolitizrAdminBundle:Fragment\\Tag:_list.html.twig',
                 array(
                     'tags' => $user->getTags($tagTypeId, $withHidden?null:true),
@@ -201,7 +190,7 @@ class PolitizrAdminTagExtension extends \Twig_Extension
      * @param string $mode edit (default) / show
      * @return string
      */
-    public function adminDebateTags(PDDebate $debate, $tagTypeId, $zoneId = 1, $newTag = false, $mode = 'edit')
+    public function adminDebateTags(\Twig_Environment $env, PDDebate $debate, $tagTypeId, $zoneId = 1, $newTag = false, $mode = 'edit')
     {
         $this->logger->info('*** adminDebateTags');
         // $this->logger->info('$debate = '.print_r($debate, true));
@@ -211,7 +200,7 @@ class PolitizrAdminTagExtension extends \Twig_Extension
 
         if ('edit' === $mode) {
             // Construction des chemins XHR
-            $xhrPathCreate = $this->templating->render(
+            $xhrPathCreate = $env->render(
                 'PolitizrAdminBundle:Fragment\\Xhr:_xhrPath.html.twig',
                 array(
                     'xhrRoute' => 'ADMIN_ROUTE_TAG_DEBATE_CREATE',
@@ -221,7 +210,7 @@ class PolitizrAdminTagExtension extends \Twig_Extension
                 )
             );
 
-            $xhrPathDelete = $this->templating->render(
+            $xhrPathDelete = $env->render(
                 'PolitizrAdminBundle:Fragment\\Xhr:_xhrPath.html.twig',
                 array(
                     'xhrRoute' => 'ADMIN_ROUTE_TAG_DEBATE_DELETE',
@@ -232,7 +221,7 @@ class PolitizrAdminTagExtension extends \Twig_Extension
             );
 
             // Construction du rendu du tag
-            $html = $this->templating->render(
+            $html = $env->render(
                 'PolitizrAdminBundle:Fragment\\Tag:_edit.html.twig',
                 array(
                     'object' => $debate,
@@ -247,7 +236,7 @@ class PolitizrAdminTagExtension extends \Twig_Extension
             );
         } else {
             // Construction du rendu du tag
-            $html = $this->templating->render(
+            $html = $env->render(
                 'PolitizrAdminBundle:Fragment\\Tag:_list.html.twig',
                 array(
                     'tags' => $debate->getTags($tagTypeId, null),
@@ -268,7 +257,7 @@ class PolitizrAdminTagExtension extends \Twig_Extension
      * @param string $mode edit (default) / show
      * @return string
      */
-    public function adminReactionTags(PDReaction $reaction, $tagTypeId, $zoneId = 1, $newTag = false, $mode = 'edit')
+    public function adminReactionTags(\Twig_Environment $env, PDReaction $reaction, $tagTypeId, $zoneId = 1, $newTag = false, $mode = 'edit')
     {
         $this->logger->info('*** adminReactionTags');
         // $this->logger->info('$reaction = '.print_r($reaction, true));
@@ -278,7 +267,7 @@ class PolitizrAdminTagExtension extends \Twig_Extension
 
         if ('edit' === $mode) {
             // Construction des chemins XHR
-            $xhrPathCreate = $this->templating->render(
+            $xhrPathCreate = $env->render(
                 'PolitizrAdminBundle:Fragment\\Xhr:_xhrPath.html.twig',
                 array(
                     'xhrRoute' => 'ADMIN_ROUTE_TAG_DEBATE_CREATE',
@@ -288,7 +277,7 @@ class PolitizrAdminTagExtension extends \Twig_Extension
                 )
             );
 
-            $xhrPathDelete = $this->templating->render(
+            $xhrPathDelete = $env->render(
                 'PolitizrAdminBundle:Fragment\\Xhr:_xhrPath.html.twig',
                 array(
                     'xhrRoute' => 'ADMIN_ROUTE_TAG_DEBATE_DELETE',
@@ -299,7 +288,7 @@ class PolitizrAdminTagExtension extends \Twig_Extension
             );
 
             // Construction du rendu du tag
-            $html = $this->templating->render(
+            $html = $env->render(
                 'PolitizrAdminBundle:Fragment\\Tag:_edit.html.twig',
                 array(
                     'object' => $reaction,
@@ -314,7 +303,7 @@ class PolitizrAdminTagExtension extends \Twig_Extension
             );
         } else {
             // Construction du rendu du tag
-            $html = $this->templating->render(
+            $html = $env->render(
                 'PolitizrAdminBundle:Fragment\\Tag:_list.html.twig',
                 array(
                     'tags' => $reaction->getTags($tagTypeId, null),
@@ -335,7 +324,7 @@ class PolitizrAdminTagExtension extends \Twig_Extension
      * @param string $mode edit (default) / show
      * @return string
      */
-    public function adminOperationTags(PEOperation $operation, $tagTypeId, $zoneId = 1, $newTag = false, $mode = 'edit')
+    public function adminOperationTags(\Twig_Environment $env, PEOperation $operation, $tagTypeId, $zoneId = 1, $newTag = false, $mode = 'edit')
     {
         $this->logger->info('*** adminOperationTags');
         // $this->logger->info('$operation = '.print_r($operation, true));
@@ -345,7 +334,7 @@ class PolitizrAdminTagExtension extends \Twig_Extension
 
         if ('edit' === $mode) {
             // Construction des chemins XHR
-            $xhrPathCreate = $this->templating->render(
+            $xhrPathCreate = $env->render(
                 'PolitizrAdminBundle:Fragment\\Xhr:_xhrPath.html.twig',
                 array(
                     'xhrRoute' => 'ADMIN_ROUTE_TAG_OPERATION_CREATE',
@@ -355,7 +344,7 @@ class PolitizrAdminTagExtension extends \Twig_Extension
                 )
             );
 
-            $xhrPathDelete = $this->templating->render(
+            $xhrPathDelete = $env->render(
                 'PolitizrAdminBundle:Fragment\\Xhr:_xhrPath.html.twig',
                 array(
                     'xhrRoute' => 'ADMIN_ROUTE_TAG_OPERATION_DELETE',
@@ -366,7 +355,7 @@ class PolitizrAdminTagExtension extends \Twig_Extension
             );
 
             // Construction du rendu du tag
-            $html = $this->templating->render(
+            $html = $env->render(
                 'PolitizrAdminBundle:Fragment\\Tag:_edit.html.twig',
                 array(
                     'object' => $operation,
@@ -381,7 +370,7 @@ class PolitizrAdminTagExtension extends \Twig_Extension
             );
         } else {
             // Construction du rendu du tag
-            $html = $this->templating->render(
+            $html = $env->render(
                 'PolitizrAdminBundle:Fragment\\Tag:_list.html.twig',
                 array(
                     'tags' => $operation->getTags($tagTypeId, null),
@@ -398,13 +387,13 @@ class PolitizrAdminTagExtension extends \Twig_Extension
      * @param PTag $tag
      * @return string
      */
-    public function adminTagDebates(PTag $tag)
+    public function adminTagDebates(\Twig_Environment $env, PTag $tag)
     {
         $this->logger->info('*** adminTagDebates');
         // $this->logger->info('$tag = '.print_r($tag, true));
 
         // Construction du rendu du tag
-        $html = $this->templating->render(
+        $html = $env->render(
             'PolitizrAdminBundle:Fragment\\Debate:_tagDebates.html.twig',
             array(
                 'tag' => $tag,
@@ -421,13 +410,13 @@ class PolitizrAdminTagExtension extends \Twig_Extension
      * @param PTag $tag
      * @return string
      */
-    public function adminTagReactions(PTag $tag)
+    public function adminTagReactions(\Twig_Environment $env, PTag $tag)
     {
         $this->logger->info('*** adminTagReactions');
         // $this->logger->info('$tag = '.print_r($tag, true));
 
         // Construction du rendu du tag
-        $html = $this->templating->render(
+        $html = $env->render(
             'PolitizrAdminBundle:Fragment\\Reaction:_tagReactions.html.twig',
             array(
                 'tag' => $tag,
@@ -444,13 +433,13 @@ class PolitizrAdminTagExtension extends \Twig_Extension
      * @param PTag $tag
      * @return string
      */
-    public function adminTagUsers(PTag $tag)
+    public function adminTagUsers(\Twig_Environment $env, PTag $tag)
     {
         $this->logger->info('*** adminTagUsers');
         // $this->logger->info('$tag = '.print_r($tag, true));
 
         // Construction du rendu du tag
-        $html = $this->templating->render(
+        $html = $env->render(
             'PolitizrAdminBundle:Fragment\\User:_tagUsers.html.twig',
             array(
                 'tag' => $tag,

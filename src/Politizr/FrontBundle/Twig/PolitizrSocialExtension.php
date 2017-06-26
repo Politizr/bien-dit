@@ -19,7 +19,6 @@ class PolitizrSocialExtension extends \Twig_Extension
     private $securityAuthorizationChecker;
 
     private $router;
-    private $templating;
 
     private $globalTools;
 
@@ -29,7 +28,6 @@ class PolitizrSocialExtension extends \Twig_Extension
      * @param @security.token_storage
      * @param @security.authorization_checker
      * @param @router
-     * @param @templating
      * @param @politizr.tools.global
      * @param @logger
      */
@@ -37,7 +35,6 @@ class PolitizrSocialExtension extends \Twig_Extension
         $securityTokenStorage,
         $securityAuthorizationChecker,
         $router,
-        $templating,
         $globalTools,
         $logger
     ) {
@@ -45,7 +42,6 @@ class PolitizrSocialExtension extends \Twig_Extension
         $this->securityAuthorizationChecker =$securityAuthorizationChecker;
 
         $this->router = $router;
-        $this->templating = $templating;
 
         $this->globalTools = $globalTools;
 
@@ -65,7 +61,7 @@ class PolitizrSocialExtension extends \Twig_Extension
             new \Twig_SimpleFilter(
                 'ogImage',
                 array($this, 'ogImage'),
-                array('is_safe' => array('html'))
+                array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             new \Twig_SimpleFilter(
                 'tcImage',
@@ -75,7 +71,7 @@ class PolitizrSocialExtension extends \Twig_Extension
             new \Twig_SimpleFilter(
                 'share',
                 array($this, 'share'),
-                array('is_safe' => array('html'))
+                array('is_safe' => array('html'), 'needs_environment' => true)
             ),
         );
     }
@@ -91,7 +87,7 @@ class PolitizrSocialExtension extends \Twig_Extension
      * @param string $baseUrl
      * @return html
      */
-    public function ogImage($subject, $baseUrl)
+    public function ogImage(\Twig_Environment $env, $subject, $baseUrl)
     {
         // $this->logger->info('*** ogImage');
         // $this->logger->info('$subject = '.print_r($subject, true));
@@ -110,7 +106,7 @@ class PolitizrSocialExtension extends \Twig_Extension
         $imageUrls[] = $baseUrl.'/bundles/politizrfront/images/share_facebook.jpg';
 
         // Construction du rendu du tag
-        $html = $this->templating->render(
+        $html = $env->render(
             'PolitizrFrontBundle:Navigation\\Social:_ogImage.html.twig',
             array(
                 'imageUrls' => $imageUrls,
@@ -157,7 +153,7 @@ class PolitizrSocialExtension extends \Twig_Extension
      * @param string $baseUrl
      * @return html
      */
-    public function share($subject, $uri)
+    public function share(\Twig_Environment $env, $subject, $uri)
     {
         $tinyUri = $this->globalTools->getTinyUrl($uri);
 
@@ -209,7 +205,7 @@ class PolitizrSocialExtension extends \Twig_Extension
         }
 
         // Construction du rendu du tag
-        $html = $this->templating->render(
+        $html = $env->render(
             'PolitizrFrontBundle:Navigation\\Social:_share.html.twig',
             array(
                 'uri' => $uri,

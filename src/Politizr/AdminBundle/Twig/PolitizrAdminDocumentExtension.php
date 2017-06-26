@@ -16,27 +16,30 @@ use Politizr\Model\PDReaction;
  */
 class PolitizrAdminDocumentExtension extends \Twig_Extension
 {
-    private $logger;
+    private $documentService;
 
     private $formFactory;
-
-    protected $documentService;
     private $router;
-    private $templating;
+    private $logger;
 
     /**
      *
+     * @param politizr.functional.document
+     * @param form.factory
+     * @param router
+     * @param logger
      */
-    public function __construct($serviceContainer)
-    {
-        $this->logger = $serviceContainer->get('logger');
-
-        $this->formFactory = $serviceContainer->get('form.factory');
-
-        $this->documentService = $serviceContainer->get('politizr.functional.document');
-
-        $this->router = $serviceContainer->get('router');
-        $this->templating = $serviceContainer->get('templating');
+    public function __construct(
+        $documentService,
+        $formFactory,
+        $router,
+        $logger
+    ) {
+        $this->documentService = $documentService;
+        
+        $this->formFactory = $formFactory;
+        $this->router = $router;
+        $this->logger = $logger;
     }
 
     /* ######################################################################################################## */
@@ -52,65 +55,47 @@ class PolitizrAdminDocumentExtension extends \Twig_Extension
             'adminUserDebates'  => new \Twig_SimpleFunction(
                 'adminUserDebates',
                 array($this, 'adminUserDebates'),
-                array(
-                    'is_safe' => array('html')
-                    )
+                array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             'adminUserReactions'  => new \Twig_SimpleFunction(
                 'adminUserReactions',
                 array($this, 'adminUserReactions'),
-                array(
-                    'is_safe' => array('html')
-                    )
+                array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             'adminUserDComments'  => new \Twig_SimpleFunction(
                 'adminUserDComments',
                 array($this, 'adminUserDComments'),
-                array(
-                    'is_safe' => array('html')
-                    )
+                array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             'adminUserRComments'  => new \Twig_SimpleFunction(
                 'adminUserRComments',
                 array($this, 'adminUserRComments'),
-                array(
-                    'is_safe' => array('html')
-                    )
+                array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             'adminDebateReactions'  => new \Twig_SimpleFunction(
                 'adminDebateReactions',
                 array($this, 'adminDebateReactions'),
-                array(
-                    'is_safe' => array('html')
-                    )
+                array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             'adminDebateComments'  => new \Twig_SimpleFunction(
                 'adminDebateComments',
                 array($this, 'adminDebateComments'),
-                array(
-                    'is_safe' => array('html')
-                    )
+                array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             'adminDebateFollowersQ'  => new \Twig_SimpleFunction(
                 'adminDebateFollowersQ',
                 array($this, 'adminDebateFollowersQ'),
-                array(
-                    'is_safe' => array('html')
-                    )
+                array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             'adminDebateFollowersC'  => new \Twig_SimpleFunction(
                 'adminDebateFollowersC',
                 array($this, 'adminDebateFollowersC'),
-                array(
-                    'is_safe' => array('html')
-                    )
+                array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             'adminReactionComments'  => new \Twig_SimpleFunction(
                 'adminReactionComments',
                 array($this, 'adminReactionComments'),
-                array(
-                    'is_safe' => array('html')
-                    )
+                array('is_safe' => array('html'), 'needs_environment' => true)
             ),
         );
     }
@@ -125,13 +110,13 @@ class PolitizrAdminDocumentExtension extends \Twig_Extension
      * @param PUser $user
      * @return string
      */
-    public function adminUserDebates(PUser $user)
+    public function adminUserDebates(\Twig_Environment $env, PUser $user)
     {
         $this->logger->info('*** adminUserDebates');
         // $this->logger->info('$pUser = '.print_r($user, true));
 
         // Construction du rendu du tag
-        $html = $this->templating->render(
+        $html = $env->render(
             'PolitizrAdminBundle:Fragment\\Debate:_userDebates.html.twig',
             array(
                 'user' => $user,
@@ -149,13 +134,13 @@ class PolitizrAdminDocumentExtension extends \Twig_Extension
      * @param PUser $user
      * @return string
      */
-    public function adminUserReactions(PUser $user)
+    public function adminUserReactions(\Twig_Environment $env, PUser $user)
     {
         $this->logger->info('*** adminUserReactions');
         // $this->logger->info('$user = '.print_r($user, true));
 
         // Construction du rendu du tag
-        $html = $this->templating->render(
+        $html = $env->render(
             'PolitizrAdminBundle:Fragment\\Reaction:_userReactions.html.twig',
             array(
                 'user' => $user,
@@ -174,12 +159,12 @@ class PolitizrAdminDocumentExtension extends \Twig_Extension
      * @param PUser $user
      * @return string
      */
-    public function adminUserDComments(PUser $user)
+    public function adminUserDComments(\Twig_Environment $env, PUser $user)
     {
         $this->logger->info('*** adminUserDComments');
 
         // Construction du rendu du tag
-        $html = $this->templating->render(
+        $html = $env->render(
             'PolitizrAdminBundle:Fragment\\Comment:_userComments.html.twig',
             array(
                 'user' => $user,
@@ -199,12 +184,12 @@ class PolitizrAdminDocumentExtension extends \Twig_Extension
      * @param PUser $user
      * @return string
      */
-    public function adminUserRComments(PUser $user)
+    public function adminUserRComments(\Twig_Environment $env, PUser $user)
     {
         $this->logger->info('*** adminUserRComments');
 
         // Construction du rendu du tag
-        $html = $this->templating->render(
+        $html = $env->render(
             'PolitizrAdminBundle:Fragment\\Comment:_userComments.html.twig',
             array(
                 'user' => $user,
@@ -224,13 +209,13 @@ class PolitizrAdminDocumentExtension extends \Twig_Extension
      * @param PDDDebate $debate
      * @return string
      */
-    public function adminDebateReactions(PDDebate $debate)
+    public function adminDebateReactions(\Twig_Environment $env, PDDebate $debate)
     {
         $this->logger->info('*** adminDebateReactions');
         // $this->logger->info('$pUser = '.print_r($pUser, true));
 
         // Construction du rendu du tag
-        $html = $this->templating->render(
+        $html = $env->render(
             'PolitizrAdminBundle:Fragment\\Reaction:_debateReactions.html.twig',
             array(
                 'debate' => $debate,
@@ -248,13 +233,13 @@ class PolitizrAdminDocumentExtension extends \Twig_Extension
      * @param PDDDebate $debate
      * @return string
      */
-    public function adminDebateComments(PDDebate $debate)
+    public function adminDebateComments(\Twig_Environment $env, PDDebate $debate)
     {
         $this->logger->info('*** adminDebateComments');
         // $this->logger->info('$debate = '.print_r($debate, true));
 
         // Construction du rendu du tag
-        $html = $this->templating->render(
+        $html = $env->render(
             'PolitizrAdminBundle:Fragment\\Debate:_comments.html.twig',
             array(
                 'debate' => $debate,
@@ -272,13 +257,13 @@ class PolitizrAdminDocumentExtension extends \Twig_Extension
      *
      * @return string
      */
-    public function adminDebateFollowersQ(PDDebate $pdDebate)
+    public function adminDebateFollowersQ(\Twig_Environment $env, PDDebate $pdDebate)
     {
         $this->logger->info('*** adminDebateFollowersQ');
         // $this->logger->info('$pdDebate = '.print_r($pdDebate, true));
 
         // Construction du rendu du tag
-        $html = $this->templating->render(
+        $html = $env->render(
             'PolitizrAdminBundle:Fragment:DebateFollowers.html.twig',
             array(
                 'pdDebate' => $pdDebate,
@@ -297,13 +282,13 @@ class PolitizrAdminDocumentExtension extends \Twig_Extension
      *
      * @return string
      */
-    public function adminDebateFollowersC(PDDebate $pdDebate)
+    public function adminDebateFollowersC(\Twig_Environment $env, PDDebate $pdDebate)
     {
         $this->logger->info('*** adminUserFollowersC');
         // $this->logger->info('$pdDebate = '.print_r($pdDebate, true));
 
         // Construction du rendu du tag
-        $html = $this->templating->render(
+        $html = $env->render(
             'PolitizrAdminBundle:Fragment:DebateFollowers.html.twig',
             array(
                 'pdDebate' => $pdDebate,
@@ -320,13 +305,13 @@ class PolitizrAdminDocumentExtension extends \Twig_Extension
      * @param PDReaction $reaction
      * @return string
      */
-    public function adminReactionComments(PDReaction $reaction)
+    public function adminReactionComments(\Twig_Environment $env, PDReaction $reaction)
     {
         $this->logger->info('*** adminReactionComments');
         // $this->logger->info('$reaction = '.print_r($reaction, true));
 
         // Construction du rendu du tag
-        $html = $this->templating->render(
+        $html = $env->render(
             'PolitizrAdminBundle:Fragment\\Reaction:_comments.html.twig',
             array(
                 'reaction' => $reaction,

@@ -21,31 +21,34 @@ use Politizr\AdminBundle\Form\Type\AdminPUserLocalizationType;
  */
 class PolitizrAdminUserExtension extends \Twig_Extension
 {
-    private $logger;
+    protected $documentService;
+    private $globalTools;
 
     private $formFactory;
-
-    protected $documentService;
     private $router;
-    private $templating;
-
-    private $globalTools;
+    private $logger;
 
     /**
      *
+     * @param politizr.functional.document
+     * @param politizr.tools.global
+     * @param form.factory
+     * @param router
+     * @param logger
      */
-    public function __construct($serviceContainer)
-    {
-        $this->logger = $serviceContainer->get('logger');
+    public function __construct(
+        $documentService,
+        $globalTools,
+        $formFactory,
+        $router,
+        $logger
+    ) {
+        $this->documentService = $documentService;
+        $this->globalTools = $globalTools;
 
-        $this->formFactory = $serviceContainer->get('form.factory');
-
-        $this->documentService = $serviceContainer->get('politizr.functional.document');
-
-        $this->router = $serviceContainer->get('router');
-        $this->templating = $serviceContainer->get('templating');
-
-        $this->globalTools = $serviceContainer->get('politizr.tools.global');
+        $this->formFactory = $formFactory;
+        $this->router = $router;
+        $this->logger = $logger;
     }
 
     /* ######################################################################################################## */
@@ -61,58 +64,42 @@ class PolitizrAdminUserExtension extends \Twig_Extension
             'adminUserFollowers'  => new \Twig_SimpleFunction(
                 'adminUserFollowers',
                 array($this, 'adminUserFollowers'),
-                array(
-                    'is_safe' => array('html')
-                    )
+                array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             'adminUserSubscribers'  => new \Twig_SimpleFunction(
                 'adminUserSubscribers',
                 array($this, 'adminUserSubscribers'),
-                array(
-                    'is_safe' => array('html')
-                    )
+                array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             'adminUserBadges'  => new \Twig_SimpleFunction(
                 'adminUserBadges',
                 array($this, 'adminUserBadges'),
-                array(
-                    'is_safe' => array('html')
-                    )
+                array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             'adminUserMandates'  => new \Twig_SimpleFunction(
                 'adminUserMandates',
                 array($this, 'adminUserMandates'),
-                array(
-                    'is_safe' => array('html')
-                    )
+                array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             'adminUserIdCheck'  => new \Twig_SimpleFunction(
                 'adminUserIdCheck',
                 array($this, 'adminUserIdCheck'),
-                array(
-                    'is_safe' => array('html')
-                    )
+                array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             'adminUserAffinities'  => new \Twig_SimpleFunction(
                 'adminUserAffinities',
                 array($this, 'adminUserAffinities'),
-                array(
-                    'is_safe' => array('html')
-                    )
+                array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             'adminUserReputation'  => new \Twig_SimpleFunction(
                 'adminUserReputation',
                 array($this, 'adminUserReputation'),
-                array(
-                    'is_safe' => array('html')
-                    )
+                array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             'adminUserLocalization'  => new \Twig_SimpleFunction(
                 'adminUserLocalization',
                 array($this, 'adminUserLocalization'),
-                array(
-                    'is_safe' => array('html')
-                    )
+                array('is_safe' => array('html'), 'needs_environment' => true)
             ),
         );
     }
@@ -127,13 +114,13 @@ class PolitizrAdminUserExtension extends \Twig_Extension
      * @param PUser $user
      * @return string
      */
-    public function adminUserFollowers(PUser $user)
+    public function adminUserFollowers(\Twig_Environment $env, PUser $user)
     {
         $this->logger->info('*** adminUserFollowers');
         // $this->logger->info('$user = '.print_r($user, true));
 
         // Construction du rendu du tag
-        $html = $this->templating->render(
+        $html = $env->render(
             'PolitizrAdminBundle:Fragment\\Follow:_userFollowersSubscribers.html.twig',
             array(
                 'user' => $user,
@@ -150,13 +137,13 @@ class PolitizrAdminUserExtension extends \Twig_Extension
      * @param PUser $user
      * @return string
      */
-    public function adminUserSubscribers(PUser $user)
+    public function adminUserSubscribers(\Twig_Environment $env, PUser $user)
     {
         $this->logger->info('*** adminUserSubscribers');
         // $this->logger->info('$user = '.print_r($user, true));
 
         // Construction du rendu du tag
-        $html = $this->templating->render(
+        $html = $env->render(
             'PolitizrAdminBundle:Fragment\\Follow:_userFollowersSubscribers.html.twig',
             array(
                 'user' => $user,
@@ -176,14 +163,14 @@ class PolitizrAdminUserExtension extends \Twig_Extension
      *
      * @return string
      */
-    public function adminUserBadges(PUser $pUser, $prBadgeType, $zoneId = 1)
+    public function adminUserBadges(\Twig_Environment $env, PUser $pUser, $prBadgeType, $zoneId = 1)
     {
         $this->logger->info('*** adminUserBadges');
         // $this->logger->info('$pUser = '.print_r($pUser, true));
         // $this->logger->info('$prBadgeType = '.print_r($prBadgeType, true));
 
         // Construction du rendu du tag
-        $html = $this->templating->render(
+        $html = $env->render(
             'PolitizrAdminBundle:Fragment:UserBadges.html.twig',
             array(
                 'pUser' => $pUser,
@@ -202,7 +189,7 @@ class PolitizrAdminUserExtension extends \Twig_Extension
      * @param PUser $user
      * @return string
      */
-    public function adminUserMandates(PUser $user)
+    public function adminUserMandates(\Twig_Environment $env, PUser $user)
     {
         $this->logger->info('*** adminUserMandates');
         // $this->logger->info('$pUser = '.print_r($pUser, true));
@@ -215,7 +202,7 @@ class PolitizrAdminUserExtension extends \Twig_Extension
         $formMandate = $this->formFactory->create(new PUMandateType(QualificationConstants::TYPE_ELECTIV, $user->getId()), $mandate);
 
         // Construction du rendu du tag
-        $html = $this->templating->render(
+        $html = $env->render(
             'PolitizrAdminBundle:Fragment\\User:_mandates.html.twig',
             array(
                 'user' => $user,
@@ -233,7 +220,7 @@ class PolitizrAdminUserExtension extends \Twig_Extension
      * @param PUser $user
      * @return string
      */
-    public function adminUserIdCheck(PUser $user)
+    public function adminUserIdCheck(\Twig_Environment $env, PUser $user)
     {
         $this->logger->info('*** adminUserIdCheck');
         // $this->logger->info('$pUser = '.print_r($pUser, true));
@@ -242,7 +229,7 @@ class PolitizrAdminUserExtension extends \Twig_Extension
         $formIdCheck = $this->formFactory->create(new PUserIdCheckType($user->getId()), $user);
 
         // Construction du rendu du tag
-        $html = $this->templating->render(
+        $html = $env->render(
             'PolitizrAdminBundle:Fragment\\User:_idCheck.html.twig',
             array(
                 'user' => $user,
@@ -260,13 +247,13 @@ class PolitizrAdminUserExtension extends \Twig_Extension
      *
      * @return string
      */
-    public function adminUserAffinities(PUser $pUser)
+    public function adminUserAffinities(\Twig_Environment $env, PUser $pUser)
     {
         $this->logger->info('*** adminUserAffinities');
         // $this->logger->info('$pUser = '.print_r($pUser, true));
 
         // Construction du rendu du tag
-        $html = $this->templating->render(
+        $html = $env->render(
             'PolitizrAdminBundle:Fragment:UserOrganizations.html.twig',
             array(
                 'pUser' => $pUser,
@@ -283,13 +270,13 @@ class PolitizrAdminUserExtension extends \Twig_Extension
      * @param PUser $user
      * @return string
      */
-    public function adminUserReputation(PUser $user)
+    public function adminUserReputation(\Twig_Environment $env, PUser $user)
     {
         $this->logger->info('*** adminUserReputation');
         // $this->logger->info('$user = '.print_r($user, true));
 
         // Construction du rendu du tag
-        $html = $this->templating->render(
+        $html = $env->render(
             'PolitizrAdminBundle:Fragment\\Reputation:user.html.twig',
             array(
                 'user' => $user,
@@ -305,7 +292,7 @@ class PolitizrAdminUserExtension extends \Twig_Extension
      * @param PUser $user
      * @return string
      */
-    public function adminUserLocalization(PUser $user)
+    public function adminUserLocalization(\Twig_Environment $env, PUser $user)
     {
         $this->logger->info('*** adminUserLocalization');
         // $this->logger->info('$user = '.print_r($user, true));
@@ -313,7 +300,7 @@ class PolitizrAdminUserExtension extends \Twig_Extension
         $form = $this->formFactory->create(new AdminPUserLocalizationType($user));
 
         // Construction du rendu du tag
-        $html = $this->templating->render(
+        $html = $env->render(
             'PolitizrAdminBundle:Fragment\\User:_localization.html.twig',
             array(
                 'form' => $form->createView(),

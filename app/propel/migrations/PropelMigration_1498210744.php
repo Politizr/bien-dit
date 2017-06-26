@@ -46,6 +46,8 @@ DROP TABLE IF EXISTS `p_u_subscribe_email`;
 
 DROP TABLE IF EXISTS `p_u_subscribe_screen`;
 
+CREATE INDEX `acl_object_identity_ancestors_I_2` ON `acl_object_identity_ancestors` (`ancestor_id`);
+
 CREATE TABLE `p_n_email`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,

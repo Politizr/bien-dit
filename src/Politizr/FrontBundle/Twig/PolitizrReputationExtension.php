@@ -26,7 +26,6 @@ class PolitizrReputationExtension extends \Twig_Extension
     private $securityAuthorizationChecker;
 
     private $router;
-    private $templating;
 
     private $globalTools;
 
@@ -36,7 +35,6 @@ class PolitizrReputationExtension extends \Twig_Extension
      * @security.token_storage
      * @security.authorization_checker
      * @router
-     * @templating
      * @politizr.tools.global
      * @logger
      */
@@ -44,7 +42,6 @@ class PolitizrReputationExtension extends \Twig_Extension
         $securityTokenStorage,
         $securityAuthorizationChecker,
         $router,
-        $templating,
         $globalTools,
         $logger
     ) {
@@ -52,7 +49,6 @@ class PolitizrReputationExtension extends \Twig_Extension
         $this->securityAuthorizationChecker =$securityAuthorizationChecker;
 
         $this->router = $router;
-        $this->templating = $templating;
 
         $this->globalTools = $globalTools;
 

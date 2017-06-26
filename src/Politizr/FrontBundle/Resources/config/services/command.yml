@@ -1,0 +1,9 @@
+services:
+    politizr.command.email_account_notifications:
+        class: Politizr\CommandBundle\Command\EmailAccountNotificationsCommand
+        tags:
+            - { name: console.command }
+        calls:
+            - [setLogger, [@logger]]
+            - [setEventDispatcher, [@event_dispatcher]]
+            - [setNotificationService, [@politizr.functional.notification]]
