@@ -1,0 +1,54 @@
+<tr style="background-color: #FFFFFF; width: 100%; padding-bottom: 20px;">
+    <td style="padding: 0 40px 0 40px; line-height: 140%;" valign="top">
+        {% spaceless %}
+        {% if interactedPublications|length > 0 %}
+            Vos publications suscitent des réactions!
+        {% endif %}
+        {% for publication in interactedPublications %}
+            {% set url = '#' %}
+            {% if publication.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE') %}
+                {% set url = absolute_url(path('DebateDetail', { 'slug': publication.slug })) %}
+            {% elseif publication.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION') %}
+                {% set url = absolute_url(path('ReactionDetail', { 'slug': publication.slug })) %}
+            {% endif %}
+            <a href="{{ url }}">{{ publication.title }}</a> a 
+            {% if publication.nbReactions > 0 %}
+                {% if publication.nbReactions > 1 %}
+                    {{ publication.nbReactions }} nouvelles réponses
+                {% else %}
+                    une nouvelle réponse
+                {% endif %}
+                {% if publication.nbComments > 0 %}
+                    et
+                {% else %}
+                    .
+                {% endif %}
+            {% endif %}
+            {% if publication.nbComments > 0 %}
+                {% if publication.nbComments > 1 %}
+                    {{ publication.nbComments }} nouveaux commentaires.
+                {% else %}
+                    une nouvelle réponse.
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+        {% if notePosPublications|length > 0 %}
+            Vos publications suscitent de l'enthousiasme!
+        {% endif %}
+        {% for publication in notePosPublications %}
+            {% set url = '#' %}
+            {% if publication.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE') %}
+                {% set url = absolute_url(path('DebateDetail', { 'slug': publication.slug })) %}
+            {% elseif publication.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION') %}
+                {% set url = absolute_url(path('ReactionDetail', { 'slug': publication.slug })) %}
+            {% endif %}
+            <a href="{{ url }}">{{ publication.title }}</a> a reçu
+            {% if publication.nbNotifications > 1 %}
+                {{ publication.nbNotifications }} notes positives.
+            {% else %}
+                une note positive.
+            {% endif %}
+        {% endfor %}
+        {% endspaceless %}
+    </td>
+</tr>

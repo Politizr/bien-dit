@@ -22,6 +22,12 @@ class EmailConstants
     const ID_PROFILE_SUMMARY = 2;
     const ID_ACTIVITY_SUMMARY = 3;
 
+    // ******************************************************** //
+    //                  EMAILING LIMITS                         //
+    // ******************************************************** //
+    const NB_MAX_INTERACTED_PUBLICATIONS = 5;
+
+
     /**
      * Return array of default notif ids for email subscribtion
      *

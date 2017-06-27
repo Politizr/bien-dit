@@ -1,0 +1,21 @@
+<tr style="background-color: #FFFFFF; width: 100%; padding-bottom: 20px;">
+    <td style="padding: 0 40px 0 40px; line-height: 140%;" valign="top">
+        {% spaceless %}
+        {% if followers|length > 1 %}
+            {% for follower in followers %}
+                {{ follower['title'] }}
+                {% if loop.revindex == 2 %}
+                    et
+                {% elseif not loop.last %}
+                    ,
+                {% else %}
+                    .
+                {% endif %}
+            {% endfor %}
+            suivent désormais votre activité.
+        {% else %}
+            {{ followers[0]['title'] }} suit désormais votre activité.
+        {% endif %}
+        {% endspaceless %}
+    </td>
+</tr>

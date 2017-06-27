@@ -234,6 +234,11 @@ Politizr_AdminBundle_PMAskForUpdate:
     type:     admingenerator
     prefix:   /PMAskForUpdate
 
+Politizr_AdminBundle_PMEmailing:
+    resource: "@PolitizrAdminBundle/Controller/PMEmailing/"
+    type:     admingenerator
+    prefix:   /PMEmailing
+
 Politizr_AdminBundle_PMAppException:
     resource: "@PolitizrAdminBundle/Controller/PMAppException/"
     type:     admingenerator

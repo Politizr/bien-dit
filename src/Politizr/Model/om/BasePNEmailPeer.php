@@ -9,6 +9,7 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
+use Politizr\Model\PMEmailingPeer;
 use Politizr\Model\PNEmail;
 use Politizr\Model\PNEmailPeer;
 use Politizr\Model\PUSubscribePNEPeer;
@@ -389,6 +390,9 @@ abstract class BasePNEmailPeer
         // Invalidate objects in PUSubscribePNEPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PUSubscribePNEPeer::clearInstancePool();
+        // Invalidate objects in PMEmailingPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PMEmailingPeer::clearInstancePool();
     }
 
     /**

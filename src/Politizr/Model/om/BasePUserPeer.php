@@ -20,6 +20,7 @@ use Politizr\Model\PMAppExceptionPeer;
 use Politizr\Model\PMAskForUpdatePeer;
 use Politizr\Model\PMDCommentHistoricPeer;
 use Politizr\Model\PMDebateHistoricPeer;
+use Politizr\Model\PMEmailingPeer;
 use Politizr\Model\PMRCommentHistoricPeer;
 use Politizr\Model\PMReactionHistoricPeer;
 use Politizr\Model\PMUserHistoricPeer;
@@ -813,6 +814,9 @@ abstract class BasePUserPeer
         // Invalidate objects in PMAppExceptionPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PMAppExceptionPeer::clearInstancePool();
+        // Invalidate objects in PMEmailingPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PMEmailingPeer::clearInstancePool();
         // Invalidate objects in PUFollowUPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PUFollowUPeer::clearInstancePool();

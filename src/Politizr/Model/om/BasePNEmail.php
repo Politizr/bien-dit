@@ -15,6 +15,8 @@ use \PropelDateTime;
 use \PropelException;
 use \PropelObjectCollection;
 use \PropelPDO;
+use Politizr\Model\PMEmailing;
+use Politizr\Model\PMEmailingQuery;
 use Politizr\Model\PNEmail;
 use Politizr\Model\PNEmailPeer;
 use Politizr\Model\PNEmailQuery;
@@ -87,6 +89,12 @@ abstract class BasePNEmail extends BaseObject implements Persistent
     protected $collPUSubscribePNEsPartial;
 
     /**
+     * @var        PropelObjectCollection|PMEmailing[] Collection to store aggregation of PMEmailing objects.
+     */
+    protected $collPMEmailings;
+    protected $collPMEmailingsPartial;
+
+    /**
      * @var        PropelObjectCollection|PUser[] Collection to store aggregation of PUser objects.
      */
     protected $collPUsers;
@@ -122,6 +130,12 @@ abstract class BasePNEmail extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $pUSubscribePNEsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pMEmailingsScheduledForDeletion = null;
 
     /**
      * Get the [id] column value.
@@ -488,6 +502,8 @@ abstract class BasePNEmail extends BaseObject implements Persistent
 
             $this->collPUSubscribePNEs = null;
 
+            $this->collPMEmailings = null;
+
             $this->collPUsers = null;
         } // if (deep)
     }
@@ -661,6 +677,24 @@ abstract class BasePNEmail extends BaseObject implements Persistent
 
             if ($this->collPUSubscribePNEs !== null) {
                 foreach ($this->collPUSubscribePNEs as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->pMEmailingsScheduledForDeletion !== null) {
+                if (!$this->pMEmailingsScheduledForDeletion->isEmpty()) {
+                    foreach ($this->pMEmailingsScheduledForDeletion as $pMEmailing) {
+                        // need to save related object because we set the relation to null
+                        $pMEmailing->save($con);
+                    }
+                    $this->pMEmailingsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPMEmailings !== null) {
+                foreach ($this->collPMEmailings as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -863,6 +897,9 @@ abstract class BasePNEmail extends BaseObject implements Persistent
             if (null !== $this->collPUSubscribePNEs) {
                 $result['PUSubscribePNEs'] = $this->collPUSubscribePNEs->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
+            if (null !== $this->collPMEmailings) {
+                $result['PMEmailings'] = $this->collPMEmailings->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
         }
 
         return $result;
@@ -1044,6 +1081,12 @@ abstract class BasePNEmail extends BaseObject implements Persistent
                 }
             }
 
+            foreach ($this->getPMEmailings() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPMEmailing($relObj->copy($deepCopy));
+                }
+            }
+
             //unflag object copy
             $this->startCopy = false;
         } // if ($deepCopy)
@@ -1107,6 +1150,9 @@ abstract class BasePNEmail extends BaseObject implements Persistent
     {
         if ('PUSubscribePNE' == $relationName) {
             $this->initPUSubscribePNEs();
+        }
+        if ('PMEmailing' == $relationName) {
+            $this->initPMEmailings();
         }
     }
 
@@ -1361,6 +1407,256 @@ abstract class BasePNEmail extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collPMEmailings collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PNEmail The current object (for fluent API support)
+     * @see        addPMEmailings()
+     */
+    public function clearPMEmailings()
+    {
+        $this->collPMEmailings = null; // important to set this to null since that means it is uninitialized
+        $this->collPMEmailingsPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPMEmailings collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPMEmailings($v = true)
+    {
+        $this->collPMEmailingsPartial = $v;
+    }
+
+    /**
+     * Initializes the collPMEmailings collection.
+     *
+     * By default this just sets the collPMEmailings collection to an empty array (like clearcollPMEmailings());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPMEmailings($overrideExisting = true)
+    {
+        if (null !== $this->collPMEmailings && !$overrideExisting) {
+            return;
+        }
+        $this->collPMEmailings = new PropelObjectCollection();
+        $this->collPMEmailings->setModel('PMEmailing');
+    }
+
+    /**
+     * Gets an array of PMEmailing objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PNEmail is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PMEmailing[] List of PMEmailing objects
+     * @throws PropelException
+     */
+    public function getPMEmailings($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPMEmailingsPartial && !$this->isNew();
+        if (null === $this->collPMEmailings || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPMEmailings) {
+                // return empty collection
+                $this->initPMEmailings();
+            } else {
+                $collPMEmailings = PMEmailingQuery::create(null, $criteria)
+                    ->filterByPNEmail($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPMEmailingsPartial && count($collPMEmailings)) {
+                      $this->initPMEmailings(false);
+
+                      foreach ($collPMEmailings as $obj) {
+                        if (false == $this->collPMEmailings->contains($obj)) {
+                          $this->collPMEmailings->append($obj);
+                        }
+                      }
+
+                      $this->collPMEmailingsPartial = true;
+                    }
+
+                    $collPMEmailings->getInternalIterator()->rewind();
+
+                    return $collPMEmailings;
+                }
+
+                if ($partial && $this->collPMEmailings) {
+                    foreach ($this->collPMEmailings as $obj) {
+                        if ($obj->isNew()) {
+                            $collPMEmailings[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPMEmailings = $collPMEmailings;
+                $this->collPMEmailingsPartial = false;
+            }
+        }
+
+        return $this->collPMEmailings;
+    }
+
+    /**
+     * Sets a collection of PMEmailing objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pMEmailings A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PNEmail The current object (for fluent API support)
+     */
+    public function setPMEmailings(PropelCollection $pMEmailings, PropelPDO $con = null)
+    {
+        $pMEmailingsToDelete = $this->getPMEmailings(new Criteria(), $con)->diff($pMEmailings);
+
+
+        $this->pMEmailingsScheduledForDeletion = $pMEmailingsToDelete;
+
+        foreach ($pMEmailingsToDelete as $pMEmailingRemoved) {
+            $pMEmailingRemoved->setPNEmail(null);
+        }
+
+        $this->collPMEmailings = null;
+        foreach ($pMEmailings as $pMEmailing) {
+            $this->addPMEmailing($pMEmailing);
+        }
+
+        $this->collPMEmailings = $pMEmailings;
+        $this->collPMEmailingsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PMEmailing objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PMEmailing objects.
+     * @throws PropelException
+     */
+    public function countPMEmailings(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPMEmailingsPartial && !$this->isNew();
+        if (null === $this->collPMEmailings || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPMEmailings) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPMEmailings());
+            }
+            $query = PMEmailingQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPNEmail($this)
+                ->count($con);
+        }
+
+        return count($this->collPMEmailings);
+    }
+
+    /**
+     * Method called to associate a PMEmailing object to this object
+     * through the PMEmailing foreign key attribute.
+     *
+     * @param    PMEmailing $l PMEmailing
+     * @return PNEmail The current object (for fluent API support)
+     */
+    public function addPMEmailing(PMEmailing $l)
+    {
+        if ($this->collPMEmailings === null) {
+            $this->initPMEmailings();
+            $this->collPMEmailingsPartial = true;
+        }
+
+        if (!in_array($l, $this->collPMEmailings->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPMEmailing($l);
+
+            if ($this->pMEmailingsScheduledForDeletion and $this->pMEmailingsScheduledForDeletion->contains($l)) {
+                $this->pMEmailingsScheduledForDeletion->remove($this->pMEmailingsScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PMEmailing $pMEmailing The pMEmailing object to add.
+     */
+    protected function doAddPMEmailing($pMEmailing)
+    {
+        $this->collPMEmailings[]= $pMEmailing;
+        $pMEmailing->setPNEmail($this);
+    }
+
+    /**
+     * @param	PMEmailing $pMEmailing The pMEmailing object to remove.
+     * @return PNEmail The current object (for fluent API support)
+     */
+    public function removePMEmailing($pMEmailing)
+    {
+        if ($this->getPMEmailings()->contains($pMEmailing)) {
+            $this->collPMEmailings->remove($this->collPMEmailings->search($pMEmailing));
+            if (null === $this->pMEmailingsScheduledForDeletion) {
+                $this->pMEmailingsScheduledForDeletion = clone $this->collPMEmailings;
+                $this->pMEmailingsScheduledForDeletion->clear();
+            }
+            $this->pMEmailingsScheduledForDeletion[]= $pMEmailing;
+            $pMEmailing->setPNEmail(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PNEmail is new, it will return
+     * an empty collection; or if this PNEmail has previously
+     * been saved, it will retrieve related PMEmailings from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PNEmail.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PMEmailing[] List of PMEmailing objects
+     */
+    public function getPMEmailingsJoinPUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PMEmailingQuery::create(null, $criteria);
+        $query->joinWith('PUser', $join_behavior);
+
+        return $this->getPMEmailings($query, $con);
+    }
+
+    /**
      * Clears out the collPUsers collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
@@ -1585,6 +1881,11 @@ abstract class BasePNEmail extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collPMEmailings) {
+                foreach ($this->collPMEmailings as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collPUsers) {
                 foreach ($this->collPUsers as $o) {
                     $o->clearAllReferences($deep);
@@ -1598,6 +1899,10 @@ abstract class BasePNEmail extends BaseObject implements Persistent
             $this->collPUSubscribePNEs->clearIterator();
         }
         $this->collPUSubscribePNEs = null;
+        if ($this->collPMEmailings instanceof PropelCollection) {
+            $this->collPMEmailings->clearIterator();
+        }
+        $this->collPMEmailings = null;
         if ($this->collPUsers instanceof PropelCollection) {
             $this->collPUsers->clearIterator();
         }

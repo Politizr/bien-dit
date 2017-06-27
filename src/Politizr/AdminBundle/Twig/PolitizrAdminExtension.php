@@ -57,7 +57,7 @@ class PolitizrAdminExtension extends \Twig_Extension
             'adminCreatePath'  => new \Twig_SimpleFunction(
                 'adminCreatePath',
                 array($this, 'adminCreatePath'),
-                array('is_safe' => array('html'))
+                array('is_safe' => array('html'), 'needs_environment' => true)
             ),
         );
     }

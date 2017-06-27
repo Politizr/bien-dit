@@ -1,0 +1,10 @@
+{# beta #}
+Nouvelle notification
+
+{{ badgesPart | purify }}
+{{ userPublicationsPart | purify }}
+{{ followersPart | purify }}
+
+Réglez vos paramètres de notifications depuis le menu "mes notifications" de votre compte sur {% if (qualified) %}{{ url('EditNotificationsE') }}{% else %}{{ url('EditNotificationsC') }}{% endif %}.
+
+{% include 'PolitizrFrontBundle:Email:_signature.txt.twig' %}

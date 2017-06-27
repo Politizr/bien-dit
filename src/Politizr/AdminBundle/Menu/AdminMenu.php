@@ -119,6 +119,11 @@ class AdminMenu extends AdmingeneratorMenuBuilder
         );
         $this->addLinkRoute(
             $monitoring,
+            'Emailing',
+            'Politizr_AdminBundle_PMEmailing_list'
+        );
+        $this->addLinkRoute(
+            $monitoring,
             'Demande de modification',
             'Politizr_AdminBundle_PMAskForUpdate_list'
         );

@@ -12,6 +12,7 @@ use \PropelCollection;
 use \PropelException;
 use \PropelObjectCollection;
 use \PropelPDO;
+use Politizr\Model\PMEmailing;
 use Politizr\Model\PNEmail;
 use Politizr\Model\PNEmailPeer;
 use Politizr\Model\PNEmailQuery;
@@ -40,6 +41,10 @@ use Politizr\Model\PUser;
  * @method PNEmailQuery leftJoinPUSubscribePNE($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUSubscribePNE relation
  * @method PNEmailQuery rightJoinPUSubscribePNE($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUSubscribePNE relation
  * @method PNEmailQuery innerJoinPUSubscribePNE($relationAlias = null) Adds a INNER JOIN clause to the query using the PUSubscribePNE relation
+ *
+ * @method PNEmailQuery leftJoinPMEmailing($relationAlias = null) Adds a LEFT JOIN clause to the query using the PMEmailing relation
+ * @method PNEmailQuery rightJoinPMEmailing($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PMEmailing relation
+ * @method PNEmailQuery innerJoinPMEmailing($relationAlias = null) Adds a INNER JOIN clause to the query using the PMEmailing relation
  *
  * @method PNEmail findOne(PropelPDO $con = null) Return the first PNEmail matching the query
  * @method PNEmail findOneOrCreate(PropelPDO $con = null) Return the first PNEmail matching the query, or a new PNEmail object populated from the query conditions when no match is found
@@ -537,6 +542,80 @@ abstract class BasePNEmailQuery extends ModelCriteria
         return $this
             ->joinPUSubscribePNE($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'PUSubscribePNE', '\Politizr\Model\PUSubscribePNEQuery');
+    }
+
+    /**
+     * Filter the query by a related PMEmailing object
+     *
+     * @param   PMEmailing|PropelObjectCollection $pMEmailing  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PNEmailQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPMEmailing($pMEmailing, $comparison = null)
+    {
+        if ($pMEmailing instanceof PMEmailing) {
+            return $this
+                ->addUsingAlias(PNEmailPeer::ID, $pMEmailing->getPNEmailId(), $comparison);
+        } elseif ($pMEmailing instanceof PropelObjectCollection) {
+            return $this
+                ->usePMEmailingQuery()
+                ->filterByPrimaryKeys($pMEmailing->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPMEmailing() only accepts arguments of type PMEmailing or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PMEmailing relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PNEmailQuery The current query, for fluid interface
+     */
+    public function joinPMEmailing($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PMEmailing');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PMEmailing');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PMEmailing relation PMEmailing object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PMEmailingQuery A secondary query class using the current class as primary query
+     */
+    public function usePMEmailingQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinPMEmailing($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PMEmailing', '\Politizr\Model\PMEmailingQuery');
     }
 
     /**
