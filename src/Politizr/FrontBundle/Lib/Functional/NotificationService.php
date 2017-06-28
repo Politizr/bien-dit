@@ -8,6 +8,8 @@ use Politizr\Constant\NotificationConstants;
 use Politizr\Model\PUser;
 
 use Politizr\Model\PUNotificationQuery;
+use Politizr\Model\PUFollowUQuery;
+use Politizr\Model\PUFollowDDQuery;
 
 /**
  * Functional service for notification management.
@@ -18,6 +20,7 @@ use Politizr\Model\PUNotificationQuery;
 class NotificationService
 {
     private $notificationManager;
+    private $globalTools;
     private $logger;
 
     /**
@@ -27,12 +30,52 @@ class NotificationService
      */
     public function __construct(
         $notificationManager,
+        $globalTools,
         $logger
     ) {
         $this->notificationManager = $notificationManager;
+        $this->globalTools = $globalTools;
         $this->logger = $logger;
     }
 
+    /* ######################################################################################################## */
+    /*                                               PRIVATE FUNCTIONS                                          */
+    /* ######################################################################################################## */
+
+    /**
+     * Get array of user's followers ids
+     *
+     * @param integer $userId
+     * @return array
+     */
+    private function getFollowersIdsArray($userId)
+    {
+        $userIds = PUFollowUQuery::create()
+            ->select('PUserFollowerId')
+            ->filterByPUserId($userId)
+            ->find()
+            ->toArray();
+
+        return $userIds;
+    }
+
+    /**
+     * Get array of user's PUFollowDD's ids
+     * @todo refactoring duplicate w. TimelineService
+     *
+     * @param integer $userId
+     * @return array
+     */
+    private function getFollowedDebatesIdsArray($userId)
+    {
+        $debateIds = PUFollowDDQuery::create()
+            ->select('PDDebateId')
+            ->filterByPUserId($userId)
+            ->find()
+            ->toArray();
+
+        return $debateIds;
+    }
 
     /* ######################################################################################################## */
     /*                                              SPECIFIC LISTING                                            */
@@ -85,7 +128,7 @@ class NotificationService
     }
 
     /**
-     * Get publications from user with most interactions (reactions, comments)
+     * Get publications from user with most interactions (reactions, comments, note pos)
      *
      * @param PUser $user
      * @param DateTime $beginAt
@@ -104,20 +147,47 @@ class NotificationService
     }
 
     /**
-     * Get publications from user with most note pos
+     * Get publications from followed user
      *
      * @param PUser $user
      * @param DateTime $beginAt
      * @param DateTime $endAt
      * @param int $limit
      */
-    public function getMostNotePosUserPublications(PUser $user, \DateTime $beginAt, \DateTime $endAt, $limit)
+    public function getMostInteractedFollowedUsersPublications(PUser $user, \DateTime $beginAt, \DateTime $endAt, $limit)
     {
         if (!$user) {
-            throw new InconsistentDataException('Can get user most note pos publications - user null');
+            throw new InconsistentDataException('Can get user followed publications - user null');
         }
 
-        $publications = $this->notificationManager->generateMostNotePosUserPublications($user->getId(), $beginAt->format('Y-m-d H:i:s'), $endAt->format('Y-m-d H:i:s'), $limit);
+        // Récupération d'un tableau des ids des débats suivis
+        $userIds = $this->getFollowersIdsArray($user->getId());
+        $inQueryUserIds = $this->globalTools->getInQuery($userIds);
+
+        $publications = $this->notificationManager->generateMostInteractedFollowedUserPublications($inQueryUserIds, $beginAt->format('Y-m-d H:i:s'), $endAt->format('Y-m-d H:i:s'), $limit);
+
+        return $publications;
+    }
+
+    /**
+     * Get publications from followed user
+     *
+     * @param PUser $user
+     * @param DateTime $beginAt
+     * @param DateTime $endAt
+     * @param int $limit
+     */
+    public function getMostInteractedFollowedDebatesPublications(PUser $user, \DateTime $beginAt, \DateTime $endAt, $limit)
+    {
+        if (!$user) {
+            throw new InconsistentDataException('Can get user followed publications - user null');
+        }
+
+        // Récupération d'un tableau des ids des débats suivis
+        $debateIds = $this->getFollowedDebatesIdsArray($user->getId());
+        $inQueryDebateIds = $this->globalTools->getInQuery($debateIds);
+
+        $publications = $this->notificationManager->generateMostInteractedFollowedDebatesPublications($inQueryDebateIds, $beginAt->format('Y-m-d H:i:s'), $endAt->format('Y-m-d H:i:s'), $limit);
 
         return $publications;
     }

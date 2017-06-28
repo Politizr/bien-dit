@@ -621,14 +621,16 @@ class DocumentService
      *
      * @param string $objectName
      * @param int $objectId
+     * @param int $authorUserId
      * @param boolean $absolute URL
-     * @return array [subject,title,url,document,documentUrl]
+     * @return array [subject,title,url,document,documentUrl,author,authorUrl]
      */
-    public function computeDocumentContextAttributes($objectName, $objectId, $absolute = true)
+    public function computeDocumentContextAttributes($objectName, $objectId, $authorUserId, $absolute = true)
     {
         // $this->logger->info('*** computeDocumentContextAttributes');
         // $this->logger->info('$objectName = '.print_r($objectName, true));
         // $this->logger->info('$objectId = '.print_r($objectId, true));
+        // $this->logger->info('$authorUserId = '.print_r($authorUserId, true));
         // $this->logger->info('$absolute = '.print_r($absolute, true));
 
         $subject = null;
@@ -636,6 +638,9 @@ class DocumentService
         $url = '#';
         $document = null;
         $documentUrl = '#';
+        $author = null;
+        $authorUrl = '#';
+
         switch ($objectName) {
             case ObjectTypeConstants::TYPE_DEBATE:
                 $subject = PDDebateQuery::create()->findPk($objectId);
@@ -714,12 +719,22 @@ class DocumentService
                 throw new InconsistentDataException(sprintf('Object name %s not managed.', $objectName));
         }
 
+        // Récupération de l'auteur de l'interaction
+        $author = PUserQuery::create()
+            ->online()
+            ->findPk($authorUserId);
+        if ($author) {
+            $authorUrl = $this->router->generate('UserDetail', array('slug' => $author->getSlug()), $absolute);
+        }
+
         return array(
             'subject' => $subject,
             'title' => $title,
             'url' => $url,
             'document' => $document,
             'documentUrl' => $documentUrl,
+            'author' => $author,
+            'authorUrl' => $authorUrl,
         );
     }
 }

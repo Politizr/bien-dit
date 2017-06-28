@@ -87,4 +87,5 @@ services:
         class: Politizr\FrontBundle\Lib\Functional\NotificationService
         arguments:
             - @politizr.manager.notification
+            - @politizr.tools.global
             - @logger

@@ -70,7 +70,7 @@ class NotificationManager
     /* ######################################################################################################## */
 
     /**
-     * Most interacted user publications (reactions/comments)
+     * Most interacted user publications (reactions/comments/note+) during period
      *
      * @see app/sql/accountNotifications.sql
      *
@@ -80,7 +80,7 @@ class NotificationManager
     {
         // Requête SQL
         $sql = "
-( SELECT DISTINCT p_d_debate.id as id, p_d_debate.title as title, p_d_debate.file_name as fileName, p_d_debate.description as description, p_d_debate.slug as slug, p_d_debate.note_pos as note_pos, p_d_debate.note_neg as note_neg, COUNT(distinct p_d_reaction_child.id) as nb_reactions, COUNT(distinct p_d_comment_child.id) as nb_comments, p_d_debate.published_at as published_at, p_d_debate.updated_at as updated_at, 'Politizr\\\Model\\\PDDebate' as type
+( SELECT DISTINCT p_d_debate.id as id, p_d_debate.p_user_id as author_id, p_d_debate.title as title, p_d_debate.description as description, p_d_debate.note_pos as note_pos, p_d_debate.note_neg as note_neg, COUNT(distinct p_d_reaction_child.id) as nb_reactions, COUNT(distinct p_d_comment_child.id) as nb_comments, COUNT(distinct p_u_notification.id) as nb_notifications, p_d_debate.published_at as published_at, p_d_debate.updated_at as updated_at, 'Politizr\\\Model\\\PDDebate' as type
 FROM p_d_debate
     LEFT JOIN p_d_reaction as p_d_reaction_child
         ON p_d_debate.id = p_d_reaction_child.p_d_debate_id
@@ -93,30 +93,42 @@ FROM p_d_debate
         AND p_d_comment_child.online = 1
         AND p_d_comment_child.created_at > :begin_at2
         AND p_d_comment_child.created_at < :end_at2
+    LEFT JOIN p_u_notification as p_u_notification
+        ON p_d_debate.id = p_u_notification.p_object_id
+        AND p_u_notification.p_notification_id = :p_notification_id
+        AND p_u_notification.p_object_name = 'Politizr\\\Model\\\PDDebate'
+        AND p_u_notification.created_at > :begin_at3
+        AND p_u_notification.created_at < :end_at3
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1
     AND p_d_debate.p_user_id = :p_user_id
 
 GROUP BY id
-HAVING nb_reactions > 0 OR nb_comments > 0
+HAVING nb_reactions > 0 OR nb_comments > 0 OR nb_notifications > 0
 )
 
 UNION DISTINCT
 
-( SELECT DISTINCT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.file_name as fileName, p_d_reaction.description as description, p_d_reaction.slug as slug, p_d_reaction.note_pos as note_pos, p_d_reaction.note_neg as note_neg, COUNT(distinct p_d_reaction_child.id) as nb_reactions, COUNT(distinct p_d_comment_child.id) as nb_comments, p_d_reaction.published_at as published_at, p_d_reaction.updated_at as updated_at,'Politizr\\\Model\\\PDReaction' as type
+( SELECT DISTINCT p_d_reaction.id as id, p_d_reaction.p_user_id as author_id, p_d_reaction.title as title, p_d_reaction.description as description, p_d_reaction.note_pos as note_pos, p_d_reaction.note_neg as note_neg, COUNT(distinct p_d_reaction_child.id) as nb_reactions, COUNT(distinct p_d_comment_child.id) as nb_comments, COUNT(distinct p_u_notification.id) as nb_notifications, p_d_reaction.published_at as published_at, p_d_reaction.updated_at as updated_at,'Politizr\\\Model\\\PDReaction' as type
 FROM p_d_reaction
     LEFT JOIN p_d_reaction as p_d_reaction_child
         ON p_d_reaction.id = p_d_reaction_child.parent_reaction_id
         AND p_d_reaction_child.published = 1
         AND p_d_reaction_child.online = 1
-        AND p_d_reaction_child.published_at > :begin_at3
-        AND p_d_reaction_child.published_at < :end_at3
+        AND p_d_reaction_child.published_at > :begin_at4
+        AND p_d_reaction_child.published_at < :end_at4
     LEFT JOIN p_d_r_comment as p_d_comment_child
         ON p_d_reaction.id = p_d_comment_child.p_d_reaction_id
         AND p_d_comment_child.online = 1
-        AND p_d_comment_child.created_at > :begin_at4
-        AND p_d_comment_child.created_at < :end_at4
+        AND p_d_comment_child.created_at > :begin_at5
+        AND p_d_comment_child.created_at < :end_at5
+    LEFT JOIN p_u_notification as p_u_notification
+        ON p_d_reaction.id = p_u_notification.p_object_id
+        AND p_u_notification.p_notification_id = :p_notification_id2
+        AND p_u_notification.p_object_name = 'Politizr\\\Model\\\PDReaction'
+        AND p_u_notification.created_at > :begin_at6
+        AND p_u_notification.created_at < :end_at6
 WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
@@ -124,10 +136,10 @@ WHERE
     AND p_d_reaction.p_user_id = :p_user_id2
 
 GROUP BY id
-HAVING nb_reactions > 0 OR nb_comments > 0
+HAVING nb_reactions > 0 OR nb_comments > 0 OR nb_notifications > 0
 )
 
-ORDER BY nb_reactions DESC, nb_comments DESC, note_pos DESC, note_neg ASC
+ORDER BY nb_reactions DESC, nb_comments DESC, note_pos DESC, nb_notifications DESC, note_neg ASC
 
 LIMIT :limit
 ";
@@ -136,57 +148,134 @@ LIMIT :limit
     }
 
     /**
-     * Most interacted user publications (notes+)
+     * Most followed user publications (reactions>subjects>comments by note+) during period
      *
      * @see app/sql/accountNotifications.sql
      *
+     * @param string $inQueryUserIds
      * @return string
      */
-    private function createMostNotePosUserPublicationsRawSql()
+    private function createMostInteractedFollowedUserPublicationsRawSql($inQueryUserIds)
     {
         // Requête SQL
         $sql = "
-( SELECT DISTINCT p_d_debate.id as id, p_d_debate.title as title, p_d_debate.file_name as fileName, p_d_debate.description as description, p_d_debate.slug as slug, p_d_debate.note_pos as note_pos, p_d_debate.note_neg as note_neg, COUNT(distinct p_u_notification.id) as nb_notifications, p_d_debate.published_at as published_at, p_d_debate.updated_at as updated_at, 'Politizr\\\Model\\\PDDebate' as type
+( SELECT p_d_debate.id as id, p_d_debate.p_user_id as author_id, p_d_debate.title as title, p_d_debate.description as description, p_d_debate.published_at as published_at, p_d_debate.note_pos as note_pos, p_d_debate.note_neg as note_neg, COUNT(distinct id) as nb_subjects, 0 as nb_reactions, 0 as nb_comments, 'Politizr\\\Model\\\PDDebate' as type
 FROM p_d_debate
-    LEFT JOIN p_u_notification as p_u_notification
-        ON p_d_debate.id = p_u_notification.p_object_id
-
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1
-    AND p_d_debate.p_user_id = :p_user_id
-    AND p_u_notification.p_notification_id = :p_notification_id
-    AND p_u_notification.p_object_name = 'Politizr\\\Model\\\PDDebate'
-    AND p_u_notification.created_at > :begin_at
-    AND p_u_notification.created_at < :end_at
+    AND p_d_debate.p_user_id IN ($inQueryUserIds)
+    AND p_d_debate.published_at > :begin_at
+    AND p_d_debate.published_at < :end_at
 
 GROUP BY id
 )
-
 
 UNION DISTINCT
 
-
-# Réactions publiés
-( SELECT DISTINCT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.file_name as fileName, p_d_reaction.description as description, p_d_reaction.slug as slug, p_d_reaction.note_pos as note_pos, p_d_reaction.note_neg as note_neg, COUNT(distinct p_u_notification.id) as nb_notifications, p_d_reaction.published_at as published_at, p_d_reaction.updated_at as updated_at,'Politizr\\\Model\\\PDReaction' as type
+# Réactions des users suivis
+( SELECT p_d_reaction.id as id, p_d_reaction.p_user_id as author_id, p_d_reaction.title as title, p_d_reaction.description as description, p_d_reaction.published_at as published_at, p_d_reaction.note_pos as note_pos, p_d_reaction.note_neg as note_neg, 0 as nb_subjects, COUNT(distinct id) as nb_reactions, 0 as nb_comments, 'Politizr\\\Model\\\PDReaction' as type
 FROM p_d_reaction
-    LEFT JOIN p_u_notification as p_u_notification
-        ON p_d_reaction.id = p_u_notification.p_object_id
-
 WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
-    AND p_d_reaction.tree_level > 0
-    AND p_d_reaction.p_user_id = :p_user_id2
-    AND p_u_notification.p_notification_id = :p_notification_id2
-    AND p_u_notification.p_object_name = 'Politizr\\\Model\\\PDReaction'
-    AND p_u_notification.created_at > :begin_at2
-    AND p_u_notification.created_at < :end_at2
+    AND p_d_reaction.p_user_id IN ($inQueryUserIds)
+    AND p_d_reaction.published_at > :begin_at2
+    AND p_d_reaction.published_at < :end_at2
 
 GROUP BY id
 )
 
-ORDER BY nb_notifications DESC
+UNION DISTINCT
+
+# Commentaires débats des users suivis
+( SELECT p_d_d_comment.id as id, p_d_d_comment.p_user_id as author_id, \"commentaire\" as title, p_d_d_comment.description as description, p_d_d_comment.published_at as published_at, p_d_d_comment.note_pos as note_pos, p_d_d_comment.note_neg as note_neg, 0 as nb_subjects, 0 as nb_reactions, COUNT(distinct id) as nb_comments, 'Politizr\\\Model\\\PDDComment' as type
+FROM p_d_d_comment
+WHERE
+    p_d_d_comment.online = 1
+    AND p_d_d_comment.p_user_id IN ($inQueryUserIds)
+    AND p_d_d_comment.published_at > :begin_at3
+    AND p_d_d_comment.published_at < :end_at3
+
+GROUP BY id
+)
+
+UNION DISTINCT
+
+# Commentaires réactions des users suivis
+( SELECT p_d_r_comment.id as id, p_d_r_comment.p_user_id as author_id, \"commentaire\" as title, p_d_r_comment.description as description, p_d_r_comment.published_at as published_at, p_d_r_comment.note_pos as note_pos, p_d_r_comment.note_neg as note_neg, 0 as nb_subjects, 0 as nb_reactions, COUNT(distinct id) as nb_comments, 'Politizr\\\Model\\\PDRComment' as type
+FROM p_d_r_comment
+WHERE
+    p_d_r_comment.online = 1
+    AND p_d_r_comment.p_user_id IN ($inQueryUserIds)
+    AND p_d_r_comment.published_at > :begin_at4
+    AND p_d_r_comment.published_at < :end_at4
+
+GROUP BY id
+)
+
+ORDER BY nb_reactions DESC, nb_subjects DESC, nb_comments DESC, note_pos DESC, note_neg ASC
+
+LIMIT :limit
+";
+
+        return $sql;
+    }
+
+    /**
+     * Most interacted followed debates publications (reactions/comments) during period
+     *
+     * @see app/sql/accountNotifications.sql
+     *
+     * @param string $inQueryDebateIds
+     * @return string
+     */
+    private function createMostInteractedFollowedDebatesPublicationsRawSql($inQueryDebateIds)
+    {
+        // Requête SQL
+        $sql = "
+( SELECT p_d_reaction.id as id, p_d_reaction.p_user_id as author_id, p_d_reaction.title as title, p_d_reaction.description as description, p_d_reaction.published_at as published_at, p_d_reaction.note_pos as note_pos, p_d_reaction.note_neg as note_neg, 0 as nb_subjects, COUNT(distinct p_d_reaction.id) as nb_reactions, 0 as nb_comments, 'Politizr\\\Model\\\PDReaction' as type
+FROM p_d_reaction
+WHERE
+    p_d_reaction.published = 1
+    AND p_d_reaction.online = 1
+    AND p_d_reaction.p_d_debate_id IN ($inQueryDebateIds)
+    AND p_d_reaction.tree_level > 0
+    AND p_d_reaction.published_at > :begin_at
+    AND p_d_reaction.published_at < :end_at
+
+GROUP BY p_d_reaction.id
+)
+
+UNION DISTINCT
+
+( SELECT p_d_d_comment.id as id, p_d_d_comment.p_user_id as author_id, \"commentaire\" as title, p_d_d_comment.description as description, p_d_d_comment.published_at as published_at, p_d_d_comment.note_pos as note_pos, p_d_d_comment.note_neg as note_neg, 0 as nb_subjects, 0 as nb_reactions, COUNT(distinct p_d_d_comment.id) as nb_comments, 'Politizr\\\Model\\\PDDComment' as type
+FROM p_d_d_comment
+WHERE
+    p_d_d_comment.online = 1
+    AND p_d_d_comment.p_d_debate_id IN ($inQueryDebateIds)
+    AND p_d_d_comment.published_at > :begin_at2
+    AND p_d_d_comment.published_at < :end_at2
+
+GROUP BY p_d_d_comment.id
+)
+
+UNION DISTINCT
+
+( SELECT p_d_r_comment.id as id, p_d_r_comment.p_user_id as author_id, \"commentaire\" as title, p_d_r_comment.description as description, p_d_r_comment.published_at as published_at, p_d_r_comment.note_pos as note_pos, p_d_r_comment.note_neg as note_neg, 0 as nb_subjects, 0 as nb_reactions, COUNT(distinct p_d_r_comment.id) as nb_comments, 'Politizr\\\Model\\\PDRComment' as type
+FROM p_d_r_comment
+    LEFT JOIN p_d_reaction
+        ON p_d_r_comment.p_d_reaction_id = p_d_reaction.id
+WHERE
+    p_d_r_comment.online = 1
+    AND p_d_reaction.p_d_debate_id IN ($inQueryDebateIds)
+    AND p_d_r_comment.published_at > :begin_at3
+    AND p_d_r_comment.published_at < :end_at3
+
+GROUP BY p_d_r_comment.id
+)
+
+ORDER BY nb_reactions DESC, nb_subjects DESC, nb_comments DESC, note_pos DESC, note_neg ASC
 
 LIMIT :limit
 ";
@@ -221,6 +310,52 @@ LIMIT :limit
 
         $stmt->bindValue(':p_user_id', $userId, \PDO::PARAM_INT);
         $stmt->bindValue(':p_user_id2', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_notification_id', NotificationConstants::ID_D_NOTE_POS, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_notification_id2', NotificationConstants::ID_D_NOTE_POS, \PDO::PARAM_INT);
+        $stmt->bindValue(':begin_at', $beginAt, \PDO::PARAM_STR);
+        $stmt->bindValue(':begin_at2', $beginAt, \PDO::PARAM_STR);
+        $stmt->bindValue(':begin_at3', $beginAt, \PDO::PARAM_STR);
+        $stmt->bindValue(':begin_at4', $beginAt, \PDO::PARAM_STR);
+        $stmt->bindValue(':begin_at5', $beginAt, \PDO::PARAM_STR);
+        $stmt->bindValue(':begin_at6', $beginAt, \PDO::PARAM_STR);
+        $stmt->bindValue(':end_at', $endAt, \PDO::PARAM_STR);
+        $stmt->bindValue(':end_at2', $endAt, \PDO::PARAM_STR);
+        $stmt->bindValue(':end_at3', $endAt, \PDO::PARAM_STR);
+        $stmt->bindValue(':end_at4', $endAt, \PDO::PARAM_STR);
+        $stmt->bindValue(':end_at5', $endAt, \PDO::PARAM_STR);
+        $stmt->bindValue(':end_at6', $endAt, \PDO::PARAM_STR);
+        $stmt->bindValue(':limit', $limit, \PDO::PARAM_STR);
+
+        $stmt->execute();
+
+        $result = $stmt->fetchAll();
+
+        $publications = $this->globalTools->hydrateInteractedPublication($result, $beginAt, $endAt);
+
+        return $publications;
+    }
+
+    /**
+     * Most interacted followed user documents listing
+     *
+     * @param int $inQueryUserIds
+     * @param string $beginAt
+     * @param string $endAt
+     * @param integer $limit
+     * @return PropelCollection
+     */
+    public function generateMostInteractedFollowedUserPublications($inQueryUserIds, $beginAt, $endAt, $limit)
+    {
+        $this->logger->info('*** generateMostFollowedUserPublications');
+        $this->logger->info('$inQueryUserIds = ' . print_r($inQueryUserIds, true));
+        $this->logger->info('$beginAt = ' . print_r($beginAt, true));
+        $this->logger->info('$endAt = ' . print_r($endAt, true));
+        $this->logger->info('$limit = ' . print_r($limit, true));
+
+        $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
+
+        $stmt = $con->prepare($this->createMostInteractedFollowedUserPublicationsRawSql($inQueryUserIds));
+
         $stmt->bindValue(':begin_at', $beginAt, \PDO::PARAM_STR);
         $stmt->bindValue(':begin_at2', $beginAt, \PDO::PARAM_STR);
         $stmt->bindValue(':begin_at3', $beginAt, \PDO::PARAM_STR);
@@ -241,34 +376,32 @@ LIMIT :limit
     }
 
     /**
-     * Interacted note pos user documents listing
+     * Most interacted followed debates publications documents listing
      *
-     * @param int $userId
+     * @param int $inQueryDebateIds
      * @param string $beginAt
      * @param string $endAt
      * @param integer $limit
      * @return PropelCollection
      */
-    public function generateMostNotePosUserPublications($userId, $beginAt, $endAt, $limit)
+    public function generateMostInteractedFollowedDebatesPublications($inQueryDebateIds, $beginAt, $endAt, $limit)
     {
-        $this->logger->info('*** generateMostInteractedUserPublications');
-        $this->logger->info('$userId = ' . print_r($userId, true));
+        $this->logger->info('*** generateMostInteractedFollowedDebatesPublications');
+        $this->logger->info('$inQueryDebateIds = ' . print_r($inQueryDebateIds, true));
         $this->logger->info('$beginAt = ' . print_r($beginAt, true));
         $this->logger->info('$endAt = ' . print_r($endAt, true));
         $this->logger->info('$limit = ' . print_r($limit, true));
 
         $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
 
-        $stmt = $con->prepare($this->createMostNotePosUserPublicationsRawSql());
+        $stmt = $con->prepare($this->createMostInteractedFollowedDebatesPublicationsRawSql($inQueryDebateIds));
 
-        $stmt->bindValue(':p_user_id', $userId, \PDO::PARAM_INT);
-        $stmt->bindValue(':p_user_id2', $userId, \PDO::PARAM_INT);
-        $stmt->bindValue(':p_notification_id', NotificationConstants::ID_D_NOTE_POS, \PDO::PARAM_INT);
-        $stmt->bindValue(':p_notification_id2', NotificationConstants::ID_D_NOTE_POS, \PDO::PARAM_INT);
         $stmt->bindValue(':begin_at', $beginAt, \PDO::PARAM_STR);
         $stmt->bindValue(':begin_at2', $beginAt, \PDO::PARAM_STR);
+        $stmt->bindValue(':begin_at3', $beginAt, \PDO::PARAM_STR);
         $stmt->bindValue(':end_at', $endAt, \PDO::PARAM_STR);
         $stmt->bindValue(':end_at2', $endAt, \PDO::PARAM_STR);
+        $stmt->bindValue(':end_at3', $endAt, \PDO::PARAM_STR);
         $stmt->bindValue(':limit', $limit, \PDO::PARAM_STR);
 
         $stmt->execute();

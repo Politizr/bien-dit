@@ -3,18 +3,16 @@
         {% spaceless %}
         {% if followers|length > 1 %}
             {% for follower in followers %}
-                {{ follower['title'] }}
+                <a href="{{ follower['authorUrl'] }}">{{ follower['author'] }}</a>
                 {% if loop.revindex == 2 %}
                     et
                 {% elseif not loop.last %}
                     ,
-                {% else %}
-                    .
                 {% endif %}
             {% endfor %}
             suivent désormais votre activité.
         {% else %}
-            {{ followers[0]['title'] }} suit désormais votre activité.
+            <a href="{{ followers[0]['authorUrl'] }}">{{ followers[0]['author'] }}</a> suit désormais votre activité.
         {% endif %}
         {% endspaceless %}
     </td>

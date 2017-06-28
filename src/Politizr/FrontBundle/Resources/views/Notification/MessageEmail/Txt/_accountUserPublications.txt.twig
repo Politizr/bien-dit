@@ -1,0 +1,41 @@
+{% spaceless %}
+{% if userPublications|length > 0 %}
+    Vos publications suscitent des réactions!
+{% endif %}
+{% for publication in userPublications %}
+    <a href="{{ publication['url'] }}">{{ publication['title'] }}</a> a 
+    {% if publication.nbReactions > 0 %}
+        {% if publication.nbReactions > 1 %}
+            {{ publication.nbReactions }} nouvelles réponses
+        {% else %}
+            une nouvelle réponse
+        {% endif %}
+        {% if publication.nbComments > 0 and publication.nbNotifications > 0 %}
+            ,
+        {% elseif publication.nbComments > 0 or publication.nbNotifications > 0 %}
+            et
+        {% else %}
+            .
+        {% endif %}
+    {% endif %}
+    {% if publication.nbComments > 0 %}
+        {% if publication.nbComments > 1 %}
+            {{ publication.nbComments }} nouveaux commentaires
+        {% else %}
+            un nouveau commentaire
+        {% endif %}
+        {% if publication.nbNotifications > 0 %}
+            et
+        {% else %}
+            .
+        {% endif %}
+    {% endif %}
+    {% if publication.nbNotifications > 0 %}
+        {% if publication.nbNotifications > 1 %}
+            {{ publication.nbNotifications }} nouvelles notes positives.
+        {% else %}
+            une nouvelle note positive.
+        {% endif %}
+    {% endif %}
+{% endfor %}
+{% endspaceless %}

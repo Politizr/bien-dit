@@ -16,11 +16,17 @@ use Politizr\Model\PUserQuery;
 
 use Politizr\Model\PMEmailing;
 
+use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\EmailConstants;
 use Politizr\Constant\NotificationConstants;
 
 /**
  * Politizr email sending
+ *
+ * https://github.com/Politizr/Politizr/wiki/Liste-des-notifications-mail
+ * @todo
+ * - + d'aggregations pour les 3. et 4.
+ * - suppr user inactifs / supprimés des envois
  * 
  * @author Lionel Bouzonville
  */
@@ -141,13 +147,32 @@ class EmailAccountNotificationsCommand extends ContainerAwareCommand
 
             // User Publications
             $interactedPublications = $this->notificationService->getMostInteractedUserPublications($user, $beginAt, $endAt, EmailConstants::NB_MAX_INTERACTED_PUBLICATIONS);
-            $notePosPublications = $this->notificationService->getMostNotePosUserPublications($user, $beginAt, $endAt, EmailConstants::NB_MAX_INTERACTED_PUBLICATIONS);
 
-            $userPublicationsPart = $this->getUserPublicationsRendering($interactedPublications, $notePosPublications, $output);
+            $userPublicationsPart = $this->getUserPublicationsRendering($interactedPublications, $output);
             $userPublicationsPartHtml = $userPublicationsPartTxt = null;
             if ($userPublicationsPart) {
                 $userPublicationsPartHtml = $userPublicationsPart[0];
                 $userPublicationsPartTxt = $userPublicationsPart[1];
+            }
+
+            // Users followed Debates Publications
+            $followedDebatesPublications = $this->notificationService->getMostInteractedFollowedDebatesPublications($user, $beginAt, $endAt, EmailConstants::NB_MAX_INTERACTED_PUBLICATIONS);
+
+            $followedDebatesPublicationsPart = $this->getFollowedDebatesRendering($followedDebatesPublications, $output);
+            $followedDebatesPublicationsPartHtml = $followedDebatesPublicationsPartTxt = null;
+            if ($followedDebatesPublicationsPart) {
+                $followedDebatesPublicationsPartHtml = $followedDebatesPublicationsPart[0];
+                $followedDebatesPublicationsPartTxt = $followedDebatesPublicationsPart[1];
+            }
+
+            // Users followed Publications
+            $followedUsersPublications = $this->notificationService->getMostInteractedFollowedUsersPublications($user, $beginAt, $endAt, EmailConstants::NB_MAX_INTERACTED_PUBLICATIONS);
+
+            $followedUsersPublicationsPart = $this->getFollowedUsersRendering($followedUsersPublications, $output);
+            $followedUsersPublicationsPartHtml = $followedUsersPublicationsPartTxt = null;
+            if ($followedUsersPublicationsPart) {
+                $followedUsersPublicationsPartHtml = $followedUsersPublicationsPart[0];
+                $followedUsersPublicationsPartTxt = $followedUsersPublicationsPart[1];
             }
 
             // Followers
@@ -163,8 +188,8 @@ class EmailAccountNotificationsCommand extends ContainerAwareCommand
             }
 
 
-            if ($badgesPart || $userPublicationsPart || $followersPart) {
-                $message = $this->accountNotificationEmail($user, $badgesPartHtml, $badgesPartTxt, $userPublicationsPartHtml, $userPublicationsPartTxt, $followersPartHtml, $followersPartTxt);
+            if ($badgesPart || $userPublicationsPart || $followersPart || $followedUsersPublicationsPart || $followedDebatesPublicationsPart) {
+                $message = $this->accountNotificationEmail($user, $badgesPartHtml, $badgesPartTxt, $userPublicationsPartHtml, $userPublicationsPartTxt, $followedDebatesPublicationsPartHtml, $followedDebatesPublicationsPartTxt, $followedUsersPublicationsPartHtml, $followedUsersPublicationsPartTxt, $followersPartHtml, $followersPartTxt);
                 // $output->writeln(print_r($message->getBody(), true));
 
                 // monitoring
@@ -197,11 +222,13 @@ class EmailAccountNotificationsCommand extends ContainerAwareCommand
         $badgesPartTxt = null;
 
         // Badges
+        $loop = 0;
         foreach ($badgeNotifications as $puNotification) {
             // Update attributes depending of context
             $attr = $this->documentService->computeDocumentContextAttributes(
                 $puNotification->getPObjectName(),
-                $puNotification->getPObjectId()
+                $puNotification->getPObjectId(),
+                $puNotification->getPAuthorUserId()
             );
 
             // $subject = $attr['subject'];
@@ -209,8 +236,12 @@ class EmailAccountNotificationsCommand extends ContainerAwareCommand
             // $url = $attr['url'];
             // $document = $attr['document'];
             // $documentUrl = $attr['documentUrl'];
+            // $author = $attr['author'];
+            // $authorUrl = $attr['authorUrl'];
 
-            $badges[]['title'] = $attr['title'];
+            $badges[$loop]['title'] = $attr['title'];
+
+            $loop++;
         }
         if (count($badges) > 0) {
             $badgesPartHtml = $this->templating->render(
@@ -234,31 +265,171 @@ class EmailAccountNotificationsCommand extends ContainerAwareCommand
     /**
      * Get user publications' interactions rendering
      *
-     * @param array $interactedPublications
-     * @param array $notePosPublications
+     * @param array $publications
      */
-    private function getUserPublicationsRendering($interactedPublications, $notePosPublications, $output)
+    private function getUserPublicationsRendering($publications, $output)
     {
         $userPublications = array();
         $userPublicationsPartHtml = null;
         $userPublicationsPartTxt = null;
 
-        if (count($interactedPublications) > 0 || count($notePosPublications) > 0) {
+        $loop = 0;
+        foreach ($publications as $publication) {
+            // Update attributes depending of context
+            $attr = $this->documentService->computeDocumentContextAttributes(
+                $publication->getType(),
+                $publication->getId(),
+                $publication->getAuthorId()
+            );
+
+            // $subject = $attr['subject'];
+            // $title = $attr['title'];
+            // $url = $attr['url'];
+            // $document = $attr['document'];
+            // $documentUrl = $attr['documentUrl'];
+            // $author = $attr['author'];
+            // $authorUrl = $attr['authorUrl'];
+
+            $userPublications[$loop]['title'] = $attr['title'];
+            $userPublications[$loop]['url'] = $attr['url'];
+
+            $userPublications[$loop]['nbReactions'] = $publication->getNbReactions();
+            $userPublications[$loop]['nbComments'] = $publication->getNbComments();
+            $userPublications[$loop]['nbNotifications'] = $publication->getNbNotifications();
+
+            $loop++;
+        }
+
+        if (count($userPublications) > 0) {
             $userPublicationsPartHtml = $this->templating->render(
                 'PolitizrFrontBundle:Notification\\MessageEmail:_accountUserPublications.html.twig',
                 array(
-                    'interactedPublications' => $interactedPublications,
-                    'notePosPublications' => $notePosPublications,
+                    'userPublications' => $userPublications,
                 )
             );
             $userPublicationsPartTxt = $this->templating->render(
                 'PolitizrFrontBundle:Notification\\MessageEmail\\Txt:_accountUserPublications.txt.twig',
                 array(
-                    'interactedPublications' => $interactedPublications,
-                    'notePosPublications' => $notePosPublications,
+                    'userPublications' => $userPublications,
                 )
             );
             return [$userPublicationsPartHtml, $userPublicationsPartTxt];
+        }
+
+        return null;
+    }
+
+    /**
+     * Get users followed debates publications rendering
+     *
+     * @param array $publications
+     */
+    private function getFollowedDebatesRendering($publications, $output)
+    {
+        $followedDebatesPublications = array();
+        $followedDebatesPublicationsPartHtml = null;
+        $followedDebatesPublicationsPartTxt = null;
+
+        $loop = 0;
+        foreach ($publications as $publication) {
+            // Update attributes depending of context
+            $attr = $this->documentService->computeDocumentContextAttributes(
+                $publication->getType(),
+                $publication->getId(),
+                $publication->getAuthorId()
+            );
+
+            // $subject = $attr['subject'];
+            // $title = $attr['title'];
+            // $url = $attr['url'];
+            // $document = $attr['document'];
+            // $documentUrl = $attr['documentUrl'];
+            // $author = $attr['author'];
+            // $authorUrl = $attr['authorUrl'];
+
+            $followedDebatesPublications[$loop]['title'] = 'un commentaire';
+            if ($publication->getType() == ObjectTypeConstants::TYPE_DEBATE || $publication->getType() == ObjectTypeConstants::TYPE_REACTION) {
+                $followedDebatesPublications[$loop]['title'] = $attr['title'];    
+            }            
+            $followedDebatesPublications[$loop]['url'] = $attr['url'];
+            $followedDebatesPublications[$loop]['author'] = $attr['author'];
+            $followedDebatesPublications[$loop]['authorUrl'] = $attr['authorUrl'];
+
+            $loop++;
+        }
+
+        if (count($followedDebatesPublications) > 0) {
+            $followedDebatesPublicationsPartHtml = $this->templating->render(
+                'PolitizrFrontBundle:Notification\\MessageEmail:_accountFollowedDebatesPublications.html.twig',
+                array(
+                    'followedDebatesPublications' => $followedDebatesPublications,
+                )
+            );
+            $followedDebatesPublicationsPartTxt = $this->templating->render(
+                'PolitizrFrontBundle:Notification\\MessageEmail\\Txt:_accountFollowedDebatesPublications.txt.twig',
+                array(
+                    'followedDebatesPublications' => $followedDebatesPublications,
+                )
+            );
+            return [$followedDebatesPublicationsPartHtml, $followedDebatesPublicationsPartTxt];
+        }
+
+        return null;
+    }
+
+    /**
+     * Get users followed publications rendering
+     *
+     * @param array $publications
+     */
+    private function getFollowedUsersRendering($publications, $output)
+    {
+        $followedUsersPublications = array();
+        $followedUsersPublicationsPartHtml = null;
+        $followedUsersPublicationsPartTxt = null;
+
+        $loop = 0;
+        foreach ($publications as $publication) {
+            // Update attributes depending of context
+            $attr = $this->documentService->computeDocumentContextAttributes(
+                $publication->getType(),
+                $publication->getId(),
+                $publication->getAuthorId()
+            );
+
+            // $subject = $attr['subject'];
+            // $title = $attr['title'];
+            // $url = $attr['url'];
+            // $document = $attr['document'];
+            // $documentUrl = $attr['documentUrl'];
+            // $author = $attr['author'];
+            // $authorUrl = $attr['authorUrl'];
+
+            $followedUsersPublications[$loop]['title'] = 'un commentaire';
+            if ($publication->getType() == ObjectTypeConstants::TYPE_DEBATE || $publication->getType() == ObjectTypeConstants::TYPE_REACTION) {
+                $followedUsersPublications[$loop]['title'] = $attr['title'];    
+            }
+            $followedUsersPublications[$loop]['url'] = $attr['url'];
+            $followedUsersPublications[$loop]['author'] = $attr['author'];
+            $followedUsersPublications[$loop]['authorUrl'] = $attr['authorUrl'];
+
+            $loop++;
+        }
+
+        if (count($followedUsersPublications) > 0) {
+            $followedUsersPublicationsPartHtml = $this->templating->render(
+                'PolitizrFrontBundle:Notification\\MessageEmail:_accountFollowedUsersPublications.html.twig',
+                array(
+                    'followedUsersPublications' => $followedUsersPublications,
+                )
+            );
+            $followedUsersPublicationsPartTxt = $this->templating->render(
+                'PolitizrFrontBundle:Notification\\MessageEmail\\Txt:_accountFollowedUsersPublications.txt.twig',
+                array(
+                    'followedUsersPublications' => $followedUsersPublications,
+                )
+            );
+            return [$followedUsersPublicationsPartHtml, $followedUsersPublicationsPartTxt];
         }
 
         return null;
@@ -276,11 +447,13 @@ class EmailAccountNotificationsCommand extends ContainerAwareCommand
         $followersPartTxt = null;
 
         // Badges
+        $loop = 0;
         foreach ($followerNotifications as $puNotification) {
             // Update attributes depending of context
             $attr = $this->documentService->computeDocumentContextAttributes(
                 $puNotification->getPObjectName(),
-                $puNotification->getPObjectId()
+                $puNotification->getPObjectId(),
+                $puNotification->getPAuthorUserId()
             );
 
             // $subject = $attr['subject'];
@@ -288,8 +461,13 @@ class EmailAccountNotificationsCommand extends ContainerAwareCommand
             // $url = $attr['url'];
             // $document = $attr['document'];
             // $documentUrl = $attr['documentUrl'];
+            // $author = $attr['author'];
+            // $authorUrl = $attr['authorUrl'];
 
-            $followers[]['title'] = $attr['title'];
+            $followers[$loop]['author'] = $attr['author'];
+            $followers[$loop]['authorUrl'] = $attr['authorUrl'];
+
+            $loop++;
         }
         if (count($followers) > 0) {
             $followersPartHtml = $this->templating->render(
@@ -316,10 +494,14 @@ class EmailAccountNotificationsCommand extends ContainerAwareCommand
      * @param PUser $user
      * @param string $badgesPartHtml
      * @param string $badgesPartTxt
+     * @param string $followedDebatesPublicationsPartHtml
+     * @param string $followedDebatesPublicationsPartTxt
+     * @param string $followedUsersPublicationsPartHtml
+     * @param string $followedUsersPublicationsPartTxt
      * @param string $userPublicationsPartHtml
      * @param string $userPublicationsPartTxt
      */
-    private function accountNotificationEmail($user, $badgesPartHtml, $badgesPartTxt, $userPublicationsPartHtml, $userPublicationsPartTxt, $followersPartHtml, $followersPartTxt)
+    private function accountNotificationEmail($user, $badgesPartHtml, $badgesPartTxt, $userPublicationsPartHtml, $userPublicationsPartTxt, $followedDebatesPublicationsPartHtml, $followedDebatesPublicationsPartTxt, $followedUsersPublicationsPartHtml, $followedUsersPublicationsPartTxt, $followersPartHtml, $followersPartTxt)
     {
         $userEmail = $user->getEmail();
 
@@ -332,6 +514,8 @@ class EmailAccountNotificationsCommand extends ContainerAwareCommand
                     'qualified' => $user->isQualified(),
                     'badgesPart' => $badgesPartHtml,
                     'userPublicationsPart' => $userPublicationsPartHtml,
+                    'followedDebatesPublicationsPart' => $followedDebatesPublicationsPartHtml,
+                    'followedUsersPublicationsPart' => $followedUsersPublicationsPartHtml,
                     'followersPart' => $followersPartHtml,
                 )
             );
@@ -341,6 +525,8 @@ class EmailAccountNotificationsCommand extends ContainerAwareCommand
                     'qualified' => $user->isQualified(),
                     'badgesPart' => $badgesPartTxt,
                     'userPublicationsPart' => $userPublicationsPartTxt,
+                    'followedDebatesPublicationsPart' => $followedDebatesPublicationsPartTxt,
+                    'followedUsersPublicationsPart' => $followedUsersPublicationsPartTxt,
                     'followersPart' => $followersPartTxt,
                 )
             );

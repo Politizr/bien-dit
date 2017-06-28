@@ -9,17 +9,16 @@ use Politizr\Exception\InconsistentDataException;
 use Eko\FeedBundle\Item\Writer\RoutedItemInterface;
 
 /**
- * Virtual object to manage publication w. notif interacted stats nbReactions / nbComments
+ * Virtual object to manage publication (subjects + reactions + comments) w. optionnaly interacted stats nbReactions / nbComments / nbNotifications
  *
  * @author Lionel Bouzonville
  */
 class InteractedPublication
 {
     protected $id;
+    protected $authorId;
     protected $title;
     protected $description;
-    protected $fileName;
-    protected $slug;
     protected $publishedAt;
     protected $type;
 
@@ -49,6 +48,22 @@ class InteractedPublication
     /**
      *
      */
+    public function getAuthorId()
+    {
+        return $this->author_id;
+    }
+
+    /**
+     *
+     */
+    public function setAuthorId($val)
+    {
+        $this->author_id = $val;
+    }
+
+    /**
+     *
+     */
     public function getTitle()
     {
         return $this->title;
@@ -65,22 +80,6 @@ class InteractedPublication
     /**
      *
      */
-    public function getFileName()
-    {
-        return $this->fileName;
-    }
-
-    /**
-     *
-     */
-    public function setFileName($val)
-    {
-        $this->fileName = $val;
-    }
-
-    /**
-     *
-     */
     public function getDescription()
     {
         return $this->description;
@@ -92,22 +91,6 @@ class InteractedPublication
     public function setDescription($val)
     {
         $this->description = $val;
-    }
-
-    /**
-     *
-     */
-    public function getSlug()
-    {
-        return $this->slug;
-    }
-
-    /**
-     *
-     */
-    public function setSlug($val)
-    {
-        $this->slug = $val;
     }
 
     /**

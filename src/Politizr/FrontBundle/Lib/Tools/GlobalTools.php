@@ -609,10 +609,9 @@ class GlobalTools
                 $publication = new InteractedPublication();
 
                 $publication->setId($row['id']);
+                $publication->setAuthorId($row['author_id']);
                 $publication->setTitle($row['title']);
-                $publication->setFileName($row['fileName']);
                 $publication->setDescription($row['description']);
-                $publication->setSlug($row['slug']);
                 $publication->setPublishedAt(new \DateTime($row['published_at']));
                 $publication->setType($row['type']);
 

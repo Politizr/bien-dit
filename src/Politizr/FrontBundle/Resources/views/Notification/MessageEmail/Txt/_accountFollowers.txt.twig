@@ -1,0 +1,15 @@
+{% spaceless %}
+{% if followers|length > 1 %}
+    {% for follower in followers %}
+        {{ follower['author'] }}
+        {% if loop.revindex == 2 %}
+            et
+        {% elseif not loop.last %}
+            ,
+        {% endif %}
+    {% endfor %}
+    suivent désormais votre activité.
+{% else %}
+    {{ followers[0]['author'] }} suit désormais votre activité.
+{% endif %}
+{% endspaceless %}

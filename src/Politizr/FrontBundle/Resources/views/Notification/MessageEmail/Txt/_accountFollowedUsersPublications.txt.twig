@@ -1,0 +1,8 @@
+{% spaceless %}
+{% if followedUsersPublications|length > 0 %}
+    Certains des utilisateurs que vous suivez ont rédigé de nouvelles publications!
+{% endif %}
+{% for publication in followedUsersPublications %}
+    <a href="{{ publication['authorUrl'] }}">{{ publication['author'] }}</a> a publié <a href="{{ publication['url'] }}">{{ publication['title'] }}</a>
+{% endfor %}
+{% endspaceless %}

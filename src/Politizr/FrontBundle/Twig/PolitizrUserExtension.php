@@ -587,7 +587,8 @@ class PolitizrUserExtension extends \Twig_Extension
         // Update attributes depending of context
         $attr = $this->documentService->computeDocumentContextAttributes(
             $notification->getPObjectName(),
-            $notification->getPObjectId()
+            $notification->getPObjectId(),
+            $notification->getPAuthorUserId()
         );
 
         $subject = $attr['subject'];
@@ -595,14 +596,8 @@ class PolitizrUserExtension extends \Twig_Extension
         $url = $attr['url'];
         $document = $attr['document'];
         $documentUrl = $attr['documentUrl'];
-
-        // Récupération de l'auteur de l'interaction
-        $author = PUserQuery::create()->findPk($notification->getPAuthorUserId());
-
-        $authorUrl = null;
-        if ($author) {
-            $authorUrl = $this->router->generate('UserDetail', array('slug' => $author->getSlug()));
-        }
+        $author = $attr['author'];
+        $authorUrl = $attr['authorUrl'];
 
         $html = $env->render(
             'PolitizrFrontBundle:Notification:_notificationScreen.html.twig',
@@ -640,7 +635,8 @@ class PolitizrUserExtension extends \Twig_Extension
         // Update attributes depending of context
         $attr = $this->documentService->computeDocumentContextAttributes(
             $notification->getPObjectName(),
-            $notification->getPObjectId()
+            $notification->getPObjectId(),
+            $notification->getPAuthorUserId()
         );
 
         $subject = $attr['subject'];
@@ -648,14 +644,8 @@ class PolitizrUserExtension extends \Twig_Extension
         $url = $attr['url'];
         $document = $attr['document'];
         $documentUrl = $attr['documentUrl'];
-
-        // Récupération de l'auteur de l'interaction
-        $author = PUserQuery::create()->findPk($notification->getPAuthorUserId());
-
-        $authorUrl = null;
-        if ($author) {
-            $authorUrl = $this->router->generate('UserDetail', array('slug' => $author->getSlug()), true);
-        }
+        $author = $attr['author'];
+        $authorUrl = $attr['authorUrl'];
 
         // Screen / Email rendering
         if (EmailConstants::TYPE_EMAIL === $type || EmailConstants::TYPE_EMAIL_TXT === $type) {

@@ -22,9 +22,11 @@
                         </tr>
 
 
-                        {{ badgesPart | purify }}
-                        {{ userPublicationsPart | purify }}
-                        {{ followersPart | purify }}
+                        {{ badgesPart | raw }}
+                        {{ userPublicationsPart | raw }}
+                        {{ followedDebatesPublicationsPart | raw }}
+                        {{ followedUsersPublicationsPart | raw }}
+                        {{ followersPart | raw }}
 
                         
                         <!-- footer -->
