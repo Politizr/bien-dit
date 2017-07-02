@@ -28,7 +28,7 @@ function sendDirectMessage(form, localLoader)
             $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
             $('#infoBoxHolder .boxError').show();
         } else {
-            $('#infoBoxHolder .boxSuccess .notifBoxText').html('Votre message a bien été envoyé, merci!');
+            $('#infoBoxHolder .boxSuccess .notifBoxText').html('Merci, nous allons reprendre contact avec vous très rapidement!');
             $('#infoBoxHolder .boxSuccess').show();
             form.trigger("reset");
         }

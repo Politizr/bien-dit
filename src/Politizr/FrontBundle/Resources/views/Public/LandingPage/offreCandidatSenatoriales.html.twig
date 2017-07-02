@@ -51,7 +51,7 @@
 
     <div id="profileSelection" class="askQuestion">
         <div class="center">
-            <h1>Contactez-nous pour plus d'informations</h1>
+            <h1>Remplissez le formulaire pour souscrire l'offre</h1>
             <div class="formBlock withLoaderInside">
                 {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
 
@@ -61,7 +61,7 @@
                     {{ form_row(form.name, { 'attr': { 'placeholder': 'Prénom et Nom' }}) }}
                     {{ form_row(form.email, { 'attr': { 'placeholder': 'Email' }}) }}
                     {{ form_row(form.city, { 'attr': { 'placeholder': 'Téléphone' }}) }}
-                    {{ form_row(form.description, { 'attr': { 'placeholder': 'Votre message' }}) }}
+                    {{ form_row(form.description, { 'attr': { 'placeholder': 'Circonscription' }}) }}
 
                     {{ form_rest(form) }}
                     <div class="buttonDirectMessage">
