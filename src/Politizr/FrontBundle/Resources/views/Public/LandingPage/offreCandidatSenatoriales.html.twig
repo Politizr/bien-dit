@@ -17,81 +17,89 @@
 {% block bodyClass %} class="public visitor"{% endblock %}
 
 {% block main %}
-    <div id="lpHeader">
-        <div class="center">
-            <h1>En 2017, il est temps d'impliquer les citoyens autant que les élus dans votre campagne pour les sénatoriales!</h1>
-            <h2>
-                A l’occasion des élections sénatoriales 2017, la startup française <b>POLITIZR</b> propose aux candidats de tester sa plateforme via une offre inédite.
-            </h2>
+    <div id="lpSenatoriales">
+        <div id="lpHero">
+            <div class="center">
+                <div id="lpHeroText">En 2017, il est temps d’impliquer les citoyens autant que les élus dans votre campagne des Sénatoriales !</div>
+                <div id="f-display"><img src="{{ asset('bundles/politizrfront/images/f-display.png') }}"></div>
+                <div id="f-accessories"><img src="{{ asset('bundles/politizrfront/images/f-accessories.png') }}"></div>
+            </div>
+            <div id="lpHeroFader"></div>
         </div>
-    </div>
-
-    <div id="postSelection">
-        <div class="center">
-            <div class="lpImg">
-                <img src="{{ asset('bundles/politizrfront/images/lp/lp-senatoriales.jpg') }}" alt="lp-senatoriales" width="600" height="400">
+        <div id="lpUnderHero">
+            <div class="center">
+                A l’occasion des élections Sénatoriales 2017, la startup française POLITIZR propose aux candidats de tester sa plateforme via une offre inédite.<br>
+                <b>POLITIZR déploie pour les candidats aux élections Sénatoriales des fonctionnalités complémentaires et adaptées​ à leur campagne électorale leur permettant de répondre directement et en toute transparence aux questions de leurs électeurs et des citoyens.</b>
             </div>
         </div>
-        <div class="center">
-            <p>C’est l’occasion pour vous de montrer votre <b>connaissance des dossiers</b> et votre <b>ouverture à l’échange</b> en engageant <b>des discussions de fond avec vos électeurs</b> sur une plateforme portée par un acteur reconnu des "Civic Tech" en France.</p>
-            <br/>
-            <p>En complément de ses <a href="{{ path('Concept') }}" target="_blank"><b>fonctionnalités à destination des citoyens et des élus</b></a>, POLITIZR déploie pour les candidats aux élections sénatoriales des <b>fonctionnalités complémentaires et adaptées​ à une campagne électorale</b>.</p>
-            <ul class="lpUl">
-                <li>Vous disposez d’une page de profil possédant un <b>​bandeau aux couleurs de votre campagne​</b> et permettant aux utilisateurs de s’exprimer d’un simple clic.</li>
-                <li>Vous disposez de l’​<b>affichage de ce bandeau​</b> sur la page d’accueil POLITIZR de tous les utilisateurs inscrits dans votre circonscription.</li>
-                <li>Vous disposez d'une fonctionnalité spéciale pour vous permettre, et à vous seul, de dialoguer publiquement avec les élus et citoyens.</li>
-                <li>Les questions ​sont exclusivement posées par les citoyens et élus <b>des villes comprises dans votre circonscription​</b>.</li>
-                <li>Vous êtes ​<b>automatiquement alerté par email​</b> à chaque nouvelle question ou remarque.</li>
-                <li>Vous disposez d’un ​<b>support de notre équipe​</b> pour la mise en ligne.</li>
-                <li>Tous les contenus associés à votre campagne sont <b>publics</b>.</li>
-                <li><i class="icon-social-fb"></i>&nbsp;la promotion de l’opération sur <b>Facebook</b> au niveau de <b>votre circonscription</b>,</li>
-            </ul>
+        <div id="lpArgu">
+            <div class="center">
+                <div class="lpLeftCol">
+                    C’est l’occasion pour vous de montrer votre connaissance des dossiers et votre ouverture à l’échange en engageant des discussions de fond avec vos électeurs sur une plateforme portée par un acteur reconnu des "Civic Tech" en France. 
+                    <img src="{{ asset('bundles/politizrfront/images/f-illustr01.jpg') }}">
+                </div>
+                <div class="lpRightCol">
+                    En souscrivant à cette offre: 
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Vous disposez d’une page de profil possédant un ​bandeau aux couleurs de votre campagne​ et permettant aux utilisateurs de s’exprimer d’un simple clic.</p></div>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Vous disposez de l’​affichage de ce bandeau​ sur la page d’accueil POLITIZR de tous les utilisateurs inscrits dans votre circonscription.</p></div>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Vous disposez d'une fonctionnalité spéciale pour vous permettre, et à vous seul, de dialoguer publiquement avec les élus et citoyens.</p></div>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Les questions ​sont exclusivement posées par les citoyens et élus des villes comprises dans votre circonscription​.</p></div>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Vous êtes ​automatiquement alerté par email​ à chaque nouvelle question ou remarque vous concernant.</p></div>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Vous disposez d’un ​support de notre équipe​ pour la mise en ligne.</p></div>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Tous les contenus associés à votre campagne sont publics.</p></div>
+                    
+                </div>
+            </div>
         </div>
-    </div>
-
-    <div id="profileSelection" class="askQuestion">
-        <div class="center">
-            <h1>Remplissez le formulaire pour souscrire l'offre</h1>
-            <div class="formBlock withLoaderInside">
-                {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
-
-                <form name="directMessage" id="formDirectMessage">
-                    {{ form_errors(form) }}
-
-                    {{ form_row(form.name, { 'attr': { 'placeholder': 'Prénom et Nom' }}) }}
-                    {{ form_row(form.email, { 'attr': { 'placeholder': 'Email' }}) }}
-                    {{ form_row(form.city, { 'attr': { 'placeholder': 'Téléphone' }}) }}
-                    {{ form_row(form.description, { 'attr': { 'placeholder': 'Circonscription' }}) }}
-
-                    {{ form_rest(form) }}
-                    <div class="buttonDirectMessage">
-                        <button type="button" action="submitDirectMessage">
-                            Envoyer
-                        </button>
+        <div id="lpPayment">
+            <div class="center">
+                <div class="lpLeftCol">
+                    <b>Nous vous contacterons dès reception de votre paiement pour mettre en place votre opération personnalisée et une facture au nom de votre mandataire vous sera expédiée.</b><br>
+                    <img src="{{ asset('bundles/politizrfront/images/f-lock.png') }}">Paiement sécurisé par Paypal. TVA : 20%.<br>
+                    <img class="f-cbcards" src="{{ asset('bundles/politizrfront/images/f-cbcards.jpg') }}">
+                </div>
+                <div class="lpRightCol">
+                    <h2>60 €<span>TTC</span></h2>
+                    Tarif tout compris pour toute la durée de votre campagne électorale.
+                    <div id="lpPaypal">
+                        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                            <input type="hidden" name="cmd" value="_s-xclick">
+                            <input type="hidden" name="hosted_button_id" value="SKRY7X59G52H4">
+                            <input type="image" src="{{ asset('bundles/politizrfront/images/bton-Paypal.png') }}" border="0" name="submit" alt="PayPal, le réflexe sécurité pour payer en ligne">
+                            <img alt="" border="0" src="https://www.paypalobjects.com/fr_FR/i/scr/pixel.gif" width="1" height="1">
+                        </form>
                     </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    
-    <div id="blockMarianne">
-        <div class="center">
-            <div id="bgBlockMarianne">
-                <div id="marianne"></div>
-                <div class="conceptCol conceptLeftCol">
-                    Politizr permet à <b>tous les élu-e-s locaux - du conseiller municipal au député -</b> de venir s'exprimer directement et publiquement de tous les sujets avec <b>leurs concitoyen-ne-s</b>.
-                </div>
-                
-                <div class="conceptCol conceptRightCol">
-                    Nous travaillons à améliorer la <b>démocratie représentative</b> en proposant un espace de discussion qui favorise les <b>échanges structurées et argumentées</b> dans un temps long propice à la qualité du débat.
                 </div>
             </div>
         </div>
-    </div>
+        <div id="lpContact">
+            <div class="center">
+                <div class="lpLeftCol">
+                    Contactez-nous pour en savoir plus : <a href="mailto:contact@politizr.com">contact@politizr.com</a><br>
+                    ou par téléphone au <b>09. 50. 42. 09. 34</b>
+                </div>
+                <div class="lpRightCol">
+                    <div class="formBlock withLoaderInside">
+                        {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
 
-    <div id="blockGraphAssembly">
-        <div class="center centerCTA">
-            &nbsp;
+                        <form name="directMessage" id="formDirectMessage">
+                            {{ form_errors(form) }}
+
+                            {{ form_row(form.name, { 'attr': { 'placeholder': 'Prénom et Nom' }}) }}
+                            {{ form_row(form.email, { 'attr': { 'placeholder': 'Email' }}) }}
+                            {{ form_row(form.city, { 'attr': { 'placeholder': 'Téléphone' }}) }}
+                            {{ form_row(form.description, { 'attr': { 'placeholder': 'Circonscription' }}) }}
+
+                            {{ form_rest(form) }}
+                            <div class="buttonDirectMessage">
+                                <button type="button" action="submitDirectMessage">
+                                    Envoyer
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock main %}
