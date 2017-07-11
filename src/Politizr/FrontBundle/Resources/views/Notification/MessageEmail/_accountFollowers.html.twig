@@ -1,9 +1,9 @@
-<tr style="background-color: #FFFFFF; width: 100%; padding-bottom: 20px;">
-    <td style="padding: 0 40px 0 40px; line-height: 140%;" valign="top">
+<tr style="background-color: #FFFFFF; width: 100%;">
+    <td colspan="2" style="float:left; width: calc(100% - 80px); padding: 40px 0; margin: 0 40px; line-height: 180%;">
         {% spaceless %}
         {% if followers|length > 1 %}
             {% for follower in followers %}
-                <a href="{{ follower['authorUrl'] }}">{{ follower['author'] }}</a>
+                <a href="{{ follower['authorUrl'] }}" style="color: #2D2D2D">{{ follower['author'] }}</a>
                 {% if loop.revindex == 2 %}
                     et
                 {% elseif not loop.last %}
@@ -12,7 +12,7 @@
             {% endfor %}
             suivent désormais votre activité.
         {% else %}
-            <a href="{{ followers[0]['authorUrl'] }}">{{ followers[0]['author'] }}</a> suit désormais votre activité.
+            <a href="{{ followers[0]['authorUrl'] }}" style="color: #2D2D2D">{{ followers[0]['author'] }}</a> suit désormais votre activité.
         {% endif %}
         {% endspaceless %}
     </td>

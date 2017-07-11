@@ -1,11 +1,11 @@
-<tr style="background-color: #FFFFFF; width: 100%; padding-bottom: 20px;">
-    <td style="padding: 0 40px 0 40px; line-height: 140%;" valign="top">
+<tr style="background-color: #FFFFFF; width: 100%;">
+    <td colspan="2" style="float:left; width: calc(100% - 80px); padding: 40px 0; margin: 0 40px; line-height: 180%; border-bottom: solid 1px #2D2D2D;">
         {% spaceless %}
         {% if followedUsersPublications|length > 0 %}
             Certains des utilisateurs que vous suivez ont rédigé de nouvelles publications!
         {% endif %}
         {% for publication in followedUsersPublications %}
-            <a href="{{ publication['authorUrl'] }}">{{ publication['author'] }}</a> a publié <a href="{{ publication['url'] }}">{{ publication['title'] }}</a>
+            <a href="{{ publication['authorUrl'] }}" style="color: #2D2D2D">{{ publication['author'] }}</a> a publié <a href="{{ publication['url'] }}" style="color: #2D2D2D">{{ publication['title'] }}</a>
         {% endfor %}
         {% endspaceless %}
     </td>
