@@ -215,6 +215,11 @@ class PublicController extends Controller
             $form = $this->createForm(new PDDirectType(), $directMessage);
 
             $template = 'offreCandidat.html.twig';
+        } elseif ($theme == 'offre-candidat-senatoriales-2017')  {
+            $directMessage = new PDDirect();
+            $form = $this->createForm(new PDDirectType(), $directMessage);
+
+            $template = 'offreCandidatSenatoriales.html.twig';
         } else {
             return $this->redirect($this->generateUrl('Homepage'));
         }
