@@ -2,11 +2,14 @@
     <td colspan="2" style="float:left; width: calc(100% - 80px); padding: 40px 0; margin: 0 40px; line-height: 180%; border-bottom: solid 1px #2D2D2D;">
         {% spaceless %}
         {% if followedDebatesPublications|length > 0 %}
-            Certains utilisateurs ont rédigé de nouvelles publications sur des sujets suivis!
+            <h1>Certains utilisateurs ont rédigé de nouvelles publications sur des sujets suivis!</h1>
         {% endif %}
         {% for publication in followedDebatesPublications %}
-            <a href="{{ publication['authorUrl'] }}" style="color: #2D2D2D">{{ publication['author'] }}</a> a publié <a href="{{ publication['url'] }}" style="color: #2D2D2D">{{ publication['title'] }}</a>
+            <a href="{{ publication['authorUrl'] }}" style="color: #2D2D2D">{{ publication['author'] }}</a> a publié {% if (publication['type'] == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE_COMMENT')) or (publication['type'] == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION_COMMENT')) %}<a href="{{ publication['url'] }}" style="color: #2D2D2D">un commentaire</a>{% else %}"<a href="{{ publication['url'] }}" style="color: #2D2D2D">{{ publication['title'] }}</a>"{% endif %}
+            <br/>
         {% endfor %}
         {% endspaceless %}
+        <br/>
+        <a href="{% if user.qualified %}{{ url('HomepageE') }}{% else %}{{ url('HomepageC') }}{% endif %}" style="color: #2D2D2D">Voir mon fil d'actualité</a> - <a href="http://politizr.help/article/suivre-une-discussion-et-enrichir-son-fil-dactualite/" style="color: #2D2D2D">En savoir plus sur les sujets suivis dans le fil d'actualité</a>
     </td>
 </tr>

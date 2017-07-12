@@ -2,10 +2,10 @@
     <td colspan="2" style="float:left; width: calc(100% - 80px); padding: 40px 0; margin: 0 40px; line-height: 180%; border-bottom: solid 1px #2D2D2D;">
         {% spaceless %}
         {% if userPublications|length > 0 %}
-            Vos publications suscitent des réactions!
+            <h1>Vos publications suscitent des réactions!</h1>
         {% endif %}
         {% for publication in userPublications %}
-            <a href="{{ publication['url'] }}" style="color: #2D2D2D">{{ publication['title'] }}</a> a 
+            "<a href="{{ publication['url'] }}" style="color: #2D2D2D">{{ publication['title'] }}</a>" a 
             {% if publication['nbReactions'] > 0 %}
                 {% if publication['nbReactions'] > 1 %}
                     {{ publication['nbReactions'] }} nouvelles réponses
@@ -39,7 +39,10 @@
                     une nouvelle note positive.
                 {% endif %}
             {% endif %}
+            <br/>
         {% endfor %}
         {% endspaceless %}
+        <br/>
+        <a href="{{ url('UserDetail', {'slug': user.slug}) }}" style="color: #2D2D2D">Voir sur mon profil</a> - <a href="{% if user.qualified %}http://politizr.help/article/repondre-a-un-sujet-citoyen-2/{% else %}http://politizr.help/article/repondre-a-un-sujet-elu/{% endif %}" style="color: #2D2D2D">En savoir plus sur les réactions</a>
     </td>
 </tr>

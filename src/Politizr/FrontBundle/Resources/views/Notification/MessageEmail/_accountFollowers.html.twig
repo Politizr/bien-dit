@@ -1,19 +1,23 @@
 <tr style="background-color: #FFFFFF; width: 100%;">
     <td colspan="2" style="float:left; width: calc(100% - 80px); padding: 40px 0; margin: 0 40px; line-height: 180%;">
         {% spaceless %}
+        <h1>De nouveaux utilisateurs s'intéressent à vous!</h1>
         {% if followers|length > 1 %}
             {% for follower in followers %}
-                <a href="{{ follower['authorUrl'] }}" style="color: #2D2D2D">{{ follower['author'] }}</a>
-                {% if loop.revindex == 2 %}
-                    et
-                {% elseif not loop.last %}
-                    ,
+                {% if follower['author'] is not empty %}
+                    <a href="{{ follower['authorUrl'] }}" style="color: #2D2D2D">{{ follower['author'] }}</a>{% if loop.revindex == 2 %} et {% elseif not loop.last %}, {% endif %}
                 {% endif %}
             {% endfor %}
             suivent désormais votre activité.
         {% else %}
-            <a href="{{ followers[0]['authorUrl'] }}" style="color: #2D2D2D">{{ followers[0]['author'] }}</a> suit désormais votre activité.
+            {% if followers[0]['author'] is not empty %}
+                <a href="{{ followers[0]['authorUrl'] }}" style="color: #2D2D2D">{{ followers[0]['author'] }}</a> suit désormais votre activité.
+            {% else %}
+                Un utilisateur supprimé suivait votre activité.
+            {% endif %}
         {% endif %}
         {% endspaceless %}
+        <br/>
+        <a href="{{ url('UserDetail', {'slug': user.slug}) }}" style="color: #2D2D2D">Voir sur mon profil</a> - <a href="http://politizr.help/article/suivre-un-utilisateur-et-voir-ses-publications-dans-le-fil-dactualite/" style="color: #2D2D2D">En savoir plus sur le fait de suivre un utilisateur</a>
     </td>
 </tr>

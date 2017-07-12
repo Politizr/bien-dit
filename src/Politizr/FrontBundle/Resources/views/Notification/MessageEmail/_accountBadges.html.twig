@@ -2,22 +2,17 @@
 <tr style="background-color: #FFFFFF; width: 100%;">
     <td colspan="2" style="float:left; width: calc(100% - 80px); padding: 40px 0; margin: 0 40px; line-height: 180%; border-bottom: solid 1px #2D2D2D;">
         {% spaceless %}
-        Félicitations!
+        <h1>Félicitations!</h1>
         {% if badges|length > 1 %}
             Vous avez obtenu les badges
             {% for badge in badges %}
-                "{{ badge['title'] }}"
-                {% if loop.revindex == 2 %}
-                    et
-                {% elseif not loop.last %}
-                    ,
-                {% else %}
-                    .
-                {% endif %}
+                "{{ badge['title'] }}"{% if loop.revindex == 2 %} et {% elseif not loop.last %}, {% else %}.{% endif %}
             {% endfor %}
         {% else %}
-            Vous avez obtenu le badge "{{ badges[0]['title'] }}"
+            Vous avez obtenu le badge "{{ badges[0]['title'] }}".
         {% endif %}
         {% endspaceless %}
+        <br/>
+        <a href="{{ url('UserDetail', {'slug': user.slug}) }}" style="color: #2D2D2D">Voir sur mon profil</a> - <a href="http://politizr.help/article/badges/" style="color: #2D2D2D">En savoir plus sur les badges</a>
     </td>
 </tr>

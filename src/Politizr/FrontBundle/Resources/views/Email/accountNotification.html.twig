@@ -32,7 +32,7 @@
                         <!-- footer -->
                         <tr>
                             <td colspan="2" style="text-align: center; padding: 40px 0; color:#9d9d9d; font-size: 10px;">
-                                <a href="{% if (qualified) %}{{ url('EditNotificationsE') }}{% else %}{{ url('EditNotificationsC') }}{% endif %}" style="color:#9d9d9d; text-decoration: underline;"><span style="color:#9d9d9d;">Désinscription</span></a>
+                                <a href="{% if (user.qualified) %}{{ url('EditNotificationsE') }}{% else %}{{ url('EditNotificationsC') }}{% endif %}" style="color:#9d9d9d; text-decoration: underline;"><span style="color:#9d9d9d;">Désinscription</span></a>
                             </td>
                         </tr>
 

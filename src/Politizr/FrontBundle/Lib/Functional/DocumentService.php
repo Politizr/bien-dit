@@ -619,16 +619,16 @@ class DocumentService
     /**
      * Compute various attributes depending of the document context
      *
-     * @param string $objectName
+     * @param string $objectType
      * @param int $objectId
      * @param int $authorUserId
      * @param boolean $absolute URL
      * @return array [subject,title,url,document,documentUrl,author,authorUrl]
      */
-    public function computeDocumentContextAttributes($objectName, $objectId, $authorUserId, $absolute = true)
+    public function computeDocumentContextAttributes($objectType, $objectId, $authorUserId, $absolute = true)
     {
         // $this->logger->info('*** computeDocumentContextAttributes');
-        // $this->logger->info('$objectName = '.print_r($objectName, true));
+        // $this->logger->info('$objectType = '.print_r($objectType, true));
         // $this->logger->info('$objectId = '.print_r($objectId, true));
         // $this->logger->info('$authorUserId = '.print_r($authorUserId, true));
         // $this->logger->info('$absolute = '.print_r($absolute, true));
@@ -641,7 +641,7 @@ class DocumentService
         $author = null;
         $authorUrl = '#';
 
-        switch ($objectName) {
+        switch ($objectType) {
             case ObjectTypeConstants::TYPE_DEBATE:
                 $subject = PDDebateQuery::create()->findPk($objectId);
 
@@ -716,7 +716,7 @@ class DocumentService
                 
                 break;
             default:
-                throw new InconsistentDataException(sprintf('Object name %s not managed.', $objectName));
+                throw new InconsistentDataException(sprintf('Object type %s not managed.', $objectType));
         }
 
         // Récupération de l'auteur de l'interaction
@@ -729,6 +729,7 @@ class DocumentService
 
         return array(
             'subject' => $subject,
+            'type' => $objectType,
             'title' => $title,
             'url' => $url,
             'document' => $document,
