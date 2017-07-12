@@ -191,4 +191,23 @@ class NotificationService
 
         return $publications;
     }
+
+    /**
+     * Get nearest qualified users from user
+     *
+     * @param PUser $user
+     * @param DateTime $beginAt
+     * @param DateTime $endAt
+     * @param int $limit
+     */
+    public function getNearestQualifiedUsers(PUser $user, \DateTime $beginAt, \DateTime $endAt, $limit)
+    {
+        if (!$user) {
+            throw new InconsistentDataException('Can get most nearest qualified users - user null');
+        }
+
+        $publications = $this->notificationManager->generateNearestQualifiedUsers($beginAt->format('Y-m-d H:i:s'), $endAt->format('Y-m-d H:i:s'), $limit);
+
+        return $publications;
+    }
 }

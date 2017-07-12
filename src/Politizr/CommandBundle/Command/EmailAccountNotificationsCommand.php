@@ -24,7 +24,7 @@ use Politizr\Constant\NotificationConstants;
 use Politizr\Exception\PolitizrException;
 
 /**
- * Politizr email sending
+ * Politizr account notifications email sending
  *
  * https://github.com/Politizr/Politizr/wiki/Liste-des-notifications-mail
  * @todo

@@ -26,6 +26,8 @@ class EmailConstants
     //                  EMAILING LIMITS                         //
     // ******************************************************** //
     const NB_MAX_INTERACTED_PUBLICATIONS = 5;
+    const NB_MAX_NEW_ELECTED_USERS = 5;
+    const NB_MAX_NEW_PUBLICATIONS = 5;
 
 
     /**
