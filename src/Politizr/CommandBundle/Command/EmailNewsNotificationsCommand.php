@@ -82,15 +82,15 @@ class EmailNewsNotificationsCommand extends ContainerAwareCommand
         if ($beginAt) {
             $beginAt = new \DateTime($beginAt);
         } else {
-            $beginAt = new \DateTime('yesterday');
-            $beginAt->setTime(17, 0, 1);
+            $beginAt = new \DateTime('-1 week');
+            $beginAt->setTime(18, 0, 1);
         }
         $endAt = $input->getArgument('endAt');
         if ($endAt) {
             $endAt = new \DateTime($endAt);
         } else {
             $endAt = new \DateTime('now');
-            $endAt->setTime(17, 0, 0);
+            $endAt->setTime(18, 0, 0);
         }
 
         // get option
@@ -111,9 +111,32 @@ class EmailNewsNotificationsCommand extends ContainerAwareCommand
 
             $puNotifications = $this->notificationService->getUserNotifications($user, $beginAt, $endAt);
 
-            // New elected users
-            $followedDebatesPublications = $this->notificationService->getNearestQualifiedUsers($user, $beginAt, $endAt, EmailConstants::NB_MAX_NEW_ELECTED_USERS);
+            // Nearest elected users
+            $nearestUsers = $this->notificationService->getNearestQualifiedUsers($user, $beginAt, $endAt, EmailConstants::NB_MAX_NEW_ELECTED_USERS);
 
+            $nearestUsersPart = $this->getNearestUsersRendering($user, $nearestUsers);
+
+            // Nearest debates
+            $nearestDebates = $this->notificationService->getNearestDebates($user, $beginAt, $endAt, EmailConstants::NB_MAX_NEW_PUBLICATIONS);
+
+            $nearestDebatesPart = $this->getNearestDebatesRendering($user, $nearestDebates);
+
+            // Emailing
+            if (sizeof($nearestUsersPart) > 0
+                || sizeof($nearestDebatesPart) > 0
+            ) {
+                $subjectMessage = $this->newsNotificationEmail($user, $nearestUsersPart, $nearestDebatesPart);
+
+                // monitoring
+                if (sizeof($subjectMessage) > 0) {
+                    $pmEmailing = new PMEmailing();
+                    $pmEmailing->setPUserId($user->getId());
+                    $pmEmailing->setPNEmailId(EmailConstants::ID_ACTIVITY_SUMMARY);
+                    $pmEmailing->setTitle($subjectMessage[0]);
+                    $pmEmailing->setHtmlBody($subjectMessage[1]->getBody());
+                    $pmEmailing->save();
+                }
+            }
         }
 
         $spool = $this->mailer->getTransport()->getSpool();
@@ -122,4 +145,141 @@ class EmailNewsNotificationsCommand extends ContainerAwareCommand
         $output->writeln('');
         $output->writeln(sprintf('<info>Send news notifications completed. %s mails have been sent!</info>', $nbSent));
     }
- }
+
+    /**
+     * Get nearest user's qualified users listing rendering
+     *
+     * @param PUser $user
+     * @param PropelCollection $users
+     */
+    private function getNearestUsersRendering(PUser $user, $users)
+    {
+        $nearestUsersPartHtml = null;
+        $nearestUsersPartTxt = null;
+
+        if ($users && count($users) > 0) {
+            $nearestUsersPartHtml = $this->templating->render(
+                'PolitizrFrontBundle:Notification\\MessageEmail:_newsNearestUsers.html.twig',
+                array(
+                    'user' => $user,
+                    'users' => $users,
+                )
+            );
+            $nearestUsersPartTxt = $this->templating->render(
+                'PolitizrFrontBundle:Notification\\MessageEmail\\Txt:_newsNearestUsers.txt.twig',
+                array(
+                    'user' => $user,
+                    'users' => $users,
+                )
+            );
+            return [$nearestUsersPartHtml, $nearestUsersPartTxt];
+        }
+
+        return array();
+    }
+
+    /**
+     * Get nearest user's debates listing rendering
+     *
+     * @param PUser $user
+     * @param PropelCollection $debates
+     */
+    private function getNearestDebatesRendering(PUser $user, $debates)
+    {
+        $nearestDebatesPartHtml = null;
+        $nearestDebatesPartTxt = null;
+
+        if ($debates && count($debates) > 0) {
+            $nearestDebatesPartHtml = $this->templating->render(
+                'PolitizrFrontBundle:Notification\\MessageEmail:_newsNearestDebates.html.twig',
+                array(
+                    'user' => $user,
+                    'debates' => $debates,
+                )
+            );
+            $nearestDebatesPartTxt = $this->templating->render(
+                'PolitizrFrontBundle:Notification\\MessageEmail\\Txt:_newsNearestDebates.txt.twig',
+                array(
+                    'user' => $user,
+                    'debates' => $debates,
+                )
+            );
+            return [$nearestDebatesPartHtml, $nearestDebatesPartTxt];
+        }
+
+        return array();
+    }
+
+    /**
+     * News notification.
+     *
+     * @param PUser $user
+     * @param string $nearestUsersPart
+     * @param string $nearestDebatesPart
+     * @return array[subjectMessage,message]
+     */
+    private function newsNotificationEmail($user, $nearestUsersPart, $nearestDebatesPart)
+    {
+        $userEmail = $user->getEmail();
+
+        // Initialize and retrieve html & txt templates, compute email subject
+        $subject = "";
+        $nearestUsersPartHtml = $nearestUsersPartTxt = null;
+        if ($nearestUsersPart && sizeof($nearestUsersPart) > 0) {
+            $nearestUsersPartHtml = $nearestUsersPart[0];
+            $nearestUsersPartTxt = $nearestUsersPart[1];
+            $subject = "de nouveaux élus";
+        }
+
+        $nearestDebatesPartHtml = $nearestDebatesPartTxt = null;
+        if ($nearestDebatesPart && sizeof($nearestDebatesPart) > 0) {
+            $nearestDebatesPartHtml = $nearestDebatesPart[0];
+            $nearestDebatesPartTxt = $nearestDebatesPart[1];
+            if (!empty($subject)) {
+                $subject .= " et ";
+            }
+            $subject .= "de nouveaux sujets pour vous";
+        }
+
+        $subject .= "...";
+        $subject = ucfirst($subject);
+
+        // prepare email and sent it
+        try {
+            $htmlBody = $this->templating->render(
+                'PolitizrFrontBundle:Email:newsNotification.html.twig',
+                array(
+                    'user' => $user,
+                    'nearestUsersPart' => $nearestUsersPartHtml,
+                    'nearestDebatesPart' => $nearestDebatesPartHtml,
+                )
+            );
+            $txtBody = $this->templating->render(
+                'PolitizrFrontBundle:Email:newsNotification.txt.twig',
+                array(
+                    'user' => $user,
+                    'nearestUsersPart' => $nearestUsersPartTxt,
+                    'nearestDebatesPart' => $nearestDebatesPartTxt,
+                )
+            );
+
+            $message = \Swift_Message::newInstance()
+                    ->setSubject($subject)
+                    ->setFrom(array('support@politizr.com' => 'Support@Politizr'))
+                    ->setTo($userEmail)
+                    ->setBody($htmlBody, 'text/html', 'utf-8')
+                    ->addPart($txtBody, 'text/plain', 'utf-8')
+            ;
+            // $message->getHeaders()->addTextHeader('X-CMail-GroupName', 'Account notification');
+
+            // Envoi email
+            $failedRecipients = array();
+            $send = $this->mailer->send($message, $failedRecipients);
+
+            return [$subject, $message];
+        } catch (\Exception $e) {
+            $this->logger->err(sprintf('Exception - EmailNewsNotificationCommand - message = %s', $e->getMessage()));
+            $this->monitoringManager->createAppException($e);
+        }
+    }
+}

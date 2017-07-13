@@ -1,0 +1,22 @@
+<tr style="background-color: #FFFFFF; width: 100%;">
+    <td colspan="2" style="float:left; width: calc(100% - 80px); padding: 40px 0; margin: 0 40px; line-height: 180%; border-bottom: solid 1px #2D2D2D;">
+        {% spaceless %}
+        {% if users|length > 1 %}
+            <h1>De nouveaux élus ont rejoint la communauté!</h1>
+        {% else %}
+            <h1>Un nouvel élu a rejoint la communauté!</h1>
+        {% endif %}
+        {% for electedUser in users %}
+            {% set organizations = electedUser.currentOrganizations %}
+            <a href="{{ url('UserDetail', {'slug': electedUser.slug}) }}" target="_blank" class="avatar40" style="width: 40px; height: 40px; margin-top: 3px; display: block; overflow: hidden; background-size: cover; background-position: center center; {{ electedUser | photo(email = true) }}"></a>
+            <a href="{{ url('UserDetail', {'slug': electedUser.slug}) }}" style="color: #2D2D2D">{{ electedUser.gender }} {{ electedUser.fullName }}{% for organization in organizations %} [{{ organization.initials }}]{% endfor %}</a>,
+            {% for mandate in electedUser.mandates() %}
+                {{ mandate }}{% if loop.revindex == 2 %} et {% elseif not loop.last %}, {% endif %}
+            {% endfor %}
+            <br/>
+        {% endfor %}
+        <br/>
+        <a href="{% if user.qualified %}{{ url('HomepageE') }}{% else %}{{ url('HomepageC') }}{% endif %}" style="color: #2D2D2D">Voir mon fil d'actualité</a> - <a href="http://politizr.help/article/suivre-un-utilisateur-et-voir-ses-publications-dans-le-fil-dactualite/" style="color: #2D2D2D">Comment suivre l'actualité d'un élu?</a>
+        {% endspaceless %}
+    </td>
+</tr>

@@ -550,9 +550,10 @@ class PolitizrDocumentExtension extends \Twig_Extension
      * Debate's localizations
      *
      * @param PDocumentInterface $document
+     * @param boolean $inMail
      * @return string
      */
-    public function localizations(\Twig_Environment $env, PDocumentInterface $document)
+    public function localizations(\Twig_Environment $env, PDocumentInterface $document, $inMail = false)
     {
         // // $this->logger->info('*** localizations');
         // // $this->logger->info('$document = '.print_r($document, true));
@@ -564,6 +565,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
             'PolitizrFrontBundle:Document:_localizations.html.twig',
             array(
                 'localizations' => $localizations,
+                'inMail' => $inMail
             )
         );
 

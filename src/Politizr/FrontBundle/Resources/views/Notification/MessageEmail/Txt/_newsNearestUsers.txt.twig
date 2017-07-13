@@ -1,0 +1,17 @@
+{% spaceless %}
+{% if users|length > 1 %}
+    <h1>De nouveaux élus ont rejoint la communauté!</h1>
+{% else %}
+    <h1>Un nouvel élu a rejoint la communauté!</h1>
+{% endif %}
+{% for electedUser in users %}
+    {% set organizations = electedUser.currentOrganizations %}
+    <a href="{{ url('UserDetail', {'slug': electedUser.slug}) }}">{{ electedUser.gender }} {{ electedUser.fullName }}{% for organization in organizations %} [{{ organization.initials }}]{% endfor %}</a>,
+    {% for mandate in electedUser.mandates() %}
+        {{ mandate }}{% if loop.revindex == 2 %} et {% elseif not loop.last %}, {% endif %}
+    {% endfor %}
+    <br/>
+{% endfor %}
+<br/>
+<a href="{% if user.qualified %}{{ url('HomepageE') }}{% else %}{{ url('HomepageC') }}{% endif %}">Voir mon fil d'actualité</a> - <a href="http://politizr.help/article/suivre-un-utilisateur-et-voir-ses-publications-dans-le-fil-dactualite/">Comment suivre l'actualité d'un élu?</a>
+{% endspaceless %}

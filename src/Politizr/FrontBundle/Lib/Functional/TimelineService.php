@@ -74,7 +74,7 @@ class TimelineService
     /* ######################################################################################################## */
 
     /**
-     * Get array of user's PUFollowDD's ids
+     * Get array of user's followed debates ids
      *
      * @param integer $userId
      * @return array
@@ -91,7 +91,7 @@ class TimelineService
     }
 
     /**
-     * Get array of user's PUFollowU's ids
+     * Get array of user's followed users ids
      *
      * @param integer $userId
      * @return array

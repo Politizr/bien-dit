@@ -2,9 +2,14 @@
 namespace Politizr\FrontBundle\Lib\Manager;
 
 use Politizr\Constant\NotificationConstants;
+use Politizr\Constant\ObjectTypeConstants;
+use Politizr\Constant\EmailConstants;
 
 use Politizr\Model\PUNotification;
 use Politizr\Model\PUSubscribePNE;
+
+use Politizr\Model\PUser;
+use Politizr\Model\PDDebate;
 
 use Politizr\Model\PUNotificationQuery;
 use Politizr\Model\PUSubscribePNEQuery;
@@ -283,6 +288,211 @@ LIMIT :limit
         return $sql;
     }
 
+    /**
+     * Nearest user's qualified users during period
+     *
+     * @see app/sql/newsNotifications.sql
+     *
+     * @return string
+     */
+    private function createNearestQualifiedUsersRawSql()
+    {
+        // Requête SQL
+        $sql = "
+SELECT DISTINCT
+".ObjectTypeConstants::SQL_P_USER_COLUMNS."
+FROM ( 
+
+SELECT DISTINCT p_user.*, 1 as unionsorting
+FROM p_user
+WHERE
+    p_user.qualified = 1
+    AND p_user.online = 1
+    AND p_user.p_u_status_id = 1
+    AND p_user.created_at > :begin_at
+    AND p_user.created_at < :end_at
+    AND p_user.id <> :p_user_id
+    AND p_user.p_l_city_id = :p_l_city_id
+
+UNION DISTINCT
+
+SELECT DISTINCT p_user.*, 2 as unionsorting
+FROM p_user
+    LEFT JOIN p_l_city as p_l_city
+        ON p_user.p_l_city_id = p_l_city.id
+    LEFT JOIN p_l_department as p_l_department
+        ON p_l_city.p_l_department_id = p_l_department.id
+WHERE
+    p_user.qualified = 1
+    AND p_user.online = 1
+    AND p_user.p_u_status_id = 1
+    AND p_user.created_at > :begin_at2
+    AND p_user.created_at < :end_at2
+    AND p_user.id <> :p_user_id2
+    AND p_l_department.id = :p_l_department_id
+
+UNION DISTINCT
+
+SELECT DISTINCT p_user.*, 3 as unionsorting
+FROM p_user
+    LEFT JOIN p_l_city as p_l_city
+        ON p_user.p_l_city_id = p_l_city.id
+    LEFT JOIN p_l_department as p_l_department
+        ON p_l_city.p_l_department_id = p_l_department.id
+    LEFT JOIN p_l_region as p_l_region
+        ON p_l_department.p_l_region_id = p_l_region.id
+WHERE
+    p_user.qualified = 1
+    AND p_user.online = 1
+    AND p_user.p_u_status_id = 1
+    AND p_user.created_at > :begin_at3
+    AND p_user.created_at < :end_at3
+    AND p_user.id <> :p_user_id3
+    AND p_l_region.id = :p_l_region_id
+
+UNION DISTINCT
+
+SELECT DISTINCT p_user.*, 4 as unionsorting
+FROM p_user
+WHERE
+    p_user.qualified = 1
+    AND p_user.online = 1
+    AND p_user.p_u_status_id = 1
+    AND p_user.created_at > :begin_at4
+    AND p_user.created_at < :end_at4
+    AND p_user.id <> :p_user_id4
+
+ORDER BY unionsorting ASC
+
+) unionsorting
+
+LIMIT :limit
+";
+
+        return $sql;
+    }
+
+    /**
+     * Nearest user's debates during period
+     *
+     * @see app/sql/newsNotifications.sql
+     *
+     * @param string $inQueryDebateIds
+     * @param string $inQueryUserIds
+     * @param string $inQueryTagIds
+     * @return string
+     */
+    private function createNearestDebatesRawSql($inQueryDebateIds, $inQueryUserIds, $inQueryTagIds)
+    {
+        // Requête SQL
+        $sql = "
+SELECT DISTINCT
+".ObjectTypeConstants::SQL_P_D_DEBATE_COLUMNS.",
+    nb_users
+FROM (
+( SELECT DISTINCT p_d_debate.*, COUNT(p_u_follow_d_d.p_d_debate_id) as nb_users, 1 as unionsorting
+FROM p_d_debate
+    LEFT JOIN p_u_follow_d_d
+        ON p_d_debate.id = p_u_follow_d_d.p_d_debate_id
+WHERE
+    p_d_debate.p_l_city_id = :p_l_city_id
+    AND p_d_debate.online = 1
+    AND p_d_debate.published = 1
+    AND p_d_debate.created_at > :begin_at
+    AND p_d_debate.created_at < :end_at
+    AND p_d_debate.id NOT IN ($inQueryDebateIds)
+    AND p_d_debate.p_user_id NOT IN ($inQueryUserIds)
+    AND p_d_debate.p_user_id <> :p_user_id
+GROUP BY p_d_debate.id
+)
+
+UNION DISTINCT
+
+( SELECT DISTINCT p_d_debate.*, COUNT(p_u_follow_d_d.p_d_debate_id) as nb_users, 2 as unionsorting
+FROM p_d_debate
+    LEFT JOIN p_u_follow_d_d
+        ON p_d_debate.id = p_u_follow_d_d.p_d_debate_id
+WHERE
+    p_d_debate.p_l_department_id = :p_l_department_id
+    AND p_d_debate.online = 1
+    AND p_d_debate.published = 1
+    AND p_d_debate.created_at > :begin_at2
+    AND p_d_debate.created_at < :end_at2
+    AND p_d_debate.id NOT IN ($inQueryDebateIds)
+    AND p_d_debate.p_user_id NOT IN ($inQueryUserIds)
+    AND p_d_debate.p_user_id <> :p_user_id2
+GROUP BY p_d_debate.id
+)
+
+UNION DISTINCT
+
+( SELECT DISTINCT p_d_debate.*, COUNT(p_u_follow_d_d.p_d_debate_id) as nb_users, 3 as unionsorting
+FROM p_d_debate
+    LEFT JOIN p_u_follow_d_d
+        ON p_d_debate.id = p_u_follow_d_d.p_d_debate_id
+    LEFT JOIN p_d_d_tagged_t
+        ON p_d_debate.id = p_d_d_tagged_t.p_d_debate_id
+WHERE
+    p_d_debate.online = 1 
+    AND p_d_debate.published = 1
+    AND p_d_debate.created_at > :begin_at3
+    AND p_d_debate.created_at < :end_at3
+    AND p_d_d_tagged_t.p_tag_id IN ($inQueryTagIds)
+    AND p_d_debate.id NOT IN ($inQueryDebateIds)
+    AND p_d_debate.p_user_id NOT IN ($inQueryUserIds)
+    AND p_d_debate.p_user_id <> :p_user_id3
+GROUP BY p_d_debate.id
+)
+
+UNION DISTINCT
+
+( SELECT DISTINCT p_d_debate.*, COUNT(p_u_follow_d_d.p_d_debate_id) as nb_users, 4 as unionsorting
+FROM p_d_debate
+    LEFT JOIN p_u_follow_d_d
+        ON p_d_debate.id = p_u_follow_d_d.p_d_debate_id
+WHERE
+    p_d_debate.p_l_region_id = :p_l_region_id
+    AND p_d_debate.online = 1
+    AND p_d_debate.published = 1
+    AND p_d_debate.created_at > :begin_at4
+    AND p_d_debate.created_at < :end_at4
+    AND p_d_debate.id NOT IN ($inQueryDebateIds)
+    AND p_d_debate.p_user_id NOT IN ($inQueryUserIds)
+    AND p_d_debate.p_user_id <> :p_user_id4
+GROUP BY p_d_debate.id
+)
+
+UNION DISTINCT
+
+( SELECT DISTINCT p_d_debate.*, COUNT(p_u_follow_d_d.p_d_debate_id) as nb_users, 5 as unionsorting
+FROM p_d_debate
+    LEFT JOIN p_u_follow_d_d
+        ON p_d_debate.id = p_u_follow_d_d.p_d_debate_id
+WHERE
+    p_d_debate.online = 1
+    AND p_d_debate.published = 1
+    AND p_d_debate.created_at > :begin_at5
+    AND p_d_debate.created_at < :end_at5
+    AND p_d_debate.id NOT IN ($inQueryDebateIds)
+    AND p_d_debate.p_user_id NOT IN ($inQueryUserIds)
+    AND p_d_debate.p_user_id <> :p_user_id5
+GROUP BY p_d_debate.id
+HAVING nb_users >= :min_nb_followers
+)
+
+ORDER BY unionsorting ASC, note_pos DESC, note_neg ASC, nb_users DESC, published_at DESC
+) unionsorting
+
+GROUP BY p_user_id
+ORDER BY unionsorting ASC, note_pos DESC, note_neg ASC, nb_users DESC, published_at DESC
+
+LIMIT :limit
+";
+
+        return $sql;
+    }
+
+
     /* ######################################################################################################## */
     /*                                            RAW SQL OPERATIONS                                            */
     /* ######################################################################################################## */
@@ -411,6 +621,134 @@ LIMIT :limit
         $publications = $this->globalTools->hydrateInteractedPublication($result, $beginAt, $endAt);
 
         return $publications;
+    }
+
+    /**
+     * Nearest user's qualified users listing
+     *
+     * @param int $userId
+     * @param int $cityId
+     * @param int $departmentId
+     * @param int $regionId
+     * @param string $beginAt
+     * @param string $endAt
+     * @param integer $limit
+     * @return PropelCollection
+     */
+    public function generateNearestQualifiedUsers($userId, $cityId, $departmentId, $regionId, $beginAt, $endAt, $limit)
+    {
+        $this->logger->info('*** generateNearestQualifiedUsers');
+        $this->logger->info('$userId = ' . print_r($userId, true));
+        $this->logger->info('$cityId = ' . print_r($cityId, true));
+        $this->logger->info('$departmentId = ' . print_r($departmentId, true));
+        $this->logger->info('$regionId = ' . print_r($regionId, true));
+        $this->logger->info('$beginAt = ' . print_r($beginAt, true));
+        $this->logger->info('$endAt = ' . print_r($endAt, true));
+        $this->logger->info('$limit = ' . print_r($limit, true));
+
+        $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
+
+        $stmt = $con->prepare($this->createNearestQualifiedUsersRawSql());
+
+        $stmt->bindValue(':p_user_id', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_user_id2', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_user_id3', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_user_id4', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_l_city_id', $cityId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_l_department_id', $departmentId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_l_region_id', $regionId, \PDO::PARAM_INT);
+        $stmt->bindValue(':begin_at', $beginAt, \PDO::PARAM_STR);
+        $stmt->bindValue(':begin_at2', $beginAt, \PDO::PARAM_STR);
+        $stmt->bindValue(':begin_at3', $beginAt, \PDO::PARAM_STR);
+        $stmt->bindValue(':begin_at4', $beginAt, \PDO::PARAM_STR);
+        $stmt->bindValue(':end_at', $endAt, \PDO::PARAM_STR);
+        $stmt->bindValue(':end_at2', $endAt, \PDO::PARAM_STR);
+        $stmt->bindValue(':end_at3', $endAt, \PDO::PARAM_STR);
+        $stmt->bindValue(':end_at4', $endAt, \PDO::PARAM_STR);
+        $stmt->bindValue(':limit', $limit, \PDO::PARAM_STR);
+
+        $stmt->execute();
+
+        $result = $stmt->fetchAll();
+
+        $users = new \PropelCollection();
+        foreach ($result as $row) {
+            $user = new PUser();
+            $user->hydrate($row);
+
+            $users->append($user);
+        }
+
+        return $users;
+    }
+
+    /**
+     * Nearest user's qualified users listing
+     *
+     * @param string $inQueryDebateIds
+     * @param string $inQueryUserIds
+     * @param string $inQueryTagIds
+     * @param int $userId
+     * @param int $cityId
+     * @param int $departmentId
+     * @param int $regionId
+     * @param string $beginAt
+     * @param string $endAt
+     * @param integer $limit
+     * @return PropelCollection
+     */
+    public function generateNearestDebates($inQueryDebateIds, $inQueryUserIds, $inQueryTagIds, $userId, $cityId, $departmentId, $regionId, $beginAt, $endAt, $limit)
+    {
+        $this->logger->info('*** generateNearestQualifiedUsers');
+        $this->logger->info('$inQueryDebateIds = ' . print_r($inQueryDebateIds, true));
+        $this->logger->info('$inQueryUserIds = ' . print_r($inQueryUserIds, true));
+        $this->logger->info('$inQueryTagIds = ' . print_r($inQueryTagIds, true));
+        $this->logger->info('$userId = ' . print_r($userId, true));
+        $this->logger->info('$cityId = ' . print_r($cityId, true));
+        $this->logger->info('$departmentId = ' . print_r($departmentId, true));
+        $this->logger->info('$regionId = ' . print_r($regionId, true));
+        $this->logger->info('$beginAt = ' . print_r($beginAt, true));
+        $this->logger->info('$endAt = ' . print_r($endAt, true));
+        $this->logger->info('$limit = ' . print_r($limit, true));
+
+        $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
+
+        $stmt = $con->prepare($this->createNearestDebatesRawSql($inQueryDebateIds, $inQueryUserIds, $inQueryTagIds));
+
+        $stmt->bindValue(':p_user_id', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_user_id2', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_user_id3', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_user_id4', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_user_id5', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_l_city_id', $cityId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_l_department_id', $departmentId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_l_region_id', $regionId, \PDO::PARAM_INT);
+        $stmt->bindValue(':begin_at', $beginAt, \PDO::PARAM_STR);
+        $stmt->bindValue(':begin_at2', $beginAt, \PDO::PARAM_STR);
+        $stmt->bindValue(':begin_at3', $beginAt, \PDO::PARAM_STR);
+        $stmt->bindValue(':begin_at4', $beginAt, \PDO::PARAM_STR);
+        $stmt->bindValue(':begin_at5', $beginAt, \PDO::PARAM_STR);
+        $stmt->bindValue(':end_at', $endAt, \PDO::PARAM_STR);
+        $stmt->bindValue(':end_at2', $endAt, \PDO::PARAM_STR);
+        $stmt->bindValue(':end_at3', $endAt, \PDO::PARAM_STR);
+        $stmt->bindValue(':end_at4', $endAt, \PDO::PARAM_STR);
+        $stmt->bindValue(':end_at5', $endAt, \PDO::PARAM_STR);
+        $stmt->bindValue(':min_nb_followers', EmailConstants::NB_MIN_FOLLOWERS, \PDO::PARAM_INT);
+        $stmt->bindValue(':limit', $limit, \PDO::PARAM_STR);
+
+        $stmt->execute();
+
+        $result = $stmt->fetchAll();
+
+        $debates = new \PropelCollection();
+        foreach ($result as $row) {
+            $debate = new PDDebate();
+            $debate->hydrate($row);
+
+            $debates->append($debate);
+        }
+
+        return $debates;
     }
 
     /* ######################################################################################################## */

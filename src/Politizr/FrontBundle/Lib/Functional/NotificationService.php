@@ -10,6 +10,7 @@ use Politizr\Model\PUser;
 use Politizr\Model\PUNotificationQuery;
 use Politizr\Model\PUFollowUQuery;
 use Politizr\Model\PUFollowDDQuery;
+use Politizr\Model\PUTaggedTQuery;
 
 /**
  * Functional service for notification management.
@@ -60,7 +61,25 @@ class NotificationService
     }
 
     /**
-     * Get array of user's PUFollowDD's ids
+     * Get array of user's followed user's ids
+     * @todo refactoring duplicate w. TimelineService
+     *
+     * @param integer $userId
+     * @return array
+     */
+    private function getFollowedUsersIdsArray($userId)
+    {
+        $userIds = PUFollowUQuery::create()
+            ->select('PUserId')
+            ->filterByPUserFollowerId($userId)
+            ->find()
+            ->toArray();
+
+        return $userIds;
+    }
+
+    /**
+     * Get array of user's followed debates ids
      * @todo refactoring duplicate w. TimelineService
      *
      * @param integer $userId
@@ -75,6 +94,23 @@ class NotificationService
             ->toArray();
 
         return $debateIds;
+    }
+
+    /**
+     * Get array of user's tags ids
+     *
+     * @param integer $userId
+     * @return array
+     */
+    private function getFollowedTagsIdsArray($userId)
+    {
+        $userIds = PUTaggedTQuery::create()
+            ->select('PTagId')
+            ->filterByPUserId($userId)
+            ->find()
+            ->toArray();
+
+        return $userIds;
     }
 
     /* ######################################################################################################## */
@@ -206,8 +242,67 @@ class NotificationService
             throw new InconsistentDataException('Can get most nearest qualified users - user null');
         }
 
-        $publications = $this->notificationManager->generateNearestQualifiedUsers($beginAt->format('Y-m-d H:i:s'), $endAt->format('Y-m-d H:i:s'), $limit);
+        // Get user's localization data
+        $city = $user->getCity();
+        $department = $user->getDepartment();
+        $region = $user->getRegion();
 
-        return $publications;
+        if (!$city || !$department || !$region) {
+            return null;
+        }
+
+        $users = $this->notificationManager->generateNearestQualifiedUsers($user->getId(), $city->getId(), $department->getId(), $region->getId(), $beginAt->format('Y-m-d H:i:s'), $endAt->format('Y-m-d H:i:s'), $limit);
+
+        return $users;
+    }
+
+    /**
+     * Get nearest debates from user
+     *
+     * @param PUser $user
+     * @param DateTime $beginAt
+     * @param DateTime $endAt
+     * @param int $limit
+     */
+    public function getNearestDebates(PUser $user, \DateTime $beginAt, \DateTime $endAt, $limit)
+    {
+        if (!$user) {
+            throw new InconsistentDataException('Can get most nearest debates - user null');
+        }
+
+        // Get user's localization data
+        $city = $user->getCity();
+        $department = $user->getDepartment();
+        $region = $user->getRegion();
+
+        if (!$city || !$department || !$region) {
+            return null;
+        }
+
+        // Compute IN string for SQL query
+        $debateIds = $this->getFollowedDebatesIdsArray($user->getId());
+        $inQueryDebateIds = $this->globalTools->getInQuery($debateIds);
+
+        $userIds = $this->getFollowedUsersIdsArray($user->getId());
+        $inQueryUserIds = $this->globalTools->getInQuery($userIds);
+        
+        $tagIds = $this->getFollowedTagsIdsArray($user->getId());
+        $inQueryTagIds = $this->globalTools->getInQuery($tagIds);
+
+        // Retrieve debates
+        $debates = $this->notificationManager->generateNearestDebates(
+            $inQueryDebateIds,
+            $inQueryUserIds,
+            $inQueryTagIds, 
+            $user->getId(),
+            $city->getId(),
+            $department->getId(),
+            $region->getId(),
+            $beginAt->format('Y-m-d H:i:s'),
+            $endAt->format('Y-m-d H:i:s'),
+            $limit
+        );
+
+        return $debates;
     }
 }

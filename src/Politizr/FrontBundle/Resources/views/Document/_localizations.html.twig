@@ -1,9 +1,9 @@
 {% spaceless %}
     {% for localization in localizations %}
-        {% if displayOnly is not defined or displayOnly == false %}
-            <a href="{{ path('ListingSearchPublications', { 'slug': localization.slug }) }}"><i class="icon-geomark"></i>{{ localization }}&nbsp;</a>
+        {% if inMail %}
+            &nbsp;{{ localization }}
         {% else %}
-            <a><i class="icon-geomark"></i>{{ localization }}&nbsp;</a>
+            <a href="{{ url('ListingSearchPublications', { 'slug': localization.slug }) }}"><i class="icon-geomark"></i>{{ localization }}&nbsp;</a>
         {% endif %}
     {% endfor %}
 {% endspaceless %}

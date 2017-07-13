@@ -571,9 +571,12 @@ class PUser extends BasePUser implements UserInterface
      *
      * @return PropelCollection[PUMandate]
      */
-    public function getMandates()
+    public function getMandates($nbMax = null)
     {
         $query = PUMandateQuery::create()
+            ->_if($nbMax)
+                ->setLimit($nbMax)
+            ->_endIf()
             ->orderByBeginAt('desc');
 
         return parent::getPUMandates($query);
@@ -1074,6 +1077,48 @@ class PUser extends BasePUser implements UserInterface
     // ************************************************************************************ //
     //                                          LOCALISATION
     // ************************************************************************************ //
+
+    /**
+     * Return user's PLCity
+     *
+     * @param PLCity
+     */
+    public function getCity()
+    {
+        return $this->getPLCity();
+    }
+
+    /**
+     * Return user's PLDepartment
+     *
+     * @param PLDepartment
+     */
+    public function getDepartment()
+    {
+        if (!$this->getPLCity()) {
+            return null;
+        }
+
+        return $this->getPLCity()->getPLDepartment();
+    }
+
+    /**
+     * Return user's PLRegion
+     *
+     * @param PLRegion
+     */
+    public function getRegion()
+    {
+        if (!$this->getPLCity()) {
+            return null;
+        }
+
+        if (!$this->getPLCity()->getPLDepartment()) {
+            return null;
+        }
+
+        return $this->getPLCity()->getPLDepartment()->getPLRegion();
+    }
 
     /**
      * Return user's city name

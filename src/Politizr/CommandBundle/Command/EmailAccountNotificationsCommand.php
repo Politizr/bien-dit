@@ -218,6 +218,7 @@ class EmailAccountNotificationsCommand extends ContainerAwareCommand
      *
      * @param PUser $user
      * @param array $publications
+     * @return array
      */
     private function getUserPublicationsRendering(PUser $user, $publications)
     {
@@ -271,6 +272,7 @@ class EmailAccountNotificationsCommand extends ContainerAwareCommand
      *
      * @param PUser $user
      * @param array $publications
+     * @return array
      */
     private function getFollowedDebatesRendering(PUser $user, $publications)
     {
@@ -322,6 +324,7 @@ class EmailAccountNotificationsCommand extends ContainerAwareCommand
      *
      * @param PUser $user
      * @param array $publications
+     * @return array
      */
     private function getFollowedUsersRendering(PUser $user, $publications)
     {
@@ -373,6 +376,7 @@ class EmailAccountNotificationsCommand extends ContainerAwareCommand
      *
      * @param PUser $user
      * @param array $followerNotifications
+     * @return array
      */
     private function getFollowersRendering(PUser $user, $followerNotifications)
     {
@@ -425,6 +429,7 @@ class EmailAccountNotificationsCommand extends ContainerAwareCommand
      * @param string $followedDebatesPublicationsPart
      * @param string $followedUsersPublicationsPart
      * @param string $userPublicationsPart
+     * @return array[subject,message]
      */
     private function accountNotificationEmail($user, $badgesPart, $userPublicationsPart, $followedDebatesPublicationsPart, $followedUsersPublicationsPart, $followersPart)
     {
