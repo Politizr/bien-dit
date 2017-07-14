@@ -103,18 +103,6 @@ WHERE
     AND p_user.id <> 3
     AND p_l_region.id = 9
 
-UNION DISTINCT
-
-SELECT DISTINCT p_user.*, 4 as unionsorting
-FROM p_user
-WHERE
-    p_user.qualified = 1
-    AND p_user.online = 1
-    AND p_user.p_u_status_id = 1
-    AND p_user.created_at > '2008-01-01 00:00:00'
-    AND p_user.created_at < '2018-01-01 00:00:00'
-    AND p_user.id <> 3
-
 ORDER BY unionsorting ASC
 
 ) unionsorting

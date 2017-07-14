@@ -44,23 +44,6 @@ class NotificationService
     /* ######################################################################################################## */
 
     /**
-     * Get array of user's followers ids
-     *
-     * @param integer $userId
-     * @return array
-     */
-    private function getFollowersIdsArray($userId)
-    {
-        $userIds = PUFollowUQuery::create()
-            ->select('PUserFollowerId')
-            ->filterByPUserId($userId)
-            ->find()
-            ->toArray();
-
-        return $userIds;
-    }
-
-    /**
      * Get array of user's followed user's ids
      * @todo refactoring duplicate w. TimelineService
      *
@@ -196,8 +179,8 @@ class NotificationService
             throw new InconsistentDataException('Can get user followed publications - user null');
         }
 
-        // Récupération d'un tableau des ids des débats suivis
-        $userIds = $this->getFollowersIdsArray($user->getId());
+        // Récupération d'un tableau des ids des users suivis
+        $userIds = $this->getFollowedUsersIdsArray($user->getId());
         $inQueryUserIds = $this->globalTools->getInQuery($userIds);
 
         $publications = $this->notificationManager->generateMostInteractedFollowedUserPublications($inQueryUserIds, $beginAt->format('Y-m-d H:i:s'), $endAt->format('Y-m-d H:i:s'), $limit);
@@ -206,7 +189,7 @@ class NotificationService
     }
 
     /**
-     * Get publications from followed user
+     * Get publications from followed debates
      *
      * @param PUser $user
      * @param DateTime $beginAt
@@ -223,7 +206,7 @@ class NotificationService
         $debateIds = $this->getFollowedDebatesIdsArray($user->getId());
         $inQueryDebateIds = $this->globalTools->getInQuery($debateIds);
 
-        $publications = $this->notificationManager->generateMostInteractedFollowedDebatesPublications($inQueryDebateIds, $beginAt->format('Y-m-d H:i:s'), $endAt->format('Y-m-d H:i:s'), $limit);
+        $publications = $this->notificationManager->generateMostInteractedFollowedDebatesPublications($inQueryDebateIds, $user->getId(), $beginAt->format('Y-m-d H:i:s'), $endAt->format('Y-m-d H:i:s'), $limit);
 
         return $publications;
     }

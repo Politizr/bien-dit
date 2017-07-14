@@ -47,6 +47,7 @@ class PMEmailingTableMap extends TableMap
         $this->addForeignKey('p_n_email_id', 'PNEmailId', 'INTEGER', 'p_n_email', 'id', false, null, null);
         $this->addColumn('title', 'Title', 'VARCHAR', false, 150, null);
         $this->addColumn('html_body', 'HtmlBody', 'LONGVARCHAR', false, null, null);
+        $this->addColumn('target_email', 'TargetEmail', 'VARCHAR', false, 150, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
         // validators

@@ -134,6 +134,7 @@ class EmailNewsNotificationsCommand extends ContainerAwareCommand
                     $pmEmailing->setPNEmailId(EmailConstants::ID_ACTIVITY_SUMMARY);
                     $pmEmailing->setTitle($subjectMessage[0]);
                     $pmEmailing->setHtmlBody($subjectMessage[1]->getBody());
+                    $pmEmailing->setTargetEmail($subjectMessage[2]);
                     $pmEmailing->save();
                 }
             }
@@ -216,7 +217,7 @@ class EmailNewsNotificationsCommand extends ContainerAwareCommand
      * @param PUser $user
      * @param string $nearestUsersPart
      * @param string $nearestDebatesPart
-     * @return array[subjectMessage,message]
+     * @return array[subjectMessage,message,email]
      */
     private function newsNotificationEmail($user, $nearestUsersPart, $nearestDebatesPart)
     {
@@ -276,7 +277,7 @@ class EmailNewsNotificationsCommand extends ContainerAwareCommand
             $failedRecipients = array();
             $send = $this->mailer->send($message, $failedRecipients);
 
-            return [$subject, $message];
+            return [$subject, $message, $userEmail];
         } catch (\Exception $e) {
             $this->logger->err(sprintf('Exception - EmailNewsNotificationCommand - message = %s', $e->getMessage()));
             $this->monitoringManager->createAppException($e);

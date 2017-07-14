@@ -24,6 +24,8 @@ params:
             label:          Titre
         html_body:
             label:          Body
+        target_email:
+            label:          Envoyé à
         created_at:
             label:          Création
         updated_at:
@@ -52,7 +54,7 @@ builders:
             title:                              "Visualisation notification email {{ PMEmailing.id }}"
             tabs:
                 "Contenu":
-                    "Texte":                    [ title, html_body ]
+                    "Texte":                    [ target_email, title, html_body ]
                 "Objets":
                     "Utilisateur":              [ block_p_user ]
                     "Type notif":               [ p_n_email_id ]

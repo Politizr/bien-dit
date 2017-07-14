@@ -154,6 +154,7 @@ class EmailAccountNotificationsCommand extends ContainerAwareCommand
                     $pmEmailing->setPNEmailId(EmailConstants::ID_PROFILE_SUMMARY);
                     $pmEmailing->setTitle($subjectMessage[0]);
                     $pmEmailing->setHtmlBody($subjectMessage[1]->getBody());
+                    $pmEmailing->setTargetEmail($subjectMessage[2]);
                     $pmEmailing->save();
                 }
             }
@@ -294,6 +295,8 @@ class EmailAccountNotificationsCommand extends ContainerAwareCommand
             $followedDebatesPublications[$loop]['url'] = $attr['url'];
             $followedDebatesPublications[$loop]['author'] = $attr['author'];
             $followedDebatesPublications[$loop]['authorUrl'] = $attr['authorUrl'];
+            $followedDebatesPublications[$loop]['commentDocument'] = $attr['document'];
+            $followedDebatesPublications[$loop]['commentDocumentUrl'] = $attr['documentUrl'];
 
             $loop++;
         }
@@ -346,6 +349,8 @@ class EmailAccountNotificationsCommand extends ContainerAwareCommand
             $followedUsersPublications[$loop]['url'] = $attr['url'];
             $followedUsersPublications[$loop]['author'] = $attr['author'];
             $followedUsersPublications[$loop]['authorUrl'] = $attr['authorUrl'];
+            $followedUsersPublications[$loop]['commentDocument'] = $attr['document'];
+            $followedUsersPublications[$loop]['commentDocumentUrl'] = $attr['documentUrl'];
 
             $loop++;
         }
@@ -429,7 +434,7 @@ class EmailAccountNotificationsCommand extends ContainerAwareCommand
      * @param string $followedDebatesPublicationsPart
      * @param string $followedUsersPublicationsPart
      * @param string $userPublicationsPart
-     * @return array[subject,message]
+     * @return array[subject,message,email]
      */
     private function accountNotificationEmail($user, $badgesPart, $userPublicationsPart, $followedDebatesPublicationsPart, $followedUsersPublicationsPart, $followersPart)
     {
@@ -541,7 +546,7 @@ class EmailAccountNotificationsCommand extends ContainerAwareCommand
             $failedRecipients = array();
             $send = $this->mailer->send($message, $failedRecipients);
 
-            return [$subject, $message];
+            return [$subject, $message, $userEmail];
         } catch (\Exception $e) {
             $this->logger->err(sprintf('Exception - EmailAccountNotificationCommand - message = %s', $e->getMessage()));
             $this->monitoringManager->createAppException($e);

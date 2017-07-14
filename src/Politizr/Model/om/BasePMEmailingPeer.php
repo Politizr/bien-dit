@@ -31,13 +31,13 @@ abstract class BasePMEmailingPeer
     const TM_CLASS = 'Politizr\\Model\\map\\PMEmailingTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 7;
+    const NUM_COLUMNS = 8;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 7;
+    const NUM_HYDRATE_COLUMNS = 8;
 
     /** the column name for the id field */
     const ID = 'p_m_emailing.id';
@@ -53,6 +53,9 @@ abstract class BasePMEmailingPeer
 
     /** the column name for the html_body field */
     const HTML_BODY = 'p_m_emailing.html_body';
+
+    /** the column name for the target_email field */
+    const TARGET_EMAIL = 'p_m_emailing.target_email';
 
     /** the column name for the created_at field */
     const CREATED_AT = 'p_m_emailing.created_at';
@@ -79,12 +82,12 @@ abstract class BasePMEmailingPeer
      * e.g. PMEmailingPeer::$fieldNames[PMEmailingPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'PUserId', 'PNEmailId', 'Title', 'HtmlBody', 'CreatedAt', 'UpdatedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pUserId', 'pNEmailId', 'title', 'htmlBody', 'createdAt', 'updatedAt', ),
-        BasePeer::TYPE_COLNAME => array (PMEmailingPeer::ID, PMEmailingPeer::P_USER_ID, PMEmailingPeer::P_N_EMAIL_ID, PMEmailingPeer::TITLE, PMEmailingPeer::HTML_BODY, PMEmailingPeer::CREATED_AT, PMEmailingPeer::UPDATED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_USER_ID', 'P_N_EMAIL_ID', 'TITLE', 'HTML_BODY', 'CREATED_AT', 'UPDATED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'p_user_id', 'p_n_email_id', 'title', 'html_body', 'created_at', 'updated_at', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'PUserId', 'PNEmailId', 'Title', 'HtmlBody', 'TargetEmail', 'CreatedAt', 'UpdatedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pUserId', 'pNEmailId', 'title', 'htmlBody', 'targetEmail', 'createdAt', 'updatedAt', ),
+        BasePeer::TYPE_COLNAME => array (PMEmailingPeer::ID, PMEmailingPeer::P_USER_ID, PMEmailingPeer::P_N_EMAIL_ID, PMEmailingPeer::TITLE, PMEmailingPeer::HTML_BODY, PMEmailingPeer::TARGET_EMAIL, PMEmailingPeer::CREATED_AT, PMEmailingPeer::UPDATED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_USER_ID', 'P_N_EMAIL_ID', 'TITLE', 'HTML_BODY', 'TARGET_EMAIL', 'CREATED_AT', 'UPDATED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'p_user_id', 'p_n_email_id', 'title', 'html_body', 'target_email', 'created_at', 'updated_at', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
     /**
@@ -94,12 +97,12 @@ abstract class BasePMEmailingPeer
      * e.g. PMEmailingPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PUserId' => 1, 'PNEmailId' => 2, 'Title' => 3, 'HtmlBody' => 4, 'CreatedAt' => 5, 'UpdatedAt' => 6, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pUserId' => 1, 'pNEmailId' => 2, 'title' => 3, 'htmlBody' => 4, 'createdAt' => 5, 'updatedAt' => 6, ),
-        BasePeer::TYPE_COLNAME => array (PMEmailingPeer::ID => 0, PMEmailingPeer::P_USER_ID => 1, PMEmailingPeer::P_N_EMAIL_ID => 2, PMEmailingPeer::TITLE => 3, PMEmailingPeer::HTML_BODY => 4, PMEmailingPeer::CREATED_AT => 5, PMEmailingPeer::UPDATED_AT => 6, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_USER_ID' => 1, 'P_N_EMAIL_ID' => 2, 'TITLE' => 3, 'HTML_BODY' => 4, 'CREATED_AT' => 5, 'UPDATED_AT' => 6, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_user_id' => 1, 'p_n_email_id' => 2, 'title' => 3, 'html_body' => 4, 'created_at' => 5, 'updated_at' => 6, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PUserId' => 1, 'PNEmailId' => 2, 'Title' => 3, 'HtmlBody' => 4, 'TargetEmail' => 5, 'CreatedAt' => 6, 'UpdatedAt' => 7, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pUserId' => 1, 'pNEmailId' => 2, 'title' => 3, 'htmlBody' => 4, 'targetEmail' => 5, 'createdAt' => 6, 'updatedAt' => 7, ),
+        BasePeer::TYPE_COLNAME => array (PMEmailingPeer::ID => 0, PMEmailingPeer::P_USER_ID => 1, PMEmailingPeer::P_N_EMAIL_ID => 2, PMEmailingPeer::TITLE => 3, PMEmailingPeer::HTML_BODY => 4, PMEmailingPeer::TARGET_EMAIL => 5, PMEmailingPeer::CREATED_AT => 6, PMEmailingPeer::UPDATED_AT => 7, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_USER_ID' => 1, 'P_N_EMAIL_ID' => 2, 'TITLE' => 3, 'HTML_BODY' => 4, 'TARGET_EMAIL' => 5, 'CREATED_AT' => 6, 'UPDATED_AT' => 7, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_user_id' => 1, 'p_n_email_id' => 2, 'title' => 3, 'html_body' => 4, 'target_email' => 5, 'created_at' => 6, 'updated_at' => 7, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
     /**
@@ -178,6 +181,7 @@ abstract class BasePMEmailingPeer
             $criteria->addSelectColumn(PMEmailingPeer::P_N_EMAIL_ID);
             $criteria->addSelectColumn(PMEmailingPeer::TITLE);
             $criteria->addSelectColumn(PMEmailingPeer::HTML_BODY);
+            $criteria->addSelectColumn(PMEmailingPeer::TARGET_EMAIL);
             $criteria->addSelectColumn(PMEmailingPeer::CREATED_AT);
             $criteria->addSelectColumn(PMEmailingPeer::UPDATED_AT);
         } else {
@@ -186,6 +190,7 @@ abstract class BasePMEmailingPeer
             $criteria->addSelectColumn($alias . '.p_n_email_id');
             $criteria->addSelectColumn($alias . '.title');
             $criteria->addSelectColumn($alias . '.html_body');
+            $criteria->addSelectColumn($alias . '.target_email');
             $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
         }

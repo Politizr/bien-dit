@@ -11,7 +11,7 @@
             <a href="{{ url('UserDetail', {'slug': electedUser.slug}) }}" target="_blank" class="avatar40" style="width: 40px; height: 40px; margin-top: 3px; display: block; overflow: hidden; background-size: cover; background-position: center center; {{ electedUser | photo(email = true) }}"></a>
             <a href="{{ url('UserDetail', {'slug': electedUser.slug}) }}" style="color: #2D2D2D">{{ electedUser.gender }} {{ electedUser.fullName }}{% for organization in organizations %} [{{ organization.initials }}]{% endfor %}</a>,
             {% for mandate in electedUser.mandates() %}
-                {{ mandate }}{% if loop.revindex == 2 %} et {% elseif not loop.last %}, {% endif %}
+                {{ mandate }}{% if loop.revindex == 2 %} et {% elseif not loop.last %},  {% else %}.{% endif %}
             {% endfor %}
             <br/>
         {% endfor %}

@@ -1480,6 +1480,7 @@
 
         <column name="title" type="varchar" size="150" />
         <column name="html_body" type="longvarchar" />
+        <column name="target_email" type="varchar" size="150" />
 
         <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />

@@ -246,6 +246,7 @@ WHERE
     AND p_d_reaction.online = 1
     AND p_d_reaction.p_d_debate_id IN ($inQueryDebateIds)
     AND p_d_reaction.tree_level > 0
+    AND p_d_reaction.p_user_id <> :p_user_id
     AND p_d_reaction.published_at > :begin_at
     AND p_d_reaction.published_at < :end_at
 
@@ -259,6 +260,7 @@ FROM p_d_d_comment
 WHERE
     p_d_d_comment.online = 1
     AND p_d_d_comment.p_d_debate_id IN ($inQueryDebateIds)
+    AND p_d_d_comment.p_user_id <> :p_user_id2
     AND p_d_d_comment.published_at > :begin_at2
     AND p_d_d_comment.published_at < :end_at2
 
@@ -274,6 +276,7 @@ FROM p_d_r_comment
 WHERE
     p_d_r_comment.online = 1
     AND p_d_reaction.p_d_debate_id IN ($inQueryDebateIds)
+    AND p_d_r_comment.p_user_id <> :p_user_id3
     AND p_d_r_comment.published_at > :begin_at3
     AND p_d_r_comment.published_at < :end_at3
 
@@ -349,18 +352,6 @@ WHERE
     AND p_user.created_at < :end_at3
     AND p_user.id <> :p_user_id3
     AND p_l_region.id = :p_l_region_id
-
-UNION DISTINCT
-
-SELECT DISTINCT p_user.*, 4 as unionsorting
-FROM p_user
-WHERE
-    p_user.qualified = 1
-    AND p_user.online = 1
-    AND p_user.p_u_status_id = 1
-    AND p_user.created_at > :begin_at4
-    AND p_user.created_at < :end_at4
-    AND p_user.id <> :p_user_id4
 
 ORDER BY unionsorting ASC
 
@@ -589,15 +580,17 @@ LIMIT :limit
      * Most interacted followed debates publications documents listing
      *
      * @param int $inQueryDebateIds
+     * @param int $userId
      * @param string $beginAt
      * @param string $endAt
      * @param integer $limit
      * @return PropelCollection
      */
-    public function generateMostInteractedFollowedDebatesPublications($inQueryDebateIds, $beginAt, $endAt, $limit)
+    public function generateMostInteractedFollowedDebatesPublications($inQueryDebateIds, $userId, $beginAt, $endAt, $limit)
     {
         $this->logger->info('*** generateMostInteractedFollowedDebatesPublications');
         $this->logger->info('$inQueryDebateIds = ' . print_r($inQueryDebateIds, true));
+        $this->logger->info('$userId = ' . print_r($userId, true));
         $this->logger->info('$beginAt = ' . print_r($beginAt, true));
         $this->logger->info('$endAt = ' . print_r($endAt, true));
         $this->logger->info('$limit = ' . print_r($limit, true));
@@ -606,6 +599,9 @@ LIMIT :limit
 
         $stmt = $con->prepare($this->createMostInteractedFollowedDebatesPublicationsRawSql($inQueryDebateIds));
 
+        $stmt->bindValue(':p_user_id', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_user_id2', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_user_id3', $userId, \PDO::PARAM_INT);
         $stmt->bindValue(':begin_at', $beginAt, \PDO::PARAM_STR);
         $stmt->bindValue(':begin_at2', $beginAt, \PDO::PARAM_STR);
         $stmt->bindValue(':begin_at3', $beginAt, \PDO::PARAM_STR);
@@ -653,18 +649,15 @@ LIMIT :limit
         $stmt->bindValue(':p_user_id', $userId, \PDO::PARAM_INT);
         $stmt->bindValue(':p_user_id2', $userId, \PDO::PARAM_INT);
         $stmt->bindValue(':p_user_id3', $userId, \PDO::PARAM_INT);
-        $stmt->bindValue(':p_user_id4', $userId, \PDO::PARAM_INT);
         $stmt->bindValue(':p_l_city_id', $cityId, \PDO::PARAM_INT);
         $stmt->bindValue(':p_l_department_id', $departmentId, \PDO::PARAM_INT);
         $stmt->bindValue(':p_l_region_id', $regionId, \PDO::PARAM_INT);
         $stmt->bindValue(':begin_at', $beginAt, \PDO::PARAM_STR);
         $stmt->bindValue(':begin_at2', $beginAt, \PDO::PARAM_STR);
         $stmt->bindValue(':begin_at3', $beginAt, \PDO::PARAM_STR);
-        $stmt->bindValue(':begin_at4', $beginAt, \PDO::PARAM_STR);
         $stmt->bindValue(':end_at', $endAt, \PDO::PARAM_STR);
         $stmt->bindValue(':end_at2', $endAt, \PDO::PARAM_STR);
         $stmt->bindValue(':end_at3', $endAt, \PDO::PARAM_STR);
-        $stmt->bindValue(':end_at4', $endAt, \PDO::PARAM_STR);
         $stmt->bindValue(':limit', $limit, \PDO::PARAM_STR);
 
         $stmt->execute();

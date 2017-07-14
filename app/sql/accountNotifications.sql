@@ -141,6 +141,7 @@ WHERE
     AND p_d_reaction.online = 1
     AND p_d_reaction.p_d_debate_id IN (109,110,891)
     AND p_d_reaction.tree_level > 0
+    AND p_d_reaction.p_user_id <> 3
     AND p_d_reaction.published_at > '2008-01-01 00:00:00'
     AND p_d_reaction.published_at < '2018-01-01 00:00:00'
 
@@ -155,6 +156,7 @@ FROM p_d_d_comment
 WHERE
     p_d_d_comment.online = 1
     AND p_d_d_comment.p_d_debate_id IN (109,110,891)
+    AND p_d_d_comment.p_user_id <> 3
     AND p_d_d_comment.published_at > '2008-01-01 00:00:00'
     AND p_d_d_comment.published_at < '2018-01-01 00:00:00'
 
@@ -171,6 +173,7 @@ FROM p_d_r_comment
 WHERE
     p_d_r_comment.online = 1
     AND p_d_reaction.p_d_debate_id IN (109,110,891)
+    AND p_d_r_comment.p_user_id <> 3
     AND p_d_r_comment.published_at > '2008-01-01 00:00:00'
     AND p_d_r_comment.published_at < '2018-01-01 00:00:00'
 

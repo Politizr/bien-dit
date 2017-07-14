@@ -5,7 +5,7 @@
             <h1>Certains utilisateurs ont rédigé de nouvelles publications sur des sujets suivis!</h1>
         {% endif %}
         {% for publication in followedDebatesPublications %}
-            <a href="{{ publication['authorUrl'] }}" style="color: #2D2D2D">{{ publication['author'] }}</a> a publié {% if (publication['type'] == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE_COMMENT')) or (publication['type'] == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION_COMMENT')) %}<a href="{{ publication['url'] }}" style="color: #2D2D2D">un commentaire</a>{% else %}"<a href="{{ publication['url'] }}" style="color: #2D2D2D">{{ publication['title'] }}</a>"{% endif %}
+            <a href="{{ publication['authorUrl'] }}" style="color: #2D2D2D">{{ publication['author'] }}</a> a publié {% if (publication['type'] == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE_COMMENT')) or (publication['type'] == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION_COMMENT')) %}<a href="{{ publication['url'] }}" style="color: #2D2D2D">un commentaire</a>{% else %}"<a href="{{ publication['url'] }}" style="color: #2D2D2D">{{ publication['title'] }}</a>"{% endif %}{% if (publication['type'] == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE_COMMENT')) or (publication['type'] == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION_COMMENT')) %} sur "<a href="{{ publication['commentDocumentUrl'] }}" style="color: #2D2D2D">{{ publication['commentDocument'] }}</a>"{% endif %}.
             <br/>
         {% endfor %}
         {% endspaceless %}

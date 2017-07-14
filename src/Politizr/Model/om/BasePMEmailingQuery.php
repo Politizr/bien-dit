@@ -24,6 +24,7 @@ use Politizr\Model\PUser;
  * @method PMEmailingQuery orderByPNEmailId($order = Criteria::ASC) Order by the p_n_email_id column
  * @method PMEmailingQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method PMEmailingQuery orderByHtmlBody($order = Criteria::ASC) Order by the html_body column
+ * @method PMEmailingQuery orderByTargetEmail($order = Criteria::ASC) Order by the target_email column
  * @method PMEmailingQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PMEmailingQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  *
@@ -32,6 +33,7 @@ use Politizr\Model\PUser;
  * @method PMEmailingQuery groupByPNEmailId() Group by the p_n_email_id column
  * @method PMEmailingQuery groupByTitle() Group by the title column
  * @method PMEmailingQuery groupByHtmlBody() Group by the html_body column
+ * @method PMEmailingQuery groupByTargetEmail() Group by the target_email column
  * @method PMEmailingQuery groupByCreatedAt() Group by the created_at column
  * @method PMEmailingQuery groupByUpdatedAt() Group by the updated_at column
  *
@@ -54,6 +56,7 @@ use Politizr\Model\PUser;
  * @method PMEmailing findOneByPNEmailId(int $p_n_email_id) Return the first PMEmailing filtered by the p_n_email_id column
  * @method PMEmailing findOneByTitle(string $title) Return the first PMEmailing filtered by the title column
  * @method PMEmailing findOneByHtmlBody(string $html_body) Return the first PMEmailing filtered by the html_body column
+ * @method PMEmailing findOneByTargetEmail(string $target_email) Return the first PMEmailing filtered by the target_email column
  * @method PMEmailing findOneByCreatedAt(string $created_at) Return the first PMEmailing filtered by the created_at column
  * @method PMEmailing findOneByUpdatedAt(string $updated_at) Return the first PMEmailing filtered by the updated_at column
  *
@@ -62,6 +65,7 @@ use Politizr\Model\PUser;
  * @method array findByPNEmailId(int $p_n_email_id) Return PMEmailing objects filtered by the p_n_email_id column
  * @method array findByTitle(string $title) Return PMEmailing objects filtered by the title column
  * @method array findByHtmlBody(string $html_body) Return PMEmailing objects filtered by the html_body column
+ * @method array findByTargetEmail(string $target_email) Return PMEmailing objects filtered by the target_email column
  * @method array findByCreatedAt(string $created_at) Return PMEmailing objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PMEmailing objects filtered by the updated_at column
  */
@@ -169,7 +173,7 @@ abstract class BasePMEmailingQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_user_id`, `p_n_email_id`, `title`, `html_body`, `created_at`, `updated_at` FROM `p_m_emailing` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_user_id`, `p_n_email_id`, `title`, `html_body`, `target_email`, `created_at`, `updated_at` FROM `p_m_emailing` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -444,6 +448,35 @@ abstract class BasePMEmailingQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PMEmailingPeer::HTML_BODY, $htmlBody, $comparison);
+    }
+
+    /**
+     * Filter the query on the target_email column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByTargetEmail('fooValue');   // WHERE target_email = 'fooValue'
+     * $query->filterByTargetEmail('%fooValue%'); // WHERE target_email LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $targetEmail The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PMEmailingQuery The current query, for fluid interface
+     */
+    public function filterByTargetEmail($targetEmail = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($targetEmail)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $targetEmail)) {
+                $targetEmail = str_replace('*', '%', $targetEmail);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PMEmailingPeer::TARGET_EMAIL, $targetEmail, $comparison);
     }
 
     /**

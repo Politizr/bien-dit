@@ -1,7 +1,7 @@
 {% spaceless %}
     {% for localization in localizations %}
         {% if inMail %}
-            &nbsp;{{ localization }}
+            {{ localization }}
         {% else %}
             <a href="{{ url('ListingSearchPublications', { 'slug': localization.slug }) }}"><i class="icon-geomark"></i>{{ localization }}&nbsp;</a>
         {% endif %}

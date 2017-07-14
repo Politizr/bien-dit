@@ -73,6 +73,12 @@ abstract class BasePMEmailing extends BaseObject implements Persistent
     protected $html_body;
 
     /**
+     * The value for the target_email field.
+     * @var        string
+     */
+    protected $target_email;
+
+    /**
      * The value for the created_at field.
      * @var        string
      */
@@ -167,6 +173,17 @@ abstract class BasePMEmailing extends BaseObject implements Persistent
     {
 
         return $this->html_body;
+    }
+
+    /**
+     * Get the [target_email] column value.
+     *
+     * @return string
+     */
+    public function getTargetEmail()
+    {
+
+        return $this->target_email;
     }
 
     /**
@@ -363,6 +380,27 @@ abstract class BasePMEmailing extends BaseObject implements Persistent
     } // setHtmlBody()
 
     /**
+     * Set the value of [target_email] column.
+     *
+     * @param  string $v new value
+     * @return PMEmailing The current object (for fluent API support)
+     */
+    public function setTargetEmail($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->target_email !== $v) {
+            $this->target_email = $v;
+            $this->modifiedColumns[] = PMEmailingPeer::TARGET_EMAIL;
+        }
+
+
+        return $this;
+    } // setTargetEmail()
+
+    /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
@@ -445,8 +483,9 @@ abstract class BasePMEmailing extends BaseObject implements Persistent
             $this->p_n_email_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
             $this->title = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
             $this->html_body = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-            $this->created_at = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->updated_at = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->target_email = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->created_at = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->updated_at = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -456,7 +495,7 @@ abstract class BasePMEmailing extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 7; // 7 = PMEmailingPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 8; // 8 = PMEmailingPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PMEmailing object", $e);
@@ -721,6 +760,9 @@ abstract class BasePMEmailing extends BaseObject implements Persistent
         if ($this->isColumnModified(PMEmailingPeer::HTML_BODY)) {
             $modifiedColumns[':p' . $index++]  = '`html_body`';
         }
+        if ($this->isColumnModified(PMEmailingPeer::TARGET_EMAIL)) {
+            $modifiedColumns[':p' . $index++]  = '`target_email`';
+        }
         if ($this->isColumnModified(PMEmailingPeer::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`created_at`';
         }
@@ -752,6 +794,9 @@ abstract class BasePMEmailing extends BaseObject implements Persistent
                         break;
                     case '`html_body`':
                         $stmt->bindValue($identifier, $this->html_body, PDO::PARAM_STR);
+                        break;
+                    case '`target_email`':
+                        $stmt->bindValue($identifier, $this->target_email, PDO::PARAM_STR);
                         break;
                     case '`created_at`':
                         $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
@@ -835,9 +880,12 @@ abstract class BasePMEmailing extends BaseObject implements Persistent
                 return $this->getHtmlBody();
                 break;
             case 5:
-                return $this->getCreatedAt();
+                return $this->getTargetEmail();
                 break;
             case 6:
+                return $this->getCreatedAt();
+                break;
+            case 7:
                 return $this->getUpdatedAt();
                 break;
             default:
@@ -874,8 +922,9 @@ abstract class BasePMEmailing extends BaseObject implements Persistent
             $keys[2] => $this->getPNEmailId(),
             $keys[3] => $this->getTitle(),
             $keys[4] => $this->getHtmlBody(),
-            $keys[5] => $this->getCreatedAt(),
-            $keys[6] => $this->getUpdatedAt(),
+            $keys[5] => $this->getTargetEmail(),
+            $keys[6] => $this->getCreatedAt(),
+            $keys[7] => $this->getUpdatedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -939,9 +988,12 @@ abstract class BasePMEmailing extends BaseObject implements Persistent
                 $this->setHtmlBody($value);
                 break;
             case 5:
-                $this->setCreatedAt($value);
+                $this->setTargetEmail($value);
                 break;
             case 6:
+                $this->setCreatedAt($value);
+                break;
+            case 7:
                 $this->setUpdatedAt($value);
                 break;
         } // switch()
@@ -973,8 +1025,9 @@ abstract class BasePMEmailing extends BaseObject implements Persistent
         if (array_key_exists($keys[2], $arr)) $this->setPNEmailId($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setTitle($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setHtmlBody($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setCreatedAt($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setUpdatedAt($arr[$keys[6]]);
+        if (array_key_exists($keys[5], $arr)) $this->setTargetEmail($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setCreatedAt($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setUpdatedAt($arr[$keys[7]]);
     }
 
     /**
@@ -991,6 +1044,7 @@ abstract class BasePMEmailing extends BaseObject implements Persistent
         if ($this->isColumnModified(PMEmailingPeer::P_N_EMAIL_ID)) $criteria->add(PMEmailingPeer::P_N_EMAIL_ID, $this->p_n_email_id);
         if ($this->isColumnModified(PMEmailingPeer::TITLE)) $criteria->add(PMEmailingPeer::TITLE, $this->title);
         if ($this->isColumnModified(PMEmailingPeer::HTML_BODY)) $criteria->add(PMEmailingPeer::HTML_BODY, $this->html_body);
+        if ($this->isColumnModified(PMEmailingPeer::TARGET_EMAIL)) $criteria->add(PMEmailingPeer::TARGET_EMAIL, $this->target_email);
         if ($this->isColumnModified(PMEmailingPeer::CREATED_AT)) $criteria->add(PMEmailingPeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(PMEmailingPeer::UPDATED_AT)) $criteria->add(PMEmailingPeer::UPDATED_AT, $this->updated_at);
 
@@ -1060,6 +1114,7 @@ abstract class BasePMEmailing extends BaseObject implements Persistent
         $copyObj->setPNEmailId($this->getPNEmailId());
         $copyObj->setTitle($this->getTitle());
         $copyObj->setHtmlBody($this->getHtmlBody());
+        $copyObj->setTargetEmail($this->getTargetEmail());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
 
@@ -1234,6 +1289,7 @@ abstract class BasePMEmailing extends BaseObject implements Persistent
         $this->p_n_email_id = null;
         $this->title = null;
         $this->html_body = null;
+        $this->target_email = null;
         $this->created_at = null;
         $this->updated_at = null;
         $this->alreadyInSave = false;
