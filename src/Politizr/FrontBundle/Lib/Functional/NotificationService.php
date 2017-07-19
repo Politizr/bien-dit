@@ -101,6 +101,24 @@ class NotificationService
     /* ######################################################################################################## */
 
     /**
+     * Retrieve ids of object type from InteractedPublications listing.
+     *
+     * @param array $interactedPublications
+     * @param string $objectType
+     * @return array[int]
+     */
+    public function getObjectTypeIdsFromInteractedPublications($interactedPublications, $objectType)
+    {
+        $ids = [];
+        foreach ($interactedPublications as $publication) {
+            if ($publication->getType() == $objectType) {
+                $ids[] = $publication->getId();
+            }
+        }
+        return $ids;
+    }
+
+    /**
      * Get user notifications from begin to end date
      *
      * @param PUser $user
@@ -172,18 +190,29 @@ class NotificationService
      * @param DateTime $beginAt
      * @param DateTime $endAt
      * @param int $limit
+     * @param array $notInDebateIds found debates' publications not in these ids
+     * @param array $notInReactionIds found reactions' publications not in these ids
+     * @param array $notInCommentDebateIds found debate's comments' publications not in these ids
+     * @param array $notInCommentReactionIds found reaction's comments' publications not in these ids
+     * @return array[InteractedPublication]
      */
-    public function getMostInteractedFollowedUsersPublications(PUser $user, \DateTime $beginAt, \DateTime $endAt, $limit)
+    public function getMostInteractedFollowedUsersPublications(PUser $user, \DateTime $beginAt, \DateTime $endAt, $limit, $notInDebateIds = [], $notInReactionIds = [], $notInCommentDebateIds = [], $notInCommentReactionIds = [])
     {
         if (!$user) {
             throw new InconsistentDataException('Can get user followed publications - user null');
         }
 
-        // Récupération d'un tableau des ids des users suivis
+        // Compute followed users ids
         $userIds = $this->getFollowedUsersIdsArray($user->getId());
         $inQueryUserIds = $this->globalTools->getInQuery($userIds);
 
-        $publications = $this->notificationManager->generateMostInteractedFollowedUserPublications($inQueryUserIds, $beginAt->format('Y-m-d H:i:s'), $endAt->format('Y-m-d H:i:s'), $limit);
+        // Construct "not in" strings
+        $inQueryNotInPDDebateIds = $this->globalTools->getInQuery($notInDebateIds);
+        $inQueryNotInPDReactionIds = $this->globalTools->getInQuery($notInReactionIds);
+        $inQueryNotInPDDCommentIds = $this->globalTools->getInQuery($notInCommentDebateIds);
+        $inQueryNotInPDRCommentIds = $this->globalTools->getInQuery($notInCommentReactionIds);
+
+        $publications = $this->notificationManager->generateMostInteractedFollowedUserPublications($inQueryUserIds, $inQueryNotInPDDebateIds, $inQueryNotInPDReactionIds, $inQueryNotInPDDCommentIds, $inQueryNotInPDRCommentIds, $beginAt->format('Y-m-d H:i:s'), $endAt->format('Y-m-d H:i:s'), $limit);
 
         return $publications;
     }
@@ -195,6 +224,7 @@ class NotificationService
      * @param DateTime $beginAt
      * @param DateTime $endAt
      * @param int $limit
+     * @return array[InteractedPublication]
      */
     public function getMostInteractedFollowedDebatesPublications(PUser $user, \DateTime $beginAt, \DateTime $endAt, $limit)
     {

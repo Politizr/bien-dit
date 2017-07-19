@@ -75,6 +75,7 @@ FROM p_d_debate
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1
+    AND p_d_debate.id NOT IN (0)
     AND p_d_debate.p_user_id IN (6,9,60)
     AND p_d_debate.published_at > '2008-01-01 00:00:00'
     AND p_d_debate.published_at < '2018-01-01 00:00:00'
@@ -90,6 +91,7 @@ FROM p_d_reaction
 WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
+    AND p_d_reaction.id NOT IN (0)
     AND p_d_reaction.p_user_id IN (6,9,60)
     AND p_d_reaction.published_at > '2008-01-01 00:00:00'
     AND p_d_reaction.published_at < '2018-01-01 00:00:00'
@@ -104,6 +106,7 @@ UNION DISTINCT
 FROM p_d_d_comment
 WHERE
     p_d_d_comment.online = 1
+    AND p_d_d_comment.id NOT IN (0)
     AND p_d_d_comment.p_user_id IN (6,9,60)
     AND p_d_d_comment.published_at > '2008-01-01 00:00:00'
     AND p_d_d_comment.published_at < '2018-01-01 00:00:00'
@@ -118,6 +121,7 @@ UNION DISTINCT
 FROM p_d_r_comment
 WHERE
     p_d_r_comment.online = 1
+    AND p_d_r_comment.id NOT IN (0)
     AND p_d_r_comment.p_user_id IN (6,9,60)
     AND p_d_r_comment.published_at > '2008-01-01 00:00:00'
     AND p_d_r_comment.published_at < '2018-01-01 00:00:00'

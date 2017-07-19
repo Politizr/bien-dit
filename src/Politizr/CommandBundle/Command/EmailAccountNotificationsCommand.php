@@ -128,8 +128,14 @@ class EmailAccountNotificationsCommand extends ContainerAwareCommand
 
             $followedDebatesPublicationsPart = $this->getFollowedDebatesRendering($user, $followedDebatesPublications);
 
+            // Retrieve previous notifieds publications to avoid duplicate notifications
+            $notifDebateIds = $this->notificationService->getObjectTypeIdsFromInteractedPublications($followedDebatesPublications, ObjectTypeConstants::TYPE_DEBATE);
+            $notifReactionIds = $this->notificationService->getObjectTypeIdsFromInteractedPublications($followedDebatesPublications, ObjectTypeConstants::TYPE_REACTION);
+            $notifCommentDebateIds = $this->notificationService->getObjectTypeIdsFromInteractedPublications($followedDebatesPublications, ObjectTypeConstants::TYPE_DEBATE_COMMENT);
+            $notifCommentReactionIds = $this->notificationService->getObjectTypeIdsFromInteractedPublications($followedDebatesPublications, ObjectTypeConstants::TYPE_REACTION_COMMENT);
+
             // Users followed Publications
-            $followedUsersPublications = $this->notificationService->getMostInteractedFollowedUsersPublications($user, $beginAt, $endAt, EmailConstants::NB_MAX_INTERACTED_PUBLICATIONS);
+            $followedUsersPublications = $this->notificationService->getMostInteractedFollowedUsersPublications($user, $beginAt, $endAt, EmailConstants::NB_MAX_INTERACTED_PUBLICATIONS, $notifDebateIds, $notifReactionIds, $notifCommentDebateIds, $notifCommentReactionIds);
 
             $followedUsersPublicationsPart = $this->getFollowedUsersRendering($user, $followedUsersPublications);
 

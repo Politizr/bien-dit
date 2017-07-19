@@ -158,9 +158,13 @@ LIMIT :limit
      * @see app/sql/accountNotifications.sql
      *
      * @param string $inQueryUserIds
+     * @param string $inQueryNotInPDDebateIds
+     * @param string $inQueryNotInPDReactionIds
+     * @param string $inQueryNotInPDDCommentIds
+     * @param string $inQueryNotInPDRCommentIds
      * @return string
      */
-    private function createMostInteractedFollowedUserPublicationsRawSql($inQueryUserIds)
+    private function createMostInteractedFollowedUserPublicationsRawSql($inQueryUserIds, $inQueryNotInPDDebateIds, $inQueryNotInPDReactionIds, $inQueryNotInPDDCommentIds, $inQueryNotInPDRCommentIds)
     {
         // Requête SQL
         $sql = "
@@ -169,6 +173,7 @@ FROM p_d_debate
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1
+    AND p_d_debate.id NOT IN ($inQueryNotInPDDebateIds)
     AND p_d_debate.p_user_id IN ($inQueryUserIds)
     AND p_d_debate.published_at > :begin_at
     AND p_d_debate.published_at < :end_at
@@ -184,6 +189,7 @@ FROM p_d_reaction
 WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
+    AND p_d_reaction.id NOT IN ($inQueryNotInPDReactionIds)
     AND p_d_reaction.p_user_id IN ($inQueryUserIds)
     AND p_d_reaction.published_at > :begin_at2
     AND p_d_reaction.published_at < :end_at2
@@ -198,6 +204,7 @@ UNION DISTINCT
 FROM p_d_d_comment
 WHERE
     p_d_d_comment.online = 1
+    AND p_d_d_comment.id NOT IN ($inQueryNotInPDDCommentIds)
     AND p_d_d_comment.p_user_id IN ($inQueryUserIds)
     AND p_d_d_comment.published_at > :begin_at3
     AND p_d_d_comment.published_at < :end_at3
@@ -212,6 +219,7 @@ UNION DISTINCT
 FROM p_d_r_comment
 WHERE
     p_d_r_comment.online = 1
+    AND p_d_r_comment.id NOT IN ($inQueryNotInPDRCommentIds)
     AND p_d_r_comment.p_user_id IN ($inQueryUserIds)
     AND p_d_r_comment.published_at > :begin_at4
     AND p_d_r_comment.published_at < :end_at4
@@ -539,13 +547,17 @@ LIMIT :limit
     /**
      * Most interacted followed user documents listing
      *
-     * @param int $inQueryUserIds
+     * @param string $inQueryUserIds
+     * @param string $inQueryNotInPDDebateIds
+     * @param string $inQueryNotInPDReactionIds
+     * @param string $inQueryNotInPDDCommentIds
+     * @param string $inQueryNotInPDRCommentIds
      * @param string $beginAt
      * @param string $endAt
      * @param integer $limit
-     * @return PropelCollection
+     * @return array[InteractedPublication]
      */
-    public function generateMostInteractedFollowedUserPublications($inQueryUserIds, $beginAt, $endAt, $limit)
+    public function generateMostInteractedFollowedUserPublications($inQueryUserIds, $inQueryNotInPDDebateIds, $inQueryNotInPDReactionIds, $inQueryNotInPDDCommentIds, $inQueryNotInPDRCommentIds, $beginAt, $endAt, $limit)
     {
         $this->logger->info('*** generateMostFollowedUserPublications');
         $this->logger->info('$inQueryUserIds = ' . print_r($inQueryUserIds, true));
@@ -555,7 +567,7 @@ LIMIT :limit
 
         $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
 
-        $stmt = $con->prepare($this->createMostInteractedFollowedUserPublicationsRawSql($inQueryUserIds));
+        $stmt = $con->prepare($this->createMostInteractedFollowedUserPublicationsRawSql($inQueryUserIds, $inQueryNotInPDDebateIds, $inQueryNotInPDReactionIds, $inQueryNotInPDDCommentIds, $inQueryNotInPDRCommentIds));
 
         $stmt->bindValue(':begin_at', $beginAt, \PDO::PARAM_STR);
         $stmt->bindValue(':begin_at2', $beginAt, \PDO::PARAM_STR);
@@ -584,7 +596,7 @@ LIMIT :limit
      * @param string $beginAt
      * @param string $endAt
      * @param integer $limit
-     * @return PropelCollection
+     * @return array[InteractedPublication]
      */
     public function generateMostInteractedFollowedDebatesPublications($inQueryDebateIds, $userId, $beginAt, $endAt, $limit)
     {
