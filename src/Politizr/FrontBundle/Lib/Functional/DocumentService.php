@@ -640,6 +640,7 @@ class DocumentService
         $documentUrl = '#';
         $author = null;
         $authorUrl = '#';
+        $initialDebate = null;
 
         switch ($objectType) {
             case ObjectTypeConstants::TYPE_DEBATE:
@@ -667,6 +668,8 @@ class DocumentService
                         $document = $subject->getDebate();
                         $documentUrl = $this->router->generate('DebateDetail', array('slug' => $document->getSlug()), $absolute);
                     }
+
+                    $initialDebate = $subject->getDebate();
                 }
 
                 break;
@@ -678,6 +681,7 @@ class DocumentService
                     $title = $subject->getDescription();
                     $url = $this->router->generate('DebateDetail', array('slug' => $document->getSlug()), $absolute) . '#p-' . $subject->getParagraphNo();
                     $documentUrl = $this->router->generate('DebateDetail', array('slug' => $document->getSlug()), $absolute);
+                    $initialDebate = $subject->getPDocument();
                 }
                 break;
             case ObjectTypeConstants::TYPE_REACTION_COMMENT:
@@ -688,6 +692,9 @@ class DocumentService
                     $title = $subject->getDescription();
                     $url = $this->router->generate('ReactionDetail', array('slug' => $document->getSlug()), $absolute) . '#p-' . $subject->getParagraphNo();
                     $documentUrl = $this->router->generate('ReactionDetail', array('slug' => $document->getSlug()), $absolute);
+                    if ($document) {
+                        $initialDebate = $document->getDebate();
+                    }
                 }
                 break;
             case ObjectTypeConstants::TYPE_USER:
@@ -736,6 +743,7 @@ class DocumentService
             'documentUrl' => $documentUrl,
             'author' => $author,
             'authorUrl' => $authorUrl,
+            'initialDebate' => $initialDebate,
         );
     }
 }

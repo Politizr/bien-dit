@@ -195,9 +195,14 @@ class EmailAccountNotificationsCommand extends ContainerAwareCommand
                 $puNotification->getPAuthorUserId()
             );
 
-            $badges[$loop]['title'] = $attr['title'];
+            $badge = $attr['subject'];
 
-            $loop++;
+            if ($badge) {
+                $badges[$loop]['title'] = $badge->getTitle();
+                $badges[$loop]['description'] = $badge->getDescription();
+                $loop++;
+            }
+
         }
         if (count($badges) > 0) {
             $badgesPartHtml = $this->templating->render(
@@ -301,8 +306,9 @@ class EmailAccountNotificationsCommand extends ContainerAwareCommand
             $followedDebatesPublications[$loop]['url'] = $attr['url'];
             $followedDebatesPublications[$loop]['author'] = $attr['author'];
             $followedDebatesPublications[$loop]['authorUrl'] = $attr['authorUrl'];
-            $followedDebatesPublications[$loop]['commentDocument'] = $attr['document'];
-            $followedDebatesPublications[$loop]['commentDocumentUrl'] = $attr['documentUrl'];
+            $followedDebatesPublications[$loop]['document'] = $attr['document'];
+            $followedDebatesPublications[$loop]['documentUrl'] = $attr['documentUrl'];
+            $followedDebatesPublications[$loop]['initialDebate'] = $attr['initialDebate'];
 
             $loop++;
         }
@@ -355,8 +361,8 @@ class EmailAccountNotificationsCommand extends ContainerAwareCommand
             $followedUsersPublications[$loop]['url'] = $attr['url'];
             $followedUsersPublications[$loop]['author'] = $attr['author'];
             $followedUsersPublications[$loop]['authorUrl'] = $attr['authorUrl'];
-            $followedUsersPublications[$loop]['commentDocument'] = $attr['document'];
-            $followedUsersPublications[$loop]['commentDocumentUrl'] = $attr['documentUrl'];
+            $followedUsersPublications[$loop]['document'] = $attr['document'];
+            $followedUsersPublications[$loop]['documentUrl'] = $attr['documentUrl'];
 
             $loop++;
         }
@@ -405,10 +411,14 @@ class EmailAccountNotificationsCommand extends ContainerAwareCommand
                 $puNotification->getPAuthorUserId()
             );
 
-            $followers[$loop]['author'] = $attr['author'];
-            $followers[$loop]['authorUrl'] = $attr['authorUrl'];
+            $author = $attr['author'];
 
-            $loop++;
+            if ($author) {
+                $followers[$loop]['author'] = $author;
+                $followers[$loop]['authorUrl'] = $attr['authorUrl'];
+
+                $loop++;
+            }
         }
         if (count($followers) > 0) {
             $followersPartHtml = $this->templating->render(

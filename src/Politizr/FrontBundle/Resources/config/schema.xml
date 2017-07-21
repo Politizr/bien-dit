@@ -1479,7 +1479,7 @@
         <column name="p_n_email_id" type="integer" />
 
         <column name="title" type="varchar" size="150" />
-        <column name="html_body" type="longvarchar" />
+        <column name="html_body" type="clob" />
         <column name="target_email" type="varchar" size="150" />
 
         <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
