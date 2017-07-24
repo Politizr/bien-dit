@@ -1,18 +1,10 @@
 {% spaceless %}
 Félicitations!
-{% if badges|length > 1 %}
-    Vous avez obtenu les badges
-    {% for badge in badges %}
-        "{{ badge['title'] }}"
-        {% if loop.revindex == 2 %}
-            et
-        {% elseif not loop.last %}
-            ,
-        {% else %}
-            .
-        {% endif %}
-    {% endfor %}
-{% else %}
-    Vous avez obtenu le badge "{{ badges[0]['title'] }}"
-{% endif %}
+Vous avez obtenu {% if badges|length > 1 %}les badges{% else %}le badge{% endif %} suivant :
+{% for badge in badges %}
+    "{{ badge['title'] }}"
+    {{ badge['description'] }}
+{% endfor %}
+{{ url('UserDetail', {'slug': user.slug}) }}
+http://politizr.help/article/badges/
 {% endspaceless %}

@@ -1,12 +1,9 @@
-{% spaceless %}
-{% if debates|length > 1 %}
-    <h1>De nouveaux sujets qui pourraient vous intéresser!</h1>
-{% else %}
-    <h1>Un nouveau sujet qui pourrait vous intéresser!</h1>
-{% endif %}
+{% if debates|length > 1 %}De nouveaux sujets qui pourraient vous intéresser!{% else %}Un nouveau sujet qui pourrait vous intéresser!{% endif %}
 {% for debate in debates %}
     {% set author = debate.user %}
-    "<a href="{{ url('DebateDetail', {'slug': debate.slug}) }}">{{ debate.title }}</a>" {% if author %} par <a href="{{ url('UserDetail', {'slug': author.slug}) }}">{{ author.fullName }}</a>{% endif %}, localisé sur {{ debate | localizations(inMail=true) }}.
-    <br/>
+    {{ debate.title }}{% if author %} par {{ author.fullName }}, {%endif %}localisé sur {{ debate | localizations(inMail=true) }}. 
+    {{ url('DebateDetail', {'slug': debate.slug}) }}
 {% endfor %}
-{% endspaceless %}
+
+{% if user.qualified %}{{ url('HomepageE') }}{% else %}{{ url('HomepageC') }}{% endif %}
+http://politizr.help/article/suivre-une-discussion-et-enrichir-son-fil-dactualite/

@@ -223,6 +223,7 @@ class PolitizrUserExtension extends \Twig_Extension
 
     /**
      * User's profile photo
+     * @todo refactoring
      *
      * @param PUser $user
      * @param string $filterName

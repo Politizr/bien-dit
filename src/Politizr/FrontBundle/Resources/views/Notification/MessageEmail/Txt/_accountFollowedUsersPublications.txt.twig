@@ -1,8 +1,9 @@
 {% spaceless %}
-{% if followedUsersPublications|length > 0 %}
-    Certains des utilisateurs que vous suivez ont rédigé de nouvelles publications!
-{% endif %}
+Des utilisateurs que vous suivez s’expriment...
 {% for publication in followedUsersPublications %}
-    <a href="{{ publication['authorUrl'] }}">{{ publication['author'] }}</a> a publié <a href="{{ publication['url'] }}">{{ publication['title'] }}</a>
+    {{ publication['author'] }}</a> a publié {% if (publication['type'] == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE_COMMENT')) or (publication['type'] == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION_COMMENT')) %}un commentaire{% else %}"{{ publication['title'] }}"{% endif %}{% if (publication['type'] == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE_COMMENT')) or (publication['type'] == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION_COMMENT')) %} sur "{{ publication['document'] }}"{% endif %}.
+    {{ publication['url'] }}
 {% endfor %}
+{% if user.qualified %}{{ url('HomepageE') }}{% else %}{{ url('HomepageC') }}{% endif %}
+http://politizr.help/article/suivre-un-utilisateur-et-voir-ses-publications-dans-le-fil-dactualite/
 {% endspaceless %}

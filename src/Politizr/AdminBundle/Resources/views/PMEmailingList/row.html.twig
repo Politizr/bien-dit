@@ -3,3 +3,15 @@
 {% block list_td_column_p_user_id %}
     {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_USER'), PMEmailing.PUserId) }}
 {% endblock %}
+
+{% block list_td_column_p_n_email_id %}
+    {% if PMEmailing.PNEmailId == constant('Politizr\\Constant\\EmailConstants::ID_ADMIN_MSG') %}
+        Admin
+    {% elseif PMEmailing.PNEmailId == constant('Politizr\\Constant\\EmailConstants::ID_PROFILE_SUMMARY') %}
+        Compte
+    {% elseif PMEmailing.PNEmailId == constant('Politizr\\Constant\\EmailConstants::ID_ACTIVITY_SUMMARY') %}
+        Actualité
+    {% else %}
+        Inconnu
+    {% endif %}
+{% endblock %}

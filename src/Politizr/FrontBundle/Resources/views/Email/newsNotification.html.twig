@@ -1,12 +1,11 @@
-{# beta #}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title>Actualités de la semaine</title>
+        <title>Cette semaine sur POLITIZR</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
-    <body bgcolor="#2D2D2D" style="-webkit-text-size-adjust: 80%; margin: 0; font-size: 12px; font-family: Tahoma, Geneva, sans-serif; color: #2D2D2D;">
+    <body bgcolor="#2D2D2D" style="margin: 0; font-size: 14px; font-family: Calibri, Tahoma, Geneva, sans-serif; color: #2D2D2D; line-height: 140%;">
         <table width="100%" bgcolor="#2D2D2D" style="border: solid 20px #2D2D2D;" cellpadding="0" cellspacing="0">
             <tr>
                 <td>
@@ -16,11 +15,15 @@
                         
                         <!-- header -->
                         <tr>
-                            <td colspan="2" style="text-align: center; padding: 20px 0 40px 0">
-                                <a href="http://www.politizr.com" target="_blank"><img src="{{ absolute_url(asset('bundles/politizrfront/imagesMail/logoPolitizr.jpg')) }}" alt="Rendez-vous sur politizr.com" style="width: 55%"/></a>
+                            <td colspan="2" style="text-align: center; padding: 20px 0">
+                                <a href="{{ url('Homepage') }}" target="_blank"><img src="{{ absolute_url(asset('bundles/politizrfront/imagesMail/logoPolitizr-dark.png')) }}" alt="Rendez-vous sur politizr.com" style="width: 60%; min-width: 240px; max-width: 320px;"/></a>
                             </td>
                         </tr>
-
+                        <tr>
+                            <td colspan="2" style="text-align: center; padding: 0 0 10px 0; color: #808080;">
+                                Cette semaine sur POLITIZR
+                            </td>
+                        </tr>
 
                         {{ nearestUsersPart | raw }}
                         {{ nearestDebatesPart | raw }}
