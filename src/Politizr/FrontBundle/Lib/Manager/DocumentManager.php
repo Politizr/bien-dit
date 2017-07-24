@@ -1084,34 +1084,7 @@ LIMIT :limit
         // Requête SQL
         $sql = "
 SELECT DISTINCT
-    id,
-    uuid,
-    p_user_id,
-    p_e_operation_id,
-    p_l_city_id,
-    p_l_department_id,
-    p_l_region_id,
-    p_l_country_id,
-    fb_ad_id,
-    title,
-    file_name,
-    copyright,
-    description,
-    note_pos,
-    note_neg,
-    nb_views,
-    published,
-    published_at,
-    published_by,
-    favorite,
-    online,
-    homepage,
-    moderated,
-    moderated_partial,
-    moderated_at,
-    created_at,
-    updated_at,
-    slug,
+".ObjectTypeConstants::SQL_P_D_DEBATE_COLUMNS.",
     nb_users
 FROM (
 ( SELECT DISTINCT p_d_debate.*, 0 as nb_users, 1 as unionsorting

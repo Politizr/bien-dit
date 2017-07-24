@@ -1,0 +1,14 @@
+{% spaceless %}
+De nouveaux utilisateurs s'intéressent à vous!
+{% for follower in followers %}
+    {% set user = follower['author'] %}
+    {% if user %}
+        {% set organizations = user.currentOrganizations %}
+        {{ user.fullName }}{% if user.qualified %}{% for organization in organizations %} [{{ organization.initials }}]{% endfor %}{% endif %} suit votre activité.
+        {{ user.biography | purify }}
+        {{ follower['authorUrl'] }}
+    {% endif %}
+{% endfor %}
+{{ url('UserDetail', {'slug': user.slug}) }}
+http://politizr.help/article/suivre-un-utilisateur-et-voir-ses-publications-dans-le-fil-dactualite/
+{% endspaceless %}

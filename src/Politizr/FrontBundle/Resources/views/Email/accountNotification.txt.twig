@@ -1,0 +1,12 @@
+{# beta #}
+Notifications de votre compte
+
+{{ badgesPart | purify }}
+{{ userPublicationsPart | purify }}
+{{ followedDebatesPublicationsPart | purify }}
+{{ followedUsersPublicationsPart | purify }}
+{{ followersPart | purify }}
+
+Réglez vos paramètres de notifications depuis le menu "mes notifications" de votre compte sur {% if (user.qualified) %}{{ url('EditNotificationsE') }}{% else %}{{ url('EditNotificationsC') }}{% endif %}.
+
+{% include 'PolitizrFrontBundle:Email:_signature.txt.twig' %}

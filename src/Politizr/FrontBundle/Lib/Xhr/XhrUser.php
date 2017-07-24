@@ -610,6 +610,7 @@ class XhrUser
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
         
+        $this->timelineService->setTemplatingService($this->templating);
         $timeline = $this->timelineService->getMyTimelinePaginatedListing($user->getId(), $offset, ListingConstants::TIMELINE_CLASSIC_PAGINATION);
         $moreResults = false;
         if (sizeof($timeline) == ListingConstants::TIMELINE_CLASSIC_PAGINATION) {
@@ -660,6 +661,7 @@ class XhrUser
             throw new InconsistentDataException(sprintf('User %s not found', $uuid));
         }
 
+        $this->timelineService->setTemplatingService($this->templating);
         $timeline = $this->timelineService->getUserDetailTimelinePaginatedListing($user->getId(), $offset, ListingConstants::TIMELINE_CLASSIC_PAGINATION);
 
         $moreResults = false;

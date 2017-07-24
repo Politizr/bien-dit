@@ -49,7 +49,6 @@ services:
         arguments:
             - @security.token_storage
             - @security.authorization_checker
-            - @templating
             - @politizr.manager.user
             - @politizr.manager.document
             - @logger
@@ -81,5 +80,12 @@ services:
             - "%facebook_graph_version%"
             - "%facebook_access_token%"
             - @router
+            - @politizr.tools.global
+            - @logger
+
+    politizr.functional.notification:
+        class: Politizr\FrontBundle\Lib\Functional\NotificationService
+        arguments:
+            - @politizr.manager.notification
             - @politizr.tools.global
             - @logger

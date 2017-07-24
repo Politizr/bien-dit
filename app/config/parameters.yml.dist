@@ -24,6 +24,10 @@ parameters:
     host.admin: politizr.beta.admin
     host.public: politizr.beta
 
+    # Default request context
+    router.request_context.host: politizr.beta
+    router.request_context.scheme: http
+
     # OAuth parameters
     # Facebook
     # https://developers.facebook.com/docs/facebook-login/permissions

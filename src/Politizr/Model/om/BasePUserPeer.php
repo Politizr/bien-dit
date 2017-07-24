@@ -20,6 +20,7 @@ use Politizr\Model\PMAppExceptionPeer;
 use Politizr\Model\PMAskForUpdatePeer;
 use Politizr\Model\PMDCommentHistoricPeer;
 use Politizr\Model\PMDebateHistoricPeer;
+use Politizr\Model\PMEmailingPeer;
 use Politizr\Model\PMRCommentHistoricPeer;
 use Politizr\Model\PMReactionHistoricPeer;
 use Politizr\Model\PMUserHistoricPeer;
@@ -39,8 +40,7 @@ use Politizr\Model\PUNotificationPeer;
 use Politizr\Model\PUReputationPeer;
 use Politizr\Model\PURoleQPeer;
 use Politizr\Model\PUStatusPeer;
-use Politizr\Model\PUSubscribeEmailPeer;
-use Politizr\Model\PUSubscribeScreenPeer;
+use Politizr\Model\PUSubscribePNEPeer;
 use Politizr\Model\PUTaggedTPeer;
 use Politizr\Model\PUTrackDDPeer;
 use Politizr\Model\PUTrackDRPeer;
@@ -769,12 +769,9 @@ abstract class BasePUserPeer
         // Invalidate objects in PUNotificationPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PUNotificationPeer::clearInstancePool();
-        // Invalidate objects in PUSubscribeEmailPeer instance pool,
+        // Invalidate objects in PUSubscribePNEPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PUSubscribeEmailPeer::clearInstancePool();
-        // Invalidate objects in PUSubscribeScreenPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PUSubscribeScreenPeer::clearInstancePool();
+        PUSubscribePNEPeer::clearInstancePool();
         // Invalidate objects in PDDebatePeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PDDebatePeer::clearInstancePool();
@@ -817,6 +814,9 @@ abstract class BasePUserPeer
         // Invalidate objects in PMAppExceptionPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PMAppExceptionPeer::clearInstancePool();
+        // Invalidate objects in PMEmailingPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PMEmailingPeer::clearInstancePool();
         // Invalidate objects in PUFollowUPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PUFollowUPeer::clearInstancePool();

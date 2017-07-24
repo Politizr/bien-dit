@@ -1631,31 +1631,6 @@ abstract class BasePLDepartment extends BaseObject implements Persistent
      * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|PDDebate[] List of PDDebate objects
      */
-    public function getPDDebatesJoinPEOperation($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = PDDebateQuery::create(null, $criteria);
-        $query->joinWith('PEOperation', $join_behavior);
-
-        return $this->getPDDebates($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this PLDepartment is new, it will return
-     * an empty collection; or if this PLDepartment has previously
-     * been saved, it will retrieve related PDDebates from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in PLDepartment.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|PDDebate[] List of PDDebate objects
-     */
     public function getPDDebatesJoinPLCity($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $query = PDDebateQuery::create(null, $criteria);
@@ -1710,6 +1685,31 @@ abstract class BasePLDepartment extends BaseObject implements Persistent
     {
         $query = PDDebateQuery::create(null, $criteria);
         $query->joinWith('PLCountry', $join_behavior);
+
+        return $this->getPDDebates($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PLDepartment is new, it will return
+     * an empty collection; or if this PLDepartment has previously
+     * been saved, it will retrieve related PDDebates from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PLDepartment.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PDDebate[] List of PDDebate objects
+     */
+    public function getPDDebatesJoinPEOperation($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PDDebateQuery::create(null, $criteria);
+        $query->joinWith('PEOperation', $join_behavior);
 
         return $this->getPDDebates($query, $con);
     }

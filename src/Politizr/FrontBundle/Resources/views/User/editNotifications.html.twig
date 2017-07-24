@@ -10,23 +10,18 @@
         </div>
 
         <div class="formBlock card">
-            {% for notificationType in notificationsType %}        
-                <div class="formBlockHeader">
-                    <label>{{ notificationType.title }}</label>
-                </div>
-                <div class="notificationsPrefs">
-                    <h5>Je souhaite être averti par email :</h5>
-                    {% for notification in notificationType.notifications %}
-                        <div class="notificationsPrefsItem withLoaderInside">
-                            {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
-                            <input type="checkbox" id="notif-{{ notificationType.id }}-{{ loop.index }}" uuid="{{ notification.uuid }}" action="{% if notification.id in emailNotifIds %}notifEmailUnsubscribe{% else %}notifEmailSubscribe{% endif %}" {% if notification.id in emailNotifIds %}checked{% endif %}/>
-                            <label for="notif-{{ notificationType.id }}-{{ loop.index }}">
-                                <i class="iconCheckInSquare"></i>{{ notification.title }}
-                            </label>
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endfor %}
+            <div class="notificationsPrefs">
+                <h5>Je souhaite être averti par email :</h5>
+                {% for notification in notifications %}
+                    <div class="notificationsPrefsItem withLoaderInside">
+                        {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+                        <input type="checkbox" id="notif-{{ notification.uuid }}-{{ loop.index }}" uuid="{{ notification.uuid }}" action="{% if notification.id in emailNotifIds %}notifEmailUnsubscribe{% else %}notifEmailSubscribe{% endif %}" {% if notification.id in emailNotifIds %}checked{% endif %}/>
+                        <label for="notif-{{ notification.uuid }}-{{ loop.index }}">
+                            <i class="iconCheckInSquare"></i>{{ notification.title }}
+                        </label>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
 {% endblock content %}

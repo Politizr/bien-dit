@@ -10,7 +10,7 @@ use Politizr\Model\PUser;
 use Politizr\Model\PUNotification;
 
 use Politizr\Model\PUserQuery;
-use Politizr\Model\PUSubscribeEmailQuery;
+use Politizr\Model\PUSubscribePNEQuery;
 
 /**
  *  Gestion des notifications par email
@@ -39,24 +39,27 @@ class NotificationEmailListener
      */
     public function onNECheck(GenericEvent $event)
     {
-        // $this->logger->info('*** onNECheck');
+        $this->logger->info('*** onNECheck');
 
         $puNotification = $event->getSubject();
+        $pnEmailId = $event->getArgument('p_n_email_id');
 
         if ($puNotification) {
             // Récupération du user destinataire de l'email
             $user = $this->getDestPUser($puNotification);
 
-            // Contrôle user courant en ligne
-            // $isOnline = $this->isOnline($user);
+            if ($user) {
+                // Contrôle user courant en ligne
+                // $isOnline = $this->isOnline($user);
 
-            // Contrôle user courant abonné à cette notification
-            $isSubscriber = $this->isSubscriber($puNotification, $user);
+                // Contrôle user courant abonné à cette notification
+                $isSubscriber = $this->isSubscriber($pnEmailId, $user->getId());
 
-            // Envoi de l'email
-            if ($isSubscriber) {
-                $event = new GenericEvent($puNotification, array('user' => $user,));
-                $dispatcher =  $this->eventDispatcher->dispatch('notification_email', $event);
+                // Envoi de l'email
+                if ($isSubscriber) {
+                    $event = new GenericEvent($puNotification, array('user' => $user, 'p_n_email_id' => $pnEmailId,));
+                    $dispatcher =  $this->eventDispatcher->dispatch('notification_email', $event);
+                }
             }
         }
     }
@@ -98,15 +101,15 @@ class NotificationEmailListener
     /**
      * Renvoit si l'utilisateur courant est abonné à cette notification.
      *
-     * @param  PUNotification $puNotifications
-     * @param  PUser $user
+     * @param  integer $pnEmailId
+     * @param  integer $userId
      * @return boolean
      */
-    private function isSubscriber(PUNotification $puNotification, PUser $user)
+    private function isSubscriber($pnEmailId, $userId)
     {
-        $isSubscriber = PUSubscribeEmailQuery::create()
-            ->filterByPNotificationId($puNotification->getPNotificationId())
-            ->filterByPUserId($user->getId())
+        $isSubscriber = PUSubscribePNEQuery::create()
+            ->filterByPNEmailId($pnEmailId)
+            ->filterByPUserId($userId)
             ->findOne();
 
         return $isSubscriber;

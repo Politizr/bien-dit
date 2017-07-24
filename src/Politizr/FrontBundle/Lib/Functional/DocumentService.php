@@ -619,16 +619,18 @@ class DocumentService
     /**
      * Compute various attributes depending of the document context
      *
-     * @param string $objectName
+     * @param string $objectType
      * @param int $objectId
+     * @param int $authorUserId
      * @param boolean $absolute URL
-     * @return array [subject,title,url,document,documentUrl]
+     * @return array [subject,title,url,document,documentUrl,author,authorUrl]
      */
-    public function computeDocumentContextAttributes($objectName, $objectId, $absolute = true)
+    public function computeDocumentContextAttributes($objectType, $objectId, $authorUserId, $absolute = true)
     {
         // $this->logger->info('*** computeDocumentContextAttributes');
-        // $this->logger->info('$objectName = '.print_r($objectName, true));
+        // $this->logger->info('$objectType = '.print_r($objectType, true));
         // $this->logger->info('$objectId = '.print_r($objectId, true));
+        // $this->logger->info('$authorUserId = '.print_r($authorUserId, true));
         // $this->logger->info('$absolute = '.print_r($absolute, true));
 
         $subject = null;
@@ -636,7 +638,11 @@ class DocumentService
         $url = '#';
         $document = null;
         $documentUrl = '#';
-        switch ($objectName) {
+        $author = null;
+        $authorUrl = '#';
+        $initialDebate = null;
+
+        switch ($objectType) {
             case ObjectTypeConstants::TYPE_DEBATE:
                 $subject = PDDebateQuery::create()->findPk($objectId);
 
@@ -662,6 +668,8 @@ class DocumentService
                         $document = $subject->getDebate();
                         $documentUrl = $this->router->generate('DebateDetail', array('slug' => $document->getSlug()), $absolute);
                     }
+
+                    $initialDebate = $subject->getDebate();
                 }
 
                 break;
@@ -673,6 +681,7 @@ class DocumentService
                     $title = $subject->getDescription();
                     $url = $this->router->generate('DebateDetail', array('slug' => $document->getSlug()), $absolute) . '#p-' . $subject->getParagraphNo();
                     $documentUrl = $this->router->generate('DebateDetail', array('slug' => $document->getSlug()), $absolute);
+                    $initialDebate = $subject->getPDocument();
                 }
                 break;
             case ObjectTypeConstants::TYPE_REACTION_COMMENT:
@@ -683,6 +692,9 @@ class DocumentService
                     $title = $subject->getDescription();
                     $url = $this->router->generate('ReactionDetail', array('slug' => $document->getSlug()), $absolute) . '#p-' . $subject->getParagraphNo();
                     $documentUrl = $this->router->generate('ReactionDetail', array('slug' => $document->getSlug()), $absolute);
+                    if ($document) {
+                        $initialDebate = $document->getDebate();
+                    }
                 }
                 break;
             case ObjectTypeConstants::TYPE_USER:
@@ -711,15 +723,27 @@ class DocumentService
                 
                 break;
             default:
-                throw new InconsistentDataException(sprintf('Object name %s not managed.', $objectName));
+                throw new InconsistentDataException(sprintf('Object type %s not managed.', $objectType));
+        }
+
+        // Récupération de l'auteur de l'interaction
+        $author = PUserQuery::create()
+            ->online()
+            ->findPk($authorUserId);
+        if ($author) {
+            $authorUrl = $this->router->generate('UserDetail', array('slug' => $author->getSlug()), $absolute);
         }
 
         return array(
             'subject' => $subject,
+            'type' => $objectType,
             'title' => $title,
             'url' => $url,
             'document' => $document,
             'documentUrl' => $documentUrl,
+            'author' => $author,
+            'authorUrl' => $authorUrl,
+            'initialDebate' => $initialDebate,
         );
     }
 }

@@ -1,0 +1,9 @@
+{# beta #}
+Actualités de la semaine
+
+{{ nearestUsersPart | purify }}
+{{ nearestDebatesPart | raw }}
+
+Réglez vos paramètres de notifications depuis le menu "mes notifications" de votre compte sur {% if (user.qualified) %}{{ url('EditNotificationsE') }}{% else %}{{ url('EditNotificationsC') }}{% endif %}.
+
+{% include 'PolitizrFrontBundle:Email:_signature.txt.twig' %}

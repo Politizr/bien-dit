@@ -10,7 +10,6 @@ services:
             - @security.token_storage
             - @security.authorization_checker
             - @router
-            - @templating
             - @politizr.tools.global
             - @logger
         tags:
@@ -22,7 +21,6 @@ services:
             - @security.token_storage
             - @security.authorization_checker
             - @router
-            - @templating
             - @politizr.tools.global
             - @logger
         tags:
@@ -34,7 +32,6 @@ services:
             - @security.token_storage
             - @security.authorization_checker
             - @router
-            - @templating
             - @politizr.functional.timeline
             - @form.factory
             - @politizr.tools.global
@@ -48,7 +45,6 @@ services:
             - @security.token_storage
             - @security.authorization_checker
             - @router
-            - @templating
             - @politizr.functional.document
             - @form.factory
             - @politizr.tools.global
@@ -62,7 +58,6 @@ services:
             - @security.token_storage
             - @security.authorization_checker
             - @router
-            - @templating
             - @politizr.tools.global
             - @logger
         tags:

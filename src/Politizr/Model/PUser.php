@@ -571,9 +571,12 @@ class PUser extends BasePUser implements UserInterface
      *
      * @return PropelCollection[PUMandate]
      */
-    public function getMandates()
+    public function getMandates($nbMax = null)
     {
         $query = PUMandateQuery::create()
+            ->_if($nbMax)
+                ->setLimit($nbMax)
+            ->_endIf()
             ->orderByBeginAt('desc');
 
         return parent::getPUMandates($query);
@@ -1072,32 +1075,50 @@ class PUser extends BasePUser implements UserInterface
     }
 
     // ************************************************************************************ //
-    //                                          NOTIFICATIONS
+    //                                          LOCALISATION
     // ************************************************************************************ //
 
     /**
-     * Check if user subscribe to notif email
+     * Return user's PLCity
      *
-     * @param int $notification
-     * @return boolean
+     * @param PLCity
      */
-    public function isEmailNotificationSubscriber($notificationId)
+    public function getCity()
     {
-        $isSubscriber = PUSubscribeEmailQuery::create()
-            ->filterByPNotificationId($notificationId)
-            ->filterByPUserId($this->getId())
-            ->findOne();
-
-        if ($isSubscriber) {
-            return true;
-        }
-
-        return false;
+        return $this->getPLCity();
     }
 
-    // ************************************************************************************ //
-    //                                          LOCALISATION
-    // ************************************************************************************ //
+    /**
+     * Return user's PLDepartment
+     *
+     * @param PLDepartment
+     */
+    public function getDepartment()
+    {
+        if (!$this->getPLCity()) {
+            return null;
+        }
+
+        return $this->getPLCity()->getPLDepartment();
+    }
+
+    /**
+     * Return user's PLRegion
+     *
+     * @param PLRegion
+     */
+    public function getRegion()
+    {
+        if (!$this->getPLCity()) {
+            return null;
+        }
+
+        if (!$this->getPLCity()->getPLDepartment()) {
+            return null;
+        }
+
+        return $this->getPLCity()->getPLDepartment()->getPLRegion();
+    }
 
     /**
      * Return user's city name

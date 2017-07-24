@@ -201,6 +201,7 @@ class EmailListener
 
         $puNotifications = $event->getSubject();
         $user = $event->getArgument('user');
+        $pnEmailId = $event->getArgument('p_n_email_id');
 
         $userEmail = $user->getEmail();
 
@@ -209,6 +210,7 @@ class EmailListener
                 'PolitizrFrontBundle:Email:_notifSubject.html.twig',
                 array(
                     'notif' => $puNotifications,
+                    'pnEmailId' => $pnEmailId,
                 )
             );
             if (!$subject) {
@@ -219,6 +221,7 @@ class EmailListener
                 'PolitizrFrontBundle:Email:notification.html.twig',
                 array(
                     'notif' => $puNotifications,
+                    'pnEmailId' => $pnEmailId,
                     'qualified' => $user->isQualified(),
                 )
             );
@@ -226,6 +229,7 @@ class EmailListener
                 'PolitizrFrontBundle:Email:notification.txt.twig',
                 array(
                     'notif' => $puNotifications,
+                    'pnEmailId' => $pnEmailId,
                     'qualified' => $user->isQualified(),
                 )
             );

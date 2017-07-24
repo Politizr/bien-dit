@@ -11,7 +11,7 @@ use Politizr\Model\PUser;
 use Politizr\Model\PUFollowDD;
 use Politizr\Model\PUFollowU;
 use Politizr\Model\PUMandate;
-use Politizr\Model\PUSubscribeEmail;
+use Politizr\Model\PUSubscribePNE;
 
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PUFollowDDQuery;
@@ -498,60 +498,7 @@ LIMIT :offset, :count
         $sql = "
 #  Concordance des tags suivis / tags caractérisant des users
 SELECT DISTINCT
-    id,
-    uuid,
-    provider,
-    provider_id,
-    nickname,
-    realname,
-    username,
-    username_canonical,
-    email,
-    email_canonical,
-    enabled,
-    salt,
-    password,
-    last_login,
-    locked,
-    expired,
-    expires_at,
-    confirmation_token,
-    password_requested_at,
-    credentials_expired,
-    credentials_expire_at,
-    roles,
-    last_activity,
-    p_u_status_id,
-    p_l_city_id,
-    file_name,
-    back_file_name,
-    copyright,
-    gender,
-    firstname,
-    name,
-    birthday,
-    subtitle,
-    biography,
-    website,
-    twitter,
-    facebook,
-    phone,
-    newsletter,
-    last_connect,
-    nb_connected_days,
-    nb_views,
-    qualified,
-    validated,
-    nb_id_check,
-    online,
-    homepage,
-    banned,
-    banned_nb_days_left,
-    banned_nb_total,
-    abuse_level,
-    created_at,
-    updated_at,
-    slug
+".ObjectTypeConstants::SQL_P_USER_COLUMNS."
 FROM (
 ( SELECT p_user.*, COUNT(p_user.id) as nb_users, 1 as unionsorting
 FROM p_user
@@ -1125,20 +1072,20 @@ LIMIT :offset, :limit
     }
 
     /**
-     * Create PUSubscribeEmail between a user and PNotification
+     * Create PUSubscribePNE
      *
      * @param integer $userId
-     * @param array $notificationIds
+     * @param array $emailIds
      */
-    public function createUserNotificationsSubscribeEmail($userId, $notificationIds)
+    public function createUserSubscribeNotifEmail($userId, $emailIds)
     {
-        foreach ($notificationIds as $notificationId) {
-            $puSubscribeEmail = new PUSubscribeEmail();
+        foreach ($emailIds as $emailId) {
+            $puSubscribePne = new PUSubscribePNE();
 
-            $puSubscribeEmail->setPUserId($userId);
-            $puSubscribeEmail->setPNotificationId($notificationId);
+            $puSubscribePne->setPUserId($userId);
+            $puSubscribePne->setPNEmailId($emailId);
 
-            $puSubscribeEmail->save();
+            $puSubscribePne->save();
         }
     }
 }

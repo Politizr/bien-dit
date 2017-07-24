@@ -1,0 +1,11 @@
+{% extends_admingenerated "PolitizrAdminBundle:PMEmailingShow:index.html.twig" %}
+
+{# Body #}
+{% block show_column_html_body %}
+    {{ PMEmailing.HtmlBody | raw }}
+{% endblock %}
+
+{# Objets #}
+{% block show_column_block_p_user %}
+    {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_USER'), PMEmailing.PUserId) }}
+{% endblock %}

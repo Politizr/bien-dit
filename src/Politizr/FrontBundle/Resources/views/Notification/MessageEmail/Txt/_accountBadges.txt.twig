@@ -1,0 +1,10 @@
+{% spaceless %}
+Félicitations!
+Vous avez obtenu {% if badges|length > 1 %}les badges{% else %}le badge{% endif %} suivant :
+{% for badge in badges %}
+    "{{ badge['title'] }}"
+    {{ badge['description'] }}
+{% endfor %}
+{{ url('UserDetail', {'slug': user.slug}) }}
+http://politizr.help/article/badges/
+{% endspaceless %}

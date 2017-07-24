@@ -14,6 +14,7 @@ use Politizr\Exception\BoxErrorException;
 use Politizr\FrontBundle\Lib\SimpleImage;
 use Politizr\FrontBundle\Lib\TimelineRow;
 use Politizr\FrontBundle\Lib\Publication;
+use Politizr\FrontBundle\Lib\InteractedPublication;
 use Politizr\FrontBundle\Form\Type\PUMandateType;
 
 use Politizr\Constant\QualificationConstants;
@@ -584,6 +585,47 @@ class GlobalTools
                 $publication->setSlug($row['slug']);
                 $publication->setPublishedAt(new \DateTime($row['published_at']));
                 $publication->setType($row['type']);
+
+                $publications[] = $publication;
+            }
+        }
+
+        return $publications;
+    }
+
+    /**
+     * Hydrate "InteractedPublication" objects from raw sql results
+     *
+     * @param array|false $result
+     * @return array[InteractedPublication]
+     */
+    public function hydrateInteractedPublication($result, $beginAt, $endAt)
+    {
+        // $this->logger->info('*** hydrateInteractedPublication');
+
+        $publications = array();
+        if ($result) {
+            foreach ($result as $row) {
+                $publication = new InteractedPublication();
+
+                $publication->setId($row['id']);
+                $publication->setAuthorId($row['author_id']);
+                $publication->setTitle($row['title']);
+                $publication->setDescription($row['description']);
+                $publication->setPublishedAt(new \DateTime($row['published_at']));
+                $publication->setType($row['type']);
+
+                $publication->setBeginAt($beginAt);
+                $publication->setEndAt($endAt);
+                if (isset($row['nb_reactions'])) {
+                    $publication->setNbReactions($row['nb_reactions']);
+                }
+                if (isset($row['nb_comments'])) {
+                    $publication->setNbComments($row['nb_comments']);
+                }
+                if (isset($row['nb_notifications'])) {
+                    $publication->setNbNotifications($row['nb_notifications']);
+                }
 
                 $publications[] = $publication;
             }

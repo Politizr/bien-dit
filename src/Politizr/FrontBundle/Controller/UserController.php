@@ -11,8 +11,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Politizr\Constant\QualificationConstants;
 
 use Politizr\Model\PUserQuery;
-use Politizr\Model\PNTypeQuery;
-use Politizr\Model\PUSubscribeEmailQuery;
+use Politizr\Model\PNEmailQuery;
+use Politizr\Model\PUSubscribePNEQuery;
 use Politizr\Model\PUCurrentQOQuery;
 use Politizr\Model\PEOperationQuery;
 
@@ -224,19 +224,19 @@ class UserController extends Controller
 
         $user = $this->getUser();
 
-        $notificationsType = PNTypeQuery::create()
+        $notifications = PNEmailQuery::create()
                         ->orderById()
                         ->find();
 
         // ids des notifs email du user
         $emailNotifIds = array();
-        $emailNotifIds = PUSubscribeEmailQuery::create()
-                        ->select('PNotificationId')
+        $emailNotifIds = PUSubscribePNEQuery::create()
+                        ->select('PNEmailId')
                         ->filterByPUserId($user->getId())
                         ->find();
 
         return $this->render('PolitizrFrontBundle:User:editNotifications.html.twig', array(
-            'notificationsType' => $notificationsType,
+            'notifications' => $notifications,
             'emailNotifIds' => $emailNotifIds,
         ));
     }

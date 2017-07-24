@@ -4,7 +4,7 @@ namespace Politizr\AdminBundle\Controller\PUser;
 
 use Admingenerated\PolitizrAdminBundle\BasePUserController\NewController as BaseNewController;
 
-use Politizr\Constant\NotificationConstants;
+use Politizr\Constant\EmailConstants;
 
 use Symfony\Component\Form\Form;
 
@@ -33,6 +33,6 @@ class NewController extends BaseNewController
     {
         $userManager = $this->get('politizr.manager.user');
 
-        $userManager->createUserNotificationsSubscribeEmail($user->getId(), NotificationConstants::getDefaultNotificationSubscribeIds());
+        $userManager->createUserSubscribeNotifEmail($user->getId(), EmailConstants::getDefaultNotificationSubscribeIds());
     }
 }

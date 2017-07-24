@@ -61,32 +61,58 @@ services:
     # EXTENSIONS TWIG
     politzr_admin.twig.generic:
         class: Politizr\AdminBundle\Twig\PolitizrAdminExtension
-        arguments: [ @service_container ]
+        arguments:
+            - @politizr.functional.document
+            - @form.factory
+            - @router
+            - @logger
         tags:
             - { name: twig.extension }
     politzr_admin.twig.tag:
         class: Politizr\AdminBundle\Twig\PolitizrAdminTagExtension
-        arguments: [ @service_container ]
+        arguments:
+            - @politizr.functional.document
+            - @form.factory
+            - @router
+            - @logger
         tags:
             - { name: twig.extension }
     politzr_admin.twig.document:
         class: Politizr\AdminBundle\Twig\PolitizrAdminDocumentExtension
-        arguments: [ @service_container ]
+        arguments:
+            - @politizr.functional.document
+            - @form.factory
+            - @router
+            - @logger
         tags:
             - { name: twig.extension }
     politzr_admin.twig.user:
         class: Politizr\AdminBundle\Twig\PolitizrAdminUserExtension
-        arguments: [ @service_container ]
+        arguments:
+            - @politizr.functional.document
+            - @politizr.tools.global
+            - @form.factory
+            - @router
+            - @logger
         tags:
             - { name: twig.extension }
     politzr_admin.twig.moderation:
         class: Politizr\AdminBundle\Twig\PolitizrAdminModerationExtension
-        arguments: [ @service_container ]
+        arguments:
+            - @politizr.functional.document
+            - @form.factory
+            - @router
+            - @logger
         tags:
             - { name: twig.extension }
     politzr_admin.twig.localization:
         class: Politizr\AdminBundle\Twig\PolitizrAdminLocalizationExtension
-        arguments: [ @service_container ]
+        arguments:
+            - @politizr.functional.document
+            - @politizr.form.type.document_localization
+            - @form.factory
+            - @router
+            - @logger
         tags:
             - { name: twig.extension }
 

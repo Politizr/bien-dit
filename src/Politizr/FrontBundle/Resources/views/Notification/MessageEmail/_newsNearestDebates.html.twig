@@ -1,0 +1,35 @@
+{% spaceless %}
+<tr style="float: left; margin-top: 30px; width: 100%; background: url({{ absolute_url(asset('bundles/politizrfront/imagesMail/h1-newpost.jpg')) }}); background-position: center center;">
+    <td colspan="2" style="float:left; width: 100%; height: 220px; position: relative;">
+        <h1 style="line-height: 100%; font-size: 36px; font-weight: 100; color: #fff; position: absolute; bottom: 0px; left: 30px; width: calc(100% - 60px);">{% if debates|length > 1 %}De nouveaux sujets qui pourraient vous intéresser!{% else %}Un nouveau sujet qui pourrait vous intéresser!{% endif %}</h1>
+    </td>
+</tr>
+
+{% for debate in debates %}
+    {% set author = debate.user %}
+    <tr style="background-color: #FFFFFF; width: 100%;">
+        <td colspan="2" style="float:left; width: calc(100% - 60px); margin: 0 30px; padding: 30px 0 20px 0;">
+            <a href="{{ url('DebateDetail', {'slug': debate.slug}) }}" style="float: left; width: 100%; text-decoration: none; font-weight: bold; color: inherit; font-size: 18px; margin-bottom: 5px;">{{ debate.title }}</a><br>
+            {% if author %}par <a href="{{ url('UserDetail', {'slug': author.slug}) }}" style="text-decoration: none; font-weight: bold; color: inherit;">{{ author.fullName }}</a>, {%endif %}localisé sur {{ debate | localizations(inMail=true) }}. 
+        </td>
+    </tr>
+    <tr style="background-color: #FFFFFF; width: 100%;">
+        <td colspan="2" style="float:left; width: calc(100% - 60px); margin: 0 30px; padding: 0 0 30px 0;">
+            <a href="{{ url('DebateDetail', {'slug': debate.slug}) }}" style="float: left; -webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px; height: 20px; text-decoration: none; padding: 5px 20px; color: #fff; background-color: #844380">Lire ce sujet</a>
+        </td>
+    </tr>
+
+    {% if not loop.last %}
+        <tr style="background-color: #FFFFFF; width: 100%;">
+            <td style="float: left; width: calc(100% - 60px); margin: 0 30px; background-color: #ccc; height: 1px;"></td>
+        </tr>
+    {% endif %}
+{% endfor %}
+
+<tr style="float: left; background-color: #d9c5d9; width: 100%; margin-bottom: 30px;">
+    <td colspan="2" style="float:left; width: calc(100% - 60px); margin: 0 0 0 30px; padding: 30px 0 20px 0;">
+        <a href="{% if user.qualified %}{{ url('HomepageE') }}{% else %}{{ url('HomepageC') }}{% endif %}" style="float: left; -webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px; height: 20px; text-decoration: none; padding: 5px 20px; margin-bottom: 10px; color: #fff; background-color: #2D2D2D">Voir mon fil d'actualité</a>
+        <a href="http://politizr.help/article/suivre-une-discussion-et-enrichir-son-fil-dactualite/" style=" float: right; text-decoration: none; color: #808080; margin: 5px 0 10px 0;"><img src="{{ absolute_url(asset('bundles/politizrfront/imagesMail/icon-info.png')) }}" style="float: left; margin: 2px 5px 0 0;"/>Comment suivre de nouveaux sujets?</a>
+    </td>
+</tr>
+{% endspaceless %}

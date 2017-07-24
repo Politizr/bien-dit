@@ -17,26 +17,34 @@ use Politizr\Model\PLCityQuery;
  */
 class PolitizrAdminLocalizationExtension extends \Twig_Extension
 {
-    private $logger;
-
+    private $documentService;
+    private $documentLocalizationFormType;
+    
     private $formFactory;
-
-    protected $documentService;
     private $router;
-    private $templating;
+    private $logger;
 
     /**
      *
+     * @param politizr.functional.document
+     * @param politizr.form.type.document_localization
+     * @param form.factory
+     * @param router
+     * @param logger
      */
-    public function __construct($serviceContainer)
-    {
-        $this->logger = $serviceContainer->get('logger');
-
-        $this->formFactory = $serviceContainer->get('form.factory');
-        $this->documentLocalizationFormType = $serviceContainer->get('politizr.form.type.document_localization');
-
-        $this->router = $serviceContainer->get('router');
-        $this->templating = $serviceContainer->get('templating');
+    public function __construct(
+        $documentService,
+        $documentLocalizationFormType,
+        $formFactory,
+        $router,
+        $logger
+    ) {
+        $this->documentService = $documentService;
+        $this->documentLocalizationFormType = $documentLocalizationFormType;
+        
+        $this->formFactory = $formFactory;
+        $this->router = $router;
+        $this->logger = $logger;
     }
 
     /* ######################################################################################################## */
@@ -52,16 +60,12 @@ class PolitizrAdminLocalizationExtension extends \Twig_Extension
             'adminDocumentLoc'  => new \Twig_SimpleFunction(
                 'adminDocumentLoc',
                 array($this, 'adminDocumentLoc'),
-                array(
-                    'is_safe' => array('html')
-                    )
+                array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             'adminOperationCities'  => new \Twig_SimpleFunction(
                 'adminOperationCities',
                 array($this, 'adminOperationCities'),
-                array(
-                    'is_safe' => array('html')
-                    )
+                array('is_safe' => array('html'), 'needs_environment' => true)
             ),
         );
     }
@@ -77,7 +81,7 @@ class PolitizrAdminLocalizationExtension extends \Twig_Extension
      * @param string $type Object type (debate / reaction)
      * @return string
      */
-    public function adminDocumentLoc(PDocumentInterface $document, $type)
+    public function adminDocumentLoc(\Twig_Environment $env, PDocumentInterface $document, $type)
     {
         $this->logger->info('*** adminDocumentLoc');
         // $this->logger->info('$document = '.print_r($document, true));
@@ -94,7 +98,7 @@ class PolitizrAdminLocalizationExtension extends \Twig_Extension
         );
 
         // Construction du rendu du tag
-        $html = $this->templating->render(
+        $html = $env->render(
             'PolitizrAdminBundle:Fragment\\Document:_localization.html.twig',
             array(
                 'form' => $form->createView(),
@@ -111,7 +115,7 @@ class PolitizrAdminLocalizationExtension extends \Twig_Extension
      * @param PEOperation $operation
      * @return string
      */
-    public function adminOperationCities(PEOperation $operation)
+    public function adminOperationCities(\Twig_Environment $env, PEOperation $operation)
     {
         $this->logger->info('*** adminOperationCities');
         // $this->logger->info('$operation = '.print_r($operation, true));
@@ -124,7 +128,7 @@ class PolitizrAdminLocalizationExtension extends \Twig_Extension
             ->endUse()
             ->find();
 
-        $html = $this->templating->render(
+        $html = $env->render(
             'PolitizrAdminBundle:Fragment\\Localization:_cities.html.twig',
             array(
                 'cities' => $cities,
