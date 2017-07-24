@@ -111,7 +111,7 @@ class EmailAccountNotificationsCommand extends ContainerAwareCommand
             ->find();
 
         foreach ($users as $user) {
-            $output->write('.');
+            // $output->write('.');
 
             $puNotifications = $this->notificationService->getUserNotifications($user, $beginAt, $endAt);
 
@@ -171,8 +171,9 @@ class EmailAccountNotificationsCommand extends ContainerAwareCommand
         $spool = $this->mailer->getTransport()->getSpool();
         $nbSent = $spool->flushQueue($this->transport);
 
-        $output->writeln('');
-        $output->writeln(sprintf('<info>Send account notifications completed. %s mails have been sent!</info>', $nbSent));
+        $now = new \DateTime('now');
+        // $output->writeln('');
+        $output->writeln(sprintf('<info>%s - Send account notifications completed. %s mails have been sent!</info>', $now->format('Y-m-d H:i:s'), $nbSent));
     }
 
     /**
@@ -558,7 +559,7 @@ class EmailAccountNotificationsCommand extends ContainerAwareCommand
                     ->setBody($htmlBody, 'text/html', 'utf-8')
                     ->addPart($txtBody, 'text/plain', 'utf-8')
             ;
-            // $message->getHeaders()->addTextHeader('X-CMail-GroupName', 'Account notification');
+            $message->getHeaders()->addTextHeader('X-CMail-GroupName', 'Account notification');
 
             // Envoi email
             $failedRecipients = array();

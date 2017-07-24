@@ -239,7 +239,7 @@ builders:
                     addFormOptions:
                         mapped:                 false
                 block_notifications:
-                    label:                      "Envoi des notifications"
+                    label:                      "Génération des notifications"
                     grid_class:                 "col-md-12"
                     formType:                   checkbox
                     dbType:                     INTEGER

@@ -210,7 +210,6 @@ builders:
                     "En ligne":                 [ online ]
                     "Mise en avant":            [ homepage ]
                     "Validé":                   [ validated, nb_id_check ]
-                    "Notification":             [ block_notifications ]
                     "Création":                 [ [ created_at, updated_at ] ]
             fields:
                 block_back_file_name:
@@ -300,13 +299,6 @@ builders:
                     grid_class:                 "col-md-12"
                     formType:                   hidden
                     dbType:                     VARCHAR
-                    addFormOptions:
-                        mapped:                 false
-                block_notifications:
-                    label:                      "Envoi des notifications"
-                    grid_class:                 "col-md-12"
-                    formType:                   checkbox
-                    dbType:                     INTEGER
                     addFormOptions:
                         mapped:                 false
                 last_login:
