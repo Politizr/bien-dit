@@ -103,7 +103,9 @@ class EmailNewsNotificationsCommand extends ContainerAwareCommand
             ->_endif()
             ->distinct()
             ->online()
-            ->joinPUSubscribePNE()
+            ->usePUSubscribePNEQuery()
+                ->filterByPNEmailId(EmailConstants::ID_ACTIVITY_SUMMARY)
+            ->endUse()
             ->find();
 
         foreach ($users as $user) {

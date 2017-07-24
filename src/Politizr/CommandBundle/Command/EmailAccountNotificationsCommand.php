@@ -105,7 +105,9 @@ class EmailAccountNotificationsCommand extends ContainerAwareCommand
             ->_endif()
             ->distinct()
             ->online()
-            ->joinPUSubscribePNE()
+            ->usePUSubscribePNEQuery()
+                ->filterByPNEmailId(EmailConstants::ID_PROFILE_SUMMARY)
+            ->endUse()
             ->find();
 
         foreach ($users as $user) {
