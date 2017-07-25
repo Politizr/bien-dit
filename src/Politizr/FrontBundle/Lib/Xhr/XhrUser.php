@@ -55,6 +55,7 @@ class XhrUser
     private $eventDispatcher;
     private $templating;
     private $router;
+    private $twigEnv;
     private $formFactory;
     private $emailCanonicalizer;
     private $userManager;
@@ -74,6 +75,7 @@ class XhrUser
      * @param @event_dispatcher
      * @param @templating
      * @param @router
+     * @param @twig
      * @param @form.factory
      * @param @fos_user.util.email_canonicalizer
      * @param @politizr.manager.user
@@ -92,6 +94,7 @@ class XhrUser
         $eventDispatcher,
         $templating,
         $router,
+        $twigEnv,
         $formFactory,
         $emailCanonicalizer,
         $userManager,
@@ -112,6 +115,7 @@ class XhrUser
 
         $this->templating = $templating;
         $this->router = $router;
+        $this->twigEnv = $twigEnv;
         $this->formFactory = $formFactory;
 
         $this->emailCanonicalizer = $emailCanonicalizer;
@@ -243,6 +247,7 @@ class XhrUser
         $user->setFileName($fileName);
 
         $html = $this->userTwigExtension->photo(
+            $this->twigEnv,
             $user,
             'user_40',
             false

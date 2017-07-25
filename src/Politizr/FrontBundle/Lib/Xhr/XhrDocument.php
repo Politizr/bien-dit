@@ -60,6 +60,7 @@ class XhrDocument
     private $templating;
     private $formFactory;
     private $router;
+    private $twigEnv;
     private $userManager;
     private $documentManager;
     private $documentService;
