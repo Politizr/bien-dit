@@ -81,6 +81,7 @@ class XhrDocument
      * @param @templating
      * @param @form.factory
      * @param @router
+     * @param @twig
      * @param @politizr.manager.user
      * @param @politizr.manager.document
      * @param @politizr.functional.document
@@ -101,6 +102,7 @@ class XhrDocument
         $templating,
         $formFactory,
         $router,
+        $twigEnv,
         $userManager,
         $documentManager,
         $documentService,
@@ -123,6 +125,7 @@ class XhrDocument
         $this->templating = $templating;
         $this->formFactory = $formFactory;
         $this->router = $router;
+        $this->twigEnv = $twigEnv;
 
         $this->userManager = $userManager;
         $this->documentManager = $documentManager;
@@ -855,6 +858,7 @@ class XhrDocument
 
         $document->setFileName($fileName);
         $html = $this->documentTwigExtension->image(
+            $this->twigEnv,
             $document,
             'debate_header'
         );

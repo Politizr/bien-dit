@@ -20,6 +20,7 @@ services:
             - @templating
             - @form.factory
             - @router
+            - @twig
             - @politizr.manager.user
             - @politizr.manager.document
             - @politizr.functional.document
