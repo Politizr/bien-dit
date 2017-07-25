@@ -67,10 +67,10 @@ class PUserContactType extends AbstractType
             'attr' => array('placeholder' => 'Prénom')
         ));
 
-        $builder->add('newsletter', 'checkbox', array(
-            'required' => false,
-            'label' => 'Je m\'inscris à la newsletter de Politizr'
-        ));
+        // $builder->add('newsletter', 'checkbox', array(
+        //     'required' => false,
+        //     'label' => 'Je m\'inscris à la newsletter de Politizr'
+        // ));
 
         if ($this->withEmail) {
             $builder->add('username', 'hidden', array(
