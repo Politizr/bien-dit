@@ -62,12 +62,12 @@ class PUserIdentityType extends AbstractType
         ));
 
         $builder->add('birthday', 'date', array(
-            'required' => true,
+            'required' => $this->user->getQualified()?true:false,
             'label' => 'Date de naissance',
             'widget' => 'single_text',
             'format' => 'dd/MM/yyyy',
             'disabled' => $this->user->getValidated()? true : false ,
-            'constraints' => new NotBlank(array('message' => 'Date de naissance obligatoire.')),
+            'constraints' => $this->user->getQualified()?new NotBlank(array('message' => 'Date de naissance obligatoire.')):null,
         ));
     }
 
