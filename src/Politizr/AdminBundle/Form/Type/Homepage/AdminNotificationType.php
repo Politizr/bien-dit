@@ -7,6 +7,8 @@ use Politizr\Model\PUserQuery;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
+use Propel\Bundle\PropelBundle\Form\Type\ModelType;
+
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
 
@@ -35,7 +37,7 @@ class AdminNotificationType extends AbstractType
         ));
 
         // Users
-        $builder->add('p_users', 'model', array(
+        $builder->add('p_users', 'Propel\Bundle\PropelBundle\Form\Type\ModelType', array(
             'required' => true,
             'label' => 'Cible(s)',
             'class' => 'Politizr\\Model\\PUser',

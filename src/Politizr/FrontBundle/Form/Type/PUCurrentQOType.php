@@ -30,7 +30,7 @@ class PUCurrentQOType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         // Liste des organisations politiques
-        $builder->add('PUCurrentQOPQOrganization', 'model', array(
+        $builder->add('PUCurrentQOPQOrganization', 'Propel\Bundle\PropelBundle\Form\Type\ModelType', array(
                 'required' => true,
                 'label' => 'Parti Politique',
                 'class' => 'Politizr\\Model\\PQOrganization',

@@ -17,7 +17,7 @@ class POrderSubscriptionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         // Liste des formules
-        $builder->add('p_o_subscription', 'model', array(
+        $builder->add('p_o_subscription', 'Propel\Bundle\PropelBundle\Form\Type\ModelType', array(
             'required' => true,
             'label' => 'Formule',
             'class' => 'Politizr\\Model\\POSubscription',

@@ -23,7 +23,7 @@ class PDocumentTagFamilyType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         // Tag type list
-        $builder->add('p_tags', 'model', array(
+        $builder->add('p_tags', 'Propel\Bundle\PropelBundle\Form\Type\ModelType', array(
             'label' => 'Famille',
             'class' => 'Politizr\\Model\\PTag',
             'query' => PTagQuery::create()

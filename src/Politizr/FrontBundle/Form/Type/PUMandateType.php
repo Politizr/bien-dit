@@ -45,7 +45,7 @@ class PUMandateType extends AbstractType
         }
 
         // Mandates type list
-        $builder->add('p_q_mandate', 'model', array(
+        $builder->add('p_q_mandate', 'Propel\Bundle\PropelBundle\Form\Type\ModelType', array(
                 'required' => true,
                 'label' => 'Type de mandat',
                 'class' => 'Politizr\\Model\\PQMandate',
@@ -75,7 +75,7 @@ class PUMandateType extends AbstractType
             ));
         
         // // Liste des organisations politiques
-        // $builder->add('p_q_organization', 'model', array(
+        // $builder->add('p_q_organization', 'Propel\Bundle\PropelBundle\Form\Type\ModelType', array(
         //         'required' => false,
         //         'label' => 'Parti Politique',
         //         'class' => 'Politizr\\Model\\PQOrganization',
