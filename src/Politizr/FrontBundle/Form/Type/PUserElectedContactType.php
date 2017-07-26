@@ -123,6 +123,7 @@ class PUserElectedContactType extends AbstractType
             $builder->add('cgu', 'checkbox', array(
                 'required' => true,
                 'mapped' => false,
+                'label' => 'Conditions Générales d\'Utilisation',
                 'constraints' => new IsTrue(
                     array(
                         'message' => 'Vous devez accepter les conditions générales d\'utilisation.'
