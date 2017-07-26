@@ -43,15 +43,11 @@
                 </div>
                 <div class="docTags">
                     <h5>3. Thématiques abordées</h5>
-                    {# include('includes/helperEditTag.php') #}
                     <div class="notice">
-                        <i class="icon-info"></i><b>Cochez la(les) rubrique(s) associée(s) à votre publication.</b>
-                    </div>
-                    {{ reaction | editTagFamilyForm }}
-                    <div class="notice">
-                        <i class="icon-info"></i><b>5 thématiques libres maximum supplémentaires.</b><br>
+                        <i class="icon-info"></i><b>Ajouter des thématiques de votre choix et/ou cochez parmi les rubriques associées à votre publication (5 thématiques maximum)</b>
                     </div>
                     {{ reactionTagsEdit(reaction, constant('Politizr\\Constant\\TagConstants::TAG_TYPE_THEME'), 1, true) }}
+                    {{ reaction | editTagFamilyForm }}
                 </div>
             </div>
             {{ app.user | isAuthorizedToPublishReaction(reaction.uuid) }}
