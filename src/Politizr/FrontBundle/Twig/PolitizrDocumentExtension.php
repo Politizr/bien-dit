@@ -1296,12 +1296,11 @@ class PolitizrDocumentExtension extends \Twig_Extension
         $operation = $debate->getPEOperation();
 
         // Classic banner
-        $html = null;
-        // $html = $env->render(
-        //     'PolitizrFrontBundle:Document:_bannerEdit.html.twig',
-        //     array(
-        //     )
-        // );
+        $html = $env->render(
+            'PolitizrFrontBundle:Document:_bannerEdit.html.twig',
+            array(
+            )
+        );
 
         if ($operation) {
             // Construction du rendu du tag            
