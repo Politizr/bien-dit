@@ -69,7 +69,7 @@ class PublicController extends Controller
         $form = null;
 
         $documentsQuery = PDDebateQuery::create()
-            ->limit(9)
+            ->limit(6)
             ->online()
             ->orderByMostViews()
             ;
@@ -78,6 +78,9 @@ class PublicController extends Controller
             ->online()
             ->orderByMostActive()
             ;
+
+        $directMessage = new PDDirect();
+        $form = $this->createForm(new PDDirectType(), $directMessage);
 
         if ($theme == 'civic-tech') {
             $documents = $documentsQuery
@@ -143,6 +146,14 @@ class PublicController extends Controller
                     ->endUse()
                 ->endUse()
                 ->find();
+
+            $users = $usersQuery
+                ->usePuTaggedTPUserQuery()
+                    ->usePuTaggedTPTagQuery()
+                        ->filterBySlug('democratie-participative')
+                    ->endUse()
+                ->endUse()
+                ->find();
             
             $template = 'democratieLocale.html.twig';
         } elseif ($theme == 'democratie-participative')  {
@@ -194,9 +205,6 @@ class PublicController extends Controller
                 ->find();
             $template = 'presidentielle.html.twig';
         } elseif ($theme == 'charlotte-marchandise')  {
-            $directMessage = new PDDirect();
-            $form = $this->createForm(new PDDirectType(), $directMessage);
-
             $documents = PDDebateQuery::create()
                 ->limit(9)
                 ->online()
@@ -216,9 +224,6 @@ class PublicController extends Controller
 
             $template = 'offreCandidat.html.twig';
         } elseif ($theme == 'offre-candidat-senatoriales-2017')  {
-            $directMessage = new PDDirect();
-            $form = $this->createForm(new PDDirectType(), $directMessage);
-
             $template = 'offreCandidatSenatoriales.html.twig';
         } else {
             return $this->redirect($this->generateUrl('Homepage'));
