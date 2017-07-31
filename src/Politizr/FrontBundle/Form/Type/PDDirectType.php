@@ -56,11 +56,11 @@ class PDDirectType extends AbstractType
         ));
         
         $builder->add('description', 'textarea', array(
-            'label' => 'Circonscription',
-            'required' => true,
-            'constraints' => array(
-                new NotBlank(array('message' => 'Circonscription obligatoire.')),
-            ),
+            'label' => 'Message',
+            'required' => false,
+            // 'constraints' => array(
+            //     new NotBlank(array('message' => 'Message obligatoire.')),
+            // ),
         ));
     }
 

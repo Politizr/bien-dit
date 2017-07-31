@@ -3,7 +3,7 @@
 {% set headerRight = false %}
 
 {% set metaTitle = 'Réseau Social Politique' %}
-{% set metaDescription = 'Politizr est un réseau social politique qui connecte élu-e-s et citoyen-ne-s.' %}
+{% set metaDescription = 'Politizr est un réseau social politique qui connecte élus et citoyens.' %}
 
 {% block title %}{{ metaTitle }} - {{ parent() }}{% endblock title %}
 {% block description %}{{ metaDescription }}{% endblock description %}
@@ -86,7 +86,7 @@
                     {% endif %}
                 {% endfor %}
                 
-                <div id="morePosts"><a href="{{ path('ListingByTag', {'slug' : 'democratie-locale'}) }}">Toutes les discussions en cours</a></div>
+                <div id="morePosts"><a href="{{ path('ListingByTag', {'slug' : 'democratie'}) }}">Toutes les discussions en cours</a></div>
             </div>
         </div>
 
