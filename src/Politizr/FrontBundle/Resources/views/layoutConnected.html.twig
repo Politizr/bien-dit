@@ -13,6 +13,10 @@
     {{ parent() }}
 
     <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/styleUser.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.css">
+
+    <link href="//cdn.jsdelivr.net/fontawesome/4.2.0/css/font-awesome.min.css" media="all" rel="stylesheet" type="text/css" />
+    <link href="//cdn.jsdelivr.net/bootstrap/3.2.0/css/bootstrap.min.css" media="all" rel="stylesheet" type="text/css" />
 {% endblock %}
 
 {% block fbScript %}
@@ -137,6 +141,10 @@
 {% block javascriptFooter %}
     {{ parent() }}
 
+    <script src="https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js"></script>
+    <script src="//cdn.jsdelivr.net/algoliasearch/2.9/algoliasearch.min.js" type="text/javascript"></script>
+    {% include 'PolitizrFrontBundle:PaginatedList:_algoliaHitTemplate.html.twig' %}
+
     {% javascripts
         '@PolitizrFrontBundle/Resources/public/js/politizr/xhr.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/global.js'
@@ -151,6 +159,7 @@
         '@PolitizrFrontBundle/Resources/public/js/politizr/reputation/score.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/reputation/notation.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/localization/edit.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/searchEngine/algolia.js'
         filter='uglifyjs2' %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}

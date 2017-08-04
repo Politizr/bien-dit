@@ -4,9 +4,60 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "83aeb732641d85dd47b339c4a03496b4",
-    "content-hash": "bcf73a6d2c04b9b04535d9ff5f6c5343",
+    "hash": "3f0e6f1ce1c6ba270e0a26b8a218c7b3",
+    "content-hash": "556d05b6e879bb14b60528c250ff5fcf",
     "packages": [
+        {
+            "name": "algolia/algoliasearch-client-php",
+            "version": "1.18.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/algolia/algoliasearch-client-php.git",
+                "reference": "77aeb5f3856c1460432e2ccb9df5634c37c0b9f3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/algolia/algoliasearch-client-php/zipball/77aeb5f3856c1460432e2ccb9df5634c37c0b9f3",
+                "reference": "77aeb5f3856c1460432e2ccb9df5634c37c0b9f3",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "php": ">=5.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8 || ^5.0",
+                "satooshi/php-coveralls": "0.6.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "AlgoliaSearch": "src/",
+                    "AlgoliaSearch\\Tests": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Algolia Team",
+                    "email": "contact@algolia.com"
+                },
+                {
+                    "name": "Ryan T. Catlin",
+                    "email": "ryan.catlin@gmail.com"
+                },
+                {
+                    "name": "Jonathan H. Wage",
+                    "email": "jonwage@gmail.com"
+                }
+            ],
+            "description": "Algolia Search API Client for PHP",
+            "homepage": "https://github.com/algolia/algoliasearch-client-php",
+            "time": "2017-05-22 14:50:28"
+        },
         {
             "name": "badlamer/propel-uuid-behavior",
             "version": "0.2.0",

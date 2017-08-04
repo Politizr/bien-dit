@@ -56,6 +56,7 @@ use Politizr\Model\PUser;
  * @method PDReactionQuery orderByModerated($order = Criteria::ASC) Order by the moderated column
  * @method PDReactionQuery orderByModeratedPartial($order = Criteria::ASC) Order by the moderated_partial column
  * @method PDReactionQuery orderByModeratedAt($order = Criteria::ASC) Order by the moderated_at column
+ * @method PDReactionQuery orderByIndexedAt($order = Criteria::ASC) Order by the indexed_at column
  * @method PDReactionQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PDReactionQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  * @method PDReactionQuery orderBySlug($order = Criteria::ASC) Order by the slug column
@@ -89,6 +90,7 @@ use Politizr\Model\PUser;
  * @method PDReactionQuery groupByModerated() Group by the moderated column
  * @method PDReactionQuery groupByModeratedPartial() Group by the moderated_partial column
  * @method PDReactionQuery groupByModeratedAt() Group by the moderated_at column
+ * @method PDReactionQuery groupByIndexedAt() Group by the indexed_at column
  * @method PDReactionQuery groupByCreatedAt() Group by the created_at column
  * @method PDReactionQuery groupByUpdatedAt() Group by the updated_at column
  * @method PDReactionQuery groupBySlug() Group by the slug column
@@ -172,6 +174,7 @@ use Politizr\Model\PUser;
  * @method PDReaction findOneByModerated(boolean $moderated) Return the first PDReaction filtered by the moderated column
  * @method PDReaction findOneByModeratedPartial(boolean $moderated_partial) Return the first PDReaction filtered by the moderated_partial column
  * @method PDReaction findOneByModeratedAt(string $moderated_at) Return the first PDReaction filtered by the moderated_at column
+ * @method PDReaction findOneByIndexedAt(string $indexed_at) Return the first PDReaction filtered by the indexed_at column
  * @method PDReaction findOneByCreatedAt(string $created_at) Return the first PDReaction filtered by the created_at column
  * @method PDReaction findOneByUpdatedAt(string $updated_at) Return the first PDReaction filtered by the updated_at column
  * @method PDReaction findOneBySlug(string $slug) Return the first PDReaction filtered by the slug column
@@ -205,6 +208,7 @@ use Politizr\Model\PUser;
  * @method array findByModerated(boolean $moderated) Return PDReaction objects filtered by the moderated column
  * @method array findByModeratedPartial(boolean $moderated_partial) Return PDReaction objects filtered by the moderated_partial column
  * @method array findByModeratedAt(string $moderated_at) Return PDReaction objects filtered by the moderated_at column
+ * @method array findByIndexedAt(string $indexed_at) Return PDReaction objects filtered by the indexed_at column
  * @method array findByCreatedAt(string $created_at) Return PDReaction objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PDReaction objects filtered by the updated_at column
  * @method array findBySlug(string $slug) Return PDReaction objects filtered by the slug column
@@ -322,7 +326,7 @@ abstract class BasePDReactionQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `p_d_debate_id`, `parent_reaction_id`, `p_l_city_id`, `p_l_department_id`, `p_l_region_id`, `p_l_country_id`, `fb_ad_id`, `title`, `file_name`, `copyright`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `homepage`, `moderated`, `moderated_partial`, `moderated_at`, `created_at`, `updated_at`, `slug`, `tree_left`, `tree_right`, `tree_level` FROM `p_d_reaction` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `p_d_debate_id`, `parent_reaction_id`, `p_l_city_id`, `p_l_department_id`, `p_l_region_id`, `p_l_country_id`, `fb_ad_id`, `title`, `file_name`, `copyright`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `homepage`, `moderated`, `moderated_partial`, `moderated_at`, `indexed_at`, `created_at`, `updated_at`, `slug`, `tree_left`, `tree_right`, `tree_level` FROM `p_d_reaction` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -1334,6 +1338,49 @@ abstract class BasePDReactionQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDReactionPeer::MODERATED_AT, $moderatedAt, $comparison);
+    }
+
+    /**
+     * Filter the query on the indexed_at column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByIndexedAt('2011-03-14'); // WHERE indexed_at = '2011-03-14'
+     * $query->filterByIndexedAt('now'); // WHERE indexed_at = '2011-03-14'
+     * $query->filterByIndexedAt(array('max' => 'yesterday')); // WHERE indexed_at < '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $indexedAt The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDReactionQuery The current query, for fluid interface
+     */
+    public function filterByIndexedAt($indexedAt = null, $comparison = null)
+    {
+        if (is_array($indexedAt)) {
+            $useMinMax = false;
+            if (isset($indexedAt['min'])) {
+                $this->addUsingAlias(PDReactionPeer::INDEXED_AT, $indexedAt['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($indexedAt['max'])) {
+                $this->addUsingAlias(PDReactionPeer::INDEXED_AT, $indexedAt['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PDReactionPeer::INDEXED_AT, $indexedAt, $comparison);
     }
 
     /**

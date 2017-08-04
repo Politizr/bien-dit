@@ -8,6 +8,7 @@ use Politizr\Exception\InconsistentDataException;
 
 use StudioEcho\Lib\StudioEchoUtils;
 
+use Politizr\Constant\PathConstants;
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\QualificationConstants;
 use Politizr\Constant\ListingConstants;
@@ -97,6 +98,20 @@ class PUser extends BasePUser implements UserInterface
     public function getFullName()
     {
         return trim($this->getFirstname().' '.$this->getName());
+    }
+
+    /**
+     *
+     */
+    public function getPathFileName()
+    {
+        $default = 'default_avatar.jpg';
+        $path = PathConstants::USER_DEFAULT_PATH.$default;
+        if ($fileName = $this->getFileName()) {
+            $path = PathConstants::USER_UPLOAD_WEB_PATH.$fileName;
+        }
+
+        return $path;
     }
 
     /**

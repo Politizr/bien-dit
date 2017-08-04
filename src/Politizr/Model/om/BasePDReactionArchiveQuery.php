@@ -41,6 +41,7 @@ use Politizr\Model\PDReactionArchiveQuery;
  * @method PDReactionArchiveQuery orderByModerated($order = Criteria::ASC) Order by the moderated column
  * @method PDReactionArchiveQuery orderByModeratedPartial($order = Criteria::ASC) Order by the moderated_partial column
  * @method PDReactionArchiveQuery orderByModeratedAt($order = Criteria::ASC) Order by the moderated_at column
+ * @method PDReactionArchiveQuery orderByIndexedAt($order = Criteria::ASC) Order by the indexed_at column
  * @method PDReactionArchiveQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PDReactionArchiveQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  * @method PDReactionArchiveQuery orderBySlug($order = Criteria::ASC) Order by the slug column
@@ -75,6 +76,7 @@ use Politizr\Model\PDReactionArchiveQuery;
  * @method PDReactionArchiveQuery groupByModerated() Group by the moderated column
  * @method PDReactionArchiveQuery groupByModeratedPartial() Group by the moderated_partial column
  * @method PDReactionArchiveQuery groupByModeratedAt() Group by the moderated_at column
+ * @method PDReactionArchiveQuery groupByIndexedAt() Group by the indexed_at column
  * @method PDReactionArchiveQuery groupByCreatedAt() Group by the created_at column
  * @method PDReactionArchiveQuery groupByUpdatedAt() Group by the updated_at column
  * @method PDReactionArchiveQuery groupBySlug() Group by the slug column
@@ -115,6 +117,7 @@ use Politizr\Model\PDReactionArchiveQuery;
  * @method PDReactionArchive findOneByModerated(boolean $moderated) Return the first PDReactionArchive filtered by the moderated column
  * @method PDReactionArchive findOneByModeratedPartial(boolean $moderated_partial) Return the first PDReactionArchive filtered by the moderated_partial column
  * @method PDReactionArchive findOneByModeratedAt(string $moderated_at) Return the first PDReactionArchive filtered by the moderated_at column
+ * @method PDReactionArchive findOneByIndexedAt(string $indexed_at) Return the first PDReactionArchive filtered by the indexed_at column
  * @method PDReactionArchive findOneByCreatedAt(string $created_at) Return the first PDReactionArchive filtered by the created_at column
  * @method PDReactionArchive findOneByUpdatedAt(string $updated_at) Return the first PDReactionArchive filtered by the updated_at column
  * @method PDReactionArchive findOneBySlug(string $slug) Return the first PDReactionArchive filtered by the slug column
@@ -149,6 +152,7 @@ use Politizr\Model\PDReactionArchiveQuery;
  * @method array findByModerated(boolean $moderated) Return PDReactionArchive objects filtered by the moderated column
  * @method array findByModeratedPartial(boolean $moderated_partial) Return PDReactionArchive objects filtered by the moderated_partial column
  * @method array findByModeratedAt(string $moderated_at) Return PDReactionArchive objects filtered by the moderated_at column
+ * @method array findByIndexedAt(string $indexed_at) Return PDReactionArchive objects filtered by the indexed_at column
  * @method array findByCreatedAt(string $created_at) Return PDReactionArchive objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PDReactionArchive objects filtered by the updated_at column
  * @method array findBySlug(string $slug) Return PDReactionArchive objects filtered by the slug column
@@ -261,7 +265,7 @@ abstract class BasePDReactionArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `p_d_debate_id`, `parent_reaction_id`, `p_l_city_id`, `p_l_department_id`, `p_l_region_id`, `p_l_country_id`, `fb_ad_id`, `title`, `file_name`, `copyright`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `homepage`, `moderated`, `moderated_partial`, `moderated_at`, `created_at`, `updated_at`, `slug`, `tree_left`, `tree_right`, `tree_level`, `archived_at` FROM `p_d_reaction_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `p_d_debate_id`, `parent_reaction_id`, `p_l_city_id`, `p_l_department_id`, `p_l_region_id`, `p_l_country_id`, `fb_ad_id`, `title`, `file_name`, `copyright`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `homepage`, `moderated`, `moderated_partial`, `moderated_at`, `indexed_at`, `created_at`, `updated_at`, `slug`, `tree_left`, `tree_right`, `tree_level`, `archived_at` FROM `p_d_reaction_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -1261,6 +1265,49 @@ abstract class BasePDReactionArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDReactionArchivePeer::MODERATED_AT, $moderatedAt, $comparison);
+    }
+
+    /**
+     * Filter the query on the indexed_at column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByIndexedAt('2011-03-14'); // WHERE indexed_at = '2011-03-14'
+     * $query->filterByIndexedAt('now'); // WHERE indexed_at = '2011-03-14'
+     * $query->filterByIndexedAt(array('max' => 'yesterday')); // WHERE indexed_at < '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $indexedAt The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDReactionArchiveQuery The current query, for fluid interface
+     */
+    public function filterByIndexedAt($indexedAt = null, $comparison = null)
+    {
+        if (is_array($indexedAt)) {
+            $useMinMax = false;
+            if (isset($indexedAt['min'])) {
+                $this->addUsingAlias(PDReactionArchivePeer::INDEXED_AT, $indexedAt['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($indexedAt['max'])) {
+                $this->addUsingAlias(PDReactionArchivePeer::INDEXED_AT, $indexedAt['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PDReactionArchivePeer::INDEXED_AT, $indexedAt, $comparison);
     }
 
     /**

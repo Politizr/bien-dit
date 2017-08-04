@@ -11,6 +11,7 @@ use StudioEcho\Lib\StudioEchoUtils;
 
 use Politizr\Model\om\BasePDDebate;
 
+use Politizr\Constant\PathConstants;
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\TagConstants;
 use Politizr\Constant\LabelConstants;
@@ -70,6 +71,20 @@ class PDDebate extends BasePDDebate implements PDocumentInterface
     public function isDisplayed()
     {
         return $this->getOnline() && $this->getPublished();
+    }
+
+    /**
+     *
+     */
+    public function getPathFileName()
+    {
+        $default = 'default_document.jpg';
+        $path = PathConstants::DEBATE_DEFAULT_PATH.$default;
+        if ($fileName = $this->getFileName()) {
+            $path = PathConstants::DEBATE_UPLOAD_WEB_PATH.$fileName;
+        }
+
+        return $path;
     }
 
     /**

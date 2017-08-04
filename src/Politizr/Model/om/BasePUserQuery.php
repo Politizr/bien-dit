@@ -102,6 +102,7 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery orderByNewsletter($order = Criteria::ASC) Order by the newsletter column
  * @method PUserQuery orderByLastConnect($order = Criteria::ASC) Order by the last_connect column
  * @method PUserQuery orderByNbConnectedDays($order = Criteria::ASC) Order by the nb_connected_days column
+ * @method PUserQuery orderByIndexedAt($order = Criteria::ASC) Order by the indexed_at column
  * @method PUserQuery orderByNbViews($order = Criteria::ASC) Order by the nb_views column
  * @method PUserQuery orderByQualified($order = Criteria::ASC) Order by the qualified column
  * @method PUserQuery orderByValidated($order = Criteria::ASC) Order by the validated column
@@ -157,6 +158,7 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery groupByNewsletter() Group by the newsletter column
  * @method PUserQuery groupByLastConnect() Group by the last_connect column
  * @method PUserQuery groupByNbConnectedDays() Group by the nb_connected_days column
+ * @method PUserQuery groupByIndexedAt() Group by the indexed_at column
  * @method PUserQuery groupByNbViews() Group by the nb_views column
  * @method PUserQuery groupByQualified() Group by the qualified column
  * @method PUserQuery groupByValidated() Group by the validated column
@@ -374,6 +376,7 @@ use Politizr\Model\PUserQuery;
  * @method PUser findOneByNewsletter(boolean $newsletter) Return the first PUser filtered by the newsletter column
  * @method PUser findOneByLastConnect(string $last_connect) Return the first PUser filtered by the last_connect column
  * @method PUser findOneByNbConnectedDays(int $nb_connected_days) Return the first PUser filtered by the nb_connected_days column
+ * @method PUser findOneByIndexedAt(string $indexed_at) Return the first PUser filtered by the indexed_at column
  * @method PUser findOneByNbViews(int $nb_views) Return the first PUser filtered by the nb_views column
  * @method PUser findOneByQualified(boolean $qualified) Return the first PUser filtered by the qualified column
  * @method PUser findOneByValidated(boolean $validated) Return the first PUser filtered by the validated column
@@ -429,6 +432,7 @@ use Politizr\Model\PUserQuery;
  * @method array findByNewsletter(boolean $newsletter) Return PUser objects filtered by the newsletter column
  * @method array findByLastConnect(string $last_connect) Return PUser objects filtered by the last_connect column
  * @method array findByNbConnectedDays(int $nb_connected_days) Return PUser objects filtered by the nb_connected_days column
+ * @method array findByIndexedAt(string $indexed_at) Return PUser objects filtered by the indexed_at column
  * @method array findByNbViews(int $nb_views) Return PUser objects filtered by the nb_views column
  * @method array findByQualified(boolean $qualified) Return PUser objects filtered by the qualified column
  * @method array findByValidated(boolean $validated) Return PUser objects filtered by the validated column
@@ -553,7 +557,7 @@ abstract class BasePUserQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `p_u_status_id`, `p_l_city_id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `last_activity`, `file_name`, `back_file_name`, `copyright`, `gender`, `firstname`, `name`, `birthday`, `subtitle`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_connected_days`, `nb_views`, `qualified`, `validated`, `nb_id_check`, `online`, `homepage`, `banned`, `banned_nb_days_left`, `banned_nb_total`, `abuse_level`, `created_at`, `updated_at`, `slug` FROM `p_user` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_u_status_id`, `p_l_city_id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `last_activity`, `file_name`, `back_file_name`, `copyright`, `gender`, `firstname`, `name`, `birthday`, `subtitle`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_connected_days`, `indexed_at`, `nb_views`, `qualified`, `validated`, `nb_id_check`, `online`, `homepage`, `banned`, `banned_nb_days_left`, `banned_nb_total`, `abuse_level`, `created_at`, `updated_at`, `slug` FROM `p_user` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -2023,6 +2027,49 @@ abstract class BasePUserQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PUserPeer::NB_CONNECTED_DAYS, $nbConnectedDays, $comparison);
+    }
+
+    /**
+     * Filter the query on the indexed_at column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByIndexedAt('2011-03-14'); // WHERE indexed_at = '2011-03-14'
+     * $query->filterByIndexedAt('now'); // WHERE indexed_at = '2011-03-14'
+     * $query->filterByIndexedAt(array('max' => 'yesterday')); // WHERE indexed_at < '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $indexedAt The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function filterByIndexedAt($indexedAt = null, $comparison = null)
+    {
+        if (is_array($indexedAt)) {
+            $useMinMax = false;
+            if (isset($indexedAt['min'])) {
+                $this->addUsingAlias(PUserPeer::INDEXED_AT, $indexedAt['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($indexedAt['max'])) {
+                $this->addUsingAlias(PUserPeer::INDEXED_AT, $indexedAt['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PUserPeer::INDEXED_AT, $indexedAt, $comparison);
     }
 
     /**

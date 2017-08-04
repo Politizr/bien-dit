@@ -56,6 +56,7 @@ use Politizr\Model\PUserArchiveQuery;
  * @method PUserArchiveQuery orderByNewsletter($order = Criteria::ASC) Order by the newsletter column
  * @method PUserArchiveQuery orderByLastConnect($order = Criteria::ASC) Order by the last_connect column
  * @method PUserArchiveQuery orderByNbConnectedDays($order = Criteria::ASC) Order by the nb_connected_days column
+ * @method PUserArchiveQuery orderByIndexedAt($order = Criteria::ASC) Order by the indexed_at column
  * @method PUserArchiveQuery orderByNbViews($order = Criteria::ASC) Order by the nb_views column
  * @method PUserArchiveQuery orderByQualified($order = Criteria::ASC) Order by the qualified column
  * @method PUserArchiveQuery orderByValidated($order = Criteria::ASC) Order by the validated column
@@ -112,6 +113,7 @@ use Politizr\Model\PUserArchiveQuery;
  * @method PUserArchiveQuery groupByNewsletter() Group by the newsletter column
  * @method PUserArchiveQuery groupByLastConnect() Group by the last_connect column
  * @method PUserArchiveQuery groupByNbConnectedDays() Group by the nb_connected_days column
+ * @method PUserArchiveQuery groupByIndexedAt() Group by the indexed_at column
  * @method PUserArchiveQuery groupByNbViews() Group by the nb_views column
  * @method PUserArchiveQuery groupByQualified() Group by the qualified column
  * @method PUserArchiveQuery groupByValidated() Group by the validated column
@@ -174,6 +176,7 @@ use Politizr\Model\PUserArchiveQuery;
  * @method PUserArchive findOneByNewsletter(boolean $newsletter) Return the first PUserArchive filtered by the newsletter column
  * @method PUserArchive findOneByLastConnect(string $last_connect) Return the first PUserArchive filtered by the last_connect column
  * @method PUserArchive findOneByNbConnectedDays(int $nb_connected_days) Return the first PUserArchive filtered by the nb_connected_days column
+ * @method PUserArchive findOneByIndexedAt(string $indexed_at) Return the first PUserArchive filtered by the indexed_at column
  * @method PUserArchive findOneByNbViews(int $nb_views) Return the first PUserArchive filtered by the nb_views column
  * @method PUserArchive findOneByQualified(boolean $qualified) Return the first PUserArchive filtered by the qualified column
  * @method PUserArchive findOneByValidated(boolean $validated) Return the first PUserArchive filtered by the validated column
@@ -230,6 +233,7 @@ use Politizr\Model\PUserArchiveQuery;
  * @method array findByNewsletter(boolean $newsletter) Return PUserArchive objects filtered by the newsletter column
  * @method array findByLastConnect(string $last_connect) Return PUserArchive objects filtered by the last_connect column
  * @method array findByNbConnectedDays(int $nb_connected_days) Return PUserArchive objects filtered by the nb_connected_days column
+ * @method array findByIndexedAt(string $indexed_at) Return PUserArchive objects filtered by the indexed_at column
  * @method array findByNbViews(int $nb_views) Return PUserArchive objects filtered by the nb_views column
  * @method array findByQualified(boolean $qualified) Return PUserArchive objects filtered by the qualified column
  * @method array findByValidated(boolean $validated) Return PUserArchive objects filtered by the validated column
@@ -349,7 +353,7 @@ abstract class BasePUserArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `p_u_status_id`, `p_l_city_id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `last_activity`, `file_name`, `back_file_name`, `copyright`, `gender`, `firstname`, `name`, `birthday`, `subtitle`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_connected_days`, `nb_views`, `qualified`, `validated`, `nb_id_check`, `online`, `homepage`, `banned`, `banned_nb_days_left`, `banned_nb_total`, `abuse_level`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_user_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_u_status_id`, `p_l_city_id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `last_activity`, `file_name`, `back_file_name`, `copyright`, `gender`, `firstname`, `name`, `birthday`, `subtitle`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_connected_days`, `indexed_at`, `nb_views`, `qualified`, `validated`, `nb_id_check`, `online`, `homepage`, `banned`, `banned_nb_days_left`, `banned_nb_total`, `abuse_level`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_user_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -1815,6 +1819,49 @@ abstract class BasePUserArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PUserArchivePeer::NB_CONNECTED_DAYS, $nbConnectedDays, $comparison);
+    }
+
+    /**
+     * Filter the query on the indexed_at column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByIndexedAt('2011-03-14'); // WHERE indexed_at = '2011-03-14'
+     * $query->filterByIndexedAt('now'); // WHERE indexed_at = '2011-03-14'
+     * $query->filterByIndexedAt(array('max' => 'yesterday')); // WHERE indexed_at < '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $indexedAt The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserArchiveQuery The current query, for fluid interface
+     */
+    public function filterByIndexedAt($indexedAt = null, $comparison = null)
+    {
+        if (is_array($indexedAt)) {
+            $useMinMax = false;
+            if (isset($indexedAt['min'])) {
+                $this->addUsingAlias(PUserArchivePeer::INDEXED_AT, $indexedAt['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($indexedAt['max'])) {
+                $this->addUsingAlias(PUserArchivePeer::INDEXED_AT, $indexedAt['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PUserArchivePeer::INDEXED_AT, $indexedAt, $comparison);
     }
 
     /**

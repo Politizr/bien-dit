@@ -67,6 +67,7 @@ class PDDebateArchiveTableMap extends TableMap
         $this->addColumn('moderated', 'Moderated', 'BOOLEAN', false, 1, null);
         $this->addColumn('moderated_partial', 'ModeratedPartial', 'BOOLEAN', false, 1, null);
         $this->addColumn('moderated_at', 'ModeratedAt', 'TIMESTAMP', false, null, null);
+        $this->addColumn('indexed_at', 'IndexedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('slug', 'Slug', 'VARCHAR', false, 255, null);

@@ -101,6 +101,8 @@ params:
             # addFilterOptions:
         updated_at:
             label:          Mis à jour
+        indexed_at:
+            label:          Indexé le
     object_actions:
         delete:             ~
     batch_actions:
@@ -210,7 +212,7 @@ builders:
                     "En ligne":                 [ online ]
                     "Mise en avant":            [ homepage ]
                     "Validé":                   [ validated, nb_id_check ]
-                    "Création":                 [ [ created_at, updated_at ] ]
+                    "Dates":                    [ [ created_at, updated_at ], [ indexed_at ] ]
             fields:
                 block_back_file_name:
                     label:                      "Image de fond"
@@ -370,7 +372,7 @@ builders:
                     "Mise en avant":            [ homepage ]
                     "Validé":                   [ validated, nb_id_check ]
                     "Rôles":                    [ roles ]
-                    "Création":                 [ [ created_at, updated_at ] ]
+                    "Dates":                    [ [ created_at, updated_at ], [ indexed_at ] ]
                 "Front":
                     "Rendu":                    [ block_front ]
             fields:

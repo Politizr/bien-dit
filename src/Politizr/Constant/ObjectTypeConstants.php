@@ -87,6 +87,7 @@ class ObjectTypeConstants
     abuse_level,
     created_at,
     updated_at,
+    indexed_at,
     slug
 ";
 
@@ -118,6 +119,7 @@ class ObjectTypeConstants
     moderated_at,
     created_at,
     updated_at,
+    indexed_at,
     slug
 ";
 }

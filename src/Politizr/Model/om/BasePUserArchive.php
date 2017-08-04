@@ -297,6 +297,12 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
     protected $nb_connected_days;
 
     /**
+     * The value for the indexed_at field.
+     * @var        string
+     */
+    protected $indexed_at;
+
+    /**
      * The value for the nb_views field.
      * @var        int
      */
@@ -1105,6 +1111,46 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
     {
 
         return $this->nb_connected_days;
+    }
+
+    /**
+     * Get the [optionally formatted] temporal [indexed_at] column value.
+     *
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getIndexedAt($format = null)
+    {
+        if ($this->indexed_at === null) {
+            return null;
+        }
+
+        if ($this->indexed_at === '0000-00-00 00:00:00') {
+            // while technically this is not a default value of null,
+            // this seems to be closest in meaning.
+            return null;
+        }
+
+        try {
+            $dt = new DateTime($this->indexed_at);
+        } catch (Exception $x) {
+            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->indexed_at, true), $x);
+        }
+
+        if ($format === null) {
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
+            return $dt;
+        }
+
+        if (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        }
+
+        return $dt->format($format);
+
     }
 
     /**
@@ -2300,6 +2346,29 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
     } // setNbConnectedDays()
 
     /**
+     * Sets the value of [indexed_at] column to a normalized version of the date/time value specified.
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return PUserArchive The current object (for fluent API support)
+     */
+    public function setIndexedAt($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->indexed_at !== null || $dt !== null) {
+            $currentDateAsString = ($this->indexed_at !== null && $tmpDt = new DateTime($this->indexed_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->indexed_at = $newDateAsString;
+                $this->modifiedColumns[] = PUserArchivePeer::INDEXED_AT;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setIndexedAt()
+
+    /**
      * Set the value of [nb_views] column.
      *
      * @param  int $v new value
@@ -2737,20 +2806,21 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
             $this->newsletter = ($row[$startcol + 38] !== null) ? (boolean) $row[$startcol + 38] : null;
             $this->last_connect = ($row[$startcol + 39] !== null) ? (string) $row[$startcol + 39] : null;
             $this->nb_connected_days = ($row[$startcol + 40] !== null) ? (int) $row[$startcol + 40] : null;
-            $this->nb_views = ($row[$startcol + 41] !== null) ? (int) $row[$startcol + 41] : null;
-            $this->qualified = ($row[$startcol + 42] !== null) ? (boolean) $row[$startcol + 42] : null;
-            $this->validated = ($row[$startcol + 43] !== null) ? (boolean) $row[$startcol + 43] : null;
-            $this->nb_id_check = ($row[$startcol + 44] !== null) ? (int) $row[$startcol + 44] : null;
-            $this->online = ($row[$startcol + 45] !== null) ? (boolean) $row[$startcol + 45] : null;
-            $this->homepage = ($row[$startcol + 46] !== null) ? (boolean) $row[$startcol + 46] : null;
-            $this->banned = ($row[$startcol + 47] !== null) ? (boolean) $row[$startcol + 47] : null;
-            $this->banned_nb_days_left = ($row[$startcol + 48] !== null) ? (int) $row[$startcol + 48] : null;
-            $this->banned_nb_total = ($row[$startcol + 49] !== null) ? (int) $row[$startcol + 49] : null;
-            $this->abuse_level = ($row[$startcol + 50] !== null) ? (int) $row[$startcol + 50] : null;
-            $this->created_at = ($row[$startcol + 51] !== null) ? (string) $row[$startcol + 51] : null;
-            $this->updated_at = ($row[$startcol + 52] !== null) ? (string) $row[$startcol + 52] : null;
-            $this->slug = ($row[$startcol + 53] !== null) ? (string) $row[$startcol + 53] : null;
-            $this->archived_at = ($row[$startcol + 54] !== null) ? (string) $row[$startcol + 54] : null;
+            $this->indexed_at = ($row[$startcol + 41] !== null) ? (string) $row[$startcol + 41] : null;
+            $this->nb_views = ($row[$startcol + 42] !== null) ? (int) $row[$startcol + 42] : null;
+            $this->qualified = ($row[$startcol + 43] !== null) ? (boolean) $row[$startcol + 43] : null;
+            $this->validated = ($row[$startcol + 44] !== null) ? (boolean) $row[$startcol + 44] : null;
+            $this->nb_id_check = ($row[$startcol + 45] !== null) ? (int) $row[$startcol + 45] : null;
+            $this->online = ($row[$startcol + 46] !== null) ? (boolean) $row[$startcol + 46] : null;
+            $this->homepage = ($row[$startcol + 47] !== null) ? (boolean) $row[$startcol + 47] : null;
+            $this->banned = ($row[$startcol + 48] !== null) ? (boolean) $row[$startcol + 48] : null;
+            $this->banned_nb_days_left = ($row[$startcol + 49] !== null) ? (int) $row[$startcol + 49] : null;
+            $this->banned_nb_total = ($row[$startcol + 50] !== null) ? (int) $row[$startcol + 50] : null;
+            $this->abuse_level = ($row[$startcol + 51] !== null) ? (int) $row[$startcol + 51] : null;
+            $this->created_at = ($row[$startcol + 52] !== null) ? (string) $row[$startcol + 52] : null;
+            $this->updated_at = ($row[$startcol + 53] !== null) ? (string) $row[$startcol + 53] : null;
+            $this->slug = ($row[$startcol + 54] !== null) ? (string) $row[$startcol + 54] : null;
+            $this->archived_at = ($row[$startcol + 55] !== null) ? (string) $row[$startcol + 55] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -2760,7 +2830,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 55; // 55 = PUserArchivePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 56; // 56 = PUserArchivePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PUserArchive object", $e);
@@ -3091,6 +3161,9 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PUserArchivePeer::NB_CONNECTED_DAYS)) {
             $modifiedColumns[':p' . $index++]  = '`nb_connected_days`';
         }
+        if ($this->isColumnModified(PUserArchivePeer::INDEXED_AT)) {
+            $modifiedColumns[':p' . $index++]  = '`indexed_at`';
+        }
         if ($this->isColumnModified(PUserArchivePeer::NB_VIEWS)) {
             $modifiedColumns[':p' . $index++]  = '`nb_views`';
         }
@@ -3266,6 +3339,9 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
                         break;
                     case '`nb_connected_days`':
                         $stmt->bindValue($identifier, $this->nb_connected_days, PDO::PARAM_INT);
+                        break;
+                    case '`indexed_at`':
+                        $stmt->bindValue($identifier, $this->indexed_at, PDO::PARAM_STR);
                         break;
                     case '`nb_views`':
                         $stmt->bindValue($identifier, $this->nb_views, PDO::PARAM_INT);
@@ -3486,45 +3562,48 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
                 return $this->getNbConnectedDays();
                 break;
             case 41:
-                return $this->getNbViews();
+                return $this->getIndexedAt();
                 break;
             case 42:
-                return $this->getQualified();
+                return $this->getNbViews();
                 break;
             case 43:
-                return $this->getValidated();
+                return $this->getQualified();
                 break;
             case 44:
-                return $this->getNbIdCheck();
+                return $this->getValidated();
                 break;
             case 45:
-                return $this->getOnline();
+                return $this->getNbIdCheck();
                 break;
             case 46:
-                return $this->getHomepage();
+                return $this->getOnline();
                 break;
             case 47:
-                return $this->getBanned();
+                return $this->getHomepage();
                 break;
             case 48:
-                return $this->getBannedNbDaysLeft();
+                return $this->getBanned();
                 break;
             case 49:
-                return $this->getBannedNbTotal();
+                return $this->getBannedNbDaysLeft();
                 break;
             case 50:
-                return $this->getAbuseLevel();
+                return $this->getBannedNbTotal();
                 break;
             case 51:
-                return $this->getCreatedAt();
+                return $this->getAbuseLevel();
                 break;
             case 52:
-                return $this->getUpdatedAt();
+                return $this->getCreatedAt();
                 break;
             case 53:
-                return $this->getSlug();
+                return $this->getUpdatedAt();
                 break;
             case 54:
+                return $this->getSlug();
+                break;
+            case 55:
                 return $this->getArchivedAt();
                 break;
             default:
@@ -3596,20 +3675,21 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
             $keys[38] => $this->getNewsletter(),
             $keys[39] => $this->getLastConnect(),
             $keys[40] => $this->getNbConnectedDays(),
-            $keys[41] => $this->getNbViews(),
-            $keys[42] => $this->getQualified(),
-            $keys[43] => $this->getValidated(),
-            $keys[44] => $this->getNbIdCheck(),
-            $keys[45] => $this->getOnline(),
-            $keys[46] => $this->getHomepage(),
-            $keys[47] => $this->getBanned(),
-            $keys[48] => $this->getBannedNbDaysLeft(),
-            $keys[49] => $this->getBannedNbTotal(),
-            $keys[50] => $this->getAbuseLevel(),
-            $keys[51] => $this->getCreatedAt(),
-            $keys[52] => $this->getUpdatedAt(),
-            $keys[53] => $this->getSlug(),
-            $keys[54] => $this->getArchivedAt(),
+            $keys[41] => $this->getIndexedAt(),
+            $keys[42] => $this->getNbViews(),
+            $keys[43] => $this->getQualified(),
+            $keys[44] => $this->getValidated(),
+            $keys[45] => $this->getNbIdCheck(),
+            $keys[46] => $this->getOnline(),
+            $keys[47] => $this->getHomepage(),
+            $keys[48] => $this->getBanned(),
+            $keys[49] => $this->getBannedNbDaysLeft(),
+            $keys[50] => $this->getBannedNbTotal(),
+            $keys[51] => $this->getAbuseLevel(),
+            $keys[52] => $this->getCreatedAt(),
+            $keys[53] => $this->getUpdatedAt(),
+            $keys[54] => $this->getSlug(),
+            $keys[55] => $this->getArchivedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -3781,45 +3861,48 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
                 $this->setNbConnectedDays($value);
                 break;
             case 41:
-                $this->setNbViews($value);
+                $this->setIndexedAt($value);
                 break;
             case 42:
-                $this->setQualified($value);
+                $this->setNbViews($value);
                 break;
             case 43:
-                $this->setValidated($value);
+                $this->setQualified($value);
                 break;
             case 44:
-                $this->setNbIdCheck($value);
+                $this->setValidated($value);
                 break;
             case 45:
-                $this->setOnline($value);
+                $this->setNbIdCheck($value);
                 break;
             case 46:
-                $this->setHomepage($value);
+                $this->setOnline($value);
                 break;
             case 47:
-                $this->setBanned($value);
+                $this->setHomepage($value);
                 break;
             case 48:
-                $this->setBannedNbDaysLeft($value);
+                $this->setBanned($value);
                 break;
             case 49:
-                $this->setBannedNbTotal($value);
+                $this->setBannedNbDaysLeft($value);
                 break;
             case 50:
-                $this->setAbuseLevel($value);
+                $this->setBannedNbTotal($value);
                 break;
             case 51:
-                $this->setCreatedAt($value);
+                $this->setAbuseLevel($value);
                 break;
             case 52:
-                $this->setUpdatedAt($value);
+                $this->setCreatedAt($value);
                 break;
             case 53:
-                $this->setSlug($value);
+                $this->setUpdatedAt($value);
                 break;
             case 54:
+                $this->setSlug($value);
+                break;
+            case 55:
                 $this->setArchivedAt($value);
                 break;
         } // switch()
@@ -3887,20 +3970,21 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
         if (array_key_exists($keys[38], $arr)) $this->setNewsletter($arr[$keys[38]]);
         if (array_key_exists($keys[39], $arr)) $this->setLastConnect($arr[$keys[39]]);
         if (array_key_exists($keys[40], $arr)) $this->setNbConnectedDays($arr[$keys[40]]);
-        if (array_key_exists($keys[41], $arr)) $this->setNbViews($arr[$keys[41]]);
-        if (array_key_exists($keys[42], $arr)) $this->setQualified($arr[$keys[42]]);
-        if (array_key_exists($keys[43], $arr)) $this->setValidated($arr[$keys[43]]);
-        if (array_key_exists($keys[44], $arr)) $this->setNbIdCheck($arr[$keys[44]]);
-        if (array_key_exists($keys[45], $arr)) $this->setOnline($arr[$keys[45]]);
-        if (array_key_exists($keys[46], $arr)) $this->setHomepage($arr[$keys[46]]);
-        if (array_key_exists($keys[47], $arr)) $this->setBanned($arr[$keys[47]]);
-        if (array_key_exists($keys[48], $arr)) $this->setBannedNbDaysLeft($arr[$keys[48]]);
-        if (array_key_exists($keys[49], $arr)) $this->setBannedNbTotal($arr[$keys[49]]);
-        if (array_key_exists($keys[50], $arr)) $this->setAbuseLevel($arr[$keys[50]]);
-        if (array_key_exists($keys[51], $arr)) $this->setCreatedAt($arr[$keys[51]]);
-        if (array_key_exists($keys[52], $arr)) $this->setUpdatedAt($arr[$keys[52]]);
-        if (array_key_exists($keys[53], $arr)) $this->setSlug($arr[$keys[53]]);
-        if (array_key_exists($keys[54], $arr)) $this->setArchivedAt($arr[$keys[54]]);
+        if (array_key_exists($keys[41], $arr)) $this->setIndexedAt($arr[$keys[41]]);
+        if (array_key_exists($keys[42], $arr)) $this->setNbViews($arr[$keys[42]]);
+        if (array_key_exists($keys[43], $arr)) $this->setQualified($arr[$keys[43]]);
+        if (array_key_exists($keys[44], $arr)) $this->setValidated($arr[$keys[44]]);
+        if (array_key_exists($keys[45], $arr)) $this->setNbIdCheck($arr[$keys[45]]);
+        if (array_key_exists($keys[46], $arr)) $this->setOnline($arr[$keys[46]]);
+        if (array_key_exists($keys[47], $arr)) $this->setHomepage($arr[$keys[47]]);
+        if (array_key_exists($keys[48], $arr)) $this->setBanned($arr[$keys[48]]);
+        if (array_key_exists($keys[49], $arr)) $this->setBannedNbDaysLeft($arr[$keys[49]]);
+        if (array_key_exists($keys[50], $arr)) $this->setBannedNbTotal($arr[$keys[50]]);
+        if (array_key_exists($keys[51], $arr)) $this->setAbuseLevel($arr[$keys[51]]);
+        if (array_key_exists($keys[52], $arr)) $this->setCreatedAt($arr[$keys[52]]);
+        if (array_key_exists($keys[53], $arr)) $this->setUpdatedAt($arr[$keys[53]]);
+        if (array_key_exists($keys[54], $arr)) $this->setSlug($arr[$keys[54]]);
+        if (array_key_exists($keys[55], $arr)) $this->setArchivedAt($arr[$keys[55]]);
     }
 
     /**
@@ -3953,6 +4037,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PUserArchivePeer::NEWSLETTER)) $criteria->add(PUserArchivePeer::NEWSLETTER, $this->newsletter);
         if ($this->isColumnModified(PUserArchivePeer::LAST_CONNECT)) $criteria->add(PUserArchivePeer::LAST_CONNECT, $this->last_connect);
         if ($this->isColumnModified(PUserArchivePeer::NB_CONNECTED_DAYS)) $criteria->add(PUserArchivePeer::NB_CONNECTED_DAYS, $this->nb_connected_days);
+        if ($this->isColumnModified(PUserArchivePeer::INDEXED_AT)) $criteria->add(PUserArchivePeer::INDEXED_AT, $this->indexed_at);
         if ($this->isColumnModified(PUserArchivePeer::NB_VIEWS)) $criteria->add(PUserArchivePeer::NB_VIEWS, $this->nb_views);
         if ($this->isColumnModified(PUserArchivePeer::QUALIFIED)) $criteria->add(PUserArchivePeer::QUALIFIED, $this->qualified);
         if ($this->isColumnModified(PUserArchivePeer::VALIDATED)) $criteria->add(PUserArchivePeer::VALIDATED, $this->validated);
@@ -4070,6 +4155,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
         $copyObj->setNewsletter($this->getNewsletter());
         $copyObj->setLastConnect($this->getLastConnect());
         $copyObj->setNbConnectedDays($this->getNbConnectedDays());
+        $copyObj->setIndexedAt($this->getIndexedAt());
         $copyObj->setNbViews($this->getNbViews());
         $copyObj->setQualified($this->getQualified());
         $copyObj->setValidated($this->getValidated());
@@ -4177,6 +4263,7 @@ abstract class BasePUserArchive extends BaseObject implements Persistent
         $this->newsletter = null;
         $this->last_connect = null;
         $this->nb_connected_days = null;
+        $this->indexed_at = null;
         $this->nb_views = null;
         $this->qualified = null;
         $this->validated = null;

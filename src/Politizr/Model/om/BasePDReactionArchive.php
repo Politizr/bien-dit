@@ -197,6 +197,12 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
     protected $moderated_at;
 
     /**
+     * The value for the indexed_at field.
+     * @var        string
+     */
+    protected $indexed_at;
+
+    /**
      * The value for the created_at field.
      * @var        string
      */
@@ -609,6 +615,46 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
             $dt = new DateTime($this->moderated_at);
         } catch (Exception $x) {
             throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->moderated_at, true), $x);
+        }
+
+        if ($format === null) {
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
+            return $dt;
+        }
+
+        if (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        }
+
+        return $dt->format($format);
+
+    }
+
+    /**
+     * Get the [optionally formatted] temporal [indexed_at] column value.
+     *
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getIndexedAt($format = null)
+    {
+        if ($this->indexed_at === null) {
+            return null;
+        }
+
+        if ($this->indexed_at === '0000-00-00 00:00:00') {
+            // while technically this is not a default value of null,
+            // this seems to be closest in meaning.
+            return null;
+        }
+
+        try {
+            $dt = new DateTime($this->indexed_at);
+        } catch (Exception $x) {
+            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->indexed_at, true), $x);
         }
 
         if ($format === null) {
@@ -1387,6 +1433,29 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
     } // setModeratedAt()
 
     /**
+     * Sets the value of [indexed_at] column to a normalized version of the date/time value specified.
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return PDReactionArchive The current object (for fluent API support)
+     */
+    public function setIndexedAt($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->indexed_at !== null || $dt !== null) {
+            $currentDateAsString = ($this->indexed_at !== null && $tmpDt = new DateTime($this->indexed_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->indexed_at = $newDateAsString;
+                $this->modifiedColumns[] = PDReactionArchivePeer::INDEXED_AT;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setIndexedAt()
+
+    /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
@@ -1605,13 +1674,14 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
             $this->moderated = ($row[$startcol + 23] !== null) ? (boolean) $row[$startcol + 23] : null;
             $this->moderated_partial = ($row[$startcol + 24] !== null) ? (boolean) $row[$startcol + 24] : null;
             $this->moderated_at = ($row[$startcol + 25] !== null) ? (string) $row[$startcol + 25] : null;
-            $this->created_at = ($row[$startcol + 26] !== null) ? (string) $row[$startcol + 26] : null;
-            $this->updated_at = ($row[$startcol + 27] !== null) ? (string) $row[$startcol + 27] : null;
-            $this->slug = ($row[$startcol + 28] !== null) ? (string) $row[$startcol + 28] : null;
-            $this->tree_left = ($row[$startcol + 29] !== null) ? (int) $row[$startcol + 29] : null;
-            $this->tree_right = ($row[$startcol + 30] !== null) ? (int) $row[$startcol + 30] : null;
-            $this->tree_level = ($row[$startcol + 31] !== null) ? (int) $row[$startcol + 31] : null;
-            $this->archived_at = ($row[$startcol + 32] !== null) ? (string) $row[$startcol + 32] : null;
+            $this->indexed_at = ($row[$startcol + 26] !== null) ? (string) $row[$startcol + 26] : null;
+            $this->created_at = ($row[$startcol + 27] !== null) ? (string) $row[$startcol + 27] : null;
+            $this->updated_at = ($row[$startcol + 28] !== null) ? (string) $row[$startcol + 28] : null;
+            $this->slug = ($row[$startcol + 29] !== null) ? (string) $row[$startcol + 29] : null;
+            $this->tree_left = ($row[$startcol + 30] !== null) ? (int) $row[$startcol + 30] : null;
+            $this->tree_right = ($row[$startcol + 31] !== null) ? (int) $row[$startcol + 31] : null;
+            $this->tree_level = ($row[$startcol + 32] !== null) ? (int) $row[$startcol + 32] : null;
+            $this->archived_at = ($row[$startcol + 33] !== null) ? (string) $row[$startcol + 33] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -1621,7 +1691,7 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 33; // 33 = PDReactionArchivePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 34; // 34 = PDReactionArchivePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PDReactionArchive object", $e);
@@ -1907,6 +1977,9 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PDReactionArchivePeer::MODERATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`moderated_at`';
         }
+        if ($this->isColumnModified(PDReactionArchivePeer::INDEXED_AT)) {
+            $modifiedColumns[':p' . $index++]  = '`indexed_at`';
+        }
         if ($this->isColumnModified(PDReactionArchivePeer::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`created_at`';
         }
@@ -2016,6 +2089,9 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
                         break;
                     case '`moderated_at`':
                         $stmt->bindValue($identifier, $this->moderated_at, PDO::PARAM_STR);
+                        break;
+                    case '`indexed_at`':
+                        $stmt->bindValue($identifier, $this->indexed_at, PDO::PARAM_STR);
                         break;
                     case '`created_at`':
                         $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
@@ -2170,24 +2246,27 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
                 return $this->getModeratedAt();
                 break;
             case 26:
-                return $this->getCreatedAt();
+                return $this->getIndexedAt();
                 break;
             case 27:
-                return $this->getUpdatedAt();
+                return $this->getCreatedAt();
                 break;
             case 28:
-                return $this->getSlug();
+                return $this->getUpdatedAt();
                 break;
             case 29:
-                return $this->getTreeLeft();
+                return $this->getSlug();
                 break;
             case 30:
-                return $this->getTreeRight();
+                return $this->getTreeLeft();
                 break;
             case 31:
-                return $this->getTreeLevel();
+                return $this->getTreeRight();
                 break;
             case 32:
+                return $this->getTreeLevel();
+                break;
+            case 33:
                 return $this->getArchivedAt();
                 break;
             default:
@@ -2244,13 +2323,14 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
             $keys[23] => $this->getModerated(),
             $keys[24] => $this->getModeratedPartial(),
             $keys[25] => $this->getModeratedAt(),
-            $keys[26] => $this->getCreatedAt(),
-            $keys[27] => $this->getUpdatedAt(),
-            $keys[28] => $this->getSlug(),
-            $keys[29] => $this->getTreeLeft(),
-            $keys[30] => $this->getTreeRight(),
-            $keys[31] => $this->getTreeLevel(),
-            $keys[32] => $this->getArchivedAt(),
+            $keys[26] => $this->getIndexedAt(),
+            $keys[27] => $this->getCreatedAt(),
+            $keys[28] => $this->getUpdatedAt(),
+            $keys[29] => $this->getSlug(),
+            $keys[30] => $this->getTreeLeft(),
+            $keys[31] => $this->getTreeRight(),
+            $keys[32] => $this->getTreeLevel(),
+            $keys[33] => $this->getArchivedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -2369,24 +2449,27 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
                 $this->setModeratedAt($value);
                 break;
             case 26:
-                $this->setCreatedAt($value);
+                $this->setIndexedAt($value);
                 break;
             case 27:
-                $this->setUpdatedAt($value);
+                $this->setCreatedAt($value);
                 break;
             case 28:
-                $this->setSlug($value);
+                $this->setUpdatedAt($value);
                 break;
             case 29:
-                $this->setTreeLeft($value);
+                $this->setSlug($value);
                 break;
             case 30:
-                $this->setTreeRight($value);
+                $this->setTreeLeft($value);
                 break;
             case 31:
-                $this->setTreeLevel($value);
+                $this->setTreeRight($value);
                 break;
             case 32:
+                $this->setTreeLevel($value);
+                break;
+            case 33:
                 $this->setArchivedAt($value);
                 break;
         } // switch()
@@ -2439,13 +2522,14 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
         if (array_key_exists($keys[23], $arr)) $this->setModerated($arr[$keys[23]]);
         if (array_key_exists($keys[24], $arr)) $this->setModeratedPartial($arr[$keys[24]]);
         if (array_key_exists($keys[25], $arr)) $this->setModeratedAt($arr[$keys[25]]);
-        if (array_key_exists($keys[26], $arr)) $this->setCreatedAt($arr[$keys[26]]);
-        if (array_key_exists($keys[27], $arr)) $this->setUpdatedAt($arr[$keys[27]]);
-        if (array_key_exists($keys[28], $arr)) $this->setSlug($arr[$keys[28]]);
-        if (array_key_exists($keys[29], $arr)) $this->setTreeLeft($arr[$keys[29]]);
-        if (array_key_exists($keys[30], $arr)) $this->setTreeRight($arr[$keys[30]]);
-        if (array_key_exists($keys[31], $arr)) $this->setTreeLevel($arr[$keys[31]]);
-        if (array_key_exists($keys[32], $arr)) $this->setArchivedAt($arr[$keys[32]]);
+        if (array_key_exists($keys[26], $arr)) $this->setIndexedAt($arr[$keys[26]]);
+        if (array_key_exists($keys[27], $arr)) $this->setCreatedAt($arr[$keys[27]]);
+        if (array_key_exists($keys[28], $arr)) $this->setUpdatedAt($arr[$keys[28]]);
+        if (array_key_exists($keys[29], $arr)) $this->setSlug($arr[$keys[29]]);
+        if (array_key_exists($keys[30], $arr)) $this->setTreeLeft($arr[$keys[30]]);
+        if (array_key_exists($keys[31], $arr)) $this->setTreeRight($arr[$keys[31]]);
+        if (array_key_exists($keys[32], $arr)) $this->setTreeLevel($arr[$keys[32]]);
+        if (array_key_exists($keys[33], $arr)) $this->setArchivedAt($arr[$keys[33]]);
     }
 
     /**
@@ -2483,6 +2567,7 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PDReactionArchivePeer::MODERATED)) $criteria->add(PDReactionArchivePeer::MODERATED, $this->moderated);
         if ($this->isColumnModified(PDReactionArchivePeer::MODERATED_PARTIAL)) $criteria->add(PDReactionArchivePeer::MODERATED_PARTIAL, $this->moderated_partial);
         if ($this->isColumnModified(PDReactionArchivePeer::MODERATED_AT)) $criteria->add(PDReactionArchivePeer::MODERATED_AT, $this->moderated_at);
+        if ($this->isColumnModified(PDReactionArchivePeer::INDEXED_AT)) $criteria->add(PDReactionArchivePeer::INDEXED_AT, $this->indexed_at);
         if ($this->isColumnModified(PDReactionArchivePeer::CREATED_AT)) $criteria->add(PDReactionArchivePeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(PDReactionArchivePeer::UPDATED_AT)) $criteria->add(PDReactionArchivePeer::UPDATED_AT, $this->updated_at);
         if ($this->isColumnModified(PDReactionArchivePeer::SLUG)) $criteria->add(PDReactionArchivePeer::SLUG, $this->slug);
@@ -2578,6 +2663,7 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
         $copyObj->setModerated($this->getModerated());
         $copyObj->setModeratedPartial($this->getModeratedPartial());
         $copyObj->setModeratedAt($this->getModeratedAt());
+        $copyObj->setIndexedAt($this->getIndexedAt());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
         $copyObj->setSlug($this->getSlug());
@@ -2662,6 +2748,7 @@ abstract class BasePDReactionArchive extends BaseObject implements Persistent
         $this->moderated = null;
         $this->moderated_partial = null;
         $this->moderated_at = null;
+        $this->indexed_at = null;
         $this->created_at = null;
         $this->updated_at = null;
         $this->slug = null;

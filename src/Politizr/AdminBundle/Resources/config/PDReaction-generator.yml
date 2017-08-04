@@ -84,6 +84,8 @@ params:
             label:          Création
         updated_at:
             label:          Mis à jour
+        indexed_at:
+            label:          Indexé le
     object_actions:
         delete:             ~
     batch_actions:
@@ -201,7 +203,7 @@ builders:
                     "En ligne":                 [ online ]
                     "Notification":             [ block_notifications ]
                     "Mise en avant":            [ [ homepage, fb_ad_id ] ]
-                    "Création":                 [ [ created_at, updated_at ] ]
+                    "Dates":                    [ [ created_at, updated_at ], [ indexed_at ] ]
             fields:
                 block_file_name:
                     label:                      "Image"
@@ -305,7 +307,7 @@ builders:
                     "Identifiants":             [ [ id, uuid, slug ] ]
                     "En ligne":                 [ online ]
                     "Mise en avant":            [ [ homepage, fb_ad_id ] ]
-                    "Création":                 [ [ created_at, updated_at ] ]
+                    "Dates":                    [ [ created_at, updated_at ], [ indexed_at ] ]
                 "Front":
                     "Rendu":                    [ block_front ]
             fields:

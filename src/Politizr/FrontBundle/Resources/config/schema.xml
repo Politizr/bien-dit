@@ -631,6 +631,8 @@
         <column name="last_connect" type="timestamp" />
         <column name="nb_connected_days" type="integer" defaultValue="0" />
 
+        <column name="indexed_at" type="timestamp" />
+
         <column name="nb_views" type="integer" />
 
         <column name="qualified" type="boolean" />
@@ -1026,6 +1028,7 @@
         <column name="moderated" type="boolean" />
         <column name="moderated_partial" type="boolean" />
         <column name="moderated_at" type="timestamp" />
+        <column name="indexed_at" type="timestamp" />
 
         <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />
@@ -1107,6 +1110,7 @@
         <column name="moderated" type="boolean" />
         <column name="moderated_partial" type="boolean" />
         <column name="moderated_at" type="timestamp" />
+        <column name="indexed_at" type="timestamp" />
 
         <foreign-key foreignTable="p_user" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />

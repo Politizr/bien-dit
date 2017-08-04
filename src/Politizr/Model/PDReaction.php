@@ -9,6 +9,7 @@ use Symfony\Component\Validator\Constraints\Count;
 
 use StudioEcho\Lib\StudioEchoUtils;
 
+use Politizr\Constant\PathConstants;
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\TagConstants;
 use Politizr\Constant\LabelConstants;
@@ -68,6 +69,20 @@ class PDReaction extends BasePDReaction implements PDocumentInterface
     public function isDisplayed()
     {
         return $this->getOnline() && $this->getPublished();
+    }
+
+    /**
+     *
+     */
+    public function getPathFileName()
+    {
+        $default = 'default_document.jpg';
+        $path = PathConstants::REACTION_DEFAULT_PATH.$default;
+        if ($fileName = $this->getFileName()) {
+            $path = PathConstants::REACTION_UPLOAD_WEB_PATH.$fileName;
+        }
+
+        return $path;
     }
 
     /**
