@@ -77,7 +77,7 @@ class PDReaction extends BasePDReaction implements PDocumentInterface
     public function getPathFileName()
     {
         $default = 'default_document.jpg';
-        $path = PathConstants::REACTION_DEFAULT_PATH.$default;
+        $path = PathConstants::REACTION_UPLOAD_WEB_PATH.$default;
         if ($fileName = $this->getFileName()) {
             $path = PathConstants::REACTION_UPLOAD_WEB_PATH.$fileName;
         }

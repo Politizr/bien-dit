@@ -79,7 +79,7 @@ class PDDebate extends BasePDDebate implements PDocumentInterface
     public function getPathFileName()
     {
         $default = 'default_document.jpg';
-        $path = PathConstants::DEBATE_DEFAULT_PATH.$default;
+        $path = PathConstants::DEBATE_UPLOAD_WEB_PATH.$default;
         if ($fileName = $this->getFileName()) {
             $path = PathConstants::DEBATE_UPLOAD_WEB_PATH.$fileName;
         }

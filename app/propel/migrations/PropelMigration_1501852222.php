@@ -66,6 +66,8 @@ ALTER TABLE `p_user_archive`
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;
+
+# @todo > copie images par défaut default_avatar.jpg & default_document.jpg
 ',
 );
     }

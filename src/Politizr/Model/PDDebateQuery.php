@@ -31,6 +31,18 @@ class PDDebateQuery extends BasePDDebateQuery
     }
 
     /**
+     *
+     * @return PDDebateQuery
+     */
+    public function offline()
+    {
+        return $this
+            ->filterByOnline(false)
+            ->_or()
+            ->filterByPublished(false);
+    }
+
+    /**
      * Filter publication's author qualified
      */
     public function onlyElected()

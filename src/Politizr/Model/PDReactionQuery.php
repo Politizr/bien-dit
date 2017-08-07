@@ -19,10 +19,23 @@ class PDReactionQuery extends BasePDReactionQuery
 
     /**
      *
+     * @return PDReactionQuery
      */
     public function online()
     {
         return $this->filterByOnline(true)->filterByPublished(true);
+    }
+
+    /**
+     *
+     * @return PDReactionQuery
+     */
+    public function offline()
+    {
+        return $this
+            ->filterByOnline(false)
+            ->_or()
+            ->filterByPublished(false);
     }
 
     /**

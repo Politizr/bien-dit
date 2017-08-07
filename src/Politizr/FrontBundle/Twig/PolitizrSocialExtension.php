@@ -94,13 +94,7 @@ class PolitizrSocialExtension extends \Twig_Extension
         // $this->logger->info('$baseUrl = '.print_r($baseUrl, true));
 
         if ($fileName = $subject->getFileName()) {
-            $fileWebPath = PathConstants::DEBATE_UPLOAD_WEB_PATH;
-            if ($subject->getType() == ObjectTypeConstants::TYPE_REACTION) {
-                $fileWebPath = PathConstants::REACTION_UPLOAD_WEB_PATH;
-            } elseif ($subject->getType() == ObjectTypeConstants::TYPE_USER) {
-                $fileWebPath = PathConstants::USER_UPLOAD_WEB_PATH;
-            }
-            $imageUrls[] = $this->globalTools->filterImage($baseUrl, $fileName, $fileWebPath, 'facebook_share');
+            $imageUrls[] = $this->globalTools->filterImage($subject->getPathFileName(), 'facebook_share');
         }
 
         $imageUrls[] = $baseUrl.'/bundles/politizrfront/images/share_facebook.jpg';
@@ -131,14 +125,7 @@ class PolitizrSocialExtension extends \Twig_Extension
         // $this->logger->info('$baseUrl = '.print_r($baseUrl, true));
 
         if ($fileName = $subject->getFileName()) {
-            $fileWebPath = PathConstants::DEBATE_UPLOAD_WEB_PATH;
-            if ($subject->getType() == ObjectTypeConstants::TYPE_REACTION) {
-                $fileWebPath = PathConstants::REACTION_UPLOAD_WEB_PATH;
-            } elseif ($subject->getType() == ObjectTypeConstants::TYPE_USER) {
-                $fileWebPath = PathConstants::USER_UPLOAD_WEB_PATH;
-            }
-
-            $imageUrl = $this->globalTools->filterImage($baseUrl, $fileName, $fileWebPath, 'twitter_share');
+            $imageUrl = $this->globalTools->filterImage($subject->getPathFileName(), 'twitter_share');
         } else {
             $imageUrl = $baseUrl.'/bundles/politizrfront/images/share_twitter.jpg';
         }

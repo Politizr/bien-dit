@@ -106,7 +106,7 @@ class PUser extends BasePUser implements UserInterface
     public function getPathFileName()
     {
         $default = 'default_avatar.jpg';
-        $path = PathConstants::USER_DEFAULT_PATH.$default;
+        $path = PathConstants::USER_UPLOAD_WEB_PATH.$default;
         if ($fileName = $this->getFileName()) {
             $path = PathConstants::USER_UPLOAD_WEB_PATH.$fileName;
         }

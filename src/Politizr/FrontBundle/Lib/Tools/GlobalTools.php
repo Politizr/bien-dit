@@ -730,27 +730,23 @@ class GlobalTools
     /**
      * Apply a LIIP Imagine filter to an image and return the image url
      *
-     * @param $baseUrl
-     * @param $fileName
-     * @param $fileWebPath   Relative web path
+     * @param $pathFileName     Relative web path + file name
      * @param $filterName
      * @return string url
      */
-    public function filterImage($baseUrl, $fileName, $fileWebPath, $filterName = 'facebook_share')
+    public function filterImage($pathFileName, $filterName = 'facebook_share')
     {
         // $this->logger->info('*** getFilteredImageUrl');
-        // $this->logger->info('$baseUrl = '.print_r($baseUrl, true));
-        // $this->logger->info('$fileName = '.print_r($fileName, true));
-        // $this->logger->info('$fileWebPath = '.print_r($fileWebPath, true));
+        // $this->logger->info('$pathFileName = '.print_r($pathFileName, true));
         // $this->logger->info('$filterName = '.print_r($filterName, true));
 
         $this->liipImagineController->filterAction(
             new Request(),
-            $fileWebPath.$fileName,
+            $pathFileName,
             $filterName
         );
 
-        $imageUrl = $this->liipImagineCacheManager->getBrowserPath($fileWebPath.$fileName, $filterName);
+        $imageUrl = $this->liipImagineCacheManager->getBrowserPath($pathFileName, $filterName);
         // $this->logger->info('$imageUrl = '.print_r($imageUrl, true));
 
         return $imageUrl;
