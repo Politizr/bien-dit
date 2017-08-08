@@ -1,0 +1,13 @@
+{% verbatim %}
+<script type="text/html" id="hit-template">
+    <div class="hit">
+        <div class="hitImage">
+            <a href="{{url}}"><img src="{{image}}" alt="{{title}}"></a>
+        </div>
+        <div class="hitContent">
+            <h2 class="hitTitle"><a href="{{url}}">{{{_highlightResult.title.value}}}</a></h2>
+            <p class="hitDescription"><a href="{{url}}">{{{_snippetResult.description.value}}}</a></p>
+        </div>
+    </div>
+</script>
+{% endverbatim %}

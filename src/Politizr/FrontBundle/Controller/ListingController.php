@@ -30,31 +30,6 @@ use AlgoliaSearch\Client as AlgoliaSearchClient;
  */
 class ListingController extends Controller
 {
-    /* ######################################################################################################## */
-    /*                                                SEARCH TEST                                               */
-    /* ######################################################################################################## */
-
-    /**
-     */
-    public function algoliaAction()
-    {
-        // Algolia search client init
-        $client = new AlgoliaSearchClient("PCH7L1BPQO", "858b1170e1d7ff7bf59cad9fbacbc71c");
-
-        $index = $client->initIndex('dev_POLITIZR');
-
-        $index->setSettings(array(
-            "searchableAttributes" => [
-                "title",
-                "description"
-            ]
-        ));
-
-        return $this->render('PolitizrFrontBundle:PaginatedList:searchResults.html.twig', array(
-        ));
-    }
-
-
     /**
      * Common document "check" validity
      * code beta

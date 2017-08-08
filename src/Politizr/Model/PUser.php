@@ -1096,7 +1096,7 @@ class PUser extends BasePUser implements UserInterface
     /**
      * Return user's PLCity
      *
-     * @param PLCity
+     * @return PLCity
      */
     public function getCity()
     {
@@ -1106,7 +1106,7 @@ class PUser extends BasePUser implements UserInterface
     /**
      * Return user's PLDepartment
      *
-     * @param PLDepartment
+     * @return PLDepartment
      */
     public function getDepartment()
     {
@@ -1120,7 +1120,7 @@ class PUser extends BasePUser implements UserInterface
     /**
      * Return user's PLRegion
      *
-     * @param PLRegion
+     * @return PLRegion
      */
     public function getRegion()
     {
@@ -1138,7 +1138,7 @@ class PUser extends BasePUser implements UserInterface
     /**
      * Return user's city name
      *
-     * @param string
+     * @return string
      */
     public function getCityStr()
     {
@@ -1152,7 +1152,7 @@ class PUser extends BasePUser implements UserInterface
     /**
      * Return user's department name
      *
-     * @param string
+     * @return string
      */
     public function getDepartmentStr()
     {
@@ -1162,6 +1162,23 @@ class PUser extends BasePUser implements UserInterface
 
         return $this->getPLCity()->getPLDepartment()->getTitle();
     }
+
+    /**
+     * Return user's city's [latitude, longitude]
+     *
+     * @return array[latitude,longitude]
+     */
+    public function getGeoloc()
+    {
+        $city = $this->getPLCity();
+
+        if ($city) {
+            return [$city->getLatitudeDeg(), $city->getLongitudeDeg()];
+        }
+
+        return null;
+    }
+
 
     // ************************************************************************************ //
     //                                          OPERATION

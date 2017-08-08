@@ -28,6 +28,9 @@ use Politizr\Exception\PolitizrException;
 /**
  * Politizr db indexing to Algolia
  *
+ * @todo (?):
+ *  - geo indexation (examples in user) => /!\ required for all records => add service to get "prefecture / dep", "ville principal / région", "toutes les grandes villes / france"  /  https://www.algolia.com/doc/guides/searching/geo-search/
+ *
  * @author Lionel Bouzonville
  */
 class AlgoliaSearchIndexingCommand extends ContainerAwareCommand
@@ -224,15 +227,28 @@ class AlgoliaSearchIndexingCommand extends ContainerAwareCommand
                 $output->writeln(sprintf('Exception for user id-%s - %s', $user->getId(), $e->getMessage()));
             }
 
-            $indexedObjects[] = [
+            $attributes = [
                 'objectID' => $user->getUuid(),
-                'type' => $user->getType(),
+                'type' => 'Utilisateur',
                 'id' => $user->getId(),
                 'image' => $imagePath,
                 'title' => $user->getFullname(),
                 'description' => html_entity_decode(strip_tags($user->getBiography())),
                 'url' => $this->router->generate('UserDetail', array('slug' => $user->getSlug()), true),
             ];
+            $indexedObjects[] = $attributes;
+
+            // if ($geoloc = $user->getGeoloc()) {
+            //     $output->writeln(sprintf('%s', print_r($geoloc, true)));
+            //     $indexedObjects[] = array_merge($attributes, [
+            //         '_geoloc' => [
+            //             'lat' => $geoloc[0],
+            //             'lng' => $geoloc[1],
+            //         ]
+            //     ]);
+            // } else {
+            //     $indexedObjects[] = $attributes;
+            // }
 
             $nbIndexed++;
         }
@@ -275,7 +291,7 @@ class AlgoliaSearchIndexingCommand extends ContainerAwareCommand
 
             $indexedObjects[] = [
                 'objectID' => $debate->getUuid(),
-                'type' => $debate->getType(),
+                'type' => 'Sujet',
                 'id' => $debate->getId(),
                 'image' => $imagePath,
                 'title' => $debate->getTitle(),
@@ -324,7 +340,7 @@ class AlgoliaSearchIndexingCommand extends ContainerAwareCommand
 
             $indexedObjects[] = [
                 'objectID' => $reaction->getUuid(),
-                'type' => $reaction->getType(),
+                'type' => 'Réponse',
                 'id' => $reaction->getId(),
                 'image' => $imagePath,
                 'title' => $reaction->getTitle(),

@@ -3,20 +3,16 @@
     <div id="headerLeft">
         <div id="logo"><a href="{{ path('Homepage'~profileSuffix()) }}"><i class="icon-pltzr-logo"></i><span>politizr</span></a></div>
         <div id="headerMenu">
-            <a href="{{ path('Homepage'~profileSuffix()) }}"{% if homepage is defined and homepage %} class="currentPage"{% endif %}>accueil</a>
+            {#<a href="{{ path('Homepage'~profileSuffix()) }}"{% if homepage is defined and homepage %} class="currentPage"{% endif %}>accueil</a>#}
             {#<a href="{{ path('ListingByRecommend') }}"{% if top is defined and top %} class="currentPage"{% endif %}>top</a>#}
             <a href="{{ path('ListingSearchPublications') }}"{% if searchPublications is defined and searchPublications %} class="currentPage"{% endif %}>publications</a>
             <a href="{{ path('ListingSearchUsers'~profileSuffix()) }}"{% if searchUsers is defined and searchUsers %} class="currentPage"{% endif %}>{% if (isGrantedE()) %}les élus{% else %}mes élus{% endif %}</a>
         </div>
+        <div id="searchInput">
+            <i class="icon-search"></i><input id="searchInputAlgolia" type="text" placeholder="Rechercher">
+        </div>
     </div>
     <div id="headerRight">
-          <header>
-            <div>
-               <input id="search-input" placeholder="Recherche...">
-               <!-- We use a specific placeholder in the input to guides users in their search. -->
-            </div>
-          </header>
-        <div class="headerSeparator"></div>
         <a href="{{ path('DebateDraftNew'~profileSuffix()) }}" class="newSubject"><i class="icon-plane"></i><span>nouveau sujet</span></a>
         <div class="headerSeparator"></div>
         <div id="notifCounter">
@@ -25,6 +21,7 @@
             </i>
             <div id="notifBox" style="display: none;"></div>
         </div>
+        {#
         <div class="headerSeparator"></div>
         <div id="reputCounter" uuid="{{ app.user.uuid }}">
             <a href="{{ path('UserDetail', {'slug': app.user.slug}) }}">
@@ -36,6 +33,7 @@
                 </span>
             </a>
         </div>
+        #}
         <div class="headerSeparator"></div>
         <div id="userLogged">
             <a href="{{ path('UserDetail', {'slug': app.user.slug}) }}">

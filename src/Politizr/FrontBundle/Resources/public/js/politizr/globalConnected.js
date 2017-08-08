@@ -2,9 +2,11 @@
 
 // on document ready
 $(function() {
-    scoreCounter();
-    badgesCounter();
+    // scoreCounter();
+    // badgesCounter();
     notificationsLoading();
+
+    $('#logo').focus();
 });
 
 
@@ -321,3 +323,18 @@ function closeOp() {
     });
 };
 
+
+// ******************************************************************* //
+//                       ALGOLIA SEARCH                                //
+// ******************************************************************* //
+
+$("body").on( "focus", "#searchInputAlgolia" , function() {
+    $('body').addClass('noScroll');
+    $('#searchModal').show();
+});
+
+$("body").on("click", "[action='closeModal']", function(e) {
+    $('#searchModal').hide();
+    $('#searchInputAlgolia').val('');
+    $('body').removeClass('noScroll');
+});
