@@ -104,8 +104,8 @@ $("body").on("click", "[action='followDebate']", function(e) {
     ).done(function(data) {
         if (!data['error']) {
             // update reputation counter
-            scoreCounter();
-            badgesCounter();
+            // scoreCounter();
+            // badgesCounter();
 
             // refresh timeline
             refreshTimeline();
@@ -135,8 +135,8 @@ $("body").on("click", "[action='followUser']", function(e) {
     ).done(function(data) {
         if (!data['error']) {
             // update reputation counter
-            scoreCounter();
-            badgesCounter();
+            // scoreCounter();
+            // badgesCounter();
 
             // refresh timeline
             refreshTimeline();

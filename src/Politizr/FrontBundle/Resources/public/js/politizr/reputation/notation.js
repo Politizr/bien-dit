@@ -37,8 +37,8 @@ function noteDocument(context, localLoader, uuid, type, way) {
             $(this).html(data['html']);
 
             // update reputation counter
-            scoreCounter();
-            badgesCounter();
+            // scoreCounter();
+            // badgesCounter();
         }
         localLoader.hide();
     });
