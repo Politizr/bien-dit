@@ -58,7 +58,7 @@ class AlgoliaInitAttributesCommand extends ContainerAwareCommand
                 'description',
             ),
             'attributesForFaceting' => array(
-                'type',
+                'typeLabel',
             ),
             'attributesToSnippet' => array(
                 'description:50',

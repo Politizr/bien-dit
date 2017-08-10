@@ -74,6 +74,10 @@ twig:
             previous_message:   '< page précédente'
             next_message:       'page suivante >'
             dots_message:       '...'
+        algolia:
+            app_id:             %algolia_app_id%
+            api_key:            %algolia_search_api_key%
+            index_name:         %algolia_index_name%
 
 # Assetic Configuration
 assetic:
@@ -423,7 +427,7 @@ liip_imagine:
         algolia_image_document:
             quality:              80
             filters:
-                thumbnail:         { size: [250, 100], mode: inbound }
+                thumbnail:         { size: [150, 100], mode: inbound }
 
 # Bazinga Faker
 bazinga_faker:

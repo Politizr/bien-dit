@@ -229,7 +229,9 @@ class AlgoliaSearchIndexingCommand extends ContainerAwareCommand
 
             $attributes = [
                 'objectID' => $user->getUuid(),
-                'type' => 'Utilisateur',
+                'type' => ObjectTypeConstants::TYPE_USER,
+                'typeLabel' => 'Utilisateur',
+                'cssClass' => 'hitUser',
                 'id' => $user->getId(),
                 'image' => $imagePath,
                 'title' => $user->getFullname(),
@@ -291,7 +293,9 @@ class AlgoliaSearchIndexingCommand extends ContainerAwareCommand
 
             $indexedObjects[] = [
                 'objectID' => $debate->getUuid(),
-                'type' => 'Sujet',
+                'type' => ObjectTypeConstants::TYPE_DEBATE,
+                'typeLabel' => 'Sujet',
+                'cssClass' => 'hitPublication',
                 'id' => $debate->getId(),
                 'image' => $imagePath,
                 'title' => $debate->getTitle(),
@@ -340,7 +344,9 @@ class AlgoliaSearchIndexingCommand extends ContainerAwareCommand
 
             $indexedObjects[] = [
                 'objectID' => $reaction->getUuid(),
-                'type' => 'Réponse',
+                'type' => ObjectTypeConstants::TYPE_REACTION,
+                'typeLabel' => 'Réponse',
+                'cssClass' => 'hitPublication',
                 'id' => $reaction->getId(),
                 'image' => $imagePath,
                 'title' => $reaction->getTitle(),

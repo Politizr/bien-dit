@@ -1,13 +1,18 @@
 var search = instantsearch({
   // Replace with your own values
-  appId: 'PCH7L1BPQO',
-  apiKey: '5d5cd40806f8b3267a59b513ecb3551a', // search only API key, no ADMIN key
-  indexName: 'dev_POLITIZR',
+  appId: $('#searchModal').attr('app'),
+  apiKey: $('#searchModal').attr('key'), // search only API key, no ADMIN key
+  indexName: $('#searchModal').attr('index'),
   urlSync: true,
   searchFunction: function(helper) {
     var searchResults = $('#algoliaResults');
+    var startSearch = $('#startSearch');
+    
+    startSearch.hide();
+
     if (helper.state.query === '') {
       searchResults.hide();
+      startSearch.show();
       return;
     }
     helper.search();
@@ -28,7 +33,7 @@ search.addWidget(
     hitsPerPage: 10,
     templates: {
       item: document.getElementById('hit-template').innerHTML,
-      empty: "We didn't find any results for the search <em>\"{{query}}\"</em>"
+      empty: "Aucun résultat pour <em>\"{{query}}\"</em>"
     },
     showMoreLabel: "Plus de résultats",
   })
@@ -42,15 +47,13 @@ search.addWidget(
 
 search.addWidget(
   instantsearch.widgets.menu({
-    container: '#categories',
-    attributeName: 'type',
+    container: '#categoriesResults',
+    attributeName: 'typeLabel',
     limit: 10,
     templates: {
-      header: 'Catégories'
+      header: 'Filtrer par'
     }
   })
 );
-
-
 
 search.start();

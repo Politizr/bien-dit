@@ -337,4 +337,10 @@ $("body").on("click", "[action='closeModal']", function(e) {
     $('#searchModal').hide();
     $('#searchInputAlgolia').val('');
     $('body').removeClass('noScroll');
+
+    // remove extra url parameters dedicated to search
+    var uri = window.location.href; //get current address
+    var cleanedUri = uri.substring(0, uri.indexOf('?'));
+    // console.log(cleanedUri);
+    updateUrl(cleanedUri);
 });
