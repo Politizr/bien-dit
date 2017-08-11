@@ -351,7 +351,7 @@ class AlgoliaSearchIndexingCommand extends ContainerAwareCommand
                 'image' => $imagePath,
                 'title' => $reaction->getTitle(),
                 'description' => html_entity_decode(strip_tags($reaction->getDescription())),
-                'url' => $this->router->generate('DebateDetail', array('slug' => $reaction->getSlug()), true),
+                'url' => $this->router->generate('ReactionDetail', array('slug' => $reaction->getSlug()), true),
             ];
 
             $nbIndexed++;
