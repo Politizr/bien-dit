@@ -1,7 +1,13 @@
 {# beta #}
+{% if document.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE') %}
+    {% set detailPath = path('DebateDetail', { 'slug': document.slug }) %}
+{% elseif document.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION') %}
+    {% set detailPath = path('ReactionDetail', { 'slug': document.slug }) %}
+{% endif %}
+
 <div class="statTime"><i class="icon-time"></i>{{ document | readingTime }}</div>
 <div class="statViews"><i class="icon-graph"></i>{{ document | nbViews }}</div>
-<div class="statComments"><i class="icon-comment"></i>{{ document | nbComments }}</div>
+<div class="statComments"><i class="icon-comment"></i>{{ document | statsComments }}</div>
 {% if facebook %}
     <div class="statFB withLoaderInside" uuid="{{ document.uuid }}" type="{{ document.type }}">
         {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}

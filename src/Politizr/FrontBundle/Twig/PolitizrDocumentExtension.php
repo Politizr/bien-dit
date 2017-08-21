@@ -123,6 +123,11 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 array('is_safe' => array('html'))
             ),
             new \Twig_SimpleFilter(
+                'statsComments',
+                array($this, 'statsComments'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
                 'readingTime',
                 array($this, 'readingTime'),
                 array('is_safe' => array('html'))
@@ -489,6 +494,43 @@ class PolitizrDocumentExtension extends \Twig_Extension
             if ($label) {
                 $html = 'Voir les commentaires';
             }
+        }
+
+        return $html;
+    }
+
+    /**
+     * Stats du nombre de commentaires d'un document.
+     *
+     * @param PDocumentInterface $document
+     * @return string
+     */
+    public function statsComments(PDocumentInterface $document)
+    {
+        // // $this->logger->info('*** statsComments');
+        // // $this->logger->info('$document = '.print_r($document, true));
+
+        $nbComments = $document->countComments(true);
+
+        switch ($document->getType()) {
+            case ObjectTypeConstants::TYPE_DEBATE:
+                $url = $this->router->generate('DebateDetail', array('slug' => $document->getSlug()));
+                break;
+            case ObjectTypeConstants::TYPE_REACTION:
+                $url = $this->router->generate('ReactionDetail', array('slug' => $document->getSlug()));
+                break;
+            default:
+                throw new InconsistentDataException(sprintf('Object type %s not managed', $document->getType()));
+        }
+
+        $url .= '#p-0';
+
+        if (0 === $nbComments) {
+            $html = 'Aucun commentaire';
+        } elseif (1 === $nbComments) {
+            $html = '<a href="' . $url . '">1 commentaire</a>';
+        } else {
+            $html = '<a href="' . $url . '">' . $nbComments . ' commentaires';
         }
 
         return $html;
