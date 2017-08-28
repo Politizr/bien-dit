@@ -61,7 +61,7 @@
         "liip/url-auto-converter-bundle": "dev-master",
 
         "exercise/htmlpurifier-bundle": "^0.2.2",
-        "rollerworks/password-strength-bundle": "^1.4",
+        "rollerworks/password-strength-bundle": "^1.7",
         "lexik/maintenance-bundle": "^2.0",
         "eko/feedbundle": "^1.2",
         "algolia/algoliasearch-client-php": "^1.18"

@@ -124,6 +124,8 @@ builders:
                         filters: 
                             qualified:          0
             display:                            [ file_name, name, firstname, p_l_city, qualified, validated, nb_id_check, reputation_score, online, homepage, last_activity, created_at ]
+            filters:                            [ id, uuid, email, name, qualified, validated, p_u_status, online, homepage ]
+            filtersMode:                        modal
             fields:
                 p_l_city:
                     label:                      Localisation
@@ -131,8 +133,10 @@ builders:
                 reputation_score:
                     label:                      Score
                     sortable:                   false
-            filtersMode:                        modal
-            filters:                            [ id, uuid, email, name, qualified, validated, p_u_status, online, homepage, last_activity, created_at ]
+                created_at:
+                    addFormOptions:
+                        format:                 'dd/MM/yyyy'
+                        # format:                 'yyyy-MM-dd'
             object_actions:
                 homepage:
                     label:    En page d'accueil

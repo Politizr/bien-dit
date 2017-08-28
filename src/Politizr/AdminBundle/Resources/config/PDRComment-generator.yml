@@ -56,7 +56,7 @@ builders:
             sort:                               [ created_at, DESC ]
             display:                            [ id, p_user_id, p_d_reaction_id, description, paragraph_no, published_at ]
             filtersMode:                        modal
-            filters:                            [ id, uuid, p_user_id, p_d_reaction_id, published_at ]
+            filters:                            [ id, uuid, p_user_id, p_d_reaction_id ]
             object_actions:
                 show:                           ~
                 edit:                           ~
