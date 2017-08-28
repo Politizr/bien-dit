@@ -133,10 +133,6 @@ builders:
                 reputation_score:
                     label:                      Score
                     sortable:                   false
-                created_at:
-                    addFormOptions:
-                        format:                 'dd/MM/yyyy'
-                        # format:                 'yyyy-MM-dd'
             object_actions:
                 homepage:
                     label:    En page d'accueil

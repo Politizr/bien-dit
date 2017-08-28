@@ -24,6 +24,8 @@ params:
             label:          Titre
         online:
             label:          En ligne
+        file_name:
+            label:          Image
         created_at:
             label:          Création
         updated_at:
