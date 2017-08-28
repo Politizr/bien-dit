@@ -1665,7 +1665,7 @@ abstract class BasePUser extends BaseObject implements Persistent
      * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
-    public function getBirthday($format = null)
+    public function getBirthday($format = 'd/m/Y')
     {
         if ($this->birthday === null) {
             return null;

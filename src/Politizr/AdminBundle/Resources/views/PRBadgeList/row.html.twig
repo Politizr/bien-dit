@@ -1,5 +1,11 @@
 {% extends_admingenerated "PolitizrAdminBundle:PRBadgeList:row.html.twig" %}
 
+{% block list_td_column_file_name %}
+    {% if PRBadge.fileName %}
+        <img src="{{ asset(constant('Politizr\\Constant\\PathConstants::BADGES_UPLOAD_WEB_PATH')~PRBadge.fileName) | imagine_filter('admin_list_thumb') }}" alt="{{ PRBadge.fileName }}" />
+    {% endif %}
+{% endblock list_td_column_file_name %}
+
 
 {% block list_td_column_nb_users %}
     {{ PRBadge.countPUsers }}

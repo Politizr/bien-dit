@@ -33,13 +33,13 @@ abstract class BasePRBadgePeer
     const TM_CLASS = 'Politizr\\Model\\map\\PRBadgeTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 10;
+    const NUM_COLUMNS = 11;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 10;
+    const NUM_HYDRATE_COLUMNS = 11;
 
     /** the column name for the id field */
     const ID = 'p_r_badge.id';
@@ -55,6 +55,9 @@ abstract class BasePRBadgePeer
 
     /** the column name for the title field */
     const TITLE = 'p_r_badge.title';
+
+    /** the column name for the file_name field */
+    const FILE_NAME = 'p_r_badge.file_name';
 
     /** the column name for the online field */
     const ONLINE = 'p_r_badge.online';
@@ -102,12 +105,12 @@ abstract class BasePRBadgePeer
      * e.g. PRBadgePeer::$fieldNames[PRBadgePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'PRMetalTypeId', 'PRBadgeFamilyId', 'Title', 'Online', 'CreatedAt', 'UpdatedAt', 'Slug', 'SortableRank', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'pRMetalTypeId', 'pRBadgeFamilyId', 'title', 'online', 'createdAt', 'updatedAt', 'slug', 'sortableRank', ),
-        BasePeer::TYPE_COLNAME => array (PRBadgePeer::ID, PRBadgePeer::UUID, PRBadgePeer::P_R_METAL_TYPE_ID, PRBadgePeer::P_R_BADGE_FAMILY_ID, PRBadgePeer::TITLE, PRBadgePeer::ONLINE, PRBadgePeer::CREATED_AT, PRBadgePeer::UPDATED_AT, PRBadgePeer::SLUG, PRBadgePeer::SORTABLE_RANK, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'P_R_METAL_TYPE_ID', 'P_R_BADGE_FAMILY_ID', 'TITLE', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', 'SLUG', 'SORTABLE_RANK', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'p_r_metal_type_id', 'p_r_badge_family_id', 'title', 'online', 'created_at', 'updated_at', 'slug', 'sortable_rank', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'PRMetalTypeId', 'PRBadgeFamilyId', 'Title', 'FileName', 'Online', 'CreatedAt', 'UpdatedAt', 'Slug', 'SortableRank', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'pRMetalTypeId', 'pRBadgeFamilyId', 'title', 'fileName', 'online', 'createdAt', 'updatedAt', 'slug', 'sortableRank', ),
+        BasePeer::TYPE_COLNAME => array (PRBadgePeer::ID, PRBadgePeer::UUID, PRBadgePeer::P_R_METAL_TYPE_ID, PRBadgePeer::P_R_BADGE_FAMILY_ID, PRBadgePeer::TITLE, PRBadgePeer::FILE_NAME, PRBadgePeer::ONLINE, PRBadgePeer::CREATED_AT, PRBadgePeer::UPDATED_AT, PRBadgePeer::SLUG, PRBadgePeer::SORTABLE_RANK, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'P_R_METAL_TYPE_ID', 'P_R_BADGE_FAMILY_ID', 'TITLE', 'FILE_NAME', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', 'SLUG', 'SORTABLE_RANK', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'p_r_metal_type_id', 'p_r_badge_family_id', 'title', 'file_name', 'online', 'created_at', 'updated_at', 'slug', 'sortable_rank', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
     );
 
     /**
@@ -117,12 +120,12 @@ abstract class BasePRBadgePeer
      * e.g. PRBadgePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'PRMetalTypeId' => 2, 'PRBadgeFamilyId' => 3, 'Title' => 4, 'Online' => 5, 'CreatedAt' => 6, 'UpdatedAt' => 7, 'Slug' => 8, 'SortableRank' => 9, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'pRMetalTypeId' => 2, 'pRBadgeFamilyId' => 3, 'title' => 4, 'online' => 5, 'createdAt' => 6, 'updatedAt' => 7, 'slug' => 8, 'sortableRank' => 9, ),
-        BasePeer::TYPE_COLNAME => array (PRBadgePeer::ID => 0, PRBadgePeer::UUID => 1, PRBadgePeer::P_R_METAL_TYPE_ID => 2, PRBadgePeer::P_R_BADGE_FAMILY_ID => 3, PRBadgePeer::TITLE => 4, PRBadgePeer::ONLINE => 5, PRBadgePeer::CREATED_AT => 6, PRBadgePeer::UPDATED_AT => 7, PRBadgePeer::SLUG => 8, PRBadgePeer::SORTABLE_RANK => 9, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'P_R_METAL_TYPE_ID' => 2, 'P_R_BADGE_FAMILY_ID' => 3, 'TITLE' => 4, 'ONLINE' => 5, 'CREATED_AT' => 6, 'UPDATED_AT' => 7, 'SLUG' => 8, 'SORTABLE_RANK' => 9, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'p_r_metal_type_id' => 2, 'p_r_badge_family_id' => 3, 'title' => 4, 'online' => 5, 'created_at' => 6, 'updated_at' => 7, 'slug' => 8, 'sortable_rank' => 9, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'PRMetalTypeId' => 2, 'PRBadgeFamilyId' => 3, 'Title' => 4, 'FileName' => 5, 'Online' => 6, 'CreatedAt' => 7, 'UpdatedAt' => 8, 'Slug' => 9, 'SortableRank' => 10, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'pRMetalTypeId' => 2, 'pRBadgeFamilyId' => 3, 'title' => 4, 'fileName' => 5, 'online' => 6, 'createdAt' => 7, 'updatedAt' => 8, 'slug' => 9, 'sortableRank' => 10, ),
+        BasePeer::TYPE_COLNAME => array (PRBadgePeer::ID => 0, PRBadgePeer::UUID => 1, PRBadgePeer::P_R_METAL_TYPE_ID => 2, PRBadgePeer::P_R_BADGE_FAMILY_ID => 3, PRBadgePeer::TITLE => 4, PRBadgePeer::FILE_NAME => 5, PRBadgePeer::ONLINE => 6, PRBadgePeer::CREATED_AT => 7, PRBadgePeer::UPDATED_AT => 8, PRBadgePeer::SLUG => 9, PRBadgePeer::SORTABLE_RANK => 10, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'P_R_METAL_TYPE_ID' => 2, 'P_R_BADGE_FAMILY_ID' => 3, 'TITLE' => 4, 'FILE_NAME' => 5, 'ONLINE' => 6, 'CREATED_AT' => 7, 'UPDATED_AT' => 8, 'SLUG' => 9, 'SORTABLE_RANK' => 10, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'p_r_metal_type_id' => 2, 'p_r_badge_family_id' => 3, 'title' => 4, 'file_name' => 5, 'online' => 6, 'created_at' => 7, 'updated_at' => 8, 'slug' => 9, 'sortable_rank' => 10, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
     );
 
     /**
@@ -201,6 +204,7 @@ abstract class BasePRBadgePeer
             $criteria->addSelectColumn(PRBadgePeer::P_R_METAL_TYPE_ID);
             $criteria->addSelectColumn(PRBadgePeer::P_R_BADGE_FAMILY_ID);
             $criteria->addSelectColumn(PRBadgePeer::TITLE);
+            $criteria->addSelectColumn(PRBadgePeer::FILE_NAME);
             $criteria->addSelectColumn(PRBadgePeer::ONLINE);
             $criteria->addSelectColumn(PRBadgePeer::CREATED_AT);
             $criteria->addSelectColumn(PRBadgePeer::UPDATED_AT);
@@ -212,6 +216,7 @@ abstract class BasePRBadgePeer
             $criteria->addSelectColumn($alias . '.p_r_metal_type_id');
             $criteria->addSelectColumn($alias . '.p_r_badge_family_id');
             $criteria->addSelectColumn($alias . '.title');
+            $criteria->addSelectColumn($alias . '.file_name');
             $criteria->addSelectColumn($alias . '.online');
             $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');

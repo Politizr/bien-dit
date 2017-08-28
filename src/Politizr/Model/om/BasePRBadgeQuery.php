@@ -27,6 +27,7 @@ use Politizr\Model\PUser;
  * @method PRBadgeQuery orderByPRMetalTypeId($order = Criteria::ASC) Order by the p_r_metal_type_id column
  * @method PRBadgeQuery orderByPRBadgeFamilyId($order = Criteria::ASC) Order by the p_r_badge_family_id column
  * @method PRBadgeQuery orderByTitle($order = Criteria::ASC) Order by the title column
+ * @method PRBadgeQuery orderByFileName($order = Criteria::ASC) Order by the file_name column
  * @method PRBadgeQuery orderByOnline($order = Criteria::ASC) Order by the online column
  * @method PRBadgeQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PRBadgeQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
@@ -38,6 +39,7 @@ use Politizr\Model\PUser;
  * @method PRBadgeQuery groupByPRMetalTypeId() Group by the p_r_metal_type_id column
  * @method PRBadgeQuery groupByPRBadgeFamilyId() Group by the p_r_badge_family_id column
  * @method PRBadgeQuery groupByTitle() Group by the title column
+ * @method PRBadgeQuery groupByFileName() Group by the file_name column
  * @method PRBadgeQuery groupByOnline() Group by the online column
  * @method PRBadgeQuery groupByCreatedAt() Group by the created_at column
  * @method PRBadgeQuery groupByUpdatedAt() Group by the updated_at column
@@ -67,6 +69,7 @@ use Politizr\Model\PUser;
  * @method PRBadge findOneByPRMetalTypeId(int $p_r_metal_type_id) Return the first PRBadge filtered by the p_r_metal_type_id column
  * @method PRBadge findOneByPRBadgeFamilyId(int $p_r_badge_family_id) Return the first PRBadge filtered by the p_r_badge_family_id column
  * @method PRBadge findOneByTitle(string $title) Return the first PRBadge filtered by the title column
+ * @method PRBadge findOneByFileName(string $file_name) Return the first PRBadge filtered by the file_name column
  * @method PRBadge findOneByOnline(boolean $online) Return the first PRBadge filtered by the online column
  * @method PRBadge findOneByCreatedAt(string $created_at) Return the first PRBadge filtered by the created_at column
  * @method PRBadge findOneByUpdatedAt(string $updated_at) Return the first PRBadge filtered by the updated_at column
@@ -78,6 +81,7 @@ use Politizr\Model\PUser;
  * @method array findByPRMetalTypeId(int $p_r_metal_type_id) Return PRBadge objects filtered by the p_r_metal_type_id column
  * @method array findByPRBadgeFamilyId(int $p_r_badge_family_id) Return PRBadge objects filtered by the p_r_badge_family_id column
  * @method array findByTitle(string $title) Return PRBadge objects filtered by the title column
+ * @method array findByFileName(string $file_name) Return PRBadge objects filtered by the file_name column
  * @method array findByOnline(boolean $online) Return PRBadge objects filtered by the online column
  * @method array findByCreatedAt(string $created_at) Return PRBadge objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PRBadge objects filtered by the updated_at column
@@ -194,7 +198,7 @@ abstract class BasePRBadgeQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `p_r_metal_type_id`, `p_r_badge_family_id`, `title`, `online`, `created_at`, `updated_at`, `slug`, `sortable_rank` FROM `p_r_badge` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_r_metal_type_id`, `p_r_badge_family_id`, `title`, `file_name`, `online`, `created_at`, `updated_at`, `slug`, `sortable_rank` FROM `p_r_badge` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -469,6 +473,35 @@ abstract class BasePRBadgeQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PRBadgePeer::TITLE, $title, $comparison);
+    }
+
+    /**
+     * Filter the query on the file_name column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByFileName('fooValue');   // WHERE file_name = 'fooValue'
+     * $query->filterByFileName('%fooValue%'); // WHERE file_name LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $fileName The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PRBadgeQuery The current query, for fluid interface
+     */
+    public function filterByFileName($fileName = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($fileName)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $fileName)) {
+                $fileName = str_replace('*', '%', $fileName);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PRBadgePeer::FILE_NAME, $fileName, $comparison);
     }
 
     /**

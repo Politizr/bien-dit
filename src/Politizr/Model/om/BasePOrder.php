@@ -384,7 +384,7 @@ abstract class BasePOrder extends BaseObject implements Persistent
      * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
-    public function getSubscriptionBeginAt($format = null)
+    public function getSubscriptionBeginAt($format = 'd/m/Y')
     {
         if ($this->subscription_begin_at === null) {
             return null;
@@ -424,7 +424,7 @@ abstract class BasePOrder extends BaseObject implements Persistent
      * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
-    public function getSubscriptionEndAt($format = null)
+    public function getSubscriptionEndAt($format = 'd/m/Y')
     {
         if ($this->subscription_end_at === null) {
             return null;

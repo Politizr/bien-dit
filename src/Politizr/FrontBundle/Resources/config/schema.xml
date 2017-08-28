@@ -148,6 +148,8 @@
         
         <column name="title" type="varchar" size="150" />
 
+        <column name="file_name" type="varchar" size="150" />
+
         <column name="online" type="boolean" />
 
         <foreign-key foreignTable="p_r_metal_type" onDelete="CASCADE" onUpdate="CASCADE">

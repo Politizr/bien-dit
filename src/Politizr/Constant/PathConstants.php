@@ -47,4 +47,10 @@ class PathConstants
     // ************************************************************************************ //
     const ORGANIZATION_UPLOAD_PATH = '/../../../web/uploads/organizations/';
     const ORGANIZATION_UPLOAD_WEB_PATH = '/uploads/organizations/';
+
+    // ************************************************************************************ //
+    //                                        BADGES
+    // ************************************************************************************ //
+    const BADGES_UPLOAD_PATH = '/../../../web/uploads/badges/';
+    const BADGES_UPLOAD_WEB_PATH = '/uploads/badges/';
 }
