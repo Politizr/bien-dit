@@ -131,7 +131,7 @@ propel:
 
         propel.defaultTimeStampFormat: ~
         propel.defaultTimeFormat: ~
-        propel.defaultDateFormat: 'd/m/Y'
+        propel.defaultDateFormat: ~
 
         propel.addValidateMethod: false
 

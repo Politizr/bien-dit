@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0d4323b0183cd0025f7a0b0e33ace2d6",
-    "content-hash": "26cb1e07df1263f69c0553950cc7569d",
+    "hash": "6a7ed056455ba349940f3bdbeb95229a",
+    "content-hash": "2f077ca660a7c0592a851cd515de9f1e",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -5064,12 +5064,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony2admingenerator/FormExtensionsBundle.git",
-                "reference": "e4a0a3d0e020ee07b2d01af684311a6ba46deec2"
+                "reference": "46e0fc9440c13cb0e4efc95f09a24aff67d8e467"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony2admingenerator/FormExtensionsBundle/zipball/e4a0a3d0e020ee07b2d01af684311a6ba46deec2",
-                "reference": "e4a0a3d0e020ee07b2d01af684311a6ba46deec2",
+                "url": "https://api.github.com/repos/symfony2admingenerator/FormExtensionsBundle/zipball/d6cd0861bf111e2dd6c125a58d16beccc8e1138a",
+                "reference": "46e0fc9440c13cb0e4efc95f09a24aff67d8e467",
                 "shasum": ""
             },
             "require": {
@@ -5110,7 +5110,7 @@
                 }
             ],
             "description": "Add additional form types to symfony2",
-            "time": "2017-03-15 22:28:36"
+            "time": "2016-07-25 11:02:01"
         },
         {
             "name": "symfony2admingenerator/generator-bundle",
@@ -6157,7 +6157,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "symfony2admingenerator/generator-bundle": 10,
         "symfony2admingenerator/form-bundle": 0,
         "symfony2admingenerator/form-extensions-bundle": 20,
         "willdurand/faker-bundle": 0,
