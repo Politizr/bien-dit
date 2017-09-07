@@ -52,6 +52,7 @@ class PDReactionArchiveTableMap extends TableMap
         $this->addColumn('p_l_region_id', 'PLRegionId', 'INTEGER', false, null, null);
         $this->addColumn('p_l_country_id', 'PLCountryId', 'INTEGER', false, null, null);
         $this->addColumn('p_c_topic_id', 'PCTopicId', 'INTEGER', false, null, null);
+        $this->addColumn('fb_ad_id', 'FbAdId', 'VARCHAR', false, 150, null);
         $this->addColumn('title', 'Title', 'VARCHAR', false, 100, null);
         $this->addColumn('file_name', 'FileName', 'VARCHAR', false, 150, null);
         $this->addColumn('copyright', 'Copyright', 'LONGVARCHAR', false, null, null);
@@ -59,6 +60,7 @@ class PDReactionArchiveTableMap extends TableMap
         $this->addColumn('note_pos', 'NotePos', 'INTEGER', false, null, 0);
         $this->addColumn('note_neg', 'NoteNeg', 'INTEGER', false, null, 0);
         $this->addColumn('nb_views', 'NbViews', 'INTEGER', false, null, null);
+        $this->addColumn('want_boost', 'WantBoost', 'INTEGER', false, null, 0);
         $this->addColumn('published', 'Published', 'BOOLEAN', false, 1, null);
         $this->addColumn('published_at', 'PublishedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('published_by', 'PublishedBy', 'VARCHAR', false, 300, null);
@@ -68,6 +70,7 @@ class PDReactionArchiveTableMap extends TableMap
         $this->addColumn('moderated', 'Moderated', 'BOOLEAN', false, 1, null);
         $this->addColumn('moderated_partial', 'ModeratedPartial', 'BOOLEAN', false, 1, null);
         $this->addColumn('moderated_at', 'ModeratedAt', 'TIMESTAMP', false, null, null);
+        $this->addColumn('indexed_at', 'IndexedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('slug', 'Slug', 'VARCHAR', false, 255, null);

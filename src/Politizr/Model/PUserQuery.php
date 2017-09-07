@@ -32,6 +32,18 @@ class PUserQuery extends BasePUserQuery
 
     /**
      *
+     * @return PUserQuery
+     */
+    public function offline()
+    {
+        return $this
+            ->filterByOnline(false)
+            ->_or()
+            ->filterByPUStatusId(UserConstants::STATUS_ACTIVED, "<>");
+    }
+
+    /**
+     *
      * @param string $keyword
      * @return PUserQuery
      */

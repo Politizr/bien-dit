@@ -1,0 +1,10 @@
+{% if users|length > 1 %}De nouveaux élus viennent de nous rejoindre!{% else %}Un nouvel élu vient de nous rejoindre!{% endif %}
+{% for electedUser in users %}
+    {% set organizations = electedUser.currentOrganizations %}
+    {{ electedUser.fullName }}{% if electedUser.qualified %}{% for organization in organizations %} [{{ organization.initials }}]{% endfor %}{% endif %}
+    {{ electedUser.biography | purify }}
+    {{ url('UserDetail', {'slug': electedUser.slug}) }}
+{% endfor %}
+
+{% if user.qualified %}{{ url('HomepageE') }}{% else %}{{ url('HomepageC') }}{% endif %}
+http://politizr.help/article/suivre-un-utilisateur-et-voir-ses-publications-dans-le-fil-dactualite/

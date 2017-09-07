@@ -4,7 +4,9 @@ services:
         arguments:
         arguments:
             - @security.token_storage
+            - @event_dispatcher
             - @templating
+            - @form.factory
             - @logger
 
     politizr.xhr.document:
@@ -18,11 +20,13 @@ services:
             - @templating
             - @form.factory
             - @router
+            - @twig
             - @politizr.manager.user
             - @politizr.manager.document
             - @politizr.functional.document
             - @politizr.functional.localization
             - @politizr.functional.tag
+            - @politizr.functional.facebook
             - @politizr.tools.global
             - @politizr.twig.document
             - @politizr.form.type.document_localization
@@ -100,6 +104,7 @@ services:
             - @event_dispatcher
             - @templating
             - @router
+            - @twig
             - @form.factory
             - @fos_user.util.email_canonicalizer
             - @politizr.manager.user

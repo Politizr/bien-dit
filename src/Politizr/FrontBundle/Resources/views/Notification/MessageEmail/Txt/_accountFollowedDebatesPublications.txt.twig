@@ -1,0 +1,14 @@
+{% spaceless %}
+La discussion se poursuit...
+{% for publication in followedDebatesPublications %}
+    {% set initialDebate = publication['initialDebate'] %}
+    {% if initialDebate %}
+        {% set debateAuthor = initialDebate.user %}
+        Sujet initial "{{ initialDebate.title }}"{% if debateAuthor %} par {{ debateAuthor.fullName }}{% endif %}.
+    {% endif %}
+    {{ publication['author'] }}</a> a publié {% if (publication['type'] == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE_COMMENT')) or (publication['type'] == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION_COMMENT')) %}un commentaire{% else %}"{{ publication['title'] }}"{% endif %}{% if (publication['type'] == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE_COMMENT')) or (publication['type'] == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION_COMMENT')) %} sur "{{ publication['document'] }}"{% endif %}.
+    {{ publication['url'] }}
+{% endfor %}
+{% if user.qualified %}{{ url('HomepageE') }}{% else %}{{ url('HomepageC') }}{% endif %}"
+http://politizr.help/article/suivre-une-discussion-et-enrichir-son-fil-dactualite/
+{% endspaceless %}

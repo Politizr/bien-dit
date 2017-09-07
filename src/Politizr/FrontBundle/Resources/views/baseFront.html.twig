@@ -10,6 +10,9 @@
         <meta name="description" content="{% block description %}{% endblock description %}">
 
         {% block metaopengraph %}
+            <meta property="fb:app_id" content="{{ facebook.client_id }}" />
+            <meta property="fb:admins" content="{{ facebook.admin_ids }}"/>
+
             {% block ogImage %}<meta property="og:image" content="{{ app.request.getSchemeAndHttpHost() ~ '/bundles/politizrfront/images/share_facebook.jpg' }}" />{% endblock ogImage %}
             <meta property="og:locale" content="fr_FR" />
             <meta property="og:type" content="article" />
@@ -34,7 +37,7 @@
         {% endblock %}
 
         {% block javascriptHeader %}
-            <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery-1.12.0.min.js') }}"></script>  
+            <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery-1.12.4.min.js') }}"></script>  
             <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery-ui.autocomplete.min.js') }}"></script>
 
             <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.waypoints.min.js') }}"></script>
@@ -138,6 +141,9 @@
             {% block headerMsg %}
             {% endblock %}
 
+            {% block searchLayout %}
+            {% endblock %}
+
             {% block preMain %}
             {% endblock %}
 
@@ -154,6 +160,20 @@
                 <script type="text/javascript">
                     var baseUrl = '{{ app.request.getBaseUrl }}';
                 </script>
+
+                {% if app.environment == 'prod' %}
+                    <!-- Twitter universal website tag code -->
+                    <script>
+                    !function(e,t,n,s,u,a){e.twq||(s=e.twq=function(){s.exe?s.exe.apply(s,arguments):s.queue.push(arguments);
+                    },s.version='1.1',s.queue=[],u=t.createElement(n),u.async=!0,u.src='//static.ads-twitter.com/uwt.js',
+                    a=t.getElementsByTagName(n)[0],a.parentNode.insertBefore(u,a))}(window,document,'script');
+                    // Insert Twitter Pixel ID and Standard Event data below
+                    twq('init','nw92c');
+                    twq('track','PageView');
+                    </script>
+                    <!-- End Twitter universal website tag code -->
+                {% endif %}
+
             {% endblock javascriptFooter %}
 
             {% block tawkTo %}

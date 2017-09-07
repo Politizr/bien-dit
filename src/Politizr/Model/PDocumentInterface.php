@@ -40,6 +40,20 @@ interface PDocumentInterface
     public function getType();
 
     /**
+     * Return debate id > id (PDDebate) or reaction's PDDebate id
+     *
+     * @return int
+     */
+    public function getDebateId();
+
+    /**
+     * Return debate > "this" or reaction's PDDebate
+     *
+     * @return PDDebate
+     */
+    public function getDebate();
+
+    /**
      * Filter the document's comments
      *
      * @param boolean $online
@@ -61,9 +75,11 @@ interface PDocumentInterface
     /**
      * Get the tagged tags objects
      *
+     * @param int|array $tagTypeId
+     * @param boolean $online
      * @return PropelCollection[PTag]
      */
-    public function getTags();
+    public function getTags($tagTypeId = null, $online = true);
 
     /**
      * Get the localizations objects
@@ -71,4 +87,12 @@ interface PDocumentInterface
      * @return array[PLocalization]
      */
     public function getPLocalizations();
+
+    /**
+     * Is document associated with a private tag
+     *
+     * @return boolean
+     */
+    public function isWithPrivateTag();
+
 }

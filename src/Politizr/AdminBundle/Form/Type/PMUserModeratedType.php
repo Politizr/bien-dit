@@ -36,7 +36,7 @@ class PMUserModeratedType extends AbstractType
         ));
 
         // Moderation type list
-        $builder->add('p_m_moderation_type', 'model', array(
+        $builder->add('p_m_moderation_type', 'Propel\Bundle\PropelBundle\Form\Type\ModelType', array(
                 'required' => true,
                 'label' => 'Type de modération',
                 'class' => 'Politizr\\Model\\PMModerationType',

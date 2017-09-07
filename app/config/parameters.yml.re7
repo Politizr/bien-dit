@@ -31,6 +31,9 @@ parameters:
     facebook_client_id: ***
     facebook_client_secret: ***
     facebook_scope: public_profile,email
+    facebook_page_id: ***
+    facebook_graph_version: v2.8
+    facebook_access_token: 123456789
 
     #Twitter
     twitter_api_key: ***
@@ -45,3 +48,9 @@ parameters:
     idcheck_wsdl_url: ***
     idcheck_login: ***
     idcheck_password: ***
+
+    # Public content: public | private | we | 30
+    private_mode: private
+
+    public_user_ids: [ 3, 315 ]
+    

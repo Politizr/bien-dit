@@ -67,6 +67,7 @@ class LocalizationDepartmentChoiceType extends AbstractType
             'current_uuid' => null,
             'user_city_id' => null,
             'label_department' => 'Département',
+            'label_circonscription' => 'Circonscription',
         ));
     }
 

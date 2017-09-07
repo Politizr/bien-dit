@@ -15,6 +15,7 @@ use Politizr\Constant\PathConstants;
 use Politizr\Constant\ListingConstants;
 use Politizr\Constant\TagConstants;
 use Politizr\Constant\LocalizationConstants;
+use Politizr\Constant\DocumentConstants;
 
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDReaction;
@@ -38,6 +39,7 @@ use Politizr\FrontBundle\Form\Type\PDDCommentType;
 use Politizr\FrontBundle\Form\Type\PDRCommentType;
 use Politizr\FrontBundle\Form\Type\PDDebateType;
 use Politizr\FrontBundle\Form\Type\PDocumentTagTypeType;
+use Politizr\FrontBundle\Form\Type\PDocumentTagFamilyType;
 use Politizr\FrontBundle\Form\Type\PDDebatePhotoInfoType;
 use Politizr\FrontBundle\Form\Type\PDReactionType;
 use Politizr\FrontBundle\Form\Type\PDReactionPhotoInfoType;
@@ -59,11 +61,13 @@ class XhrDocument
     private $templating;
     private $formFactory;
     private $router;
+    private $twigEnv;
     private $userManager;
     private $documentManager;
     private $documentService;
     private $localizationService;
     private $tagService;
+    private $facebookService;
     private $globalTools;
     private $documentTwigExtension;
     private $documentLocalizationFormType;
@@ -79,11 +83,13 @@ class XhrDocument
      * @param @templating
      * @param @form.factory
      * @param @router
+     * @param @twig
      * @param @politizr.manager.user
      * @param @politizr.manager.document
      * @param @politizr.functional.document
      * @param @politizr.functional.localization
      * @param @politizr.functional.tag
+     * @param @politizr.functional.facebook
      * @param @politizr.tools.global
      * @param @politizr.twig.document
      * @param @politizr.form.type.document_localization
@@ -98,11 +104,13 @@ class XhrDocument
         $templating,
         $formFactory,
         $router,
+        $twigEnv,
         $userManager,
         $documentManager,
         $documentService,
         $localizationService,
         $tagService,
+        $facebookService,
         $globalTools,
         $documentTwigExtension,
         $documentLocalizationFormType,
@@ -119,6 +127,7 @@ class XhrDocument
         $this->templating = $templating;
         $this->formFactory = $formFactory;
         $this->router = $router;
+        $this->twigEnv = $twigEnv;
 
         $this->userManager = $userManager;
         $this->documentManager = $documentManager;
@@ -126,6 +135,7 @@ class XhrDocument
         $this->documentService = $documentService;
         $this->localizationService = $localizationService;
         $this->tagService = $tagService;
+        $this->facebookService = $facebookService;
 
         $this->globalTools = $globalTools;
 
@@ -163,14 +173,16 @@ class XhrDocument
             $this->userManager->createUserFollowDebate($user->getId(), $debate->getId());
 
             // Events
+            // upd > no emails events
             $event = new GenericEvent($debate, array('user_id' => $user->getId(),));
             $dispatcher = $this->eventDispatcher->dispatch('r_debate_follow', $event);
-            $event = new GenericEvent($debate, array('author_user_id' => $user->getId(),));
-            $dispatcher = $this->eventDispatcher->dispatch('n_debate_follow', $event);
+            // $event = new GenericEvent($debate, array('author_user_id' => $user->getId(),));
+            // $dispatcher = $this->eventDispatcher->dispatch('n_debate_follow', $event);
         } elseif ('unfollow' == $way) {
             $this->userManager->deleteUserFollowDebate($user->getId(), $debate->getId());
 
             // Events
+            // upd > no events reputation nor emails because of "followRelativeDebate" concepts
             $event = new GenericEvent($debate, array('user_id' => $user->getId(),));
             $dispatcher = $this->eventDispatcher->dispatch('r_debate_unfollow', $event);
         } else {
@@ -188,6 +200,60 @@ class XhrDocument
         return array(
             'html' => $html,
         );
+    }
+
+    /**
+     * Follow automaticaly a debate, relative to another interactive action (note, comment), by current user
+     * beta
+     */
+    public function followRelativeDebate(Request $request)
+    {
+        // $this->logger->info('*** followRelativeDebate');
+        
+        // Request arguments
+        $uuid = $request->get('uuid');
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
+        $type = $request->get('type');
+        // $this->logger->info('$type = ' . print_r($type, true));
+
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        
+        if ($type == ObjectTypeConstants::TYPE_DEBATE) {
+            $debate = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
+        } elseif ($type == ObjectTypeConstants::TYPE_REACTION) {
+            $reaction = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
+            $debate = $reaction->getPDDebate();
+        } elseif ($type == ObjectTypeConstants::TYPE_DEBATE_COMMENT) {
+            $comment = PDDCommentQuery::create()->filterByUuid($uuid)->findOne();
+            $debate = $comment->getPDDebate();
+        } elseif ($type == ObjectTypeConstants::TYPE_REACTION_COMMENT) {
+            $comment = PDRCommentQuery::create()->filterByUuid($uuid)->findOne();
+            $reaction = $comment->getPDReaction();
+            $debate = $reaction->getPDDebate();
+        } else {
+            throw new InconsistentDataException(sprintf('Type %s not managed', $type));
+        }
+
+        if (!$debate) {
+            throw new InconsistentDataException(sprintf('Relative Debate %s not found', $uuid));
+        }
+
+        // No link if user is author
+        if ($debate->getPUserId() == $user->getId()) {
+            return true;
+        }
+
+        $this->userManager->createUserFollowDebate($user->getId(), $debate->getId());
+
+        // Events
+        // upd > no emails events
+        $event = new GenericEvent($debate, array('user_id' => $user->getId(),));
+        $dispatcher = $this->eventDispatcher->dispatch('r_debate_follow', $event);
+        // $event = new GenericEvent($debate, array('author_user_id' => $user->getId(),));
+        // $dispatcher = $this->eventDispatcher->dispatch('n_debate_follow', $event);
+
+        return true;
     }
 
     /**
@@ -230,7 +296,19 @@ class XhrDocument
         // related to issue #178 > control user <> subject
         $canUserNoteDocument = $this->documentService->canUserNoteDocument($user, $subject, $way);
         if (!$canUserNoteDocument) {
-            throw new InconsistentDataException('You can\'t note this publication.');
+            // throw new InconsistentDataException('You can\'t note this publication.');
+
+            // Rendering
+            $html = $this->templating->render(
+                'PolitizrFrontBundle:Reputation:_noteAction.html.twig',
+                array(
+                    'subject' => $subject
+                )
+            );
+
+            return array(
+                'html' => $html
+            );
         }
 
         // update note
@@ -366,7 +444,7 @@ class XhrDocument
             array(
                 'title' => $debate->getTitle(),
                 'description' => strip_tags($debate->getDescription()),
-                'themaTags' => $debate->getArrayTags(TagConstants::TAG_TYPE_THEME),
+                'tags' => $debate->getArrayTags([TagConstants::TAG_TYPE_FAMILY, TagConstants::TAG_TYPE_THEME]),
                 'localization' => $debate->getPLocalizations(),
             ),
             $debate->getPublishConstraints(),
@@ -424,6 +502,44 @@ class XhrDocument
 
         return array(
             'redirectUrl' => $this->router->generate('Drafts'.$this->globalTools->computeProfileSuffix()),
+        );
+    }
+
+    /**
+     * Debate update tags zone
+     * beta
+     */
+    public function updateDebateTagsZone(Request $request)
+    {
+        // Request arguments
+        $uuid = $request->get('uuid');
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
+
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        
+        $debate = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
+        if (!$debate) {
+            throw new InconsistentDataException('Debate '.$uuid.' not found.');
+        }
+        if ($debate->getPublished()) {
+            throw new InconsistentDataException('Debate '.$uuid.' is published and cannot be edited anymore.');
+        }
+        if (!$debate->isOwner($user->getId())) {
+            throw new InconsistentDataException('Debate '.$uuid.' is not yours.');
+        }
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Tag:_docTags.html.twig',
+            array(
+                'document' => $debate,
+                'displayOnly' => true,
+                'tagTypeId' => null,
+            )
+        );
+
+        return array(
+            'html' => $html,
         );
     }
 
@@ -499,7 +615,7 @@ class XhrDocument
             array(
                 'title' => $reaction->getTitle(),
                 'description' => strip_tags($reaction->getDescription()),
-                'themaTags' => $reaction->getArrayTags(TagConstants::TAG_TYPE_THEME),
+                'tags' => $reaction->getArrayTags([TagConstants::TAG_TYPE_FAMILY, TagConstants::TAG_TYPE_THEME]),
                 'localization' => $reaction->getPLocalizations(),
             ),
             $reaction->getPublishConstraints(),
@@ -569,6 +685,44 @@ class XhrDocument
         );
     }
 
+    /**
+     * Debate update tags zone
+     * beta
+     */
+    public function updateReactionTagsZone(Request $request)
+    {
+        // Request arguments
+        $uuid = $request->get('uuid');
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
+
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        
+        $reaction = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
+        if (!$reaction) {
+            throw new InconsistentDataException('Reaction '.$uuid.' not found.');
+        }
+        if ($reaction->getPublished()) {
+            throw new InconsistentDataException('Reaction '.$uuid.' is published and cannot be edited anymore.');
+        }
+        if (!$reaction->isOwner($user->getId())) {
+            throw new InconsistentDataException('Reaction '.$uuid.' is not yours.');
+        }
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Tag:_docTags.html.twig',
+            array(
+                'document' => $reaction,
+                'displayOnly' => true,
+                'tagTypeId' => null,
+            )
+        );
+
+        return array(
+            'html' => $html,
+        );
+    }
+
     /* ######################################################################################################## */
     /*                                 DEBATE & REACTION COMMON EDITION FUNCTIONS                               */
     /* ######################################################################################################## */
@@ -585,7 +739,7 @@ class XhrDocument
         $uuid = $request->get('document_localization')['uuid'];
         // $this->logger->info('$uuid = ' . print_r($uuid, true));
         $type = $request->get('document_localization')['type'];
-        // $this->logger->info('$uuid = ' . print_r($uuid, true));
+        // $this->logger->info('$type = ' . print_r($type, true));
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -622,19 +776,35 @@ class XhrDocument
         $document = $formLocalization->getData();
         $document->save();
 
-        // Debate's tags type
-        $formTagTypes = $this->formFactory->create(
+        // Document's tags type
+        $formTagType = $this->formFactory->create(
             new PDocumentTagTypeType(), 
             null, 
             array('elected_mode' => $user->getQualified())
         );
-        $formTagTypes->bind($request);
+        $formTagType->bind($request);
 
-        $tags = $formTagTypes->getData()['p_tags'];
+        $tags = $formTagType->getData()['p_tags'];
         if ($type == ObjectTypeConstants::TYPE_DEBATE) {
             $this->tagService->updateDebateTags($document, $tags, TagConstants::TAG_TYPE_TYPE);
         } elseif ($type == ObjectTypeConstants::TYPE_REACTION) {
             $this->tagService->updateReactionTags($document, $tags, TagConstants::TAG_TYPE_TYPE);
+        } else {
+            throw new InconsistentDataException('Document '.$type.' unknown.');
+        }
+
+        // Document's tags family
+        $formTagFamily = $this->formFactory->create(
+            new PDocumentTagFamilyType(), 
+            null
+        );
+        $formTagFamily->bind($request);
+
+        $tags = $formTagFamily->getData()['p_tags'];
+        if ($type == ObjectTypeConstants::TYPE_DEBATE) {
+            $this->tagService->updateDebateTags($document, $tags, TagConstants::TAG_TYPE_FAMILY);
+        } elseif ($type == ObjectTypeConstants::TYPE_REACTION) {
+            $this->tagService->updateReactionTags($document, $tags, TagConstants::TAG_TYPE_FAMILY);
         } else {
             throw new InconsistentDataException('Document '.$type.' unknown.');
         }
@@ -690,6 +860,7 @@ class XhrDocument
 
         $document->setFileName($fileName);
         $html = $this->documentTwigExtension->image(
+            $this->twigEnv,
             $document,
             'debate_header'
         );
@@ -1323,22 +1494,33 @@ class XhrDocument
         
         // Request arguments
         $uuid = $request->get('uuid');
-        // $this->logger->info('$uuid = ' . print_r($uuid, true));
+        $this->logger->info('$uuid = ' . print_r($uuid, true));
         $orderBy = $request->get('orderBy');
-        // $this->logger->info('$orderBy = ' . print_r($orderBy, true));
+        $this->logger->info('$orderBy = ' . print_r($orderBy, true));
+        $tagUuid = $request->get('tagUuid');
+        $this->logger->info('$tagUuid = ' . print_r($tagUuid, true));
         $offset = $request->get('offset');
-        // $this->logger->info('$offset = ' . print_r($offset, true));
+        $this->logger->info('$offset = ' . print_r($offset, true));
 
 
         $user = PUserQuery::create()->filterByUuid($uuid)->findOne();
         if (!$user) {
             throw new InconsistentDataException(sprintf('User %s not found', $uuid));
         }
+        $tagId = null;
+        if ($tagUuid) {
+            $tag = PTagQuery::create()->filterByUuid($tagUuid)->findOne();
+            if (!$tag) {
+                throw new InconsistentDataException(sprintf('Tag %s not found', $tagUuid));
+            }
+            $tagId = $tag->getId();
+        }
 
         // get publications
         $publications = $this->documentService->getUserPublicationsPaginatedListing(
             $user->getId(),
             $orderBy,
+            $tagId,
             $offset,
             ListingConstants::LISTING_CLASSIC_PAGINATION
         );
@@ -1427,11 +1609,12 @@ class XhrDocument
         // $this->logger->info('$filterDate = ' . print_r($filterDate, true));
 
         // set default values if not set
-        if (empty($geoUuid)) {
-            $france = PLCountryQuery::create()->findPk(LocalizationConstants::FRANCE_ID);
-            $geoUuid = $france->getUuid();
-            $type = LocalizationConstants::TYPE_COUNTRY;
-        }
+        // upd > default = all
+        // if (empty($geoUuid)) {
+        //     $france = PLCountryQuery::create()->findPk(LocalizationConstants::FRANCE_ID);
+        //     $geoUuid = $france->getUuid();
+        //     $type = LocalizationConstants::TYPE_COUNTRY;
+        // }
         if (empty($filterPublication)) {
             $filterPublication = ListingConstants::FILTER_KEYWORD_ALL_PUBLICATIONS;
         }
@@ -1563,4 +1746,177 @@ class XhrDocument
         );
     }
 
+    /**
+     * Facebook's document insights
+     *
+     * @param PDocumentInterface $document
+     * @return string
+     */
+    public function facebookInsights(Request $request)
+    {
+        // $this->logger->info('*** facebookInsights');
+
+        // Request arguments
+        $uuid = $request->get('uuid');
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
+        $type = $request->get('type');
+        // $this->logger->info('$type = ' . print_r($type, true));
+
+        if ($type == ObjectTypeConstants::TYPE_DEBATE) {
+            $document = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
+        } elseif ($type == ObjectTypeConstants::TYPE_REACTION) {
+            $document = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
+        } else {
+            throw new InconsistentDataException(sprintf('Object type %s not managed', $document->getType()));
+        }
+
+        $fbAdId = $document->getFbAdId();
+        if (!$fbAdId) {
+            return array(
+                'html' => ''
+            );
+        }
+
+        try {
+            $impressions = $this->facebookService->getImpressions($fbAdId);
+            $interactions = $this->facebookService->getInteractions($fbAdId);
+            $nbEmotions = $this->facebookService->getNbEmotions($fbAdId);
+            $nbComments = $this->facebookService->getNbComments($fbAdId);
+            $nbShares = $this->facebookService->getNbShares($fbAdId);
+        } catch (\Exception $e) {
+            $this->logger->error('Exception FB - msg = '.print_r($e->getMessage(), true));
+            return array(
+                'html' => ''
+            );
+        }
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Document:_facebookInsights.html.twig',
+            array(
+                'impressions' => $impressions,
+                'interactions' => $interactions,
+                'nbEmotions' => $nbEmotions,
+                'nbComments' => $nbComments,
+                'nbShares' => $nbShares,
+            )
+        );
+
+        return array(
+            'html' => $html,
+        );
+    }
+
+    /**
+     * Facebook comments
+     *
+     * @param PDocumentInterface $document
+     * @return string
+     */
+    public function facebookComments(Request $request)
+    {
+        // $this->logger->info('*** facebookComments');
+
+        // Request arguments
+        $uuid = $request->get('uuid');
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
+        $type = $request->get('type');
+        // $this->logger->info('$type = ' . print_r($type, true));
+
+        if ($type == ObjectTypeConstants::TYPE_DEBATE) {
+            $document = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
+        } elseif ($type == ObjectTypeConstants::TYPE_REACTION) {
+            $document = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
+        } else {
+            throw new InconsistentDataException(sprintf('Object type %s not managed', $document->getType()));
+        }
+
+        $fbAdId = $document->getFbAdId();
+        if (!$fbAdId) {
+            return array(
+                'html' => ''
+            );
+        }
+
+        try {
+            $impressions = $this->facebookService->getImpressions($fbAdId);
+            $interactions = $this->facebookService->getInteractions($fbAdId);
+            $emotions = $this->facebookService->getEmotions($fbAdId);
+            $nbComments = $this->facebookService->getNbComments($fbAdId);
+            $comments = $this->facebookService->getComments($fbAdId);
+            $nbEmotions = $this->facebookService->getNbEmotions($fbAdId);
+            $nbShares = $this->facebookService->getNbShares($fbAdId);
+        } catch (\Exception $e) {
+            return array(
+                'html' => ''
+            );
+        }
+
+        // Construction du rendu du tag
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Document:_facebookComments.html.twig',
+            array(
+                'fbAdId' => $fbAdId,
+                'impressions' => $impressions,
+                'interactions' => $interactions,
+                'emotions' => $emotions,
+                'nbComments' => $nbComments,
+                'comments' => $comments,
+                'nbEmotions' => $nbEmotions,
+                'nbShares' => $nbShares,
+            )
+        );
+
+        return array(
+            'html' => $html,
+        );
+    }
+
+
+    /**
+     * Boost question
+     * code beta
+     */
+    public function boostQuestion(Request $request)
+    {
+        // $this->logger->info('*** boostQuestion');
+        
+        // Request arguments
+        $uuid = $request->get('uuid');
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
+        $type = $request->get('type');
+        // $this->logger->info('$type = ' . print_r($type, true));
+        $boost = $request->get('boost');
+        // $this->logger->info('$boost = ' . print_r($boost, true));
+
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+
+        if ($type == ObjectTypeConstants::TYPE_DEBATE) {
+            $document = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
+        } elseif ($type == ObjectTypeConstants::TYPE_REACTION) {
+            $document = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
+        } else {
+            throw new InconsistentDataException(sprintf('Object type %s not managed', $document->getType()));
+        }
+
+        $document->setWantBoost($boost);
+        $document->save();
+
+        if ($boost == DocumentConstants::WB_OK) {
+            $event = new GenericEvent($document);
+            $dispatcher =  $this->eventDispatcher->dispatch('boost_fb_email', $event);
+        }
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Document:_boostQuestionResponse.html.twig',
+            array(
+                'boost' => $boost
+            )
+        );
+
+        return array(
+            'html' => $html,
+        );
+    }
 }

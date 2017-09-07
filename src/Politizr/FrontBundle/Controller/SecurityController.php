@@ -50,10 +50,12 @@ class SecurityController extends Controller
      * Login
      * http://symfony.com/doc/current/cookbook/security/form_login_setup.html
      */
-    public function loginAction()
+    public function loginAction(Request $request)
     {
         $logger = $this->get('logger');
         $logger->info('*** loginAction');
+
+        $this->get('session')->set('inscription/referer', $request->headers->get('referer'));
 
         $authenticationUtils = $this->get('security.authentication_utils');
 
@@ -223,7 +225,7 @@ class SecurityController extends Controller
             $user->save();
 
             // upd localization infos
-            $this->get('politizr.manager.localization')->updateUserCity($user, $form->get('localization')->getData()['city']);
+            $this->get('politizr.functional.localization')->updateUserGeoloc($user, $form);
 
             $this->get('politizr.functional.security')->inscriptionCitizenFinish($user);
 
@@ -231,12 +233,9 @@ class SecurityController extends Controller
             $request->getSession()->getFlashBag()->add('inscription/success', true);
 
             // Redirect to page before inscription
-            $referer = $this->get('session')->get('inscription/referer');
-            if (strpos($referer, 'debat') || // debate detail 
-                strpos($referer, 'reaction') || // reaction detail
-                strpos($referer, 'auteur') // user detail
-            ) {
-                return $this->redirect($referer); 
+            $refererUrl = $this->get('politizr.tools.global')->getRefererUrl();
+            if ($refererUrl) {
+                return $this->redirect($refererUrl);
             }
 
             return $this->redirect($this->generateUrl('HomepageC'));
@@ -367,7 +366,7 @@ class SecurityController extends Controller
             $user->save();
 
             // upd localization infos
-            $this->get('politizr.manager.localization')->updateUserCity($user, $form->get('localization')->getData()['city']);
+            $this->get('politizr.functional.localization')->updateUserGeoloc($user, $form);
 
             return $this->redirect($this->generateUrl('InscriptionElectedMandate'));
         }
@@ -563,12 +562,9 @@ class SecurityController extends Controller
         $request->getSession()->getFlashBag()->add('inscription/success', true);
 
         // Redirect to page before inscription
-        $referer = $this->get('session')->get('inscription/referer');
-        if (strpos($referer, 'debat') || // debate detail 
-            strpos($referer, 'reaction') || // reaction detail
-            strpos($referer, 'auteur') // user detail
-        ) {
-            return $this->redirect($referer); 
+        $refererUrl = $this->get('politizr.tools.global')->getRefererUrl();
+        if ($refererUrl) {
+            return $this->redirect($refererUrl);
         }
 
         return $this->redirect($this->generateUrl('HomepageE'));
@@ -609,5 +605,26 @@ class SecurityController extends Controller
 
         // Redirection
         return $this->redirect($redirectUrl);
+    }
+
+    /* ######################################################################################################## */
+    /*                                              SUPPRESSION COMPTE                                          */
+    /* ######################################################################################################## */
+
+    /**
+     *  Suppression du compte
+     */
+    public function deleteAccountAction(Request $request)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** deleteAccount');
+
+        $user = $this->getUser();
+        $user->delete();
+
+        $this->get('security.context')->setToken(null);
+        $this->get('request')->getSession()->invalidate();
+            
+        return $this->redirect($this->generateUrl('Homepage'));
     }
 }

@@ -7,6 +7,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use Politizr\Exception\InconsistentDataException;
 
 use Politizr\Constant\NotificationConstants;
+use Politizr\Constant\EmailConstants;
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\UserConstants;
 
@@ -76,10 +77,6 @@ class NotificationListener
         }
 
         $puNotification = $this->insertPUNotification($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
-
-        // Alerte email
-        $event = new GenericEvent($puNotification);
-        $dispatcher =  $this->eventDispatcher->dispatch('n_e_check', $event);
     }
 
     /**
@@ -117,10 +114,6 @@ class NotificationListener
         }
 
         $puNotification = $this->insertPUNotification($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
-
-        // Alerte email
-        $event = new GenericEvent($puNotification);
-        $dispatcher =  $this->eventDispatcher->dispatch('n_e_check', $event);
     }
 
     /**
@@ -160,10 +153,6 @@ class NotificationListener
 
             $pNotificationId = NotificationConstants::ID_S_U_DEBATE_PUBLISH;
             $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId);
-
-            // email
-            $event = new GenericEvent($puNotification);
-            $dispatcher = $this->eventDispatcher->dispatch('n_e_check', $event);
         }
 
         // get debate's tags
@@ -179,10 +168,6 @@ class NotificationListener
 
                 $pNotificationId = NotificationConstants::ID_S_T_DOCUMENT;
                 $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId);
-
-                // email
-                $event = new GenericEvent($puNotification);
-                $dispatcher = $this->eventDispatcher->dispatch('n_e_check', $event);
             }
         }
 
@@ -229,10 +214,6 @@ class NotificationListener
             $usersIds[] = $debateUserId;
 
             $puNotification = $this->insertPUNotification($debateUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
-
-            // email
-            $event = new GenericEvent($puNotification);
-            $dispatcher = $this->eventDispatcher->dispatch('n_e_check', $event);
         }
 
         // reaction published on my reaction
@@ -248,10 +229,6 @@ class NotificationListener
             if ($targetUserId != $authorUserId) {
                 $usersIds[] = $targetUserId;
                 $puNotification = $this->insertPUNotification($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
-
-                // email
-                $event = new GenericEvent($puNotification);
-                $dispatcher = $this->eventDispatcher->dispatch('n_e_check', $event);
             }
         }
 
@@ -267,10 +244,6 @@ class NotificationListener
 
             $pNotificationId = NotificationConstants::ID_S_U_REACTION_PUBLISH;
             $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId);
-
-            // email
-            $event = new GenericEvent($puNotification);
-            $dispatcher = $this->eventDispatcher->dispatch('n_e_check', $event);
         }
 
         // reaction published on followed debate
@@ -282,10 +255,6 @@ class NotificationListener
 
             $pNotificationId = NotificationConstants::ID_S_D_REACTION_PUBLISH;
             $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId);
-
-            // email
-            $event = new GenericEvent($puNotification);
-            $dispatcher = $this->eventDispatcher->dispatch('n_e_check', $event);
         }
 
         // reaction with followed tags
@@ -301,10 +270,6 @@ class NotificationListener
 
                 $pNotificationId = NotificationConstants::ID_S_T_DOCUMENT;
                 $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId);
-
-                // email
-                $event = new GenericEvent($puNotification);
-                $dispatcher = $this->eventDispatcher->dispatch('n_e_check', $event);
             }
         }
 
@@ -332,7 +297,7 @@ class NotificationListener
             $department = $document->getPLDepartment();
             $region = $department->getPLRegion();
         } elseif ($regionId = $document->getPLRegionId()) {
-            $region = $department->getPLRegion();
+            $region = $document->getPLRegion();
         }
 
         // retrieve users of city
@@ -343,10 +308,6 @@ class NotificationListener
             foreach ($users as $user) {
                 $pNotificationId = NotificationConstants::ID_L_D_CITY;
                 $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId);
-
-                // email
-                $event = new GenericEvent($puNotification);
-                $dispatcher = $this->eventDispatcher->dispatch('n_e_check', $event);
 
                 $usersIds[] = $user->getId();
             }
@@ -361,10 +322,6 @@ class NotificationListener
                 $pNotificationId = NotificationConstants::ID_L_D_DEPARTMENT;
                 $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId);
 
-                // email
-                $event = new GenericEvent($puNotification);
-                $dispatcher = $this->eventDispatcher->dispatch('n_e_check', $event);
-
                 $usersIds[] = $user->getId();
             }
         }
@@ -377,10 +334,6 @@ class NotificationListener
             foreach ($users as $user) {
                 $pNotificationId = NotificationConstants::ID_L_D_REGION;
                 $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId);
-
-                // email
-                $event = new GenericEvent($puNotification);
-                $dispatcher = $this->eventDispatcher->dispatch('n_e_check', $event);
             }
         }
     }
@@ -418,16 +371,6 @@ class NotificationListener
         // don't notif if same user
         if ($targetUserId != $authorUserId) {
             $puNotification = $this->insertPUNotification($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
-
-            // email
-            $event = new GenericEvent($puNotification);
-
-            // store user's email notification to prevent duplicate sending
-            if ($targetUser && $targetUser->isEmailNotificationSubscriber($puNotification->getPNotificationId())) {
-                if (!isset($neCheck[$targetUser->getId()])) {
-                    $neCheck[$targetUser->getId()] = $event;
-                }
-            }
         }
 
         // Retrieve comment's user
@@ -440,16 +383,6 @@ class NotificationListener
             if ($user->getId() != $authorUserId) {
                 $pNotificationId = NotificationConstants::ID_S_U_COMMENT_PUBLISH;
                 $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId);
-
-                // email
-                $event = new GenericEvent($puNotification);
-
-                // store user's email notification to prevent duplicate sending
-                if ($user->isEmailNotificationSubscriber($puNotification->getPNotificationId())) {
-                    if (!isset($neCheck[$user->getId()])) {
-                        $neCheck[$user->getId()] = $event;
-                    }
-                }
             }
         }
 
@@ -469,22 +402,7 @@ class NotificationListener
         foreach ($users as $user) {
             if ($user->getId() != $authorUserId) {
                 $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId);
-
-                // email
-                $event = new GenericEvent($puNotification);
-
-                // store user's email notification to prevent duplicate sending
-                if ($user->isEmailNotificationSubscriber($puNotification->getPNotificationId())) {
-                    if (!isset($neCheck[$user->getId()])) {
-                        $neCheck[$user->getId()] = $event;
-                    }
-                }
             }
-        }
-
-        // email notification dispatching
-        foreach ($neCheck as $userId => $event) {
-            $dispatcher = $this->eventDispatcher->dispatch('n_e_check', $event);
         }
     }
 
@@ -511,10 +429,6 @@ class NotificationListener
         $targetUserId = $subject->getPUserId();
 
         $puNotification = $this->insertPUNotification($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
-
-        // Alerte email
-        $event = new GenericEvent($puNotification);
-        $dispatcher =  $this->eventDispatcher->dispatch('n_e_check', $event);
     }
 
     /**
@@ -540,10 +454,6 @@ class NotificationListener
         $targetUserId = $subject->getId();
 
         $puNotification = $this->insertPUNotification($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
-
-        // Alerte email
-        $event = new GenericEvent($puNotification);
-        $dispatcher =  $this->eventDispatcher->dispatch('n_e_check', $event);
     }
 
     /**
@@ -571,10 +481,6 @@ class NotificationListener
         $objectId = $badge->getId();
 
         $puNotification = $this->insertPUNotification($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
-
-        // Alerte email
-        $event = new GenericEvent($puNotification);
-        $dispatcher =  $this->eventDispatcher->dispatch('n_e_check', $event);
     }
 
     /**
@@ -604,24 +510,7 @@ class NotificationListener
             if ($user->getId() != $authorUserId) {
                 $pNotificationId = NotificationConstants::ID_S_T_USER;
                 $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId);
-
-                // email
-                $event = new GenericEvent($puNotification);
-
-                // store user's email notification to prevent duplicate sending
-                if ($user && $user->isEmailNotificationSubscriber($puNotification->getPNotificationId())) {
-                    if (!isset($neCheck[$user->getId()])) {
-                        $neCheck[$user->getId()] = $event;
-                    }
-                }
             }
-        }
-
-        // Alerte email
-
-        // email notification dispatching
-        foreach ($neCheck as $userId => $event) {
-            $dispatcher = $this->eventDispatcher->dispatch('n_e_check', $event);
         }
     }
 
@@ -659,10 +548,6 @@ class NotificationListener
                 $pNotificationId = NotificationConstants::ID_L_U_CITY;
                 $puNotification = $this->insertPUNotification($user->getId(), $electedUserId, $pNotificationId, $objectName, $objectId);
 
-                // email
-                $event = new GenericEvent($puNotification);
-                $dispatcher = $this->eventDispatcher->dispatch('n_e_check', $event);
-
                 $usersIds[] = $user->getId();
             }
         }
@@ -675,10 +560,6 @@ class NotificationListener
             $pNotificationId = NotificationConstants::ID_L_U_DEPARTMENT;
             $puNotification = $this->insertPUNotification($user->getId(), $electedUserId, $pNotificationId, $objectName, $objectId);
 
-            // email
-            $event = new GenericEvent($puNotification);
-            $dispatcher = $this->eventDispatcher->dispatch('n_e_check', $event);
-
             $usersIds[] = $user->getId();
         }
 
@@ -689,10 +570,6 @@ class NotificationListener
         foreach ($users as $user) {
             $pNotificationId = NotificationConstants::ID_L_U_REGION;
             $puNotification = $this->insertPUNotification($user->getId(), $electedUserId, $pNotificationId, $objectName, $objectId);
-
-            // email
-            $event = new GenericEvent($puNotification);
-            $dispatcher = $this->eventDispatcher->dispatch('n_e_check', $event);
         }
     }
 
@@ -722,7 +599,7 @@ class NotificationListener
         $puNotification = $this->insertPUNotification($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId, $adminMsg);
 
         // Alerte email
-        $event = new GenericEvent($puNotification);
+        $event = new GenericEvent($puNotification, array('p_n_email_id' => EmailConstants::ID_ADMIN_MSG,));
         $dispatcher =  $this->eventDispatcher->dispatch('n_e_check', $event);
     }
 
@@ -752,17 +629,20 @@ class NotificationListener
         // $this->logger->info('objectName = '.print_r($objectName, true));
         // $this->logger->info('objectId = '.print_r($objectId, true));
 
-        $notif = new PUNotification();
+        $notif = null;
+        if ($userId) {
+            $notif = new PUNotification();
 
-        $notif->setPUserId($userId);
-        $notif->setPNotificationId($notificationId);
-        $notif->setPObjectName($objectName);
-        $notif->setPObjectId($objectId);
-        $notif->setPAuthorUserId($authorUserId);
-        $notif->setDescription($description);
-        $notif->setChecked(false);
-        
-        $notif->save();
+            $notif->setPUserId($userId);
+            $notif->setPNotificationId($notificationId);
+            $notif->setPObjectName($objectName);
+            $notif->setPObjectId($objectId);
+            $notif->setPAuthorUserId($authorUserId);
+            $notif->setDescription($description);
+            $notif->setChecked(false);
+            
+            $notif->save();
+        }
 
         return $notif;
     }

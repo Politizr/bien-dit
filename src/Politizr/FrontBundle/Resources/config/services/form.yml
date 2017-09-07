@@ -13,6 +13,13 @@ services:
         tags:
             - { name: form.type }
 
+    politizr.form.type.localization.circonscription:
+        class: Politizr\FrontBundle\Form\Type\LocalizationCirconscriptionChoiceType
+        arguments:
+            - @politizr.manager.localization
+        tags:
+            - { name: form.type }
+
     politizr.form.type.localization.region:
         class: Politizr\FrontBundle\Form\Type\LocalizationRegionChoiceType
         arguments:

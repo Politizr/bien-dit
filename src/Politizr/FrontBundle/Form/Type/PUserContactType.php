@@ -67,10 +67,10 @@ class PUserContactType extends AbstractType
             'attr' => array('placeholder' => 'Prénom')
         ));
 
-        $builder->add('newsletter', 'checkbox', array(
-            'required' => false,
-            'label' => 'Je souhaite recevoir les news de Politizr'
-        ));
+        // $builder->add('newsletter', 'checkbox', array(
+        //     'required' => false,
+        //     'label' => 'Je m\'inscris à la newsletter de Politizr'
+        // ));
 
         if ($this->withEmail) {
             $builder->add('username', 'hidden', array(
@@ -107,6 +107,7 @@ class PUserContactType extends AbstractType
             $builder->add('cgu', 'checkbox', array(
                 'required' => true,
                 'mapped' => false,
+                'label' => 'Conditions Générales d\'Utilisation',
                 'constraints' => new IsTrue(
                     array(
                         'message' => 'Vous devez accepter les conditions générales d\'utilisation.'

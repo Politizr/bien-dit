@@ -10,7 +10,10 @@ services:
 
     politizr.manager.document:
         class: Politizr\FrontBundle\Lib\Manager\DocumentManager
-        arguments: [ @politizr.tools.global, @logger ]
+        arguments:
+            - @politizr.manager.tag
+            - @politizr.tools.global
+            - @logger
 
     politizr.manager.tag:
         class: Politizr\FrontBundle\Lib\Manager\TagManager
@@ -26,9 +29,15 @@ services:
 
     politizr.manager.notification:
         class: Politizr\FrontBundle\Lib\Manager\NotificationManager
-        arguments: [ @logger ]
+        arguments:
+            - @politizr.tools.global
+            - @logger
 
     politizr.manager.monitoring:
         class: Politizr\FrontBundle\Lib\Manager\MonitoringManager
+        arguments: [ @logger ]
+
+    politizr.manager.event:
+        class: Politizr\FrontBundle\Lib\Manager\EventManager
         arguments: [ @logger ]
 

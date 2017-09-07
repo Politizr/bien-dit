@@ -20,27 +20,30 @@ use Politizr\AdminBundle\Form\Type\PMUserModeratedType;
  */
 class PolitizrAdminModerationExtension extends \Twig_Extension
 {
-    private $logger;
-
+    private $documentService;
+    
     private $formFactory;
-
-    protected $documentService;
     private $router;
-    private $templating;
+    private $logger;
 
     /**
      *
+     * @param politizr.functional.document
+     * @param form.factory
+     * @param router
+     * @param logger
      */
-    public function __construct($serviceContainer)
-    {
-        $this->logger = $serviceContainer->get('logger');
-
-        $this->formFactory = $serviceContainer->get('form.factory');
-
-        $this->documentService = $serviceContainer->get('politizr.functional.document');
-
-        $this->router = $serviceContainer->get('router');
-        $this->templating = $serviceContainer->get('templating');
+    public function __construct(
+        $documentService,
+        $formFactory,
+        $router,
+        $logger
+    ) {
+        $this->documentService = $documentService;
+        
+        $this->formFactory = $formFactory;
+        $this->router = $router;
+        $this->logger = $logger;
     }
 
     /* ######################################################################################################## */
@@ -57,12 +60,12 @@ class PolitizrAdminModerationExtension extends \Twig_Extension
             new \Twig_SimpleFilter(
                 'linkedModeration',
                 array($this, 'linkedModeration'),
-                array('is_safe' => array('html'))
+                array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             new \Twig_SimpleFilter(
                 'linkedBanned',
                 array($this, 'linkedBanned'),
-                array('is_safe' => array('html'))
+                array('is_safe' => array('html'), 'needs_environment' => true)
             ),
         );
     }
@@ -77,16 +80,12 @@ class PolitizrAdminModerationExtension extends \Twig_Extension
             'adminModerationAlertNew'  => new \Twig_SimpleFunction(
                 'adminModerationAlertNew',
                 array($this, 'adminModerationAlertNew'),
-                array(
-                    'is_safe' => array('html')
-                    )
+                array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             'adminModerationAlertListing'  => new \Twig_SimpleFunction(
                 'adminModerationAlertListing',
                 array($this, 'adminModerationAlertListing'),
-                array(
-                    'is_safe' => array('html')
-                    )
+                array('is_safe' => array('html'), 'needs_environment' => true)
             ),
         );
     }
@@ -103,11 +102,11 @@ class PolitizrAdminModerationExtension extends \Twig_Extension
      * @param string $type html or txt mail
      * @return html
      */
-    public function linkedModeration(PMUserModerated $userModerated, $type)
+    public function linkedModeration(\Twig_Environment $env, PMUserModerated $userModerated, $type)
     {
-        $this->logger->info('*** linkedModeration');
-        $this->logger->info('$userModerated = '.print_r($userModerated, true));
-        $this->logger->info('$type = '.print_r($type, true));
+        // $this->logger->info('*** linkedModeration');
+        // $this->logger->info('$userModerated = '.print_r($userModerated, true));
+        // $this->logger->info('$type = '.print_r($type, true));
 
         // User
         $author = PUserQuery::create()->findPk($userModerated->getPUserId());
@@ -135,7 +134,7 @@ class PolitizrAdminModerationExtension extends \Twig_Extension
         $document = $attr['document'];
         $documentUrl = $attr['documentUrl'];
 
-        $html = $this->templating->render(
+        $html = $env->render(
             'PolitizrAdminBundle:Fragment\\Moderation:_notification.html.twig',
             array(
                 'type' => $type,
@@ -160,13 +159,13 @@ class PolitizrAdminModerationExtension extends \Twig_Extension
      * @param string $type html or txt mail
      * @return html
      */
-    public function linkedBanned(PUser $user, $type)
+    public function linkedBanned(\Twig_Environment $env, PUser $user, $type)
     {
-        $this->logger->info('*** linkedBanned');
+        // $this->logger->info('*** linkedBanned');
         // $this->logger->info('$user = '.print_r($user, true));
         // $this->logger->info('$type = '.print_r($type, true));
 
-        $html = $this->templating->render(
+        $html = $env->render(
             'PolitizrAdminBundle:Fragment\\Moderation:_banned.html.twig',
             array(
                 'type' => $type,
@@ -189,9 +188,9 @@ class PolitizrAdminModerationExtension extends \Twig_Extension
      * @param int $userId
      * @return string
      */
-    public function adminModerationAlertNew($objectClass, $objectId, $userId)
+    public function adminModerationAlertNew(\Twig_Environment $env, $objectClass, $objectId, $userId)
     {
-        $this->logger->info('*** adminModerationAlertNew');
+        // $this->logger->info('*** adminModerationAlertNew');
         // $this->logger->info('$objectClass = '.print_r($objectClass, true));
         // $this->logger->info('$objectId = '.print_r($objectId, true));
 
@@ -219,7 +218,7 @@ class PolitizrAdminModerationExtension extends \Twig_Extension
         $form = $this->formFactory->create(new PMUserModeratedType(), $userModerated);
 
         // Construction du rendu du tag
-        $html = $this->templating->render(
+        $html = $env->render(
             'PolitizrAdminBundle:Fragment\\Moderation:_new.html.twig',
             array(
                 'form' => $form->createView(),
@@ -235,9 +234,9 @@ class PolitizrAdminModerationExtension extends \Twig_Extension
      * @param int $userId
      * @return string
      */
-    public function adminModerationAlertListing($userId)
+    public function adminModerationAlertListing(\Twig_Environment $env, $userId)
     {
-        $this->logger->info('*** adminModerationAlertListing');
+        // $this->logger->info('*** adminModerationAlertListing');
         // $this->logger->info('$objectClass = '.print_r($objectClass, true));
         // $this->logger->info('$objectId = '.print_r($objectId, true));
 
@@ -247,7 +246,7 @@ class PolitizrAdminModerationExtension extends \Twig_Extension
                                 ->find();
 
         // Construction du rendu du tag
-        $html = $this->templating->render(
+        $html = $env->render(
             'PolitizrAdminBundle:Fragment\\Moderation:_listing.html.twig',
             array(
                 'moderations' => $moderations,

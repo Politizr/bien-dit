@@ -13,8 +13,6 @@ use Politizr\Model\PNTypePeer;
 use Politizr\Model\PNotification;
 use Politizr\Model\PNotificationPeer;
 use Politizr\Model\PUNotificationPeer;
-use Politizr\Model\PUSubscribeEmailPeer;
-use Politizr\Model\PUSubscribeScreenPeer;
 use Politizr\Model\map\PNotificationTableMap;
 
 abstract class BasePNotificationPeer
@@ -402,12 +400,6 @@ abstract class BasePNotificationPeer
         // Invalidate objects in PUNotificationPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PUNotificationPeer::clearInstancePool();
-        // Invalidate objects in PUSubscribeEmailPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PUSubscribeEmailPeer::clearInstancePool();
-        // Invalidate objects in PUSubscribeScreenPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PUSubscribeScreenPeer::clearInstancePool();
     }
 
     /**

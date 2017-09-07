@@ -47,6 +47,7 @@ class PRBadgeTableMap extends TableMap
         $this->addForeignKey('p_r_metal_type_id', 'PRMetalTypeId', 'INTEGER', 'p_r_metal_type', 'id', true, null, null);
         $this->addForeignKey('p_r_badge_family_id', 'PRBadgeFamilyId', 'INTEGER', 'p_r_badge_family', 'id', true, null, null);
         $this->addColumn('title', 'Title', 'VARCHAR', false, 150, null);
+        $this->addColumn('file_name', 'FileName', 'VARCHAR', false, 150, null);
         $this->addColumn('online', 'Online', 'BOOLEAN', false, 1, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);

@@ -1,0 +1,122 @@
+{% set layout = 'PolitizrFrontBundle::layoutPublic.html.twig' %}
+{% extends layout %}
+{% set headerRight = false %}
+
+{% set metaTitle = 'Offre Candidat' %}
+{% set metaDescription = 'Politizr propose une offre à destination des candidats pour les législatives 2017!' %}
+
+{% block title %}{{ metaTitle }} - {{ parent() }}{% endblock title %}
+{% block description %}{{ metaDescription }}{% endblock description %}
+
+{% block ogTitle %}{{ metaTitle }} - {{ parent() }}{% endblock ogTitle %}
+{% block ogDescription %}{{ metaDescription }}{% endblock ogDescription %}
+
+{% block tcTitle %}{{ metaTitle }} - {{ parent() }}{% endblock tcTitle %}
+{% block tcDescription %}{{ metaDescription }}{% endblock tcDescription %}
+
+{% block bodyClass %} class="public visitor"{% endblock %}
+
+{% block main %}
+    <div id="lpHeader">
+        <div class="center">
+            <h1>Une touche de Civic Tech dans votre campagne législative?</h1>
+            <h2>
+                A l’occasion des élections législatives 2017, la startup française <b>POLITIZR</b> propose aux candidats de tester sa plateforme via une offre inédite.
+            </h2>
+        </div>
+    </div>
+
+    <div id="postSelection">
+        <div class="center">
+            <div class="lpImg">
+                <img src="{{ asset('bundles/politizrfront/images/lp/lp-legislatives.jpg') }}" alt="lp-legislatives" width="600" height="337">
+            </div>
+        </div>
+        <div class="center">
+            <p>C’est l’occasion pour vous de montrer votre <b>connaissance des dossiers</b> et votre <b>ouverture à l’échange</b> en engageant <b>des discussions de fond avec vos électeurs</b> sur une plateforme portée par un acteur reconnu des "Civic Tech" en France. En complément de ses <a href="{{ path('Concept') }}" target="_blank"><b>fonctionnalités à destination des citoyens et des élus</b></a>, POLITIZR déploie pour les candidat-s aux élections des <b>fonctionnalités complémentaires et adaptées​ à une campagne électorale</b>.</p>
+            <ul class="lpUl">
+                <li>Disposer d’une page de profil possédant un <b>​bandeau aux couleurs de votre campagne​</b> et permettant aux utilisateurs de s’exprimer d’un simple clic.</li>
+                <li>Disposer de l’​<b>affichage de ce bandeau​</b> sur la page d’accueil POLITIZR de tous les utilisateurs inscrits dans votre circonscription.</li>
+                <li>Disposer d’​ une <b>thématique spécifique et “privatisée”​</b> pour vous permettre, et à vous seul, de dialoguer publiquement avec les citoyens. Exemple: <a href="https://www.politizr.com/axelle-2017" target="_blank">“​Axelle 2017​”</a></li>
+                <li>Limiter les questions ​ <b>aux seuls habitants des villes comprises dans votre circonscription​</b>.</li>
+                <li>Être ​<b>automatiquement alerté par email​</b> à chaque nouvelle question ou remarque citoyenne.</li>
+                <li>Disposer d’un ​<b>support de notre équipe​</b> pour la mise en ligne.</li>
+                <li>Rendre ​<b>publique​</b> tous les contenus associés à votre campagne.</li>
+                <li><i class="icon-social-fb"></i>&nbsp;la promotion de l’opération sur <b>Facebook</b> au niveau de <b>votre circonscription</b>,</li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="profileSelection" class="askQuestion">
+        <div class="center">
+            <h1>Contactez-nous pour plus d'informations</h1>
+            <div class="formBlock withLoaderInside">
+                {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+
+                <form name="directMessage" id="formDirectMessage">
+                    {{ form_errors(form) }}
+
+                    {{ form_row(form.name, { 'attr': { 'placeholder': 'Prénom et Nom' }}) }}
+                    {{ form_row(form.email, { 'attr': { 'placeholder': 'Email' }}) }}
+                    {{ form_row(form.city, { 'attr': { 'placeholder': 'Téléphone' }}) }}
+                    {{ form_row(form.description, { 'attr': { 'placeholder': 'Votre message' }}) }}
+
+                    {{ form_rest(form) }}
+                    <div class="buttonDirectMessage">
+                        <button type="button" action="submitDirectMessage">
+                            Envoyer
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div id="lpHeader">
+                <div class="centerCTA">
+                    <a href="tel:0950420934">ou par téléphone au 09. 50. 42. 09. 34</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="blockMarianne">
+        <div class="center">
+            <div id="bgBlockMarianne">
+                <div id="marianne"></div>
+                <div class="conceptCol conceptLeftCol">
+                    Politizr permet à <b>tous les élu-e-s locaux - du conseiller municipal au député -</b> de venir s'exprimer directement et publiquement de tous les sujets avec <b>leurs concitoyen-ne-s</b>.
+                </div>
+                
+                <div class="conceptCol conceptRightCol">
+                    Nous travaillons à améliorer la <b>démocratie représentative</b> en proposant un espace de discussion qui favorise les <b>échanges structurées et argumentées</b> dans un temps long propice à la qualité du débat.
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="blockGraphAssembly">
+        <div class="center centerCTA">
+            <a href="{{ path('InscriptionChoice') }}">Créer un compte</a>
+        </div>
+    </div>
+    
+{% endblock main %}
+
+{% block postMain %}
+    {% include 'PolitizrFrontBundle:Navigation\\Footer:_publicFooter.html.twig' %}
+{% endblock postMain %}
+
+
+{% block javascriptFooter %}
+    {{ parent() }}
+
+    {% if (app.environment == 'prod') %}
+        <script type="text/javascript">
+            mixpanel.track("LP élu local");
+        </script>
+    {% endif %}
+
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/pages/landingPage.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock javascriptFooter %}

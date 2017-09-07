@@ -9,14 +9,6 @@ namespace Politizr\Constant;
 class NotificationConstants
 {
     // ******************************************************** //
-    //                      NOTIFS TYPES                        //
-    // ******************************************************** //
-    const TYPE_SCREEN = 1;
-    const TYPE_EMAIL = 2;
-    const TYPE_EMAIL_TXT = 3;
-    const TYPE_EMAIL_SUBJECT = 4;
-
-    // ******************************************************** //
     //                      DOCUMENTS                           //
     // ******************************************************** //
     const ID_D_COMMENT_PUBLISH = 1;

@@ -1,0 +1,5 @@
+{% for city in cities %}
+    <div class="cityItem">
+        <strong>{{ city.nameReal }}</strong> ({{ city.zipcode }}) - INSEE / {{ city.municipalityCode }}&nbsp;
+    </div>
+{% endfor %}

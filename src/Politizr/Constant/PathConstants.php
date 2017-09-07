@@ -19,6 +19,7 @@ class PathConstants
     // ************************************************************************************ //
     const USER_UPLOAD_PATH = '/../../../web/uploads/users/';
     const USER_UPLOAD_WEB_PATH = '/uploads/users/';
+    const USER_DEFAULT_PATH = 'bundles/politizrfront/images/';
     const IDCHECK_UPLOAD_WEB_PATH = '/uploads/idcheck/';
 
     // ************************************************************************************ //
@@ -46,4 +47,10 @@ class PathConstants
     // ************************************************************************************ //
     const ORGANIZATION_UPLOAD_PATH = '/../../../web/uploads/organizations/';
     const ORGANIZATION_UPLOAD_WEB_PATH = '/uploads/organizations/';
+
+    // ************************************************************************************ //
+    //                                        BADGES
+    // ************************************************************************************ //
+    const BADGES_UPLOAD_PATH = '/../../../web/uploads/badges/';
+    const BADGES_UPLOAD_WEB_PATH = '/uploads/badges/';
 }

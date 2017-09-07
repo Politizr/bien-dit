@@ -28,6 +28,8 @@ use Politizr\Model\PDDebatePeer;
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReaction;
 use Politizr\Model\PDReactionQuery;
+use Politizr\Model\PEOperation;
+use Politizr\Model\PEOperationQuery;
 use Politizr\Model\PLCity;
 use Politizr\Model\PLCityQuery;
 use Politizr\Model\PLCountry;
@@ -89,6 +91,12 @@ abstract class BasePDDebate extends BaseObject implements Persistent
     protected $p_user_id;
 
     /**
+     * The value for the p_e_operation_id field.
+     * @var        int
+     */
+    protected $p_e_operation_id;
+
+    /**
      * The value for the p_l_city_id field.
      * @var        int
      */
@@ -117,6 +125,12 @@ abstract class BasePDDebate extends BaseObject implements Persistent
      * @var        int
      */
     protected $p_c_topic_id;
+
+    /**
+     * The value for the fb_ad_id field.
+     * @var        string
+     */
+    protected $fb_ad_id;
 
     /**
      * The value for the title field.
@@ -161,6 +175,13 @@ abstract class BasePDDebate extends BaseObject implements Persistent
      * @var        int
      */
     protected $nb_views;
+
+    /**
+     * The value for the want_boost field.
+     * Note: this column has a database default value of: 0
+     * @var        int
+     */
+    protected $want_boost;
 
     /**
      * The value for the published field.
@@ -217,6 +238,12 @@ abstract class BasePDDebate extends BaseObject implements Persistent
     protected $moderated_at;
 
     /**
+     * The value for the indexed_at field.
+     * @var        string
+     */
+    protected $indexed_at;
+
+    /**
      * The value for the created_at field.
      * @var        string
      */
@@ -263,6 +290,11 @@ abstract class BasePDDebate extends BaseObject implements Persistent
      * @var        PCTopic
      */
     protected $aPCTopic;
+
+    /**
+     * @var        PEOperation
+     */
+    protected $aPEOperation;
 
     /**
      * @var        PropelObjectCollection|PUFollowDD[] Collection to store aggregation of PUFollowDD objects.
@@ -425,6 +457,7 @@ abstract class BasePDDebate extends BaseObject implements Persistent
     {
         $this->note_pos = 0;
         $this->note_neg = 0;
+        $this->want_boost = 0;
     }
 
     /**
@@ -468,6 +501,17 @@ abstract class BasePDDebate extends BaseObject implements Persistent
     {
 
         return $this->p_user_id;
+    }
+
+    /**
+     * Get the [p_e_operation_id] column value.
+     *
+     * @return int
+     */
+    public function getPEOperationId()
+    {
+
+        return $this->p_e_operation_id;
     }
 
     /**
@@ -523,6 +567,17 @@ abstract class BasePDDebate extends BaseObject implements Persistent
     {
 
         return $this->p_c_topic_id;
+    }
+
+    /**
+     * Get the [fb_ad_id] column value.
+     *
+     * @return string
+     */
+    public function getFbAdId()
+    {
+
+        return $this->fb_ad_id;
     }
 
     /**
@@ -600,6 +655,17 @@ abstract class BasePDDebate extends BaseObject implements Persistent
     {
 
         return $this->nb_views;
+    }
+
+    /**
+     * Get the [want_boost] column value.
+     *
+     * @return int
+     */
+    public function getWantBoost()
+    {
+
+        return $this->want_boost;
     }
 
     /**
@@ -744,6 +810,46 @@ abstract class BasePDDebate extends BaseObject implements Persistent
             $dt = new DateTime($this->moderated_at);
         } catch (Exception $x) {
             throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->moderated_at, true), $x);
+        }
+
+        if ($format === null) {
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
+            return $dt;
+        }
+
+        if (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        }
+
+        return $dt->format($format);
+
+    }
+
+    /**
+     * Get the [optionally formatted] temporal [indexed_at] column value.
+     *
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getIndexedAt($format = null)
+    {
+        if ($this->indexed_at === null) {
+            return null;
+        }
+
+        if ($this->indexed_at === '0000-00-00 00:00:00') {
+            // while technically this is not a default value of null,
+            // this seems to be closest in meaning.
+            return null;
+        }
+
+        try {
+            $dt = new DateTime($this->indexed_at);
+        } catch (Exception $x) {
+            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->indexed_at, true), $x);
         }
 
         if ($format === null) {
@@ -918,6 +1024,31 @@ abstract class BasePDDebate extends BaseObject implements Persistent
     } // setPUserId()
 
     /**
+     * Set the value of [p_e_operation_id] column.
+     *
+     * @param  int $v new value
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function setPEOperationId($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->p_e_operation_id !== $v) {
+            $this->p_e_operation_id = $v;
+            $this->modifiedColumns[] = PDDebatePeer::P_E_OPERATION_ID;
+        }
+
+        if ($this->aPEOperation !== null && $this->aPEOperation->getId() !== $v) {
+            $this->aPEOperation = null;
+        }
+
+
+        return $this;
+    } // setPEOperationId()
+
+    /**
      * Set the value of [p_l_city_id] column.
      *
      * @param  int $v new value
@@ -1041,6 +1172,27 @@ abstract class BasePDDebate extends BaseObject implements Persistent
 
         return $this;
     } // setPCTopicId()
+
+    /**
+     * Set the value of [fb_ad_id] column.
+     *
+     * @param  string $v new value
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function setFbAdId($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->fb_ad_id !== $v) {
+            $this->fb_ad_id = $v;
+            $this->modifiedColumns[] = PDDebatePeer::FB_AD_ID;
+        }
+
+
+        return $this;
+    } // setFbAdId()
 
     /**
      * Set the value of [title] column.
@@ -1188,6 +1340,27 @@ abstract class BasePDDebate extends BaseObject implements Persistent
 
         return $this;
     } // setNbViews()
+
+    /**
+     * Set the value of [want_boost] column.
+     *
+     * @param  int $v new value
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function setWantBoost($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->want_boost !== $v) {
+            $this->want_boost = $v;
+            $this->modifiedColumns[] = PDDebatePeer::WANT_BOOST;
+        }
+
+
+        return $this;
+    } // setWantBoost()
 
     /**
      * Sets the value of the [published] column.
@@ -1431,6 +1604,29 @@ abstract class BasePDDebate extends BaseObject implements Persistent
     } // setModeratedAt()
 
     /**
+     * Sets the value of [indexed_at] column to a normalized version of the date/time value specified.
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return PDDebate The current object (for fluent API support)
+     */
+    public function setIndexedAt($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->indexed_at !== null || $dt !== null) {
+            $currentDateAsString = ($this->indexed_at !== null && $tmpDt = new DateTime($this->indexed_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->indexed_at = $newDateAsString;
+                $this->modifiedColumns[] = PDDebatePeer::INDEXED_AT;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setIndexedAt()
+
+    /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
@@ -1515,6 +1711,10 @@ abstract class BasePDDebate extends BaseObject implements Persistent
                 return false;
             }
 
+            if ($this->want_boost !== 0) {
+                return false;
+            }
+
         // otherwise, everything was equal, so return true
         return true;
     } // hasOnlyDefaultValues()
@@ -1540,30 +1740,34 @@ abstract class BasePDDebate extends BaseObject implements Persistent
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->uuid = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
             $this->p_user_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
-            $this->p_l_city_id = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
-            $this->p_l_department_id = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
-            $this->p_l_region_id = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
-            $this->p_l_country_id = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
-            $this->p_c_topic_id = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
-            $this->title = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
-            $this->file_name = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
-            $this->copyright = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
-            $this->description = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
-            $this->note_pos = ($row[$startcol + 12] !== null) ? (int) $row[$startcol + 12] : null;
-            $this->note_neg = ($row[$startcol + 13] !== null) ? (int) $row[$startcol + 13] : null;
-            $this->nb_views = ($row[$startcol + 14] !== null) ? (int) $row[$startcol + 14] : null;
-            $this->published = ($row[$startcol + 15] !== null) ? (boolean) $row[$startcol + 15] : null;
-            $this->published_at = ($row[$startcol + 16] !== null) ? (string) $row[$startcol + 16] : null;
-            $this->published_by = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
-            $this->favorite = ($row[$startcol + 18] !== null) ? (boolean) $row[$startcol + 18] : null;
-            $this->online = ($row[$startcol + 19] !== null) ? (boolean) $row[$startcol + 19] : null;
-            $this->homepage = ($row[$startcol + 20] !== null) ? (boolean) $row[$startcol + 20] : null;
-            $this->moderated = ($row[$startcol + 21] !== null) ? (boolean) $row[$startcol + 21] : null;
-            $this->moderated_partial = ($row[$startcol + 22] !== null) ? (boolean) $row[$startcol + 22] : null;
-            $this->moderated_at = ($row[$startcol + 23] !== null) ? (string) $row[$startcol + 23] : null;
-            $this->created_at = ($row[$startcol + 24] !== null) ? (string) $row[$startcol + 24] : null;
-            $this->updated_at = ($row[$startcol + 25] !== null) ? (string) $row[$startcol + 25] : null;
-            $this->slug = ($row[$startcol + 26] !== null) ? (string) $row[$startcol + 26] : null;
+            $this->p_e_operation_id = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
+            $this->p_l_city_id = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
+            $this->p_l_department_id = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
+            $this->p_l_region_id = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
+            $this->p_l_country_id = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
+            $this->p_c_topic_id = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
+            $this->fb_ad_id = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+            $this->title = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+            $this->file_name = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+            $this->copyright = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+            $this->description = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
+            $this->note_pos = ($row[$startcol + 14] !== null) ? (int) $row[$startcol + 14] : null;
+            $this->note_neg = ($row[$startcol + 15] !== null) ? (int) $row[$startcol + 15] : null;
+            $this->nb_views = ($row[$startcol + 16] !== null) ? (int) $row[$startcol + 16] : null;
+            $this->want_boost = ($row[$startcol + 17] !== null) ? (int) $row[$startcol + 17] : null;
+            $this->published = ($row[$startcol + 18] !== null) ? (boolean) $row[$startcol + 18] : null;
+            $this->published_at = ($row[$startcol + 19] !== null) ? (string) $row[$startcol + 19] : null;
+            $this->published_by = ($row[$startcol + 20] !== null) ? (string) $row[$startcol + 20] : null;
+            $this->favorite = ($row[$startcol + 21] !== null) ? (boolean) $row[$startcol + 21] : null;
+            $this->online = ($row[$startcol + 22] !== null) ? (boolean) $row[$startcol + 22] : null;
+            $this->homepage = ($row[$startcol + 23] !== null) ? (boolean) $row[$startcol + 23] : null;
+            $this->moderated = ($row[$startcol + 24] !== null) ? (boolean) $row[$startcol + 24] : null;
+            $this->moderated_partial = ($row[$startcol + 25] !== null) ? (boolean) $row[$startcol + 25] : null;
+            $this->moderated_at = ($row[$startcol + 26] !== null) ? (string) $row[$startcol + 26] : null;
+            $this->indexed_at = ($row[$startcol + 27] !== null) ? (string) $row[$startcol + 27] : null;
+            $this->created_at = ($row[$startcol + 28] !== null) ? (string) $row[$startcol + 28] : null;
+            $this->updated_at = ($row[$startcol + 29] !== null) ? (string) $row[$startcol + 29] : null;
+            $this->slug = ($row[$startcol + 30] !== null) ? (string) $row[$startcol + 30] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -1573,7 +1777,7 @@ abstract class BasePDDebate extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 27; // 27 = PDDebatePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 31; // 31 = PDDebatePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PDDebate object", $e);
@@ -1598,6 +1802,9 @@ abstract class BasePDDebate extends BaseObject implements Persistent
 
         if ($this->aPUser !== null && $this->p_user_id !== $this->aPUser->getId()) {
             $this->aPUser = null;
+        }
+        if ($this->aPEOperation !== null && $this->p_e_operation_id !== $this->aPEOperation->getId()) {
+            $this->aPEOperation = null;
         }
         if ($this->aPLCity !== null && $this->p_l_city_id !== $this->aPLCity->getId()) {
             $this->aPLCity = null;
@@ -1659,6 +1866,7 @@ abstract class BasePDDebate extends BaseObject implements Persistent
             $this->aPLRegion = null;
             $this->aPLCountry = null;
             $this->aPCTopic = null;
+            $this->aPEOperation = null;
             $this->collPuFollowDdPDDebates = null;
 
             $this->collPuBookmarkDdPDDebates = null;
@@ -1865,6 +2073,13 @@ abstract class BasePDDebate extends BaseObject implements Persistent
                     $affectedRows += $this->aPCTopic->save($con);
                 }
                 $this->setPCTopic($this->aPCTopic);
+            }
+
+            if ($this->aPEOperation !== null) {
+                if ($this->aPEOperation->isModified() || $this->aPEOperation->isNew()) {
+                    $affectedRows += $this->aPEOperation->save($con);
+                }
+                $this->setPEOperation($this->aPEOperation);
             }
 
             if ($this->isNew() || $this->isModified()) {
@@ -2137,6 +2352,9 @@ abstract class BasePDDebate extends BaseObject implements Persistent
         if ($this->isColumnModified(PDDebatePeer::P_USER_ID)) {
             $modifiedColumns[':p' . $index++]  = '`p_user_id`';
         }
+        if ($this->isColumnModified(PDDebatePeer::P_E_OPERATION_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`p_e_operation_id`';
+        }
         if ($this->isColumnModified(PDDebatePeer::P_L_CITY_ID)) {
             $modifiedColumns[':p' . $index++]  = '`p_l_city_id`';
         }
@@ -2151,6 +2369,9 @@ abstract class BasePDDebate extends BaseObject implements Persistent
         }
         if ($this->isColumnModified(PDDebatePeer::P_C_TOPIC_ID)) {
             $modifiedColumns[':p' . $index++]  = '`p_c_topic_id`';
+        }
+        if ($this->isColumnModified(PDDebatePeer::FB_AD_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`fb_ad_id`';
         }
         if ($this->isColumnModified(PDDebatePeer::TITLE)) {
             $modifiedColumns[':p' . $index++]  = '`title`';
@@ -2172,6 +2393,9 @@ abstract class BasePDDebate extends BaseObject implements Persistent
         }
         if ($this->isColumnModified(PDDebatePeer::NB_VIEWS)) {
             $modifiedColumns[':p' . $index++]  = '`nb_views`';
+        }
+        if ($this->isColumnModified(PDDebatePeer::WANT_BOOST)) {
+            $modifiedColumns[':p' . $index++]  = '`want_boost`';
         }
         if ($this->isColumnModified(PDDebatePeer::PUBLISHED)) {
             $modifiedColumns[':p' . $index++]  = '`published`';
@@ -2199,6 +2423,9 @@ abstract class BasePDDebate extends BaseObject implements Persistent
         }
         if ($this->isColumnModified(PDDebatePeer::MODERATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`moderated_at`';
+        }
+        if ($this->isColumnModified(PDDebatePeer::INDEXED_AT)) {
+            $modifiedColumns[':p' . $index++]  = '`indexed_at`';
         }
         if ($this->isColumnModified(PDDebatePeer::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`created_at`';
@@ -2229,6 +2456,9 @@ abstract class BasePDDebate extends BaseObject implements Persistent
                     case '`p_user_id`':
                         $stmt->bindValue($identifier, $this->p_user_id, PDO::PARAM_INT);
                         break;
+                    case '`p_e_operation_id`':
+                        $stmt->bindValue($identifier, $this->p_e_operation_id, PDO::PARAM_INT);
+                        break;
                     case '`p_l_city_id`':
                         $stmt->bindValue($identifier, $this->p_l_city_id, PDO::PARAM_INT);
                         break;
@@ -2243,6 +2473,9 @@ abstract class BasePDDebate extends BaseObject implements Persistent
                         break;
                     case '`p_c_topic_id`':
                         $stmt->bindValue($identifier, $this->p_c_topic_id, PDO::PARAM_INT);
+                        break;
+                    case '`fb_ad_id`':
+                        $stmt->bindValue($identifier, $this->fb_ad_id, PDO::PARAM_STR);
                         break;
                     case '`title`':
                         $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
@@ -2264,6 +2497,9 @@ abstract class BasePDDebate extends BaseObject implements Persistent
                         break;
                     case '`nb_views`':
                         $stmt->bindValue($identifier, $this->nb_views, PDO::PARAM_INT);
+                        break;
+                    case '`want_boost`':
+                        $stmt->bindValue($identifier, $this->want_boost, PDO::PARAM_INT);
                         break;
                     case '`published`':
                         $stmt->bindValue($identifier, (int) $this->published, PDO::PARAM_INT);
@@ -2291,6 +2527,9 @@ abstract class BasePDDebate extends BaseObject implements Persistent
                         break;
                     case '`moderated_at`':
                         $stmt->bindValue($identifier, $this->moderated_at, PDO::PARAM_STR);
+                        break;
+                    case '`indexed_at`':
+                        $stmt->bindValue($identifier, $this->indexed_at, PDO::PARAM_STR);
                         break;
                     case '`created_at`':
                         $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
@@ -2371,75 +2610,87 @@ abstract class BasePDDebate extends BaseObject implements Persistent
                 return $this->getPUserId();
                 break;
             case 3:
-                return $this->getPLCityId();
+                return $this->getPEOperationId();
                 break;
             case 4:
-                return $this->getPLDepartmentId();
+                return $this->getPLCityId();
                 break;
             case 5:
-                return $this->getPLRegionId();
+                return $this->getPLDepartmentId();
                 break;
             case 6:
-                return $this->getPLCountryId();
+                return $this->getPLRegionId();
                 break;
             case 7:
-                return $this->getPCTopicId();
+                return $this->getPLCountryId();
                 break;
             case 8:
-                return $this->getTitle();
+                return $this->getPCTopicId();
                 break;
             case 9:
-                return $this->getFileName();
+                return $this->getFbAdId();
                 break;
             case 10:
-                return $this->getCopyright();
+                return $this->getTitle();
                 break;
             case 11:
-                return $this->getDescription();
+                return $this->getFileName();
                 break;
             case 12:
-                return $this->getNotePos();
+                return $this->getCopyright();
                 break;
             case 13:
-                return $this->getNoteNeg();
+                return $this->getDescription();
                 break;
             case 14:
-                return $this->getNbViews();
+                return $this->getNotePos();
                 break;
             case 15:
-                return $this->getPublished();
+                return $this->getNoteNeg();
                 break;
             case 16:
-                return $this->getPublishedAt();
+                return $this->getNbViews();
                 break;
             case 17:
-                return $this->getPublishedBy();
+                return $this->getWantBoost();
                 break;
             case 18:
-                return $this->getFavorite();
+                return $this->getPublished();
                 break;
             case 19:
-                return $this->getOnline();
+                return $this->getPublishedAt();
                 break;
             case 20:
-                return $this->getHomepage();
+                return $this->getPublishedBy();
                 break;
             case 21:
-                return $this->getModerated();
+                return $this->getFavorite();
                 break;
             case 22:
-                return $this->getModeratedPartial();
+                return $this->getOnline();
                 break;
             case 23:
-                return $this->getModeratedAt();
+                return $this->getHomepage();
                 break;
             case 24:
-                return $this->getCreatedAt();
+                return $this->getModerated();
                 break;
             case 25:
-                return $this->getUpdatedAt();
+                return $this->getModeratedPartial();
                 break;
             case 26:
+                return $this->getModeratedAt();
+                break;
+            case 27:
+                return $this->getIndexedAt();
+                break;
+            case 28:
+                return $this->getCreatedAt();
+                break;
+            case 29:
+                return $this->getUpdatedAt();
+                break;
+            case 30:
                 return $this->getSlug();
                 break;
             default:
@@ -2474,30 +2725,34 @@ abstract class BasePDDebate extends BaseObject implements Persistent
             $keys[0] => $this->getId(),
             $keys[1] => $this->getUuid(),
             $keys[2] => $this->getPUserId(),
-            $keys[3] => $this->getPLCityId(),
-            $keys[4] => $this->getPLDepartmentId(),
-            $keys[5] => $this->getPLRegionId(),
-            $keys[6] => $this->getPLCountryId(),
-            $keys[7] => $this->getPCTopicId(),
-            $keys[8] => $this->getTitle(),
-            $keys[9] => $this->getFileName(),
-            $keys[10] => $this->getCopyright(),
-            $keys[11] => $this->getDescription(),
-            $keys[12] => $this->getNotePos(),
-            $keys[13] => $this->getNoteNeg(),
-            $keys[14] => $this->getNbViews(),
-            $keys[15] => $this->getPublished(),
-            $keys[16] => $this->getPublishedAt(),
-            $keys[17] => $this->getPublishedBy(),
-            $keys[18] => $this->getFavorite(),
-            $keys[19] => $this->getOnline(),
-            $keys[20] => $this->getHomepage(),
-            $keys[21] => $this->getModerated(),
-            $keys[22] => $this->getModeratedPartial(),
-            $keys[23] => $this->getModeratedAt(),
-            $keys[24] => $this->getCreatedAt(),
-            $keys[25] => $this->getUpdatedAt(),
-            $keys[26] => $this->getSlug(),
+            $keys[3] => $this->getPEOperationId(),
+            $keys[4] => $this->getPLCityId(),
+            $keys[5] => $this->getPLDepartmentId(),
+            $keys[6] => $this->getPLRegionId(),
+            $keys[7] => $this->getPLCountryId(),
+            $keys[8] => $this->getPCTopicId(),
+            $keys[9] => $this->getFbAdId(),
+            $keys[10] => $this->getTitle(),
+            $keys[11] => $this->getFileName(),
+            $keys[12] => $this->getCopyright(),
+            $keys[13] => $this->getDescription(),
+            $keys[14] => $this->getNotePos(),
+            $keys[15] => $this->getNoteNeg(),
+            $keys[16] => $this->getNbViews(),
+            $keys[17] => $this->getWantBoost(),
+            $keys[18] => $this->getPublished(),
+            $keys[19] => $this->getPublishedAt(),
+            $keys[20] => $this->getPublishedBy(),
+            $keys[21] => $this->getFavorite(),
+            $keys[22] => $this->getOnline(),
+            $keys[23] => $this->getHomepage(),
+            $keys[24] => $this->getModerated(),
+            $keys[25] => $this->getModeratedPartial(),
+            $keys[26] => $this->getModeratedAt(),
+            $keys[27] => $this->getIndexedAt(),
+            $keys[28] => $this->getCreatedAt(),
+            $keys[29] => $this->getUpdatedAt(),
+            $keys[30] => $this->getSlug(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -2522,6 +2777,9 @@ abstract class BasePDDebate extends BaseObject implements Persistent
             }
             if (null !== $this->aPCTopic) {
                 $result['PCTopic'] = $this->aPCTopic->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->aPEOperation) {
+                $result['PEOperation'] = $this->aPEOperation->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
             if (null !== $this->collPuFollowDdPDDebates) {
                 $result['PuFollowDdPDDebates'] = $this->collPuFollowDdPDDebates->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -2588,75 +2846,87 @@ abstract class BasePDDebate extends BaseObject implements Persistent
                 $this->setPUserId($value);
                 break;
             case 3:
-                $this->setPLCityId($value);
+                $this->setPEOperationId($value);
                 break;
             case 4:
-                $this->setPLDepartmentId($value);
+                $this->setPLCityId($value);
                 break;
             case 5:
-                $this->setPLRegionId($value);
+                $this->setPLDepartmentId($value);
                 break;
             case 6:
-                $this->setPLCountryId($value);
+                $this->setPLRegionId($value);
                 break;
             case 7:
-                $this->setPCTopicId($value);
+                $this->setPLCountryId($value);
                 break;
             case 8:
-                $this->setTitle($value);
+                $this->setPCTopicId($value);
                 break;
             case 9:
-                $this->setFileName($value);
+                $this->setFbAdId($value);
                 break;
             case 10:
-                $this->setCopyright($value);
+                $this->setTitle($value);
                 break;
             case 11:
-                $this->setDescription($value);
+                $this->setFileName($value);
                 break;
             case 12:
-                $this->setNotePos($value);
+                $this->setCopyright($value);
                 break;
             case 13:
-                $this->setNoteNeg($value);
+                $this->setDescription($value);
                 break;
             case 14:
-                $this->setNbViews($value);
+                $this->setNotePos($value);
                 break;
             case 15:
-                $this->setPublished($value);
+                $this->setNoteNeg($value);
                 break;
             case 16:
-                $this->setPublishedAt($value);
+                $this->setNbViews($value);
                 break;
             case 17:
-                $this->setPublishedBy($value);
+                $this->setWantBoost($value);
                 break;
             case 18:
-                $this->setFavorite($value);
+                $this->setPublished($value);
                 break;
             case 19:
-                $this->setOnline($value);
+                $this->setPublishedAt($value);
                 break;
             case 20:
-                $this->setHomepage($value);
+                $this->setPublishedBy($value);
                 break;
             case 21:
-                $this->setModerated($value);
+                $this->setFavorite($value);
                 break;
             case 22:
-                $this->setModeratedPartial($value);
+                $this->setOnline($value);
                 break;
             case 23:
-                $this->setModeratedAt($value);
+                $this->setHomepage($value);
                 break;
             case 24:
-                $this->setCreatedAt($value);
+                $this->setModerated($value);
                 break;
             case 25:
-                $this->setUpdatedAt($value);
+                $this->setModeratedPartial($value);
                 break;
             case 26:
+                $this->setModeratedAt($value);
+                break;
+            case 27:
+                $this->setIndexedAt($value);
+                break;
+            case 28:
+                $this->setCreatedAt($value);
+                break;
+            case 29:
+                $this->setUpdatedAt($value);
+                break;
+            case 30:
                 $this->setSlug($value);
                 break;
         } // switch()
@@ -2686,30 +2956,34 @@ abstract class BasePDDebate extends BaseObject implements Persistent
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setUuid($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setPUserId($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setPLCityId($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setPLDepartmentId($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setPLRegionId($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setPLCountryId($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setPCTopicId($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setTitle($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setFileName($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setCopyright($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setDescription($arr[$keys[11]]);
-        if (array_key_exists($keys[12], $arr)) $this->setNotePos($arr[$keys[12]]);
-        if (array_key_exists($keys[13], $arr)) $this->setNoteNeg($arr[$keys[13]]);
-        if (array_key_exists($keys[14], $arr)) $this->setNbViews($arr[$keys[14]]);
-        if (array_key_exists($keys[15], $arr)) $this->setPublished($arr[$keys[15]]);
-        if (array_key_exists($keys[16], $arr)) $this->setPublishedAt($arr[$keys[16]]);
-        if (array_key_exists($keys[17], $arr)) $this->setPublishedBy($arr[$keys[17]]);
-        if (array_key_exists($keys[18], $arr)) $this->setFavorite($arr[$keys[18]]);
-        if (array_key_exists($keys[19], $arr)) $this->setOnline($arr[$keys[19]]);
-        if (array_key_exists($keys[20], $arr)) $this->setHomepage($arr[$keys[20]]);
-        if (array_key_exists($keys[21], $arr)) $this->setModerated($arr[$keys[21]]);
-        if (array_key_exists($keys[22], $arr)) $this->setModeratedPartial($arr[$keys[22]]);
-        if (array_key_exists($keys[23], $arr)) $this->setModeratedAt($arr[$keys[23]]);
-        if (array_key_exists($keys[24], $arr)) $this->setCreatedAt($arr[$keys[24]]);
-        if (array_key_exists($keys[25], $arr)) $this->setUpdatedAt($arr[$keys[25]]);
-        if (array_key_exists($keys[26], $arr)) $this->setSlug($arr[$keys[26]]);
+        if (array_key_exists($keys[3], $arr)) $this->setPEOperationId($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setPLCityId($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setPLDepartmentId($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setPLRegionId($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setPLCountryId($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setPCTopicId($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setFbAdId($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setTitle($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setFileName($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setCopyright($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setDescription($arr[$keys[13]]);
+        if (array_key_exists($keys[14], $arr)) $this->setNotePos($arr[$keys[14]]);
+        if (array_key_exists($keys[15], $arr)) $this->setNoteNeg($arr[$keys[15]]);
+        if (array_key_exists($keys[16], $arr)) $this->setNbViews($arr[$keys[16]]);
+        if (array_key_exists($keys[17], $arr)) $this->setWantBoost($arr[$keys[17]]);
+        if (array_key_exists($keys[18], $arr)) $this->setPublished($arr[$keys[18]]);
+        if (array_key_exists($keys[19], $arr)) $this->setPublishedAt($arr[$keys[19]]);
+        if (array_key_exists($keys[20], $arr)) $this->setPublishedBy($arr[$keys[20]]);
+        if (array_key_exists($keys[21], $arr)) $this->setFavorite($arr[$keys[21]]);
+        if (array_key_exists($keys[22], $arr)) $this->setOnline($arr[$keys[22]]);
+        if (array_key_exists($keys[23], $arr)) $this->setHomepage($arr[$keys[23]]);
+        if (array_key_exists($keys[24], $arr)) $this->setModerated($arr[$keys[24]]);
+        if (array_key_exists($keys[25], $arr)) $this->setModeratedPartial($arr[$keys[25]]);
+        if (array_key_exists($keys[26], $arr)) $this->setModeratedAt($arr[$keys[26]]);
+        if (array_key_exists($keys[27], $arr)) $this->setIndexedAt($arr[$keys[27]]);
+        if (array_key_exists($keys[28], $arr)) $this->setCreatedAt($arr[$keys[28]]);
+        if (array_key_exists($keys[29], $arr)) $this->setUpdatedAt($arr[$keys[29]]);
+        if (array_key_exists($keys[30], $arr)) $this->setSlug($arr[$keys[30]]);
     }
 
     /**
@@ -2724,11 +2998,13 @@ abstract class BasePDDebate extends BaseObject implements Persistent
         if ($this->isColumnModified(PDDebatePeer::ID)) $criteria->add(PDDebatePeer::ID, $this->id);
         if ($this->isColumnModified(PDDebatePeer::UUID)) $criteria->add(PDDebatePeer::UUID, $this->uuid);
         if ($this->isColumnModified(PDDebatePeer::P_USER_ID)) $criteria->add(PDDebatePeer::P_USER_ID, $this->p_user_id);
+        if ($this->isColumnModified(PDDebatePeer::P_E_OPERATION_ID)) $criteria->add(PDDebatePeer::P_E_OPERATION_ID, $this->p_e_operation_id);
         if ($this->isColumnModified(PDDebatePeer::P_L_CITY_ID)) $criteria->add(PDDebatePeer::P_L_CITY_ID, $this->p_l_city_id);
         if ($this->isColumnModified(PDDebatePeer::P_L_DEPARTMENT_ID)) $criteria->add(PDDebatePeer::P_L_DEPARTMENT_ID, $this->p_l_department_id);
         if ($this->isColumnModified(PDDebatePeer::P_L_REGION_ID)) $criteria->add(PDDebatePeer::P_L_REGION_ID, $this->p_l_region_id);
         if ($this->isColumnModified(PDDebatePeer::P_L_COUNTRY_ID)) $criteria->add(PDDebatePeer::P_L_COUNTRY_ID, $this->p_l_country_id);
         if ($this->isColumnModified(PDDebatePeer::P_C_TOPIC_ID)) $criteria->add(PDDebatePeer::P_C_TOPIC_ID, $this->p_c_topic_id);
+        if ($this->isColumnModified(PDDebatePeer::FB_AD_ID)) $criteria->add(PDDebatePeer::FB_AD_ID, $this->fb_ad_id);
         if ($this->isColumnModified(PDDebatePeer::TITLE)) $criteria->add(PDDebatePeer::TITLE, $this->title);
         if ($this->isColumnModified(PDDebatePeer::FILE_NAME)) $criteria->add(PDDebatePeer::FILE_NAME, $this->file_name);
         if ($this->isColumnModified(PDDebatePeer::COPYRIGHT)) $criteria->add(PDDebatePeer::COPYRIGHT, $this->copyright);
@@ -2736,6 +3012,7 @@ abstract class BasePDDebate extends BaseObject implements Persistent
         if ($this->isColumnModified(PDDebatePeer::NOTE_POS)) $criteria->add(PDDebatePeer::NOTE_POS, $this->note_pos);
         if ($this->isColumnModified(PDDebatePeer::NOTE_NEG)) $criteria->add(PDDebatePeer::NOTE_NEG, $this->note_neg);
         if ($this->isColumnModified(PDDebatePeer::NB_VIEWS)) $criteria->add(PDDebatePeer::NB_VIEWS, $this->nb_views);
+        if ($this->isColumnModified(PDDebatePeer::WANT_BOOST)) $criteria->add(PDDebatePeer::WANT_BOOST, $this->want_boost);
         if ($this->isColumnModified(PDDebatePeer::PUBLISHED)) $criteria->add(PDDebatePeer::PUBLISHED, $this->published);
         if ($this->isColumnModified(PDDebatePeer::PUBLISHED_AT)) $criteria->add(PDDebatePeer::PUBLISHED_AT, $this->published_at);
         if ($this->isColumnModified(PDDebatePeer::PUBLISHED_BY)) $criteria->add(PDDebatePeer::PUBLISHED_BY, $this->published_by);
@@ -2745,6 +3022,7 @@ abstract class BasePDDebate extends BaseObject implements Persistent
         if ($this->isColumnModified(PDDebatePeer::MODERATED)) $criteria->add(PDDebatePeer::MODERATED, $this->moderated);
         if ($this->isColumnModified(PDDebatePeer::MODERATED_PARTIAL)) $criteria->add(PDDebatePeer::MODERATED_PARTIAL, $this->moderated_partial);
         if ($this->isColumnModified(PDDebatePeer::MODERATED_AT)) $criteria->add(PDDebatePeer::MODERATED_AT, $this->moderated_at);
+        if ($this->isColumnModified(PDDebatePeer::INDEXED_AT)) $criteria->add(PDDebatePeer::INDEXED_AT, $this->indexed_at);
         if ($this->isColumnModified(PDDebatePeer::CREATED_AT)) $criteria->add(PDDebatePeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(PDDebatePeer::UPDATED_AT)) $criteria->add(PDDebatePeer::UPDATED_AT, $this->updated_at);
         if ($this->isColumnModified(PDDebatePeer::SLUG)) $criteria->add(PDDebatePeer::SLUG, $this->slug);
@@ -2813,11 +3091,13 @@ abstract class BasePDDebate extends BaseObject implements Persistent
     {
         $copyObj->setUuid($this->getUuid());
         $copyObj->setPUserId($this->getPUserId());
+        $copyObj->setPEOperationId($this->getPEOperationId());
         $copyObj->setPLCityId($this->getPLCityId());
         $copyObj->setPLDepartmentId($this->getPLDepartmentId());
         $copyObj->setPLRegionId($this->getPLRegionId());
         $copyObj->setPLCountryId($this->getPLCountryId());
         $copyObj->setPCTopicId($this->getPCTopicId());
+        $copyObj->setFbAdId($this->getFbAdId());
         $copyObj->setTitle($this->getTitle());
         $copyObj->setFileName($this->getFileName());
         $copyObj->setCopyright($this->getCopyright());
@@ -2825,6 +3105,7 @@ abstract class BasePDDebate extends BaseObject implements Persistent
         $copyObj->setNotePos($this->getNotePos());
         $copyObj->setNoteNeg($this->getNoteNeg());
         $copyObj->setNbViews($this->getNbViews());
+        $copyObj->setWantBoost($this->getWantBoost());
         $copyObj->setPublished($this->getPublished());
         $copyObj->setPublishedAt($this->getPublishedAt());
         $copyObj->setPublishedBy($this->getPublishedBy());
@@ -2834,6 +3115,7 @@ abstract class BasePDDebate extends BaseObject implements Persistent
         $copyObj->setModerated($this->getModerated());
         $copyObj->setModeratedPartial($this->getModeratedPartial());
         $copyObj->setModeratedAt($this->getModeratedAt());
+        $copyObj->setIndexedAt($this->getIndexedAt());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
         $copyObj->setSlug($this->getSlug());
@@ -3247,6 +3529,58 @@ abstract class BasePDDebate extends BaseObject implements Persistent
         }
 
         return $this->aPCTopic;
+    }
+
+    /**
+     * Declares an association between this object and a PEOperation object.
+     *
+     * @param                  PEOperation $v
+     * @return PDDebate The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setPEOperation(PEOperation $v = null)
+    {
+        if ($v === null) {
+            $this->setPEOperationId(NULL);
+        } else {
+            $this->setPEOperationId($v->getId());
+        }
+
+        $this->aPEOperation = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the PEOperation object, it will not be re-added.
+        if ($v !== null) {
+            $v->addPDDebate($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated PEOperation object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return PEOperation The associated PEOperation object.
+     * @throws PropelException
+     */
+    public function getPEOperation(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aPEOperation === null && ($this->p_e_operation_id !== null) && $doQuery) {
+            $this->aPEOperation = PEOperationQuery::create()->findPk($this->p_e_operation_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aPEOperation->addPDDebates($this);
+             */
+        }
+
+        return $this->aPEOperation;
     }
 
 
@@ -5914,11 +6248,13 @@ abstract class BasePDDebate extends BaseObject implements Persistent
         $this->id = null;
         $this->uuid = null;
         $this->p_user_id = null;
+        $this->p_e_operation_id = null;
         $this->p_l_city_id = null;
         $this->p_l_department_id = null;
         $this->p_l_region_id = null;
         $this->p_l_country_id = null;
         $this->p_c_topic_id = null;
+        $this->fb_ad_id = null;
         $this->title = null;
         $this->file_name = null;
         $this->copyright = null;
@@ -5926,6 +6262,7 @@ abstract class BasePDDebate extends BaseObject implements Persistent
         $this->note_pos = null;
         $this->note_neg = null;
         $this->nb_views = null;
+        $this->want_boost = null;
         $this->published = null;
         $this->published_at = null;
         $this->published_by = null;
@@ -5935,6 +6272,7 @@ abstract class BasePDDebate extends BaseObject implements Persistent
         $this->moderated = null;
         $this->moderated_partial = null;
         $this->moderated_at = null;
+        $this->indexed_at = null;
         $this->created_at = null;
         $this->updated_at = null;
         $this->slug = null;
@@ -6034,6 +6372,9 @@ abstract class BasePDDebate extends BaseObject implements Persistent
             if ($this->aPCTopic instanceof Persistent) {
               $this->aPCTopic->clearAllReferences($deep);
             }
+            if ($this->aPEOperation instanceof Persistent) {
+              $this->aPEOperation->clearAllReferences($deep);
+            }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
@@ -6088,6 +6429,7 @@ abstract class BasePDDebate extends BaseObject implements Persistent
         $this->aPLRegion = null;
         $this->aPLCountry = null;
         $this->aPCTopic = null;
+        $this->aPEOperation = null;
     }
 
     /**
@@ -6366,11 +6708,13 @@ abstract class BasePDDebate extends BaseObject implements Persistent
         }
         $this->setUuid($archive->getUuid());
         $this->setPUserId($archive->getPUserId());
+        $this->setPEOperationId($archive->getPEOperationId());
         $this->setPLCityId($archive->getPLCityId());
         $this->setPLDepartmentId($archive->getPLDepartmentId());
         $this->setPLRegionId($archive->getPLRegionId());
         $this->setPLCountryId($archive->getPLCountryId());
         $this->setPCTopicId($archive->getPCTopicId());
+        $this->setFbAdId($archive->getFbAdId());
         $this->setTitle($archive->getTitle());
         $this->setFileName($archive->getFileName());
         $this->setCopyright($archive->getCopyright());
@@ -6378,6 +6722,7 @@ abstract class BasePDDebate extends BaseObject implements Persistent
         $this->setNotePos($archive->getNotePos());
         $this->setNoteNeg($archive->getNoteNeg());
         $this->setNbViews($archive->getNbViews());
+        $this->setWantBoost($archive->getWantBoost());
         $this->setPublished($archive->getPublished());
         $this->setPublishedAt($archive->getPublishedAt());
         $this->setPublishedBy($archive->getPublishedBy());
@@ -6387,6 +6732,7 @@ abstract class BasePDDebate extends BaseObject implements Persistent
         $this->setModerated($archive->getModerated());
         $this->setModeratedPartial($archive->getModeratedPartial());
         $this->setModeratedAt($archive->getModeratedAt());
+        $this->setIndexedAt($archive->getIndexedAt());
         $this->setCreatedAt($archive->getCreatedAt());
         $this->setUpdatedAt($archive->getUpdatedAt());
         $this->setSlug($archive->getSlug());

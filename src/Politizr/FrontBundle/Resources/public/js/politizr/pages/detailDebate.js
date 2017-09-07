@@ -8,5 +8,10 @@ $(function() {
         )
     ).done(function(r1) {
         stickySidebar();
+
+        loadFbInsights();
+        loadFbComments();
     });
+
+    $('.paragraph p').selectionSharer();
 });

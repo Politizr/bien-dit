@@ -69,6 +69,12 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
     protected $p_user_id;
 
     /**
+     * The value for the p_owner_id field.
+     * @var        int
+     */
+    protected $p_owner_id;
+
+    /**
      * The value for the title field.
      * @var        string
      */
@@ -189,6 +195,17 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
     {
 
         return $this->p_user_id;
+    }
+
+    /**
+     * Get the [p_owner_id] column value.
+     *
+     * @return int
+     */
+    public function getPOwnerId()
+    {
+
+        return $this->p_owner_id;
     }
 
     /**
@@ -501,6 +518,27 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
     } // setPUserId()
 
     /**
+     * Set the value of [p_owner_id] column.
+     *
+     * @param  int $v new value
+     * @return PTagArchive The current object (for fluent API support)
+     */
+    public function setPOwnerId($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->p_owner_id !== $v) {
+            $this->p_owner_id = $v;
+            $this->modifiedColumns[] = PTagArchivePeer::P_OWNER_ID;
+        }
+
+
+        return $this;
+    } // setPOwnerId()
+
+    /**
      * Set the value of [title] column.
      *
      * @param  string $v new value
@@ -729,14 +767,15 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
             $this->p_t_tag_type_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
             $this->p_t_parent_id = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
             $this->p_user_id = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
-            $this->title = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->moderated = ($row[$startcol + 6] !== null) ? (boolean) $row[$startcol + 6] : null;
-            $this->moderated_at = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-            $this->online = ($row[$startcol + 8] !== null) ? (boolean) $row[$startcol + 8] : null;
-            $this->created_at = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
-            $this->updated_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
-            $this->slug = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
-            $this->archived_at = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+            $this->p_owner_id = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
+            $this->title = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->moderated = ($row[$startcol + 7] !== null) ? (boolean) $row[$startcol + 7] : null;
+            $this->moderated_at = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+            $this->online = ($row[$startcol + 9] !== null) ? (boolean) $row[$startcol + 9] : null;
+            $this->created_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+            $this->updated_at = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+            $this->slug = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+            $this->archived_at = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -746,7 +785,7 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 13; // 13 = PTagArchivePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 14; // 14 = PTagArchivePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PTagArchive object", $e);
@@ -969,6 +1008,9 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PTagArchivePeer::P_USER_ID)) {
             $modifiedColumns[':p' . $index++]  = '`p_user_id`';
         }
+        if ($this->isColumnModified(PTagArchivePeer::P_OWNER_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`p_owner_id`';
+        }
         if ($this->isColumnModified(PTagArchivePeer::TITLE)) {
             $modifiedColumns[':p' . $index++]  = '`title`';
         }
@@ -1018,6 +1060,9 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
                         break;
                     case '`p_user_id`':
                         $stmt->bindValue($identifier, $this->p_user_id, PDO::PARAM_INT);
+                        break;
+                    case '`p_owner_id`':
+                        $stmt->bindValue($identifier, $this->p_owner_id, PDO::PARAM_INT);
                         break;
                     case '`title`':
                         $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
@@ -1112,27 +1157,30 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
                 return $this->getPUserId();
                 break;
             case 5:
-                return $this->getTitle();
+                return $this->getPOwnerId();
                 break;
             case 6:
-                return $this->getModerated();
+                return $this->getTitle();
                 break;
             case 7:
-                return $this->getModeratedAt();
+                return $this->getModerated();
                 break;
             case 8:
-                return $this->getOnline();
+                return $this->getModeratedAt();
                 break;
             case 9:
-                return $this->getCreatedAt();
+                return $this->getOnline();
                 break;
             case 10:
-                return $this->getUpdatedAt();
+                return $this->getCreatedAt();
                 break;
             case 11:
-                return $this->getSlug();
+                return $this->getUpdatedAt();
                 break;
             case 12:
+                return $this->getSlug();
+                break;
+            case 13:
                 return $this->getArchivedAt();
                 break;
             default:
@@ -1168,14 +1216,15 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
             $keys[2] => $this->getPTTagTypeId(),
             $keys[3] => $this->getPTParentId(),
             $keys[4] => $this->getPUserId(),
-            $keys[5] => $this->getTitle(),
-            $keys[6] => $this->getModerated(),
-            $keys[7] => $this->getModeratedAt(),
-            $keys[8] => $this->getOnline(),
-            $keys[9] => $this->getCreatedAt(),
-            $keys[10] => $this->getUpdatedAt(),
-            $keys[11] => $this->getSlug(),
-            $keys[12] => $this->getArchivedAt(),
+            $keys[5] => $this->getPOwnerId(),
+            $keys[6] => $this->getTitle(),
+            $keys[7] => $this->getModerated(),
+            $keys[8] => $this->getModeratedAt(),
+            $keys[9] => $this->getOnline(),
+            $keys[10] => $this->getCreatedAt(),
+            $keys[11] => $this->getUpdatedAt(),
+            $keys[12] => $this->getSlug(),
+            $keys[13] => $this->getArchivedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1231,27 +1280,30 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
                 $this->setPUserId($value);
                 break;
             case 5:
-                $this->setTitle($value);
+                $this->setPOwnerId($value);
                 break;
             case 6:
-                $this->setModerated($value);
+                $this->setTitle($value);
                 break;
             case 7:
-                $this->setModeratedAt($value);
+                $this->setModerated($value);
                 break;
             case 8:
-                $this->setOnline($value);
+                $this->setModeratedAt($value);
                 break;
             case 9:
-                $this->setCreatedAt($value);
+                $this->setOnline($value);
                 break;
             case 10:
-                $this->setUpdatedAt($value);
+                $this->setCreatedAt($value);
                 break;
             case 11:
-                $this->setSlug($value);
+                $this->setUpdatedAt($value);
                 break;
             case 12:
+                $this->setSlug($value);
+                break;
+            case 13:
                 $this->setArchivedAt($value);
                 break;
         } // switch()
@@ -1283,14 +1335,15 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
         if (array_key_exists($keys[2], $arr)) $this->setPTTagTypeId($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setPTParentId($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setPUserId($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setTitle($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setModerated($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setModeratedAt($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setOnline($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setCreatedAt($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setUpdatedAt($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setSlug($arr[$keys[11]]);
-        if (array_key_exists($keys[12], $arr)) $this->setArchivedAt($arr[$keys[12]]);
+        if (array_key_exists($keys[5], $arr)) $this->setPOwnerId($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setTitle($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setModerated($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setModeratedAt($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setOnline($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setCreatedAt($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setUpdatedAt($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setSlug($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setArchivedAt($arr[$keys[13]]);
     }
 
     /**
@@ -1307,6 +1360,7 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PTagArchivePeer::P_T_TAG_TYPE_ID)) $criteria->add(PTagArchivePeer::P_T_TAG_TYPE_ID, $this->p_t_tag_type_id);
         if ($this->isColumnModified(PTagArchivePeer::P_T_PARENT_ID)) $criteria->add(PTagArchivePeer::P_T_PARENT_ID, $this->p_t_parent_id);
         if ($this->isColumnModified(PTagArchivePeer::P_USER_ID)) $criteria->add(PTagArchivePeer::P_USER_ID, $this->p_user_id);
+        if ($this->isColumnModified(PTagArchivePeer::P_OWNER_ID)) $criteria->add(PTagArchivePeer::P_OWNER_ID, $this->p_owner_id);
         if ($this->isColumnModified(PTagArchivePeer::TITLE)) $criteria->add(PTagArchivePeer::TITLE, $this->title);
         if ($this->isColumnModified(PTagArchivePeer::MODERATED)) $criteria->add(PTagArchivePeer::MODERATED, $this->moderated);
         if ($this->isColumnModified(PTagArchivePeer::MODERATED_AT)) $criteria->add(PTagArchivePeer::MODERATED_AT, $this->moderated_at);
@@ -1382,6 +1436,7 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
         $copyObj->setPTTagTypeId($this->getPTTagTypeId());
         $copyObj->setPTParentId($this->getPTParentId());
         $copyObj->setPUserId($this->getPUserId());
+        $copyObj->setPOwnerId($this->getPOwnerId());
         $copyObj->setTitle($this->getTitle());
         $copyObj->setModerated($this->getModerated());
         $copyObj->setModeratedAt($this->getModeratedAt());
@@ -1446,6 +1501,7 @@ abstract class BasePTagArchive extends BaseObject implements Persistent
         $this->p_t_tag_type_id = null;
         $this->p_t_parent_id = null;
         $this->p_user_id = null;
+        $this->p_owner_id = null;
         $this->title = null;
         $this->moderated = null;
         $this->moderated_at = null;

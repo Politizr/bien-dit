@@ -16,28 +16,24 @@
                         <!-- header -->
                         <tr>
                             <td colspan="2" style="text-align: center; padding: 20px 0 40px 0">
-                                <a href="http://www.politizr.com" target="_blank"><img src="{{ asset('bundles/politizrfront/imagesMail/logoPolitizr.jpg', absolute=true) }}" alt="Rendez-vous sur politizr.com" style="width: 55%"/></a>
+                                <a href="http://www.politizr.com" target="_blank"><img src="{{ absolute_url(asset('bundles/politizrfront/imagesMail/logoPolitizr.jpg')) }}" alt="Rendez-vous sur politizr.com" style="width: 55%"/></a>
                             </td>
                         </tr>
                          <tr style="background-color: #FFFFFF; width: 100%;">
                             <td colspan="2" style="padding: 40px 40px 40px 40px;  line-height: 180%;">
-Bonjour {{ user }},<br>
+Bonjour {{ user }},<br/><br/>
 
-Merci d'avoir rejoint la communauté en pleine expansion de Politizr.<br><br>
+Merci de votre inscription ! Je suis {% if user.qualified %}Lionel{% else %}Thomas{% endif %} de Politizr et je voulais vous souhaiter la bienvenue. Notre équipe est présente si vous avez besoin d'aide dans la découverte de nos fonctionnalités.<br/><br/>
 
-{% if user.qualified %}
-En tant qu'élu{% if user.gender == 'Madame' %}e{% endif %}, vous pourrez faire valoir vos actions et vos points de vue en toute transparence pour contribuer à convaincre et à mobiliser vos concitoyen-ne-s autour de vos projets.<br><br>
-{% else %}
-En tant que citoyen{% if user.gender == 'Madame' %}ne{% endif %}, vous pourrez exprimer vos opinions ou vos questions et ouvrir un canal de discussion direct avec vos élu-e-s.<br><br>
-{% endif %}
+En quelques mots, Politizr c'est :<br/><br/>
 
-Complétez votre profil pour permettre aux autres utilisateurs de suivre votre actualité. Suivez les sujets et les profils qui vous intéressent pour être tenu au courant des nouveautés.<br><br>
+- Un lieu d'échange privilégié entre les citoyens et les élus.<br/>
+- Retrouvez l'intégralité des sujets qui font l'actualité au niveau local et national.<br/>
+- Un espace indépendant où vous avez la possibilité de vous exprimer afin de faire entendre votre voix sur les sujets qui vous préocuppent.<br/><br/>
 
-Vous voulez vous exprimer sur des problématiques relatives à votre ville ou région? Venez publier un nouveau sujet sur Politizr et nous ferons la promotion de votre publication pour toucher les citoyen-ne-s et les élu-e-s concerné-e-s!<br><br>
+Retrouvez plus de détail sur cette <a href="{{ url('Concept') }}">page</a>.<br/><br/>
 
-N'hésitez pas à nous contacter si vous voulez nous faire part de vos retours ou idées d'améliorations.<br><br>
-
-Merci,<br><br>
+Faites entendre votre voix avec Politizr!<br/><br/>
 
 {% if user.qualified %}
 Lionel Bouzonville<br>

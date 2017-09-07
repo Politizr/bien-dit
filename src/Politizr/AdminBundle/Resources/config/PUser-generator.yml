@@ -101,6 +101,8 @@ params:
             # addFilterOptions:
         updated_at:
             label:          Mis à jour
+        indexed_at:
+            label:          Indexé le
     object_actions:
         delete:             ~
     batch_actions:
@@ -122,6 +124,8 @@ builders:
                         filters: 
                             qualified:          0
             display:                            [ file_name, name, firstname, p_l_city, qualified, validated, nb_id_check, reputation_score, online, homepage, last_activity, created_at ]
+            filters:                            [ id, uuid, email, name, qualified, validated, p_u_status, online, homepage, created_at, last_login ]
+            filtersMode:                        modal
             fields:
                 p_l_city:
                     label:                      Localisation
@@ -129,8 +133,6 @@ builders:
                 reputation_score:
                     label:                      Score
                     sortable:                   false
-            filtersMode:                        modal
-            filters:                            [ id, uuid, email, name, qualified, validated, p_u_status, online, homepage, last_activity, created_at ]
             object_actions:
                 homepage:
                     label:    En page d'accueil
@@ -146,7 +148,7 @@ builders:
                     label:    En page d'accueil
     excel:
         params:
-            display:                            [ qualified, gender, name, first_name, cityStr, departmentStr, email, phone, email, website, twitter, facebook, reputation_score, newsletter ]
+            display:                            [ qualified, gender, name, first_name, cityStr, departmentStr, birthday, email, phone, email, website, twitter, facebook, reputation_score, provider, provider_id ]
             filename:                           politizr-users
             filetype: ~
             datetime_format: ~
@@ -210,7 +212,7 @@ builders:
                     "En ligne":                 [ online ]
                     "Mise en avant":            [ homepage ]
                     "Validé":                   [ validated, nb_id_check ]
-                    "Création":                 [ [ created_at, updated_at ] ]
+                    "Dates":                    [ [ created_at, updated_at ], [ indexed_at ] ]
             fields:
                 block_back_file_name:
                     label:                      "Image de fond"
@@ -370,7 +372,7 @@ builders:
                     "Mise en avant":            [ homepage ]
                     "Validé":                   [ validated, nb_id_check ]
                     "Rôles":                    [ roles ]
-                    "Création":                 [ [ created_at, updated_at ] ]
+                    "Dates":                    [ [ created_at, updated_at ], [ indexed_at ] ]
                 "Front":
                     "Rendu":                    [ block_front ]
             fields:

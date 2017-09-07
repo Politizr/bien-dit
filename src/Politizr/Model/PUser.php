@@ -8,6 +8,7 @@ use Politizr\Exception\InconsistentDataException;
 
 use StudioEcho\Lib\StudioEchoUtils;
 
+use Politizr\Constant\PathConstants;
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\QualificationConstants;
 use Politizr\Constant\ListingConstants;
@@ -97,6 +98,20 @@ class PUser extends BasePUser implements UserInterface
     public function getFullName()
     {
         return trim($this->getFirstname().' '.$this->getName());
+    }
+
+    /**
+     *
+     */
+    public function getPathFileName()
+    {
+        $default = 'default_avatar.jpg';
+        $path = PathConstants::USER_UPLOAD_WEB_PATH.$default;
+        if ($fileName = $this->getFileName()) {
+            $path = PathConstants::USER_UPLOAD_WEB_PATH.$fileName;
+        }
+
+        return $path;
     }
 
     /**
@@ -571,9 +586,12 @@ class PUser extends BasePUser implements UserInterface
      *
      * @return PropelCollection[PUMandate]
      */
-    public function getMandates()
+    public function getMandates($nbMax = null)
     {
         $query = PUMandateQuery::create()
+            ->_if($nbMax)
+                ->setLimit($nbMax)
+            ->_endIf()
             ->orderByBeginAt('desc');
 
         return parent::getPUMandates($query);
@@ -1072,37 +1090,55 @@ class PUser extends BasePUser implements UserInterface
     }
 
     // ************************************************************************************ //
-    //                                          NOTIFICATIONS
-    // ************************************************************************************ //
-
-    /**
-     * Check if user subscribe to notif email
-     *
-     * @param int $notification
-     * @return boolean
-     */
-    public function isEmailNotificationSubscriber($notificationId)
-    {
-        $isSubscriber = PUSubscribeEmailQuery::create()
-            ->filterByPNotificationId($notificationId)
-            ->filterByPUserId($this->getId())
-            ->findOne();
-
-        if ($isSubscriber) {
-            return true;
-        }
-
-        return false;
-    }
-
-    // ************************************************************************************ //
     //                                          LOCALISATION
     // ************************************************************************************ //
 
     /**
+     * Return user's PLCity
+     *
+     * @return PLCity
+     */
+    public function getCity()
+    {
+        return $this->getPLCity();
+    }
+
+    /**
+     * Return user's PLDepartment
+     *
+     * @return PLDepartment
+     */
+    public function getDepartment()
+    {
+        if (!$this->getPLCity()) {
+            return null;
+        }
+
+        return $this->getPLCity()->getPLDepartment();
+    }
+
+    /**
+     * Return user's PLRegion
+     *
+     * @return PLRegion
+     */
+    public function getRegion()
+    {
+        if (!$this->getPLCity()) {
+            return null;
+        }
+
+        if (!$this->getPLCity()->getPLDepartment()) {
+            return null;
+        }
+
+        return $this->getPLCity()->getPLDepartment()->getPLRegion();
+    }
+
+    /**
      * Return user's city name
      *
-     * @param string
+     * @return string
      */
     public function getCityStr()
     {
@@ -1116,7 +1152,7 @@ class PUser extends BasePUser implements UserInterface
     /**
      * Return user's department name
      *
-     * @param string
+     * @return string
      */
     public function getDepartmentStr()
     {
@@ -1125,5 +1161,59 @@ class PUser extends BasePUser implements UserInterface
         }
 
         return $this->getPLCity()->getPLDepartment()->getTitle();
+    }
+
+    /**
+     * Return user's city's [latitude, longitude]
+     *
+     * @return array[latitude,longitude]
+     */
+    public function getGeoloc()
+    {
+        $city = $this->getPLCity();
+
+        if ($city) {
+            return [$city->getLatitudeDeg(), $city->getLongitudeDeg()];
+        }
+
+        return null;
+    }
+
+
+    // ************************************************************************************ //
+    //                                          OPERATION
+    // ************************************************************************************ //
+
+    /**
+     * Get user associated operations 
+     *
+     * @param boolean $online
+     * @return boolean
+     */
+    public function getOperations($online = true)
+    {
+        $query = PEOperationQuery::create()
+            ->filterIfOnline($online);
+
+        return parent::getPEOperations($query);
+    }
+
+    /**
+     * Is user associated with an operation 
+     *
+     * @param boolean $online
+     * @return boolean
+     */
+    public function isWithOperation($online = true)
+    {
+        $query = PEOperationQuery::create()
+            ->filterIfOnline($online);
+
+        $nbResults = parent::countPEOperations($query);
+        if ($nbResults > 0) {
+            return true;
+        }
+
+        return false;
     }
 }

@@ -7,6 +7,7 @@ use Politizr\Exception\InconsistentDataException;
 
 use Politizr\Model\PNotificationQuery;
 use Politizr\Model\PUNotificationQuery;
+use Politizr\Model\PNEmailQuery;
 
 /**
  * XHR service for user's notification management.
@@ -153,9 +154,9 @@ class XhrNotification
         $user = $this->securityTokenStorage->getToken()->getUser();
 
         // Retrieve subject
-        $notification = PNotificationQuery::create()->filterByUuid($uuid)->findOne();
+        $pnEmail = PNEmailQuery::create()->filterByUuid($uuid)->findOne();
 
-        $this->notificationManager->createUserSubscribeEmail($user->getId(), $notification->getId());
+        $this->notificationManager->createUserSubscribeEmail($user->getId(), $pnEmail->getId());
 
         return true;
     }
@@ -176,9 +177,9 @@ class XhrNotification
         $user = $this->securityTokenStorage->getToken()->getUser();
 
         // Retrieve subject
-        $notification = PNotificationQuery::create()->filterByUuid($uuid)->findOne();
+        $pnEmail = PNEmailQuery::create()->filterByUuid($uuid)->findOne();
 
-        $this->notificationManager->deleteUserSubscribeEmail($user->getId(), $notification->getId());
+        $this->notificationManager->deleteUserSubscribeEmail($user->getId(), $pnEmail->getId());
 
         return true;
     }

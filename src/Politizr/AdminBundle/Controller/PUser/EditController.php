@@ -5,6 +5,7 @@ namespace Politizr\AdminBundle\Controller\PUser;
 use Admingenerated\PolitizrAdminBundle\BasePUserController\EditController as BaseEditController;
 
 use Symfony\Component\Form\Form;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 use Politizr\Model\PUser;
 

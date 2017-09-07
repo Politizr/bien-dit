@@ -53,24 +53,41 @@ class DocumentLocalizationType extends AbstractType
         ));
         
         // Preset the localization list
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($user) {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($user, $options) {
             $form = $event->getForm();
             $document = $event->getData();
 
-            $currentType = LocalizationConstants::TYPE_CITY;
-            $currentUuid = null;
-            if ($cityId = $document->getPLCityId()) {
-                $currentType = LocalizationConstants::TYPE_CITY;
-                $currentUuid = $this->localizationManager->getCityUuidByCityId($cityId);
-            } elseif ($departmentId = $document->getPLDepartmentId()) {
-                $currentType = LocalizationConstants::TYPE_DEPARTMENT;
-                $currentUuid = $this->localizationManager->getDepartmentUuidByDepartmentId($departmentId);
-            } elseif ($regionId = $document->getPLRegionId()) {
-                $currentType = LocalizationConstants::TYPE_REGION;
-                $currentUuid = $this->localizationManager->getRegionUuidByRegionId($regionId);
-            } elseif ($countryId = $document->getPLCountryId()) {
-                $currentType = LocalizationConstants::TYPE_COUNTRY;
-                // $currentUuid = $this->localizationManager->getCountryUuidByCountryId($countryId);
+            if ($options['force_geoloc_type'] && $options['force_geoloc_id']) {
+                $currentType = $options['force_geoloc_type'];
+                $currentUuid = null;
+                if ($currentType == LocalizationConstants::TYPE_CITY) {
+                    $currentUuid = $this->localizationManager->getCityUuidByCityId($options['force_geoloc_id']);
+                } elseif ($currentType == LocalizationConstants::TYPE_DEPARTMENT) {
+                    $currentUuid = $this->localizationManager->getDepartmentUuidByDepartmentId($departmentId);
+                } elseif ($currentType == LocalizationConstants::TYPE_REGION) {
+                    $currentUuid = $this->localizationManager->getRegionUuidByRegionId($regionId);
+                }
+            } else {
+                // If user is out of France, default is "circonscription" / other case > "city"
+                if ($this->localizationManager->isOutOfFranceByCityId($user->getPLCityId())) {
+                    $currentType = LocalizationConstants::TYPE_CIRCONSCRIPTION;
+                } else {
+                    $currentType = LocalizationConstants::TYPE_CITY;
+                }
+                $currentUuid = null;
+                if ($cityId = $document->getPLCityId()) {
+                    $currentType = LocalizationConstants::TYPE_CITY;
+                    $currentUuid = $this->localizationManager->getCityUuidByCityId($cityId);
+                } elseif ($departmentId = $document->getPLDepartmentId()) {
+                    $currentType = LocalizationConstants::TYPE_DEPARTMENT;
+                    $currentUuid = $this->localizationManager->getDepartmentUuidByDepartmentId($departmentId);
+                } elseif ($regionId = $document->getPLRegionId()) {
+                    $currentType = LocalizationConstants::TYPE_REGION;
+                    $currentUuid = $this->localizationManager->getRegionUuidByRegionId($regionId);
+                } elseif ($countryId = $document->getPLCountryId()) {
+                    $currentType = LocalizationConstants::TYPE_COUNTRY;
+                    // $currentUuid = $this->localizationManager->getCountryUuidByCountryId($countryId);
+                }
             }
 
             // Geo type list
@@ -79,6 +96,7 @@ class DocumentLocalizationType extends AbstractType
                 'Un département' => LocalizationConstants::TYPE_DEPARTMENT,
                 'Une région' => LocalizationConstants::TYPE_REGION,
                 'Toute la France' => LocalizationConstants::TYPE_COUNTRY,
+                'Hors de France' => LocalizationConstants::TYPE_CIRCONSCRIPTION,
             );
 
             $form->add('loc_type', 'choice', array(
@@ -112,6 +130,14 @@ class DocumentLocalizationType extends AbstractType
 
             // Localization region type
             $form->add('localization_region', LocalizationRegionChoiceType::class, array(
+                'required' => false,
+                'mapped' => false,
+                'current_uuid' => $currentUuid,
+                'user_city_id' => $user->getPLCityId(),
+            ));
+
+            // Localization circonscription type
+            $form->add('localization_circonscription', LocalizationCirconscriptionChoiceType::class, array(
                 'required' => false,
                 'mapped' => false,
                 'current_uuid' => $currentUuid,
@@ -155,7 +181,15 @@ class DocumentLocalizationType extends AbstractType
                 $document->setPLDepartmentId(null);
                 $document->setPLRegionId(null);
                 $document->setPLCountryId(LocalizationConstants::FRANCE_ID);
-            } 
+            } elseif ($type == LocalizationConstants::TYPE_CIRCONSCRIPTION) {
+                $currentUuid = $form->get('localization_circonscription')->get('circonscription')->getData();
+                $departmentId = $this->localizationManager->getDepartmentIdByDepartmentUuid($currentUuid);
+
+                $document->setPLCityId(null);
+                $document->setPLDepartmentId($departmentId);
+                $document->setPLRegionId(null);
+                $document->setPLCountryId(null);
+            }
         });
     }
 
@@ -176,6 +210,8 @@ class DocumentLocalizationType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => 'Politizr\Model\PDocumentInterface',
             'user' => null,
+            'force_geoloc_type' => null,
+            'force_geoloc_id' => null,
         ));
     }
 }

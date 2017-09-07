@@ -10,11 +10,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Politizr\Constant\ListingConstants;
 
+use Politizr\Model\PDDirect;
+
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PTagQuery;
 use Politizr\Model\PQOrganizationQuery;
+
+use Politizr\FrontBundle\Form\Type\PDDirectType;
 
 use Eko\FeedBundle\Field\Item\MediaItemField;
 
@@ -62,9 +66,10 @@ class PublicController extends Controller
 
         $documents = null;
         $users = null;
+        $form = null;
 
         $documentsQuery = PDDebateQuery::create()
-            ->limit(9)
+            ->limit(6)
             ->online()
             ->orderByMostViews()
             ;
@@ -73,6 +78,9 @@ class PublicController extends Controller
             ->online()
             ->orderByMostActive()
             ;
+
+        $directMessage = new PDDirect();
+        $form = $this->createForm(new PDDirectType(), $directMessage);
 
         if ($theme == 'civic-tech') {
             $documents = $documentsQuery
@@ -138,13 +146,15 @@ class PublicController extends Controller
                     ->endUse()
                 ->endUse()
                 ->find();
+
             $users = $usersQuery
                 ->usePuTaggedTPUserQuery()
                     ->usePuTaggedTPTagQuery()
-                        ->filterBySlug('democratie-locale')
+                        ->filterBySlug('democratie-participative')
                     ->endUse()
                 ->endUse()
                 ->find();
+            
             $template = 'democratieLocale.html.twig';
         } elseif ($theme == 'democratie-participative')  {
             $documents = $documentsQuery
@@ -194,11 +204,28 @@ class PublicController extends Controller
                 ->endUse()
                 ->find();
             $template = 'presidentielle.html.twig';
-        } elseif ($theme == 'charlotte-marchandise-franquet')  {
-            $documents = $documentsQuery
+        } elseif ($theme == 'charlotte-marchandise')  {
+            $documents = PDDebateQuery::create()
+                ->limit(9)
+                ->online()
+                ->orderByPublishedAt('desc')
+                ->usePDDTaggedTQuery()
+                    ->usePTagQuery()
+                        ->filterBySlug('presidentielle-2017')
+                    ->endUse()
+                ->endUse()
+                // ->orderByMostViews()
                 ->filterByPUserId(315)
                 ->find();
             $template = 'charlotte.html.twig';
+        } elseif ($theme == 'concertation-publique')  {
+            $template = 'concertationPublique.html.twig';
+        } elseif ($theme == 'entreprise-liberee')  {
+            $template = 'entrepriseLiberee.html.twig';
+        } elseif ($theme == 'offre-candidat-legislatives-2017')  {
+            $template = 'offreCandidat.html.twig';
+        } elseif ($theme == 'offre-candidat-senatoriales-2017')  {
+            $template = 'offreCandidatSenatoriales.html.twig';
         } else {
             return $this->redirect($this->generateUrl('Homepage'));
         }
@@ -206,6 +233,7 @@ class PublicController extends Controller
         return $this->render('PolitizrFrontBundle:Public\LandingPage:'.$template, array(
             'documents' => $documents,
             'users' => $users,
+            'form' => $form?$form->createView():null,
         ));
     }
 
@@ -241,6 +269,7 @@ class PublicController extends Controller
     public function rssFeedAction()
     {
         $publications = $this->get('politizr.functional.document')->getPublicationsByFilters(
+            null,
             null,
             ListingConstants::FILTER_KEYWORD_DEBATES_AND_REACTIONS,
             ListingConstants::FILTER_KEYWORD_ALL_USERS,

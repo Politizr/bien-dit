@@ -224,6 +224,18 @@ class LocalizationService
             $departmentIds[] = LocalizationConstants::DEPARTMENT_ID_SAINT_PIERRE_ET_MIQUELON;
             $departmentIds[] = LocalizationConstants::DEPARTMENT_ID_WALLIS_ET_FUTUNA;
             $departmentIds[] = LocalizationConstants::DEPARTMENT_ID_NOUVELLE_CALEDONIE;
+        } elseif ($regionId == LocalizationConstants::REGION_ID_WORLD) {
+            $departmentIds[] = LocalizationConstants::DEPARTMENT_ID_WORLD_1;
+            $departmentIds[] = LocalizationConstants::DEPARTMENT_ID_WORLD_2;
+            $departmentIds[] = LocalizationConstants::DEPARTMENT_ID_WORLD_3;
+            $departmentIds[] = LocalizationConstants::DEPARTMENT_ID_WORLD_4;
+            $departmentIds[] = LocalizationConstants::DEPARTMENT_ID_WORLD_5;
+            $departmentIds[] = LocalizationConstants::DEPARTMENT_ID_WORLD_6;
+            $departmentIds[] = LocalizationConstants::DEPARTMENT_ID_WORLD_7;
+            $departmentIds[] = LocalizationConstants::DEPARTMENT_ID_WORLD_8;
+            $departmentIds[] = LocalizationConstants::DEPARTMENT_ID_WORLD_9;
+            $departmentIds[] = LocalizationConstants::DEPARTMENT_ID_WORLD_10;
+            $departmentIds[] = LocalizationConstants::DEPARTMENT_ID_WORLD_11;
         } else {
             throw new InconsistentDataException(sprintf('Region id %s does not match', $regionId));
         }
@@ -364,6 +376,18 @@ class LocalizationService
             $mapUuids['saintPierreEtMiquelon'] = PLDepartmentQuery::create()->findPk(LocalizationConstants::DEPARTMENT_ID_SAINT_PIERRE_ET_MIQUELON)->getUuid();
             $mapUuids['wallisEtFutuna'] = PLDepartmentQuery::create()->findPk(LocalizationConstants::DEPARTMENT_ID_WALLIS_ET_FUTUNA)->getUuid();
             $mapUuids['nouvelleCaledonie'] = PLDepartmentQuery::create()->findPk(LocalizationConstants::DEPARTMENT_ID_NOUVELLE_CALEDONIE)->getUuid();
+        } elseif ($regionId == LocalizationConstants::REGION_ID_WORLD) {
+            $mapUuids['circonscription1'] = PLDepartmentQuery::create()->findPk(LocalizationConstants::DEPARTMENT_ID_WORLD_1)->getUuid();
+            $mapUuids['circonscription2'] = PLDepartmentQuery::create()->findPk(LocalizationConstants::DEPARTMENT_ID_WORLD_2)->getUuid();
+            $mapUuids['circonscription3'] = PLDepartmentQuery::create()->findPk(LocalizationConstants::DEPARTMENT_ID_WORLD_3)->getUuid();
+            $mapUuids['circonscription4'] = PLDepartmentQuery::create()->findPk(LocalizationConstants::DEPARTMENT_ID_WORLD_4)->getUuid();
+            $mapUuids['circonscription5'] = PLDepartmentQuery::create()->findPk(LocalizationConstants::DEPARTMENT_ID_WORLD_5)->getUuid();
+            $mapUuids['circonscription6'] = PLDepartmentQuery::create()->findPk(LocalizationConstants::DEPARTMENT_ID_WORLD_6)->getUuid();
+            $mapUuids['circonscription7'] = PLDepartmentQuery::create()->findPk(LocalizationConstants::DEPARTMENT_ID_WORLD_7)->getUuid();
+            $mapUuids['circonscription8'] = PLDepartmentQuery::create()->findPk(LocalizationConstants::DEPARTMENT_ID_WORLD_8)->getUuid();
+            $mapUuids['circonscription9'] = PLDepartmentQuery::create()->findPk(LocalizationConstants::DEPARTMENT_ID_WORLD_9)->getUuid();
+            $mapUuids['circonscription10'] = PLDepartmentQuery::create()->findPk(LocalizationConstants::DEPARTMENT_ID_WORLD_10)->getUuid();
+            $mapUuids['circonscription11'] = PLDepartmentQuery::create()->findPk(LocalizationConstants::DEPARTMENT_ID_WORLD_11)->getUuid();
         } else {
             throw new InconsistentDataException(sprintf('Region id %s does not match', $regionId));
         }
@@ -450,6 +474,30 @@ class LocalizationService
             ->toArray();
 
         return $cityIds;
+    }
+
+    /**
+     * Get city id of a circonscription/department uuid
+     *
+     * @param integer $departmentId
+     * @return string
+     */
+    public function getCityUuidFromCirconscriptionUuid($circonscriptionUuid)
+    {
+        // $this->logger->info('*** getCityUuidFromCirconscriptionUuid');
+        // $this->logger->info('$circonscriptionUuid = '.print_r($circonscriptionUuid, true));
+
+        $city = PLCityQuery::create()
+            ->usePLDepartmentQuery()
+                ->filterByUuid($circonscriptionUuid)
+            ->endUse()
+            ->findOne();
+
+        if ($city) {
+            return $city->getUuid();
+        }
+
+        return null;
     }
 
     /**
@@ -630,5 +678,23 @@ class LocalizationService
         }
 
         return $localization;
+    }
+
+    /**
+     * Manage user city update
+     *
+     * @param PUser $user
+     * @param Form $formGeoloc LocalizationChoiceType
+     * @return PUser
+     */
+    public function updateUserGeoloc($user, $formGeoloc)
+    {
+        if ($formGeoloc['localization']['out_of_france']->getData()) {
+            $circonscriptionUuid = $formGeoloc['localization']['circonscription']->getData();
+            $cityUuid = $this->getCityUuidFromCirconscriptionUuid($circonscriptionUuid);
+            return $this->localizationManager->updateUserCity($user, $cityUuid);
+        } else {
+            return $this->localizationManager->updateUserCity($user, $formGeoloc['localization']['city']->getData());
+        }
     }
 }

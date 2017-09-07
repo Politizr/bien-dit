@@ -1,7 +1,11 @@
 // beta
 $(function() {
+    loadFbInsights();
+    loadFbComments();
+
     stickySidebar();
-    // $('.cycle-slideshow').cycle('goto', 1);
+
+    $('.paragraph p').selectionSharer();
 });
 
 

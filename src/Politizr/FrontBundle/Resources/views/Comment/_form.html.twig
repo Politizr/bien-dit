@@ -8,6 +8,7 @@
     {% endif %}
     
     <input type="hidden" name="uuid" value="{{ uuid }}">
+    <input type="hidden" name="type" value="{{ type }}">
     {{ form_rest(formComment) }}
     <div class="actionsButtons withLoaderInside">
         {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}

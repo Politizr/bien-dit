@@ -17,6 +17,8 @@ use Politizr\Model\PDDTaggedT;
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDRTaggedT;
 use Politizr\Model\PDReaction;
+use Politizr\Model\PEOPresetPT;
+use Politizr\Model\PEOperation;
 use Politizr\Model\PTTagType;
 use Politizr\Model\PTag;
 use Politizr\Model\PTagPeer;
@@ -30,6 +32,7 @@ use Politizr\Model\PUser;
  * @method PTagQuery orderByPTTagTypeId($order = Criteria::ASC) Order by the p_t_tag_type_id column
  * @method PTagQuery orderByPTParentId($order = Criteria::ASC) Order by the p_t_parent_id column
  * @method PTagQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
+ * @method PTagQuery orderByPOwnerId($order = Criteria::ASC) Order by the p_owner_id column
  * @method PTagQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method PTagQuery orderByModerated($order = Criteria::ASC) Order by the moderated column
  * @method PTagQuery orderByModeratedAt($order = Criteria::ASC) Order by the moderated_at column
@@ -43,6 +46,7 @@ use Politizr\Model\PUser;
  * @method PTagQuery groupByPTTagTypeId() Group by the p_t_tag_type_id column
  * @method PTagQuery groupByPTParentId() Group by the p_t_parent_id column
  * @method PTagQuery groupByPUserId() Group by the p_user_id column
+ * @method PTagQuery groupByPOwnerId() Group by the p_owner_id column
  * @method PTagQuery groupByTitle() Group by the title column
  * @method PTagQuery groupByModerated() Group by the moderated column
  * @method PTagQuery groupByModeratedAt() Group by the moderated_at column
@@ -67,9 +71,17 @@ use Politizr\Model\PUser;
  * @method PTagQuery rightJoinPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUser relation
  * @method PTagQuery innerJoinPUser($relationAlias = null) Adds a INNER JOIN clause to the query using the PUser relation
  *
+ * @method PTagQuery leftJoinPOwner($relationAlias = null) Adds a LEFT JOIN clause to the query using the POwner relation
+ * @method PTagQuery rightJoinPOwner($relationAlias = null) Adds a RIGHT JOIN clause to the query using the POwner relation
+ * @method PTagQuery innerJoinPOwner($relationAlias = null) Adds a INNER JOIN clause to the query using the POwner relation
+ *
  * @method PTagQuery leftJoinPTagRelatedById($relationAlias = null) Adds a LEFT JOIN clause to the query using the PTagRelatedById relation
  * @method PTagQuery rightJoinPTagRelatedById($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PTagRelatedById relation
  * @method PTagQuery innerJoinPTagRelatedById($relationAlias = null) Adds a INNER JOIN clause to the query using the PTagRelatedById relation
+ *
+ * @method PTagQuery leftJoinPEOPresetPT($relationAlias = null) Adds a LEFT JOIN clause to the query using the PEOPresetPT relation
+ * @method PTagQuery rightJoinPEOPresetPT($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PEOPresetPT relation
+ * @method PTagQuery innerJoinPEOPresetPT($relationAlias = null) Adds a INNER JOIN clause to the query using the PEOPresetPT relation
  *
  * @method PTagQuery leftJoinPuTaggedTPTag($relationAlias = null) Adds a LEFT JOIN clause to the query using the PuTaggedTPTag relation
  * @method PTagQuery rightJoinPuTaggedTPTag($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PuTaggedTPTag relation
@@ -90,6 +102,7 @@ use Politizr\Model\PUser;
  * @method PTag findOneByPTTagTypeId(int $p_t_tag_type_id) Return the first PTag filtered by the p_t_tag_type_id column
  * @method PTag findOneByPTParentId(int $p_t_parent_id) Return the first PTag filtered by the p_t_parent_id column
  * @method PTag findOneByPUserId(int $p_user_id) Return the first PTag filtered by the p_user_id column
+ * @method PTag findOneByPOwnerId(int $p_owner_id) Return the first PTag filtered by the p_owner_id column
  * @method PTag findOneByTitle(string $title) Return the first PTag filtered by the title column
  * @method PTag findOneByModerated(boolean $moderated) Return the first PTag filtered by the moderated column
  * @method PTag findOneByModeratedAt(string $moderated_at) Return the first PTag filtered by the moderated_at column
@@ -103,6 +116,7 @@ use Politizr\Model\PUser;
  * @method array findByPTTagTypeId(int $p_t_tag_type_id) Return PTag objects filtered by the p_t_tag_type_id column
  * @method array findByPTParentId(int $p_t_parent_id) Return PTag objects filtered by the p_t_parent_id column
  * @method array findByPUserId(int $p_user_id) Return PTag objects filtered by the p_user_id column
+ * @method array findByPOwnerId(int $p_owner_id) Return PTag objects filtered by the p_owner_id column
  * @method array findByTitle(string $title) Return PTag objects filtered by the title column
  * @method array findByModerated(boolean $moderated) Return PTag objects filtered by the moderated column
  * @method array findByModeratedAt(string $moderated_at) Return PTag objects filtered by the moderated_at column
@@ -221,7 +235,7 @@ abstract class BasePTagQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `p_t_tag_type_id`, `p_t_parent_id`, `p_user_id`, `title`, `moderated`, `moderated_at`, `online`, `created_at`, `updated_at`, `slug` FROM `p_tag` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_t_tag_type_id`, `p_t_parent_id`, `p_user_id`, `p_owner_id`, `title`, `moderated`, `moderated_at`, `online`, `created_at`, `updated_at`, `slug` FROM `p_tag` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -511,6 +525,50 @@ abstract class BasePTagQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PTagPeer::P_USER_ID, $pUserId, $comparison);
+    }
+
+    /**
+     * Filter the query on the p_owner_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPOwnerId(1234); // WHERE p_owner_id = 1234
+     * $query->filterByPOwnerId(array(12, 34)); // WHERE p_owner_id IN (12, 34)
+     * $query->filterByPOwnerId(array('min' => 12)); // WHERE p_owner_id >= 12
+     * $query->filterByPOwnerId(array('max' => 12)); // WHERE p_owner_id <= 12
+     * </code>
+     *
+     * @see       filterByPOwner()
+     *
+     * @param     mixed $pOwnerId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PTagQuery The current query, for fluid interface
+     */
+    public function filterByPOwnerId($pOwnerId = null, $comparison = null)
+    {
+        if (is_array($pOwnerId)) {
+            $useMinMax = false;
+            if (isset($pOwnerId['min'])) {
+                $this->addUsingAlias(PTagPeer::P_OWNER_ID, $pOwnerId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($pOwnerId['max'])) {
+                $this->addUsingAlias(PTagPeer::P_OWNER_ID, $pOwnerId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PTagPeer::P_OWNER_ID, $pOwnerId, $comparison);
     }
 
     /**
@@ -983,6 +1041,82 @@ abstract class BasePTagQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query by a related PUser object
+     *
+     * @param   PUser|PropelObjectCollection $pUser The related object(s) to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PTagQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPOwner($pUser, $comparison = null)
+    {
+        if ($pUser instanceof PUser) {
+            return $this
+                ->addUsingAlias(PTagPeer::P_OWNER_ID, $pUser->getId(), $comparison);
+        } elseif ($pUser instanceof PropelObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(PTagPeer::P_OWNER_ID, $pUser->toKeyValue('PrimaryKey', 'Id'), $comparison);
+        } else {
+            throw new PropelException('filterByPOwner() only accepts arguments of type PUser or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the POwner relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PTagQuery The current query, for fluid interface
+     */
+    public function joinPOwner($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('POwner');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'POwner');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the POwner relation PUser object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PUserQuery A secondary query class using the current class as primary query
+     */
+    public function usePOwnerQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinPOwner($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'POwner', '\Politizr\Model\PUserQuery');
+    }
+
+    /**
      * Filter the query by a related PTag object
      *
      * @param   PTag|PropelObjectCollection $pTag  the related object to use as filter
@@ -1054,6 +1188,80 @@ abstract class BasePTagQuery extends ModelCriteria
         return $this
             ->joinPTagRelatedById($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'PTagRelatedById', '\Politizr\Model\PTagQuery');
+    }
+
+    /**
+     * Filter the query by a related PEOPresetPT object
+     *
+     * @param   PEOPresetPT|PropelObjectCollection $pEOPresetPT  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PTagQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPEOPresetPT($pEOPresetPT, $comparison = null)
+    {
+        if ($pEOPresetPT instanceof PEOPresetPT) {
+            return $this
+                ->addUsingAlias(PTagPeer::ID, $pEOPresetPT->getPTagId(), $comparison);
+        } elseif ($pEOPresetPT instanceof PropelObjectCollection) {
+            return $this
+                ->usePEOPresetPTQuery()
+                ->filterByPrimaryKeys($pEOPresetPT->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPEOPresetPT() only accepts arguments of type PEOPresetPT or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PEOPresetPT relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PTagQuery The current query, for fluid interface
+     */
+    public function joinPEOPresetPT($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PEOPresetPT');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PEOPresetPT');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PEOPresetPT relation PEOPresetPT object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PEOPresetPTQuery A secondary query class using the current class as primary query
+     */
+    public function usePEOPresetPTQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPEOPresetPT($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PEOPresetPT', '\Politizr\Model\PEOPresetPTQuery');
     }
 
     /**
@@ -1276,6 +1484,23 @@ abstract class BasePTagQuery extends ModelCriteria
         return $this
             ->joinPDRTaggedT($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'PDRTaggedT', '\Politizr\Model\PDRTaggedTQuery');
+    }
+
+    /**
+     * Filter the query by a related PEOperation object
+     * using the p_e_o_preset_p_t table as cross reference
+     *
+     * @param   PEOperation $pEOperation the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return   PTagQuery The current query, for fluid interface
+     */
+    public function filterByPEOperation($pEOperation, $comparison = Criteria::EQUAL)
+    {
+        return $this
+            ->usePEOPresetPTQuery()
+            ->filterByPEOperation($pEOperation, $comparison)
+            ->endUse();
     }
 
     /**

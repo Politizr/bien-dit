@@ -55,6 +55,7 @@ class XhrUser
     private $eventDispatcher;
     private $templating;
     private $router;
+    private $twigEnv;
     private $formFactory;
     private $emailCanonicalizer;
     private $userManager;
@@ -74,6 +75,7 @@ class XhrUser
      * @param @event_dispatcher
      * @param @templating
      * @param @router
+     * @param @twig
      * @param @form.factory
      * @param @fos_user.util.email_canonicalizer
      * @param @politizr.manager.user
@@ -92,6 +94,7 @@ class XhrUser
         $eventDispatcher,
         $templating,
         $router,
+        $twigEnv,
         $formFactory,
         $emailCanonicalizer,
         $userManager,
@@ -112,6 +115,7 @@ class XhrUser
 
         $this->templating = $templating;
         $this->router = $router;
+        $this->twigEnv = $twigEnv;
         $this->formFactory = $formFactory;
 
         $this->emailCanonicalizer = $emailCanonicalizer;
@@ -243,6 +247,7 @@ class XhrUser
         $user->setFileName($fileName);
 
         $html = $this->userTwigExtension->photo(
+            $this->twigEnv,
             $user,
             'user_40',
             false
@@ -509,7 +514,7 @@ class XhrUser
                 }
             } elseif ($formTypeId == 4) {
                 // upd localization infos
-                $this->localizationManager->updateUserCity($user, $form->get('localization')->getData()['city']);
+                $this->localizationService->updateUserGeoloc($user, $form);
             }
         } else {
             $errors = StudioEchoUtils::getAjaxFormErrors($form);
@@ -610,6 +615,7 @@ class XhrUser
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
         
+        $this->timelineService->setTemplatingService($this->templating);
         $timeline = $this->timelineService->getMyTimelinePaginatedListing($user->getId(), $offset, ListingConstants::TIMELINE_CLASSIC_PAGINATION);
         $moreResults = false;
         if (sizeof($timeline) == ListingConstants::TIMELINE_CLASSIC_PAGINATION) {
@@ -660,6 +666,7 @@ class XhrUser
             throw new InconsistentDataException(sprintf('User %s not found', $uuid));
         }
 
+        $this->timelineService->setTemplatingService($this->templating);
         $timeline = $this->timelineService->getUserDetailTimelinePaginatedListing($user->getId(), $offset, ListingConstants::TIMELINE_CLASSIC_PAGINATION);
 
         $moreResults = false;

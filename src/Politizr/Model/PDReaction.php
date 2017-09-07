@@ -9,6 +9,7 @@ use Symfony\Component\Validator\Constraints\Count;
 
 use StudioEcho\Lib\StudioEchoUtils;
 
+use Politizr\Constant\PathConstants;
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\TagConstants;
 use Politizr\Constant\LabelConstants;
@@ -48,6 +49,19 @@ class PDReaction extends BasePDReaction implements PDocumentInterface
         return ObjectTypeConstants::TYPE_REACTION;
     }
 
+    /**
+     * @see PDocumentInterface::getDebateId
+     */
+    public function getDebateId()
+    {
+        $debate = $this->getDebate();
+
+        if (!$debate) {
+            return null;
+        }
+        
+        return $debate->getId();
+    }
 
     /**
      * @see PDocumentInterface::isDisplayed
@@ -55,6 +69,20 @@ class PDReaction extends BasePDReaction implements PDocumentInterface
     public function isDisplayed()
     {
         return $this->getOnline() && $this->getPublished();
+    }
+
+    /**
+     *
+     */
+    public function getPathFileName()
+    {
+        $default = 'default_document.jpg';
+        $path = PathConstants::REACTION_UPLOAD_WEB_PATH.$default;
+        if ($fileName = $this->getFileName()) {
+            $path = PathConstants::REACTION_UPLOAD_WEB_PATH.$fileName;
+        }
+
+        return $path;
     }
 
     /**
@@ -73,7 +101,7 @@ class PDReaction extends BasePDReaction implements PDocumentInterface
                 new NotBlank(['message' => 'Le texte de votre document ne doit pas être vide.']),
                 // new Length(['min' => 140, 'minMessage' => 'Le corps de la publication doit contenir {{ limit }} actères minimum.']),
             ),
-            'themaTags' => new Count(['max' => 5, 'maxMessage' => 'Saisissez au maximum {{ limit }} thématiques.']),
+            'tags' => new Count(['max' => 5, 'maxMessage' => 'Saisissez au maximum {{ limit }} thématiques.']),
             'localization' => new Count(['min' => 1, 'minMessage' => 'Le document doit être associé à une localisation.']),
         ));
 
@@ -126,9 +154,7 @@ class PDReaction extends BasePDReaction implements PDocumentInterface
     /* ######################################################################################################## */
 
     /**
-     * Renvoit le débat associé à la réaction
-     *
-     * @return     PDDebate     Objet débat
+     * @see PDocumentInterface::getDebate
      */
     public function getDebate()
     {
@@ -141,7 +167,6 @@ class PDReaction extends BasePDReaction implements PDocumentInterface
 
     /**
      * Reaction's array tags
-     * - used by elastica indexation
      *
      * @return array[string]
      */
@@ -158,6 +183,22 @@ class PDReaction extends BasePDReaction implements PDocumentInterface
     }
 
     /**
+     * Reaction's array tags
+     *
+     * @return array[id => string]
+     */
+    public function getIndexedArrayTags($tagTypeId = null, $online = true)
+    {
+        $query = PTagQuery::create()
+            ->filterIfTypeId($tagTypeId)
+            ->filterIfOnline($online)
+            ->orderByTitle()
+            ->setDistinct();
+
+        return parent::getPTags($query)->toKeyValue('Uuid', 'Title');
+    }
+
+    /**
      * @see PDocumentInterface::getTags
      */
     public function getTags($tagTypeId = null, $online = true)
@@ -169,6 +210,24 @@ class PDReaction extends BasePDReaction implements PDocumentInterface
             ->setDistinct();
 
         return parent::getPTags($query);
+    }
+
+    /**
+     * @see PDocumentInterface::isWithPrivateTag
+     */
+    public function isWithPrivateTag()
+    {
+        $query = PTagQuery::create()
+            ->filterByPTTagTypeId(TagConstants::TAG_TYPE_PRIVATE)
+            ->setDistinct();
+
+        $nbResults = parent::countPTags($query);
+        
+        if ($nbResults > 0) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -206,7 +265,7 @@ class PDReaction extends BasePDReaction implements PDocumentInterface
     /**
      * @see ObjectTypeConstants::countComments
      */
-    public function countComments($online = true, $paragraphNo = null, $onlyElected = false)
+    public function countComments($online = true, $paragraphNo = null, $onlyElected = null)
     {
         $query = PDRCommentQuery::create()
             ->filterIfOnline($online)

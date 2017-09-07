@@ -66,6 +66,7 @@ twig:
 #      image_path_diaporama:   %image_path_diaporama%
     globals:
         facebook:
+            admin_ids:          %facebook_admin_ids%
             client_id:          %facebook_client_id%
             client_secret:      %facebook_client_secret%
             scope:              %facebook_scope%
@@ -73,6 +74,10 @@ twig:
             previous_message:   '< page précédente'
             next_message:       'page suivante >'
             dots_message:       '...'
+        algolia:
+            app_id:             %algolia_app_id%
+            api_key:            %algolia_search_api_key%
+            index_name:         %algolia_index_name%
 
 # Assetic Configuration
 assetic:
@@ -124,9 +129,6 @@ propel:
         propel.useDateTimeClass: true
         propel.dateTimeClass:    "DateTime"
 
-        propel.defaultTimeStampFormat: ~
-        propel.defaultTimeFormat: ~
-        propel.defaultDateFormat: ~
         propel.defaultTimeStampFormat: ~
         propel.defaultTimeFormat: ~
         propel.defaultDateFormat: ~
@@ -284,8 +286,8 @@ liip_imagine:
     resolvers:
         default:
             web_path:
-              web_root:     %kernel.root_dir%/../web
-              cache_prefix: /uploads/cache
+                web_root:     %kernel.root_dir%/../web
+                cache_prefix: /uploads/cache
 
 #    loaders:
 #        default:
@@ -303,105 +305,107 @@ liip_imagine:
     filter_sets:
         # ADMIN
         admin_list_thumb:
-            quality:              100
+            quality:              80
             filters:
                 relative_resize:  { widen: 100 }
         admin_show_thumb:
-            quality:              100
+            quality:              80
             filters:
                 relative_resize:  { widen: 250 }
         admin_organization:
-            quality:              100
+            quality:              80
             filters:
                 relative_resize:  { widen: 50 }
-
+        admin_banner_thumb:
+            quality:              80
+            filters:
+                relative_resize:  { widen: 250 }
 
         # FRONT / GENERAL
         facebook_share:
-            quality:              100
+            quality:              80
             filters:
                 thumbnail:         { size: [1200, 630], mode: inbound }
 
         twitter_share:
-            quality:              100
+            quality:              80
             filters:
                 thumbnail:         { size: [500, 500], mode: inbound }
 
         debate_header:
-            quality:              100
+            quality:              80
             filters:
                 relative_resize:  { widen: 700 }
 
         debate_half_header:
-            quality:              100
+            quality:              80
             filters:
                 relative_resize:  { widen: 300 }
 
         debate_list:
-            quality:              100
+            quality:              80
             filters:
                 relative_resize:  { widen: 700 }
 
         debate_timeline:
-            quality:              100
+            quality:              80
             filters:
                 relative_resize:  { widen: 600 }
 
         debate_abuse:
-            quality:              100
+            quality:              80
             filters:
                 relative_resize:  { widen: 200 }
 
         reaction_header:
-            quality:              100
+            quality:              80
             filters:
                 relative_resize:  { widen: 700 }
 
         user_bio_back:
-            quality:              100
+            quality:              80
             filters:
                 relative_resize:  { widen: 700 }
 
         user_bio:
-            quality:              100
+            quality:              90
             filters:
                 relative_resize:  { widen: 60 }
 
         user_15:
-            quality:              100
+            quality:              90
             filters:
                 relative_resize:  { widen: 20 }
 
         user_30:
-            quality:              100
+            quality:              90
             filters:
                 relative_resize:  { widen: 50 }
 
         user_40:
-            quality:              100
+            quality:              90
             filters:
                 relative_resize:  { widen: 60 }
 
         user_60:
-            quality:              100
+            quality:              90
             filters:
                 relative_resize:  { widen: 80 }
 
         user_follower:
-            quality:              100
+            quality:              90
             filters:
                 relative_resize:  { widen: 40 }
 
         organization_mini:
-            quality:              100
+            quality:              90
             filters:
                 relative_resize:  { widen: 30 }
 
         organization_detail:
-            quality:              100
+            quality:              90
             filters:
                 relative_resize:  { heighten: 80 }
-
 
 
         # FRONT / ESPACE CITOYEN
@@ -410,6 +414,17 @@ liip_imagine:
             filters:
                 relative_resize:  { widen: 100 }
 
+
+        # COMMAND
+        algolia_image_user:
+            quality:              80
+            filters:
+                thumbnail:         { size: [60, 60], mode: inbound }
+
+        algolia_image_document:
+            quality:              80
+            filters:
+                thumbnail:         { size: [150, 100], mode: inbound }
 
 # Bazinga Faker
 bazinga_faker:
@@ -629,8 +644,10 @@ hwi_oauth:
 # HTMLPurifierBundle
 exercise_html_purifier:
     default:
-        # Cache.SerializerPath: '%kernel.cache_dir%/htmlpurifier'
         Cache.SerializerPath: "%kernel.root_dir%/cache/htmlpurifier"
+    # custom:
+    #     HTML.SafeIframe: true
+    #     URI.SafeIframeRegexp: '%^(https?:)?//(www\.youtube(?:-nocookie)?\.com/embed/%'
 
 # Liip URL autoconverter
 liip_url_auto_converter:

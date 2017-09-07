@@ -11,27 +11,28 @@ var RETURN_URL = 3;
 // ******************************************************** //
 
 // GENERAL
-var ROUTE_SHOW_HIDE_SUGGESTION = 'profil/suggestion';
+var ROUTE_SHOW_HIDE_SUGGESTION = '$w/suggestion';
 
 // FOLLOW
-var ROUTE_FOLLOW_DEBATE = 'profil/suivre/debat';
-var ROUTE_FOLLOW_USER = 'profil/suivre/utilisateur';
-var ROUTE_FOLLOW_TAG = 'profil/suivre/thematique';
+var ROUTE_FOLLOW_DEBATE = '$w/suivre/debat';
+var ROUTE_FOLLOW_USER = '$w/suivre/utilisateur';
+var ROUTE_FOLLOW_TAG = '$w/suivre/thematique';
+var ROUTE_FOLLOW_RELATIVE_DEBATE = '$w/suivre/debat/relatif';
 
 // COMMENTS
 var ROUTE_COMMENTS = 'commentaires';
-var ROUTE_COMMENT_CREATE = 'profil/commentaire/nouveau';
+var ROUTE_COMMENT_CREATE = '$w/commentaire/nouveau';
 
 // DOCUMENTS
-var ROUTE_DOCUMENT_PHOTO_UPLOAD = 'profil/document/photo/upload';
-var ROUTE_DOCUMENT_PHOTO_DELETE = 'profil/document/photo/delete';
+var ROUTE_DOCUMENT_PHOTO_UPLOAD = '$w/document/photo/upload';
+var ROUTE_DOCUMENT_PHOTO_DELETE = '$w/document/photo/delete';
 
-var ROUTE_DOCUMENT_LISTING_MY_DRAFTS = 'profil/mes-documents/brouillons';
-var ROUTE_DOCUMENT_LISTING_MY_BOOKMARKS = 'profil/mes-favoris';
-var ROUTE_DOCUMENT_LISTING_USER_PUBLICATIONS = 'profil/publications';
+var ROUTE_DOCUMENT_LISTING_MY_DRAFTS = '$w/mes-documents/brouillons';
+var ROUTE_DOCUMENT_LISTING_MY_BOOKMARKS = '$w/mes-favoris';
+var ROUTE_DOCUMENT_LISTING_USER_PUBLICATIONS = '$w/publications';
 
 var ROUTE_DOCUMENT_LISTING_TOP = 'documents/top';
-var ROUTE_DOCUMENT_LISTING_SUGGESTION = '/espace/profil/documents/suggestions';
+var ROUTE_DOCUMENT_LISTING_SUGGESTION = '/$w/documents/suggestions';
 
 var ROUTE_DOCUMENT_LISTING_RECOMMEND = 'documents/recommend';
 var ROUTE_DOCUMENT_LISTING_RECOMMEND_NAV = 'documents/recommend/nav';
@@ -43,38 +44,41 @@ var ROUTE_MAP_MENU = 'carte/menu';
 var ROUTE_MAP_BREADCRUMB = 'carte/breadcrumb';
 var ROUTE_MAP_SCHEMA = 'carte/schema';
 
-var ROUTE_DOCUMENT_BOOKMARK = 'profil/document/bookmark';
+var ROUTE_DOCUMENT_BOOKMARK = '$w/document/bookmark';
 
+var ROUTE_FB_COMMENTS = 'fb/commentaires';
+var ROUTE_FB_INSIGHTS= 'fb/insights';
 
 // DEBATES
-var ROUTE_DEBATE_UPDATE = 'profil/debat/update';
-var ROUTE_DEBATE_PUBLISH = 'profil/debat/publier';
-var ROUTE_DEBATE_DELETE = 'profil/debat/supprimer';
-var ROUTE_DEBATE_PHOTO_INFO_UPDATE = 'profil/debat/infos/photo/update';
+var ROUTE_DEBATE_UPDATE = '$w/debat/update';
+var ROUTE_DEBATE_PUBLISH = '$w/debat/publier';
+var ROUTE_DEBATE_DELETE = '$w/debat/supprimer';
+var ROUTE_DEBATE_PHOTO_INFO_UPDATE = '$w/debat/infos/photo/update';
+var ROUTE_DEBATE_DOC_TAGS = '$w/debate/tags/update';
 
 // REACTIONS
-var ROUTE_REACTION_UPDATE = 'profil/reaction/update';
-var ROUTE_REACTION_PUBLISH = 'profil/reaction/publier';
-var ROUTE_REACTION_DELETE = 'profil/reaction/supprimer';
-var ROUTE_REACTION_PHOTO_INFO_UPDATE = 'profil/reaction/infos/photo/update';
+var ROUTE_REACTION_UPDATE = '$w/reaction/update';
+var ROUTE_REACTION_PUBLISH = '$w/reaction/publier';
+var ROUTE_REACTION_DELETE = '$w/reaction/supprimer';
+var ROUTE_REACTION_PHOTO_INFO_UPDATE = '$w/reaction/infos/photo/update';
+var ROUTE_REACTION_DOC_TAGS = '$w/reaction/tags/update';
 
 var ROUTE_REACTION_LISTING_DEBATE_FIRST_CHILD = 'reactions/debat';
 
-
 // NOTIFICATIONS
-var ROUTE_NOTIF_LOADING = 'profil/notif/chargement';
-var ROUTE_NOTIF_CHECK = 'profil/notif/marque-vu';
-var ROUTE_NOTIF_CHECK_ALL = 'profil/notif/tout-marque-vu';
-var ROUTE_NOTIF_EMAIL_SUBSCRIBE = 'profil/notif/email/activer';
-var ROUTE_NOTIF_EMAIL_UNSUBSCRIBE = 'profil/notif/email/desactiver';
-var ROUTE_NOTIF_CONTEXT_DEBATE_SUBSCRIBE = 'profil/notif/debat/contexte/activer';
-var ROUTE_NOTIF_CONTEXT_DEBATE_UNSUBSCRIBE = 'profil/notif/debat/contexte/desactiver';
-var ROUTE_NOTIF_CONTEXT_USER_SUBSCRIBE = 'profil/notif/utilisateur/contexte/activer';
-var ROUTE_NOTIF_CONTEXT_USER_UNSUBSCRIBE = 'profil/notif/utilisateur/contexte/desactiver';
+var ROUTE_NOTIF_LOADING = '$w/notif/chargement';
+var ROUTE_NOTIF_CHECK = '$w/notif/marque-vu';
+var ROUTE_NOTIF_CHECK_ALL = '$w/notif/tout-marque-vu';
+var ROUTE_NOTIF_EMAIL_SUBSCRIBE = '$w/notif/email/activer';
+var ROUTE_NOTIF_EMAIL_UNSUBSCRIBE = '$w/notif/email/desactiver';
+var ROUTE_NOTIF_CONTEXT_DEBATE_SUBSCRIBE = '$w/notif/debat/contexte/activer';
+var ROUTE_NOTIF_CONTEXT_DEBATE_UNSUBSCRIBE = '$w/notif/debat/contexte/desactiver';
+var ROUTE_NOTIF_CONTEXT_USER_SUBSCRIBE = '$w/notif/utilisateur/contexte/activer';
+var ROUTE_NOTIF_CONTEXT_USER_UNSUBSCRIBE = '$w/notif/utilisateur/contexte/desactiver';
 
 // REPUTATION COUNTER
-var ROUTE_SCORE_COUNTER = 'profil/reputation/score';
-var ROUTE_BADGES_COUNTER = 'profil/reputation/badges';
+var ROUTE_SCORE_COUNTER = '$w/reputation/score';
+var ROUTE_BADGES_COUNTER = '$w/reputation/badges';
 
 // MODAL
 var ROUTE_MODAL_HELP_US = 'politizr-needs-you';
@@ -83,27 +87,31 @@ var ROUTE_MODAL_CGU = 'conditions-generales-d-utilisation';
 var ROUTE_MODAL_CGV = 'conditions-generales-de-vente';
 var ROUTE_MODAL_CHARTE = 'charte-politizr';
 
+// OP
+var ROUTE_OP_CLOSE = 'op/close';
+
 // NOTATION
-var ROUTE_NOTE = 'profil/noter';
+var ROUTE_NOTE = '$w/noter';
 
 // SECURITY
 var ROUTE_SECURITY_LOGIN = 'login';
 var ROUTE_SECURITY_LOST_PASSWORD_CHECK = 'password/init';
-var ROUTE_SECURITY_PAYMENT_PROCESS = 'v/paiement';
+var ROUTE_SECURITY_PAYMENT_PROCESS = '$v/paiement';
 
 // TAGS
-var ROUTE_TAG_DEBATE_CREATE = 'profil/debat/tag/create';
-var ROUTE_TAG_DEBATE_DELETE = 'profil/debat/tag/delete';
-var ROUTE_TAG_REACTION_CREATE = 'profil/reaction/tag/create';
-var ROUTE_TAG_REACTION_DELETE = 'profil/reaction/tag/delete';
-var ROUTE_TAG_USER_CREATE = 'profil/utilisateur/tag/create';
-var ROUTE_TAG_USER_DELETE = 'profil/utilisateur/tag/delete';
-var ROUTE_TAG_USER_HIDE = 'profil/utilisateur/tag/hide';
-var ROUTE_TAG_USER_ASSOCIATE = 'profil/utilisateur/tag/associate';
+var ROUTE_TAG_DEBATE_CREATE = '$w/debat/tag/create';
+var ROUTE_TAG_DEBATE_DELETE = '$w/debat/tag/delete';
+var ROUTE_TAG_REACTION_CREATE = '$w/reaction/tag/create';
+var ROUTE_TAG_REACTION_DELETE = '$w/reaction/tag/delete';
+var ROUTE_TAG_USER_CREATE = '$w/utilisateur/tag/create';
+var ROUTE_TAG_USER_DELETE = '$w/utilisateur/tag/delete';
+var ROUTE_TAG_USER_HIDE = '$w/utilisateur/tag/hide';
+var ROUTE_TAG_USER_ASSOCIATE = '$w/utilisateur/tag/associate';
 
 var ROUTE_TAG_LISTING_TOP = 'tags/top';
 var ROUTE_TAG_LISTING_TYPE = 'tags/type';
-var ROUTE_TAG_LISTING_USER = 'profil/tags/user';
+var ROUTE_TAG_LISTING_FAMILY = 'tags/family';
+var ROUTE_TAG_LISTING_USER = '$w/tags/user';
 var ROUTE_TAG_LISTING = 'tags/listing';
 
 // ORGANIZATION
@@ -114,19 +122,19 @@ var ROUTE_ORGANIZATION_DOCUMENT_LISTING = 'organisation/documents/listing';
 var ROUTE_ORGANIZATION_USER_LISTING = 'organisation/profils/listing';
 
 // USER
-var ROUTE_USER_MANDATE_CREATE = 'profil/utilisateur/mandat/create';
-var ROUTE_USER_MANDATE_UPDATE = 'profil/utilisateur/mandat/update';
-var ROUTE_USER_MANDATE_DELETE = 'profil/utilisateur/mandat/delete';
-var ROUTE_USER_PROFILE_UPDATE = 'profil/utilisateur/update';
-var ROUTE_USER_ORGA_UPDATE = 'profil/utilisateur/orga/update';
-var ROUTE_USER_AFFINITIES_UPDATE = 'profil/utilisateur/affinitees/update';
-var ROUTE_USER_PERSO_UPDATE = 'profil/utilisateur/perso/update';
+var ROUTE_USER_MANDATE_CREATE = '$w/utilisateur/mandat/create';
+var ROUTE_USER_MANDATE_UPDATE = '$w/utilisateur/mandat/update';
+var ROUTE_USER_MANDATE_DELETE = '$w/utilisateur/mandat/delete';
+var ROUTE_USER_PROFILE_UPDATE = '$w/utilisateur/update';
+var ROUTE_USER_ORGA_UPDATE = '$w/utilisateur/orga/update';
+var ROUTE_USER_AFFINITIES_UPDATE = '$w/utilisateur/affinitees/update';
+var ROUTE_USER_PERSO_UPDATE = '$w/utilisateur/perso/update';
 
 var ROUTE_USER_VALIDATE_ID = 'utilisateur/validation/carte-identite';
 var ROUTE_USER_VALIDATE_PHOTO_UPLOAD = 'utilisateur/validation/photo-id-upload';
 
-var ROUTE_USER_PHOTO_UPLOAD = 'profil/photo/upload';
-var ROUTE_USER_PHOTO_DELETE = 'profil/photo/delete';
+var ROUTE_USER_PHOTO_UPLOAD = '$w/photo/upload';
+var ROUTE_USER_PHOTO_DELETE = '$w/photo/delete';
 
 
 var ROUTE_USER_LISTING_LAST_DEBATE_FOLLOWERS = 'debat/derniers-abonnes';
@@ -145,14 +153,14 @@ var ROUTE_USER_LISTING_USER_SUBSCRIBERS_CONTENT = 'auteur/content/derniers-abonn
 var ROUTE_USER_LISTING_BADGES = 'auteur/badges';
 
 // TIMELINE
-var ROUTE_TIMELINE_MINE = 'profil/timeline';
+var ROUTE_TIMELINE_MINE = '$w/timeline';
 var ROUTE_TIMELINE_USER = 'user/timeline';
 
 // MONITORING
-var ROUTE_MONITORING_ABUSE = 'profil/signaler-un-abus';
-var ROUTE_MONITORING_ABUSE_CHECK = 'profil/signaler-un-abus/check';
-var ROUTE_MONITORING_ASK_FOR_UPDATE = 'profil/modifier-mes-donnees';
-var ROUTE_MONITORING_ASK_FOR_UPDATE_CHECK = 'profil/modifier-mes-donnees/check';
+var ROUTE_MONITORING_ABUSE = '$w/signaler-un-abus';
+var ROUTE_MONITORING_ABUSE_CHECK = '$w/signaler-un-abus/check';
+var ROUTE_MONITORING_ASK_FOR_UPDATE = '$w/modifier-mes-donnees';
+var ROUTE_MONITORING_ASK_FOR_UPDATE_CHECK = '$w/modifier-mes-donnees/check';
 
 // BUBBLES
 var ROUTE_BUBBLE_USER = 'bubble/user';
@@ -160,6 +168,10 @@ var ROUTE_BUBBLE_TAG = 'bubble/tag';
 
 // LOCALIZATION
 var ROUTE_CITY_LISTING = 'villes/listing';
+
+// PUBLIC
+var ROUTE_PUBLIC_DIRECT_MESSAGE = 'direct/message';
+
 
 // ******************************************************** //
 //                  JS FUNCTION KEYS

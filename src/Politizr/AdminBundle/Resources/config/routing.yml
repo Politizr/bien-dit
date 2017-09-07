@@ -102,6 +102,11 @@ Politizr_AdminBundle_User:
 
 
 # Commandes
+Politizr_AdminBundle_PEOperation:
+    resource: "@PolitizrAdminBundle/Controller/PEOperation/"
+    type:     admingenerator
+    prefix:   /PEOperation
+
 Politizr_AdminBundle_POrder:
     resource: "@PolitizrAdminBundle/Controller/POrder/"
     type:     admingenerator
@@ -136,6 +141,11 @@ Politizr_AdminBundle_PDRComment:
     resource: "@PolitizrAdminBundle/Controller/PDRComment/"
     type:     admingenerator
     prefix:   /PDRComment
+
+Politizr_AdminBundle_PDDirect:
+    resource: "@PolitizrAdminBundle/Controller/PDDirect/"
+    type:     admingenerator
+    prefix:   /PDDirect
 
 # Groupes
 Politizr_AdminBundle_PCircle:
@@ -234,6 +244,11 @@ Politizr_AdminBundle_PMAskForUpdate:
     resource: "@PolitizrAdminBundle/Controller/PMAskForUpdate/"
     type:     admingenerator
     prefix:   /PMAskForUpdate
+
+Politizr_AdminBundle_PMEmailing:
+    resource: "@PolitizrAdminBundle/Controller/PMEmailing/"
+    type:     admingenerator
+    prefix:   /PMEmailing
 
 Politizr_AdminBundle_PMAppException:
     resource: "@PolitizrAdminBundle/Controller/PMAppException/"

@@ -3,7 +3,7 @@
     {% include 'PolitizrFrontBundle:User:_summary.html.twig' with { 'user': user, 'withSocialLinks': false, 'withMandates': false } only %}
     <div class="coloredBg">
         {% if (way == 'up') %}
-            <div class="activity cardLike">Vous aimez cette publication.</div>
+            <div class="activity cardLike">{% if app.user.id == user.id %}Vous aimez cette publication.{% else %}{{ user }} aime cette publication.{% endif %}</div>
         {% else %}
             <div class="activity cardDislike">Vous n'aimez pas cette publication.</div>
         {% endif %}

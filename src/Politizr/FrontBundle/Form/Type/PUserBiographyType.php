@@ -35,7 +35,7 @@ class PUserBiographyType extends AbstractType
             'required' => false,
             'label' => 'Biographie',
             'attr' => array(
-                'maxlength' => 140
+                'maxlength' => 280
             )
         ));
         

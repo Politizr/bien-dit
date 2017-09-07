@@ -21,6 +21,8 @@ use Politizr\Constant\OrderConstants;
 use Politizr\Constant\UserConstants;
 use Politizr\Constant\PathConstants;
 use Politizr\Constant\ReputationConstants;
+use Politizr\Constant\NotificationConstants;
+use Politizr\Constant\EmailConstants;
 
 use Politizr\Model\PUser;
 
@@ -696,7 +698,7 @@ class SecurityService
         $user->updateReputation(ReputationConstants::ACTION_CITIZEN_INSCRIPTION);
 
         // notification subscription > all by default
-        $this->userManager->createAllUserSubscribeEmail($user->getId());
+        $this->userManager->createUserSubscribeNotifEmail($user->getId(), EmailConstants::getDefaultNotificationSubscribeIds());
 
         // (re)connect user
         $this->doPublicConnection($user);
@@ -758,15 +760,12 @@ class SecurityService
         $user->save();
         
         // notification subscription > all by default
-        $this->userManager->createAllUserSubscribeEmail($user->getId());
+        $this->userManager->createUserSubscribeNotifEmail($user->getId(), EmailConstants::getDefaultNotificationSubscribeIds());
 
         $this->doPublicConnection($user);
 
         // Events
         $dispatcher =  $this->eventDispatcher->dispatch('welcome_email', new GenericEvent($user));
-
-        $event = new GenericEvent($user);
-        $dispatcher = $this->eventDispatcher->dispatch('n_localization_user', $event);
     }
 
     /**

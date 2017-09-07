@@ -4,11 +4,14 @@ $(function() {
     autosize($('.formCommentNew textarea'));
     commentTextCounter();
 
+    var commentMode = $('#commentMode').attr('mode');
+    // console.log(commentMode);
+
+    // inscription popup or preopen comment by paragraph
     if(window.location.hash) {
         var paragraphId = window.location.hash.substr(3);
         // console.log(paragraphId);
 
-        var commentMode = $('#commentMode').attr('mode');
         // console.log(commentMode);
         if (commentMode === 'public') {
             $("[action='createAccountToComment']").trigger("click");
@@ -16,9 +19,20 @@ $(function() {
             if (paragraphId > 0) {
                 var clickContext = $('#p-'+paragraphId).find("[action='comments']");
                 clickContext.trigger("click");
+                $(document).scrollTop( $('#p-'+paragraphId).offset().top );  
             } else {
-                $("[action='globalComments']").trigger("click");
+                // open global comments
+                if (commentMode === 'connected') {
+                    $("[action='globalComments']").trigger("click");
+                    $(document).scrollTop( $('#p-0').offset().top );
+                }
             }
+        }
+    } else {
+        // open global comments
+        if (commentMode === 'connected') {
+            $('#globalComments').toggle();
+            loadParagraphContent($('#globalComments').closest('.paragraphHolder'));
         }
     }
 });
@@ -65,6 +79,7 @@ $("body").on("click", "[action='globalComments']", function() {
         $('.commentsCounter').removeClass('activeComment');
 
         context.find('#globalComments').toggle();
+        $(document).scrollTop( $('#p-0').offset().top );
 
         return loadParagraphContent(context);
     }
@@ -81,7 +96,18 @@ $("body").on("click", "input[action='createComment']", function(e) {
     // console.log('*** click createComment');
     
     var context = $(this).closest('.paragraphHolder');
-    createComment(context);
+
+    var uuid = $(this).closest('.formCommentNew').find("input[name='uuid']").val();
+    var type = $(this).closest('.formCommentNew').find("input[name='type']").val();
+    // console.log(uuid);
+    // console.log(type);
+
+    $.when(
+        createComment(context)
+    ).done(function(data) {
+        // follow debate
+        followRelativeDebate(uuid, type);
+    });
 });
 
 /**
@@ -172,7 +198,7 @@ function loadParagraphContent(context)
             fullImgLiquid();
             autosize($('.formCommentNew textarea'));
             commentTextCounter();
-            $('#comment_description').focus();
+            // $('#comment_description').focus();
         }
         localLoader.hide();
     });

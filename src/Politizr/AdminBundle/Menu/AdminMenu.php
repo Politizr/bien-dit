@@ -46,7 +46,17 @@ class AdminMenu extends AdmingeneratorMenuBuilder
         }
 
         // Order
-        $orders = $this->addLinkRoute($menu, 'Commande', 'Politizr_AdminBundle_POrder_list');
+        $orders = $this->addDropdown($menu, 'Commande');
+        $this->addLinkRoute(
+            $orders,
+            'Opération',
+            'Politizr_AdminBundle_PEOperation_list'
+        );
+        $this->addLinkRoute(
+            $orders,
+            'Premium',
+            'Politizr_AdminBundle_POrder_list'
+        );
 
         // User
         $users = $this->addLinkRoute($menu, 'Utilisateur', 'Politizr_AdminBundle_PUser_list');
@@ -62,6 +72,11 @@ class AdminMenu extends AdmingeneratorMenuBuilder
             $reputation,
             'Réponse',
             'Politizr_AdminBundle_PDReaction_list'
+        );
+        $this->addLinkRoute(
+            $reputation,
+            'Message direct',
+            'Politizr_AdminBundle_PDDirect_list'
         );
 
 
@@ -114,6 +129,11 @@ class AdminMenu extends AdmingeneratorMenuBuilder
             $monitoring,
             'Exception',
             'Politizr_AdminBundle_PMAppException_list'
+        );
+        $this->addLinkRoute(
+            $monitoring,
+            'Emailing',
+            'Politizr_AdminBundle_PMEmailing_list'
         );
         $this->addLinkRoute(
             $monitoring,

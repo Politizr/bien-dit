@@ -19,6 +19,12 @@
 {% block tcDescription %}{{ metaDescription }}{% endblock tcDescription %}
 {% block tcImage %}{{ user | tcImage(app.request.getSchemeAndHttpHost()) }}{% endblock tcImage %}
 
+{% block headerMsg %}
+    {{ parent() }}
+
+    {{ user | userOperation }}
+{% endblock %}
+
 {% block content %}
     <div id="content" class="withLoaderInside">
         {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
@@ -35,6 +41,12 @@
 
 {% block javascriptFooter %}
     {{ parent() }}
+
+    {% if (app.environment == 'prod') %}
+        <script type="text/javascript">
+            mixpanel.track("Utilisateur - {{ user | purify | trim }}");
+        </script>
+    {% endif %}
 
     {% javascripts
         '@PolitizrFrontBundle/Resources/public/js/politizr/tag/listing.js'

@@ -1,0 +1,12 @@
+<div id="op" class="bannerItem miniHeader op-{{ operation.uuid }}">
+    <div class="center">
+        <div class="imgOp">
+            <img src="{{ asset('/uploads/users/'~operation.fileName) }}" alt="{{ operation.title }}">
+        </div>
+        <div class="txtOp">
+            {{ operation.editingDescription | purify }}
+        </div>
+    </div>
+    <div class="bgLeftOp"></div>
+    <div class="bgRightOp"></div>
+</div>

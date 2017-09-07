@@ -9,10 +9,17 @@
 
 {% block header %}
     {% include 'PolitizrFrontBundle:Navigation\\Header:_headerInscription.html.twig' with { 'type': 'choice' } %}
-    <div id="headerTrigger"></div>
 {% endblock header %}
 
 {% block main %}
+    <div id="alertIdCheck">
+        <div class="center">
+            <p>
+                Candidat aux Sénatoriales? Venez expérimenter notre <a href="{{ path('LandingPage', { 'theme': 'offre-candidat-senatoriales-2017'}) }}">offre spéciale</a>!
+            </p>
+        </div>
+    </div>
+
     <div id="main">
         <center>
             <div class="column column360">
@@ -21,7 +28,21 @@
             --><div class="column column360">
                 {% include 'PolitizrFrontBundle:Public:_cardAdvantagesElected.html.twig' %}
             </div>
-            <div class="footerXcolumns footer2columns">Déjà inscrit-e? <a href="{{ path('Login') }}">Identifiez-vous</a></div>
+            <div class="footerXcolumns footer2columns">
+                Déjà inscrit-e? <a href="{{ path('Login') }}">Identifiez-vous</a>
+            </div>
+
+            <div class="dataCarefull">
+                <div class="dataCarefullVisions"> 
+                    <img src="{{ asset('bundles/politizrfront/images/label-visions.jpg') }}">
+                    <p>POLITIZR travaille avec l'équipe du <a href="https://visionspol.eu/projet-label/" target="_blank">label VISIONS</a> pour permettre aux utilisateurs de conserver la maîtrise sur l'exploitation des données les concernant.</p>
+                </div>
+                <div class="dataCarefullCnil">
+                    <img src="{{ asset('bundles/politizrfront/images/label-cnil.jpg') }}">
+                    <p>POLITIZR est déclaré à la CNIL sous le numéro 1968464.<br>
+                    Conformément à la loi « informatique et libertés », vous pouvez exercer votre droit d'accès aux données vous concernant et les faire rectifier en contactant <a href="mailto:contact@politizr.com">POLITIZR</a>.</p>
+                </div>
+            </div>
         </center>
     </div>
 {% endblock main %}

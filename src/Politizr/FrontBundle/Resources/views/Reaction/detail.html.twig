@@ -20,6 +20,11 @@
 {% block tcDescription %}{{ metaDescription }}{% endblock tcDescription %}
 {% block tcImage %}{{ reaction | tcImage(app.request.getSchemeAndHttpHost()) }}{% endblock tcImage %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/selection-sharer.css') }}" />
+{% endblock %}
+
 {% block javascriptHeader %}
     {{ parent() }}
 
@@ -38,13 +43,20 @@
     } only %}
 {% endblock %}
 
+{% block headerMsg %}
+    {{ parent() }}
+
+    {{ reaction | documentOperation }}
+    {{ reaction | boostQuestion }}
+{% endblock %}
+
 {% block content %}
     <div id="content">
         <div class="post">
             {% include 'PolitizrFrontBundle:User:_summary.html.twig' with { 'user': reaction.user, 'withSocialLinks': false, 'withMandates': false } only %}
             <h5>{% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': reaction } only %}</h5>
             <div class="postStats">
-                {% include 'PolitizrFrontBundle:Document:_statsMini.html.twig' with { 'document': reaction } only %}
+                {% include 'PolitizrFrontBundle:Document:_statsMini.html.twig' with { 'document': reaction, 'facebook': true } only %}
             </div>
             
             <div id="cardPost">
@@ -70,6 +82,11 @@
                         </div>
                     {% endfor %}
                 </div>
+
+                {% if reactions | length > 0 %}
+                    {% include 'PolitizrFrontBundle:Reaction:_listReactionsToPost.html.twig' with { 'document': reaction, 'reactions': reactions } only %}
+                {% endif %}
+
                 <div id="cardPostTextFooter">
                     {{ reaction | footer }}
                 </div>
@@ -77,10 +94,6 @@
             <div id="p-0">
                 {% include 'PolitizrFrontBundle:Comment:_global.html.twig' with { 'document': reaction, 'formComment': formComment } only %}
             </div>
-
-            {% if reactions | length > 0 %}
-                {% include 'PolitizrFrontBundle:Reaction:_listReactionsToPost.html.twig' with { 'document': reaction, 'reactions': reactions } only %}
-            {% endif %}
 
             <div class="postTags">
                 <h5>Thématiques abordées</h5>
@@ -104,6 +117,13 @@
 {% block javascriptFooter %}
     {{ parent() }}
 
+    {% if (app.environment == 'prod') %}
+        <script type="text/javascript">
+            mixpanel.track("Réaction - {{ reaction.title }}");
+        </script>
+    {% endif %}
+
+    <script src="{{ asset('bundles/politizrfront/js/politizr/selection-sharer.js') }}"></script>
     {% javascripts
         '@PolitizrFrontBundle/Resources/public/js/smoke.min.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/document/detail.js'

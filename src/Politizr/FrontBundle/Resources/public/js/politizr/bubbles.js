@@ -1,5 +1,34 @@
 // beta
 var bubbleDelay = 500;
+var timeoutId;
+
+/**
+ * Load bubble
+ *
+ * @param xhrPath
+ * @param context
+ * @param uuid
+ * @param localLoader
+ */
+function loadBubble(xhrPath, context, uuid, localLoader) {
+    timeoutId = setTimeout(function() {
+        return xhrCall(
+            context,
+            { 'uuid': uuid },
+            xhrPath,
+            localLoader
+        ).done(function(data) {
+            if (data['error']) {
+                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+                $('#infoBoxHolder .boxError').show();
+            } else {
+                context.show().find('.bubbleContent').html(data['html']);
+                fullImgLiquid();
+            }
+            localLoader.hide();
+        });
+      }, bubbleDelay);
+}
 
 /**
  * Profile bubble
@@ -23,29 +52,13 @@ $("body").on("mouseenter", "[action='bubbleProfile']", function() {
 
     var localLoader = context.find('.ajaxLoader').first();
 
-    // display bubble
-    context.delay(bubbleDelay).fadeIn(400, function() {
-        return xhrCall(
-            context,
-            { 'uuid': uuid },
-            xhrPath,
-            localLoader
-        ).done(function(data) {
-            if (data['error']) {
-                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
-                $('#infoBoxHolder .boxError').show();
-            } else {
-                context.find('.bubbleContent').html(data['html']);
-                fullImgLiquid();
-            }
-            localLoader.hide();
-        });
-    });
+    return loadBubble(xhrPath, context, uuid, localLoader);
 });
 
 $("body").on("mouseleave", ".bubblesProfile, .profileNameHolder, .avatar40", function() {
     // console.log('*** mouseleave bubblesProfile');
 
+    clearTimeout(timeoutId);
     $(".bubblesProfile").clearQueue().hide();
 });
 
@@ -70,28 +83,13 @@ $("body").on("mouseenter", "[action='bubbleTag']", function() {
 
     var localLoader = context.find('.ajaxLoader').first();
 
-    // display bubble
-    context.delay(bubbleDelay).fadeIn(400, function() {
-        return xhrCall(
-            context,
-            { 'uuid': uuid },
-            xhrPath,
-            localLoader
-        ).done(function(data) {
-            if (data['error']) {
-                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
-                $('#infoBoxHolder .boxError').show();
-            } else {
-                context.find('.bubbleContent').html(data['html']);
-            }
-            localLoader.hide();
-        });
-    });
+    return loadBubble(xhrPath, context, uuid, localLoader);
 });
 
 $("body").on("mouseleave", ".bubblesTag, .tag", function() {
     // console.log('*** mouseleave bubblesTag');
 
+    clearTimeout(timeoutId);
     $(".bubblesTag").clearQueue().hide();
 });
 

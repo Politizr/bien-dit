@@ -11,7 +11,7 @@ use Politizr\Model\PUser;
 use Politizr\Model\PUFollowDD;
 use Politizr\Model\PUFollowU;
 use Politizr\Model\PUMandate;
-use Politizr\Model\PUSubscribeEmail;
+use Politizr\Model\PUSubscribePNE;
 
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PUFollowDDQuery;
@@ -91,6 +91,7 @@ LIMIT :offset, :limit
      * @param array $inQueryReputationIds2 IN stmt values
      * @param array $inQueryReputationIds3 IN stmt values
      * @param array $inQueryReputationIds4 IN stmt values
+     * @param array $inQueryReputationIds5 IN stmt values
      * @return string
      */
     public function createMyTimelineRawSql(
@@ -101,11 +102,12 @@ LIMIT :offset, :limit
         $inQueryReputationIds,
         $inQueryReputationIds2,
         $inQueryReputationIds3,
-        $inQueryReputationIds4
+        $inQueryReputationIds4,
+        $inQueryReputationIds5
     ) {
         $sql = "
 #  Débats publiés
-( SELECT p_d_debate.id as id, 'null' as target_id, 'null' as target_user_id, 'null' as target_object_name, p_d_debate.title as title, p_d_debate.published_at as published_at, 'Politizr\\\Model\\\PDDebate' as type
+( SELECT p_d_debate.id as id, null as target_id, null as target_user_id, null as target_object_name, p_d_debate.title as title, p_d_debate.published_at as published_at, 'Politizr\\\Model\\\PDDebate' as type
 FROM p_d_debate
 WHERE
     p_d_debate.published = 1
@@ -115,7 +117,7 @@ WHERE
 UNION DISTINCT
 
 #  Réactions publiés
-( SELECT p_d_reaction.id as id, 'null' as target_id, 'null' as target_user_id, 'null' as target_object_name, p_d_reaction.title as title, p_d_reaction.published_at as published_at, 'Politizr\\\Model\\\PDReaction' as type
+( SELECT p_d_reaction.id as id, null as target_id, null as target_user_id, null as target_object_name, p_d_reaction.title as title, p_d_reaction.published_at as published_at, 'Politizr\\\Model\\\PDReaction' as type
 FROM p_d_reaction
 WHERE
     p_d_reaction.published = 1
@@ -126,7 +128,7 @@ WHERE
 UNION DISTINCT
 
 #  Débats suivis
-( SELECT p_d_debate.id as id, 'null' as target_id, 'null' as target_user_id, 'null' as target_object_name, p_d_debate.title as title, p_d_debate.published_at as published_at, 'Politizr\\\Model\\\PDDebate' as type
+( SELECT p_d_debate.id as id, null as target_id, null as target_user_id, null as target_object_name, p_d_debate.title as title, p_d_debate.published_at as published_at, 'Politizr\\\Model\\\PDDebate' as type
 FROM p_d_debate
 WHERE
     p_d_debate.published = 1
@@ -136,7 +138,7 @@ WHERE
 UNION DISTINCT
 
 #  Réactions aux débats suivis
-( SELECT p_d_reaction.id as id, 'null' as target_id, 'null' as target_user_id, 'null' as target_object_name, p_d_reaction.title as title, p_d_reaction.published_at as published_at, 'Politizr\\\Model\\\PDReaction' as type
+( SELECT p_d_reaction.id as id, null as target_id, null as target_user_id, null as target_object_name, p_d_reaction.title as title, p_d_reaction.published_at as published_at, 'Politizr\\\Model\\\PDReaction' as type
 FROM p_d_reaction
 WHERE
     p_d_reaction.published = 1
@@ -147,7 +149,7 @@ WHERE
 UNION DISTINCT
 
 # Débats des users suivis
-( SELECT p_d_debate.id as id, 'null' as target_id, 'null' as target_user_id, 'null' as target_object_name, p_d_debate.title as title, p_d_debate.published_at as published_at, 'Politizr\\\Model\\\PDDebate' as type
+( SELECT p_d_debate.id as id, null as target_id, null as target_user_id, null as target_object_name, p_d_debate.title as title, p_d_debate.published_at as published_at, 'Politizr\\\Model\\\PDDebate' as type
 FROM p_d_debate
 WHERE
     p_d_debate.published = 1
@@ -157,7 +159,7 @@ WHERE
 UNION DISTINCT
 
 # Réactions des users suivis
-( SELECT p_d_reaction.id as id, 'null' as target_id, 'null' as target_user_id, 'null' as target_object_name, p_d_reaction.title as title, p_d_reaction.published_at as published_at, 'Politizr\\\Model\\\PDReaction' as type
+( SELECT p_d_reaction.id as id, null as target_id, null as target_user_id, null as target_object_name, p_d_reaction.title as title, p_d_reaction.published_at as published_at, 'Politizr\\\Model\\\PDReaction' as type
 FROM p_d_reaction
 WHERE
     p_d_reaction.published = 1
@@ -167,7 +169,7 @@ WHERE
 UNION DISTINCT
 
 # Réactions sur mes débats
-( SELECT p_d_reaction.id as id, 'null' as target_id, 'null' as target_user_id, 'null' as target_object_name, p_d_reaction.title as title, p_d_reaction.published_at as published_at, 'Politizr\\\Model\\\PDReaction' as type
+( SELECT p_d_reaction.id as id, null as target_id, null as target_user_id, null as target_object_name, p_d_reaction.title as title, p_d_reaction.published_at as published_at, 'Politizr\\\Model\\\PDReaction' as type
 FROM p_d_reaction
     LEFT JOIN p_d_debate
         ON p_d_reaction.p_d_debate_id = p_d_debate.id
@@ -180,7 +182,7 @@ WHERE
 UNION DISTINCT
 
 # Réactions sur mes réactions
-( SELECT p_d_reaction.id as id, 'null' as target_id, 'null' as target_user_id, 'null' as target_object_name, p_d_reaction.title as title, p_d_reaction.published_at as published_at, 'Politizr\\\Model\\\PDReaction' as type
+( SELECT p_d_reaction.id as id, null as target_id, null as target_user_id, null as target_object_name, p_d_reaction.title as title, p_d_reaction.published_at as published_at, 'Politizr\\\Model\\\PDReaction' as type
 FROM p_d_reaction as p_d_reaction
     LEFT JOIN p_d_reaction as my_reaction
         ON p_d_reaction.p_d_debate_id = my_reaction.p_d_debate_id
@@ -196,7 +198,7 @@ WHERE
 UNION DISTINCT
 
 # Commentaires débats publiés
-( SELECT p_d_d_comment.id as id, 'null' as target_id, 'null' as target_user_id, 'null' as target_object_name, \"commentaire\" as title, p_d_d_comment.published_at as published_at, 'Politizr\\\Model\\\PDDComment' as type
+( SELECT p_d_d_comment.id as id, null as target_id, null as target_user_id, null as target_object_name, \"commentaire\" as title, p_d_d_comment.published_at as published_at, 'Politizr\\\Model\\\PDDComment' as type
 FROM p_d_d_comment
 WHERE
     p_d_d_comment.online = 1
@@ -205,7 +207,7 @@ WHERE
 UNION DISTINCT
 
 # Commentaires réactions publiés
-( SELECT p_d_r_comment.id as id, 'null' as target_id, 'null' as target_user_id, 'null' as target_object_name, \"commentaire\" as title, p_d_r_comment.published_at as published_at, 'Politizr\\\Model\\\PDRComment' as type
+( SELECT p_d_r_comment.id as id, null as target_id, null as target_user_id, null as target_object_name, \"commentaire\" as title, p_d_r_comment.published_at as published_at, 'Politizr\\\Model\\\PDRComment' as type
 FROM p_d_r_comment
 WHERE
     p_d_r_comment.online = 1
@@ -214,7 +216,7 @@ WHERE
 UNION DISTINCT
 
 # Commentaires débats des users suivis
-( SELECT p_d_d_comment.id as id, 'null' as target_id, 'null' as target_user_id, 'null' as target_object_name, \"commentaire\" as title, p_d_d_comment.published_at as published_at, 'Politizr\\\Model\\\PDDComment' as type
+( SELECT p_d_d_comment.id as id, null as target_id, null as target_user_id, null as target_object_name, \"commentaire\" as title, p_d_d_comment.published_at as published_at, 'Politizr\\\Model\\\PDDComment' as type
 FROM p_d_d_comment
 WHERE
     p_d_d_comment.online = 1
@@ -223,7 +225,7 @@ WHERE
 UNION DISTINCT
 
 # Commentaires réactions des users suivis
-( SELECT p_d_r_comment.id as id, 'null' as target_id, 'null' as target_user_id, 'null' as target_object_name, \"commentaire\" as title, p_d_r_comment.published_at as published_at, 'Politizr\\\Model\\\PDRComment' as type
+( SELECT p_d_r_comment.id as id, null as target_id, null as target_user_id, null as target_object_name, \"commentaire\" as title, p_d_r_comment.published_at as published_at, 'Politizr\\\Model\\\PDRComment' as type
 FROM p_d_r_comment
 WHERE
     p_d_r_comment.online = 1
@@ -232,7 +234,7 @@ WHERE
 UNION DISTINCT
 
 # Commentaires débats des débats suivis
-( SELECT p_d_d_comment.id as id, 'null' as target_id, 'null' as target_user_id, 'null' as target_object_name, \"commentaire\" as title, p_d_d_comment.published_at as published_at, 'Politizr\\\Model\\\PDDComment' as type
+( SELECT p_d_d_comment.id as id, null as target_id, null as target_user_id, null as target_object_name, \"commentaire\" as title, p_d_d_comment.published_at as published_at, 'Politizr\\\Model\\\PDDComment' as type
 FROM p_d_d_comment
 WHERE
     p_d_d_comment.online = 1
@@ -241,7 +243,7 @@ WHERE
 UNION DISTINCT
 
 # Commentaires réactions des débats suivis
-( SELECT p_d_r_comment.id as id, 'null' as target_id, 'null' as target_user_id, 'null' as target_object_name, \"commentaire\" as title, p_d_r_comment.published_at as published_at, 'Politizr\\\Model\\\PDRComment' as type
+( SELECT p_d_r_comment.id as id, null as target_id, null as target_user_id, null as target_object_name, \"commentaire\" as title, p_d_r_comment.published_at as published_at, 'Politizr\\\Model\\\PDRComment' as type
 FROM p_d_r_comment
     LEFT JOIN p_d_reaction
         ON p_d_r_comment.p_d_reaction_id = p_d_reaction.id
@@ -252,7 +254,7 @@ WHERE
 UNION DISTINCT
 
 # Commentaires sur mes débats
-( SELECT p_d_d_comment.id as id, 'null' as target_id, 'null' as target_user_id, 'null' as target_object_name, \"commentaire\" as title, p_d_d_comment.published_at as published_at, 'Politizr\\\Model\\\PDDComment' as type
+( SELECT p_d_d_comment.id as id, null as target_id, null as target_user_id, null as target_object_name, \"commentaire\" as title, p_d_d_comment.published_at as published_at, 'Politizr\\\Model\\\PDDComment' as type
 FROM p_d_d_comment
 WHERE
     p_d_d_comment.online = 1
@@ -261,7 +263,7 @@ WHERE
 UNION DISTINCT
 
 # Commentaires sur mes réactions
-( SELECT p_d_r_comment.id as id, 'null' as target_id, 'null' as target_user_id, 'null' as target_object_name, \"commentaire\" as title, p_d_r_comment.published_at as published_at, 'Politizr\\\Model\\\PDRComment' as type
+( SELECT p_d_r_comment.id as id, null as target_id, null as target_user_id, null as target_object_name, \"commentaire\" as title, p_d_r_comment.published_at as published_at, 'Politizr\\\Model\\\PDRComment' as type
 FROM p_d_r_comment
 WHERE
     p_d_r_comment.online = 1
@@ -270,7 +272,7 @@ WHERE
 UNION DISTINCT
 
 #  Actions réputation: note +/- comment / sujet / reponse, suivre un utilisateur, être suivi par un utilisateur
-( SELECT p_u_reputation.p_r_action_id as id, p_u_reputation.p_object_id as target_id, 'null' as target_user_id, p_u_reputation.p_object_name as target_object_name, p_r_action.title as title, p_u_reputation.created_at as published_at, 'Politizr\\\Model\\\PRAction' as type
+( SELECT p_u_reputation.p_r_action_id as id, p_u_reputation.p_object_id as target_id, null as target_user_id, p_u_reputation.p_object_name as target_object_name, p_r_action.title as title, p_u_reputation.created_at as published_at, 'Politizr\\\Model\\\PRAction' as type
 FROM p_r_action
     LEFT JOIN p_u_reputation
         ON p_r_action.id = p_u_reputation.p_r_action_id
@@ -390,7 +392,7 @@ WHERE
 UNION DISTINCT
 
 # Badges
-( SELECT p_u_badge.p_r_badge_id as id, 'null' as target_id, 'null' as target_user_id, 'null' as target_object_name, p_r_badge.title as title, p_u_badge.created_at as published_at, 'Politizr\\\Model\\\PRBadge' as type
+( SELECT p_u_badge.p_r_badge_id as id, null as target_id, null as target_user_id, null as target_object_name, p_r_badge.title as title, p_u_badge.created_at as published_at, 'Politizr\\\Model\\\PRBadge' as type
 FROM p_r_badge
     LEFT JOIN p_u_badge
         ON p_r_badge.id = p_u_badge.p_r_badge_id
@@ -402,10 +404,23 @@ WHERE
 UNION DISTINCT
 
 # Création profil
-( SELECT p_user.id as id, 'null' as target_id, 'null' as target_user_id, 'null' as target_object_name, p_user.name as title, p_user.created_at as published_at, 'Politizr\\\Model\\\PUser' as type
+( SELECT p_user.id as id, null as target_id, null as target_user_id, null as target_object_name, p_user.name as title, p_user.created_at as published_at, 'Politizr\\\Model\\\PUser' as type
 FROM p_user
 WHERE
     p_user.id = :p_user_id12
+)
+
+UNION DISTINCT
+
+#  Actions réputation des users suivis: note + comment / sujet / reponse, suivre un utilisateur
+( SELECT p_u_reputation.p_r_action_id as id, p_u_reputation.p_object_id as target_id, p_user_id as target_user_id, p_u_reputation.p_object_name as target_object_name, p_r_action.title as title, p_u_reputation.created_at as published_at, 'Politizr\\\Model\\\PRAction' as type
+FROM p_r_action
+    LEFT JOIN p_u_reputation
+        ON p_r_action.id = p_u_reputation.p_r_action_id
+
+WHERE
+    p_u_reputation.p_user_id IN ($inQueryUserIds)
+    AND p_r_action.id IN ($inQueryReputationIds5)
 )
 
 ORDER BY published_at DESC
@@ -483,60 +498,7 @@ LIMIT :offset, :count
         $sql = "
 #  Concordance des tags suivis / tags caractérisant des users
 SELECT DISTINCT
-    id,
-    uuid,
-    provider,
-    provider_id,
-    nickname,
-    realname,
-    username,
-    username_canonical,
-    email,
-    email_canonical,
-    enabled,
-    salt,
-    password,
-    last_login,
-    locked,
-    expired,
-    expires_at,
-    confirmation_token,
-    password_requested_at,
-    credentials_expired,
-    credentials_expire_at,
-    roles,
-    last_activity,
-    p_u_status_id,
-    p_l_city_id,
-    file_name,
-    back_file_name,
-    copyright,
-    gender,
-    firstname,
-    name,
-    birthday,
-    subtitle,
-    biography,
-    website,
-    twitter,
-    facebook,
-    phone,
-    newsletter,
-    last_connect,
-    nb_connected_days,
-    nb_views,
-    qualified,
-    validated,
-    nb_id_check,
-    online,
-    homepage,
-    banned,
-    banned_nb_days_left,
-    banned_nb_total,
-    abuse_level,
-    created_at,
-    updated_at,
-    slug
+".ObjectTypeConstants::SQL_P_USER_COLUMNS."
 FROM (
 ( SELECT p_user.*, COUNT(p_user.id) as nb_users, 1 as unionsorting
 FROM p_user
@@ -629,6 +591,7 @@ LIMIT :offset, :limit
      * @param string $inQueryReputationIds2
      * @param string $inQueryReputationIds3
      * @param string $inQueryReputationIds4
+     * @param string $inQueryReputationIds5
      * @param integer $offset
      * @param integer $count
      * @return string
@@ -643,6 +606,7 @@ LIMIT :offset, :limit
         $inQueryReputationIds2,
         $inQueryReputationIds3,
         $inQueryReputationIds4,
+        $inQueryReputationIds5,
         $offset,
         $count
     ) {
@@ -656,6 +620,7 @@ LIMIT :offset, :limit
         // $this->logger->info('$inQueryReputationIds2 = ' . print_r($inQueryReputationIds2, true));
         // $this->logger->info('$inQueryReputationIds3 = ' . print_r($inQueryReputationIds3, true));
         // $this->logger->info('$inQueryReputationIds4 = ' . print_r($inQueryReputationIds4, true));
+        // $this->logger->info('$inQueryReputationIds5 = ' . print_r($inQueryReputationIds5, true));
         // $this->logger->info('$offset = ' . print_r($offset, true));
         // $this->logger->info('$count = ' . print_r($count, true));
 
@@ -668,7 +633,8 @@ LIMIT :offset, :limit
             $inQueryReputationIds,
             $inQueryReputationIds2,
             $inQueryReputationIds3,
-            $inQueryReputationIds4
+            $inQueryReputationIds4,
+            $inQueryReputationIds5
         ));
 
         $stmt->bindValue(':p_user_id', $userId, \PDO::PARAM_INT);
@@ -980,9 +946,11 @@ LIMIT :offset, :limit
             $puFollowDD->setPUserId($userId);
             $puFollowDD->setPDDebateId($debateId);
             $puFollowDD->save();
+            
+            return $puFollowDD;
         }
 
-        return $puFollowDD;
+        return null;
     }
 
     /**
@@ -1023,9 +991,10 @@ LIMIT :offset, :limit
             $puFollowU->setPUserFollowerId($sourceId);
             $puFollowU->setPUserId($targetId);
             $puFollowU->save();
+           return $puFollowU;
         }
 
-        return $puFollowU;
+        return null;
     }
 
     /**
@@ -1103,23 +1072,20 @@ LIMIT :offset, :limit
     }
 
     /**
-     * Create PUSubscribeEmail between a user and every PNotification
+     * Create PUSubscribePNE
      *
      * @param integer $userId
-     * @param integer $debateId
-     * @return PUFollowDD
+     * @param array $emailIds
      */
-    public function createAllUserSubscribeEmail($userId)
+    public function createUserSubscribeNotifEmail($userId, $emailIds)
     {
-        $notifications = PNotificationQuery::create()->find();
+        foreach ($emailIds as $emailId) {
+            $puSubscribePne = new PUSubscribePNE();
 
-        foreach ($notifications as $notif) {
-            $puSubscribeEmail = new PUSubscribeEmail();
+            $puSubscribePne->setPUserId($userId);
+            $puSubscribePne->setPNEmailId($emailId);
 
-            $puSubscribeEmail->setPUserId($userId);
-            $puSubscribeEmail->setPNotificationId($notif->getId());
-
-            $puSubscribeEmail->save();
+            $puSubscribePne->save();
         }
     }
 }

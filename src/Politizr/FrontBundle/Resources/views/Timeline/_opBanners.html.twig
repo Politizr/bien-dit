@@ -1,0 +1,12 @@
+{# beta #}
+{% if operations | length > 0 %}
+    <div id="opBanners" class="cycle-slideshow" data-cycle-fx="scrollHorz" data-cycle-swipe="true" data-cycle-swipe-fx="scrollHorz" data-cycle-timeout="5000" data-cycle-slides="> div.miniHeader" data-cycle-prev="#bannerPrev" data-cycle-next="#bannerNext">
+        {% for operation in operations %}
+            {% include 'PolitizrFrontBundle:User:_opBanner.html.twig' with { 'operation': operation } %}
+        {% endfor %}
+        {% if operations | length > 1 %}
+            <div id="bannerPrev"><i class="icon-goleft"></i></div>
+            <div id="bannerNext"><i class="icon-goright"></i></div>
+        {% endif %}
+    </div>
+{% endif %}

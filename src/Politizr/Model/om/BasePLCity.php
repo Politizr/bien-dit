@@ -23,6 +23,10 @@ use Politizr\Model\PDDebate;
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReaction;
 use Politizr\Model\PDReactionQuery;
+use Politizr\Model\PEOScopePLC;
+use Politizr\Model\PEOScopePLCQuery;
+use Politizr\Model\PEOperation;
+use Politizr\Model\PEOperationQuery;
 use Politizr\Model\PLCity;
 use Politizr\Model\PLCityPeer;
 use Politizr\Model\PLCityQuery;
@@ -238,6 +242,12 @@ abstract class BasePLCity extends BaseObject implements Persistent
     protected $aPLDepartment;
 
     /**
+     * @var        PropelObjectCollection|PEOScopePLC[] Collection to store aggregation of PEOScopePLC objects.
+     */
+    protected $collPEOScopePLCs;
+    protected $collPEOScopePLCsPartial;
+
+    /**
      * @var        PropelObjectCollection|PUser[] Collection to store aggregation of PUser objects.
      */
     protected $collPUsers;
@@ -260,6 +270,11 @@ abstract class BasePLCity extends BaseObject implements Persistent
      */
     protected $collPCGroupLCs;
     protected $collPCGroupLCsPartial;
+
+    /**
+     * @var        PropelObjectCollection|PEOperation[] Collection to store aggregation of PEOperation objects.
+     */
+    protected $collPEOperations;
 
     /**
      * @var        PropelObjectCollection|PCircle[] Collection to store aggregation of PCircle objects.
@@ -290,7 +305,19 @@ abstract class BasePLCity extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
+    protected $pEOperationsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
     protected $pCirclesScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pEOScopePLCsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -1479,6 +1506,8 @@ abstract class BasePLCity extends BaseObject implements Persistent
         if ($deep) {  // also de-associate any related objects?
 
             $this->aPLDepartment = null;
+            $this->collPEOScopePLCs = null;
+
             $this->collPUsers = null;
 
             $this->collPDDebates = null;
@@ -1487,6 +1516,7 @@ abstract class BasePLCity extends BaseObject implements Persistent
 
             $this->collPCGroupLCs = null;
 
+            $this->collPEOperations = null;
             $this->collPCircles = null;
         } // if (deep)
     }
@@ -1644,6 +1674,32 @@ abstract class BasePLCity extends BaseObject implements Persistent
                 $this->resetModified();
             }
 
+            if ($this->pEOperationsScheduledForDeletion !== null) {
+                if (!$this->pEOperationsScheduledForDeletion->isEmpty()) {
+                    $pks = array();
+                    $pk = $this->getPrimaryKey();
+                    foreach ($this->pEOperationsScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
+                        $pks[] = array($remotePk, $pk);
+                    }
+                    PEOScopePLCQuery::create()
+                        ->filterByPrimaryKeys($pks)
+                        ->delete($con);
+                    $this->pEOperationsScheduledForDeletion = null;
+                }
+
+                foreach ($this->getPEOperations() as $pEOperation) {
+                    if ($pEOperation->isModified()) {
+                        $pEOperation->save($con);
+                    }
+                }
+            } elseif ($this->collPEOperations) {
+                foreach ($this->collPEOperations as $pEOperation) {
+                    if ($pEOperation->isModified()) {
+                        $pEOperation->save($con);
+                    }
+                }
+            }
+
             if ($this->pCirclesScheduledForDeletion !== null) {
                 if (!$this->pCirclesScheduledForDeletion->isEmpty()) {
                     $pks = array();
@@ -1666,6 +1722,23 @@ abstract class BasePLCity extends BaseObject implements Persistent
                 foreach ($this->collPCircles as $pCircle) {
                     if ($pCircle->isModified()) {
                         $pCircle->save($con);
+                    }
+                }
+            }
+
+            if ($this->pEOScopePLCsScheduledForDeletion !== null) {
+                if (!$this->pEOScopePLCsScheduledForDeletion->isEmpty()) {
+                    PEOScopePLCQuery::create()
+                        ->filterByPrimaryKeys($this->pEOScopePLCsScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->pEOScopePLCsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPEOScopePLCs !== null) {
+                foreach ($this->collPEOScopePLCs as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
                     }
                 }
             }
@@ -2177,6 +2250,9 @@ abstract class BasePLCity extends BaseObject implements Persistent
             if (null !== $this->aPLDepartment) {
                 $result['PLDepartment'] = $this->aPLDepartment->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
+            if (null !== $this->collPEOScopePLCs) {
+                $result['PEOScopePLCs'] = $this->collPEOScopePLCs->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
             if (null !== $this->collPUsers) {
                 $result['PUsers'] = $this->collPUsers->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
@@ -2508,6 +2584,12 @@ abstract class BasePLCity extends BaseObject implements Persistent
             // store object hash to prevent cycle
             $this->startCopy = true;
 
+            foreach ($this->getPEOScopePLCs() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPEOScopePLC($relObj->copy($deepCopy));
+                }
+            }
+
             foreach ($this->getPUsers() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addPUser($relObj->copy($deepCopy));
@@ -2645,6 +2727,9 @@ abstract class BasePLCity extends BaseObject implements Persistent
      */
     public function initRelation($relationName)
     {
+        if ('PEOScopePLC' == $relationName) {
+            $this->initPEOScopePLCs();
+        }
         if ('PUser' == $relationName) {
             $this->initPUsers();
         }
@@ -2657,6 +2742,256 @@ abstract class BasePLCity extends BaseObject implements Persistent
         if ('PCGroupLC' == $relationName) {
             $this->initPCGroupLCs();
         }
+    }
+
+    /**
+     * Clears out the collPEOScopePLCs collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PLCity The current object (for fluent API support)
+     * @see        addPEOScopePLCs()
+     */
+    public function clearPEOScopePLCs()
+    {
+        $this->collPEOScopePLCs = null; // important to set this to null since that means it is uninitialized
+        $this->collPEOScopePLCsPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPEOScopePLCs collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPEOScopePLCs($v = true)
+    {
+        $this->collPEOScopePLCsPartial = $v;
+    }
+
+    /**
+     * Initializes the collPEOScopePLCs collection.
+     *
+     * By default this just sets the collPEOScopePLCs collection to an empty array (like clearcollPEOScopePLCs());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPEOScopePLCs($overrideExisting = true)
+    {
+        if (null !== $this->collPEOScopePLCs && !$overrideExisting) {
+            return;
+        }
+        $this->collPEOScopePLCs = new PropelObjectCollection();
+        $this->collPEOScopePLCs->setModel('PEOScopePLC');
+    }
+
+    /**
+     * Gets an array of PEOScopePLC objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PLCity is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PEOScopePLC[] List of PEOScopePLC objects
+     * @throws PropelException
+     */
+    public function getPEOScopePLCs($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPEOScopePLCsPartial && !$this->isNew();
+        if (null === $this->collPEOScopePLCs || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPEOScopePLCs) {
+                // return empty collection
+                $this->initPEOScopePLCs();
+            } else {
+                $collPEOScopePLCs = PEOScopePLCQuery::create(null, $criteria)
+                    ->filterByPLCity($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPEOScopePLCsPartial && count($collPEOScopePLCs)) {
+                      $this->initPEOScopePLCs(false);
+
+                      foreach ($collPEOScopePLCs as $obj) {
+                        if (false == $this->collPEOScopePLCs->contains($obj)) {
+                          $this->collPEOScopePLCs->append($obj);
+                        }
+                      }
+
+                      $this->collPEOScopePLCsPartial = true;
+                    }
+
+                    $collPEOScopePLCs->getInternalIterator()->rewind();
+
+                    return $collPEOScopePLCs;
+                }
+
+                if ($partial && $this->collPEOScopePLCs) {
+                    foreach ($this->collPEOScopePLCs as $obj) {
+                        if ($obj->isNew()) {
+                            $collPEOScopePLCs[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPEOScopePLCs = $collPEOScopePLCs;
+                $this->collPEOScopePLCsPartial = false;
+            }
+        }
+
+        return $this->collPEOScopePLCs;
+    }
+
+    /**
+     * Sets a collection of PEOScopePLC objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pEOScopePLCs A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PLCity The current object (for fluent API support)
+     */
+    public function setPEOScopePLCs(PropelCollection $pEOScopePLCs, PropelPDO $con = null)
+    {
+        $pEOScopePLCsToDelete = $this->getPEOScopePLCs(new Criteria(), $con)->diff($pEOScopePLCs);
+
+
+        $this->pEOScopePLCsScheduledForDeletion = $pEOScopePLCsToDelete;
+
+        foreach ($pEOScopePLCsToDelete as $pEOScopePLCRemoved) {
+            $pEOScopePLCRemoved->setPLCity(null);
+        }
+
+        $this->collPEOScopePLCs = null;
+        foreach ($pEOScopePLCs as $pEOScopePLC) {
+            $this->addPEOScopePLC($pEOScopePLC);
+        }
+
+        $this->collPEOScopePLCs = $pEOScopePLCs;
+        $this->collPEOScopePLCsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PEOScopePLC objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PEOScopePLC objects.
+     * @throws PropelException
+     */
+    public function countPEOScopePLCs(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPEOScopePLCsPartial && !$this->isNew();
+        if (null === $this->collPEOScopePLCs || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPEOScopePLCs) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPEOScopePLCs());
+            }
+            $query = PEOScopePLCQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPLCity($this)
+                ->count($con);
+        }
+
+        return count($this->collPEOScopePLCs);
+    }
+
+    /**
+     * Method called to associate a PEOScopePLC object to this object
+     * through the PEOScopePLC foreign key attribute.
+     *
+     * @param    PEOScopePLC $l PEOScopePLC
+     * @return PLCity The current object (for fluent API support)
+     */
+    public function addPEOScopePLC(PEOScopePLC $l)
+    {
+        if ($this->collPEOScopePLCs === null) {
+            $this->initPEOScopePLCs();
+            $this->collPEOScopePLCsPartial = true;
+        }
+
+        if (!in_array($l, $this->collPEOScopePLCs->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPEOScopePLC($l);
+
+            if ($this->pEOScopePLCsScheduledForDeletion and $this->pEOScopePLCsScheduledForDeletion->contains($l)) {
+                $this->pEOScopePLCsScheduledForDeletion->remove($this->pEOScopePLCsScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PEOScopePLC $pEOScopePLC The pEOScopePLC object to add.
+     */
+    protected function doAddPEOScopePLC($pEOScopePLC)
+    {
+        $this->collPEOScopePLCs[]= $pEOScopePLC;
+        $pEOScopePLC->setPLCity($this);
+    }
+
+    /**
+     * @param	PEOScopePLC $pEOScopePLC The pEOScopePLC object to remove.
+     * @return PLCity The current object (for fluent API support)
+     */
+    public function removePEOScopePLC($pEOScopePLC)
+    {
+        if ($this->getPEOScopePLCs()->contains($pEOScopePLC)) {
+            $this->collPEOScopePLCs->remove($this->collPEOScopePLCs->search($pEOScopePLC));
+            if (null === $this->pEOScopePLCsScheduledForDeletion) {
+                $this->pEOScopePLCsScheduledForDeletion = clone $this->collPEOScopePLCs;
+                $this->pEOScopePLCsScheduledForDeletion->clear();
+            }
+            $this->pEOScopePLCsScheduledForDeletion[]= clone $pEOScopePLC;
+            $pEOScopePLC->setPLCity(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PLCity is new, it will return
+     * an empty collection; or if this PLCity has previously
+     * been saved, it will retrieve related PEOScopePLCs from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PLCity.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PEOScopePLC[] List of PEOScopePLC objects
+     */
+    public function getPEOScopePLCsJoinPEOperation($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PEOScopePLCQuery::create(null, $criteria);
+        $query->joinWith('PEOperation', $join_behavior);
+
+        return $this->getPEOScopePLCs($query, $con);
     }
 
     /**
@@ -3255,6 +3590,31 @@ abstract class BasePLCity extends BaseObject implements Persistent
     {
         $query = PDDebateQuery::create(null, $criteria);
         $query->joinWith('PCTopic', $join_behavior);
+
+        return $this->getPDDebates($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PLCity is new, it will return
+     * an empty collection; or if this PLCity has previously
+     * been saved, it will retrieve related PDDebates from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PLCity.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PDDebate[] List of PDDebate objects
+     */
+    public function getPDDebatesJoinPEOperation($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PDDebateQuery::create(null, $criteria);
+        $query->joinWith('PEOperation', $join_behavior);
 
         return $this->getPDDebates($query, $con);
     }
@@ -3885,6 +4245,193 @@ abstract class BasePLCity extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collPEOperations collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PLCity The current object (for fluent API support)
+     * @see        addPEOperations()
+     */
+    public function clearPEOperations()
+    {
+        $this->collPEOperations = null; // important to set this to null since that means it is uninitialized
+        $this->collPEOperationsPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * Initializes the collPEOperations collection.
+     *
+     * By default this just sets the collPEOperations collection to an empty collection (like clearPEOperations());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @return void
+     */
+    public function initPEOperations()
+    {
+        $this->collPEOperations = new PropelObjectCollection();
+        $this->collPEOperations->setModel('PEOperation');
+    }
+
+    /**
+     * Gets a collection of PEOperation objects related by a many-to-many relationship
+     * to the current object by way of the p_e_o_scope_p_l_c cross-reference table.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PLCity is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return PropelObjectCollection|PEOperation[] List of PEOperation objects
+     */
+    public function getPEOperations($criteria = null, PropelPDO $con = null)
+    {
+        if (null === $this->collPEOperations || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPEOperations) {
+                // return empty collection
+                $this->initPEOperations();
+            } else {
+                $collPEOperations = PEOperationQuery::create(null, $criteria)
+                    ->filterByPLCity($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    return $collPEOperations;
+                }
+                $this->collPEOperations = $collPEOperations;
+            }
+        }
+
+        return $this->collPEOperations;
+    }
+
+    /**
+     * Sets a collection of PEOperation objects related by a many-to-many relationship
+     * to the current object by way of the p_e_o_scope_p_l_c cross-reference table.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pEOperations A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PLCity The current object (for fluent API support)
+     */
+    public function setPEOperations(PropelCollection $pEOperations, PropelPDO $con = null)
+    {
+        $this->clearPEOperations();
+        $currentPEOperations = $this->getPEOperations(null, $con);
+
+        $this->pEOperationsScheduledForDeletion = $currentPEOperations->diff($pEOperations);
+
+        foreach ($pEOperations as $pEOperation) {
+            if (!$currentPEOperations->contains($pEOperation)) {
+                $this->doAddPEOperation($pEOperation);
+            }
+        }
+
+        $this->collPEOperations = $pEOperations;
+
+        return $this;
+    }
+
+    /**
+     * Gets the number of PEOperation objects related by a many-to-many relationship
+     * to the current object by way of the p_e_o_scope_p_l_c cross-reference table.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param boolean $distinct Set to true to force count distinct
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return int the number of related PEOperation objects
+     */
+    public function countPEOperations($criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        if (null === $this->collPEOperations || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPEOperations) {
+                return 0;
+            } else {
+                $query = PEOperationQuery::create(null, $criteria);
+                if ($distinct) {
+                    $query->distinct();
+                }
+
+                return $query
+                    ->filterByPLCity($this)
+                    ->count($con);
+            }
+        } else {
+            return count($this->collPEOperations);
+        }
+    }
+
+    /**
+     * Associate a PEOperation object to this object
+     * through the p_e_o_scope_p_l_c cross reference table.
+     *
+     * @param  PEOperation $pEOperation The PEOScopePLC object to relate
+     * @return PLCity The current object (for fluent API support)
+     */
+    public function addPEOperation(PEOperation $pEOperation)
+    {
+        if ($this->collPEOperations === null) {
+            $this->initPEOperations();
+        }
+
+        if (!$this->collPEOperations->contains($pEOperation)) { // only add it if the **same** object is not already associated
+            $this->doAddPEOperation($pEOperation);
+            $this->collPEOperations[] = $pEOperation;
+
+            if ($this->pEOperationsScheduledForDeletion and $this->pEOperationsScheduledForDeletion->contains($pEOperation)) {
+                $this->pEOperationsScheduledForDeletion->remove($this->pEOperationsScheduledForDeletion->search($pEOperation));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PEOperation $pEOperation The pEOperation object to add.
+     */
+    protected function doAddPEOperation(PEOperation $pEOperation)
+    {
+        // set the back reference to this object directly as using provided method either results
+        // in endless loop or in multiple relations
+        if (!$pEOperation->getPLCities()->contains($this)) { $pEOScopePLC = new PEOScopePLC();
+            $pEOScopePLC->setPEOperation($pEOperation);
+            $this->addPEOScopePLC($pEOScopePLC);
+
+            $foreignCollection = $pEOperation->getPLCities();
+            $foreignCollection[] = $this;
+        }
+    }
+
+    /**
+     * Remove a PEOperation object to this object
+     * through the p_e_o_scope_p_l_c cross reference table.
+     *
+     * @param PEOperation $pEOperation The PEOScopePLC object to relate
+     * @return PLCity The current object (for fluent API support)
+     */
+    public function removePEOperation(PEOperation $pEOperation)
+    {
+        if ($this->getPEOperations()->contains($pEOperation)) {
+            $this->collPEOperations->remove($this->collPEOperations->search($pEOperation));
+            if (null === $this->pEOperationsScheduledForDeletion) {
+                $this->pEOperationsScheduledForDeletion = clone $this->collPEOperations;
+                $this->pEOperationsScheduledForDeletion->clear();
+            }
+            $this->pEOperationsScheduledForDeletion[]= $pEOperation;
+        }
+
+        return $this;
+    }
+
+    /**
      * Clears out the collPCircles collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
@@ -4128,6 +4675,11 @@ abstract class BasePLCity extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
+            if ($this->collPEOScopePLCs) {
+                foreach ($this->collPEOScopePLCs as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collPUsers) {
                 foreach ($this->collPUsers as $o) {
                     $o->clearAllReferences($deep);
@@ -4148,6 +4700,11 @@ abstract class BasePLCity extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collPEOperations) {
+                foreach ($this->collPEOperations as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collPCircles) {
                 foreach ($this->collPCircles as $o) {
                     $o->clearAllReferences($deep);
@@ -4160,6 +4717,10 @@ abstract class BasePLCity extends BaseObject implements Persistent
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
+        if ($this->collPEOScopePLCs instanceof PropelCollection) {
+            $this->collPEOScopePLCs->clearIterator();
+        }
+        $this->collPEOScopePLCs = null;
         if ($this->collPUsers instanceof PropelCollection) {
             $this->collPUsers->clearIterator();
         }
@@ -4176,6 +4737,10 @@ abstract class BasePLCity extends BaseObject implements Persistent
             $this->collPCGroupLCs->clearIterator();
         }
         $this->collPCGroupLCs = null;
+        if ($this->collPEOperations instanceof PropelCollection) {
+            $this->collPEOperations->clearIterator();
+        }
+        $this->collPEOperations = null;
         if ($this->collPCircles instanceof PropelCollection) {
             $this->collPCircles->clearIterator();
         }

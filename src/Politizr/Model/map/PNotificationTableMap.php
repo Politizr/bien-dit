@@ -60,11 +60,7 @@ class PNotificationTableMap extends TableMap
     {
         $this->addRelation('PNType', 'Politizr\\Model\\PNType', RelationMap::MANY_TO_ONE, array('p_n_type_id' => 'id', ), 'CASCADE', 'CASCADE');
         $this->addRelation('PUNotificationPNotification', 'Politizr\\Model\\PUNotification', RelationMap::ONE_TO_MANY, array('id' => 'p_notification_id', ), 'CASCADE', 'CASCADE', 'PUNotificationPNotifications');
-        $this->addRelation('PUSubscribeEmailPNotification', 'Politizr\\Model\\PUSubscribeEmail', RelationMap::ONE_TO_MANY, array('id' => 'p_notification_id', ), 'CASCADE', 'CASCADE', 'PUSubscribeEmailPNotifications');
-        $this->addRelation('PUSubscribeScreenPNotification', 'Politizr\\Model\\PUSubscribeScreen', RelationMap::ONE_TO_MANY, array('id' => 'p_notification_id', ), 'CASCADE', 'CASCADE', 'PUSubscribeScreenPNotifications');
         $this->addRelation('PUNotificationPUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PUNotificationPUsers');
-        $this->addRelation('PUSubscribeEmailPUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PUSubscribeEmailPUsers');
-        $this->addRelation('PUSubscribeScreenPUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PUSubscribeScreenPUsers');
     } // buildRelations()
 
     /**

@@ -22,17 +22,25 @@ use Politizr\Model\PDReactionQuery;
  */
 class DocumentManager
 {
+    private $tagManager;
+
     private $globalTools;
 
     private $logger;
 
     /**
      *
+     * @param @politizr.manager.tag
      * @param @politizr.tools.global
      * @param @logger
      */
-    public function __construct($globalTools, $logger)
-    {
+    public function __construct(
+        $tagManager,
+        $globalTools,
+        $logger
+    ) {
+        $this->tagManager = $tagManager;
+
         $this->globalTools = $globalTools;
         
         $this->logger = $logger;
@@ -122,17 +130,19 @@ LIMIT :offset, :limit
             $subRequestRegionIds1 = $prefix . "p_d_debate.p_l_region_id = $regionId";
             $subRequestRegionIds2 = $prefix . "p_d_reaction.p_l_region_id = $regionId";
         }
-        if ($countryId) {
-            if ($inQueryCityIds || $inQueryDepartmentIds || $regionId) {
-                $prefix = "OR ";
-            } else {
-                $prefix = "AND (";
-            }
-            $subRequestCountryIds1 = $prefix . "p_d_debate.p_l_country_id = $countryId";
-            $subRequestCountryIds2 = $prefix . "p_d_reaction.p_l_country_id = $countryId";
-        }
 
-        if ($inQueryCityIds || $inQueryDepartmentIds || $regionId || $countryId) {
+        // upd > default = all publications
+        // if ($countryId) {
+        //     if ($inQueryCityIds || $inQueryDepartmentIds || $regionId) {
+        //         $prefix = "OR ";
+        //     } else {
+        //         $prefix = "AND (";
+        //     }
+        //     $subRequestCountryIds1 = $prefix . "p_d_debate.p_l_country_id = $countryId";
+        //     $subRequestCountryIds2 = $prefix . "p_d_reaction.p_l_country_id = $countryId";
+        // }
+
+        if ($inQueryCityIds || $inQueryDepartmentIds || $regionId /* || $countryId */) {
             $subRequestCountryIds1 .= ")";
             $subRequestCountryIds2 .= ")";
         }
@@ -722,50 +732,92 @@ LIMIT :limit
      * @see app/sql/userDocuments.sql
      *
      * @param string $orderBy
+     * @param integer $tagId
      * @return string
      */
-    private function createPublicationsByUserRawSql($orderBy = ListingConstants::ORDER_BY_KEYWORD_BEST_NOTE)
+    private function createPublicationsByUserRawSql($orderBy = ListingConstants::ORDER_BY_KEYWORD_BEST_NOTE, $tagId = null)
     {
         $orderByReq = "ORDER BY note_pos DESC, note_neg ASC";
         if ($orderBy == ListingConstants::ORDER_BY_KEYWORD_LAST) {
             $orderByReq = "ORDER BY published_at DESC";
         }
 
+        // Tag filtering subrequest
+        $subRequestTagLeftJoin1 = null;
+        $subRequestTagLeftJoin2 = null;
+        $subRequestTagLeftJoin3 = null;
+        $subRequestTagLeftJoin4 = null;
+        $subRequestTagWhere1 = null;
+        $subRequestTagWhere2 = null;
+        $subRequestTagWhere3 = null;
+        $subRequestTagWhere4 = null;
+        if ($tagId) {
+            $subRequestTagLeftJoin1 = "
+    LEFT JOIN p_d_d_tagged_t
+        ON p_d_debate.id = p_d_d_tagged_t.p_d_debate_id
+";
+            $subRequestTagLeftJoin2 = "
+    LEFT JOIN p_d_r_tagged_t
+        ON p_d_reaction.id = p_d_r_tagged_t.p_d_reaction_id
+";
+            $subRequestTagLeftJoin3 = "
+    LEFT JOIN p_d_d_tagged_t
+        ON p_d_d_comment.p_d_debate_id = p_d_d_tagged_t.p_d_debate_id
+";
+            $subRequestTagLeftJoin4 = "
+    LEFT JOIN p_d_r_tagged_t
+        ON p_d_r_comment.p_d_reaction_id = p_d_r_tagged_t.p_d_reaction_id
+";
+            $subRequestTagWhere1 = "AND p_d_d_tagged_t.p_tag_id = $tagId";
+            $subRequestTagWhere2 = "AND p_d_r_tagged_t.p_tag_id = $tagId";
+            $subRequestTagWhere3 = "AND p_d_d_tagged_t.p_tag_id = $tagId";
+            $subRequestTagWhere4 = "AND p_d_r_tagged_t.p_tag_id = $tagId";
+        }
 
         $sql = "
-( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.file_name as fileName, p_d_reaction.description as description, p_d_reaction.slug as slug, p_d_reaction.published_at as published_at, p_d_reaction.updated_at as updated_at, p_d_reaction.note_pos as note_pos, p_d_reaction.note_neg as note_neg, 'Politizr\\\Model\\\PDReaction' as type
-FROM p_d_reaction
+( SELECT p_d_debate.id as id, p_d_debate.title as title, p_d_debate.file_name as fileName, p_d_debate.description as description, p_d_debate.slug as slug, p_d_debate.published_at as published_at, p_d_debate.updated_at as updated_at, p_d_debate.note_pos as note_pos, p_d_debate.note_neg as note_neg, 'Politizr\\\Model\\\PDDebate' as type
+FROM p_d_debate
+$subRequestTagLeftJoin1
 WHERE
     p_user_id = :p_user_id
-    AND p_d_reaction.published = 1
-    AND p_d_reaction.online = 1
+    AND p_d_debate.published = 1
+    AND p_d_debate.online = 1
+    $subRequestTagWhere1
 )
 
 UNION DISTINCT
 
-( SELECT p_d_debate.id as id, p_d_debate.title as title, p_d_debate.file_name as fileName, p_d_debate.description as description, p_d_debate.slug as slug, p_d_debate.published_at as published_at, p_d_debate.updated_at as updated_at, p_d_debate.note_pos as note_pos, p_d_debate.note_neg as note_neg, 'Politizr\\\Model\\\PDDebate' as type
-FROM p_d_debate
+( SELECT p_d_reaction.id as id, p_d_reaction.title as title, p_d_reaction.file_name as fileName, p_d_reaction.description as description, p_d_reaction.slug as slug, p_d_reaction.published_at as published_at, p_d_reaction.updated_at as updated_at, p_d_reaction.note_pos as note_pos, p_d_reaction.note_neg as note_neg, 'Politizr\\\Model\\\PDReaction' as type
+FROM p_d_reaction
+$subRequestTagLeftJoin2
 WHERE
     p_user_id = :p_user_id2
-    AND p_d_debate.published = 1
-    AND p_d_debate.online = 1
+    AND p_d_reaction.published = 1
+    AND p_d_reaction.online = 1
+    $subRequestTagWhere2
 )
 
 UNION DISTINCT
 
 ( SELECT p_d_d_comment.id as id, \"commentaire\" as title, \"image\" as fileName, p_d_d_comment.description as description, \"slug\" as slug, p_d_d_comment.published_at as published_at, p_d_d_comment.updated_at as updated_at, p_d_d_comment.note_pos as note_pos, p_d_d_comment.note_neg as note_neg, 'Politizr\\\Model\\\PDDComment' as type
 FROM p_d_d_comment
+$subRequestTagLeftJoin3
 WHERE
     p_d_d_comment.online = 1
-    AND p_d_d_comment.p_user_id = :p_user_id3 )
+    AND p_d_d_comment.p_user_id = :p_user_id3
+    $subRequestTagWhere3
+)
 
 UNION DISTINCT
 
 ( SELECT p_d_r_comment.id as id, \"commentaire\" as title, \"image\" as fileName, p_d_r_comment.description as description, \"slug\" as slug, p_d_r_comment.published_at as published_at, p_d_r_comment.updated_at as updated_at, p_d_r_comment.note_pos as note_pos, p_d_r_comment.note_neg as note_neg, 'Politizr\\\Model\\\PDRComment' as type
 FROM p_d_r_comment
+$subRequestTagLeftJoin4
 WHERE
     p_d_r_comment.online = 1
-    AND p_d_r_comment.p_user_id = :p_user_id4 )
+    AND p_d_r_comment.p_user_id = :p_user_id4
+    $subRequestTagWhere4
+)
 
 $orderByReq
 
@@ -1032,31 +1084,7 @@ LIMIT :limit
         // Requête SQL
         $sql = "
 SELECT DISTINCT
-    id,
-    uuid,
-    p_user_id,
-    p_l_city_id,
-    p_l_department_id,
-    p_l_region_id,
-    p_l_country_id,
-    title,
-    file_name,
-    copyright,
-    description,
-    note_pos,
-    note_neg,
-    nb_views,
-    published,
-    published_at,
-    published_by,
-    favorite,
-    online,
-    moderated,
-    moderated_partial,
-    moderated_at,
-    created_at,
-    updated_at,
-    slug,
+".ObjectTypeConstants::SQL_P_D_DEBATE_COLUMNS.",
     nb_users
 FROM (
 ( SELECT DISTINCT p_d_debate.*, 0 as nb_users, 1 as unionsorting
@@ -1362,20 +1390,22 @@ GROUP BY p_d_debate_id
      *
      * @param integer $userId
      * @param integer $orderBy
+     * @param integer $tagId
      * @param integer $offset
      * @param integer $limit
      * @return PropelCollection
      */
-    public function generatePublicationsByUserPaginated($userId, $orderBy, $offset, $limit)
+    public function generatePublicationsByUserPaginated($userId, $orderBy, $tagId, $offset, $limit)
     {
         // $this->logger->info('*** generatePublicationsByUserPaginated');
         // $this->logger->info('$userId = ' . print_r($userId, true));
         // $this->logger->info('$orderBy = ' . print_r($orderBy, true));
+        // $this->logger->info('$tagId = ' . print_r($tagId, true));
         // $this->logger->info('$offset = ' . print_r($offset, true));
         // $this->logger->info('$limit = ' . print_r($limit, true));
 
         $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
-        $stmt = $con->prepare($this->createPublicationsByUserRawSql($orderBy));
+        $stmt = $con->prepare($this->createPublicationsByUserRawSql($orderBy, $tagId));
 
         $stmt->bindValue(':p_user_id', $userId, \PDO::PARAM_INT);
         $stmt->bindValue(':p_user_id2', $userId, \PDO::PARAM_INT);
@@ -1902,7 +1932,7 @@ GROUP BY p_d_debate_id
     }
 
     /**
-     * Init reaction's tags by default = parent's ones
+     * Init reaction's tags by default = parent's family ones
      *
      * @param PDReaction $reaction
      * @return PDReaction
@@ -1916,14 +1946,10 @@ GROUP BY p_d_debate_id
             $parent = $reaction->getDebate();
         }
 
-        $tags = $parent->getTags(TagConstants::TAG_TYPE_THEME);
+        // Init private & family tags
+        $tags = $parent->getTags([TagConstants::TAG_TYPE_PRIVATE, TagConstants::TAG_TYPE_FAMILY]);
         foreach ($tags as $tag) {
-            $pdrTaggedT = new PDRTaggedT();
-
-            $pdrTaggedT->setPTagId($tag->getId());
-            $pdrTaggedT->setPDReactionId($reaction->getId());
-
-            $pdrTaggedT->save();
+            $this->tagManager->createReactionTag($reaction->getId(), $tag->getId());
         }
 
         return $reaction;

@@ -10,26 +10,11 @@
     <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.cycle2.swipe.min.js') }}"></script>
 {% endblock %}
 
-{% block preMain %}
-    <div id="suggHeader">
-        {% if not app.session.has('showSuggestion') or app.session.get('showSuggestion') != true %}
-            <span id="suggestionMode" mode="hide" />
-        {% else %}
-            <span id="suggestionMode" mode="show" />
-        {% endif %}
-        <div class="center">
-            <div id="suggTitle">Sélection de nouvelles publications d'après <a href="{{ path('UserDetail', {'slug': app.user.slug}) }}">les thématiques que vous suivez</a>.<br><b>Retrouvez <a href="{{ path('ListingSearchPublications') }}">ici</a> les dernières publications.</b></div>
-            <div class="toggleSugg hideSugg" action="hideSugg" style="display: none">Masquer</div>
-            <div class="toggleSugg showSugg" action="showSugg" style="display: none">Afficher</div>
-        </div>
-    </div>
-    <div id="suggestions">
-        <div class="center">
-            <div class="documentList withLoaderInside"></div>
-        </div>
-        <div id="suggBg"></div>
-    </div>
-{% endblock preMain %}
+{% block headerMsg %}
+    {{ parent() }}
+
+    {% include 'PolitizrFrontBundle:Timeline:_opBanners.html.twig' with {'operations': operations} only %}
+{% endblock %}
 
 {% block content %}
     <div id="content">
@@ -45,7 +30,8 @@
     {% if app.user %}
         {% include 'PolitizrFrontBundle:Tag:_sidebarFollowedTags.html.twig' with {'uuid': app.user.uuid} only %}
     {% endif %}
-    {% include 'PolitizrFrontBundle:Tag:_sidebarTopTags.html.twig' %}
+    {# include 'PolitizrFrontBundle:Tag:_sidebarTopTags.html.twig' #}
+    {% include 'PolitizrFrontBundle:Tag:_sidebarFamilyTags.html.twig' %}
     {% include 'PolitizrFrontBundle:Tag:_sidebarTypeTags.html.twig' %}
     {% include 'PolitizrFrontBundle:Document:_sidebarTopDocuments.html.twig' %}
 {% endblock sidebarContent %}
@@ -53,7 +39,7 @@
 {% block javascriptFooter %}
     {{ parent() }}
 
-    {% if app.environment == 'prod' %}
+    {% if (app.environment == 'prod') %}
         <script type="text/javascript">
             mixpanel.track("Accueil connecté");
         </script>

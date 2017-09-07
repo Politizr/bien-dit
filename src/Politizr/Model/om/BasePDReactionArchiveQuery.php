@@ -25,6 +25,7 @@ use Politizr\Model\PDReactionArchiveQuery;
  * @method PDReactionArchiveQuery orderByPLRegionId($order = Criteria::ASC) Order by the p_l_region_id column
  * @method PDReactionArchiveQuery orderByPLCountryId($order = Criteria::ASC) Order by the p_l_country_id column
  * @method PDReactionArchiveQuery orderByPCTopicId($order = Criteria::ASC) Order by the p_c_topic_id column
+ * @method PDReactionArchiveQuery orderByFbAdId($order = Criteria::ASC) Order by the fb_ad_id column
  * @method PDReactionArchiveQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method PDReactionArchiveQuery orderByFileName($order = Criteria::ASC) Order by the file_name column
  * @method PDReactionArchiveQuery orderByCopyright($order = Criteria::ASC) Order by the copyright column
@@ -32,6 +33,7 @@ use Politizr\Model\PDReactionArchiveQuery;
  * @method PDReactionArchiveQuery orderByNotePos($order = Criteria::ASC) Order by the note_pos column
  * @method PDReactionArchiveQuery orderByNoteNeg($order = Criteria::ASC) Order by the note_neg column
  * @method PDReactionArchiveQuery orderByNbViews($order = Criteria::ASC) Order by the nb_views column
+ * @method PDReactionArchiveQuery orderByWantBoost($order = Criteria::ASC) Order by the want_boost column
  * @method PDReactionArchiveQuery orderByPublished($order = Criteria::ASC) Order by the published column
  * @method PDReactionArchiveQuery orderByPublishedAt($order = Criteria::ASC) Order by the published_at column
  * @method PDReactionArchiveQuery orderByPublishedBy($order = Criteria::ASC) Order by the published_by column
@@ -41,6 +43,7 @@ use Politizr\Model\PDReactionArchiveQuery;
  * @method PDReactionArchiveQuery orderByModerated($order = Criteria::ASC) Order by the moderated column
  * @method PDReactionArchiveQuery orderByModeratedPartial($order = Criteria::ASC) Order by the moderated_partial column
  * @method PDReactionArchiveQuery orderByModeratedAt($order = Criteria::ASC) Order by the moderated_at column
+ * @method PDReactionArchiveQuery orderByIndexedAt($order = Criteria::ASC) Order by the indexed_at column
  * @method PDReactionArchiveQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PDReactionArchiveQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  * @method PDReactionArchiveQuery orderBySlug($order = Criteria::ASC) Order by the slug column
@@ -59,6 +62,7 @@ use Politizr\Model\PDReactionArchiveQuery;
  * @method PDReactionArchiveQuery groupByPLRegionId() Group by the p_l_region_id column
  * @method PDReactionArchiveQuery groupByPLCountryId() Group by the p_l_country_id column
  * @method PDReactionArchiveQuery groupByPCTopicId() Group by the p_c_topic_id column
+ * @method PDReactionArchiveQuery groupByFbAdId() Group by the fb_ad_id column
  * @method PDReactionArchiveQuery groupByTitle() Group by the title column
  * @method PDReactionArchiveQuery groupByFileName() Group by the file_name column
  * @method PDReactionArchiveQuery groupByCopyright() Group by the copyright column
@@ -66,6 +70,7 @@ use Politizr\Model\PDReactionArchiveQuery;
  * @method PDReactionArchiveQuery groupByNotePos() Group by the note_pos column
  * @method PDReactionArchiveQuery groupByNoteNeg() Group by the note_neg column
  * @method PDReactionArchiveQuery groupByNbViews() Group by the nb_views column
+ * @method PDReactionArchiveQuery groupByWantBoost() Group by the want_boost column
  * @method PDReactionArchiveQuery groupByPublished() Group by the published column
  * @method PDReactionArchiveQuery groupByPublishedAt() Group by the published_at column
  * @method PDReactionArchiveQuery groupByPublishedBy() Group by the published_by column
@@ -75,6 +80,7 @@ use Politizr\Model\PDReactionArchiveQuery;
  * @method PDReactionArchiveQuery groupByModerated() Group by the moderated column
  * @method PDReactionArchiveQuery groupByModeratedPartial() Group by the moderated_partial column
  * @method PDReactionArchiveQuery groupByModeratedAt() Group by the moderated_at column
+ * @method PDReactionArchiveQuery groupByIndexedAt() Group by the indexed_at column
  * @method PDReactionArchiveQuery groupByCreatedAt() Group by the created_at column
  * @method PDReactionArchiveQuery groupByUpdatedAt() Group by the updated_at column
  * @method PDReactionArchiveQuery groupBySlug() Group by the slug column
@@ -99,6 +105,7 @@ use Politizr\Model\PDReactionArchiveQuery;
  * @method PDReactionArchive findOneByPLRegionId(int $p_l_region_id) Return the first PDReactionArchive filtered by the p_l_region_id column
  * @method PDReactionArchive findOneByPLCountryId(int $p_l_country_id) Return the first PDReactionArchive filtered by the p_l_country_id column
  * @method PDReactionArchive findOneByPCTopicId(int $p_c_topic_id) Return the first PDReactionArchive filtered by the p_c_topic_id column
+ * @method PDReactionArchive findOneByFbAdId(string $fb_ad_id) Return the first PDReactionArchive filtered by the fb_ad_id column
  * @method PDReactionArchive findOneByTitle(string $title) Return the first PDReactionArchive filtered by the title column
  * @method PDReactionArchive findOneByFileName(string $file_name) Return the first PDReactionArchive filtered by the file_name column
  * @method PDReactionArchive findOneByCopyright(string $copyright) Return the first PDReactionArchive filtered by the copyright column
@@ -106,6 +113,7 @@ use Politizr\Model\PDReactionArchiveQuery;
  * @method PDReactionArchive findOneByNotePos(int $note_pos) Return the first PDReactionArchive filtered by the note_pos column
  * @method PDReactionArchive findOneByNoteNeg(int $note_neg) Return the first PDReactionArchive filtered by the note_neg column
  * @method PDReactionArchive findOneByNbViews(int $nb_views) Return the first PDReactionArchive filtered by the nb_views column
+ * @method PDReactionArchive findOneByWantBoost(int $want_boost) Return the first PDReactionArchive filtered by the want_boost column
  * @method PDReactionArchive findOneByPublished(boolean $published) Return the first PDReactionArchive filtered by the published column
  * @method PDReactionArchive findOneByPublishedAt(string $published_at) Return the first PDReactionArchive filtered by the published_at column
  * @method PDReactionArchive findOneByPublishedBy(string $published_by) Return the first PDReactionArchive filtered by the published_by column
@@ -115,6 +123,7 @@ use Politizr\Model\PDReactionArchiveQuery;
  * @method PDReactionArchive findOneByModerated(boolean $moderated) Return the first PDReactionArchive filtered by the moderated column
  * @method PDReactionArchive findOneByModeratedPartial(boolean $moderated_partial) Return the first PDReactionArchive filtered by the moderated_partial column
  * @method PDReactionArchive findOneByModeratedAt(string $moderated_at) Return the first PDReactionArchive filtered by the moderated_at column
+ * @method PDReactionArchive findOneByIndexedAt(string $indexed_at) Return the first PDReactionArchive filtered by the indexed_at column
  * @method PDReactionArchive findOneByCreatedAt(string $created_at) Return the first PDReactionArchive filtered by the created_at column
  * @method PDReactionArchive findOneByUpdatedAt(string $updated_at) Return the first PDReactionArchive filtered by the updated_at column
  * @method PDReactionArchive findOneBySlug(string $slug) Return the first PDReactionArchive filtered by the slug column
@@ -133,6 +142,7 @@ use Politizr\Model\PDReactionArchiveQuery;
  * @method array findByPLRegionId(int $p_l_region_id) Return PDReactionArchive objects filtered by the p_l_region_id column
  * @method array findByPLCountryId(int $p_l_country_id) Return PDReactionArchive objects filtered by the p_l_country_id column
  * @method array findByPCTopicId(int $p_c_topic_id) Return PDReactionArchive objects filtered by the p_c_topic_id column
+ * @method array findByFbAdId(string $fb_ad_id) Return PDReactionArchive objects filtered by the fb_ad_id column
  * @method array findByTitle(string $title) Return PDReactionArchive objects filtered by the title column
  * @method array findByFileName(string $file_name) Return PDReactionArchive objects filtered by the file_name column
  * @method array findByCopyright(string $copyright) Return PDReactionArchive objects filtered by the copyright column
@@ -140,6 +150,7 @@ use Politizr\Model\PDReactionArchiveQuery;
  * @method array findByNotePos(int $note_pos) Return PDReactionArchive objects filtered by the note_pos column
  * @method array findByNoteNeg(int $note_neg) Return PDReactionArchive objects filtered by the note_neg column
  * @method array findByNbViews(int $nb_views) Return PDReactionArchive objects filtered by the nb_views column
+ * @method array findByWantBoost(int $want_boost) Return PDReactionArchive objects filtered by the want_boost column
  * @method array findByPublished(boolean $published) Return PDReactionArchive objects filtered by the published column
  * @method array findByPublishedAt(string $published_at) Return PDReactionArchive objects filtered by the published_at column
  * @method array findByPublishedBy(string $published_by) Return PDReactionArchive objects filtered by the published_by column
@@ -149,6 +160,7 @@ use Politizr\Model\PDReactionArchiveQuery;
  * @method array findByModerated(boolean $moderated) Return PDReactionArchive objects filtered by the moderated column
  * @method array findByModeratedPartial(boolean $moderated_partial) Return PDReactionArchive objects filtered by the moderated_partial column
  * @method array findByModeratedAt(string $moderated_at) Return PDReactionArchive objects filtered by the moderated_at column
+ * @method array findByIndexedAt(string $indexed_at) Return PDReactionArchive objects filtered by the indexed_at column
  * @method array findByCreatedAt(string $created_at) Return PDReactionArchive objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PDReactionArchive objects filtered by the updated_at column
  * @method array findBySlug(string $slug) Return PDReactionArchive objects filtered by the slug column
@@ -261,7 +273,7 @@ abstract class BasePDReactionArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `p_d_debate_id`, `parent_reaction_id`, `p_l_city_id`, `p_l_department_id`, `p_l_region_id`, `p_l_country_id`, `p_c_topic_id`, `title`, `file_name`, `copyright`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `homepage`, `moderated`, `moderated_partial`, `moderated_at`, `created_at`, `updated_at`, `slug`, `tree_left`, `tree_right`, `tree_level`, `archived_at` FROM `p_d_reaction_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `p_d_debate_id`, `parent_reaction_id`, `p_l_city_id`, `p_l_department_id`, `p_l_region_id`, `p_l_country_id`, `p_c_topic_id`, `fb_ad_id`, `title`, `file_name`, `copyright`, `description`, `note_pos`, `note_neg`, `nb_views`, `want_boost`, `published`, `published_at`, `published_by`, `favorite`, `online`, `homepage`, `moderated`, `moderated_partial`, `moderated_at`, `indexed_at`, `created_at`, `updated_at`, `slug`, `tree_left`, `tree_right`, `tree_level`, `archived_at` FROM `p_d_reaction_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -758,6 +770,35 @@ abstract class BasePDReactionArchiveQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the fb_ad_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByFbAdId('fooValue');   // WHERE fb_ad_id = 'fooValue'
+     * $query->filterByFbAdId('%fooValue%'); // WHERE fb_ad_id LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $fbAdId The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDReactionArchiveQuery The current query, for fluid interface
+     */
+    public function filterByFbAdId($fbAdId = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($fbAdId)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $fbAdId)) {
+                $fbAdId = str_replace('*', '%', $fbAdId);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PDReactionArchivePeer::FB_AD_ID, $fbAdId, $comparison);
+    }
+
+    /**
      * Filter the query on the title column
      *
      * Example usage:
@@ -997,6 +1038,48 @@ abstract class BasePDReactionArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDReactionArchivePeer::NB_VIEWS, $nbViews, $comparison);
+    }
+
+    /**
+     * Filter the query on the want_boost column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByWantBoost(1234); // WHERE want_boost = 1234
+     * $query->filterByWantBoost(array(12, 34)); // WHERE want_boost IN (12, 34)
+     * $query->filterByWantBoost(array('min' => 12)); // WHERE want_boost >= 12
+     * $query->filterByWantBoost(array('max' => 12)); // WHERE want_boost <= 12
+     * </code>
+     *
+     * @param     mixed $wantBoost The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDReactionArchiveQuery The current query, for fluid interface
+     */
+    public function filterByWantBoost($wantBoost = null, $comparison = null)
+    {
+        if (is_array($wantBoost)) {
+            $useMinMax = false;
+            if (isset($wantBoost['min'])) {
+                $this->addUsingAlias(PDReactionArchivePeer::WANT_BOOST, $wantBoost['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($wantBoost['max'])) {
+                $this->addUsingAlias(PDReactionArchivePeer::WANT_BOOST, $wantBoost['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PDReactionArchivePeer::WANT_BOOST, $wantBoost, $comparison);
     }
 
     /**
@@ -1274,6 +1357,49 @@ abstract class BasePDReactionArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDReactionArchivePeer::MODERATED_AT, $moderatedAt, $comparison);
+    }
+
+    /**
+     * Filter the query on the indexed_at column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByIndexedAt('2011-03-14'); // WHERE indexed_at = '2011-03-14'
+     * $query->filterByIndexedAt('now'); // WHERE indexed_at = '2011-03-14'
+     * $query->filterByIndexedAt(array('max' => 'yesterday')); // WHERE indexed_at < '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $indexedAt The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDReactionArchiveQuery The current query, for fluid interface
+     */
+    public function filterByIndexedAt($indexedAt = null, $comparison = null)
+    {
+        if (is_array($indexedAt)) {
+            $useMinMax = false;
+            if (isset($indexedAt['min'])) {
+                $this->addUsingAlias(PDReactionArchivePeer::INDEXED_AT, $indexedAt['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($indexedAt['max'])) {
+                $this->addUsingAlias(PDReactionArchivePeer::INDEXED_AT, $indexedAt['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PDReactionArchivePeer::INDEXED_AT, $indexedAt, $comparison);
     }
 
     /**

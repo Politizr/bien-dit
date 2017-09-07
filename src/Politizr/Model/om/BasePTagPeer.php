@@ -11,6 +11,7 @@ use \PropelException;
 use \PropelPDO;
 use Politizr\Model\PDDTaggedTPeer;
 use Politizr\Model\PDRTaggedTPeer;
+use Politizr\Model\PEOPresetPTPeer;
 use Politizr\Model\PTTagTypePeer;
 use Politizr\Model\PTag;
 use Politizr\Model\PTagPeer;
@@ -34,13 +35,13 @@ abstract class BasePTagPeer
     const TM_CLASS = 'Politizr\\Model\\map\\PTagTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 12;
+    const NUM_COLUMNS = 13;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 12;
+    const NUM_HYDRATE_COLUMNS = 13;
 
     /** the column name for the id field */
     const ID = 'p_tag.id';
@@ -56,6 +57,9 @@ abstract class BasePTagPeer
 
     /** the column name for the p_user_id field */
     const P_USER_ID = 'p_tag.p_user_id';
+
+    /** the column name for the p_owner_id field */
+    const P_OWNER_ID = 'p_tag.p_owner_id';
 
     /** the column name for the title field */
     const TITLE = 'p_tag.title';
@@ -97,12 +101,12 @@ abstract class BasePTagPeer
      * e.g. PTagPeer::$fieldNames[PTagPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'PTTagTypeId', 'PTParentId', 'PUserId', 'Title', 'Moderated', 'ModeratedAt', 'Online', 'CreatedAt', 'UpdatedAt', 'Slug', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'pTTagTypeId', 'pTParentId', 'pUserId', 'title', 'moderated', 'moderatedAt', 'online', 'createdAt', 'updatedAt', 'slug', ),
-        BasePeer::TYPE_COLNAME => array (PTagPeer::ID, PTagPeer::UUID, PTagPeer::P_T_TAG_TYPE_ID, PTagPeer::P_T_PARENT_ID, PTagPeer::P_USER_ID, PTagPeer::TITLE, PTagPeer::MODERATED, PTagPeer::MODERATED_AT, PTagPeer::ONLINE, PTagPeer::CREATED_AT, PTagPeer::UPDATED_AT, PTagPeer::SLUG, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'P_T_TAG_TYPE_ID', 'P_T_PARENT_ID', 'P_USER_ID', 'TITLE', 'MODERATED', 'MODERATED_AT', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', 'SLUG', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'p_t_tag_type_id', 'p_t_parent_id', 'p_user_id', 'title', 'moderated', 'moderated_at', 'online', 'created_at', 'updated_at', 'slug', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'PTTagTypeId', 'PTParentId', 'PUserId', 'POwnerId', 'Title', 'Moderated', 'ModeratedAt', 'Online', 'CreatedAt', 'UpdatedAt', 'Slug', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'pTTagTypeId', 'pTParentId', 'pUserId', 'pOwnerId', 'title', 'moderated', 'moderatedAt', 'online', 'createdAt', 'updatedAt', 'slug', ),
+        BasePeer::TYPE_COLNAME => array (PTagPeer::ID, PTagPeer::UUID, PTagPeer::P_T_TAG_TYPE_ID, PTagPeer::P_T_PARENT_ID, PTagPeer::P_USER_ID, PTagPeer::P_OWNER_ID, PTagPeer::TITLE, PTagPeer::MODERATED, PTagPeer::MODERATED_AT, PTagPeer::ONLINE, PTagPeer::CREATED_AT, PTagPeer::UPDATED_AT, PTagPeer::SLUG, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'P_T_TAG_TYPE_ID', 'P_T_PARENT_ID', 'P_USER_ID', 'P_OWNER_ID', 'TITLE', 'MODERATED', 'MODERATED_AT', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', 'SLUG', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'p_t_tag_type_id', 'p_t_parent_id', 'p_user_id', 'p_owner_id', 'title', 'moderated', 'moderated_at', 'online', 'created_at', 'updated_at', 'slug', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
     );
 
     /**
@@ -112,12 +116,12 @@ abstract class BasePTagPeer
      * e.g. PTagPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'PTTagTypeId' => 2, 'PTParentId' => 3, 'PUserId' => 4, 'Title' => 5, 'Moderated' => 6, 'ModeratedAt' => 7, 'Online' => 8, 'CreatedAt' => 9, 'UpdatedAt' => 10, 'Slug' => 11, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'pTTagTypeId' => 2, 'pTParentId' => 3, 'pUserId' => 4, 'title' => 5, 'moderated' => 6, 'moderatedAt' => 7, 'online' => 8, 'createdAt' => 9, 'updatedAt' => 10, 'slug' => 11, ),
-        BasePeer::TYPE_COLNAME => array (PTagPeer::ID => 0, PTagPeer::UUID => 1, PTagPeer::P_T_TAG_TYPE_ID => 2, PTagPeer::P_T_PARENT_ID => 3, PTagPeer::P_USER_ID => 4, PTagPeer::TITLE => 5, PTagPeer::MODERATED => 6, PTagPeer::MODERATED_AT => 7, PTagPeer::ONLINE => 8, PTagPeer::CREATED_AT => 9, PTagPeer::UPDATED_AT => 10, PTagPeer::SLUG => 11, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'P_T_TAG_TYPE_ID' => 2, 'P_T_PARENT_ID' => 3, 'P_USER_ID' => 4, 'TITLE' => 5, 'MODERATED' => 6, 'MODERATED_AT' => 7, 'ONLINE' => 8, 'CREATED_AT' => 9, 'UPDATED_AT' => 10, 'SLUG' => 11, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'p_t_tag_type_id' => 2, 'p_t_parent_id' => 3, 'p_user_id' => 4, 'title' => 5, 'moderated' => 6, 'moderated_at' => 7, 'online' => 8, 'created_at' => 9, 'updated_at' => 10, 'slug' => 11, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'PTTagTypeId' => 2, 'PTParentId' => 3, 'PUserId' => 4, 'POwnerId' => 5, 'Title' => 6, 'Moderated' => 7, 'ModeratedAt' => 8, 'Online' => 9, 'CreatedAt' => 10, 'UpdatedAt' => 11, 'Slug' => 12, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'pTTagTypeId' => 2, 'pTParentId' => 3, 'pUserId' => 4, 'pOwnerId' => 5, 'title' => 6, 'moderated' => 7, 'moderatedAt' => 8, 'online' => 9, 'createdAt' => 10, 'updatedAt' => 11, 'slug' => 12, ),
+        BasePeer::TYPE_COLNAME => array (PTagPeer::ID => 0, PTagPeer::UUID => 1, PTagPeer::P_T_TAG_TYPE_ID => 2, PTagPeer::P_T_PARENT_ID => 3, PTagPeer::P_USER_ID => 4, PTagPeer::P_OWNER_ID => 5, PTagPeer::TITLE => 6, PTagPeer::MODERATED => 7, PTagPeer::MODERATED_AT => 8, PTagPeer::ONLINE => 9, PTagPeer::CREATED_AT => 10, PTagPeer::UPDATED_AT => 11, PTagPeer::SLUG => 12, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'P_T_TAG_TYPE_ID' => 2, 'P_T_PARENT_ID' => 3, 'P_USER_ID' => 4, 'P_OWNER_ID' => 5, 'TITLE' => 6, 'MODERATED' => 7, 'MODERATED_AT' => 8, 'ONLINE' => 9, 'CREATED_AT' => 10, 'UPDATED_AT' => 11, 'SLUG' => 12, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'p_t_tag_type_id' => 2, 'p_t_parent_id' => 3, 'p_user_id' => 4, 'p_owner_id' => 5, 'title' => 6, 'moderated' => 7, 'moderated_at' => 8, 'online' => 9, 'created_at' => 10, 'updated_at' => 11, 'slug' => 12, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
     );
 
     /**
@@ -196,6 +200,7 @@ abstract class BasePTagPeer
             $criteria->addSelectColumn(PTagPeer::P_T_TAG_TYPE_ID);
             $criteria->addSelectColumn(PTagPeer::P_T_PARENT_ID);
             $criteria->addSelectColumn(PTagPeer::P_USER_ID);
+            $criteria->addSelectColumn(PTagPeer::P_OWNER_ID);
             $criteria->addSelectColumn(PTagPeer::TITLE);
             $criteria->addSelectColumn(PTagPeer::MODERATED);
             $criteria->addSelectColumn(PTagPeer::MODERATED_AT);
@@ -209,6 +214,7 @@ abstract class BasePTagPeer
             $criteria->addSelectColumn($alias . '.p_t_tag_type_id');
             $criteria->addSelectColumn($alias . '.p_t_parent_id');
             $criteria->addSelectColumn($alias . '.p_user_id');
+            $criteria->addSelectColumn($alias . '.p_owner_id');
             $criteria->addSelectColumn($alias . '.title');
             $criteria->addSelectColumn($alias . '.moderated');
             $criteria->addSelectColumn($alias . '.moderated_at');
@@ -423,6 +429,9 @@ abstract class BasePTagPeer
         // Invalidate objects in PTagPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PTagPeer::clearInstancePool();
+        // Invalidate objects in PEOPresetPTPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PEOPresetPTPeer::clearInstancePool();
         // Invalidate objects in PUTaggedTPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PUTaggedTPeer::clearInstancePool();
@@ -632,6 +641,57 @@ abstract class BasePTagPeer
 
 
     /**
+     * Returns the number of rows matching criteria, joining the related POwner table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinPOwner(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(PTagPeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            PTagPeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+
+        // Set the correct dbName
+        $criteria->setDbName(PTagPeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(PTagPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(PTagPeer::P_OWNER_ID, PUserPeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
      * Selects a collection of PTag objects pre-filled with their PTTagType objects.
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
@@ -753,7 +813,74 @@ abstract class BasePTagPeer
                 } // if obj2 already loaded
 
                 // Add the $obj1 (PTag) to $obj2 (PUser)
-                $obj2->addPTag($obj1);
+                $obj2->addPUser($obj1);
+
+            } // if joined row was not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Selects a collection of PTag objects pre-filled with their PUser objects.
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of PTag objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinPOwner(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(PTagPeer::DATABASE_NAME);
+        }
+
+        PTagPeer::addSelectColumns($criteria);
+        $startcol = PTagPeer::NUM_HYDRATE_COLUMNS;
+        PUserPeer::addSelectColumns($criteria);
+
+        $criteria->addJoin(PTagPeer::P_OWNER_ID, PUserPeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = PTagPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PTagPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+
+                $cls = PTagPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                PTagPeer::addInstanceToPool($obj1, $key1);
+            } // if $obj1 already loaded
+
+            $key2 = PUserPeer::getPrimaryKeyHashFromRow($row, $startcol);
+            if ($key2 !== null) {
+                $obj2 = PUserPeer::getInstanceFromPool($key2);
+                if (!$obj2) {
+
+                    $cls = PUserPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol);
+                    PUserPeer::addInstanceToPool($obj2, $key2);
+                } // if obj2 already loaded
+
+                // Add the $obj1 (PTag) to $obj2 (PUser)
+                $obj2->addPOwner($obj1);
 
             } // if joined row was not null
 
@@ -805,6 +932,8 @@ abstract class BasePTagPeer
 
         $criteria->addJoin(PTagPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
 
+        $criteria->addJoin(PTagPeer::P_OWNER_ID, PUserPeer::ID, $join_behavior);
+
         $stmt = BasePeer::doCount($criteria, $con);
 
         if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -845,9 +974,14 @@ abstract class BasePTagPeer
         PUserPeer::addSelectColumns($criteria);
         $startcol4 = $startcol3 + PUserPeer::NUM_HYDRATE_COLUMNS;
 
+        PUserPeer::addSelectColumns($criteria);
+        $startcol5 = $startcol4 + PUserPeer::NUM_HYDRATE_COLUMNS;
+
         $criteria->addJoin(PTagPeer::P_T_TAG_TYPE_ID, PTTagTypePeer::ID, $join_behavior);
 
         $criteria->addJoin(PTagPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
+
+        $criteria->addJoin(PTagPeer::P_OWNER_ID, PUserPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
@@ -899,7 +1033,25 @@ abstract class BasePTagPeer
                 } // if obj3 loaded
 
                 // Add the $obj1 (PTag) to the collection in $obj3 (PUser)
-                $obj3->addPTag($obj1);
+                $obj3->addPUser($obj1);
+            } // if joined row not null
+
+            // Add objects for joined PUser rows
+
+            $key4 = PUserPeer::getPrimaryKeyHashFromRow($row, $startcol4);
+            if ($key4 !== null) {
+                $obj4 = PUserPeer::getInstanceFromPool($key4);
+                if (!$obj4) {
+
+                    $cls = PUserPeer::getOMClass();
+
+                    $obj4 = new $cls();
+                    $obj4->hydrate($row, $startcol4);
+                    PUserPeer::addInstanceToPool($obj4, $key4);
+                } // if obj4 loaded
+
+                // Add the $obj1 (PTag) to the collection in $obj4 (PUser)
+                $obj4->addPOwner($obj1);
             } // if joined row not null
 
             $results[] = $obj1;
@@ -947,6 +1099,8 @@ abstract class BasePTagPeer
         }
 
         $criteria->addJoin(PTagPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
+
+        $criteria->addJoin(PTagPeer::P_OWNER_ID, PUserPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -1001,6 +1155,8 @@ abstract class BasePTagPeer
 
         $criteria->addJoin(PTagPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
 
+        $criteria->addJoin(PTagPeer::P_OWNER_ID, PUserPeer::ID, $join_behavior);
+
         $stmt = BasePeer::doCount($criteria, $con);
 
         if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -1024,6 +1180,57 @@ abstract class BasePTagPeer
      * @return int Number of matching rows.
      */
     public static function doCountJoinAllExceptPUser(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(PTagPeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            PTagPeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY should not affect count
+
+        // Set the correct dbName
+        $criteria->setDbName(PTagPeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(PTagPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(PTagPeer::P_T_TAG_TYPE_ID, PTTagTypePeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining the related POwner table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinAllExceptPOwner(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         // we're going to modify criteria, so copy it first
         $criteria = clone $criteria;
@@ -1092,7 +1299,12 @@ abstract class BasePTagPeer
         PUserPeer::addSelectColumns($criteria);
         $startcol3 = $startcol2 + PUserPeer::NUM_HYDRATE_COLUMNS;
 
+        PUserPeer::addSelectColumns($criteria);
+        $startcol4 = $startcol3 + PUserPeer::NUM_HYDRATE_COLUMNS;
+
         $criteria->addJoin(PTagPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
+
+        $criteria->addJoin(PTagPeer::P_OWNER_ID, PUserPeer::ID, $join_behavior);
 
 
         $stmt = BasePeer::doSelect($criteria, $con);
@@ -1127,7 +1339,26 @@ abstract class BasePTagPeer
                 } // if $obj2 already loaded
 
                 // Add the $obj1 (PTag) to the collection in $obj2 (PUser)
-                $obj2->addPTag($obj1);
+                $obj2->addPUser($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined PUser rows
+
+                $key3 = PUserPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+                if ($key3 !== null) {
+                    $obj3 = PUserPeer::getInstanceFromPool($key3);
+                    if (!$obj3) {
+
+                        $cls = PUserPeer::getOMClass();
+
+                    $obj3 = new $cls();
+                    $obj3->hydrate($row, $startcol3);
+                    PUserPeer::addInstanceToPool($obj3, $key3);
+                } // if $obj3 already loaded
+
+                // Add the $obj1 (PTag) to the collection in $obj3 (PUser)
+                $obj3->addPOwner($obj1);
 
             } // if joined row is not null
 
@@ -1169,9 +1400,14 @@ abstract class BasePTagPeer
         PUserPeer::addSelectColumns($criteria);
         $startcol4 = $startcol3 + PUserPeer::NUM_HYDRATE_COLUMNS;
 
+        PUserPeer::addSelectColumns($criteria);
+        $startcol5 = $startcol4 + PUserPeer::NUM_HYDRATE_COLUMNS;
+
         $criteria->addJoin(PTagPeer::P_T_TAG_TYPE_ID, PTTagTypePeer::ID, $join_behavior);
 
         $criteria->addJoin(PTagPeer::P_USER_ID, PUserPeer::ID, $join_behavior);
+
+        $criteria->addJoin(PTagPeer::P_OWNER_ID, PUserPeer::ID, $join_behavior);
 
 
         $stmt = BasePeer::doSelect($criteria, $con);
@@ -1225,7 +1461,26 @@ abstract class BasePTagPeer
                 } // if $obj3 already loaded
 
                 // Add the $obj1 (PTag) to the collection in $obj3 (PUser)
-                $obj3->addPTag($obj1);
+                $obj3->addPUser($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined PUser rows
+
+                $key4 = PUserPeer::getPrimaryKeyHashFromRow($row, $startcol4);
+                if ($key4 !== null) {
+                    $obj4 = PUserPeer::getInstanceFromPool($key4);
+                    if (!$obj4) {
+
+                        $cls = PUserPeer::getOMClass();
+
+                    $obj4 = new $cls();
+                    $obj4->hydrate($row, $startcol4);
+                    PUserPeer::addInstanceToPool($obj4, $key4);
+                } // if $obj4 already loaded
+
+                // Add the $obj1 (PTag) to the collection in $obj4 (PUser)
+                $obj4->addPOwner($obj1);
 
             } // if joined row is not null
 
@@ -1248,6 +1503,80 @@ abstract class BasePTagPeer
      *		 rethrown wrapped into a PropelException.
      */
     public static function doSelectJoinAllExceptPUser(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        // $criteria->getDbName() will return the same object if not set to another value
+        // so == check is okay and faster
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(PTagPeer::DATABASE_NAME);
+        }
+
+        PTagPeer::addSelectColumns($criteria);
+        $startcol2 = PTagPeer::NUM_HYDRATE_COLUMNS;
+
+        PTTagTypePeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + PTTagTypePeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(PTagPeer::P_T_TAG_TYPE_ID, PTTagTypePeer::ID, $join_behavior);
+
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = PTagPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PTagPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+                $cls = PTagPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                PTagPeer::addInstanceToPool($obj1, $key1);
+            } // if obj1 already loaded
+
+                // Add objects for joined PTTagType rows
+
+                $key2 = PTTagTypePeer::getPrimaryKeyHashFromRow($row, $startcol2);
+                if ($key2 !== null) {
+                    $obj2 = PTTagTypePeer::getInstanceFromPool($key2);
+                    if (!$obj2) {
+
+                        $cls = PTTagTypePeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol2);
+                    PTTagTypePeer::addInstanceToPool($obj2, $key2);
+                } // if $obj2 already loaded
+
+                // Add the $obj1 (PTag) to the collection in $obj2 (PTTagType)
+                $obj2->addPTag($obj1);
+
+            } // if joined row is not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Selects a collection of PTag objects pre-filled with all related objects except POwner.
+     *
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of PTag objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinAllExceptPOwner(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $criteria = clone $criteria;
 

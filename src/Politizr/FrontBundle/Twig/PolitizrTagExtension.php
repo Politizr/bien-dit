@@ -21,7 +21,6 @@ class PolitizrTagExtension extends \Twig_Extension
     private $securityAuthorizationChecker;
 
     private $router;
-    private $templating;
 
     private $globalTools;
 
@@ -31,7 +30,6 @@ class PolitizrTagExtension extends \Twig_Extension
      * @security.token_storage
      * @security.authorization_checker
      * @router
-     * @templating
      * @politizr.tools.global
      * @logger
      */
@@ -39,7 +37,6 @@ class PolitizrTagExtension extends \Twig_Extension
         $securityTokenStorage,
         $securityAuthorizationChecker,
         $router,
-        $templating,
         $globalTools,
         $logger
     ) {
@@ -47,7 +44,6 @@ class PolitizrTagExtension extends \Twig_Extension
         $this->securityAuthorizationChecker =$securityAuthorizationChecker;
 
         $this->router = $router;
-        $this->templating = $templating;
 
         $this->globalTools = $globalTools;
 
@@ -77,6 +73,11 @@ class PolitizrTagExtension extends \Twig_Extension
             new \Twig_SimpleFilter(
                 'linkSubscribeTag',
                 array($this, 'linkSubscribeTag'),
+                array('is_safe' => array('html'), 'needs_environment' => true)
+            ),
+            new \Twig_SimpleFilter(
+                'tagTypeClass',
+                array($this, 'tagTypeClass'),
                 array('is_safe' => array('html'))
             ),
         );
@@ -91,17 +92,17 @@ class PolitizrTagExtension extends \Twig_Extension
             'debateTagsEdit'  => new \Twig_SimpleFunction(
                 'debateTagsEdit',
                 array($this, 'debateTagsEdit'),
-                array('is_safe' => array('html'))
+                array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             'reactionTagsEdit'  => new \Twig_SimpleFunction(
                 'reactionTagsEdit',
                 array($this, 'reactionTagsEdit'),
-                array('is_safe' => array('html'))
+                array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             'userTagsEdit'  => new \Twig_SimpleFunction(
                 'userTagsEdit',
                 array($this, 'userTagsEdit'),
-                array('is_safe' => array('html'))
+                array('is_safe' => array('html'), 'needs_environment' => true)
             ),
         );
     }
@@ -165,7 +166,7 @@ class PolitizrTagExtension extends \Twig_Extension
      * @param PDDebate $tag
      * @return string
      */
-    public function linkSubscribeTag(PTag $tag)
+    public function linkSubscribeTag(\Twig_Environment $env, PTag $tag)
     {
         // $this->logger->info('*** linkSubscribeTag');
         // $this->logger->info('$tag = '.print_r($tag, true));
@@ -185,7 +186,7 @@ class PolitizrTagExtension extends \Twig_Extension
         }
 
         // Construction du rendu du tag
-        $html = $this->templating->render(
+        $html = $env->render(
             'PolitizrFrontBundle:Follow:_subscribeTagLink.html.twig',
             array(
                 'object' => $tag,
@@ -194,6 +195,32 @@ class PolitizrTagExtension extends \Twig_Extension
         );
 
         return $html;
+    }
+
+    /**
+     * Return css tag class depending of tag type
+     *
+     * @param PTag $tag
+     * @return string
+     */
+    public function tagTypeClass(PTag $tag)
+    {
+        // $this->logger->info('*** tagTypeClass');
+        // $this->logger->info('$tag = '.print_r($tag, true));
+
+        $tagTypeClass = "default";
+        if ($tag->getTagType() == TagConstants::TAG_TYPE_THEME) {
+            $tagTypeClass = "theme";
+        } elseif ($tag->getTagType() == TagConstants::TAG_TYPE_TYPE) {
+            $tagTypeClass = "type";
+        } elseif ($tag->getTagType() == TagConstants::TAG_TYPE_FAMILY) {
+            $tagTypeClass = "family";
+        } elseif ($tag->getTagType() == TagConstants::TAG_TYPE_PRIVATE) {
+            $tagTypeClass = "private";
+        }
+        
+        return $tagTypeClass;
+
     }
 
     /* ######################################################################################################## */
@@ -214,7 +241,7 @@ class PolitizrTagExtension extends \Twig_Extension
      * @param boolean $newTag can create new tag
      * @return string
      */
-    public function debateTagsEdit($debate, $tagTypeId, $zoneId = 1, $newTag = false)
+    public function debateTagsEdit(\Twig_Environment $env, $debate, $tagTypeId, $zoneId = 1, $newTag = false)
     {
         // $this->logger->info('*** debateTagsEdit');
         // $this->logger->info('$debate = '.print_r($debate, true));
@@ -222,7 +249,7 @@ class PolitizrTagExtension extends \Twig_Extension
         // $this->logger->info('$zoneId = '.print_r($zoneId, true));
 
         // Construction des chemins XHR
-        $xhrPathCreate = $this->templating->render(
+        $xhrPathCreate = $env->render(
             'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
             array(
                 'xhrRoute' => 'ROUTE_TAG_DEBATE_CREATE',
@@ -232,7 +259,7 @@ class PolitizrTagExtension extends \Twig_Extension
             )
         );
 
-        $xhrPathDelete = $this->templating->render(
+        $xhrPathDelete = $env->render(
             'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
             array(
                 'xhrRoute' => 'ROUTE_TAG_DEBATE_DELETE',
@@ -243,7 +270,7 @@ class PolitizrTagExtension extends \Twig_Extension
         );
 
         // Construction du rendu du tag
-        $html = $this->templating->render(
+        $html = $env->render(
             'PolitizrFrontBundle:Tag:_edit.html.twig',
             array(
                 'object' => $debate,
@@ -269,7 +296,7 @@ class PolitizrTagExtension extends \Twig_Extension
      * @param boolean $newTag can create new tag
      * @return string
      */
-    public function reactionTagsEdit($reaction, $tagTypeId, $zoneId = 1, $newTag = false)
+    public function reactionTagsEdit(\Twig_Environment $env, $reaction, $tagTypeId, $zoneId = 1, $newTag = false)
     {
         // $this->logger->info('*** reactionTagsEdit');
         // $this->logger->info('$reaction = '.print_r($reaction, true));
@@ -277,7 +304,7 @@ class PolitizrTagExtension extends \Twig_Extension
         // $this->logger->info('$zoneId = '.print_r($zoneId, true));
 
         // Construction des chemins XHR
-        $xhrPathCreate = $this->templating->render(
+        $xhrPathCreate = $env->render(
             'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
             array(
                 'xhrRoute' => 'ROUTE_TAG_DEBATE_CREATE',
@@ -287,7 +314,7 @@ class PolitizrTagExtension extends \Twig_Extension
             )
         );
 
-        $xhrPathDelete = $this->templating->render(
+        $xhrPathDelete = $env->render(
             'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
             array(
                 'xhrRoute' => 'ROUTE_TAG_DEBATE_DELETE',
@@ -298,7 +325,7 @@ class PolitizrTagExtension extends \Twig_Extension
         );
 
         // Construction du rendu du tag
-        $html = $this->templating->render(
+        $html = $env->render(
             'PolitizrFrontBundle:Tag:_edit.html.twig',
             array(
                 'object' => $reaction,
@@ -325,7 +352,7 @@ class PolitizrTagExtension extends \Twig_Extension
      * @param boolean $withHidden manage hidden tag's property
      * @return string
      */
-    public function userTagsEdit($user, $tagTypeId, $zoneId = 1, $newTag = false, $withHidden = true)
+    public function userTagsEdit(\Twig_Environment $env, $user, $tagTypeId, $zoneId = 1, $newTag = false, $withHidden = true)
     {
         // $this->logger->info('*** userTagsEdit');
         // $this->logger->info('$debate = '.print_r($user, true));
@@ -334,7 +361,7 @@ class PolitizrTagExtension extends \Twig_Extension
         // $this->logger->info('$withHidden = '.print_r($withHidden, true));
 
         // Construction des chemins XHR
-        $xhrPathCreate = $this->templating->render(
+        $xhrPathCreate = $env->render(
             'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
             array(
                 'xhrRoute' => 'ROUTE_TAG_USER_CREATE',
@@ -344,7 +371,7 @@ class PolitizrTagExtension extends \Twig_Extension
             )
         );
 
-        $xhrPathHide = $this->templating->render(
+        $xhrPathHide = $env->render(
             'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
             array(
                 'xhrRoute' => 'ROUTE_TAG_USER_HIDE',
@@ -354,7 +381,7 @@ class PolitizrTagExtension extends \Twig_Extension
             )
         );
 
-        $xhrPathDelete = $this->templating->render(
+        $xhrPathDelete = $env->render(
             'PolitizrFrontBundle:Navigation\\Xhr:_xhrPath.html.twig',
             array(
                 'xhrRoute' => 'ROUTE_TAG_USER_DELETE',
@@ -367,7 +394,7 @@ class PolitizrTagExtension extends \Twig_Extension
         // Construction du rendu du tag
         $tags = $user->getTags($tagTypeId, $withHidden?null:false);
 
-        $html = $this->templating->render(
+        $html = $env->render(
             'PolitizrFrontBundle:Tag:_edit.html.twig',
             array(
                 'object' => $user,

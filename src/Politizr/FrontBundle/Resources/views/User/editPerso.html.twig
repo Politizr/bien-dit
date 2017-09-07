@@ -130,6 +130,12 @@
                     </form>
                 </div>
             </div>
+
+            <div id="boxDeleteAccount">
+                <div class="notice">
+                    <i class="icon-alert"></i>Cliquez <a target="{{ path('DeleteAccount') }}" action="deleteAccount">ici</a> pour supprimer votre compte.
+                </div>
+            </div>
         </div>
     </div>
 {% endblock content %}
@@ -141,7 +147,14 @@
 {% block javascriptFooter %}
     {{ parent() }}
 
+    {% if (app.environment == 'prod') %}
+        <script type="text/javascript">
+            mixpanel.track("Mon compte");
+        </script>
+    {% endif %}
+
     {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/smoke.min.js'
         '@PolitizrFrontBundle/Resources/public/js/jquery.form.min.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/pages/editPerso.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/user/editPerso.js'

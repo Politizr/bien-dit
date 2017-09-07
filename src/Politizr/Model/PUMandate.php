@@ -19,7 +19,7 @@ class PUMandate extends BasePUMandate
      */
     public function __toString()
     {
-        $mandate =  $this->getPQMandate() . " (" . $this->getOrganizationInitials() . ")";
+        $mandate =  $this->getPQMandate() . " (" . $this->getLocalization() . ") ";
 
         if ($this->getBeginAt() && $this->getEndAt()) {
             $mandate .= " du " . $this->getBeginAt('d/m/Y') . " au " . $this->getEndAt('d/m/Y');

@@ -1,9 +1,0 @@
-{% include 'PolitizrFrontBundle:Notification\\MessageEmail:_emailNotificationHeader.html.twig' with {'document': document} only %}
-<tr style="background-color: #FFFFFF; width: 100%; padding-bottom: 20px;">
-    <td style="padding: 0 40px 0 40px; line-height: 140%;" valign="top">
-        <b>Vous avez reçu une note négative sur votre commentaire:</b>
-        <br>
-        {% include 'PolitizrFrontBundle:Notification\\MessageEmail:_emailContent.html.twig' with {'url': url, 'description': title} only %}
-    </td>
-</tr>
-{% include 'PolitizrFrontBundle:Notification\\MessageEmail:_emailNotificationFooter.html.twig' with {'url': url} only %}

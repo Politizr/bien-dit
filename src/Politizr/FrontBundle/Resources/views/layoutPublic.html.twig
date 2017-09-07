@@ -1,7 +1,7 @@
 {% extends 'PolitizrFrontBundle::baseFront.html.twig' %}
 
 {% block title %}Politizr{% endblock title %}
-{% block description %}Politizr est une plateforme neutre et indépendante permettant aux élus et anciens élus de débattre publiquement des sujets proposés par leurs concitoyens.{% endblock description %}
+{% block description %}Politizr permet de renouer du lien entre les habitants et les élus locaux.{% endblock description %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -60,6 +60,7 @@
         '@PolitizrFrontBundle/Resources/public/js/politizr/monitoring/abuse.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/monitoring/askForUpdate.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/reputation/score.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/public/directMessage.js'
         filter='uglifyjs2' %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}

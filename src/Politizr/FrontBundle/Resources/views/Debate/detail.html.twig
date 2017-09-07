@@ -20,13 +20,25 @@
 {% block tcDescription %}{{ metaDescription }}{% endblock tcDescription %}
 {% block tcImage %}{{ debate | tcImage(app.request.getSchemeAndHttpHost()) }}{% endblock tcImage %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/selection-sharer.css') }}" />
+{% endblock %}
+
+{% block headerMsg %}
+    {{ parent() }}
+
+    {{ debate | documentOperation }}
+    {{ debate | boostQuestion }}
+{% endblock %}
+
 {% block content %}
     <div id="content">
         <div class="post">
             {% include 'PolitizrFrontBundle:User:_summary.html.twig' with { 'user': debate.user, 'withSocialLinks': false, 'withMandates': false } only %}
             <h5>{% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': debate } only %}</h5>
             <div class="postStats">
-                {% include 'PolitizrFrontBundle:Document:_statsMini.html.twig' with { 'document': debate } only %}
+                {% include 'PolitizrFrontBundle:Document:_statsMini.html.twig' with { 'document': debate, 'facebook': true } only %}
             </div>
             
             <div id="cardPost">
@@ -52,6 +64,11 @@
                         </div>
                     {% endfor %}
                 </div>
+
+                {% if reactions | length > 0 %}
+                    {% include 'PolitizrFrontBundle:Reaction:_listReactionsToPost.html.twig' with { 'document': debate, 'reactions': reactions } only %}
+                {% endif %}
+
                 <div id="cardPostTextFooter">
                     {{ debate | footer }}
                 </div>
@@ -59,10 +76,6 @@
             <div id="p-0">
                 {% include 'PolitizrFrontBundle:Comment:_global.html.twig' with { 'document': debate, 'formComment': formComment } only %}
             </div>
-
-            {% if reactions | length > 0 %}
-                {% include 'PolitizrFrontBundle:Reaction:_listReactionsToPost.html.twig' with { 'document': debate, 'reactions': reactions } only %}
-            {% endif %}
 
             <div class="postTags">
                 <h5>Thématiques abordées</h5>
@@ -86,6 +99,13 @@
 {% block javascriptFooter %}
     {{ parent() }}
 
+    {% if (app.environment == 'prod') %}
+        <script type="text/javascript">
+            mixpanel.track("Sujet - {{ debate.title }}");
+        </script>
+    {% endif %}
+
+    <script src="{{ asset('bundles/politizrfront/js/politizr/selection-sharer.js') }}"></script>
     {% javascripts
         '@PolitizrFrontBundle/Resources/public/js/smoke.min.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/document/detail.js'

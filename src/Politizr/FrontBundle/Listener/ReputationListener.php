@@ -352,7 +352,11 @@ class ReputationListener
     /**
      * Insertion en BDD
      *
-     * @param
+     * @param $userId
+     * @param $prActionId
+     * @param $objectName
+     * @param $objectId
+     * @return PUReputation
      */
     private function insertPUReputation($userId, $prActionId, $objectName, $objectId)
     {
@@ -362,13 +366,18 @@ class ReputationListener
         // $this->logger->info('objectName = '.print_r($objectName, true));
         // $this->logger->info('objectId = '.print_r($objectId, true));
 
-        $userRepAction = new PUReputation();
+        $userRepAction = null;
+        if ($userId) {
+            $userRepAction = new PUReputation();
 
-        $userRepAction->setPUserId($userId);
-        $userRepAction->setPRActionId($prActionId);
-        $userRepAction->setPObjectName($objectName);
-        $userRepAction->setPObjectId($objectId);
-        
-        $userRepAction->save();
+            $userRepAction->setPUserId($userId);
+            $userRepAction->setPRActionId($prActionId);
+            $userRepAction->setPObjectName($objectName);
+            $userRepAction->setPObjectId($objectId);
+            
+            $userRepAction->save();
+        }
+
+        return $userRepAction;
     }
 }

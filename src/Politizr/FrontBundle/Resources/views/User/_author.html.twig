@@ -5,7 +5,7 @@
             <a href="{{ path('UserDetail', { 'slug': user.slug }) }}" action="bubbleProfile" uuid="{{ user.uuid }}">{{ user }}</a>
             {% include 'PolitizrFrontBundle:User:_bubbleUser.html.twig' with { 'user': user } only %}
         {% else %}
-            <i>utilisateur supprimé</i>
+            <div class="deletedAccount">utilisateur supprimé</div>
         {% endif %}
     </div>
     {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with { 'user': user } only %}

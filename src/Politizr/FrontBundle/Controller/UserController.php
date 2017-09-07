@@ -11,9 +11,10 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Politizr\Constant\QualificationConstants;
 
 use Politizr\Model\PUserQuery;
-use Politizr\Model\PNTypeQuery;
-use Politizr\Model\PUSubscribeEmailQuery;
+use Politizr\Model\PNEmailQuery;
+use Politizr\Model\PUSubscribePNEQuery;
 use Politizr\Model\PUCurrentQOQuery;
+use Politizr\Model\PEOperationQuery;
 
 use Politizr\Model\PUCurrentQO;
 use Politizr\Model\PUMandate;
@@ -36,7 +37,6 @@ use Politizr\FrontBundle\Form\Type\PUserLocalizationType;
  */
 class UserController extends Controller
 {
-
     /* ######################################################################################################## */
     /*                                                    DISPLAY                                               */
     /* ######################################################################################################## */
@@ -101,8 +101,28 @@ class UserController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** timelineAction');
 
+        // Redirect to page before login
+        $refererUrl = $this->get('politizr.tools.global')->getRefererUrl();
+        if ($refererUrl) {
+            return $this->redirect($refererUrl);
+        }
+
+        // get actives ops for current user
+        $user = $this->getUser();
+        $operations = PEOperationQuery::create()
+            ->distinct()
+            ->filterByOnline(true)
+            ->filterByTimeline(true)
+            ->filterByGeoScoped(false)
+            ->_or()
+            ->usePEOScopePLCQuery(null, "LEFT JOIN")
+                ->filterByPLCityId($user->getPLCityId())
+            ->endUse()
+            ->find();
+
         return $this->render('PolitizrFrontBundle:Timeline:user.html.twig', array(
             'homepage' => true,
+            'operations' => $operations
         ));
     }
 
@@ -203,19 +223,19 @@ class UserController extends Controller
 
         $user = $this->getUser();
 
-        $notificationsType = PNTypeQuery::create()
+        $notifications = PNEmailQuery::create()
                         ->orderById()
                         ->find();
 
         // ids des notifs email du user
         $emailNotifIds = array();
-        $emailNotifIds = PUSubscribeEmailQuery::create()
-                        ->select('PNotificationId')
+        $emailNotifIds = PUSubscribePNEQuery::create()
+                        ->select('PNEmailId')
                         ->filterByPUserId($user->getId())
                         ->find();
 
         return $this->render('PolitizrFrontBundle:User:editNotifications.html.twig', array(
-            'notificationsType' => $notificationsType,
+            'notifications' => $notifications,
             'emailNotifIds' => $emailNotifIds,
         ));
     }

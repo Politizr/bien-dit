@@ -59,6 +59,10 @@
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map:_fom.html.twig' with { 'current': null } %}
     </div>
+{% elseif type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_REGION') and geoId == constant('Politizr\\Constant\\LocalizationConstants::REGION_ID_WORLD') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Search\\Map:_world.html.twig' with { 'current': null } %}
+    </div>
 {% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_AIN') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map\\Regions:_mapARA.svg.twig' with { 'current': 'ain' } %}
@@ -486,5 +490,49 @@
 {% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_NOUVELLE_CALEDONIE') %}
     <div class="svg">
         {% include 'PolitizrFrontBundle:Search\\Map:_fom.html.twig' with { 'current': 'nouvelleCaledonie' } %}
+    </div>
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_WORLD_1') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Search\\Map:_world.html.twig' with { 'current': 'circonscription1' } %}
+    </div>
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_WORLD_2') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Search\\Map:_world.html.twig' with { 'current': 'circonscription2' } %}
+    </div>
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_WORLD_3') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Search\\Map:_world.html.twig' with { 'current': 'circonscription3' } %}
+    </div>
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_WORLD_4') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Search\\Map:_world.html.twig' with { 'current': 'circonscription4' } %}
+    </div>
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_WORLD_5') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Search\\Map:_world.html.twig' with { 'current': 'circonscription5' } %}
+    </div>
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_WORLD_6') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Search\\Map:_world.html.twig' with { 'current': 'circonscription6' } %}
+    </div>
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_WORLD_7') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Search\\Map:_world.html.twig' with { 'current': 'circonscription7' } %}
+    </div>
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_WORLD_8') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Search\\Map:_world.html.twig' with { 'current': 'circonscription8' } %}
+    </div>
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_WORLD_9') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Search\\Map:_world.html.twig' with { 'current': 'circonscription9' } %}
+    </div>
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_WORLD_10') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Search\\Map:_world.html.twig' with { 'current': 'circonscription10' } %}
+    </div>
+{% elseif (type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') or type == constant('Politizr\\Constant\\LocalizationConstants::TYPE_CITY')) and geoId == constant('Politizr\\Constant\\LocalizationConstants::DEPARTMENT_ID_WORLD_11') %}
+    <div class="svg">
+        {% include 'PolitizrFrontBundle:Search\\Map:_world.html.twig' with { 'current': 'circonscription11' } %}
     </div>
 {% endif %}

@@ -19,6 +19,8 @@ class TagConstants
     // ************************************************************************************ //
     const TAG_TYPE_THEME = 2;
     const TAG_TYPE_TYPE = 3;
+    const TAG_TYPE_FAMILY = 4;
+    const TAG_TYPE_PRIVATE = 5;
 
     // ************************************************************************************ //
     //                                TYPE OBJECT IDS

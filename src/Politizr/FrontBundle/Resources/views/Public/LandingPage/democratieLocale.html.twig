@@ -2,8 +2,8 @@
 {% extends layout %}
 {% set headerRight = false %}
 
-{% set metaTitle = 'Démocratie locale' %}
-{% set metaDescription = 'Politizr propose un outil numérique de démocratie locale et multi-locale.' %}
+{% set metaTitle = 'Démocratie Locale' %}
+{% set metaDescription = 'Politizr est un site web de démocratie locale qui réinvente le dialogue entre élus et citoyens.' %}
 
 {% block title %}{{ metaTitle }} - {{ parent() }}{% endblock title %}
 {% block description %}{{ metaDescription }}{% endblock description %}
@@ -14,79 +14,135 @@
 {% block tcTitle %}{{ metaTitle }} - {{ parent() }}{% endblock tcTitle %}
 {% block tcDescription %}{{ metaDescription }}{% endblock tcDescription %}
 
-{% block bodyClass %} class="public visitor noHeaderTrigger"{% endblock %}
+{% block bodyClass %} class="public visitor"{% endblock %}
 
 {% block main %}
-    <div id="lpHeader">
-        <div class="center">
-            <h1>Politizr invente une démocratie locale<br> et numérique à toutes les échelles territoriales.</h1>
-            <h2>
-                Politizr vous propose des échanges entre citoyen-ne-s et élu-e-s à toutes les échelles territoriales.<br> Et vous, changerez-vous d’opinion?
-            </h2>
-            <div class="centerCTA">
+    <div id="lpGeneric">
+        <div id="lpHero">
+            <div class="center">
+                <h1>En 2017, la démocratie locale est sur POLITIZR !</h1>
+                <h2>Plateforme web de démocratie locale pour les citoyens et leurs élus</h2>
+                <div id="f-display"><img src="{{ asset('bundles/politizrfront/images/f-display.png') }}" alt="Démocratie locale"></div>
+                <div id="f-accessories"><img src="{{ asset('bundles/politizrfront/images/f-accessories.png') }}"></div>
+            </div>
+            <div id="lpHeroFader"></div>
+        </div>
+        <div id="lpUnderHero">
+            <div class="center">
+                Élus ou citoyen, profitez d'un <b>espace d'échange unique et adapté</b>: exprimez-vous <b>simplement et gratuitement</b> sur des sujets relatifs à <b>votre territoire</b> pour permettre à vos élus de prendre <b>les bonnes décisions en toute transparence</b>.
+            </div>
+        </div>
+        <div id="lpArgu">
+            <div class="center">
+                <div class="lpLeftCol">
+                    <p>
+                        Politizr est un site web de <b>démocratie locale</b> favorisant <b>les échanges constructifs</b> entre citoyens et élus. Nous proposons une inscription individuelle gratuite et des offres payantes pour les collectivités locales.
+                    </p>
+                    <p>
+                        Nous travaillons à améliorer la <b>démocratie représentative</b> en proposant un espace de discussion qui favorise les <b>échanges structurées et argumentées</b> dans un temps long propice à la qualité du débat.
+                    </p>
+                    <img src="{{ asset('bundles/politizrfront/images/f-illustr01.jpg') }}">
+                </div>
+                <div class="lpRightCol">
+                    <h3>Vous êtes un citoyen désireux d'une nouvelle politique?</h3>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Discutez <b>directement</b> avec vos <b>élu-e-s</b>.</p></div>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p><b>Commentez et notez</b> toutes les discussions ouvertes.</p></div>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Partagez <b>votre opinion</b> auprès de vos <b>concitoyen-ne-s et élu-e-s</b>.</p></div>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Participez à des échanges suivant vos <b>centres d'intérêt</b>.</p></div>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Accédez à l'ensemble des publications aux niveaux <b>local et national</b>.</p></div>
+                    <div class="lpCheckLi"><i class="icon-social-fb"></i><p>&nbsp;Visualisez <b>l'impact Facebook</b> de vos publications sur <b>votre territoire</b>.</p></div>
+                    <br/>
+                    <h3>Vous êtes un élu moderne?</h3>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Expliquez <b>vos actions</b> à vos concitoyen-ne-s.</p></div>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Répondez aux <b>questions</b> et aux <b>opinions</b> de vos concitoyen-ne-s.</p></div>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Faîtes profiter d'autres élu-e-s de vos <b>retours d'expérience</b>.</p></div>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Participez à des échanges suivant vos <b>centres d'intérêt</b>.</p></div>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Accédez à l'ensemble des publications aux niveaux <b>local et national</b>.</p></div>
+                    <div class="lpCheckLi"><i class="icon-social-fb"></i><p>&nbsp;Visualisez <b>l'impact Facebook</b> de vos publications sur <b>votre territoire</b>.</p></div>
+                    <h3>Vous êtes une collectivité?</h3>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Découvrez <a href="https://territoires.politizr.com" target="_blank">Politizr Territoires</a>, une offre conçue spécialement pour renforcer la démocratie locale sur votre territoire.</p></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="lpCTA">
+            <div class="center">
                 <a href="{{ path('InscriptionChoice') }}">Inscription</a>
             </div>
         </div>
-    </div>
 
-    <div id="postSelection">
-        <div class="center">
-            <h1>Les discussions en cours</h1>
-            <h2>La démocratie locale dans les débats</h2>
-            
-            {% for document in documents %}
-                {% if loop.first or loop.index0 is divisible by(3) %}
-                    <div class="cardColumn">
-                {% endif %}
-                    {% include 'PolitizrFrontBundle:Document:_cardPublic.html.twig' %}
-                {% if loop.last or loop.index is divisible by(3) %}
-                    </div>
-                {% endif %}
-            {% endfor %}
-            
-            <div id="morePosts"><a href="{{ path('ListingByTag', {'slug' : 'democratie-locale'}) }}">Toutes les discussions en cours</a></div>
-        </div>
-    </div>
-    
-    <div id="profileSelection">
-        <div class="center">
-            <h1>Rejoignez la communauté Politizr</h1>
-            <h2>La démocratie locale avec des citoyen-nes et élu-es de toute la France sur Politizr:<br>
-            <a href="{{ path('InscriptionChoice') }}">inscrivez-vous et participez aux débats!</a></h2>
-            
-            {% for user in users %}
-                {% if loop.first or loop.index0 is divisible by(2) %}
-                    <div class="cardColumn">
-                {% endif %}
-                    {% include 'PolitizrFrontBundle:User:_cardPublic.html.twig' %}
-                {% if loop.last or loop.index is divisible by(2) %}
-                    </div>
-                {% endif %}
-            {% endfor %}
-        </div>
-    </div>
-
-    <div id="blockMarianne">
-        <div class="center">
-            <div id="bgBlockMarianne">
-                <div id="marianne"></div>
-                <div class="conceptCol conceptLeftCol">
-                    Politizr est un site web de <b>démocratie locale</b> et même <b>multi-locale</b>. Parlez-nous de votre territoire et venez profiter des expériences et des retours d'autres territoires sur votre sujet.
-                </div>
+        <div id="lpPostsElection">
+            <div class="center">
+                <h1>La démocratie locale avec Politizr</h1>
+                <h2>Des échanges avec des citoyens et des élus</h2>
                 
-                <div class="conceptCol conceptRightCol">
-                    Nous travaillons à améliorer la <b>démocratie représentative</b> en proposant un espace de discussion qui favorise les <b>échanges structurées et argumentées</b> dans un temps long propice à la qualité du débat.
+                {% for document in documents %}
+                    {% if loop.first or loop.index0 is divisible by(2) %}
+                        <div class="cardColumn">
+                    {% endif %}
+                        {% include 'PolitizrFrontBundle:Document:_cardPublic.html.twig' %}
+                    {% if loop.last or loop.index is divisible by(2) %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                
+                <div id="morePosts"><a href="{{ path('ListingByTag', {'slug' : 'democratie-locale'}) }}">Toutes les discussions en cours</a></div>
+            </div>
+        </div>
+
+        <div id="lpProfilesSelection">
+            <div class="center">
+                <h1>Rejoignez la communauté Politizr</h1>
+                <h2>Des citoyens et élus de toute la France sont sur Politizr</h2>
+                
+                {% for user in users %}
+                    {% if loop.first or loop.index0 is divisible by(2) %}
+                        <div class="cardColumn">
+                    {% endif %}
+                        {% include 'PolitizrFrontBundle:User:_cardPublic.html.twig' %}
+                    {% if loop.last or loop.index is divisible by(2) %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div id="lpCTA">
+            <div class="center">
+                <a href="{{ path('InscriptionChoice') }}">Inscription</a>
+            </div>
+        </div>
+
+        <div id="lpContact">
+            <div class="center">
+                <div class="lpLeftCol">
+                    Contactez-nous pour en savoir plus : <a href="mailto:contact@politizr.com">contact@politizr.com</a><br>
+                    ou par téléphone au <b>09. 50. 42. 09. 34</b>
+                </div>
+                <div class="lpRightCol">
+                    <div class="formBlock withLoaderInside">
+                        {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+
+                        <form name="directMessage" id="formDirectMessage">
+                            {{ form_errors(form) }}
+
+                            {{ form_row(form.name, { 'attr': { 'placeholder': 'Prénom et Nom' }}) }}
+                            {{ form_row(form.email, { 'attr': { 'placeholder': 'Email' }}) }}
+                            {{ form_row(form.city, { 'attr': { 'placeholder': 'Téléphone' }}) }}
+                            {{ form_row(form.description, { 'attr': { 'placeholder': 'Question' }}) }}
+
+                            {{ form_rest(form) }}
+                            <div class="buttonDirectMessage">
+                                <button type="button" action="submitDirectMessage">
+                                    Envoyer
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    
-    <div id="blockGraphAssembly">
-        <div class="center centerCTA">
-            <a href="{{ path('InscriptionChoice') }}">Créer un compte</a>
-        </div>
-    </div>
-    
 {% endblock main %}
 
 {% block postMain %}
@@ -96,6 +152,12 @@
 
 {% block javascriptFooter %}
     {{ parent() }}
+
+    {% if (app.environment == 'prod') %}
+        <script type="text/javascript">
+            mixpanel.track("LP élu local");
+        </script>
+    {% endif %}
 
     {% javascripts
         '@PolitizrFrontBundle/Resources/public/js/politizr/pages/landingPage.js'

@@ -20,27 +20,30 @@ use Politizr\Model\PCTopicQuery;
  */
 class PolitizrAdminExtension extends \Twig_Extension
 {
-    private $logger;
-
+    private $documentService;
+    
     private $formFactory;
-
-    protected $documentService;
     private $router;
-    private $templating;
+    private $logger;
 
     /**
      *
+     * @param politizr.functional.document
+     * @param form.factory
+     * @param router
+     * @param logger
      */
-    public function __construct($serviceContainer)
-    {
-        $this->logger = $serviceContainer->get('logger');
-
-        $this->formFactory = $serviceContainer->get('form.factory');
-
-        $this->documentService = $serviceContainer->get('politizr.functional.document');
-
-        $this->router = $serviceContainer->get('router');
-        $this->templating = $serviceContainer->get('templating');
+    public function __construct(
+        $documentService,
+        $formFactory,
+        $router,
+        $logger
+    ) {
+        $this->documentService = $documentService;
+        
+        $this->formFactory = $formFactory;
+        $this->router = $router;
+        $this->logger = $logger;
     }
 
     /* ######################################################################################################## */
@@ -56,9 +59,7 @@ class PolitizrAdminExtension extends \Twig_Extension
             'adminCreatePath'  => new \Twig_SimpleFunction(
                 'adminCreatePath',
                 array($this, 'adminCreatePath'),
-                array(
-                    'is_safe' => array('html')
-                    )
+                array('is_safe' => array('html'), 'needs_environment' => true)
             ),
         );
     }
@@ -78,7 +79,7 @@ class PolitizrAdminExtension extends \Twig_Extension
      * @param string $idType id|uuid
      * @return string
      */
-    public function adminCreatePath($objectClass, $objectId, $displayWithType = false, $mode = 'show', $idType = 'id')
+    public function adminCreatePath(\Twig_Environment $env, $objectClass, $objectId, $displayWithType = false, $mode = 'show', $idType = 'id')
     {
         $this->logger->info('*** adminCreatePath');
         $this->logger->info('$objectClass = '.print_r($objectClass, true));

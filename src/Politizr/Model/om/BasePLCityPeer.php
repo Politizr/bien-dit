@@ -12,6 +12,7 @@ use \PropelPDO;
 use Politizr\Model\PCGroupLCPeer;
 use Politizr\Model\PDDebatePeer;
 use Politizr\Model\PDReactionPeer;
+use Politizr\Model\PEOScopePLCPeer;
 use Politizr\Model\PLCity;
 use Politizr\Model\PLCityPeer;
 use Politizr\Model\PLDepartmentPeer;
@@ -510,6 +511,9 @@ abstract class BasePLCityPeer
      */
     public static function clearRelatedInstancePool()
     {
+        // Invalidate objects in PEOScopePLCPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PEOScopePLCPeer::clearInstancePool();
         // Invalidate objects in PUserPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PUserPeer::clearInstancePool();

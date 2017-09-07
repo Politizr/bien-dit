@@ -11,10 +11,11 @@
             </div>
             <div class="profileBio">
                 {% include 'PolitizrFrontBundle:User:_certification.html.twig' with { 'user': user } only %}
-                {{ user.biography | purify }}
+                {{ user.biography | truncate(60, true) | purify }}
+                {{ user | localization }}
             </div>
         </div>
     {% else %}
-        <i>utilisateur supprimé</i>
+        <div class="deletedAccount">utilisateur supprimé</div>
     {% endif %}
 </div>

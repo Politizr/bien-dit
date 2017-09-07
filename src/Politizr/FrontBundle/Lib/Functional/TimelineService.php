@@ -39,7 +39,6 @@ class TimelineService
      *
      * @param @security.token_storage
      * @param @security.authorization_checker
-     * @param @templating
      * @param @politizr.manager.user
      * @param @politizr.manager.document
      * @param @logger
@@ -47,7 +46,6 @@ class TimelineService
     public function __construct(
         $securityTokenStorage,
         $securityAuthorizationChecker,
-        $templating,
         $userManager,
         $documentManager,
         $logger
@@ -55,12 +53,20 @@ class TimelineService
         $this->securityTokenStorage = $securityTokenStorage;
         $this->securityAuthorizationChecker =$securityAuthorizationChecker;
 
-        $this->templating = $templating;
-
         $this->userManager = $userManager;
         $this->documentManager = $documentManager;
         
         $this->logger = $logger;
+    }
+
+    /**
+     * Inject Twig templating service w. setter to avoid circular reference exception
+     * 
+     * @param @templating
+     */
+    public function setTemplatingService($templating)
+    {
+        $this->templating = $templating;
     }
 
     /* ######################################################################################################## */
@@ -68,7 +74,7 @@ class TimelineService
     /* ######################################################################################################## */
 
     /**
-     * Get array of user's PUFollowDD's ids
+     * Get array of user's followed debates ids
      *
      * @param integer $userId
      * @return array
@@ -85,7 +91,7 @@ class TimelineService
     }
 
     /**
-     * Get array of user's PUFollowU's ids
+     * Get array of user's followed users ids
      *
      * @param integer $userId
      * @return array
@@ -231,6 +237,12 @@ class TimelineService
             $inQueryReputationIds4 = 0;
         }
 
+        $reputationIds5 = ReputationConstants::getTimelineFollowingReputationIds();
+        $inQueryReputationIds5 = implode(',', $reputationIds5);
+        if (empty($inQueryReputationIds5)) {
+            $inQueryReputationIds5 = 0;
+        }
+
         $timeline = $this->userManager->generateMyTimelinePaginatedListing(
             $userId,
             $inQueryDebateIds,
@@ -241,6 +253,7 @@ class TimelineService
             $inQueryReputationIds2,
             $inQueryReputationIds3,
             $inQueryReputationIds4,
+            $inQueryReputationIds5,
             $offset,
             $count
         );
@@ -286,13 +299,20 @@ class TimelineService
     public function generateRenderingItemActionNoteDocument($timelineRow, $withContext)
     {
         // get current user
-        $user = $this->securityTokenStorage->getToken()->getUser();
+        $currentUser = $this->securityTokenStorage->getToken()->getUser();
 
         $actionId = $timelineRow->getId();
         $documentId = $timelineRow->getTargetId();
+        $userId = $timelineRow->getTargetUserId();
 
         $document = null;
         $author = null;
+
+        // if userId is set: action is from a following user else its from current user
+        $user = $currentUser;
+        if ($userId) {
+            $user = PUserQuery::create()->findPk($userId);
+        }
 
         if ($actionId == ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_NOTE_POS || $actionId == ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_NOTE_NEG) {
             $document = PDDebateQuery::create()->findPk($documentId);
@@ -309,6 +329,11 @@ class TimelineService
         $way = 'down';
         if ($actionId == ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_NOTE_POS || $actionId == ReputationConstants::ACTION_ID_D_AUTHOR_REACTION_NOTE_POS) {
             $way = 'up';
+        }
+
+        // special case: author is current user and action is from a following user > we don't show "up" note to avoid duplicate notification
+        if ($userId && $author && $author->getId() == $currentUser->getId()) {
+            return null;
         }
 
         $html = $this->templating->render(
@@ -335,14 +360,21 @@ class TimelineService
     public function generateRenderingItemActionNoteComment($timelineRow, $withContext)
     {
         // get current user
-        $user = $this->securityTokenStorage->getToken()->getUser();
+        $currentUser = $this->securityTokenStorage->getToken()->getUser();
 
         $actionId = $timelineRow->getId();
         $commentId = $timelineRow->getTargetId();
+        $userId = $timelineRow->getTargetUserId();
         $objectName = $timelineRow->getTargetObjectName();
 
         $comment = null;
         $author = null;
+
+        // if userId is set: action is from a following user else its from current user
+        $user = $currentUser;
+        if ($userId) {
+            $user = PUserQuery::create()->findPk($userId);
+        }
 
         if ($objectName == ObjectTypeConstants::TYPE_DEBATE_COMMENT) {
             $comment = PDDCommentQuery::create()->findPk($commentId);
@@ -359,6 +391,11 @@ class TimelineService
         $way = 'down';
         if ($actionId == ReputationConstants::ACTION_ID_D_AUTHOR_COMMENT_NOTE_POS) {
             $way = 'up';
+        }
+
+        // special case: author is current user and action is from a following user > we don't show "up" note to avoid duplicate notification
+        if ($userId && $author->getId() == $currentUser->getId()) {
+            return null;
         }
 
         $html = $this->templating->render(
@@ -385,10 +422,17 @@ class TimelineService
     public function generateRenderingItemActionFollowUser($timelineRow, $withContext)
     {
         // get current user
-        $user = $this->securityTokenStorage->getToken()->getUser();
+        $currentUser = $this->securityTokenStorage->getToken()->getUser();
 
         $actionId = $timelineRow->getId();
         $followId = $timelineRow->getTargetId();
+        $userId = $timelineRow->getTargetUserId();
+
+        // if userId is set: action is from a following user else its from current user
+        $user = $currentUser;
+        if ($userId) {
+            $user = PUserQuery::create()->findPk($userId);
+        }
 
         $followUser = null;
         $followUser = PUserQuery::create()->findPk($followId);
@@ -400,6 +444,11 @@ class TimelineService
         $way = 'down';
         if ($actionId == ReputationConstants::ACTION_ID_U_AUTHOR_USER_FOLLOW) {
             $way = 'up';
+        }
+
+        // special case: author is current user and action is from a following user > we don't show "up" note to avoid duplicate notification
+        if ($userId && $followUser->getId() == $currentUser->getId()) {
+            return null;
         }
 
         $html = $this->templating->render(

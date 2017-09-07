@@ -110,6 +110,7 @@ class LocalizationCityChoiceType extends AbstractType
         $resolver->setDefaults(array(
             'current_uuid' => null,
             'user_city_id' => null,
+            'label_circonscription' => 'Circonscription',
             'label_department' => 'Département',
             'label_city' => 'Ville',
         ));

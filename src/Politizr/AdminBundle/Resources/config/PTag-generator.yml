@@ -16,13 +16,22 @@ params:
             label:          ID Type
         p_t_tag_type:
             label:          Type
-        PTagRelatedByPTParentId:
-            label:              Tag parent
-            addFormOptions:
-                empty_value:    ""
-                query:          \Politizr\Model\PTagQuery::create()->filterByPTTagTypeId(1)->where("p_tag.id > ?", 22)->where("p_tag.id < ?", 129)->orderById() 
-                # group_by:       p_t_parent_id
-                # property:       title
+        # not used anymore
+        # PTagRelatedByPTParentId:
+        #     label:              Tag parent
+        #     addFormOptions:
+        #         empty_value:    ""
+        #         query:          \Politizr\Model\PTagQuery::create()->filterByPTTagTypeId(1)->where("p_tag.id > ?", 22)->where("p_tag.id < ?", 129)->orderById() 
+        #         # group_by:       p_t_parent_id
+        #         # property:       title
+        p_user_id:
+            label:          ID Créé par
+        p_user:
+            label:          Créé par
+        p_owner_id:
+            label:          ID propriétaire
+        p_owner:
+            label:          Propriétaire
         title:
             label:          Titre
         moderated:
@@ -50,13 +59,19 @@ builders:
                     "Type":
                         filters:
                             p_t_tag_type_id:    3
+                    "Famille":
+                        filters:
+                            p_t_tag_type_id:    4
                     "Thématique":
                         default:                true
                         filters:
                             p_t_tag_type_id:    2
-            display:                            [ title, p_t_tag_type, PTagRelatedByPTParentId, countDebates, countReactions, countUsers, created_at, online ]
+                    "Privé":
+                        filters:
+                            p_t_tag_type_id:    5
+            display:                            [ title, p_t_tag_type, countDebates, countReactions, countUsers, created_at, online ]
             filtersMode:                        modal
-            filters:                            [ title, p_t_tag_type_id, PTagRelatedByPTParentId, p_t_tag_type, online, created_at ]
+            filters:                            [ title, p_t_tag_type_id, p_t_tag_type, online, created_at ]
             fields:
                 countDebates:
                     label:                      Débats
@@ -79,14 +94,19 @@ builders:
         params:
             title:                              "Création d'un tag"
             display:
-                "Champs principaux":            [ p_t_tag_type, PTagRelatedByPTParentId, title ]
+                "Champs principaux":            [ p_t_tag_type, p_owner, title ]
             fields:
                 p_t_tag_type:
                     addFormOptions:
                         query:                  \Politizr\Model\PTTagTypeQuery::create()->orderByTitle() 
-                PTagRelatedByPTParentId:
+                p_owner:
+                    dbType:                     model
+                    formType:                   Admingenerator\FormExtensionsBundle\Form\Type\Select2ModelType
                     addFormOptions:
-                        required:               false
+                        multiple:               false
+                        required:               true
+                        class:                  Politizr\Model\PUser
+                        query:                  \Politizr\Model\PUserQuery::create()->orderByName()
             actions:
               save:                             ~
               list:                             ~
@@ -96,18 +116,28 @@ builders:
             tabs:
                 "Contenu":
                     "Texte":                    [ [ title ] ]
+                "Objets":
+                    "Auteur":                   [ p_user ]
+                    "Propriétaire":             [ p_owner ]
                 "Modération":
                     "Portée":                   [ [ moderated, moderated_at ] ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
-                    "Création":                 [ [ p_t_tag_type ], [ PTagRelatedByPTParentId ], [ online ], [ created_at, updated_at ] ]
+                    "Type":                     [ p_t_tag_type ]
+                    "En ligne":                 [ online ]
+                    "Création":                 [ [ created_at, updated_at ] ]
             fields:
+                p_user:
+                    addFormOptions:
+                        disabled:               true
+                        read_only:              true
+                p_owner:
+                    addFormOptions:
+                        disabled:               true
+                        read_only:              true
                 p_t_tag_type:
                     addFormOptions:
                         query:                  \Politizr\Model\PTTagTypeQuery::create()->orderByTitle()
-                PTagRelatedByPTParentId:
-                    addFormOptions:
-                        required:               false
                 id:
                     addFormOptions:
                         read_only:              true
@@ -131,6 +161,9 @@ builders:
             tabs:
                 "Contenu":
                     "Texte":                    [ [ title ] ]
+                "Objets":
+                    "Utilisateur":              [ block_p_user ]
+                    "Propriétaire":             [ block_p_owner ]
                 "Publication":
                     "Débats":                   [ block_debates ]
                     "Réactions":                [ block_reactions ]
@@ -140,8 +173,14 @@ builders:
                     "Profils":                  [ block_users ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
-                    "Création":                 [ [ p_t_tag_type ], [ PTagRelatedByPTParentId ], [ online ], [ created_at, updated_at ] ]
+                    "Type":                     [ p_t_tag_type ]
+                    "En ligne":                 [ online ]
+                    "Création":                 [ [ created_at, updated_at ] ]
             fields:
+                block_p_user:
+                    label:                      "Auteur"
+                block_p_owner:
+                    label:                      "Propriétaire"
                 block_debates:
                     label:                      "Taggés"
                 block_reactions:

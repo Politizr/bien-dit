@@ -1,0 +1,22 @@
+<div id="searchModal" app="{{ algolia.app_id }}" key="{{ algolia.api_key }}" index="{{ algolia.index_name }}" style="display: none">
+    <div id="searchModalResults">
+        <div id="searchModalHeader">
+            <div class="center">
+                <div id="startSearch" style="display: block">
+                    <i class="icon-info"></i>Saisissez des mots dans le champ "Rechercher" pour lancer la recherche!
+                </div>
+                <div id="closeModal" action="closeModal">Fermer<i class="icon-cross"></i></div>
+            </div>
+        </div>
+        <div class="center">
+            <div id="algoliaResults">                
+                <div id="hits"></div>
+                <div id="categories">
+                    <div id="categoriesResults"></div>
+                    <div class="searchBy">Recherche par <img src="{{ asset('bundles/politizrfront/images/algolia-logo-light.svg') }}" width="60"></div>
+                </div>
+            </div>
+        </div>        
+    </div>  
+    <div id="searchModalBg"></div>
+</div>

@@ -88,10 +88,10 @@ security:
     access_control:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY, host: "%host.admin%" }
         - { path: ^/, role: ROLE_ADMIN, host: "%host.admin%" }                                    # Espace ADMIN
-        - { path: ^/u, role: ROLE_CITIZEN_INSCRIPTION, host: "%host.public%" }                    # Process d'inscription citoyen
-        - { path: ^/v, role: ROLE_ELECTED_INSCRIPTION, host: "%host.public%" }                    # Process d'inscription elu
+        - { path: ^/$u, role: ROLE_CITIZEN_INSCRIPTION, host: "%host.public%" }                    # Process d'inscription citoyen
+        - { path: ^/$v, role: ROLE_ELECTED_INSCRIPTION, host: "%host.public%" }                    # Process d'inscription elu
         - { path: ^/espace/citoyen, role: ROLE_CITIZEN, host: "%host.public%" }                          # Espace citoyen
         - { path: ^/espace/elu, role: ROLE_ELECTED, host: "%host.public%" }                              # Espace élu
-        - { path: ^/espace/profil, role: ROLE_PROFILE_COMPLETED, host: "%host.public%" }                 # Profil citoyen ou élu complet
+        - { path: ^/$w, role: ROLE_PROFILE_COMPLETED, host: "%host.public%" }                 # Profil citoyen ou élu complet
         - { path: ^/oauth, roles: IS_AUTHENTICATED_ANONYMOUSLY, host: "%host.public%" }
         - { path: ^/oauth/target, roles: ROLE_OAUTH_USER , host: "%host.public%"}                  # Process d'inscription OAuth

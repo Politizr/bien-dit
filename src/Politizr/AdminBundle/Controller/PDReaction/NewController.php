@@ -34,19 +34,5 @@ class NewController extends BaseNewController
 
         // Publication
         $this->get('politizr.manager.document')->publishReaction($reaction);
-
-        // Events
-        $parentUserId = $reaction->getDebate()->getPUserId();
-        if ($reaction->getTreeLevel() > 1) {
-            $parentUserId = $reaction->getParent()->getPUserId();
-        }
-        $event = new GenericEvent($reaction, array('user_id' => $reaction->getPUserId(),));
-        $dispatcher = $this->get('event_dispatcher')->dispatch('r_reaction_publish', $event);
-        $event = new GenericEvent($reaction, array('author_user_id' => $reaction->getPUserId(),));
-        $dispatcher = $this->get('event_dispatcher')->dispatch('n_reaction_publish', $event);
-        $event = new GenericEvent($reaction, array('author_user_id' => $reaction->getPUserId(), 'parent_user_id' => $parentUserId));
-        $dispatcher = $this->get('event_dispatcher')->dispatch('b_reaction_publish', $event);
-
     }
-
 }

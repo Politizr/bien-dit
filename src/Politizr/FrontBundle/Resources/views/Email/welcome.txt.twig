@@ -1,21 +1,16 @@
 Bonjour {{ user }},
 
-Merci d'avoir rejoint la communauté en pleine expansion de Politizr.
+Merci de votre inscription ! Je suis {% if user.qualified %}Lionel{% else %}Thomas{% endif %} de Politizr et je voulais vous souhaiter la bienvenue. Notre équipe est présente si vous avez besoin d'aide dans la découverte de nos fonctionnalités.
 
-Nous connectons les citoyen-ne-s et leurs élu-e-s pour faire vivre notre démocratie. 
-{% if user.qualified %}
-En tant qu'élu{% if user.gender == 'Madame' %}e{% endif %}, vous pourrez faire valoir vos actions et vos points de vue en toute transparence pour contribuer à convaincre et à mobiliser vos concitoyen-ne-s autour de vos projets.
-{% else %}
-En tant que citoyen{% if user.gender == 'Madame' %}ne{% endif %}, vous pourrez exprimer vos opinions ou vos questions et ouvrir un canal de discussion direct avec vos élu-e-s.
-{% endif %}
+En quelques mots, Politizr c'est :
 
-Complétez votre profil pour permettre aux autres utilisateurs de suivre votre actualité. Suivez les sujets et les profils qui vous intéressent pour être tenu au courant des nouveautés.
+- Un lieu d'échange privilégié entre les citoyens et les élus.
+- Retrouvez l'intégralité des sujets qui font l'actualité au niveau local et national.
+- Un espace indépendant où vous avez la possibilité de vous exprimer afin de faire entendre votre voix sur les sujets qui vous préocuppent.
 
-Vous voulez vous exprimer sur des problématiques relatives à votre ville ou région? Venez publier un nouveau sujet sur Politizr et nous ferons la promotion de votre publication pour toucher les citoyen-ne-s et les élu-e-s concerné-e-s!
+Retrouvez plus de détail sur cette <a href="{{ url('Concept') }}">page</a>.
 
-N'hésitez pas à nous contacter si vous voulez nous faire part de vos retours ou idées d'améliorations.
-
-Merci,
+Faites entendre votre voix avec Politizr!
 
 {% if user.qualified %}
 Lionel Bouzonville

@@ -53,6 +53,19 @@
     </div>
 {% endblock %}
 
+{# Bloc boost #}
+{% block show_column_block_want_boost %}
+    {% if PDReaction.wantBoost == constant('Politizr\\Constant\\DocumentConstants::WB_NO_RESPONSE') %}
+        Non répondu
+    {% elseif PDReaction.wantBoost == constant('Politizr\\Constant\\DocumentConstants::WB_OK') %}
+        Oui
+    {% else %}
+        Non
+    {% endif %}
+{% endblock %}
+
+
+
 {# Block front link #}
 {% block show_column_block_front %}
     {% if PDReaction.online and PDReaction.published %}

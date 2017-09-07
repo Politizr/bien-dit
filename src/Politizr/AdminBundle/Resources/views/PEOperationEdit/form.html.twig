@@ -1,0 +1,26 @@
+{% extends_admingenerated "PolitizrAdminBundle:PEOperationEdit:form.html.twig" %}
+
+{# Bloc tags #}
+{% block form_row_block_tags %}
+    {{ adminOperationTags(PEOperation, null, 1, true) }}
+{% endblock %}
+
+{# Scope #}
+{% block form_row_block_cities %}
+    <div class="form-group">
+        <label class="control-label">Localisation</label>
+        <div id="selectedCities">
+        </div>
+    </div>
+{% endblock %}
+
+{% block form_row_block_cities_add %}
+    <div id="selectCities">
+        <label>Code INSEE</label>
+        <input type="hidden" id="operationId" name="operationId" value="{{ PEOperation.id }}">
+        <input type="text" name="codeInsee">
+        <a action="searchLocalizations">Chercher</a>
+    </div>
+    <div id="searchResult">
+    </div>
+{% endblock %}

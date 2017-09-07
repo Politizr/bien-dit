@@ -18,11 +18,13 @@ use Politizr\Model\PDDebateArchiveQuery;
  * @method PDDebateArchiveQuery orderById($order = Criteria::ASC) Order by the id column
  * @method PDDebateArchiveQuery orderByUuid($order = Criteria::ASC) Order by the uuid column
  * @method PDDebateArchiveQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
+ * @method PDDebateArchiveQuery orderByPEOperationId($order = Criteria::ASC) Order by the p_e_operation_id column
  * @method PDDebateArchiveQuery orderByPLCityId($order = Criteria::ASC) Order by the p_l_city_id column
  * @method PDDebateArchiveQuery orderByPLDepartmentId($order = Criteria::ASC) Order by the p_l_department_id column
  * @method PDDebateArchiveQuery orderByPLRegionId($order = Criteria::ASC) Order by the p_l_region_id column
  * @method PDDebateArchiveQuery orderByPLCountryId($order = Criteria::ASC) Order by the p_l_country_id column
  * @method PDDebateArchiveQuery orderByPCTopicId($order = Criteria::ASC) Order by the p_c_topic_id column
+ * @method PDDebateArchiveQuery orderByFbAdId($order = Criteria::ASC) Order by the fb_ad_id column
  * @method PDDebateArchiveQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method PDDebateArchiveQuery orderByFileName($order = Criteria::ASC) Order by the file_name column
  * @method PDDebateArchiveQuery orderByCopyright($order = Criteria::ASC) Order by the copyright column
@@ -30,6 +32,7 @@ use Politizr\Model\PDDebateArchiveQuery;
  * @method PDDebateArchiveQuery orderByNotePos($order = Criteria::ASC) Order by the note_pos column
  * @method PDDebateArchiveQuery orderByNoteNeg($order = Criteria::ASC) Order by the note_neg column
  * @method PDDebateArchiveQuery orderByNbViews($order = Criteria::ASC) Order by the nb_views column
+ * @method PDDebateArchiveQuery orderByWantBoost($order = Criteria::ASC) Order by the want_boost column
  * @method PDDebateArchiveQuery orderByPublished($order = Criteria::ASC) Order by the published column
  * @method PDDebateArchiveQuery orderByPublishedAt($order = Criteria::ASC) Order by the published_at column
  * @method PDDebateArchiveQuery orderByPublishedBy($order = Criteria::ASC) Order by the published_by column
@@ -39,6 +42,7 @@ use Politizr\Model\PDDebateArchiveQuery;
  * @method PDDebateArchiveQuery orderByModerated($order = Criteria::ASC) Order by the moderated column
  * @method PDDebateArchiveQuery orderByModeratedPartial($order = Criteria::ASC) Order by the moderated_partial column
  * @method PDDebateArchiveQuery orderByModeratedAt($order = Criteria::ASC) Order by the moderated_at column
+ * @method PDDebateArchiveQuery orderByIndexedAt($order = Criteria::ASC) Order by the indexed_at column
  * @method PDDebateArchiveQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PDDebateArchiveQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  * @method PDDebateArchiveQuery orderBySlug($order = Criteria::ASC) Order by the slug column
@@ -47,11 +51,13 @@ use Politizr\Model\PDDebateArchiveQuery;
  * @method PDDebateArchiveQuery groupById() Group by the id column
  * @method PDDebateArchiveQuery groupByUuid() Group by the uuid column
  * @method PDDebateArchiveQuery groupByPUserId() Group by the p_user_id column
+ * @method PDDebateArchiveQuery groupByPEOperationId() Group by the p_e_operation_id column
  * @method PDDebateArchiveQuery groupByPLCityId() Group by the p_l_city_id column
  * @method PDDebateArchiveQuery groupByPLDepartmentId() Group by the p_l_department_id column
  * @method PDDebateArchiveQuery groupByPLRegionId() Group by the p_l_region_id column
  * @method PDDebateArchiveQuery groupByPLCountryId() Group by the p_l_country_id column
  * @method PDDebateArchiveQuery groupByPCTopicId() Group by the p_c_topic_id column
+ * @method PDDebateArchiveQuery groupByFbAdId() Group by the fb_ad_id column
  * @method PDDebateArchiveQuery groupByTitle() Group by the title column
  * @method PDDebateArchiveQuery groupByFileName() Group by the file_name column
  * @method PDDebateArchiveQuery groupByCopyright() Group by the copyright column
@@ -59,6 +65,7 @@ use Politizr\Model\PDDebateArchiveQuery;
  * @method PDDebateArchiveQuery groupByNotePos() Group by the note_pos column
  * @method PDDebateArchiveQuery groupByNoteNeg() Group by the note_neg column
  * @method PDDebateArchiveQuery groupByNbViews() Group by the nb_views column
+ * @method PDDebateArchiveQuery groupByWantBoost() Group by the want_boost column
  * @method PDDebateArchiveQuery groupByPublished() Group by the published column
  * @method PDDebateArchiveQuery groupByPublishedAt() Group by the published_at column
  * @method PDDebateArchiveQuery groupByPublishedBy() Group by the published_by column
@@ -68,6 +75,7 @@ use Politizr\Model\PDDebateArchiveQuery;
  * @method PDDebateArchiveQuery groupByModerated() Group by the moderated column
  * @method PDDebateArchiveQuery groupByModeratedPartial() Group by the moderated_partial column
  * @method PDDebateArchiveQuery groupByModeratedAt() Group by the moderated_at column
+ * @method PDDebateArchiveQuery groupByIndexedAt() Group by the indexed_at column
  * @method PDDebateArchiveQuery groupByCreatedAt() Group by the created_at column
  * @method PDDebateArchiveQuery groupByUpdatedAt() Group by the updated_at column
  * @method PDDebateArchiveQuery groupBySlug() Group by the slug column
@@ -82,11 +90,13 @@ use Politizr\Model\PDDebateArchiveQuery;
  *
  * @method PDDebateArchive findOneByUuid(string $uuid) Return the first PDDebateArchive filtered by the uuid column
  * @method PDDebateArchive findOneByPUserId(int $p_user_id) Return the first PDDebateArchive filtered by the p_user_id column
+ * @method PDDebateArchive findOneByPEOperationId(int $p_e_operation_id) Return the first PDDebateArchive filtered by the p_e_operation_id column
  * @method PDDebateArchive findOneByPLCityId(int $p_l_city_id) Return the first PDDebateArchive filtered by the p_l_city_id column
  * @method PDDebateArchive findOneByPLDepartmentId(int $p_l_department_id) Return the first PDDebateArchive filtered by the p_l_department_id column
  * @method PDDebateArchive findOneByPLRegionId(int $p_l_region_id) Return the first PDDebateArchive filtered by the p_l_region_id column
  * @method PDDebateArchive findOneByPLCountryId(int $p_l_country_id) Return the first PDDebateArchive filtered by the p_l_country_id column
  * @method PDDebateArchive findOneByPCTopicId(int $p_c_topic_id) Return the first PDDebateArchive filtered by the p_c_topic_id column
+ * @method PDDebateArchive findOneByFbAdId(string $fb_ad_id) Return the first PDDebateArchive filtered by the fb_ad_id column
  * @method PDDebateArchive findOneByTitle(string $title) Return the first PDDebateArchive filtered by the title column
  * @method PDDebateArchive findOneByFileName(string $file_name) Return the first PDDebateArchive filtered by the file_name column
  * @method PDDebateArchive findOneByCopyright(string $copyright) Return the first PDDebateArchive filtered by the copyright column
@@ -94,6 +104,7 @@ use Politizr\Model\PDDebateArchiveQuery;
  * @method PDDebateArchive findOneByNotePos(int $note_pos) Return the first PDDebateArchive filtered by the note_pos column
  * @method PDDebateArchive findOneByNoteNeg(int $note_neg) Return the first PDDebateArchive filtered by the note_neg column
  * @method PDDebateArchive findOneByNbViews(int $nb_views) Return the first PDDebateArchive filtered by the nb_views column
+ * @method PDDebateArchive findOneByWantBoost(int $want_boost) Return the first PDDebateArchive filtered by the want_boost column
  * @method PDDebateArchive findOneByPublished(boolean $published) Return the first PDDebateArchive filtered by the published column
  * @method PDDebateArchive findOneByPublishedAt(string $published_at) Return the first PDDebateArchive filtered by the published_at column
  * @method PDDebateArchive findOneByPublishedBy(string $published_by) Return the first PDDebateArchive filtered by the published_by column
@@ -103,6 +114,7 @@ use Politizr\Model\PDDebateArchiveQuery;
  * @method PDDebateArchive findOneByModerated(boolean $moderated) Return the first PDDebateArchive filtered by the moderated column
  * @method PDDebateArchive findOneByModeratedPartial(boolean $moderated_partial) Return the first PDDebateArchive filtered by the moderated_partial column
  * @method PDDebateArchive findOneByModeratedAt(string $moderated_at) Return the first PDDebateArchive filtered by the moderated_at column
+ * @method PDDebateArchive findOneByIndexedAt(string $indexed_at) Return the first PDDebateArchive filtered by the indexed_at column
  * @method PDDebateArchive findOneByCreatedAt(string $created_at) Return the first PDDebateArchive filtered by the created_at column
  * @method PDDebateArchive findOneByUpdatedAt(string $updated_at) Return the first PDDebateArchive filtered by the updated_at column
  * @method PDDebateArchive findOneBySlug(string $slug) Return the first PDDebateArchive filtered by the slug column
@@ -111,11 +123,13 @@ use Politizr\Model\PDDebateArchiveQuery;
  * @method array findById(int $id) Return PDDebateArchive objects filtered by the id column
  * @method array findByUuid(string $uuid) Return PDDebateArchive objects filtered by the uuid column
  * @method array findByPUserId(int $p_user_id) Return PDDebateArchive objects filtered by the p_user_id column
+ * @method array findByPEOperationId(int $p_e_operation_id) Return PDDebateArchive objects filtered by the p_e_operation_id column
  * @method array findByPLCityId(int $p_l_city_id) Return PDDebateArchive objects filtered by the p_l_city_id column
  * @method array findByPLDepartmentId(int $p_l_department_id) Return PDDebateArchive objects filtered by the p_l_department_id column
  * @method array findByPLRegionId(int $p_l_region_id) Return PDDebateArchive objects filtered by the p_l_region_id column
  * @method array findByPLCountryId(int $p_l_country_id) Return PDDebateArchive objects filtered by the p_l_country_id column
  * @method array findByPCTopicId(int $p_c_topic_id) Return PDDebateArchive objects filtered by the p_c_topic_id column
+ * @method array findByFbAdId(string $fb_ad_id) Return PDDebateArchive objects filtered by the fb_ad_id column
  * @method array findByTitle(string $title) Return PDDebateArchive objects filtered by the title column
  * @method array findByFileName(string $file_name) Return PDDebateArchive objects filtered by the file_name column
  * @method array findByCopyright(string $copyright) Return PDDebateArchive objects filtered by the copyright column
@@ -123,6 +137,7 @@ use Politizr\Model\PDDebateArchiveQuery;
  * @method array findByNotePos(int $note_pos) Return PDDebateArchive objects filtered by the note_pos column
  * @method array findByNoteNeg(int $note_neg) Return PDDebateArchive objects filtered by the note_neg column
  * @method array findByNbViews(int $nb_views) Return PDDebateArchive objects filtered by the nb_views column
+ * @method array findByWantBoost(int $want_boost) Return PDDebateArchive objects filtered by the want_boost column
  * @method array findByPublished(boolean $published) Return PDDebateArchive objects filtered by the published column
  * @method array findByPublishedAt(string $published_at) Return PDDebateArchive objects filtered by the published_at column
  * @method array findByPublishedBy(string $published_by) Return PDDebateArchive objects filtered by the published_by column
@@ -132,6 +147,7 @@ use Politizr\Model\PDDebateArchiveQuery;
  * @method array findByModerated(boolean $moderated) Return PDDebateArchive objects filtered by the moderated column
  * @method array findByModeratedPartial(boolean $moderated_partial) Return PDDebateArchive objects filtered by the moderated_partial column
  * @method array findByModeratedAt(string $moderated_at) Return PDDebateArchive objects filtered by the moderated_at column
+ * @method array findByIndexedAt(string $indexed_at) Return PDDebateArchive objects filtered by the indexed_at column
  * @method array findByCreatedAt(string $created_at) Return PDDebateArchive objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PDDebateArchive objects filtered by the updated_at column
  * @method array findBySlug(string $slug) Return PDDebateArchive objects filtered by the slug column
@@ -241,7 +257,7 @@ abstract class BasePDDebateArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `p_l_city_id`, `p_l_department_id`, `p_l_region_id`, `p_l_country_id`, `p_c_topic_id`, `title`, `file_name`, `copyright`, `description`, `note_pos`, `note_neg`, `nb_views`, `published`, `published_at`, `published_by`, `favorite`, `online`, `homepage`, `moderated`, `moderated_partial`, `moderated_at`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_d_debate_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `p_e_operation_id`, `p_l_city_id`, `p_l_department_id`, `p_l_region_id`, `p_l_country_id`, `p_c_topic_id`, `fb_ad_id`, `title`, `file_name`, `copyright`, `description`, `note_pos`, `note_neg`, `nb_views`, `want_boost`, `published`, `published_at`, `published_by`, `favorite`, `online`, `homepage`, `moderated`, `moderated_partial`, `moderated_at`, `indexed_at`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_d_debate_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -441,6 +457,48 @@ abstract class BasePDDebateArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDDebateArchivePeer::P_USER_ID, $pUserId, $comparison);
+    }
+
+    /**
+     * Filter the query on the p_e_operation_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPEOperationId(1234); // WHERE p_e_operation_id = 1234
+     * $query->filterByPEOperationId(array(12, 34)); // WHERE p_e_operation_id IN (12, 34)
+     * $query->filterByPEOperationId(array('min' => 12)); // WHERE p_e_operation_id >= 12
+     * $query->filterByPEOperationId(array('max' => 12)); // WHERE p_e_operation_id <= 12
+     * </code>
+     *
+     * @param     mixed $pEOperationId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDDebateArchiveQuery The current query, for fluid interface
+     */
+    public function filterByPEOperationId($pEOperationId = null, $comparison = null)
+    {
+        if (is_array($pEOperationId)) {
+            $useMinMax = false;
+            if (isset($pEOperationId['min'])) {
+                $this->addUsingAlias(PDDebateArchivePeer::P_E_OPERATION_ID, $pEOperationId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($pEOperationId['max'])) {
+                $this->addUsingAlias(PDDebateArchivePeer::P_E_OPERATION_ID, $pEOperationId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PDDebateArchivePeer::P_E_OPERATION_ID, $pEOperationId, $comparison);
     }
 
     /**
@@ -651,6 +709,35 @@ abstract class BasePDDebateArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDDebateArchivePeer::P_C_TOPIC_ID, $pCTopicId, $comparison);
+    }
+
+    /**
+     * Filter the query on the fb_ad_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByFbAdId('fooValue');   // WHERE fb_ad_id = 'fooValue'
+     * $query->filterByFbAdId('%fooValue%'); // WHERE fb_ad_id LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $fbAdId The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDDebateArchiveQuery The current query, for fluid interface
+     */
+    public function filterByFbAdId($fbAdId = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($fbAdId)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $fbAdId)) {
+                $fbAdId = str_replace('*', '%', $fbAdId);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PDDebateArchivePeer::FB_AD_ID, $fbAdId, $comparison);
     }
 
     /**
@@ -893,6 +980,48 @@ abstract class BasePDDebateArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDDebateArchivePeer::NB_VIEWS, $nbViews, $comparison);
+    }
+
+    /**
+     * Filter the query on the want_boost column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByWantBoost(1234); // WHERE want_boost = 1234
+     * $query->filterByWantBoost(array(12, 34)); // WHERE want_boost IN (12, 34)
+     * $query->filterByWantBoost(array('min' => 12)); // WHERE want_boost >= 12
+     * $query->filterByWantBoost(array('max' => 12)); // WHERE want_boost <= 12
+     * </code>
+     *
+     * @param     mixed $wantBoost The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDDebateArchiveQuery The current query, for fluid interface
+     */
+    public function filterByWantBoost($wantBoost = null, $comparison = null)
+    {
+        if (is_array($wantBoost)) {
+            $useMinMax = false;
+            if (isset($wantBoost['min'])) {
+                $this->addUsingAlias(PDDebateArchivePeer::WANT_BOOST, $wantBoost['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($wantBoost['max'])) {
+                $this->addUsingAlias(PDDebateArchivePeer::WANT_BOOST, $wantBoost['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PDDebateArchivePeer::WANT_BOOST, $wantBoost, $comparison);
     }
 
     /**
@@ -1170,6 +1299,49 @@ abstract class BasePDDebateArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDDebateArchivePeer::MODERATED_AT, $moderatedAt, $comparison);
+    }
+
+    /**
+     * Filter the query on the indexed_at column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByIndexedAt('2011-03-14'); // WHERE indexed_at = '2011-03-14'
+     * $query->filterByIndexedAt('now'); // WHERE indexed_at = '2011-03-14'
+     * $query->filterByIndexedAt(array('max' => 'yesterday')); // WHERE indexed_at < '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $indexedAt The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDDebateArchiveQuery The current query, for fluid interface
+     */
+    public function filterByIndexedAt($indexedAt = null, $comparison = null)
+    {
+        if (is_array($indexedAt)) {
+            $useMinMax = false;
+            if (isset($indexedAt['min'])) {
+                $this->addUsingAlias(PDDebateArchivePeer::INDEXED_AT, $indexedAt['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($indexedAt['max'])) {
+                $this->addUsingAlias(PDDebateArchivePeer::INDEXED_AT, $indexedAt['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PDDebateArchivePeer::INDEXED_AT, $indexedAt, $comparison);
     }
 
     /**

@@ -1,0 +1,15 @@
+{# beta #}
+{% if type == constant('Politizr\\Constant\\EmailConstants::TYPE_EMAIL') %}
+    {% set twigFolder = 'MessageEmail' %}
+    {% set twigExt = 'html' %}
+{% elseif type == constant('Politizr\\Constant\\EmailConstants::TYPE_EMAIL_TXT') %}
+    {% set twigFolder = 'MessageEmail\\Txt' %}        
+    {% set twigExt = 'txt' %}
+{% endif %}
+{% spaceless %}
+{% if
+    pnEmailId == constant('Politizr\\Constant\\EmailConstants::ID_ADMIN_MSG')
+%}
+    {% include 'PolitizrFrontBundle:Notification\\'~twigFolder~':_msgAdmMessage.'~twigExt~'.twig' %}
+{% endif %}
+{% endspaceless %}

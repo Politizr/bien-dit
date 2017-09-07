@@ -15,6 +15,6 @@
 </div>
 <div class="notifItemContent">
     <span {% if not notification.checked %}class="notifHighlight"{% endif %} uuid="{{ notification.uuid }}">
-        {% include 'PolitizrFrontBundle:Notification:_notificationMessage.html.twig' with { 'type': constant('Politizr\\Constant\\NotificationConstants::TYPE_SCREEN')} %}
+        {% include 'PolitizrFrontBundle:Notification:_notificationMessage.html.twig' %}
     </span>
 </div>

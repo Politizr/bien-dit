@@ -25,6 +25,10 @@
                                 {{ form_widget(formLocalization.localization_department) }}<br/>
                             {% elseif loop.index == 3 %}
                                 {{ form_widget(formLocalization.localization_region) }}<br/>
+                            {% elseif loop.index == 4 %}
+                                &nbsp;
+                            {% elseif loop.index == 5 %}
+                                {{ form_widget(formLocalization.localization_circonscription) }}<br/>
                             {% endif %}
                         {% endfor %}
                         {{ form_rest(formLocalization) }}
@@ -35,19 +39,18 @@
                     <div class="notice">
                         <i class="icon-info"></i><b>Cochez le(s) type(s) associé(s) à votre publication.</b>
                     </div>
-                    {{ reaction | editTypeForm }}
+                    {{ reaction | editTagTypeForm }}
                 </div>
                 <div class="docTags">
                     <h5>3. Thématiques abordées</h5>
                     <div class="notice">
-                        <i class="icon-info"></i><b>5 thématiques maximum.</b><br>
+                        <i class="icon-info"></i><b>Ajouter des thématiques de votre choix et/ou cochez parmi les rubriques associées à votre publication (5 thématiques maximum)</b>
                     </div>
-                    {# include('includes/helperEditTag.php') #}
-
                     {{ reactionTagsEdit(reaction, constant('Politizr\\Constant\\TagConstants::TAG_TYPE_THEME'), 1, true) }}
+                    {{ reaction | editTagFamilyForm }}
                 </div>
             </div>
-            {{ app.user | isAuthorizedToPublishDebate(reaction.uuid) }}
+            {{ app.user | isAuthorizedToPublishReaction(reaction.uuid) }}
             <div class="modalPublishBg"></div>
         </div>
     </div>
@@ -111,6 +114,14 @@
                 {{ form_rest(form) }}                
             </form>
         </div>
+        <div class="postTags">
+            <div class="formBlockHeader">
+                <label>Thématiques abordées</label>
+                {% include 'PolitizrFrontBundle:Navigation\\Helper:_addTagToPublication.html.twig' %}
+            </div>
+            <div class="tagList">
+            </div>
+        </div>
     </div>
 {% endblock content %}
 
@@ -120,6 +131,13 @@
 
 {% block javascriptFooter %}
     {{ parent() }}
+
+    {% if (app.environment == 'prod') %}
+        <script type="text/javascript">
+            mixpanel.track("Édition d'une réponse");
+        </script>
+    {% endif %}
+
 
     {% javascripts
         '@PolitizrFrontBundle/Resources/public/js/smoke.min.js'

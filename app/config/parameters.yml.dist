@@ -24,12 +24,26 @@ parameters:
     host.admin: politizr.beta.admin
     host.public: politizr.beta
 
+    # Default request context
+    router.request_context.host: politizr.beta
+    router.request_context.scheme: http
+
+    # Algolia
+    algolia_app_id: APPID
+    algolia_admin_api_key: API_KEY
+    algolia_search_api_key: API_KEY
+    algolia_index_name: POLITIZR
+
     # OAuth parameters
     # Facebook
     # https://developers.facebook.com/docs/facebook-login/permissions
+    facebook_admin_ids: '123'
     facebook_client_id: 123
     facebook_client_secret: 123
     facebook_scope: public_profile,email
+    facebook_page_id: 123
+    facebook_graph_version: v2.8
+    facebook_access_token: 123456789
 
     #Twitter
     twitter_api_key: 123
@@ -45,5 +59,8 @@ parameters:
     idcheck_login: 123
     idcheck_password: 123
 
-    # Public content: public | private | we
+    # Public content: public | private | we | 30
     private_mode: public
+
+    public_user_ids: [ 3, 315 ]
+    

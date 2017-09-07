@@ -75,7 +75,7 @@ function saveDocumentAttr()
 {
     // console.log('*** saveDocumentAttr');
 
-    var serializedForms = $("#formDocLoc, #formTagType").serialize();
+    var serializedForms = $("#formDocLoc, #formTagType, #formTagFamily").serialize();
 
     var xhrPath = getXhrPath(
         ROUTE_DEBATE_UPDATE,
@@ -218,7 +218,7 @@ function saveDebate()
 
     var localLoader = $('.actionSave').find('.ajaxLoader').first();
 
-    var serializedForms = $("#formDebateUpdate, #formTagType").serialize();
+    var serializedForms = $("#formDebateUpdate, #formTagType, #formTagFamily").serialize();
 
     var xhrPath = getXhrPath(
         ROUTE_DEBATE_UPDATE,
@@ -258,7 +258,7 @@ function saveReaction()
 
     var localLoader = $('.actionSave').find('.ajaxLoader').first();
 
-    var serializedForms = $("#formReactionUpdate, #formTagType").serialize();
+    var serializedForms = $("#formReactionUpdate, #formTagType, #formTagFamily").serialize();
 
     var xhrPath = getXhrPath(
         ROUTE_REACTION_UPDATE,
@@ -351,6 +351,74 @@ function deleteReaction(uuid)
 }
 
 /**
+ * Update debate's tag zone
+ *
+ * @param string uuid
+ */
+function updateDebateTagsZone(uuid)
+{
+    // console.log('*** updateDebateTagsZone');
+    // console.log(uuid);
+
+    var localLoader = $('.tagList').find('.ajaxLoader').first();
+    var targetElement = $('.tagList');
+
+    var xhrPath = getXhrPath(
+        ROUTE_DEBATE_DOC_TAGS,
+        'document',
+        'updateDebateTagsZone',
+        RETURN_HTML
+        );
+
+    return xhrCall(
+        document,
+        { 'uuid': uuid },
+        xhrPath,
+        localLoader
+    ).done(function(data) {
+        if (data['error']) {
+            $('#ajaxGlobalLoader').hide();
+        } else {
+            targetElement.html(data['html']);            
+        }
+    });    
+}
+
+/**
+ * Update reaction's tag zone
+ *
+ * @param string uuid
+ */
+function updateReactionTagsZone(uuid)
+{
+    // console.log('*** updateReactionTagsZone');
+    // console.log(uuid);
+
+    var localLoader = $('.tagList').find('.ajaxLoader').first();
+    var targetElement = $('.tagList');
+
+    var xhrPath = getXhrPath(
+        ROUTE_REACTION_DOC_TAGS,
+        'document',
+        'updateReactionTagsZone',
+        RETURN_HTML
+        );
+
+    return xhrCall(
+        document,
+        { 'uuid': uuid },
+        xhrPath,
+        localLoader
+    ).done(function(data) {
+        if (data['error']) {
+            $('#ajaxGlobalLoader').hide();
+        } else {
+            targetElement.html(data['html']);            
+        }
+    });    
+}
+
+/**
  * Show / hide div attributes relative to zone choice
  */
 function locShowHideAttr() {
@@ -361,20 +429,30 @@ function locShowHideAttr() {
         $('#document_localization_localization_city').show();
         $('#document_localization_localization_department').hide();
         $('#document_localization_localization_region').hide();
+        $('#document_localization_localization_circonscription').hide();
     } else if ($('#document_localization_loc_type_1').is(':checked')) {
         // console.log('document_localization_loc_type_1 :checked');
         $('#document_localization_localization_city').hide();
         $('#document_localization_localization_department').show();
         $('#document_localization_localization_region').hide();
+        $('#document_localization_localization_circonscription').hide();
     } else if ($('#document_localization_loc_type_2').is(':checked')) {
         // console.log('document_localization_loc_type_2 :checked');
         $('#document_localization_localization_city').hide();
         $('#document_localization_localization_department').hide();
         $('#document_localization_localization_region').show();
+        $('#document_localization_localization_circonscription').hide();
     } else if ($('#document_localization_loc_type_3').is(':checked')) {
         // console.log('document_localization_loc_type_3 :checked');
         $('#document_localization_localization_city').hide();
         $('#document_localization_localization_department').hide();
         $('#document_localization_localization_region').hide();
+        $('#document_localization_localization_circonscription').hide();
+    } else if ($('#document_localization_loc_type_4').is(':checked')) {
+        // console.log('document_localization_loc_type_4 :checked');
+        $('#document_localization_localization_city').hide();
+        $('#document_localization_localization_department').hide();
+        $('#document_localization_localization_region').hide();
+        $('#document_localization_localization_circonscription').show();
     }
 }

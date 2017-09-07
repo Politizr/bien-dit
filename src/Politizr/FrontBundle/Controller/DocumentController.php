@@ -4,6 +4,8 @@ namespace Politizr\FrontBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
+
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use Politizr\Exception\InconsistentDataException;
@@ -17,6 +19,7 @@ use Politizr\Model\PDocumentInterface;
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
 use Politizr\Model\PLCountryQuery;
+use Politizr\Model\PEOperationQuery;
 
 use Politizr\Model\PDDComment;
 use Politizr\Model\PDRComment;
@@ -119,7 +122,7 @@ class DocumentController extends Controller
         }
 
         // Cut text if user not logged and content setted as not public
-        $private = $this->get('politizr.tools.global')->isPrivateMode($visitor, $this->getParameter('private_mode'));
+        $private = $this->get('politizr.tools.global')->isPrivateMode($visitor, $debate, $this->getParameter('private_mode'), $this->getParameter('public_user_ids'));
         $description = $debate->getDescription();
         if ($private) {
             $description = $this->get('politizr.tools.global')->truncate($description, 800, ['html' => true]);
@@ -129,23 +132,11 @@ class DocumentController extends Controller
         $utilsManager = $this->get('politizr.tools.global');
         $paragraphs = $utilsManager->explodeParagraphs($description);
 
-
         // Debate's reactions
         $reactions = $debate->getChildrenReactions(true, true);
 
         // Debate's similar debates
-        $similars = PDDebateQuery::create()
-            ->filterById($debate->getId(), \Criteria::NOT_EQUAL)
-            ->usePDDTaggedTQuery()
-                ->filterByPTag($debate->getTags(TagConstants::TAG_TYPE_THEME), \Criteria::IN)
-            ->endUse()
-            ->distinct()
-            ->filterByOnline(true)
-            ->filterByPublished(true)
-            ->limit(ListingConstants::LISTING_DEBATE_SIMILARS)
-            ->orderByNotePos('desc')
-            ->orderByNoteNeg('asc')
-            ->find();
+        $similars = $this->get('politizr.functional.document')->getSimilarDebates($debate);
 
         return $this->render('PolitizrFrontBundle:Debate:detail.html.twig', array(
             'private' => $private,
@@ -195,7 +186,8 @@ class DocumentController extends Controller
         }
 
         // Cut text if user not logged
-        $private = $this->get('politizr.tools.global')->isPrivateMode($visitor, $this->getParameter('private_mode'));
+        $private = $this->get('politizr.tools.global')->isPrivateMode($visitor, $reaction, $this->getParameter('private_mode'), $this->getParameter('public_user_ids'));
+
         $description = $reaction->getDescription();
         if ($private) {
             $description = $this->get('politizr.tools.global')->truncate($description, 800, ['html' => true]);
@@ -242,18 +234,7 @@ class DocumentController extends Controller
         }
 
         // Reaction's similar debates
-        $similars = PDDebateQuery::create()
-            ->filterById($reaction->getPDDebateId(), \Criteria::NOT_EQUAL)
-            ->usePDDTaggedTQuery()
-                ->filterByPTag($reaction->getTags(TagConstants::TAG_TYPE_THEME), \Criteria::IN)
-            ->endUse()
-            ->distinct()
-            ->filterByOnline(true)
-            ->filterByPublished(true)
-            ->limit(ListingConstants::LISTING_DEBATE_SIMILARS)
-            ->orderByNotePos('desc')
-            ->orderByNoteNeg('asc')
-            ->find();
+        $similars = $this->get('politizr.functional.document')->getSimilarDebates($reaction);
 
         return $this->render('PolitizrFrontBundle:Reaction:detail.html.twig', array(
             'private' => $private,
@@ -278,29 +259,58 @@ class DocumentController extends Controller
      * Create new debate
      * beta
      */
-    public function debateNewAction()
+    public function debateNewAction(Request $request)
     {
         // $logger = $this->get('logger');
         // $logger->info('*** debateNewAction');
+
 
         $user = $this->getUser();
         if (!$user) {
             throw new InconsistentDataException('Current user not found.');
         }
 
+        // unplug / conflicts w. "op"
         // search "as new" already created debate
-        $debate = PDDebateQuery::create()
-                    ->filterByPUserId($user->getId())
-                    ->where('p_d_debate.created_at = p_d_debate.updated_at')
-                    ->findOne();
+        // $debate = PDDebateQuery::create()
+        //             ->filterByPUserId($user->getId())
+        //             ->where('p_d_debate.created_at = p_d_debate.updated_at')
+        //             ->findOne();
 
+        $debate = null;
         if (!$debate) {
             $debate = $this->get('politizr.functional.document')->createDebate();
         }
 
-        return $this->redirect($this->generateUrl('DebateDraftEdit'.$this->get('politizr.tools.global')->computeProfileSuffix(), array(
-            'uuid' => $debate->getUuid()
-        )));
+        // manage OP
+        $opUuid = $request->get('op');
+        $operation = null;
+        if ($opUuid) {
+            $operation = PEOperationQuery::create()
+                ->filterByUuid($opUuid)
+                ->findOne();
+            if (!$operation) {
+                throw new InconsistentDataException(sprintf('Operation %s not found.', $opUuid));
+            }
+
+            $debate->setPEOperationId($operation->getId());
+            $debate->save();
+
+            // op preset tags
+            $tags = $operation->getPTags();
+            foreach ($tags as $tag) {
+                $this->get('politizr.manager.tag')->createDebateTag($debate->getId(), $tag->getId());
+            }
+        }
+
+        return $this->redirect(
+            $this->generateUrl(
+                'DebateDraftEdit'.$this->get('politizr.tools.global')->computeProfileSuffix(),
+                array(
+                    'uuid' => $debate->getUuid()
+                )
+            )
+        );
     }
 
     /**
@@ -309,7 +319,7 @@ class DocumentController extends Controller
      *
      * @param $uuid
      */
-    public function debateEditAction($uuid)
+    public function debateEditAction(Request $request, $uuid)
     {
         // $logger = $this->get('logger');
         // $logger->info('*** debateEditAction');
@@ -328,8 +338,8 @@ class DocumentController extends Controller
             $debateLocType,
             $debate,
             array(
+                'data_class' => ObjectTypeConstants::TYPE_DEBATE,
                 'user' => $user,
-                'data_class' => ObjectTypeConstants::TYPE_DEBATE
             )
         );
 
@@ -441,7 +451,7 @@ class DocumentController extends Controller
             'paragraphs' => $paragraphs,
             'form' => $form->createView(),
             'formLocalization' => $formLocalization->createView(),
-            ));
+        ));
     }
 
     /* ######################################################################################################## */

@@ -1,25 +1,30 @@
 {# beta #}
 <div class="paragraphHolder withLoaderInside" uuid="{{ document.uuid }}" type="{{ document.type }}" noParagraph="0">
     {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
-    <div id="addNewGlobalComments">
-        {% if app.user %}
-            {{ app.user | isAuthorizedToNewComment(formComment, document.uuid) }}
-        {% else %}
-            {# Fake public form #}
-            <form class="formCommentNew">
-                <textarea id="comment_description" name="comment[description]" placeholder="Votre commentaire..." class="commentDescriptionHook"></textarea>
-                <div class="actionsButtons">
-                    <input type="button" class="commentDescriptionHook" value="Publier">
-                </div>
-            </form>
-        {% endif %}
-    </div>
     <div id="globalCommentsButton">
+        {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
         <div class="counterContent">
             {% include 'PolitizrFrontBundle:Comment:_counter.html.twig' with { 'document': document, 'paragraphNo': 0, 'active': false, 'paragraphContext': 'global' } only %}
         </div>
     </div>
     <div id="globalComments" style="display: none;">
-        <div class="commentsContent"></div>
+        <h5>Commentaires</h5>
+        <div id="addNewGlobalComments">
+            {% if app.user %}
+                {{ app.user | isAuthorizedToNewComment(formComment, document.uuid, document.type) }}
+            {% else %}
+                {# Fake public form #}
+                <form class="formCommentNew">
+                    <textarea id="comment_description" name="comment[description]" placeholder="Votre commentaire..." class="commentDescriptionHook"></textarea>
+                    <div class="actionsButtons">
+                        <input type="button" class="commentDescriptionHook" value="Publier">
+                    </div>
+                </form>
+            {% endif %}
+        </div>
+        <div class="commentsContent" id="globalCommentsContent"></div>
+        <div class="embedFB withLoaderInside" uuid="{{ document.uuid }}" type="{{ document.type }}">
+            {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+        </div>
     </div>
 </div>

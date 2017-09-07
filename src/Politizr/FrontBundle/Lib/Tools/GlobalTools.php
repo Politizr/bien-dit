@@ -14,10 +14,13 @@ use Politizr\Exception\BoxErrorException;
 use Politizr\FrontBundle\Lib\SimpleImage;
 use Politizr\FrontBundle\Lib\TimelineRow;
 use Politizr\FrontBundle\Lib\Publication;
+use Politizr\FrontBundle\Lib\InteractedPublication;
 use Politizr\FrontBundle\Form\Type\PUMandateType;
 
 use Politizr\Constant\QualificationConstants;
 
+use Politizr\Model\PDocumentInterface;
+use Politizr\Model\PUser;
 use Politizr\Model\PUMandateQuery;
 
 use StudioEcho\Lib\StudioEchoUtils;
@@ -33,6 +36,7 @@ class GlobalTools
     private $securityContext;
 
     private $requestStack;
+    private $session;
 
     private $formFactory;
     private $validator;
@@ -47,6 +51,7 @@ class GlobalTools
      * @param @security.authorization_checker
      * @param @security.context
      * @param @request_stack
+     * @param @session
      * @param @form.factory
      * @param @validator
      * @param @liip_imagine.controller
@@ -57,6 +62,7 @@ class GlobalTools
         $securityAuthorizationChecker,
         $securityContext,
         $requestStack,
+        $session,
         $formFactory,
         $validator,
         $liipImagineController,
@@ -67,6 +73,7 @@ class GlobalTools
         $this->securityContext = $securityContext;
 
         $this->requestStack = $requestStack;
+        $this->session = $session;
         
         $this->formFactory = $formFactory;
 
@@ -262,7 +269,7 @@ class GlobalTools
         // }
 
         $paragraphs = array();
-        $count = preg_match_all('/<p[^>]*>(.*?)<\/p>|<h\d[^>]*>(.*?)<\/h\d>|<ul[^>]*>(.*?)<\/ul>|<blockquote[^>]*>(.*?)<\/blockquote>/is', $htmlText, $matches);
+        $count = preg_match_all('/<p[^>]*>(.*?)<\/p>|<h\d[^>]*>(.*?)<\/h\d>|<ul[^>]*>(.*?)<\/ul>|<blockquote[^>]*>(.*?)<\/blockquote>|<iframe[^>]*>(.*?)<\/iframe>/is', $htmlText, $matches);
         for ($i = 0; $i < $count; ++$i) {
             if (!$onlyP) {
                 $paragraphs[] = $matches[0][$i];
@@ -587,6 +594,47 @@ class GlobalTools
     }
 
     /**
+     * Hydrate "InteractedPublication" objects from raw sql results
+     *
+     * @param array|false $result
+     * @return array[InteractedPublication]
+     */
+    public function hydrateInteractedPublication($result, $beginAt, $endAt)
+    {
+        // $this->logger->info('*** hydrateInteractedPublication');
+
+        $publications = array();
+        if ($result) {
+            foreach ($result as $row) {
+                $publication = new InteractedPublication();
+
+                $publication->setId($row['id']);
+                $publication->setAuthorId($row['author_id']);
+                $publication->setTitle($row['title']);
+                $publication->setDescription($row['description']);
+                $publication->setPublishedAt(new \DateTime($row['published_at']));
+                $publication->setType($row['type']);
+
+                $publication->setBeginAt($beginAt);
+                $publication->setEndAt($endAt);
+                if (isset($row['nb_reactions'])) {
+                    $publication->setNbReactions($row['nb_reactions']);
+                }
+                if (isset($row['nb_comments'])) {
+                    $publication->setNbComments($row['nb_comments']);
+                }
+                if (isset($row['nb_notifications'])) {
+                    $publication->setNbNotifications($row['nb_notifications']);
+                }
+
+                $publications[] = $publication;
+            }
+        }
+
+        return $publications;
+    }
+
+    /**
      * Format high number to human readeable number (1k, 1M)
      *
      * @param integer $number
@@ -682,27 +730,23 @@ class GlobalTools
     /**
      * Apply a LIIP Imagine filter to an image and return the image url
      *
-     * @param $baseUrl
-     * @param $fileName
-     * @param $fileWebPath   Relative web path
+     * @param $pathFileName     Relative web path + file name
      * @param $filterName
      * @return string url
      */
-    public function filterImage($baseUrl, $fileName, $fileWebPath, $filterName = 'facebook_share')
+    public function filterImage($pathFileName, $filterName = 'facebook_share')
     {
         // $this->logger->info('*** getFilteredImageUrl');
-        // $this->logger->info('$baseUrl = '.print_r($baseUrl, true));
-        // $this->logger->info('$fileName = '.print_r($fileName, true));
-        // $this->logger->info('$fileWebPath = '.print_r($fileWebPath, true));
+        // $this->logger->info('$pathFileName = '.print_r($pathFileName, true));
         // $this->logger->info('$filterName = '.print_r($filterName, true));
 
         $this->liipImagineController->filterAction(
             new Request(),
-            $fileWebPath.$fileName,
+            $pathFileName,
             $filterName
         );
 
-        $imageUrl = $this->liipImagineCacheManager->getBrowserPath($fileWebPath.$fileName, $filterName);
+        $imageUrl = $this->liipImagineCacheManager->getBrowserPath($pathFileName, $filterName);
         // $this->logger->info('$imageUrl = '.print_r($imageUrl, true));
 
         return $imageUrl;
@@ -750,21 +794,68 @@ class GlobalTools
      * Check if Politizr is in public or private mode
      *
      * @param $visitor PUser current connected user
-     * @param $mode public|private|we
+     * @param PDocumentInterface Document
+     * @param $mode public|private|we|<nb of days>
      * @return boolean
      */
-    public function isPrivateMode($visitor, $mode) {
-        $private = true;
+    public function isPrivateMode($visitor, PDocumentInterface $document, $mode, $userIds)
+    {
+        $publishedAt = $document->getPublishedAt();
+        $author =  $document->getPUser();
+
+        // public if
         if ($visitor) {
-            $private = false;
+            // user is connected
+            return false;
+        } elseif ($author && in_array($author->getId(), $userIds)) {
+            // author in list of public users
+            return false;
+        } elseif ($author && $author->isWithOperation()) {
+            // author has subscribe an "OP"
+            return false;
+        } elseif ($document && $document->isWithPrivateTag()) {
+            // document has private tag
+            return false;
         } elseif ($mode == 'public') {
-            $private = false;
+            // app in public mode
+            return false;
         } elseif ($mode == 'we') {
+            // app in we mode and datetime is we
             $dayOfWeek = date('w');
             if ($dayOfWeek == 0 || $dayOfWeek == 6) {
-                $private = false;
+                return false;
+            }
+        } elseif (is_int($mode)) {
+            // app in X days mode and document is older than X days
+            $now = new \DateTime();
+            $diff = $now->diff($publishedAt);
+            if ($diff->days > $mode) {
+                return false;
             }
         }
-        return $private;
+
+        return true;
+    }
+
+    /**
+     * Post inscription/login URL if set else null
+     *
+     * @return string
+     */
+    public function getRefererUrl()
+    {
+        $referer = $this->session->get('inscription/referer');
+
+        // remove from session
+        $this->session->remove('inscription/referer');
+
+        if (strpos($referer, 'debat') || // debate detail 
+            strpos($referer, 'reaction') || // reaction detail
+            strpos($referer, '@') // user detail
+        ) {
+            return $referer; 
+        }
+
+        return null;
     }
 }

@@ -2,12 +2,12 @@
 
 // on document ready
 $(function() {
-    scoreCounter();
-    badgesCounter();
+    // scoreCounter();
+    // badgesCounter();
     notificationsLoading();
+
+    $('#logo').focus();
 });
-
-
 
 
 // ******************************************************************* //
@@ -26,6 +26,19 @@ $("body").on("click", "[action='bookmark']", function(e) {
     return bookmark(targetElement, localLoader, uuid, type);
 });
 
+
+// boost question
+$("body").on("click", "[action='boost']", function(e) {
+    // console.log('*** click boost');
+    
+    var targetElement = $(this).closest('.boostBox');
+    var localLoader = $(this).closest('.boostBox').find('.ajaxLoader').first();
+    var uuid = $(this).attr('uuid');
+    var type = $(this).attr('type');
+    var boost = $(this).attr('boost');
+
+    return boostQuestion(targetElement, localLoader, uuid, type, boost);
+});
 
 
 // ******************************************************************* //
@@ -104,14 +117,14 @@ $("body").on("click", "[action='followDebate']", function(e) {
     ).done(function(data) {
         if (!data['error']) {
             // update reputation counter
-            scoreCounter();
-            badgesCounter();
+            // scoreCounter();
+            // badgesCounter();
 
             // refresh timeline
             refreshTimeline();
             stickySidebar();
         }
-    });    
+    });
 });
 
 // follow / unfollow user
@@ -135,8 +148,8 @@ $("body").on("click", "[action='followUser']", function(e) {
     ).done(function(data) {
         if (!data['error']) {
             // update reputation counter
-            scoreCounter();
-            badgesCounter();
+            // scoreCounter();
+            // badgesCounter();
 
             // refresh timeline
             refreshTimeline();
@@ -171,8 +184,30 @@ $("body").on("click", "[action='followTag']", function(e) {
                 $('.sidebarFollowedTags').find('.ajaxLoader').first()
             );
         }
-    });    
+    });
 });
+
+/**
+ * Automaticly add debate to subscribing user debate
+ */
+function followRelativeDebate(uuid, type) {
+    // console.log('*** followRelativeDebate');
+
+    var xhrPath = getXhrPath(
+        ROUTE_FOLLOW_RELATIVE_DEBATE,
+        'document',
+        'followRelativeDebate',
+        RETURN_BOOLEAN
+    );
+
+    return xhrCall(
+        document,
+        { 'uuid': uuid, 'type': type },
+        xhrPath
+    ).done(function(data) {
+        // console.log(data);
+    });
+}
 
 // ******************************************************************* //
 //                            NOTATION                                 //
@@ -187,7 +222,12 @@ $("body").on("click", "[action='note']", function(e) {
     var type = $(this).attr('type');
     var way = $(this).attr('way');
 
-    return noteDocument($(this), localLoader, uuid, type, way);
+    $.when(
+        noteDocument($(this), localLoader, uuid, type, way)
+    ).done(function(data) {
+        // follow debate
+        followRelativeDebate(uuid, type)
+    });
 });
 
 // ******************************************************************* //
@@ -264,3 +304,56 @@ $("body").on("click", "button[action='updateLocalization']", function(e) {
 });
 
 
+// ******************************************************************* //
+//                       OP CHARLOTTE                                  //
+// ******************************************************************* //
+
+$("body").on("click", "a[action='closeOp']", function(e) {
+    // console.log('*** click closeOp');
+
+    return closeOp();
+});
+
+/**
+ * Modal help us
+ */
+function closeOp() {
+    // console.log('*** closeOp');
+
+    var xhrPath = getXhrPath(
+        ROUTE_MODAL_HELP_US,
+        'general',
+        'hideOp',
+        RETURN_BOOLEAN
+    );
+
+    return xhrCall(
+        document,
+        null,
+        xhrPath
+    ).done(function(data) {
+        $('#opCharlotte').hide();
+    });
+};
+
+
+// ******************************************************************* //
+//                       ALGOLIA SEARCH                                //
+// ******************************************************************* //
+
+$("body").on( "focus", "#searchInputAlgolia" , function() {
+    $('body').addClass('noScroll');
+    $('#searchModal').show();
+});
+
+$("body").on("click", "[action='closeModal']", function(e) {
+    $('#searchModal').hide();
+    $('#searchInputAlgolia').val('');
+    $('body').removeClass('noScroll');
+
+    // remove extra url parameters dedicated to search
+    var uri = window.location.href; //get current address
+    var cleanedUri = uri.substring(0, uri.indexOf('?'));
+    // console.log(cleanedUri);
+    updateUrl(cleanedUri);
+});

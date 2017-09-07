@@ -7,6 +7,8 @@ use Politizr\Model\PLCityQuery;
 
 use Politizr\Model\PUser;
 
+use  Politizr\Constant\LocalizationConstants;
+
 /**
  * DB manager service for localization.
  *
@@ -42,6 +44,32 @@ class LocalizationManager
             ->distinct()
             ->select(array('uuid', 'title'))
             ->orderBy('title')
+            ->filterById(LocalizationConstants::getOutOfFranceDepartmentIds(), ' NOT IN ')
+            ->find()
+            ->toArray();
+
+        $choices = array();
+        foreach ($departments as $department) {
+            $choices[$department['title']] = $department['uuid'];
+        }
+
+        return $choices;
+    }
+
+    /**
+     * Get array of [title] => [uuid] cities
+     *
+     * @param int departmentUuid
+     * @return array
+     */
+    public function getCirconscriptionChoices()
+    {
+        // department out of france list
+        $departments = PLDepartmentQuery::create()
+            ->distinct()
+            ->select(array('uuid', 'title'))
+            ->orderBy('id')
+            ->filterById(LocalizationConstants::getOutOfFranceDepartmentIds())
             ->find()
             ->toArray();
 
@@ -333,6 +361,29 @@ class LocalizationManager
         return $region->getUuid();
     }
 
+    /**
+     * Check if city is out of france (circonscription)
+     *
+     * @param int $cityId
+     * @return boolean
+     */
+    public function isOutOfFranceByCityId($cityId)
+    {
+        if (!$cityId) {
+            return false;
+        }
+
+        $city = PLCityQuery::create()->findPk($cityId);
+        if (!$city) {
+            return false;
+        }
+
+        if (in_array($city->getPLDepartmentId(), LocalizationConstants::getOutOfFranceDepartmentIds())) {
+            return true;
+        }
+
+        return false;
+    }
 
     /**
      * Upd user w. his city id
