@@ -9,16 +9,16 @@
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
-            "version": "1.18.0",
+            "version": "1.20.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/algolia/algoliasearch-client-php.git",
-                "reference": "77aeb5f3856c1460432e2ccb9df5634c37c0b9f3"
+                "reference": "3daee8d55c1d84eff227fd99054e78ddc196f309"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/algolia/algoliasearch-client-php/zipball/77aeb5f3856c1460432e2ccb9df5634c37c0b9f3",
-                "reference": "77aeb5f3856c1460432e2ccb9df5634c37c0b9f3",
+                "url": "https://api.github.com/repos/algolia/algoliasearch-client-php/zipball/3daee8d55c1d84eff227fd99054e78ddc196f309",
+                "reference": "3daee8d55c1d84eff227fd99054e78ddc196f309",
                 "shasum": ""
             },
             "require": {
@@ -56,7 +56,7 @@
             ],
             "description": "Algolia Search API Client for PHP",
             "homepage": "https://github.com/algolia/algoliasearch-client-php",
-            "time": "2017-05-22 14:50:28"
+            "time": "2017-08-30 08:28:40"
         },
         {
             "name": "badlamer/propel-uuid-behavior",
@@ -1307,16 +1307,16 @@
         },
         {
             "name": "google/apiclient-services",
-            "version": "v0.20",
+            "version": "v0.22",
             "source": {
                 "type": "git",
                 "url": "https://github.com/google/google-api-php-client-services.git",
-                "reference": "c1a6e6ac716c6563ca6c240120cde69fde49af4f"
+                "reference": "f3cc7456ec878086ee6b53591e979a022e24ac27"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/google/google-api-php-client-services/zipball/c1a6e6ac716c6563ca6c240120cde69fde49af4f",
-                "reference": "c1a6e6ac716c6563ca6c240120cde69fde49af4f",
+                "url": "https://api.github.com/repos/google/google-api-php-client-services/zipball/f3cc7456ec878086ee6b53591e979a022e24ac27",
+                "reference": "f3cc7456ec878086ee6b53591e979a022e24ac27",
                 "shasum": ""
             },
             "require": {
@@ -1340,7 +1340,7 @@
             "keywords": [
                 "google"
             ],
-            "time": "2017-08-20 00:20:36"
+            "time": "2017-09-02 00:25:09"
         },
         {
             "name": "google/auth",
@@ -1768,23 +1768,24 @@
         },
         {
             "name": "imagine/imagine",
-            "version": "v0.6.3",
+            "version": "v0.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/avalanche123/Imagine.git",
-                "reference": "149041d2a1b517107bfe270ca2b1a17aa341715d"
+                "reference": "a9a702a946073cbca166718f1b02a1e72d742daa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/avalanche123/Imagine/zipball/149041d2a1b517107bfe270ca2b1a17aa341715d",
-                "reference": "149041d2a1b517107bfe270ca2b1a17aa341715d",
+                "url": "https://api.github.com/repos/avalanche123/Imagine/zipball/a9a702a946073cbca166718f1b02a1e72d742daa",
+                "reference": "a9a702a946073cbca166718f1b02a1e72d742daa",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.2"
             },
             "require-dev": {
-                "sami/sami": "dev-master"
+                "sami/sami": "^3.3",
+                "symfony/phpunit-bridge": "^3.2"
             },
             "suggest": {
                 "ext-gd": "to use the GD implementation",
@@ -1821,7 +1822,7 @@
                 "image manipulation",
                 "image processing"
             ],
-            "time": "2015-09-19 16:54:05"
+            "time": "2017-05-16 10:31:22"
         },
         {
             "name": "incenteev/composer-parameter-handler",
@@ -2592,20 +2593,20 @@
         },
         {
             "name": "liip/imagine-bundle",
-            "version": "1.8.0",
+            "version": "1.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipImagineBundle.git",
-                "reference": "d2551d8560212d440b4a6483236005957fbd4bff"
+                "reference": "2b9f4e66a56b735c15435f5a154eded8d02d0750"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/d2551d8560212d440b4a6483236005957fbd4bff",
-                "reference": "d2551d8560212d440b4a6483236005957fbd4bff",
+                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/2b9f4e66a56b735c15435f5a154eded8d02d0750",
+                "reference": "2b9f4e66a56b735c15435f5a154eded8d02d0750",
                 "shasum": ""
             },
             "require": {
-                "imagine/imagine": "^0.6.3,<0.7",
+                "imagine/imagine": "^0.6.3|^0.7.0,<0.8",
                 "php": "^5.3.9|^7.0",
                 "symfony/asset": "~2.3|~3.0",
                 "symfony/filesystem": "~2.3|~3.0",
@@ -2689,7 +2690,7 @@
                 "symfony",
                 "transformation"
             ],
-            "time": "2017-05-09 14:18:19"
+            "time": "2017-09-02 23:08:10"
         },
         {
             "name": "liip/url-auto-converter-bundle",
@@ -3820,16 +3821,16 @@
         },
         {
             "name": "rollerworks/password-strength-validator",
-            "version": "v1.0.1",
+            "version": "v1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rollerworks/PasswordStrengthValidator.git",
-                "reference": "c8ba8208498b928d7e94f6d80863df4f91c771c3"
+                "reference": "818b62fc5b2fc6cb622806716d59b83d07859d37"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rollerworks/PasswordStrengthValidator/zipball/c8ba8208498b928d7e94f6d80863df4f91c771c3",
-                "reference": "c8ba8208498b928d7e94f6d80863df4f91c771c3",
+                "url": "https://api.github.com/repos/rollerworks/PasswordStrengthValidator/zipball/818b62fc5b2fc6cb622806716d59b83d07859d37",
+                "reference": "818b62fc5b2fc6cb622806716d59b83d07859d37",
                 "shasum": ""
             },
             "require": {
@@ -3881,7 +3882,7 @@
                 "symfony",
                 "validator"
             ],
-            "time": "2017-08-24 10:50:18"
+            "time": "2017-08-28 06:57:07"
         },
         {
             "name": "sensio/distribution-bundle",
@@ -4868,16 +4869,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.8.26",
+            "version": "v2.8.27",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "33553101754e0888a1a1fecc46d7a7f10f6f9580"
+                "reference": "d512cc1c2c418f42c07b82d8b029e7a487be007f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/33553101754e0888a1a1fecc46d7a7f10f6f9580",
-                "reference": "33553101754e0888a1a1fecc46d7a7f10f6f9580",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/d512cc1c2c418f42c07b82d8b029e7a487be007f",
+                "reference": "d512cc1c2c418f42c07b82d8b029e7a487be007f",
                 "shasum": ""
             },
             "require": {
@@ -5002,27 +5003,27 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2017-08-01 09:05:29"
+            "time": "2017-08-28 19:21:56"
         },
         {
             "name": "symfony2admingenerator/form-bundle",
-            "version": "v1.3.0",
+            "version": "v1.4.0",
             "target-dir": "Admingenerator/FormBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony2admingenerator/FormBundle.git",
-                "reference": "af383968ac59e1d99311fe7a9b13e38277dc2ee7"
+                "reference": "bc40834e60a7807e0904ac60a8f40cd59b2446ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony2admingenerator/FormBundle/zipball/af383968ac59e1d99311fe7a9b13e38277dc2ee7",
-                "reference": "af383968ac59e1d99311fe7a9b13e38277dc2ee7",
+                "url": "https://api.github.com/repos/symfony2admingenerator/FormBundle/zipball/bc40834e60a7807e0904ac60a8f40cd59b2446ce",
+                "reference": "bc40834e60a7807e0904ac60a8f40cd59b2446ce",
                 "shasum": ""
             },
             "require": {
                 "symfony/symfony": ">= 2.2.0",
                 "twig/extensions": "~1.0",
-                "twig/twig": "~1.12"
+                "twig/twig": "~1.26||~2.0"
             },
             "suggest": {
                 "symfony2admingenerator/form-extensions-bundle": "Symfony2 form extensions for Admingenerator project (also working standalone!)",
@@ -5055,7 +5056,7 @@
                 }
             ],
             "description": "Twig extension introduceing new blocks to seperate form HTML structure from CSS decorating it and JS enhancing it's functionalities.",
-            "time": "2016-01-06 20:09:12"
+            "time": "2017-08-31 20:50:18"
         },
         {
             "name": "symfony2admingenerator/form-extensions-bundle",
@@ -5068,15 +5069,15 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony2admingenerator/FormExtensionsBundle/zipball/d6cd0861bf111e2dd6c125a58d16beccc8e1138a",
+                "url": "https://api.github.com/repos/symfony2admingenerator/FormExtensionsBundle/zipball/46e0fc9440c13cb0e4efc95f09a24aff67d8e467",
                 "reference": "46e0fc9440c13cb0e4efc95f09a24aff67d8e467",
                 "shasum": ""
             },
             "require": {
                 "symfony/symfony": "~2.8|~3.0",
-                "symfony2admingenerator/form-bundle": "~1.3",
+                "symfony2admingenerator/form-bundle": "~1.4",
                 "twig/extensions": "~1.0",
-                "twig/twig": "~1.23"
+                "twig/twig": "~1.26||~2.0"
             },
             "suggest": {
                 "liip/imagine-bundle": "Apply filters on preview images",
@@ -5110,7 +5111,7 @@
                 }
             ],
             "description": "Add additional form types to symfony2",
-            "time": "2016-07-25 11:02:01"
+            "time": "2017-08-31 21:04:48"
         },
         {
             "name": "symfony2admingenerator/generator-bundle",
@@ -6097,7 +6098,7 @@
     "packages-dev": [
         {
             "name": "symfony/phpunit-bridge",
-            "version": "v2.8.26",
+            "version": "v2.8.27",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",
