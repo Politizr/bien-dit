@@ -807,13 +807,13 @@ class GlobalTools
         if ($visitor) {
             // user is connected
             return false;
-        } elseif (in_array($author->getId(), $userIds)) {
+        } elseif ($author && in_array($author->getId(), $userIds)) {
             // author in list of public users
             return false;
-        } elseif ($author->isWithOperation()) {
+        } elseif ($author && $author->isWithOperation()) {
             // author has subscribe an "OP"
             return false;
-        } elseif ($document->isWithPrivateTag()) {
+        } elseif ($document && $document->isWithPrivateTag()) {
             // document has private tag
             return false;
         } elseif ($mode == 'public') {
