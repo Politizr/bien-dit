@@ -27,6 +27,19 @@ $("body").on("click", "[action='bookmark']", function(e) {
 });
 
 
+// boost question
+$("body").on("click", "[action='boost']", function(e) {
+    // console.log('*** click boost');
+    
+    var targetElement = $(this).closest('.boostBox');
+    var localLoader = $(this).closest('.boostBox').find('.ajaxLoader').first();
+    var uuid = $(this).attr('uuid');
+    var type = $(this).attr('type');
+    var boost = $(this).attr('boost');
+
+    return boostQuestion(targetElement, localLoader, uuid, type, boost);
+});
+
 
 // ******************************************************************* //
 //                            NOTIFICATIONS                            //

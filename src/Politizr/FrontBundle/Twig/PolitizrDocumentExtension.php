@@ -7,6 +7,7 @@ use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\PathConstants;
 use Politizr\Constant\ReputationConstants;
 use Politizr\Constant\TagConstants;
+use Politizr\Constant\DocumentConstants;
 
 use Politizr\Model\PDocumentInterface;
 use Politizr\Model\PDDebate;
@@ -225,6 +226,11 @@ class PolitizrDocumentExtension extends \Twig_Extension
             new \Twig_SimpleFilter(
                 'editDocumentOperation',
                 array($this, 'editDocumentOperation'),
+                array('is_safe' => array('html'), 'needs_environment' => true)
+            ),
+            new \Twig_SimpleFilter(
+                'boostQuestion',
+                array($this, 'boostQuestion'),
                 array('is_safe' => array('html'), 'needs_environment' => true)
             ),
         );
@@ -1230,6 +1236,9 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
+        if (is_string($user)) {
+            $user = null;
+        }
 
         $form = $this->formFactory->create(
             new PDocumentTagTypeType(),
@@ -1262,6 +1271,9 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
+        if (is_string($user)) {
+            $user = null;
+        }
 
         $form = $this->formFactory->create(
             new PDocumentTagFamilyType(),
@@ -1292,6 +1304,9 @@ class PolitizrDocumentExtension extends \Twig_Extension
         // $this->logger->info('$user = '.print_r($document, true));
 
         $user = $document->getUser();
+        if (is_string($user)) {
+            $user = null;
+        }
 
         // get op for user
         $operation = null;
@@ -1356,6 +1371,40 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
         return $html;
     }
+
+   /**
+     * Display boost question
+     *
+     * @param PDocument $subject
+     * @return string
+     */
+    public function boostQuestion(\Twig_Environment $env, PDocumentInterface $document)
+    {
+        // $this->logger->info('*** boostQuestion');
+        // $this->logger->info('$user = '.print_r($document, true));
+
+        $html = null;
+
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        if (is_string($user)) {
+            $user = null;
+        }
+
+        $author = $document->getUser();
+
+        if ($user && $user->getId() == $author->getId() && $document->getWantBoost() == DocumentConstants::WB_NO_RESPONSE) {
+            $html = $env->render(
+                'PolitizrFrontBundle:Document:_boostQuestion.html.twig',
+                array(
+                    'document' => $document
+                )
+            );
+        }
+
+        return $html;
+    }
+
 
     /* ######################################################################################################## */
     /*                                             FONCTIONS                                                    */

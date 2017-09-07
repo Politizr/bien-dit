@@ -16,6 +16,7 @@ services:
             - { name: kernel.event_listener, event: welcome_email }
             - { name: kernel.event_listener, event: idcheck_trace_email }
             - { name: kernel.event_listener, event: direct_message_email }
+            - { name: kernel.event_listener, event: boost_fb_email }
 
     politizr.listener.notification:
         class:      Politizr\FrontBundle\Listener\NotificationListener

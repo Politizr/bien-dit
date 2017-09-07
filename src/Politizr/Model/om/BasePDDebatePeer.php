@@ -42,13 +42,13 @@ abstract class BasePDDebatePeer
     const TM_CLASS = 'Politizr\\Model\\map\\PDDebateTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 29;
+    const NUM_COLUMNS = 30;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 29;
+    const NUM_HYDRATE_COLUMNS = 30;
 
     /** the column name for the id field */
     const ID = 'p_d_debate.id';
@@ -97,6 +97,9 @@ abstract class BasePDDebatePeer
 
     /** the column name for the nb_views field */
     const NB_VIEWS = 'p_d_debate.nb_views';
+
+    /** the column name for the want_boost field */
+    const WANT_BOOST = 'p_d_debate.want_boost';
 
     /** the column name for the published field */
     const PUBLISHED = 'p_d_debate.published';
@@ -156,12 +159,12 @@ abstract class BasePDDebatePeer
      * e.g. PDDebatePeer::$fieldNames[PDDebatePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'PUserId', 'PEOperationId', 'PLCityId', 'PLDepartmentId', 'PLRegionId', 'PLCountryId', 'FbAdId', 'Title', 'FileName', 'Copyright', 'Description', 'NotePos', 'NoteNeg', 'NbViews', 'Published', 'PublishedAt', 'PublishedBy', 'Favorite', 'Online', 'Homepage', 'Moderated', 'ModeratedPartial', 'ModeratedAt', 'IndexedAt', 'CreatedAt', 'UpdatedAt', 'Slug', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'pUserId', 'pEOperationId', 'pLCityId', 'pLDepartmentId', 'pLRegionId', 'pLCountryId', 'fbAdId', 'title', 'fileName', 'copyright', 'description', 'notePos', 'noteNeg', 'nbViews', 'published', 'publishedAt', 'publishedBy', 'favorite', 'online', 'homepage', 'moderated', 'moderatedPartial', 'moderatedAt', 'indexedAt', 'createdAt', 'updatedAt', 'slug', ),
-        BasePeer::TYPE_COLNAME => array (PDDebatePeer::ID, PDDebatePeer::UUID, PDDebatePeer::P_USER_ID, PDDebatePeer::P_E_OPERATION_ID, PDDebatePeer::P_L_CITY_ID, PDDebatePeer::P_L_DEPARTMENT_ID, PDDebatePeer::P_L_REGION_ID, PDDebatePeer::P_L_COUNTRY_ID, PDDebatePeer::FB_AD_ID, PDDebatePeer::TITLE, PDDebatePeer::FILE_NAME, PDDebatePeer::COPYRIGHT, PDDebatePeer::DESCRIPTION, PDDebatePeer::NOTE_POS, PDDebatePeer::NOTE_NEG, PDDebatePeer::NB_VIEWS, PDDebatePeer::PUBLISHED, PDDebatePeer::PUBLISHED_AT, PDDebatePeer::PUBLISHED_BY, PDDebatePeer::FAVORITE, PDDebatePeer::ONLINE, PDDebatePeer::HOMEPAGE, PDDebatePeer::MODERATED, PDDebatePeer::MODERATED_PARTIAL, PDDebatePeer::MODERATED_AT, PDDebatePeer::INDEXED_AT, PDDebatePeer::CREATED_AT, PDDebatePeer::UPDATED_AT, PDDebatePeer::SLUG, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'P_USER_ID', 'P_E_OPERATION_ID', 'P_L_CITY_ID', 'P_L_DEPARTMENT_ID', 'P_L_REGION_ID', 'P_L_COUNTRY_ID', 'FB_AD_ID', 'TITLE', 'FILE_NAME', 'COPYRIGHT', 'DESCRIPTION', 'NOTE_POS', 'NOTE_NEG', 'NB_VIEWS', 'PUBLISHED', 'PUBLISHED_AT', 'PUBLISHED_BY', 'FAVORITE', 'ONLINE', 'HOMEPAGE', 'MODERATED', 'MODERATED_PARTIAL', 'MODERATED_AT', 'INDEXED_AT', 'CREATED_AT', 'UPDATED_AT', 'SLUG', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'p_user_id', 'p_e_operation_id', 'p_l_city_id', 'p_l_department_id', 'p_l_region_id', 'p_l_country_id', 'fb_ad_id', 'title', 'file_name', 'copyright', 'description', 'note_pos', 'note_neg', 'nb_views', 'published', 'published_at', 'published_by', 'favorite', 'online', 'homepage', 'moderated', 'moderated_partial', 'moderated_at', 'indexed_at', 'created_at', 'updated_at', 'slug', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'PUserId', 'PEOperationId', 'PLCityId', 'PLDepartmentId', 'PLRegionId', 'PLCountryId', 'FbAdId', 'Title', 'FileName', 'Copyright', 'Description', 'NotePos', 'NoteNeg', 'NbViews', 'WantBoost', 'Published', 'PublishedAt', 'PublishedBy', 'Favorite', 'Online', 'Homepage', 'Moderated', 'ModeratedPartial', 'ModeratedAt', 'IndexedAt', 'CreatedAt', 'UpdatedAt', 'Slug', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'pUserId', 'pEOperationId', 'pLCityId', 'pLDepartmentId', 'pLRegionId', 'pLCountryId', 'fbAdId', 'title', 'fileName', 'copyright', 'description', 'notePos', 'noteNeg', 'nbViews', 'wantBoost', 'published', 'publishedAt', 'publishedBy', 'favorite', 'online', 'homepage', 'moderated', 'moderatedPartial', 'moderatedAt', 'indexedAt', 'createdAt', 'updatedAt', 'slug', ),
+        BasePeer::TYPE_COLNAME => array (PDDebatePeer::ID, PDDebatePeer::UUID, PDDebatePeer::P_USER_ID, PDDebatePeer::P_E_OPERATION_ID, PDDebatePeer::P_L_CITY_ID, PDDebatePeer::P_L_DEPARTMENT_ID, PDDebatePeer::P_L_REGION_ID, PDDebatePeer::P_L_COUNTRY_ID, PDDebatePeer::FB_AD_ID, PDDebatePeer::TITLE, PDDebatePeer::FILE_NAME, PDDebatePeer::COPYRIGHT, PDDebatePeer::DESCRIPTION, PDDebatePeer::NOTE_POS, PDDebatePeer::NOTE_NEG, PDDebatePeer::NB_VIEWS, PDDebatePeer::WANT_BOOST, PDDebatePeer::PUBLISHED, PDDebatePeer::PUBLISHED_AT, PDDebatePeer::PUBLISHED_BY, PDDebatePeer::FAVORITE, PDDebatePeer::ONLINE, PDDebatePeer::HOMEPAGE, PDDebatePeer::MODERATED, PDDebatePeer::MODERATED_PARTIAL, PDDebatePeer::MODERATED_AT, PDDebatePeer::INDEXED_AT, PDDebatePeer::CREATED_AT, PDDebatePeer::UPDATED_AT, PDDebatePeer::SLUG, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'P_USER_ID', 'P_E_OPERATION_ID', 'P_L_CITY_ID', 'P_L_DEPARTMENT_ID', 'P_L_REGION_ID', 'P_L_COUNTRY_ID', 'FB_AD_ID', 'TITLE', 'FILE_NAME', 'COPYRIGHT', 'DESCRIPTION', 'NOTE_POS', 'NOTE_NEG', 'NB_VIEWS', 'WANT_BOOST', 'PUBLISHED', 'PUBLISHED_AT', 'PUBLISHED_BY', 'FAVORITE', 'ONLINE', 'HOMEPAGE', 'MODERATED', 'MODERATED_PARTIAL', 'MODERATED_AT', 'INDEXED_AT', 'CREATED_AT', 'UPDATED_AT', 'SLUG', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'p_user_id', 'p_e_operation_id', 'p_l_city_id', 'p_l_department_id', 'p_l_region_id', 'p_l_country_id', 'fb_ad_id', 'title', 'file_name', 'copyright', 'description', 'note_pos', 'note_neg', 'nb_views', 'want_boost', 'published', 'published_at', 'published_by', 'favorite', 'online', 'homepage', 'moderated', 'moderated_partial', 'moderated_at', 'indexed_at', 'created_at', 'updated_at', 'slug', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, )
     );
 
     /**
@@ -171,12 +174,12 @@ abstract class BasePDDebatePeer
      * e.g. PDDebatePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'PUserId' => 2, 'PEOperationId' => 3, 'PLCityId' => 4, 'PLDepartmentId' => 5, 'PLRegionId' => 6, 'PLCountryId' => 7, 'FbAdId' => 8, 'Title' => 9, 'FileName' => 10, 'Copyright' => 11, 'Description' => 12, 'NotePos' => 13, 'NoteNeg' => 14, 'NbViews' => 15, 'Published' => 16, 'PublishedAt' => 17, 'PublishedBy' => 18, 'Favorite' => 19, 'Online' => 20, 'Homepage' => 21, 'Moderated' => 22, 'ModeratedPartial' => 23, 'ModeratedAt' => 24, 'IndexedAt' => 25, 'CreatedAt' => 26, 'UpdatedAt' => 27, 'Slug' => 28, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'pUserId' => 2, 'pEOperationId' => 3, 'pLCityId' => 4, 'pLDepartmentId' => 5, 'pLRegionId' => 6, 'pLCountryId' => 7, 'fbAdId' => 8, 'title' => 9, 'fileName' => 10, 'copyright' => 11, 'description' => 12, 'notePos' => 13, 'noteNeg' => 14, 'nbViews' => 15, 'published' => 16, 'publishedAt' => 17, 'publishedBy' => 18, 'favorite' => 19, 'online' => 20, 'homepage' => 21, 'moderated' => 22, 'moderatedPartial' => 23, 'moderatedAt' => 24, 'indexedAt' => 25, 'createdAt' => 26, 'updatedAt' => 27, 'slug' => 28, ),
-        BasePeer::TYPE_COLNAME => array (PDDebatePeer::ID => 0, PDDebatePeer::UUID => 1, PDDebatePeer::P_USER_ID => 2, PDDebatePeer::P_E_OPERATION_ID => 3, PDDebatePeer::P_L_CITY_ID => 4, PDDebatePeer::P_L_DEPARTMENT_ID => 5, PDDebatePeer::P_L_REGION_ID => 6, PDDebatePeer::P_L_COUNTRY_ID => 7, PDDebatePeer::FB_AD_ID => 8, PDDebatePeer::TITLE => 9, PDDebatePeer::FILE_NAME => 10, PDDebatePeer::COPYRIGHT => 11, PDDebatePeer::DESCRIPTION => 12, PDDebatePeer::NOTE_POS => 13, PDDebatePeer::NOTE_NEG => 14, PDDebatePeer::NB_VIEWS => 15, PDDebatePeer::PUBLISHED => 16, PDDebatePeer::PUBLISHED_AT => 17, PDDebatePeer::PUBLISHED_BY => 18, PDDebatePeer::FAVORITE => 19, PDDebatePeer::ONLINE => 20, PDDebatePeer::HOMEPAGE => 21, PDDebatePeer::MODERATED => 22, PDDebatePeer::MODERATED_PARTIAL => 23, PDDebatePeer::MODERATED_AT => 24, PDDebatePeer::INDEXED_AT => 25, PDDebatePeer::CREATED_AT => 26, PDDebatePeer::UPDATED_AT => 27, PDDebatePeer::SLUG => 28, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'P_USER_ID' => 2, 'P_E_OPERATION_ID' => 3, 'P_L_CITY_ID' => 4, 'P_L_DEPARTMENT_ID' => 5, 'P_L_REGION_ID' => 6, 'P_L_COUNTRY_ID' => 7, 'FB_AD_ID' => 8, 'TITLE' => 9, 'FILE_NAME' => 10, 'COPYRIGHT' => 11, 'DESCRIPTION' => 12, 'NOTE_POS' => 13, 'NOTE_NEG' => 14, 'NB_VIEWS' => 15, 'PUBLISHED' => 16, 'PUBLISHED_AT' => 17, 'PUBLISHED_BY' => 18, 'FAVORITE' => 19, 'ONLINE' => 20, 'HOMEPAGE' => 21, 'MODERATED' => 22, 'MODERATED_PARTIAL' => 23, 'MODERATED_AT' => 24, 'INDEXED_AT' => 25, 'CREATED_AT' => 26, 'UPDATED_AT' => 27, 'SLUG' => 28, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'p_user_id' => 2, 'p_e_operation_id' => 3, 'p_l_city_id' => 4, 'p_l_department_id' => 5, 'p_l_region_id' => 6, 'p_l_country_id' => 7, 'fb_ad_id' => 8, 'title' => 9, 'file_name' => 10, 'copyright' => 11, 'description' => 12, 'note_pos' => 13, 'note_neg' => 14, 'nb_views' => 15, 'published' => 16, 'published_at' => 17, 'published_by' => 18, 'favorite' => 19, 'online' => 20, 'homepage' => 21, 'moderated' => 22, 'moderated_partial' => 23, 'moderated_at' => 24, 'indexed_at' => 25, 'created_at' => 26, 'updated_at' => 27, 'slug' => 28, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'PUserId' => 2, 'PEOperationId' => 3, 'PLCityId' => 4, 'PLDepartmentId' => 5, 'PLRegionId' => 6, 'PLCountryId' => 7, 'FbAdId' => 8, 'Title' => 9, 'FileName' => 10, 'Copyright' => 11, 'Description' => 12, 'NotePos' => 13, 'NoteNeg' => 14, 'NbViews' => 15, 'WantBoost' => 16, 'Published' => 17, 'PublishedAt' => 18, 'PublishedBy' => 19, 'Favorite' => 20, 'Online' => 21, 'Homepage' => 22, 'Moderated' => 23, 'ModeratedPartial' => 24, 'ModeratedAt' => 25, 'IndexedAt' => 26, 'CreatedAt' => 27, 'UpdatedAt' => 28, 'Slug' => 29, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'pUserId' => 2, 'pEOperationId' => 3, 'pLCityId' => 4, 'pLDepartmentId' => 5, 'pLRegionId' => 6, 'pLCountryId' => 7, 'fbAdId' => 8, 'title' => 9, 'fileName' => 10, 'copyright' => 11, 'description' => 12, 'notePos' => 13, 'noteNeg' => 14, 'nbViews' => 15, 'wantBoost' => 16, 'published' => 17, 'publishedAt' => 18, 'publishedBy' => 19, 'favorite' => 20, 'online' => 21, 'homepage' => 22, 'moderated' => 23, 'moderatedPartial' => 24, 'moderatedAt' => 25, 'indexedAt' => 26, 'createdAt' => 27, 'updatedAt' => 28, 'slug' => 29, ),
+        BasePeer::TYPE_COLNAME => array (PDDebatePeer::ID => 0, PDDebatePeer::UUID => 1, PDDebatePeer::P_USER_ID => 2, PDDebatePeer::P_E_OPERATION_ID => 3, PDDebatePeer::P_L_CITY_ID => 4, PDDebatePeer::P_L_DEPARTMENT_ID => 5, PDDebatePeer::P_L_REGION_ID => 6, PDDebatePeer::P_L_COUNTRY_ID => 7, PDDebatePeer::FB_AD_ID => 8, PDDebatePeer::TITLE => 9, PDDebatePeer::FILE_NAME => 10, PDDebatePeer::COPYRIGHT => 11, PDDebatePeer::DESCRIPTION => 12, PDDebatePeer::NOTE_POS => 13, PDDebatePeer::NOTE_NEG => 14, PDDebatePeer::NB_VIEWS => 15, PDDebatePeer::WANT_BOOST => 16, PDDebatePeer::PUBLISHED => 17, PDDebatePeer::PUBLISHED_AT => 18, PDDebatePeer::PUBLISHED_BY => 19, PDDebatePeer::FAVORITE => 20, PDDebatePeer::ONLINE => 21, PDDebatePeer::HOMEPAGE => 22, PDDebatePeer::MODERATED => 23, PDDebatePeer::MODERATED_PARTIAL => 24, PDDebatePeer::MODERATED_AT => 25, PDDebatePeer::INDEXED_AT => 26, PDDebatePeer::CREATED_AT => 27, PDDebatePeer::UPDATED_AT => 28, PDDebatePeer::SLUG => 29, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'P_USER_ID' => 2, 'P_E_OPERATION_ID' => 3, 'P_L_CITY_ID' => 4, 'P_L_DEPARTMENT_ID' => 5, 'P_L_REGION_ID' => 6, 'P_L_COUNTRY_ID' => 7, 'FB_AD_ID' => 8, 'TITLE' => 9, 'FILE_NAME' => 10, 'COPYRIGHT' => 11, 'DESCRIPTION' => 12, 'NOTE_POS' => 13, 'NOTE_NEG' => 14, 'NB_VIEWS' => 15, 'WANT_BOOST' => 16, 'PUBLISHED' => 17, 'PUBLISHED_AT' => 18, 'PUBLISHED_BY' => 19, 'FAVORITE' => 20, 'ONLINE' => 21, 'HOMEPAGE' => 22, 'MODERATED' => 23, 'MODERATED_PARTIAL' => 24, 'MODERATED_AT' => 25, 'INDEXED_AT' => 26, 'CREATED_AT' => 27, 'UPDATED_AT' => 28, 'SLUG' => 29, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'p_user_id' => 2, 'p_e_operation_id' => 3, 'p_l_city_id' => 4, 'p_l_department_id' => 5, 'p_l_region_id' => 6, 'p_l_country_id' => 7, 'fb_ad_id' => 8, 'title' => 9, 'file_name' => 10, 'copyright' => 11, 'description' => 12, 'note_pos' => 13, 'note_neg' => 14, 'nb_views' => 15, 'want_boost' => 16, 'published' => 17, 'published_at' => 18, 'published_by' => 19, 'favorite' => 20, 'online' => 21, 'homepage' => 22, 'moderated' => 23, 'moderated_partial' => 24, 'moderated_at' => 25, 'indexed_at' => 26, 'created_at' => 27, 'updated_at' => 28, 'slug' => 29, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, )
     );
 
     /**
@@ -266,6 +269,7 @@ abstract class BasePDDebatePeer
             $criteria->addSelectColumn(PDDebatePeer::NOTE_POS);
             $criteria->addSelectColumn(PDDebatePeer::NOTE_NEG);
             $criteria->addSelectColumn(PDDebatePeer::NB_VIEWS);
+            $criteria->addSelectColumn(PDDebatePeer::WANT_BOOST);
             $criteria->addSelectColumn(PDDebatePeer::PUBLISHED);
             $criteria->addSelectColumn(PDDebatePeer::PUBLISHED_AT);
             $criteria->addSelectColumn(PDDebatePeer::PUBLISHED_BY);
@@ -296,6 +300,7 @@ abstract class BasePDDebatePeer
             $criteria->addSelectColumn($alias . '.note_pos');
             $criteria->addSelectColumn($alias . '.note_neg');
             $criteria->addSelectColumn($alias . '.nb_views');
+            $criteria->addSelectColumn($alias . '.want_boost');
             $criteria->addSelectColumn($alias . '.published');
             $criteria->addSelectColumn($alias . '.published_at');
             $criteria->addSelectColumn($alias . '.published_by');

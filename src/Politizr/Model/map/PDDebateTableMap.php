@@ -58,6 +58,7 @@ class PDDebateTableMap extends TableMap
         $this->addColumn('note_pos', 'NotePos', 'INTEGER', false, null, 0);
         $this->addColumn('note_neg', 'NoteNeg', 'INTEGER', false, null, 0);
         $this->addColumn('nb_views', 'NbViews', 'INTEGER', false, null, null);
+        $this->addColumn('want_boost', 'WantBoost', 'INTEGER', false, null, 0);
         $this->addColumn('published', 'Published', 'BOOLEAN', false, 1, null);
         $this->addColumn('published_at', 'PublishedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('published_by', 'PublishedBy', 'VARCHAR', false, 300, null);

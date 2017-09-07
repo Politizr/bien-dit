@@ -50,6 +50,8 @@ params:
             label:          Description
         nb_views:
             label:          Nombre de vues
+        want_boost:
+            label:          Boost demandé
         note_pos:
             label:          Notes +
         note_neg:
@@ -97,7 +99,7 @@ builders:
                             published:          0
             display:                            [ file_name, id, p_user_id, p_e_operation, p_l_city_id, p_l_department_id, p_l_region_id, title, count_reactions, homepage, published, published_at, created_at ]
             filtersMode:                        modal
-            filters:                            [ id, uuid, p_user_id, p_e_operation, p_l_department, p_l_region, p_l_country, title, online, homepage, published, created_at, published_at ]
+            filters:                            [ id, uuid, p_user_id, p_e_operation, p_l_department, p_l_region, p_l_country, title, online, homepage, published, want_boost, created_at, published_at ]
             fields:
                 count_reactions:
                     label:                      Réponses
@@ -178,7 +180,7 @@ builders:
                     "Identifiants":             [ [ id, uuid, slug ] ]
                     "En ligne":                 [ online ]
                     "Notification":             [ block_notifications ]
-                    "Mise en avant":            [ [ homepage, fb_ad_id ] ]
+                    "Mise en avant":            [ [ want_boost ], [ homepage, fb_ad_id ] ]
                     "Dates":                    [ [ created_at, updated_at ], [ indexed_at ] ]
             fields:
                 block_file_name:
@@ -284,11 +286,13 @@ builders:
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
                     "En ligne":                 [ online ]
-                    "Mise en avant":            [ [ homepage, fb_ad_id ] ]
+                    "Mise en avant":            [ [ block_want_boost ], [ homepage, fb_ad_id ] ]
                     "Dates":                    [ [ created_at, updated_at ], [ indexed_at ] ]
                 "Front":
                     "Rendu":                    [ block_front ]
             fields:
+                block_want_boost:
+                    label:                      "Boost demandé"
                 block_file_name:
                     label:                      "Image"
                 block_p_user:

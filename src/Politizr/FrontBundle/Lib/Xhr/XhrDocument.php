@@ -15,6 +15,7 @@ use Politizr\Constant\PathConstants;
 use Politizr\Constant\ListingConstants;
 use Politizr\Constant\TagConstants;
 use Politizr\Constant\LocalizationConstants;
+use Politizr\Constant\DocumentConstants;
 
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDReaction;
@@ -1863,6 +1864,54 @@ class XhrDocument
                 'comments' => $comments,
                 'nbEmotions' => $nbEmotions,
                 'nbShares' => $nbShares,
+            )
+        );
+
+        return array(
+            'html' => $html,
+        );
+    }
+
+
+    /**
+     * Boost question
+     * code beta
+     */
+    public function boostQuestion(Request $request)
+    {
+        // $this->logger->info('*** boostQuestion');
+        
+        // Request arguments
+        $uuid = $request->get('uuid');
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
+        $type = $request->get('type');
+        // $this->logger->info('$type = ' . print_r($type, true));
+        $boost = $request->get('boost');
+        // $this->logger->info('$boost = ' . print_r($boost, true));
+
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+
+        if ($type == ObjectTypeConstants::TYPE_DEBATE) {
+            $document = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
+        } elseif ($type == ObjectTypeConstants::TYPE_REACTION) {
+            $document = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
+        } else {
+            throw new InconsistentDataException(sprintf('Object type %s not managed', $document->getType()));
+        }
+
+        $document->setWantBoost($boost);
+        $document->save();
+
+        if ($boost == DocumentConstants::WB_OK) {
+            $event = new GenericEvent($document);
+            $dispatcher =  $this->eventDispatcher->dispatch('boost_fb_email', $event);
+        }
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Document:_boostQuestionResponse.html.twig',
+            array(
+                'boost' => $boost
             )
         );
 

@@ -137,6 +137,13 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
     protected $nb_views;
 
     /**
+     * The value for the want_boost field.
+     * Note: this column has a database default value of: 0
+     * @var        int
+     */
+    protected $want_boost;
+
+    /**
      * The value for the published field.
      * @var        boolean
      */
@@ -250,6 +257,7 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
     {
         $this->note_pos = 0;
         $this->note_neg = 0;
+        $this->want_boost = 0;
     }
 
     /**
@@ -436,6 +444,17 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
     {
 
         return $this->nb_views;
+    }
+
+    /**
+     * Get the [want_boost] column value.
+     *
+     * @return int
+     */
+    public function getWantBoost()
+    {
+
+        return $this->want_boost;
     }
 
     /**
@@ -1103,6 +1122,27 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
     } // setNbViews()
 
     /**
+     * Set the value of [want_boost] column.
+     *
+     * @param  int $v new value
+     * @return PDDebateArchive The current object (for fluent API support)
+     */
+    public function setWantBoost($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->want_boost !== $v) {
+            $this->want_boost = $v;
+            $this->modifiedColumns[] = PDDebateArchivePeer::WANT_BOOST;
+        }
+
+
+        return $this;
+    } // setWantBoost()
+
+    /**
      * Sets the value of the [published] column.
      * Non-boolean arguments are converted using the following rules:
      *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
@@ -1474,6 +1514,10 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
                 return false;
             }
 
+            if ($this->want_boost !== 0) {
+                return false;
+            }
+
         // otherwise, everything was equal, so return true
         return true;
     } // hasOnlyDefaultValues()
@@ -1512,20 +1556,21 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
             $this->note_pos = ($row[$startcol + 13] !== null) ? (int) $row[$startcol + 13] : null;
             $this->note_neg = ($row[$startcol + 14] !== null) ? (int) $row[$startcol + 14] : null;
             $this->nb_views = ($row[$startcol + 15] !== null) ? (int) $row[$startcol + 15] : null;
-            $this->published = ($row[$startcol + 16] !== null) ? (boolean) $row[$startcol + 16] : null;
-            $this->published_at = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
-            $this->published_by = ($row[$startcol + 18] !== null) ? (string) $row[$startcol + 18] : null;
-            $this->favorite = ($row[$startcol + 19] !== null) ? (boolean) $row[$startcol + 19] : null;
-            $this->online = ($row[$startcol + 20] !== null) ? (boolean) $row[$startcol + 20] : null;
-            $this->homepage = ($row[$startcol + 21] !== null) ? (boolean) $row[$startcol + 21] : null;
-            $this->moderated = ($row[$startcol + 22] !== null) ? (boolean) $row[$startcol + 22] : null;
-            $this->moderated_partial = ($row[$startcol + 23] !== null) ? (boolean) $row[$startcol + 23] : null;
-            $this->moderated_at = ($row[$startcol + 24] !== null) ? (string) $row[$startcol + 24] : null;
-            $this->indexed_at = ($row[$startcol + 25] !== null) ? (string) $row[$startcol + 25] : null;
-            $this->created_at = ($row[$startcol + 26] !== null) ? (string) $row[$startcol + 26] : null;
-            $this->updated_at = ($row[$startcol + 27] !== null) ? (string) $row[$startcol + 27] : null;
-            $this->slug = ($row[$startcol + 28] !== null) ? (string) $row[$startcol + 28] : null;
-            $this->archived_at = ($row[$startcol + 29] !== null) ? (string) $row[$startcol + 29] : null;
+            $this->want_boost = ($row[$startcol + 16] !== null) ? (int) $row[$startcol + 16] : null;
+            $this->published = ($row[$startcol + 17] !== null) ? (boolean) $row[$startcol + 17] : null;
+            $this->published_at = ($row[$startcol + 18] !== null) ? (string) $row[$startcol + 18] : null;
+            $this->published_by = ($row[$startcol + 19] !== null) ? (string) $row[$startcol + 19] : null;
+            $this->favorite = ($row[$startcol + 20] !== null) ? (boolean) $row[$startcol + 20] : null;
+            $this->online = ($row[$startcol + 21] !== null) ? (boolean) $row[$startcol + 21] : null;
+            $this->homepage = ($row[$startcol + 22] !== null) ? (boolean) $row[$startcol + 22] : null;
+            $this->moderated = ($row[$startcol + 23] !== null) ? (boolean) $row[$startcol + 23] : null;
+            $this->moderated_partial = ($row[$startcol + 24] !== null) ? (boolean) $row[$startcol + 24] : null;
+            $this->moderated_at = ($row[$startcol + 25] !== null) ? (string) $row[$startcol + 25] : null;
+            $this->indexed_at = ($row[$startcol + 26] !== null) ? (string) $row[$startcol + 26] : null;
+            $this->created_at = ($row[$startcol + 27] !== null) ? (string) $row[$startcol + 27] : null;
+            $this->updated_at = ($row[$startcol + 28] !== null) ? (string) $row[$startcol + 28] : null;
+            $this->slug = ($row[$startcol + 29] !== null) ? (string) $row[$startcol + 29] : null;
+            $this->archived_at = ($row[$startcol + 30] !== null) ? (string) $row[$startcol + 30] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -1535,7 +1580,7 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 30; // 30 = PDDebateArchivePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 31; // 31 = PDDebateArchivePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PDDebateArchive object", $e);
@@ -1791,6 +1836,9 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PDDebateArchivePeer::NB_VIEWS)) {
             $modifiedColumns[':p' . $index++]  = '`nb_views`';
         }
+        if ($this->isColumnModified(PDDebateArchivePeer::WANT_BOOST)) {
+            $modifiedColumns[':p' . $index++]  = '`want_boost`';
+        }
         if ($this->isColumnModified(PDDebateArchivePeer::PUBLISHED)) {
             $modifiedColumns[':p' . $index++]  = '`published`';
         }
@@ -1891,6 +1939,9 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
                         break;
                     case '`nb_views`':
                         $stmt->bindValue($identifier, $this->nb_views, PDO::PARAM_INT);
+                        break;
+                    case '`want_boost`':
+                        $stmt->bindValue($identifier, $this->want_boost, PDO::PARAM_INT);
                         break;
                     case '`published`':
                         $stmt->bindValue($identifier, (int) $this->published, PDO::PARAM_INT);
@@ -2036,45 +2087,48 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
                 return $this->getNbViews();
                 break;
             case 16:
-                return $this->getPublished();
+                return $this->getWantBoost();
                 break;
             case 17:
-                return $this->getPublishedAt();
+                return $this->getPublished();
                 break;
             case 18:
-                return $this->getPublishedBy();
+                return $this->getPublishedAt();
                 break;
             case 19:
-                return $this->getFavorite();
+                return $this->getPublishedBy();
                 break;
             case 20:
-                return $this->getOnline();
+                return $this->getFavorite();
                 break;
             case 21:
-                return $this->getHomepage();
+                return $this->getOnline();
                 break;
             case 22:
-                return $this->getModerated();
+                return $this->getHomepage();
                 break;
             case 23:
-                return $this->getModeratedPartial();
+                return $this->getModerated();
                 break;
             case 24:
-                return $this->getModeratedAt();
+                return $this->getModeratedPartial();
                 break;
             case 25:
-                return $this->getIndexedAt();
+                return $this->getModeratedAt();
                 break;
             case 26:
-                return $this->getCreatedAt();
+                return $this->getIndexedAt();
                 break;
             case 27:
-                return $this->getUpdatedAt();
+                return $this->getCreatedAt();
                 break;
             case 28:
-                return $this->getSlug();
+                return $this->getUpdatedAt();
                 break;
             case 29:
+                return $this->getSlug();
+                break;
+            case 30:
                 return $this->getArchivedAt();
                 break;
             default:
@@ -2121,20 +2175,21 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
             $keys[13] => $this->getNotePos(),
             $keys[14] => $this->getNoteNeg(),
             $keys[15] => $this->getNbViews(),
-            $keys[16] => $this->getPublished(),
-            $keys[17] => $this->getPublishedAt(),
-            $keys[18] => $this->getPublishedBy(),
-            $keys[19] => $this->getFavorite(),
-            $keys[20] => $this->getOnline(),
-            $keys[21] => $this->getHomepage(),
-            $keys[22] => $this->getModerated(),
-            $keys[23] => $this->getModeratedPartial(),
-            $keys[24] => $this->getModeratedAt(),
-            $keys[25] => $this->getIndexedAt(),
-            $keys[26] => $this->getCreatedAt(),
-            $keys[27] => $this->getUpdatedAt(),
-            $keys[28] => $this->getSlug(),
-            $keys[29] => $this->getArchivedAt(),
+            $keys[16] => $this->getWantBoost(),
+            $keys[17] => $this->getPublished(),
+            $keys[18] => $this->getPublishedAt(),
+            $keys[19] => $this->getPublishedBy(),
+            $keys[20] => $this->getFavorite(),
+            $keys[21] => $this->getOnline(),
+            $keys[22] => $this->getHomepage(),
+            $keys[23] => $this->getModerated(),
+            $keys[24] => $this->getModeratedPartial(),
+            $keys[25] => $this->getModeratedAt(),
+            $keys[26] => $this->getIndexedAt(),
+            $keys[27] => $this->getCreatedAt(),
+            $keys[28] => $this->getUpdatedAt(),
+            $keys[29] => $this->getSlug(),
+            $keys[30] => $this->getArchivedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -2223,45 +2278,48 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
                 $this->setNbViews($value);
                 break;
             case 16:
-                $this->setPublished($value);
+                $this->setWantBoost($value);
                 break;
             case 17:
-                $this->setPublishedAt($value);
+                $this->setPublished($value);
                 break;
             case 18:
-                $this->setPublishedBy($value);
+                $this->setPublishedAt($value);
                 break;
             case 19:
-                $this->setFavorite($value);
+                $this->setPublishedBy($value);
                 break;
             case 20:
-                $this->setOnline($value);
+                $this->setFavorite($value);
                 break;
             case 21:
-                $this->setHomepage($value);
+                $this->setOnline($value);
                 break;
             case 22:
-                $this->setModerated($value);
+                $this->setHomepage($value);
                 break;
             case 23:
-                $this->setModeratedPartial($value);
+                $this->setModerated($value);
                 break;
             case 24:
-                $this->setModeratedAt($value);
+                $this->setModeratedPartial($value);
                 break;
             case 25:
-                $this->setIndexedAt($value);
+                $this->setModeratedAt($value);
                 break;
             case 26:
-                $this->setCreatedAt($value);
+                $this->setIndexedAt($value);
                 break;
             case 27:
-                $this->setUpdatedAt($value);
+                $this->setCreatedAt($value);
                 break;
             case 28:
-                $this->setSlug($value);
+                $this->setUpdatedAt($value);
                 break;
             case 29:
+                $this->setSlug($value);
+                break;
+            case 30:
                 $this->setArchivedAt($value);
                 break;
         } // switch()
@@ -2304,20 +2362,21 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
         if (array_key_exists($keys[13], $arr)) $this->setNotePos($arr[$keys[13]]);
         if (array_key_exists($keys[14], $arr)) $this->setNoteNeg($arr[$keys[14]]);
         if (array_key_exists($keys[15], $arr)) $this->setNbViews($arr[$keys[15]]);
-        if (array_key_exists($keys[16], $arr)) $this->setPublished($arr[$keys[16]]);
-        if (array_key_exists($keys[17], $arr)) $this->setPublishedAt($arr[$keys[17]]);
-        if (array_key_exists($keys[18], $arr)) $this->setPublishedBy($arr[$keys[18]]);
-        if (array_key_exists($keys[19], $arr)) $this->setFavorite($arr[$keys[19]]);
-        if (array_key_exists($keys[20], $arr)) $this->setOnline($arr[$keys[20]]);
-        if (array_key_exists($keys[21], $arr)) $this->setHomepage($arr[$keys[21]]);
-        if (array_key_exists($keys[22], $arr)) $this->setModerated($arr[$keys[22]]);
-        if (array_key_exists($keys[23], $arr)) $this->setModeratedPartial($arr[$keys[23]]);
-        if (array_key_exists($keys[24], $arr)) $this->setModeratedAt($arr[$keys[24]]);
-        if (array_key_exists($keys[25], $arr)) $this->setIndexedAt($arr[$keys[25]]);
-        if (array_key_exists($keys[26], $arr)) $this->setCreatedAt($arr[$keys[26]]);
-        if (array_key_exists($keys[27], $arr)) $this->setUpdatedAt($arr[$keys[27]]);
-        if (array_key_exists($keys[28], $arr)) $this->setSlug($arr[$keys[28]]);
-        if (array_key_exists($keys[29], $arr)) $this->setArchivedAt($arr[$keys[29]]);
+        if (array_key_exists($keys[16], $arr)) $this->setWantBoost($arr[$keys[16]]);
+        if (array_key_exists($keys[17], $arr)) $this->setPublished($arr[$keys[17]]);
+        if (array_key_exists($keys[18], $arr)) $this->setPublishedAt($arr[$keys[18]]);
+        if (array_key_exists($keys[19], $arr)) $this->setPublishedBy($arr[$keys[19]]);
+        if (array_key_exists($keys[20], $arr)) $this->setFavorite($arr[$keys[20]]);
+        if (array_key_exists($keys[21], $arr)) $this->setOnline($arr[$keys[21]]);
+        if (array_key_exists($keys[22], $arr)) $this->setHomepage($arr[$keys[22]]);
+        if (array_key_exists($keys[23], $arr)) $this->setModerated($arr[$keys[23]]);
+        if (array_key_exists($keys[24], $arr)) $this->setModeratedPartial($arr[$keys[24]]);
+        if (array_key_exists($keys[25], $arr)) $this->setModeratedAt($arr[$keys[25]]);
+        if (array_key_exists($keys[26], $arr)) $this->setIndexedAt($arr[$keys[26]]);
+        if (array_key_exists($keys[27], $arr)) $this->setCreatedAt($arr[$keys[27]]);
+        if (array_key_exists($keys[28], $arr)) $this->setUpdatedAt($arr[$keys[28]]);
+        if (array_key_exists($keys[29], $arr)) $this->setSlug($arr[$keys[29]]);
+        if (array_key_exists($keys[30], $arr)) $this->setArchivedAt($arr[$keys[30]]);
     }
 
     /**
@@ -2345,6 +2404,7 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PDDebateArchivePeer::NOTE_POS)) $criteria->add(PDDebateArchivePeer::NOTE_POS, $this->note_pos);
         if ($this->isColumnModified(PDDebateArchivePeer::NOTE_NEG)) $criteria->add(PDDebateArchivePeer::NOTE_NEG, $this->note_neg);
         if ($this->isColumnModified(PDDebateArchivePeer::NB_VIEWS)) $criteria->add(PDDebateArchivePeer::NB_VIEWS, $this->nb_views);
+        if ($this->isColumnModified(PDDebateArchivePeer::WANT_BOOST)) $criteria->add(PDDebateArchivePeer::WANT_BOOST, $this->want_boost);
         if ($this->isColumnModified(PDDebateArchivePeer::PUBLISHED)) $criteria->add(PDDebateArchivePeer::PUBLISHED, $this->published);
         if ($this->isColumnModified(PDDebateArchivePeer::PUBLISHED_AT)) $criteria->add(PDDebateArchivePeer::PUBLISHED_AT, $this->published_at);
         if ($this->isColumnModified(PDDebateArchivePeer::PUBLISHED_BY)) $criteria->add(PDDebateArchivePeer::PUBLISHED_BY, $this->published_by);
@@ -2437,6 +2497,7 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
         $copyObj->setNotePos($this->getNotePos());
         $copyObj->setNoteNeg($this->getNoteNeg());
         $copyObj->setNbViews($this->getNbViews());
+        $copyObj->setWantBoost($this->getWantBoost());
         $copyObj->setPublished($this->getPublished());
         $copyObj->setPublishedAt($this->getPublishedAt());
         $copyObj->setPublishedBy($this->getPublishedBy());
@@ -2518,6 +2579,7 @@ abstract class BasePDDebateArchive extends BaseObject implements Persistent
         $this->note_pos = null;
         $this->note_neg = null;
         $this->nb_views = null;
+        $this->want_boost = null;
         $this->published = null;
         $this->published_at = null;
         $this->published_by = null;
