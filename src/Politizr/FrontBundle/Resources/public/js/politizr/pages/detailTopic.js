@@ -1,0 +1,5 @@
+// beta
+$(function() {
+    publicationsByTopicListing();
+    stickySidebar();
+});

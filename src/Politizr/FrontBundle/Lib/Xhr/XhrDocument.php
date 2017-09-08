@@ -1630,6 +1630,7 @@ class XhrDocument
 
         $publications = $this->documentService->getPublicationsByFilters(
             $geoUuid,
+            null,
             $type,
             $filterPublication,
             $filterProfile,

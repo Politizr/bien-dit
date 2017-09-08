@@ -25,6 +25,7 @@ use Politizr\Model\PUReputationQuery;
 use Politizr\Model\PTagQuery;
 use Politizr\Model\PUFollowDDQuery;
 use Politizr\Model\PUFollowUQuery;
+use Politizr\Model\PCTopicQuery;
 
 /**
  * Functional service for document management.
@@ -147,6 +148,7 @@ class DocumentService
      * beta
      *
      * @param string $geoUuid
+     * @param string $topicUuid
      * @param string $type
      * @param string $filterPublication
      * @param string $filterProfile
@@ -157,7 +159,8 @@ class DocumentService
      * @return PropelCollection[Publication]
      */
     public function getPublicationsByFilters(
-        $geoUuid,
+        $geoUuid = null,
+        $topicUuid = null,
         $type,
         $filterPublication = ListingConstants::FILTER_KEYWORD_ALL_PUBLICATIONS,
         $filterProfile = ListingConstants::FILTER_KEYWORD_ALL_USERS,
@@ -186,6 +189,14 @@ class DocumentService
 
             $inQueryCityIds = $this->globalTools->getInQuery($cityIds);
             $inQueryDepartmentIds = $this->globalTools->getInQuery($departmentIds);
+        }
+
+        $topicId = null;
+        if ($topicUuid) {
+            $topic = PCTopicQuery::create()->filterByfindOne();
+            if ($topic) {
+                $topicId = $topic->getId();
+            }
         }
 
         // "most views" activity filters only applied to debates and/or reactions:
@@ -234,6 +245,7 @@ class DocumentService
             $inQueryDepartmentIds,
             $regionId,
             $countryId,
+            $topicId,
             $filterPublication,
             $filterProfile,
             $filterActivity,

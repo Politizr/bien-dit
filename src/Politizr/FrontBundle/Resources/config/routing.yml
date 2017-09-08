@@ -31,6 +31,11 @@ User:
 Listing:
     resource: "./routing/Listing.yml"
 
+# Groupes
+Circle:
+    resource: "./routing/Circle.yml"
+
+
 # Feed RSS
 RssFeed:
     pattern:  /rss

@@ -157,13 +157,14 @@ LIMIT :offset, :limit
      * @param string $inQueryDepartmentIds
      * @param int $regionId
      * @param int $countryId
+     * @param int $topicId
      * @param string $filterPublication
      * @param string $filterProfile
      * @param string $filterActivity
      * @param string $filterDate
      * @return string
      */
-    private function createPublicationsByFiltersRawSql($inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId, $filterPublication, $filterProfile, $filterActivity, $filterDate)
+    private function createPublicationsByFiltersRawSql($inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId, $topicId, $filterPublication, $filterProfile, $filterActivity, $filterDate)
     {
         // Geo subrequest
         $subRequestCityIds1 = null;
@@ -238,6 +239,7 @@ FROM p_d_debate
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1 
+    AND p_d_debate.p_c_topic_id IS NULL 
     $subRequestCityIds1
     $subRequestDepartmentIds1
     $subRequestRegionIds1
@@ -257,6 +259,7 @@ WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
     AND p_d_reaction.tree_level > 0
+    AND p_d_reaction.p_c_topic_id IS NULL 
     $subRequestCityIds2
     $subRequestDepartmentIds2
     $subRequestRegionIds2
@@ -276,6 +279,7 @@ FROM p_d_d_comment
         ON p_user.id = p_d_d_comment.p_user_id
 WHERE
     p_d_d_comment.online = 1
+    AND p_d_debate.p_c_topic_id IS NULL 
     $subRequestCityIds1
     $subRequestDepartmentIds1
     $subRequestRegionIds1
@@ -295,6 +299,7 @@ FROM p_d_r_comment
         ON p_user.id = p_d_r_comment.p_user_id
 WHERE
     p_d_r_comment.online = 1
+    AND p_d_reaction.p_c_topic_id IS NULL 
     $subRequestCityIds2
     $subRequestDepartmentIds2
     $subRequestRegionIds2
@@ -337,11 +342,12 @@ LIMIT :offset, :limit
      * @param string $inQueryDepartmentIds
      * @param int $regionId
      * @param int $countryId
+     * @param int $topicId
      * @param string $filterProfile
      * @param string $filterDate
      * @return string
      */
-    private function createPublicationsByFiltersMostFollowedRawSql($inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId, $filterProfile, $filterDate)
+    private function createPublicationsByFiltersMostFollowedRawSql($inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId, $topicId, $filterProfile, $filterDate)
     {
         // Geo subrequest
         $subRequestCityIds1 = null;
@@ -401,6 +407,7 @@ FROM p_d_debate
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1 
+    AND p_d_debate.p_c_topic_id IS NULL 
     $subRequestCityIds1
     $subRequestDepartmentIds1
     $subRequestRegionIds1
@@ -427,12 +434,13 @@ LIMIT :offset, :limit
      * @param string $inQueryDepartmentIds
      * @param int $regionId
      * @param int $countryId
+     * @param int $topicId
      * @param string $filterPublication
      * @param string $filterProfile
      * @param string $filterDate
      * @return string
      */
-    private function createPublicationsByFiltersMostReactionsRawSql($inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId, $filterPublication, $filterProfile, $filterDate)
+    private function createPublicationsByFiltersMostReactionsRawSql($inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId, $topicId, $filterPublication, $filterProfile, $filterDate)
     {
         // Geo subrequest
         $subRequestCityIds1 = null;
@@ -501,6 +509,7 @@ FROM p_d_debate
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1
+    AND p_d_debate.p_c_topic_id IS NULL 
     AND p_d_reaction_child.published = 1
     AND p_d_reaction_child.online = true
     $subRequestCityIds1
@@ -523,6 +532,7 @@ FROM p_d_reaction
 WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
+    AND p_d_reaction.p_c_topic_id IS NULL 
     AND p_d_reaction.tree_level > 0
     AND p_d_reaction_child.published = 1
     AND p_d_reaction_child.online = true
@@ -566,12 +576,13 @@ LIMIT :offset, :limit
      * @param string $inQueryDepartmentIds
      * @param int $regionId
      * @param int $countryId
+     * @param int $topicId
      * @param string $filterPublication
      * @param string $filterProfile
      * @param string $filterDate
      * @return string
      */
-    private function createPublicationsByFiltersMostCommentsRawSql($inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId, $filterPublication, $filterProfile, $filterDate)
+    private function createPublicationsByFiltersMostCommentsRawSql($inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId, $topicId, $filterPublication, $filterProfile, $filterDate)
     {
         // Geo subrequest
         $subRequestCityIds1 = null;
@@ -636,6 +647,7 @@ FROM p_d_debate
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1
+    AND p_d_debate.p_c_topic_id IS NULL 
     AND p_d_d_comment.online = true
     $subRequestCityIds1
     $subRequestDepartmentIds1
@@ -657,6 +669,7 @@ FROM p_d_reaction
 WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
+    AND p_d_reaction.p_c_topic_id IS NULL 
     AND p_d_reaction.tree_level > 0
     AND p_d_r_comment.online = true
     $subRequestCityIds2
@@ -1338,6 +1351,7 @@ GROUP BY p_d_debate_id
      * @param string $inQueryDepartmentIds
      * @param int $regionId
      * @param int $countryId
+     * @param int $topicId
      * @param string $filterPublication
      * @param string $filterProfile
      * @param string $filterActivity
@@ -1346,13 +1360,25 @@ GROUP BY p_d_debate_id
      * @param integer $limit
      * @return PropelCollection
      */
-    public function generatePublicationsByFiltersPaginated($inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId, $filterPublication, $filterProfile, $filterActivity, $filterDate, $offset, $limit)
-    {
-        $this->logger->info('*** generatePublicationsByFiltersPaginated');
-        $this->logger->info('$inQueryCityIds = ' . print_r($inQueryCityIds, true));
-        $this->logger->info('$inQueryDepartmentIds = ' . print_r($inQueryDepartmentIds, true));
-        $this->logger->info('$regionId = ' . print_r($regionId, true));
-        $this->logger->info('$countryId = ' . print_r($countryId, true));
+    public function generatePublicationsByFiltersPaginated(
+        $inQueryCityIds,
+        $inQueryDepartmentIds,
+        $regionId,
+        $countryId,
+        $topicId,
+        $filterPublication,
+        $filterProfile,
+        $filterActivity,
+        $filterDate,
+        $offset,
+        $limit
+    ) {
+        // $this->logger->info('*** generatePublicationsByFiltersPaginated');
+        // $this->logger->info('$inQueryCityIds = ' . print_r($inQueryCityIds, true));
+        // $this->logger->info('$inQueryDepartmentIds = ' . print_r($inQueryDepartmentIds, true));
+        // $this->logger->info('$regionId = ' . print_r($regionId, true));
+        // $this->logger->info('$countryId = ' . print_r($countryId, true));
+        // $this->logger->info('$topicId = ' . print_r($topicId, true));
         // $this->logger->info('$filterPublication = ' . print_r($filterPublication, true));
         // $this->logger->info('$filterProfile = ' . print_r($filterProfile, true));
         // $this->logger->info('$filterActivity = ' . print_r($filterActivity, true));
@@ -1364,13 +1390,13 @@ GROUP BY p_d_debate_id
 
         // special request construction for "most followed" / "most reactions" / "most comments" filters
         if ($filterActivity == ListingConstants::ORDER_BY_KEYWORD_MOST_FOLLOWED) {
-            $stmt = $con->prepare($this->createPublicationsByFiltersMostFollowedRawSql($inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId, $filterProfile, $filterDate));
+            $stmt = $con->prepare($this->createPublicationsByFiltersMostFollowedRawSql($inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId, $topicId, $filterProfile, $filterDate));
         } elseif ($filterActivity == ListingConstants::ORDER_BY_KEYWORD_MOST_REACTIONS) {
-            $stmt = $con->prepare($this->createPublicationsByFiltersMostReactionsRawSql($inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId, $filterPublication, $filterProfile, $filterDate));
+            $stmt = $con->prepare($this->createPublicationsByFiltersMostReactionsRawSql($inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId, $topicId, $filterPublication, $filterProfile, $filterDate));
         } elseif ($filterActivity == ListingConstants::ORDER_BY_KEYWORD_MOST_COMMENTS) {
-            $stmt = $con->prepare($this->createPublicationsByFiltersMostCommentsRawSql($inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId, $filterPublication, $filterProfile, $filterDate));
+            $stmt = $con->prepare($this->createPublicationsByFiltersMostCommentsRawSql($inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId, $topicId, $filterPublication, $filterProfile, $filterDate));
         } else {
-            $stmt = $con->prepare($this->createPublicationsByFiltersRawSql($inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId, $filterPublication, $filterProfile, $filterActivity, $filterDate));
+            $stmt = $con->prepare($this->createPublicationsByFiltersRawSql($inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId, $topicId, $filterPublication, $filterProfile, $filterActivity, $filterDate));
         }
 
         $stmt->bindValue(':offset', $offset, \PDO::PARAM_INT);

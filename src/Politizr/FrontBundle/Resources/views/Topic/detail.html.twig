@@ -1,0 +1,49 @@
+{# beta #}
+{% extends 'PolitizrFrontBundle::layoutConnected.html.twig' %}
+
+{% set metaTitle = topic.title | purify | trim ~' - '~ circle.title | purify | trim %}
+{% set metaDescription = topic.summary | striptags | truncate(160, true) | purify %}
+{% set ogDescription = topic.summary | striptags | truncate(295, true) | purify %}
+
+{% block title %}{{ metaTitle }} - {{ parent() }}{% endblock title %}
+{% block description %}{{ metaDescription }}{% endblock description %}
+
+{% block ogTitle %}{{ metaTitle }} - {{ parent() }}{% endblock ogTitle %}
+{% block ogDescription %}{{ ogDescription }}{% endblock ogDescription %}
+
+{% block tcTitle %}{{ metaTitle }} - {{ parent() }}{% endblock tcTitle %}
+{% block tcDescription %}{{ metaDescription }}{% endblock tcDescription %}
+
+{% block content %}
+    <div id="content">
+        <div>
+            <h1>{{ topic.title }}</h1>
+            <div>{{ topic.summary | purify  }}</div>
+            <div>{{ topic.description | purify  }}</div>
+        </div>
+        <div id="documentListing" class="searchResults withLoaderInside">
+            {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+            <div class="listTop"></div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block sidebarContent %}
+{% endblock sidebarContent %}
+
+{% block javascriptFooter %}
+    {{ parent() }}
+
+    {% if (app.environment == 'prod') %}
+        <script type="text/javascript">
+            mixpanel.track("Les publications (recherche)");
+        </script>
+    {% endif %}
+
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/document/listing.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/pages/detailTopic.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock javascriptFooter %}
