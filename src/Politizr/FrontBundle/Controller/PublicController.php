@@ -220,6 +220,8 @@ class PublicController extends Controller
             $template = 'charlotte.html.twig';
         } elseif ($theme == 'concertation-publique')  {
             $template = 'concertationPublique.html.twig';
+        } elseif ($theme == 'budget-participatif')  {
+            $template = 'budgetParticipatif.html.twig';
         } elseif ($theme == 'entreprise-liberee')  {
             $template = 'entrepriseLiberee.html.twig';
         } elseif ($theme == 'offre-candidat-legislatives-2017')  {
