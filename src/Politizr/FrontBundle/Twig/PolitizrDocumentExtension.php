@@ -1393,7 +1393,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
         $author = $document->getUser();
 
-        if ($user && $user->getId() == $author->getId() && $document->getWantBoost() == DocumentConstants::WB_NO_RESPONSE) {
+        if ($user && $author && $user->getId() == $author->getId() && $document->getWantBoost() == DocumentConstants::WB_NO_RESPONSE) {
             $html = $env->render(
                 'PolitizrFrontBundle:Document:_boostQuestion.html.twig',
                 array(
