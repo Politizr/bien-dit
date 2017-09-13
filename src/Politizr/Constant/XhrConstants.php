@@ -201,6 +201,8 @@ class XhrConstants
     const JS_KEY_LISTING_USERS_USER_FOLLOWERS = "JS_KEY_LISTING_USERS_USER_FOLLOWERS";
     const JS_KEY_LISTING_USERS_USER_SUBSCRIBERS = "JS_KEY_LISTING_USERS_USER_SUBSCRIBERS";
 
+    const JS_KEY_LISTING_DOCUMENTS_BY_TOPIC = "JS_KEY_LISTING_DOCUMENTS_BY_TOPIC";
+
 
     // ******************************************************** //
     //                  XHR URL REWRITING (ADMIN)

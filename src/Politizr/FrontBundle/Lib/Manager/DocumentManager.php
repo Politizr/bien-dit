@@ -188,6 +188,14 @@ LIMIT :offset, :limit
             $subRequestCountryIds2
         );
 
+        // Topic subrequest
+        $subRequestTopic1 = "AND p_d_debate.p_c_topic_id is NULL";
+        $subRequestTopic2 = "AND p_d_reaction.p_c_topic_id is NULL";
+        if ($topicId) {
+            $subRequestTopic1 = sprintf("AND p_d_debate.p_c_topic_id = %s", $topicId);
+            $subRequestTopic2 = sprintf("AND p_d_reaction.p_c_topic_id = %s", $topicId);
+        }
+
         // Profile subrequest
         $subRequestFilterProfile = null;
         if ($filterProfile == ListingConstants::FILTER_KEYWORD_QUALIFIED) {
@@ -239,7 +247,7 @@ FROM p_d_debate
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1 
-    AND p_d_debate.p_c_topic_id IS NULL 
+    $subRequestTopic1
     $subRequestCityIds1
     $subRequestDepartmentIds1
     $subRequestRegionIds1
@@ -259,7 +267,7 @@ WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
     AND p_d_reaction.tree_level > 0
-    AND p_d_reaction.p_c_topic_id IS NULL 
+    $subRequestTopic2
     $subRequestCityIds2
     $subRequestDepartmentIds2
     $subRequestRegionIds2
@@ -279,7 +287,7 @@ FROM p_d_d_comment
         ON p_user.id = p_d_d_comment.p_user_id
 WHERE
     p_d_d_comment.online = 1
-    AND p_d_debate.p_c_topic_id IS NULL 
+    $subRequestTopic1
     $subRequestCityIds1
     $subRequestDepartmentIds1
     $subRequestRegionIds1
@@ -299,7 +307,7 @@ FROM p_d_r_comment
         ON p_user.id = p_d_r_comment.p_user_id
 WHERE
     p_d_r_comment.online = 1
-    AND p_d_reaction.p_c_topic_id IS NULL 
+    $subRequestTopic2
     $subRequestCityIds2
     $subRequestDepartmentIds2
     $subRequestRegionIds2
@@ -371,6 +379,14 @@ LIMIT :offset, :limit
             $subRequestCountryIds2
         );
 
+        // Topic subrequest
+        $subRequestTopic1 = "AND p_d_debate.p_c_topic_id is NULL";
+        $subRequestTopic2 = "AND p_d_reaction.p_c_topic_id is NULL";
+        if ($topicId) {
+            $subRequestTopic1 = sprintf("AND p_d_debate.p_c_topic_id = %s", $topicId);
+            $subRequestTopic2 = sprintf("AND p_d_reaction.p_c_topic_id = %s", $topicId);
+        }
+
         // Profile subrequest
         $subRequestFilterProfileLeftJoin = null;
         $subRequestFilterProfile = null;
@@ -407,7 +423,7 @@ FROM p_d_debate
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1 
-    AND p_d_debate.p_c_topic_id IS NULL 
+    $subRequestTopic1
     $subRequestCityIds1
     $subRequestDepartmentIds1
     $subRequestRegionIds1
@@ -464,6 +480,14 @@ LIMIT :offset, :limit
             $subRequestCountryIds2
         );
 
+        // Topic subrequest
+        $subRequestTopic1 = "AND p_d_debate.p_c_topic_id is NULL";
+        $subRequestTopic2 = "AND p_d_reaction.p_c_topic_id is NULL";
+        if ($topicId) {
+            $subRequestTopic1 = sprintf("AND p_d_debate.p_c_topic_id = %s", $topicId);
+            $subRequestTopic2 = sprintf("AND p_d_reaction.p_c_topic_id = %s", $topicId);
+        }
+
         // Profile subrequest
         $subRequestFilterProfileLeftJoin1 = null;
         $subRequestFilterProfileLeftJoin2 = null;
@@ -509,7 +533,7 @@ FROM p_d_debate
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1
-    AND p_d_debate.p_c_topic_id IS NULL 
+    $subRequestTopic1
     AND p_d_reaction_child.published = 1
     AND p_d_reaction_child.online = true
     $subRequestCityIds1
@@ -532,7 +556,7 @@ FROM p_d_reaction
 WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
-    AND p_d_reaction.p_c_topic_id IS NULL 
+    $subRequestTopic2
     AND p_d_reaction.tree_level > 0
     AND p_d_reaction_child.published = 1
     AND p_d_reaction_child.online = true
@@ -606,6 +630,14 @@ LIMIT :offset, :limit
             $subRequestCountryIds2
         );
 
+        // Topic subrequest
+        $subRequestTopic1 = "AND p_d_debate.p_c_topic_id is NULL";
+        $subRequestTopic2 = "AND p_d_reaction.p_c_topic_id is NULL";
+        if ($topicId) {
+            $subRequestTopic1 = sprintf("AND p_d_debate.p_c_topic_id = %s", $topicId);
+            $subRequestTopic2 = sprintf("AND p_d_reaction.p_c_topic_id = %s", $topicId);
+        }
+
         // Profile subrequest
         $subRequestFilterProfileLeftJoin1 = null;
         $subRequestFilterProfileLeftJoin2 = null;
@@ -647,7 +679,7 @@ FROM p_d_debate
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1
-    AND p_d_debate.p_c_topic_id IS NULL 
+    $subRequestTopic1
     AND p_d_d_comment.online = true
     $subRequestCityIds1
     $subRequestDepartmentIds1
@@ -669,7 +701,7 @@ FROM p_d_reaction
 WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
-    AND p_d_reaction.p_c_topic_id IS NULL 
+    $subRequestTopic2
     AND p_d_reaction.tree_level > 0
     AND p_d_r_comment.online = true
     $subRequestCityIds2

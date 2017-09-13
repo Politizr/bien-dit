@@ -1,5 +1,5 @@
 // beta
-paginatedFunctions[JS_KEY_LISTING_DOCUMENTS_BY_TOPIC] = documentsByTopicListing;
+paginatedFunctions[JS_KEY_LISTING_DOCUMENTS_BY_TOPIC] = publicationsByTopicListing;
 
 
 /**
@@ -17,12 +17,15 @@ function publicationsByTopicListing(init, offset) {
 
     targetElement = $('#documentListing .listTop');
     localLoader = $('#documentListing').find('.ajaxLoader').first();
+    topicUuid = $('#documentListing').attr('uuid');
 
     console.log(targetElement);
     console.log(localLoader);
+    console.log(topicUuid);
 
-    // datas = getCurrentPublicationFilters();
+    datas = getCurrentTopicFilters();
     datas.push({name: 'offset', value: offset});
+    datas.push({name: 'topicUuid', value: topicUuid});
 
     var xhrPath = getXhrPath(
         ROUTE_DOCUMENT_LISTING_FILTERS,
@@ -58,29 +61,11 @@ function publicationsByTopicListing(init, offset) {
  * Get search filters
  * @todo
  */
-function getCurrentPublicationFilters() {
-    console.log('*** getCurrentPublicationFilters');
+function getCurrentTopicFilters() {
+    console.log('*** getCurrentTopicFilters');
 
     var filters = [];
 
-    // map
-    if ($('.mapBreadcrumbs').find('.current').length) {
-        console.log('sub map uuid');
-        uuid = $('.mapBreadcrumbs').find('.current').attr('uuid');
-        console.log(uuid);
-        type = $('.mapBreadcrumbs').find('.current').attr('type');
-        console.log(type);
-    } else {
-        console.log('map uuid');
-        uuid = $('.mapMenu').find('.active').attr('uuid');
-        console.log(uuid);
-        type = $('.mapMenu').find('.active').attr('type');
-        console.log(type);
-    }
-
-    filters.push({name: 'geoUuid', value: uuid});
-    filters.push({name: 'type', value: type});
-    
     // publication
     filters.push({name: 'filterPublication', value: $('#publicationFilter input:checked').val()});
 

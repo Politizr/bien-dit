@@ -21,7 +21,7 @@
             <div>{{ topic.summary | purify  }}</div>
             <div>{{ topic.description | purify  }}</div>
         </div>
-        <div id="documentListing" class="searchResults withLoaderInside">
+        <div id="documentListing" uuid="{{ topic.uuid }}" class="searchResults withLoaderInside">
             {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
             <div class="listTop"></div>
         </div>
@@ -29,6 +29,11 @@
 {% endblock content %}
 
 {% block sidebarContent %}
+    <div class="sidebarSearch">
+        <div class="sidebarSearchFilters withLoaderInside">
+            {% include 'PolitizrFrontBundle:Topic\\Filters:_publicationsCategory.html.twig' %}
+        </div>
+    </div>
 {% endblock sidebarContent %}
 
 {% block javascriptFooter %}
@@ -41,7 +46,7 @@
     {% endif %}
 
     {% javascripts
-        '@PolitizrFrontBundle/Resources/public/js/politizr/document/listing.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/circle/listing.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/pages/detailTopic.js'
         filter='uglifyjs2' %}
         <script src="{{ asset_url }}"></script>

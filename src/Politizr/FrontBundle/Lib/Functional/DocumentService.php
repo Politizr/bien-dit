@@ -148,8 +148,8 @@ class DocumentService
      * beta
      *
      * @param string $geoUuid
-     * @param string $topicUuid
      * @param string $type
+     * @param string $topicUuid
      * @param string $filterPublication
      * @param string $filterProfile
      * @param string $filterActivity
@@ -160,8 +160,8 @@ class DocumentService
      */
     public function getPublicationsByFilters(
         $geoUuid = null,
+        $type = null,
         $topicUuid = null,
-        $type,
         $filterPublication = ListingConstants::FILTER_KEYWORD_ALL_PUBLICATIONS,
         $filterProfile = ListingConstants::FILTER_KEYWORD_ALL_USERS,
         $filterActivity = ListingConstants::ORDER_BY_KEYWORD_LAST,
@@ -193,7 +193,7 @@ class DocumentService
 
         $topicId = null;
         if ($topicUuid) {
-            $topic = PCTopicQuery::create()->filterByfindOne();
+            $topic = PCTopicQuery::create()->filterByUuid($topicUuid)->findOne();
             if ($topic) {
                 $topicId = $topic->getId();
             }

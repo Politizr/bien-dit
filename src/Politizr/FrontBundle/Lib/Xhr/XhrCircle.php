@@ -101,29 +101,21 @@ class XhrCircle
         
         // Request arguments
         $offset = $request->get('offset');
-
+        // $this->logger->info('$offset = ' . print_r($offset, true));
         $topicUuid = $request->get('topicUuid');
         // $this->logger->info('$topicUuid = ' . print_r($topicUuid, true));
+        $filterPublication = $request->get('filterPublication');
+        // $this->logger->info('$filterPublication = ' . print_r($filterPublication, true));
+        $filterProfile = $request->get('filterProfile');
+        // $this->logger->info('$filterProfile = ' . print_r($filterProfile, true));
+        $filterActivity = $request->get('filterActivity');
+        // $this->logger->info('$filterActivity = ' . print_r($filterActivity, true));
+        $filterDate = $request->get('filterDate');
+        // $this->logger->info('$filterDate = ' . print_r($filterDate, true));
 
-        // // $this->logger->info('$geoUuid = ' . print_r($geoUuid, true));
-        // $type = $request->get('type');
-        // // $this->logger->info('$type = ' . print_r($type, true));
-        // $filterPublication = $request->get('filterPublication');
-        // // $this->logger->info('$filterPublication = ' . print_r($filterPublication, true));
-        // $filterProfile = $request->get('filterProfile');
-        // // $this->logger->info('$filterProfile = ' . print_r($filterProfile, true));
-        // $filterActivity = $request->get('filterActivity');
-        // // $this->logger->info('$filterActivity = ' . print_r($filterActivity, true));
-        // $filterDate = $request->get('filterDate');
-        // // $this->logger->info('$filterDate = ' . print_r($filterDate, true));
-
-        // set default values if not set
-        // upd > default = all
-        // if (empty($geoUuid)) {
-        //     $france = PLCountryQuery::create()->findPk(LocalizationConstants::FRANCE_ID);
-        //     $geoUuid = $france->getUuid();
-        //     $type = LocalizationConstants::TYPE_COUNTRY;
-        // }
+        if (!$topicUuid) {
+            throw new InconsistentDataException(sprintf('Topic %s not found', $topicUuid));
+        }
         if (empty($filterPublication)) {
             $filterPublication = ListingConstants::FILTER_KEYWORD_ALL_PUBLICATIONS;
         }
@@ -139,8 +131,8 @@ class XhrCircle
 
         $publications = $this->documentService->getPublicationsByFilters(
             null,
+            null,
             $topicUuid,
-            $type,
             $filterPublication,
             $filterProfile,
             $filterActivity,
