@@ -41,3 +41,9 @@ services:
         class: Politizr\FrontBundle\Lib\Manager\EventManager
         arguments: [ @logger ]
 
+    politizr.manager.circle:
+        class: Politizr\FrontBundle\Lib\Manager\CircleManager
+        arguments:
+            - @politizr.tools.global
+            - @logger
+

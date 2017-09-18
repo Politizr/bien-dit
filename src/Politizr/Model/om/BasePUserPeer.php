@@ -35,6 +35,7 @@ use Politizr\Model\PUBookmarkDRPeer;
 use Politizr\Model\PUCurrentQOPeer;
 use Politizr\Model\PUFollowDDPeer;
 use Politizr\Model\PUFollowUPeer;
+use Politizr\Model\PUInPCPeer;
 use Politizr\Model\PUMandatePeer;
 use Politizr\Model\PUNotificationPeer;
 use Politizr\Model\PUReputationPeer;
@@ -789,6 +790,9 @@ abstract class BasePUserPeer
         // Invalidate objects in PDRCommentPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PDRCommentPeer::clearInstancePool();
+        // Invalidate objects in PUInPCPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PUInPCPeer::clearInstancePool();
         // Invalidate objects in PMUserModeratedPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PMUserModeratedPeer::clearInstancePool();

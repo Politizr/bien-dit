@@ -43,9 +43,9 @@ services:
             - @templating
             - @form.factory
             - @router
-            - @twig
-            - @politizr.manager.document
+            - @politizr.functional.circle
             - @politizr.functional.document
+            - @politizr.manager.circle
             - @politizr.tools.global
             - @logger
 

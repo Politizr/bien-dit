@@ -12,6 +12,8 @@ use Politizr\Exception\BoxErrorException;
 use Politizr\Constant\XhrConstants;
 use Politizr\Constant\ListingConstants;
 
+use Politizr\Model\PCircleQuery;
+
 /**
  * XHR service for document management.
  * beta
@@ -28,8 +30,7 @@ class XhrCircle
     private $templating;
     private $formFactory;
     private $router;
-    private $twigEnv;
-    private $documentManager;
+    private $circleService;
     private $documentService;
     private $globalTools;
     private $logger;
@@ -44,9 +45,9 @@ class XhrCircle
      * @templating
      * @form.factory
      * @router
-     * @twig
-     * @politizr.manager.document
+     * @politizr.functional.circle
      * @politizr.functional.document
+     * @politizr.manager.circle
      * @politizr.tools.global
      * @logger
      */
@@ -59,9 +60,9 @@ class XhrCircle
         $templating,
         $formFactory,
         $router,
-        $twigEnv,
-        $documentManager,
+        $circleService,
         $documentService,
+        $circleManager,
         $globalTools,
         $logger
     ) {
@@ -76,15 +77,75 @@ class XhrCircle
         $this->templating = $templating;
         $this->formFactory = $formFactory;
         $this->router = $router;
-        $this->twigEnv = $twigEnv;
 
-        $this->documentManager = $documentManager;
-
+        $this->circleService = $circleService;
         $this->documentService = $documentService;
+
+        $this->circleManager = $circleManager;
 
         $this->globalTools = $globalTools;
 
         $this->logger = $logger;
+    }
+
+    /* ######################################################################################################## */
+    /*                                       SUBSCRIPTION                                                       */
+    /* ######################################################################################################## */
+
+
+    /**
+     * Filtered publications by topic
+     * code beta
+     */
+    public function subscribeCircle(Request $request)
+    {
+        // $this->logger->info('*** publicationsByFilters');
+        
+        // Request arguments
+        $uuid = $request->get('uuid');
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
+        $way = $request->get('way');
+        // $this->logger->info('$way = ' . print_r($way, true));
+
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+
+        // get circle
+        $circle = PCircleQuery::create()->filterByUuid($uuid)->findOne();
+
+        // update membership
+        if ($way == 'subscribe') {
+            $this->circleManager->createUserInCircle($user->getId(), $circle->getId());
+            $redirectUrl = $this->router->generate('DetailCircle'.$this->globalTools->computeProfileSuffix(), array('slug' => $circle->getSlug()));
+            $eventName = 'c_subscribe';
+        } elseif ($way == 'unsubscribe') {
+            $this->circleManager->deleteUserInCircle($user->getId(), $circle->getId());
+            $redirectUrl = null;
+            $eventName = 'c_unsubscribe';
+        } else {
+            throw new InconsistentDataException(sprintf('Subscribe\'s way %s not managed', $way));
+        }
+
+        // get membership
+        $circle = PCircleQuery::create()->filterByUuid($uuid)->findOne();     
+        $isMember = $this->circleService->isUserMemberOfCircle($user->getId(), $circle->getId());
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Circle:_menuActions.html.twig',
+            array(
+                'isMember' => $isMember,
+                'circle' => $circle,
+            )
+        );
+
+        // events
+        $event = new GenericEvent($circle, array('p_user' => $user,));
+        $dispatcher = $this->eventDispatcher->dispatch($eventName, $event);
+
+        return array(
+            'html' => $html,
+            'redirectUrl' => $redirectUrl,
+        );
     }
 
     /* ######################################################################################################## */

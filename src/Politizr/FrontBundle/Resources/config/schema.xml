@@ -1366,9 +1366,21 @@
         </foreign-key>
     </table>
 
+    <table name="p_u_in_p_c" isCrossRef="true">
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
 
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_circle_id" type="integer" required="true" />
+        <column name="p_user_id" type="integer" required="true" />
 
-
+        <foreign-key foreignTable="p_circle" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_circle_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="p_user" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_user_id" foreign="id" />
+        </foreign-key>
+    </table>
 
 
 

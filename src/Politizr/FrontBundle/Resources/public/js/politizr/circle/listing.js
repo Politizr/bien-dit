@@ -4,8 +4,8 @@ paginatedFunctions[JS_KEY_LISTING_DOCUMENTS_BY_TOPIC] = publicationsByTopicListi
 
 /**
  * Loading of paginated filters/search listing.
- * @param targetElement
- * @param localLoader
+ * @param init
+ * @param offset
  */
 function publicationsByTopicListing(init, offset) {
     console.log('*** publicationsByTopicListing');

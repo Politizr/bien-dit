@@ -1,15 +1,57 @@
 ################################################################################
 #               ROUTING GROUPES
 ################################################################################
-HomeCircle:
-    pattern:  /mes-groupes/{slug}
-    defaults: { _controller: PolitizrFrontBundle:Circle:home }
+
+
+################################################################################
+#               PUBLIC
+################################################################################
+PublicCircle:
+    pattern:  /g/{slug}
+    defaults: { _controller: PolitizrFrontBundle:Circle:detail }
     requirements:
         _method:        GET
 
-TopicDetail:
-    pattern:  /mes-groupes/{circleSlug}/{slug}
+
+################################################################################
+#               CITIZEN
+################################################################################
+MenuCircleC:
+    pattern:  /espace/citoyen/mes-groupes
+    defaults: { _controller: PolitizrFrontBundle:Circle:menu }
+    requirements:
+        _method:        GET
+
+DetailCircleC:
+    pattern:  /espace/citoyen/mes-groupes/{slug}
+    defaults: { _controller: PolitizrFrontBundle:Circle:detail }
+    requirements:
+        _method:        GET
+
+TopicDetailC:
+    pattern:  /espace/citoyen/mes-groupes/{circleSlug}/{slug}
     defaults: { _controller: PolitizrFrontBundle:Circle:topicDetail }
     requirements:
         _method:        GET
 
+
+################################################################################
+#               ELECTED
+################################################################################
+MenuCircleE:
+    pattern:  /espace/elu/mes-groupes
+    defaults: { _controller: PolitizrFrontBundle:Circle:menu }
+    requirements:
+        _method:        GET
+
+DetailCircleE:
+    pattern:  /espace/elu/mes-groupes/{slug}
+    defaults: { _controller: PolitizrFrontBundle:Circle:detail }
+    requirements:
+        _method:        GET
+
+TopicDetailE:
+    pattern:  /espace/elu/mes-groupes/{circleSlug}/{slug}
+    defaults: { _controller: PolitizrFrontBundle:Circle:topicDetail }
+    requirements:
+        _method:        GET

@@ -26,6 +26,10 @@ use Politizr\Model\PCirclePeer;
 use Politizr\Model\PCircleQuery;
 use Politizr\Model\PLCity;
 use Politizr\Model\PLCityQuery;
+use Politizr\Model\PUInPC;
+use Politizr\Model\PUInPCQuery;
+use Politizr\Model\PUser;
+use Politizr\Model\PUserQuery;
 
 abstract class BasePCircle extends BaseObject implements Persistent
 {
@@ -127,9 +131,20 @@ abstract class BasePCircle extends BaseObject implements Persistent
     protected $collPCGroupLCsPartial;
 
     /**
+     * @var        PropelObjectCollection|PUInPC[] Collection to store aggregation of PUInPC objects.
+     */
+    protected $collPUInPCs;
+    protected $collPUInPCsPartial;
+
+    /**
      * @var        PropelObjectCollection|PLCity[] Collection to store aggregation of PLCity objects.
      */
     protected $collPLCities;
+
+    /**
+     * @var        PropelObjectCollection|PUser[] Collection to store aggregation of PUser objects.
+     */
+    protected $collPUsers;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -164,6 +179,12 @@ abstract class BasePCircle extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
+    protected $pUsersScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
     protected $pCTopicsScheduledForDeletion = null;
 
     /**
@@ -171,6 +192,12 @@ abstract class BasePCircle extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $pCGroupLCsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pUInPCsScheduledForDeletion = null;
 
     /**
      * Get the [id] column value.
@@ -720,7 +747,10 @@ abstract class BasePCircle extends BaseObject implements Persistent
 
             $this->collPCGroupLCs = null;
 
+            $this->collPUInPCs = null;
+
             $this->collPLCities = null;
+            $this->collPUsers = null;
         } // if (deep)
     }
 
@@ -901,6 +931,32 @@ abstract class BasePCircle extends BaseObject implements Persistent
                 }
             }
 
+            if ($this->pUsersScheduledForDeletion !== null) {
+                if (!$this->pUsersScheduledForDeletion->isEmpty()) {
+                    $pks = array();
+                    $pk = $this->getPrimaryKey();
+                    foreach ($this->pUsersScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
+                        $pks[] = array($pk, $remotePk);
+                    }
+                    PUInPCQuery::create()
+                        ->filterByPrimaryKeys($pks)
+                        ->delete($con);
+                    $this->pUsersScheduledForDeletion = null;
+                }
+
+                foreach ($this->getPUsers() as $pUser) {
+                    if ($pUser->isModified()) {
+                        $pUser->save($con);
+                    }
+                }
+            } elseif ($this->collPUsers) {
+                foreach ($this->collPUsers as $pUser) {
+                    if ($pUser->isModified()) {
+                        $pUser->save($con);
+                    }
+                }
+            }
+
             if ($this->pCTopicsScheduledForDeletion !== null) {
                 if (!$this->pCTopicsScheduledForDeletion->isEmpty()) {
                     PCTopicQuery::create()
@@ -929,6 +985,23 @@ abstract class BasePCircle extends BaseObject implements Persistent
 
             if ($this->collPCGroupLCs !== null) {
                 foreach ($this->collPCGroupLCs as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->pUInPCsScheduledForDeletion !== null) {
+                if (!$this->pUInPCsScheduledForDeletion->isEmpty()) {
+                    PUInPCQuery::create()
+                        ->filterByPrimaryKeys($this->pUInPCsScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->pUInPCsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPUInPCs !== null) {
+                foreach ($this->collPUInPCs as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -1184,6 +1257,9 @@ abstract class BasePCircle extends BaseObject implements Persistent
             if (null !== $this->collPCGroupLCs) {
                 $result['PCGroupLCs'] = $this->collPCGroupLCs->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
+            if (null !== $this->collPUInPCs) {
+                $result['PUInPCs'] = $this->collPUInPCs->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
         }
 
         return $result;
@@ -1401,6 +1477,12 @@ abstract class BasePCircle extends BaseObject implements Persistent
                 }
             }
 
+            foreach ($this->getPUInPCs() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPUInPC($relObj->copy($deepCopy));
+                }
+            }
+
             //unflag object copy
             $this->startCopy = false;
         } // if ($deepCopy)
@@ -1467,6 +1549,9 @@ abstract class BasePCircle extends BaseObject implements Persistent
         }
         if ('PCGroupLC' == $relationName) {
             $this->initPCGroupLCs();
+        }
+        if ('PUInPC' == $relationName) {
+            $this->initPUInPCs();
         }
     }
 
@@ -1946,6 +2031,256 @@ abstract class BasePCircle extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collPUInPCs collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PCircle The current object (for fluent API support)
+     * @see        addPUInPCs()
+     */
+    public function clearPUInPCs()
+    {
+        $this->collPUInPCs = null; // important to set this to null since that means it is uninitialized
+        $this->collPUInPCsPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPUInPCs collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPUInPCs($v = true)
+    {
+        $this->collPUInPCsPartial = $v;
+    }
+
+    /**
+     * Initializes the collPUInPCs collection.
+     *
+     * By default this just sets the collPUInPCs collection to an empty array (like clearcollPUInPCs());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPUInPCs($overrideExisting = true)
+    {
+        if (null !== $this->collPUInPCs && !$overrideExisting) {
+            return;
+        }
+        $this->collPUInPCs = new PropelObjectCollection();
+        $this->collPUInPCs->setModel('PUInPC');
+    }
+
+    /**
+     * Gets an array of PUInPC objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PCircle is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PUInPC[] List of PUInPC objects
+     * @throws PropelException
+     */
+    public function getPUInPCs($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPUInPCsPartial && !$this->isNew();
+        if (null === $this->collPUInPCs || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPUInPCs) {
+                // return empty collection
+                $this->initPUInPCs();
+            } else {
+                $collPUInPCs = PUInPCQuery::create(null, $criteria)
+                    ->filterByPCircle($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPUInPCsPartial && count($collPUInPCs)) {
+                      $this->initPUInPCs(false);
+
+                      foreach ($collPUInPCs as $obj) {
+                        if (false == $this->collPUInPCs->contains($obj)) {
+                          $this->collPUInPCs->append($obj);
+                        }
+                      }
+
+                      $this->collPUInPCsPartial = true;
+                    }
+
+                    $collPUInPCs->getInternalIterator()->rewind();
+
+                    return $collPUInPCs;
+                }
+
+                if ($partial && $this->collPUInPCs) {
+                    foreach ($this->collPUInPCs as $obj) {
+                        if ($obj->isNew()) {
+                            $collPUInPCs[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPUInPCs = $collPUInPCs;
+                $this->collPUInPCsPartial = false;
+            }
+        }
+
+        return $this->collPUInPCs;
+    }
+
+    /**
+     * Sets a collection of PUInPC objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pUInPCs A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PCircle The current object (for fluent API support)
+     */
+    public function setPUInPCs(PropelCollection $pUInPCs, PropelPDO $con = null)
+    {
+        $pUInPCsToDelete = $this->getPUInPCs(new Criteria(), $con)->diff($pUInPCs);
+
+
+        $this->pUInPCsScheduledForDeletion = $pUInPCsToDelete;
+
+        foreach ($pUInPCsToDelete as $pUInPCRemoved) {
+            $pUInPCRemoved->setPCircle(null);
+        }
+
+        $this->collPUInPCs = null;
+        foreach ($pUInPCs as $pUInPC) {
+            $this->addPUInPC($pUInPC);
+        }
+
+        $this->collPUInPCs = $pUInPCs;
+        $this->collPUInPCsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PUInPC objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PUInPC objects.
+     * @throws PropelException
+     */
+    public function countPUInPCs(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPUInPCsPartial && !$this->isNew();
+        if (null === $this->collPUInPCs || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPUInPCs) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPUInPCs());
+            }
+            $query = PUInPCQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPCircle($this)
+                ->count($con);
+        }
+
+        return count($this->collPUInPCs);
+    }
+
+    /**
+     * Method called to associate a PUInPC object to this object
+     * through the PUInPC foreign key attribute.
+     *
+     * @param    PUInPC $l PUInPC
+     * @return PCircle The current object (for fluent API support)
+     */
+    public function addPUInPC(PUInPC $l)
+    {
+        if ($this->collPUInPCs === null) {
+            $this->initPUInPCs();
+            $this->collPUInPCsPartial = true;
+        }
+
+        if (!in_array($l, $this->collPUInPCs->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPUInPC($l);
+
+            if ($this->pUInPCsScheduledForDeletion and $this->pUInPCsScheduledForDeletion->contains($l)) {
+                $this->pUInPCsScheduledForDeletion->remove($this->pUInPCsScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PUInPC $pUInPC The pUInPC object to add.
+     */
+    protected function doAddPUInPC($pUInPC)
+    {
+        $this->collPUInPCs[]= $pUInPC;
+        $pUInPC->setPCircle($this);
+    }
+
+    /**
+     * @param	PUInPC $pUInPC The pUInPC object to remove.
+     * @return PCircle The current object (for fluent API support)
+     */
+    public function removePUInPC($pUInPC)
+    {
+        if ($this->getPUInPCs()->contains($pUInPC)) {
+            $this->collPUInPCs->remove($this->collPUInPCs->search($pUInPC));
+            if (null === $this->pUInPCsScheduledForDeletion) {
+                $this->pUInPCsScheduledForDeletion = clone $this->collPUInPCs;
+                $this->pUInPCsScheduledForDeletion->clear();
+            }
+            $this->pUInPCsScheduledForDeletion[]= clone $pUInPC;
+            $pUInPC->setPCircle(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PCircle is new, it will return
+     * an empty collection; or if this PCircle has previously
+     * been saved, it will retrieve related PUInPCs from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PCircle.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PUInPC[] List of PUInPC objects
+     */
+    public function getPUInPCsJoinPUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PUInPCQuery::create(null, $criteria);
+        $query->joinWith('PUser', $join_behavior);
+
+        return $this->getPUInPCs($query, $con);
+    }
+
+    /**
      * Clears out the collPLCities collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
@@ -2133,6 +2468,193 @@ abstract class BasePCircle extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collPUsers collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PCircle The current object (for fluent API support)
+     * @see        addPUsers()
+     */
+    public function clearPUsers()
+    {
+        $this->collPUsers = null; // important to set this to null since that means it is uninitialized
+        $this->collPUsersPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * Initializes the collPUsers collection.
+     *
+     * By default this just sets the collPUsers collection to an empty collection (like clearPUsers());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @return void
+     */
+    public function initPUsers()
+    {
+        $this->collPUsers = new PropelObjectCollection();
+        $this->collPUsers->setModel('PUser');
+    }
+
+    /**
+     * Gets a collection of PUser objects related by a many-to-many relationship
+     * to the current object by way of the p_u_in_p_c cross-reference table.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PCircle is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return PropelObjectCollection|PUser[] List of PUser objects
+     */
+    public function getPUsers($criteria = null, PropelPDO $con = null)
+    {
+        if (null === $this->collPUsers || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPUsers) {
+                // return empty collection
+                $this->initPUsers();
+            } else {
+                $collPUsers = PUserQuery::create(null, $criteria)
+                    ->filterByPCircle($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    return $collPUsers;
+                }
+                $this->collPUsers = $collPUsers;
+            }
+        }
+
+        return $this->collPUsers;
+    }
+
+    /**
+     * Sets a collection of PUser objects related by a many-to-many relationship
+     * to the current object by way of the p_u_in_p_c cross-reference table.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pUsers A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PCircle The current object (for fluent API support)
+     */
+    public function setPUsers(PropelCollection $pUsers, PropelPDO $con = null)
+    {
+        $this->clearPUsers();
+        $currentPUsers = $this->getPUsers(null, $con);
+
+        $this->pUsersScheduledForDeletion = $currentPUsers->diff($pUsers);
+
+        foreach ($pUsers as $pUser) {
+            if (!$currentPUsers->contains($pUser)) {
+                $this->doAddPUser($pUser);
+            }
+        }
+
+        $this->collPUsers = $pUsers;
+
+        return $this;
+    }
+
+    /**
+     * Gets the number of PUser objects related by a many-to-many relationship
+     * to the current object by way of the p_u_in_p_c cross-reference table.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param boolean $distinct Set to true to force count distinct
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return int the number of related PUser objects
+     */
+    public function countPUsers($criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        if (null === $this->collPUsers || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPUsers) {
+                return 0;
+            } else {
+                $query = PUserQuery::create(null, $criteria);
+                if ($distinct) {
+                    $query->distinct();
+                }
+
+                return $query
+                    ->filterByPCircle($this)
+                    ->count($con);
+            }
+        } else {
+            return count($this->collPUsers);
+        }
+    }
+
+    /**
+     * Associate a PUser object to this object
+     * through the p_u_in_p_c cross reference table.
+     *
+     * @param  PUser $pUser The PUInPC object to relate
+     * @return PCircle The current object (for fluent API support)
+     */
+    public function addPUser(PUser $pUser)
+    {
+        if ($this->collPUsers === null) {
+            $this->initPUsers();
+        }
+
+        if (!$this->collPUsers->contains($pUser)) { // only add it if the **same** object is not already associated
+            $this->doAddPUser($pUser);
+            $this->collPUsers[] = $pUser;
+
+            if ($this->pUsersScheduledForDeletion and $this->pUsersScheduledForDeletion->contains($pUser)) {
+                $this->pUsersScheduledForDeletion->remove($this->pUsersScheduledForDeletion->search($pUser));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PUser $pUser The pUser object to add.
+     */
+    protected function doAddPUser(PUser $pUser)
+    {
+        // set the back reference to this object directly as using provided method either results
+        // in endless loop or in multiple relations
+        if (!$pUser->getPCircles()->contains($this)) { $pUInPC = new PUInPC();
+            $pUInPC->setPUser($pUser);
+            $this->addPUInPC($pUInPC);
+
+            $foreignCollection = $pUser->getPCircles();
+            $foreignCollection[] = $this;
+        }
+    }
+
+    /**
+     * Remove a PUser object to this object
+     * through the p_u_in_p_c cross reference table.
+     *
+     * @param PUser $pUser The PUInPC object to relate
+     * @return PCircle The current object (for fluent API support)
+     */
+    public function removePUser(PUser $pUser)
+    {
+        if ($this->getPUsers()->contains($pUser)) {
+            $this->collPUsers->remove($this->collPUsers->search($pUser));
+            if (null === $this->pUsersScheduledForDeletion) {
+                $this->pUsersScheduledForDeletion = clone $this->collPUsers;
+                $this->pUsersScheduledForDeletion->clear();
+            }
+            $this->pUsersScheduledForDeletion[]= $pUser;
+        }
+
+        return $this;
+    }
+
+    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
@@ -2180,8 +2702,18 @@ abstract class BasePCircle extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collPUInPCs) {
+                foreach ($this->collPUInPCs as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collPLCities) {
                 foreach ($this->collPLCities as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collPUsers) {
+                foreach ($this->collPUsers as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -2197,10 +2729,18 @@ abstract class BasePCircle extends BaseObject implements Persistent
             $this->collPCGroupLCs->clearIterator();
         }
         $this->collPCGroupLCs = null;
+        if ($this->collPUInPCs instanceof PropelCollection) {
+            $this->collPUInPCs->clearIterator();
+        }
+        $this->collPUInPCs = null;
         if ($this->collPLCities instanceof PropelCollection) {
             $this->collPLCities->clearIterator();
         }
         $this->collPLCities = null;
+        if ($this->collPUsers instanceof PropelCollection) {
+            $this->collPUsers->clearIterator();
+        }
+        $this->collPUsers = null;
     }
 
     /**

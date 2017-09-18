@@ -19,6 +19,8 @@ use Politizr\Model\PCircle;
 use Politizr\Model\PCirclePeer;
 use Politizr\Model\PCircleQuery;
 use Politizr\Model\PLCity;
+use Politizr\Model\PUInPC;
+use Politizr\Model\PUser;
 
 /**
  * @method PCircleQuery orderById($order = Criteria::ASC) Order by the id column
@@ -56,6 +58,10 @@ use Politizr\Model\PLCity;
  * @method PCircleQuery leftJoinPCGroupLC($relationAlias = null) Adds a LEFT JOIN clause to the query using the PCGroupLC relation
  * @method PCircleQuery rightJoinPCGroupLC($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PCGroupLC relation
  * @method PCircleQuery innerJoinPCGroupLC($relationAlias = null) Adds a INNER JOIN clause to the query using the PCGroupLC relation
+ *
+ * @method PCircleQuery leftJoinPUInPC($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUInPC relation
+ * @method PCircleQuery rightJoinPUInPC($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUInPC relation
+ * @method PCircleQuery innerJoinPUInPC($relationAlias = null) Adds a INNER JOIN clause to the query using the PUInPC relation
  *
  * @method PCircle findOne(PropelPDO $con = null) Return the first PCircle matching the query
  * @method PCircle findOneOrCreate(PropelPDO $con = null) Return the first PCircle matching the query, or a new PCircle object populated from the query conditions when no match is found
@@ -787,6 +793,80 @@ abstract class BasePCircleQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query by a related PUInPC object
+     *
+     * @param   PUInPC|PropelObjectCollection $pUInPC  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PCircleQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPUInPC($pUInPC, $comparison = null)
+    {
+        if ($pUInPC instanceof PUInPC) {
+            return $this
+                ->addUsingAlias(PCirclePeer::ID, $pUInPC->getPCircleId(), $comparison);
+        } elseif ($pUInPC instanceof PropelObjectCollection) {
+            return $this
+                ->usePUInPCQuery()
+                ->filterByPrimaryKeys($pUInPC->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPUInPC() only accepts arguments of type PUInPC or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PUInPC relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PCircleQuery The current query, for fluid interface
+     */
+    public function joinPUInPC($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PUInPC');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PUInPC');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PUInPC relation PUInPC object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PUInPCQuery A secondary query class using the current class as primary query
+     */
+    public function usePUInPCQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPUInPC($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PUInPC', '\Politizr\Model\PUInPCQuery');
+    }
+
+    /**
      * Filter the query by a related PLCity object
      * using the p_c_group_l_c table as cross reference
      *
@@ -800,6 +880,23 @@ abstract class BasePCircleQuery extends ModelCriteria
         return $this
             ->usePCGroupLCQuery()
             ->filterByPLCity($pLCity, $comparison)
+            ->endUse();
+    }
+
+    /**
+     * Filter the query by a related PUser object
+     * using the p_u_in_p_c table as cross reference
+     *
+     * @param   PUser $pUser the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return   PCircleQuery The current query, for fluid interface
+     */
+    public function filterByPUser($pUser, $comparison = Criteria::EQUAL)
+    {
+        return $this
+            ->usePUInPCQuery()
+            ->filterByPUser($pUser, $comparison)
             ->endUse();
     }
 

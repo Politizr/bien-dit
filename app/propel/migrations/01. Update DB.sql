@@ -161,5 +161,35 @@ CREATE TABLE `p_c_topic_archive`
     INDEX `p_c_topic_archive_I_3` (`slug`(255))
 ) ENGINE=InnoDB;
 
+
+ALTER TABLE `p_d_debate` ADD CONSTRAINT `p_d_debate_FK_7`
+    FOREIGN KEY (`p_e_operation_id`)
+    REFERENCES `p_e_operation` (`id`)
+    ON UPDATE CASCADE
+    ON DELETE SET NULL;
+
+CREATE TABLE `p_u_in_p_c`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `p_circle_id` INTEGER NOT NULL,
+    `p_user_id` INTEGER NOT NULL,
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    PRIMARY KEY (`id`),
+    INDEX `p_u_in_p_c_FI_1` (`p_circle_id`),
+    INDEX `p_u_in_p_c_FI_2` (`p_user_id`),
+    CONSTRAINT `p_u_in_p_c_FK_1`
+        FOREIGN KEY (`p_circle_id`)
+        REFERENCES `p_circle` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `p_u_in_p_c_FK_2`
+        FOREIGN KEY (`p_user_id`)
+        REFERENCES `p_user` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

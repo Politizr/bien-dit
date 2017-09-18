@@ -164,6 +164,9 @@ class XhrConstants
 
     const ROUTE_USER_LISTING_BADGES = 'auteur/badges';
 
+    // CIRCLES
+    const ROUTE_CIRCLE_SUBSCRIPTION = '$w/circle/subscription';
+
     // TIMELINE
     const ROUTE_TIMELINE_MINE = '$w/timeline';
     const ROUTE_TIMELINE_USER = 'user/timeline';

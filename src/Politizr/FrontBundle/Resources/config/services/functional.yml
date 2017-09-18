@@ -89,3 +89,11 @@ services:
             - @politizr.manager.notification
             - @politizr.tools.global
             - @logger
+
+    politizr.functional.circle:
+        class: Politizr\FrontBundle\Lib\Functional\CircleService
+        arguments:
+            - @security.token_storage
+            - @security.authorization_checker
+            - @politizr.manager.circle
+            - @logger

@@ -152,6 +152,9 @@ var ROUTE_USER_LISTING_USER_SUBSCRIBERS_CONTENT = 'auteur/content/derniers-abonn
 
 var ROUTE_USER_LISTING_BADGES = 'auteur/badges';
 
+// CIRCLES
+var ROUTE_CIRCLE_SUBSCRIPTION = '$w/circle/subscription';
+
 // TIMELINE
 var ROUTE_TIMELINE_MINE = '$w/timeline';
 var ROUTE_TIMELINE_USER = 'user/timeline';

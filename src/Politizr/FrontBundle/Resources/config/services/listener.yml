@@ -72,6 +72,15 @@ services:
             - { name: kernel.event_listener, event: b_comment_note_neg }
             - { name: kernel.event_listener, event: b_user_follow }
 
+    politizr.listener.circle:
+        class:      Politizr\FrontBundle\Listener\CircleListener
+        arguments:
+            - @event_dispatcher
+            - @logger
+        tags:
+            - { name: kernel.event_listener, event: c_subscribe }
+            - { name: kernel.event_listener, event: c_unsubscribe }
+
     politizr.listener.activity:
         class:      Politizr\FrontBundle\Listener\ActivityListener
         arguments:  [ @security.token_storage ]

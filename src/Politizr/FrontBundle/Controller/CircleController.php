@@ -23,13 +23,34 @@ use Politizr\Model\PDDebateQuery;
 class CircleController extends Controller
 {
     /**
-     * Home group
+     * Circle menu
      * beta
      */
-    public function homeAction($slug)
+    public function menuAction()
     {
         // $logger = $this->get('logger');
-        // $logger->info('*** homeAction');
+        // $logger->info('*** menuAction');
+
+        $user = $this->getUser();
+        if (!$user) {
+            throw new InconsistentDataException('Current user not found.');
+        }
+
+        $circles = $this->get('politizr.functional.circle')->getCirclesByUser($user);
+
+        return $this->render('PolitizrFrontBundle:Circle:menu.html.twig', array(
+            'circles' => $circles,
+        ));
+    }
+
+    /**
+     * Circle detail
+     * beta
+     */
+    public function detailAction($slug)
+    {
+        // $logger = $this->get('logger');
+        // $logger->info('*** detailAction');
         // $logger->info('$slug = '.print_r($slug, true));
 
         $circle = PCircleQuery::create()->filterBySlug($slug)->findOne();
@@ -40,13 +61,16 @@ class CircleController extends Controller
             throw new NotFoundHttpException('Circle "'.$slug.'" not online.');
         }
 
+        // check access granted
+        $this->denyAccessUnlessGranted('circle_detail', $circle);
+
         // get circle's topics
         $topics = PCTopicQuery::create()
                     ->filterByPCircleId($circle->getId())
                     ->filterByOnline(true)
                     ->find();
 
-        return $this->render('PolitizrFrontBundle:Circle:home.html.twig', array(
+        return $this->render('PolitizrFrontBundle:Circle:detail.html.twig', array(
             'circle' => $circle,
             'topics' => $topics,
         ));
