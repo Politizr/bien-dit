@@ -103,6 +103,9 @@ class CircleController extends Controller
             throw new NotFoundHttpException('Topic "'.$slug.'" not online.');
         }
 
+        // check access granted
+        $this->denyAccessUnlessGranted('topic_detail', $topic);
+
         // @todo XHR loading
         // get topic's debates
         $debates = PDDebateQuery::create()

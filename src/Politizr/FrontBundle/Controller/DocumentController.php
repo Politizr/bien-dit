@@ -61,6 +61,12 @@ class DocumentController extends Controller
             throw new NotFoundHttpException(sprintf('Document not published.'));
         }
 
+        // check access granted
+        $topic = $document->getPCTopic();
+        if ($topic) {
+            $this->denyAccessUnlessGranted('topic_detail', $topic);
+        }
+
         return true;
     }
 

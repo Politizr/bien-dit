@@ -233,6 +233,11 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 array($this, 'boostQuestion'),
                 array('is_safe' => array('html'), 'needs_environment' => true)
             ),
+            new \Twig_SimpleFilter(
+                'circleContext',
+                array($this, 'circleContext'),
+                array('is_safe' => array('html'), 'needs_environment' => true)
+            ),
         );
     }
 
@@ -1381,7 +1386,31 @@ class PolitizrDocumentExtension extends \Twig_Extension
         return $html;
     }
 
-   /**
+    /**
+     * Display document(s circle information (breadcrumb)
+     *
+     * @param PDocument $subject
+     * @return string
+     */
+    public function circleContext(\Twig_Environment $env, PDocumentInterface $document)
+    {
+        $html = null;
+
+        $topic = $document->getPCTopic();
+        if ($topic) {
+            $html = $env->render(
+                'PolitizrFrontBundle:Document:_circleContext.html.twig',
+                array(
+                    'circle' => $topic->getPCircle(),
+                    'topic' => $topic,
+                )
+            );
+        }
+
+        return $html;
+    }
+
+    /**
      * Display boost question
      *
      * @param PDocument $subject

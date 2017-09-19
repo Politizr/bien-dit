@@ -7,6 +7,7 @@ use Politizr\Model\PUser;
 use Politizr\Model\PCTopic;
 
 use Politizr\Model\PCircleQuery;
+use Politizr\Model\PCTopicQuery;
 use Politizr\Model\PUInPCQuery;
 
 use \PropelCollection;
@@ -118,5 +119,26 @@ class CircleService
             $options['force_geoloc_type'] = $topic->getForceGeolocType();
             $options['force_geoloc_id'] = $topic->getForceGeolocId();
         }
+    }
+
+    /**
+     * Get topic id list by user id
+     *
+     * @param int $userId
+     * @return array
+     */
+    public function getTopicIdsByUserId($userId)
+    {
+        $topicIds = PCTopicQuery::create()
+            ->select('Id')
+            ->usePCircleQuery()
+                ->usePUInPCQuery()
+                    ->filterByPUserId($userId)
+                ->endUse()
+            ->endUse()
+            ->find()
+            ->toArray();
+
+        return $topicIds;
     }
 }

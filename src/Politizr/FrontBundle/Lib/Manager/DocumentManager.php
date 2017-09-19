@@ -776,15 +776,24 @@ LIMIT :limit
      *
      * @see app/sql/userDocuments.sql
      *
+     * @param string $inQueryTopicIds
      * @param string $orderBy
      * @param integer $tagId
      * @return string
      */
-    private function createPublicationsByUserRawSql($orderBy = ListingConstants::ORDER_BY_KEYWORD_BEST_NOTE, $tagId = null)
+    private function createPublicationsByUserRawSql($inQueryTopicIds, $orderBy = ListingConstants::ORDER_BY_KEYWORD_BEST_NOTE, $tagId = null)
     {
         $orderByReq = "ORDER BY note_pos DESC, note_neg ASC";
         if ($orderBy == ListingConstants::ORDER_BY_KEYWORD_LAST) {
             $orderByReq = "ORDER BY published_at DESC";
+        }
+
+        // Topic subrequest
+        $subrequestTopic1 = "AND p_d_debate.p_c_topic_id is NULL";
+        $subrequestTopic2 = "AND p_d_reaction.p_c_topic_id is NULL";
+        if ($inQueryTopicIds) {
+            $subrequestTopic1 = "AND p_d_debate.p_c_topic_id is NULL OR p_d_debate.p_c_topic_id IN ($inQueryTopicIds)";
+            $subrequestTopic2 = "AND p_d_reaction.p_c_topic_id is NULL OR p_d_reaction.p_c_topic_id IN ($inQueryTopicIds)";
         }
 
         // Tag filtering subrequest
@@ -827,6 +836,7 @@ WHERE
     p_user_id = :p_user_id
     AND p_d_debate.published = 1
     AND p_d_debate.online = 1
+    $subrequestTopic1
     $subRequestTagWhere1
 )
 
@@ -839,6 +849,7 @@ WHERE
     p_user_id = :p_user_id2
     AND p_d_reaction.published = 1
     AND p_d_reaction.online = 1
+    $subrequestTopic2
     $subRequestTagWhere2
 )
 
@@ -846,10 +857,15 @@ UNION DISTINCT
 
 ( SELECT p_d_d_comment.id as id, \"commentaire\" as title, \"image\" as fileName, p_d_d_comment.description as description, \"slug\" as slug, p_d_d_comment.published_at as published_at, p_d_d_comment.updated_at as updated_at, p_d_d_comment.note_pos as note_pos, p_d_d_comment.note_neg as note_neg, 'Politizr\\\Model\\\PDDComment' as type
 FROM p_d_d_comment
+    LEFT JOIN p_d_debate
+        ON p_d_d_comment.p_d_debate_id = p_d_debate.id
 $subRequestTagLeftJoin3
 WHERE
     p_d_d_comment.online = 1
     AND p_d_d_comment.p_user_id = :p_user_id3
+    AND p_d_debate.published = 1
+    AND p_d_debate.online = 1
+    $subrequestTopic1
     $subRequestTagWhere3
 )
 
@@ -857,10 +873,15 @@ UNION DISTINCT
 
 ( SELECT p_d_r_comment.id as id, \"commentaire\" as title, \"image\" as fileName, p_d_r_comment.description as description, \"slug\" as slug, p_d_r_comment.published_at as published_at, p_d_r_comment.updated_at as updated_at, p_d_r_comment.note_pos as note_pos, p_d_r_comment.note_neg as note_neg, 'Politizr\\\Model\\\PDRComment' as type
 FROM p_d_r_comment
+    LEFT JOIN p_d_reaction
+        ON p_d_r_comment.p_d_reaction_id = p_d_reaction.id
 $subRequestTagLeftJoin4
 WHERE
     p_d_r_comment.online = 1
     AND p_d_r_comment.p_user_id = :p_user_id4
+    AND p_d_reaction.published = 1
+    AND p_d_reaction.online = 1
+    $subrequestTopic2
     $subRequestTagWhere4
 )
 
@@ -1447,23 +1468,25 @@ GROUP BY p_d_debate_id
      * My documents paginated listing
      *
      * @param integer $userId
+     * @param string $inQueryTopicIds
      * @param integer $orderBy
      * @param integer $tagId
      * @param integer $offset
      * @param integer $limit
      * @return PropelCollection
      */
-    public function generatePublicationsByUserPaginated($userId, $orderBy, $tagId, $offset, $limit)
+    public function generatePublicationsByUserPaginated($userId, $inQueryTopicIds, $orderBy, $tagId, $offset, $limit)
     {
         // $this->logger->info('*** generatePublicationsByUserPaginated');
         // $this->logger->info('$userId = ' . print_r($userId, true));
+        // $this->logger->info('$inQueryTopicIds = ' . print_r($inQueryTopicIds, true));
         // $this->logger->info('$orderBy = ' . print_r($orderBy, true));
         // $this->logger->info('$tagId = ' . print_r($tagId, true));
         // $this->logger->info('$offset = ' . print_r($offset, true));
         // $this->logger->info('$limit = ' . print_r($limit, true));
 
         $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
-        $stmt = $con->prepare($this->createPublicationsByUserRawSql($orderBy, $tagId));
+        $stmt = $con->prepare($this->createPublicationsByUserRawSql($inQueryTopicIds, $orderBy, $tagId));
 
         $stmt->bindValue(':p_user_id', $userId, \PDO::PARAM_INT);
         $stmt->bindValue(':p_user_id2', $userId, \PDO::PARAM_INT);

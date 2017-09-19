@@ -28,6 +28,7 @@
 {% block headerMsg %}
     {{ parent() }}
 
+    {{ debate | circleContext }}
     {{ debate | documentOperation }}
     {{ debate | boostQuestion }}
 {% endblock %}

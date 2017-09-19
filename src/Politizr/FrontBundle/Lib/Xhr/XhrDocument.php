@@ -1510,7 +1510,6 @@ class XhrDocument
         $offset = $request->get('offset');
         $this->logger->info('$offset = ' . print_r($offset, true));
 
-
         $user = PUserQuery::create()->filterByUuid($uuid)->findOne();
         if (!$user) {
             throw new InconsistentDataException(sprintf('User %s not found', $uuid));
@@ -1524,9 +1523,16 @@ class XhrDocument
             $tagId = $tag->getId();
         }
 
+        // get current user
+        $currentUser = $this->securityTokenStorage->getToken()->getUser();
+        if (is_string($currentUser)) {
+            $currentUser = null;
+        }
+
         // get publications
         $publications = $this->documentService->getUserPublicationsPaginatedListing(
             $user->getId(),
+            $currentUser?$currentUser->getId():null,
             $orderBy,
             $tagId,
             $offset,

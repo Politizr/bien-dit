@@ -14,6 +14,14 @@
 {% block tcTitle %}{{ metaTitle }} - {{ parent() }}{% endblock tcTitle %}
 {% block tcDescription %}{{ metaDescription }}{% endblock tcDescription %}
 
+
+{% block headerMsg %}
+    <div id="circleBreadcrumb">
+        <a href="{{ path('DetailCircle', { 'slug': circle.slug }) }}">{{ circle.title }}</a> - <a href="{{ path('TopicDetail', { 'circleSlug': circle.slug, 'slug': topic.slug }) }}">{{ topic.title }}</a>
+    </div>
+{% endblock headerMsg %}
+
+
 {% block content %}
     <div id="content">
         <div>

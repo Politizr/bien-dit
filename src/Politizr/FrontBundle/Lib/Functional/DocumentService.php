@@ -44,6 +44,7 @@ class DocumentService
 
     private $tagService;
     private $localizationService;
+    private $circleService;
 
     private $router;
 
@@ -59,6 +60,7 @@ class DocumentService
      * @param @politizr.manager.tag
      * @param @politizr.functional.tag
      * @param @politizr.functional.localization
+     * @param @politizr.functional.circle
      * @param @router
      * @param @politizr.tools.global
      * @param @logger
@@ -70,6 +72,7 @@ class DocumentService
         $tagManager,
         $tagService,
         $localizationService,
+        $circleService,
         $router,
         $globalTools,
         $logger
@@ -82,6 +85,7 @@ class DocumentService
 
         $this->tagService = $tagService;
         $this->localizationService = $localizationService;
+        $this->circleService = $circleService;
 
         $this->router = $router;
 
@@ -266,16 +270,23 @@ class DocumentService
      * Get "user publications" paginated listing
      * beta
      *
-     * @param array $userId
+     * @param int $userId
+     * @param int $currentUserId
      * @param string $orderBy
      * @param string $tagId
      * @param integer $offset
      * @param înteger $count
      * @return PropelCollection[Publication]
      */
-    public function getUserPublicationsPaginatedListing($userId, $orderBy, $tagId = null, $offset = 0, $count = ListingConstants::LISTING_CLASSIC_PAGINATION)
+    public function getUserPublicationsPaginatedListing($userId, $currentUserId = null, $orderBy, $tagId = null, $offset = 0, $count = ListingConstants::LISTING_CLASSIC_PAGINATION)
     {
-        $documents = $this->documentManager->generatePublicationsByUserPaginated($userId, $orderBy, $tagId, $offset, $count);
+        $inQueryTopicIds = null;
+        if ($currentUserId) {
+            $topicIds = $this->circleService->getTopicIdsByUserId($currentUserId);
+            $inQueryTopicIds = $this->globalTools->getInQuery($topicIds);
+        }
+
+        $documents = $this->documentManager->generatePublicationsByUserPaginated($userId, $inQueryTopicIds, $orderBy, $tagId, $offset, $count);
 
         return $documents;
     }

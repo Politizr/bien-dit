@@ -46,6 +46,7 @@
 {% block headerMsg %}
     {{ parent() }}
 
+    {{ reaction | circleContext }}
     {{ reaction | documentOperation }}
     {{ reaction | boostQuestion }}
 {% endblock %}

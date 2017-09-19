@@ -15,6 +15,10 @@
                             {{ circle | circleActions }}
                         </div>
                     </div>
+                {% else %}
+                    <div class="noResults">
+                        Aucun groupe n'est disponible dans votre zone géographique!
+                    </div>
                 {% endfor %}
             </div>
         </div>
