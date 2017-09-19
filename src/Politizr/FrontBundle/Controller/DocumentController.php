@@ -20,6 +20,7 @@ use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
 use Politizr\Model\PLCountryQuery;
 use Politizr\Model\PEOperationQuery;
+use Politizr\Model\PCTopicQuery;
 
 use Politizr\Model\PDDComment;
 use Politizr\Model\PDRComment;
@@ -282,25 +283,21 @@ class DocumentController extends Controller
             $debate = $this->get('politizr.functional.document')->createDebate();
         }
 
-        // manage OP
+        // manage context (op, topic)
         $opUuid = $request->get('op');
-        $operation = null;
-        if ($opUuid) {
-            $operation = PEOperationQuery::create()
-                ->filterByUuid($opUuid)
+        $topicUuid = $request->get('topic');
+        $debate = $this->get('politizr.functional.document')->manageEditDocumentContext($debate, $opUuid, $topicUuid);
+
+        // circle security check
+        if ($topicUuid) {
+            $topic = PCTopicQuery::create()
+                ->filterByUuid($topicUuid)
                 ->findOne();
-            if (!$operation) {
-                throw new InconsistentDataException(sprintf('Operation %s not found.', $opUuid));
+            if (!$topic) {
+                throw new InconsistentDataException(sprintf('Topic %s not found.', $topicUuid));
             }
 
-            $debate->setPEOperationId($operation->getId());
-            $debate->save();
-
-            // op preset tags
-            $tags = $operation->getPTags();
-            foreach ($tags as $tag) {
-                $this->get('politizr.manager.tag')->createDebateTag($debate->getId(), $tag->getId());
-            }
+            $this->denyAccessUnlessGranted('topic_detail', $topic);
         }
 
         return $this->redirect(
@@ -334,13 +331,17 @@ class DocumentController extends Controller
 
         // get geo debate informations
         $debateLocType = $this->get('politizr.form.type.document_localization');
+        $options = array(
+                'data_class' => ObjectTypeConstants::TYPE_DEBATE,
+                'user' => $user,
+        );
+        if ($debate->getPCTopicId()) {
+            $this->get('politizr.functional.circle')->updateDocumentLocalizationTypeOptions($debate->getPCTopic(), $options);
+        }
         $formLocalization = $this->createForm(
             $debateLocType,
             $debate,
-            array(
-                'data_class' => ObjectTypeConstants::TYPE_DEBATE,
-                'user' => $user,
-            )
+            $options
         );
 
         return $this->render('PolitizrFrontBundle:Debate:edit.html.twig', array(
@@ -394,8 +395,15 @@ class DocumentController extends Controller
                     ->where('p_d_reaction.created_at = p_d_reaction.updated_at')
                     ->findOne();
 
+
         if (!$reaction) {
             $reaction = $this->get('politizr.functional.document')->createReaction($debate, $parent);
+        }
+
+        // circle security check
+        $topic = $reaction->getPCTopic();
+        if ($topic) {
+            $this->denyAccessUnlessGranted('topic_detail', $topic);
         }
 
         return $this->redirect($this->generateUrl('ReactionDraftEdit'.$this->get('politizr.tools.global')->computeProfileSuffix(), array(
@@ -436,13 +444,17 @@ class DocumentController extends Controller
 
         // get geo reaction informations
         $reactionLocType = $this->get('politizr.form.type.document_localization');
+        $options = array(
+                'data_class' => ObjectTypeConstants::TYPE_REACTION,
+                'user' => $user,
+        );
+        if ($reaction->getPCTopicId()) {
+            $this->get('politizr.functional.circle')->updateDocumentLocalizationTypeOptions($reaction->getPCTopic(), $options);
+        }
         $formLocalization = $this->createForm(
             $reactionLocType,
             $reaction,
-            array(
-                'user' => $user,
-                'data_class' => ObjectTypeConstants::TYPE_REACTION
-            )
+            $options
         );
 
         return $this->render('PolitizrFrontBundle:Reaction:edit.html.twig', array(

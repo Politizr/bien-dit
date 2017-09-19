@@ -26,6 +26,10 @@ params:
             label:          Description
         online:
             label:          En ligne
+        force_geoloc_type:
+            label:          Geoloc type
+        force_geoloc_id:
+            label:          Geoloc id
         created_at:
             label:          Création
         updated_at:
@@ -76,6 +80,7 @@ builders:
                     "Groupe":                   [ p_circle ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
+                    "Géoloc":                   [ [ force_geoloc_type, force_geoloc_id ]]
                     "En ligne":                 [ online ]
                     "Création":                 [ [ created_at, updated_at ] ]
             fields:
@@ -93,6 +98,16 @@ builders:
                 uuid:
                     addFormOptions:
                         read_only:              true
+                force_geoloc_type:
+                    dbType:                     VARCHAR
+                    formType:                   Symfony\Component\Form\Extension\Core\Type\ChoiceType
+                    addFormOptions:
+                        multiple:               false
+                        required:               false
+                        choices:                
+                            city:               Ville
+                            department:         Département
+                            region:             Région
                 created_at:
                     addFormOptions:
                         widget:                 single_text
@@ -114,6 +129,7 @@ builders:
                     "Groupe":                   [ block_p_circle ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
+                    "Géoloc":                   [ [ force_geoloc_type, force_geoloc_id ]]
                     "En ligne":                 [ online ]
                     "Création":                 [ [ created_at, updated_at ] ]
             fields:

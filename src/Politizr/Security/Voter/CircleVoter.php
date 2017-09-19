@@ -9,11 +9,13 @@ use Politizr\Exception\InconsistentDataException;
 
 use Politizr\Model\PUser;
 use Politizr\Model\PCircle;
+use Politizr\Model\PCTopic;
 
 class CircleVoter extends Voter
 {
     // these strings are just invented: you can use anything
     const CIRCLE_DETAIL = 'circle_detail';
+    const TOPIC_DETAIL = 'topic_detail';
 
     /**
      *
@@ -21,12 +23,12 @@ class CircleVoter extends Voter
     protected function supports($attribute, $subject)
     {
         // if the attribute isn't one we support, return false
-        if (!in_array($attribute, array(self::CIRCLE_DETAIL))) {
+        if (!in_array($attribute, array(self::CIRCLE_DETAIL, self::TOPIC_DETAIL))) {
             return false;
         }
 
         // only vote on Circle objects inside this voter
-        if (!$subject instanceof PCircle) {
+        if (!$subject instanceof PCircle && !$subject instanceof PCTopic) {
             return false;
         }
 
@@ -45,10 +47,14 @@ class CircleVoter extends Voter
             return false;
         }
 
-        $circle = $subject;
-
         switch ($attribute) {
             case self::CIRCLE_DETAIL:
+                return $this->canCircleDetail($subject, $user);
+            case self::TOPIC_DETAIL:
+                $circle = $subject->getPCircle();
+                if (!$circle) {
+                    throw new InconsistentDataException(sprintf('Topic %s has no circle!', $subject->getId()));
+                }
                 return $this->canCircleDetail($circle, $user);
         }
 

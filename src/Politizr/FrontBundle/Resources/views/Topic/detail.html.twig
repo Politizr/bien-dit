@@ -20,6 +20,7 @@
             <h1>{{ topic.title }}</h1>
             <div>{{ topic.summary | purify  }}</div>
             <div>{{ topic.description | purify  }}</div>
+            <a href="{{ path('DebateDraftNew'~profileSuffix(), { topic: topic.uuid }) }}">Je m'exprime!</a>
         </div>
         <div id="documentListing" uuid="{{ topic.uuid }}" class="searchResults withLoaderInside">
             {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}

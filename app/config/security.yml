@@ -4,6 +4,7 @@ jms_security_extra:
     expressions:            true
 
 security:
+    access_denied_url:    ~ # Example: /foo/error403
     access_decision_manager:
         strategy: unanimous
 

@@ -1341,6 +1341,9 @@
 
         <column name="online" type="boolean" />
 
+        <column name="force_geoloc_type" type="varchar" size="100" />
+        <column name="force_geoloc_id" type="integer" />
+
         <foreign-key foreignTable="p_circle" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_circle_id" foreign="id" />
         </foreign-key>
@@ -1381,6 +1384,8 @@
             <reference local="p_user_id" foreign="id" />
         </foreign-key>
     </table>
+
+
 
 
 

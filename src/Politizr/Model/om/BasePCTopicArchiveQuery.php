@@ -22,6 +22,8 @@ use Politizr\Model\PCTopicArchiveQuery;
  * @method PCTopicArchiveQuery orderBySummary($order = Criteria::ASC) Order by the summary column
  * @method PCTopicArchiveQuery orderByDescription($order = Criteria::ASC) Order by the description column
  * @method PCTopicArchiveQuery orderByOnline($order = Criteria::ASC) Order by the online column
+ * @method PCTopicArchiveQuery orderByForceGeolocType($order = Criteria::ASC) Order by the force_geoloc_type column
+ * @method PCTopicArchiveQuery orderByForceGeolocId($order = Criteria::ASC) Order by the force_geoloc_id column
  * @method PCTopicArchiveQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PCTopicArchiveQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  * @method PCTopicArchiveQuery orderBySlug($order = Criteria::ASC) Order by the slug column
@@ -34,6 +36,8 @@ use Politizr\Model\PCTopicArchiveQuery;
  * @method PCTopicArchiveQuery groupBySummary() Group by the summary column
  * @method PCTopicArchiveQuery groupByDescription() Group by the description column
  * @method PCTopicArchiveQuery groupByOnline() Group by the online column
+ * @method PCTopicArchiveQuery groupByForceGeolocType() Group by the force_geoloc_type column
+ * @method PCTopicArchiveQuery groupByForceGeolocId() Group by the force_geoloc_id column
  * @method PCTopicArchiveQuery groupByCreatedAt() Group by the created_at column
  * @method PCTopicArchiveQuery groupByUpdatedAt() Group by the updated_at column
  * @method PCTopicArchiveQuery groupBySlug() Group by the slug column
@@ -52,6 +56,8 @@ use Politizr\Model\PCTopicArchiveQuery;
  * @method PCTopicArchive findOneBySummary(string $summary) Return the first PCTopicArchive filtered by the summary column
  * @method PCTopicArchive findOneByDescription(string $description) Return the first PCTopicArchive filtered by the description column
  * @method PCTopicArchive findOneByOnline(boolean $online) Return the first PCTopicArchive filtered by the online column
+ * @method PCTopicArchive findOneByForceGeolocType(string $force_geoloc_type) Return the first PCTopicArchive filtered by the force_geoloc_type column
+ * @method PCTopicArchive findOneByForceGeolocId(int $force_geoloc_id) Return the first PCTopicArchive filtered by the force_geoloc_id column
  * @method PCTopicArchive findOneByCreatedAt(string $created_at) Return the first PCTopicArchive filtered by the created_at column
  * @method PCTopicArchive findOneByUpdatedAt(string $updated_at) Return the first PCTopicArchive filtered by the updated_at column
  * @method PCTopicArchive findOneBySlug(string $slug) Return the first PCTopicArchive filtered by the slug column
@@ -64,6 +70,8 @@ use Politizr\Model\PCTopicArchiveQuery;
  * @method array findBySummary(string $summary) Return PCTopicArchive objects filtered by the summary column
  * @method array findByDescription(string $description) Return PCTopicArchive objects filtered by the description column
  * @method array findByOnline(boolean $online) Return PCTopicArchive objects filtered by the online column
+ * @method array findByForceGeolocType(string $force_geoloc_type) Return PCTopicArchive objects filtered by the force_geoloc_type column
+ * @method array findByForceGeolocId(int $force_geoloc_id) Return PCTopicArchive objects filtered by the force_geoloc_id column
  * @method array findByCreatedAt(string $created_at) Return PCTopicArchive objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PCTopicArchive objects filtered by the updated_at column
  * @method array findBySlug(string $slug) Return PCTopicArchive objects filtered by the slug column
@@ -173,7 +181,7 @@ abstract class BasePCTopicArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `p_circle_id`, `title`, `summary`, `description`, `online`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_c_topic_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_circle_id`, `title`, `summary`, `description`, `online`, `force_geoloc_type`, `force_geoloc_id`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_c_topic_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -487,6 +495,77 @@ abstract class BasePCTopicArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PCTopicArchivePeer::ONLINE, $online, $comparison);
+    }
+
+    /**
+     * Filter the query on the force_geoloc_type column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByForceGeolocType('fooValue');   // WHERE force_geoloc_type = 'fooValue'
+     * $query->filterByForceGeolocType('%fooValue%'); // WHERE force_geoloc_type LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $forceGeolocType The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PCTopicArchiveQuery The current query, for fluid interface
+     */
+    public function filterByForceGeolocType($forceGeolocType = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($forceGeolocType)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $forceGeolocType)) {
+                $forceGeolocType = str_replace('*', '%', $forceGeolocType);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PCTopicArchivePeer::FORCE_GEOLOC_TYPE, $forceGeolocType, $comparison);
+    }
+
+    /**
+     * Filter the query on the force_geoloc_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByForceGeolocId(1234); // WHERE force_geoloc_id = 1234
+     * $query->filterByForceGeolocId(array(12, 34)); // WHERE force_geoloc_id IN (12, 34)
+     * $query->filterByForceGeolocId(array('min' => 12)); // WHERE force_geoloc_id >= 12
+     * $query->filterByForceGeolocId(array('max' => 12)); // WHERE force_geoloc_id <= 12
+     * </code>
+     *
+     * @param     mixed $forceGeolocId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PCTopicArchiveQuery The current query, for fluid interface
+     */
+    public function filterByForceGeolocId($forceGeolocId = null, $comparison = null)
+    {
+        if (is_array($forceGeolocId)) {
+            $useMinMax = false;
+            if (isset($forceGeolocId['min'])) {
+                $this->addUsingAlias(PCTopicArchivePeer::FORCE_GEOLOC_ID, $forceGeolocId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($forceGeolocId['max'])) {
+                $this->addUsingAlias(PCTopicArchivePeer::FORCE_GEOLOC_ID, $forceGeolocId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PCTopicArchivePeer::FORCE_GEOLOC_ID, $forceGeolocId, $comparison);
     }
 
     /**

@@ -224,8 +224,8 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             new \Twig_SimpleFilter(
-                'editDocumentOperation',
-                array($this, 'editDocumentOperation'),
+                'editDocumentBanner',
+                array($this, 'editDocumentBanner'),
                 array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             new \Twig_SimpleFilter(
@@ -1339,32 +1339,41 @@ class PolitizrDocumentExtension extends \Twig_Extension
     }
 
    /**
-     * Display edition's operation context
+     * Display context edition's document banner
      *
      * @param PDocument $subject
      * @return string
      */
-    public function editDocumentOperation(\Twig_Environment $env, PDocumentInterface $document)
+    public function editDocumentBanner(\Twig_Environment $env, PDocumentInterface $document)
     {
-        // $this->logger->info('*** editDocumentOperation');
+        // $this->logger->info('*** editDocumentBanner');
         // $this->logger->info('$user = '.print_r($document, true));
 
         $debate = $document->getDebate();
         $operation = $debate->getPEOperation();
-
-        // Classic banner
-        $html = $env->render(
-            'PolitizrFrontBundle:Document:_bannerEdit.html.twig',
-            array(
-            )
-        );
+        $topic = $debate->getPCTopic();
 
         if ($operation) {
-            // Construction du rendu du tag            
+            // Operation banner
             $html = $env->render(
                 'PolitizrFrontBundle:Document:_opBannerEdit.html.twig',
                 array(
                     'operation' => $operation,
+                )
+            );
+        } elseif ($topic) {
+            // Topic banner
+            $html = $env->render(
+                'PolitizrFrontBundle:Document:_topicBannerEdit.html.twig',
+                array(
+                    'topic' => $topic,
+                )
+            );
+        } else {
+            // Classic banner
+            $html = $env->render(
+                'PolitizrFrontBundle:Document:_bannerEdit.html.twig',
+                array(
                 )
             );
         }

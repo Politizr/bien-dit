@@ -24,7 +24,7 @@
         {% for topic in topics %}
             <h1>{{ topic.title }}</h1>
             <div>{{ topic.summary | purify  }}</div>
-            <a href="{{ path('TopicDetail'~profileSuffix(), { 'circleSlug': circle.slug, 'slug': topic.slug }) }}">En savoir plus</a>
+            <a href="{{ path('TopicDetail', { 'circleSlug': circle.slug, 'slug': topic.slug }) }}">En savoir plus</a>
         {% endfor %}
     </div>
 {% endblock content %}

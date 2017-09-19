@@ -190,6 +190,14 @@ CREATE TABLE `p_u_in_p_c`
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
+ALTER TABLE `p_c_topic`
+    ADD `force_geoloc_type` VARCHAR(100) AFTER `online`,
+    ADD `force_geoloc_id` INTEGER AFTER `force_geoloc_type`;
+
+ALTER TABLE `p_c_topic_archive`
+    ADD `force_geoloc_type` VARCHAR(100) AFTER `online`,
+    ADD `force_geoloc_id` INTEGER AFTER `force_geoloc_type`;
+
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

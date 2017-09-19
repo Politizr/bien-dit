@@ -1966,9 +1966,10 @@ GROUP BY p_d_debate_id
      * @param int $userId
      * @param int $debateId
      * @param int $parentId
+     * @param int $topicId
      * @return PDReaction
      */
-    public function createReaction($userId, $debateId, $parentId = null)
+    public function createReaction($userId, $debateId, $parentId = null, $topicId = null)
     {
         $reaction = new PDReaction();
 
@@ -1983,6 +1984,8 @@ GROUP BY p_d_debate_id
         $reaction->setPublished(false);
 
         $reaction->setParentReactionId($parentId);
+
+        $reaction->setPCTopicId($topicId);
 
         $reaction->save();
 

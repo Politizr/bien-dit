@@ -28,6 +28,8 @@ use Politizr\Model\PDReaction;
  * @method PCTopicQuery orderBySummary($order = Criteria::ASC) Order by the summary column
  * @method PCTopicQuery orderByDescription($order = Criteria::ASC) Order by the description column
  * @method PCTopicQuery orderByOnline($order = Criteria::ASC) Order by the online column
+ * @method PCTopicQuery orderByForceGeolocType($order = Criteria::ASC) Order by the force_geoloc_type column
+ * @method PCTopicQuery orderByForceGeolocId($order = Criteria::ASC) Order by the force_geoloc_id column
  * @method PCTopicQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PCTopicQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  * @method PCTopicQuery orderBySlug($order = Criteria::ASC) Order by the slug column
@@ -39,6 +41,8 @@ use Politizr\Model\PDReaction;
  * @method PCTopicQuery groupBySummary() Group by the summary column
  * @method PCTopicQuery groupByDescription() Group by the description column
  * @method PCTopicQuery groupByOnline() Group by the online column
+ * @method PCTopicQuery groupByForceGeolocType() Group by the force_geoloc_type column
+ * @method PCTopicQuery groupByForceGeolocId() Group by the force_geoloc_id column
  * @method PCTopicQuery groupByCreatedAt() Group by the created_at column
  * @method PCTopicQuery groupByUpdatedAt() Group by the updated_at column
  * @method PCTopicQuery groupBySlug() Group by the slug column
@@ -68,6 +72,8 @@ use Politizr\Model\PDReaction;
  * @method PCTopic findOneBySummary(string $summary) Return the first PCTopic filtered by the summary column
  * @method PCTopic findOneByDescription(string $description) Return the first PCTopic filtered by the description column
  * @method PCTopic findOneByOnline(boolean $online) Return the first PCTopic filtered by the online column
+ * @method PCTopic findOneByForceGeolocType(string $force_geoloc_type) Return the first PCTopic filtered by the force_geoloc_type column
+ * @method PCTopic findOneByForceGeolocId(int $force_geoloc_id) Return the first PCTopic filtered by the force_geoloc_id column
  * @method PCTopic findOneByCreatedAt(string $created_at) Return the first PCTopic filtered by the created_at column
  * @method PCTopic findOneByUpdatedAt(string $updated_at) Return the first PCTopic filtered by the updated_at column
  * @method PCTopic findOneBySlug(string $slug) Return the first PCTopic filtered by the slug column
@@ -79,6 +85,8 @@ use Politizr\Model\PDReaction;
  * @method array findBySummary(string $summary) Return PCTopic objects filtered by the summary column
  * @method array findByDescription(string $description) Return PCTopic objects filtered by the description column
  * @method array findByOnline(boolean $online) Return PCTopic objects filtered by the online column
+ * @method array findByForceGeolocType(string $force_geoloc_type) Return PCTopic objects filtered by the force_geoloc_type column
+ * @method array findByForceGeolocId(int $force_geoloc_id) Return PCTopic objects filtered by the force_geoloc_id column
  * @method array findByCreatedAt(string $created_at) Return PCTopic objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PCTopic objects filtered by the updated_at column
  * @method array findBySlug(string $slug) Return PCTopic objects filtered by the slug column
@@ -193,7 +201,7 @@ abstract class BasePCTopicQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `p_circle_id`, `title`, `summary`, `description`, `online`, `created_at`, `updated_at`, `slug` FROM `p_c_topic` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_circle_id`, `title`, `summary`, `description`, `online`, `force_geoloc_type`, `force_geoloc_id`, `created_at`, `updated_at`, `slug` FROM `p_c_topic` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -509,6 +517,77 @@ abstract class BasePCTopicQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PCTopicPeer::ONLINE, $online, $comparison);
+    }
+
+    /**
+     * Filter the query on the force_geoloc_type column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByForceGeolocType('fooValue');   // WHERE force_geoloc_type = 'fooValue'
+     * $query->filterByForceGeolocType('%fooValue%'); // WHERE force_geoloc_type LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $forceGeolocType The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PCTopicQuery The current query, for fluid interface
+     */
+    public function filterByForceGeolocType($forceGeolocType = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($forceGeolocType)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $forceGeolocType)) {
+                $forceGeolocType = str_replace('*', '%', $forceGeolocType);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PCTopicPeer::FORCE_GEOLOC_TYPE, $forceGeolocType, $comparison);
+    }
+
+    /**
+     * Filter the query on the force_geoloc_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByForceGeolocId(1234); // WHERE force_geoloc_id = 1234
+     * $query->filterByForceGeolocId(array(12, 34)); // WHERE force_geoloc_id IN (12, 34)
+     * $query->filterByForceGeolocId(array('min' => 12)); // WHERE force_geoloc_id >= 12
+     * $query->filterByForceGeolocId(array('max' => 12)); // WHERE force_geoloc_id <= 12
+     * </code>
+     *
+     * @param     mixed $forceGeolocId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PCTopicQuery The current query, for fluid interface
+     */
+    public function filterByForceGeolocId($forceGeolocId = null, $comparison = null)
+    {
+        if (is_array($forceGeolocId)) {
+            $useMinMax = false;
+            if (isset($forceGeolocId['min'])) {
+                $this->addUsingAlias(PCTopicPeer::FORCE_GEOLOC_ID, $forceGeolocId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($forceGeolocId['max'])) {
+                $this->addUsingAlias(PCTopicPeer::FORCE_GEOLOC_ID, $forceGeolocId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PCTopicPeer::FORCE_GEOLOC_ID, $forceGeolocId, $comparison);
     }
 
     /**

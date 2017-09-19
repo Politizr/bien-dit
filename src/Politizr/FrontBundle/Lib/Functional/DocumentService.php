@@ -25,6 +25,7 @@ use Politizr\Model\PUReputationQuery;
 use Politizr\Model\PTagQuery;
 use Politizr\Model\PUFollowDDQuery;
 use Politizr\Model\PUFollowUQuery;
+use Politizr\Model\PEOperationQuery;
 use Politizr\Model\PCTopicQuery;
 
 /**
@@ -39,6 +40,7 @@ class DocumentService
     private $securityAuthorizationChecker;
     
     private $documentManager;
+    private $tagManager;
 
     private $tagService;
     private $localizationService;
@@ -54,6 +56,7 @@ class DocumentService
      * @param @security.token_storage
      * @param @security.authorization_checker
      * @param @politizr.manager.document
+     * @param @politizr.manager.tag
      * @param @politizr.functional.tag
      * @param @politizr.functional.localization
      * @param @router
@@ -64,6 +67,7 @@ class DocumentService
         $securityTokenStorage,
         $securityAuthorizationChecker,
         $documentManager,
+        $tagManager,
         $tagService,
         $localizationService,
         $router,
@@ -74,6 +78,7 @@ class DocumentService
         $this->securityAuthorizationChecker =$securityAuthorizationChecker;
 
         $this->documentManager = $documentManager;
+        $this->tagManager = $tagManager;
 
         $this->tagService = $tagService;
         $this->localizationService = $localizationService;
@@ -564,9 +569,10 @@ class DocumentService
         if ($parent) {
             $parentId = $parent->getId();
         }
+        $topicId = $debate->getPCTopicId();
 
         // Create reaction for user
-        $reaction = $this->documentManager->createReaction($user->getId(), $debateId, $parentId);
+        $reaction = $this->documentManager->createReaction($user->getId(), $debateId, $parentId, $topicId);
 
         // Init default reaction's tagged tags
         $this->documentManager->initReactionTaggedTags($reaction);
@@ -625,9 +631,60 @@ class DocumentService
     }
 
     /* ######################################################################################################## */
-    /*                                  CONTEXT BY DOCUMENT TYPE                                                */
+    /*                                CONTEXT DOCUMENT COMPUTING                                                */
     /* ######################################################################################################## */
     
+
+    /**
+     * Manage linked object depending of the context of edition
+     *
+     * @param
+     * @param
+     * @return
+     */
+    public function manageEditDocumentContext(PDDebate $debate, $opUuid = null, $topicUuid = null)
+    {
+        // manage OP context
+        $operation = null;
+        if ($opUuid && $debate->getType() == ObjectTypeConstants::TYPE_DEBATE) {
+            $operation = PEOperationQuery::create()
+                ->filterByUuid($opUuid)
+                ->findOne();
+            if (!$operation) {
+                throw new InconsistentDataException(sprintf('Operation %s not found.', $opUuid));
+            }
+
+            $debate->setPEOperationId($operation->getId());
+            $debate->save();
+
+            // op preset tags
+            $tags = $operation->getPTags();
+            foreach ($tags as $tag) {
+                $this->tagManager->createDebateTag($debate->getId(), $tag->getId());
+            }
+
+            return $debate;
+        }
+
+        // manage TOPIC context
+        $topic = null;
+        if ($topicUuid) {
+            $topic = PCTopicQuery::create()
+                ->filterByUuid($topicUuid)
+                ->findOne();
+            if (!$topic) {
+                throw new InconsistentDataException(sprintf('Topic %s not found.', $topicUuid));
+            }
+
+            $debate->setPCTopicId($topic->getId());
+            $debate->save();
+
+            return $debate;
+        }
+
+        return $debate;
+    }
+
     /**
      * Compute various attributes depending of the document context
      *

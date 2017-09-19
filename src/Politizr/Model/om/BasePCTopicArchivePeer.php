@@ -29,13 +29,13 @@ abstract class BasePCTopicArchivePeer
     const TM_CLASS = 'Politizr\\Model\\map\\PCTopicArchiveTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 11;
+    const NUM_COLUMNS = 13;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 11;
+    const NUM_HYDRATE_COLUMNS = 13;
 
     /** the column name for the id field */
     const ID = 'p_c_topic_archive.id';
@@ -57,6 +57,12 @@ abstract class BasePCTopicArchivePeer
 
     /** the column name for the online field */
     const ONLINE = 'p_c_topic_archive.online';
+
+    /** the column name for the force_geoloc_type field */
+    const FORCE_GEOLOC_TYPE = 'p_c_topic_archive.force_geoloc_type';
+
+    /** the column name for the force_geoloc_id field */
+    const FORCE_GEOLOC_ID = 'p_c_topic_archive.force_geoloc_id';
 
     /** the column name for the created_at field */
     const CREATED_AT = 'p_c_topic_archive.created_at';
@@ -89,12 +95,12 @@ abstract class BasePCTopicArchivePeer
      * e.g. PCTopicArchivePeer::$fieldNames[PCTopicArchivePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'PCircleId', 'Title', 'Summary', 'Description', 'Online', 'CreatedAt', 'UpdatedAt', 'Slug', 'ArchivedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'pCircleId', 'title', 'summary', 'description', 'online', 'createdAt', 'updatedAt', 'slug', 'archivedAt', ),
-        BasePeer::TYPE_COLNAME => array (PCTopicArchivePeer::ID, PCTopicArchivePeer::UUID, PCTopicArchivePeer::P_CIRCLE_ID, PCTopicArchivePeer::TITLE, PCTopicArchivePeer::SUMMARY, PCTopicArchivePeer::DESCRIPTION, PCTopicArchivePeer::ONLINE, PCTopicArchivePeer::CREATED_AT, PCTopicArchivePeer::UPDATED_AT, PCTopicArchivePeer::SLUG, PCTopicArchivePeer::ARCHIVED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'P_CIRCLE_ID', 'TITLE', 'SUMMARY', 'DESCRIPTION', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', 'SLUG', 'ARCHIVED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'p_circle_id', 'title', 'summary', 'description', 'online', 'created_at', 'updated_at', 'slug', 'archived_at', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'PCircleId', 'Title', 'Summary', 'Description', 'Online', 'ForceGeolocType', 'ForceGeolocId', 'CreatedAt', 'UpdatedAt', 'Slug', 'ArchivedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'pCircleId', 'title', 'summary', 'description', 'online', 'forceGeolocType', 'forceGeolocId', 'createdAt', 'updatedAt', 'slug', 'archivedAt', ),
+        BasePeer::TYPE_COLNAME => array (PCTopicArchivePeer::ID, PCTopicArchivePeer::UUID, PCTopicArchivePeer::P_CIRCLE_ID, PCTopicArchivePeer::TITLE, PCTopicArchivePeer::SUMMARY, PCTopicArchivePeer::DESCRIPTION, PCTopicArchivePeer::ONLINE, PCTopicArchivePeer::FORCE_GEOLOC_TYPE, PCTopicArchivePeer::FORCE_GEOLOC_ID, PCTopicArchivePeer::CREATED_AT, PCTopicArchivePeer::UPDATED_AT, PCTopicArchivePeer::SLUG, PCTopicArchivePeer::ARCHIVED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'P_CIRCLE_ID', 'TITLE', 'SUMMARY', 'DESCRIPTION', 'ONLINE', 'FORCE_GEOLOC_TYPE', 'FORCE_GEOLOC_ID', 'CREATED_AT', 'UPDATED_AT', 'SLUG', 'ARCHIVED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'p_circle_id', 'title', 'summary', 'description', 'online', 'force_geoloc_type', 'force_geoloc_id', 'created_at', 'updated_at', 'slug', 'archived_at', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
     );
 
     /**
@@ -104,12 +110,12 @@ abstract class BasePCTopicArchivePeer
      * e.g. PCTopicArchivePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'PCircleId' => 2, 'Title' => 3, 'Summary' => 4, 'Description' => 5, 'Online' => 6, 'CreatedAt' => 7, 'UpdatedAt' => 8, 'Slug' => 9, 'ArchivedAt' => 10, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'pCircleId' => 2, 'title' => 3, 'summary' => 4, 'description' => 5, 'online' => 6, 'createdAt' => 7, 'updatedAt' => 8, 'slug' => 9, 'archivedAt' => 10, ),
-        BasePeer::TYPE_COLNAME => array (PCTopicArchivePeer::ID => 0, PCTopicArchivePeer::UUID => 1, PCTopicArchivePeer::P_CIRCLE_ID => 2, PCTopicArchivePeer::TITLE => 3, PCTopicArchivePeer::SUMMARY => 4, PCTopicArchivePeer::DESCRIPTION => 5, PCTopicArchivePeer::ONLINE => 6, PCTopicArchivePeer::CREATED_AT => 7, PCTopicArchivePeer::UPDATED_AT => 8, PCTopicArchivePeer::SLUG => 9, PCTopicArchivePeer::ARCHIVED_AT => 10, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'P_CIRCLE_ID' => 2, 'TITLE' => 3, 'SUMMARY' => 4, 'DESCRIPTION' => 5, 'ONLINE' => 6, 'CREATED_AT' => 7, 'UPDATED_AT' => 8, 'SLUG' => 9, 'ARCHIVED_AT' => 10, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'p_circle_id' => 2, 'title' => 3, 'summary' => 4, 'description' => 5, 'online' => 6, 'created_at' => 7, 'updated_at' => 8, 'slug' => 9, 'archived_at' => 10, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'PCircleId' => 2, 'Title' => 3, 'Summary' => 4, 'Description' => 5, 'Online' => 6, 'ForceGeolocType' => 7, 'ForceGeolocId' => 8, 'CreatedAt' => 9, 'UpdatedAt' => 10, 'Slug' => 11, 'ArchivedAt' => 12, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'pCircleId' => 2, 'title' => 3, 'summary' => 4, 'description' => 5, 'online' => 6, 'forceGeolocType' => 7, 'forceGeolocId' => 8, 'createdAt' => 9, 'updatedAt' => 10, 'slug' => 11, 'archivedAt' => 12, ),
+        BasePeer::TYPE_COLNAME => array (PCTopicArchivePeer::ID => 0, PCTopicArchivePeer::UUID => 1, PCTopicArchivePeer::P_CIRCLE_ID => 2, PCTopicArchivePeer::TITLE => 3, PCTopicArchivePeer::SUMMARY => 4, PCTopicArchivePeer::DESCRIPTION => 5, PCTopicArchivePeer::ONLINE => 6, PCTopicArchivePeer::FORCE_GEOLOC_TYPE => 7, PCTopicArchivePeer::FORCE_GEOLOC_ID => 8, PCTopicArchivePeer::CREATED_AT => 9, PCTopicArchivePeer::UPDATED_AT => 10, PCTopicArchivePeer::SLUG => 11, PCTopicArchivePeer::ARCHIVED_AT => 12, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'P_CIRCLE_ID' => 2, 'TITLE' => 3, 'SUMMARY' => 4, 'DESCRIPTION' => 5, 'ONLINE' => 6, 'FORCE_GEOLOC_TYPE' => 7, 'FORCE_GEOLOC_ID' => 8, 'CREATED_AT' => 9, 'UPDATED_AT' => 10, 'SLUG' => 11, 'ARCHIVED_AT' => 12, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'p_circle_id' => 2, 'title' => 3, 'summary' => 4, 'description' => 5, 'online' => 6, 'force_geoloc_type' => 7, 'force_geoloc_id' => 8, 'created_at' => 9, 'updated_at' => 10, 'slug' => 11, 'archived_at' => 12, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
     );
 
     /**
@@ -190,6 +196,8 @@ abstract class BasePCTopicArchivePeer
             $criteria->addSelectColumn(PCTopicArchivePeer::SUMMARY);
             $criteria->addSelectColumn(PCTopicArchivePeer::DESCRIPTION);
             $criteria->addSelectColumn(PCTopicArchivePeer::ONLINE);
+            $criteria->addSelectColumn(PCTopicArchivePeer::FORCE_GEOLOC_TYPE);
+            $criteria->addSelectColumn(PCTopicArchivePeer::FORCE_GEOLOC_ID);
             $criteria->addSelectColumn(PCTopicArchivePeer::CREATED_AT);
             $criteria->addSelectColumn(PCTopicArchivePeer::UPDATED_AT);
             $criteria->addSelectColumn(PCTopicArchivePeer::SLUG);
@@ -202,6 +210,8 @@ abstract class BasePCTopicArchivePeer
             $criteria->addSelectColumn($alias . '.summary');
             $criteria->addSelectColumn($alias . '.description');
             $criteria->addSelectColumn($alias . '.online');
+            $criteria->addSelectColumn($alias . '.force_geoloc_type');
+            $criteria->addSelectColumn($alias . '.force_geoloc_id');
             $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
             $criteria->addSelectColumn($alias . '.slug');

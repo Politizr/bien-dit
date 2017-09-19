@@ -49,6 +49,8 @@ class PCTopicArchiveTableMap extends TableMap
         $this->addColumn('summary', 'Summary', 'LONGVARCHAR', false, null, null);
         $this->addColumn('description', 'Description', 'CLOB', false, null, null);
         $this->addColumn('online', 'Online', 'BOOLEAN', false, 1, null);
+        $this->addColumn('force_geoloc_type', 'ForceGeolocType', 'VARCHAR', false, 100, null);
+        $this->addColumn('force_geoloc_id', 'ForceGeolocId', 'INTEGER', false, null, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('slug', 'Slug', 'VARCHAR', false, 255, null);

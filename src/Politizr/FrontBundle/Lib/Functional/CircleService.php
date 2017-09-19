@@ -4,6 +4,7 @@ namespace Politizr\FrontBundle\Lib\Functional;
 use Politizr\Exception\InconsistentDataException;
 
 use Politizr\Model\PUser;
+use Politizr\Model\PCTopic;
 
 use Politizr\Model\PCircleQuery;
 use Politizr\Model\PUInPCQuery;
@@ -46,7 +47,7 @@ class CircleService
     }
 
     /* ######################################################################################################## */
-    /*                                              PUBLIC FUNCTIONS                                            */
+    /*                                              CIRCLE FUNCTIONS                                            */
     /* ######################################################################################################## */
     
     /**
@@ -98,5 +99,24 @@ class CircleService
         }
 
         return false;
+    }
+
+    /* ######################################################################################################## */
+    /*                                              TOPIC FUNCTIONS                                             */
+    /* ######################################################################################################## */
+    
+    /**
+     * Update form options if topic has geoloc preset values
+     *
+     * @param PCTopic $topic
+     * @param array $options
+     */
+    public function updateDocumentLocalizationTypeOptions(PCTopic $topic = null, & $options)
+    {
+        if ($topic && $topic->getForceGeolocType() && $topic->getForceGeolocId()) {
+            $options['force_geoloc'] = true;
+            $options['force_geoloc_type'] = $topic->getForceGeolocType();
+            $options['force_geoloc_id'] = $topic->getForceGeolocId();
+        }
     }
 }

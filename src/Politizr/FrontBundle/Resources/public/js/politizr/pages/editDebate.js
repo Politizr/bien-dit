@@ -9,7 +9,7 @@ $(function() {
     locShowHideAttr();
 
     var uuid = $('input[name="uuid"]').val();
-    // // console.log(uuid);
+    // console.log(uuid);
     
     updateDebateTagsZone(uuid);
 

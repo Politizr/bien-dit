@@ -27,6 +27,7 @@ services:
             - @politizr.functional.localization
             - @politizr.functional.tag
             - @politizr.functional.facebook
+            - @politizr.functional.circle
             - @politizr.tools.global
             - @politizr.twig.document
             - @politizr.form.type.document_localization

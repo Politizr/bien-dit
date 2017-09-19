@@ -68,6 +68,7 @@ class XhrDocument
     private $localizationService;
     private $tagService;
     private $facebookService;
+    private $circleService;
     private $globalTools;
     private $documentTwigExtension;
     private $documentLocalizationFormType;
@@ -90,6 +91,7 @@ class XhrDocument
      * @param @politizr.functional.localization
      * @param @politizr.functional.tag
      * @param @politizr.functional.facebook
+     * @param @politizr.functional.circle
      * @param @politizr.tools.global
      * @param @politizr.twig.document
      * @param @politizr.form.type.document_localization
@@ -111,6 +113,7 @@ class XhrDocument
         $localizationService,
         $tagService,
         $facebookService,
+        $circleService,
         $globalTools,
         $documentTwigExtension,
         $documentLocalizationFormType,
@@ -136,6 +139,7 @@ class XhrDocument
         $this->localizationService = $localizationService;
         $this->tagService = $tagService;
         $this->facebookService = $facebookService;
+        $this->circleService = $circleService;
 
         $this->globalTools = $globalTools;
 
@@ -764,13 +768,17 @@ class XhrDocument
         }
 
         // Document's localization
+        $options = array(
+                'data_class' => $type,
+                'user' => $user,
+        );
+        if ($document->getPCTopicId()) {
+            $this->circleService->updateDocumentLocalizationTypeOptions($document->getPCTopic(), $options);
+        }
         $formLocalization = $this->formFactory->create(
             $this->documentLocalizationFormType,
             $document,
-            array(
-                'user' => $user,
-                'data_class' => $type
-            )
+            $options
         );
         $formLocalization->bind($request);
         $document = $formLocalization->getData();
