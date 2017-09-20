@@ -4,6 +4,7 @@ FROM p_d_debate
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1 
+    AND p_d_debate.p_c_topic_id is NULL
     AND p_d_debate.p_user_id IN (
         SELECT p_user.id
         FROM p_user
@@ -23,6 +24,7 @@ FROM p_d_reaction
 WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
+    AND p_d_reaction.p_c_topic_id is NULL
     AND p_d_reaction.tree_level > 0
     AND p_d_reaction.p_user_id IN (
         SELECT p_user.id
@@ -40,8 +42,13 @@ UNION DISTINCT
 # Commentaires débats publiés
 ( SELECT DISTINCT p_d_d_comment.id as id, "commentaire" as title, "image" as fileName, p_d_d_comment.description as description, "slug" as slug, p_d_d_comment.note_pos as note_pos, p_d_d_comment.note_neg as note_neg, -1 as nb_views, p_d_d_comment.published_at as published_at, p_d_d_comment.updated_at as updated_at, 'Politizr\\Model\\PDDComment' as type
 FROM p_d_d_comment
+    LEFT JOIN p_d_debate
+        ON p_d_d_comment.p_d_debate_id = p_d_debate.id
 WHERE
     p_d_d_comment.online = 1
+    AND p_d_debate.published = 1
+    AND p_d_debate.online = 1
+    AND p_d_debate.p_c_topic_id is NULL
     AND p_d_d_comment.p_user_id IN (
         SELECT p_user.id
         FROM p_user
@@ -58,8 +65,13 @@ UNION DISTINCT
 # Commentaires réactions publiés
 ( SELECT DISTINCT p_d_r_comment.id as id, "commentaire" as title, "image" as fileName, p_d_r_comment.description as description, "slug" as slug, p_d_r_comment.note_pos as note_pos, p_d_r_comment.note_neg as note_neg, -1 as nb_views, p_d_r_comment.published_at as published_at, p_d_r_comment.updated_at as updated_at, 'Politizr\\Model\\PDRComment' as type
 FROM p_d_r_comment
+    LEFT JOIN p_d_reaction
+        ON p_d_r_comment.p_d_reaction_id = p_d_reaction.id
 WHERE
     p_d_r_comment.online = 1
+    AND p_d_reaction.published = 1
+    AND p_d_reaction.online = 1
+    AND p_d_reaction.p_c_topic_id is NULL
     AND p_d_r_comment.p_user_id IN (
         SELECT p_user.id
         FROM p_user

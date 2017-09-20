@@ -141,4 +141,20 @@ class CircleService
 
         return $topicIds;
     }
+
+    /**
+     * Return users by filtering those who are not in circle
+     *
+     * @param \PropelCollection $users
+     * @param int $circleId
+     * @return \PropelCollection
+     */
+    public function filterUsersNotInCircle(\PropelCollection $users, $circleId) {
+        foreach ($users as $key => $user) {
+            if (!$this->isUserMemberOfCircle($user->getId(), $circleId)) {
+                $users->remove($key);
+            }
+        }
+        return $users;
+    }
 }

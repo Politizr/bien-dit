@@ -5,6 +5,7 @@ FROM p_d_debate
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1 
+    AND p_d_debate.p_c_topic_id is NULL
     AND p_d_debate.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW() 
     )
 
@@ -17,6 +18,7 @@ WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
     AND p_d_reaction.tree_level > 0
+    AND p_d_reaction.p_c_topic_id is NULL
     AND p_d_reaction.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW() 
     )
 
@@ -33,6 +35,7 @@ FROM p_u_reputation
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1 
+    AND p_d_debate.p_c_topic_id is NULL
     AND (p_d_debate.note_pos - p_d_debate.note_neg) > 0
     AND p_u_reputation.p_r_action_id = 10
     # AND p_u_reputation.created_at BETWEEN DATE_SUB(NOW(), INTERVAL 60 DAY) AND NOW() 
@@ -50,6 +53,7 @@ WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
     AND p_d_reaction.tree_level > 0
+    AND p_d_reaction.p_c_topic_id is NULL
     AND (p_d_reaction.note_pos - p_d_reaction.note_neg) > 0
     AND p_u_reputation.p_r_action_id = 12
     # AND p_u_reputation.created_at BETWEEN DATE_SUB(NOW(), INTERVAL 60 DAY) AND NOW() 
@@ -65,6 +69,7 @@ FROM p_d_debate
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1 
+    AND p_d_debate.p_c_topic_id is NULL
     )
 
 UNION DISTINCT
@@ -75,6 +80,7 @@ WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
     AND p_d_reaction.tree_level > 0
+    AND p_d_reaction.p_c_topic_id is NULL
     )
 
 ORDER BY published_at DESC

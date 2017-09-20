@@ -67,6 +67,7 @@ FROM p_d_debate
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1 
+    AND p_d_debate.p_c_topic_id is NULL
     AND p_d_debate.homepage = 1 
 )
 
@@ -78,6 +79,7 @@ FROM p_d_reaction
 WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
+    AND p_d_reaction.p_c_topic_id is NULL
     AND p_d_reaction.homepage = 1
     AND p_d_reaction.tree_level > 0
 )
@@ -792,8 +794,8 @@ LIMIT :limit
         $subrequestTopic1 = "AND p_d_debate.p_c_topic_id is NULL";
         $subrequestTopic2 = "AND p_d_reaction.p_c_topic_id is NULL";
         if ($inQueryTopicIds) {
-            $subrequestTopic1 = "AND p_d_debate.p_c_topic_id is NULL OR p_d_debate.p_c_topic_id IN ($inQueryTopicIds)";
-            $subrequestTopic2 = "AND p_d_reaction.p_c_topic_id is NULL OR p_d_reaction.p_c_topic_id IN ($inQueryTopicIds)";
+            $subrequestTopic1 = "AND (p_d_debate.p_c_topic_id is NULL OR p_d_debate.p_c_topic_id IN ($inQueryTopicIds))";
+            $subrequestTopic2 = "AND (p_d_reaction.p_c_topic_id is NULL OR p_d_reaction.p_c_topic_id IN ($inQueryTopicIds))";
         }
 
         // Tag filtering subrequest
@@ -897,7 +899,7 @@ LIMIT :offset, :limit
     /**
      * Documents by recommended
      *
-     * @see app/sql/topDocumentsBestNote.sql
+     * @see app/sql/topDocuments.sql
      *
      * @return string
      */
@@ -919,6 +921,7 @@ FROM p_u_reputation
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1 
+    AND p_d_debate.p_c_topic_id is NULL
     AND (p_d_debate.note_pos - p_d_debate.note_neg) > 0
     AND p_u_reputation.p_r_action_id = :id_author_debate_note_pos
     $subRequestCond
@@ -934,6 +937,7 @@ FROM p_u_reputation
 WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
+    AND p_d_reaction.p_c_topic_id is NULL
     AND p_d_reaction.tree_level > 0
     AND (p_d_reaction.note_pos - p_d_reaction.note_neg) > 0
     AND p_u_reputation.p_r_action_id = :id_author_reaction_note_pos
@@ -974,6 +978,7 @@ FROM p_d_debate
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1 
+    AND p_d_debate.p_c_topic_id is NULL
     AND p_d_debate.p_user_id IN (
         SELECT p_user.id
         FROM p_user
@@ -992,6 +997,7 @@ FROM p_d_reaction
 WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
+    AND p_d_reaction.p_c_topic_id is NULL
     AND p_d_reaction.tree_level > 0
     AND p_d_reaction.p_user_id IN (
         SELECT p_user.id
@@ -1009,8 +1015,13 @@ UNION DISTINCT
 # Commentaires débats publiés
 ( SELECT DISTINCT p_d_d_comment.id as id, \"commentaire\" as title, \"image\" as fileName, p_d_d_comment.description as description, \"slug\" as slug, p_d_d_comment.note_pos as note_pos, p_d_d_comment.note_neg as note_neg, -1 as nb_views, p_d_d_comment.published_at as published_at, p_d_d_comment.updated_at as updated_at, 'Politizr\\\Model\\\PDDComment' as type
 FROM p_d_d_comment
+    LEFT JOIN p_d_debate
+        ON p_d_d_comment.p_d_debate_id = p_d_debate.id
 WHERE
     p_d_d_comment.online = 1
+    AND p_d_debate.published = 1
+    AND p_d_debate.online = 1
+    AND p_d_debate.p_c_topic_id is NULL
     AND p_d_d_comment.p_user_id IN (
         SELECT p_user.id
         FROM p_user
@@ -1027,8 +1038,13 @@ UNION DISTINCT
 # Commentaires réactions publiés
 ( SELECT DISTINCT p_d_r_comment.id as id, \"commentaire\" as title, \"image\" as fileName, p_d_r_comment.description as description, \"slug\" as slug, p_d_r_comment.note_pos as note_pos, p_d_r_comment.note_neg as note_neg, -1 as nb_views, p_d_r_comment.published_at as published_at, p_d_r_comment.updated_at as updated_at, 'Politizr\\\Model\\\PDRComment' as type
 FROM p_d_r_comment
+    LEFT JOIN p_d_reaction
+        ON p_d_r_comment.p_d_reaction_id = p_d_reaction.id
 WHERE
     p_d_r_comment.online = 1
+    AND p_d_reaction.published = 1
+    AND p_d_reaction.online = 1
+    AND p_d_reaction.p_c_topic_id is NULL
     AND p_d_r_comment.p_user_id IN (
         SELECT p_user.id
         FROM p_user
@@ -1054,10 +1070,11 @@ LIMIT :offset, :limit
      * @see app/sql/documentsByTags.sql
      *
      * @param string $inQueryTagIds
+     * @param string $inQueryTopicIds
      * @param integer $orderBy
      * @return string
      */
-    private function createDocumentsByTagsRawSql($inQueryTagIds, $orderBy = null)
+    private function createDocumentsByTagsRawSql($inQueryTagIds, $inQueryTopicIds, $orderBy = null)
     {
         if ($orderBy == ListingConstants::ORDER_BY_KEYWORD_BEST_NOTE) {
             $orderBy = "ORDER BY note_pos DESC, note_neg ASC, published_at DESC";
@@ -1065,6 +1082,14 @@ LIMIT :offset, :limit
             $orderBy = "ORDER BY published_at DESC, note_pos DESC, note_neg ASC";
         } else {
             throw new InconsistentDataException(sprintf('OrderBy keyword %s not found'), $keyword);
+        }
+
+        // Topic subrequest
+        $subrequestTopic1 = "AND p_d_debate.p_c_topic_id is NULL";
+        $subrequestTopic2 = "AND p_d_reaction.p_c_topic_id is NULL";
+        if ($inQueryTopicIds) {
+            $subrequestTopic1 = "AND (p_d_debate.p_c_topic_id is NULL OR p_d_debate.p_c_topic_id IN ($inQueryTopicIds))";
+            $subrequestTopic2 = "AND (p_d_reaction.p_c_topic_id is NULL OR p_d_reaction.p_c_topic_id IN ($inQueryTopicIds))";
         }
 
         // Requête SQL
@@ -1076,6 +1101,7 @@ FROM p_d_debate
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1 
+    $subrequestTopic1
     AND p_d_d_tagged_t.p_tag_id IN ($inQueryTagIds)
     )
 
@@ -1089,6 +1115,7 @@ WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
     AND p_d_reaction.tree_level > 0
+    $subrequestTopic2
     AND p_d_r_tagged_t.p_tag_id IN ($inQueryTagIds)
     )
 
@@ -1116,6 +1143,7 @@ FROM p_d_debate
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1 
+    AND p_d_debate.p_c_topic_id is NULL
     AND p_d_debate.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 90 DAY) AND NOW() 
     )
 
@@ -1126,6 +1154,7 @@ FROM p_d_reaction
 WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
+    AND p_d_reaction.p_c_topic_id is NULL
     AND p_d_reaction.tree_level > 0
     AND p_d_reaction.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 90 DAY) AND NOW() 
     )
@@ -1598,21 +1627,23 @@ GROUP BY p_d_debate_id
      * Documents by tags
      *
      * @param string $inQueryTagIds
+     * @param string $inQueryTopicIds
      * @param integer $orderBy
      * @param integer $offset
      * @param integer $limit
      * @return PropelCollection[PDDebate|PDReaction]
      */
-    public function generateDocumentsByTagsPaginated($inQueryTagIds, $orderBy, $offset, $limit)
+    public function generateDocumentsByTagsPaginated($inQueryTagIds, $inQueryTopicIds, $orderBy, $offset, $limit)
     {
         // $this->logger->info('*** generateUserSuggestedDebatesPaginatedListing');
         // $this->logger->info('$inQueryTagIds = ' . print_r($inQueryTagIds, true));
+        // $this->logger->info('$inQueryTopicIds = ' . print_r($inQueryTopicIds, true));
         // $this->logger->info('$orderBy = ' . print_r($orderBy, true));
         // $this->logger->info('$offset = ' . print_r($offset, true));
         // $this->logger->info('$limit = ' . print_r($limit, true));
 
         $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
-        $stmt = $con->prepare($this->createDocumentsByTagsRawSql($inQueryTagIds, $orderBy));
+        $stmt = $con->prepare($this->createDocumentsByTagsRawSql($inQueryTagIds, $inQueryTopicIds, $orderBy));
 
         $stmt->bindValue(':offset', $offset, \PDO::PARAM_INT);
         $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);

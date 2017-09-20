@@ -22,6 +22,7 @@ services:
         class:      Politizr\FrontBundle\Listener\NotificationListener
         arguments:
             - @event_dispatcher
+            - @politizr.functional.circle
             - @logger
         tags:
             - { name: kernel.event_listener, event: n_note_pos }

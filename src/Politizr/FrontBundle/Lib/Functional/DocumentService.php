@@ -340,19 +340,26 @@ class DocumentService
      * beta
      *
      * @param array $tagIds
+     * @param int $currentUserId
      * @param string $orderBy
      * @param integer $offset
      * @param înteger $count
      * @return PropelCollection PDocument
      */
-    public function getDocumentsByTagsPaginated($tagIds, $orderBy = null, $offset = 0, $count = ListingConstants::LISTING_CLASSIC_PAGINATION)
+    public function getDocumentsByTagsPaginated($tagIds, $currentUserId = null, $orderBy = null, $offset = 0, $count = ListingConstants::LISTING_CLASSIC_PAGINATION)
     {
+        $inQueryTopicIds = null;
+        if ($currentUserId) {
+            $topicIds = $this->circleService->getTopicIdsByUserId($currentUserId);
+            $inQueryTopicIds = $this->globalTools->getInQuery($topicIds);
+        }
+
         $inQueryTagIds = implode(',', $tagIds);
         if (empty($inQueryTagIds)) {
             $inQueryTagIds = 0;
         }
 
-        $documents = $this->documentManager->generateDocumentsByTagsPaginated($inQueryTagIds, $orderBy, $offset, $count);
+        $documents = $this->documentManager->generateDocumentsByTagsPaginated($inQueryTagIds, $inQueryTopicIds, $orderBy, $offset, $count);
 
         return $documents;
     }

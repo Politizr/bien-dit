@@ -51,8 +51,10 @@ services:
         arguments:
             - @security.token_storage
             - @security.authorization_checker
+            - @politizr.functional.circle
             - @politizr.manager.user
             - @politizr.manager.document
+            - @politizr.tools.global
             - @logger
 
     politizr.functional.tag:

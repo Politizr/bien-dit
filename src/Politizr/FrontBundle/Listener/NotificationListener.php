@@ -26,18 +26,23 @@ class NotificationListener
 {
 
     protected $eventDispatcher;
+    protected $circleService;
     protected $logger;
 
     /**
      *
      * @param @event_dispatcher
+     * @param @politizr.functional.circle
      * @param @logger
      */
     public function __construct(
         $eventDispatcher,
+        $circleService,
         $logger
     ) {
         $this->eventDispatcher = $eventDispatcher;
+        
+        $this->circleService = $circleService;
         
         $this->logger = $logger;
     }
@@ -148,6 +153,7 @@ class NotificationListener
         
         // get debate's user followers
         $users = $authorUser->getFollowers();
+        $users = $this->filterUsersByTopicMembership($users, $debate);
         foreach ($users as $user) {
             $usersIds[] = $user->getId();
 
@@ -162,6 +168,7 @@ class NotificationListener
             // get tag's users
             $query = PUserQuery::create()->filterById($usersIds, " NOT IN ");
             $users = $tag->getUsers(true, $query);
+            $users = $this->filterUsersByTopicMembership($users, $debate);
 
             foreach ($users as $user) {
                 $usersIds[] = $user->getId();
@@ -603,11 +610,52 @@ class NotificationListener
         $dispatcher =  $this->eventDispatcher->dispatch('n_e_check', $event);
     }
 
-    /**
+    // ******************************************************** //
+    //                     Private functions                    //
+    // ******************************************************** //
 
-    // ******************************************************** //
-    //                      Méthodes privées                    //
-    // ******************************************************** //
+    /**
+     * Used to remove users from collection if they can't access to circle
+     *
+     * @param \PropelCollection $users
+     * @param PDDebate|PDReaction|PDDComment|PDRComment $publication
+     * @return \PropelCollection
+     */
+    private function filterUsersByTopicMembership(\PropelCollection $users, $publication)
+    {
+        $toFilter = false;
+        switch ($publication->getType()) {
+            case (ObjectTypeConstants::TYPE_DEBATE || ObjectTypeConstants::TYPE_REACTION):
+                if ($publication->getPCTopicId()) {
+                    $topic = $publication->getPCTopic();
+                    if ($topic) {
+                        $circleId = $topic->getPCircleId();
+                        $toFilter = true;
+                    }
+                }
+                break;
+            
+            case (ObjectTypeConstants::TYPE_DEBATE_COMMENT || ObjectTypeConstants::TYPE_REACTION_COMMENT):
+                $document = $publication->getPDocument();
+                if ($document->getPCTopicId()) {
+                    $topic = $document->getPCTopic();
+                    if ($topic) {
+                        $circleId = $topic->getPCircleId();
+                        $toFilter = true;
+                    }
+                }
+                break;
+
+            default:
+                break;
+        }
+
+        if ($toFilter) {
+            $users = $this->circleService->filterUsersNotInCircle($users, $circleId);
+        }
+
+        return $users;
+    }
 
     /**
      * Insertion en BDD

@@ -6,6 +6,7 @@ FROM p_d_debate
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1 
+    AND (p_d_debate.p_c_topic_id is NULL OR p_d_debate.p_c_topic_id IN (1, 2, 3, 4, 5, 6, 7, 8))
     AND p_d_d_tagged_t.p_tag_id IN (8, 31)
 )
 
@@ -20,6 +21,7 @@ WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
     AND p_d_reaction.tree_level > 0
+    AND (p_d_reaction.p_c_topic_id is NULL OR p_d_reaction.p_c_topic_id IN (1, 2, 3, 4, 5, 6, 7, 8))
     AND p_d_r_tagged_t.p_tag_id IN (8, 31)
 )
 

@@ -1370,8 +1370,15 @@ class XhrDocument
         $tagIds = array();
         $tagIds[] = $tag->getId();
 
+        // get current user
+        $currentUser = $this->securityTokenStorage->getToken()->getUser();
+        if (is_string($currentUser)) {
+            $currentUser = null;
+        }
+
         $documents = $this->documentService->getDocumentsByTagsPaginated(
             $tagIds,
+            $currentUser?$currentUser->getId():null,
             $orderBy,
             $offset,
             ListingConstants::LISTING_CLASSIC_PAGINATION

@@ -56,7 +56,7 @@ WHERE
     p_user_id = 1
     AND p_d_debate.published = 1
     AND p_d_debate.online = 1
-    AND p_d_debate.p_c_topic_id is NULL OR p_d_debate.p_c_topic_id IN (1, 2, 3, 4, 5, 6, 7, 8)
+    AND (p_d_debate.p_c_topic_id is NULL OR p_d_debate.p_c_topic_id IN (1, 2, 3, 4, 5, 6, 7, 8))
     AND p_d_d_tagged_t.p_tag_id IN (627, 479, 433, 271, 498, 514, 252, 407, 839, 652, 651)
 )
 
@@ -71,7 +71,7 @@ WHERE
     p_user_id = 1
     AND p_d_reaction.published = 1
     AND p_d_reaction.online = 1
-    AND p_d_reaction.p_c_topic_id is NULL OR p_d_reaction.p_c_topic_id IN (1, 2, 3, 4, 5, 6, 7, 8)
+    AND (p_d_reaction.p_c_topic_id is NULL OR p_d_reaction.p_c_topic_id IN (1, 2, 3, 4, 5, 6, 7, 8))
     AND p_d_r_tagged_t.p_tag_id IN (627, 479, 433, 271, 498, 514, 252, 407, 839, 652, 651)
 )
 
@@ -89,7 +89,7 @@ WHERE
     AND p_d_d_comment.p_user_id = 1
     AND p_d_debate.published = 1
     AND p_d_debate.online = 1
-    AND p_d_debate.p_c_topic_id is NULL OR p_d_debate.p_c_topic_id IN (1, 2, 3, 4, 5, 6, 7, 8)
+    AND (p_d_debate.p_c_topic_id is NULL OR p_d_debate.p_c_topic_id IN (1, 2, 3, 4, 5, 6, 7, 8))
     AND p_d_d_tagged_t.p_tag_id IN (627, 479, 433, 271, 498, 514, 252, 407, 839, 652, 651)
 )
 
@@ -107,7 +107,7 @@ WHERE
     AND p_d_r_comment.p_user_id = 1
     AND p_d_reaction.published = 1
     AND p_d_reaction.online = 1
-    AND p_d_reaction.p_c_topic_id is NULL OR p_d_reaction.p_c_topic_id IN (1, 2, 3, 4, 5, 6, 7, 8)
+    AND (p_d_reaction.p_c_topic_id is NULL OR p_d_reaction.p_c_topic_id IN (1, 2, 3, 4, 5, 6, 7, 8))
     AND p_d_r_tagged_t.p_tag_id IN (627, 479, 433, 271, 498, 514, 252, 407, 839, 652, 651)
 )
 
