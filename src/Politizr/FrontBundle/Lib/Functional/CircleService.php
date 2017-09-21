@@ -267,7 +267,7 @@ class CircleService
      */
     public function filterUsersNotInCircle(\PropelCollection $users, PCircle $circle) {
         foreach ($users as $key => $user) {
-            if (!$this->isUserMemberOfCircle($user, $circle)) {
+            if (!$this->isUserMemberOfCircle($circle, $user)) {
                 $users->remove($key);
             }
         }
