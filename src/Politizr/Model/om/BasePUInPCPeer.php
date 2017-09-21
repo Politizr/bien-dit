@@ -31,13 +31,13 @@ abstract class BasePUInPCPeer
     const TM_CLASS = 'Politizr\\Model\\map\\PUInPCTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 5;
+    const NUM_COLUMNS = 6;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 5;
+    const NUM_HYDRATE_COLUMNS = 6;
 
     /** the column name for the id field */
     const ID = 'p_u_in_p_c.id';
@@ -47,6 +47,9 @@ abstract class BasePUInPCPeer
 
     /** the column name for the p_user_id field */
     const P_USER_ID = 'p_u_in_p_c.p_user_id';
+
+    /** the column name for the is_authorized_reaction field */
+    const IS_AUTHORIZED_REACTION = 'p_u_in_p_c.is_authorized_reaction';
 
     /** the column name for the created_at field */
     const CREATED_AT = 'p_u_in_p_c.created_at';
@@ -73,12 +76,12 @@ abstract class BasePUInPCPeer
      * e.g. PUInPCPeer::$fieldNames[PUInPCPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'PCircleId', 'PUserId', 'CreatedAt', 'UpdatedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pCircleId', 'pUserId', 'createdAt', 'updatedAt', ),
-        BasePeer::TYPE_COLNAME => array (PUInPCPeer::ID, PUInPCPeer::P_CIRCLE_ID, PUInPCPeer::P_USER_ID, PUInPCPeer::CREATED_AT, PUInPCPeer::UPDATED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_CIRCLE_ID', 'P_USER_ID', 'CREATED_AT', 'UPDATED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'p_circle_id', 'p_user_id', 'created_at', 'updated_at', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'PCircleId', 'PUserId', 'IsAuthorizedReaction', 'CreatedAt', 'UpdatedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pCircleId', 'pUserId', 'isAuthorizedReaction', 'createdAt', 'updatedAt', ),
+        BasePeer::TYPE_COLNAME => array (PUInPCPeer::ID, PUInPCPeer::P_CIRCLE_ID, PUInPCPeer::P_USER_ID, PUInPCPeer::IS_AUTHORIZED_REACTION, PUInPCPeer::CREATED_AT, PUInPCPeer::UPDATED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_CIRCLE_ID', 'P_USER_ID', 'IS_AUTHORIZED_REACTION', 'CREATED_AT', 'UPDATED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'p_circle_id', 'p_user_id', 'is_authorized_reaction', 'created_at', 'updated_at', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
     );
 
     /**
@@ -88,12 +91,12 @@ abstract class BasePUInPCPeer
      * e.g. PUInPCPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PCircleId' => 1, 'PUserId' => 2, 'CreatedAt' => 3, 'UpdatedAt' => 4, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pCircleId' => 1, 'pUserId' => 2, 'createdAt' => 3, 'updatedAt' => 4, ),
-        BasePeer::TYPE_COLNAME => array (PUInPCPeer::ID => 0, PUInPCPeer::P_CIRCLE_ID => 1, PUInPCPeer::P_USER_ID => 2, PUInPCPeer::CREATED_AT => 3, PUInPCPeer::UPDATED_AT => 4, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_CIRCLE_ID' => 1, 'P_USER_ID' => 2, 'CREATED_AT' => 3, 'UPDATED_AT' => 4, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_circle_id' => 1, 'p_user_id' => 2, 'created_at' => 3, 'updated_at' => 4, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PCircleId' => 1, 'PUserId' => 2, 'IsAuthorizedReaction' => 3, 'CreatedAt' => 4, 'UpdatedAt' => 5, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pCircleId' => 1, 'pUserId' => 2, 'isAuthorizedReaction' => 3, 'createdAt' => 4, 'updatedAt' => 5, ),
+        BasePeer::TYPE_COLNAME => array (PUInPCPeer::ID => 0, PUInPCPeer::P_CIRCLE_ID => 1, PUInPCPeer::P_USER_ID => 2, PUInPCPeer::IS_AUTHORIZED_REACTION => 3, PUInPCPeer::CREATED_AT => 4, PUInPCPeer::UPDATED_AT => 5, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_CIRCLE_ID' => 1, 'P_USER_ID' => 2, 'IS_AUTHORIZED_REACTION' => 3, 'CREATED_AT' => 4, 'UPDATED_AT' => 5, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_circle_id' => 1, 'p_user_id' => 2, 'is_authorized_reaction' => 3, 'created_at' => 4, 'updated_at' => 5, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
     );
 
     /**
@@ -170,12 +173,14 @@ abstract class BasePUInPCPeer
             $criteria->addSelectColumn(PUInPCPeer::ID);
             $criteria->addSelectColumn(PUInPCPeer::P_CIRCLE_ID);
             $criteria->addSelectColumn(PUInPCPeer::P_USER_ID);
+            $criteria->addSelectColumn(PUInPCPeer::IS_AUTHORIZED_REACTION);
             $criteria->addSelectColumn(PUInPCPeer::CREATED_AT);
             $criteria->addSelectColumn(PUInPCPeer::UPDATED_AT);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.p_circle_id');
             $criteria->addSelectColumn($alias . '.p_user_id');
+            $criteria->addSelectColumn($alias . '.is_authorized_reaction');
             $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
         }

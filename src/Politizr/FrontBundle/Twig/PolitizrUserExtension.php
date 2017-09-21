@@ -38,6 +38,7 @@ class PolitizrUserExtension extends \Twig_Extension
 
     private $router;
 
+    private $userService;
     private $documentService;
     
     private $formFactory;
@@ -50,6 +51,7 @@ class PolitizrUserExtension extends \Twig_Extension
      * @security.token_storage
      * @security.authorization_checker
      * @router
+     * @politizr.functional.user
      * @politizr.functional.document
      * @form.factory
      * @politizr.tools.global
@@ -59,6 +61,7 @@ class PolitizrUserExtension extends \Twig_Extension
         $securityTokenStorage,
         $securityAuthorizationChecker,
         $router,
+        $userService,
         $documentService,
         $formFactory,
         $globalTools,
@@ -69,6 +72,7 @@ class PolitizrUserExtension extends \Twig_Extension
 
         $this->router = $router;
 
+        $this->userService = $userService;
         $this->documentService = $documentService;
 
         $this->formFactory = $formFactory;
@@ -700,30 +704,7 @@ class PolitizrUserExtension extends \Twig_Extension
         // $this->logger->info('$user = '.print_r($user, true));
         // $this->logger->info('$document = '.print_r($document, true));
 
-        // elected profile can react if document ha no private tags
-        if (!$document->isWithPrivateTag() && $this->securityAuthorizationChecker->isGranted('ROLE_ELECTED')) {
-            return true;
-        }
-
-        // owner of private tag can react
-        if ($document->isWithPrivateTag()) {
-            $tags = $document->getTags(TagConstants::TAG_TYPE_PRIVATE);
-            foreach ($tags as $tag) {
-                $tagOwner = $tag->getPOwner();
-                if ($tagOwner && $tagOwner->getId() == $user->getId()) {
-                    return true;
-                }
-            }
-        }
-
-        // author of the debate can react
-        // + min reputation to reach
-        $score = $user->getReputationScore();
-        if ($document->isDebateOwner($user->getId()) && $score >= ReputationConstants::ACTION_REACTION_WRITE) {
-            return true;
-        }
-
-        return false;
+        return $this->userService->isAuthorizedToReact($user, $document);
     }
 
     /**

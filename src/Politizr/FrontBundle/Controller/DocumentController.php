@@ -391,6 +391,12 @@ class DocumentController extends Controller
             throw new InconsistentDataException('Debate\'s reaction not found.');
         }
 
+        // authorization checking
+        $authorized = $this->get('politizr.functional.user')->isAuthorizedToReact($user, $debate);
+        if (!$authorized) {
+            throw new InconsistentDataException(sprintf('User-%s is not authorized to publish reaction for Debate-%s.', $user->getId(), $debate->getId()));
+        }
+
         // search "as new" already created reaction
         $reaction = PDReactionQuery::create()
                     ->filterByPUserId($user->getId())

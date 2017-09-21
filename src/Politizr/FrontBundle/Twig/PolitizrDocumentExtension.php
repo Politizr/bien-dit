@@ -43,6 +43,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
     private $router;
 
     private $timelineService;
+    private $userService;
 
     private $formFactory;
 
@@ -64,6 +65,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
         $securityAuthorizationChecker,
         $router,
         $timelineService,
+        $userService,
         $formFactory,
         $globalTools,
         $logger
@@ -74,6 +76,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
         $this->router = $router;
 
         $this->timelineService = $timelineService;
+        $this->userService = $userService;
 
         $this->formFactory = $formFactory;
 
@@ -1130,44 +1133,13 @@ class PolitizrDocumentExtension extends \Twig_Extension
             $user = null;
         }
 
-        $qualified = false;
-        $private = false;
-        $privateOwner = false;
-        $owner = false;
-        if ($user) {
-            // qualified?
-            if ($this->securityAuthorizationChecker->isGranted('ROLE_ELECTED')) {
-                $qualified = true;
-            }
-
-            // private & privateOwner?
-            if ($document->isWithPrivateTag()) {
-                $private = true;
-                $tags = $document->getTags(TagConstants::TAG_TYPE_PRIVATE);
-                foreach ($tags as $tag) {
-                    $tagOwner = $tag->getPOwner();
-                    if ($tagOwner && $tagOwner->getId() == $user->getId()) {
-                        $privateOwner = true;
-                    }
-                }
-            }
-
-            // debate owner?
-            $score = $user->getReputationScore();
-            if ($document->isDebateOwner($user->getId()) && $score >= ReputationConstants::ACTION_REACTION_WRITE) {
-                $owner = true;
-            }
-        }
+        $reason = $this->userService->isAuthorizedToReact($user, $document, true);
 
         // Construction du rendu du tag
         $html = $env->render(
             'PolitizrFrontBundle:Document:_footer.html.twig',
             array(
-                'document' => $document,
-                'qualified' => $qualified,
-                'private' => $private,
-                'privateOwner' => $privateOwner,
-                'owner' => $owner,
+                'reason' => $reason,
             )
         );
 

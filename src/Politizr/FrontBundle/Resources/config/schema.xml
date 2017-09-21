@@ -1377,6 +1377,8 @@
         <column name="p_circle_id" type="integer" required="true" />
         <column name="p_user_id" type="integer" required="true" />
 
+        <column name="is_authorized_reaction" type="boolean" default="false" />        
+
         <foreign-key foreignTable="p_circle" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_circle_id" foreign="id" />
         </foreign-key>

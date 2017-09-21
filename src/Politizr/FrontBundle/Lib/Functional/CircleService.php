@@ -172,6 +172,33 @@ class CircleService
         return $debates;
     }
 
+
+    /**
+     * Check if user has role to publish reaction in the circle
+     *
+     * @param PCircle $circle
+     * @param PUser $user
+     * @return boolean
+     */
+    public function isUserAuthorizedReaction(PCircle $circle, PUser $user)
+    {
+        if (!$circle || !$user) {
+            throw new InconsistentDataException('Circle or user null');
+        }
+
+        $nb = PUInPCQuery::create()
+            ->filterByPUserId($user->getId())
+            ->filterByPCircleId($circle->getId())
+            ->filterByIsAuthorizedReaction(true)
+            ->count();
+
+        if ($nb > 0) {
+            return true;
+        }
+
+        return false;
+    }
+
     /* ######################################################################################################## */
     /*                                              TOPIC FUNCTIONS                                             */
     /* ######################################################################################################## */

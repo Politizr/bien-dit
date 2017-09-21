@@ -21,6 +21,7 @@ services:
             - @politizr.manager.user
             - @politizr.functional.tag
             - @politizr.functional.localization
+            - @politizr.functional.circle
             - @event_dispatcher
             - @router
             - @logger

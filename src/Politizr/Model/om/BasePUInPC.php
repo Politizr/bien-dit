@@ -61,6 +61,13 @@ abstract class BasePUInPC extends BaseObject implements Persistent
     protected $p_user_id;
 
     /**
+     * The value for the is_authorized_reaction field.
+     * Note: this column has a database default value of: false
+     * @var        boolean
+     */
+    protected $is_authorized_reaction;
+
+    /**
      * The value for the created_at field.
      * @var        string
      */
@@ -103,6 +110,27 @@ abstract class BasePUInPC extends BaseObject implements Persistent
     protected $alreadyInClearAllReferencesDeep = false;
 
     /**
+     * Applies default values to this object.
+     * This method should be called from the object's constructor (or
+     * equivalent initialization method).
+     * @see        __construct()
+     */
+    public function applyDefaultValues()
+    {
+        $this->is_authorized_reaction = false;
+    }
+
+    /**
+     * Initializes internal state of BasePUInPC object.
+     * @see        applyDefaults()
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->applyDefaultValues();
+    }
+
+    /**
      * Get the [id] column value.
      *
      * @return int
@@ -133,6 +161,17 @@ abstract class BasePUInPC extends BaseObject implements Persistent
     {
 
         return $this->p_user_id;
+    }
+
+    /**
+     * Get the [is_authorized_reaction] column value.
+     *
+     * @return boolean
+     */
+    public function getIsAuthorizedReaction()
+    {
+
+        return $this->is_authorized_reaction;
     }
 
     /**
@@ -287,6 +326,35 @@ abstract class BasePUInPC extends BaseObject implements Persistent
     } // setPUserId()
 
     /**
+     * Sets the value of the [is_authorized_reaction] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return PUInPC The current object (for fluent API support)
+     */
+    public function setIsAuthorizedReaction($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->is_authorized_reaction !== $v) {
+            $this->is_authorized_reaction = $v;
+            $this->modifiedColumns[] = PUInPCPeer::IS_AUTHORIZED_REACTION;
+        }
+
+
+        return $this;
+    } // setIsAuthorizedReaction()
+
+    /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
@@ -342,6 +410,10 @@ abstract class BasePUInPC extends BaseObject implements Persistent
      */
     public function hasOnlyDefaultValues()
     {
+            if ($this->is_authorized_reaction !== false) {
+                return false;
+            }
+
         // otherwise, everything was equal, so return true
         return true;
     } // hasOnlyDefaultValues()
@@ -367,8 +439,9 @@ abstract class BasePUInPC extends BaseObject implements Persistent
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->p_circle_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
             $this->p_user_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
-            $this->created_at = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-            $this->updated_at = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->is_authorized_reaction = ($row[$startcol + 3] !== null) ? (boolean) $row[$startcol + 3] : null;
+            $this->created_at = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->updated_at = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -378,7 +451,7 @@ abstract class BasePUInPC extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 5; // 5 = PUInPCPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 6; // 6 = PUInPCPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PUInPC object", $e);
@@ -637,6 +710,9 @@ abstract class BasePUInPC extends BaseObject implements Persistent
         if ($this->isColumnModified(PUInPCPeer::P_USER_ID)) {
             $modifiedColumns[':p' . $index++]  = '`p_user_id`';
         }
+        if ($this->isColumnModified(PUInPCPeer::IS_AUTHORIZED_REACTION)) {
+            $modifiedColumns[':p' . $index++]  = '`is_authorized_reaction`';
+        }
         if ($this->isColumnModified(PUInPCPeer::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`created_at`';
         }
@@ -662,6 +738,9 @@ abstract class BasePUInPC extends BaseObject implements Persistent
                         break;
                     case '`p_user_id`':
                         $stmt->bindValue($identifier, $this->p_user_id, PDO::PARAM_INT);
+                        break;
+                    case '`is_authorized_reaction`':
+                        $stmt->bindValue($identifier, (int) $this->is_authorized_reaction, PDO::PARAM_INT);
                         break;
                     case '`created_at`':
                         $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
@@ -739,9 +818,12 @@ abstract class BasePUInPC extends BaseObject implements Persistent
                 return $this->getPUserId();
                 break;
             case 3:
-                return $this->getCreatedAt();
+                return $this->getIsAuthorizedReaction();
                 break;
             case 4:
+                return $this->getCreatedAt();
+                break;
+            case 5:
                 return $this->getUpdatedAt();
                 break;
             default:
@@ -776,8 +858,9 @@ abstract class BasePUInPC extends BaseObject implements Persistent
             $keys[0] => $this->getId(),
             $keys[1] => $this->getPCircleId(),
             $keys[2] => $this->getPUserId(),
-            $keys[3] => $this->getCreatedAt(),
-            $keys[4] => $this->getUpdatedAt(),
+            $keys[3] => $this->getIsAuthorizedReaction(),
+            $keys[4] => $this->getCreatedAt(),
+            $keys[5] => $this->getUpdatedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -835,9 +918,12 @@ abstract class BasePUInPC extends BaseObject implements Persistent
                 $this->setPUserId($value);
                 break;
             case 3:
-                $this->setCreatedAt($value);
+                $this->setIsAuthorizedReaction($value);
                 break;
             case 4:
+                $this->setCreatedAt($value);
+                break;
+            case 5:
                 $this->setUpdatedAt($value);
                 break;
         } // switch()
@@ -867,8 +953,9 @@ abstract class BasePUInPC extends BaseObject implements Persistent
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setPCircleId($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setPUserId($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setCreatedAt($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setUpdatedAt($arr[$keys[4]]);
+        if (array_key_exists($keys[3], $arr)) $this->setIsAuthorizedReaction($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setCreatedAt($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setUpdatedAt($arr[$keys[5]]);
     }
 
     /**
@@ -883,6 +970,7 @@ abstract class BasePUInPC extends BaseObject implements Persistent
         if ($this->isColumnModified(PUInPCPeer::ID)) $criteria->add(PUInPCPeer::ID, $this->id);
         if ($this->isColumnModified(PUInPCPeer::P_CIRCLE_ID)) $criteria->add(PUInPCPeer::P_CIRCLE_ID, $this->p_circle_id);
         if ($this->isColumnModified(PUInPCPeer::P_USER_ID)) $criteria->add(PUInPCPeer::P_USER_ID, $this->p_user_id);
+        if ($this->isColumnModified(PUInPCPeer::IS_AUTHORIZED_REACTION)) $criteria->add(PUInPCPeer::IS_AUTHORIZED_REACTION, $this->is_authorized_reaction);
         if ($this->isColumnModified(PUInPCPeer::CREATED_AT)) $criteria->add(PUInPCPeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(PUInPCPeer::UPDATED_AT)) $criteria->add(PUInPCPeer::UPDATED_AT, $this->updated_at);
 
@@ -950,6 +1038,7 @@ abstract class BasePUInPC extends BaseObject implements Persistent
     {
         $copyObj->setPCircleId($this->getPCircleId());
         $copyObj->setPUserId($this->getPUserId());
+        $copyObj->setIsAuthorizedReaction($this->getIsAuthorizedReaction());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
 
@@ -1122,12 +1211,14 @@ abstract class BasePUInPC extends BaseObject implements Persistent
         $this->id = null;
         $this->p_circle_id = null;
         $this->p_user_id = null;
+        $this->is_authorized_reaction = null;
         $this->created_at = null;
         $this->updated_at = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
         $this->clearAllReferences();
+        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);

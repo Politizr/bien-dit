@@ -23,12 +23,14 @@ use Politizr\Model\PUser;
  * @method PUInPCQuery orderById($order = Criteria::ASC) Order by the id column
  * @method PUInPCQuery orderByPCircleId($order = Criteria::ASC) Order by the p_circle_id column
  * @method PUInPCQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
+ * @method PUInPCQuery orderByIsAuthorizedReaction($order = Criteria::ASC) Order by the is_authorized_reaction column
  * @method PUInPCQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PUInPCQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  *
  * @method PUInPCQuery groupById() Group by the id column
  * @method PUInPCQuery groupByPCircleId() Group by the p_circle_id column
  * @method PUInPCQuery groupByPUserId() Group by the p_user_id column
+ * @method PUInPCQuery groupByIsAuthorizedReaction() Group by the is_authorized_reaction column
  * @method PUInPCQuery groupByCreatedAt() Group by the created_at column
  * @method PUInPCQuery groupByUpdatedAt() Group by the updated_at column
  *
@@ -49,12 +51,14 @@ use Politizr\Model\PUser;
  *
  * @method PUInPC findOneByPCircleId(int $p_circle_id) Return the first PUInPC filtered by the p_circle_id column
  * @method PUInPC findOneByPUserId(int $p_user_id) Return the first PUInPC filtered by the p_user_id column
+ * @method PUInPC findOneByIsAuthorizedReaction(boolean $is_authorized_reaction) Return the first PUInPC filtered by the is_authorized_reaction column
  * @method PUInPC findOneByCreatedAt(string $created_at) Return the first PUInPC filtered by the created_at column
  * @method PUInPC findOneByUpdatedAt(string $updated_at) Return the first PUInPC filtered by the updated_at column
  *
  * @method array findById(int $id) Return PUInPC objects filtered by the id column
  * @method array findByPCircleId(int $p_circle_id) Return PUInPC objects filtered by the p_circle_id column
  * @method array findByPUserId(int $p_user_id) Return PUInPC objects filtered by the p_user_id column
+ * @method array findByIsAuthorizedReaction(boolean $is_authorized_reaction) Return PUInPC objects filtered by the is_authorized_reaction column
  * @method array findByCreatedAt(string $created_at) Return PUInPC objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PUInPC objects filtered by the updated_at column
  */
@@ -165,7 +169,7 @@ abstract class BasePUInPCQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_circle_id`, `p_user_id`, `created_at`, `updated_at` FROM `p_u_in_p_c` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_circle_id`, `p_user_id`, `is_authorized_reaction`, `created_at`, `updated_at` FROM `p_u_in_p_c` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -382,6 +386,33 @@ abstract class BasePUInPCQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PUInPCPeer::P_USER_ID, $pUserId, $comparison);
+    }
+
+    /**
+     * Filter the query on the is_authorized_reaction column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByIsAuthorizedReaction(true); // WHERE is_authorized_reaction = true
+     * $query->filterByIsAuthorizedReaction('yes'); // WHERE is_authorized_reaction = true
+     * </code>
+     *
+     * @param     boolean|string $isAuthorizedReaction The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUInPCQuery The current query, for fluid interface
+     */
+    public function filterByIsAuthorizedReaction($isAuthorizedReaction = null, $comparison = null)
+    {
+        if (is_string($isAuthorizedReaction)) {
+            $isAuthorizedReaction = in_array(strtolower($isAuthorizedReaction), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PUInPCPeer::IS_AUTHORIZED_REACTION, $isAuthorizedReaction, $comparison);
     }
 
     /**
