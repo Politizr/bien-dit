@@ -12,7 +12,7 @@ SELECT 1, `id`, NOW(), NOW()
 FROM `p_user`
 WHERE `p_l_city_id` IN (
     SELECT `id` FROM `p_l_city` WHERE `p_l_department_id` = 9
-)
+);
 
 # MAJ des droits
 UPDATE `p_user` SET `roles` = REPLACE(`roles`, ' ROLE_CIRCLE_1 |', '');
@@ -20,7 +20,7 @@ UPDATE `p_user` SET `roles` = REPLACE(`roles`, ' ROLE_CIRCLE_1 |', '');
 UPDATE `p_user` SET `roles` = CONCAT(`roles`, ' ROLE_CIRCLE_1 |'), `updated_at` = NOW() 
 WHERE `p_l_city_id` IN (
     SELECT `id` FROM `p_l_city` WHERE `p_l_department_id` = 9
-)
+);
 
 # MAJ des users ayant l'autorisation de répondre
 UPDATE `p_u_in_p_c` SET `is_authorized_reaction` = 1 WHERE `p_user_id` = 3;

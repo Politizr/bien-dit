@@ -629,7 +629,7 @@ class NotificationListener
                 if ($publication->getPCTopicId()) {
                     $topic = $publication->getPCTopic();
                     if ($topic) {
-                        $circleId = $topic->getPCircle();
+                        $circle = $topic->getPCircle();
                         $toFilter = true;
                     }
                 }
@@ -640,7 +640,7 @@ class NotificationListener
                 if ($document->getPCTopicId()) {
                     $topic = $document->getPCTopic();
                     if ($topic) {
-                        $circleId = $topic->getPCircle();
+                        $circle = $topic->getPCircle();
                         $toFilter = true;
                     }
                 }
