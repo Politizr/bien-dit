@@ -79,10 +79,19 @@
                         {{ form_widget(formPerso4.localization) }}
                         {{ form_rest(formPerso4) }}
             
-                        <button type="button" action="submitPerso">
-                            Mettre à jour
-                        </button>
+
+                        {% set isCircleMember = app.user | circleMember %}
+                        {% if not isCircleMember %}
+                            <button type="button" action="submitPerso">
+                                Mettre à jour
+                            </button>
+                        {% endif %}
                     </form>
+                    {% if isCircleMember %}
+                        <p class="formInfo">
+                            <i class="icon-alert"></i>Vous devez quitter tous <a href="{{ path('MenuCircle') }}">les groupes</a> auxquels vous appartenez avant de pouvoir mettre à jour cette information.
+                        </p>
+                    {% endif %}
                 </div>
             </div>            
 

@@ -39,7 +39,8 @@ class PUserLocalizationType extends AbstractType
 
         // Localization type
         $builder->add('localization', LocalizationChoiceType::class, array(
-            'required' => true,
+            'disabled' => $options['circleMember'],
+            'required' => false,
             'mapped' => false,
             'city_id' => $this->user->getPLCityId(),
         ));
@@ -61,6 +62,7 @@ class PUserLocalizationType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'Politizr\Model\PUser',
+            'circleMember' => false,
         ));
     }
 }

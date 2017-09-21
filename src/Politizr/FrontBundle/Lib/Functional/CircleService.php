@@ -126,19 +126,19 @@ class CircleService
     /**
      * Check if user is member of circle
      *
-     * @param int $userId
-     * @param int $circleId
+     * @param PUser $user
+     * @param PCircle $circle
      * @return boolean
      */
-    public function isUserMemberOfCircle($userId = null, $circleId = null)
+    public function isUserMemberOfCircle(PCircle $circle, PUser $user)
     {
-        // $this->logger->info('*** isUserMemberOfCircle');
-        // $this->logger->info('$userId = '.print_r($userId, true));
-        // $this->logger->info('$circleId = '.print_r($circleId, true));
+        if (!$circle || !$user) {
+            throw new InconsistentDataException('Circle or user null');
+        }
 
         $nb = PUInPCQuery::create()
-            ->filterByPUserId($userId)
-            ->filterByPCircleId($circleId)
+            ->filterByPUserId($user->getId())
+            ->filterByPCircleId($circle->getId())
             ->count();
 
         if ($nb > 0) {
@@ -146,6 +146,25 @@ class CircleService
         }
 
         return false;
+    }
+
+    /**
+     * Return number of user's circles
+     *
+     * @param PUser $user
+     * @return int
+     */
+    public function countUserCircles(PUser $user)
+    {
+        if (!$user) {
+            throw new InconsistentDataException('User null');
+        }
+
+        $nb = PUInPCQuery::create()
+            ->filterByPUserId($user->getId())
+            ->count();
+
+        return $nb;
     }
 
     /**
@@ -246,9 +265,9 @@ class CircleService
      * @param int $circleId
      * @return \PropelCollection
      */
-    public function filterUsersNotInCircle(\PropelCollection $users, $circleId) {
+    public function filterUsersNotInCircle(\PropelCollection $users, PCircle $circle) {
         foreach ($users as $key => $user) {
-            if (!$this->isUserMemberOfCircle($user->getId(), $circleId)) {
+            if (!$this->isUserMemberOfCircle($user, $circle)) {
                 $users->remove($key);
             }
         }

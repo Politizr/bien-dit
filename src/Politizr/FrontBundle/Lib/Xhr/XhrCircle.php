@@ -125,7 +125,7 @@ class XhrCircle
 
         // get membership
         $circle = PCircleQuery::create()->filterByUuid($uuid)->findOne();     
-        $isMember = $this->circleService->isUserMemberOfCircle($user->getId(), $circle->getId());
+        $isMember = $this->circleService->isUserMemberOfCircle($circle, $user);
 
         $html = $this->templating->render(
             'PolitizrFrontBundle:Circle:_menuActions.html.twig',

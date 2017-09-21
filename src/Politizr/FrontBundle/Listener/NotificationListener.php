@@ -629,7 +629,7 @@ class NotificationListener
                 if ($publication->getPCTopicId()) {
                     $topic = $publication->getPCTopic();
                     if ($topic) {
-                        $circleId = $topic->getPCircleId();
+                        $circleId = $topic->getPCircle();
                         $toFilter = true;
                     }
                 }
@@ -640,7 +640,7 @@ class NotificationListener
                 if ($document->getPCTopicId()) {
                     $topic = $document->getPCTopic();
                     if ($topic) {
-                        $circleId = $topic->getPCircleId();
+                        $circleId = $topic->getPCircle();
                         $toFilter = true;
                     }
                 }
@@ -651,7 +651,7 @@ class NotificationListener
         }
 
         if ($toFilter) {
-            $users = $this->circleService->filterUsersNotInCircle($users, $circleId);
+            $users = $this->circleService->filterUsersNotInCircle($users, $circle);
         }
 
         return $users;

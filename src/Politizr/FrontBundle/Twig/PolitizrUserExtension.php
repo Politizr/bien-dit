@@ -40,6 +40,7 @@ class PolitizrUserExtension extends \Twig_Extension
 
     private $userService;
     private $documentService;
+    private $circleService;
     
     private $formFactory;
 
@@ -53,6 +54,7 @@ class PolitizrUserExtension extends \Twig_Extension
      * @router
      * @politizr.functional.user
      * @politizr.functional.document
+     * @politizr.functional.circle
      * @form.factory
      * @politizr.tools.global
      * @logger
@@ -63,6 +65,7 @@ class PolitizrUserExtension extends \Twig_Extension
         $router,
         $userService,
         $documentService,
+        $circleService,
         $formFactory,
         $globalTools,
         $logger
@@ -74,6 +77,7 @@ class PolitizrUserExtension extends \Twig_Extension
 
         $this->userService = $userService;
         $this->documentService = $documentService;
+        $this->circleService = $circleService;
 
         $this->formFactory = $formFactory;
         
@@ -187,6 +191,11 @@ class PolitizrUserExtension extends \Twig_Extension
                 'localization',
                 array($this, 'localization'),
                 array('is_safe' => array('html'), 'needs_environment' => true)
+            ),
+            new \Twig_SimpleFilter(
+                'circleMember',
+                array($this, 'circleMember'),
+                array('is_safe' => array('html'))
             ),
         );
     }
@@ -923,6 +932,22 @@ class PolitizrUserExtension extends \Twig_Extension
         );
 
         return $html;
+    }
+
+    /**
+     * Check if user is member of a circle
+     *
+     * @return boolean
+     */
+    public function circleMember(PUser $user)
+    {
+        $nbCircles = $this->circleService->countUserCircles($user);
+
+        if ($nbCircles > 0) {
+            return true;
+        }
+
+        return false;
     }
 
     /* ######################################################################################################## */

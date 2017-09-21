@@ -48,6 +48,7 @@ services:
             - @router
             - @politizr.functional.user
             - @politizr.functional.document
+            - @politizr.functional.circle
             - @form.factory
             - @politizr.tools.global
             - @logger

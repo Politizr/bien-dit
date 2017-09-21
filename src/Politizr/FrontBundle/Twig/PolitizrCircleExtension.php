@@ -96,7 +96,7 @@ class PolitizrCircleExtension extends \Twig_Extension
             return null;
         }
 
-        $isMember = $this->circleService->isUserMemberOfCircle($user->getId(), $circle->getId());
+        $isMember = $this->circleService->isUserMemberOfCircle($circle, $user);
 
         // Construction du rendu du tag
         $html = $env->render(
