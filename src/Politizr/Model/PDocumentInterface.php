@@ -95,4 +95,10 @@ interface PDocumentInterface
      */
     public function isWithPrivateTag();
 
+    /**
+     * Get associated circle
+     *
+     * @return PCircle|null
+     */
+    public function getCircle();
 }

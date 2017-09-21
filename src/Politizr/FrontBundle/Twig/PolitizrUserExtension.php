@@ -437,33 +437,7 @@ class PolitizrUserExtension extends \Twig_Extension
         // get current user
         $currentUser = $this->securityTokenStorage->getToken()->getUser();
         
-        $tags = array();
-
-        $debates = $user->getDebates();
-        foreach ($debates as $debate) {
-            $documentTags = $debate->getIndexedArrayTags($tagTypeId);
-            $tags = array_replace($tags, $documentTags);
-        }
-
-        $reactions = $user->getReactions();
-        foreach ($reactions as $reaction) {
-            $documentTags = $reaction->getIndexedArrayTags($tagTypeId);
-            $tags = array_replace($tags, $documentTags);
-        }
-
-        $comments = $user->getDComments();
-        foreach ($comments as $comment) {
-            $document = $comment->getPDocument();
-            $documentTags = $document->getIndexedArrayTags($tagTypeId);
-            $tags = array_replace($tags, $documentTags);
-        }
-
-        $comments = $user->getRComments();
-        foreach ($comments as $comment) {
-            $document = $comment->getPDocument();
-            $documentTags = $document->getIndexedArrayTags($tagTypeId);
-            $tags = array_replace($tags, $documentTags);
-        }
+        $tags = $this->userService->getIndexedArrayTagsByUserPublications($user, $tagTypeId, $currentUser);
 
         // Construction du rendu du tag
         $html = $env->render(

@@ -16,6 +16,7 @@ use Politizr\Constant\DocumentConstants;
 use Politizr\Model\PUser;
 use Politizr\Model\PDocumentInterface;
 use Politizr\Model\PDDebate;
+use Politizr\Model\PCircle;
 
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PTagQuery;
@@ -333,5 +334,94 @@ class UserService
         }
 
         return false;
+    }
+
+    /**
+     * Get indexed array tags(uuid => title) used in all user publications.
+     * If currentUser is set, filter theses tags depending of circle context authorization.
+     *
+     * @param PUser $user
+     * @param int $tagTypeId
+     * @param PUser $currentUser
+     * @return array
+     */
+    public function getIndexedArrayTagsByUserPublications(PUser $user, $tagTypeId, PUser $currentUser = null)
+    {
+        $tags = array();
+        $debates = $user->getDebates();
+        foreach ($debates as $debate) {
+            $computeIndexedArrayTags = $this->hasToComputeIndexedArrayTags($debate->getCircle(), $currentUser);
+
+            if ($computeIndexedArrayTags) {
+                $documentTags = $debate->getIndexedArrayTags($tagTypeId);
+                $tags = array_replace($tags, $documentTags);
+            }
+        }
+
+        $reactions = $user->getReactions();
+        foreach ($reactions as $reaction) {
+            $computeIndexedArrayTags = $this->hasToComputeIndexedArrayTags($reaction->getCircle(), $currentUser);
+
+            if ($computeIndexedArrayTags) {
+                $documentTags = $reaction->getIndexedArrayTags($tagTypeId);
+                $tags = array_replace($tags, $documentTags);
+            }
+        }
+
+        $comments = $user->getDComments();
+        foreach ($comments as $comment) {
+            $computeIndexedArrayTags = false;
+            $document = $comment->getPDocument();
+            if ($document) {
+                $computeIndexedArrayTags = $this->hasToComputeIndexedArrayTags($document->getCircle(), $currentUser);
+            }
+
+            if ($computeIndexedArrayTags) {
+                $documentTags = $document->getIndexedArrayTags($tagTypeId);
+                $tags = array_replace($tags, $documentTags);
+            }
+        }
+
+        $comments = $user->getRComments();
+        foreach ($comments as $comment) {
+            $computeIndexedArrayTags = false;
+            $document = $comment->getPDocument();
+            if ($document) {
+                $computeIndexedArrayTags = $this->hasToComputeIndexedArrayTags($document->getCircle(), $currentUser);
+            }
+
+            if ($computeIndexedArrayTags) {
+                $documentTags = $document->getIndexedArrayTags($tagTypeId);
+                $tags = array_replace($tags, $documentTags);
+            }
+        }
+
+        return $tags;
+    }
+
+    /**
+     * Compute to check if user has access to circle
+     *
+     * @param PCircle $cirlce
+     * @param PUser $user
+     * @return boolean
+     */
+    private function hasToComputeIndexedArrayTags(PCircle $circle = null, PUser $user = null)
+    {
+        if ($user && $circle) {
+            $computeIndexedArrayTags = false;
+            $circleMember = $this->circleService->isUserMemberOfCircle($circle, $user);
+            if ($circleMember) {
+                $computeIndexedArrayTags = true;
+            }
+        } elseif (!$user && $circle) {
+            $computeIndexedArrayTags = false;
+        } elseif ($user && !$circle) {
+            $computeIndexedArrayTags = true;
+        } else {
+            $computeIndexedArrayTags = false;
+        }
+
+        return $computeIndexedArrayTags;
     }
 }

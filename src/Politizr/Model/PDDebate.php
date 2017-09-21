@@ -66,6 +66,19 @@ class PDDebate extends BasePDDebate implements PDocumentInterface
     }
 
     /**
+     * @see PDocumentInterface::getCircle
+     */
+    public function getCircle()
+    {
+        $topic = $this->getPCTopic();
+        if ($topic) {
+            return $topic->getPCircle();
+        }
+
+        return null;
+    }
+
+    /**
      * @see PDocumentInterface::isDisplayed
      */
     public function isDisplayed()
