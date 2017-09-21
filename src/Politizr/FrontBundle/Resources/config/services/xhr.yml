@@ -24,6 +24,7 @@ services:
             - @politizr.manager.user
             - @politizr.manager.document
             - @politizr.functional.document
+            - @politizr.functional.user
             - @politizr.functional.localization
             - @politizr.functional.tag
             - @politizr.functional.facebook

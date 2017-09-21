@@ -114,6 +114,7 @@ FROM p_d_debate
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1
+    AND (p_d_debate.p_c_topic_id is NULL OR p_d_debate.p_c_topic_id IN ($inQueryTopicIds))
     AND p_d_debate.p_user_id = :p_user_id )
 
 UNION DISTINCT
@@ -124,6 +125,7 @@ FROM p_d_reaction
 WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
+    AND (p_d_reaction.p_c_topic_id is NULL OR p_d_reaction.p_c_topic_id IN ($inQueryTopicIds))
     AND p_d_reaction.p_user_id = :p_user_id2
     AND p_d_reaction.tree_level > 0 )
 
@@ -1080,6 +1082,27 @@ LIMIT :offset, :limit
         $result = $mandate->delete();
 
         return $result;
+    }
+
+    /**
+     * Check if a user follow debate
+     *
+     * @param integer $userId
+     * @param integer $debateId
+     * @return PUFollowDD
+     */
+    public function isUserFollowDebate($userId, $debateId)
+    {
+        $nb = PUFollowDDQuery::create()
+            ->filterByPUserId($userId)
+            ->filterByPDDebateId($debateId)
+            ->count();
+
+        if ($nb > 0) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

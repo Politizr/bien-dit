@@ -1,14 +1,18 @@
 <?php
 namespace Politizr\FrontBundle\Lib\Functional;
 
+use Symfony\Component\EventDispatcher\GenericEvent;
+
 use Politizr\Exception\InconsistentDataException;
 
 use Politizr\Model\PUser;
+use Politizr\Model\PCircle;
 use Politizr\Model\PCTopic;
 
 use Politizr\Model\PCircleQuery;
 use Politizr\Model\PCTopicQuery;
 use Politizr\Model\PUInPCQuery;
+use Politizr\Model\PDDebateQuery;
 
 use \PropelCollection;
 
@@ -23,7 +27,9 @@ class CircleService
     private $securityAuthorizationChecker;
     
     private $circleManager;
-    
+
+    private $eventDispatcher;
+
     private $logger;
 
     /**
@@ -31,12 +37,14 @@ class CircleService
      * @param @security.token_storage
      * @param @security.authorization_checker
      * @param @politizr.manager.circle
+     * @param @event_dispatcher
      * @param @logger
      */
     public function __construct(
         $securityTokenStorage,
         $securityAuthorizationChecker,
         $circleManager,
+        $eventDispatcher,
         $logger
     ) {
         $this->securityTokenStorage = $securityTokenStorage;
@@ -44,13 +52,51 @@ class CircleService
 
         $this->circleManager = $circleManager;
 
+        $this->eventDispatcher = $eventDispatcher;
+
         $this->logger = $logger;
     }
 
     /* ######################################################################################################## */
     /*                                              CIRCLE FUNCTIONS                                            */
     /* ######################################################################################################## */
-    
+
+    /**
+     * Add a user in a circle
+     *
+     * @param PUser $user
+     * @param PCircle $circle
+     */    
+    public function addUserInCircle(PUser $user = null, PCircle $circle = null)
+    {
+        if (!$user || !$circle) {
+            throw new InconsistentDataException('User or circle null');
+        }
+        $this->circleManager->createUserInCircle($user->getId(), $circle->getId());
+
+        // events
+        $event = new GenericEvent($circle, array('p_user' => $user,));
+        $dispatcher = $this->eventDispatcher->dispatch('c_subscribe', $event);
+    }
+
+    /**
+     * Remove a user from a circle
+     *
+     * @param PUser $user
+     * @param PCircle $circle
+     */    
+    public function removeUserFromCircle(PUser $user = null, PCircle $circle = null)
+    {
+        if (!$user || !$circle) {
+            throw new InconsistentDataException('User or circle null');
+        }
+        $this->circleManager->deleteUserInCircle($user->getId(), $circle->getId());
+
+        // events
+        $event = new GenericEvent($circle, array('p_user' => $user,));
+        $dispatcher = $this->eventDispatcher->dispatch('c_unsubscribe', $event);
+    }
+
     /**
      * Get authorized circles by user
      *
@@ -100,6 +146,30 @@ class CircleService
         }
 
         return false;
+    }
+
+    /**
+     * Get debates relative to a circle
+     *
+     * @param PCircle $circle
+     * @return PropelCollection[PDDebate]
+     */
+    public function getDebatesByCircle(PCircle $circle = null)
+    {
+        if (!$circle) {
+            throw new InconsistentDataException('Circle null');
+        }
+
+        $debates = PDDebateQuery::create()
+            ->distinct()
+            ->usePCTopicQuery()
+                ->usePCircleQuery()
+                    ->filterById($circle->getId())
+                ->endUse()
+            ->endUse()
+            ->find();
+
+        return $debates;
     }
 
     /* ######################################################################################################## */

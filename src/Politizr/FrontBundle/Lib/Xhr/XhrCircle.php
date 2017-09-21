@@ -92,7 +92,6 @@ class XhrCircle
     /*                                       SUBSCRIPTION                                                       */
     /* ######################################################################################################## */
 
-
     /**
      * Filtered publications by topic
      * code beta
@@ -115,13 +114,11 @@ class XhrCircle
 
         // update membership
         if ($way == 'subscribe') {
-            $this->circleManager->createUserInCircle($user->getId(), $circle->getId());
+            $this->circleService->addUserInCircle($user, $circle);
             $redirectUrl = $this->router->generate('DetailCircle', array('slug' => $circle->getSlug()));
-            $eventName = 'c_subscribe';
         } elseif ($way == 'unsubscribe') {
-            $this->circleManager->deleteUserInCircle($user->getId(), $circle->getId());
+            $this->circleService->removeUserFromCircle($user, $circle);
             $redirectUrl = null;
-            $eventName = 'c_unsubscribe';
         } else {
             throw new InconsistentDataException(sprintf('Subscribe\'s way %s not managed', $way));
         }
@@ -137,10 +134,6 @@ class XhrCircle
                 'circle' => $circle,
             )
         );
-
-        // events
-        $event = new GenericEvent($circle, array('p_user' => $user,));
-        $dispatcher = $this->eventDispatcher->dispatch($eventName, $event);
 
         return array(
             'html' => $html,

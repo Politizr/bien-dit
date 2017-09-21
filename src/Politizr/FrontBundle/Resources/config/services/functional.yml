@@ -21,6 +21,7 @@ services:
             - @politizr.manager.user
             - @politizr.functional.tag
             - @politizr.functional.localization
+            - @event_dispatcher
             - @router
             - @logger
 
@@ -100,4 +101,5 @@ services:
             - @security.token_storage
             - @security.authorization_checker
             - @politizr.manager.circle
+            - @event_dispatcher
             - @logger

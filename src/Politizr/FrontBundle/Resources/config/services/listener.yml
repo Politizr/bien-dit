@@ -76,9 +76,12 @@ services:
     politizr.listener.circle:
         class:      Politizr\FrontBundle\Listener\CircleListener
         arguments:
+            - @politizr.functional.circle
+            - @politizr.functional.user
             - @event_dispatcher
             - @logger
         tags:
+            - { name: kernel.event_listener, event: u_inscription }
             - { name: kernel.event_listener, event: c_subscribe }
             - { name: kernel.event_listener, event: c_unsubscribe }
 

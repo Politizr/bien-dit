@@ -1,6 +1,8 @@
 <?php
 namespace Politizr\FrontBundle\Lib\Functional;
 
+use Symfony\Component\EventDispatcher\GenericEvent;
+
 use Politizr\Exception\InconsistentDataException;
 
 use Politizr\Constant\ObjectTypeConstants;
@@ -9,6 +11,7 @@ use Politizr\Constant\UserConstants;
 use Politizr\Constant\LocalizationConstants;
 
 use Politizr\Model\PUser;
+use Politizr\Model\PDDebate;
 
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PTagQuery;
@@ -30,6 +33,8 @@ class UserService
     private $tagService;
     private $localizationService;
 
+    private $eventDispatcher;
+
     private $router;
     
     private $logger;
@@ -41,6 +46,7 @@ class UserService
      * @param @politizr.manager.user
      * @param @politizr.functional.tag
      * @param @politizr.functional.localization
+     * @param @event_dispatcher
      * @param @router
      * @param @logger
      */
@@ -50,6 +56,7 @@ class UserService
         $userManager,
         $tagService,
         $localizationService,
+        $eventDispatcher,
         $router,
         $logger
     ) {
@@ -60,6 +67,8 @@ class UserService
 
         $this->tagService = $tagService;
         $this->localizationService = $localizationService;
+
+        $this->eventDispatcher = $eventDispatcher;
 
         $this->router = $router;
 
@@ -155,4 +164,67 @@ class UserService
         return $users;
     }
 
+    /* ######################################################################################################## */
+    /*                                   DOCUMENTS OPERATIONS                                                   */
+    /* ######################################################################################################## */
+
+    /**
+     * Follow debate for user
+     *
+     * @param PUser $user
+     * @param PDDebate $debate
+     * @return boolean
+     */
+    public function followDebate(PUser $user, PDDebate $debate)
+    {
+        if (!$debate || !$user) {
+            throw new InconsistentDataException('Debate or user null');
+        }
+
+        $follow = $this->userManager->isUserFollowDebate($user->getId(), $debate->getId());
+        if (!$follow) {
+            $this->userManager->createUserFollowDebate($user->getId(), $debate->getId());
+
+            // Events
+            // upd > no emails events
+            $event = new GenericEvent($debate, array('user_id' => $user->getId(),));
+            $dispatcher = $this->eventDispatcher->dispatch('r_debate_follow', $event);
+            // $event = new GenericEvent($debate, array('author_user_id' => $user->getId(),));
+            // $dispatcher = $this->eventDispatcher->dispatch('n_debate_follow', $event);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Unfollow debate for user
+     *
+     * @param PUser $user
+     * @param PDDebate $debate
+     * @return boolean
+     */
+    public function unfollowDebate(PUser $user, PDDebate $debate)
+    {
+        if (!$debate || !$user) {
+            throw new InconsistentDataException('Debate or user null');
+        }
+
+        $follow = $this->userManager->isUserFollowDebate($user->getId(), $debate->getId());
+        if ($follow) {
+            $this->userManager->deleteUserFollowDebate($user->getId(), $debate->getId());
+
+            // Events
+            // upd > no emails events
+            $event = new GenericEvent($debate, array('user_id' => $user->getId(),));
+            $dispatcher = $this->eventDispatcher->dispatch('r_debate_unfollow', $event);
+            // $event = new GenericEvent($debate, array('author_user_id' => $user->getId(),));
+            // $dispatcher = $this->eventDispatcher->dispatch('n_debate_follow', $event);
+
+            return true;
+        }
+
+        return false;
+    }
 }

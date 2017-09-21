@@ -65,6 +65,7 @@ class XhrDocument
     private $userManager;
     private $documentManager;
     private $documentService;
+    private $userService;
     private $localizationService;
     private $tagService;
     private $facebookService;
@@ -88,6 +89,7 @@ class XhrDocument
      * @param @politizr.manager.user
      * @param @politizr.manager.document
      * @param @politizr.functional.document
+     * @param @politizr.functional.user
      * @param @politizr.functional.localization
      * @param @politizr.functional.tag
      * @param @politizr.functional.facebook
@@ -110,6 +112,7 @@ class XhrDocument
         $userManager,
         $documentManager,
         $documentService,
+        $userService,
         $localizationService,
         $tagService,
         $facebookService,
@@ -136,6 +139,7 @@ class XhrDocument
         $this->documentManager = $documentManager;
 
         $this->documentService = $documentService;
+        $this->userService = $userService;
         $this->localizationService = $localizationService;
         $this->tagService = $tagService;
         $this->facebookService = $facebookService;
@@ -174,21 +178,9 @@ class XhrDocument
         
         $debate = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
         if ('follow' == $way) {
-            $this->userManager->createUserFollowDebate($user->getId(), $debate->getId());
-
-            // Events
-            // upd > no emails events
-            $event = new GenericEvent($debate, array('user_id' => $user->getId(),));
-            $dispatcher = $this->eventDispatcher->dispatch('r_debate_follow', $event);
-            // $event = new GenericEvent($debate, array('author_user_id' => $user->getId(),));
-            // $dispatcher = $this->eventDispatcher->dispatch('n_debate_follow', $event);
+            $this->userService->followDebate($user, $debate);
         } elseif ('unfollow' == $way) {
-            $this->userManager->deleteUserFollowDebate($user->getId(), $debate->getId());
-
-            // Events
-            // upd > no events reputation nor emails because of "followRelativeDebate" concepts
-            $event = new GenericEvent($debate, array('user_id' => $user->getId(),));
-            $dispatcher = $this->eventDispatcher->dispatch('r_debate_unfollow', $event);
+            $this->userService->unfollowDebate($user, $debate);
         } else {
             throw new InconsistentDataException(sprintf('Follow\'s way %s not managed', $way));
         }
