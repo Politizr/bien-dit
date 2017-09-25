@@ -201,5 +201,8 @@ ALTER TABLE `p_c_topic_archive`
 ALTER TABLE `p_u_in_p_c`
     ADD `is_authorized_reaction` TINYINT(1) DEFAULT 0 AFTER `p_user_id`;
 
+ALTER TABLE `p_u_notification`
+    ADD `p_c_topic_id` INTEGER AFTER `p_author_user_id`;
+
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

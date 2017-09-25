@@ -27,6 +27,7 @@ use Politizr\Model\PUser;
  * @method PUNotificationQuery orderByPObjectName($order = Criteria::ASC) Order by the p_object_name column
  * @method PUNotificationQuery orderByPObjectId($order = Criteria::ASC) Order by the p_object_id column
  * @method PUNotificationQuery orderByPAuthorUserId($order = Criteria::ASC) Order by the p_author_user_id column
+ * @method PUNotificationQuery orderByPCTopicId($order = Criteria::ASC) Order by the p_c_topic_id column
  * @method PUNotificationQuery orderByDescription($order = Criteria::ASC) Order by the description column
  * @method PUNotificationQuery orderByChecked($order = Criteria::ASC) Order by the checked column
  * @method PUNotificationQuery orderByCheckedAt($order = Criteria::ASC) Order by the checked_at column
@@ -40,6 +41,7 @@ use Politizr\Model\PUser;
  * @method PUNotificationQuery groupByPObjectName() Group by the p_object_name column
  * @method PUNotificationQuery groupByPObjectId() Group by the p_object_id column
  * @method PUNotificationQuery groupByPAuthorUserId() Group by the p_author_user_id column
+ * @method PUNotificationQuery groupByPCTopicId() Group by the p_c_topic_id column
  * @method PUNotificationQuery groupByDescription() Group by the description column
  * @method PUNotificationQuery groupByChecked() Group by the checked column
  * @method PUNotificationQuery groupByCheckedAt() Group by the checked_at column
@@ -67,6 +69,7 @@ use Politizr\Model\PUser;
  * @method PUNotification findOneByPObjectName(string $p_object_name) Return the first PUNotification filtered by the p_object_name column
  * @method PUNotification findOneByPObjectId(int $p_object_id) Return the first PUNotification filtered by the p_object_id column
  * @method PUNotification findOneByPAuthorUserId(int $p_author_user_id) Return the first PUNotification filtered by the p_author_user_id column
+ * @method PUNotification findOneByPCTopicId(int $p_c_topic_id) Return the first PUNotification filtered by the p_c_topic_id column
  * @method PUNotification findOneByDescription(string $description) Return the first PUNotification filtered by the description column
  * @method PUNotification findOneByChecked(boolean $checked) Return the first PUNotification filtered by the checked column
  * @method PUNotification findOneByCheckedAt(string $checked_at) Return the first PUNotification filtered by the checked_at column
@@ -80,6 +83,7 @@ use Politizr\Model\PUser;
  * @method array findByPObjectName(string $p_object_name) Return PUNotification objects filtered by the p_object_name column
  * @method array findByPObjectId(int $p_object_id) Return PUNotification objects filtered by the p_object_id column
  * @method array findByPAuthorUserId(int $p_author_user_id) Return PUNotification objects filtered by the p_author_user_id column
+ * @method array findByPCTopicId(int $p_c_topic_id) Return PUNotification objects filtered by the p_c_topic_id column
  * @method array findByDescription(string $description) Return PUNotification objects filtered by the description column
  * @method array findByChecked(boolean $checked) Return PUNotification objects filtered by the checked column
  * @method array findByCheckedAt(string $checked_at) Return PUNotification objects filtered by the checked_at column
@@ -193,7 +197,7 @@ abstract class BasePUNotificationQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `p_notification_id`, `p_object_name`, `p_object_id`, `p_author_user_id`, `description`, `checked`, `checked_at`, `created_at`, `updated_at` FROM `p_u_notification` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `p_notification_id`, `p_object_name`, `p_object_id`, `p_author_user_id`, `p_c_topic_id`, `description`, `checked`, `checked_at`, `created_at`, `updated_at` FROM `p_u_notification` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -552,6 +556,48 @@ abstract class BasePUNotificationQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PUNotificationPeer::P_AUTHOR_USER_ID, $pAuthorUserId, $comparison);
+    }
+
+    /**
+     * Filter the query on the p_c_topic_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPCTopicId(1234); // WHERE p_c_topic_id = 1234
+     * $query->filterByPCTopicId(array(12, 34)); // WHERE p_c_topic_id IN (12, 34)
+     * $query->filterByPCTopicId(array('min' => 12)); // WHERE p_c_topic_id >= 12
+     * $query->filterByPCTopicId(array('max' => 12)); // WHERE p_c_topic_id <= 12
+     * </code>
+     *
+     * @param     mixed $pCTopicId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUNotificationQuery The current query, for fluid interface
+     */
+    public function filterByPCTopicId($pCTopicId = null, $comparison = null)
+    {
+        if (is_array($pCTopicId)) {
+            $useMinMax = false;
+            if (isset($pCTopicId['min'])) {
+                $this->addUsingAlias(PUNotificationPeer::P_C_TOPIC_ID, $pCTopicId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($pCTopicId['max'])) {
+                $this->addUsingAlias(PUNotificationPeer::P_C_TOPIC_ID, $pCTopicId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PUNotificationPeer::P_C_TOPIC_ID, $pCTopicId, $comparison);
     }
 
     /**

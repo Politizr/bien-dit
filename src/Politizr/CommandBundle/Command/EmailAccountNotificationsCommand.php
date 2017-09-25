@@ -113,7 +113,7 @@ class EmailAccountNotificationsCommand extends ContainerAwareCommand
         foreach ($users as $user) {
             // $output->write('.');
 
-            $puNotifications = $this->notificationService->getUserNotifications($user, $beginAt, $endAt);
+            $puNotifications = $this->notificationService->getUserNotificationsForEmailing($user, $beginAt, $endAt);
 
             // Badges
             $badgeNotifications = $this->notificationService->extractPUNotifications($puNotifications, [NotificationConstants::ID_U_BADGE]);
@@ -404,7 +404,6 @@ class EmailAccountNotificationsCommand extends ContainerAwareCommand
         $followersPartHtml = null;
         $followersPartTxt = null;
 
-        // Badges
         $loop = 0;
         foreach ($followerNotifications as $puNotification) {
             // Update attributes depending of context

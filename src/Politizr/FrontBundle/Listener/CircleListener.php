@@ -54,7 +54,7 @@ class CircleListener
         }
 
         // get all circle for user's geoloc
-        $circles = $this->circleService->getCirclesByUser($user);
+        $circles = $this->circleService->getAuthorizedCirclesByUser($user);
 
         // default add user to his local circles
         foreach ($circles as $circle) {

@@ -1140,6 +1140,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
             'PolitizrFrontBundle:Document:_footer.html.twig',
             array(
                 'reason' => $reason,
+                'document' => $document,
             )
         );
 

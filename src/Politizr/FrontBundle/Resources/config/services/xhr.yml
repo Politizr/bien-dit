@@ -72,6 +72,7 @@ services:
         arguments:
             - @security.token_storage
             - @templating
+            - @politizr.functional.notification
             - @politizr.manager.user
             - @politizr.manager.notification
             - @logger

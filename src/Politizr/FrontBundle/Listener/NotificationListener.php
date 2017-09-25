@@ -67,6 +67,7 @@ class NotificationListener
 
         // Document associé
         $targetUserId = $subject->getPUserId();
+        $topicId =  $subject->getTopicId();
 
         switch($objectName) {
             case 'Politizr\Model\PDDebate':
@@ -81,7 +82,7 @@ class NotificationListener
                 throw new InconsistentDataException(sprintf('Object name %s not managed', $objectName));
         }
 
-        $puNotification = $this->insertPUNotification($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
+        $puNotification = $this->insertPUNotification($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId, $topicId);
     }
 
     /**
@@ -104,6 +105,7 @@ class NotificationListener
 
         // Document associé
         $targetUserId = $subject->getPUserId();
+        $topicId =  $subject->getTopicId();
 
         switch ($objectName) {
             case 'Politizr\Model\PDDebate':
@@ -118,7 +120,7 @@ class NotificationListener
                 throw new InconsistentDataException(sprintf('Object name %s not managed', $objectName));
         }
 
-        $puNotification = $this->insertPUNotification($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
+        $puNotification = $this->insertPUNotification($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId, $topicId);
     }
 
     /**
@@ -141,6 +143,7 @@ class NotificationListener
         $authorUserId = $event->getArgument('author_user_id');
         $objectName = get_class($debate);
         $objectId = $debate->getId();
+        $topicId =  $debate->getTopicId();
 
         // retrieve user
         $authorUser = PUserQuery::create()->findPk($authorUserId);
@@ -158,7 +161,7 @@ class NotificationListener
             $usersIds[] = $user->getId();
 
             $pNotificationId = NotificationConstants::ID_S_U_DEBATE_PUBLISH;
-            $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId);
+            $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId, $topicId);
         }
 
         // get debate's tags
@@ -174,12 +177,12 @@ class NotificationListener
                 $usersIds[] = $user->getId();
 
                 $pNotificationId = NotificationConstants::ID_S_T_DOCUMENT;
-                $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId);
+                $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId, $topicId);
             }
         }
 
         // localization
-        $this->locDocNotificationsManagement($debate, $usersIds, $authorUserId, $objectName, $objectId);
+        $this->locDocNotificationsManagement($debate, $usersIds, $authorUserId, $objectName, $objectId, $topicId);
     }
 
     /**
@@ -204,6 +207,7 @@ class NotificationListener
         $authorUserId = $event->getArgument('author_user_id');
         $objectName = get_class($reaction);
         $objectId = $reaction->getId();
+        $topicId =  $reaction->getTopicId();
 
         // retrieve reaction's debate
         $debate = $reaction->getPDDebate();
@@ -220,7 +224,7 @@ class NotificationListener
         if ($debateUserId != $authorUserId) {
             $usersIds[] = $debateUserId;
 
-            $puNotification = $this->insertPUNotification($debateUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
+            $puNotification = $this->insertPUNotification($debateUserId, $authorUserId, $pNotificationId, $objectName, $objectId, $topicId);
         }
 
         // reaction published on my reaction
@@ -235,7 +239,7 @@ class NotificationListener
             // don't notif if same user
             if ($targetUserId != $authorUserId) {
                 $usersIds[] = $targetUserId;
-                $puNotification = $this->insertPUNotification($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
+                $puNotification = $this->insertPUNotification($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId, $topicId);
             }
         }
 
@@ -250,7 +254,7 @@ class NotificationListener
             $usersIds[] = $user->getId();
 
             $pNotificationId = NotificationConstants::ID_S_U_REACTION_PUBLISH;
-            $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId);
+            $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId, $topicId);
         }
 
         // reaction published on followed debate
@@ -261,7 +265,7 @@ class NotificationListener
             $usersIds[] = $user->getId();
 
             $pNotificationId = NotificationConstants::ID_S_D_REACTION_PUBLISH;
-            $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId);
+            $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId, $topicId);
         }
 
         // reaction with followed tags
@@ -276,12 +280,12 @@ class NotificationListener
                 $usersIds[] = $user->getId();
 
                 $pNotificationId = NotificationConstants::ID_S_T_DOCUMENT;
-                $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId);
+                $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId, $topicId);
             }
         }
 
         // localization
-        $this->locDocNotificationsManagement($reaction, $usersIds, $authorUserId, $objectName, $objectId);
+        $this->locDocNotificationsManagement($reaction, $usersIds, $authorUserId, $objectName, $objectId, $topicId);
     }
 
     /**
@@ -292,8 +296,9 @@ class NotificationListener
      * @param int $authorUserId notification author id
      * @param string $objectName notification object name
      * @param int $objectId notification object id
+     * @param int $topicId doc topic id
      */
-    private function locDocNotificationsManagement(PDocumentInterface $document, &$usersIds, $authorUserId, $objectName, $objectId)
+    private function locDocNotificationsManagement(PDocumentInterface $document, &$usersIds, $authorUserId, $objectName, $objectId, $topicId)
     {
         $city = $department = $region = null;
         if ($cityId = $document->getPLCityId()) {
@@ -314,7 +319,7 @@ class NotificationListener
 
             foreach ($users as $user) {
                 $pNotificationId = NotificationConstants::ID_L_D_CITY;
-                $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId);
+                $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId, $topicId);
 
                 $usersIds[] = $user->getId();
             }
@@ -327,7 +332,7 @@ class NotificationListener
 
             foreach ($users as $user) {
                 $pNotificationId = NotificationConstants::ID_L_D_DEPARTMENT;
-                $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId);
+                $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId, $topicId);
 
                 $usersIds[] = $user->getId();
             }
@@ -340,7 +345,7 @@ class NotificationListener
 
             foreach ($users as $user) {
                 $pNotificationId = NotificationConstants::ID_L_D_REGION;
-                $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId);
+                $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId, $topicId);
             }
         }
     }
@@ -370,6 +375,7 @@ class NotificationListener
         $document = $subject->getPDocument();
         $targetUserId = $document->getPUserId();
         $targetUser = $document->getPUser();
+        $topicId = $document->getTopicId();
 
         // Emails notification array
         $neCheck = [];
@@ -377,7 +383,7 @@ class NotificationListener
         // Comment published on my debate or reaction
         // don't notif if same user
         if ($targetUserId != $authorUserId) {
-            $puNotification = $this->insertPUNotification($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
+            $puNotification = $this->insertPUNotification($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId, $topicId);
         }
 
         // Retrieve comment's user
@@ -389,7 +395,7 @@ class NotificationListener
         foreach ($users as $user) {
             if ($user->getId() != $authorUserId) {
                 $pNotificationId = NotificationConstants::ID_S_U_COMMENT_PUBLISH;
-                $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId);
+                $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId, $topicId);
             }
         }
 
@@ -408,7 +414,7 @@ class NotificationListener
         $users = $debate->getFollowers();
         foreach ($users as $user) {
             if ($user->getId() != $authorUserId) {
-                $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId);
+                $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId, $topicId);
             }
         }
     }
@@ -431,11 +437,12 @@ class NotificationListener
 
         $objectName = get_class($subject);
         $objectId = $subject->getId();
+        $topicId = $subject->getTopicId();
 
         // Auteur du débat
         $targetUserId = $subject->getPUserId();
 
-        $puNotification = $this->insertPUNotification($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId);
+        $puNotification = $this->insertPUNotification($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId, $topicId);
     }
 
     /**
@@ -665,15 +672,18 @@ class NotificationListener
      * @param $notificationId
      * @param $objectName
      * @param $objectId
+     * @param $topicId
+     * @param $description
      *
      * @return PUNotification  Objet inséré
      */
-    private function insertPUNotification($userId, $authorUserId, $notificationId, $objectName, $objectId, $description = null)
+    private function insertPUNotification($userId, $authorUserId, $notificationId, $objectName, $objectId, $topicId = null, $description = null)
     {
         // $this->logger->info('*** insertPUNotification');
         // $this->logger->info('userId = '.print_r($userId, true));
         // $this->logger->info('authorUserId = '.print_r($authorUserId, true));
         // $this->logger->info('notificationId = '.print_r($notificationId, true));
+        // $this->logger->info('topicId = '.print_r($topicId, true));
         // $this->logger->info('objectName = '.print_r($objectName, true));
         // $this->logger->info('objectId = '.print_r($objectId, true));
 
@@ -685,6 +695,7 @@ class NotificationListener
             $notif->setPNotificationId($notificationId);
             $notif->setPObjectName($objectName);
             $notif->setPObjectId($objectId);
+            $notif->setPCTopicId($topicId);
             $notif->setPAuthorUserId($authorUserId);
             $notif->setDescription($description);
             $notif->setChecked(false);

@@ -103,9 +103,9 @@ class CircleService
      * @param PUser $user
      * @return PropelCollection[PCircle]
      */
-    public function getCirclesByUser(PUser $user = null)
+    public function getAuthorizedCirclesByUser(PUser $user = null)
     {
-        // $this->logger->info('*** getCirclesByUserId');
+        // $this->logger->info('*** getAuthorizedCirclesByUser');
         // $this->logger->info('$user = '.print_r($user, true));
         // $this->logger->info('$user->getPLCityId = '.print_r($user->getPLCityId(), true));
 
@@ -118,6 +118,33 @@ class CircleService
                         ->usePCGroupLCQuery()
                             ->filterByPLCityId($user->getPLCityId())
                         ->endUse()
+                        ->find();
+
+        return $circles;
+    }
+
+    /**
+     * Get membership circles by user
+     *
+     * @param PUser $user
+     * @return PropelCollection[PCircle]
+     */
+    public function getCirclesByUser(PUser $user = null)
+    {
+        // $this->logger->info('*** getCirclesByUser');
+        // $this->logger->info('$user = '.print_r($user, true));
+        // $this->logger->info('$user->getPLCityId = '.print_r($user->getPLCityId(), true));
+
+        if (!$user) {
+            throw new InconsistentDataException('User null');
+        }
+
+        $circles = PCircleQuery::create()
+                        ->filterByOnline(true)
+                        ->usePUinPCQuery()
+                            ->filterByPUserId($user->getId())
+                        ->endUse()
+                        ->distinct()
                         ->find();
 
         return $circles;

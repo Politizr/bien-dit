@@ -23,6 +23,7 @@ FROM p_d_debate
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1
+    AND (p_d_debate.p_c_topic_id is NULL OR p_d_debate.p_c_topic_id IN (1, 2, 3, 4, 5, 6, 7, 8))
     AND p_d_debate.p_user_id = 3
 
 GROUP BY id
@@ -55,6 +56,7 @@ WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
     AND p_d_reaction.tree_level > 0
+    AND (p_d_reaction.p_c_topic_id is NULL OR p_d_reaction.p_c_topic_id IN (1, 2, 3, 4, 5, 6, 7, 8))
     AND p_d_reaction.p_user_id = 3
 
 GROUP BY id
@@ -75,6 +77,7 @@ FROM p_d_debate
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1
+    AND (p_d_debate.p_c_topic_id is NULL OR p_d_debate.p_c_topic_id IN (1, 2, 3, 4, 5, 6, 7, 8))
     AND p_d_debate.id NOT IN (0)
     AND p_d_debate.p_user_id IN (6,9,60)
     AND p_d_debate.published_at > '2008-01-01 00:00:00'
@@ -91,6 +94,7 @@ FROM p_d_reaction
 WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
+    AND (p_d_reaction.p_c_topic_id is NULL OR p_d_reaction.p_c_topic_id IN (1, 2, 3, 4, 5, 6, 7, 8))
     AND p_d_reaction.id NOT IN (0)
     AND p_d_reaction.p_user_id IN (6,9,60)
     AND p_d_reaction.published_at > '2008-01-01 00:00:00'
@@ -102,10 +106,15 @@ GROUP BY id
 UNION DISTINCT
 
 # Commentaires débats des users suivis
-( SELECT p_d_d_comment.id as id, p_d_d_comment.p_user_id as author_id, "commentaire" as title, p_d_d_comment.description as description, p_d_d_comment.published_at as published_at, p_d_d_comment.note_pos as note_pos, p_d_d_comment.note_neg as note_neg, 0 as nb_subjects, 0 as nb_reactions, COUNT(distinct id) as nb_comments, 'Politizr\\Model\\PDDComment' as type
+( SELECT p_d_d_comment.id as id, p_d_d_comment.p_user_id as author_id, "commentaire" as title, p_d_d_comment.description as description, p_d_d_comment.published_at as published_at, p_d_d_comment.note_pos as note_pos, p_d_d_comment.note_neg as note_neg, 0 as nb_subjects, 0 as nb_reactions, COUNT(distinct p_d_d_comment.id) as nb_comments, 'Politizr\\Model\\PDDComment' as type
 FROM p_d_d_comment
+    LEFT JOIN p_d_debate
+        ON p_d_d_comment.p_d_debate_id = p_d_debate.id
 WHERE
     p_d_d_comment.online = 1
+    AND p_d_debate.published = 1
+    AND p_d_debate.online = 1
+    AND (p_d_debate.p_c_topic_id is NULL OR p_d_debate.p_c_topic_id IN (1, 2, 3, 4, 5, 6, 7, 8))
     AND p_d_d_comment.id NOT IN (0)
     AND p_d_d_comment.p_user_id IN (6,9,60)
     AND p_d_d_comment.published_at > '2008-01-01 00:00:00'
@@ -117,10 +126,15 @@ GROUP BY id
 UNION DISTINCT
 
 # Commentaires réactions des users suivis
-( SELECT p_d_r_comment.id as id, p_d_r_comment.p_user_id as author_id, "commentaire" as title, p_d_r_comment.description as description, p_d_r_comment.published_at as published_at, p_d_r_comment.note_pos as note_pos, p_d_r_comment.note_neg as note_neg, 0 as nb_subjects, 0 as nb_reactions, COUNT(distinct id) as nb_comments, 'Politizr\\Model\\PDRComment' as type
+( SELECT p_d_r_comment.id as id, p_d_r_comment.p_user_id as author_id, "commentaire" as title, p_d_r_comment.description as description, p_d_r_comment.published_at as published_at, p_d_r_comment.note_pos as note_pos, p_d_r_comment.note_neg as note_neg, 0 as nb_subjects, 0 as nb_reactions, COUNT(distinct p_d_r_comment.id) as nb_comments, 'Politizr\\Model\\PDRComment' as type
 FROM p_d_r_comment
+    LEFT JOIN p_d_reaction
+        ON p_d_r_comment.p_d_reaction_id = p_d_reaction.id
 WHERE
     p_d_r_comment.online = 1
+    AND p_d_reaction.published = 1
+    AND p_d_reaction.online = 1
+    AND (p_d_reaction.p_c_topic_id is NULL OR p_d_reaction.p_c_topic_id IN (1, 2, 3, 4, 5, 6, 7, 8))
     AND p_d_r_comment.id NOT IN (0)
     AND p_d_r_comment.p_user_id IN (6,9,60)
     AND p_d_r_comment.published_at > '2008-01-01 00:00:00'
@@ -143,6 +157,7 @@ FROM p_d_reaction
 WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
+    AND (p_d_reaction.p_c_topic_id is NULL OR p_d_reaction.p_c_topic_id IN (1, 2, 3, 4, 5, 6, 7, 8))
     AND p_d_reaction.p_d_debate_id IN (109,110,891)
     AND p_d_reaction.tree_level > 0
     AND p_d_reaction.p_user_id <> 3
@@ -157,8 +172,13 @@ UNION DISTINCT
 # Commentaires débats des débats suivis
 ( SELECT p_d_d_comment.id as id, p_d_d_comment.p_user_id as author_id, "commentaire" as title, p_d_d_comment.description as description, p_d_d_comment.published_at as published_at, p_d_d_comment.note_pos as note_pos, p_d_d_comment.note_neg as note_neg, 0 as nb_subjects, 0 as nb_reactions, COUNT(distinct p_d_d_comment.id) as nb_comments, 'Politizr\\Model\\PDDComment' as type
 FROM p_d_d_comment
+    LEFT JOIN p_d_debate
+        ON p_d_d_comment.p_d_debate_id = p_d_debate.id
 WHERE
     p_d_d_comment.online = 1
+    AND p_d_debate.published = 1
+    AND p_d_debate.online = 1
+    AND (p_d_debate.p_c_topic_id is NULL OR p_d_debate.p_c_topic_id IN (1, 2, 3, 4, 5, 6, 7, 8))
     AND p_d_d_comment.p_d_debate_id IN (109,110,891)
     AND p_d_d_comment.p_user_id <> 3
     AND p_d_d_comment.published_at > '2008-01-01 00:00:00'
@@ -176,6 +196,9 @@ FROM p_d_r_comment
         ON p_d_r_comment.p_d_reaction_id = p_d_reaction.id
 WHERE
     p_d_r_comment.online = 1
+    AND p_d_reaction.published = 1
+    AND p_d_reaction.online = 1
+    AND (p_d_reaction.p_c_topic_id is NULL OR p_d_reaction.p_c_topic_id IN (1, 2, 3, 4, 5, 6, 7, 8))
     AND p_d_reaction.p_d_debate_id IN (109,110,891)
     AND p_d_r_comment.p_user_id <> 3
     AND p_d_r_comment.published_at > '2008-01-01 00:00:00'

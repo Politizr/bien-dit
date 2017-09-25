@@ -101,4 +101,11 @@ interface PDocumentInterface
      * @return PCircle|null
      */
     public function getCircle();
+
+    /**
+     * Get associated topic id
+     *
+     * @return int|null
+     */
+    public function getTopicId();
 }

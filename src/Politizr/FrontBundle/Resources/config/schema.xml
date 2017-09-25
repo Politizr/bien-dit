@@ -947,6 +947,7 @@
         <column name="p_object_name" type="varchar" size="150" />
         <column name="p_object_id" type="integer" />
         <column name="p_author_user_id" type="integer" />
+        <column name="p_c_topic_id" type="integer" required="false" />
 
         <column name="description" type="longvarchar" />
 
