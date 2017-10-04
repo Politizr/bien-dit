@@ -14,6 +14,7 @@ use Politizr\Model\PCircleQuery;
 use Politizr\Model\PCTopicQuery;
 use Politizr\Model\PDDebateQuery;
 
+use Politizr\Constant\CircleConstants;
 
 /**
  * Circle controller
@@ -70,9 +71,19 @@ class CircleController extends Controller
                     ->filterByOnline(true)
                     ->find();
 
-        return $this->render('PolitizrFrontBundle:Circle:detail.html.twig', array(
+        // get users authorized reactions list > generic or dedicated
+        $authorizedUsers = $this->get('politizr.functional.circle')->getAuthorizedReactionUsersByCircle($circle);
+
+        // get template path > generic or dedicated
+        $templatePath = 'Circle';
+        if ($circle->getId() == CircleConstants::CD09_ID_CIRCLE) {
+            $templatePath = 'Circle\\cd09';
+        }
+
+        return $this->render('PolitizrFrontBundle:'.$templatePath.':detail.html.twig', array(
             'circle' => $circle,
             'topics' => $topics,
+            'authorizedUsers' => $authorizedUsers,
         ));
     }
 

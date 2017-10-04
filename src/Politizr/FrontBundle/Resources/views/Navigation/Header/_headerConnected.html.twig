@@ -35,29 +35,41 @@
         </div>
         #}
         <div class="headerSeparator"></div>
-        <div id="userLogged">
-            <a href="{{ path('UserDetail', {'slug': app.user.slug}) }}">
-                {# <span class="userName">{{ app.user.firstname }} {{ app.user.name }}</span> #}
-                <span class="avatar30">{{ app.user | photo('user_30', withLink = false, withBubble = false) }}</span>
-            </a>
+        <div id="headerGrp" action="toggleGrpMenu">
+            <i class="icon-grp"></i><span>Groupes</span><i class="icon-arrow-down"></i>
+        </div>
+        <div id="headerGrpMenu" style="display: none;">
+            <div id="headerGrpMenuArrow"><i class="icon-arrow-up"></i></div>
+            <div class="innerMenu">
+                <div class="primaryMenu">
+                    {{ app.user | circleMenu }}
+                </div>
+                <div class="secondaryMenu">
+                    <a href="{{ path('MenuCircle') }}">Gérer mes groupes</a>
+                </div>
+            </div>
         </div>
         <div class="headerSeparator"></div>
-        <div id="menuButton"><i class="icon-menu" action="toggleMenu"></i></div>
+        <div id="userLogged" action="toggleMenu">
+            {# <span class="userName">{{ app.user.firstname }} {{ app.user.name }}</span> #}
+            <span class="avatar30">{{ app.user | photo('user_30', withLink = false, withBubble = false) }}</span>
+        </div>
         <div id="menu" style="display: none;">
-            <div id="menuArrow"><i class="icon-arrow-up"></i></div> 
-            <div id="primaryMenu">
-                <a href="{{ path('Drafts'~profileSuffix()) }}">Mes brouillons</a>
-                <a href="{{ path('UserDetail', {'slug': app.user.slug}) }}">Mes publications</a>
-                <a href="{{ path('Bookmarks'~profileSuffix()) }}">Mes favoris</a>
-                <a href="{{ path('MenuCircle') }}">Mes groupes</a>
-            </div>
-            <div id="secondaryMenu">
-                <a href="{{ path('EditProfile'~profileSuffix()) }}">Mon profil</a>
-                <a href="{{ path('EditPerso'~profileSuffix()) }}">Mon compte</a>
-                <a href="{{ path('EditNotifications'~profileSuffix()) }}">Réglages des notifications</a>
-                <a href="{{ path('GlobalHelper') }}">Comment ça marche?</a>
-                <a href="http://www.politizr.help" target="_blank"><b>Support et assistance</b></a>
-                <div id="deconnect"><a href="{{ path('Logout') }}">Déconnexion</a></div>
+            <div id="menuArrow"><i class="icon-arrow-up"></i></div>
+            <div class="innerMenu">
+                <div class="primaryMenu">
+                    <a href="{{ path('UserDetail', {'slug': app.user.slug}) }}">Mon profil</a>
+                    <a href="{{ path('Drafts'~profileSuffix()) }}">Mes brouillons</a>
+                    <a href="{{ path('UserDetail', {'slug': app.user.slug}) }}">Mes publications</a>
+                    <a href="{{ path('Bookmarks'~profileSuffix()) }}">Mes favoris</a>
+                </div>
+                <div class="secondaryMenu">
+                    <a href="{{ path('EditPerso'~profileSuffix()) }}">Mon compte</a>
+                    <a href="{{ path('EditNotifications'~profileSuffix()) }}">Réglages des notifications</a>
+                    <a href="{{ path('GlobalHelper') }}">Principes de base</a>
+                    <a href="http://www.politizr.help" target="_blank"><b>Support et assistance</b></a>
+                    <div id="deconnect"><a href="{{ path('Logout') }}">Déconnexion</a></div>
+                </div>
             </div>
         </div>
     </div>

@@ -25,6 +25,10 @@
     <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/selection-sharer.css') }}" />
 {% endblock %}
 
+{% block bodyClass %}
+    {% if debate.PCTopicId %} class="grp"{% endif %}
+{% endblock %}
+
 {% block headerMsg %}
     {{ parent() }}
 

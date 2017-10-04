@@ -1,0 +1,135 @@
+{# beta #}
+{% set layout = 'PolitizrFrontBundle::layoutPublic.html.twig' %}
+{% if (isGrantedE() or isGrantedC()) %}
+    {% set layout = 'PolitizrFrontBundle::layoutConnected.html.twig' %}
+{% endif %}
+{% extends layout %}
+
+{% set metaTitle = circle.title | purify | trim %}
+{% set metaDescription = circle.summary | striptags | truncate(160, true) | purify %}
+{% set ogDescription = circle.summary | striptags | truncate(295, true) | purify %}
+
+{% block title %}{{ metaTitle }} - {{ parent() }}{% endblock title %}
+{% block description %}{{ metaDescription }}{% endblock description %}
+
+{% block ogTitle %}{{ metaTitle }} - {{ parent() }}{% endblock ogTitle %}
+{% block ogDescription %}{{ ogDescription }}{% endblock ogDescription %}
+
+{% block tcTitle %}{{ metaTitle }} - {{ parent() }}{% endblock tcTitle %}
+{% block tcDescription %}{{ metaDescription }}{% endblock tcDescription %}
+
+{% block bodyClass %} class="grp"{% endblock %}
+
+{% block main %}
+    <div id="main">
+        <div class="center">
+            <div id="grpMenu">
+                <img src="{{ asset('bundles/politizrfront/images/grp-CD09/grp-logoCD09.png') }}">
+                <div id="grpMenuPseudoTabs">
+                    <span>Budget primitif 2017</span>
+                </div>
+                <div id="grpMenuLinksMobile" action="toggleGrpMenuLinks">Menu<i class="icon-menu"></i></div>
+                <div id="grpMenuLinks">
+                    {% for topic in topics %}
+                        <a href="{{ path('TopicDetail', { 'circleSlug': circle.slug, 'slug': topic.slug }) }}">{{ topic.title }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+            <div id="grpBreadcrumbs">
+                Ariège, le Département<i class="icon-arrow-right"></i>Budget primitif 2017<i class="icon-arrow-right"></i><span>Accueil</span>
+            </div>
+            <div class="grpCard">
+                <div class="grpGlobalIntro">
+                    <div class="grpGlobalIntroBigArticle">
+                        <img src="{{ asset('bundles/politizrfront/images/grp-CD09/grp-bigArticle.png') }}">
+                        <div class="grpGlobalIntroOneCol">
+                            <h1>Présentation du contexte porta sem suada magna mollis</h1>
+                            <p><b>Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Sed posuere consectetur est at lobortis. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec id elit non mi porta gravida at eget metus.</b><br>
+Curabitur blandit tempus porttitor. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.<br>
+                                <a class="grpKnowMore" target="_blank" href="">En savoir plus sur le site du Département</a>
+                            </p>
+                        </div>
+                        <div class="grpGlobalIntroBigArticleSidebar">
+                            <p>Les domaines abordés par le budget primitif 2017 du Conseil départemental</p>
+                            {% for topic in topics %}
+                                <a class="grpGlobalIntroTag" href="{{ path('TopicDetail', { 'circleSlug': circle.slug, 'slug': topic.slug }) }}">{{ topic.title }}</a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="grpGlobalIntroSmallArticles">
+                        <div class="grpGlobalIntroOneCol">
+                            <img src="{{ asset('bundles/politizrfront/images/grp-CD09/grp_article1.jpg') }}">
+                            <h1>Praesent Fusce Venenatis commodo cursus magna velisque</h1>
+                            <p>Etiam porta sem malesuada magna mollis euismod. Vivamus sagittis lacus vel augue laoreet rutrum.</p>
+                        </div>
+                        <div class="grpGlobalIntroOneCol">
+                            <p>Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Donec sed odio dui. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Vestibulum id ligula porta felis euismod semper. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
+                        </div>
+                        <div class="grpGlobalIntroTwoCol">
+                            <img src="{{ asset('bundles/politizrfront/images/grp-CD09/grp_article2.jpg') }}">
+                            <h1>Vestibulum id ligula porta felis euis mod semper.</h1>
+                            <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Etiam porta sem malesuada magna mollis euismod.<br>
+Nullam quis risus eget urna mollis ornare vel eu leo. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec sed odio dui.</p>
+                        </div>
+                    </div>
+                    <div class="grpTwitterFeed">
+                        <div class="grpTwitterLogo">
+                            <i class="icon-social-tw"></i><br>
+                            Mentions<br>
+                            <span>#09Budg2017</span>
+                        </div>
+                        <a class="twitter-timeline" href="https://twitter.com/hashtag/Ari%C3%A8ge" data-widget-id="913411922724352000" data-chrome="nofooter noheader noborders noscrollbar transparent" data-width="180" data-height="625">></a> 
+                        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+                    </div>
+                </div>
+                <div class="grpAnswersBy">
+                    <div class="grpAnswersByTitle">
+                        <h1>Les élus du Conseil départemental de l’Ariège en charge de ces sujets</h1>
+                        <div class="grpAnswersByTitleNotice">
+                            <i class="icon-info"></i>
+                            <p>Tous les conseillers départementaux ci-contre peuvent répondre à vos questions.</p>
+                        </div>
+                        
+                    </div>
+                    {{ authorizedReactionUsersForCd09() }}
+                </div>
+                <div class="grpChaptersList">
+                    <h1>Les 8 chapitres du budget primitif</h1>
+                    <h2>sur lesquels le Conseil départemental souhaite connaître votre opinion</h2>
+                    {% for topic in topics %}
+                        <div class="grpChaptersListItem">
+                            <div class="grpCharterImg">
+                                <a href="{{ path('TopicDetail', { 'circleSlug': circle.slug, 'slug': topic.slug }) }}">
+                                    <span>{{ topic.title }}</span>
+                                    <img src="{{ asset('bundles/politizrfront/images/grp-CD09/grp_catAgriculture.jpg') }}">
+                                </a>
+                            </div>
+                            {{ topic | topicStats }}
+                            <p>
+                                {{ topic.summary | striptags | truncate(50, true) | purify }}
+                                <a href="{{ path('TopicDetail', { 'circleSlug': circle.slug, 'slug': topic.slug }) }}" class="grpKnowMore">En savoir plus</a>
+                            </p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {{ circle | circleFooter }}
+        </div>
+    </div>
+{% endblock main %}
+
+{% block javascriptFooter %}
+    {{ parent() }}
+
+    {% if (app.environment == 'prod') %}
+        <script type="text/javascript">
+            mixpanel.track("Groupe - {{ circle.title }}");
+        </script>
+    {% endif %}
+
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/pages/detailCircle.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock javascriptFooter %}

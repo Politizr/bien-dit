@@ -32,6 +32,10 @@
     <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.cycle2.swipe.min.js') }}"></script>
 {% endblock %}
 
+{% block bodyClass %}
+    {% if reaction.PCTopicId %} class="grp"{% endif %}
+{% endblock %}
+
 {% block preMain %}
     {% include 'PolitizrFrontBundle:Reaction:_menu.html.twig' with {
         'debate': debate,

@@ -197,6 +197,11 @@ class PolitizrUserExtension extends \Twig_Extension
                 array($this, 'circleMember'),
                 array('is_safe' => array('html'))
             ),
+            new \Twig_SimpleFilter(
+                'circleMenu',
+                array($this, 'circleMenu'),
+                array('is_safe' => array('html'), 'needs_environment' => true)
+            ),
         );
     }
 
@@ -922,6 +927,25 @@ class PolitizrUserExtension extends \Twig_Extension
         }
 
         return false;
+    }
+
+    /**
+     * Get user's circles
+     *
+     * @return boolean
+     */
+    public function circleMenu(\Twig_Environment $env, PUser $user)
+    {
+        $circles = $this->circleService->getCirclesByUser($user);
+
+        $html = $env->render(
+            'PolitizrFrontBundle:Navigation\\Menu:_circles.html.twig',
+            array(
+                'circles' => $circles,
+            )
+        );
+
+        return $html;
     }
 
     /* ######################################################################################################## */

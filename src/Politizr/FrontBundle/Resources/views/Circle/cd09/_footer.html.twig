@@ -1,0 +1,40 @@
+<div id="grpFooter">
+    <h1>Comment participer ?</h1>
+    <div class="grpFooterCol">
+        <img src="{{ asset('bundles/politizrfront/images/grp-CD09/grp_footerAccount.png') }}">
+        <h2>
+            <b>Inscrivez-vous</b>
+            Maecenas faucibus mollis interdum. 
+        </h2>
+    </div>
+    <div class="grpFooterCol">
+        <img src="{{ asset('bundles/politizrfront/images/grp-CD09/grp_footerNote.png') }}">
+        <h2>
+            <b>Notez</b>
+            Maecenas faucibus mollis interdum. 
+        </h2>
+    </div>
+    <div class="grpFooterCol">
+        <img src="{{ asset('bundles/politizrfront/images/grp-CD09/grp_footerComment.png') }}">
+        <h2>
+            <b>Commentez</b>
+            Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus 
+        </h2>
+    </div>
+    <div class="grpFooterCol">
+        <img src="{{ asset('bundles/politizrfront/images/grp-CD09/grp_footerPost.png') }}">
+        <h2>
+            <b>Posez vos questions</b>
+            Et poursuivez la discussion avec les élus qui vous auront répondus. 
+        </h2>
+    </div>
+    {% if not app.user %}
+        <div class="grpFooterMentions">
+            La participation à ce groupe est réservée aux habitants d’Ariège (élu-e-s et citoyen-ne-s).<br>
+            Vous habitez en dehors de ce territoire? <a href="">inscrivez-vous</a> pour rejoindre le(s) groupe(s) de votre secteur.
+        </div>
+    {% endif %}
+    <div class="grpFooterLinks">
+        <a href="">Mentions légales</a> • <a href="">Charte d’utilisation</a> • <a href="">Contact</a>
+    </div>
+</div>

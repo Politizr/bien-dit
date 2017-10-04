@@ -1,0 +1,3 @@
+{% for circle in circles %}
+    <a href="{{ path('DetailCircle', { 'slug': circle.slug }) }}">{{ circle.title }}</a>
+{% endfor %}

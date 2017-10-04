@@ -1,5 +1,10 @@
 {# beta #}
-{% extends 'PolitizrFrontBundle::layoutConnected.html.twig' %}
+{# beta #}
+{% set layout = 'PolitizrFrontBundle::layoutPublic.html.twig' %}
+{% if (isGrantedE() or isGrantedC()) %}
+    {% set layout = 'PolitizrFrontBundle::layoutConnected.html.twig' %}
+{% endif %}
+{% extends layout %}
 
 {% set metaTitle = topic.title | purify | trim ~' - '~ circle.title | purify | trim %}
 {% set metaDescription = topic.summary | striptags | truncate(160, true) | purify %}
@@ -14,9 +19,10 @@
 {% block tcTitle %}{{ metaTitle }} - {{ parent() }}{% endblock tcTitle %}
 {% block tcDescription %}{{ metaDescription }}{% endblock tcDescription %}
 
+{% block bodyClass %} class="grp"{% endblock %}
 
 {% block headerMsg %}
-    <div id="circleBreadcrumb">
+    <div id="grpBreadcrumbs">
         <a href="{{ path('DetailCircle', { 'slug': circle.slug }) }}">{{ circle.title }}</a> - <a href="{{ path('TopicDetail', { 'circleSlug': circle.slug, 'slug': topic.slug }) }}">{{ topic.title }}</a>
     </div>
 {% endblock headerMsg %}

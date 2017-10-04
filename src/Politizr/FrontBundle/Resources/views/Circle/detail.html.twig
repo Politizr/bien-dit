@@ -18,15 +18,18 @@
 {% block tcTitle %}{{ metaTitle }} - {{ parent() }}{% endblock tcTitle %}
 {% block tcDescription %}{{ metaDescription }}{% endblock tcDescription %}
 
+{% block bodyClass %} class="grp"{% endblock %}
+
 {% block content %}
     <div id="content">
-        {{ circle.description | purify }}
+        {{ circle.description | raw }}
         {% for topic in topics %}
             <h1>{{ topic.title }}</h1>
             <div>{{ topic.summary | purify  }}</div>
             <a href="{{ path('TopicDetail', { 'circleSlug': circle.slug, 'slug': topic.slug }) }}">En savoir plus</a>
         {% endfor %}
     </div>
+    {{ circle | circleFooter }}
 {% endblock content %}
 
 {% block sidebarContent %}

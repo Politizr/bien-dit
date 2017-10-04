@@ -10,9 +10,13 @@ use Politizr\Model\PCircle;
 use Politizr\Model\PCTopic;
 
 use Politizr\Model\PCircleQuery;
+use Politizr\Model\PUserQuery;
 use Politizr\Model\PCTopicQuery;
 use Politizr\Model\PUInPCQuery;
 use Politizr\Model\PDDebateQuery;
+use Politizr\Model\PDReactionQuery;
+use Politizr\Model\PDDCommentQuery;
+use Politizr\Model\PDRCommentQuery;
 
 use \PropelCollection;
 
@@ -245,6 +249,31 @@ class CircleService
         return false;
     }
 
+    /**
+     * Get authorized reaction users by circle
+     *
+     * @param PUser $user
+     * @return PropelCollection[PCircle]
+     */
+    public function getAuthorizedReactionUsersByCircle(PCircle $circle)
+    {
+        // $this->logger->info('*** getAuthorizedReactionUsersByCircle');
+        // $this->logger->info('$circle = '.print_r($circle, true));
+
+        if (!$circle) {
+            return null;
+        }
+
+        $users = PUserQuery::create()
+            ->usePUInPCQuery()
+                ->filterByPCircleId($circle->getId())
+                ->filterByIsAuthorizedReaction(true)
+            ->endUse()
+            ->find();
+
+        return $users;
+    }
+
     /* ######################################################################################################## */
     /*                                              TOPIC FUNCTIONS                                             */
     /* ######################################################################################################## */
@@ -292,12 +321,86 @@ class CircleService
      * @param int $circleId
      * @return \PropelCollection
      */
-    public function filterUsersNotInCircle(\PropelCollection $users, PCircle $circle) {
+    public function filterUsersNotInCircle(\PropelCollection $users, PCircle $circle)
+    {
         foreach ($users as $key => $user) {
             if (!$this->isUserMemberOfCircle($circle, $user)) {
                 $users->remove($key);
             }
         }
         return $users;
+    }
+
+    /**
+     * Count number of PDDebate in a topic
+     *
+     * @param PCTopic $topic
+     * @return int
+     */
+    public function countDebatesByTopic(PCTopic $topic)
+    {
+        if (!$topic) {
+            return null;
+        }
+
+        $nb = PDDebateQuery::create()
+            ->online()
+            ->filterByPCTopicId($topic->getId())
+            ->count();
+
+        return $nb;
+    }
+
+    /**
+     * Count number of PDReaction in a topic
+     *
+     * @param PCTopic $topic
+     * @return int
+     */
+    public function countReactionsByTopic(PCTopic $topic)
+    {
+        if (!$topic) {
+            return null;
+        }
+
+        $nb = PDReactionQuery::create()
+            ->online()
+            ->filterByPCTopicId($topic->getId())
+            ->count();
+
+        return $nb;
+    }
+
+    /**
+     * Count number of PDDComment & PDRComment in a topic
+     *
+     * @param PCTopic $topic
+     * @return int
+     */
+    public function countCommentsByTopic(PCTopic $topic)
+    {
+        if (!$topic) {
+            return null;
+        }
+
+        $nbDebateComments = PDDCommentQuery::create()
+            ->online()
+            ->usePDDebateQuery()
+                ->online()
+                ->filterByPCTopicId($topic->getId())
+            ->endUse()
+            ->count();
+
+        $nbReactionComments = PDRCommentQuery::create()
+            ->online()
+            ->usePDReactionQuery()
+                ->online()
+                ->filterByPCTopicId($topic->getId())
+            ->endUse()
+            ->count();
+
+        $nb = $nbDebateComments + $nbReactionComments;
+
+        return $nb;
     }
 }

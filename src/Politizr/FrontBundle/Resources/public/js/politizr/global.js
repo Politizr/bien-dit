@@ -39,20 +39,6 @@ $("body").on("click", "[action='closeModal']", function() {
     $('#modal').hide();
 });
 
-// main menu
-$("body").on("mousedown touchstart", function(e) {
-    var container = $("body.css700 #headerMenu, #menu, [action='toggleMenu']");
-    if (!container.is(e.target) // if the target of the click isn't the container...
-        && container.has(e.target).length === 0) // ... nor a descendant of the container
-    {
-        $('#menu, body.user.css700 #headerMenu').hide();      
-    }
-});
-
-$("body").on("click", "[action='toggleMenu']", function() {
-    $('#menu, body.css700 #headerMenu').toggle();
-});
-
 // Scroll haut de page
 $("body").on("click", "[action='goUp']", function() {
     stickySidebar(true);
