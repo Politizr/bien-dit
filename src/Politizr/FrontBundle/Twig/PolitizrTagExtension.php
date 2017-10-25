@@ -7,6 +7,7 @@ use Politizr\FrontBundle\Lib\Tag;
 use Politizr\Model\PTag;
 
 use Politizr\Model\PTagQuery;
+use Politizr\Model\PEOperationQuery;
 
 use Politizr\Exception\InconsistentDataException;
 
@@ -79,6 +80,11 @@ class PolitizrTagExtension extends \Twig_Extension
                 'tagTypeClass',
                 array($this, 'tagTypeClass'),
                 array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
+                'tagOperation',
+                array($this, 'tagOperation'),
+                array('is_safe' => array('html'), 'needs_environment' => true)
             ),
         );
     }
@@ -163,7 +169,7 @@ class PolitizrTagExtension extends \Twig_Extension
     /**
      * Follow / unfollow tag
      *
-     * @param PDDebate $tag
+     * @param PTag $tag
      * @return string
      */
     public function linkSubscribeTag(\Twig_Environment $env, PTag $tag)
@@ -222,6 +228,41 @@ class PolitizrTagExtension extends \Twig_Extension
         return $tagTypeClass;
 
     }
+
+    /**
+     * Private operation linked to operation
+     * 
+     * @param PTag $tag
+     * @return string
+     */
+    public function tagOperation(\Twig_Environment $env, PTag $tag)
+    {
+        // $this->logger->info('*** tagOperation');
+        // $this->logger->info('$tag = '.print_r($tag, true));
+
+        // get op for user
+        $operation = PEOperationQuery::create()
+            ->filterByOnline(true)
+            ->usePEOPresetPTQuery()
+                ->filterByPTagId($tag->getId())
+            ->endUse()
+            ->findOne();
+
+        if (!$operation) {
+            return null;
+        }
+
+        // Construction du rendu du tag            
+        $html = $env->render(
+            'PolitizrFrontBundle:User:_opBanner.html.twig',
+            array(
+                'operation' => $operation,
+            )
+        );
+
+        return $html;
+    }
+
 
     /* ######################################################################################################## */
     /*                                              FONCTIONS                                                   */

@@ -705,16 +705,29 @@ class PolitizrUserExtension extends \Twig_Extension
             return true;
         }
 
-        // owner of private tag can react
-        if ($document->isWithPrivateTag()) {
-            $tags = $document->getTags(TagConstants::TAG_TYPE_PRIVATE);
-            foreach ($tags as $tag) {
-                $tagOwner = $tag->getPOwner();
-                if ($tagOwner && $tagOwner->getId() == $user->getId()) {
+        // operation?
+        $operation = $document->getPEOperation();
+        if ($operation) {
+            $userIdOwner = $operation->getPUserId();
+            if ($userIdOwner) {
+                if ($userIdOwner == $user->getId()) {
                     return true;
                 }
+            } elseif ($this->securityAuthorizationChecker->isGranted('ROLE_ELECTED')) {
+                return true;
             }
         }
+
+        // owner of private tag can react
+        // if ($document->isWithPrivateTag()) {
+        //     $tags = $document->getTags(TagConstants::TAG_TYPE_PRIVATE);
+        //     foreach ($tags as $tag) {
+        //         $tagOwner = $tag->getPOwner();
+        //         if ($tagOwner && $tagOwner->getId() == $user->getId()) {
+        //             return true;
+        //         }
+        //     }
+        // }
 
         // author of the debate can react
         // + min reputation to reach

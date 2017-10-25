@@ -1110,6 +1110,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
     /**
      * Document footer explanations
+     * @todo check logical code duplicate w. PolitizrUserExtension->isAuthorizedToReact
      *
      * @param PDocumentInterface $document
      * @return string
@@ -1126,8 +1127,9 @@ class PolitizrDocumentExtension extends \Twig_Extension
         }
 
         $qualified = false;
-        $private = false;
-        $privateOwner = false;
+        $operation = false;
+        $operationWithOwner = false;
+        $operationOwner = false;
         $owner = false;
         if ($user) {
             // qualified?
@@ -1135,15 +1137,19 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 $qualified = true;
             }
 
-            // private & privateOwner?
-            if ($document->isWithPrivateTag()) {
-                $private = true;
-                $tags = $document->getTags(TagConstants::TAG_TYPE_PRIVATE);
-                foreach ($tags as $tag) {
-                    $tagOwner = $tag->getPOwner();
-                    if ($tagOwner && $tagOwner->getId() == $user->getId()) {
-                        $privateOwner = true;
+            // operation?
+            $operation = $document->getPEOperation();
+            if ($operation) {
+                $userIdOwner = $operation->getPUserId();
+                if ($userIdOwner) {
+                    $operationWithOwner = true;
+                    if ($userIdOwner == $user->getId()) {
+                        $operationOwner = true;
+                    } else {
+                        $operationOwner = false;
                     }
+                } else {
+                    $operationWithOwner = false;
                 }
             }
 
@@ -1160,8 +1166,9 @@ class PolitizrDocumentExtension extends \Twig_Extension
             array(
                 'document' => $document,
                 'qualified' => $qualified,
-                'private' => $private,
-                'privateOwner' => $privateOwner,
+                'operation' => $operation,
+                'operationWithOwner' => $operationWithOwner,
+                'operationOwner' => $operationOwner,
                 'owner' => $owner,
             )
         );
