@@ -1118,6 +1118,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
     /**
      * Document footer explanations
+     * @todo check logical code duplicate w. PolitizrUserExtension->isAuthorizedToReact
      *
      * @param PDocumentInterface $document
      * @return string

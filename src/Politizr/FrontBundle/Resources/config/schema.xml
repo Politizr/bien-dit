@@ -72,7 +72,7 @@
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="uuid" type="varchar" size="50" />
-        <column name="p_user_id" type="integer" required="true" />
+        <column name="p_user_id" type="integer" required="false" />
         
         <column name="title" type="varchar" size="150" />
         <column name="description" type="longvarchar" />
@@ -83,7 +83,7 @@
         <column name="online" type="boolean" />
         <column name="timeline" type="boolean" />
 
-        <foreign-key foreignTable="p_user" onDelete="CASCADE" onUpdate="CASCADE">
+        <foreign-key foreignTable="p_user" onDelete="CASCADE" onUpdate="SETNULL">
             <reference local="p_user_id" foreign="id" />
         </foreign-key>        
 

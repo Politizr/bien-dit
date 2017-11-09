@@ -692,7 +692,7 @@ class PolitizrUserExtension extends \Twig_Extension
         // $this->logger->info('$user = '.print_r($user, true));
         // $this->logger->info('$document = '.print_r($document, true));
 
-        return $this->userService->isAuthorizedToReact($user, $document);
+        return $this->userService->isAuthorizedToReact($user, $document);        
     }
 
     /**

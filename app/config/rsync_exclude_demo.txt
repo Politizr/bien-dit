@@ -27,7 +27,6 @@ reload-bdd.sh
 /app/config/parameters.yml.re7
 /app/config/config_dev.yml
 /app/config/config_re7.yml
-/app/config/config_demo.yml
 /app/config/config_test.yml
 /app/config/rsync_exclude_re7
 

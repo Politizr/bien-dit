@@ -296,24 +296,23 @@ class UserService
                 }
             }
 
-            // owner of private tag can react
-            if ($document->isWithPrivateTag()) {
-                $tags = $document->getTags(TagConstants::TAG_TYPE_PRIVATE);
-                foreach ($tags as $tag) {
-                    $tagOwner = $tag->getPOwner();
-                    if ($tagOwner && $tagOwner->getId() == $user->getId()) {
-                        if ($document->isDebateOwner($user->getId())) {
-                            if ($reason) {
-                                return DocumentConstants::REASON_OWNER_OPERATION;
-                            } else {
-                                return true;
-                            }
-                        }
+            // operation?
+            $operation = $document->getDebate()->getPEOperation();
+            if ($operation) {
+                $userIdOwner = $operation->getPUserId();
+                if ($userIdOwner) {
+                    if ($userIdOwner == $user->getId()) {
                         if ($reason) {
-                            return DocumentConstants::REASON_USER_OPERATION;
+                            return DocumentConstants::REASON_OWNER_OPERATION;
                         } else {
                             return true;
                         }
+                    }
+                } elseif ($this->securityAuthorizationChecker->isGranted('ROLE_ELECTED')) {
+                    if ($reason) {
+                        return DocumentConstants::REASON_USER_ELECTED;
+                    } else {
+                        return true;
                     }
                 }
             }
