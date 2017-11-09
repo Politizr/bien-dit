@@ -27,6 +27,7 @@ use Politizr\Model\PDReaction;
  * @method PCTopicQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method PCTopicQuery orderBySummary($order = Criteria::ASC) Order by the summary column
  * @method PCTopicQuery orderByDescription($order = Criteria::ASC) Order by the description column
+ * @method PCTopicQuery orderByFileName($order = Criteria::ASC) Order by the file_name column
  * @method PCTopicQuery orderByOnline($order = Criteria::ASC) Order by the online column
  * @method PCTopicQuery orderByForceGeolocType($order = Criteria::ASC) Order by the force_geoloc_type column
  * @method PCTopicQuery orderByForceGeolocId($order = Criteria::ASC) Order by the force_geoloc_id column
@@ -40,6 +41,7 @@ use Politizr\Model\PDReaction;
  * @method PCTopicQuery groupByTitle() Group by the title column
  * @method PCTopicQuery groupBySummary() Group by the summary column
  * @method PCTopicQuery groupByDescription() Group by the description column
+ * @method PCTopicQuery groupByFileName() Group by the file_name column
  * @method PCTopicQuery groupByOnline() Group by the online column
  * @method PCTopicQuery groupByForceGeolocType() Group by the force_geoloc_type column
  * @method PCTopicQuery groupByForceGeolocId() Group by the force_geoloc_id column
@@ -71,6 +73,7 @@ use Politizr\Model\PDReaction;
  * @method PCTopic findOneByTitle(string $title) Return the first PCTopic filtered by the title column
  * @method PCTopic findOneBySummary(string $summary) Return the first PCTopic filtered by the summary column
  * @method PCTopic findOneByDescription(string $description) Return the first PCTopic filtered by the description column
+ * @method PCTopic findOneByFileName(string $file_name) Return the first PCTopic filtered by the file_name column
  * @method PCTopic findOneByOnline(boolean $online) Return the first PCTopic filtered by the online column
  * @method PCTopic findOneByForceGeolocType(string $force_geoloc_type) Return the first PCTopic filtered by the force_geoloc_type column
  * @method PCTopic findOneByForceGeolocId(int $force_geoloc_id) Return the first PCTopic filtered by the force_geoloc_id column
@@ -84,6 +87,7 @@ use Politizr\Model\PDReaction;
  * @method array findByTitle(string $title) Return PCTopic objects filtered by the title column
  * @method array findBySummary(string $summary) Return PCTopic objects filtered by the summary column
  * @method array findByDescription(string $description) Return PCTopic objects filtered by the description column
+ * @method array findByFileName(string $file_name) Return PCTopic objects filtered by the file_name column
  * @method array findByOnline(boolean $online) Return PCTopic objects filtered by the online column
  * @method array findByForceGeolocType(string $force_geoloc_type) Return PCTopic objects filtered by the force_geoloc_type column
  * @method array findByForceGeolocId(int $force_geoloc_id) Return PCTopic objects filtered by the force_geoloc_id column
@@ -201,7 +205,7 @@ abstract class BasePCTopicQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `p_circle_id`, `title`, `summary`, `description`, `online`, `force_geoloc_type`, `force_geoloc_id`, `created_at`, `updated_at`, `slug` FROM `p_c_topic` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_circle_id`, `title`, `summary`, `description`, `file_name`, `online`, `force_geoloc_type`, `force_geoloc_id`, `created_at`, `updated_at`, `slug` FROM `p_c_topic` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -490,6 +494,35 @@ abstract class BasePCTopicQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PCTopicPeer::DESCRIPTION, $description, $comparison);
+    }
+
+    /**
+     * Filter the query on the file_name column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByFileName('fooValue');   // WHERE file_name = 'fooValue'
+     * $query->filterByFileName('%fooValue%'); // WHERE file_name LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $fileName The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PCTopicQuery The current query, for fluid interface
+     */
+    public function filterByFileName($fileName = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($fileName)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $fileName)) {
+                $fileName = str_replace('*', '%', $fileName);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PCTopicPeer::FILE_NAME, $fileName, $comparison);
     }
 
     /**

@@ -1,5 +1,4 @@
 {# beta #}
-{# beta #}
 {% set layout = 'PolitizrFrontBundle::layoutPublic.html.twig' %}
 {% if (isGrantedE() or isGrantedC()) %}
     {% set layout = 'PolitizrFrontBundle::layoutConnected.html.twig' %}
@@ -21,42 +20,50 @@
 
 {% block bodyClass %} class="grp"{% endblock %}
 
-{% block headerMsg %}
-    <div id="grpBreadcrumbs">
-        <a href="{{ path('DetailCircle', { 'slug': circle.slug }) }}">{{ circle.title }}</a> - <a href="{{ path('TopicDetail', { 'circleSlug': circle.slug, 'slug': topic.slug }) }}">{{ topic.title }}</a>
-    </div>
-{% endblock headerMsg %}
-
-
-{% block content %}
-    <div id="content">
-        <div>
-            <h1>{{ topic.title }}</h1>
-            <div>{{ topic.summary | purify  }}</div>
-            <div>{{ topic.description | purify  }}</div>
-            <a href="{{ path('DebateDraftNew'~profileSuffix(), { topic: topic.uuid }) }}">Je m'exprime!</a>
-        </div>
-        <div id="documentListing" uuid="{{ topic.uuid }}" class="searchResults withLoaderInside">
-            {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
-            <div class="listTop"></div>
+{% block main %}
+    <div class="mainClass">
+        <div class="center">
+            {{ circle | circleMenuTop }}
+            {{ circle | circleBreadcrumb }}
         </div>
     </div>
-{% endblock content %}
+    {{ topic | topicBriefing }}
 
-{% block sidebarContent %}
-    <div class="sidebarSearch">
-        <div class="sidebarSearchFilters withLoaderInside">
-            {% include 'PolitizrFrontBundle:Topic\\Filters:_publicationsCategory.html.twig' %}
+    <div class="mainClass">
+        <div class="center">        
+            <div class="listHeaderByTag">
+                <div class="listHeader">
+                    <h5>[ {{ circle.title }} ] Les questions, avis, remarques ou opinions abordants la thématique:</h5>
+                    <h1>{{ topic.title }}</h1>
+                </div>
+            </div>
+                        
+            <div id="content">                                  
+                <div id="documentListing" uuid="{{ topic.uuid }}" class="searchResults withLoaderInside">
+                    {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+                    <div class="listTop"></div>
+                </div>
+            </div>
+
+            <div id="sidebar">
+                <div class="sidebarSearch">
+                    <div class="sidebarSearchFilters withLoaderInside">
+                        {% include 'PolitizrFrontBundle:Topic\\Filters:_publicationsCategory.html.twig' %}
+                    </div>
+                </div>
+                {{ topic | topicQuestion }}
+                {% include 'PolitizrFrontBundle:Navigation\\Helper:_circleHowTo.html.twig' %}
+            </div>
         </div>
     </div>
-{% endblock sidebarContent %}
+{% endblock main %}
 
 {% block javascriptFooter %}
     {{ parent() }}
 
     {% if (app.environment == 'prod') %}
         <script type="text/javascript">
-            mixpanel.track("Les publications (recherche)");
+            mixpanel.track("Les discussions {{ topic.title }} du groupe {{ circle.title }}");
         </script>
     {% endif %}
 

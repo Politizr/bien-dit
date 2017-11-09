@@ -10,6 +10,7 @@
             <div id="groupListing">
                 {% for circle in circles %}
                     <div>
+                        <h1>{{ circle.PCOwner }}</h1>
                         <h1>{{ circle.title }}</h1>
                         <div class="circleActions withLoaderInside">
                             {{ circle | circleActions }}

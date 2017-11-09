@@ -37,6 +37,8 @@
 {% endblock %}
 
 {% block preMain %}
+    {{ reaction | circleContext }}
+
     {% include 'PolitizrFrontBundle:Reaction:_menu.html.twig' with {
         'debate': debate,
         'reaction': reaction,
@@ -50,7 +52,6 @@
 {% block headerMsg %}
     {{ parent() }}
 
-    {{ reaction | circleContext }}
     {{ reaction | documentOperation }}
     {{ reaction | boostQuestion }}
 {% endblock %}

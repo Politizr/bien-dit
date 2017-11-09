@@ -29,10 +29,13 @@
     {% if debate.PCTopicId %} class="grp"{% endif %}
 {% endblock %}
 
+{% block preMain %}
+    {{ debate | circleContext }}
+{% endblock %}
+
 {% block headerMsg %}
     {{ parent() }}
-
-    {{ debate | circleContext }}
+    
     {{ debate | documentOperation }}
     {{ debate | boostQuestion }}
 {% endblock %}

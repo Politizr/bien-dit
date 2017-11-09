@@ -10,6 +10,7 @@ use \Propel;
 use \PropelException;
 use \PropelPDO;
 use Politizr\Model\PCGroupLCPeer;
+use Politizr\Model\PCOwnerPeer;
 use Politizr\Model\PCTopicPeer;
 use Politizr\Model\PCircle;
 use Politizr\Model\PCirclePeer;
@@ -32,19 +33,22 @@ abstract class BasePCirclePeer
     const TM_CLASS = 'Politizr\\Model\\map\\PCircleTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 11;
+    const NUM_COLUMNS = 13;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 11;
+    const NUM_HYDRATE_COLUMNS = 13;
 
     /** the column name for the id field */
     const ID = 'p_circle.id';
 
     /** the column name for the uuid field */
     const UUID = 'p_circle.uuid';
+
+    /** the column name for the p_c_owner_id field */
+    const P_C_OWNER_ID = 'p_circle.p_c_owner_id';
 
     /** the column name for the title field */
     const TITLE = 'p_circle.title';
@@ -54,6 +58,9 @@ abstract class BasePCirclePeer
 
     /** the column name for the description field */
     const DESCRIPTION = 'p_circle.description';
+
+    /** the column name for the logo_file_name field */
+    const LOGO_FILE_NAME = 'p_circle.logo_file_name';
 
     /** the column name for the url field */
     const URL = 'p_circle.url';
@@ -92,12 +99,12 @@ abstract class BasePCirclePeer
      * e.g. PCirclePeer::$fieldNames[PCirclePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'Title', 'Summary', 'Description', 'Url', 'Online', 'OnlyElected', 'CreatedAt', 'UpdatedAt', 'Slug', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'title', 'summary', 'description', 'url', 'online', 'onlyElected', 'createdAt', 'updatedAt', 'slug', ),
-        BasePeer::TYPE_COLNAME => array (PCirclePeer::ID, PCirclePeer::UUID, PCirclePeer::TITLE, PCirclePeer::SUMMARY, PCirclePeer::DESCRIPTION, PCirclePeer::URL, PCirclePeer::ONLINE, PCirclePeer::ONLY_ELECTED, PCirclePeer::CREATED_AT, PCirclePeer::UPDATED_AT, PCirclePeer::SLUG, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'TITLE', 'SUMMARY', 'DESCRIPTION', 'URL', 'ONLINE', 'ONLY_ELECTED', 'CREATED_AT', 'UPDATED_AT', 'SLUG', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'title', 'summary', 'description', 'url', 'online', 'only_elected', 'created_at', 'updated_at', 'slug', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'PCOwnerId', 'Title', 'Summary', 'Description', 'LogoFileName', 'Url', 'Online', 'OnlyElected', 'CreatedAt', 'UpdatedAt', 'Slug', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'pCOwnerId', 'title', 'summary', 'description', 'logoFileName', 'url', 'online', 'onlyElected', 'createdAt', 'updatedAt', 'slug', ),
+        BasePeer::TYPE_COLNAME => array (PCirclePeer::ID, PCirclePeer::UUID, PCirclePeer::P_C_OWNER_ID, PCirclePeer::TITLE, PCirclePeer::SUMMARY, PCirclePeer::DESCRIPTION, PCirclePeer::LOGO_FILE_NAME, PCirclePeer::URL, PCirclePeer::ONLINE, PCirclePeer::ONLY_ELECTED, PCirclePeer::CREATED_AT, PCirclePeer::UPDATED_AT, PCirclePeer::SLUG, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'P_C_OWNER_ID', 'TITLE', 'SUMMARY', 'DESCRIPTION', 'LOGO_FILE_NAME', 'URL', 'ONLINE', 'ONLY_ELECTED', 'CREATED_AT', 'UPDATED_AT', 'SLUG', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'p_c_owner_id', 'title', 'summary', 'description', 'logo_file_name', 'url', 'online', 'only_elected', 'created_at', 'updated_at', 'slug', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
     );
 
     /**
@@ -107,12 +114,12 @@ abstract class BasePCirclePeer
      * e.g. PCirclePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'Title' => 2, 'Summary' => 3, 'Description' => 4, 'Url' => 5, 'Online' => 6, 'OnlyElected' => 7, 'CreatedAt' => 8, 'UpdatedAt' => 9, 'Slug' => 10, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'title' => 2, 'summary' => 3, 'description' => 4, 'url' => 5, 'online' => 6, 'onlyElected' => 7, 'createdAt' => 8, 'updatedAt' => 9, 'slug' => 10, ),
-        BasePeer::TYPE_COLNAME => array (PCirclePeer::ID => 0, PCirclePeer::UUID => 1, PCirclePeer::TITLE => 2, PCirclePeer::SUMMARY => 3, PCirclePeer::DESCRIPTION => 4, PCirclePeer::URL => 5, PCirclePeer::ONLINE => 6, PCirclePeer::ONLY_ELECTED => 7, PCirclePeer::CREATED_AT => 8, PCirclePeer::UPDATED_AT => 9, PCirclePeer::SLUG => 10, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'TITLE' => 2, 'SUMMARY' => 3, 'DESCRIPTION' => 4, 'URL' => 5, 'ONLINE' => 6, 'ONLY_ELECTED' => 7, 'CREATED_AT' => 8, 'UPDATED_AT' => 9, 'SLUG' => 10, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'title' => 2, 'summary' => 3, 'description' => 4, 'url' => 5, 'online' => 6, 'only_elected' => 7, 'created_at' => 8, 'updated_at' => 9, 'slug' => 10, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'PCOwnerId' => 2, 'Title' => 3, 'Summary' => 4, 'Description' => 5, 'LogoFileName' => 6, 'Url' => 7, 'Online' => 8, 'OnlyElected' => 9, 'CreatedAt' => 10, 'UpdatedAt' => 11, 'Slug' => 12, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'pCOwnerId' => 2, 'title' => 3, 'summary' => 4, 'description' => 5, 'logoFileName' => 6, 'url' => 7, 'online' => 8, 'onlyElected' => 9, 'createdAt' => 10, 'updatedAt' => 11, 'slug' => 12, ),
+        BasePeer::TYPE_COLNAME => array (PCirclePeer::ID => 0, PCirclePeer::UUID => 1, PCirclePeer::P_C_OWNER_ID => 2, PCirclePeer::TITLE => 3, PCirclePeer::SUMMARY => 4, PCirclePeer::DESCRIPTION => 5, PCirclePeer::LOGO_FILE_NAME => 6, PCirclePeer::URL => 7, PCirclePeer::ONLINE => 8, PCirclePeer::ONLY_ELECTED => 9, PCirclePeer::CREATED_AT => 10, PCirclePeer::UPDATED_AT => 11, PCirclePeer::SLUG => 12, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'P_C_OWNER_ID' => 2, 'TITLE' => 3, 'SUMMARY' => 4, 'DESCRIPTION' => 5, 'LOGO_FILE_NAME' => 6, 'URL' => 7, 'ONLINE' => 8, 'ONLY_ELECTED' => 9, 'CREATED_AT' => 10, 'UPDATED_AT' => 11, 'SLUG' => 12, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'p_c_owner_id' => 2, 'title' => 3, 'summary' => 4, 'description' => 5, 'logo_file_name' => 6, 'url' => 7, 'online' => 8, 'only_elected' => 9, 'created_at' => 10, 'updated_at' => 11, 'slug' => 12, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
     );
 
     /**
@@ -188,9 +195,11 @@ abstract class BasePCirclePeer
         if (null === $alias) {
             $criteria->addSelectColumn(PCirclePeer::ID);
             $criteria->addSelectColumn(PCirclePeer::UUID);
+            $criteria->addSelectColumn(PCirclePeer::P_C_OWNER_ID);
             $criteria->addSelectColumn(PCirclePeer::TITLE);
             $criteria->addSelectColumn(PCirclePeer::SUMMARY);
             $criteria->addSelectColumn(PCirclePeer::DESCRIPTION);
+            $criteria->addSelectColumn(PCirclePeer::LOGO_FILE_NAME);
             $criteria->addSelectColumn(PCirclePeer::URL);
             $criteria->addSelectColumn(PCirclePeer::ONLINE);
             $criteria->addSelectColumn(PCirclePeer::ONLY_ELECTED);
@@ -200,9 +209,11 @@ abstract class BasePCirclePeer
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.uuid');
+            $criteria->addSelectColumn($alias . '.p_c_owner_id');
             $criteria->addSelectColumn($alias . '.title');
             $criteria->addSelectColumn($alias . '.summary');
             $criteria->addSelectColumn($alias . '.description');
+            $criteria->addSelectColumn($alias . '.logo_file_name');
             $criteria->addSelectColumn($alias . '.url');
             $criteria->addSelectColumn($alias . '.online');
             $criteria->addSelectColumn($alias . '.only_elected');
@@ -516,6 +527,244 @@ abstract class BasePCirclePeer
         }
 
         return array($obj, $col);
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining the related PCOwner table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinPCOwner(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(PCirclePeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            PCirclePeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+
+        // Set the correct dbName
+        $criteria->setDbName(PCirclePeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(PCirclePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(PCirclePeer::P_C_OWNER_ID, PCOwnerPeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
+     * Selects a collection of PCircle objects pre-filled with their PCOwner objects.
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of PCircle objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinPCOwner(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(PCirclePeer::DATABASE_NAME);
+        }
+
+        PCirclePeer::addSelectColumns($criteria);
+        $startcol = PCirclePeer::NUM_HYDRATE_COLUMNS;
+        PCOwnerPeer::addSelectColumns($criteria);
+
+        $criteria->addJoin(PCirclePeer::P_C_OWNER_ID, PCOwnerPeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = PCirclePeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PCirclePeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+
+                $cls = PCirclePeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                PCirclePeer::addInstanceToPool($obj1, $key1);
+            } // if $obj1 already loaded
+
+            $key2 = PCOwnerPeer::getPrimaryKeyHashFromRow($row, $startcol);
+            if ($key2 !== null) {
+                $obj2 = PCOwnerPeer::getInstanceFromPool($key2);
+                if (!$obj2) {
+
+                    $cls = PCOwnerPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol);
+                    PCOwnerPeer::addInstanceToPool($obj2, $key2);
+                } // if obj2 already loaded
+
+                // Add the $obj1 (PCircle) to $obj2 (PCOwner)
+                $obj2->addPCircle($obj1);
+
+            } // if joined row was not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining all related tables
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinAll(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(PCirclePeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            PCirclePeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+
+        // Set the correct dbName
+        $criteria->setDbName(PCirclePeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(PCirclePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(PCirclePeer::P_C_OWNER_ID, PCOwnerPeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+    /**
+     * Selects a collection of PCircle objects pre-filled with all related objects.
+     *
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of PCircle objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinAll(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(PCirclePeer::DATABASE_NAME);
+        }
+
+        PCirclePeer::addSelectColumns($criteria);
+        $startcol2 = PCirclePeer::NUM_HYDRATE_COLUMNS;
+
+        PCOwnerPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + PCOwnerPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(PCirclePeer::P_C_OWNER_ID, PCOwnerPeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = PCirclePeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PCirclePeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+                $cls = PCirclePeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                PCirclePeer::addInstanceToPool($obj1, $key1);
+            } // if obj1 already loaded
+
+            // Add objects for joined PCOwner rows
+
+            $key2 = PCOwnerPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+            if ($key2 !== null) {
+                $obj2 = PCOwnerPeer::getInstanceFromPool($key2);
+                if (!$obj2) {
+
+                    $cls = PCOwnerPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol2);
+                    PCOwnerPeer::addInstanceToPool($obj2, $key2);
+                } // if obj2 loaded
+
+                // Add the $obj1 (PCircle) to the collection in $obj2 (PCOwner)
+                $obj2->addPCircle($obj1);
+            } // if joined row not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
     }
 
     /**

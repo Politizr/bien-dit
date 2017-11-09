@@ -14,6 +14,7 @@ use \PropelException;
 use \PropelObjectCollection;
 use \PropelPDO;
 use Politizr\Model\PCGroupLC;
+use Politizr\Model\PCOwner;
 use Politizr\Model\PCTopic;
 use Politizr\Model\PCircle;
 use Politizr\Model\PCirclePeer;
@@ -25,9 +26,11 @@ use Politizr\Model\PUser;
 /**
  * @method PCircleQuery orderById($order = Criteria::ASC) Order by the id column
  * @method PCircleQuery orderByUuid($order = Criteria::ASC) Order by the uuid column
+ * @method PCircleQuery orderByPCOwnerId($order = Criteria::ASC) Order by the p_c_owner_id column
  * @method PCircleQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method PCircleQuery orderBySummary($order = Criteria::ASC) Order by the summary column
  * @method PCircleQuery orderByDescription($order = Criteria::ASC) Order by the description column
+ * @method PCircleQuery orderByLogoFileName($order = Criteria::ASC) Order by the logo_file_name column
  * @method PCircleQuery orderByUrl($order = Criteria::ASC) Order by the url column
  * @method PCircleQuery orderByOnline($order = Criteria::ASC) Order by the online column
  * @method PCircleQuery orderByOnlyElected($order = Criteria::ASC) Order by the only_elected column
@@ -37,9 +40,11 @@ use Politizr\Model\PUser;
  *
  * @method PCircleQuery groupById() Group by the id column
  * @method PCircleQuery groupByUuid() Group by the uuid column
+ * @method PCircleQuery groupByPCOwnerId() Group by the p_c_owner_id column
  * @method PCircleQuery groupByTitle() Group by the title column
  * @method PCircleQuery groupBySummary() Group by the summary column
  * @method PCircleQuery groupByDescription() Group by the description column
+ * @method PCircleQuery groupByLogoFileName() Group by the logo_file_name column
  * @method PCircleQuery groupByUrl() Group by the url column
  * @method PCircleQuery groupByOnline() Group by the online column
  * @method PCircleQuery groupByOnlyElected() Group by the only_elected column
@@ -50,6 +55,10 @@ use Politizr\Model\PUser;
  * @method PCircleQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method PCircleQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method PCircleQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ *
+ * @method PCircleQuery leftJoinPCOwner($relationAlias = null) Adds a LEFT JOIN clause to the query using the PCOwner relation
+ * @method PCircleQuery rightJoinPCOwner($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PCOwner relation
+ * @method PCircleQuery innerJoinPCOwner($relationAlias = null) Adds a INNER JOIN clause to the query using the PCOwner relation
  *
  * @method PCircleQuery leftJoinPCTopic($relationAlias = null) Adds a LEFT JOIN clause to the query using the PCTopic relation
  * @method PCircleQuery rightJoinPCTopic($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PCTopic relation
@@ -67,9 +76,11 @@ use Politizr\Model\PUser;
  * @method PCircle findOneOrCreate(PropelPDO $con = null) Return the first PCircle matching the query, or a new PCircle object populated from the query conditions when no match is found
  *
  * @method PCircle findOneByUuid(string $uuid) Return the first PCircle filtered by the uuid column
+ * @method PCircle findOneByPCOwnerId(int $p_c_owner_id) Return the first PCircle filtered by the p_c_owner_id column
  * @method PCircle findOneByTitle(string $title) Return the first PCircle filtered by the title column
  * @method PCircle findOneBySummary(string $summary) Return the first PCircle filtered by the summary column
  * @method PCircle findOneByDescription(string $description) Return the first PCircle filtered by the description column
+ * @method PCircle findOneByLogoFileName(string $logo_file_name) Return the first PCircle filtered by the logo_file_name column
  * @method PCircle findOneByUrl(string $url) Return the first PCircle filtered by the url column
  * @method PCircle findOneByOnline(boolean $online) Return the first PCircle filtered by the online column
  * @method PCircle findOneByOnlyElected(boolean $only_elected) Return the first PCircle filtered by the only_elected column
@@ -79,9 +90,11 @@ use Politizr\Model\PUser;
  *
  * @method array findById(int $id) Return PCircle objects filtered by the id column
  * @method array findByUuid(string $uuid) Return PCircle objects filtered by the uuid column
+ * @method array findByPCOwnerId(int $p_c_owner_id) Return PCircle objects filtered by the p_c_owner_id column
  * @method array findByTitle(string $title) Return PCircle objects filtered by the title column
  * @method array findBySummary(string $summary) Return PCircle objects filtered by the summary column
  * @method array findByDescription(string $description) Return PCircle objects filtered by the description column
+ * @method array findByLogoFileName(string $logo_file_name) Return PCircle objects filtered by the logo_file_name column
  * @method array findByUrl(string $url) Return PCircle objects filtered by the url column
  * @method array findByOnline(boolean $online) Return PCircle objects filtered by the online column
  * @method array findByOnlyElected(boolean $only_elected) Return PCircle objects filtered by the only_elected column
@@ -199,7 +212,7 @@ abstract class BasePCircleQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `title`, `summary`, `description`, `url`, `online`, `only_elected`, `created_at`, `updated_at`, `slug` FROM `p_circle` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_c_owner_id`, `title`, `summary`, `description`, `logo_file_name`, `url`, `online`, `only_elected`, `created_at`, `updated_at`, `slug` FROM `p_circle` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -360,6 +373,50 @@ abstract class BasePCircleQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the p_c_owner_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPCOwnerId(1234); // WHERE p_c_owner_id = 1234
+     * $query->filterByPCOwnerId(array(12, 34)); // WHERE p_c_owner_id IN (12, 34)
+     * $query->filterByPCOwnerId(array('min' => 12)); // WHERE p_c_owner_id >= 12
+     * $query->filterByPCOwnerId(array('max' => 12)); // WHERE p_c_owner_id <= 12
+     * </code>
+     *
+     * @see       filterByPCOwner()
+     *
+     * @param     mixed $pCOwnerId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PCircleQuery The current query, for fluid interface
+     */
+    public function filterByPCOwnerId($pCOwnerId = null, $comparison = null)
+    {
+        if (is_array($pCOwnerId)) {
+            $useMinMax = false;
+            if (isset($pCOwnerId['min'])) {
+                $this->addUsingAlias(PCirclePeer::P_C_OWNER_ID, $pCOwnerId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($pCOwnerId['max'])) {
+                $this->addUsingAlias(PCirclePeer::P_C_OWNER_ID, $pCOwnerId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PCirclePeer::P_C_OWNER_ID, $pCOwnerId, $comparison);
+    }
+
+    /**
      * Filter the query on the title column
      *
      * Example usage:
@@ -444,6 +501,35 @@ abstract class BasePCircleQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PCirclePeer::DESCRIPTION, $description, $comparison);
+    }
+
+    /**
+     * Filter the query on the logo_file_name column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByLogoFileName('fooValue');   // WHERE logo_file_name = 'fooValue'
+     * $query->filterByLogoFileName('%fooValue%'); // WHERE logo_file_name LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $logoFileName The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PCircleQuery The current query, for fluid interface
+     */
+    public function filterByLogoFileName($logoFileName = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($logoFileName)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $logoFileName)) {
+                $logoFileName = str_replace('*', '%', $logoFileName);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PCirclePeer::LOGO_FILE_NAME, $logoFileName, $comparison);
     }
 
     /**
@@ -642,6 +728,82 @@ abstract class BasePCircleQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PCirclePeer::SLUG, $slug, $comparison);
+    }
+
+    /**
+     * Filter the query by a related PCOwner object
+     *
+     * @param   PCOwner|PropelObjectCollection $pCOwner The related object(s) to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PCircleQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPCOwner($pCOwner, $comparison = null)
+    {
+        if ($pCOwner instanceof PCOwner) {
+            return $this
+                ->addUsingAlias(PCirclePeer::P_C_OWNER_ID, $pCOwner->getId(), $comparison);
+        } elseif ($pCOwner instanceof PropelObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(PCirclePeer::P_C_OWNER_ID, $pCOwner->toKeyValue('PrimaryKey', 'Id'), $comparison);
+        } else {
+            throw new PropelException('filterByPCOwner() only accepts arguments of type PCOwner or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PCOwner relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PCircleQuery The current query, for fluid interface
+     */
+    public function joinPCOwner($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PCOwner');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PCOwner');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PCOwner relation PCOwner object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PCOwnerQuery A secondary query class using the current class as primary query
+     */
+    public function usePCOwnerQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPCOwner($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PCOwner', '\Politizr\Model\PCOwnerQuery');
     }
 
     /**

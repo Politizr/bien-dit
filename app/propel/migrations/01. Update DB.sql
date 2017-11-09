@@ -60,13 +60,33 @@ CREATE INDEX `p_d_reaction_archive_I_8` ON `p_d_reaction_archive` (`uuid`);
 
 CREATE INDEX `p_d_reaction_archive_I_9` ON `p_d_reaction_archive` (`slug`);
 
-CREATE TABLE `p_circle`
+ALTER TABLE `p_u_notification`
+    ADD `p_c_topic_id` INTEGER AFTER `p_author_user_id`;
+
+CREATE TABLE `p_c_owner`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `uuid` VARCHAR(50),
     `title` VARCHAR(100),
     `summary` TEXT,
+    `description` TEXT,
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    `slug` VARCHAR(255),
+    PRIMARY KEY (`id`),
+    UNIQUE INDEX `p_c_owner_U_1` (`uuid`),
+    UNIQUE INDEX `p_c_owner_slug` (`slug`(255))
+) ENGINE=InnoDB;
+
+CREATE TABLE `p_circle`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `uuid` VARCHAR(50),
+    `p_c_owner_id` INTEGER NOT NULL,
+    `title` VARCHAR(100),
+    `summary` TEXT,
     `description` LONGTEXT,
+    `logo_file_name` VARCHAR(150),
     `url` VARCHAR(150),
     `online` TINYINT(1),
     `only_elected` TINYINT(1),
@@ -75,7 +95,13 @@ CREATE TABLE `p_circle`
     `slug` VARCHAR(255),
     PRIMARY KEY (`id`),
     UNIQUE INDEX `p_circle_U_1` (`uuid`),
-    UNIQUE INDEX `p_circle_slug` (`slug`(255))
+    UNIQUE INDEX `p_circle_slug` (`slug`(255)),
+    INDEX `p_circle_FI_1` (`p_c_owner_id`),
+    CONSTRAINT `p_circle_FK_1`
+        FOREIGN KEY (`p_c_owner_id`)
+        REFERENCES `p_c_owner` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 CREATE TABLE `p_c_topic`
@@ -86,7 +112,10 @@ CREATE TABLE `p_c_topic`
     `title` VARCHAR(100),
     `summary` TEXT,
     `description` LONGTEXT,
+    `file_name` VARCHAR(150),
     `online` TINYINT(1),
+    `force_geoloc_type` VARCHAR(100),
+    `force_geoloc_id` INTEGER,
     `created_at` DATETIME,
     `updated_at` DATETIME,
     `slug` VARCHAR(255),
@@ -123,56 +152,12 @@ CREATE TABLE `p_c_group_l_c`
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
-CREATE TABLE `p_circle_archive`
-(
-    `id` INTEGER NOT NULL,
-    `uuid` VARCHAR(50),
-    `title` VARCHAR(100),
-    `summary` TEXT,
-    `description` LONGTEXT,
-    `url` VARCHAR(150),
-    `online` TINYINT(1),
-    `only_elected` TINYINT(1),
-    `created_at` DATETIME,
-    `updated_at` DATETIME,
-    `slug` VARCHAR(255),
-    `archived_at` DATETIME,
-    PRIMARY KEY (`id`),
-    INDEX `p_circle_archive_I_1` (`uuid`),
-    INDEX `p_circle_archive_I_2` (`slug`(255))
-) ENGINE=InnoDB;
-
-CREATE TABLE `p_c_topic_archive`
-(
-    `id` INTEGER NOT NULL,
-    `uuid` VARCHAR(50),
-    `p_circle_id` INTEGER NOT NULL,
-    `title` VARCHAR(100),
-    `summary` TEXT,
-    `description` LONGTEXT,
-    `online` TINYINT(1),
-    `created_at` DATETIME,
-    `updated_at` DATETIME,
-    `slug` VARCHAR(255),
-    `archived_at` DATETIME,
-    PRIMARY KEY (`id`),
-    INDEX `p_c_topic_archive_I_1` (`p_circle_id`),
-    INDEX `p_c_topic_archive_I_2` (`uuid`),
-    INDEX `p_c_topic_archive_I_3` (`slug`(255))
-) ENGINE=InnoDB;
-
-
-ALTER TABLE `p_d_debate` ADD CONSTRAINT `p_d_debate_FK_7`
-    FOREIGN KEY (`p_e_operation_id`)
-    REFERENCES `p_e_operation` (`id`)
-    ON UPDATE CASCADE
-    ON DELETE SET NULL;
-
 CREATE TABLE `p_u_in_p_c`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `p_circle_id` INTEGER NOT NULL,
     `p_user_id` INTEGER NOT NULL,
+    `is_authorized_reaction` TINYINT(1) DEFAULT 0,
     `created_at` DATETIME,
     `updated_at` DATETIME,
     PRIMARY KEY (`id`),
@@ -190,19 +175,65 @@ CREATE TABLE `p_u_in_p_c`
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
-ALTER TABLE `p_c_topic`
-    ADD `force_geoloc_type` VARCHAR(100) AFTER `online`,
-    ADD `force_geoloc_id` INTEGER AFTER `force_geoloc_type`;
+CREATE TABLE `p_c_owner_archive`
+(
+    `id` INTEGER NOT NULL,
+    `uuid` VARCHAR(50),
+    `title` VARCHAR(100),
+    `summary` TEXT,
+    `description` TEXT,
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    `slug` VARCHAR(255),
+    `archived_at` DATETIME,
+    PRIMARY KEY (`id`),
+    INDEX `p_c_owner_archive_I_1` (`uuid`),
+    INDEX `p_c_owner_archive_I_2` (`slug`(255))
+) ENGINE=InnoDB;
 
-ALTER TABLE `p_c_topic_archive`
-    ADD `force_geoloc_type` VARCHAR(100) AFTER `online`,
-    ADD `force_geoloc_id` INTEGER AFTER `force_geoloc_type`;
+CREATE TABLE `p_circle_archive`
+(
+    `id` INTEGER NOT NULL,
+    `uuid` VARCHAR(50),
+    `p_c_owner_id` INTEGER NOT NULL,
+    `title` VARCHAR(100),
+    `summary` TEXT,
+    `description` LONGTEXT,
+    `logo_file_name` VARCHAR(150),
+    `url` VARCHAR(150),
+    `online` TINYINT(1),
+    `only_elected` TINYINT(1),
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    `slug` VARCHAR(255),
+    `archived_at` DATETIME,
+    PRIMARY KEY (`id`),
+    INDEX `p_circle_archive_I_1` (`p_c_owner_id`),
+    INDEX `p_circle_archive_I_2` (`uuid`),
+    INDEX `p_circle_archive_I_3` (`slug`(255))
+) ENGINE=InnoDB;
 
-ALTER TABLE `p_u_in_p_c`
-    ADD `is_authorized_reaction` TINYINT(1) DEFAULT 0 AFTER `p_user_id`;
-
-ALTER TABLE `p_u_notification`
-    ADD `p_c_topic_id` INTEGER AFTER `p_author_user_id`;
+CREATE TABLE `p_c_topic_archive`
+(
+    `id` INTEGER NOT NULL,
+    `uuid` VARCHAR(50),
+    `p_circle_id` INTEGER NOT NULL,
+    `title` VARCHAR(100),
+    `summary` TEXT,
+    `description` LONGTEXT,
+    `file_name` VARCHAR(150),
+    `online` TINYINT(1),
+    `force_geoloc_type` VARCHAR(100),
+    `force_geoloc_id` INTEGER,
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    `slug` VARCHAR(255),
+    `archived_at` DATETIME,
+    PRIMARY KEY (`id`),
+    INDEX `p_c_topic_archive_I_1` (`p_circle_id`),
+    INDEX `p_c_topic_archive_I_2` (`uuid`),
+    INDEX `p_c_topic_archive_I_3` (`slug`(255))
+) ENGINE=InnoDB;
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

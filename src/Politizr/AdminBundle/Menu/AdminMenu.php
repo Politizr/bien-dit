@@ -97,6 +97,11 @@ class AdminMenu extends AdmingeneratorMenuBuilder
         $circle = $this->addDropdown($menu, 'Groupes');
         $this->addLinkRoute(
             $circle,
+            'Client',
+            'Politizr_AdminBundle_PCOwner_list'
+        );
+        $this->addLinkRoute(
+            $circle,
             'Groupe',
             'Politizr_AdminBundle_PCircle_list'
         );

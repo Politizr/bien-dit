@@ -1,0 +1,22 @@
+<div id="grpBrief">
+    <div id="grpBriefHeader">
+        <div class="center">
+            {{ topic.summary | raw }}
+            <div class="showBriefLink" action="showBrief">Afficher le dossier de présentation</div>
+            <div class="hideBriefLink" action="hideBrief">Masquer le dossier de présentation</div>
+        </div>
+        <div id="grpBriefHeaderImg">
+            <div id="grpBriefHeaderImgShadow"></div>
+            <img src="{{ asset(constant('Politizr\\Constant\\PathConstants::CIRCLE_UPLOAD_WEB_PATH') ~ topic.fileName) }}">
+        </div>
+    </div>
+    
+    <div class="center">            
+        <div id="grpBriefCard">
+            {{ topic.description | raw }}
+        </div>
+        <div id="grpBriefFooter">
+            <div class="hideBriefLink" action="hideBrief">Masquer le dossier de présentation</div>
+        </div>
+    </div>
+</div>

@@ -13,7 +13,6 @@ use Politizr\Model\PCTopic;
 
 class CircleVoter extends Voter
 {
-    // these strings are just invented: you can use anything
     const CIRCLE_DETAIL = 'circle_detail';
     const TOPIC_DETAIL = 'topic_detail';
 

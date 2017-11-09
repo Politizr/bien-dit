@@ -20,6 +20,8 @@ params:
             label:          Groupe
             addFormOptions:
                 query:      \Politizr\Model\PCircleQuery::create()->orderByTitle()
+        file_name:
+            label:          Bandeau
         summary:
             label:          Résumé
         description:
@@ -44,9 +46,9 @@ builders:
             title:                              Liste des discussions
             max_per_page:                       50
             sort:                               [ created_at, DESC ]
-            display:                            [ title, id, p_circle, online, created_at ]
+            display:                            [ file_name, title, id, p_circle, online, created_at ]
             filtersMode:                        modal
-            filters:                            [ p_circle, id, uuid, title, online, created_at ]
+            filters:                            [ p_circle, uuid, title, online, created_at ]
             object_actions:
                 show:                           ~
                 edit:                           ~
@@ -75,6 +77,7 @@ builders:
             title:                              "Edition de la discussion '{{ PCTopic.title }}'"
             tabs:
                 "Contenu":
+                    "Bandeau":                  [ uploadedFileName ]
                     "Texte":                    [ title, summary, description ]
                 "Objets":
                     "Groupe":                   [ p_circle ]
@@ -84,6 +87,13 @@ builders:
                     "En ligne":                 [ online ]
                     "Création":                 [ [ created_at, updated_at ] ]
             fields:
+                uploadedFileName:
+                    dbType:                     VARCHAR
+                    label:                      Photo
+                    formType:                   Admingenerator\FormExtensionsBundle\Form\Type\SingleUploadType
+                    addFormOptions:
+                        deleteable:             fileName
+                        data_class:             Symfony\Component\HttpFoundation\File\File
                 summary:
                     grid_class:                 "col-md-12"
                     addFormOptions:
@@ -124,6 +134,7 @@ builders:
             title:                              "Visualisation de la discussion '{{ PCTopic.getTitle }}'"
             tabs:
                 "Contenu":
+                    "Bandeau":                  [ file_name ]
                     "Texte":                    [ title, summary, description ]
                 "Objets":
                     "Groupe":                   [ block_p_circle ]

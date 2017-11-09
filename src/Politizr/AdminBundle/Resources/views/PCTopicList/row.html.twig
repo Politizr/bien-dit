@@ -1,1 +1,7 @@
 {% extends_admingenerated "PolitizrAdminBundle:PCTopicList:row.html.twig" %}
+
+{% block list_td_column_file_name %}
+    {% if PCTopic.fileName %}
+        <img src="{{ asset('/uploads/circles/'~PCTopic.fileName) | imagine_filter('admin_banner_thumb') }}" alt="{{ PCTopic.title }}">
+    {% endif %}
+{% endblock list_td_column_file_name %}

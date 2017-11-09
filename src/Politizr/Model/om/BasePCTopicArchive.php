@@ -75,6 +75,12 @@ abstract class BasePCTopicArchive extends BaseObject implements Persistent
     protected $description;
 
     /**
+     * The value for the file_name field.
+     * @var        string
+     */
+    protected $file_name;
+
+    /**
      * The value for the online field.
      * @var        boolean
      */
@@ -200,6 +206,17 @@ abstract class BasePCTopicArchive extends BaseObject implements Persistent
     {
 
         return $this->description;
+    }
+
+    /**
+     * Get the [file_name] column value.
+     *
+     * @return string
+     */
+    public function getFileName()
+    {
+
+        return $this->file_name;
     }
 
     /**
@@ -493,6 +510,27 @@ abstract class BasePCTopicArchive extends BaseObject implements Persistent
     } // setDescription()
 
     /**
+     * Set the value of [file_name] column.
+     *
+     * @param  string $v new value
+     * @return PCTopicArchive The current object (for fluent API support)
+     */
+    public function setFileName($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->file_name !== $v) {
+            $this->file_name = $v;
+            $this->modifiedColumns[] = PCTopicArchivePeer::FILE_NAME;
+        }
+
+
+        return $this;
+    } // setFileName()
+
+    /**
      * Sets the value of the [online] column.
      * Non-boolean arguments are converted using the following rules:
      *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
@@ -691,13 +729,14 @@ abstract class BasePCTopicArchive extends BaseObject implements Persistent
             $this->title = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
             $this->summary = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
             $this->description = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->online = ($row[$startcol + 6] !== null) ? (boolean) $row[$startcol + 6] : null;
-            $this->force_geoloc_type = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-            $this->force_geoloc_id = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
-            $this->created_at = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
-            $this->updated_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
-            $this->slug = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
-            $this->archived_at = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+            $this->file_name = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->online = ($row[$startcol + 7] !== null) ? (boolean) $row[$startcol + 7] : null;
+            $this->force_geoloc_type = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+            $this->force_geoloc_id = ($row[$startcol + 9] !== null) ? (int) $row[$startcol + 9] : null;
+            $this->created_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+            $this->updated_at = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+            $this->slug = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+            $this->archived_at = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -707,7 +746,7 @@ abstract class BasePCTopicArchive extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 13; // 13 = PCTopicArchivePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 14; // 14 = PCTopicArchivePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PCTopicArchive object", $e);
@@ -933,6 +972,9 @@ abstract class BasePCTopicArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PCTopicArchivePeer::DESCRIPTION)) {
             $modifiedColumns[':p' . $index++]  = '`description`';
         }
+        if ($this->isColumnModified(PCTopicArchivePeer::FILE_NAME)) {
+            $modifiedColumns[':p' . $index++]  = '`file_name`';
+        }
         if ($this->isColumnModified(PCTopicArchivePeer::ONLINE)) {
             $modifiedColumns[':p' . $index++]  = '`online`';
         }
@@ -982,6 +1024,9 @@ abstract class BasePCTopicArchive extends BaseObject implements Persistent
                         break;
                     case '`description`':
                         $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
+                        break;
+                    case '`file_name`':
+                        $stmt->bindValue($identifier, $this->file_name, PDO::PARAM_STR);
                         break;
                     case '`online`':
                         $stmt->bindValue($identifier, (int) $this->online, PDO::PARAM_INT);
@@ -1076,24 +1121,27 @@ abstract class BasePCTopicArchive extends BaseObject implements Persistent
                 return $this->getDescription();
                 break;
             case 6:
-                return $this->getOnline();
+                return $this->getFileName();
                 break;
             case 7:
-                return $this->getForceGeolocType();
+                return $this->getOnline();
                 break;
             case 8:
-                return $this->getForceGeolocId();
+                return $this->getForceGeolocType();
                 break;
             case 9:
-                return $this->getCreatedAt();
+                return $this->getForceGeolocId();
                 break;
             case 10:
-                return $this->getUpdatedAt();
+                return $this->getCreatedAt();
                 break;
             case 11:
-                return $this->getSlug();
+                return $this->getUpdatedAt();
                 break;
             case 12:
+                return $this->getSlug();
+                break;
+            case 13:
                 return $this->getArchivedAt();
                 break;
             default:
@@ -1130,13 +1178,14 @@ abstract class BasePCTopicArchive extends BaseObject implements Persistent
             $keys[3] => $this->getTitle(),
             $keys[4] => $this->getSummary(),
             $keys[5] => $this->getDescription(),
-            $keys[6] => $this->getOnline(),
-            $keys[7] => $this->getForceGeolocType(),
-            $keys[8] => $this->getForceGeolocId(),
-            $keys[9] => $this->getCreatedAt(),
-            $keys[10] => $this->getUpdatedAt(),
-            $keys[11] => $this->getSlug(),
-            $keys[12] => $this->getArchivedAt(),
+            $keys[6] => $this->getFileName(),
+            $keys[7] => $this->getOnline(),
+            $keys[8] => $this->getForceGeolocType(),
+            $keys[9] => $this->getForceGeolocId(),
+            $keys[10] => $this->getCreatedAt(),
+            $keys[11] => $this->getUpdatedAt(),
+            $keys[12] => $this->getSlug(),
+            $keys[13] => $this->getArchivedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1195,24 +1244,27 @@ abstract class BasePCTopicArchive extends BaseObject implements Persistent
                 $this->setDescription($value);
                 break;
             case 6:
-                $this->setOnline($value);
+                $this->setFileName($value);
                 break;
             case 7:
-                $this->setForceGeolocType($value);
+                $this->setOnline($value);
                 break;
             case 8:
-                $this->setForceGeolocId($value);
+                $this->setForceGeolocType($value);
                 break;
             case 9:
-                $this->setCreatedAt($value);
+                $this->setForceGeolocId($value);
                 break;
             case 10:
-                $this->setUpdatedAt($value);
+                $this->setCreatedAt($value);
                 break;
             case 11:
-                $this->setSlug($value);
+                $this->setUpdatedAt($value);
                 break;
             case 12:
+                $this->setSlug($value);
+                break;
+            case 13:
                 $this->setArchivedAt($value);
                 break;
         } // switch()
@@ -1245,13 +1297,14 @@ abstract class BasePCTopicArchive extends BaseObject implements Persistent
         if (array_key_exists($keys[3], $arr)) $this->setTitle($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setSummary($arr[$keys[4]]);
         if (array_key_exists($keys[5], $arr)) $this->setDescription($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setOnline($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setForceGeolocType($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setForceGeolocId($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setCreatedAt($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setUpdatedAt($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setSlug($arr[$keys[11]]);
-        if (array_key_exists($keys[12], $arr)) $this->setArchivedAt($arr[$keys[12]]);
+        if (array_key_exists($keys[6], $arr)) $this->setFileName($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setOnline($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setForceGeolocType($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setForceGeolocId($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setCreatedAt($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setUpdatedAt($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setSlug($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setArchivedAt($arr[$keys[13]]);
     }
 
     /**
@@ -1269,6 +1322,7 @@ abstract class BasePCTopicArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PCTopicArchivePeer::TITLE)) $criteria->add(PCTopicArchivePeer::TITLE, $this->title);
         if ($this->isColumnModified(PCTopicArchivePeer::SUMMARY)) $criteria->add(PCTopicArchivePeer::SUMMARY, $this->summary);
         if ($this->isColumnModified(PCTopicArchivePeer::DESCRIPTION)) $criteria->add(PCTopicArchivePeer::DESCRIPTION, $this->description);
+        if ($this->isColumnModified(PCTopicArchivePeer::FILE_NAME)) $criteria->add(PCTopicArchivePeer::FILE_NAME, $this->file_name);
         if ($this->isColumnModified(PCTopicArchivePeer::ONLINE)) $criteria->add(PCTopicArchivePeer::ONLINE, $this->online);
         if ($this->isColumnModified(PCTopicArchivePeer::FORCE_GEOLOC_TYPE)) $criteria->add(PCTopicArchivePeer::FORCE_GEOLOC_TYPE, $this->force_geoloc_type);
         if ($this->isColumnModified(PCTopicArchivePeer::FORCE_GEOLOC_ID)) $criteria->add(PCTopicArchivePeer::FORCE_GEOLOC_ID, $this->force_geoloc_id);
@@ -1344,6 +1398,7 @@ abstract class BasePCTopicArchive extends BaseObject implements Persistent
         $copyObj->setTitle($this->getTitle());
         $copyObj->setSummary($this->getSummary());
         $copyObj->setDescription($this->getDescription());
+        $copyObj->setFileName($this->getFileName());
         $copyObj->setOnline($this->getOnline());
         $copyObj->setForceGeolocType($this->getForceGeolocType());
         $copyObj->setForceGeolocId($this->getForceGeolocId());
@@ -1408,6 +1463,7 @@ abstract class BasePCTopicArchive extends BaseObject implements Persistent
         $this->title = null;
         $this->summary = null;
         $this->description = null;
+        $this->file_name = null;
         $this->online = null;
         $this->force_geoloc_type = null;
         $this->force_geoloc_id = null;

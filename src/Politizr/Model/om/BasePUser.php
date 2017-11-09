@@ -7457,7 +7457,7 @@ abstract class BasePUser extends BaseObject implements Persistent
                 $this->pEOperationsScheduledForDeletion = clone $this->collPEOperations;
                 $this->pEOperationsScheduledForDeletion->clear();
             }
-            $this->pEOperationsScheduledForDeletion[]= clone $pEOperation;
+            $this->pEOperationsScheduledForDeletion[]= $pEOperation;
             $pEOperation->setPUser(null);
         }
 

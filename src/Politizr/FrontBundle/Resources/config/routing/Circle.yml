@@ -17,19 +17,19 @@ PublicCircle:
 #               CONNECTED
 ################################################################################
 MenuCircle:
-    pattern:  /$w/mes-groupes
+    pattern:  /-w/mes-groupes
     defaults: { _controller: PolitizrFrontBundle:Circle:menu }
     requirements:
         _method:        GET
 
 DetailCircle:
-    pattern:  /$w/mes-groupes/{slug}
+    pattern:  /-w/mes-groupes/{slug}
     defaults: { _controller: PolitizrFrontBundle:Circle:detail }
     requirements:
         _method:        GET
 
 TopicDetail:
-    pattern:  /$w/mes-groupes/{circleSlug}/{slug}
+    pattern:  /-w/mes-groupes/{circleSlug}/{slug}
     defaults: { _controller: PolitizrFrontBundle:Circle:topicDetail }
     requirements:
         _method:        GET

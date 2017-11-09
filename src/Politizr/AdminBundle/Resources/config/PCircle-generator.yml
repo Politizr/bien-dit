@@ -8,10 +8,16 @@ params:
     fields:
         id:
             label:          ID
+        p_c_owner_id:
+            label:          ID Client
+        p_c_owner:
+            label:          Client
         uuid:
             label:          UUID
         slug:
             label:          Slug
+        logo_file_name:
+            label:          Logo
         title:
             label:          Titre
         summary:
@@ -38,9 +44,9 @@ builders:
             title:                              Liste des groupes
             max_per_page:                       50
             sort:                               [ created_at, DESC ]
-            display:                            [ title, id, online, created_at ]
+            display:                            [ logo_file_name, title, p_c_owner, online, created_at ]
             filtersMode:                        modal
-            filters:                            [ id, uuid, title, online, created_at ]
+            filters:                            [ id, p_c_owner, uuid, title, online, created_at ]
             object_actions:
                 show:                           ~
                 edit:                           ~
@@ -51,7 +57,16 @@ builders:
         params:
             title:                              "Création d'un groupe"
             display:
-                "Champs principaux":            [ title ]
+                "Champs principaux":            [ p_c_owner, title ]
+            fields:
+                p_c_owner:
+                    dbType:                     model
+                    formType:                   Admingenerator\FormExtensionsBundle\Form\Type\Select2ModelType
+                    addFormOptions:
+                        multiple:               false
+                        required:               true
+                        class:                  Politizr\Model\PCOwner
+                        query:                  \Politizr\Model\PCOwnerQuery::create()->orderByTitle()
             actions:
               save:                             ~
               list:                             ~
@@ -60,7 +75,10 @@ builders:
             title:                              "Edition du groupe '{{ PCircle.title }}'"
             tabs:
                 "Contenu":
+                    "Bandeau":                  [ uploadedLogoFileName ]
                     "Texte":                    [ title, summary, description ]
+                "Objets":
+                    "Client":                   [ p_c_owner ]
                 "Options":
                     "Adresse":                  [ url ]
                     "Restrictions":             [ only_elected ]
@@ -69,6 +87,13 @@ builders:
                     "En ligne":                 [ online ]
                     "Création":                 [ [ created_at, updated_at ] ]
             fields:
+                uploadedLogoFileName:
+                    dbType:                     VARCHAR
+                    label:                      Photo
+                    formType:                   Admingenerator\FormExtensionsBundle\Form\Type\SingleUploadType
+                    addFormOptions:
+                        deleteable:             fileName
+                        data_class:             Symfony\Component\HttpFoundation\File\File
                 summary:
                     grid_class:                 "col-md-12"
                     addFormOptions:
@@ -99,7 +124,10 @@ builders:
             title:                              "Visualisation du groupe '{{ PCircle.getTitle }}'"
             tabs:
                 "Contenu":
+                    "Bandeau":                  [ logo_file_name ]
                     "Texte":                    [ title, summary, description ]
+                "Objets":
+                    "Client":                   [ block_p_c_owner ]
                 "Options":
                     "Adresse":                  [ url ]
                     "Restrictions":             [ only_elected ]
@@ -108,8 +136,8 @@ builders:
                     "En ligne":                 [ online ]
                     "Création":                 [ [ created_at, updated_at ] ]
             fields:
-                block_p_circle:
-                    label:                      "Groupe"
+                block_p_c_owner:
+                    label:                      "Client"
             actions:
                 list:                           ~
                 edit:                           ~

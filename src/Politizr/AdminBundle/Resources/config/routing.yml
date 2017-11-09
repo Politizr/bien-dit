@@ -148,6 +148,11 @@ Politizr_AdminBundle_PDDirect:
     prefix:   /PDDirect
 
 # Groupes
+Politizr_AdminBundle_PCOwner:
+    resource: "@PolitizrAdminBundle/Controller/PCOwner/"
+    type:     admingenerator
+    prefix:   /PCOwner
+
 Politizr_AdminBundle_PCircle:
     resource: "@PolitizrAdminBundle/Controller/PCircle/"
     type:     admingenerator

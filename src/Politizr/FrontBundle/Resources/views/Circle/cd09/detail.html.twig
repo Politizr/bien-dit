@@ -23,21 +23,8 @@
 {% block main %}
     <div id="main">
         <div class="center">
-            <div id="grpMenu">
-                <img src="{{ asset('bundles/politizrfront/images/grp-CD09/grp-logoCD09.png') }}">
-                <div id="grpMenuPseudoTabs">
-                    <span>Budget primitif 2017</span>
-                </div>
-                <div id="grpMenuLinksMobile" action="toggleGrpMenuLinks">Menu<i class="icon-menu"></i></div>
-                <div id="grpMenuLinks">
-                    {% for topic in topics %}
-                        <a href="{{ path('TopicDetail', { 'circleSlug': circle.slug, 'slug': topic.slug }) }}">{{ topic.title }}</a>
-                    {% endfor %}
-                </div>
-            </div>
-            <div id="grpBreadcrumbs">
-                Ariège, le Département<i class="icon-arrow-right"></i>Budget primitif 2017<i class="icon-arrow-right"></i><span>Accueil</span>
-            </div>
+            {{ circle | circleMenuTop }}
+            {{ circle | circleBreadcrumb }}
             <div class="grpCard">
                 <div class="grpGlobalIntro">
                     <div class="grpGlobalIntroBigArticle">

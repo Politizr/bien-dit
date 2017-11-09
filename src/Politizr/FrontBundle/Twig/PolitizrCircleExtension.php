@@ -6,6 +6,8 @@ use Politizr\Exception\InconsistentDataException;
 use Politizr\Model\PCircle;
 use Politizr\Model\PCTopic;
 
+use Politizr\Model\PCircleQuery;
+use Politizr\Model\PCTopicQuery;
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PUInPCQuery;
 
@@ -75,6 +77,16 @@ class PolitizrCircleExtension extends \Twig_Extension
                 array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             new \Twig_SimpleFilter(
+                'circleMenuTop',
+                array($this, 'circleMenuTop'),
+                array('is_safe' => array('html'), 'needs_environment' => true)
+            ),
+            new \Twig_SimpleFilter(
+                'circleBreadcrumb',
+                array($this, 'circleBreadcrumb'),
+                array('is_safe' => array('html'), 'needs_environment' => true)
+            ),
+            new \Twig_SimpleFilter(
                 'circleFooter',
                 array($this, 'circleFooter'),
                 array('is_safe' => array('html'), 'needs_environment' => true)
@@ -82,6 +94,16 @@ class PolitizrCircleExtension extends \Twig_Extension
             new \Twig_SimpleFilter(
                 'topicStats',
                 array($this, 'topicStats'),
+                array('is_safe' => array('html'), 'needs_environment' => true)
+            ),
+            new \Twig_SimpleFilter(
+                'topicBriefing',
+                array($this, 'topicBriefing'),
+                array('is_safe' => array('html'), 'needs_environment' => true)
+            ),
+            new \Twig_SimpleFilter(
+                'topicQuestion',
+                array($this, 'topicQuestion'),
                 array('is_safe' => array('html'), 'needs_environment' => true)
             ),
         );
@@ -131,6 +153,57 @@ class PolitizrCircleExtension extends \Twig_Extension
             'PolitizrFrontBundle:Circle:_menuActions.html.twig',
             array(
                 'isMember' => $isMember,
+                'circle' => $circle
+            )
+        );
+
+        return $html;
+    }
+
+    /**
+     * Manage circle menu
+     *
+     * @param PCircle $circle
+     * @return html
+     */
+    public function circleMenuTop(\Twig_Environment $env, PCircle $circle)
+    {
+        // $this->logger->info('*** circleMenuTop');
+        // $this->logger->info('$circle = '.print_r($circle, true));
+
+        // get circle's topics
+        $topics = PCTopicQuery::create()
+                    ->filterByPCircleId($circle->getId())
+                    ->filterByOnline(true)
+                    ->find();
+
+        // Construction du rendu du tag
+        $html = $env->render(
+            'PolitizrFrontBundle:Circle:_menuTop.html.twig',
+            array(
+                'circle' => $circle,
+                'topics' => $topics,
+            )
+        );
+
+        return $html;
+    }
+
+    /**
+     * Manage circle breadcrumb
+     *
+     * @param PCircle $circle
+     * @return html
+     */
+    public function circleBreadcrumb(\Twig_Environment $env, PCircle $circle)
+    {
+        // $this->logger->info('*** circleBreadcrumb');
+        // $this->logger->info('$circle = '.print_r($circle, true));
+
+        // Construction du rendu du tag
+        $html = $env->render(
+            'PolitizrFrontBundle:Circle:_breadcrumb.html.twig',
+            array(
                 'circle' => $circle
             )
         );
@@ -190,6 +263,50 @@ class PolitizrCircleExtension extends \Twig_Extension
                 'nbDebates' => $nbDebates,
                 'nbReactions' => $nbReactions,
                 'nbComments' => $nbComments,
+            )
+        );
+
+        return $html;
+    }
+
+    /**
+     * Display topic briefing
+     *
+     * @param PCTopic $topic
+     * @return html
+     */
+    public function topicBriefing(\Twig_Environment $env, PCTopic $topic)
+    {
+        // $this->logger->info('*** topicBriefing');
+        // $this->logger->info('$topic = '.print_r($topic, true));
+
+        // Construction du rendu du tag
+        $html = $env->render(
+            'PolitizrFrontBundle:Topic:_briefing.html.twig',
+            array(
+                'topic' => $topic,
+            )
+        );
+
+        return $html;
+    }
+
+    /**
+     * Display topic "I've a new question"
+     *
+     * @param PCTopic $topic
+     * @return html
+     */
+    public function topicQuestion(\Twig_Environment $env, PCTopic $topic)
+    {
+        // $this->logger->info('*** topicQuestion');
+        // $this->logger->info('$topic = '.print_r($topic, true));
+
+        // Construction du rendu du tag
+        $html = $env->render(
+            'PolitizrFrontBundle:Topic:_question.html.twig',
+            array(
+                'topic' => $topic,
             )
         );
 

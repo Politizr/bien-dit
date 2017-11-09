@@ -44,9 +44,11 @@ class PCircleTableMap extends TableMap
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addColumn('uuid', 'Uuid', 'VARCHAR', false, 50, null);
+        $this->addForeignKey('p_c_owner_id', 'PCOwnerId', 'INTEGER', 'p_c_owner', 'id', true, null, null);
         $this->addColumn('title', 'Title', 'VARCHAR', false, 100, null);
         $this->addColumn('summary', 'Summary', 'LONGVARCHAR', false, null, null);
         $this->addColumn('description', 'Description', 'CLOB', false, null, null);
+        $this->addColumn('logo_file_name', 'LogoFileName', 'VARCHAR', false, 150, null);
         $this->addColumn('url', 'Url', 'VARCHAR', false, 150, null);
         $this->addColumn('online', 'Online', 'BOOLEAN', false, 1, null);
         $this->addColumn('only_elected', 'OnlyElected', 'BOOLEAN', false, 1, null);
@@ -61,6 +63,7 @@ class PCircleTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('PCOwner', 'Politizr\\Model\\PCOwner', RelationMap::MANY_TO_ONE, array('p_c_owner_id' => 'id', ), 'CASCADE', 'CASCADE');
         $this->addRelation('PCTopic', 'Politizr\\Model\\PCTopic', RelationMap::ONE_TO_MANY, array('id' => 'p_circle_id', ), 'CASCADE', 'CASCADE', 'PCTopics');
         $this->addRelation('PCGroupLC', 'Politizr\\Model\\PCGroupLC', RelationMap::ONE_TO_MANY, array('id' => 'p_circle_id', ), 'CASCADE', 'CASCADE', 'PCGroupLCs');
         $this->addRelation('PUInPC', 'Politizr\\Model\\PUInPC', RelationMap::ONE_TO_MANY, array('id' => 'p_circle_id', ), 'CASCADE', 'CASCADE', 'PUInPCs');

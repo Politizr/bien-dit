@@ -25,6 +25,7 @@ class ObjectTypeConstants
     const TYPE_ASK_FOR_UPDATE = 'Politizr\Model\PMAskForUpdate';
     const TYPE_ACTION = 'Politizr\Model\PRAction';
     const TYPE_CIRCLE = 'Politizr\Model\PCircle';
+    const TYPE_CIRCLE_OWNER = 'Politizr\Model\PCOwner';
     const TYPE_TOPIC = 'Politizr\Model\PCTopic';
     const TYPE_OPERATION = 'Politizr\Model\PEOperation';
 

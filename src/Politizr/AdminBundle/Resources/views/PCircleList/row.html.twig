@@ -1,1 +1,7 @@
 {% extends_admingenerated "PolitizrAdminBundle:PCircleList:row.html.twig" %}
+
+{% block list_td_column_logo_file_name %}
+    {% if PCircle.logoFileName %}
+        <img src="{{ asset('/uploads/circles/'~PCircle.logoFileName) | imagine_filter('admin_banner_thumb') }}" alt="{{ PCircle.title }}">
+    {% endif %}
+{% endblock list_td_column_logo_file_name %}

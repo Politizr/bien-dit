@@ -1,1 +1,7 @@
 {% extends_admingenerated "PolitizrAdminBundle:PCircleShow:index.html.twig" %}
+
+{# Objets #}
+{% block show_column_block_p_c_owner %}
+    {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_CIRCLE_OWNER'), PCircle.PCOwnerId) }}
+{% endblock %}
+

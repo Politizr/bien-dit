@@ -17,6 +17,8 @@ use \PropelObjectCollection;
 use \PropelPDO;
 use Politizr\Model\PCGroupLC;
 use Politizr\Model\PCGroupLCQuery;
+use Politizr\Model\PCOwner;
+use Politizr\Model\PCOwnerQuery;
 use Politizr\Model\PCTopic;
 use Politizr\Model\PCTopicQuery;
 use Politizr\Model\PCircle;
@@ -65,6 +67,12 @@ abstract class BasePCircle extends BaseObject implements Persistent
     protected $uuid;
 
     /**
+     * The value for the p_c_owner_id field.
+     * @var        int
+     */
+    protected $p_c_owner_id;
+
+    /**
      * The value for the title field.
      * @var        string
      */
@@ -81,6 +89,12 @@ abstract class BasePCircle extends BaseObject implements Persistent
      * @var        string
      */
     protected $description;
+
+    /**
+     * The value for the logo_file_name field.
+     * @var        string
+     */
+    protected $logo_file_name;
 
     /**
      * The value for the url field.
@@ -117,6 +131,11 @@ abstract class BasePCircle extends BaseObject implements Persistent
      * @var        string
      */
     protected $slug;
+
+    /**
+     * @var        PCOwner
+     */
+    protected $aPCOwner;
 
     /**
      * @var        PropelObjectCollection|PCTopic[] Collection to store aggregation of PCTopic objects.
@@ -222,6 +241,17 @@ abstract class BasePCircle extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [p_c_owner_id] column value.
+     *
+     * @return int
+     */
+    public function getPCOwnerId()
+    {
+
+        return $this->p_c_owner_id;
+    }
+
+    /**
      * Get the [title] column value.
      *
      * @return string
@@ -252,6 +282,17 @@ abstract class BasePCircle extends BaseObject implements Persistent
     {
 
         return $this->description;
+    }
+
+    /**
+     * Get the [logo_file_name] column value.
+     *
+     * @return string
+     */
+    public function getLogoFileName()
+    {
+
+        return $this->logo_file_name;
     }
 
     /**
@@ -421,6 +462,31 @@ abstract class BasePCircle extends BaseObject implements Persistent
     } // setUuid()
 
     /**
+     * Set the value of [p_c_owner_id] column.
+     *
+     * @param  int $v new value
+     * @return PCircle The current object (for fluent API support)
+     */
+    public function setPCOwnerId($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->p_c_owner_id !== $v) {
+            $this->p_c_owner_id = $v;
+            $this->modifiedColumns[] = PCirclePeer::P_C_OWNER_ID;
+        }
+
+        if ($this->aPCOwner !== null && $this->aPCOwner->getId() !== $v) {
+            $this->aPCOwner = null;
+        }
+
+
+        return $this;
+    } // setPCOwnerId()
+
+    /**
      * Set the value of [title] column.
      *
      * @param  string $v new value
@@ -482,6 +548,27 @@ abstract class BasePCircle extends BaseObject implements Persistent
 
         return $this;
     } // setDescription()
+
+    /**
+     * Set the value of [logo_file_name] column.
+     *
+     * @param  string $v new value
+     * @return PCircle The current object (for fluent API support)
+     */
+    public function setLogoFileName($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->logo_file_name !== $v) {
+            $this->logo_file_name = $v;
+            $this->modifiedColumns[] = PCirclePeer::LOGO_FILE_NAME;
+        }
+
+
+        return $this;
+    } // setLogoFileName()
 
     /**
      * Set the value of [url] column.
@@ -663,15 +750,17 @@ abstract class BasePCircle extends BaseObject implements Persistent
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->uuid = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
-            $this->title = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-            $this->summary = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-            $this->description = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-            $this->url = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->online = ($row[$startcol + 6] !== null) ? (boolean) $row[$startcol + 6] : null;
-            $this->only_elected = ($row[$startcol + 7] !== null) ? (boolean) $row[$startcol + 7] : null;
-            $this->created_at = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
-            $this->updated_at = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
-            $this->slug = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+            $this->p_c_owner_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+            $this->title = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+            $this->summary = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->description = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->logo_file_name = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->url = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+            $this->online = ($row[$startcol + 8] !== null) ? (boolean) $row[$startcol + 8] : null;
+            $this->only_elected = ($row[$startcol + 9] !== null) ? (boolean) $row[$startcol + 9] : null;
+            $this->created_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+            $this->updated_at = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+            $this->slug = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -681,7 +770,7 @@ abstract class BasePCircle extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 11; // 11 = PCirclePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 13; // 13 = PCirclePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PCircle object", $e);
@@ -704,6 +793,9 @@ abstract class BasePCircle extends BaseObject implements Persistent
     public function ensureConsistency()
     {
 
+        if ($this->aPCOwner !== null && $this->p_c_owner_id !== $this->aPCOwner->getId()) {
+            $this->aPCOwner = null;
+        }
     } // ensureConsistency
 
     /**
@@ -743,6 +835,7 @@ abstract class BasePCircle extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->aPCOwner = null;
             $this->collPCTopics = null;
 
             $this->collPCGroupLCs = null;
@@ -894,6 +987,18 @@ abstract class BasePCircle extends BaseObject implements Persistent
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
 
+            // We call the save method on the following object(s) if they
+            // were passed to this object by their corresponding set
+            // method.  This object relates to these object(s) by a
+            // foreign key reference.
+
+            if ($this->aPCOwner !== null) {
+                if ($this->aPCOwner->isModified() || $this->aPCOwner->isNew()) {
+                    $affectedRows += $this->aPCOwner->save($con);
+                }
+                $this->setPCOwner($this->aPCOwner);
+            }
+
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -1040,6 +1145,9 @@ abstract class BasePCircle extends BaseObject implements Persistent
         if ($this->isColumnModified(PCirclePeer::UUID)) {
             $modifiedColumns[':p' . $index++]  = '`uuid`';
         }
+        if ($this->isColumnModified(PCirclePeer::P_C_OWNER_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`p_c_owner_id`';
+        }
         if ($this->isColumnModified(PCirclePeer::TITLE)) {
             $modifiedColumns[':p' . $index++]  = '`title`';
         }
@@ -1048,6 +1156,9 @@ abstract class BasePCircle extends BaseObject implements Persistent
         }
         if ($this->isColumnModified(PCirclePeer::DESCRIPTION)) {
             $modifiedColumns[':p' . $index++]  = '`description`';
+        }
+        if ($this->isColumnModified(PCirclePeer::LOGO_FILE_NAME)) {
+            $modifiedColumns[':p' . $index++]  = '`logo_file_name`';
         }
         if ($this->isColumnModified(PCirclePeer::URL)) {
             $modifiedColumns[':p' . $index++]  = '`url`';
@@ -1084,6 +1195,9 @@ abstract class BasePCircle extends BaseObject implements Persistent
                     case '`uuid`':
                         $stmt->bindValue($identifier, $this->uuid, PDO::PARAM_STR);
                         break;
+                    case '`p_c_owner_id`':
+                        $stmt->bindValue($identifier, $this->p_c_owner_id, PDO::PARAM_INT);
+                        break;
                     case '`title`':
                         $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
                         break;
@@ -1092,6 +1206,9 @@ abstract class BasePCircle extends BaseObject implements Persistent
                         break;
                     case '`description`':
                         $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
+                        break;
+                    case '`logo_file_name`':
+                        $stmt->bindValue($identifier, $this->logo_file_name, PDO::PARAM_STR);
                         break;
                     case '`url`':
                         $stmt->bindValue($identifier, $this->url, PDO::PARAM_STR);
@@ -1178,30 +1295,36 @@ abstract class BasePCircle extends BaseObject implements Persistent
                 return $this->getUuid();
                 break;
             case 2:
-                return $this->getTitle();
+                return $this->getPCOwnerId();
                 break;
             case 3:
-                return $this->getSummary();
+                return $this->getTitle();
                 break;
             case 4:
-                return $this->getDescription();
+                return $this->getSummary();
                 break;
             case 5:
-                return $this->getUrl();
+                return $this->getDescription();
                 break;
             case 6:
-                return $this->getOnline();
+                return $this->getLogoFileName();
                 break;
             case 7:
-                return $this->getOnlyElected();
+                return $this->getUrl();
                 break;
             case 8:
-                return $this->getCreatedAt();
+                return $this->getOnline();
                 break;
             case 9:
-                return $this->getUpdatedAt();
+                return $this->getOnlyElected();
                 break;
             case 10:
+                return $this->getCreatedAt();
+                break;
+            case 11:
+                return $this->getUpdatedAt();
+                break;
+            case 12:
                 return $this->getSlug();
                 break;
             default:
@@ -1235,15 +1358,17 @@ abstract class BasePCircle extends BaseObject implements Persistent
         $result = array(
             $keys[0] => $this->getId(),
             $keys[1] => $this->getUuid(),
-            $keys[2] => $this->getTitle(),
-            $keys[3] => $this->getSummary(),
-            $keys[4] => $this->getDescription(),
-            $keys[5] => $this->getUrl(),
-            $keys[6] => $this->getOnline(),
-            $keys[7] => $this->getOnlyElected(),
-            $keys[8] => $this->getCreatedAt(),
-            $keys[9] => $this->getUpdatedAt(),
-            $keys[10] => $this->getSlug(),
+            $keys[2] => $this->getPCOwnerId(),
+            $keys[3] => $this->getTitle(),
+            $keys[4] => $this->getSummary(),
+            $keys[5] => $this->getDescription(),
+            $keys[6] => $this->getLogoFileName(),
+            $keys[7] => $this->getUrl(),
+            $keys[8] => $this->getOnline(),
+            $keys[9] => $this->getOnlyElected(),
+            $keys[10] => $this->getCreatedAt(),
+            $keys[11] => $this->getUpdatedAt(),
+            $keys[12] => $this->getSlug(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1251,6 +1376,9 @@ abstract class BasePCircle extends BaseObject implements Persistent
         }
 
         if ($includeForeignObjects) {
+            if (null !== $this->aPCOwner) {
+                $result['PCOwner'] = $this->aPCOwner->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
             if (null !== $this->collPCTopics) {
                 $result['PCTopics'] = $this->collPCTopics->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
@@ -1301,30 +1429,36 @@ abstract class BasePCircle extends BaseObject implements Persistent
                 $this->setUuid($value);
                 break;
             case 2:
-                $this->setTitle($value);
+                $this->setPCOwnerId($value);
                 break;
             case 3:
-                $this->setSummary($value);
+                $this->setTitle($value);
                 break;
             case 4:
-                $this->setDescription($value);
+                $this->setSummary($value);
                 break;
             case 5:
-                $this->setUrl($value);
+                $this->setDescription($value);
                 break;
             case 6:
-                $this->setOnline($value);
+                $this->setLogoFileName($value);
                 break;
             case 7:
-                $this->setOnlyElected($value);
+                $this->setUrl($value);
                 break;
             case 8:
-                $this->setCreatedAt($value);
+                $this->setOnline($value);
                 break;
             case 9:
-                $this->setUpdatedAt($value);
+                $this->setOnlyElected($value);
                 break;
             case 10:
+                $this->setCreatedAt($value);
+                break;
+            case 11:
+                $this->setUpdatedAt($value);
+                break;
+            case 12:
                 $this->setSlug($value);
                 break;
         } // switch()
@@ -1353,15 +1487,17 @@ abstract class BasePCircle extends BaseObject implements Persistent
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setUuid($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setTitle($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setSummary($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setDescription($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setUrl($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setOnline($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setOnlyElected($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setCreatedAt($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setUpdatedAt($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setSlug($arr[$keys[10]]);
+        if (array_key_exists($keys[2], $arr)) $this->setPCOwnerId($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setTitle($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setSummary($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setDescription($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setLogoFileName($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setUrl($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setOnline($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setOnlyElected($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setCreatedAt($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setUpdatedAt($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setSlug($arr[$keys[12]]);
     }
 
     /**
@@ -1375,9 +1511,11 @@ abstract class BasePCircle extends BaseObject implements Persistent
 
         if ($this->isColumnModified(PCirclePeer::ID)) $criteria->add(PCirclePeer::ID, $this->id);
         if ($this->isColumnModified(PCirclePeer::UUID)) $criteria->add(PCirclePeer::UUID, $this->uuid);
+        if ($this->isColumnModified(PCirclePeer::P_C_OWNER_ID)) $criteria->add(PCirclePeer::P_C_OWNER_ID, $this->p_c_owner_id);
         if ($this->isColumnModified(PCirclePeer::TITLE)) $criteria->add(PCirclePeer::TITLE, $this->title);
         if ($this->isColumnModified(PCirclePeer::SUMMARY)) $criteria->add(PCirclePeer::SUMMARY, $this->summary);
         if ($this->isColumnModified(PCirclePeer::DESCRIPTION)) $criteria->add(PCirclePeer::DESCRIPTION, $this->description);
+        if ($this->isColumnModified(PCirclePeer::LOGO_FILE_NAME)) $criteria->add(PCirclePeer::LOGO_FILE_NAME, $this->logo_file_name);
         if ($this->isColumnModified(PCirclePeer::URL)) $criteria->add(PCirclePeer::URL, $this->url);
         if ($this->isColumnModified(PCirclePeer::ONLINE)) $criteria->add(PCirclePeer::ONLINE, $this->online);
         if ($this->isColumnModified(PCirclePeer::ONLY_ELECTED)) $criteria->add(PCirclePeer::ONLY_ELECTED, $this->only_elected);
@@ -1448,9 +1586,11 @@ abstract class BasePCircle extends BaseObject implements Persistent
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
         $copyObj->setUuid($this->getUuid());
+        $copyObj->setPCOwnerId($this->getPCOwnerId());
         $copyObj->setTitle($this->getTitle());
         $copyObj->setSummary($this->getSummary());
         $copyObj->setDescription($this->getDescription());
+        $copyObj->setLogoFileName($this->getLogoFileName());
         $copyObj->setUrl($this->getUrl());
         $copyObj->setOnline($this->getOnline());
         $copyObj->setOnlyElected($this->getOnlyElected());
@@ -1531,6 +1671,58 @@ abstract class BasePCircle extends BaseObject implements Persistent
         }
 
         return self::$peer;
+    }
+
+    /**
+     * Declares an association between this object and a PCOwner object.
+     *
+     * @param                  PCOwner $v
+     * @return PCircle The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setPCOwner(PCOwner $v = null)
+    {
+        if ($v === null) {
+            $this->setPCOwnerId(NULL);
+        } else {
+            $this->setPCOwnerId($v->getId());
+        }
+
+        $this->aPCOwner = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the PCOwner object, it will not be re-added.
+        if ($v !== null) {
+            $v->addPCircle($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated PCOwner object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return PCOwner The associated PCOwner object.
+     * @throws PropelException
+     */
+    public function getPCOwner(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aPCOwner === null && ($this->p_c_owner_id !== null) && $doQuery) {
+            $this->aPCOwner = PCOwnerQuery::create()->findPk($this->p_c_owner_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aPCOwner->addPCircles($this);
+             */
+        }
+
+        return $this->aPCOwner;
     }
 
 
@@ -2661,9 +2853,11 @@ abstract class BasePCircle extends BaseObject implements Persistent
     {
         $this->id = null;
         $this->uuid = null;
+        $this->p_c_owner_id = null;
         $this->title = null;
         $this->summary = null;
         $this->description = null;
+        $this->logo_file_name = null;
         $this->url = null;
         $this->online = null;
         $this->only_elected = null;
@@ -2717,6 +2911,9 @@ abstract class BasePCircle extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->aPCOwner instanceof Persistent) {
+              $this->aPCOwner->clearAllReferences($deep);
+            }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
@@ -2741,6 +2938,7 @@ abstract class BasePCircle extends BaseObject implements Persistent
             $this->collPUsers->clearIterator();
         }
         $this->collPUsers = null;
+        $this->aPCOwner = null;
     }
 
     /**
@@ -3018,9 +3216,11 @@ abstract class BasePCircle extends BaseObject implements Persistent
             $this->setId($archive->getId());
         }
         $this->setUuid($archive->getUuid());
+        $this->setPCOwnerId($archive->getPCOwnerId());
         $this->setTitle($archive->getTitle());
         $this->setSummary($archive->getSummary());
         $this->setDescription($archive->getDescription());
+        $this->setLogoFileName($archive->getLogoFileName());
         $this->setUrl($archive->getUrl());
         $this->setOnline($archive->getOnline());
         $this->setOnlyElected($archive->getOnlyElected());

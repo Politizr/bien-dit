@@ -21,6 +21,7 @@ use Politizr\Model\PCTopicArchiveQuery;
  * @method PCTopicArchiveQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method PCTopicArchiveQuery orderBySummary($order = Criteria::ASC) Order by the summary column
  * @method PCTopicArchiveQuery orderByDescription($order = Criteria::ASC) Order by the description column
+ * @method PCTopicArchiveQuery orderByFileName($order = Criteria::ASC) Order by the file_name column
  * @method PCTopicArchiveQuery orderByOnline($order = Criteria::ASC) Order by the online column
  * @method PCTopicArchiveQuery orderByForceGeolocType($order = Criteria::ASC) Order by the force_geoloc_type column
  * @method PCTopicArchiveQuery orderByForceGeolocId($order = Criteria::ASC) Order by the force_geoloc_id column
@@ -35,6 +36,7 @@ use Politizr\Model\PCTopicArchiveQuery;
  * @method PCTopicArchiveQuery groupByTitle() Group by the title column
  * @method PCTopicArchiveQuery groupBySummary() Group by the summary column
  * @method PCTopicArchiveQuery groupByDescription() Group by the description column
+ * @method PCTopicArchiveQuery groupByFileName() Group by the file_name column
  * @method PCTopicArchiveQuery groupByOnline() Group by the online column
  * @method PCTopicArchiveQuery groupByForceGeolocType() Group by the force_geoloc_type column
  * @method PCTopicArchiveQuery groupByForceGeolocId() Group by the force_geoloc_id column
@@ -55,6 +57,7 @@ use Politizr\Model\PCTopicArchiveQuery;
  * @method PCTopicArchive findOneByTitle(string $title) Return the first PCTopicArchive filtered by the title column
  * @method PCTopicArchive findOneBySummary(string $summary) Return the first PCTopicArchive filtered by the summary column
  * @method PCTopicArchive findOneByDescription(string $description) Return the first PCTopicArchive filtered by the description column
+ * @method PCTopicArchive findOneByFileName(string $file_name) Return the first PCTopicArchive filtered by the file_name column
  * @method PCTopicArchive findOneByOnline(boolean $online) Return the first PCTopicArchive filtered by the online column
  * @method PCTopicArchive findOneByForceGeolocType(string $force_geoloc_type) Return the first PCTopicArchive filtered by the force_geoloc_type column
  * @method PCTopicArchive findOneByForceGeolocId(int $force_geoloc_id) Return the first PCTopicArchive filtered by the force_geoloc_id column
@@ -69,6 +72,7 @@ use Politizr\Model\PCTopicArchiveQuery;
  * @method array findByTitle(string $title) Return PCTopicArchive objects filtered by the title column
  * @method array findBySummary(string $summary) Return PCTopicArchive objects filtered by the summary column
  * @method array findByDescription(string $description) Return PCTopicArchive objects filtered by the description column
+ * @method array findByFileName(string $file_name) Return PCTopicArchive objects filtered by the file_name column
  * @method array findByOnline(boolean $online) Return PCTopicArchive objects filtered by the online column
  * @method array findByForceGeolocType(string $force_geoloc_type) Return PCTopicArchive objects filtered by the force_geoloc_type column
  * @method array findByForceGeolocId(int $force_geoloc_id) Return PCTopicArchive objects filtered by the force_geoloc_id column
@@ -181,7 +185,7 @@ abstract class BasePCTopicArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `p_circle_id`, `title`, `summary`, `description`, `online`, `force_geoloc_type`, `force_geoloc_id`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_c_topic_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_circle_id`, `title`, `summary`, `description`, `file_name`, `online`, `force_geoloc_type`, `force_geoloc_id`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_c_topic_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -468,6 +472,35 @@ abstract class BasePCTopicArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PCTopicArchivePeer::DESCRIPTION, $description, $comparison);
+    }
+
+    /**
+     * Filter the query on the file_name column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByFileName('fooValue');   // WHERE file_name = 'fooValue'
+     * $query->filterByFileName('%fooValue%'); // WHERE file_name LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $fileName The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PCTopicArchiveQuery The current query, for fluid interface
+     */
+    public function filterByFileName($fileName = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($fileName)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $fileName)) {
+                $fileName = str_replace('*', '%', $fileName);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PCTopicArchivePeer::FILE_NAME, $fileName, $comparison);
     }
 
     /**

@@ -1,3 +1,6 @@
-<div class="circleBreadcrumb">
-    <a href="{{ path('DetailCircle', { 'slug': circle.slug }) }}">{{ circle.title }}</a> - <a href="{{ path('TopicDetail', { 'circleSlug': circle.slug, 'slug': topic.slug }) }}">{{ topic.title }}</a>
+<div class="mainClass">
+    <div class="center">
+        {{ circle | circleMenuTop }}
+        {{ circle | circleBreadcrumb }}
+    </div>
 </div>

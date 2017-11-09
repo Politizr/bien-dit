@@ -2870,7 +2870,7 @@ abstract class BasePUserQuery extends ModelCriteria
      *
      * @return PUserQuery The current query, for fluid interface
      */
-    public function joinPEOperation($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinPEOperation($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('PEOperation');
@@ -2905,7 +2905,7 @@ abstract class BasePUserQuery extends ModelCriteria
      *
      * @return   \Politizr\Model\PEOperationQuery A secondary query class using the current class as primary query
      */
-    public function usePEOperationQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function usePEOperationQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
             ->joinPEOperation($relationAlias, $joinType)

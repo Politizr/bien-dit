@@ -256,7 +256,13 @@ function fullImgLiquid() {
         fill: true,
         horizontalAlign: "center",
         verticalAlign: "center"
-    });    
+    });
+    // full size image in grp
+    $("#grpBriefHeaderImg, .grpImg").imgLiquid({
+        fill: true,
+        horizontalAlign: "center",
+        verticalAlign: "center"
+    });
 }
 
 /**
