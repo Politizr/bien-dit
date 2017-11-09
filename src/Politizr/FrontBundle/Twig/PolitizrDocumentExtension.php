@@ -1138,7 +1138,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
             }
 
             // operation?
-            $operation = $document->getPEOperation();
+            $operation = $document->getDebate()->getPEOperation();
             if ($operation) {
                 $userIdOwner = $operation->getPUserId();
                 if ($userIdOwner) {
