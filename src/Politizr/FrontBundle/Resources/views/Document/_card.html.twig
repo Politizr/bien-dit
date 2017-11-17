@@ -24,10 +24,9 @@
         <div class="postStats">
             {% include 'PolitizrFrontBundle:Document:_statsMini.html.twig' with { 'document': document, 'facebook': false } only %}
         </div>
-        {{ circleBreadcrumb(document = document) }}
         {{ document | nbElectedPublications }}
-
         <h5>{% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': document } only %}</h5>
+        {{ circleBreadcrumb(document = document) }}
         <div class="postTags">
             <h5>Thématiques abordées</h5>
             <div class="tagList">
