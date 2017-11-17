@@ -1344,10 +1344,15 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 )
             );
         } elseif ($topic) {
+            $circle = $topic->getPCircle();
+            $owner = $circle->getPCOwner();
+            
             // Topic banner
             $html = $env->render(
                 'PolitizrFrontBundle:Document:_topicBannerEdit.html.twig',
                 array(
+                    'owner' => $owner,
+                    'circle' => $circle,
                     'topic' => $topic,
                 )
             );

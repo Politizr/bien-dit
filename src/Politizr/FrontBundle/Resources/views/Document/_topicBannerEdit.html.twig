@@ -1,7 +1,10 @@
-<div id="topic" class="bannerItem miniHeader topic-{{ topic.uuid }}">
+<div id="topic" class="bannerItem miniHeader">
     <div class="center">
         <div class="txtTopic">
-            Rédigez ici vos opinions ou questions sur le sujet de <b>"{{ topic.title }}"</b>.
+            <div class="txtTopic">
+                <i class="icon-grp"></i>{{ owner.title }}
+                <span>Rédigez ici vos opinions ou questions sur le sujet de <b>"{{ topic.title }}"</b>.</span>
+            </div>
         </div>
     </div>
     <div class="bgLeftTopic"></div>
