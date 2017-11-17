@@ -115,7 +115,7 @@ class XhrCircle
         // update membership
         if ($way == 'subscribe') {
             $this->circleService->addUserInCircle($user, $circle);
-            $redirectUrl = $this->router->generate('DetailCircle', array('slug' => $circle->getSlug()));
+            $redirectUrl = $this->router->generate('CircleDetail', array('slug' => $circle->getSlug()));
         } elseif ($way == 'unsubscribe') {
             $this->circleService->removeUserFromCircle($user, $circle);
             $redirectUrl = null;
