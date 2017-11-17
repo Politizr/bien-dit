@@ -1412,6 +1412,11 @@ class PolitizrDocumentExtension extends \Twig_Extension
             $user = null;
         }
 
+        // no boost available for circle's documents
+        if ($document->getPCTopicId()) {
+            return null;
+        }
+
         $author = $document->getUser();
 
         if ($user && $author && $user->getId() == $author->getId() && $document->getWantBoost() == DocumentConstants::WB_NO_RESPONSE) {

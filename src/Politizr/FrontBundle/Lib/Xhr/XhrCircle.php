@@ -186,6 +186,7 @@ class XhrCircle
         $publications = $this->documentService->getPublicationsByFilters(
             null,
             null,
+            null,
             $topicUuid,
             $filterPublication,
             $filterProfile,

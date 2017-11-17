@@ -1641,7 +1641,14 @@ class XhrDocument
             $filterDate = ListingConstants::FILTER_KEYWORD_ALL_DATE;
         }
 
+        // get current user
+        $currentUser = $this->securityTokenStorage->getToken()->getUser();
+        if (is_string($currentUser)) {
+            $currentUser = null;
+        }
+
         $publications = $this->documentService->getPublicationsByFilters(
+            $currentUser?$currentUser->getId():null,
             $geoUuid,
             $type,
             null,

@@ -156,6 +156,7 @@ class DocumentService
      * Get filtered paginated documents
      * beta
      *
+     * @param int $currentUserId
      * @param string $geoUuid
      * @param string $type
      * @param string $topicUuid
@@ -168,6 +169,7 @@ class DocumentService
      * @return PropelCollection[Publication]
      */
     public function getPublicationsByFilters(
+        $currentUserId = null,
         $geoUuid = null,
         $type = null,
         $topicUuid = null,
@@ -179,6 +181,12 @@ class DocumentService
         $count = ListingConstants::LISTING_CLASSIC_PAGINATION
     ) {
         $documents = new \PropelCollection();
+
+        $inQueryTopicIds = null;
+        if ($currentUserId) {
+            $topicIds = $this->circleService->getTopicIdsByUserId($currentUserId);
+            $inQueryTopicIds = $this->globalTools->getInQuery($topicIds);
+        }
 
         $inQueryCityIds = null;
         $inQueryDepartmentIds = null;
@@ -250,6 +258,7 @@ class DocumentService
         }
 
         $documents = $this->documentManager->generatePublicationsByFiltersPaginated(
+            $inQueryTopicIds,
             $inQueryCityIds,
             $inQueryDepartmentIds,
             $regionId,
