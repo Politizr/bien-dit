@@ -44,7 +44,7 @@ class PEOperationArchiveTableMap extends TableMap
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addColumn('uuid', 'Uuid', 'VARCHAR', false, 50, null);
-        $this->addColumn('p_user_id', 'PUserId', 'INTEGER', true, null, null);
+        $this->addColumn('p_user_id', 'PUserId', 'INTEGER', false, null, null);
         $this->addColumn('title', 'Title', 'VARCHAR', false, 150, null);
         $this->addColumn('description', 'Description', 'LONGVARCHAR', false, null, null);
         $this->addColumn('editing_description', 'EditingDescription', 'LONGVARCHAR', false, null, null);
