@@ -1,6 +1,6 @@
 {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
 {% if isMember %}
-    <a href="{{ path('CircleDetail', { 'slug': circle.slug }) }}" class="groupListingConsult">Consulter</a>
+    <a href="{{ path('CircleDetail', { 'slug': circle.slug }) }}" class="groupListingConsult"><i class="icon-goto"></i>Consulter</a>
     <a action="quitCircle" uuid="{{ circle.uuid }}"><i class="icon-cross-insquare"></i>Quitter</a>
 {% else %}
     <a action="joinCircle" uuid="{{ circle.uuid }}"><i class="icon-check-insquare"></i>Rejoindre</a>
