@@ -17,6 +17,7 @@ use Politizr\Model\PDDebate;
 use Politizr\Model\PUNotification;
 use Politizr\Model\PUser;
 use Politizr\Model\PEOperation;
+use Politizr\Model\PCOwner;
 
 use Politizr\Model\PUFollowUQuery;
 use Politizr\Model\PUserQuery;
@@ -201,6 +202,11 @@ class PolitizrUserExtension extends \Twig_Extension
                 'circleMenu',
                 array($this, 'circleMenu'),
                 array('is_safe' => array('html'), 'needs_environment' => true)
+            ),
+            new \Twig_SimpleFilter(
+                'circlesByOwner',
+                array($this, 'circlesByOwner'),
+                array('is_safe' => array('html'))
             ),
         );
     }
@@ -932,20 +938,32 @@ class PolitizrUserExtension extends \Twig_Extension
     /**
      * Get user's circles
      *
-     * @return boolean
+     * @return string
      */
     public function circleMenu(\Twig_Environment $env, PUser $user)
     {
-        $circles = $this->circleService->getCirclesByUser($user);
+        $owners = $this->circleService->getOwnersByUser($user);
 
         $html = $env->render(
             'PolitizrFrontBundle:Navigation\\Menu:_circles.html.twig',
             array(
-                'circles' => $circles,
+                'owners' => $owners,
             )
         );
 
         return $html;
+    }
+
+    /**
+     * Get owner's circles for a user
+     *
+     * @return PropelCollection[PCircle]
+     */
+    public function circlesByOwner(PUser $user, PCOwner $owner)
+    {
+        $circles = $this->circleService->getOwnerCirclesByUser($owner, $user);
+
+        return $circles;
     }
 
     /* ######################################################################################################## */

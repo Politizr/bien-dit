@@ -34,6 +34,7 @@ use Politizr\Model\PDReaction;
  * @method PCTopicQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PCTopicQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  * @method PCTopicQuery orderBySlug($order = Criteria::ASC) Order by the slug column
+ * @method PCTopicQuery orderBySortableRank($order = Criteria::ASC) Order by the sortable_rank column
  *
  * @method PCTopicQuery groupById() Group by the id column
  * @method PCTopicQuery groupByUuid() Group by the uuid column
@@ -48,6 +49,7 @@ use Politizr\Model\PDReaction;
  * @method PCTopicQuery groupByCreatedAt() Group by the created_at column
  * @method PCTopicQuery groupByUpdatedAt() Group by the updated_at column
  * @method PCTopicQuery groupBySlug() Group by the slug column
+ * @method PCTopicQuery groupBySortableRank() Group by the sortable_rank column
  *
  * @method PCTopicQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method PCTopicQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -80,6 +82,7 @@ use Politizr\Model\PDReaction;
  * @method PCTopic findOneByCreatedAt(string $created_at) Return the first PCTopic filtered by the created_at column
  * @method PCTopic findOneByUpdatedAt(string $updated_at) Return the first PCTopic filtered by the updated_at column
  * @method PCTopic findOneBySlug(string $slug) Return the first PCTopic filtered by the slug column
+ * @method PCTopic findOneBySortableRank(int $sortable_rank) Return the first PCTopic filtered by the sortable_rank column
  *
  * @method array findById(int $id) Return PCTopic objects filtered by the id column
  * @method array findByUuid(string $uuid) Return PCTopic objects filtered by the uuid column
@@ -94,6 +97,7 @@ use Politizr\Model\PDReaction;
  * @method array findByCreatedAt(string $created_at) Return PCTopic objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PCTopic objects filtered by the updated_at column
  * @method array findBySlug(string $slug) Return PCTopic objects filtered by the slug column
+ * @method array findBySortableRank(int $sortable_rank) Return PCTopic objects filtered by the sortable_rank column
  */
 abstract class BasePCTopicQuery extends ModelCriteria
 {
@@ -205,7 +209,7 @@ abstract class BasePCTopicQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `p_circle_id`, `title`, `summary`, `description`, `file_name`, `online`, `force_geoloc_type`, `force_geoloc_id`, `created_at`, `updated_at`, `slug` FROM `p_c_topic` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_circle_id`, `title`, `summary`, `description`, `file_name`, `online`, `force_geoloc_type`, `force_geoloc_id`, `created_at`, `updated_at`, `slug`, `sortable_rank` FROM `p_c_topic` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -739,6 +743,48 @@ abstract class BasePCTopicQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the sortable_rank column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterBySortableRank(1234); // WHERE sortable_rank = 1234
+     * $query->filterBySortableRank(array(12, 34)); // WHERE sortable_rank IN (12, 34)
+     * $query->filterBySortableRank(array('min' => 12)); // WHERE sortable_rank >= 12
+     * $query->filterBySortableRank(array('max' => 12)); // WHERE sortable_rank <= 12
+     * </code>
+     *
+     * @param     mixed $sortableRank The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PCTopicQuery The current query, for fluid interface
+     */
+    public function filterBySortableRank($sortableRank = null, $comparison = null)
+    {
+        if (is_array($sortableRank)) {
+            $useMinMax = false;
+            if (isset($sortableRank['min'])) {
+                $this->addUsingAlias(PCTopicPeer::SORTABLE_RANK, $sortableRank['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($sortableRank['max'])) {
+                $this->addUsingAlias(PCTopicPeer::SORTABLE_RANK, $sortableRank['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PCTopicPeer::SORTABLE_RANK, $sortableRank, $comparison);
+    }
+
+    /**
      * Filter the query by a related PCircle object
      *
      * @param   PCircle|PropelObjectCollection $pCircle The related object(s) to use as filter
@@ -1182,6 +1228,181 @@ abstract class BasePCTopicQuery extends ModelCriteria
         }
 
         return $stmt;
+    }
+
+    // sortable behavior
+
+    /**
+     * Returns the objects in a certain list, from the list scope
+     *
+     * @param int $scope Scope to determine which objects node to return
+     *
+     * @return PCTopicQuery The current query, for fluid interface
+     */
+    public function inList($scope)
+    {
+
+        PCTopicPeer::sortableApplyScopeCriteria($this, $scope, 'addUsingAlias');
+
+        return $this;
+    }
+
+    /**
+     * Filter the query based on a rank in the list
+     *
+     * @param     integer   $rank rank
+     * @param int $scope Scope to determine which objects node to return
+
+     *
+     * @return    PCTopicQuery The current query, for fluid interface
+     */
+    public function filterByRank($rank, $scope)
+    {
+
+
+        return $this
+            ->inList($scope)
+            ->addUsingAlias(PCTopicPeer::RANK_COL, $rank, Criteria::EQUAL);
+    }
+
+    /**
+     * Order the query based on the rank in the list.
+     * Using the default $order, returns the item with the lowest rank first
+     *
+     * @param     string $order either Criteria::ASC (default) or Criteria::DESC
+     *
+     * @return    PCTopicQuery The current query, for fluid interface
+     */
+    public function orderByRank($order = Criteria::ASC)
+    {
+        $order = strtoupper($order);
+        switch ($order) {
+            case Criteria::ASC:
+                return $this->addAscendingOrderByColumn($this->getAliasedColName(PCTopicPeer::RANK_COL));
+                break;
+            case Criteria::DESC:
+                return $this->addDescendingOrderByColumn($this->getAliasedColName(PCTopicPeer::RANK_COL));
+                break;
+            default:
+                throw new PropelException('PCTopicQuery::orderBy() only accepts "asc" or "desc" as argument');
+        }
+    }
+
+    /**
+     * Get an item from the list based on its rank
+     *
+     * @param     integer   $rank rank
+     * @param int $scope Scope to determine which objects node to return
+     * @param     PropelPDO $con optional connection
+     *
+     * @return    PCTopic
+     */
+    public function findOneByRank($rank, $scope, PropelPDO $con = null)
+    {
+
+        return $this
+            ->filterByRank($rank, $scope)
+            ->findOne($con);
+    }
+
+    /**
+     * Returns a list of objects
+     *
+     * @param int $scope Scope to determine which objects node to return
+
+     * @param      PropelPDO $con	Connection to use.
+     *
+     * @return     mixed the list of results, formatted by the current formatter
+     */
+    public function findList($scope, $con = null)
+    {
+
+
+        return $this
+            ->inList($scope)
+            ->orderByRank()
+            ->find($con);
+    }
+
+    /**
+     * Get the highest rank
+     *
+     * @param int $scope Scope to determine which objects node to return
+
+     * @param     PropelPDO optional connection
+     *
+     * @return    integer highest position
+     */
+    public function getMaxRank($scope, PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(PCTopicPeer::DATABASE_NAME);
+        }
+        // shift the objects with a position lower than the one of object
+        $this->addSelectColumn('MAX(' . PCTopicPeer::RANK_COL . ')');
+
+        PCTopicPeer::sortableApplyScopeCriteria($this, $scope);
+        $stmt = $this->doSelect($con);
+
+        return $stmt->fetchColumn();
+    }
+
+    /**
+     * Get the highest rank by a scope with a array format.
+     *
+     * @param     int $scope		The scope value as scalar type or array($value1, ...).
+
+     * @param     PropelPDO optional connection
+     *
+     * @return    integer highest position
+     */
+    public function getMaxRankArray($scope, PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(PCTopicPeer::DATABASE_NAME);
+        }
+        // shift the objects with a position lower than the one of object
+        $this->addSelectColumn('MAX(' . PCTopicPeer::RANK_COL . ')');
+        PCTopicPeer::sortableApplyScopeCriteria($this, $scope);
+        $stmt = $this->doSelect($con);
+
+        return $stmt->fetchColumn();
+    }
+
+    /**
+     * Reorder a set of sortable objects based on a list of id/position
+     * Beware that there is no check made on the positions passed
+     * So incoherent positions will result in an incoherent list
+     *
+     * @param     array     $order id => rank pairs
+     * @param     PropelPDO $con   optional connection
+     *
+     * @return    boolean true if the reordering took place, false if a database problem prevented it
+     */
+    public function reorder(array $order, PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(PCTopicPeer::DATABASE_NAME);
+        }
+
+        $con->beginTransaction();
+        try {
+            $ids = array_keys($order);
+            $objects = $this->findPks($ids, $con);
+            foreach ($objects as $object) {
+                $pk = $object->getPrimaryKey();
+                if ($object->getSortableRank() != $order[$pk]) {
+                    $object->setSortableRank($order[$pk]);
+                    $object->save($con);
+                }
+            }
+            $con->commit();
+
+            return true;
+        } catch (Exception $e) {
+            $con->rollback();
+            throw $e;
+        }
     }
 
     // archivable behavior

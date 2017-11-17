@@ -24,10 +24,12 @@ use Politizr\Model\PCircleArchiveQuery;
  * @method PCircleArchiveQuery orderByLogoFileName($order = Criteria::ASC) Order by the logo_file_name column
  * @method PCircleArchiveQuery orderByUrl($order = Criteria::ASC) Order by the url column
  * @method PCircleArchiveQuery orderByOnline($order = Criteria::ASC) Order by the online column
+ * @method PCircleArchiveQuery orderByReadOnly($order = Criteria::ASC) Order by the read_only column
  * @method PCircleArchiveQuery orderByOnlyElected($order = Criteria::ASC) Order by the only_elected column
  * @method PCircleArchiveQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PCircleArchiveQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  * @method PCircleArchiveQuery orderBySlug($order = Criteria::ASC) Order by the slug column
+ * @method PCircleArchiveQuery orderBySortableRank($order = Criteria::ASC) Order by the sortable_rank column
  * @method PCircleArchiveQuery orderByArchivedAt($order = Criteria::ASC) Order by the archived_at column
  *
  * @method PCircleArchiveQuery groupById() Group by the id column
@@ -39,10 +41,12 @@ use Politizr\Model\PCircleArchiveQuery;
  * @method PCircleArchiveQuery groupByLogoFileName() Group by the logo_file_name column
  * @method PCircleArchiveQuery groupByUrl() Group by the url column
  * @method PCircleArchiveQuery groupByOnline() Group by the online column
+ * @method PCircleArchiveQuery groupByReadOnly() Group by the read_only column
  * @method PCircleArchiveQuery groupByOnlyElected() Group by the only_elected column
  * @method PCircleArchiveQuery groupByCreatedAt() Group by the created_at column
  * @method PCircleArchiveQuery groupByUpdatedAt() Group by the updated_at column
  * @method PCircleArchiveQuery groupBySlug() Group by the slug column
+ * @method PCircleArchiveQuery groupBySortableRank() Group by the sortable_rank column
  * @method PCircleArchiveQuery groupByArchivedAt() Group by the archived_at column
  *
  * @method PCircleArchiveQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
@@ -60,10 +64,12 @@ use Politizr\Model\PCircleArchiveQuery;
  * @method PCircleArchive findOneByLogoFileName(string $logo_file_name) Return the first PCircleArchive filtered by the logo_file_name column
  * @method PCircleArchive findOneByUrl(string $url) Return the first PCircleArchive filtered by the url column
  * @method PCircleArchive findOneByOnline(boolean $online) Return the first PCircleArchive filtered by the online column
+ * @method PCircleArchive findOneByReadOnly(boolean $read_only) Return the first PCircleArchive filtered by the read_only column
  * @method PCircleArchive findOneByOnlyElected(boolean $only_elected) Return the first PCircleArchive filtered by the only_elected column
  * @method PCircleArchive findOneByCreatedAt(string $created_at) Return the first PCircleArchive filtered by the created_at column
  * @method PCircleArchive findOneByUpdatedAt(string $updated_at) Return the first PCircleArchive filtered by the updated_at column
  * @method PCircleArchive findOneBySlug(string $slug) Return the first PCircleArchive filtered by the slug column
+ * @method PCircleArchive findOneBySortableRank(int $sortable_rank) Return the first PCircleArchive filtered by the sortable_rank column
  * @method PCircleArchive findOneByArchivedAt(string $archived_at) Return the first PCircleArchive filtered by the archived_at column
  *
  * @method array findById(int $id) Return PCircleArchive objects filtered by the id column
@@ -75,10 +81,12 @@ use Politizr\Model\PCircleArchiveQuery;
  * @method array findByLogoFileName(string $logo_file_name) Return PCircleArchive objects filtered by the logo_file_name column
  * @method array findByUrl(string $url) Return PCircleArchive objects filtered by the url column
  * @method array findByOnline(boolean $online) Return PCircleArchive objects filtered by the online column
+ * @method array findByReadOnly(boolean $read_only) Return PCircleArchive objects filtered by the read_only column
  * @method array findByOnlyElected(boolean $only_elected) Return PCircleArchive objects filtered by the only_elected column
  * @method array findByCreatedAt(string $created_at) Return PCircleArchive objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PCircleArchive objects filtered by the updated_at column
  * @method array findBySlug(string $slug) Return PCircleArchive objects filtered by the slug column
+ * @method array findBySortableRank(int $sortable_rank) Return PCircleArchive objects filtered by the sortable_rank column
  * @method array findByArchivedAt(string $archived_at) Return PCircleArchive objects filtered by the archived_at column
  */
 abstract class BasePCircleArchiveQuery extends ModelCriteria
@@ -185,7 +193,7 @@ abstract class BasePCircleArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `p_c_owner_id`, `title`, `summary`, `description`, `logo_file_name`, `url`, `online`, `only_elected`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_circle_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_c_owner_id`, `title`, `summary`, `description`, `logo_file_name`, `url`, `online`, `read_only`, `only_elected`, `created_at`, `updated_at`, `slug`, `sortable_rank`, `archived_at` FROM `p_circle_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -560,6 +568,33 @@ abstract class BasePCircleArchiveQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the read_only column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByReadOnly(true); // WHERE read_only = true
+     * $query->filterByReadOnly('yes'); // WHERE read_only = true
+     * </code>
+     *
+     * @param     boolean|string $readOnly The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PCircleArchiveQuery The current query, for fluid interface
+     */
+    public function filterByReadOnly($readOnly = null, $comparison = null)
+    {
+        if (is_string($readOnly)) {
+            $readOnly = in_array(strtolower($readOnly), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PCircleArchivePeer::READ_ONLY, $readOnly, $comparison);
+    }
+
+    /**
      * Filter the query on the only_elected column
      *
      * Example usage:
@@ -699,6 +734,48 @@ abstract class BasePCircleArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PCircleArchivePeer::SLUG, $slug, $comparison);
+    }
+
+    /**
+     * Filter the query on the sortable_rank column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterBySortableRank(1234); // WHERE sortable_rank = 1234
+     * $query->filterBySortableRank(array(12, 34)); // WHERE sortable_rank IN (12, 34)
+     * $query->filterBySortableRank(array('min' => 12)); // WHERE sortable_rank >= 12
+     * $query->filterBySortableRank(array('max' => 12)); // WHERE sortable_rank <= 12
+     * </code>
+     *
+     * @param     mixed $sortableRank The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PCircleArchiveQuery The current query, for fluid interface
+     */
+    public function filterBySortableRank($sortableRank = null, $comparison = null)
+    {
+        if (is_array($sortableRank)) {
+            $useMinMax = false;
+            if (isset($sortableRank['min'])) {
+                $this->addUsingAlias(PCircleArchivePeer::SORTABLE_RANK, $sortableRank['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($sortableRank['max'])) {
+                $this->addUsingAlias(PCircleArchivePeer::SORTABLE_RANK, $sortableRank['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PCircleArchivePeer::SORTABLE_RANK, $sortableRank, $comparison);
     }
 
     /**

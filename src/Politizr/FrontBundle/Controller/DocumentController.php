@@ -132,7 +132,7 @@ class DocumentController extends Controller
         $private = $this->get('politizr.tools.global')->isPrivateMode($visitor, $debate, $this->getParameter('private_mode'), $this->getParameter('public_user_ids'));
         $description = $debate->getDescription();
         if ($private) {
-            $description = $this->get('politizr.tools.global')->truncate($description, 800, ['html' => true]);
+            $description = $this->get('politizr.tools.global')->truncate($description, 500, ['html' => true]);
         }
 
         // Paragraphs explode
@@ -197,7 +197,7 @@ class DocumentController extends Controller
 
         $description = $reaction->getDescription();
         if ($private) {
-            $description = $this->get('politizr.tools.global')->truncate($description, 800, ['html' => true]);
+            $description = $this->get('politizr.tools.global')->truncate($description, 500, ['html' => true]);
         }
 
         // Paragraphs explode

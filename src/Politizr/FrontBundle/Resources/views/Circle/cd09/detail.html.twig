@@ -20,54 +20,21 @@
 
 {% block bodyClass %} class="grp"{% endblock %}
 
+{% block header %}
+    {% embed 'PolitizrFrontBundle:Navigation\\Header:_headerConnected.html.twig' %}
+        {% block newSubject %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
 {% block main %}
     <div id="main">
         <div class="center">
             {{ circle | circleMenuTop }}
-            {{ circle | circleBreadcrumb }}
+            {{ circleBreadcrumb(circle = circle) }}
             <div class="grpCard">
                 <div class="grpGlobalIntro">
-                    <div class="grpGlobalIntroBigArticle">
-                        <img src="{{ asset('bundles/politizrfront/images/grp-CD09/grp-bigArticle.png') }}">
-                        <div class="grpGlobalIntroOneCol">
-                            <h1>Présentation du contexte porta sem suada magna mollis</h1>
-                            <p><b>Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Sed posuere consectetur est at lobortis. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec id elit non mi porta gravida at eget metus.</b><br>
-Curabitur blandit tempus porttitor. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.<br>
-                                <a class="grpKnowMore" target="_blank" href="">En savoir plus sur le site du Département</a>
-                            </p>
-                        </div>
-                        <div class="grpGlobalIntroBigArticleSidebar">
-                            <p>Les domaines abordés par le budget primitif 2017 du Conseil départemental</p>
-                            {% for topic in topics %}
-                                <a class="grpGlobalIntroTag" href="{{ path('TopicDetail', { 'circleSlug': circle.slug, 'slug': topic.slug }) }}">{{ topic.title }}</a>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    <div class="grpGlobalIntroSmallArticles">
-                        <div class="grpGlobalIntroOneCol">
-                            <img src="{{ asset('bundles/politizrfront/images/grp-CD09/grp_article1.jpg') }}">
-                            <h1>Praesent Fusce Venenatis commodo cursus magna velisque</h1>
-                            <p>Etiam porta sem malesuada magna mollis euismod. Vivamus sagittis lacus vel augue laoreet rutrum.</p>
-                        </div>
-                        <div class="grpGlobalIntroOneCol">
-                            <p>Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Donec sed odio dui. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Vestibulum id ligula porta felis euismod semper. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-                        </div>
-                        <div class="grpGlobalIntroTwoCol">
-                            <img src="{{ asset('bundles/politizrfront/images/grp-CD09/grp_article2.jpg') }}">
-                            <h1>Vestibulum id ligula porta felis euis mod semper.</h1>
-                            <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Etiam porta sem malesuada magna mollis euismod.<br>
-Nullam quis risus eget urna mollis ornare vel eu leo. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec sed odio dui.</p>
-                        </div>
-                    </div>
-                    <div class="grpTwitterFeed">
-                        <div class="grpTwitterLogo">
-                            <i class="icon-social-tw"></i><br>
-                            Mentions<br>
-                            <span>#09Budg2017</span>
-                        </div>
-                        <a class="twitter-timeline" href="https://twitter.com/hashtag/Ari%C3%A8ge" data-widget-id="913411922724352000" data-chrome="nofooter noheader noborders noscrollbar transparent" data-width="180" data-height="625">></a> 
-                        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-                    </div>
+                    {{ circle.description | raw }}
                 </div>
                 <div class="grpAnswersBy">
                     <div class="grpAnswersByTitle">
@@ -76,9 +43,8 @@ Nullam quis risus eget urna mollis ornare vel eu leo. Cras justo odio, dapibus a
                             <i class="icon-info"></i>
                             <p>Tous les conseillers départementaux ci-contre peuvent répondre à vos questions.</p>
                         </div>
-                        
                     </div>
-                    {{ authorizedReactionUsersForCd09() }}
+                    {{ circle | authorizedReactionUsers() }}
                 </div>
                 <div class="grpChaptersList">
                     <h1>Les 8 chapitres du budget primitif</h1>

@@ -13,6 +13,9 @@ use Politizr\Model\PDocumentInterface;
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDReaction;
 use Politizr\Model\PDCommentInterface;
+use Politizr\Model\PCOwner;
+use Politizr\Model\PCircle;
+use Politizr\Model\PCTopic;
 
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
@@ -263,6 +266,11 @@ class PolitizrDocumentExtension extends \Twig_Extension
             'publicationRow'  => new \Twig_SimpleFunction(
                 'publicationRow',
                 array($this, 'publicationRow'),
+                array('is_safe' => array('html'), 'needs_environment' => true)
+            ),
+            'circleBreadcrumb'  => new \Twig_SimpleFunction(
+                'circleBreadcrumb',
+                array($this, 'circleBreadcrumb'),
                 array('is_safe' => array('html'), 'needs_environment' => true)
             ),
         );
@@ -1377,6 +1385,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 array(
                     'circle' => $topic->getPCircle(),
                     'topic' => $topic,
+                    'document' => $document,
                 )
             );
         }
@@ -1625,6 +1634,66 @@ class PolitizrDocumentExtension extends \Twig_Extension
             default:
                 throw new InconsistentDataException(sprintf('Object type %s not managed', $publicationRow->getType()));
         }
+
+        return $html;
+    }
+
+    /**
+     * Breadcrumb
+     *
+     * @param PCircle $circle
+     * @param PCTopic $topic
+     * @param PDocument $document
+     * @return html
+     */
+    public function circleBreadcrumb(
+        \Twig_Environment $env,
+        PCircle $circle = null,
+        PCTopic $topic = null,
+        PDocumentInterface $document = null
+    ) {
+        // $this->logger->info('*** circleBreadcrumb');
+        // $this->logger->info('$circle = '.print_r($circle, true));
+
+        $circleLevel = false;
+        $topicLevel = false;
+        $documentLevel = false;
+
+        if ($circle) {
+            $circleLevel = true;
+            
+            $owner = $circle->getPCOwner();
+        } elseif ($topic) {
+            $topicLevel = true;
+
+            $circle = $topic->getPCircle();
+            $owner = $circle->getPCOwner();
+        } elseif ($document) {
+            $documentLevel = true;
+
+            $topic = $document->getPCTopic();
+
+            if ($topic) {
+                $circle = $topic->getPCircle();
+                $owner = $circle->getPCOwner();
+            } else {
+                return null;
+            }
+        }
+
+        // Construction du rendu du tag
+        $html = $env->render(
+            'PolitizrFrontBundle:Circle:_breadcrumb.html.twig',
+            array(
+                'circleLevel' => $circleLevel,
+                'topicLevel' => $topicLevel,
+                'documentLevel' => $documentLevel,
+                'owner' => $owner,
+                'circle' => $circle,
+                'topic' => $topic,
+                'document' => $document,
+            )
+        );
 
         return $html;
     }

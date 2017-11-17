@@ -69,6 +69,7 @@ class CircleController extends Controller
         $topics = PCTopicQuery::create()
                     ->filterByPCircleId($circle->getId())
                     ->filterByOnline(true)
+                    ->orderByRank()
                     ->find();
 
         // get users authorized reactions list > generic or dedicated

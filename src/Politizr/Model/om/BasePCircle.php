@@ -109,6 +109,12 @@ abstract class BasePCircle extends BaseObject implements Persistent
     protected $online;
 
     /**
+     * The value for the read_only field.
+     * @var        boolean
+     */
+    protected $read_only;
+
+    /**
      * The value for the only_elected field.
      * @var        boolean
      */
@@ -131,6 +137,12 @@ abstract class BasePCircle extends BaseObject implements Persistent
      * @var        string
      */
     protected $slug;
+
+    /**
+     * The value for the sortable_rank field.
+     * @var        int
+     */
+    protected $sortable_rank;
 
     /**
      * @var        PCOwner
@@ -184,6 +196,20 @@ abstract class BasePCircle extends BaseObject implements Persistent
      * @var        boolean
      */
     protected $alreadyInClearAllReferencesDeep = false;
+
+    // sortable behavior
+
+    /**
+     * Queries to be executed in the save transaction
+     * @var        array
+     */
+    protected $sortableQueries = array();
+
+    /**
+     * The old scope value.
+     * @var        int
+     */
+    protected $oldScope;
 
     // archivable behavior
     protected $archiveOnDelete = true;
@@ -318,6 +344,17 @@ abstract class BasePCircle extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [read_only] column value.
+     *
+     * @return boolean
+     */
+    public function getReadOnly()
+    {
+
+        return $this->read_only;
+    }
+
+    /**
      * Get the [only_elected] column value.
      *
      * @return boolean
@@ -420,6 +457,17 @@ abstract class BasePCircle extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [sortable_rank] column value.
+     *
+     * @return int
+     */
+    public function getSortableRank()
+    {
+
+        return $this->sortable_rank;
+    }
+
+    /**
      * Set the value of [id] column.
      *
      * @param  int $v new value
@@ -474,6 +522,9 @@ abstract class BasePCircle extends BaseObject implements Persistent
         }
 
         if ($this->p_c_owner_id !== $v) {
+            // sortable behavior
+            $this->oldScope = $this->p_c_owner_id;
+
             $this->p_c_owner_id = $v;
             $this->modifiedColumns[] = PCirclePeer::P_C_OWNER_ID;
         }
@@ -621,6 +672,35 @@ abstract class BasePCircle extends BaseObject implements Persistent
     } // setOnline()
 
     /**
+     * Sets the value of the [read_only] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return PCircle The current object (for fluent API support)
+     */
+    public function setReadOnly($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->read_only !== $v) {
+            $this->read_only = $v;
+            $this->modifiedColumns[] = PCirclePeer::READ_ONLY;
+        }
+
+
+        return $this;
+    } // setReadOnly()
+
+    /**
      * Sets the value of the [only_elected] column.
      * Non-boolean arguments are converted using the following rules:
      *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
@@ -717,6 +797,27 @@ abstract class BasePCircle extends BaseObject implements Persistent
     } // setSlug()
 
     /**
+     * Set the value of [sortable_rank] column.
+     *
+     * @param  int $v new value
+     * @return PCircle The current object (for fluent API support)
+     */
+    public function setSortableRank($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->sortable_rank !== $v) {
+            $this->sortable_rank = $v;
+            $this->modifiedColumns[] = PCirclePeer::SORTABLE_RANK;
+        }
+
+
+        return $this;
+    } // setSortableRank()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -757,10 +858,12 @@ abstract class BasePCircle extends BaseObject implements Persistent
             $this->logo_file_name = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
             $this->url = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
             $this->online = ($row[$startcol + 8] !== null) ? (boolean) $row[$startcol + 8] : null;
-            $this->only_elected = ($row[$startcol + 9] !== null) ? (boolean) $row[$startcol + 9] : null;
-            $this->created_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
-            $this->updated_at = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
-            $this->slug = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+            $this->read_only = ($row[$startcol + 9] !== null) ? (boolean) $row[$startcol + 9] : null;
+            $this->only_elected = ($row[$startcol + 10] !== null) ? (boolean) $row[$startcol + 10] : null;
+            $this->created_at = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+            $this->updated_at = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+            $this->slug = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
+            $this->sortable_rank = ($row[$startcol + 14] !== null) ? (int) $row[$startcol + 14] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -770,7 +873,7 @@ abstract class BasePCircle extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 13; // 13 = PCirclePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 15; // 15 = PCirclePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PCircle object", $e);
@@ -872,6 +975,11 @@ abstract class BasePCircle extends BaseObject implements Persistent
             $deleteQuery = PCircleQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
+            // sortable behavior
+
+            PCirclePeer::shiftRank(-1, $this->getSortableRank() + 1, null, $this->getScopeValue(), $con);
+            PCirclePeer::clearInstancePool();
+
             // archivable behavior
             if ($ret) {
                 if ($this->archiveOnDelete) {
@@ -933,6 +1041,8 @@ abstract class BasePCircle extends BaseObject implements Persistent
             } elseif (!$this->getSlug()) {
                 $this->setSlug($this->createSlug());
             }
+            // sortable behavior
+            $this->processSortableQueries($con);
             if ($isInsert) {
                 $ret = $ret && $this->preInsert($con);
                 // timestampable behavior
@@ -942,12 +1052,24 @@ abstract class BasePCircle extends BaseObject implements Persistent
                 if (!$this->isColumnModified(PCirclePeer::UPDATED_AT)) {
                     $this->setUpdatedAt(time());
                 }
+                // sortable behavior
+                if (!$this->isColumnModified(PCirclePeer::RANK_COL)) {
+                    $this->setSortableRank(PCircleQuery::create()->getMaxRankArray($this->getScopeValue(), $con) + 1);
+                }
+
             } else {
                 $ret = $ret && $this->preUpdate($con);
                 // timestampable behavior
                 if ($this->isModified() && !$this->isColumnModified(PCirclePeer::UPDATED_AT)) {
                     $this->setUpdatedAt(time());
                 }
+                // sortable behavior
+                // if scope has changed and rank was not modified (if yes, assuming superior action)
+                // insert object to the end of new scope and cleanup old one
+                if (($this->isColumnModified(PCirclePeer::P_C_OWNER_ID)) && !$this->isColumnModified(PCirclePeer::RANK_COL)) { PCirclePeer::shiftRank(-1, $this->getSortableRank() + 1, null, $this->oldScope, $con);
+                    $this->insertAtBottom($con);
+                }
+
             }
             if ($ret) {
                 $affectedRows = $this->doSave($con);
@@ -1166,6 +1288,9 @@ abstract class BasePCircle extends BaseObject implements Persistent
         if ($this->isColumnModified(PCirclePeer::ONLINE)) {
             $modifiedColumns[':p' . $index++]  = '`online`';
         }
+        if ($this->isColumnModified(PCirclePeer::READ_ONLY)) {
+            $modifiedColumns[':p' . $index++]  = '`read_only`';
+        }
         if ($this->isColumnModified(PCirclePeer::ONLY_ELECTED)) {
             $modifiedColumns[':p' . $index++]  = '`only_elected`';
         }
@@ -1177,6 +1302,9 @@ abstract class BasePCircle extends BaseObject implements Persistent
         }
         if ($this->isColumnModified(PCirclePeer::SLUG)) {
             $modifiedColumns[':p' . $index++]  = '`slug`';
+        }
+        if ($this->isColumnModified(PCirclePeer::SORTABLE_RANK)) {
+            $modifiedColumns[':p' . $index++]  = '`sortable_rank`';
         }
 
         $sql = sprintf(
@@ -1216,6 +1344,9 @@ abstract class BasePCircle extends BaseObject implements Persistent
                     case '`online`':
                         $stmt->bindValue($identifier, (int) $this->online, PDO::PARAM_INT);
                         break;
+                    case '`read_only`':
+                        $stmt->bindValue($identifier, (int) $this->read_only, PDO::PARAM_INT);
+                        break;
                     case '`only_elected`':
                         $stmt->bindValue($identifier, (int) $this->only_elected, PDO::PARAM_INT);
                         break;
@@ -1227,6 +1358,9 @@ abstract class BasePCircle extends BaseObject implements Persistent
                         break;
                     case '`slug`':
                         $stmt->bindValue($identifier, $this->slug, PDO::PARAM_STR);
+                        break;
+                    case '`sortable_rank`':
+                        $stmt->bindValue($identifier, $this->sortable_rank, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -1316,16 +1450,22 @@ abstract class BasePCircle extends BaseObject implements Persistent
                 return $this->getOnline();
                 break;
             case 9:
-                return $this->getOnlyElected();
+                return $this->getReadOnly();
                 break;
             case 10:
-                return $this->getCreatedAt();
+                return $this->getOnlyElected();
                 break;
             case 11:
-                return $this->getUpdatedAt();
+                return $this->getCreatedAt();
                 break;
             case 12:
+                return $this->getUpdatedAt();
+                break;
+            case 13:
                 return $this->getSlug();
+                break;
+            case 14:
+                return $this->getSortableRank();
                 break;
             default:
                 return null;
@@ -1365,10 +1505,12 @@ abstract class BasePCircle extends BaseObject implements Persistent
             $keys[6] => $this->getLogoFileName(),
             $keys[7] => $this->getUrl(),
             $keys[8] => $this->getOnline(),
-            $keys[9] => $this->getOnlyElected(),
-            $keys[10] => $this->getCreatedAt(),
-            $keys[11] => $this->getUpdatedAt(),
-            $keys[12] => $this->getSlug(),
+            $keys[9] => $this->getReadOnly(),
+            $keys[10] => $this->getOnlyElected(),
+            $keys[11] => $this->getCreatedAt(),
+            $keys[12] => $this->getUpdatedAt(),
+            $keys[13] => $this->getSlug(),
+            $keys[14] => $this->getSortableRank(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1450,16 +1592,22 @@ abstract class BasePCircle extends BaseObject implements Persistent
                 $this->setOnline($value);
                 break;
             case 9:
-                $this->setOnlyElected($value);
+                $this->setReadOnly($value);
                 break;
             case 10:
-                $this->setCreatedAt($value);
+                $this->setOnlyElected($value);
                 break;
             case 11:
-                $this->setUpdatedAt($value);
+                $this->setCreatedAt($value);
                 break;
             case 12:
+                $this->setUpdatedAt($value);
+                break;
+            case 13:
                 $this->setSlug($value);
+                break;
+            case 14:
+                $this->setSortableRank($value);
                 break;
         } // switch()
     }
@@ -1494,10 +1642,12 @@ abstract class BasePCircle extends BaseObject implements Persistent
         if (array_key_exists($keys[6], $arr)) $this->setLogoFileName($arr[$keys[6]]);
         if (array_key_exists($keys[7], $arr)) $this->setUrl($arr[$keys[7]]);
         if (array_key_exists($keys[8], $arr)) $this->setOnline($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setOnlyElected($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setCreatedAt($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setUpdatedAt($arr[$keys[11]]);
-        if (array_key_exists($keys[12], $arr)) $this->setSlug($arr[$keys[12]]);
+        if (array_key_exists($keys[9], $arr)) $this->setReadOnly($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setOnlyElected($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setCreatedAt($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setUpdatedAt($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setSlug($arr[$keys[13]]);
+        if (array_key_exists($keys[14], $arr)) $this->setSortableRank($arr[$keys[14]]);
     }
 
     /**
@@ -1518,10 +1668,12 @@ abstract class BasePCircle extends BaseObject implements Persistent
         if ($this->isColumnModified(PCirclePeer::LOGO_FILE_NAME)) $criteria->add(PCirclePeer::LOGO_FILE_NAME, $this->logo_file_name);
         if ($this->isColumnModified(PCirclePeer::URL)) $criteria->add(PCirclePeer::URL, $this->url);
         if ($this->isColumnModified(PCirclePeer::ONLINE)) $criteria->add(PCirclePeer::ONLINE, $this->online);
+        if ($this->isColumnModified(PCirclePeer::READ_ONLY)) $criteria->add(PCirclePeer::READ_ONLY, $this->read_only);
         if ($this->isColumnModified(PCirclePeer::ONLY_ELECTED)) $criteria->add(PCirclePeer::ONLY_ELECTED, $this->only_elected);
         if ($this->isColumnModified(PCirclePeer::CREATED_AT)) $criteria->add(PCirclePeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(PCirclePeer::UPDATED_AT)) $criteria->add(PCirclePeer::UPDATED_AT, $this->updated_at);
         if ($this->isColumnModified(PCirclePeer::SLUG)) $criteria->add(PCirclePeer::SLUG, $this->slug);
+        if ($this->isColumnModified(PCirclePeer::SORTABLE_RANK)) $criteria->add(PCirclePeer::SORTABLE_RANK, $this->sortable_rank);
 
         return $criteria;
     }
@@ -1593,10 +1745,12 @@ abstract class BasePCircle extends BaseObject implements Persistent
         $copyObj->setLogoFileName($this->getLogoFileName());
         $copyObj->setUrl($this->getUrl());
         $copyObj->setOnline($this->getOnline());
+        $copyObj->setReadOnly($this->getReadOnly());
         $copyObj->setOnlyElected($this->getOnlyElected());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
         $copyObj->setSlug($this->getSlug());
+        $copyObj->setSortableRank($this->getSortableRank());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -2860,10 +3014,12 @@ abstract class BasePCircle extends BaseObject implements Persistent
         $this->logo_file_name = null;
         $this->url = null;
         $this->online = null;
+        $this->read_only = null;
         $this->only_elected = null;
         $this->created_at = null;
         $this->updated_at = null;
         $this->slug = null;
+        $this->sortable_rank = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
@@ -3133,6 +3289,398 @@ abstract class BasePCircle extends BaseObject implements Persistent
             return true;
     }
 
+    // sortable behavior
+
+    /**
+     * Wrap the getter for rank value
+     *
+     * @return    int
+     */
+    public function getRank()
+    {
+        return $this->sortable_rank;
+    }
+
+    /**
+     * Wrap the setter for rank value
+     *
+     * @param     int
+     * @return    PCircle
+     */
+    public function setRank($v)
+    {
+        return $this->setSortableRank($v);
+    }
+
+
+    /**
+     * Wrap the getter for scope value
+     *
+     * @param boolean $returnNulls If true and all scope values are null, this will return null instead of a array full with nulls
+     *
+     * @return    mixed A array or a native type
+     */
+    public function getScopeValue($returnNulls = true)
+    {
+
+
+        return $this->getPCOwnerId();
+
+    }
+
+    /**
+     * Wrap the setter for scope value
+     *
+     * @param     mixed A array or a native type
+     * @return    PCircle
+     */
+    public function setScopeValue($v)
+    {
+
+
+        return $this->setPCOwnerId($v);
+
+    }
+
+    /**
+     * Check if the object is first in the list, i.e. if it has 1 for rank
+     *
+     * @return    boolean
+     */
+    public function isFirst()
+    {
+        return $this->getSortableRank() == 1;
+    }
+
+    /**
+     * Check if the object is last in the list, i.e. if its rank is the highest rank
+     *
+     * @param     PropelPDO  $con      optional connection
+     *
+     * @return    boolean
+     */
+    public function isLast(PropelPDO $con = null)
+    {
+        return $this->getSortableRank() == PCircleQuery::create()->getMaxRankArray($this->getScopeValue(), $con);
+    }
+
+    /**
+     * Get the next item in the list, i.e. the one for which rank is immediately higher
+     *
+     * @param     PropelPDO  $con      optional connection
+     *
+     * @return    PCircle
+     */
+    public function getNext(PropelPDO $con = null)
+    {
+
+        $query = PCircleQuery::create();
+
+        $scope = $this->getScopeValue();
+
+        $query->filterByRank($this->getSortableRank() + 1, $scope);
+
+
+        return $query->findOne($con);
+    }
+
+    /**
+     * Get the previous item in the list, i.e. the one for which rank is immediately lower
+     *
+     * @param     PropelPDO  $con      optional connection
+     *
+     * @return    PCircle
+     */
+    public function getPrevious(PropelPDO $con = null)
+    {
+
+        $query = PCircleQuery::create();
+
+        $scope = $this->getScopeValue();
+
+        $query->filterByRank($this->getSortableRank() - 1, $scope);
+
+
+        return $query->findOne($con);
+    }
+
+    /**
+     * Insert at specified rank
+     * The modifications are not persisted until the object is saved.
+     *
+     * @param     integer    $rank rank value
+     * @param     PropelPDO  $con      optional connection
+     *
+     * @return    PCircle the current object
+     *
+     * @throws    PropelException
+     */
+    public function insertAtRank($rank, PropelPDO $con = null)
+    {
+        $maxRank = PCircleQuery::create()->getMaxRankArray($this->getScopeValue(), $con);
+        if ($rank < 1 || $rank > $maxRank + 1) {
+            throw new PropelException('Invalid rank ' . $rank);
+        }
+        // move the object in the list, at the given rank
+        $this->setSortableRank($rank);
+        if ($rank != $maxRank + 1) {
+            // Keep the list modification query for the save() transaction
+            $this->sortableQueries []= array(
+                'callable'  => array(self::PEER, 'shiftRank'),
+                'arguments' => array(1, $rank, null, $this->getScopeValue())
+            );
+        }
+
+        return $this;
+    }
+
+    /**
+     * Insert in the last rank
+     * The modifications are not persisted until the object is saved.
+     *
+     * @param PropelPDO $con optional connection
+     *
+     * @return    PCircle the current object
+     *
+     * @throws    PropelException
+     */
+    public function insertAtBottom(PropelPDO $con = null)
+    {
+        $this->setSortableRank(PCircleQuery::create()->getMaxRankArray($this->getScopeValue(), $con) + 1);
+
+        return $this;
+    }
+
+    /**
+     * Insert in the first rank
+     * The modifications are not persisted until the object is saved.
+     *
+     * @return    PCircle the current object
+     */
+    public function insertAtTop()
+    {
+        return $this->insertAtRank(1);
+    }
+
+    /**
+     * Move the object to a new rank, and shifts the rank
+     * Of the objects inbetween the old and new rank accordingly
+     *
+     * @param     integer   $newRank rank value
+     * @param     PropelPDO $con optional connection
+     *
+     * @return    PCircle the current object
+     *
+     * @throws    PropelException
+     */
+    public function moveToRank($newRank, PropelPDO $con = null)
+    {
+        if ($this->isNew()) {
+            throw new PropelException('New objects cannot be moved. Please use insertAtRank() instead');
+        }
+        if ($con === null) {
+            $con = Propel::getConnection(PCirclePeer::DATABASE_NAME);
+        }
+        if ($newRank < 1 || $newRank > PCircleQuery::create()->getMaxRankArray($this->getScopeValue(), $con)) {
+            throw new PropelException('Invalid rank ' . $newRank);
+        }
+
+        $oldRank = $this->getSortableRank();
+        if ($oldRank == $newRank) {
+            return $this;
+        }
+
+        $con->beginTransaction();
+        try {
+            // shift the objects between the old and the new rank
+            $delta = ($oldRank < $newRank) ? -1 : 1;
+            PCirclePeer::shiftRank($delta, min($oldRank, $newRank), max($oldRank, $newRank), $this->getScopeValue(), $con);
+
+            // move the object to its new rank
+            $this->setSortableRank($newRank);
+            $this->save($con);
+
+            $con->commit();
+
+            return $this;
+        } catch (Exception $e) {
+            $con->rollback();
+            throw $e;
+        }
+    }
+
+    /**
+     * Exchange the rank of the object with the one passed as argument, and saves both objects
+     *
+     * @param     PCircle $object
+     * @param     PropelPDO $con optional connection
+     *
+     * @return    PCircle the current object
+     *
+     * @throws Exception if the database cannot execute the two updates
+     */
+    public function swapWith($object, PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(PCirclePeer::DATABASE_NAME);
+        }
+        $con->beginTransaction();
+        try {
+            $oldScope = $this->getScopeValue();
+            $newScope = $object->getScopeValue();
+            if ($oldScope != $newScope) {
+                $this->setScopeValue($newScope);
+                $object->setScopeValue($oldScope);
+            }
+            $oldRank = $this->getSortableRank();
+            $newRank = $object->getSortableRank();
+            $this->setSortableRank($newRank);
+            $this->save($con);
+            $object->setSortableRank($oldRank);
+            $object->save($con);
+            $con->commit();
+
+            return $this;
+        } catch (Exception $e) {
+            $con->rollback();
+            throw $e;
+        }
+    }
+
+    /**
+     * Move the object higher in the list, i.e. exchanges its rank with the one of the previous object
+     *
+     * @param     PropelPDO $con optional connection
+     *
+     * @return    PCircle the current object
+     */
+    public function moveUp(PropelPDO $con = null)
+    {
+        if ($this->isFirst()) {
+            return $this;
+        }
+        if ($con === null) {
+            $con = Propel::getConnection(PCirclePeer::DATABASE_NAME);
+        }
+        $con->beginTransaction();
+        try {
+            $prev = $this->getPrevious($con);
+            $this->swapWith($prev, $con);
+            $con->commit();
+
+            return $this;
+        } catch (Exception $e) {
+            $con->rollback();
+            throw $e;
+        }
+    }
+
+    /**
+     * Move the object higher in the list, i.e. exchanges its rank with the one of the next object
+     *
+     * @param     PropelPDO $con optional connection
+     *
+     * @return    PCircle the current object
+     */
+    public function moveDown(PropelPDO $con = null)
+    {
+        if ($this->isLast($con)) {
+            return $this;
+        }
+        if ($con === null) {
+            $con = Propel::getConnection(PCirclePeer::DATABASE_NAME);
+        }
+        $con->beginTransaction();
+        try {
+            $next = $this->getNext($con);
+            $this->swapWith($next, $con);
+            $con->commit();
+
+            return $this;
+        } catch (Exception $e) {
+            $con->rollback();
+            throw $e;
+        }
+    }
+
+    /**
+     * Move the object to the top of the list
+     *
+     * @param     PropelPDO $con optional connection
+     *
+     * @return    PCircle the current object
+     */
+    public function moveToTop(PropelPDO $con = null)
+    {
+        if ($this->isFirst()) {
+            return $this;
+        }
+
+        return $this->moveToRank(1, $con);
+    }
+
+    /**
+     * Move the object to the bottom of the list
+     *
+     * @param     PropelPDO $con optional connection
+     *
+     * @return integer the old object's rank
+     */
+    public function moveToBottom(PropelPDO $con = null)
+    {
+        if ($this->isLast($con)) {
+            return false;
+        }
+        if ($con === null) {
+            $con = Propel::getConnection(PCirclePeer::DATABASE_NAME);
+        }
+        $con->beginTransaction();
+        try {
+            $bottom = PCircleQuery::create()->getMaxRankArray($this->getScopeValue(), $con);
+            $res = $this->moveToRank($bottom, $con);
+            $con->commit();
+
+            return $res;
+        } catch (Exception $e) {
+            $con->rollback();
+            throw $e;
+        }
+    }
+
+    /**
+     * Removes the current object from the list (moves it to the null scope).
+     * The modifications are not persisted until the object is saved.
+     *
+     * @param     PropelPDO $con optional connection
+     *
+     * @return    PCircle the current object
+     */
+    public function removeFromList(PropelPDO $con = null)
+    {
+        // check if object is already removed
+        if ($this->getScopeValue() === null) {
+            throw new PropelException('Object is already removed (has null scope)');
+        }
+
+        // move the object to the end of null scope
+        $this->setScopeValue(null);
+    //    $this->insertAtBottom($con);
+
+        return $this;
+    }
+
+    /**
+     * Execute queries that were saved to be run inside the save transaction
+     */
+    protected function processSortableQueries($con)
+    {
+        foreach ($this->sortableQueries as $query) {
+            $query['arguments'][]= $con;
+            call_user_func_array($query['callable'], $query['arguments']);
+        }
+        $this->sortableQueries = array();
+    }
+
     // archivable behavior
 
     /**
@@ -3223,10 +3771,12 @@ abstract class BasePCircle extends BaseObject implements Persistent
         $this->setLogoFileName($archive->getLogoFileName());
         $this->setUrl($archive->getUrl());
         $this->setOnline($archive->getOnline());
+        $this->setReadOnly($archive->getReadOnly());
         $this->setOnlyElected($archive->getOnlyElected());
         $this->setCreatedAt($archive->getCreatedAt());
         $this->setUpdatedAt($archive->getUpdatedAt());
         $this->setSlug($archive->getSlug());
+        $this->setSortableRank($archive->getSortableRank());
 
         return $this;
     }

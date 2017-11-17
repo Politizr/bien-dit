@@ -55,6 +55,7 @@ class PCTopicArchiveTableMap extends TableMap
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('slug', 'Slug', 'VARCHAR', false, 255, null);
+        $this->addColumn('sortable_rank', 'SortableRank', 'INTEGER', false, null, null);
         $this->addColumn('archived_at', 'ArchivedAt', 'TIMESTAMP', false, null, null);
         // validators
     } // initialize()

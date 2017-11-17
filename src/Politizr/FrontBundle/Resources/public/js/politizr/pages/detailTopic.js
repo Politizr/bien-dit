@@ -1,7 +1,7 @@
 // beta
 $(function() {
     publicationsByTopicListing();
-    stickySidebar();
+    // stickySidebar();
 });
 
 // Publication filter change

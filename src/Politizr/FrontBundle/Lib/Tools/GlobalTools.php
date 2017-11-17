@@ -802,30 +802,31 @@ class GlobalTools
     {
         $publishedAt = $document->getPublishedAt();
         $author =  $document->getPUser();
+        $topic = $document->getPCTopic();
 
         // public if
         if ($visitor) {
             // user is connected
             return false;
-        } elseif ($author && in_array($author->getId(), $userIds)) {
+        } elseif ($author && in_array($author->getId(), $userIds) && $topic == null) {
             // author in list of public users
             return false;
-        } elseif ($author && $author->isWithOperation()) {
+        } elseif ($author && $author->isWithOperation() && $topic == null) {
             // author has subscribe an "OP"
             return false;
-        } elseif ($document && $document->isWithPrivateTag()) {
+        } elseif ($document && $document->isWithPrivateTag() && $topic == null) {
             // document has private tag
             return false;
-        } elseif ($mode == 'public') {
+        } elseif ($mode == 'public' && $topic == null) {
             // app in public mode
             return false;
-        } elseif ($mode == 'we') {
+        } elseif ($mode == 'we' && $topic == null) {
             // app in we mode and datetime is we
             $dayOfWeek = date('w');
             if ($dayOfWeek == 0 || $dayOfWeek == 6) {
                 return false;
             }
-        } elseif (is_int($mode)) {
+        } elseif (is_int($mode) && $publishedAt instanceof \DateTime && $topic == null) {
             // app in X days mode and document is older than X days
             $now = new \DateTime();
             $diff = $now->diff($publishedAt);
@@ -851,7 +852,8 @@ class GlobalTools
 
         if (strpos($referer, 'debat') || // debate detail 
             strpos($referer, 'reaction') || // reaction detail
-            strpos($referer, '@') // user detail
+            strpos($referer, '@') || // user detail
+            strpos($referer, 'groupes') // circles pages
         ) {
             return $referer; 
         }

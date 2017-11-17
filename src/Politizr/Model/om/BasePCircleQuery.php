@@ -33,10 +33,12 @@ use Politizr\Model\PUser;
  * @method PCircleQuery orderByLogoFileName($order = Criteria::ASC) Order by the logo_file_name column
  * @method PCircleQuery orderByUrl($order = Criteria::ASC) Order by the url column
  * @method PCircleQuery orderByOnline($order = Criteria::ASC) Order by the online column
+ * @method PCircleQuery orderByReadOnly($order = Criteria::ASC) Order by the read_only column
  * @method PCircleQuery orderByOnlyElected($order = Criteria::ASC) Order by the only_elected column
  * @method PCircleQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PCircleQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  * @method PCircleQuery orderBySlug($order = Criteria::ASC) Order by the slug column
+ * @method PCircleQuery orderBySortableRank($order = Criteria::ASC) Order by the sortable_rank column
  *
  * @method PCircleQuery groupById() Group by the id column
  * @method PCircleQuery groupByUuid() Group by the uuid column
@@ -47,10 +49,12 @@ use Politizr\Model\PUser;
  * @method PCircleQuery groupByLogoFileName() Group by the logo_file_name column
  * @method PCircleQuery groupByUrl() Group by the url column
  * @method PCircleQuery groupByOnline() Group by the online column
+ * @method PCircleQuery groupByReadOnly() Group by the read_only column
  * @method PCircleQuery groupByOnlyElected() Group by the only_elected column
  * @method PCircleQuery groupByCreatedAt() Group by the created_at column
  * @method PCircleQuery groupByUpdatedAt() Group by the updated_at column
  * @method PCircleQuery groupBySlug() Group by the slug column
+ * @method PCircleQuery groupBySortableRank() Group by the sortable_rank column
  *
  * @method PCircleQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method PCircleQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -83,10 +87,12 @@ use Politizr\Model\PUser;
  * @method PCircle findOneByLogoFileName(string $logo_file_name) Return the first PCircle filtered by the logo_file_name column
  * @method PCircle findOneByUrl(string $url) Return the first PCircle filtered by the url column
  * @method PCircle findOneByOnline(boolean $online) Return the first PCircle filtered by the online column
+ * @method PCircle findOneByReadOnly(boolean $read_only) Return the first PCircle filtered by the read_only column
  * @method PCircle findOneByOnlyElected(boolean $only_elected) Return the first PCircle filtered by the only_elected column
  * @method PCircle findOneByCreatedAt(string $created_at) Return the first PCircle filtered by the created_at column
  * @method PCircle findOneByUpdatedAt(string $updated_at) Return the first PCircle filtered by the updated_at column
  * @method PCircle findOneBySlug(string $slug) Return the first PCircle filtered by the slug column
+ * @method PCircle findOneBySortableRank(int $sortable_rank) Return the first PCircle filtered by the sortable_rank column
  *
  * @method array findById(int $id) Return PCircle objects filtered by the id column
  * @method array findByUuid(string $uuid) Return PCircle objects filtered by the uuid column
@@ -97,10 +103,12 @@ use Politizr\Model\PUser;
  * @method array findByLogoFileName(string $logo_file_name) Return PCircle objects filtered by the logo_file_name column
  * @method array findByUrl(string $url) Return PCircle objects filtered by the url column
  * @method array findByOnline(boolean $online) Return PCircle objects filtered by the online column
+ * @method array findByReadOnly(boolean $read_only) Return PCircle objects filtered by the read_only column
  * @method array findByOnlyElected(boolean $only_elected) Return PCircle objects filtered by the only_elected column
  * @method array findByCreatedAt(string $created_at) Return PCircle objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PCircle objects filtered by the updated_at column
  * @method array findBySlug(string $slug) Return PCircle objects filtered by the slug column
+ * @method array findBySortableRank(int $sortable_rank) Return PCircle objects filtered by the sortable_rank column
  */
 abstract class BasePCircleQuery extends ModelCriteria
 {
@@ -212,7 +220,7 @@ abstract class BasePCircleQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `p_c_owner_id`, `title`, `summary`, `description`, `logo_file_name`, `url`, `online`, `only_elected`, `created_at`, `updated_at`, `slug` FROM `p_circle` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_c_owner_id`, `title`, `summary`, `description`, `logo_file_name`, `url`, `online`, `read_only`, `only_elected`, `created_at`, `updated_at`, `slug`, `sortable_rank` FROM `p_circle` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -589,6 +597,33 @@ abstract class BasePCircleQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the read_only column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByReadOnly(true); // WHERE read_only = true
+     * $query->filterByReadOnly('yes'); // WHERE read_only = true
+     * </code>
+     *
+     * @param     boolean|string $readOnly The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PCircleQuery The current query, for fluid interface
+     */
+    public function filterByReadOnly($readOnly = null, $comparison = null)
+    {
+        if (is_string($readOnly)) {
+            $readOnly = in_array(strtolower($readOnly), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PCirclePeer::READ_ONLY, $readOnly, $comparison);
+    }
+
+    /**
      * Filter the query on the only_elected column
      *
      * Example usage:
@@ -728,6 +763,48 @@ abstract class BasePCircleQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PCirclePeer::SLUG, $slug, $comparison);
+    }
+
+    /**
+     * Filter the query on the sortable_rank column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterBySortableRank(1234); // WHERE sortable_rank = 1234
+     * $query->filterBySortableRank(array(12, 34)); // WHERE sortable_rank IN (12, 34)
+     * $query->filterBySortableRank(array('min' => 12)); // WHERE sortable_rank >= 12
+     * $query->filterBySortableRank(array('max' => 12)); // WHERE sortable_rank <= 12
+     * </code>
+     *
+     * @param     mixed $sortableRank The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PCircleQuery The current query, for fluid interface
+     */
+    public function filterBySortableRank($sortableRank = null, $comparison = null)
+    {
+        if (is_array($sortableRank)) {
+            $useMinMax = false;
+            if (isset($sortableRank['min'])) {
+                $this->addUsingAlias(PCirclePeer::SORTABLE_RANK, $sortableRank['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($sortableRank['max'])) {
+                $this->addUsingAlias(PCirclePeer::SORTABLE_RANK, $sortableRank['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PCirclePeer::SORTABLE_RANK, $sortableRank, $comparison);
     }
 
     /**
@@ -1282,6 +1359,181 @@ abstract class BasePCircleQuery extends ModelCriteria
         }
 
         return $stmt;
+    }
+
+    // sortable behavior
+
+    /**
+     * Returns the objects in a certain list, from the list scope
+     *
+     * @param int $scope Scope to determine which objects node to return
+     *
+     * @return PCircleQuery The current query, for fluid interface
+     */
+    public function inList($scope)
+    {
+
+        PCirclePeer::sortableApplyScopeCriteria($this, $scope, 'addUsingAlias');
+
+        return $this;
+    }
+
+    /**
+     * Filter the query based on a rank in the list
+     *
+     * @param     integer   $rank rank
+     * @param int $scope Scope to determine which objects node to return
+
+     *
+     * @return    PCircleQuery The current query, for fluid interface
+     */
+    public function filterByRank($rank, $scope)
+    {
+
+
+        return $this
+            ->inList($scope)
+            ->addUsingAlias(PCirclePeer::RANK_COL, $rank, Criteria::EQUAL);
+    }
+
+    /**
+     * Order the query based on the rank in the list.
+     * Using the default $order, returns the item with the lowest rank first
+     *
+     * @param     string $order either Criteria::ASC (default) or Criteria::DESC
+     *
+     * @return    PCircleQuery The current query, for fluid interface
+     */
+    public function orderByRank($order = Criteria::ASC)
+    {
+        $order = strtoupper($order);
+        switch ($order) {
+            case Criteria::ASC:
+                return $this->addAscendingOrderByColumn($this->getAliasedColName(PCirclePeer::RANK_COL));
+                break;
+            case Criteria::DESC:
+                return $this->addDescendingOrderByColumn($this->getAliasedColName(PCirclePeer::RANK_COL));
+                break;
+            default:
+                throw new PropelException('PCircleQuery::orderBy() only accepts "asc" or "desc" as argument');
+        }
+    }
+
+    /**
+     * Get an item from the list based on its rank
+     *
+     * @param     integer   $rank rank
+     * @param int $scope Scope to determine which objects node to return
+     * @param     PropelPDO $con optional connection
+     *
+     * @return    PCircle
+     */
+    public function findOneByRank($rank, $scope, PropelPDO $con = null)
+    {
+
+        return $this
+            ->filterByRank($rank, $scope)
+            ->findOne($con);
+    }
+
+    /**
+     * Returns a list of objects
+     *
+     * @param int $scope Scope to determine which objects node to return
+
+     * @param      PropelPDO $con	Connection to use.
+     *
+     * @return     mixed the list of results, formatted by the current formatter
+     */
+    public function findList($scope, $con = null)
+    {
+
+
+        return $this
+            ->inList($scope)
+            ->orderByRank()
+            ->find($con);
+    }
+
+    /**
+     * Get the highest rank
+     *
+     * @param int $scope Scope to determine which objects node to return
+
+     * @param     PropelPDO optional connection
+     *
+     * @return    integer highest position
+     */
+    public function getMaxRank($scope, PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(PCirclePeer::DATABASE_NAME);
+        }
+        // shift the objects with a position lower than the one of object
+        $this->addSelectColumn('MAX(' . PCirclePeer::RANK_COL . ')');
+
+        PCirclePeer::sortableApplyScopeCriteria($this, $scope);
+        $stmt = $this->doSelect($con);
+
+        return $stmt->fetchColumn();
+    }
+
+    /**
+     * Get the highest rank by a scope with a array format.
+     *
+     * @param     int $scope		The scope value as scalar type or array($value1, ...).
+
+     * @param     PropelPDO optional connection
+     *
+     * @return    integer highest position
+     */
+    public function getMaxRankArray($scope, PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(PCirclePeer::DATABASE_NAME);
+        }
+        // shift the objects with a position lower than the one of object
+        $this->addSelectColumn('MAX(' . PCirclePeer::RANK_COL . ')');
+        PCirclePeer::sortableApplyScopeCriteria($this, $scope);
+        $stmt = $this->doSelect($con);
+
+        return $stmt->fetchColumn();
+    }
+
+    /**
+     * Reorder a set of sortable objects based on a list of id/position
+     * Beware that there is no check made on the positions passed
+     * So incoherent positions will result in an incoherent list
+     *
+     * @param     array     $order id => rank pairs
+     * @param     PropelPDO $con   optional connection
+     *
+     * @return    boolean true if the reordering took place, false if a database problem prevented it
+     */
+    public function reorder(array $order, PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(PCirclePeer::DATABASE_NAME);
+        }
+
+        $con->beginTransaction();
+        try {
+            $ids = array_keys($order);
+            $objects = $this->findPks($ids, $con);
+            foreach ($objects as $object) {
+                $pk = $object->getPrimaryKey();
+                if ($object->getSortableRank() != $order[$pk]) {
+                    $object->setSortableRank($order[$pk]);
+                    $object->save($con);
+                }
+            }
+            $con->commit();
+
+            return true;
+        } catch (Exception $e) {
+            $con->rollback();
+            throw $e;
+        }
     }
 
     // archivable behavior

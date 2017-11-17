@@ -42,8 +42,8 @@ class CircleVoter extends Voter
         $user = $token->getUser();
 
         if (!$user instanceof PUser) {
-            // the user must be logged in; if not, deny access
-            return false;
+            // public access allowed
+            return true;
         }
 
         switch ($attribute) {

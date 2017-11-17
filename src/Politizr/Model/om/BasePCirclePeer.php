@@ -14,6 +14,7 @@ use Politizr\Model\PCOwnerPeer;
 use Politizr\Model\PCTopicPeer;
 use Politizr\Model\PCircle;
 use Politizr\Model\PCirclePeer;
+use Politizr\Model\PCircleQuery;
 use Politizr\Model\PUInPCPeer;
 use Politizr\Model\map\PCircleTableMap;
 
@@ -33,13 +34,13 @@ abstract class BasePCirclePeer
     const TM_CLASS = 'Politizr\\Model\\map\\PCircleTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 13;
+    const NUM_COLUMNS = 15;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 13;
+    const NUM_HYDRATE_COLUMNS = 15;
 
     /** the column name for the id field */
     const ID = 'p_circle.id';
@@ -68,6 +69,9 @@ abstract class BasePCirclePeer
     /** the column name for the online field */
     const ONLINE = 'p_circle.online';
 
+    /** the column name for the read_only field */
+    const READ_ONLY = 'p_circle.read_only';
+
     /** the column name for the only_elected field */
     const ONLY_ELECTED = 'p_circle.only_elected';
 
@@ -79,6 +83,9 @@ abstract class BasePCirclePeer
 
     /** the column name for the slug field */
     const SLUG = 'p_circle.slug';
+
+    /** the column name for the sortable_rank field */
+    const SORTABLE_RANK = 'p_circle.sortable_rank';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -92,6 +99,18 @@ abstract class BasePCirclePeer
     public static $instances = array();
 
 
+    // sortable behavior
+
+    /**
+     * rank column
+     */
+    const RANK_COL = 'p_circle.sortable_rank';
+
+    /**
+     * Scope column for the set
+     */
+    const SCOPE_COL = 'p_circle.p_c_owner_id';
+
     /**
      * holds an array of fieldnames
      *
@@ -99,12 +118,12 @@ abstract class BasePCirclePeer
      * e.g. PCirclePeer::$fieldNames[PCirclePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'PCOwnerId', 'Title', 'Summary', 'Description', 'LogoFileName', 'Url', 'Online', 'OnlyElected', 'CreatedAt', 'UpdatedAt', 'Slug', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'pCOwnerId', 'title', 'summary', 'description', 'logoFileName', 'url', 'online', 'onlyElected', 'createdAt', 'updatedAt', 'slug', ),
-        BasePeer::TYPE_COLNAME => array (PCirclePeer::ID, PCirclePeer::UUID, PCirclePeer::P_C_OWNER_ID, PCirclePeer::TITLE, PCirclePeer::SUMMARY, PCirclePeer::DESCRIPTION, PCirclePeer::LOGO_FILE_NAME, PCirclePeer::URL, PCirclePeer::ONLINE, PCirclePeer::ONLY_ELECTED, PCirclePeer::CREATED_AT, PCirclePeer::UPDATED_AT, PCirclePeer::SLUG, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'P_C_OWNER_ID', 'TITLE', 'SUMMARY', 'DESCRIPTION', 'LOGO_FILE_NAME', 'URL', 'ONLINE', 'ONLY_ELECTED', 'CREATED_AT', 'UPDATED_AT', 'SLUG', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'p_c_owner_id', 'title', 'summary', 'description', 'logo_file_name', 'url', 'online', 'only_elected', 'created_at', 'updated_at', 'slug', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'PCOwnerId', 'Title', 'Summary', 'Description', 'LogoFileName', 'Url', 'Online', 'ReadOnly', 'OnlyElected', 'CreatedAt', 'UpdatedAt', 'Slug', 'SortableRank', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'pCOwnerId', 'title', 'summary', 'description', 'logoFileName', 'url', 'online', 'readOnly', 'onlyElected', 'createdAt', 'updatedAt', 'slug', 'sortableRank', ),
+        BasePeer::TYPE_COLNAME => array (PCirclePeer::ID, PCirclePeer::UUID, PCirclePeer::P_C_OWNER_ID, PCirclePeer::TITLE, PCirclePeer::SUMMARY, PCirclePeer::DESCRIPTION, PCirclePeer::LOGO_FILE_NAME, PCirclePeer::URL, PCirclePeer::ONLINE, PCirclePeer::READ_ONLY, PCirclePeer::ONLY_ELECTED, PCirclePeer::CREATED_AT, PCirclePeer::UPDATED_AT, PCirclePeer::SLUG, PCirclePeer::SORTABLE_RANK, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'P_C_OWNER_ID', 'TITLE', 'SUMMARY', 'DESCRIPTION', 'LOGO_FILE_NAME', 'URL', 'ONLINE', 'READ_ONLY', 'ONLY_ELECTED', 'CREATED_AT', 'UPDATED_AT', 'SLUG', 'SORTABLE_RANK', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'p_c_owner_id', 'title', 'summary', 'description', 'logo_file_name', 'url', 'online', 'read_only', 'only_elected', 'created_at', 'updated_at', 'slug', 'sortable_rank', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, )
     );
 
     /**
@@ -114,12 +133,12 @@ abstract class BasePCirclePeer
      * e.g. PCirclePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'PCOwnerId' => 2, 'Title' => 3, 'Summary' => 4, 'Description' => 5, 'LogoFileName' => 6, 'Url' => 7, 'Online' => 8, 'OnlyElected' => 9, 'CreatedAt' => 10, 'UpdatedAt' => 11, 'Slug' => 12, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'pCOwnerId' => 2, 'title' => 3, 'summary' => 4, 'description' => 5, 'logoFileName' => 6, 'url' => 7, 'online' => 8, 'onlyElected' => 9, 'createdAt' => 10, 'updatedAt' => 11, 'slug' => 12, ),
-        BasePeer::TYPE_COLNAME => array (PCirclePeer::ID => 0, PCirclePeer::UUID => 1, PCirclePeer::P_C_OWNER_ID => 2, PCirclePeer::TITLE => 3, PCirclePeer::SUMMARY => 4, PCirclePeer::DESCRIPTION => 5, PCirclePeer::LOGO_FILE_NAME => 6, PCirclePeer::URL => 7, PCirclePeer::ONLINE => 8, PCirclePeer::ONLY_ELECTED => 9, PCirclePeer::CREATED_AT => 10, PCirclePeer::UPDATED_AT => 11, PCirclePeer::SLUG => 12, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'P_C_OWNER_ID' => 2, 'TITLE' => 3, 'SUMMARY' => 4, 'DESCRIPTION' => 5, 'LOGO_FILE_NAME' => 6, 'URL' => 7, 'ONLINE' => 8, 'ONLY_ELECTED' => 9, 'CREATED_AT' => 10, 'UPDATED_AT' => 11, 'SLUG' => 12, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'p_c_owner_id' => 2, 'title' => 3, 'summary' => 4, 'description' => 5, 'logo_file_name' => 6, 'url' => 7, 'online' => 8, 'only_elected' => 9, 'created_at' => 10, 'updated_at' => 11, 'slug' => 12, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'PCOwnerId' => 2, 'Title' => 3, 'Summary' => 4, 'Description' => 5, 'LogoFileName' => 6, 'Url' => 7, 'Online' => 8, 'ReadOnly' => 9, 'OnlyElected' => 10, 'CreatedAt' => 11, 'UpdatedAt' => 12, 'Slug' => 13, 'SortableRank' => 14, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'pCOwnerId' => 2, 'title' => 3, 'summary' => 4, 'description' => 5, 'logoFileName' => 6, 'url' => 7, 'online' => 8, 'readOnly' => 9, 'onlyElected' => 10, 'createdAt' => 11, 'updatedAt' => 12, 'slug' => 13, 'sortableRank' => 14, ),
+        BasePeer::TYPE_COLNAME => array (PCirclePeer::ID => 0, PCirclePeer::UUID => 1, PCirclePeer::P_C_OWNER_ID => 2, PCirclePeer::TITLE => 3, PCirclePeer::SUMMARY => 4, PCirclePeer::DESCRIPTION => 5, PCirclePeer::LOGO_FILE_NAME => 6, PCirclePeer::URL => 7, PCirclePeer::ONLINE => 8, PCirclePeer::READ_ONLY => 9, PCirclePeer::ONLY_ELECTED => 10, PCirclePeer::CREATED_AT => 11, PCirclePeer::UPDATED_AT => 12, PCirclePeer::SLUG => 13, PCirclePeer::SORTABLE_RANK => 14, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'P_C_OWNER_ID' => 2, 'TITLE' => 3, 'SUMMARY' => 4, 'DESCRIPTION' => 5, 'LOGO_FILE_NAME' => 6, 'URL' => 7, 'ONLINE' => 8, 'READ_ONLY' => 9, 'ONLY_ELECTED' => 10, 'CREATED_AT' => 11, 'UPDATED_AT' => 12, 'SLUG' => 13, 'SORTABLE_RANK' => 14, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'p_c_owner_id' => 2, 'title' => 3, 'summary' => 4, 'description' => 5, 'logo_file_name' => 6, 'url' => 7, 'online' => 8, 'read_only' => 9, 'only_elected' => 10, 'created_at' => 11, 'updated_at' => 12, 'slug' => 13, 'sortable_rank' => 14, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, )
     );
 
     /**
@@ -202,10 +221,12 @@ abstract class BasePCirclePeer
             $criteria->addSelectColumn(PCirclePeer::LOGO_FILE_NAME);
             $criteria->addSelectColumn(PCirclePeer::URL);
             $criteria->addSelectColumn(PCirclePeer::ONLINE);
+            $criteria->addSelectColumn(PCirclePeer::READ_ONLY);
             $criteria->addSelectColumn(PCirclePeer::ONLY_ELECTED);
             $criteria->addSelectColumn(PCirclePeer::CREATED_AT);
             $criteria->addSelectColumn(PCirclePeer::UPDATED_AT);
             $criteria->addSelectColumn(PCirclePeer::SLUG);
+            $criteria->addSelectColumn(PCirclePeer::SORTABLE_RANK);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.uuid');
@@ -216,10 +237,12 @@ abstract class BasePCirclePeer
             $criteria->addSelectColumn($alias . '.logo_file_name');
             $criteria->addSelectColumn($alias . '.url');
             $criteria->addSelectColumn($alias . '.online');
+            $criteria->addSelectColumn($alias . '.read_only');
             $criteria->addSelectColumn($alias . '.only_elected');
             $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
             $criteria->addSelectColumn($alias . '.slug');
+            $criteria->addSelectColumn($alias . '.sortable_rank');
         }
     }
 
@@ -1062,6 +1085,216 @@ abstract class BasePCirclePeer
         }
 
         return $objs;
+    }
+
+    // sortable behavior
+
+    /**
+     * Get the highest rank
+     *
+     * @param      int $scope		Scope to determine which suite to consider
+     * @param     PropelPDO optional connection
+     *
+     * @return    integer highest position
+     */
+    public static function getMaxRank($scope = null, PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(PCirclePeer::DATABASE_NAME);
+        }
+        // shift the objects with a position lower than the one of object
+        $c = new Criteria();
+        $c->addSelectColumn('MAX(' . PCirclePeer::RANK_COL . ')');
+        PCirclePeer::sortableApplyScopeCriteria($c, $scope);
+        $stmt = PCirclePeer::doSelectStmt($c, $con);
+
+        return $stmt->fetchColumn();
+    }
+
+    /**
+     * Get an item from the list based on its rank
+     *
+     * @param     integer   $rank rank
+     * @param      int $scope		Scope to determine which suite to consider
+     * @param     PropelPDO $con optional connection
+     *
+     * @return PCircle
+     */
+    public static function retrieveByRank($rank, $scope = null, PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(PCirclePeer::DATABASE_NAME);
+        }
+
+        $c = new Criteria;
+        $c->add(PCirclePeer::RANK_COL, $rank);
+        PCirclePeer::sortableApplyScopeCriteria($c, $scope);
+
+        return PCirclePeer::doSelectOne($c, $con);
+    }
+
+    /**
+     * Reorder a set of sortable objects based on a list of id/position
+     * Beware that there is no check made on the positions passed
+     * So incoherent positions will result in an incoherent list
+     *
+     * @param     array     $order id => rank pairs
+     * @param     PropelPDO $con   optional connection
+     *
+     * @return    boolean true if the reordering took place, false if a database problem prevented it
+     */
+    public static function reorder(array $order, PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(PCirclePeer::DATABASE_NAME);
+        }
+
+        $con->beginTransaction();
+        try {
+            $ids = array_keys($order);
+            $objects = PCirclePeer::retrieveByPKs($ids);
+            foreach ($objects as $object) {
+                $pk = $object->getPrimaryKey();
+                if ($object->getSortableRank() != $order[$pk]) {
+                    $object->setSortableRank($order[$pk]);
+                    $object->save($con);
+                }
+            }
+            $con->commit();
+
+            return true;
+        } catch (Exception $e) {
+            $con->rollback();
+            throw $e;
+        }
+    }
+
+    /**
+     * Return an array of sortable objects ordered by position
+     *
+     * @param     Criteria  $criteria  optional criteria object
+     * @param     string    $order     sorting order, to be chosen between Criteria::ASC (default) and Criteria::DESC
+     * @param     PropelPDO $con       optional connection
+     *
+     * @return    array list of sortable objects
+     */
+    public static function doSelectOrderByRank(Criteria $criteria = null, $order = Criteria::ASC, PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(PCirclePeer::DATABASE_NAME);
+        }
+
+        if ($criteria === null) {
+            $criteria = new Criteria();
+        } elseif ($criteria instanceof Criteria) {
+            $criteria = clone $criteria;
+        }
+
+        $criteria->clearOrderByColumns();
+
+        if ($order == Criteria::ASC) {
+            $criteria->addAscendingOrderByColumn(PCirclePeer::RANK_COL);
+        } else {
+            $criteria->addDescendingOrderByColumn(PCirclePeer::RANK_COL);
+        }
+
+        return PCirclePeer::doSelect($criteria, $con);
+    }
+
+    /**
+     * Return an array of sortable objects in the given scope ordered by position
+     *
+     * @param     mixed     $scope  the scope of the list
+     * @param     string    $order  sorting order, to be chosen between Criteria::ASC (default) and Criteria::DESC
+     * @param     PropelPDO $con    optional connection
+     *
+     * @return    array list of sortable objects
+     */
+    public static function retrieveList($scope, $order = Criteria::ASC, PropelPDO $con = null)
+    {
+        $c = new Criteria();
+        PCirclePeer::sortableApplyScopeCriteria($c, $scope);
+
+        return PCirclePeer::doSelectOrderByRank($c, $order, $con);
+    }
+
+    /**
+     * Return the number of sortable objects in the given scope
+     *
+     * @param     mixed     $scope  the scope of the list
+     * @param     PropelPDO $con    optional connection
+     *
+     * @return    array list of sortable objects
+     */
+    public static function countList($scope, PropelPDO $con = null)
+    {
+        $c = new Criteria();
+        PCirclePeer::sortableApplyScopeCriteria($c, $scope);
+
+        return PCirclePeer::doCount($c, $con);
+    }
+
+    /**
+     * Deletes the sortable objects in the given scope
+     *
+     * @param     mixed     $scope  the scope of the list
+     * @param     PropelPDO $con    optional connection
+     *
+     * @return    int number of deleted objects
+     */
+    public static function deleteList($scope, PropelPDO $con = null)
+    {
+        $c = new Criteria();
+        PCirclePeer::sortableApplyScopeCriteria($c, $scope);
+
+        return PCirclePeer::doDelete($c, $con);
+    }
+
+    /**
+     * Applies all scope fields to the given criteria.
+     *
+     * @param  Criteria $criteria Applies the values directly to this criteria.
+     * @param  mixed    $scope    The scope value as scalar type or array($value1, ...).
+     * @param  string   $method   The method we use to apply the values.
+     *
+     */
+    public static function sortableApplyScopeCriteria(Criteria $criteria, $scope, $method = 'add')
+    {
+
+        $criteria->$method(PCirclePeer::P_C_OWNER_ID, $scope, Criteria::EQUAL);
+
+    }
+
+    /**
+     * Adds $delta to all Rank values that are >= $first and <= $last.
+     * '$delta' can also be negative.
+     *
+     * @param      int $delta Value to be shifted by, can be negative
+     * @param      int $first First node to be shifted
+     * @param      int $last  Last node to be shifted
+     * @param      mixed $scope Scope to use for the shift. Scalar value (single scope) or array
+     * @param      PropelPDO $con Connection to use.
+     */
+    public static function shiftRank($delta, $first = null, $last = null, $scope = null, PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(PCirclePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+        }
+
+        $whereCriteria = PCircleQuery::create();
+        if (null !== $first) {
+            $whereCriteria->add(PCirclePeer::RANK_COL, $first, Criteria::GREATER_EQUAL);
+        }
+        if (null !== $last) {
+            $whereCriteria->addAnd(PCirclePeer::RANK_COL, $last, Criteria::LESS_EQUAL);
+        }
+        PCirclePeer::sortableApplyScopeCriteria($whereCriteria, $scope);
+
+        $valuesCriteria = new Criteria(PCirclePeer::DATABASE_NAME);
+        $valuesCriteria->add(PCirclePeer::RANK_COL, array('raw' => PCirclePeer::RANK_COL . ' + ?', 'value' => $delta), Criteria::CUSTOM_EQUAL);
+
+        BasePeer::doUpdate($whereCriteria, $valuesCriteria, $con);
+        PCirclePeer::clearInstancePool();
     }
 
 } // BasePCirclePeer

@@ -51,10 +51,12 @@ class PCircleArchiveTableMap extends TableMap
         $this->addColumn('logo_file_name', 'LogoFileName', 'VARCHAR', false, 150, null);
         $this->addColumn('url', 'Url', 'VARCHAR', false, 150, null);
         $this->addColumn('online', 'Online', 'BOOLEAN', false, 1, null);
+        $this->addColumn('read_only', 'ReadOnly', 'BOOLEAN', false, 1, null);
         $this->addColumn('only_elected', 'OnlyElected', 'BOOLEAN', false, 1, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('slug', 'Slug', 'VARCHAR', false, 255, null);
+        $this->addColumn('sortable_rank', 'SortableRank', 'INTEGER', false, null, null);
         $this->addColumn('archived_at', 'ArchivedAt', 'TIMESTAMP', false, null, null);
         // validators
     } // initialize()

@@ -5,6 +5,13 @@
 
 {% block bodyClass %} class="user edition"{% endblock bodyClass %}
 
+{% block header %}
+    {% embed 'PolitizrFrontBundle:Navigation\\Header:_headerConnected.html.twig' %}
+        {% block newSubject %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
 {% block content %}
     <div class="modalPublish" style="display: none">
         <div class="modalPublishContent">

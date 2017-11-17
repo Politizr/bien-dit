@@ -6,9 +6,11 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use Politizr\Exception\InconsistentDataException;
 
 use Politizr\Model\PUser;
+use Politizr\Model\PCOwner;
 use Politizr\Model\PCircle;
 use Politizr\Model\PCTopic;
 
+use Politizr\Model\PCOwnerQuery;
 use Politizr\Model\PCircleQuery;
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PCTopicQuery;
@@ -128,28 +130,61 @@ class CircleService
     }
 
     /**
-     * Get membership circles by user
+     * Get membership circles' owners by user
      *
      * @param PUser $user
-     * @return PropelCollection[PCircle]
+     * @return PropelCollection[PCOwner]
      */
-    public function getCirclesByUser(PUser $user = null)
+    public function getOwnersByUser(PUser $user = null)
     {
-        // $this->logger->info('*** getCirclesByUser');
+        // $this->logger->info('*** getOwnersByUser');
         // $this->logger->info('$user = '.print_r($user, true));
-        // $this->logger->info('$user->getPLCityId = '.print_r($user->getPLCityId(), true));
 
         if (!$user) {
             throw new InconsistentDataException('User null');
         }
 
-        $circles = PCircleQuery::create()
+        $owners = PCOwnerQuery::create()
+                    ->usePCircleQuery()
                         ->filterByOnline(true)
                         ->usePUinPCQuery()
                             ->filterByPUserId($user->getId())
                         ->endUse()
-                        ->distinct()
-                        ->find();
+                    ->endUse()
+                    ->distinct()
+                    ->find();
+
+        return $owners;
+    }
+
+    /**
+     * Get owner's circles by user
+     *
+     * @param PCOwner $owner
+     * @param PUser $user
+     * @return PropelCollection[PCircle]
+     */
+    public function getOwnerCirclesByUser(PCOwner $owner, PUser $user)
+    {
+        // $this->logger->info('*** getPCOwnersByUser');
+        // $this->logger->info('$user = '.print_r($user, true));
+
+        if (!$owner) {
+            throw new InconsistentDataException('Owner null');
+        }
+        if (!$user) {
+            throw new InconsistentDataException('User null');
+        }
+
+        $circles = PCircleQuery::create()
+                    ->filterByOnline(true)
+                    ->filterByPCOwnerId($owner->getId())
+                    ->usePUinPCQuery()
+                        ->filterByPUserId($user->getId())
+                    ->endUse()
+                    ->orderByRank()
+                    ->distinct()
+                    ->find();
 
         return $circles;
     }

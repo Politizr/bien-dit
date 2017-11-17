@@ -1,4 +1,15 @@
-{# @todo accueil #}
 <div id="grpBreadcrumbs">
-    {{ circle.PCOwner }}<i class="icon-arrow-right"></i>{{ circle.title }}<i class="icon-arrow-right"></i><span>Accueil</span>
+    {% if circleLevel and circle %}
+        {{ owner.title }}<i class="icon-arrow-right"></i>
+        <span>{{ circle.title }}
+    {% elseif topicLevel and topic %}
+        {{ owner.title }}<i class="icon-arrow-right"></i>
+        <a href="{{ path('CircleDetail', { 'slug': circle.slug }) }}">{{ circle.title }}</a><i class="icon-arrow-right"></i>
+        <span>{{ topic.title }}
+    {% elseif documentLevel and document %}
+        {{ owner.title }}<i class="icon-arrow-right"></i>
+        <a href="{{ path('CircleDetail', { 'slug': circle.slug }) }}">{{ circle.title }}</a><i class="icon-arrow-right"></i>
+        <a href="{{ path('TopicDetail', { 'slug': topic.slug, 'circleSlug': circle.slug }) }}">{{ topic.title }}</a><i class="icon-arrow-right"></i>
+        <span>{{ document.title }}
+    {% endif %}
 </div>

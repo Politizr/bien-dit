@@ -11,6 +11,7 @@ use \PropelException;
 use \PropelPDO;
 use Politizr\Model\PCTopic;
 use Politizr\Model\PCTopicPeer;
+use Politizr\Model\PCTopicQuery;
 use Politizr\Model\PCirclePeer;
 use Politizr\Model\PDDebatePeer;
 use Politizr\Model\PDReactionPeer;
@@ -32,13 +33,13 @@ abstract class BasePCTopicPeer
     const TM_CLASS = 'Politizr\\Model\\map\\PCTopicTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 13;
+    const NUM_COLUMNS = 14;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 13;
+    const NUM_HYDRATE_COLUMNS = 14;
 
     /** the column name for the id field */
     const ID = 'p_c_topic.id';
@@ -79,6 +80,9 @@ abstract class BasePCTopicPeer
     /** the column name for the slug field */
     const SLUG = 'p_c_topic.slug';
 
+    /** the column name for the sortable_rank field */
+    const SORTABLE_RANK = 'p_c_topic.sortable_rank';
+
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
 
@@ -91,6 +95,18 @@ abstract class BasePCTopicPeer
     public static $instances = array();
 
 
+    // sortable behavior
+
+    /**
+     * rank column
+     */
+    const RANK_COL = 'p_c_topic.sortable_rank';
+
+    /**
+     * Scope column for the set
+     */
+    const SCOPE_COL = 'p_c_topic.p_circle_id';
+
     /**
      * holds an array of fieldnames
      *
@@ -98,12 +114,12 @@ abstract class BasePCTopicPeer
      * e.g. PCTopicPeer::$fieldNames[PCTopicPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'PCircleId', 'Title', 'Summary', 'Description', 'FileName', 'Online', 'ForceGeolocType', 'ForceGeolocId', 'CreatedAt', 'UpdatedAt', 'Slug', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'pCircleId', 'title', 'summary', 'description', 'fileName', 'online', 'forceGeolocType', 'forceGeolocId', 'createdAt', 'updatedAt', 'slug', ),
-        BasePeer::TYPE_COLNAME => array (PCTopicPeer::ID, PCTopicPeer::UUID, PCTopicPeer::P_CIRCLE_ID, PCTopicPeer::TITLE, PCTopicPeer::SUMMARY, PCTopicPeer::DESCRIPTION, PCTopicPeer::FILE_NAME, PCTopicPeer::ONLINE, PCTopicPeer::FORCE_GEOLOC_TYPE, PCTopicPeer::FORCE_GEOLOC_ID, PCTopicPeer::CREATED_AT, PCTopicPeer::UPDATED_AT, PCTopicPeer::SLUG, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'P_CIRCLE_ID', 'TITLE', 'SUMMARY', 'DESCRIPTION', 'FILE_NAME', 'ONLINE', 'FORCE_GEOLOC_TYPE', 'FORCE_GEOLOC_ID', 'CREATED_AT', 'UPDATED_AT', 'SLUG', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'p_circle_id', 'title', 'summary', 'description', 'file_name', 'online', 'force_geoloc_type', 'force_geoloc_id', 'created_at', 'updated_at', 'slug', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'PCircleId', 'Title', 'Summary', 'Description', 'FileName', 'Online', 'ForceGeolocType', 'ForceGeolocId', 'CreatedAt', 'UpdatedAt', 'Slug', 'SortableRank', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'pCircleId', 'title', 'summary', 'description', 'fileName', 'online', 'forceGeolocType', 'forceGeolocId', 'createdAt', 'updatedAt', 'slug', 'sortableRank', ),
+        BasePeer::TYPE_COLNAME => array (PCTopicPeer::ID, PCTopicPeer::UUID, PCTopicPeer::P_CIRCLE_ID, PCTopicPeer::TITLE, PCTopicPeer::SUMMARY, PCTopicPeer::DESCRIPTION, PCTopicPeer::FILE_NAME, PCTopicPeer::ONLINE, PCTopicPeer::FORCE_GEOLOC_TYPE, PCTopicPeer::FORCE_GEOLOC_ID, PCTopicPeer::CREATED_AT, PCTopicPeer::UPDATED_AT, PCTopicPeer::SLUG, PCTopicPeer::SORTABLE_RANK, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'P_CIRCLE_ID', 'TITLE', 'SUMMARY', 'DESCRIPTION', 'FILE_NAME', 'ONLINE', 'FORCE_GEOLOC_TYPE', 'FORCE_GEOLOC_ID', 'CREATED_AT', 'UPDATED_AT', 'SLUG', 'SORTABLE_RANK', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'p_circle_id', 'title', 'summary', 'description', 'file_name', 'online', 'force_geoloc_type', 'force_geoloc_id', 'created_at', 'updated_at', 'slug', 'sortable_rank', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, )
     );
 
     /**
@@ -113,12 +129,12 @@ abstract class BasePCTopicPeer
      * e.g. PCTopicPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'PCircleId' => 2, 'Title' => 3, 'Summary' => 4, 'Description' => 5, 'FileName' => 6, 'Online' => 7, 'ForceGeolocType' => 8, 'ForceGeolocId' => 9, 'CreatedAt' => 10, 'UpdatedAt' => 11, 'Slug' => 12, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'pCircleId' => 2, 'title' => 3, 'summary' => 4, 'description' => 5, 'fileName' => 6, 'online' => 7, 'forceGeolocType' => 8, 'forceGeolocId' => 9, 'createdAt' => 10, 'updatedAt' => 11, 'slug' => 12, ),
-        BasePeer::TYPE_COLNAME => array (PCTopicPeer::ID => 0, PCTopicPeer::UUID => 1, PCTopicPeer::P_CIRCLE_ID => 2, PCTopicPeer::TITLE => 3, PCTopicPeer::SUMMARY => 4, PCTopicPeer::DESCRIPTION => 5, PCTopicPeer::FILE_NAME => 6, PCTopicPeer::ONLINE => 7, PCTopicPeer::FORCE_GEOLOC_TYPE => 8, PCTopicPeer::FORCE_GEOLOC_ID => 9, PCTopicPeer::CREATED_AT => 10, PCTopicPeer::UPDATED_AT => 11, PCTopicPeer::SLUG => 12, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'P_CIRCLE_ID' => 2, 'TITLE' => 3, 'SUMMARY' => 4, 'DESCRIPTION' => 5, 'FILE_NAME' => 6, 'ONLINE' => 7, 'FORCE_GEOLOC_TYPE' => 8, 'FORCE_GEOLOC_ID' => 9, 'CREATED_AT' => 10, 'UPDATED_AT' => 11, 'SLUG' => 12, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'p_circle_id' => 2, 'title' => 3, 'summary' => 4, 'description' => 5, 'file_name' => 6, 'online' => 7, 'force_geoloc_type' => 8, 'force_geoloc_id' => 9, 'created_at' => 10, 'updated_at' => 11, 'slug' => 12, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'PCircleId' => 2, 'Title' => 3, 'Summary' => 4, 'Description' => 5, 'FileName' => 6, 'Online' => 7, 'ForceGeolocType' => 8, 'ForceGeolocId' => 9, 'CreatedAt' => 10, 'UpdatedAt' => 11, 'Slug' => 12, 'SortableRank' => 13, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'pCircleId' => 2, 'title' => 3, 'summary' => 4, 'description' => 5, 'fileName' => 6, 'online' => 7, 'forceGeolocType' => 8, 'forceGeolocId' => 9, 'createdAt' => 10, 'updatedAt' => 11, 'slug' => 12, 'sortableRank' => 13, ),
+        BasePeer::TYPE_COLNAME => array (PCTopicPeer::ID => 0, PCTopicPeer::UUID => 1, PCTopicPeer::P_CIRCLE_ID => 2, PCTopicPeer::TITLE => 3, PCTopicPeer::SUMMARY => 4, PCTopicPeer::DESCRIPTION => 5, PCTopicPeer::FILE_NAME => 6, PCTopicPeer::ONLINE => 7, PCTopicPeer::FORCE_GEOLOC_TYPE => 8, PCTopicPeer::FORCE_GEOLOC_ID => 9, PCTopicPeer::CREATED_AT => 10, PCTopicPeer::UPDATED_AT => 11, PCTopicPeer::SLUG => 12, PCTopicPeer::SORTABLE_RANK => 13, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'P_CIRCLE_ID' => 2, 'TITLE' => 3, 'SUMMARY' => 4, 'DESCRIPTION' => 5, 'FILE_NAME' => 6, 'ONLINE' => 7, 'FORCE_GEOLOC_TYPE' => 8, 'FORCE_GEOLOC_ID' => 9, 'CREATED_AT' => 10, 'UPDATED_AT' => 11, 'SLUG' => 12, 'SORTABLE_RANK' => 13, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'p_circle_id' => 2, 'title' => 3, 'summary' => 4, 'description' => 5, 'file_name' => 6, 'online' => 7, 'force_geoloc_type' => 8, 'force_geoloc_id' => 9, 'created_at' => 10, 'updated_at' => 11, 'slug' => 12, 'sortable_rank' => 13, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, )
     );
 
     /**
@@ -205,6 +221,7 @@ abstract class BasePCTopicPeer
             $criteria->addSelectColumn(PCTopicPeer::CREATED_AT);
             $criteria->addSelectColumn(PCTopicPeer::UPDATED_AT);
             $criteria->addSelectColumn(PCTopicPeer::SLUG);
+            $criteria->addSelectColumn(PCTopicPeer::SORTABLE_RANK);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.uuid');
@@ -219,6 +236,7 @@ abstract class BasePCTopicPeer
             $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
             $criteria->addSelectColumn($alias . '.slug');
+            $criteria->addSelectColumn($alias . '.sortable_rank');
         }
     }
 
@@ -1058,6 +1076,216 @@ abstract class BasePCTopicPeer
         }
 
         return $objs;
+    }
+
+    // sortable behavior
+
+    /**
+     * Get the highest rank
+     *
+     * @param      int $scope		Scope to determine which suite to consider
+     * @param     PropelPDO optional connection
+     *
+     * @return    integer highest position
+     */
+    public static function getMaxRank($scope = null, PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(PCTopicPeer::DATABASE_NAME);
+        }
+        // shift the objects with a position lower than the one of object
+        $c = new Criteria();
+        $c->addSelectColumn('MAX(' . PCTopicPeer::RANK_COL . ')');
+        PCTopicPeer::sortableApplyScopeCriteria($c, $scope);
+        $stmt = PCTopicPeer::doSelectStmt($c, $con);
+
+        return $stmt->fetchColumn();
+    }
+
+    /**
+     * Get an item from the list based on its rank
+     *
+     * @param     integer   $rank rank
+     * @param      int $scope		Scope to determine which suite to consider
+     * @param     PropelPDO $con optional connection
+     *
+     * @return PCTopic
+     */
+    public static function retrieveByRank($rank, $scope = null, PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(PCTopicPeer::DATABASE_NAME);
+        }
+
+        $c = new Criteria;
+        $c->add(PCTopicPeer::RANK_COL, $rank);
+        PCTopicPeer::sortableApplyScopeCriteria($c, $scope);
+
+        return PCTopicPeer::doSelectOne($c, $con);
+    }
+
+    /**
+     * Reorder a set of sortable objects based on a list of id/position
+     * Beware that there is no check made on the positions passed
+     * So incoherent positions will result in an incoherent list
+     *
+     * @param     array     $order id => rank pairs
+     * @param     PropelPDO $con   optional connection
+     *
+     * @return    boolean true if the reordering took place, false if a database problem prevented it
+     */
+    public static function reorder(array $order, PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(PCTopicPeer::DATABASE_NAME);
+        }
+
+        $con->beginTransaction();
+        try {
+            $ids = array_keys($order);
+            $objects = PCTopicPeer::retrieveByPKs($ids);
+            foreach ($objects as $object) {
+                $pk = $object->getPrimaryKey();
+                if ($object->getSortableRank() != $order[$pk]) {
+                    $object->setSortableRank($order[$pk]);
+                    $object->save($con);
+                }
+            }
+            $con->commit();
+
+            return true;
+        } catch (Exception $e) {
+            $con->rollback();
+            throw $e;
+        }
+    }
+
+    /**
+     * Return an array of sortable objects ordered by position
+     *
+     * @param     Criteria  $criteria  optional criteria object
+     * @param     string    $order     sorting order, to be chosen between Criteria::ASC (default) and Criteria::DESC
+     * @param     PropelPDO $con       optional connection
+     *
+     * @return    array list of sortable objects
+     */
+    public static function doSelectOrderByRank(Criteria $criteria = null, $order = Criteria::ASC, PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(PCTopicPeer::DATABASE_NAME);
+        }
+
+        if ($criteria === null) {
+            $criteria = new Criteria();
+        } elseif ($criteria instanceof Criteria) {
+            $criteria = clone $criteria;
+        }
+
+        $criteria->clearOrderByColumns();
+
+        if ($order == Criteria::ASC) {
+            $criteria->addAscendingOrderByColumn(PCTopicPeer::RANK_COL);
+        } else {
+            $criteria->addDescendingOrderByColumn(PCTopicPeer::RANK_COL);
+        }
+
+        return PCTopicPeer::doSelect($criteria, $con);
+    }
+
+    /**
+     * Return an array of sortable objects in the given scope ordered by position
+     *
+     * @param     mixed     $scope  the scope of the list
+     * @param     string    $order  sorting order, to be chosen between Criteria::ASC (default) and Criteria::DESC
+     * @param     PropelPDO $con    optional connection
+     *
+     * @return    array list of sortable objects
+     */
+    public static function retrieveList($scope, $order = Criteria::ASC, PropelPDO $con = null)
+    {
+        $c = new Criteria();
+        PCTopicPeer::sortableApplyScopeCriteria($c, $scope);
+
+        return PCTopicPeer::doSelectOrderByRank($c, $order, $con);
+    }
+
+    /**
+     * Return the number of sortable objects in the given scope
+     *
+     * @param     mixed     $scope  the scope of the list
+     * @param     PropelPDO $con    optional connection
+     *
+     * @return    array list of sortable objects
+     */
+    public static function countList($scope, PropelPDO $con = null)
+    {
+        $c = new Criteria();
+        PCTopicPeer::sortableApplyScopeCriteria($c, $scope);
+
+        return PCTopicPeer::doCount($c, $con);
+    }
+
+    /**
+     * Deletes the sortable objects in the given scope
+     *
+     * @param     mixed     $scope  the scope of the list
+     * @param     PropelPDO $con    optional connection
+     *
+     * @return    int number of deleted objects
+     */
+    public static function deleteList($scope, PropelPDO $con = null)
+    {
+        $c = new Criteria();
+        PCTopicPeer::sortableApplyScopeCriteria($c, $scope);
+
+        return PCTopicPeer::doDelete($c, $con);
+    }
+
+    /**
+     * Applies all scope fields to the given criteria.
+     *
+     * @param  Criteria $criteria Applies the values directly to this criteria.
+     * @param  mixed    $scope    The scope value as scalar type or array($value1, ...).
+     * @param  string   $method   The method we use to apply the values.
+     *
+     */
+    public static function sortableApplyScopeCriteria(Criteria $criteria, $scope, $method = 'add')
+    {
+
+        $criteria->$method(PCTopicPeer::P_CIRCLE_ID, $scope, Criteria::EQUAL);
+
+    }
+
+    /**
+     * Adds $delta to all Rank values that are >= $first and <= $last.
+     * '$delta' can also be negative.
+     *
+     * @param      int $delta Value to be shifted by, can be negative
+     * @param      int $first First node to be shifted
+     * @param      int $last  Last node to be shifted
+     * @param      mixed $scope Scope to use for the shift. Scalar value (single scope) or array
+     * @param      PropelPDO $con Connection to use.
+     */
+    public static function shiftRank($delta, $first = null, $last = null, $scope = null, PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(PCTopicPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+        }
+
+        $whereCriteria = PCTopicQuery::create();
+        if (null !== $first) {
+            $whereCriteria->add(PCTopicPeer::RANK_COL, $first, Criteria::GREATER_EQUAL);
+        }
+        if (null !== $last) {
+            $whereCriteria->addAnd(PCTopicPeer::RANK_COL, $last, Criteria::LESS_EQUAL);
+        }
+        PCTopicPeer::sortableApplyScopeCriteria($whereCriteria, $scope);
+
+        $valuesCriteria = new Criteria(PCTopicPeer::DATABASE_NAME);
+        $valuesCriteria->add(PCTopicPeer::RANK_COL, array('raw' => PCTopicPeer::RANK_COL . ' + ?', 'value' => $delta), Criteria::CUSTOM_EQUAL);
+
+        BasePeer::doUpdate($whereCriteria, $valuesCriteria, $con);
+        PCTopicPeer::clearInstancePool();
     }
 
 } // BasePCTopicPeer

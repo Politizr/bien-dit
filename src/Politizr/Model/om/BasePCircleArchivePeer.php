@@ -29,13 +29,13 @@ abstract class BasePCircleArchivePeer
     const TM_CLASS = 'Politizr\\Model\\map\\PCircleArchiveTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 14;
+    const NUM_COLUMNS = 16;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 14;
+    const NUM_HYDRATE_COLUMNS = 16;
 
     /** the column name for the id field */
     const ID = 'p_circle_archive.id';
@@ -64,6 +64,9 @@ abstract class BasePCircleArchivePeer
     /** the column name for the online field */
     const ONLINE = 'p_circle_archive.online';
 
+    /** the column name for the read_only field */
+    const READ_ONLY = 'p_circle_archive.read_only';
+
     /** the column name for the only_elected field */
     const ONLY_ELECTED = 'p_circle_archive.only_elected';
 
@@ -75,6 +78,9 @@ abstract class BasePCircleArchivePeer
 
     /** the column name for the slug field */
     const SLUG = 'p_circle_archive.slug';
+
+    /** the column name for the sortable_rank field */
+    const SORTABLE_RANK = 'p_circle_archive.sortable_rank';
 
     /** the column name for the archived_at field */
     const ARCHIVED_AT = 'p_circle_archive.archived_at';
@@ -98,12 +104,12 @@ abstract class BasePCircleArchivePeer
      * e.g. PCircleArchivePeer::$fieldNames[PCircleArchivePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'PCOwnerId', 'Title', 'Summary', 'Description', 'LogoFileName', 'Url', 'Online', 'OnlyElected', 'CreatedAt', 'UpdatedAt', 'Slug', 'ArchivedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'pCOwnerId', 'title', 'summary', 'description', 'logoFileName', 'url', 'online', 'onlyElected', 'createdAt', 'updatedAt', 'slug', 'archivedAt', ),
-        BasePeer::TYPE_COLNAME => array (PCircleArchivePeer::ID, PCircleArchivePeer::UUID, PCircleArchivePeer::P_C_OWNER_ID, PCircleArchivePeer::TITLE, PCircleArchivePeer::SUMMARY, PCircleArchivePeer::DESCRIPTION, PCircleArchivePeer::LOGO_FILE_NAME, PCircleArchivePeer::URL, PCircleArchivePeer::ONLINE, PCircleArchivePeer::ONLY_ELECTED, PCircleArchivePeer::CREATED_AT, PCircleArchivePeer::UPDATED_AT, PCircleArchivePeer::SLUG, PCircleArchivePeer::ARCHIVED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'P_C_OWNER_ID', 'TITLE', 'SUMMARY', 'DESCRIPTION', 'LOGO_FILE_NAME', 'URL', 'ONLINE', 'ONLY_ELECTED', 'CREATED_AT', 'UPDATED_AT', 'SLUG', 'ARCHIVED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'p_c_owner_id', 'title', 'summary', 'description', 'logo_file_name', 'url', 'online', 'only_elected', 'created_at', 'updated_at', 'slug', 'archived_at', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'PCOwnerId', 'Title', 'Summary', 'Description', 'LogoFileName', 'Url', 'Online', 'ReadOnly', 'OnlyElected', 'CreatedAt', 'UpdatedAt', 'Slug', 'SortableRank', 'ArchivedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'pCOwnerId', 'title', 'summary', 'description', 'logoFileName', 'url', 'online', 'readOnly', 'onlyElected', 'createdAt', 'updatedAt', 'slug', 'sortableRank', 'archivedAt', ),
+        BasePeer::TYPE_COLNAME => array (PCircleArchivePeer::ID, PCircleArchivePeer::UUID, PCircleArchivePeer::P_C_OWNER_ID, PCircleArchivePeer::TITLE, PCircleArchivePeer::SUMMARY, PCircleArchivePeer::DESCRIPTION, PCircleArchivePeer::LOGO_FILE_NAME, PCircleArchivePeer::URL, PCircleArchivePeer::ONLINE, PCircleArchivePeer::READ_ONLY, PCircleArchivePeer::ONLY_ELECTED, PCircleArchivePeer::CREATED_AT, PCircleArchivePeer::UPDATED_AT, PCircleArchivePeer::SLUG, PCircleArchivePeer::SORTABLE_RANK, PCircleArchivePeer::ARCHIVED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'P_C_OWNER_ID', 'TITLE', 'SUMMARY', 'DESCRIPTION', 'LOGO_FILE_NAME', 'URL', 'ONLINE', 'READ_ONLY', 'ONLY_ELECTED', 'CREATED_AT', 'UPDATED_AT', 'SLUG', 'SORTABLE_RANK', 'ARCHIVED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'p_c_owner_id', 'title', 'summary', 'description', 'logo_file_name', 'url', 'online', 'read_only', 'only_elected', 'created_at', 'updated_at', 'slug', 'sortable_rank', 'archived_at', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, )
     );
 
     /**
@@ -113,12 +119,12 @@ abstract class BasePCircleArchivePeer
      * e.g. PCircleArchivePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'PCOwnerId' => 2, 'Title' => 3, 'Summary' => 4, 'Description' => 5, 'LogoFileName' => 6, 'Url' => 7, 'Online' => 8, 'OnlyElected' => 9, 'CreatedAt' => 10, 'UpdatedAt' => 11, 'Slug' => 12, 'ArchivedAt' => 13, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'pCOwnerId' => 2, 'title' => 3, 'summary' => 4, 'description' => 5, 'logoFileName' => 6, 'url' => 7, 'online' => 8, 'onlyElected' => 9, 'createdAt' => 10, 'updatedAt' => 11, 'slug' => 12, 'archivedAt' => 13, ),
-        BasePeer::TYPE_COLNAME => array (PCircleArchivePeer::ID => 0, PCircleArchivePeer::UUID => 1, PCircleArchivePeer::P_C_OWNER_ID => 2, PCircleArchivePeer::TITLE => 3, PCircleArchivePeer::SUMMARY => 4, PCircleArchivePeer::DESCRIPTION => 5, PCircleArchivePeer::LOGO_FILE_NAME => 6, PCircleArchivePeer::URL => 7, PCircleArchivePeer::ONLINE => 8, PCircleArchivePeer::ONLY_ELECTED => 9, PCircleArchivePeer::CREATED_AT => 10, PCircleArchivePeer::UPDATED_AT => 11, PCircleArchivePeer::SLUG => 12, PCircleArchivePeer::ARCHIVED_AT => 13, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'P_C_OWNER_ID' => 2, 'TITLE' => 3, 'SUMMARY' => 4, 'DESCRIPTION' => 5, 'LOGO_FILE_NAME' => 6, 'URL' => 7, 'ONLINE' => 8, 'ONLY_ELECTED' => 9, 'CREATED_AT' => 10, 'UPDATED_AT' => 11, 'SLUG' => 12, 'ARCHIVED_AT' => 13, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'p_c_owner_id' => 2, 'title' => 3, 'summary' => 4, 'description' => 5, 'logo_file_name' => 6, 'url' => 7, 'online' => 8, 'only_elected' => 9, 'created_at' => 10, 'updated_at' => 11, 'slug' => 12, 'archived_at' => 13, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'PCOwnerId' => 2, 'Title' => 3, 'Summary' => 4, 'Description' => 5, 'LogoFileName' => 6, 'Url' => 7, 'Online' => 8, 'ReadOnly' => 9, 'OnlyElected' => 10, 'CreatedAt' => 11, 'UpdatedAt' => 12, 'Slug' => 13, 'SortableRank' => 14, 'ArchivedAt' => 15, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'pCOwnerId' => 2, 'title' => 3, 'summary' => 4, 'description' => 5, 'logoFileName' => 6, 'url' => 7, 'online' => 8, 'readOnly' => 9, 'onlyElected' => 10, 'createdAt' => 11, 'updatedAt' => 12, 'slug' => 13, 'sortableRank' => 14, 'archivedAt' => 15, ),
+        BasePeer::TYPE_COLNAME => array (PCircleArchivePeer::ID => 0, PCircleArchivePeer::UUID => 1, PCircleArchivePeer::P_C_OWNER_ID => 2, PCircleArchivePeer::TITLE => 3, PCircleArchivePeer::SUMMARY => 4, PCircleArchivePeer::DESCRIPTION => 5, PCircleArchivePeer::LOGO_FILE_NAME => 6, PCircleArchivePeer::URL => 7, PCircleArchivePeer::ONLINE => 8, PCircleArchivePeer::READ_ONLY => 9, PCircleArchivePeer::ONLY_ELECTED => 10, PCircleArchivePeer::CREATED_AT => 11, PCircleArchivePeer::UPDATED_AT => 12, PCircleArchivePeer::SLUG => 13, PCircleArchivePeer::SORTABLE_RANK => 14, PCircleArchivePeer::ARCHIVED_AT => 15, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'P_C_OWNER_ID' => 2, 'TITLE' => 3, 'SUMMARY' => 4, 'DESCRIPTION' => 5, 'LOGO_FILE_NAME' => 6, 'URL' => 7, 'ONLINE' => 8, 'READ_ONLY' => 9, 'ONLY_ELECTED' => 10, 'CREATED_AT' => 11, 'UPDATED_AT' => 12, 'SLUG' => 13, 'SORTABLE_RANK' => 14, 'ARCHIVED_AT' => 15, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'p_c_owner_id' => 2, 'title' => 3, 'summary' => 4, 'description' => 5, 'logo_file_name' => 6, 'url' => 7, 'online' => 8, 'read_only' => 9, 'only_elected' => 10, 'created_at' => 11, 'updated_at' => 12, 'slug' => 13, 'sortable_rank' => 14, 'archived_at' => 15, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, )
     );
 
     /**
@@ -201,10 +207,12 @@ abstract class BasePCircleArchivePeer
             $criteria->addSelectColumn(PCircleArchivePeer::LOGO_FILE_NAME);
             $criteria->addSelectColumn(PCircleArchivePeer::URL);
             $criteria->addSelectColumn(PCircleArchivePeer::ONLINE);
+            $criteria->addSelectColumn(PCircleArchivePeer::READ_ONLY);
             $criteria->addSelectColumn(PCircleArchivePeer::ONLY_ELECTED);
             $criteria->addSelectColumn(PCircleArchivePeer::CREATED_AT);
             $criteria->addSelectColumn(PCircleArchivePeer::UPDATED_AT);
             $criteria->addSelectColumn(PCircleArchivePeer::SLUG);
+            $criteria->addSelectColumn(PCircleArchivePeer::SORTABLE_RANK);
             $criteria->addSelectColumn(PCircleArchivePeer::ARCHIVED_AT);
         } else {
             $criteria->addSelectColumn($alias . '.id');
@@ -216,10 +224,12 @@ abstract class BasePCircleArchivePeer
             $criteria->addSelectColumn($alias . '.logo_file_name');
             $criteria->addSelectColumn($alias . '.url');
             $criteria->addSelectColumn($alias . '.online');
+            $criteria->addSelectColumn($alias . '.read_only');
             $criteria->addSelectColumn($alias . '.only_elected');
             $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
             $criteria->addSelectColumn($alias . '.slug');
+            $criteria->addSelectColumn($alias . '.sortable_rank');
             $criteria->addSelectColumn($alias . '.archived_at');
         }
     }

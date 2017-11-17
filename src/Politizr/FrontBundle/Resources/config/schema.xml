@@ -1323,6 +1323,10 @@
             <parameter name="version" value="4" />
             <parameter name="permanent" value="false" />
         </behavior>
+        <behavior name="sortable" >
+            <parameter name="use_scope" value="true" />
+            <parameter name="scope_column" value="p_c_owner_id" />
+        </behavior>
         <behavior name="archivable" />
 
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
@@ -1339,6 +1343,7 @@
         <column name="url" type="varchar" size="150" />
 
         <column name="online" type="boolean" />
+        <column name="read_only" type="boolean" />
         <column name="only_elected" type="boolean" />
 
         <foreign-key foreignTable="p_c_owner" onDelete="CASCADE" onUpdate="CASCADE">
@@ -1359,6 +1364,10 @@
         <behavior name="uuid">
             <parameter name="version" value="4" />
             <parameter name="permanent" value="false" />
+        </behavior>
+        <behavior name="sortable" >
+            <parameter name="use_scope" value="true" />
+            <parameter name="scope_column" value="p_circle_id" />
         </behavior>
         <behavior name="archivable" />
 

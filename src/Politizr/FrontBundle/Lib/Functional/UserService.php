@@ -244,7 +244,7 @@ class UserService
      * @param PDocumentInterface $document
      * @return boolean|int
      */
-    public function isAuthorizedToReact(PUser $user, PDocumentInterface $document, $reason = false)
+    public function isAuthorizedToReact(PUser $user = null, PDocumentInterface $document = null, $reason = false)
     {
         if (!$document || !$user) {
             if ($reason) {

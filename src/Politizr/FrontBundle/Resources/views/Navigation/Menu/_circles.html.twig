@@ -1,3 +1,7 @@
-{% for circle in circles %}
-    <a href="{{ path('DetailCircle', { 'slug': circle.slug }) }}">{{ circle.title }}</a>
+{% for owner in owners %}
+    <span>{{ owner.title }}</span>
+    {% set circles = app.user | circlesByOwner(owner) %}
+    {% for circle in circles %}
+        <a href="{{ path('CircleDetail', { 'slug': circle.slug }) }}">{{ circle.title }}</a>
+    {% endfor %}
 {% endfor %}

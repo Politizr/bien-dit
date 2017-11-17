@@ -55,6 +55,7 @@ class PCTopicTableMap extends TableMap
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('slug', 'Slug', 'VARCHAR', false, 255, null);
+        $this->addColumn('sortable_rank', 'SortableRank', 'INTEGER', false, null, null);
         // validators
     } // initialize()
 
@@ -102,6 +103,11 @@ class PCTopicTableMap extends TableMap
   'permanent' => 'false',
   'required' => 'true',
   'unique' => 'true',
+),
+            'sortable' =>  array (
+  'rank_column' => 'sortable_rank',
+  'use_scope' => 'true',
+  'scope_column' => 'p_circle_id',
 ),
             'archivable' =>  array (
   'archive_table' => '',

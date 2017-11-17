@@ -8,7 +8,7 @@
             {{ operation.description | purify }}
             {% if app.user and app.user | isAuthorizedToAskOperation(operation) %}
                 <span>
-                    <a class="ctaOp" href="{{ path('DebateDraftNew'~profileSuffix(), { op: operation.uuid }) }}">{{ questionLabel }}</a>
+                    <a class="ctaOp" href="{{ path('DebateDraftNew', { op: operation.uuid }) }}">{{ questionLabel }}</a>
                 </span>
             {% elseif not app.user %}
                 <span>

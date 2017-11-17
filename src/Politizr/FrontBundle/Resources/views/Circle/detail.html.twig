@@ -20,23 +20,57 @@
 
 {% block bodyClass %} class="grp"{% endblock %}
 
-{% block content %}
-    <div id="content">
-        {{ circle.description | raw }}
-        {% for topic in topics %}
-            <h1>{{ topic.title }}</h1>
-            <div>{{ topic.summary | purify  }}</div>
-            <a href="{{ path('TopicDetail', { 'circleSlug': circle.slug, 'slug': topic.slug }) }}">En savoir plus</a>
-        {% endfor %}
-    </div>
-    {{ circle | circleFooter }}
-{% endblock content %}
+{% block header %}
+    {% embed 'PolitizrFrontBundle:Navigation\\Header:_headerConnected.html.twig' %}
+        {% block newSubject %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
 
-{% block sidebarContent %}
-    {% if not app.user %}
-        {% include 'PolitizrFrontBundle:Navigation\\Menu:_createAccount.html.twig' %}
-    {% endif %}
-{% endblock sidebarContent %}
+{% block main %}
+    <div id="main">
+        <div class="center">
+            {{ circle | circleMenuTop }}
+            {{ circleBreadcrumb(circle = circle) }}
+            <div class="grpCard">
+                <div class="grpGlobalIntro">
+                    {{ circle.description | raw }}
+                </div>
+                <div class="grpAnswersBy">
+                    <div class="grpAnswersByTitle">
+                        <h1>Les élus en charge de ces sujets</h1>
+                        <div class="grpAnswersByTitleNotice">
+                            <i class="icon-info"></i>
+                            <p>Tous les élus ci-contre peuvent répondre à vos questions.</p>
+                        </div>
+                        
+                    </div>
+                    {{ circle | authorizedReactionUsers() }}
+                </div>
+                <div class="grpChaptersList">
+                    <h1>Les 8 chapitres du budget primitif</h1>
+                    <h2>sur lesquels le Conseil départemental souhaite connaître votre opinion</h2>
+                    {% for topic in topics %}
+                        <div class="grpChaptersListItem">
+                            <div class="grpCharterImg">
+                                <a href="{{ path('TopicDetail', { 'circleSlug': circle.slug, 'slug': topic.slug }) }}">
+                                    <span>{{ topic.title }}</span>
+                                    <img src="{{ asset('bundles/politizrfront/images/grp-CD09/grp_catAgriculture.jpg') }}">
+                                </a>
+                            </div>
+                            {{ topic | topicStats }}
+                            <p>
+                                {{ topic.summary | striptags | truncate(50, true) | purify }}
+                                <a href="{{ path('TopicDetail', { 'circleSlug': circle.slug, 'slug': topic.slug }) }}" class="grpKnowMore">En savoir plus</a>
+                            </p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {{ circle | circleFooter }}
+        </div>
+    </div>
+{% endblock main %}
 
 {% block javascriptFooter %}
     {{ parent() }}

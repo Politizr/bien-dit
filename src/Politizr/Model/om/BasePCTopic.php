@@ -127,6 +127,12 @@ abstract class BasePCTopic extends BaseObject implements Persistent
     protected $slug;
 
     /**
+     * The value for the sortable_rank field.
+     * @var        int
+     */
+    protected $sortable_rank;
+
+    /**
      * @var        PCircle
      */
     protected $aPCircle;
@@ -162,6 +168,20 @@ abstract class BasePCTopic extends BaseObject implements Persistent
      * @var        boolean
      */
     protected $alreadyInClearAllReferencesDeep = false;
+
+    // sortable behavior
+
+    /**
+     * Queries to be executed in the save transaction
+     * @var        array
+     */
+    protected $sortableQueries = array();
+
+    /**
+     * The old scope value.
+     * @var        int
+     */
+    protected $oldScope;
 
     // archivable behavior
     protected $archiveOnDelete = true;
@@ -380,6 +400,17 @@ abstract class BasePCTopic extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [sortable_rank] column value.
+     *
+     * @return int
+     */
+    public function getSortableRank()
+    {
+
+        return $this->sortable_rank;
+    }
+
+    /**
      * Set the value of [id] column.
      *
      * @param  int $v new value
@@ -434,6 +465,9 @@ abstract class BasePCTopic extends BaseObject implements Persistent
         }
 
         if ($this->p_circle_id !== $v) {
+            // sortable behavior
+            $this->oldScope = $this->p_circle_id;
+
             $this->p_circle_id = $v;
             $this->modifiedColumns[] = PCTopicPeer::P_CIRCLE_ID;
         }
@@ -669,6 +703,27 @@ abstract class BasePCTopic extends BaseObject implements Persistent
     } // setSlug()
 
     /**
+     * Set the value of [sortable_rank] column.
+     *
+     * @param  int $v new value
+     * @return PCTopic The current object (for fluent API support)
+     */
+    public function setSortableRank($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->sortable_rank !== $v) {
+            $this->sortable_rank = $v;
+            $this->modifiedColumns[] = PCTopicPeer::SORTABLE_RANK;
+        }
+
+
+        return $this;
+    } // setSortableRank()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -713,6 +768,7 @@ abstract class BasePCTopic extends BaseObject implements Persistent
             $this->created_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
             $this->updated_at = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
             $this->slug = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+            $this->sortable_rank = ($row[$startcol + 13] !== null) ? (int) $row[$startcol + 13] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -722,7 +778,7 @@ abstract class BasePCTopic extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 13; // 13 = PCTopicPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 14; // 14 = PCTopicPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PCTopic object", $e);
@@ -820,6 +876,11 @@ abstract class BasePCTopic extends BaseObject implements Persistent
             $deleteQuery = PCTopicQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
+            // sortable behavior
+
+            PCTopicPeer::shiftRank(-1, $this->getSortableRank() + 1, null, $this->getScopeValue(), $con);
+            PCTopicPeer::clearInstancePool();
+
             // archivable behavior
             if ($ret) {
                 if ($this->archiveOnDelete) {
@@ -881,6 +942,8 @@ abstract class BasePCTopic extends BaseObject implements Persistent
             } elseif (!$this->getSlug()) {
                 $this->setSlug($this->createSlug());
             }
+            // sortable behavior
+            $this->processSortableQueries($con);
             if ($isInsert) {
                 $ret = $ret && $this->preInsert($con);
                 // timestampable behavior
@@ -890,12 +953,24 @@ abstract class BasePCTopic extends BaseObject implements Persistent
                 if (!$this->isColumnModified(PCTopicPeer::UPDATED_AT)) {
                     $this->setUpdatedAt(time());
                 }
+                // sortable behavior
+                if (!$this->isColumnModified(PCTopicPeer::RANK_COL)) {
+                    $this->setSortableRank(PCTopicQuery::create()->getMaxRankArray($this->getScopeValue(), $con) + 1);
+                }
+
             } else {
                 $ret = $ret && $this->preUpdate($con);
                 // timestampable behavior
                 if ($this->isModified() && !$this->isColumnModified(PCTopicPeer::UPDATED_AT)) {
                     $this->setUpdatedAt(time());
                 }
+                // sortable behavior
+                // if scope has changed and rank was not modified (if yes, assuming superior action)
+                // insert object to the end of new scope and cleanup old one
+                if (($this->isColumnModified(PCTopicPeer::P_CIRCLE_ID)) && !$this->isColumnModified(PCTopicPeer::RANK_COL)) { PCTopicPeer::shiftRank(-1, $this->getSortableRank() + 1, null, $this->oldScope, $con);
+                    $this->insertAtBottom($con);
+                }
+
             }
             if ($ret) {
                 $affectedRows = $this->doSave($con);
@@ -1059,6 +1134,9 @@ abstract class BasePCTopic extends BaseObject implements Persistent
         if ($this->isColumnModified(PCTopicPeer::SLUG)) {
             $modifiedColumns[':p' . $index++]  = '`slug`';
         }
+        if ($this->isColumnModified(PCTopicPeer::SORTABLE_RANK)) {
+            $modifiedColumns[':p' . $index++]  = '`sortable_rank`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `p_c_topic` (%s) VALUES (%s)',
@@ -1108,6 +1186,9 @@ abstract class BasePCTopic extends BaseObject implements Persistent
                         break;
                     case '`slug`':
                         $stmt->bindValue($identifier, $this->slug, PDO::PARAM_STR);
+                        break;
+                    case '`sortable_rank`':
+                        $stmt->bindValue($identifier, $this->sortable_rank, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -1208,6 +1289,9 @@ abstract class BasePCTopic extends BaseObject implements Persistent
             case 12:
                 return $this->getSlug();
                 break;
+            case 13:
+                return $this->getSortableRank();
+                break;
             default:
                 return null;
                 break;
@@ -1250,6 +1334,7 @@ abstract class BasePCTopic extends BaseObject implements Persistent
             $keys[10] => $this->getCreatedAt(),
             $keys[11] => $this->getUpdatedAt(),
             $keys[12] => $this->getSlug(),
+            $keys[13] => $this->getSortableRank(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1339,6 +1424,9 @@ abstract class BasePCTopic extends BaseObject implements Persistent
             case 12:
                 $this->setSlug($value);
                 break;
+            case 13:
+                $this->setSortableRank($value);
+                break;
         } // switch()
     }
 
@@ -1376,6 +1464,7 @@ abstract class BasePCTopic extends BaseObject implements Persistent
         if (array_key_exists($keys[10], $arr)) $this->setCreatedAt($arr[$keys[10]]);
         if (array_key_exists($keys[11], $arr)) $this->setUpdatedAt($arr[$keys[11]]);
         if (array_key_exists($keys[12], $arr)) $this->setSlug($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setSortableRank($arr[$keys[13]]);
     }
 
     /**
@@ -1400,6 +1489,7 @@ abstract class BasePCTopic extends BaseObject implements Persistent
         if ($this->isColumnModified(PCTopicPeer::CREATED_AT)) $criteria->add(PCTopicPeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(PCTopicPeer::UPDATED_AT)) $criteria->add(PCTopicPeer::UPDATED_AT, $this->updated_at);
         if ($this->isColumnModified(PCTopicPeer::SLUG)) $criteria->add(PCTopicPeer::SLUG, $this->slug);
+        if ($this->isColumnModified(PCTopicPeer::SORTABLE_RANK)) $criteria->add(PCTopicPeer::SORTABLE_RANK, $this->sortable_rank);
 
         return $criteria;
     }
@@ -1475,6 +1565,7 @@ abstract class BasePCTopic extends BaseObject implements Persistent
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
         $copyObj->setSlug($this->getSlug());
+        $copyObj->setSortableRank($this->getSortableRank());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -2384,6 +2475,7 @@ abstract class BasePCTopic extends BaseObject implements Persistent
         $this->created_at = null;
         $this->updated_at = null;
         $this->slug = null;
+        $this->sortable_rank = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
@@ -2626,6 +2718,398 @@ abstract class BasePCTopic extends BaseObject implements Persistent
             return true;
     }
 
+    // sortable behavior
+
+    /**
+     * Wrap the getter for rank value
+     *
+     * @return    int
+     */
+    public function getRank()
+    {
+        return $this->sortable_rank;
+    }
+
+    /**
+     * Wrap the setter for rank value
+     *
+     * @param     int
+     * @return    PCTopic
+     */
+    public function setRank($v)
+    {
+        return $this->setSortableRank($v);
+    }
+
+
+    /**
+     * Wrap the getter for scope value
+     *
+     * @param boolean $returnNulls If true and all scope values are null, this will return null instead of a array full with nulls
+     *
+     * @return    mixed A array or a native type
+     */
+    public function getScopeValue($returnNulls = true)
+    {
+
+
+        return $this->getPCircleId();
+
+    }
+
+    /**
+     * Wrap the setter for scope value
+     *
+     * @param     mixed A array or a native type
+     * @return    PCTopic
+     */
+    public function setScopeValue($v)
+    {
+
+
+        return $this->setPCircleId($v);
+
+    }
+
+    /**
+     * Check if the object is first in the list, i.e. if it has 1 for rank
+     *
+     * @return    boolean
+     */
+    public function isFirst()
+    {
+        return $this->getSortableRank() == 1;
+    }
+
+    /**
+     * Check if the object is last in the list, i.e. if its rank is the highest rank
+     *
+     * @param     PropelPDO  $con      optional connection
+     *
+     * @return    boolean
+     */
+    public function isLast(PropelPDO $con = null)
+    {
+        return $this->getSortableRank() == PCTopicQuery::create()->getMaxRankArray($this->getScopeValue(), $con);
+    }
+
+    /**
+     * Get the next item in the list, i.e. the one for which rank is immediately higher
+     *
+     * @param     PropelPDO  $con      optional connection
+     *
+     * @return    PCTopic
+     */
+    public function getNext(PropelPDO $con = null)
+    {
+
+        $query = PCTopicQuery::create();
+
+        $scope = $this->getScopeValue();
+
+        $query->filterByRank($this->getSortableRank() + 1, $scope);
+
+
+        return $query->findOne($con);
+    }
+
+    /**
+     * Get the previous item in the list, i.e. the one for which rank is immediately lower
+     *
+     * @param     PropelPDO  $con      optional connection
+     *
+     * @return    PCTopic
+     */
+    public function getPrevious(PropelPDO $con = null)
+    {
+
+        $query = PCTopicQuery::create();
+
+        $scope = $this->getScopeValue();
+
+        $query->filterByRank($this->getSortableRank() - 1, $scope);
+
+
+        return $query->findOne($con);
+    }
+
+    /**
+     * Insert at specified rank
+     * The modifications are not persisted until the object is saved.
+     *
+     * @param     integer    $rank rank value
+     * @param     PropelPDO  $con      optional connection
+     *
+     * @return    PCTopic the current object
+     *
+     * @throws    PropelException
+     */
+    public function insertAtRank($rank, PropelPDO $con = null)
+    {
+        $maxRank = PCTopicQuery::create()->getMaxRankArray($this->getScopeValue(), $con);
+        if ($rank < 1 || $rank > $maxRank + 1) {
+            throw new PropelException('Invalid rank ' . $rank);
+        }
+        // move the object in the list, at the given rank
+        $this->setSortableRank($rank);
+        if ($rank != $maxRank + 1) {
+            // Keep the list modification query for the save() transaction
+            $this->sortableQueries []= array(
+                'callable'  => array(self::PEER, 'shiftRank'),
+                'arguments' => array(1, $rank, null, $this->getScopeValue())
+            );
+        }
+
+        return $this;
+    }
+
+    /**
+     * Insert in the last rank
+     * The modifications are not persisted until the object is saved.
+     *
+     * @param PropelPDO $con optional connection
+     *
+     * @return    PCTopic the current object
+     *
+     * @throws    PropelException
+     */
+    public function insertAtBottom(PropelPDO $con = null)
+    {
+        $this->setSortableRank(PCTopicQuery::create()->getMaxRankArray($this->getScopeValue(), $con) + 1);
+
+        return $this;
+    }
+
+    /**
+     * Insert in the first rank
+     * The modifications are not persisted until the object is saved.
+     *
+     * @return    PCTopic the current object
+     */
+    public function insertAtTop()
+    {
+        return $this->insertAtRank(1);
+    }
+
+    /**
+     * Move the object to a new rank, and shifts the rank
+     * Of the objects inbetween the old and new rank accordingly
+     *
+     * @param     integer   $newRank rank value
+     * @param     PropelPDO $con optional connection
+     *
+     * @return    PCTopic the current object
+     *
+     * @throws    PropelException
+     */
+    public function moveToRank($newRank, PropelPDO $con = null)
+    {
+        if ($this->isNew()) {
+            throw new PropelException('New objects cannot be moved. Please use insertAtRank() instead');
+        }
+        if ($con === null) {
+            $con = Propel::getConnection(PCTopicPeer::DATABASE_NAME);
+        }
+        if ($newRank < 1 || $newRank > PCTopicQuery::create()->getMaxRankArray($this->getScopeValue(), $con)) {
+            throw new PropelException('Invalid rank ' . $newRank);
+        }
+
+        $oldRank = $this->getSortableRank();
+        if ($oldRank == $newRank) {
+            return $this;
+        }
+
+        $con->beginTransaction();
+        try {
+            // shift the objects between the old and the new rank
+            $delta = ($oldRank < $newRank) ? -1 : 1;
+            PCTopicPeer::shiftRank($delta, min($oldRank, $newRank), max($oldRank, $newRank), $this->getScopeValue(), $con);
+
+            // move the object to its new rank
+            $this->setSortableRank($newRank);
+            $this->save($con);
+
+            $con->commit();
+
+            return $this;
+        } catch (Exception $e) {
+            $con->rollback();
+            throw $e;
+        }
+    }
+
+    /**
+     * Exchange the rank of the object with the one passed as argument, and saves both objects
+     *
+     * @param     PCTopic $object
+     * @param     PropelPDO $con optional connection
+     *
+     * @return    PCTopic the current object
+     *
+     * @throws Exception if the database cannot execute the two updates
+     */
+    public function swapWith($object, PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(PCTopicPeer::DATABASE_NAME);
+        }
+        $con->beginTransaction();
+        try {
+            $oldScope = $this->getScopeValue();
+            $newScope = $object->getScopeValue();
+            if ($oldScope != $newScope) {
+                $this->setScopeValue($newScope);
+                $object->setScopeValue($oldScope);
+            }
+            $oldRank = $this->getSortableRank();
+            $newRank = $object->getSortableRank();
+            $this->setSortableRank($newRank);
+            $this->save($con);
+            $object->setSortableRank($oldRank);
+            $object->save($con);
+            $con->commit();
+
+            return $this;
+        } catch (Exception $e) {
+            $con->rollback();
+            throw $e;
+        }
+    }
+
+    /**
+     * Move the object higher in the list, i.e. exchanges its rank with the one of the previous object
+     *
+     * @param     PropelPDO $con optional connection
+     *
+     * @return    PCTopic the current object
+     */
+    public function moveUp(PropelPDO $con = null)
+    {
+        if ($this->isFirst()) {
+            return $this;
+        }
+        if ($con === null) {
+            $con = Propel::getConnection(PCTopicPeer::DATABASE_NAME);
+        }
+        $con->beginTransaction();
+        try {
+            $prev = $this->getPrevious($con);
+            $this->swapWith($prev, $con);
+            $con->commit();
+
+            return $this;
+        } catch (Exception $e) {
+            $con->rollback();
+            throw $e;
+        }
+    }
+
+    /**
+     * Move the object higher in the list, i.e. exchanges its rank with the one of the next object
+     *
+     * @param     PropelPDO $con optional connection
+     *
+     * @return    PCTopic the current object
+     */
+    public function moveDown(PropelPDO $con = null)
+    {
+        if ($this->isLast($con)) {
+            return $this;
+        }
+        if ($con === null) {
+            $con = Propel::getConnection(PCTopicPeer::DATABASE_NAME);
+        }
+        $con->beginTransaction();
+        try {
+            $next = $this->getNext($con);
+            $this->swapWith($next, $con);
+            $con->commit();
+
+            return $this;
+        } catch (Exception $e) {
+            $con->rollback();
+            throw $e;
+        }
+    }
+
+    /**
+     * Move the object to the top of the list
+     *
+     * @param     PropelPDO $con optional connection
+     *
+     * @return    PCTopic the current object
+     */
+    public function moveToTop(PropelPDO $con = null)
+    {
+        if ($this->isFirst()) {
+            return $this;
+        }
+
+        return $this->moveToRank(1, $con);
+    }
+
+    /**
+     * Move the object to the bottom of the list
+     *
+     * @param     PropelPDO $con optional connection
+     *
+     * @return integer the old object's rank
+     */
+    public function moveToBottom(PropelPDO $con = null)
+    {
+        if ($this->isLast($con)) {
+            return false;
+        }
+        if ($con === null) {
+            $con = Propel::getConnection(PCTopicPeer::DATABASE_NAME);
+        }
+        $con->beginTransaction();
+        try {
+            $bottom = PCTopicQuery::create()->getMaxRankArray($this->getScopeValue(), $con);
+            $res = $this->moveToRank($bottom, $con);
+            $con->commit();
+
+            return $res;
+        } catch (Exception $e) {
+            $con->rollback();
+            throw $e;
+        }
+    }
+
+    /**
+     * Removes the current object from the list (moves it to the null scope).
+     * The modifications are not persisted until the object is saved.
+     *
+     * @param     PropelPDO $con optional connection
+     *
+     * @return    PCTopic the current object
+     */
+    public function removeFromList(PropelPDO $con = null)
+    {
+        // check if object is already removed
+        if ($this->getScopeValue() === null) {
+            throw new PropelException('Object is already removed (has null scope)');
+        }
+
+        // move the object to the end of null scope
+        $this->setScopeValue(null);
+    //    $this->insertAtBottom($con);
+
+        return $this;
+    }
+
+    /**
+     * Execute queries that were saved to be run inside the save transaction
+     */
+    protected function processSortableQueries($con)
+    {
+        foreach ($this->sortableQueries as $query) {
+            $query['arguments'][]= $con;
+            call_user_func_array($query['callable'], $query['arguments']);
+        }
+        $this->sortableQueries = array();
+    }
+
     // archivable behavior
 
     /**
@@ -2720,6 +3204,7 @@ abstract class BasePCTopic extends BaseObject implements Persistent
         $this->setCreatedAt($archive->getCreatedAt());
         $this->setUpdatedAt($archive->getUpdatedAt());
         $this->setSlug($archive->getSlug());
+        $this->setSortableRank($archive->getSortableRank());
 
         return $this;
     }

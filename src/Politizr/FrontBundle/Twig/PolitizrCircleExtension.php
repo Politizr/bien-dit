@@ -82,11 +82,6 @@ class PolitizrCircleExtension extends \Twig_Extension
                 array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             new \Twig_SimpleFilter(
-                'circleBreadcrumb',
-                array($this, 'circleBreadcrumb'),
-                array('is_safe' => array('html'), 'needs_environment' => true)
-            ),
-            new \Twig_SimpleFilter(
                 'circleFooter',
                 array($this, 'circleFooter'),
                 array('is_safe' => array('html'), 'needs_environment' => true)
@@ -104,6 +99,11 @@ class PolitizrCircleExtension extends \Twig_Extension
             new \Twig_SimpleFilter(
                 'topicQuestion',
                 array($this, 'topicQuestion'),
+                array('is_safe' => array('html'), 'needs_environment' => true)
+            ),
+            new \Twig_SimpleFilter(
+                'authorizedReactionUsers',
+                array($this, 'authorizedReactionUsers'),
                 array('is_safe' => array('html'), 'needs_environment' => true)
             ),
         );
@@ -175,6 +175,7 @@ class PolitizrCircleExtension extends \Twig_Extension
         $topics = PCTopicQuery::create()
                     ->filterByPCircleId($circle->getId())
                     ->filterByOnline(true)
+                    ->orderByRank()
                     ->find();
 
         // Construction du rendu du tag
@@ -183,28 +184,6 @@ class PolitizrCircleExtension extends \Twig_Extension
             array(
                 'circle' => $circle,
                 'topics' => $topics,
-            )
-        );
-
-        return $html;
-    }
-
-    /**
-     * Manage circle breadcrumb
-     *
-     * @param PCircle $circle
-     * @return html
-     */
-    public function circleBreadcrumb(\Twig_Environment $env, PCircle $circle)
-    {
-        // $this->logger->info('*** circleBreadcrumb');
-        // $this->logger->info('$circle = '.print_r($circle, true));
-
-        // Construction du rendu du tag
-        $html = $env->render(
-            'PolitizrFrontBundle:Circle:_breadcrumb.html.twig',
-            array(
-                'circle' => $circle
             )
         );
 
@@ -313,6 +292,42 @@ class PolitizrCircleExtension extends \Twig_Extension
         return $html;
     }
 
+    /**
+     * Display listing of users authorized to react in this circle
+     *
+     * @param PCTopic $topic
+     * @return html
+     */
+    public function authorizedReactionUsers(\Twig_Environment $env, PCircle $circle)
+    {
+        // $this->logger->info('*** authorizedReactionUsers');
+        // $this->logger->info('$topic = '.print_r($topic, true));
+
+        $mainUser = null;
+        if ($circle->getId() == CircleConstants::CD09_ID_CIRCLE) {
+            $mainUser = PUserQuery::create()->findPk(CircleConstants::CD09_ID_USER_PRESIDENT);
+        }
+
+        $users = $this->circleService->getAuthorizedReactionUsersByCircle($circle);
+
+        // get template path > generic or dedicated
+        $templatePath = 'Circle';
+        if ($circle->getId() == CircleConstants::CD09_ID_CIRCLE) {
+            $templatePath = 'Circle\\cd09';
+        }
+
+        // Construction du rendu du tag
+        $html = $env->render(
+            'PolitizrFrontBundle:'.$templatePath.':_authorizedReactionUsers.html.twig',
+            array(
+                'mainUser' => $mainUser,
+                'users' => $users,
+            )
+        );
+
+        return $html;
+    }
+
     /* ######################################################################################################## */
     /*                                             FONCTIONS                                                    */
     /* ######################################################################################################## */
@@ -327,7 +342,6 @@ class PolitizrCircleExtension extends \Twig_Extension
     {
         // $this->logger->info('*** authorizedReactionUsersForCd09');
 
-        $mainUser = PUserQuery::create()->findPk(CircleConstants::CD09_ID_USER_PRESIDENT);
         $users = PUserQuery::create()->filterById(CircleConstants::CD09_IDS_USER_RESPONSES)->find();
         
         $html = $env->render(

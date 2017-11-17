@@ -26,6 +26,8 @@ params:
             label:          Description
         url:
             label:          URL
+        read_only:
+            label:          Lecture seule
         online:
             label:          En ligne
         only_elected:
@@ -43,7 +45,14 @@ builders:
         params:
             title:                              Liste des groupes
             max_per_page:                       50
-            sort:                               [ created_at, DESC ]
+            sort:                               [ sortable_rank, ASC ]
+            scopes:
+                group_1: 
+                    "Tous":                     ~
+                    "Ariège Département":
+                        default:                1
+                        filters:
+                            p_c_owner_id:       1
             display:                            [ logo_file_name, title, p_c_owner, online, created_at ]
             filtersMode:                        modal
             filters:                            [ id, p_c_owner, uuid, title, online, created_at ]
@@ -51,6 +60,8 @@ builders:
                 show:                           ~
                 edit:                           ~
                 delete:                         ~
+                moveUp:                         ~
+                moveDown:                       ~
             actions:
                 new:                            ~
     new:
@@ -84,7 +95,7 @@ builders:
                     "Restrictions":             [ only_elected ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
-                    "En ligne":                 [ online ]
+                    "En ligne":                 [ read_only, online ]
                     "Création":                 [ [ created_at, updated_at ] ]
             fields:
                 uploadedLogoFileName:
@@ -100,8 +111,8 @@ builders:
                         attr:                   { class : tinymce }
                 description:
                     grid_class:                 "col-md-12"
-                    addFormOptions:
-                        attr:                   { class : tinymce }
+                    # addFormOptions:
+                    #     attr:                   { class : tinymce }
                 id:
                     addFormOptions:
                         read_only:              true
@@ -145,8 +156,8 @@ builders:
     actions:
         params:
             object_actions:
-                homepage:                       ~
+                moveUp:                         ~
+                moveDown:                       ~
                 delete: ~
             batch_actions:
-                homepage:                       ~
                 delete: ~

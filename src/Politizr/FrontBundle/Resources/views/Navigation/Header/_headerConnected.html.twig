@@ -1,76 +1,83 @@
 {# beta #}
-<div class="center">
-    <div id="headerLeft">
-        <div id="logo"><a href="{{ path('Homepage'~profileSuffix()) }}"><i class="icon-pltzr-logo"></i><span>politizr</span></a></div>
-        <div id="headerMenu">
-            {#<a href="{{ path('Homepage'~profileSuffix()) }}"{% if homepage is defined and homepage %} class="currentPage"{% endif %}>accueil</a>#}
-            {#<a href="{{ path('ListingByRecommend') }}"{% if top is defined and top %} class="currentPage"{% endif %}>top</a>#}
-            <a href="{{ path('ListingSearchPublications') }}"{% if searchPublications is defined and searchPublications %} class="currentPage"{% endif %}>publications</a>
-            <a href="{{ path('ListingSearchUsers'~profileSuffix()) }}"{% if searchUsers is defined and searchUsers %} class="currentPage"{% endif %}>{% if (isGrantedE()) %}les élus{% else %}mes élus{% endif %}</a>
-        </div>
-        <div id="searchInput">
-            <i class="icon-search"></i><input id="searchInputAlgolia" type="text" placeholder="Rechercher">
-        </div>
-    </div>
-    <div id="headerRight">
-        <a href="{{ path('DebateDraftNew'~profileSuffix()) }}" class="newSubject"><i class="icon-plane"></i><span>nouveau sujet</span></a>
-        <div class="headerSeparator"></div>
-        <div id="notifCounter">
-            <i class="icon-notif" action="toggleNotifBox">
-                <span class="notifNew" id="notifCounterNew">-</span>
-            </i>
-            <div id="notifBox" style="display: none;"></div>
-        </div>
-        {#
-        <div class="headerSeparator"></div>
-        <div id="reputCounter" uuid="{{ app.user.uuid }}">
-            <a href="{{ path('UserDetail', {'slug': app.user.slug}) }}">
-                <i class="icon-cup"></i><span class="reputPoints">-</span>
-                <span class="badgesCounter">
-                    <span class="badgesCounterGold">-</span>
-                    <span class="badgesCounterSilver">-</span>
-                    <span class="badgesCounterBronze">-</span>
-                </span>
-            </a>
-        </div>
-        #}
-        <div class="headerSeparator"></div>
-        <div id="headerGrp" action="toggleGrpMenu">
-            <i class="icon-grp"></i><span>Groupes</span><i class="icon-arrow-down"></i>
-        </div>
-        <div id="headerGrpMenu" style="display: none;">
-            <div id="headerGrpMenuArrow"><i class="icon-arrow-up"></i></div>
-            <div class="innerMenu">
-                <div class="primaryMenu">
-                    {{ app.user | circleMenu }}
-                </div>
-                <div class="secondaryMenu">
-                    <a href="{{ path('MenuCircle') }}">Gérer mes groupes</a>
-                </div>
+<div id="header">
+    <div class="center">
+        <div id="headerLeft">
+            <div id="logo"><a href="{{ path('Homepage'~profileSuffix()) }}"><i class="icon-pltzr-logo"></i><span>politizr</span></a></div>
+            <div id="headerMenu">
+                {#<a href="{{ path('Homepage'~profileSuffix()) }}"{% if homepage is defined and homepage %} class="currentPage"{% endif %}>accueil</a>#}
+                {#<a href="{{ path('ListingByRecommend') }}"{% if top is defined and top %} class="currentPage"{% endif %}>top</a>#}
+                <a href="{{ path('ListingSearchPublications') }}"{% if searchPublications is defined and searchPublications %} class="currentPage"{% endif %}>publications</a>
+                <a href="{{ path('ListingSearchUsers'~profileSuffix()) }}"{% if searchUsers is defined and searchUsers %} class="currentPage"{% endif %}>{% if (isGrantedE()) %}les élus{% else %}mes élus{% endif %}</a>
+            </div>
+            <div id="searchInput">
+                <i class="icon-search"></i><input id="searchInputAlgolia" type="text" placeholder="Rechercher">
             </div>
         </div>
-        <div class="headerSeparator"></div>
-        <div id="userLogged" action="toggleMenu">
-            {# <span class="userName">{{ app.user.firstname }} {{ app.user.name }}</span> #}
-            <span class="avatar30">{{ app.user | photo('user_30', withLink = false, withBubble = false) }}</span>
-        </div>
-        <div id="menu" style="display: none;">
-            <div id="menuArrow"><i class="icon-arrow-up"></i></div>
-            <div class="innerMenu">
-                <div class="primaryMenu">
-                    <a href="{{ path('UserDetail', {'slug': app.user.slug}) }}">Mon profil</a>
-                    <a href="{{ path('Drafts'~profileSuffix()) }}">Mes brouillons</a>
-                    <a href="{{ path('UserDetail', {'slug': app.user.slug}) }}">Mes publications</a>
-                    <a href="{{ path('Bookmarks'~profileSuffix()) }}">Mes favoris</a>
+        <div id="headerRight">
+            {% block newSubject %}
+                <a href="{{ path('DebateDraftNew') }}" class="newSubject">
+                    <i class="icon-plane"></i><span>je m'exprime</span>
+                </a>
+                <div class="headerSeparator"></div>
+            {% endblock %}
+            <div id="notifCounter">
+                <i class="icon-notif" action="toggleNotifBox">
+                    <span class="notifNew" id="notifCounterNew">-</span>
+                </i>
+                <div id="notifBox" style="display: none;"></div>
+            </div>
+            {#
+            <div class="headerSeparator"></div>
+            <div id="reputCounter" uuid="{{ app.user.uuid }}">
+                <a href="{{ path('UserDetail', {'slug': app.user.slug}) }}">
+                    <i class="icon-cup"></i><span class="reputPoints">-</span>
+                    <span class="badgesCounter">
+                        <span class="badgesCounterGold">-</span>
+                        <span class="badgesCounterSilver">-</span>
+                        <span class="badgesCounterBronze">-</span>
+                    </span>
+                </a>
+            </div>
+            #}
+            <div class="headerSeparator"></div>
+            <div id="headerGrp" action="toggleGrpMenu">
+                <i class="icon-grp"></i><span>Groupes</span><i class="icon-arrow-down"></i>
+            </div>
+            <div id="headerGrpMenu" style="display: none;">
+                <div id="headerGrpMenuArrow"><i class="icon-arrow-up"></i></div>
+                <div class="innerMenu">
+                    <div class="primaryMenu">
+                        {{ app.user | circleMenu }}
+                    </div>
+                    <div class="secondaryMenu">
+                        <a href="{{ path('MenuCircle') }}">Gérer mes groupes</a>
+                    </div>
                 </div>
-                <div class="secondaryMenu">
-                    <a href="{{ path('EditPerso'~profileSuffix()) }}">Mon compte</a>
-                    <a href="{{ path('EditNotifications'~profileSuffix()) }}">Réglages des notifications</a>
-                    <a href="{{ path('GlobalHelper') }}">Principes de base</a>
-                    <a href="http://www.politizr.help" target="_blank"><b>Support et assistance</b></a>
-                    <div id="deconnect"><a href="{{ path('Logout') }}">Déconnexion</a></div>
+            </div>
+            <div class="headerSeparator"></div>
+            <div id="userLogged" action="toggleMenu">
+                {# <span class="userName">{{ app.user.firstname }} {{ app.user.name }}</span> #}
+                <span class="avatar30">{{ app.user | photo('user_30', withLink = false, withBubble = false) }}</span>
+            </div>
+            <div id="menu" style="display: none;">
+                <div id="menuArrow"><i class="icon-arrow-up"></i></div>
+                <div class="innerMenu">
+                    <div class="primaryMenu">
+                        <a href="{{ path('UserDetail', {'slug': app.user.slug}) }}">Mon profil</a>
+                        <a href="{{ path('Drafts'~profileSuffix()) }}">Mes brouillons</a>
+                        <a href="{{ path('UserDetail', {'slug': app.user.slug}) }}">Mes publications</a>
+                        <a href="{{ path('Bookmarks'~profileSuffix()) }}">Mes favoris</a>
+                    </div>
+                    <div class="secondaryMenu">
+                        <a href="{{ path('EditPerso'~profileSuffix()) }}">Mon compte</a>
+                        <a href="{{ path('EditNotifications'~profileSuffix()) }}">Réglages des notifications</a>
+                        <a href="{{ path('GlobalHelper') }}">Principes de base</a>
+                        <a href="http://www.politizr.help" target="_blank"><b>Support et assistance</b></a>
+                        <div id="deconnect"><a href="{{ path('Logout') }}">Déconnexion</a></div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<div id="headerTrigger"></div>

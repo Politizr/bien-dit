@@ -93,6 +93,12 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
     protected $online;
 
     /**
+     * The value for the read_only field.
+     * @var        boolean
+     */
+    protected $read_only;
+
+    /**
      * The value for the only_elected field.
      * @var        boolean
      */
@@ -115,6 +121,12 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
      * @var        string
      */
     protected $slug;
+
+    /**
+     * The value for the sortable_rank field.
+     * @var        int
+     */
+    protected $sortable_rank;
 
     /**
      * The value for the archived_at field.
@@ -242,6 +254,17 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [read_only] column value.
+     *
+     * @return boolean
+     */
+    public function getReadOnly()
+    {
+
+        return $this->read_only;
+    }
+
+    /**
      * Get the [only_elected] column value.
      *
      * @return boolean
@@ -341,6 +364,17 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
     {
 
         return $this->slug;
+    }
+
+    /**
+     * Get the [sortable_rank] column value.
+     *
+     * @return int
+     */
+    public function getSortableRank()
+    {
+
+        return $this->sortable_rank;
     }
 
     /**
@@ -581,6 +615,35 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
     } // setOnline()
 
     /**
+     * Sets the value of the [read_only] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return PCircleArchive The current object (for fluent API support)
+     */
+    public function setReadOnly($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->read_only !== $v) {
+            $this->read_only = $v;
+            $this->modifiedColumns[] = PCircleArchivePeer::READ_ONLY;
+        }
+
+
+        return $this;
+    } // setReadOnly()
+
+    /**
      * Sets the value of the [only_elected] column.
      * Non-boolean arguments are converted using the following rules:
      *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
@@ -677,6 +740,27 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
     } // setSlug()
 
     /**
+     * Set the value of [sortable_rank] column.
+     *
+     * @param  int $v new value
+     * @return PCircleArchive The current object (for fluent API support)
+     */
+    public function setSortableRank($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->sortable_rank !== $v) {
+            $this->sortable_rank = $v;
+            $this->modifiedColumns[] = PCircleArchivePeer::SORTABLE_RANK;
+        }
+
+
+        return $this;
+    } // setSortableRank()
+
+    /**
      * Sets the value of [archived_at] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
@@ -740,11 +824,13 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
             $this->logo_file_name = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
             $this->url = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
             $this->online = ($row[$startcol + 8] !== null) ? (boolean) $row[$startcol + 8] : null;
-            $this->only_elected = ($row[$startcol + 9] !== null) ? (boolean) $row[$startcol + 9] : null;
-            $this->created_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
-            $this->updated_at = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
-            $this->slug = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
-            $this->archived_at = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
+            $this->read_only = ($row[$startcol + 9] !== null) ? (boolean) $row[$startcol + 9] : null;
+            $this->only_elected = ($row[$startcol + 10] !== null) ? (boolean) $row[$startcol + 10] : null;
+            $this->created_at = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+            $this->updated_at = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+            $this->slug = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
+            $this->sortable_rank = ($row[$startcol + 14] !== null) ? (int) $row[$startcol + 14] : null;
+            $this->archived_at = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -754,7 +840,7 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 14; // 14 = PCircleArchivePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 16; // 16 = PCircleArchivePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PCircleArchive object", $e);
@@ -989,6 +1075,9 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PCircleArchivePeer::ONLINE)) {
             $modifiedColumns[':p' . $index++]  = '`online`';
         }
+        if ($this->isColumnModified(PCircleArchivePeer::READ_ONLY)) {
+            $modifiedColumns[':p' . $index++]  = '`read_only`';
+        }
         if ($this->isColumnModified(PCircleArchivePeer::ONLY_ELECTED)) {
             $modifiedColumns[':p' . $index++]  = '`only_elected`';
         }
@@ -1000,6 +1089,9 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
         }
         if ($this->isColumnModified(PCircleArchivePeer::SLUG)) {
             $modifiedColumns[':p' . $index++]  = '`slug`';
+        }
+        if ($this->isColumnModified(PCircleArchivePeer::SORTABLE_RANK)) {
+            $modifiedColumns[':p' . $index++]  = '`sortable_rank`';
         }
         if ($this->isColumnModified(PCircleArchivePeer::ARCHIVED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`archived_at`';
@@ -1042,6 +1134,9 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
                     case '`online`':
                         $stmt->bindValue($identifier, (int) $this->online, PDO::PARAM_INT);
                         break;
+                    case '`read_only`':
+                        $stmt->bindValue($identifier, (int) $this->read_only, PDO::PARAM_INT);
+                        break;
                     case '`only_elected`':
                         $stmt->bindValue($identifier, (int) $this->only_elected, PDO::PARAM_INT);
                         break;
@@ -1053,6 +1148,9 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
                         break;
                     case '`slug`':
                         $stmt->bindValue($identifier, $this->slug, PDO::PARAM_STR);
+                        break;
+                    case '`sortable_rank`':
+                        $stmt->bindValue($identifier, $this->sortable_rank, PDO::PARAM_INT);
                         break;
                     case '`archived_at`':
                         $stmt->bindValue($identifier, $this->archived_at, PDO::PARAM_STR);
@@ -1138,18 +1236,24 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
                 return $this->getOnline();
                 break;
             case 9:
-                return $this->getOnlyElected();
+                return $this->getReadOnly();
                 break;
             case 10:
-                return $this->getCreatedAt();
+                return $this->getOnlyElected();
                 break;
             case 11:
-                return $this->getUpdatedAt();
+                return $this->getCreatedAt();
                 break;
             case 12:
-                return $this->getSlug();
+                return $this->getUpdatedAt();
                 break;
             case 13:
+                return $this->getSlug();
+                break;
+            case 14:
+                return $this->getSortableRank();
+                break;
+            case 15:
                 return $this->getArchivedAt();
                 break;
             default:
@@ -1189,11 +1293,13 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
             $keys[6] => $this->getLogoFileName(),
             $keys[7] => $this->getUrl(),
             $keys[8] => $this->getOnline(),
-            $keys[9] => $this->getOnlyElected(),
-            $keys[10] => $this->getCreatedAt(),
-            $keys[11] => $this->getUpdatedAt(),
-            $keys[12] => $this->getSlug(),
-            $keys[13] => $this->getArchivedAt(),
+            $keys[9] => $this->getReadOnly(),
+            $keys[10] => $this->getOnlyElected(),
+            $keys[11] => $this->getCreatedAt(),
+            $keys[12] => $this->getUpdatedAt(),
+            $keys[13] => $this->getSlug(),
+            $keys[14] => $this->getSortableRank(),
+            $keys[15] => $this->getArchivedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1261,18 +1367,24 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
                 $this->setOnline($value);
                 break;
             case 9:
-                $this->setOnlyElected($value);
+                $this->setReadOnly($value);
                 break;
             case 10:
-                $this->setCreatedAt($value);
+                $this->setOnlyElected($value);
                 break;
             case 11:
-                $this->setUpdatedAt($value);
+                $this->setCreatedAt($value);
                 break;
             case 12:
-                $this->setSlug($value);
+                $this->setUpdatedAt($value);
                 break;
             case 13:
+                $this->setSlug($value);
+                break;
+            case 14:
+                $this->setSortableRank($value);
+                break;
+            case 15:
                 $this->setArchivedAt($value);
                 break;
         } // switch()
@@ -1308,11 +1420,13 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
         if (array_key_exists($keys[6], $arr)) $this->setLogoFileName($arr[$keys[6]]);
         if (array_key_exists($keys[7], $arr)) $this->setUrl($arr[$keys[7]]);
         if (array_key_exists($keys[8], $arr)) $this->setOnline($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setOnlyElected($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setCreatedAt($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setUpdatedAt($arr[$keys[11]]);
-        if (array_key_exists($keys[12], $arr)) $this->setSlug($arr[$keys[12]]);
-        if (array_key_exists($keys[13], $arr)) $this->setArchivedAt($arr[$keys[13]]);
+        if (array_key_exists($keys[9], $arr)) $this->setReadOnly($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setOnlyElected($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setCreatedAt($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setUpdatedAt($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setSlug($arr[$keys[13]]);
+        if (array_key_exists($keys[14], $arr)) $this->setSortableRank($arr[$keys[14]]);
+        if (array_key_exists($keys[15], $arr)) $this->setArchivedAt($arr[$keys[15]]);
     }
 
     /**
@@ -1333,10 +1447,12 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PCircleArchivePeer::LOGO_FILE_NAME)) $criteria->add(PCircleArchivePeer::LOGO_FILE_NAME, $this->logo_file_name);
         if ($this->isColumnModified(PCircleArchivePeer::URL)) $criteria->add(PCircleArchivePeer::URL, $this->url);
         if ($this->isColumnModified(PCircleArchivePeer::ONLINE)) $criteria->add(PCircleArchivePeer::ONLINE, $this->online);
+        if ($this->isColumnModified(PCircleArchivePeer::READ_ONLY)) $criteria->add(PCircleArchivePeer::READ_ONLY, $this->read_only);
         if ($this->isColumnModified(PCircleArchivePeer::ONLY_ELECTED)) $criteria->add(PCircleArchivePeer::ONLY_ELECTED, $this->only_elected);
         if ($this->isColumnModified(PCircleArchivePeer::CREATED_AT)) $criteria->add(PCircleArchivePeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(PCircleArchivePeer::UPDATED_AT)) $criteria->add(PCircleArchivePeer::UPDATED_AT, $this->updated_at);
         if ($this->isColumnModified(PCircleArchivePeer::SLUG)) $criteria->add(PCircleArchivePeer::SLUG, $this->slug);
+        if ($this->isColumnModified(PCircleArchivePeer::SORTABLE_RANK)) $criteria->add(PCircleArchivePeer::SORTABLE_RANK, $this->sortable_rank);
         if ($this->isColumnModified(PCircleArchivePeer::ARCHIVED_AT)) $criteria->add(PCircleArchivePeer::ARCHIVED_AT, $this->archived_at);
 
         return $criteria;
@@ -1409,10 +1525,12 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
         $copyObj->setLogoFileName($this->getLogoFileName());
         $copyObj->setUrl($this->getUrl());
         $copyObj->setOnline($this->getOnline());
+        $copyObj->setReadOnly($this->getReadOnly());
         $copyObj->setOnlyElected($this->getOnlyElected());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
         $copyObj->setSlug($this->getSlug());
+        $copyObj->setSortableRank($this->getSortableRank());
         $copyObj->setArchivedAt($this->getArchivedAt());
         if ($makeNew) {
             $copyObj->setNew(true);
@@ -1474,10 +1592,12 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
         $this->logo_file_name = null;
         $this->url = null;
         $this->online = null;
+        $this->read_only = null;
         $this->only_elected = null;
         $this->created_at = null;
         $this->updated_at = null;
         $this->slug = null;
+        $this->sortable_rank = null;
         $this->archived_at = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;

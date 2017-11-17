@@ -60,6 +60,10 @@ CREATE INDEX `p_d_reaction_archive_I_8` ON `p_d_reaction_archive` (`uuid`);
 
 CREATE INDEX `p_d_reaction_archive_I_9` ON `p_d_reaction_archive` (`slug`);
 
+ALTER TABLE `p_e_operation` CHANGE `p_user_id` `p_user_id` INTEGER;
+
+ALTER TABLE `p_e_operation_archive` CHANGE `p_user_id` `p_user_id` INTEGER;
+
 ALTER TABLE `p_u_notification`
     ADD `p_c_topic_id` INTEGER AFTER `p_author_user_id`;
 
@@ -89,10 +93,12 @@ CREATE TABLE `p_circle`
     `logo_file_name` VARCHAR(150),
     `url` VARCHAR(150),
     `online` TINYINT(1),
+    `read_only` TINYINT(1),
     `only_elected` TINYINT(1),
     `created_at` DATETIME,
     `updated_at` DATETIME,
     `slug` VARCHAR(255),
+    `sortable_rank` INTEGER,
     PRIMARY KEY (`id`),
     UNIQUE INDEX `p_circle_U_1` (`uuid`),
     UNIQUE INDEX `p_circle_slug` (`slug`(255)),
@@ -119,6 +125,7 @@ CREATE TABLE `p_c_topic`
     `created_at` DATETIME,
     `updated_at` DATETIME,
     `slug` VARCHAR(255),
+    `sortable_rank` INTEGER,
     PRIMARY KEY (`id`),
     UNIQUE INDEX `p_c_topic_U_1` (`uuid`),
     UNIQUE INDEX `p_c_topic_slug` (`slug`(255)),
@@ -202,10 +209,12 @@ CREATE TABLE `p_circle_archive`
     `logo_file_name` VARCHAR(150),
     `url` VARCHAR(150),
     `online` TINYINT(1),
+    `read_only` TINYINT(1),
     `only_elected` TINYINT(1),
     `created_at` DATETIME,
     `updated_at` DATETIME,
     `slug` VARCHAR(255),
+    `sortable_rank` INTEGER,
     `archived_at` DATETIME,
     PRIMARY KEY (`id`),
     INDEX `p_circle_archive_I_1` (`p_c_owner_id`),
@@ -228,6 +237,7 @@ CREATE TABLE `p_c_topic_archive`
     `created_at` DATETIME,
     `updated_at` DATETIME,
     `slug` VARCHAR(255),
+    `sortable_rank` INTEGER,
     `archived_at` DATETIME,
     PRIMARY KEY (`id`),
     INDEX `p_c_topic_archive_I_1` (`p_circle_id`),

@@ -19,7 +19,7 @@ params:
         p_circle:
             label:          Groupe
             addFormOptions:
-                query:      \Politizr\Model\PCircleQuery::create()->orderByTitle()
+                query:      \Politizr\Model\PCircleQuery::create()->orderByRank()
         file_name:
             label:          Bandeau
         summary:
@@ -45,7 +45,14 @@ builders:
         params:
             title:                              Liste des discussions
             max_per_page:                       50
-            sort:                               [ created_at, DESC ]
+            sort:                               [ sortable_rank, ASC ]
+            scopes:
+                group_1: 
+                    "Tous":                     ~
+                    "[CD09] Budget Primitif 2017":
+                        default:                1
+                        filters:
+                            p_circle_id:        1
             display:                            [ file_name, title, id, p_circle, online, created_at ]
             filtersMode:                        modal
             filters:                            [ p_circle, uuid, title, online, created_at ]
@@ -53,6 +60,8 @@ builders:
                 show:                           ~
                 edit:                           ~
                 delete:                         ~
+                moveUp:                         ~
+                moveDown:                       ~
             actions:
                 new:                            ~
     new:
@@ -100,8 +109,8 @@ builders:
                         attr:                   { class : tinymce }
                 description:
                     grid_class:                 "col-md-12"
-                    addFormOptions:
-                        attr:                   { class : tinymce }
+                    # addFormOptions:
+                    #     attr:                   { class : tinymce }
                 id:
                     addFormOptions:
                         read_only:              true
@@ -153,8 +162,8 @@ builders:
     actions:
         params:
             object_actions:
-                homepage:                       ~
+                moveUp:                         ~
+                moveDown:                       ~
                 delete: ~
             batch_actions:
-                homepage:                       ~
                 delete: ~
