@@ -5,6 +5,8 @@ use Politizr\Exception\InconsistentDataException;
 
 use Politizr\Model\PCircle;
 use Politizr\Model\PCTopic;
+use Politizr\Model\PDocumentInterface;
+use Politizr\Model\PDCommentInterface;
 
 use Politizr\Model\PCircleQuery;
 use Politizr\Model\PCTopicQuery;
@@ -118,6 +120,16 @@ class PolitizrCircleExtension extends \Twig_Extension
             'authorizedReactionUsersForCd09'  => new \Twig_SimpleFunction(
                 'authorizedReactionUsersForCd09',
                 array($this, 'authorizedReactionUsersForCd09'),
+                array('is_safe' => array('html'), 'needs_environment' => true)
+            ),
+            'circleBreadcrumb'  => new \Twig_SimpleFunction(
+                'circleBreadcrumb',
+                array($this, 'circleBreadcrumb'),
+                array('is_safe' => array('html'), 'needs_environment' => true)
+            ),
+            'circleCardHeader'  => new \Twig_SimpleFunction(
+                'circleCardHeader',
+                array($this, 'circleCardHeader'),
                 array('is_safe' => array('html'), 'needs_environment' => true)
             ),
         );
@@ -355,6 +367,102 @@ class PolitizrCircleExtension extends \Twig_Extension
         return $html;
     }
 
+    /**
+     * Breadcrumb
+     *
+     * @param PCircle $circle
+     * @param PCTopic $topic
+     * @param PDocument $document
+     * @return html
+     */
+    public function circleBreadcrumb(
+        \Twig_Environment $env,
+        PCircle $circle = null,
+        PCTopic $topic = null,
+        PDocumentInterface $document = null
+    ) {
+        // $this->logger->info('*** circleBreadcrumb');
+        // $this->logger->info('$circle = '.print_r($circle, true));
+
+        $circleLevel = false;
+        $topicLevel = false;
+        $documentLevel = false;
+
+        if ($circle) {
+            $circleLevel = true;
+            
+            $owner = $circle->getPCOwner();
+        } elseif ($topic) {
+            $topicLevel = true;
+
+            $circle = $topic->getPCircle();
+            $owner = $circle->getPCOwner();
+        } elseif ($document) {
+            $documentLevel = true;
+
+            $topic = $document->getPCTopic();
+
+            if ($topic) {
+                $circle = $topic->getPCircle();
+                $owner = $circle->getPCOwner();
+            } else {
+                return null;
+            }
+        }
+
+        // Construction du rendu du tag
+        $html = $env->render(
+            'PolitizrFrontBundle:Circle:_breadcrumb.html.twig',
+            array(
+                'circleLevel' => $circleLevel,
+                'topicLevel' => $topicLevel,
+                'documentLevel' => $documentLevel,
+                'owner' => $owner,
+                'circle' => $circle,
+                'topic' => $topic,
+                'document' => $document,
+            )
+        );
+
+        return $html;
+    }
+
+    /**
+     * Header for document's card (debate, reaction, comment) in circle context
+     *
+     * @param PDocumentInterface $document
+     * @param PDCommentInterface $comment
+     * @return html
+     */
+    public function circleCardHeader(
+        \Twig_Environment $env,
+        PDocumentInterface $document = null,
+        PDCommentInterface $comment = null
+    ) {
+        // $this->logger->info('*** circleCardHeader');
+        // $this->logger->info('$document = '.print_r($document, true));
+        // $this->logger->info('$comment = '.print_r($comment, true));
+        if ($document && $topic = $document->getPCTopic()) {
+            $circle = $topic->getPCircle();
+            $owner = $circle->getPCOwner();
+        } elseif ($comment && $comment->getPDocument() && $topic = $comment->getPDocument()->getPCTopic()) {
+            $circle = $topic->getPCircle();
+            $owner = $circle->getPCOwner();
+        } else {
+            return null;
+        }
+
+        // Construction du rendu du tag
+        $html = $env->render(
+            'PolitizrFrontBundle:Document:_circleHeader.html.twig',
+            array(
+                'owner' => $owner,
+                'circle' => $circle,
+            )
+        );
+
+        return $html;
+    }
 
     public function getName()
     {
