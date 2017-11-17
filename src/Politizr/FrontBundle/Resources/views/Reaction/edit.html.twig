@@ -3,7 +3,15 @@
 
 {% block title %}Éditer une réponse - {{ parent() }}{% endblock title %}
 
-{% block bodyClass %} class="user edition"{% endblock bodyClass %}
+{% block bodyClass %}
+    {% spaceless %}
+        {% if reaction.PCTopicId %}
+            class="user edition grp"
+        {% else %}
+             class="user edition"
+        {% endif %}
+    {% endspaceless %}
+{% endblock bodyClass %}
 
 {% block header %}
     {% embed 'PolitizrFrontBundle:Navigation\\Header:_headerConnected.html.twig' %}
