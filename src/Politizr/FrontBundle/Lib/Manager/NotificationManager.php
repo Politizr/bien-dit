@@ -926,6 +926,7 @@ LIMIT :limit
             $debates->append($debate);
         }
 
+
         return $debates;
     }
 

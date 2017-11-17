@@ -112,6 +112,7 @@ class ObjectTypeConstants
     note_pos,
     note_neg,
     nb_views,
+    want_boost,
     published,
     published_at,
     published_by,
