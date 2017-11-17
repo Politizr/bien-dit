@@ -1,7 +1,7 @@
 {# @todo dynamic rendering #}
 <div id="grpMenu">
     <div class="center">
-        <img src="{{ asset(constant('Politizr\\Constant\\PathConstants::CIRCLE_UPLOAD_WEB_PATH') ~ circle.logoFileName) }}">
+        <a href="{{ path('CircleDetail', { 'slug': circle.slug }) }}"><img src="{{ asset(constant('Politizr\\Constant\\PathConstants::CIRCLE_UPLOAD_WEB_PATH') ~ circle.logoFileName) }}"></a>
         <div id="grpMenuPseudoTabs">
             <span>{{ circle.title }}</span>
         </div>

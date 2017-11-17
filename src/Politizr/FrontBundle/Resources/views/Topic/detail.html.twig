@@ -18,17 +18,29 @@
 {% block tcTitle %}{{ metaTitle }} - {{ parent() }}{% endblock tcTitle %}
 {% block tcDescription %}{{ metaDescription }}{% endblock tcDescription %}
 
-{% block bodyClass %} class="grp"{% endblock %}
+{% block bodyClass %}
+    {% spaceless %}
+        {% if (isGrantedE() or isGrantedC()) %}
+            class="grp"
+        {% else %}    
+            class="grp public"
+        {% endif %}
+    {% endspaceless %}
+{% endblock bodyClass %}
 
 {% block header %}
-    {% embed 'PolitizrFrontBundle:Navigation\\Header:_headerConnected.html.twig' %}
-        {% block newSubject %}
-            <a href="{{ path('DebateDraftNew', { topic: topic.uuid }) }}" class="newSubject">
-                <i class="icon-plane"></i><span>je m'exprime</span>
-            </a>
-            <div class="headerSeparator"></div>
-        {% endblock %}
-    {% endembed %}
+    {% if (isGrantedE() or isGrantedC()) %}
+        {% embed 'PolitizrFrontBundle:Navigation\\Header:_headerConnected.html.twig' %}
+            {% block newSubject %}
+                <a href="{{ path('DebateDraftNew', { topic: topic.uuid }) }}" class="newSubject">
+                    <i class="icon-plane"></i><span>je m'exprime</span>
+                </a>
+                <div class="headerSeparator"></div>
+            {% endblock %}
+        {% endembed %}
+    {% else %}
+        {{ parent() }}
+    {% endif %}
 {% endblock %}
 
 {% block main %}

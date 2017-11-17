@@ -18,13 +18,25 @@
 {% block tcTitle %}{{ metaTitle }} - {{ parent() }}{% endblock tcTitle %}
 {% block tcDescription %}{{ metaDescription }}{% endblock tcDescription %}
 
-{% block bodyClass %} class="grp"{% endblock %}
+{% block bodyClass %}
+    {% spaceless %}
+        {% if (isGrantedE() or isGrantedC()) %}
+            class="grp"
+        {% else %}    
+            class="grp public"
+        {% endif %}
+    {% endspaceless %}
+{% endblock bodyClass %}
 
 {% block header %}
-    {% embed 'PolitizrFrontBundle:Navigation\\Header:_headerConnected.html.twig' %}
-        {% block newSubject %}
-        {% endblock %}
-    {% endembed %}
+    {% if (isGrantedE() or isGrantedC()) %}
+        {% embed 'PolitizrFrontBundle:Navigation\\Header:_headerConnected.html.twig' %}
+            {% block newSubject %}
+            {% endblock %}
+        {% endembed %}
+    {% else %}
+        {{ parent() }}
+    {% endif %}
 {% endblock %}
 
 {% block main %}
