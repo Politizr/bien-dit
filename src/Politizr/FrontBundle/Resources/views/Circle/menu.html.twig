@@ -8,17 +8,16 @@
         <div class="list">
             <div class="pageTitle">Mes groupes</div>
             <div id="groupListing">
-                {% set prevOwner = null %}
-                {% for circle in circles %}
-                    {% set owner = circle.PCOwner %}
-                    {% if owner != prevOwner %}
-                        <h1>{{ owner.title }}</h1>
-                    {% endif %}
-                    <div>
-                        <h2>{{ circle.title }}</h2>
-                        <div class="circleActions withLoaderInside">
-                            {{ circle | circleActions }}
-                        </div>
+                {% for owner in owners %}
+                    <h1>{{ owner.title }}</h1>
+                    <div class="groupListingRow">
+                        {% set circles = app.user | circlesByOwner(owner) %}
+                        {% for circle in circles %}
+                            <h2>{{ circle.title }}</h2>
+                            <div class="circleActions withLoaderInside">
+                                {{ circle | circleActions }}
+                            </div>
+                        {% endfor %}
                     </div>
                 {% else %}
                     <div class="noResults">

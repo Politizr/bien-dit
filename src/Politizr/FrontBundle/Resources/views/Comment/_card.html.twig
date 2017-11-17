@@ -1,5 +1,6 @@
 {# beta #}
 <div class="card">
+    {{ circleCardHeader(comment = comment) }}
     {% include 'PolitizrFrontBundle:User:_summary.html.twig' with { 'user': comment.user, 'withSocialLinks': false, 'withMandates': false } only %}
     <div class="commentInCard">
         {{ comment | linkParentDocument }}

@@ -38,9 +38,10 @@ class CircleController extends Controller
         }
 
         $circles = $this->get('politizr.functional.circle')->getAuthorizedCirclesByUser($user);
+        $owners = $this->get('politizr.functional.circle')->getOwnersByUser($user);
 
         return $this->render('PolitizrFrontBundle:Circle:menu.html.twig', array(
-            'circles' => $circles,
+            'owners' => $owners,
         ));
     }
 
