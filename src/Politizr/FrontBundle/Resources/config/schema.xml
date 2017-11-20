@@ -644,6 +644,8 @@
         <column name="online" type="boolean" />
         <column name="homepage" type="boolean" />
 
+        <column name="support_group" type="boolean" />
+
         <column name="banned" type="boolean" />
         <column name="banned_nb_days_left" type="integer" />
         <column name="banned_nb_total" type="integer" />

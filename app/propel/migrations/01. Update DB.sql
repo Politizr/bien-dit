@@ -60,12 +60,14 @@ CREATE INDEX `p_d_reaction_archive_I_8` ON `p_d_reaction_archive` (`uuid`);
 
 CREATE INDEX `p_d_reaction_archive_I_9` ON `p_d_reaction_archive` (`slug`);
 
-ALTER TABLE `p_e_operation` CHANGE `p_user_id` `p_user_id` INTEGER;
-
-ALTER TABLE `p_e_operation_archive` CHANGE `p_user_id` `p_user_id` INTEGER;
-
 ALTER TABLE `p_u_notification`
     ADD `p_c_topic_id` INTEGER AFTER `p_author_user_id`;
+
+ALTER TABLE `p_user`
+    ADD `support_group` TINYINT(1) AFTER `homepage`;
+
+ALTER TABLE `p_user_archive`
+    ADD `support_group` TINYINT(1) AFTER `homepage`;
 
 CREATE TABLE `p_c_owner`
 (

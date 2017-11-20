@@ -84,6 +84,7 @@ class ObjectTypeConstants
     nb_id_check,
     online,
     homepage,
+    support_group,
     banned,
     banned_nb_days_left,
     banned_nb_total,

@@ -94,6 +94,7 @@ class PUserArchiveTableMap extends TableMap
         $this->addColumn('nb_id_check', 'NbIdCheck', 'INTEGER', false, null, null);
         $this->addColumn('online', 'Online', 'BOOLEAN', false, 1, null);
         $this->addColumn('homepage', 'Homepage', 'BOOLEAN', false, 1, null);
+        $this->addColumn('support_group', 'SupportGroup', 'BOOLEAN', false, 1, null);
         $this->addColumn('banned', 'Banned', 'BOOLEAN', false, 1, null);
         $this->addColumn('banned_nb_days_left', 'BannedNbDaysLeft', 'INTEGER', false, null, null);
         $this->addColumn('banned_nb_total', 'BannedNbTotal', 'INTEGER', false, null, null);

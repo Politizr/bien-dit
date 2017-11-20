@@ -58,6 +58,7 @@ class XhrConstants
     const ROUTE_MAP_SCHEMA = 'carte/schema';
 
     const ROUTE_DOCUMENT_BOOKMARK = '-w/document/bookmark';
+    const ROUTE_DOCUMENT_BOOST = '-w/document/boost';
 
     const ROUTE_FB_COMMENTS = 'fb/commentaires';
     const ROUTE_FB_INSIGHTS= 'fb/insights';
@@ -166,6 +167,7 @@ class XhrConstants
 
     // CIRCLES
     const ROUTE_CIRCLE_SUBSCRIPTION = '-w/circle/subscription';
+    const ROUTE_CIRCLE_SUPPORT = '-w/circle/support';
 
     // TIMELINE
     const ROUTE_TIMELINE_MINE = '-w/timeline';

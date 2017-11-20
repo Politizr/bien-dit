@@ -45,6 +45,7 @@ var ROUTE_MAP_BREADCRUMB = 'carte/breadcrumb';
 var ROUTE_MAP_SCHEMA = 'carte/schema';
 
 var ROUTE_DOCUMENT_BOOKMARK = '-w/document/bookmark';
+var ROUTE_DOCUMENT_BOOST = '-w/document/boost';
 
 var ROUTE_FB_COMMENTS = 'fb/commentaires';
 var ROUTE_FB_INSIGHTS= 'fb/insights';
@@ -154,6 +155,7 @@ var ROUTE_USER_LISTING_BADGES = 'auteur/badges';
 
 // CIRCLES
 var ROUTE_CIRCLE_SUBSCRIPTION = '-w/circle/subscription';
+var ROUTE_CIRCLE_SUPPORT = '-w/circle/support';
 
 // TIMELINE
 var ROUTE_TIMELINE_MINE = '-w/timeline';

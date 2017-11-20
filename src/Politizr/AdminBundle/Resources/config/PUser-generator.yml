@@ -75,6 +75,8 @@ params:
             label:          En ligne
         homepage:
             label:          Accueil
+        support_group:
+            label:          Support groupe
         banned:
             label:          Banni
         banned_nb_days_left:
@@ -209,8 +211,8 @@ builders:
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
                     "Type":                     [ qualified ]
-                    "En ligne":                 [ online ]
-                    "Mise en avant":            [ homepage ]
+                    "En ligne":                 [ [ online, homepage] ]
+                    "Groupe":                   [ support_group ]
                     "Validé":                   [ validated, nb_id_check ]
                     "Dates":                    [ [ created_at, updated_at ], [ indexed_at ] ]
             fields:
@@ -368,8 +370,8 @@ builders:
                     "Précédentes notifications": [ block_moderation_alert_listing  ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
-                    "En ligne":                 [ online ]
-                    "Mise en avant":            [ homepage ]
+                    "En ligne":                 [ [ online, homepage] ]
+                    "Groupe":                   [ support_group ]
                     "Validé":                   [ validated, nb_id_check ]
                     "Rôles":                    [ roles ]
                     "Dates":                    [ [ created_at, updated_at ], [ indexed_at ] ]

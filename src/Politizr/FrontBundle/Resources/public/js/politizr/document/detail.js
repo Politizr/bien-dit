@@ -136,7 +136,7 @@ function boostQuestion(targetElement, localLoader, uuid, type, boost) {
     // console.log(uuid);
 
     var xhrPath = getXhrPath(
-        ROUTE_DOCUMENT_BOOKMARK,
+        ROUTE_DOCUMENT_BOOST,
         'document',
         'boostQuestion',
         RETURN_HTML

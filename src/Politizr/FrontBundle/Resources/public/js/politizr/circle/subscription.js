@@ -39,3 +39,34 @@ function subscribeCircle(targetElement, localLoader, uuid, way) {
         localLoader.hide();
     });
 }
+
+/**
+ * Boost question
+ */
+function supportGroup(targetElement, localLoader) {
+    // console.log('*** supportGroup');
+    // console.log(targetElement);
+    // console.log(localLoader);
+
+    var xhrPath = getXhrPath(
+        ROUTE_CIRCLE_SUPPORT,
+        'circle',
+        'supportGroup',
+        RETURN_HTML
+    );
+
+    return xhrCall(
+        document,
+        { },
+        xhrPath,
+        localLoader
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
+            targetElement.html(data['html']);
+        }
+        localLoader.hide();
+    });
+}
