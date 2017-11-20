@@ -3,11 +3,11 @@
         <a href="{{ path('CircleDetail', { 'slug': circle.slug }) }}">{{ owner.title }}</a><i class="icon-arrow-right"></i>
         <span>{{ circle.title }}
     {% elseif topicLevel and topic %}
-        {{ owner.title }}<i class="icon-arrow-right"></i>
+        <a href="{{ path('CircleDetail', { 'slug': circle.slug }) }}">{{ owner.title }}</a><i class="icon-arrow-right"></i>
         <a href="{{ path('CircleDetail', { 'slug': circle.slug }) }}">{{ circle.title }}</a><i class="icon-arrow-right"></i>
         <span>{{ topic.title }}
     {% elseif documentLevel and document %}
-        {{ owner.title }}<i class="icon-arrow-right"></i>
+        <a href="{{ path('CircleDetail', { 'slug': circle.slug }) }}">{{ owner.title }}</a><i class="icon-arrow-right"></i>
         <a href="{{ path('CircleDetail', { 'slug': circle.slug }) }}">{{ circle.title }}</a><i class="icon-arrow-right"></i>
         <a href="{{ path('TopicDetail', { 'slug': topic.slug, 'circleSlug': circle.slug }) }}">{{ topic.title }}</a><i class="icon-arrow-right"></i>
         <span>{{ document.title }}
