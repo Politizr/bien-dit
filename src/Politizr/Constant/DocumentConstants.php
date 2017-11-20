@@ -26,4 +26,7 @@ class DocumentConstants
     const REASON_USER_ELECTED = 5;
     const REASON_USER_OPERATION = 6;
     const REASON_OWNER_OPERATION = 7;
+
+    // ******************************************************* //
+    const PRIVATE_DOC_LENGTH = 500;
 }

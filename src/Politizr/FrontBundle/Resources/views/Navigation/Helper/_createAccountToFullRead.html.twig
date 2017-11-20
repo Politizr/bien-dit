@@ -1,25 +1,8 @@
-<div id="publicPostGetAccount">
-    <div id="publicPostGetAccountGradient"></div>
-    <div id="publicPostGetAccountContent">
-        <div id="publicPostGetAccountHeader">
-            <i class="icon-info"></i>
-            <h1><a href="{{ path('InscriptionChoice') }}">Inscription gratuite pour lire la suite</a></h1>
-        </div>
-        {#
-        <div id="publicPostGetAccountLeftCol">
-            <div class="footerXcolumns footer2columns">Déjà inscrit-e? <a href="{{ path('Login') }}">Identifiez-vous</a></div>
-        </div>
-        
-        <div id="publicPostGetAccountRightCol">
-            <b>Pas encore inscrit-e ? Créez votre compte Politizr gratuitement en quelques clics!</b>
-            <div class="publicPostGetAccountArgu">
-                {% include 'PolitizrFrontBundle:Public:_cardAdvantagesCitizen.html.twig' %}
-            </div>
-            <div class="publicPostGetAccountArgu">
-                {% include 'PolitizrFrontBundle:Public:_cardAdvantagesElected.html.twig' %}
-            </div>
-        </div>
-        #}
+<div class="postGetAccount">
+    {% if private %}<h1><i class="icon-info"></i>Vous devez vous inscrire pour lire la suite</h1>{% endif %}
+    <p>Ne manquer aucune publication {% if document.PUserId %}de <b>{{ document.user }}</b>{% endif %} en vous inscrivant. <a href="{{ path('Concept') }}">En savoir plus</a></p>
+    <div class="getAccountActions">
+        <a class="linkPostGetAccount" href="{{ path('InscriptionChoice') }}">Créer un compte</a>
+        <span>Déjà inscrit-e? <a href="{{ path('Login') }}">Identifiez-vous</a></span>
     </div>
-        
 </div>

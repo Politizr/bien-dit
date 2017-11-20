@@ -14,6 +14,7 @@ use Politizr\Constant\TagConstants;
 use Politizr\Constant\ListingConstants;
 use Politizr\Constant\LocalizationConstants;
 use Politizr\Constant\ObjectTypeConstants;
+use Politizr\Constant\DocumentConstants;
 
 use Politizr\Model\PDocumentInterface;
 use Politizr\Model\PDDebateQuery;
@@ -132,7 +133,7 @@ class DocumentController extends Controller
         $private = $this->get('politizr.tools.global')->isPrivateMode($visitor, $debate, $this->getParameter('private_mode'), $this->getParameter('public_user_ids'));
         $description = $debate->getDescription();
         if ($private) {
-            $description = $this->get('politizr.tools.global')->truncate($description, 500, ['html' => true]);
+            $description = $this->get('politizr.tools.global')->truncate($description, DocumentConstants::PRIVATE_DOC_LENGTH, ['html' => true]);
         }
 
         // Paragraphs explode
@@ -197,7 +198,7 @@ class DocumentController extends Controller
 
         $description = $reaction->getDescription();
         if ($private) {
-            $description = $this->get('politizr.tools.global')->truncate($description, 500, ['html' => true]);
+            $description = $this->get('politizr.tools.global')->truncate($description, DocumentConstants::PRIVATE_DOC_LENGTH, ['html' => true]);
         }
 
         // Paragraphs explode
