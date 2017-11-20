@@ -356,7 +356,9 @@ $('body').on("click", "[action='openCgv']", function(e){
 $('body').on("click", "[action='openCharte']", function(e){
     // console.log('*** click openCharte');
 
-    return modalCharte();
+    var uuid = $(this).attr('uuid');
+
+    return modalCharte(uuid);
 });
 
 $('body').on("click", "[action='openGlobalHelper']", function(e){
@@ -424,8 +426,9 @@ function modalCgv() {
 /**
  * Modal Charte
  */
-function modalCharte() {
+function modalCharte(uuid) {
     // console.log('*** modalCharte');
+    // console.log(uuid);
 
     var xhrPath = getXhrPath(
         ROUTE_MODAL_CHARTE,
@@ -436,7 +439,7 @@ function modalCharte() {
 
     return xhrCall(
         document,
-        null,
+        { 'uuid': uuid },
         xhrPath
     ).done(function(data) {
         if (data['error']) {

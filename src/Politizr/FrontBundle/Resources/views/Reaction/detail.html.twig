@@ -150,6 +150,10 @@
     {% include 'PolitizrFrontBundle:Reaction:_sidebar.html.twig' %}
 {% endblock sidebarContent %}
 
+{% block sidebarFooter %}
+    {% include 'PolitizrFrontBundle:Navigation\\Footer:_sidebar.html.twig' with { 'document': reaction } %}
+{% endblock %}
+
 {% block javascriptFooter %}
     {{ parent() }}
 

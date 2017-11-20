@@ -43,6 +43,7 @@ class PMCharteTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
+        $this->addForeignKey('p_circle_id', 'PCircleId', 'INTEGER', 'p_circle', 'id', false, null, null);
         $this->addColumn('title', 'Title', 'VARCHAR', false, 100, null);
         $this->addColumn('summary', 'Summary', 'LONGVARCHAR', false, null, null);
         $this->addColumn('description', 'Description', 'CLOB', false, null, null);
@@ -57,6 +58,7 @@ class PMCharteTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('PCircle', 'Politizr\\Model\\PCircle', RelationMap::MANY_TO_ONE, array('p_circle_id' => 'id', ), 'SET NULL', 'CASCADE');
     } // buildRelations()
 
     /**

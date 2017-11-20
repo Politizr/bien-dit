@@ -200,6 +200,11 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             new \Twig_SimpleFilter(
+                'linkCharte',
+                array($this, 'linkCharte'),
+                array('is_safe' => array('html'), 'needs_environment' => true)
+            ),
+            new \Twig_SimpleFilter(
                 'followersDebate',
                 array($this, 'followersDebate'),
                 array('is_safe' => array('html'), 'needs_environment' => true)
@@ -1076,6 +1081,34 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 'object' => $debate,
                 'owner' => $owner,
                 'follower' => $follower
+            )
+        );
+
+        return $html;
+    }
+
+    /**
+     * Global / specific link for charte
+     *
+     * @param PDocumentInterface $document
+     * @return string
+     */
+    public function linkCharte(\Twig_Environment $env, PDocumentInterface $document)
+    {
+        // // $this->logger->info('*** linkCharte');
+        // // $this->logger->info('$document = '.print_r($document, true));
+
+        $uuid = null;
+        if ($topic = $document->getPCTopic()) {
+            $circle = $topic->getPCircle();
+            $uuid = $circle->getUuid();
+        }
+
+        // Construction du rendu du tag
+        $html = $env->render(
+            'PolitizrFrontBundle:Document:_charteLink.html.twig',
+            array(
+                'uuid' => $uuid,
             )
         );
 

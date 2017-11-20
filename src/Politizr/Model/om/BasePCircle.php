@@ -28,6 +28,8 @@ use Politizr\Model\PCirclePeer;
 use Politizr\Model\PCircleQuery;
 use Politizr\Model\PLCity;
 use Politizr\Model\PLCityQuery;
+use Politizr\Model\PMCharte;
+use Politizr\Model\PMCharteQuery;
 use Politizr\Model\PUInPC;
 use Politizr\Model\PUInPCQuery;
 use Politizr\Model\PUser;
@@ -168,6 +170,12 @@ abstract class BasePCircle extends BaseObject implements Persistent
     protected $collPUInPCsPartial;
 
     /**
+     * @var        PropelObjectCollection|PMCharte[] Collection to store aggregation of PMCharte objects.
+     */
+    protected $collPMChartes;
+    protected $collPMChartesPartial;
+
+    /**
      * @var        PropelObjectCollection|PLCity[] Collection to store aggregation of PLCity objects.
      */
     protected $collPLCities;
@@ -243,6 +251,12 @@ abstract class BasePCircle extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $pUInPCsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pMChartesScheduledForDeletion = null;
 
     /**
      * Get the [id] column value.
@@ -945,6 +959,8 @@ abstract class BasePCircle extends BaseObject implements Persistent
 
             $this->collPUInPCs = null;
 
+            $this->collPMChartes = null;
+
             $this->collPLCities = null;
             $this->collPUsers = null;
         } // if (deep)
@@ -1229,6 +1245,24 @@ abstract class BasePCircle extends BaseObject implements Persistent
 
             if ($this->collPUInPCs !== null) {
                 foreach ($this->collPUInPCs as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->pMChartesScheduledForDeletion !== null) {
+                if (!$this->pMChartesScheduledForDeletion->isEmpty()) {
+                    foreach ($this->pMChartesScheduledForDeletion as $pMCharte) {
+                        // need to save related object because we set the relation to null
+                        $pMCharte->save($con);
+                    }
+                    $this->pMChartesScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPMChartes !== null) {
+                foreach ($this->collPMChartes as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -1530,6 +1564,9 @@ abstract class BasePCircle extends BaseObject implements Persistent
             if (null !== $this->collPUInPCs) {
                 $result['PUInPCs'] = $this->collPUInPCs->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
+            if (null !== $this->collPMChartes) {
+                $result['PMChartes'] = $this->collPMChartes->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
         }
 
         return $result;
@@ -1777,6 +1814,12 @@ abstract class BasePCircle extends BaseObject implements Persistent
                 }
             }
 
+            foreach ($this->getPMChartes() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPMCharte($relObj->copy($deepCopy));
+                }
+            }
+
             //unflag object copy
             $this->startCopy = false;
         } // if ($deepCopy)
@@ -1898,6 +1941,9 @@ abstract class BasePCircle extends BaseObject implements Persistent
         }
         if ('PUInPC' == $relationName) {
             $this->initPUInPCs();
+        }
+        if ('PMCharte' == $relationName) {
+            $this->initPMChartes();
         }
     }
 
@@ -2627,6 +2673,231 @@ abstract class BasePCircle extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collPMChartes collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PCircle The current object (for fluent API support)
+     * @see        addPMChartes()
+     */
+    public function clearPMChartes()
+    {
+        $this->collPMChartes = null; // important to set this to null since that means it is uninitialized
+        $this->collPMChartesPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPMChartes collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPMChartes($v = true)
+    {
+        $this->collPMChartesPartial = $v;
+    }
+
+    /**
+     * Initializes the collPMChartes collection.
+     *
+     * By default this just sets the collPMChartes collection to an empty array (like clearcollPMChartes());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPMChartes($overrideExisting = true)
+    {
+        if (null !== $this->collPMChartes && !$overrideExisting) {
+            return;
+        }
+        $this->collPMChartes = new PropelObjectCollection();
+        $this->collPMChartes->setModel('PMCharte');
+    }
+
+    /**
+     * Gets an array of PMCharte objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PCircle is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PMCharte[] List of PMCharte objects
+     * @throws PropelException
+     */
+    public function getPMChartes($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPMChartesPartial && !$this->isNew();
+        if (null === $this->collPMChartes || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPMChartes) {
+                // return empty collection
+                $this->initPMChartes();
+            } else {
+                $collPMChartes = PMCharteQuery::create(null, $criteria)
+                    ->filterByPCircle($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPMChartesPartial && count($collPMChartes)) {
+                      $this->initPMChartes(false);
+
+                      foreach ($collPMChartes as $obj) {
+                        if (false == $this->collPMChartes->contains($obj)) {
+                          $this->collPMChartes->append($obj);
+                        }
+                      }
+
+                      $this->collPMChartesPartial = true;
+                    }
+
+                    $collPMChartes->getInternalIterator()->rewind();
+
+                    return $collPMChartes;
+                }
+
+                if ($partial && $this->collPMChartes) {
+                    foreach ($this->collPMChartes as $obj) {
+                        if ($obj->isNew()) {
+                            $collPMChartes[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPMChartes = $collPMChartes;
+                $this->collPMChartesPartial = false;
+            }
+        }
+
+        return $this->collPMChartes;
+    }
+
+    /**
+     * Sets a collection of PMCharte objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pMChartes A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PCircle The current object (for fluent API support)
+     */
+    public function setPMChartes(PropelCollection $pMChartes, PropelPDO $con = null)
+    {
+        $pMChartesToDelete = $this->getPMChartes(new Criteria(), $con)->diff($pMChartes);
+
+
+        $this->pMChartesScheduledForDeletion = $pMChartesToDelete;
+
+        foreach ($pMChartesToDelete as $pMCharteRemoved) {
+            $pMCharteRemoved->setPCircle(null);
+        }
+
+        $this->collPMChartes = null;
+        foreach ($pMChartes as $pMCharte) {
+            $this->addPMCharte($pMCharte);
+        }
+
+        $this->collPMChartes = $pMChartes;
+        $this->collPMChartesPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PMCharte objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PMCharte objects.
+     * @throws PropelException
+     */
+    public function countPMChartes(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPMChartesPartial && !$this->isNew();
+        if (null === $this->collPMChartes || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPMChartes) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPMChartes());
+            }
+            $query = PMCharteQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPCircle($this)
+                ->count($con);
+        }
+
+        return count($this->collPMChartes);
+    }
+
+    /**
+     * Method called to associate a PMCharte object to this object
+     * through the PMCharte foreign key attribute.
+     *
+     * @param    PMCharte $l PMCharte
+     * @return PCircle The current object (for fluent API support)
+     */
+    public function addPMCharte(PMCharte $l)
+    {
+        if ($this->collPMChartes === null) {
+            $this->initPMChartes();
+            $this->collPMChartesPartial = true;
+        }
+
+        if (!in_array($l, $this->collPMChartes->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPMCharte($l);
+
+            if ($this->pMChartesScheduledForDeletion and $this->pMChartesScheduledForDeletion->contains($l)) {
+                $this->pMChartesScheduledForDeletion->remove($this->pMChartesScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PMCharte $pMCharte The pMCharte object to add.
+     */
+    protected function doAddPMCharte($pMCharte)
+    {
+        $this->collPMChartes[]= $pMCharte;
+        $pMCharte->setPCircle($this);
+    }
+
+    /**
+     * @param	PMCharte $pMCharte The pMCharte object to remove.
+     * @return PCircle The current object (for fluent API support)
+     */
+    public function removePMCharte($pMCharte)
+    {
+        if ($this->getPMChartes()->contains($pMCharte)) {
+            $this->collPMChartes->remove($this->collPMChartes->search($pMCharte));
+            if (null === $this->pMChartesScheduledForDeletion) {
+                $this->pMChartesScheduledForDeletion = clone $this->collPMChartes;
+                $this->pMChartesScheduledForDeletion->clear();
+            }
+            $this->pMChartesScheduledForDeletion[]= $pMCharte;
+            $pMCharte->setPCircle(null);
+        }
+
+        return $this;
+    }
+
+    /**
      * Clears out the collPLCities collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
@@ -3057,6 +3328,11 @@ abstract class BasePCircle extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collPMChartes) {
+                foreach ($this->collPMChartes as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collPLCities) {
                 foreach ($this->collPLCities as $o) {
                     $o->clearAllReferences($deep);
@@ -3086,6 +3362,10 @@ abstract class BasePCircle extends BaseObject implements Persistent
             $this->collPUInPCs->clearIterator();
         }
         $this->collPUInPCs = null;
+        if ($this->collPMChartes instanceof PropelCollection) {
+            $this->collPMChartes->clearIterator();
+        }
+        $this->collPMChartes = null;
         if ($this->collPLCities instanceof PropelCollection) {
             $this->collPLCities->clearIterator();
         }

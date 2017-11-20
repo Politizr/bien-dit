@@ -69,6 +69,7 @@ class PCircleTableMap extends TableMap
         $this->addRelation('PCTopic', 'Politizr\\Model\\PCTopic', RelationMap::ONE_TO_MANY, array('id' => 'p_circle_id', ), 'CASCADE', 'CASCADE', 'PCTopics');
         $this->addRelation('PCGroupLC', 'Politizr\\Model\\PCGroupLC', RelationMap::ONE_TO_MANY, array('id' => 'p_circle_id', ), 'CASCADE', 'CASCADE', 'PCGroupLCs');
         $this->addRelation('PUInPC', 'Politizr\\Model\\PUInPC', RelationMap::ONE_TO_MANY, array('id' => 'p_circle_id', ), 'CASCADE', 'CASCADE', 'PUInPCs');
+        $this->addRelation('PMCharte', 'Politizr\\Model\\PMCharte', RelationMap::ONE_TO_MANY, array('id' => 'p_circle_id', ), 'SET NULL', 'CASCADE', 'PMChartes');
         $this->addRelation('PLCity', 'Politizr\\Model\\PLCity', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PLCities');
         $this->addRelation('PUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PUsers');
     } // buildRelations()

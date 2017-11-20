@@ -5,10 +5,12 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\ListingConstants;
+use Politizr\Constant\GlobalConstants;
 
 use Politizr\Model\PMCguQuery;
 use Politizr\Model\PMCgvQuery;
 use Politizr\Model\PMCharteQuery;
+use Politizr\Model\PCircleQuery;
 
 /**
  * XHR service for modal management.
@@ -129,8 +131,19 @@ class XhrModal
     {
         // $this->logger->info('*** charte');
 
-        $legal = PMCharteQuery::create()->filterByOnline(true)->orderByCreatedAt('desc')->findOne();
-        
+        $uuid = $request->get('uuid');
+
+        if ($uuid) {
+            $circle = PCircleQuery::create()->filterByUuid($uuid)->findOne();
+            if (!$circle) {
+                throw new InconsistentDataException(sprintf('Circle %s not found', $uuid));
+            }
+
+            $legal = PMCharteQuery::create()->filterByPCircleId($circle->getId())->findOne();            
+        } else {
+            $legal = PMCharteQuery::create()->findPk(GlobalConstants::GLOBAL_CHARTE_ID);            
+        }
+
         $html = $this->templating->render(
             'PolitizrFrontBundle:Monitoring:_legal.html.twig',
             array(

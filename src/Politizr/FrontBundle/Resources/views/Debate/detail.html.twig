@@ -134,6 +134,10 @@
     {% include 'PolitizrFrontBundle:Debate:_sidebar.html.twig' %}
 {% endblock sidebarContent %}
 
+{% block sidebarFooter %}
+    {% include 'PolitizrFrontBundle:Navigation\\Footer:_sidebar.html.twig' with { 'document': debate } %}
+{% endblock %}
+
 {% block javascriptFooter %}
     {{ parent() }}
 

@@ -13,6 +13,8 @@ use \Propel;
 use \PropelDateTime;
 use \PropelException;
 use \PropelPDO;
+use Politizr\Model\PCircle;
+use Politizr\Model\PCircleQuery;
 use Politizr\Model\PMCharte;
 use Politizr\Model\PMChartePeer;
 use Politizr\Model\PMCharteQuery;
@@ -43,6 +45,12 @@ abstract class BasePMCharte extends BaseObject implements Persistent
      * @var        int
      */
     protected $id;
+
+    /**
+     * The value for the p_circle_id field.
+     * @var        int
+     */
+    protected $p_circle_id;
 
     /**
      * The value for the title field.
@@ -81,6 +89,11 @@ abstract class BasePMCharte extends BaseObject implements Persistent
     protected $updated_at;
 
     /**
+     * @var        PCircle
+     */
+    protected $aPCircle;
+
+    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      * @var        boolean
@@ -109,6 +122,17 @@ abstract class BasePMCharte extends BaseObject implements Persistent
     {
 
         return $this->id;
+    }
+
+    /**
+     * Get the [p_circle_id] column value.
+     *
+     * @return int
+     */
+    public function getPCircleId()
+    {
+
+        return $this->p_circle_id;
     }
 
     /**
@@ -255,6 +279,31 @@ abstract class BasePMCharte extends BaseObject implements Persistent
 
         return $this;
     } // setId()
+
+    /**
+     * Set the value of [p_circle_id] column.
+     *
+     * @param  int $v new value
+     * @return PMCharte The current object (for fluent API support)
+     */
+    public function setPCircleId($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->p_circle_id !== $v) {
+            $this->p_circle_id = $v;
+            $this->modifiedColumns[] = PMChartePeer::P_CIRCLE_ID;
+        }
+
+        if ($this->aPCircle !== null && $this->aPCircle->getId() !== $v) {
+            $this->aPCircle = null;
+        }
+
+
+        return $this;
+    } // setPCircleId()
 
     /**
      * Set the value of [title] column.
@@ -427,12 +476,13 @@ abstract class BasePMCharte extends BaseObject implements Persistent
         try {
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->title = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
-            $this->summary = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-            $this->description = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-            $this->online = ($row[$startcol + 4] !== null) ? (boolean) $row[$startcol + 4] : null;
-            $this->created_at = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->updated_at = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->p_circle_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
+            $this->title = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
+            $this->summary = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+            $this->description = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->online = ($row[$startcol + 5] !== null) ? (boolean) $row[$startcol + 5] : null;
+            $this->created_at = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->updated_at = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -442,7 +492,7 @@ abstract class BasePMCharte extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 7; // 7 = PMChartePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 8; // 8 = PMChartePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PMCharte object", $e);
@@ -465,6 +515,9 @@ abstract class BasePMCharte extends BaseObject implements Persistent
     public function ensureConsistency()
     {
 
+        if ($this->aPCircle !== null && $this->p_circle_id !== $this->aPCircle->getId()) {
+            $this->aPCircle = null;
+        }
     } // ensureConsistency
 
     /**
@@ -504,6 +557,7 @@ abstract class BasePMCharte extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->aPCircle = null;
         } // if (deep)
     }
 
@@ -628,6 +682,18 @@ abstract class BasePMCharte extends BaseObject implements Persistent
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
 
+            // We call the save method on the following object(s) if they
+            // were passed to this object by their corresponding set
+            // method.  This object relates to these object(s) by a
+            // foreign key reference.
+
+            if ($this->aPCircle !== null) {
+                if ($this->aPCircle->isModified() || $this->aPCircle->isNew()) {
+                    $affectedRows += $this->aPCircle->save($con);
+                }
+                $this->setPCircle($this->aPCircle);
+            }
+
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -668,6 +734,9 @@ abstract class BasePMCharte extends BaseObject implements Persistent
         if ($this->isColumnModified(PMChartePeer::ID)) {
             $modifiedColumns[':p' . $index++]  = '`id`';
         }
+        if ($this->isColumnModified(PMChartePeer::P_CIRCLE_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`p_circle_id`';
+        }
         if ($this->isColumnModified(PMChartePeer::TITLE)) {
             $modifiedColumns[':p' . $index++]  = '`title`';
         }
@@ -699,6 +768,9 @@ abstract class BasePMCharte extends BaseObject implements Persistent
                 switch ($columnName) {
                     case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
+                        break;
+                    case '`p_circle_id`':
+                        $stmt->bindValue($identifier, $this->p_circle_id, PDO::PARAM_INT);
                         break;
                     case '`title`':
                         $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
@@ -782,21 +854,24 @@ abstract class BasePMCharte extends BaseObject implements Persistent
                 return $this->getId();
                 break;
             case 1:
-                return $this->getTitle();
+                return $this->getPCircleId();
                 break;
             case 2:
-                return $this->getSummary();
+                return $this->getTitle();
                 break;
             case 3:
-                return $this->getDescription();
+                return $this->getSummary();
                 break;
             case 4:
-                return $this->getOnline();
+                return $this->getDescription();
                 break;
             case 5:
-                return $this->getCreatedAt();
+                return $this->getOnline();
                 break;
             case 6:
+                return $this->getCreatedAt();
+                break;
+            case 7:
                 return $this->getUpdatedAt();
                 break;
             default:
@@ -816,10 +891,11 @@ abstract class BasePMCharte extends BaseObject implements Persistent
      *                    Defaults to BasePeer::TYPE_PHPNAME.
      * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to true.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
+     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
+    public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
         if (isset($alreadyDumpedObjects['PMCharte'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
@@ -828,18 +904,24 @@ abstract class BasePMCharte extends BaseObject implements Persistent
         $keys = PMChartePeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getTitle(),
-            $keys[2] => $this->getSummary(),
-            $keys[3] => $this->getDescription(),
-            $keys[4] => $this->getOnline(),
-            $keys[5] => $this->getCreatedAt(),
-            $keys[6] => $this->getUpdatedAt(),
+            $keys[1] => $this->getPCircleId(),
+            $keys[2] => $this->getTitle(),
+            $keys[3] => $this->getSummary(),
+            $keys[4] => $this->getDescription(),
+            $keys[5] => $this->getOnline(),
+            $keys[6] => $this->getCreatedAt(),
+            $keys[7] => $this->getUpdatedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
         }
 
+        if ($includeForeignObjects) {
+            if (null !== $this->aPCircle) {
+                $result['PCircle'] = $this->aPCircle->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+        }
 
         return $result;
     }
@@ -877,21 +959,24 @@ abstract class BasePMCharte extends BaseObject implements Persistent
                 $this->setId($value);
                 break;
             case 1:
-                $this->setTitle($value);
+                $this->setPCircleId($value);
                 break;
             case 2:
-                $this->setSummary($value);
+                $this->setTitle($value);
                 break;
             case 3:
-                $this->setDescription($value);
+                $this->setSummary($value);
                 break;
             case 4:
-                $this->setOnline($value);
+                $this->setDescription($value);
                 break;
             case 5:
-                $this->setCreatedAt($value);
+                $this->setOnline($value);
                 break;
             case 6:
+                $this->setCreatedAt($value);
+                break;
+            case 7:
                 $this->setUpdatedAt($value);
                 break;
         } // switch()
@@ -919,12 +1004,13 @@ abstract class BasePMCharte extends BaseObject implements Persistent
         $keys = PMChartePeer::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setTitle($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setSummary($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setDescription($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setOnline($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setCreatedAt($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setUpdatedAt($arr[$keys[6]]);
+        if (array_key_exists($keys[1], $arr)) $this->setPCircleId($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setTitle($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setSummary($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setDescription($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setOnline($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setCreatedAt($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setUpdatedAt($arr[$keys[7]]);
     }
 
     /**
@@ -937,6 +1023,7 @@ abstract class BasePMCharte extends BaseObject implements Persistent
         $criteria = new Criteria(PMChartePeer::DATABASE_NAME);
 
         if ($this->isColumnModified(PMChartePeer::ID)) $criteria->add(PMChartePeer::ID, $this->id);
+        if ($this->isColumnModified(PMChartePeer::P_CIRCLE_ID)) $criteria->add(PMChartePeer::P_CIRCLE_ID, $this->p_circle_id);
         if ($this->isColumnModified(PMChartePeer::TITLE)) $criteria->add(PMChartePeer::TITLE, $this->title);
         if ($this->isColumnModified(PMChartePeer::SUMMARY)) $criteria->add(PMChartePeer::SUMMARY, $this->summary);
         if ($this->isColumnModified(PMChartePeer::DESCRIPTION)) $criteria->add(PMChartePeer::DESCRIPTION, $this->description);
@@ -1006,12 +1093,25 @@ abstract class BasePMCharte extends BaseObject implements Persistent
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
+        $copyObj->setPCircleId($this->getPCircleId());
         $copyObj->setTitle($this->getTitle());
         $copyObj->setSummary($this->getSummary());
         $copyObj->setDescription($this->getDescription());
         $copyObj->setOnline($this->getOnline());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
+
+        if ($deepCopy && !$this->startCopy) {
+            // important: temporarily setNew(false) because this affects the behavior of
+            // the getter/setter methods for fkey referrer objects.
+            $copyObj->setNew(false);
+            // store object hash to prevent cycle
+            $this->startCopy = true;
+
+            //unflag object copy
+            $this->startCopy = false;
+        } // if ($deepCopy)
+
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
@@ -1059,11 +1159,64 @@ abstract class BasePMCharte extends BaseObject implements Persistent
     }
 
     /**
+     * Declares an association between this object and a PCircle object.
+     *
+     * @param                  PCircle $v
+     * @return PMCharte The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setPCircle(PCircle $v = null)
+    {
+        if ($v === null) {
+            $this->setPCircleId(NULL);
+        } else {
+            $this->setPCircleId($v->getId());
+        }
+
+        $this->aPCircle = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the PCircle object, it will not be re-added.
+        if ($v !== null) {
+            $v->addPMCharte($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated PCircle object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return PCircle The associated PCircle object.
+     * @throws PropelException
+     */
+    public function getPCircle(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aPCircle === null && ($this->p_circle_id !== null) && $doQuery) {
+            $this->aPCircle = PCircleQuery::create()->findPk($this->p_circle_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aPCircle->addPMChartes($this);
+             */
+        }
+
+        return $this->aPCircle;
+    }
+
+    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
     {
         $this->id = null;
+        $this->p_circle_id = null;
         $this->title = null;
         $this->summary = null;
         $this->description = null;
@@ -1092,10 +1245,14 @@ abstract class BasePMCharte extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
+            if ($this->aPCircle instanceof Persistent) {
+              $this->aPCircle->clearAllReferences($deep);
+            }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
+        $this->aPCircle = null;
     }
 
     /**

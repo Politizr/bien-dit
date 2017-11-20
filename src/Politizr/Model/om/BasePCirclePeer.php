@@ -15,6 +15,7 @@ use Politizr\Model\PCTopicPeer;
 use Politizr\Model\PCircle;
 use Politizr\Model\PCirclePeer;
 use Politizr\Model\PCircleQuery;
+use Politizr\Model\PMChartePeer;
 use Politizr\Model\PUInPCPeer;
 use Politizr\Model\map\PCircleTableMap;
 
@@ -456,6 +457,9 @@ abstract class BasePCirclePeer
         // Invalidate objects in PUInPCPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PUInPCPeer::clearInstancePool();
+        // Invalidate objects in PMChartePeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PMChartePeer::clearInstancePool();
     }
 
     /**

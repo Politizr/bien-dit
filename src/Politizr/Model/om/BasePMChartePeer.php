@@ -9,6 +9,7 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
+use Politizr\Model\PCirclePeer;
 use Politizr\Model\PMCharte;
 use Politizr\Model\PMChartePeer;
 use Politizr\Model\map\PMCharteTableMap;
@@ -29,16 +30,19 @@ abstract class BasePMChartePeer
     const TM_CLASS = 'Politizr\\Model\\map\\PMCharteTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 7;
+    const NUM_COLUMNS = 8;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 7;
+    const NUM_HYDRATE_COLUMNS = 8;
 
     /** the column name for the id field */
     const ID = 'p_m_charte.id';
+
+    /** the column name for the p_circle_id field */
+    const P_CIRCLE_ID = 'p_m_charte.p_circle_id';
 
     /** the column name for the title field */
     const TITLE = 'p_m_charte.title';
@@ -77,12 +81,12 @@ abstract class BasePMChartePeer
      * e.g. PMChartePeer::$fieldNames[PMChartePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Title', 'Summary', 'Description', 'Online', 'CreatedAt', 'UpdatedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'title', 'summary', 'description', 'online', 'createdAt', 'updatedAt', ),
-        BasePeer::TYPE_COLNAME => array (PMChartePeer::ID, PMChartePeer::TITLE, PMChartePeer::SUMMARY, PMChartePeer::DESCRIPTION, PMChartePeer::ONLINE, PMChartePeer::CREATED_AT, PMChartePeer::UPDATED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'TITLE', 'SUMMARY', 'DESCRIPTION', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'title', 'summary', 'description', 'online', 'created_at', 'updated_at', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'PCircleId', 'Title', 'Summary', 'Description', 'Online', 'CreatedAt', 'UpdatedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pCircleId', 'title', 'summary', 'description', 'online', 'createdAt', 'updatedAt', ),
+        BasePeer::TYPE_COLNAME => array (PMChartePeer::ID, PMChartePeer::P_CIRCLE_ID, PMChartePeer::TITLE, PMChartePeer::SUMMARY, PMChartePeer::DESCRIPTION, PMChartePeer::ONLINE, PMChartePeer::CREATED_AT, PMChartePeer::UPDATED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_CIRCLE_ID', 'TITLE', 'SUMMARY', 'DESCRIPTION', 'ONLINE', 'CREATED_AT', 'UPDATED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'p_circle_id', 'title', 'summary', 'description', 'online', 'created_at', 'updated_at', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
     /**
@@ -92,12 +96,12 @@ abstract class BasePMChartePeer
      * e.g. PMChartePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Title' => 1, 'Summary' => 2, 'Description' => 3, 'Online' => 4, 'CreatedAt' => 5, 'UpdatedAt' => 6, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'title' => 1, 'summary' => 2, 'description' => 3, 'online' => 4, 'createdAt' => 5, 'updatedAt' => 6, ),
-        BasePeer::TYPE_COLNAME => array (PMChartePeer::ID => 0, PMChartePeer::TITLE => 1, PMChartePeer::SUMMARY => 2, PMChartePeer::DESCRIPTION => 3, PMChartePeer::ONLINE => 4, PMChartePeer::CREATED_AT => 5, PMChartePeer::UPDATED_AT => 6, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'TITLE' => 1, 'SUMMARY' => 2, 'DESCRIPTION' => 3, 'ONLINE' => 4, 'CREATED_AT' => 5, 'UPDATED_AT' => 6, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'title' => 1, 'summary' => 2, 'description' => 3, 'online' => 4, 'created_at' => 5, 'updated_at' => 6, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PCircleId' => 1, 'Title' => 2, 'Summary' => 3, 'Description' => 4, 'Online' => 5, 'CreatedAt' => 6, 'UpdatedAt' => 7, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pCircleId' => 1, 'title' => 2, 'summary' => 3, 'description' => 4, 'online' => 5, 'createdAt' => 6, 'updatedAt' => 7, ),
+        BasePeer::TYPE_COLNAME => array (PMChartePeer::ID => 0, PMChartePeer::P_CIRCLE_ID => 1, PMChartePeer::TITLE => 2, PMChartePeer::SUMMARY => 3, PMChartePeer::DESCRIPTION => 4, PMChartePeer::ONLINE => 5, PMChartePeer::CREATED_AT => 6, PMChartePeer::UPDATED_AT => 7, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_CIRCLE_ID' => 1, 'TITLE' => 2, 'SUMMARY' => 3, 'DESCRIPTION' => 4, 'ONLINE' => 5, 'CREATED_AT' => 6, 'UPDATED_AT' => 7, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_circle_id' => 1, 'title' => 2, 'summary' => 3, 'description' => 4, 'online' => 5, 'created_at' => 6, 'updated_at' => 7, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
     /**
@@ -172,6 +176,7 @@ abstract class BasePMChartePeer
     {
         if (null === $alias) {
             $criteria->addSelectColumn(PMChartePeer::ID);
+            $criteria->addSelectColumn(PMChartePeer::P_CIRCLE_ID);
             $criteria->addSelectColumn(PMChartePeer::TITLE);
             $criteria->addSelectColumn(PMChartePeer::SUMMARY);
             $criteria->addSelectColumn(PMChartePeer::DESCRIPTION);
@@ -180,6 +185,7 @@ abstract class BasePMChartePeer
             $criteria->addSelectColumn(PMChartePeer::UPDATED_AT);
         } else {
             $criteria->addSelectColumn($alias . '.id');
+            $criteria->addSelectColumn($alias . '.p_circle_id');
             $criteria->addSelectColumn($alias . '.title');
             $criteria->addSelectColumn($alias . '.summary');
             $criteria->addSelectColumn($alias . '.description');
@@ -484,6 +490,244 @@ abstract class BasePMChartePeer
         }
 
         return array($obj, $col);
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining the related PCircle table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinPCircle(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(PMChartePeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            PMChartePeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+
+        // Set the correct dbName
+        $criteria->setDbName(PMChartePeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(PMChartePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(PMChartePeer::P_CIRCLE_ID, PCirclePeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
+     * Selects a collection of PMCharte objects pre-filled with their PCircle objects.
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of PMCharte objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinPCircle(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(PMChartePeer::DATABASE_NAME);
+        }
+
+        PMChartePeer::addSelectColumns($criteria);
+        $startcol = PMChartePeer::NUM_HYDRATE_COLUMNS;
+        PCirclePeer::addSelectColumns($criteria);
+
+        $criteria->addJoin(PMChartePeer::P_CIRCLE_ID, PCirclePeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = PMChartePeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PMChartePeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+
+                $cls = PMChartePeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                PMChartePeer::addInstanceToPool($obj1, $key1);
+            } // if $obj1 already loaded
+
+            $key2 = PCirclePeer::getPrimaryKeyHashFromRow($row, $startcol);
+            if ($key2 !== null) {
+                $obj2 = PCirclePeer::getInstanceFromPool($key2);
+                if (!$obj2) {
+
+                    $cls = PCirclePeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol);
+                    PCirclePeer::addInstanceToPool($obj2, $key2);
+                } // if obj2 already loaded
+
+                // Add the $obj1 (PMCharte) to $obj2 (PCircle)
+                $obj2->addPMCharte($obj1);
+
+            } // if joined row was not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining all related tables
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinAll(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(PMChartePeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            PMChartePeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+
+        // Set the correct dbName
+        $criteria->setDbName(PMChartePeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(PMChartePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(PMChartePeer::P_CIRCLE_ID, PCirclePeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+    /**
+     * Selects a collection of PMCharte objects pre-filled with all related objects.
+     *
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of PMCharte objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinAll(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(PMChartePeer::DATABASE_NAME);
+        }
+
+        PMChartePeer::addSelectColumns($criteria);
+        $startcol2 = PMChartePeer::NUM_HYDRATE_COLUMNS;
+
+        PCirclePeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + PCirclePeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(PMChartePeer::P_CIRCLE_ID, PCirclePeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = PMChartePeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PMChartePeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+                $cls = PMChartePeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                PMChartePeer::addInstanceToPool($obj1, $key1);
+            } // if obj1 already loaded
+
+            // Add objects for joined PCircle rows
+
+            $key2 = PCirclePeer::getPrimaryKeyHashFromRow($row, $startcol2);
+            if ($key2 !== null) {
+                $obj2 = PCirclePeer::getInstanceFromPool($key2);
+                if (!$obj2) {
+
+                    $cls = PCirclePeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol2);
+                    PCirclePeer::addInstanceToPool($obj2, $key2);
+                } // if obj2 loaded
+
+                // Add the $obj1 (PMCharte) to the collection in $obj2 (PCircle)
+                $obj2->addPMCharte($obj1);
+            } // if joined row not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
     }
 
     /**

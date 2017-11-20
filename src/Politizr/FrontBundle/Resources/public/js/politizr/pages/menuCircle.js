@@ -28,7 +28,7 @@ $(function() {
 
 // Join circle
 $("body").on("click", "[action='joinCircle']", function(e) {
-    console.log('*** click joinCircle');
+    // console.log('*** click joinCircle');
 
     var targetElement = $(this).closest('.circleActions');
     var localLoader = $(this).closest('.withLoaderInside').find('.ajaxLoader').first();
@@ -40,7 +40,7 @@ $("body").on("click", "[action='joinCircle']", function(e) {
 
 // Quit circle
 $("body").on("click", "[action='quitCircle']", function(e) {
-    console.log('*** click quitCircle');
+    // console.log('*** click quitCircle');
     
     var targetElement = $(this).closest('.circleActions');
     var localLoader = $(this).closest('.withLoaderInside').find('.ajaxLoader').first();
@@ -62,7 +62,7 @@ $("body").on("click", "[action='quitCircle']", function(e) {
 
 // Support group
 $("body").on("click", "[action='supportGroup']", function(e) {
-    // console.log('*** click boost');
+    // console.log('*** click supportGroup');
     
     var targetElement = $(this).closest('#supportGroup');
     var localLoader = $(this).closest('#supportGroup').find('.ajaxLoader').first();

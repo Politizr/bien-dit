@@ -60,6 +60,17 @@ CREATE INDEX `p_d_reaction_archive_I_8` ON `p_d_reaction_archive` (`uuid`);
 
 CREATE INDEX `p_d_reaction_archive_I_9` ON `p_d_reaction_archive` (`slug`);
 
+ALTER TABLE `p_m_charte`
+    ADD `p_circle_id` INTEGER AFTER `id`;
+
+CREATE INDEX `p_m_charte_FI_1` ON `p_m_charte` (`p_circle_id`);
+
+ALTER TABLE `p_m_charte` ADD CONSTRAINT `p_m_charte_FK_1`
+    FOREIGN KEY (`p_circle_id`)
+    REFERENCES `p_circle` (`id`)
+    ON UPDATE CASCADE
+    ON DELETE SET NULL;
+
 ALTER TABLE `p_u_notification`
     ADD `p_c_topic_id` INTEGER AFTER `p_author_user_id`;
 

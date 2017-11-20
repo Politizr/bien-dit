@@ -6,12 +6,12 @@
     <div id="footerLinks">
         <a href="http://www.politizr.help" target="_blank">Aide</a>
         {% if app.user %}
-            <a action="openCgu">CGU</a>
-            <a action="openCharte">Charte</a>
+            <a action="openCgu">Mentions légales</a>
+            {% if document is defined %}
+                {{ document | linkCharte }}
+            {% else %}
+                <a action="openCharte">Charte</a>
+            {% endif %}
         {% endif %}
-        {#
-        <a href="{{ path('WhoWeAre') }}">Qui sommes-nous?</a>
-        <a href="#">Contacts</a>
-        #}
     </div>
 </div>
