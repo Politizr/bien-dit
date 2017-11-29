@@ -5,7 +5,7 @@ $(function() {
 
 // payment choice
 $("body").on("click", "[action='paymentChoice']", function() {
-    console.log('*** click paymentChoice');
+    // console.log('*** click paymentChoice');
 
     $(".paymentDetail").hide();
     $(this).siblings(".paymentDetail").show();
@@ -13,7 +13,7 @@ $("body").on("click", "[action='paymentChoice']", function() {
 
 // payment process
 $("body").on("click", "[action='paymentProcess']", function(e) {
-    console.log('*** paymentProcess');
+    // console.log('*** paymentProcess');
 
     var targetElement = $(this).parent();
     var paymentTypeId = $(this).attr('paymentTypeId');

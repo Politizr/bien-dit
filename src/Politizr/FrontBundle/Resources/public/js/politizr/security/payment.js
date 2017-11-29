@@ -4,9 +4,9 @@
  * @param targetElement
  */
 function validatePayment(targetElement, paymentTypeId) {
-    console.log('*** validatePayment');
-    console.log(targetElement);
-    console.log(paymentTypeId);
+    // console.log('*** validatePayment');
+    // console.log(targetElement);
+    // console.log(paymentTypeId);
 
     var xhrPath = getXhrPath(
         ROUTE_SECURITY_PAYMENT_PROCESS,

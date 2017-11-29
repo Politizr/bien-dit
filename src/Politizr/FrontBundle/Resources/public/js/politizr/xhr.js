@@ -293,6 +293,6 @@ function xhrError(jqXHR, textStatus, errorThrown, localLoader ) {
     $('#ajaxGlobalLoader').hide();
     // $('#infoBoxHolder .boxError .notifBoxText').html('Erreur inconnue: merci de recharger la page.');
     // $('#infoBoxHolder .boxError').show();
-    console.log(textStatus);
-    console.log(errorThrown);
+    // console.log(textStatus);
+    // console.log(errorThrown);
 }

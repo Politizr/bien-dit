@@ -8,9 +8,9 @@ paginatedFunctions[JS_KEY_LISTING_DOCUMENTS_BY_TOPIC] = publicationsByTopicListi
  * @param offset
  */
 function publicationsByTopicListing(init, offset) {
-    console.log('*** publicationsByTopicListing');
-    console.log(init);
-    console.log(offset);
+    // console.log('*** publicationsByTopicListing');
+    // console.log(init);
+    // console.log(offset);
 
     init = (typeof init === "undefined") ? true : init;
     offset = (typeof offset === "undefined") ? 0 : offset;
@@ -19,9 +19,9 @@ function publicationsByTopicListing(init, offset) {
     localLoader = $('#documentListing').find('.ajaxLoader').first();
     topicUuid = $('#documentListing').attr('uuid');
 
-    console.log(targetElement);
-    console.log(localLoader);
-    console.log(topicUuid);
+    // console.log(targetElement);
+    // console.log(localLoader);
+    // console.log(topicUuid);
 
     datas = getCurrentTopicFilters();
     datas.push({name: 'offset', value: offset});
@@ -62,7 +62,7 @@ function publicationsByTopicListing(init, offset) {
  * @todo
  */
 function getCurrentTopicFilters() {
-    console.log('*** getCurrentTopicFilters');
+    // console.log('*** getCurrentTopicFilters');
 
     var filters = [];
 
@@ -78,7 +78,7 @@ function getCurrentTopicFilters() {
     // date
     filters.push({name: 'filterDate', value: $('#dateFilter input:checked').val()});
 
-    console.log(filters);
+    // console.log(filters);
     return filters;
 }
 

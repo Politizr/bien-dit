@@ -7,11 +7,11 @@
  * @param way
  */
 function subscribeCircle(targetElement, localLoader, uuid, way) {
-    console.log('*** subscribeCircle');
-    console.log(targetElement);
-    console.log(localLoader);
-    console.log(uuid);
-    console.log(way);
+    // console.log('*** subscribeCircle');
+    // console.log(targetElement);
+    // console.log(localLoader);
+    // console.log(uuid);
+    // console.log(way);
 
     var xhrPath = getXhrPath(
         ROUTE_CIRCLE_SUBSCRIPTION,
