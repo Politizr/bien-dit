@@ -288,9 +288,10 @@ class CircleService
      * Get authorized reaction users by circle
      *
      * @param PUser $user
+     * @param array|PUser $users
      * @return PropelCollection[PCircle]
      */
-    public function getAuthorizedReactionUsersByCircle(PCircle $circle)
+    public function getAuthorizedReactionUsersByCircle(PCircle $circle, $users = null)
     {
         // $this->logger->info('*** getAuthorizedReactionUsersByCircle');
         // $this->logger->info('$circle = '.print_r($circle, true));
@@ -304,6 +305,9 @@ class CircleService
                 ->filterByPCircleId($circle->getId())
                 ->filterByIsAuthorizedReaction(true)
             ->endUse()
+            ->_if($users !== null && $users instanceof PUser)
+                ->filterById($users?$users->getId():null, ' NOT IN ')
+            ->_endif()
             ->find();
 
         return $users;

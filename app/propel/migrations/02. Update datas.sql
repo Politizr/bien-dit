@@ -1028,4 +1028,4 @@ WHERE `p_l_city_id` IN (
 );
 
 # MAJ des users ayant l'autorisation de répondre
-UPDATE `p_u_in_p_c` SET `is_authorized_reaction` = 1 WHERE `p_user_id` = 3;
+UPDATE `p_u_in_p_c` SET `is_authorized_reaction` = 1 WHERE `p_user_id` = 2064;

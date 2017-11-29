@@ -10,5 +10,5 @@ class CircleConstants
 {
     // SPECIFIC CD09
     const CD09_ID_CIRCLE = 1;
-    const CD09_ID_USER_PRESIDENT = 3;
+    const CD09_ID_USER_PRESIDENT = 2064;
 }

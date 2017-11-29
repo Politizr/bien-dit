@@ -106,7 +106,7 @@ class PUserRegisterType extends AbstractType
      */
     public function getName()
     {
-        return 'register';
+        return 'user_register';
     }
     
     /**

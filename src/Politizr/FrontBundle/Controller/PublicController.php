@@ -273,6 +273,8 @@ class PublicController extends Controller
         $publications = $this->get('politizr.functional.document')->getPublicationsByFilters(
             null,
             null,
+            null,
+            null,
             ListingConstants::FILTER_KEYWORD_DEBATES_AND_REACTIONS,
             ListingConstants::FILTER_KEYWORD_ALL_USERS,
             ListingConstants::ORDER_BY_KEYWORD_LAST,

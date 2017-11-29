@@ -1,16 +1,17 @@
 Bonjour {{ user }},
 
-Merci de votre inscription ! Je suis {% if user.qualified %}Lionel{% else %}Thomas{% endif %} de Politizr et je voulais vous souhaiter la bienvenue. Notre équipe est présente si vous avez besoin d'aide dans la découverte de nos fonctionnalités.
+Je suis {% if user.qualified %}Lionel Bouzonville{% else %}Thomas Champion{% endif %}, co-fondateur de Politizr.
+Chez Politizr, nous pensons que citoyens et élus doivent échanger pour oeuvrer à l’intérêt général: nous voulons faire évoluer les pratiques politiques pour favoriser des échanges constructifs, basés sur la transparence, le respect et la bienveillance.
 
-En quelques mots, Politizr c'est :
+Pour y parvenir, nous avons développé un espace de dialogue en ligne conçu autour de la légitimité, de la transparence et de discussions de fond qui s'inscrivent dans la durée.
 
-- Un lieu d'échange privilégié entre les citoyens et les élus.
-- Retrouvez l'intégralité des sujets qui font l'actualité au niveau local et national.
-- Un espace indépendant où vous avez la possibilité de vous exprimer afin de faire entendre votre voix sur les sujets qui vous préocuppent.
+Un des points fort de Politizr est de permettre de générer ces discussions sur des problématiques précises, pour permettre d’échanger sur des points de vue et des bonnes pratiques de manière décloisonnée géographiquement.
 
-Retrouvez plus de détail sur cette <a href="{{ url('Concept') }}">page</a>.
+{% if user.qualified %}
+En complément de cette version globale, nous proposons désormais aux collectivités “Politizr Territoires”, un ensemble de services intégrés à POLITIZR et favorisant l’expression citoyenne, pour leur permettre d’avoir des retours de leurs habitants autour de questions ou de projets précis: répondez simplement à ce mail pour nous demander une documentation complète!
+{% endif %} 
 
-Faites entendre votre voix avec Politizr!
+Commencez dès aujourd'hui à faire <a href="{{ url('DebateDraftNew') }}">connaître votre opinion</a>!
 
 {% if user.qualified %}
 Lionel Bouzonville

@@ -320,7 +320,7 @@ class PolitizrCircleExtension extends \Twig_Extension
             $mainUser = PUserQuery::create()->findPk(CircleConstants::CD09_ID_USER_PRESIDENT);
         }
 
-        $users = $this->circleService->getAuthorizedReactionUsersByCircle($circle);
+        $users = $this->circleService->getAuthorizedReactionUsersByCircle($circle, $mainUser);
 
         // get template path > generic or dedicated
         $templatePath = 'Circle';

@@ -63,12 +63,12 @@
                 <div id="menuArrow"><i class="icon-arrow-up"></i></div>
                 <div class="innerMenu">
                     <div class="primaryMenu">
-                        <a href="{{ path('UserDetail', {'slug': app.user.slug}) }}">Mon profil</a>
-                        <a href="{{ path('Drafts'~profileSuffix()) }}">Mes brouillons</a>
                         <a href="{{ path('UserDetail', {'slug': app.user.slug}) }}">Mes publications</a>
+                        <a href="{{ path('Drafts'~profileSuffix()) }}">Mes brouillons</a>
                         <a href="{{ path('Bookmarks'~profileSuffix()) }}">Mes favoris</a>
                     </div>
                     <div class="secondaryMenu">
+                        <a href="{{ path('EditProfile'~profileSuffix())}}">Mon profil</a>
                         <a href="{{ path('EditPerso'~profileSuffix()) }}">Mon compte</a>
                         <a href="{{ path('EditNotifications'~profileSuffix()) }}">Réglages des notifications</a>
                         <a href="{{ path('GlobalHelper') }}">Principes de base</a>

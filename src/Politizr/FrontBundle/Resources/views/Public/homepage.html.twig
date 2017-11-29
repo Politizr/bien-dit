@@ -24,9 +24,9 @@
     <div id="publicVideo">
         <div id="videoOverlay">
             <div id="videoText">
-                <h1>Élu-e ou Citoyen-ne?<br/>Bienvenue sur un lieu d'échange unique et adapté</h1>
-                <h2>POLITIZR est un espace en ligne <b>indépendant, neutre et gratuit</b><br> qui réinvente le dialogue entre <b>citoyen-ne-s et élu-e-s</b> pour que chaque habitant-e devienne <b>acteur de son territoire</b><br> et que chaque élu-e puisse <b>rendre compte publiquement, sur le fond et dans la durée</b> de ses actions.</h2>
-                <a href="{{ path('InscriptionChoice') }}">Créer un compte</a>
+                <h1>Et vous, changerez-vous d'opinion?<br/></h1>
+                <h2>Bienvenue sur un espace de discussion <b>indépendant, neutre et gratuit</b> qui renouvelle les pratiques politiques<br>en permettant des échanges structurés et constructifs entre les citoyens et leurs représentants partout en France.</h2>
+                <a href="{{ path('InscriptionChoice') }}">Inscription</a>
                 <a href="{{ path('Concept') }}">En savoir plus</a>
             </div>
             <div id="goDown" action="scrollVideo">
@@ -43,12 +43,12 @@
         <div class="center">
             <div id="yellowBlock">
                 <span>
-                    Exprimez-vous <b>simplement et gratuitement</b> sur des sujets relatifs à <b>votre territoire</b><br> pour permettre à <b>vos élus</b> de prendre les <b>bonnes décisions en toute transparence</b>.
+                    Nous favorisons des <b>échanges constructifs</b>, basés sur la <b>transparence</b>, le <b>respect</b> et la <b>bienveillance</b> sur des <b>sujets proches de chez vous</b>.
                 </span>
-                <a href="{{ path('InscriptionChoice') }}">J'ai quelque chose à dire</a>
+                <a href="{{ path('InscriptionChoice') }}">Je m'exprime</a>
             </div>
             <div id="blueBlock">
-                <span>Des <b>échanges constructifs</b> entre citoyen-ne-s et élu-e-s<br>aux <b>quatre coins de la France</b>.</span>
+                <span><b>Questions, opinions<br>et propositions<br>partout en France!</b></span>
             </div>
         </div>
     </div>
@@ -56,11 +56,11 @@
     <div id="bannerPromo" class="bannerPromoSenatoriales">
         <div class="center">
             <div class="txtBannerPromo">
-                <h1>Salon des Maires 2017</h1>
+                <h1>Vous représentez une collectivité?</h1>
+                Innovez en impliquant vos administrés autour de vos projets !<br><br>
                 <span>
-                    <b>L'équipe POLITIZR vous attend du 21 au 23 novembre prochain pour <a href="http://www.salondesmaires.com">le Salon des Maires</a>: nous y présenterons nos dernières innovations et les premières réalisations de notre service <a href="https://territoires.politizr.com">POLITIZR TERRITOIRES</a> dédié aux collectivités. 🔝<br/><br/>
-                    Nous vous accueillerons sur le stand de la <a href="http://www.salondesmaires.com/liste/fiche-exposant/11134/">Région Occitanie</a> au Pavillon 2.1 F62.</b><br/><br/>
-                    <a class="ctaBannerPromo" href="mailto: contact@politizr.com">Prendre rendez-vous</a>
+                    <b>Nous proposons aux collectivités un ensemble de services intégrés à POLITIZR et favorisant l’expression citoyenne, pour leur permettre d’avoir des retours de leurs habitants autour de questions ou de projets précis.</b><br>
+                    <a class="ctaBannerPromo" href="mailto: contact@politizr.com">En savoir plus</a>
                 </span>
             </div>
         </div>
@@ -122,8 +122,8 @@
     <div id="profileSelection">
         <div class="center">
             <h1>Rejoignez la communauté Politizr</h1>
-            <h2>Citoyen-ne-s ou élu-e-s de toute la France partagent leurs points de vue en toute transparence:<br>
-            <a href="{{ path('InscriptionChoice') }}">inscrivez-vous et participez aux débats!</a></h2>
+            <h2>Des habitants et leurs élus de toute la France s'expriment:<br>
+            <a href="{{ path('InscriptionChoice') }}">venez rejoindre notre communauté!</a></h2>
             
             {% for user in users %}
                 {% if loop.first or loop.index0 is divisible by(2) %}
