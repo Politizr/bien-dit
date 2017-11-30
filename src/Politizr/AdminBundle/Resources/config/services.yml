@@ -39,6 +39,7 @@ services:
             - @templating
             - @form.factory
             - @politizr.functional.localization
+            - @politizr.functional.circle
             - @politizr.manager.tag
             - @politizr.manager.user
             - @politizr.manager.localization

@@ -49,6 +49,7 @@ class XhrAdmin
     private $templating;
     private $formFactory;
     private $localizationService;
+    private $circleService;
     private $tagManager;
     private $userManager;
     private $localizationManager;
@@ -64,6 +65,7 @@ class XhrAdmin
      * @param @templating
      * @param @form.factory
      * @param @politizr.functional.localization
+     * @param @politizr.functional.circle
      * @param @politizr.manager.tag
      * @param @politizr.manager.user
      * @param @politizr.manager.localization
@@ -78,6 +80,7 @@ class XhrAdmin
         $templating,
         $formFactory,
         $localizationService,
+        $circleService,
         $tagManager,
         $userManager,
         $localizationManager,
@@ -94,6 +97,7 @@ class XhrAdmin
         $this->formFactory = $formFactory;
 
         $this->localizationService = $localizationService;
+        $this->circleService = $circleService;
 
         $this->tagManager = $tagManager;
         $this->userManager = $userManager;
@@ -1198,5 +1202,25 @@ class XhrAdmin
         $this->eventManager->deleteOperationCityScope($operationId, $cityId);        
 
         return true;
+    }
+
+    /* ######################################################################################################## */
+    /*                                               OPERATION                                                  */
+    /* ######################################################################################################## */
+
+    /**
+     * Apply a filter to a circle's users select list
+     */
+    public function filterCircleUsers(Request $request)
+    {
+        $this->logger->info('*** filterCircleUsers');
+
+        // Request arguments
+        $only_elected = $request->get('admin_circle_users_filter')['only_elected'];
+        $this->logger->info('$only_elected = ' . print_r($only_elected, true));
+        $p_circle_id = $request->get('admin_circle_users_list')['p_circle_id'];
+        $this->logger->info('$p_circle_id = ' . print_r($p_circle_id, true));
+
+        return 'ok';
     }
 }

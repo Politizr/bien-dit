@@ -253,4 +253,7 @@ class XhrConstants
     const ADMIN_ROUTE_OPERATION_CITIES_SEARCH_LISTING = 'admin/tag/villes/recherche';
     const ADMIN_ROUTE_ADD_OPERATION_CITY = 'admin/tag/ville/create';
     const ADMIN_ROUTE_DELETE_OPERATION_CITY = 'admin/tag/ville/delete';
+
+    // CIRCLE
+    const ADMIN_ROUTE_CIRCLE_FILTER_USERS = 'admin/circle/filter/users';
 }

@@ -89,6 +89,24 @@ Politizr_AdminBundle_PUser_archive:
     defaults: { _controller: PolitizrAdminBundle:PUser/Actions:archive }
 
 
+# Circles
+Politizr_AdminBundle_PCircle_addUsersToCircle:
+    pattern:  /PCircle/addUsersToCircle
+    defaults: { _controller: PolitizrAdminBundle:PCircle/Actions:addUsersToCircle }
+
+Politizr_AdminBundle_PCircle_removeUsersFromCircle:
+    pattern:  /PCircle/removeUsersFromCircle
+    defaults: { _controller: PolitizrAdminBundle:PCircle/Actions:removeUsersFromCircle }
+
+Politizr_AdminBundle_PCircle_addUsersIsAuthorizedReactionToCircle:
+    pattern:  /PCircle/addUsersIsAuthorizedReactionToCircle
+    defaults: { _controller: PolitizrAdminBundle:PCircle/Actions:addUsersIsAuthorizedReactionToCircle }
+
+Politizr_AdminBundle_PCircle_removeUsersIsAuthorizedReactionToCircle:
+    pattern:  /PCircle/removeUsersIsAuthorizedReactionToCircle
+    defaults: { _controller: PolitizrAdminBundle:PCircle/Actions:removeUsersIsAuthorizedReactionToCircle }
+
+
 ################################################################################
 #               ADMIN GENERATED ROUTES
 ################################################################################

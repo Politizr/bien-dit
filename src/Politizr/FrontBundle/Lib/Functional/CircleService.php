@@ -104,6 +104,21 @@ class CircleService
     }
 
     /**
+     * Remove a user authorization to publish reaction from a circle
+     *
+     * @param PUser $user
+     * @param PCircle $circle
+     * @param boolean $isAuthorizedReaction
+     */    
+    public function updateUserIsAuthorizedReactionInCircle(PUser $user = null, PCircle $circle = null, $isAuthorizedReaction)
+    {
+        if (!$user || !$circle) {
+            throw new InconsistentDataException('User or circle null');
+        }
+        $this->circleManager->updateUserIsAuthorizedReactionInCircle($user->getId(), $circle->getId(), $isAuthorizedReaction);
+    }
+
+    /**
      * Get authorized circles by user
      *
      * @param PUser $user
@@ -187,6 +202,32 @@ class CircleService
                     ->find();
 
         return $circles;
+    }
+
+    /**
+     * Get users in circle by circle id
+     *
+     * @param int $circleId
+     * @param boolean $isAuthorizedReaction
+     * @return PropelCollection[PUser]
+     */
+    public function getUsersInCircleByCircleId($circleId, $isAuthorizedReaction = null)
+    {
+        if (!$circleId) {
+            throw new InconsistentDataException('Circle id null');
+        }
+
+        $users = PUserQuery::create()
+            ->usePUinPCQuery()
+                ->filterByPCircleId($circleId)
+                ->_if($isAuthorizedReaction)
+                    ->filterByIsAuthorizedReaction($isAuthorizedReaction)
+                ->_endif()
+            ->endUse()
+            ->orderByName()
+            ->find();
+
+        return $users;
     }
 
     /**

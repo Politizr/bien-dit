@@ -60,6 +60,7 @@ builders:
                 show:                           ~
                 edit:                           ~
                 delete:                         ~
+                scope:                          ~
                 moveUp:                         ~
                 moveDown:                       ~
             actions:
@@ -159,5 +160,6 @@ builders:
                 moveUp:                         ~
                 moveDown:                       ~
                 delete: ~
+                scope:  ~
             batch_actions:
                 delete: ~
