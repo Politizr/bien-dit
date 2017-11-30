@@ -26,15 +26,18 @@ Bonjour {{ user }},<br/><br/>
 Je suis {% if user.qualified %}Lionel Bouzonville{% else %}Thomas Champion{% endif %}, co-fondateur de Politizr.<br/><br/>
 Chez Politizr, nous pensons que citoyens et élus doivent échanger pour oeuvrer à l’intérêt général: nous voulons faire évoluer les pratiques politiques pour favoriser des échanges constructifs, basés sur la transparence, le respect et la bienveillance.<br/><br/>
 
-Pour y parvenir, nous avons développé un espace de dialogue en ligne conçu autour de la légitimité, de la transparence et de discussions de fond qui s'inscrivent dans la durée.<br/><br/>
-
-Un des points fort de Politizr est de permettre de générer ces discussions sur des problématiques précises, pour permettre d’échanger sur des points de vue et des bonnes pratiques de manière décloisonnée géographiquement.<br/><br/>
-
 {% if user.qualified %}
-En complément de cette version globale, nous proposons désormais aux collectivités “Politizr Territoires”, un ensemble de services intégrés à POLITIZR et favorisant l’expression citoyenne, pour leur permettre d’avoir des retours de leurs habitants autour de questions ou de projets précis: répondez simplement à ce mail pour nous demander une documentation complète!
+Un des points fort de Politizr est de permettre de générer des discussions de fond sur des problématiques précises, pour permettre d’échanger sur des points de vue et avoir des retours sur des bonnes pratiques de la part d'élus de toute la France.<br/><br/>
+
+En complément de cette version globale, nous proposons désormais aux collectivités “Politizr Territoires”, un ensemble de services intégrés à POLITIZR et favorisant l’expression citoyenne, pour leur permettre d’avoir des retours de leurs habitants autour de questions ou de projets précis: répondez simplement à ce mail pour nous demander une documentation complète!<br/><br/>
+
+{% else %}
+
+Grâce à Politizr, vous pourrez exprimer votre opinion sur les sujets qui vous semblent important sur votre ville, votre département, etc. et obtenir des retours d'élus de votre territoire mais aussi d'ailleurs en France et qui vous apporteront un éclairage sur le sujet abordé.<br/><br/>
+
 {% endif %} 
 
-Commencez dès aujourd'hui à faire <a href="{{ url('DebateDraftNew') }}">connaître votre opinion</a>!
+Commencez dès aujourd'hui à faire <a href="{{ url('DebateDraftNew') }}">connaître votre opinion</a>!<br/><br/>
 
 {% if user.qualified %}
 Lionel Bouzonville<br>

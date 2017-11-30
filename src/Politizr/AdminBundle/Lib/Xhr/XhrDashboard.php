@@ -73,9 +73,15 @@ class XhrDashboard
 
         $form = $this->formFactory->create(new AdminNotificationType());
         $form->handleRequest($request);
+        
         if ($form->isValid()) {
             $data = $form->getData();
-            foreach ($data['p_users'] as $user) {
+            foreach ($data['p_users_elected'] as $user) {
+                // Notification
+                $event = new GenericEvent($user, array('admin_msg' => $data['description']));
+                $dispatcher = $this->eventDispatcher->dispatch('n_admin_message', $event);
+            }
+            foreach ($data['p_users_citizen'] as $user) {
                 // Notification
                 $event = new GenericEvent($user, array('admin_msg' => $data['description']));
                 $dispatcher = $this->eventDispatcher->dispatch('n_admin_message', $event);

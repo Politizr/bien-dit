@@ -36,17 +36,35 @@ class AdminNotificationType extends AbstractType
             )
         ));
 
-        // Users
-        $builder->add('p_users', 'Propel\Bundle\PropelBundle\Form\Type\ModelType', array(
+        // Elected
+        $builder->add('p_users_elected', 'Propel\Bundle\PropelBundle\Form\Type\ModelType', array(
             'required' => true,
-            'label' => 'Cible(s)',
+            'label' => 'Cible(s) élu',
             'class' => 'Politizr\\Model\\PUser',
-            'query' => PUserQuery::create()->filterByOnline(true)->orderByName(),
+            'query' => PUserQuery::create()->filterByOnline(true)->filterByQualified(true)->orderByName(),
+            'choice_label' => 'NameFirstName',
             'multiple' => true,
             'expanded' => false,
-            'constraints' => new NotNull(array('message' => 'Choix d\'un utilisateur cible obligatoire.')),
+            // 'constraints' => new NotNull(array('message' => 'Choix d\'un utilisateur cible obligatoire.')),
             'attr' => array(
-                'class' => 'default'
+                'class' => 'default',
+                'size' => 10,
+            )
+        ));
+
+        // Citizens
+        $builder->add('p_users_citizen', 'Propel\Bundle\PropelBundle\Form\Type\ModelType', array(
+            'required' => true,
+            'label' => 'Cible(s) citoyen',
+            'class' => 'Politizr\\Model\\PUser',
+            'query' => PUserQuery::create()->filterByOnline(true)->filterByQualified(false)->orderByName(),
+            'choice_label' => 'NameFirstName',
+            'multiple' => true,
+            'expanded' => false,
+            // 'constraints' => new NotNull(array('message' => 'Choix d\'un utilisateur cible obligatoire.')),
+            'attr' => array(
+                'class' => 'default',
+                'size' => 10,
             )
         ));
     }

@@ -610,7 +610,7 @@ class NotificationListener
         $objectName = get_class($subject);
         $objectId = $subject->getId();
 
-        $puNotification = $this->insertPUNotification($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId, $adminMsg);
+        $puNotification = $this->insertPUNotification($targetUserId, $authorUserId, $pNotificationId, $objectName, $objectId, null, $adminMsg);
 
         // Alerte email
         $event = new GenericEvent($puNotification, array('p_n_email_id' => EmailConstants::ID_ADMIN_MSG,));
