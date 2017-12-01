@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Politizr\Model\PCircle;
 use Politizr\Model\PCircleQuery;
 
-use Politizr\AdminBundle\Form\Type\PCirclePUsersFiltersType;
+use Politizr\AdminBundle\Form\Type\PUsersFiltersType;
 use Politizr\AdminBundle\Form\Type\PCirclePUsersSelectListType;
 
 /**
@@ -81,9 +81,9 @@ class ActionsController extends BaseActionsController
     protected function successObjectScope(PCircle $circle)
     {
         // filter forms
-        $formFilter1 = $this->createForm(new PCirclePUsersFiltersType());
-        $formFilter2 = $this->createForm(new PCirclePUsersFiltersType());
-        $formFilter3 = $this->createForm(new PCirclePUsersFiltersType());
+        $formFilter1 = $this->createForm(new PUsersFiltersType());
+        $formFilter2 = $this->createForm(new PUsersFiltersType());
+        $formFilter3 = $this->createForm(new PUsersFiltersType());
 
         // users forms
         $circleService = $this->get('politizr.functional.circle');

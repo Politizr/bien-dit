@@ -27,7 +27,7 @@ $("body").on("click", "a[action='filterForm3']", function(e) {
 });
 
 /**
- * Search operation localizations
+ * Update users form
  */
 function filterCircleUsersList(targetElement, serializedForms) {
     console.log('*** filterCircleUsersList');

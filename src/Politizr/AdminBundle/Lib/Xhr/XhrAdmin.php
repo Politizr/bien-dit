@@ -34,7 +34,7 @@ use Politizr\Model\PEOperationQuery;
 
 use Politizr\AdminBundle\Form\Type\PMUserModeratedType;
 use Politizr\AdminBundle\Form\Type\AdminPUserLocalizationType;
-use Politizr\AdminBundle\Form\Type\PCirclePUsersFiltersType;
+use Politizr\AdminBundle\Form\Type\PUsersFiltersType;
 use Politizr\AdminBundle\Form\Type\PCirclePUsersSelectListType;
 
 use Politizr\FrontBundle\Form\Type\PUMandateType;
@@ -1220,13 +1220,10 @@ class XhrAdmin
         // Request arguments
         $formNo = $request->get('no');
         $circleId = $request->get('circleId');
-        dump($formNo);
-        dump($circleId);
 
-        $formFilter = $this->formFactory->create(new PCirclePUsersFiltersType());
+        $formFilter = $this->formFactory->create(new PUsersFiltersType());
         $formFilter->handleRequest($request);
         $filtersData = $formFilter->getData();
-        dump($filtersData);
 
         if ($formNo == 1) {
             $users = $this->circleService->getUsersInCircleByCircleId(null, null, $filtersData);

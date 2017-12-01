@@ -11,6 +11,7 @@ var RETURN_URL = 3;
 
 // DASHBOARD
 var ADMIN_ROUTE_NOTIF_CREATE = 'admin/notification/create';
+var ADMIN_ROUTE_NOTIF_FILTER_USERS = 'admin/notification/filter/users';
 
 
 // UPLOAD

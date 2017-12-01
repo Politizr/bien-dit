@@ -18,12 +18,12 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
 
 /**
- * Admin users management form type for circle
+ * Admin users filter type
  * beta
  *
  * @author Lionel Bouzonville
  */
-class PCirclePUsersFiltersType extends AbstractType
+class PUsersFiltersType extends AbstractType
 {
     /**
      *
@@ -54,6 +54,6 @@ class PCirclePUsersFiltersType extends AbstractType
      */
     public function getName()
     {
-        return 'admin_circle_users_filter';
+        return 'admin_users_filter';
     }
 }

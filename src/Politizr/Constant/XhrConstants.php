@@ -215,6 +215,7 @@ class XhrConstants
 
     // DASHBOARD
     const ADMIN_ROUTE_NOTIF_CREATE = 'admin/notification/create';
+    const ADMIN_ROUTE_NOTIF_FILTER_USERS = 'admin/notification/filter/users';
 
     // UPLOAD
     const ADMIN_ROUTE_UPLOAD_IMAGE = 'admin/upload/image';

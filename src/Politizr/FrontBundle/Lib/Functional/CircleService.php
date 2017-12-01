@@ -214,33 +214,8 @@ class CircleService
      */
     public function getUsersInCircleByCircleId($circleId = null, $isAuthorizedReaction = null, $filters = null)
     {
-        if ($filters) {
-            $query = PUserQuery::create();
-
-            if ($filters['only_elected'] === true) {
-                $query->filterByQualified(true);
-            }
-
-            if (!empty($filters['city_insee_code'])) {
-                $query
-                    ->usePLCityQuery()
-                        ->filterByMunicipalityCode($filters['city_insee_code'])
-                    ->endUse();
-            }
-
-            if (!empty($filters['department_code'])) {
-                $query
-                    ->usePLCityQuery()
-                        ->usePLDepartmentQuery()
-                            ->filterByCode($filters['department_code'])
-                        ->endUse()
-                    ->endUse();
-            }
-        } else {
-            $query = PUserQuery::create();
-        }
-
-        $users = $query
+        $users = PUserQuery::create()
+            ->filterByCustomFilters($filters)
             ->_if($circleId)
                 ->usePUinPCQuery()
                     ->filterByPCircleId($circleId)

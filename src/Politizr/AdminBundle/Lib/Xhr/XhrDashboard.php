@@ -11,8 +11,11 @@ use Politizr\Constant\NotificationConstants;
 use Politizr\Exception\InconsistentDataException;
 use Politizr\Exception\BoxErrorException;
 
+use Politizr\AdminBundle\Form\Type\PUsersFiltersType;
+
 use Politizr\AdminBundle\Form\Type\Homepage\AdminNotificationType;
 
+use Politizr\Model\PUserQuery;
 use Politizr\Model\PUNotificationQuery;
 
 
@@ -76,12 +79,7 @@ class XhrDashboard
         
         if ($form->isValid()) {
             $data = $form->getData();
-            foreach ($data['p_users_elected'] as $user) {
-                // Notification
-                $event = new GenericEvent($user, array('admin_msg' => $data['description']));
-                $dispatcher = $this->eventDispatcher->dispatch('n_admin_message', $event);
-            }
-            foreach ($data['p_users_citizen'] as $user) {
+            foreach ($data['p_users'] as $user) {
                 // Notification
                 $event = new GenericEvent($user, array('admin_msg' => $data['description']));
                 $dispatcher = $this->eventDispatcher->dispatch('n_admin_message', $event);
@@ -110,5 +108,41 @@ class XhrDashboard
         );
     }
 
+    /**
+     * Apply a filter to the admin notif users select list
+     */
+    public function filterAdminNotifUsers(Request $request)
+    {
+        $this->logger->info('*** filterAdminNotifUsers');
 
+        // Request arguments
+        $formFilter = $this->formFactory->create(new PUsersFiltersType());
+        $formFilter->handleRequest($request);
+        $filtersData = $formFilter->getData();
+
+        $users = PUserQuery::create()
+            ->filterByCustomFilters($filtersData)
+            ->orderByName()
+            ->distinct()
+            ->find();
+
+        $form = $this->formFactory->create(
+            new AdminNotificationType(),
+            null,
+            array('users' => $users)
+        );
+
+        $html = $this->templating->render(
+            'PolitizrAdminBundle:Fragment\\Notification:_adminNotifForm.html.twig',
+            array(
+                'formFilter' => $formFilter->createView(),
+                'form' => $form->createView(),
+            )
+        );
+
+        // Renvoi de l'ensemble des blocs HTML maj
+        return array(
+            'html' => $html
+        );
+    }
 }

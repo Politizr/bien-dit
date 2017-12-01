@@ -164,7 +164,7 @@ class PUserQuery extends BasePUserQuery
      * Filter by array of tags id
      *
      * @param array[int]
-     * @return PDDebateQuery
+     * @return PUserQuery
      */
     public function filterByTags($tagIds)
     {
@@ -178,10 +178,43 @@ class PUserQuery extends BasePUserQuery
      * Filter by geolocalization
      *
      * @param Geocoded $geocoded
-     * @return PDDebateQuery
+     * @return PUserQuery
      */
     public function filterByGeolocalization(Geocoded $geocoded)
     {
+    }
+
+    /**
+     * Filter by custom filters
+     *
+     * @param array $filters ['only_elected' => boolean, 'city_insee_code' => string, 'department_code' => string ]
+     * @return PUserQuery
+     */
+    public function filterByCustomFilters(array $filters = null)
+    {
+        if ($filters) {
+            if ($filters['only_elected'] === true) {
+                $this->filterByQualified(true);
+            }
+
+            if (!empty($filters['city_insee_code'])) {
+                $this
+                    ->usePLCityQuery()
+                        ->filterByMunicipalityCode($filters['city_insee_code'])
+                    ->endUse();
+            }
+
+            if (!empty($filters['department_code'])) {
+                $this
+                    ->usePLCityQuery()
+                        ->usePLDepartmentQuery()
+                            ->filterByCode($filters['department_code'])
+                        ->endUse()
+                    ->endUse();
+            }
+        }
+
+        return $this;
     }
 
     /* ######################################################################################################## */
