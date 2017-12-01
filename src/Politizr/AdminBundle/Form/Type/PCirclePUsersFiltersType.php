@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 use Politizr\Model\PUserQuery;
@@ -33,6 +34,16 @@ class PCirclePUsersFiltersType extends AbstractType
     {
         $builder->add('only_elected', CheckboxType::class, array(
             'label'    => 'Élus uniquement',
+            'required' => false,
+        ));
+
+        $builder->add('city_insee_code', TextType::class, array(
+            'label'    => 'Code ville INSEE',
+            'required' => false,
+        ));
+
+        $builder->add('department_code', TextType::class, array(
+            'label'    => 'Code département',
             'required' => false,
         ));
     }

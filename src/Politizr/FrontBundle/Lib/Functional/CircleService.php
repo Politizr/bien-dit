@@ -205,26 +205,52 @@ class CircleService
     }
 
     /**
-     * Get users in circle by circle id
+     * Get users in circle by circle id or all users if no circle id is specified
      *
      * @param int $circleId
      * @param boolean $isAuthorizedReaction
+     * @param array $filters ['only_elected' => boolean, 'city_insee_code' => string, 'department_code' => string ]
      * @return PropelCollection[PUser]
      */
-    public function getUsersInCircleByCircleId($circleId, $isAuthorizedReaction = null)
+    public function getUsersInCircleByCircleId($circleId = null, $isAuthorizedReaction = null, $filters = null)
     {
-        if (!$circleId) {
-            throw new InconsistentDataException('Circle id null');
+        if ($filters) {
+            $query = PUserQuery::create();
+
+            if ($filters['only_elected'] === true) {
+                $query->filterByQualified(true);
+            }
+
+            if (!empty($filters['city_insee_code'])) {
+                $query
+                    ->usePLCityQuery()
+                        ->filterByMunicipalityCode($filters['city_insee_code'])
+                    ->endUse();
+            }
+
+            if (!empty($filters['department_code'])) {
+                $query
+                    ->usePLCityQuery()
+                        ->usePLDepartmentQuery()
+                            ->filterByCode($filters['department_code'])
+                        ->endUse()
+                    ->endUse();
+            }
+        } else {
+            $query = PUserQuery::create();
         }
 
-        $users = PUserQuery::create()
-            ->usePUinPCQuery()
-                ->filterByPCircleId($circleId)
-                ->_if($isAuthorizedReaction)
-                    ->filterByIsAuthorizedReaction($isAuthorizedReaction)
-                ->_endif()
-            ->endUse()
+        $users = $query
+            ->_if($circleId)
+                ->usePUinPCQuery()
+                    ->filterByPCircleId($circleId)
+                    ->_if($isAuthorizedReaction)
+                        ->filterByIsAuthorizedReaction($isAuthorizedReaction)
+                    ->_endif()
+                ->endUse()
+            ->_endif()
             ->orderByName()
+            ->distinct()
             ->find();
 
         return $users;

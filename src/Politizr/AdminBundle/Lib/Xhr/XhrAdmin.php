@@ -33,9 +33,11 @@ use Politizr\Model\PEOPresetPTQuery;
 use Politizr\Model\PEOperationQuery;
 
 use Politizr\AdminBundle\Form\Type\PMUserModeratedType;
-use Politizr\FrontBundle\Form\Type\PUMandateType;
-
 use Politizr\AdminBundle\Form\Type\AdminPUserLocalizationType;
+use Politizr\AdminBundle\Form\Type\PCirclePUsersFiltersType;
+use Politizr\AdminBundle\Form\Type\PCirclePUsersSelectListType;
+
+use Politizr\FrontBundle\Form\Type\PUMandateType;
 
 /**
  * XHR service for admin management.
@@ -1216,11 +1218,42 @@ class XhrAdmin
         $this->logger->info('*** filterCircleUsers');
 
         // Request arguments
-        $only_elected = $request->get('admin_circle_users_filter')['only_elected'];
-        $this->logger->info('$only_elected = ' . print_r($only_elected, true));
-        $p_circle_id = $request->get('admin_circle_users_list')['p_circle_id'];
-        $this->logger->info('$p_circle_id = ' . print_r($p_circle_id, true));
+        $formNo = $request->get('no');
+        $circleId = $request->get('circleId');
+        dump($formNo);
+        dump($circleId);
 
-        return 'ok';
+        $formFilter = $this->formFactory->create(new PCirclePUsersFiltersType());
+        $formFilter->handleRequest($request);
+        $filtersData = $formFilter->getData();
+        dump($filtersData);
+
+        if ($formNo == 1) {
+            $users = $this->circleService->getUsersInCircleByCircleId(null, null, $filtersData);
+        } elseif ($formNo == 2) {
+            $users = $this->circleService->getUsersInCircleByCircleId($circleId, null, $filtersData);
+        } elseif ($formNo == 3) {
+            $users = $this->circleService->getUsersInCircleByCircleId($circleId, true, $filtersData);
+        }
+
+        $formUsers = $this->formFactory->create(
+            new PCirclePUsersSelectListType(),
+            null,
+            array('circle_id' => $circleId, 'users' => $users)
+        );
+
+        $html = $this->templating->render(
+            'PolitizrAdminBundle:Fragment\\Circle:_circleUsersForms'.$formNo.'.html.twig',
+            array(
+                'circleId' => $circleId,
+                'formFilter'.$formNo => $formFilter->createView(),
+                'formUsers'.$formNo => $formUsers->createView(),
+            )
+        );
+
+        // Renvoi de l'ensemble des blocs HTML maj
+        return array(
+            'html' => $html
+        );
     }
 }

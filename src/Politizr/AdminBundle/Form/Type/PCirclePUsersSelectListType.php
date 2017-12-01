@@ -32,16 +32,15 @@ class PCirclePUsersSelectListType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        // default with all users
+        $circleId = $options['circle_id'];
         $users = $options['users'];
-        if (!$users) {
-            $users = PUserQuery::create()->orderByName()->find();
-        }
+
+        // Circle Id
+        $builder->add('p_circle_id', HiddenType::class, array(
+            'data' => $circleId,
+        ));
 
         // Users
-        $builder->add('p_circle_id', HiddenType::class, array(
-            'data' => $options['circle_id'],
-        ));
         $builder->add('p_users', ModelType::class, array(
             'required' => true,
             'label' => 'Utilisateur(s)',

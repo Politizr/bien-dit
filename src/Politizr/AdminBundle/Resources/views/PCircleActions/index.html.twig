@@ -8,59 +8,25 @@
     <div class="row">
         <div class="form-model form-model-pcircle col-md-12">
             <div class="tab-content form-model-content">
-                <label class="help">
-                    <i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;Liste complète des utilisateurs</li>
-                </label>
-
-                {{ form_start(formFilter, {'attr': {'id': 'filterUsers1', 'name': 'filterUsers1', 'novalidate': 'novalidate' }}) }}
-                    {{ form_errors(formFilter) }}
-                    {{ form_row(formFilter.only_elected) }}
-                    <a class="generic-action btn btn-default" action="filterForm1">Filtrer</a>
-                {{ form_end(formFilter) }}
-
-                {{ form_start(formUsers, {'action': path('Politizr_AdminBundle_PCircle_addUsersToCircle'), 'method': 'POST', 'attr': {'id': 'users1', 'name': 'users1', 'novalidate': 'novalidate' }}) }}
-                    {{ form_errors(formUsers) }}
-                    {{ form_row(formUsers.p_users) }}
-                    <div class="form-model-actions row">
-                        <div class="form-model-actions-generic col-md-12 text-right" role="generic-actions">
-                            <button type="submit" class="generic-action btn btn-success"><i class="fa fa-fw fa-plus"></i>Ajouter au groupe
-                        </div>
-                    </div>
-                {{ form_end(formUsers) }}
+                <div id="circleUsersForms1">
+                    {% include 'PolitizrAdminBundle:Fragment\\Circle:_circleUsersForms1.html.twig' %}
+                </div>
             </div>
             <div class="tab-content form-model-content">
-                {{ form_start(formUsersInCircle, {'action': path('Politizr_AdminBundle_PCircle_removeUsersFromCircle'), 'method': 'POST', 'attr': { 'novalidate': 'novalidate' }}) }}
-                    {{ form_errors(formUsersInCircle) }}
-
-                    <label class="help">
-                        <i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;Liste des utilisateurs ayant accès au groupe</li>
-                    </label>
-                    {{ form_row(formUsersInCircle.p_users) }}
-
-                    <div class="form-model-actions row">
-                        <div class="form-model-actions-generic col-md-12 text-right" role="generic-actions">
-                            <button type="submit" class="generic-action btn btn-warning"><i class="fa fa-fw fa-times"></i>Retirer du groupe
-                            <button type="submit" class="generic-action btn btn-default" formAction="{{ path('Politizr_AdminBundle_PCircle_addUsersIsAuthorizedReactionToCircle') }}"><i class="fa fa-fw fa-plus"></i>Ajouter l'autorisation de publier des réponses
-                        </div>
-                    </div>
-                {{ form_end(formUsersInCircle) }}
+                <div id="circleUsersForms2">
+                    {% include 'PolitizrAdminBundle:Fragment\\Circle:_circleUsersForms2.html.twig' %}
+                </div>
             </div>
             <div class="tab-content form-model-content">
-                {{ form_start(formUsersCanReactInCircle, {'action': path('Politizr_AdminBundle_PCircle_removeUsersIsAuthorizedReactionToCircle'), 'method': 'POST', 'attr': { 'novalidate': 'novalidate' }}) }}
-                    {{ form_errors(formUsersCanReactInCircle) }}
-
-                    <label class="help">
-                        <i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;Liste des utilisateurs ayant accès au groupe et ayant l'autorisation de publier des réponses</li>
-                    </label>
-                    {{ form_row(formUsersCanReactInCircle.p_users) }}
-
-                    <div class="form-model-actions row">
-                        <div class="form-model-actions-generic col-md-12 text-right" role="generic-actions">
-                            <button type="submit" class="generic-action btn btn-warning"><i class="fa fa-fw fa-remove"></i>Retirer l'autorisation de publier des réponses
-                        </div>
-                    </div>
-                {{ form_end(formUsersCanReactInCircle) }}
+                <div id="circleUsersForms3">
+                    {% include 'PolitizrAdminBundle:Fragment\\Circle:_circleUsersForms3.html.twig' %}
+                </div>
             </div>
+        </div>
+    </div>
+    <div class="form-model-actions row">
+        <div class="form-model-actions-generic col-md-12 text-right" role="generic-actions">
+            <a class="generic-action btn btn-default" href="{{ path("Politizr_AdminBundle_PCircle_list", {}) }}"><i class="fa fa-fw fa-list-alt"></i> {{ "action.generic.list"|trans({}, "Admingenerator")|raw }}</a>
         </div>
     </div>
 {% endblock page_content %}

@@ -81,17 +81,20 @@ class ActionsController extends BaseActionsController
     protected function successObjectScope(PCircle $circle)
     {
         // filter forms
-        $formFilter = $this->createForm(new PCirclePUsersFiltersType());
+        $formFilter1 = $this->createForm(new PCirclePUsersFiltersType());
+        $formFilter2 = $this->createForm(new PCirclePUsersFiltersType());
+        $formFilter3 = $this->createForm(new PCirclePUsersFiltersType());
 
         // users forms
         $circleService = $this->get('politizr.functional.circle');
 
+        $users = $circleService->getUsersInCircleByCircleId();
         $usersInCircle = $circleService->getUsersInCircleByCircleId($circle->getId());
         $usersCanReactInCircle = $circleService->getUsersInCircleByCircleId($circle->getId(), true);
 
-        $formUsers = $this->createForm(new PCirclePUsersSelectListType(), null, array('circle_id' => $circle->getId()));
-        $formUsersInCircle = $this->createForm(new PCirclePUsersSelectListType(), null, array('circle_id' => $circle->getId(), 'users' => $usersInCircle));
-        $formUsersCanReactInCircle = $this->createForm(new PCirclePUsersSelectListType(), null, array('circle_id' => $circle->getId(), 'users' => $usersCanReactInCircle));
+        $formUsers1 = $this->createForm(new PCirclePUsersSelectListType(), null, array('circle_id' => $circle->getId(), 'users' => $users));
+        $formUsers2 = $this->createForm(new PCirclePUsersSelectListType(), null, array('circle_id' => $circle->getId(), 'users' => $usersInCircle));
+        $formUsers3 = $this->createForm(new PCirclePUsersSelectListType(), null, array('circle_id' => $circle->getId(), 'users' => $usersCanReactInCircle));
 
         return $this->render(
             'PolitizrAdminBundle:PCircleActions:index.html.twig',
@@ -104,11 +107,13 @@ class ActionsController extends BaseActionsController
                 ),
                 "actionRoute" => "Politizr_AdminBundle_PCircle_object",
                 "actionParams" => array("pk" => $circle->getId(), "action" => "scope"),
-                'formFilter' => $formFilter->createView(),
-                'formUsers' => $formUsers->createView(),
-                'formUsers' => $formUsers->createView(),
-                'formUsersInCircle' => $formUsersInCircle->createView(),
-                'formUsersCanReactInCircle' => $formUsersCanReactInCircle->createView(),
+                'circleId' => $circle->getId(),
+                'formFilter1' => $formFilter1->createView(),
+                'formFilter2' => $formFilter2->createView(),
+                'formFilter3' => $formFilter3->createView(),
+                'formUsers1' => $formUsers1->createView(),
+                'formUsers2' => $formUsers2->createView(),
+                'formUsers3' => $formUsers3->createView(),
             )
         );
     }

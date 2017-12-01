@@ -59,8 +59,8 @@ builders:
             object_actions:
                 show:                           ~
                 edit:                           ~
-                delete:                         ~
                 scope:                          ~
+                delete:                         ~
                 moveUp:                         ~
                 moveDown:                       ~
             actions:
