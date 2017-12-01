@@ -407,6 +407,11 @@ liip_imagine:
             filters:
                 relative_resize:  { heighten: 80 }
 
+        topic_list:
+            quality:              100
+            filters:
+                relative_resize:  { widen: 250 }
+
 
         # FRONT / ESPACE CITOYEN
         c_document_list_thumb:

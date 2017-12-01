@@ -108,6 +108,11 @@ class PolitizrCircleExtension extends \Twig_Extension
                 array($this, 'authorizedReactionUsers'),
                 array('is_safe' => array('html'), 'needs_environment' => true)
             ),
+            new \Twig_SimpleFilter(
+                'readOnlyMessage',
+                array($this, 'readOnlyMessage'),
+                array('is_safe' => array('html'), 'needs_environment' => true)
+            ),
         );
     }
 
@@ -334,6 +339,45 @@ class PolitizrCircleExtension extends \Twig_Extension
             array(
                 'mainUser' => $mainUser,
                 'users' => $users,
+            )
+        );
+
+        return $html;
+    }
+
+    /**
+     * Display banner if circle is in "read only" mode
+     *
+     * @param PDocumentInterface|PCircle|PCTopic $subject
+     * @return string
+     */
+    public function readOnlyMessage(\Twig_Environment $env, $subject)
+    {
+        $html = null;
+
+        if ($subject instanceof PDocumentInterface) {
+            $topic = $subject->getPCTopic();
+            if ($topic) {
+                $circle = $topic->getPCircle();
+            } else {
+                return null;
+            }
+        } elseif ($subject instanceof PCTopic) {
+            $circle = $subject->getPCircle();
+        } elseif ($subject instanceof PCircle) {
+            $circle = $subject;
+        } else {
+            throw new InconsistentDataException('Class not managed');
+        }
+
+        if (! $circle->getReadOnly()) {
+            return null;
+        }
+
+        $html = $env->render(
+            'PolitizrFrontBundle:Circle:_readOnlyBanner.html.twig',
+            array(
+                'circle' => $circle,
             )
         );
 

@@ -43,15 +43,7 @@
     {% if (isGrantedE() or isGrantedC()) %}
         {% embed 'PolitizrFrontBundle:Navigation\\Header:_headerConnected.html.twig' %}
             {% block newSubject %}
-                {% set topic = debate.PCTopic %}
-                {% if topic %}
-                    <a href="{{ path('DebateDraftNew', { topic: topic.uuid }) }}" class="newSubject">
-                        <i class="icon-plane"></i><span>je m'exprime</span>
-                    </a>
-                    <div class="headerSeparator"></div>
-                {% else %}
-                    {{ parent() }}
-                {% endif %}
+                {{ debate | newSubject }}
             {% endblock newSubject %}
         {% endembed %}
     {% else %}
@@ -68,6 +60,7 @@
     
     {{ debate | documentOperation }}
     {{ debate | boostQuestion }}
+    {{ debate | readOnlyMessage }}
 {% endblock %}
 
 {% block content %}

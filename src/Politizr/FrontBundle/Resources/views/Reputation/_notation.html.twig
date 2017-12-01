@@ -1,25 +1,50 @@
 {# beta #}
-{% if app.user %}
-    {% if not pos and not neg %}
-        <div class="like">
-            <div class="likeButton" action="note" uuid="{{ object.uuid }}" type="{{ type }}" way="up"><i class="icon-like-yes"></i></div>
-            {{ object.notePos }}
-        </div>
-        <div class="dislike">
-            {{ object.noteNeg }}
-            <div class="dislikeButton" action="note" uuid="{{ object.uuid }}" type="{{ type }}" way="down"><i class="icon-like-no"></i></div>
-        </div>
-    {% else %}
-        <div class="like {% if pos and not isOwnDocument %}myvote{% else %}novote{% endif %}">
-            <div class="likeButton"><i class="icon-like-yes"></i></div>
-            {{ object.notePos }}
-        </div>
-        <div class="dislike {% if neg and not isOwnDocument %}myvote{% else %}novote{% endif %}">
-            {{ object.noteNeg }}
-            <div class="dislikeButton"><i class="icon-like-no"></i></div>
-        </div>
-    {% endif %}
-{% else %}
+{% if reason == constant('Politizr\\Constant\\DocumentConstants::NOTATION_AUTHORIZED') %}
+    <div class="like">
+        <div class="likeButton" action="note" uuid="{{ object.uuid }}" type="{{ type }}" way="up"><i class="icon-like-yes"></i></div>
+        {{ object.notePos }}
+    </div>
+    <div class="dislike">
+        {{ object.noteNeg }}
+        <div class="dislikeButton" action="note" uuid="{{ object.uuid }}" type="{{ type }}" way="down"><i class="icon-like-no"></i></div>
+    </div>
+{% elseif reason == constant('Politizr\\Constant\\DocumentConstants::NOTATION_REASON_VOTE_POS_DONE') %}
+    <div class="like myvote">
+        <div class="likeButton"><i class="icon-like-yes"></i></div>
+        {{ object.notePos }}
+    </div>
+    <div class="dislike {% if neg and not isOwnDocument %}myvote{% else %}novote{% endif %}">
+        {{ object.noteNeg }}
+        <div class="dislikeButton"><i class="icon-like-no"></i></div>
+    </div>
+{% elseif reason == constant('Politizr\\Constant\\DocumentConstants::NOTATION_REASON_VOTE_NEG_DONE') %}
+    <div class="like novote">
+        <div class="likeButton"><i class="icon-like-yes"></i></div>
+        {{ object.notePos }}
+    </div>
+    <div class="dislike myvote">
+        {{ object.noteNeg }}
+        <div class="dislikeButton"><i class="icon-like-no"></i></div>
+    </div>
+{% elseif reason == constant('Politizr\\Constant\\DocumentConstants::NOTATION_REASON_NO_REPUTATION') %}
+    <div class="like novote">
+        <div class="likeButton"><i class="icon-like-yes"></i></div>
+        {{ object.notePos }}
+    </div>
+    <div class="dislike novote">
+        {{ object.noteNeg }}
+        <div class="dislikeButton"><i class="icon-like-no"></i></div>
+    </div>
+{% elseif reason == constant('Politizr\\Constant\\DocumentConstants::NOTATION_REASON_DOC_OWNER') %}
+    <div class="like novote">
+        <div class="likeButton"><i class="icon-like-yes"></i></div>
+        {{ object.notePos }}
+    </div>
+    <div class="dislike novote">
+        {{ object.noteNeg }}
+        <div class="dislikeButton"><i class="icon-like-no"></i></div>
+    </div>
+{% elseif reason == constant('Politizr\\Constant\\DocumentConstants::NOTATION_REASON_NOT_LOGGED') %}
     <div class="like">
         <a href="{{ path('InscriptionChoice') }}"><div class="likeButton"><i class="icon-like-yes"></i></div></a>
         {{ object.notePos }}

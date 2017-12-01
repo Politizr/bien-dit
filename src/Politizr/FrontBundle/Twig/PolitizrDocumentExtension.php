@@ -249,6 +249,11 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 array($this, 'circleContext'),
                 array('is_safe' => array('html'), 'needs_environment' => true)
             ),
+            new \Twig_SimpleFilter(
+                'newSubject',
+                array($this, 'newSubject'),
+                array('is_safe' => array('html'), 'needs_environment' => true)
+            ),
         );
     }
 
@@ -774,72 +779,15 @@ class PolitizrDocumentExtension extends \Twig_Extension
             $user = null;
         }
 
-        $pos = false;
-        $neg = false;
-
-        $score = null;
-        $isAuthorizedToNotateNeg = false;
-        $isOwnDocument = false;
-        $hasAlreadyNotePos = false;
-        $hasAlreadyNoteNeg = false;
-
-        if ($user) {
-            $ownDebate = PDDebateQuery::create()
-                ->filterByPUserId($user->getId())
-                ->filterById($debate->getId())
-                ->findOne();
-
-            if ($ownDebate) {
-                $pos = true;
-                $neg = true;
-
-                $isOwnDocument = true;
-            } else {
-                $queryPos = PUReputationQuery::create()
-                    ->filterByPRActionId(ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_NOTE_POS)
-                    ->filterByPObjectName('Politizr\Model\PDDebate');
-                $queryNeg = PUReputationQuery::create()
-                    ->filterByPRActionId(ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_NOTE_NEG)
-                    ->filterByPObjectName('Politizr\Model\PDDebate');
-
-                $notePos = $queryPos->filterByPUserId($user->getId())
-                    ->filterByPObjectId($debate->getId())
-                    ->findOne();
-                if ($notePos) {
-                    $pos = true;
-                    $hasAlreadyNotePos = true;
-                }
-
-                $noteNeg = $queryNeg->filterByPUserId($user->getId())
-                    ->filterByPObjectId($debate->getId())
-                    ->findOne();
-                if ($noteNeg) {
-                    $neg = true;
-                    $hasAlreadyNoteNeg = true;
-                }
-
-                // min score management
-                $score = $user->getReputationScore();
-                if ($score >= ReputationConstants::ACTION_DEBATE_NOTE_NEG) {
-                    $isAuthorizedToNotateNeg = true;
-                }
-            }
-        }
+        $reason = $this->userService->isAuthorizedToNote($user, $debate, true);
 
         // Construction du rendu du tag
         $html = $env->render(
             'PolitizrFrontBundle:Reputation:_notation.html.twig',
             array(
                 'object' => $debate,
+                'reason' => $reason,
                 'type' => ObjectTypeConstants::TYPE_DEBATE,
-                'pos' => $pos,
-                'neg' => $neg,
-                'score' => $score,
-                'minScore' => ReputationConstants::ACTION_DEBATE_NOTE_NEG,
-                'isAuthorizedToNotateNeg' => $isAuthorizedToNotateNeg,
-                'isOwnDocument' => $isOwnDocument,
-                'hasAlreadyNotePos' => $hasAlreadyNotePos,
-                'hasAlreadyNoteNeg' => $hasAlreadyNoteNeg,
             )
         );
 
@@ -1154,7 +1102,6 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
     /**
      * Document footer explanations
-     * @todo check logical code duplicate w. PolitizrUserExtension->isAuthorizedToReact
      *
      * @param PDocumentInterface $document
      * @return string
@@ -1422,6 +1369,49 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 )
             );
         }
+
+        return $html;
+    }
+
+    /**
+     * Compute & display contextualized link for "je m'exprime"
+     *
+     * @param PDocumentInterface|PCTopic $subject
+     * @return string
+     */
+    public function newSubject(\Twig_Environment $env, $subject)
+    {
+        $html = null;
+
+        $display = true;
+        $url = null;
+
+        if ($subject instanceof PDocumentInterface) {
+            $topic = $subject->getPCTopic();
+        } elseif ($subject instanceof PCTopic) {
+            $topic = $subject;
+        } else {
+            throw new InconsistentDataException('Class not managed');
+        }
+
+        if ($topic) {
+            $circle = $topic->getPCircle();
+            if ($circle->getReadOnly()) {
+                $display = false;
+            } else {
+                $url = $this->router->generate('DebateDraftNew', array('topic' => $topic->getUuid()));
+            }
+        } else {
+            $url = $this->router->generate('DebateDraftNew');
+        }
+
+        $html = $env->render(
+            'PolitizrFrontBundle:Document:_newSubject.html.twig',
+            array(
+                'display' => $display,
+                'url' => $url,
+            )
+        );
 
         return $html;
     }

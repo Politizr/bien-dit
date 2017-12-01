@@ -18,6 +18,8 @@ use Politizr\Model\PDocumentInterface;
 use Politizr\Model\PDDebate;
 use Politizr\Model\PCircle;
 
+use Politizr\Model\PDDebateQuery;
+use Politizr\Model\PUReputationQuery;
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PTagQuery;
 use Politizr\Model\PLCityQuery;
@@ -257,6 +259,18 @@ class UserService
         // circle case: only specified user can react
         $topicId = $document->getPCTopicId();
         if ($topicId) {
+            $topic = $document->getPCTopic();
+            $circle = $topic->getPCircle();
+
+            // topic is in a circle which is "read only"
+            if ($circle->getReadOnly()) {
+                if ($reason) {
+                    return DocumentConstants::REASON_CIRCLE_READ_ONLY;
+                } else {
+                    return false;
+                }
+            }
+
             // author of the document can react
             $score = $user->getReputationScore();
             if ($document->isDebateOwner($user->getId())) {
@@ -268,8 +282,6 @@ class UserService
             }
 
             // authorized users can react
-            $topic = $document->getPCTopic();
-            $circle = $topic->getPCircle();
             if ($circle) {
                 $authorizedCircleUser = $this->circleService->isUserAuthorizedReaction($circle, $user);
                 if ($authorizedCircleUser) {
@@ -333,6 +345,86 @@ class UserService
         }
 
         return false;
+    }
+
+    /**
+     * Check if user can note a document
+     *
+     * @param PUser $user
+     * @param PDocumentInterface $document
+     * @return boolean|int
+     */
+    public function isAuthorizedToNote(PUser $user = null, PDocumentInterface $document = null, $reason = false)
+    {
+        if (!$document || !$user) {
+            if ($reason) {
+                return DocumentConstants::NOTATION_REASON_NOT_LOGGED;
+            } else {
+                return false;
+            }
+        }
+
+        // debate owner
+        $ownDebate = PDDebateQuery::create()
+            ->filterByPUserId($user->getId())
+            ->filterById($document->getId())
+            ->findOne();
+
+        if ($ownDebate) {
+            if ($reason) {
+                return DocumentConstants::NOTATION_REASON_DOC_OWNER;
+            } else {
+                return false;
+            }
+        }
+
+        // already note
+        $queryPos = PUReputationQuery::create()
+            ->filterByPRActionId(ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_NOTE_POS)
+            ->filterByPObjectName('Politizr\Model\PDDebate');
+        $queryNeg = PUReputationQuery::create()
+            ->filterByPRActionId(ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_NOTE_NEG)
+            ->filterByPObjectName('Politizr\Model\PDDebate');
+
+        $notePos = $queryPos->filterByPUserId($user->getId())
+            ->filterByPObjectId($document->getId())
+            ->findOne();
+
+        if ($notePos) {
+            if ($reason) {
+                return DocumentConstants::NOTATION_REASON_VOTE_POS_DONE;
+            } else {
+                return false;
+            }
+        }
+
+        $noteNeg = $queryNeg->filterByPUserId($user->getId())
+            ->filterByPObjectId($document->getId())
+            ->findOne();
+
+        if ($notePos) {
+            if ($reason) {
+                return DocumentConstants::NOTATION_REASON_VOTE_NEG_DONE;
+            } else {
+                return false;
+            }
+        }
+
+        // min score management
+        $score = $user->getReputationScore();
+        if ($score < ReputationConstants::ACTION_DEBATE_NOTE_NEG) {
+            if ($reason) {
+                return DocumentConstants::NOTATION_REASON_NO_REPUTATION;
+            } else {
+                return false;
+            }
+        }
+
+        if ($reason) {
+            return DocumentConstants::NOTATION_AUTHORIZED;
+        }
+
+        return true;
     }
 
     /**

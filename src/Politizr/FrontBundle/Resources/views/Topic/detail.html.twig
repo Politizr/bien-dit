@@ -32,15 +32,16 @@
     {% if (isGrantedE() or isGrantedC()) %}
         {% embed 'PolitizrFrontBundle:Navigation\\Header:_headerConnected.html.twig' %}
             {% block newSubject %}
-                <a href="{{ path('DebateDraftNew', { topic: topic.uuid }) }}" class="newSubject">
-                    <i class="icon-plane"></i><span>je m'exprime</span>
-                </a>
-                <div class="headerSeparator"></div>
+                {{ topic | newSubject }}
             {% endblock %}
         {% endembed %}
     {% else %}
         {{ parent() }}
     {% endif %}
+{% endblock %}
+
+{% block headerMsg %}
+    {{ circle | readOnlyMessage }}
 {% endblock %}
 
 {% block main %}

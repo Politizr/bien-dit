@@ -15,10 +15,7 @@
         </div>
         <div id="headerRight">
             {% block newSubject %}
-                <a href="{{ path('DebateDraftNew') }}" class="newSubject">
-                    <i class="icon-plane"></i><span>je m'exprime</span>
-                </a>
-                <div class="headerSeparator"></div>
+                {% include 'PolitizrFrontBundle:Document:_newSubject.html.twig' with { 'display': true, 'url': path('DebateDraftNew') } %}
             {% endblock %}
             <div id="notifCounter">
                 <i class="icon-notif" action="toggleNotifBox">
