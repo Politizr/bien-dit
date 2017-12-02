@@ -289,9 +289,8 @@ class XhrDocument
                 throw new InconsistentDataException(sprintf('Note on type %s not allowed', $type));
         }
 
-        // related to issue #178 > control user <> subject
-        $canUserNoteDocument = $this->documentService->canUserNoteDocument($user, $subject, $way);
-        if (!$canUserNoteDocument) {
+        $isAuthorizedToNote = $this->userService->isAuthorizedToNote($user, $subject);
+        if (!$isAuthorizedToNote) {
             // throw new InconsistentDataException('You can\'t note this publication.');
 
             // Rendering

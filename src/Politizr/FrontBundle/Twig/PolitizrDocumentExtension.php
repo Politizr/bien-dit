@@ -180,18 +180,18 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             new \Twig_SimpleFilter(
-                'linkNoteDebate',
-                array($this, 'linkNoteDebate'),
+                'linkNoteDocument',
+                array($this, 'linkNoteDocument'),
                 array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             new \Twig_SimpleFilter(
-                'linkNoteReaction',
-                array($this, 'linkNoteReaction'),
+                'linkNoteDocument',
+                array($this, 'linkNoteDocument'),
                 array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             new \Twig_SimpleFilter(
-                'linkNoteComment',
-                array($this, 'linkNoteComment'),
+                'linkNoteDocument',
+                array($this, 'linkNoteDocument'),
                 array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             new \Twig_SimpleFilter(
@@ -762,16 +762,15 @@ class PolitizrDocumentExtension extends \Twig_Extension
     }
 
     /**
-     * Affiche & active / désactive les Note + / Note -
-     * @todo to refactor check w. DocumentService->canUserNoteDocument
+     * Display / activate document or comment note
      *
-     * @param PDDebate $debate
+     * @param PDocumentInterface|PDCommentInterface $document
      * @return html
      */
-    public function linkNoteDebate(\Twig_Environment $env, PDDebate $debate)
+    public function linkNoteDocument(\Twig_Environment $env, $document)
     {
-        // // $this->logger->info('*** linkNoteDebate');
-        // // $this->logger->info('$debate = '.print_r($debate, true));
+        // $this->logger->info('*** linkNoteDocument');
+        // $this->logger->info('$debate = '.print_r($document, true));
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -779,213 +778,19 @@ class PolitizrDocumentExtension extends \Twig_Extension
             $user = null;
         }
 
-        $reason = $this->userService->isAuthorizedToNote($user, $debate, true);
+        $reason = $this->userService->isAuthorizedToNote($user, $document, true);
 
         // Construction du rendu du tag
         $html = $env->render(
             'PolitizrFrontBundle:Reputation:_notation.html.twig',
             array(
-                'object' => $debate,
+                'object' => $document,
                 'reason' => $reason,
-                'type' => ObjectTypeConstants::TYPE_DEBATE,
+                'type' => $document->getType(),
             )
         );
 
         return $html;
-    }
-
-    /**
-     *  Affiche & active / désactive les Note + / Note -
-     *
-     *  @param $nbViews         integer
-     *
-     *  @return html
-     */
-    public function linkNoteReaction(\Twig_Environment $env, PDReaction $reaction)
-    {
-        // // $this->logger->info('*** linkNoteReaction');
-        // // $this->logger->info('$reaction = '.print_r($reaction, true));
-
-        // get current user
-        $user = $this->securityTokenStorage->getToken()->getUser();
-        if (is_string($user)) {
-            $user = null;
-        }
-
-        $pos = false;
-        $neg = false;
-
-        $score = null;
-        $isAuthorizedToNotateNeg = false;
-        $isOwnDocument = false;
-        $hasAlreadyNotePos = false;
-        $hasAlreadyNoteNeg = false;
-
-        if ($user) {
-            $ownReaction = PDReactionQuery::create()
-                ->filterByPUserId($user->getId())
-                ->filterById($reaction->getId())
-                ->findOne();
-
-            if ($ownReaction) {
-                $pos = true;
-                $neg = true;
-
-                $isOwnDocument = true;
-            } else {
-                $queryPos = PUReputationQuery::create()
-                    ->filterByPRActionId(ReputationConstants::ACTION_ID_D_AUTHOR_REACTION_NOTE_POS)
-                    ->filterByPObjectName('Politizr\Model\PDReaction');
-                $queryNeg = PUReputationQuery::create()
-                    ->filterByPRActionId(ReputationConstants::ACTION_ID_D_AUTHOR_REACTION_NOTE_NEG)
-                    ->filterByPObjectName('Politizr\Model\PDReaction');
-
-                $notePos = $queryPos->filterByPUserId($user->getId())
-                    ->filterByPObjectId($reaction->getId())
-                    ->findOne();
-                if ($notePos) {
-                    $pos = true;
-                    $hasAlreadyNotePos = true;
-                }
-
-                $noteNeg = $queryNeg->filterByPUserId($user->getId())
-                    ->filterByPObjectId($reaction->getId())
-                    ->findOne();
-                if ($noteNeg) {
-                    $neg = true;
-                    $hasAlreadyNoteNeg = true;
-                }
-
-                // min score management
-                $score = $user->getReputationScore();
-                if ($score >= ReputationConstants::ACTION_REACTION_NOTE_NEG) {
-                    $isAuthorizedToNotateNeg = true;
-                }
-            }
-        }
-
-        // Construction du rendu du tag
-        $html = $env->render(
-            'PolitizrFrontBundle:Reputation:_notation.html.twig',
-            array(
-                'object' => $reaction,
-                'type' => ObjectTypeConstants::TYPE_REACTION,
-                'pos' => $pos,
-                'neg' => $neg,
-                'score' => $score,
-                'minScore' => ReputationConstants::ACTION_REACTION_NOTE_NEG,
-                'isAuthorizedToNotateNeg' => $isAuthorizedToNotateNeg,
-                'isOwnDocument' => $isOwnDocument,
-                'hasAlreadyNotePos' => $hasAlreadyNotePos,
-                'hasAlreadyNoteNeg' => $hasAlreadyNoteNeg,
-            )
-        );
-
-        return $html;
-
-    }
-
-    /**
-     *  Affiche & active / désactive les Note + / Note -
-     *
-     *  @param $nbViews         integer
-     *
-     *  @return html
-     */
-    public function linkNoteComment(\Twig_Environment $env, PDCommentInterface $comment)
-    {
-        // // $this->logger->info('*** linkNoteComment');
-        // // $this->logger->info('$comment = '.print_r($comment, true));
-
-        // get current user
-        $user = $this->securityTokenStorage->getToken()->getUser();
-        if (is_string($user)) {
-            $user = null;
-        }
-
-        $pos = false;
-        $neg = false;
-
-        $score = null;
-        $isAuthorizedToNotateNeg = false;
-        $isOwnDocument = false;
-        $hasAlreadyNotePos = false;
-        $hasAlreadyNoteNeg = false;
-
-        if ($user) {
-            switch ($comment->getType()) {
-                case ObjectTypeConstants::TYPE_DEBATE_COMMENT:
-                    $type = ObjectTypeConstants::TYPE_DEBATE_COMMENT;
-                    $query = PDDCommentQuery::create();
-                    break;
-                case ObjectTypeConstants::TYPE_REACTION_COMMENT:
-                    $type = ObjectTypeConstants::TYPE_REACTION_COMMENT;
-                    $query = PDRCommentQuery::create();
-                    break;
-                default:
-                    throw new InconsistentDataException(sprintf('Object type %s not managed', $comment->getType()));
-            }
-            $document = $query
-                ->filterByPUserId($user->getId())
-                ->filterById($comment->getId())
-                ->findOne();
-
-            if ($document) {
-                $pos = true;
-                $neg = true;
-
-                $isOwnDocument = true;
-            } else {
-                $queryPos = PUReputationQuery::create()
-                    ->filterByPRActionId(ReputationConstants::ACTION_ID_D_AUTHOR_COMMENT_NOTE_POS)
-                    ->filterByPObjectName($comment->getType());
-                $queryNeg = PUReputationQuery::create()
-                    ->filterByPRActionId(ReputationConstants::ACTION_ID_D_AUTHOR_COMMENT_NOTE_NEG)
-                    ->filterByPObjectName($comment->getType());
-
-                $notePos = $queryPos->filterByPUserId($user->getId())
-                    ->filterByPObjectId($comment->getId())
-                    ->findOne();
-                if ($notePos) {
-                    $pos = true;
-                    $hasAlreadyNotePos = true;
-                }
-
-                $noteNeg = $queryNeg->filterByPUserId($user->getId())
-                    ->filterByPObjectId($comment->getId())
-                    ->findOne();
-                if ($noteNeg) {
-                    $neg = true;
-                    $hasAlreadyNoteNeg = true;
-                }
-
-                // min score management
-                $score = $user->getReputationScore();
-                if ($score >= ReputationConstants::ACTION_COMMENT_NOTE_NEG) {
-                    $isAuthorizedToNotateNeg = true;
-                }
-            }
-        }
-
-        // Construction du rendu du tag
-        $html = $env->render(
-            'PolitizrFrontBundle:Reputation:_notation.html.twig',
-            array(
-                'object' => $comment,
-                'type' => $comment->getType(),
-                'pos' => $pos,
-                'neg' => $neg,
-                'score' => $score,
-                'minScore' => ReputationConstants::ACTION_COMMENT_NOTE_NEG,
-                'isAuthorizedToNotateNeg' => $isAuthorizedToNotateNeg,
-                'isOwnDocument' => $isOwnDocument,
-                'hasAlreadyNotePos' => $hasAlreadyNotePos,
-                'hasAlreadyNoteNeg' => $hasAlreadyNoteNeg,
-            )
-        );
-
-        return $html;
-
     }
 
     /**

@@ -16,9 +16,15 @@ use Politizr\Constant\DocumentConstants;
 use Politizr\Model\PUser;
 use Politizr\Model\PDocumentInterface;
 use Politizr\Model\PDDebate;
+use Politizr\Model\PDReaction;
+use Politizr\Model\PDDComment;
+use Politizr\Model\PDRComment;
 use Politizr\Model\PCircle;
 
 use Politizr\Model\PDDebateQuery;
+use Politizr\Model\PDReactionQuery;
+use Politizr\Model\PDDCommentQuery;
+use Politizr\Model\PDRCommentQuery;
 use Politizr\Model\PUReputationQuery;
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PTagQuery;
@@ -351,10 +357,10 @@ class UserService
      * Check if user can note a document
      *
      * @param PUser $user
-     * @param PDocumentInterface $document
+     * @param PDocumentInterface|PDCommentInterface $document
      * @return boolean|int
      */
-    public function isAuthorizedToNote(PUser $user = null, PDocumentInterface $document = null, $reason = false)
+    public function isAuthorizedToNote(PUser $user = null, $document = null, $reason = false)
     {
         if (!$document || !$user) {
             if ($reason) {
@@ -364,13 +370,35 @@ class UserService
             }
         }
 
-        // debate owner
-        $ownDebate = PDDebateQuery::create()
+        if ($document instanceof PDDebate) {
+            $documentQuery = PDDebateQuery::create();
+            $notePosActionId = ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_NOTE_POS;
+            $noteNegActionId = ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_NOTE_NEG;
+            $minReputationScore = ReputationConstants::ACTION_DEBATE_NOTE_NEG;
+        } elseif ($document instanceof PDReaction) {
+            $documentQuery = PDReactionQuery::create();
+            $notePosActionId = ReputationConstants::ACTION_ID_D_AUTHOR_REACTION_NOTE_POS;
+            $noteNegActionId = ReputationConstants::ACTION_ID_D_AUTHOR_REACTION_NOTE_NEG;
+            $minReputationScore = ReputationConstants::ACTION_REACTION_NOTE_NEG;
+        } elseif ($document instanceof PDDComment) {
+            $documentQuery = PDDCommentQuery::create();
+            $notePosActionId = ReputationConstants::ACTION_ID_D_AUTHOR_COMMENT_NOTE_POS;
+            $noteNegActionId = ReputationConstants::ACTION_ID_D_AUTHOR_COMMENT_NOTE_NEG;
+            $minReputationScore = ReputationConstants::ACTION_COMMENT_NOTE_NEG;
+        } elseif ($document instanceof PDRComment) {
+            $documentQuery = PDRCommentQuery::create();
+            $notePosActionId = ReputationConstants::ACTION_ID_D_AUTHOR_COMMENT_NOTE_POS;
+            $noteNegActionId = ReputationConstants::ACTION_ID_D_AUTHOR_COMMENT_NOTE_NEG;
+            $minReputationScore = ReputationConstants::ACTION_COMMENT_NOTE_NEG;
+        }
+
+        // document owner
+        $ownDocument = $documentQuery
             ->filterByPUserId($user->getId())
             ->filterById($document->getId())
             ->findOne();
 
-        if ($ownDebate) {
+        if ($ownDocument) {
             if ($reason) {
                 return DocumentConstants::NOTATION_REASON_DOC_OWNER;
             } else {
@@ -379,14 +407,10 @@ class UserService
         }
 
         // already note
-        $queryPos = PUReputationQuery::create()
-            ->filterByPRActionId(ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_NOTE_POS)
-            ->filterByPObjectName('Politizr\Model\PDDebate');
-        $queryNeg = PUReputationQuery::create()
-            ->filterByPRActionId(ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_NOTE_NEG)
-            ->filterByPObjectName('Politizr\Model\PDDebate');
-
-        $notePos = $queryPos->filterByPUserId($user->getId())
+        $notePos = PUReputationQuery::create()
+            ->filterByPRActionId($notePosActionId)
+            ->filterByPObjectName($document->getType())
+            ->filterByPUserId($user->getId())
             ->filterByPObjectId($document->getId())
             ->findOne();
 
@@ -398,11 +422,14 @@ class UserService
             }
         }
 
-        $noteNeg = $queryNeg->filterByPUserId($user->getId())
+        $noteNeg = PUReputationQuery::create()
+            ->filterByPRActionId($noteNegActionId)
+            ->filterByPObjectName($document->getType())
+            ->filterByPUserId($user->getId())
             ->filterByPObjectId($document->getId())
             ->findOne();
 
-        if ($notePos) {
+        if ($noteNeg) {
             if ($reason) {
                 return DocumentConstants::NOTATION_REASON_VOTE_NEG_DONE;
             } else {
@@ -412,7 +439,7 @@ class UserService
 
         // min score management
         $score = $user->getReputationScore();
-        if ($score < ReputationConstants::ACTION_DEBATE_NOTE_NEG) {
+        if ($score < $minReputationScore) {
             if ($reason) {
                 return DocumentConstants::NOTATION_REASON_NO_REPUTATION;
             } else {

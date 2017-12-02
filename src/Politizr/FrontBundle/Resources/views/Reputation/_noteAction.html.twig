@@ -1,11 +1,11 @@
 {# beta #}
 {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
 {% if subject.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE') %} 
-    {{ subject | linkNoteDebate }}
+    {{ subject | linkNoteDocument }}
 {% elseif subject.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION') %} 
-    {{ subject | linkNoteReaction }}
+    {{ subject | linkNoteDocument }}
 {% elseif subject.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE_COMMENT') %} 
-    {{ subject | linkNoteComment }}
+    {{ subject | linkNoteDocument }}
 {% elseif subject.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION_COMMENT') %} 
-    {{ subject | linkNoteComment }}
+    {{ subject | linkNoteDocument }}
 {% endif %}

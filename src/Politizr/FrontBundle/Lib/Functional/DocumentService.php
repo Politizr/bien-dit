@@ -608,56 +608,6 @@ class DocumentService
     }
 
     /* ######################################################################################################## */
-    /*                                      SECURITY CONTROLS                                                   */
-    /* ######################################################################################################## */
-    
-    /**
-     * Controle if user can note document:
-     *  - not his document
-     *  - not already notate
-     *  - has reputation to note down
-     *
-     * @param PUser $user
-     * @param PDDebate|PDReaction|PDDComment|PDRComment $object
-     * @param string up|down
-     * @return boolean
-     */
-    public function canUserNoteDocument(PUser $user, $object, $way)
-    {
-        // $this->logger->info('*** canUserNoteDocument');
-        // $this->logger->info('$user = '.print_r($user, true));
-        // $this->logger->info('$object = '.print_r($object, true));
-        // $this->logger->info('$way = '.print_r($way, true));
-
-        // check if current user is not author
-        if ($object->getPUserId() == $user->getId()) {
-            return false;
-        }
-
-        // check if user has already notate
-        $query = PUReputationQuery::create()
-                    ->filterByPObjectId($object->getId())
-                    ->filterByPObjectName($object->getType())
-                    ->filterByPRActionId(
-                        ReputationConstants::getNotationPRActionsId()
-                    );
-        $nb = $user->countPUReputations($query);
-        if ($nb > 0) {
-            return false;
-        }
-
-        // check if user can note down
-        if ($way == 'down') {
-            $score = $user->getReputationScore();
-            if ($score < ReputationConstants::ACTION_DEBATE_NOTE_NEG) {
-                return false;
-            }
-        }
-
-        return true;
-    }
- 
-    /* ######################################################################################################## */
     /*                                CONTEXT DOCUMENT COMPUTING                                                */
     /* ######################################################################################################## */
     
