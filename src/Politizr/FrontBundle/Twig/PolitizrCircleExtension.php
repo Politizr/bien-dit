@@ -302,6 +302,7 @@ class PolitizrCircleExtension extends \Twig_Extension
         $html = $env->render(
             'PolitizrFrontBundle:Topic:_question.html.twig',
             array(
+                'circle' => $topic->getPCircle(),
                 'topic' => $topic,
             )
         );

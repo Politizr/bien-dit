@@ -1,0 +1,11 @@
+{% if reason == constant('Politizr\\Constant\\DocumentConstants::REASON_CIRCLE_READ_ONLY') %}
+    <div class="cannotComment">
+        Les contributions pour ce groupe sont désormais closes.
+    </div>
+{% elseif reason == constant('Politizr\\Constant\\DocumentConstants::REASON_NO_REPUTATION') %}
+    <div class="cannotComment">
+        Vous devez avoir au moins {{ constant('Politizr\\Constant\\ReputationConstants::ACTION_COMMENT_WRITE') }} de réputation pour publier un nouveau commentaire.
+    </div>
+{% else %}
+    {{ document | commentForm(noParagraph) }}
+{% endif %}

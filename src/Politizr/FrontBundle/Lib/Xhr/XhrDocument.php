@@ -988,7 +988,7 @@ class XhrDocument
     }
 
     /**
-     * Display comments & create form comment
+     * Display comments
      * code beta
      */
     public function comments(Request $request)
@@ -1003,27 +1003,24 @@ class XhrDocument
         $noParagraph = $request->get('noParagraph');
         // $this->logger->info('$noParagraph = ' . print_r($noParagraph, true));
 
+        // get current user
+        $currentUser = $this->securityTokenStorage->getToken()->getUser();
+        if (is_string($currentUser)) {
+            $currentUser = null;
+        }
+
         switch ($type) {
             case ObjectTypeConstants::TYPE_DEBATE:
                 $document = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
-                $comment = new PDDComment();
-                $formType = new PDDCommentType();
                 break;
             case ObjectTypeConstants::TYPE_REACTION:
                 $document = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
-                $comment = new PDRComment();
-                $formType = new PDRCommentType();
                 break;
             default:
                 throw new InconsistentDataException(sprintf('Object type %s not managed', $type));
         }
 
         $comments = $document->getComments(true, $noParagraph);
-
-        if ($this->securityAuthorizationChecker->isGranted('ROLE_PROFILE_COMPLETED')) {
-            $comment->setParagraphNo($noParagraph);
-        }
-        $formComment = $this->formFactory->create($formType, $comment);
 
         // Rendering
         $paragraphContext = 'global';
@@ -1033,11 +1030,13 @@ class XhrDocument
 
         $form = null;
         if ($paragraphContext == 'global') {
+            $reason = $this->userService->isAuthorizedToPublishComment($currentUser, $document, true);
             $form = $this->templating->render(
-                'PolitizrFrontBundle:Comment:_isAuthorizedToNewComment.html.twig',
+                'PolitizrFrontBundle:Comment:_comment.html.twig',
                 array(
                     'document' => $document,
-                    'formComment' => $formComment->createView(),
+                    'reason' => $reason,
+                    'noParagraph' => $noParagraph,
                 )
             );
         }
@@ -1048,24 +1047,24 @@ class XhrDocument
                 'paragraphContext' => $paragraphContext,
                 'document' => $document,
                 'comments' => $comments,
-                'formComment' => $formComment->createView(),
+                'noParagraph' => $noParagraph,
             )
         );
         $counter = $this->templating->render(
             'PolitizrFrontBundle:Comment:_counter.html.twig',
             array(
                 'document' => $document,
-                'paragraphNo' => $noParagraph,
+                'noParagraph' => $noParagraph,
                 'active' => true,
                 'paragraphContext' => $paragraphContext,
             )
         );
 
         return array(
-            'form' => $form,
             'list' => $list,
             'counter' => $counter,
-            );
+            'form' => $form,
+        );
     }
 
     /* ######################################################################################################## */

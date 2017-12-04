@@ -25,18 +25,21 @@ class DocumentConstants
     const REASON_AUTHORIZED_CIRCLE_USER = 4;
     const REASON_NOT_AUTHORIZED_CIRCLE_USER = 5;
     const REASON_USER_ELECTED = 6;
-    const REASON_USER_OPERATION = 7;
-    const REASON_OWNER_OPERATION = 8;
+    const REASON_USER_NOT_CERTIFIED = 7;
+    const REASON_USER_OPERATION = 8;
+    const REASON_OWNER_OPERATION = 9;
+    const REASON_NO_REPUTATION = 10;
 
     // ******************************************************** //
     //                   NOTATION REASONS                       //
     // ******************************************************** //
     const NOTATION_AUTHORIZED = 0;
-    const NOTATION_REASON_VOTE_POS_DONE = 1;
-    const NOTATION_REASON_VOTE_NEG_DONE = 2;
-    const NOTATION_REASON_DOC_OWNER = 3;
-    const NOTATION_REASON_NO_REPUTATION = 4;
-    const NOTATION_REASON_NOT_LOGGED = 5;
+    const NOTATION_REASON_NOT_LOGGED = 1;
+    const NOTATION_REASON_VOTE_POS_DONE = 2;
+    const NOTATION_REASON_VOTE_NEG_DONE = 3;
+    const NOTATION_REASON_DOC_OWNER = 4;
+    const NOTATION_REASON_NO_REPUTATION = 5;
+    const NOTATION_REASON_CIRCLE_READ_ONLY = 6;
 
     // ******************************************************* //
     const PRIVATE_DOC_LENGTH = 500;

@@ -159,18 +159,13 @@ class PolitizrUserExtension extends \Twig_Extension
                 array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             new \Twig_SimpleFilter(
-                'isAuthorizedToReact',
-                array($this, 'isAuthorizedToReact'),
-                array('is_safe' => array('html'))
-            ),
-            new \Twig_SimpleFilter(
                 'isAuthorizedToReportAbuse',
                 array($this, 'isAuthorizedToReportAbuse'),
                 array('is_safe' => array('html'))
             ),
             new \Twig_SimpleFilter(
-                'isAuthorizedToNewComment',
-                array($this, 'isAuthorizedToNewComment'),
+                'isAuthorizedToPublishComment',
+                array($this, 'isAuthorizedToPublishComment'),
                 array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             new \Twig_SimpleFilter(
@@ -686,22 +681,6 @@ class PolitizrUserExtension extends \Twig_Extension
     }
 
     /**
-     * Test if the user has role to react to the document
-     *
-     * @param PUser $user
-     * @param PDDebate $document
-     * @return boolean
-     */
-    public function isAuthorizedToReact(PUser $user, PDocumentInterface $document)
-    {
-        // $this->logger->info('*** isAuthorizedToReact');
-        // $this->logger->info('$user = '.print_r($user, true));
-        // $this->logger->info('$document = '.print_r($document, true));
-
-        return $this->userService->isAuthorizedToReact($user, $document);        
-    }
-
-    /**
      * Test if the user can report an abuse
      *
      * @param PUser $user
@@ -758,104 +737,92 @@ class PolitizrUserExtension extends \Twig_Extension
     }
 
     /**
-     * Display the publish link - or not - depending of the reputation score and if elected user is validated
+     * Compute authorization for document's comment
      *
      * @param PUser $user
-     * @param string $uuid
+     * @param PDocumentInterface $document
+     * @param int $noParagraph
+     * @param boolean $withReason
      * @return string
      */
-    public function isAuthorizedToPublishDebate(\Twig_Environment $env, PUser $user, $uuid)
+    public function isAuthorizedToPublishComment(\Twig_Environment $env, PUser $user, PDocumentInterface $document, $noParagraph = 0, $withReason = true)
     {
-        // $this->logger->info('*** isAuthorizedToPublishDebate');
+        // $this->logger->info('*** isAuthorizedToPublishComment');
         // $this->logger->info('$user = '.print_r($user, true));
 
-        $score = $user->getReputationScore();
+        $reason = $this->userService->isAuthorizedToPublishComment($user, $document, $withReason);
 
-        if ($score >= ReputationConstants::ACTION_DEBATE_WRITE) {
-            $html = $env->render(
-                'PolitizrFrontBundle:Debate:_publishLink.html.twig',
-                array(
-                    'uuid' => $uuid,
-                )
-            );
-        } else {
-            $html = $env->render(
-                'PolitizrFrontBundle:Reputation:_cannotPublishDebate.html.twig',
-                array(
-                    'score' => $score,
-                )
-            );
+        if (!$withReason) {
+            return $reason;
         }
+
+        $html = $env->render(
+            'PolitizrFrontBundle:Comment:_comment.html.twig',
+            array(
+                'document' => $document,
+                'noParagraph' => $noParagraph,
+                'reason' => $reason,
+            )
+        );
 
         return $html;
     }
 
     /**
-     * Display the publish link - or not - depending of the reputation score
+     * Compute authorization for debate
      *
      * @param PUser $user
      * @param string $uuid
      * @return string
      */
-    public function isAuthorizedToPublishReaction(\Twig_Environment $env, PUser $user, $uuid)
+    public function isAuthorizedToPublishDebate(\Twig_Environment $env, PUser $user, PDDebate $debate, $withReason = true)
+    {
+        // $this->logger->info('*** isAuthorizedToPublishDebate');
+        // $this->logger->info('$user = '.print_r($user, true));
+
+        $reason = $this->userService->isAuthorizedToPublishDebate($user, $debate, $withReason);
+
+        if (!$withReason) {
+            return $reason;
+        }
+
+        $html = $env->render(
+            'PolitizrFrontBundle:Debate:_publishLink.html.twig',
+            array(
+                'document' => $debate,
+                'reason' => $reason,
+            )
+        );
+
+        return $html;
+    }
+
+    /**
+     * Compute authorization for reaction
+     *
+     * @param PUser $user
+     * @param string $uuid
+     * @param boolean $withReason
+     * @return string
+     */
+    public function isAuthorizedToPublishReaction(\Twig_Environment $env, PUser $user, PDocumentInterface $document, $withReason = true)
     {
         // $this->logger->info('*** isAuthorizedToPublishReaction');
         // $this->logger->info('$user = '.print_r($user, true));
 
-        $score = $user->getReputationScore();
-        
-        if ($this->securityAuthorizationChecker->isGranted('ROLE_ELECTED') && !$user->isValidated()) {
-            // case: own subject > certification not needed
-            $reaction = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
-            $debate = $reaction->getDebate();
-            if ($debate) {
-                $debateUser = $debate->getPUser();
-                if ($debateUser && $debateUser->getId() == $user->getId()) {
-                    if ($score >= ReputationConstants::ACTION_REACTION_WRITE) {
-                        $html = $env->render(
-                            'PolitizrFrontBundle:Reaction:_publishLink.html.twig',
-                            array(
-                                'uuid' => $uuid,
-                            )
-                        );
-                    } else {
-                        $html = $env->render(
-                            'PolitizrFrontBundle:Reputation:_cannotPublishReaction.html.twig',
-                            array(
-                                'case' => ReputationConstants::SCORE_NOT_REACHED,
-                                'score' => $score,
-                            )
-                        );
-                    }
+        $reason = $this->userService->isAuthorizedToPublishReaction($user, $document, $withReason);
 
-                    return $html;
-                }
-            }
-
-            // case: other subject > certification needed
-            $html = $env->render(
-                'PolitizrFrontBundle:Reputation:_cannotPublishReaction.html.twig',
-                array(
-                    'case' => ReputationConstants::USER_ELECTED_NOT_VALIDATED,
-                    'score' => $score,
-                )
-            );
-        } elseif ($score >= ReputationConstants::ACTION_REACTION_WRITE) {
-            $html = $env->render(
-                'PolitizrFrontBundle:Reaction:_publishLink.html.twig',
-                array(
-                    'uuid' => $uuid,
-                )
-            );
-        } else {
-            $html = $env->render(
-                'PolitizrFrontBundle:Reputation:_cannotPublishReaction.html.twig',
-                array(
-                    'case' => ReputationConstants::SCORE_NOT_REACHED,
-                    'score' => $score,
-                )
-            );
+        if (!$withReason) {
+            return $reason;
         }
+
+        $html = $env->render(
+            'PolitizrFrontBundle:Reaction:_publishLink.html.twig',
+            array(
+                'document' => $document,
+                'reason' => $reason,
+            )
+        );
 
         return $html;
     }

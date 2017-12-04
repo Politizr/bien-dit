@@ -13,6 +13,8 @@ use Politizr\Model\PDocumentInterface;
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDReaction;
 use Politizr\Model\PDCommentInterface;
+use Politizr\Model\PDDComment;
+use Politizr\Model\PDRComment;
 use Politizr\Model\PCOwner;
 use Politizr\Model\PCircle;
 use Politizr\Model\PCTopic;
@@ -30,6 +32,8 @@ use Politizr\Model\PEOperationQuery;
 use Politizr\FrontBundle\Lib\TimelineRow;
 use Politizr\FrontBundle\Lib\Publication;
 
+use Politizr\FrontBundle\Form\Type\PDDCommentType;
+use Politizr\FrontBundle\Form\Type\PDRCommentType;
 use Politizr\FrontBundle\Form\Type\PDocumentTagTypeType;
 use Politizr\FrontBundle\Form\Type\PDocumentTagFamilyType;
 
@@ -133,6 +137,11 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 'statsComments',
                 array($this, 'statsComments'),
                 array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
+                'commentForm',
+                array($this, 'commentForm'),
+                array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             new \Twig_SimpleFilter(
                 'readingTime',
@@ -564,6 +573,48 @@ class PolitizrDocumentExtension extends \Twig_Extension
     }
 
     /**
+     * Render the document's comment form
+     *
+     * @param PDCommentInterface $document
+     * @param int $paragraphNo
+     * @return string
+     */
+    public function commentForm(\Twig_Environment $env, PDocumentInterface $document, $paragraphNo = 0)
+    {
+        switch ($document->getType()) {
+            case ObjectTypeConstants::TYPE_DEBATE:
+                $formType = new PDDCommentType();        
+                $comment = new PDDComment();
+                break;
+            case ObjectTypeConstants::TYPE_REACTION:
+                $formType = new PDRCommentType();        
+                $comment = new PDRComment();
+                break;
+            default:
+                throw new InconsistentDataException(sprintf('Object type %s not managed', $document->getType()));
+        }
+
+        $comment->setParagraphNo($paragraphNo);
+
+        $form = $this->formFactory->create(
+            $formType,
+            $comment
+        );
+
+        // Construction du rendu du tag
+        $html = $env->render(
+            'PolitizrFrontBundle:Comment:_form.html.twig',
+            array(
+                'formComment' => $form->createView(),
+                'uuid' => $document->getUuid(),
+                'type' => $document->getType(),
+            )
+        );
+
+        return $html;
+    }
+
+    /**
      * Reading time of a document
      *
      * @param PDocumentInterface $document
@@ -922,7 +973,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
             $user = null;
         }
 
-        $reason = $this->userService->isAuthorizedToReact($user, $document, true);
+        $reason = $this->userService->isAuthorizedToPublishReaction($user, $document, true);
 
         // Construction du rendu du tag
         $html = $env->render(
@@ -1132,15 +1183,25 @@ class PolitizrDocumentExtension extends \Twig_Extension
             $circle = $topic->getPCircle();
             $owner = $circle->getPCOwner();
             
-            // Topic banner
-            $html = $env->render(
-                'PolitizrFrontBundle:Document:_topicBannerEdit.html.twig',
-                array(
-                    'owner' => $owner,
-                    'circle' => $circle,
-                    'topic' => $topic,
-                )
-            );
+            if ($circle->getReadOnly()) {
+                // Read only circle's banner
+                $html = $env->render(
+                    'PolitizrFrontBundle:Circle:_readOnlyBanner.html.twig',
+                    array(
+                        'circle' => $circle,
+                    )
+                );
+            } else {
+                // Topic banner
+                $html = $env->render(
+                    'PolitizrFrontBundle:Document:_topicBannerEdit.html.twig',
+                    array(
+                        'owner' => $owner,
+                        'circle' => $circle,
+                        'topic' => $topic,
+                    )
+                );
+            }
         } else {
             // Classic banner
             $html = $env->render(

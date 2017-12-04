@@ -31,8 +31,6 @@ use Politizr\Model\PUTrackDR;
 use Politizr\FrontBundle\Form\Type\PDDebateType;
 use Politizr\FrontBundle\Form\Type\PDReactionType;
 use Politizr\FrontBundle\Form\Type\PDDebateLocalizationType;
-use Politizr\FrontBundle\Form\Type\PDDCommentType;
-use Politizr\FrontBundle\Form\Type\PDRCommentType;
 
 /**
  * Document controller: debates, reactions, comments
@@ -112,12 +110,6 @@ class DocumentController extends Controller
         $debate->setNbViews($debate->getNbViews() + 1);
         $debate->save();
 
-        // Global comment form
-        $formType = new PDDCommentType();
-        $comment = new PDDComment();
-        $comment->setParagraphNo(0);
-        $formComment = $this->createForm($formType, $comment);
-
         // Tracking
         $visitor = $this->getUser();
         if ($visitor) {
@@ -149,7 +141,6 @@ class DocumentController extends Controller
         return $this->render('PolitizrFrontBundle:Debate:detail.html.twig', array(
             'private' => $private,
             'debate' => $debate,
-            'formComment' => $formComment->createView(),
             'paragraphs' => $paragraphs,
             'reactions' => $reactions,
             'similars' => $similars,
@@ -175,12 +166,6 @@ class DocumentController extends Controller
 
         $reaction->setNbViews($reaction->getNbViews() + 1);
         $reaction->save();
-
-        // Global comment form
-        $formType = new PDRCommentType();
-        $comment = new PDRComment();
-        $comment->setParagraphNo(0);
-        $formComment = $this->createForm($formType, $comment);
 
         // Tracking
         $visitor = $this->getUser();
@@ -248,7 +233,6 @@ class DocumentController extends Controller
             'private' => $private,
             'debate' => $debate,
             'reaction' => $reaction,
-            'formComment' => $formComment->createView(),
             'paragraphs' => $paragraphs,
             'reactions' => $reactions,
             'parentReaction' => $parentReaction,
@@ -295,16 +279,16 @@ class DocumentController extends Controller
         $topicUuid = $request->get('topic');
         $debate = $this->get('politizr.functional.document')->manageEditDocumentContext($debate, $opUuid, $topicUuid);
 
-        // circle security check
-        if ($topicUuid) {
-            $topic = PCTopicQuery::create()
-                ->filterByUuid($topicUuid)
-                ->findOne();
-            if (!$topic) {
-                throw new InconsistentDataException(sprintf('Topic %s not found.', $topicUuid));
-            }
-
+        $topic = $debate->getPCTopic();
+        if ($topic) {
+            // circle security check
             $this->denyAccessUnlessGranted('topic_detail', $topic);
+
+            // circle read only?
+            $circle = $topic->getPCircle();
+            if ($circle->getReadOnly()) {
+                throw new InconsistentDataException(sprintf('Circle %s in "read only" mode', $circle->getId()));
+            }
         }
 
         return $this->redirect(
@@ -393,7 +377,7 @@ class DocumentController extends Controller
         }
 
         // authorization checking
-        $authorized = $this->get('politizr.functional.user')->isAuthorizedToReact($user, $debate);
+        $authorized = $this->get('politizr.functional.user')->isAuthorizedToPublishReaction($user, $debate);
         if (!$authorized) {
             throw new InconsistentDataException(sprintf('User-%s is not authorized to publish reaction for Debate-%s.', $user->getId(), $debate->getId()));
         }
@@ -413,10 +397,16 @@ class DocumentController extends Controller
             $reaction = $this->get('politizr.functional.document')->createReaction($debate, $parent);
         }
 
-        // circle security check
         $topic = $reaction->getPCTopic();
         if ($topic) {
+            // circle security check
             $this->denyAccessUnlessGranted('topic_detail', $topic);
+
+            // circle read only?
+            $circle = $topic->getPCircle();
+            if ($circle->getReadOnly()) {
+                throw new InconsistentDataException(sprintf('Circle %s in "read only" mode', $circle->getId()));
+            }
         }
 
         return $this->redirect($this->generateUrl('ReactionDraftEdit'.$this->get('politizr.tools.global')->computeProfileSuffix(), array(

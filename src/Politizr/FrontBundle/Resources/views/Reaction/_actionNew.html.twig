@@ -8,7 +8,7 @@
         {% set debate = document.debate %}
         {% set reactionPath = path('ReactionDraftNew', { 'debateUuid': document.debate.uuid, 'parentUuid': document.uuid }) %}
     {% endif %}
-    {% if not checkIfAuthorized or app.user | isAuthorizedToReact(document) %}
+    {% if not checkIfAuthorized or app.user | isAuthorizedToPublishReaction(document, false) %}
         <div class="actionAnswer">
             <a class="actionReact" href="{{ reactionPath }}">
                 <i class="icon-answer"></i>

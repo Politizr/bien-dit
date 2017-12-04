@@ -71,7 +71,7 @@
                     {{ debate | editTagFamilyForm }}
                 </div>
             </div>
-            {{ app.user | isAuthorizedToPublishDebate(debate.uuid) }}
+            {{ app.user | isAuthorizedToPublishDebate(debate) }}
             <div class="modalPublishBg"></div>
         </div>
     </div>

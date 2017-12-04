@@ -6,7 +6,7 @@
             <div class="bubblesCommentsHeader">
                 <span action="closeComments">Masquer<i class="icon-cross"></i></span>
             </div>
-            {{ app.user | isAuthorizedToNewComment(formComment, document.uuid, document.type) }}
+            {{ app.user | isAuthorizedToPublishComment(document, noParagraph, true) }}
         </div>
     {% endif %}
 

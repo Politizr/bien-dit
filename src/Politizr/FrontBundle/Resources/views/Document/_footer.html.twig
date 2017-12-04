@@ -32,6 +32,14 @@
         {% include 'PolitizrFrontBundle:Reaction:_actionNew.html.twig' with { 'document': document, 'checkIfAuthorized': false } only %}
     {% elseif reason == constant('Politizr\\Constant\\DocumentConstants::REASON_NOT_AUTHORIZED_CIRCLE_USER') %}
            Seules les personnes indiquées en page d'accueil de ce groupe et l'auteur du sujet peuvent publier une réponse à cette publication, mais vous pouvez vous exprimer en publiant votre commentaire sur ce sujet.
+    {% elseif reason == constant('Politizr\\Constant\\DocumentConstants::REASON_NO_REPUTATION') %}
+        <span class="withActionAnswer">             
+            Vous devez avoir au moins {{ constant('Politizr\\Constant\\ReputationConstants::ACTION_REACTION_WRITE') }} de réputation pour publier une réponse.
+        </span>
+    {% elseif reason == constant('Politizr\\Constant\\DocumentConstants::REASON_USER_NOT_CERTIFIED') %}
+        <span class="withActionAnswer">             
+            Vous devez <a href="{{ path('IdCheckDataReviewE') }}">certifier votre identité</a> pour pouvoir publier une réponse.
+        </span>
     {% else %}
             Seuls les élu-e-s et l'auteur du sujet peuvent publier une réponse à cette publication, mais vous pouvez vous exprimer en publiant votre commentaire sur ce sujet.
     {% endif %}

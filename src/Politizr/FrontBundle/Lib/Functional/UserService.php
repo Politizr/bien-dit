@@ -246,13 +246,67 @@ class UserService
     }
 
     /**
-     * Check if user can write a reaction to a document
+     * Check if user can publish a debate
+     *
+     * @param PUser $user
+     * @param PDDebate $debate
+     * @return boolean|int
+     */
+    public function isAuthorizedToPublishDebate(PUser $user = null, PDDebate $debate = null, $reason = false)
+    {
+        if (!$debate || !$user) {
+            if ($reason) {
+                return DocumentConstants::REASON_USER_NOT_LOGGED;
+            } else {
+                return false;
+            }
+        }
+
+        // user minimum score required
+        $score = $user->getReputationScore();
+        $minScore = ReputationConstants::ACTION_DEBATE_WRITE;
+        $reputationOk = ($score >= $minScore);
+
+        // circle case
+        $topicId = $debate->getPCTopicId();
+        if ($topicId) {
+            $topic = $debate->getPCTopic();
+            $circle = $topic->getPCircle();
+
+            // topic is in a circle which is "read only"
+            if ($circle->getReadOnly()) {
+                if ($reason) {
+                    return DocumentConstants::REASON_CIRCLE_READ_ONLY;
+                } else {
+                    return false;
+                }
+            }
+        }
+
+        // reputation check
+        if (!$reputationOk) {
+            if ($reason) {
+                return DocumentConstants::REASON_NO_REPUTATION;
+            } else {
+                return false;
+            }
+        }
+
+        // default case = new debate ok
+        if ($reason) {
+            return DocumentConstants::REASON_NONE;
+        }
+        return true;
+    }
+
+    /**
+     * Check if user can publish a reaction to a document
      *
      * @param PUser $user
      * @param PDocumentInterface $document
      * @return boolean|int
      */
-    public function isAuthorizedToReact(PUser $user = null, PDocumentInterface $document = null, $reason = false)
+    public function isAuthorizedToPublishReaction(PUser $user = null, PDocumentInterface $document = null, $reason = false)
     {
         if (!$document || !$user) {
             if ($reason) {
@@ -261,6 +315,14 @@ class UserService
                 return false;
             }
         }
+
+        // user minimum score required
+        $score = $user->getReputationScore();
+        $minScore = ReputationConstants::ACTION_REACTION_WRITE;
+        $reputationOk = ($score >= $minScore);
+
+        // elected user certification required
+        $isValidated = $user->getValidated();
 
         // circle case: only specified user can react
         $topicId = $document->getPCTopicId();
@@ -278,42 +340,36 @@ class UserService
             }
 
             // author of the document can react
-            $score = $user->getReputationScore();
-            if ($document->isDebateOwner($user->getId())) {
+            if ($document->isDebateOwner($user->getId()) && $reputationOk) {
                 if ($reason) {
                     return DocumentConstants::REASON_DEBATE_OWNER;
                 } else {
                     return true;
                 }
+            } elseif (!$reputationOk) {
+                if ($reason) {
+                    return DocumentConstants::REASON_NO_REPUTATION;
+                } else {
+                    return false;
+                }
             }
 
             // authorized users can react
-            if ($circle) {
-                $authorizedCircleUser = $this->circleService->isUserAuthorizedReaction($circle, $user);
-                if ($authorizedCircleUser) {
-                    if ($reason) {
-                        return DocumentConstants::REASON_AUTHORIZED_CIRCLE_USER;
-                    } else {
-                        return true;
-                    }
-                } else {
-                    if ($reason) {
-                        return DocumentConstants::REASON_NOT_AUTHORIZED_CIRCLE_USER;
-                    } else {
-                        return false;
-                    }
-                }
-            }
-        } else {
-            // elected profile can react if document has no private tags
-            if (!$document->isWithPrivateTag() && $this->securityAuthorizationChecker->isGranted('ROLE_ELECTED')) {
+            $authorizedCircleUser = $this->circleService->isUserAuthorizedReaction($circle, $user);
+            if ($authorizedCircleUser) {
                 if ($reason) {
-                    return DocumentConstants::REASON_USER_ELECTED;
+                    return DocumentConstants::REASON_AUTHORIZED_CIRCLE_USER;
                 } else {
                     return true;
                 }
+            } else {
+                if ($reason) {
+                    return DocumentConstants::REASON_NOT_AUTHORIZED_CIRCLE_USER;
+                } else {
+                    return false;
+                }
             }
-
+        } else {
             // operation?
             $operation = $document->getDebate()->getPEOperation();
             if ($operation) {
@@ -325,32 +381,112 @@ class UserService
                         } else {
                             return true;
                         }
-                    }
-                } elseif ($this->securityAuthorizationChecker->isGranted('ROLE_ELECTED')) {
-                    if ($reason) {
-                        return DocumentConstants::REASON_USER_ELECTED;
                     } else {
-                        return true;
+                        if ($reason) {
+                            return DocumentConstants::REASON_USER_OPERATION;
+                        } else {
+                            return false;
+                        }
                     }
                 }
             }
 
-            // author of the debate can react
-            $score = $user->getReputationScore();
-            if ($document->isDebateOwner($user->getId())) {
+            // author of the document can react
+            if ($document->isDebateOwner($user->getId()) && $reputationOk) {
                 if ($reason) {
                     return DocumentConstants::REASON_DEBATE_OWNER;
                 } else {
                     return true;
                 }
+            } elseif (!$reputationOk) {
+                if ($reason) {
+                    return DocumentConstants::REASON_NO_REPUTATION;
+                } else {
+                    return false;
+                }
+            }
+
+            // elected profile can react
+            if (!$document->isWithPrivateTag() && $this->securityAuthorizationChecker->isGranted('ROLE_ELECTED') && $reputationOk && $isValidated) {
+                if ($reason) {
+                    return DocumentConstants::REASON_USER_ELECTED;
+                } else {
+                    return true;
+                }
+            } elseif (!$reputationOk) {
+                if ($reason) {
+                    return DocumentConstants::REASON_NO_REPUTATION;
+                } else {
+                    return false;
+                }
+            } elseif (!$isValidated) {
+                if ($reason) {
+                    return DocumentConstants::REASON_USER_NOT_CERTIFIED;
+                } else {
+                    return false;
+                }
             }
         }
 
+        // default case = no reaction
         if ($reason) {
             return DocumentConstants::REASON_NONE;
         }
-
         return false;
+    }
+
+    /**
+     * Check if user can publish a comment
+     *
+     * @param PUser $user
+     * @param PDocumentInterface $document
+     * @return boolean|int
+     */
+    public function isAuthorizedToPublishComment(PUser $user = null, PDocumentInterface $document = null, $reason = false)
+    {
+        if (!$document || !$user) {
+            if ($reason) {
+                return DocumentConstants::REASON_USER_NOT_LOGGED;
+            } else {
+                return false;
+            }
+        }
+
+        // user minimum score required
+        $score = $user->getReputationScore();
+        $minScore = ReputationConstants::ACTION_COMMENT_WRITE;
+        $reputationOk = ($score >= $minScore);
+
+        // circle case
+        $topicId = $document->getPCTopicId();
+        if ($topicId) {
+            $topic = $document->getPCTopic();
+            $circle = $topic->getPCircle();
+
+            // topic is in a circle which is "read only"
+            if ($circle->getReadOnly()) {
+                if ($reason) {
+                    return DocumentConstants::REASON_CIRCLE_READ_ONLY;
+                } else {
+                    return false;
+                }
+            }
+        }
+
+        // reputation check
+        if (!$reputationOk) {
+            if ($reason) {
+                return DocumentConstants::REASON_NO_REPUTATION;
+            } else {
+                return false;
+            }
+        }
+
+        // default case = new comment ok
+        if ($reason) {
+            return DocumentConstants::REASON_NONE;
+        }
+        return true;
     }
 
     /**
@@ -390,6 +526,16 @@ class UserService
             $notePosActionId = ReputationConstants::ACTION_ID_D_AUTHOR_COMMENT_NOTE_POS;
             $noteNegActionId = ReputationConstants::ACTION_ID_D_AUTHOR_COMMENT_NOTE_NEG;
             $minReputationScore = ReputationConstants::ACTION_COMMENT_NOTE_NEG;
+        }
+
+        // document in circle's in read only mode
+        $circle = $document->getCircle();
+        if ($circle && $circle->getReadOnly()) {
+            if ($reason) {
+                return DocumentConstants::NOTATION_REASON_CIRCLE_READ_ONLY;
+            } else {
+                return false;
+            }
         }
 
         // document owner

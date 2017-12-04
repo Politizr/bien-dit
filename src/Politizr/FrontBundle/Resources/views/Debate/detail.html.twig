@@ -87,7 +87,7 @@
                 <div id="cardPostText">
                     {% for paragraph in paragraphs %}
                         <div id="p-{{ loop.index }}" class="paragraph">
-                            {% include 'PolitizrFrontBundle:Comment:_paragraph.html.twig' with { 'document': debate, 'paragraphNo': loop.index } only %}
+                            {% include 'PolitizrFrontBundle:Comment:_paragraph.html.twig' with { 'document': debate, 'noParagraph': loop.index } only %}
                             {{ paragraph | purify }}
                         </div>
                     {% endfor %}
@@ -105,7 +105,7 @@
                 </div>
             </div>
             <div id="p-0">
-                {% include 'PolitizrFrontBundle:Comment:_global.html.twig' with { 'document': debate, 'formComment': formComment } only %}
+                {% include 'PolitizrFrontBundle:Comment:_global.html.twig' with { 'document': debate } only %}
             </div>
 
             <div class="postTags">

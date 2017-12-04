@@ -20,6 +20,12 @@
     {% endembed %}
 {% endblock %}
 
+{% block headerMsg %}
+    {{ parent() }}
+
+    {{ reaction | editDocumentBanner }}
+{% endblock %}
+
 {% block content %}
     <div class="modalPublish" style="display: none">
         <div class="modalPublishContent">
@@ -65,7 +71,7 @@
                     {{ reaction | editTagFamilyForm }}
                 </div>
             </div>
-            {{ app.user | isAuthorizedToPublishReaction(reaction.uuid) }}
+            {{ app.user | isAuthorizedToPublishReaction(reaction) }}
             <div class="modalPublishBg"></div>
         </div>
     </div>
