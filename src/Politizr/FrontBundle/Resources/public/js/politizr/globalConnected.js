@@ -60,25 +60,6 @@ $("body").on("click", "[action='toggleMenu']", function() {
     $('#menu, body.css700 #headerMenu').toggle();
 });
 
-// toggle grp menu
-$("body").on("mousedown touchstart", function(e) {
-    var container = $("#headerGrpMenu, [action='toggleGrpMenu']");
-    if (!container.is(e.target) // if the target of the click isn't the container...
-        && container.has(e.target).length === 0) // ... nor a descendant of the container
-    {
-        $('#headerGrpMenu').hide();     
-    }
-});
-$("body").on("click", "[action='toggleGrpMenu']", function() {
-    $('#headerGrpMenu').toggle();
-    $('body.css700 #headerMenu').hide();    
-});
-
-// toggle menu grp
-$("body").on("mousedown touchstart", "[action='toggleGrpMenuLinks']", function() {
-    $('#grpMenuLinks').toggle();
-});
-
 // notifications
 $("body").on("mousedown touchstart", function(e) {
     var container = $("#notifBox, [action='toggleNotifBox']");
