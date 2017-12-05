@@ -258,7 +258,7 @@ function fullImgLiquid() {
         verticalAlign: "center"
     });
     // full size image in grp
-    $("#grpBriefHeaderImg, .grpImg").imgLiquid({
+    $("#grpBriefHeaderImg, .grpCharterImg, .grpImg").imgLiquid({
         fill: true,
         horizontalAlign: "center",
         verticalAlign: "center"

@@ -76,7 +76,7 @@ params:
         homepage:
             label:          Accueil
         support_group:
-            label:          Support groupe
+            label:          Supporte la création d'un groupe pour ses collectivités
         banned:
             label:          Banni
         banned_nb_days_left:
@@ -91,13 +91,6 @@ params:
             addFormOptions:
                 expanded:                       true
                 multiple:                       true
-                choices:                
-                    ROLE_OAUTH_USER:            'Connexion OpenID'
-                    ROLE_CITIZEN_INSCRIPTION:   'Inscription Citoyen en cours'
-                    ROLE_ELECTED_INSCRIPTION:   'Inscription Élu en cours'
-                    ROLE_CITIZEN:               'Citoyen'
-                    ROLE_ELECTED:               'Élu'
-                    ROLE_PROFILE_COMPLETED:     'Inscription terminée'
         created_at:
             label:      Création
             # addFilterOptions:
