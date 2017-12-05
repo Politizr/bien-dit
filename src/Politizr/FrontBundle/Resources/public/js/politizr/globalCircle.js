@@ -14,17 +14,16 @@ $("body").on("mousedown touchstart", "[action='showBrief']", function() {
 });
 $("body").on("mousedown touchstart", "[action='hideBrief']", function() {
     $('body #grpBrief').stop().animate({
-        height:'500px',
+        height:'260px',
         overflow:'hidden'
     }, 600);
     $('body.css700 #grpBrief').stop().animate({
-        height:'360px',
+        height:'260px',
         overflow:'hidden'
     }, 600);
     $('.showBriefLink').show();
     $('#grpBriefHeader .hideBriefLink').hide();
 });
-
 
 // reduce menu grp on scroll
 $(function(){
