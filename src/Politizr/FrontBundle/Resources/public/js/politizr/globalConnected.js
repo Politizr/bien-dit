@@ -37,6 +37,11 @@ $("body").on("click", "[action='boost']", function(e) {
     var type = $(this).attr('type');
     var boost = $(this).attr('boost');
 
+    if (boost == 1) {
+        // open Paypal payment link
+        window.open('https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=356HDHFFNQM8U');
+    }
+
     return boostQuestion(targetElement, localLoader, uuid, type, boost);
 });
 
@@ -45,8 +50,39 @@ $("body").on("click", "[action='boost']", function(e) {
 //                              MAIN MENU                              //
 // ******************************************************************* //
 
+// toggle notifications + menu
+$("body").on("mousedown touchstart", function(e) {
+//$(document).mousedown(function (e) {
+    var container = $("#notifBox, [action='toggleNotifBox']");
+    if (!container.is(e.target) // if the target of the click isn't the container...
+        && container.has(e.target).length === 0) // ... nor a descendant of the container
+    {
+        $('#notifBox').hide();      
+    }
+});
+$("body").on("click", "[action='toggleNotifBox']", function() {
+    $('#notifBox').toggle();
+    $('body.css700 #headerMenu').hide();
+});
+
+// toggle grp menu
+$("body").on("mousedown touchstart", function(e) {
+//$(document).mousedown(function (e) {
+    var container = $("#headerGrpMenu, [action='toggleGrpMenu']");
+    if (!container.is(e.target) // if the target of the click isn't the container...
+        && container.has(e.target).length === 0) // ... nor a descendant of the container
+    {
+        $('#headerGrpMenu').hide();     
+    }
+});
+$("body").on("click", "[action='toggleGrpMenu']", function() {
+    $('#headerGrpMenu').toggle();
+    $('body.css700 #headerMenu').hide();    
+});
+
 // toggle menu
 $("body").on("mousedown touchstart", function(e) {
+//$(document).mousedown(function (e) {
     var container = $("body.css700 #headerMenu, #menu, [action='toggleMenu']");
     if (!container.is(e.target) // if the target of the click isn't the container...
         && container.has(e.target).length === 0) // ... nor a descendant of the container
@@ -58,20 +94,6 @@ $("body").on("mousedown touchstart", function(e) {
 
 $("body").on("click", "[action='toggleMenu']", function() {
     $('#menu, body.css700 #headerMenu').toggle();
-});
-
-// notifications
-$("body").on("mousedown touchstart", function(e) {
-    var container = $("#notifBox, [action='toggleNotifBox']");
-    if (!container.is(e.target) // if the target of the click isn't the container...
-        && container.has(e.target).length === 0) // ... nor a descendant of the container
-    {
-        $('#notifBox').hide();      
-    }
-});
-
-$("body").on("click", "[action='toggleNotifBox']", function() {
-    $('#notifBox').toggle();
 });
 
 // check notification
