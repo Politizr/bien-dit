@@ -141,7 +141,7 @@ builders:
         params:
             title:                              "Création d'un débat"
             display:
-                "Champs principaux":            [ [ title ], [ p_user ], [ p_e_operation ] ]
+                "Champs principaux":            [ [ title ], [ p_user ], [ p_e_operation ], [ p_c_topic ] ]
             fields:
                 p_user:
                     dbType:                     model
@@ -159,6 +159,14 @@ builders:
                         required:               false
                         class:                  Politizr\Model\PEOperation
                         query:                  \Politizr\Model\PEOperationQuery::create()->orderByTitle()
+                p_c_topic:
+                    dbType:                     model
+                    formType:                   Admingenerator\FormExtensionsBundle\Form\Type\Select2ModelType
+                    addFormOptions:
+                        multiple:               false
+                        required:               false
+                        class:                  Politizr\Model\PCTopic
+                        query:                  \Politizr\Model\PCTopicQuery::create()->orderByPCircleId()->orderByRank()
             actions:
               save:                             ~
               list:                             ~
