@@ -1,10 +1,10 @@
 // toggle menu grp
-$("body").on("mousedown touchstart", "[action='toggleGrpMenuLinks']", function() {
+$("body").on("click", "[action='toggleGrpMenuLinks']", function() {
     $('#grpMenuLinks').toggle();
 });
 
 // toggle grp brief
-$("body").on("mousedown touchstart", "[action='showBrief']", function() {
+$("body").on("click", "[action='showBrief']", function() {
     $('#grpBrief').stop().animate({
         height: $('#grpBrief')[0].scrollHeight+'px',
         overflow:'visible'
@@ -12,7 +12,7 @@ $("body").on("mousedown touchstart", "[action='showBrief']", function() {
     $('.showBriefLink').hide();
     $('#grpBriefHeader .hideBriefLink').show();
 });
-$("body").on("mousedown touchstart", "[action='hideBrief']", function() {
+$("body").on("click", "[action='hideBrief']", function() {
     $('body #grpBrief').stop().animate({
         height:'260px',
         overflow:'hidden'
