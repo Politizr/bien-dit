@@ -1,31 +1,33 @@
-<div id="grpFooter">
+<div id="grpFooter"{% if app.user %} class="grpFooterLogged"{% endif %}>
     <h1>Comment participer ?</h1>
-    <div class="grpFooterCol">
-        <img src="{{ asset('bundles/politizrfront/images/grp_footerAccount.png') }}">
-        <h2>
-            <b>Inscrivez-vous</b>
-            Inscription gratuite et sans engagement!
-        </h2>
-    </div>
+    {% if not app.user %}
+        <div class="grpFooterCol">
+            <img src="{{ asset('bundles/politizrfront/images/grp_footerAccount.png') }}">
+            <h2>
+                <b>Inscrivez-vous</b>
+                Gratuitement et en quelques clics.
+            </h2>
+        </div>
+    {% endif %}
     <div class="grpFooterCol">
         <img src="{{ asset('bundles/politizrfront/images/grp_footerNote.png') }}">
         <h2>
             <b>Notez</b>
-            Un petit coup de pouce pour encourager les propositions qui vous paraissent pertinentes!
+            Approuvez les publications des autres utilisateurs.
         </h2>
     </div>
     <div class="grpFooterCol">
         <img src="{{ asset('bundles/politizrfront/images/grp_footerComment.png') }}">
         <h2>
             <b>Commentez</b>
-            Exprimez-vous en laissant un commentaire sur une publication pour enrichir le débat.
+            Faites part de vos remarques en quelques mots.
         </h2>
     </div>
     <div class="grpFooterCol">
         <img src="{{ asset('bundles/politizrfront/images/grp_footerPost.png') }}">
         <h2>
             <b>Posez vos questions</b>
-            Et poursuivez la discussion avec les élus qui vous auront répondu. 
+            Et poursuivez la discussion avec vos élus.
         </h2>
     </div>
     {% if not app.user %}
