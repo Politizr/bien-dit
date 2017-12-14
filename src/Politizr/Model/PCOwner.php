@@ -31,4 +31,18 @@ class PCOwner extends BasePCOwner
         $slug = $this->cleanupSlugPart($toSlug);
         return $slug;
     }
+
+    /**
+     * Retrieve owner's online circles
+     *
+     * @return PropelCollection[PCircle]
+     */
+    public function getCircles()
+    {
+        $query = PCircleQuery::create()
+            ->filterByOnline(true)
+            ->orderByRank();
+
+        return parent::getPCircles($query);
+    }
 }

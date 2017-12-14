@@ -31,7 +31,7 @@ params:
         online:
             label:          En ligne
         new_subject_link:
-            label:          Lien nouveau sujet actif
+            label:          Lien nouveau sujet par défaut actif
         created_at:
             label:          Création
         updated_at:

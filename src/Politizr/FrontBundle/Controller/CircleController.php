@@ -37,8 +37,7 @@ class CircleController extends Controller
             throw new InconsistentDataException('Current user not found.');
         }
 
-        $circles = $this->get('politizr.functional.circle')->getAuthorizedCirclesByUser($user);
-        $owners = $this->get('politizr.functional.circle')->getOwnersByUser($user);
+        $owners = $this->get('politizr.functional.circle')->getAuthorizedOwnersByUser($user);
 
         return $this->render('PolitizrFrontBundle:Circle:menu.html.twig', array(
             'owners' => $owners,

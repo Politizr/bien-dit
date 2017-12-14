@@ -139,9 +139,43 @@ class CircleService
                         ->usePCGroupLCQuery()
                             ->filterByPLCityId($user->getPLCityId())
                         ->endUse()
+                        ->usePCOwnerQuery()
+                            ->orderByRank()
+                        ->endUse()
+                        ->orderByRank()
                         ->find();
 
         return $circles;
+    }
+
+    /**
+     * Get owners containing authorized circles by user
+     *
+     * @param PUser $user
+     * @return PropelCollection[PCircle]
+     */
+    public function getAuthorizedOwnersByUser(PUser $user = null)
+    {
+        // $this->logger->info('*** getAuthorizedCirclesByUser');
+        // $this->logger->info('$user = '.print_r($user, true));
+        // $this->logger->info('$user->getPLCityId = '.print_r($user->getPLCityId(), true));
+
+        if (!$user || !$user->getPLCityId()) {
+            return null;
+        }
+
+        $owners = PCOwnerQuery::create()
+                    ->usePCircleQuery()
+                        ->filterByOnline(true)
+                        ->usePCGroupLCQuery()
+                            ->filterByPLCityId($user->getPLCityId())
+                        ->endUse()
+                        ->orderByRank()
+                    ->endUse()
+                    ->distinct()
+                    ->find();
+
+        return $owners;
     }
 
     /**

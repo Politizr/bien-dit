@@ -11,7 +11,7 @@
                 {% for owner in owners %}
                     <h1>{{ owner.title }}</h1>
                     <div class="groupListingRow">
-                        {% set circles = app.user | circlesByOwner(owner) %}
+                        {% set circles = owner.circles %}
                         {% for circle in circles %}
                             <h2>{{ circle.title }}</h2>
                             <div class="circleActions withLoaderInside">
