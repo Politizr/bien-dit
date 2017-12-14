@@ -101,9 +101,13 @@ builders:
                         deleteable:             fileName
                         data_class:             Symfony\Component\HttpFoundation\File\File
                 p_user:
+                    dbType:                     model
+                    formType:                   Admingenerator\FormExtensionsBundle\Form\Type\Select2ModelType
                     addFormOptions:
-                        disabled:               true
-                        read_only:              true
+                        multiple:               false
+                        required:               true
+                        class:                  Politizr\Model\PUser
+                        query:                  \Politizr\Model\PUserQuery::create()->orderByName()
                 description:
                     grid_class:                 "col-md-12"
                     addFormOptions:
