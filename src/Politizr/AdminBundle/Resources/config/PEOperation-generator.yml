@@ -67,7 +67,7 @@ builders:
                     formType:                   Admingenerator\FormExtensionsBundle\Form\Type\Select2ModelType
                     addFormOptions:
                         multiple:               false
-                        required:               true
+                        required:               false
                         class:                  Politizr\Model\PUser
                         query:                  \Politizr\Model\PUserQuery::create()->orderByName()
             actions:
@@ -105,7 +105,7 @@ builders:
                     formType:                   Admingenerator\FormExtensionsBundle\Form\Type\Select2ModelType
                     addFormOptions:
                         multiple:               false
-                        required:               true
+                        required:               false
                         class:                  Politizr\Model\PUser
                         query:                  \Politizr\Model\PUserQuery::create()->orderByName()
                 description:
