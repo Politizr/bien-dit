@@ -407,7 +407,7 @@ class UserService
             }
 
             // elected profile can react
-            if (!$document->isWithPrivateTag() && $this->securityAuthorizationChecker->isGranted('ROLE_ELECTED') && $reputationOk && $isValidated) {
+            if ($this->securityAuthorizationChecker->isGranted('ROLE_ELECTED') && $reputationOk && $isValidated) {
                 if ($reason) {
                     return DocumentConstants::REASON_USER_ELECTED;
                 } else {
