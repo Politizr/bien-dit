@@ -30,6 +30,8 @@ params:
             label:          Mise en timeline
         online:
             label:          En ligne
+        new_subject_link:
+            label:          Lien nouveau sujet actif
         created_at:
             label:          Création
         updated_at:
@@ -89,7 +91,7 @@ builders:
                     "Ajouter des villes":       [ block_cities_add ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
-                    "Options":                  [ [ geo_scoped, timeline ] ]
+                    "Options":                  [ [ geo_scoped, timeline, new_subject_link ] ]
                     "En ligne":                 [ online ]
                     "Création":                 [ [ created_at, updated_at ] ]
             fields:
@@ -166,7 +168,7 @@ builders:
                     "Villes associés":          [ block_cities ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
-                    "Options":                  [ [ geo_scoped, timeline ] ]
+                    "Options":                  [ [ geo_scoped, timeline, new_subject_link ] ]
                     "En ligne":                 [ online ]
                     "Création":                 [ [ created_at, updated_at ] ]
             fields:

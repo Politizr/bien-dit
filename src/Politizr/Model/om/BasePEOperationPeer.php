@@ -33,13 +33,13 @@ abstract class BasePEOperationPeer
     const TM_CLASS = 'Politizr\\Model\\map\\PEOperationTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 13;
+    const NUM_COLUMNS = 14;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 13;
+    const NUM_HYDRATE_COLUMNS = 14;
 
     /** the column name for the id field */
     const ID = 'p_e_operation.id';
@@ -71,6 +71,9 @@ abstract class BasePEOperationPeer
     /** the column name for the timeline field */
     const TIMELINE = 'p_e_operation.timeline';
 
+    /** the column name for the new_subject_link field */
+    const NEW_SUBJECT_LINK = 'p_e_operation.new_subject_link';
+
     /** the column name for the created_at field */
     const CREATED_AT = 'p_e_operation.created_at';
 
@@ -99,12 +102,12 @@ abstract class BasePEOperationPeer
      * e.g. PEOperationPeer::$fieldNames[PEOperationPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'PUserId', 'Title', 'Description', 'EditingDescription', 'FileName', 'GeoScoped', 'Online', 'Timeline', 'CreatedAt', 'UpdatedAt', 'Slug', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'pUserId', 'title', 'description', 'editingDescription', 'fileName', 'geoScoped', 'online', 'timeline', 'createdAt', 'updatedAt', 'slug', ),
-        BasePeer::TYPE_COLNAME => array (PEOperationPeer::ID, PEOperationPeer::UUID, PEOperationPeer::P_USER_ID, PEOperationPeer::TITLE, PEOperationPeer::DESCRIPTION, PEOperationPeer::EDITING_DESCRIPTION, PEOperationPeer::FILE_NAME, PEOperationPeer::GEO_SCOPED, PEOperationPeer::ONLINE, PEOperationPeer::TIMELINE, PEOperationPeer::CREATED_AT, PEOperationPeer::UPDATED_AT, PEOperationPeer::SLUG, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'P_USER_ID', 'TITLE', 'DESCRIPTION', 'EDITING_DESCRIPTION', 'FILE_NAME', 'GEO_SCOPED', 'ONLINE', 'TIMELINE', 'CREATED_AT', 'UPDATED_AT', 'SLUG', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'p_user_id', 'title', 'description', 'editing_description', 'file_name', 'geo_scoped', 'online', 'timeline', 'created_at', 'updated_at', 'slug', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'PUserId', 'Title', 'Description', 'EditingDescription', 'FileName', 'GeoScoped', 'Online', 'Timeline', 'NewSubjectLink', 'CreatedAt', 'UpdatedAt', 'Slug', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'pUserId', 'title', 'description', 'editingDescription', 'fileName', 'geoScoped', 'online', 'timeline', 'newSubjectLink', 'createdAt', 'updatedAt', 'slug', ),
+        BasePeer::TYPE_COLNAME => array (PEOperationPeer::ID, PEOperationPeer::UUID, PEOperationPeer::P_USER_ID, PEOperationPeer::TITLE, PEOperationPeer::DESCRIPTION, PEOperationPeer::EDITING_DESCRIPTION, PEOperationPeer::FILE_NAME, PEOperationPeer::GEO_SCOPED, PEOperationPeer::ONLINE, PEOperationPeer::TIMELINE, PEOperationPeer::NEW_SUBJECT_LINK, PEOperationPeer::CREATED_AT, PEOperationPeer::UPDATED_AT, PEOperationPeer::SLUG, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'P_USER_ID', 'TITLE', 'DESCRIPTION', 'EDITING_DESCRIPTION', 'FILE_NAME', 'GEO_SCOPED', 'ONLINE', 'TIMELINE', 'NEW_SUBJECT_LINK', 'CREATED_AT', 'UPDATED_AT', 'SLUG', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'p_user_id', 'title', 'description', 'editing_description', 'file_name', 'geo_scoped', 'online', 'timeline', 'new_subject_link', 'created_at', 'updated_at', 'slug', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, )
     );
 
     /**
@@ -114,12 +117,12 @@ abstract class BasePEOperationPeer
      * e.g. PEOperationPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'PUserId' => 2, 'Title' => 3, 'Description' => 4, 'EditingDescription' => 5, 'FileName' => 6, 'GeoScoped' => 7, 'Online' => 8, 'Timeline' => 9, 'CreatedAt' => 10, 'UpdatedAt' => 11, 'Slug' => 12, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'pUserId' => 2, 'title' => 3, 'description' => 4, 'editingDescription' => 5, 'fileName' => 6, 'geoScoped' => 7, 'online' => 8, 'timeline' => 9, 'createdAt' => 10, 'updatedAt' => 11, 'slug' => 12, ),
-        BasePeer::TYPE_COLNAME => array (PEOperationPeer::ID => 0, PEOperationPeer::UUID => 1, PEOperationPeer::P_USER_ID => 2, PEOperationPeer::TITLE => 3, PEOperationPeer::DESCRIPTION => 4, PEOperationPeer::EDITING_DESCRIPTION => 5, PEOperationPeer::FILE_NAME => 6, PEOperationPeer::GEO_SCOPED => 7, PEOperationPeer::ONLINE => 8, PEOperationPeer::TIMELINE => 9, PEOperationPeer::CREATED_AT => 10, PEOperationPeer::UPDATED_AT => 11, PEOperationPeer::SLUG => 12, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'P_USER_ID' => 2, 'TITLE' => 3, 'DESCRIPTION' => 4, 'EDITING_DESCRIPTION' => 5, 'FILE_NAME' => 6, 'GEO_SCOPED' => 7, 'ONLINE' => 8, 'TIMELINE' => 9, 'CREATED_AT' => 10, 'UPDATED_AT' => 11, 'SLUG' => 12, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'p_user_id' => 2, 'title' => 3, 'description' => 4, 'editing_description' => 5, 'file_name' => 6, 'geo_scoped' => 7, 'online' => 8, 'timeline' => 9, 'created_at' => 10, 'updated_at' => 11, 'slug' => 12, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'PUserId' => 2, 'Title' => 3, 'Description' => 4, 'EditingDescription' => 5, 'FileName' => 6, 'GeoScoped' => 7, 'Online' => 8, 'Timeline' => 9, 'NewSubjectLink' => 10, 'CreatedAt' => 11, 'UpdatedAt' => 12, 'Slug' => 13, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'pUserId' => 2, 'title' => 3, 'description' => 4, 'editingDescription' => 5, 'fileName' => 6, 'geoScoped' => 7, 'online' => 8, 'timeline' => 9, 'newSubjectLink' => 10, 'createdAt' => 11, 'updatedAt' => 12, 'slug' => 13, ),
+        BasePeer::TYPE_COLNAME => array (PEOperationPeer::ID => 0, PEOperationPeer::UUID => 1, PEOperationPeer::P_USER_ID => 2, PEOperationPeer::TITLE => 3, PEOperationPeer::DESCRIPTION => 4, PEOperationPeer::EDITING_DESCRIPTION => 5, PEOperationPeer::FILE_NAME => 6, PEOperationPeer::GEO_SCOPED => 7, PEOperationPeer::ONLINE => 8, PEOperationPeer::TIMELINE => 9, PEOperationPeer::NEW_SUBJECT_LINK => 10, PEOperationPeer::CREATED_AT => 11, PEOperationPeer::UPDATED_AT => 12, PEOperationPeer::SLUG => 13, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'P_USER_ID' => 2, 'TITLE' => 3, 'DESCRIPTION' => 4, 'EDITING_DESCRIPTION' => 5, 'FILE_NAME' => 6, 'GEO_SCOPED' => 7, 'ONLINE' => 8, 'TIMELINE' => 9, 'NEW_SUBJECT_LINK' => 10, 'CREATED_AT' => 11, 'UPDATED_AT' => 12, 'SLUG' => 13, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'p_user_id' => 2, 'title' => 3, 'description' => 4, 'editing_description' => 5, 'file_name' => 6, 'geo_scoped' => 7, 'online' => 8, 'timeline' => 9, 'new_subject_link' => 10, 'created_at' => 11, 'updated_at' => 12, 'slug' => 13, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, )
     );
 
     /**
@@ -203,6 +206,7 @@ abstract class BasePEOperationPeer
             $criteria->addSelectColumn(PEOperationPeer::GEO_SCOPED);
             $criteria->addSelectColumn(PEOperationPeer::ONLINE);
             $criteria->addSelectColumn(PEOperationPeer::TIMELINE);
+            $criteria->addSelectColumn(PEOperationPeer::NEW_SUBJECT_LINK);
             $criteria->addSelectColumn(PEOperationPeer::CREATED_AT);
             $criteria->addSelectColumn(PEOperationPeer::UPDATED_AT);
             $criteria->addSelectColumn(PEOperationPeer::SLUG);
@@ -217,6 +221,7 @@ abstract class BasePEOperationPeer
             $criteria->addSelectColumn($alias . '.geo_scoped');
             $criteria->addSelectColumn($alias . '.online');
             $criteria->addSelectColumn($alias . '.timeline');
+            $criteria->addSelectColumn($alias . '.new_subject_link');
             $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
             $criteria->addSelectColumn($alias . '.slug');

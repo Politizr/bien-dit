@@ -115,6 +115,13 @@ abstract class BasePEOperation extends BaseObject implements Persistent
     protected $timeline;
 
     /**
+     * The value for the new_subject_link field.
+     * Note: this column has a database default value of: true
+     * @var        boolean
+     */
+    protected $new_subject_link;
+
+    /**
      * The value for the created_at field.
      * @var        string
      */
@@ -217,6 +224,27 @@ abstract class BasePEOperation extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $pDDebatesScheduledForDeletion = null;
+
+    /**
+     * Applies default values to this object.
+     * This method should be called from the object's constructor (or
+     * equivalent initialization method).
+     * @see        __construct()
+     */
+    public function applyDefaultValues()
+    {
+        $this->new_subject_link = true;
+    }
+
+    /**
+     * Initializes internal state of BasePEOperation object.
+     * @see        applyDefaults()
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->applyDefaultValues();
+    }
 
     /**
      * Get the [id] column value.
@@ -326,6 +354,17 @@ abstract class BasePEOperation extends BaseObject implements Persistent
     {
 
         return $this->timeline;
+    }
+
+    /**
+     * Get the [new_subject_link] column value.
+     *
+     * @return boolean
+     */
+    public function getNewSubjectLink()
+    {
+
+        return $this->new_subject_link;
     }
 
     /**
@@ -658,6 +697,35 @@ abstract class BasePEOperation extends BaseObject implements Persistent
     } // setTimeline()
 
     /**
+     * Sets the value of the [new_subject_link] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return PEOperation The current object (for fluent API support)
+     */
+    public function setNewSubjectLink($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->new_subject_link !== $v) {
+            $this->new_subject_link = $v;
+            $this->modifiedColumns[] = PEOperationPeer::NEW_SUBJECT_LINK;
+        }
+
+
+        return $this;
+    } // setNewSubjectLink()
+
+    /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
@@ -734,6 +802,10 @@ abstract class BasePEOperation extends BaseObject implements Persistent
      */
     public function hasOnlyDefaultValues()
     {
+            if ($this->new_subject_link !== true) {
+                return false;
+            }
+
         // otherwise, everything was equal, so return true
         return true;
     } // hasOnlyDefaultValues()
@@ -766,9 +838,10 @@ abstract class BasePEOperation extends BaseObject implements Persistent
             $this->geo_scoped = ($row[$startcol + 7] !== null) ? (boolean) $row[$startcol + 7] : null;
             $this->online = ($row[$startcol + 8] !== null) ? (boolean) $row[$startcol + 8] : null;
             $this->timeline = ($row[$startcol + 9] !== null) ? (boolean) $row[$startcol + 9] : null;
-            $this->created_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
-            $this->updated_at = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
-            $this->slug = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+            $this->new_subject_link = ($row[$startcol + 10] !== null) ? (boolean) $row[$startcol + 10] : null;
+            $this->created_at = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+            $this->updated_at = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+            $this->slug = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -778,7 +851,7 @@ abstract class BasePEOperation extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 13; // 13 = PEOperationPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 14; // 14 = PEOperationPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PEOperation object", $e);
@@ -1178,6 +1251,9 @@ abstract class BasePEOperation extends BaseObject implements Persistent
         if ($this->isColumnModified(PEOperationPeer::TIMELINE)) {
             $modifiedColumns[':p' . $index++]  = '`timeline`';
         }
+        if ($this->isColumnModified(PEOperationPeer::NEW_SUBJECT_LINK)) {
+            $modifiedColumns[':p' . $index++]  = '`new_subject_link`';
+        }
         if ($this->isColumnModified(PEOperationPeer::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`created_at`';
         }
@@ -1227,6 +1303,9 @@ abstract class BasePEOperation extends BaseObject implements Persistent
                         break;
                     case '`timeline`':
                         $stmt->bindValue($identifier, (int) $this->timeline, PDO::PARAM_INT);
+                        break;
+                    case '`new_subject_link`':
+                        $stmt->bindValue($identifier, (int) $this->new_subject_link, PDO::PARAM_INT);
                         break;
                     case '`created_at`':
                         $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
@@ -1328,12 +1407,15 @@ abstract class BasePEOperation extends BaseObject implements Persistent
                 return $this->getTimeline();
                 break;
             case 10:
-                return $this->getCreatedAt();
+                return $this->getNewSubjectLink();
                 break;
             case 11:
-                return $this->getUpdatedAt();
+                return $this->getCreatedAt();
                 break;
             case 12:
+                return $this->getUpdatedAt();
+                break;
+            case 13:
                 return $this->getSlug();
                 break;
             default:
@@ -1375,9 +1457,10 @@ abstract class BasePEOperation extends BaseObject implements Persistent
             $keys[7] => $this->getGeoScoped(),
             $keys[8] => $this->getOnline(),
             $keys[9] => $this->getTimeline(),
-            $keys[10] => $this->getCreatedAt(),
-            $keys[11] => $this->getUpdatedAt(),
-            $keys[12] => $this->getSlug(),
+            $keys[10] => $this->getNewSubjectLink(),
+            $keys[11] => $this->getCreatedAt(),
+            $keys[12] => $this->getUpdatedAt(),
+            $keys[13] => $this->getSlug(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1462,12 +1545,15 @@ abstract class BasePEOperation extends BaseObject implements Persistent
                 $this->setTimeline($value);
                 break;
             case 10:
-                $this->setCreatedAt($value);
+                $this->setNewSubjectLink($value);
                 break;
             case 11:
-                $this->setUpdatedAt($value);
+                $this->setCreatedAt($value);
                 break;
             case 12:
+                $this->setUpdatedAt($value);
+                break;
+            case 13:
                 $this->setSlug($value);
                 break;
         } // switch()
@@ -1504,9 +1590,10 @@ abstract class BasePEOperation extends BaseObject implements Persistent
         if (array_key_exists($keys[7], $arr)) $this->setGeoScoped($arr[$keys[7]]);
         if (array_key_exists($keys[8], $arr)) $this->setOnline($arr[$keys[8]]);
         if (array_key_exists($keys[9], $arr)) $this->setTimeline($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setCreatedAt($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setUpdatedAt($arr[$keys[11]]);
-        if (array_key_exists($keys[12], $arr)) $this->setSlug($arr[$keys[12]]);
+        if (array_key_exists($keys[10], $arr)) $this->setNewSubjectLink($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setCreatedAt($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setUpdatedAt($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setSlug($arr[$keys[13]]);
     }
 
     /**
@@ -1528,6 +1615,7 @@ abstract class BasePEOperation extends BaseObject implements Persistent
         if ($this->isColumnModified(PEOperationPeer::GEO_SCOPED)) $criteria->add(PEOperationPeer::GEO_SCOPED, $this->geo_scoped);
         if ($this->isColumnModified(PEOperationPeer::ONLINE)) $criteria->add(PEOperationPeer::ONLINE, $this->online);
         if ($this->isColumnModified(PEOperationPeer::TIMELINE)) $criteria->add(PEOperationPeer::TIMELINE, $this->timeline);
+        if ($this->isColumnModified(PEOperationPeer::NEW_SUBJECT_LINK)) $criteria->add(PEOperationPeer::NEW_SUBJECT_LINK, $this->new_subject_link);
         if ($this->isColumnModified(PEOperationPeer::CREATED_AT)) $criteria->add(PEOperationPeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(PEOperationPeer::UPDATED_AT)) $criteria->add(PEOperationPeer::UPDATED_AT, $this->updated_at);
         if ($this->isColumnModified(PEOperationPeer::SLUG)) $criteria->add(PEOperationPeer::SLUG, $this->slug);
@@ -1603,6 +1691,7 @@ abstract class BasePEOperation extends BaseObject implements Persistent
         $copyObj->setGeoScoped($this->getGeoScoped());
         $copyObj->setOnline($this->getOnline());
         $copyObj->setTimeline($this->getTimeline());
+        $copyObj->setNewSubjectLink($this->getNewSubjectLink());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
         $copyObj->setSlug($this->getSlug());
@@ -3020,6 +3109,7 @@ abstract class BasePEOperation extends BaseObject implements Persistent
         $this->geo_scoped = null;
         $this->online = null;
         $this->timeline = null;
+        $this->new_subject_link = null;
         $this->created_at = null;
         $this->updated_at = null;
         $this->slug = null;
@@ -3027,6 +3117,7 @@ abstract class BasePEOperation extends BaseObject implements Persistent
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
         $this->clearAllReferences();
+        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);
@@ -3383,6 +3474,7 @@ abstract class BasePEOperation extends BaseObject implements Persistent
         $this->setGeoScoped($archive->getGeoScoped());
         $this->setOnline($archive->getOnline());
         $this->setTimeline($archive->getTimeline());
+        $this->setNewSubjectLink($archive->getNewSubjectLink());
         $this->setCreatedAt($archive->getCreatedAt());
         $this->setUpdatedAt($archive->getUpdatedAt());
         $this->setSlug($archive->getSlug());

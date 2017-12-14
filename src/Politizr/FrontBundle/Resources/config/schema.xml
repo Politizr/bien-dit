@@ -82,6 +82,7 @@
         <column name="geo_scoped" type="boolean" />
         <column name="online" type="boolean" />
         <column name="timeline" type="boolean" />
+        <column name="new_subject_link" type="boolean" defaultValue="true" />
 
         <foreign-key foreignTable="p_user" onDelete="CASCADE" onUpdate="SETNULL">
             <reference local="p_user_id" foreign="id" />
