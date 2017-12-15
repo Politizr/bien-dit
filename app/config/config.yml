@@ -650,9 +650,10 @@ hwi_oauth:
 exercise_html_purifier:
     default:
         Cache.SerializerPath: "%kernel.root_dir%/cache/htmlpurifier"
-    # custom:
-    #     HTML.SafeIframe: true
-    #     URI.SafeIframeRegexp: '%^(https?:)?//(www\.youtube(?:-nocookie)?\.com/embed/%'
+    custom:
+        Cache.SerializerPath: "%kernel.root_dir%/cache/htmlpurifier"
+        HTML.SafeIframe: true
+        URI.SafeIframeRegexp: "#^(https?:)?//(www\.youtube(?:-nocookie)?\.com/embed/|player\.vimeo\.com/video/)#"
 
 # Liip URL autoconverter
 liip_url_auto_converter:
