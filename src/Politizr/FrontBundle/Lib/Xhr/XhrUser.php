@@ -282,6 +282,7 @@ class XhrUser
         $user->setFileName(null);
 
         $html = $this->userTwigExtension->photo(
+            $this->twigEnv,
             $user,
             'user_40',
             false
