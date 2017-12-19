@@ -196,9 +196,24 @@ class GlobalTools
         }
 
         // Resize de la photo
+        $resized = $this->resizeImage($destPath . $fileName, $maxWidth, $maxHeight);
+
+        return $fileName;
+    }
+
+    /**
+     * Resize an image
+     *
+     * @param
+     * @return boolean
+     */
+    public function resizeImage($absolutePath, $maxWidth, $maxHeight)
+    {
+        // Resize de la photo
         $resized = false;
         $image = new SimpleImage();
-        $image->load($destPath . $fileName);
+        $image->load($absolutePath);
+        dump($image);
         if ($width = $image->getWidth() > $maxWidth) {
             $image->resizeToWidth($maxWidth);
             $resized = true;
@@ -208,10 +223,10 @@ class GlobalTools
             $resized = true;
         }
         if ($resized) {
-            $image->save($destPath . $fileName);
+            $image->save($absolutePath);
         }
 
-        return $fileName;
+        return $resized;
     }
 
     /**
@@ -221,7 +236,7 @@ class GlobalTools
      * @param string $destFile folder & file name
      * @param $force true to override if destFile already exists
      */
-    public function copyFile($file, $force = true)
+    public function copyFile($file, $destFile = null, $force = true)
     {
         $fileInfo = pathinfo($file);
         $orgDirname = $fileInfo['dirname'];
@@ -229,7 +244,9 @@ class GlobalTools
 
         $newFileName = uniqid();
 
-        $destFile = $orgDirname . '/' . $newFileName . '.' . $orgExtension;
+        if(!$destFile) {
+            $destFile = $orgDirname . '/' . $newFileName . '.' . $orgExtension;
+        }
 
         $fs = new Filesystem();
         $fs->copy($file, $destFile, $force);
@@ -269,7 +286,7 @@ class GlobalTools
         // }
 
         $paragraphs = array();
-        $count = preg_match_all('/<p[^>]*>(.*?)<\/p>|<h\d[^>]*>(.*?)<\/h\d>|<ul[^>]*>(.*?)<\/ul>|<blockquote[^>]*>(.*?)<\/blockquote>|<iframe[^>]*>(.*?)<\/iframe>/is', $htmlText, $matches);
+        $count = preg_match_all('/<p[^>]*>(.*?)<\/p>|<div[^>]*>(.*?)<\/div>|<h\d[^>]*>(.*?)<\/h\d>|<ul[^>]*>(.*?)<\/ul>|<blockquote[^>]*>(.*?)<\/blockquote>|<iframe[^>]*>(.*?)<\/iframe>/is', $htmlText, $matches);
         for ($i = 0; $i < $count; ++$i) {
             if (!$onlyP) {
                 $paragraphs[] = $matches[0][$i];

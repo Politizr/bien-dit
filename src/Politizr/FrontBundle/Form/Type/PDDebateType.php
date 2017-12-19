@@ -36,13 +36,13 @@ class PDDebateType extends AbstractType
             'required' => true,
         ));
 
-        $builder->add('file_name', 'hidden', array(
-            'required' => false,
-        ));
-
-        $builder->add('copyright', 'textarea', array(
-            'required' => false,
-        ));
+        // $builder->add('file_name', 'hidden', array(
+        //     'required' => false,
+        // ));
+        // 
+        // $builder->add('copyright', 'textarea', array(
+        //     'required' => false,
+        // ));
     }
 
     /**

@@ -20,6 +20,8 @@ use Politizr\Model\PCTopic;
 use Politizr\Model\PCTopicQuery;
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDDebateQuery;
+use Politizr\Model\PDMedia;
+use Politizr\Model\PDMediaQuery;
 use Politizr\Model\PDRComment;
 use Politizr\Model\PDRCommentQuery;
 use Politizr\Model\PDRTaggedT;
@@ -342,6 +344,12 @@ abstract class BasePDReaction extends BaseObject implements Persistent
     protected $collPDRTaggedTsPartial;
 
     /**
+     * @var        PropelObjectCollection|PDMedia[] Collection to store aggregation of PDMedia objects.
+     */
+    protected $collPDMedias;
+    protected $collPDMediasPartial;
+
+    /**
      * @var        PropelObjectCollection|PMReactionHistoric[] Collection to store aggregation of PMReactionHistoric objects.
      */
     protected $collPMReactionHistorics;
@@ -447,6 +455,12 @@ abstract class BasePDReaction extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $pDRTaggedTsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pDMediasScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -2014,6 +2028,8 @@ abstract class BasePDReaction extends BaseObject implements Persistent
 
             $this->collPDRTaggedTs = null;
 
+            $this->collPDMedias = null;
+
             $this->collPMReactionHistorics = null;
 
             $this->collPuBookmarkDrPUsers = null;
@@ -2394,6 +2410,23 @@ abstract class BasePDReaction extends BaseObject implements Persistent
 
             if ($this->collPDRTaggedTs !== null) {
                 foreach ($this->collPDRTaggedTs as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->pDMediasScheduledForDeletion !== null) {
+                if (!$this->pDMediasScheduledForDeletion->isEmpty()) {
+                    PDMediaQuery::create()
+                        ->filterByPrimaryKeys($this->pDMediasScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->pDMediasScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPDMedias !== null) {
+                foreach ($this->collPDMedias as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -2934,6 +2967,9 @@ abstract class BasePDReaction extends BaseObject implements Persistent
             if (null !== $this->collPDRTaggedTs) {
                 $result['PDRTaggedTs'] = $this->collPDRTaggedTs->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
+            if (null !== $this->collPDMedias) {
+                $result['PDMedias'] = $this->collPDMedias->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
             if (null !== $this->collPMReactionHistorics) {
                 $result['PMReactionHistorics'] = $this->collPMReactionHistorics->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
@@ -3307,6 +3343,12 @@ abstract class BasePDReaction extends BaseObject implements Persistent
             foreach ($this->getPDRTaggedTs() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addPDRTaggedT($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getPDMedias() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPDMedia($relObj->copy($deepCopy));
                 }
             }
 
@@ -3752,6 +3794,9 @@ abstract class BasePDReaction extends BaseObject implements Persistent
         }
         if ('PDRTaggedT' == $relationName) {
             $this->initPDRTaggedTs();
+        }
+        if ('PDMedia' == $relationName) {
+            $this->initPDMedias();
         }
         if ('PMReactionHistoric' == $relationName) {
             $this->initPMReactionHistorics();
@@ -4759,6 +4804,256 @@ abstract class BasePDReaction extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collPDMedias collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PDReaction The current object (for fluent API support)
+     * @see        addPDMedias()
+     */
+    public function clearPDMedias()
+    {
+        $this->collPDMedias = null; // important to set this to null since that means it is uninitialized
+        $this->collPDMediasPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPDMedias collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPDMedias($v = true)
+    {
+        $this->collPDMediasPartial = $v;
+    }
+
+    /**
+     * Initializes the collPDMedias collection.
+     *
+     * By default this just sets the collPDMedias collection to an empty array (like clearcollPDMedias());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPDMedias($overrideExisting = true)
+    {
+        if (null !== $this->collPDMedias && !$overrideExisting) {
+            return;
+        }
+        $this->collPDMedias = new PropelObjectCollection();
+        $this->collPDMedias->setModel('PDMedia');
+    }
+
+    /**
+     * Gets an array of PDMedia objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PDReaction is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PDMedia[] List of PDMedia objects
+     * @throws PropelException
+     */
+    public function getPDMedias($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPDMediasPartial && !$this->isNew();
+        if (null === $this->collPDMedias || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPDMedias) {
+                // return empty collection
+                $this->initPDMedias();
+            } else {
+                $collPDMedias = PDMediaQuery::create(null, $criteria)
+                    ->filterByPDReaction($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPDMediasPartial && count($collPDMedias)) {
+                      $this->initPDMedias(false);
+
+                      foreach ($collPDMedias as $obj) {
+                        if (false == $this->collPDMedias->contains($obj)) {
+                          $this->collPDMedias->append($obj);
+                        }
+                      }
+
+                      $this->collPDMediasPartial = true;
+                    }
+
+                    $collPDMedias->getInternalIterator()->rewind();
+
+                    return $collPDMedias;
+                }
+
+                if ($partial && $this->collPDMedias) {
+                    foreach ($this->collPDMedias as $obj) {
+                        if ($obj->isNew()) {
+                            $collPDMedias[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPDMedias = $collPDMedias;
+                $this->collPDMediasPartial = false;
+            }
+        }
+
+        return $this->collPDMedias;
+    }
+
+    /**
+     * Sets a collection of PDMedia objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pDMedias A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PDReaction The current object (for fluent API support)
+     */
+    public function setPDMedias(PropelCollection $pDMedias, PropelPDO $con = null)
+    {
+        $pDMediasToDelete = $this->getPDMedias(new Criteria(), $con)->diff($pDMedias);
+
+
+        $this->pDMediasScheduledForDeletion = $pDMediasToDelete;
+
+        foreach ($pDMediasToDelete as $pDMediaRemoved) {
+            $pDMediaRemoved->setPDReaction(null);
+        }
+
+        $this->collPDMedias = null;
+        foreach ($pDMedias as $pDMedia) {
+            $this->addPDMedia($pDMedia);
+        }
+
+        $this->collPDMedias = $pDMedias;
+        $this->collPDMediasPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PDMedia objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PDMedia objects.
+     * @throws PropelException
+     */
+    public function countPDMedias(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPDMediasPartial && !$this->isNew();
+        if (null === $this->collPDMedias || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPDMedias) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPDMedias());
+            }
+            $query = PDMediaQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPDReaction($this)
+                ->count($con);
+        }
+
+        return count($this->collPDMedias);
+    }
+
+    /**
+     * Method called to associate a PDMedia object to this object
+     * through the PDMedia foreign key attribute.
+     *
+     * @param    PDMedia $l PDMedia
+     * @return PDReaction The current object (for fluent API support)
+     */
+    public function addPDMedia(PDMedia $l)
+    {
+        if ($this->collPDMedias === null) {
+            $this->initPDMedias();
+            $this->collPDMediasPartial = true;
+        }
+
+        if (!in_array($l, $this->collPDMedias->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPDMedia($l);
+
+            if ($this->pDMediasScheduledForDeletion and $this->pDMediasScheduledForDeletion->contains($l)) {
+                $this->pDMediasScheduledForDeletion->remove($this->pDMediasScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PDMedia $pDMedia The pDMedia object to add.
+     */
+    protected function doAddPDMedia($pDMedia)
+    {
+        $this->collPDMedias[]= $pDMedia;
+        $pDMedia->setPDReaction($this);
+    }
+
+    /**
+     * @param	PDMedia $pDMedia The pDMedia object to remove.
+     * @return PDReaction The current object (for fluent API support)
+     */
+    public function removePDMedia($pDMedia)
+    {
+        if ($this->getPDMedias()->contains($pDMedia)) {
+            $this->collPDMedias->remove($this->collPDMedias->search($pDMedia));
+            if (null === $this->pDMediasScheduledForDeletion) {
+                $this->pDMediasScheduledForDeletion = clone $this->collPDMedias;
+                $this->pDMediasScheduledForDeletion->clear();
+            }
+            $this->pDMediasScheduledForDeletion[]= $pDMedia;
+            $pDMedia->setPDReaction(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PDReaction is new, it will return
+     * an empty collection; or if this PDReaction has previously
+     * been saved, it will retrieve related PDMedias from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PDReaction.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PDMedia[] List of PDMedia objects
+     */
+    public function getPDMediasJoinPDDebate($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PDMediaQuery::create(null, $criteria);
+        $query->joinWith('PDDebate', $join_behavior);
+
+        return $this->getPDMedias($query, $con);
+    }
+
+    /**
      * Clears out the collPMReactionHistorics collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
@@ -5652,6 +5947,11 @@ abstract class BasePDReaction extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collPDMedias) {
+                foreach ($this->collPDMedias as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collPMReactionHistorics) {
                 foreach ($this->collPMReactionHistorics as $o) {
                     $o->clearAllReferences($deep);
@@ -5716,6 +6016,10 @@ abstract class BasePDReaction extends BaseObject implements Persistent
             $this->collPDRTaggedTs->clearIterator();
         }
         $this->collPDRTaggedTs = null;
+        if ($this->collPDMedias instanceof PropelCollection) {
+            $this->collPDMedias->clearIterator();
+        }
+        $this->collPDMedias = null;
         if ($this->collPMReactionHistorics instanceof PropelCollection) {
             $this->collPMReactionHistorics->clearIterator();
         }

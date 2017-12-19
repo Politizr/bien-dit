@@ -55,6 +55,9 @@ class AppKernel extends Kernel
             // ATOM RSS Feed
             new Eko\FeedBundle\EkoFeedBundle(),
 
+            // File upload JS
+            new Oneup\UploaderBundle\OneupUploaderBundle(),
+
             // Lexik maintenance
             new Lexik\Bundle\MaintenanceBundle\LexikMaintenanceBundle(),
 

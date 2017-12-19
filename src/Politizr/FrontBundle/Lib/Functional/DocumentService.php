@@ -1,6 +1,8 @@
 <?php
 namespace Politizr\FrontBundle\Lib\Functional;
 
+use Symfony\Component\HttpFoundation\File\File;
+
 use Politizr\Exception\InconsistentDataException;
 
 use Politizr\Constant\ObjectTypeConstants;
@@ -605,6 +607,54 @@ class DocumentService
         $this->documentManager->initReactionTaggedTags($reaction);
 
         return $reaction;
+    }
+
+    /**
+     * Create new media
+     *
+     * @param File $file
+     * @param string $uuid  document uuid
+     * @param string $type document type
+     * @return
+     */
+    public function createMediaFromFileByDocUuid(File $file, $uuid, $type)
+    {
+        // get reaction's associated debate
+        if (!$file || !$uuid) {
+            throw new InconsistentDataException('File null');
+        }
+
+        if ($type == ObjectTypeConstants::TYPE_DEBATE) {
+            $query = PDDebateQuery::create();
+        } elseif ($type == ObjectTypeConstants::TYPE_REACTION) {
+            $query = PDReactionQuery::create();
+        } else {
+            throw new InconsistentDataException(sprintf('Document of type "%s" not found', $type));
+        }
+
+        $document = $query->filterByUuid($uuid)->findOne();
+        if (!$document) {
+            throw new InconsistentDataException(sprintf('Document "%s" not found', $uuid));
+        }
+
+        $debateId = null;
+        $reactionId = null;
+        if ($type == ObjectTypeConstants::TYPE_DEBATE) {
+            $debateId = $document->getId();
+        } else {
+            $reactionId = $document->getId();
+        }
+
+        $media = $this->documentManager->createMedia(
+            $debateId,
+            $reactionId,
+            $file->getPath(),
+            $file->getFilename(),
+            $file->getExtension(),
+            $file->getSize()
+        );
+
+        return $media;
     }
 
     /* ######################################################################################################## */

@@ -5,6 +5,7 @@ namespace Politizr\FrontBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -39,6 +40,29 @@ use Politizr\FrontBundle\Form\Type\PDDebateLocalizationType;
  */
 class DocumentController extends Controller
 {
+    /**
+     * Détail débat
+     * beta
+     */
+    public function testDropzoneAction()
+    {
+        return $this->render('PolitizrFrontBundle:Debate:testDropzone.html.twig', array(
+        ));
+    }
+
+    /**
+     *
+     */
+    public function deleteDocumentImageAction(Request $request)
+    {
+        dump('deleteDocumentImageAction');
+
+        $file = $request->get('file');
+        dump($file);
+
+        return new JsonResponse(array('success' => true));
+    }
+
     /**
      * Common document "check" validity
      * beta

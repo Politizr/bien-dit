@@ -15,3 +15,8 @@ _liip_imagine:
 #_internal:
 #    resource: "@FrameworkBundle/Resources/config/routing/internal.xml"
 #    prefix:   /_internal
+
+oneup_uploader:
+    resource: .
+    type: uploader
+    # prefix:   /-w

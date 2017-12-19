@@ -96,6 +96,7 @@ class PDReactionTableMap extends TableMap
         $this->addRelation('PuTrackDrPDReaction', 'Politizr\\Model\\PUTrackDR', RelationMap::ONE_TO_MANY, array('id' => 'p_d_reaction_id', ), 'CASCADE', 'CASCADE', 'PuTrackDrPDReactions');
         $this->addRelation('PDRComment', 'Politizr\\Model\\PDRComment', RelationMap::ONE_TO_MANY, array('id' => 'p_d_reaction_id', ), 'CASCADE', 'CASCADE', 'PDRComments');
         $this->addRelation('PDRTaggedT', 'Politizr\\Model\\PDRTaggedT', RelationMap::ONE_TO_MANY, array('id' => 'p_d_reaction_id', ), 'CASCADE', 'CASCADE', 'PDRTaggedTs');
+        $this->addRelation('PDMedia', 'Politizr\\Model\\PDMedia', RelationMap::ONE_TO_MANY, array('id' => 'p_d_reaction_id', ), 'CASCADE', 'CASCADE', 'PDMedias');
         $this->addRelation('PMReactionHistoric', 'Politizr\\Model\\PMReactionHistoric', RelationMap::ONE_TO_MANY, array('id' => 'p_d_reaction_id', ), 'SET NULL', 'CASCADE', 'PMReactionHistorics');
         $this->addRelation('PuBookmarkDrPUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PuBookmarkDrPUsers');
         $this->addRelation('PuTrackDrPUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PuTrackDrPUsers');

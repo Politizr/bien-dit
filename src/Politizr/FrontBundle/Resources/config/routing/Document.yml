@@ -1,3 +1,7 @@
+DocImageDelete:
+    pattern:  /delete/document/image
+    defaults: { _controller: PolitizrFrontBundle:Document:deleteDocumentImage }
+
 ################################################################################
 #               PUBLIC
 ################################################################################

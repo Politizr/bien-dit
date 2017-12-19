@@ -24,3 +24,38 @@ var descriptionEditor = new MediumEditor('.editable.description', {
     anchorPreview: false,
     autoLink:true
 });
+
+$(function () {
+    $('.editable.description').mediumInsert({
+        editor: descriptionEditor,
+        addons: {
+            images: {
+                deleteScript: $('#postText').attr('delete'), // (string) A relative path to a delete script
+                fileUploadOptions: { // (object) File upload configuration. See https://github.com/blueimp/jQuery-File-Upload/wiki/Options
+                    url: $('#postText').attr('path'),
+                    acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i, // (regexp) Regexp of accepted file types
+                    maxFileSize: 5000000, // 5MB
+                    formData: {
+                        uuid: $('#formDebateUpdate').attr('uuid'),
+                        type: $('#formDebateUpdate').attr('type')
+                    },
+                    // native jquery resize not supported cf https://github.com/orthes/medium-editor-insert-plugin/issues/288
+                    // disableImageResize: false,
+                },
+                uploadCompleted: function (el, data) {
+                    console.log('uploadCompleted');
+                    console.log(el);
+                    console.log(data);
+                },
+                uploadFailed: function (uploadErrors, data) {
+                    console.log('uploadFailed');
+                    console.log(uploadErrors);
+                    console.log(data);
+
+                    $('#infoBoxHolder .boxError .notifBoxText').html(uploadErrors);
+                    $('#infoBoxHolder .boxError').show();
+                }
+            }
+        }
+    });
+});

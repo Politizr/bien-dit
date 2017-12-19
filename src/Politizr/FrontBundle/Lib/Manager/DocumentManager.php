@@ -10,6 +10,8 @@ use Politizr\Constant\TagConstants;
 
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDReaction;
+use Politizr\Model\PDMedia;
+
 use Politizr\Model\PDRTaggedT;
 
 use Politizr\Model\PDDebateQuery;
@@ -2169,5 +2171,30 @@ GROUP BY p_d_debate_id
         $result = $reaction->delete();
 
         return $result;
+    }
+
+    /**
+     * Create a new PDReaction associated with userId, debateId and optionnaly parentId
+     *
+     * @param int $userId
+     * @param int $debateId
+     * @param int $parentId
+     * @param int $topicId
+     * @return PDReaction
+     */
+    public function createMedia($debateId, $reactionId, $path, $fileName, $extension, $size)
+    {
+        $media = new PDMedia();
+
+        $media->setPDDebateId($debateId);
+        $media->setPDReactionId($reactionId);
+        $media->setPath($path);
+        $media->setFileName($fileName);
+        $media->setExtension($extension);
+        $media->setSize($size);
+
+        $media->save();
+
+        return $media;
     }
 }
