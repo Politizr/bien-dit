@@ -27,8 +27,11 @@ use Politizr\Model\PDReaction;
  * @method PDMediaQuery orderByFileName($order = Criteria::ASC) Order by the file_name column
  * @method PDMediaQuery orderByExtension($order = Criteria::ASC) Order by the extension column
  * @method PDMediaQuery orderBySize($order = Criteria::ASC) Order by the size column
+ * @method PDMediaQuery orderByWidth($order = Criteria::ASC) Order by the width column
+ * @method PDMediaQuery orderByHeight($order = Criteria::ASC) Order by the height column
  * @method PDMediaQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PDMediaQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
+ * @method PDMediaQuery orderByUuid($order = Criteria::ASC) Order by the uuid column
  *
  * @method PDMediaQuery groupById() Group by the id column
  * @method PDMediaQuery groupByPDDebateId() Group by the p_d_debate_id column
@@ -37,8 +40,11 @@ use Politizr\Model\PDReaction;
  * @method PDMediaQuery groupByFileName() Group by the file_name column
  * @method PDMediaQuery groupByExtension() Group by the extension column
  * @method PDMediaQuery groupBySize() Group by the size column
+ * @method PDMediaQuery groupByWidth() Group by the width column
+ * @method PDMediaQuery groupByHeight() Group by the height column
  * @method PDMediaQuery groupByCreatedAt() Group by the created_at column
  * @method PDMediaQuery groupByUpdatedAt() Group by the updated_at column
+ * @method PDMediaQuery groupByUuid() Group by the uuid column
  *
  * @method PDMediaQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method PDMediaQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -61,8 +67,11 @@ use Politizr\Model\PDReaction;
  * @method PDMedia findOneByFileName(string $file_name) Return the first PDMedia filtered by the file_name column
  * @method PDMedia findOneByExtension(string $extension) Return the first PDMedia filtered by the extension column
  * @method PDMedia findOneBySize(int $size) Return the first PDMedia filtered by the size column
+ * @method PDMedia findOneByWidth(int $width) Return the first PDMedia filtered by the width column
+ * @method PDMedia findOneByHeight(int $height) Return the first PDMedia filtered by the height column
  * @method PDMedia findOneByCreatedAt(string $created_at) Return the first PDMedia filtered by the created_at column
  * @method PDMedia findOneByUpdatedAt(string $updated_at) Return the first PDMedia filtered by the updated_at column
+ * @method PDMedia findOneByUuid(string $uuid) Return the first PDMedia filtered by the uuid column
  *
  * @method array findById(int $id) Return PDMedia objects filtered by the id column
  * @method array findByPDDebateId(int $p_d_debate_id) Return PDMedia objects filtered by the p_d_debate_id column
@@ -71,8 +80,11 @@ use Politizr\Model\PDReaction;
  * @method array findByFileName(string $file_name) Return PDMedia objects filtered by the file_name column
  * @method array findByExtension(string $extension) Return PDMedia objects filtered by the extension column
  * @method array findBySize(int $size) Return PDMedia objects filtered by the size column
+ * @method array findByWidth(int $width) Return PDMedia objects filtered by the width column
+ * @method array findByHeight(int $height) Return PDMedia objects filtered by the height column
  * @method array findByCreatedAt(string $created_at) Return PDMedia objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PDMedia objects filtered by the updated_at column
+ * @method array findByUuid(string $uuid) Return PDMedia objects filtered by the uuid column
  */
 abstract class BasePDMediaQuery extends ModelCriteria
 {
@@ -181,7 +193,7 @@ abstract class BasePDMediaQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_d_debate_id`, `p_d_reaction_id`, `path`, `file_name`, `extension`, `size`, `created_at`, `updated_at` FROM `p_d_media` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `p_d_debate_id`, `p_d_reaction_id`, `path`, `file_name`, `extension`, `size`, `width`, `height`, `created_at`, `updated_at`, `uuid` FROM `p_d_media` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -530,6 +542,90 @@ abstract class BasePDMediaQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the width column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByWidth(1234); // WHERE width = 1234
+     * $query->filterByWidth(array(12, 34)); // WHERE width IN (12, 34)
+     * $query->filterByWidth(array('min' => 12)); // WHERE width >= 12
+     * $query->filterByWidth(array('max' => 12)); // WHERE width <= 12
+     * </code>
+     *
+     * @param     mixed $width The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDMediaQuery The current query, for fluid interface
+     */
+    public function filterByWidth($width = null, $comparison = null)
+    {
+        if (is_array($width)) {
+            $useMinMax = false;
+            if (isset($width['min'])) {
+                $this->addUsingAlias(PDMediaPeer::WIDTH, $width['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($width['max'])) {
+                $this->addUsingAlias(PDMediaPeer::WIDTH, $width['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PDMediaPeer::WIDTH, $width, $comparison);
+    }
+
+    /**
+     * Filter the query on the height column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByHeight(1234); // WHERE height = 1234
+     * $query->filterByHeight(array(12, 34)); // WHERE height IN (12, 34)
+     * $query->filterByHeight(array('min' => 12)); // WHERE height >= 12
+     * $query->filterByHeight(array('max' => 12)); // WHERE height <= 12
+     * </code>
+     *
+     * @param     mixed $height The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDMediaQuery The current query, for fluid interface
+     */
+    public function filterByHeight($height = null, $comparison = null)
+    {
+        if (is_array($height)) {
+            $useMinMax = false;
+            if (isset($height['min'])) {
+                $this->addUsingAlias(PDMediaPeer::HEIGHT, $height['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($height['max'])) {
+                $this->addUsingAlias(PDMediaPeer::HEIGHT, $height['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PDMediaPeer::HEIGHT, $height, $comparison);
+    }
+
+    /**
      * Filter the query on the created_at column
      *
      * Example usage:
@@ -613,6 +709,35 @@ abstract class BasePDMediaQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PDMediaPeer::UPDATED_AT, $updatedAt, $comparison);
+    }
+
+    /**
+     * Filter the query on the uuid column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByUuid('fooValue');   // WHERE uuid = 'fooValue'
+     * $query->filterByUuid('%fooValue%'); // WHERE uuid LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $uuid The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PDMediaQuery The current query, for fluid interface
+     */
+    public function filterByUuid($uuid = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($uuid)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $uuid)) {
+                $uuid = str_replace('*', '%', $uuid);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PDMediaPeer::UUID, $uuid, $comparison);
     }
 
     /**

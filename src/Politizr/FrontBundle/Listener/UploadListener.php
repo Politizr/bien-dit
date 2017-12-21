@@ -6,6 +6,7 @@ use Oneup\UploaderBundle\Event\PostPersistEvent;
 use Symfony\Component\HttpFoundation\File\Exception\UploadException;
 
 use Politizr\Constant\PathConstants;
+use Politizr\Constant\DocumentConstants;
 
 /**
  *
@@ -45,24 +46,33 @@ class UploadListener
         $request = $event->getRequest();
         $uuid = $request->get('uuid');
         $type = $request->get('type');
-        dump($uuid);
-        dump($type);
-
-        //if everything went fine
-        $response = $event->getResponse();
         
         $file = $event->getFile();
-        dump($file);
+
+        // // error tests
+        // throw new UploadException('Oooh no, error occurs');
+        // 
+        // $response = $event->getResponse();
+        // $response = [[
+        //     "error" => "Image must be in JPG format",
+        //     "url" => "", 
+        //     "thumbnail_url" => "", 
+        //     "delete_url" => "", 
+        //     "delete_type" => "DELETE", 
+        //     "name" => "broken_image.jpg", 
+        //     "size" => 78191
+        // ]];
+        // return $response;
 
         // resize image max width and/or max height
-        $this->globalTools->resizeImage(
+        $image = $this->globalTools->resizeImage(
             $file->getRealPath(),
             1200,
             1200
         );
 
         // create thumbnail
-        $thumbnailRealPath = $file->getPath() . '/' . 'thb-' . $file->getFilename();
+        $thumbnailRealPath = $file->getPath() . '/' . DocumentConstants::DOC_THUMBNAIL_PREFIX . $file->getFilename();
         $this->globalTools->copyFile(
             $file->getRealPath(),
             $thumbnailRealPath
@@ -74,15 +84,18 @@ class UploadListener
         );
 
         // persist media
-        $this->documentService->createMediaFromFileByDocUuid($file, $uuid, $type);
+        $media = $this->documentService->createMediaFromSimpleImageByDocUuid($image, $uuid, $type);
 
+        // everything went fine
+        $response = $event->getResponse();
         $response['files'] = [[
             'url' => $request->getSchemeAndHttpHost() . PathConstants::DEBATE_UPLOAD_WEB_PATH . $file->getFilename(),
             'thumbnail_url'=> $request->getSchemeAndHttpHost() . PathConstants::DEBATE_UPLOAD_WEB_PATH . 'thb-' . $file->getFilename(),
-            'name'=> $file->getBaseName(),
+            'name'=> $image->getBaseName(),
             'type'=> $file->getType(),
-            'size'=> $file->getSize(),
+            'size'=> $image->getSize(),
         ]];
+        $response['media_uuid'] = $media->getUuid();
 
         return $response;
     }

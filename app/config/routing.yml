@@ -19,4 +19,8 @@ _liip_imagine:
 oneup_uploader:
     resource: .
     type: uploader
-    # prefix:   /-w
+
+nelmio_security:
+    path:     /nelmio/csp/report
+    defaults: { _controller: nelmio_security.csp_reporter_controller:indexAction }
+    methods:  [POST]

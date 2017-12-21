@@ -43,4 +43,10 @@ class DocumentConstants
 
     // ******************************************************* //
     const PRIVATE_DOC_LENGTH = 500;
+
+    // ******************************************************** //
+    //                      DOC MEDIAS                          //
+    // ******************************************************** //
+    const DOC_THUMBNAIL_PREFIX = 'thb-';
+    const DOC_MAIN_IMAGE_MIN_WIDTH = 250;
 }

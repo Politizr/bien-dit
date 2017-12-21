@@ -150,6 +150,11 @@ Politizr_AdminBundle_PDReaction:
     type:     admingenerator_nested
     prefix:   /PDReaction
 
+Politizr_AdminBundle_PDMedia:
+    resource: "@PolitizrAdminBundle/Controller/PDMedia/"
+    type:     admingenerator
+    prefix:   /PDMedia
+
 Politizr_AdminBundle_PDDComment:
     resource: "@PolitizrAdminBundle/Controller/PDDComment/"
     type:     admingenerator
@@ -159,11 +164,6 @@ Politizr_AdminBundle_PDRComment:
     resource: "@PolitizrAdminBundle/Controller/PDRComment/"
     type:     admingenerator
     prefix:   /PDRComment
-
-Politizr_AdminBundle_PDDirect:
-    resource: "@PolitizrAdminBundle/Controller/PDDirect/"
-    type:     admingenerator
-    prefix:   /PDDirect
 
 # Groupes
 Politizr_AdminBundle_PCOwner:
@@ -272,6 +272,11 @@ Politizr_AdminBundle_PMEmailing:
     resource: "@PolitizrAdminBundle/Controller/PMEmailing/"
     type:     admingenerator
     prefix:   /PMEmailing
+
+Politizr_AdminBundle_PDDirect:
+    resource: "@PolitizrAdminBundle/Controller/PDDirect/"
+    type:     admingenerator
+    prefix:   /PDDirect
 
 Politizr_AdminBundle_PMAppException:
     resource: "@PolitizrAdminBundle/Controller/PMAppException/"

@@ -117,7 +117,7 @@
                     <div class="formBlockHeader">
                         <label>Titre</label>
                     </div>
-                    {{ form_widget(form.title, { 'attr': {'placeholder': 'Donnez un titre à votre sujet de discussion'}}) }}
+                    {{ form_widget(form.title, { 'attr': {'placeholder': 'Titre de votre sujet'}}) }}
                 </div>
                 <div class="formBlock">
                     <div class="formBlockHeader">
@@ -128,7 +128,7 @@
                     <div id="postText" path="{{ oneup_uploader_endpoint('document') }}" delete="{{ path('DocImageDelete') }}">
                         <div class="paragraph">
                             <div class="editable description">
-                                {{ debate.description | purify('custom') }}
+                                {{ debate.description|raw }}
                             </div>
                         </div>
                     </div>

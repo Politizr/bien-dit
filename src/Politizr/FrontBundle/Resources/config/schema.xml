@@ -1292,7 +1292,11 @@
     <table name="p_d_media">
         <behavior name="timestampable" />
         <behavior name="query_cache" />
-
+        <behavior name="uuid">
+            <parameter name="version" value="4" />
+            <parameter name="permanent" value="false" />
+        </behavior>
+        
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="p_d_debate_id" type="integer" required="false" />
         <column name="p_d_reaction_id" type="integer" required="false" />
@@ -1301,6 +1305,8 @@
         <column name="file_name" type="varchar" size="150" />
         <column name="extension" type="varchar" size="150" />
         <column name="size" type="integer" />
+        <column name="width" type="integer" />
+        <column name="height" type="integer" />
 
         <foreign-key foreignTable="p_d_debate" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_d_debate_id" foreign="id" />

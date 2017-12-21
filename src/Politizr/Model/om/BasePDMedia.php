@@ -85,6 +85,18 @@ abstract class BasePDMedia extends BaseObject implements Persistent
     protected $size;
 
     /**
+     * The value for the width field.
+     * @var        int
+     */
+    protected $width;
+
+    /**
+     * The value for the height field.
+     * @var        int
+     */
+    protected $height;
+
+    /**
      * The value for the created_at field.
      * @var        string
      */
@@ -95,6 +107,12 @@ abstract class BasePDMedia extends BaseObject implements Persistent
      * @var        string
      */
     protected $updated_at;
+
+    /**
+     * The value for the uuid field.
+     * @var        string
+     */
+    protected $uuid;
 
     /**
      * @var        PDDebate
@@ -204,6 +222,28 @@ abstract class BasePDMedia extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [width] column value.
+     *
+     * @return int
+     */
+    public function getWidth()
+    {
+
+        return $this->width;
+    }
+
+    /**
+     * Get the [height] column value.
+     *
+     * @return int
+     */
+    public function getHeight()
+    {
+
+        return $this->height;
+    }
+
+    /**
      * Get the [optionally formatted] temporal [created_at] column value.
      *
      *
@@ -281,6 +321,17 @@ abstract class BasePDMedia extends BaseObject implements Persistent
 
         return $dt->format($format);
 
+    }
+
+    /**
+     * Get the [uuid] column value.
+     *
+     * @return string
+     */
+    public function getUuid()
+    {
+
+        return $this->uuid;
     }
 
     /**
@@ -439,6 +490,48 @@ abstract class BasePDMedia extends BaseObject implements Persistent
     } // setSize()
 
     /**
+     * Set the value of [width] column.
+     *
+     * @param  int $v new value
+     * @return PDMedia The current object (for fluent API support)
+     */
+    public function setWidth($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->width !== $v) {
+            $this->width = $v;
+            $this->modifiedColumns[] = PDMediaPeer::WIDTH;
+        }
+
+
+        return $this;
+    } // setWidth()
+
+    /**
+     * Set the value of [height] column.
+     *
+     * @param  int $v new value
+     * @return PDMedia The current object (for fluent API support)
+     */
+    public function setHeight($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->height !== $v) {
+            $this->height = $v;
+            $this->modifiedColumns[] = PDMediaPeer::HEIGHT;
+        }
+
+
+        return $this;
+    } // setHeight()
+
+    /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
@@ -485,6 +578,27 @@ abstract class BasePDMedia extends BaseObject implements Persistent
     } // setUpdatedAt()
 
     /**
+     * Set the value of [uuid] column.
+     *
+     * @param  string $v new value
+     * @return PDMedia The current object (for fluent API support)
+     */
+    public function setUuid($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->uuid !== $v) {
+            $this->uuid = $v;
+            $this->modifiedColumns[] = PDMediaPeer::UUID;
+        }
+
+
+        return $this;
+    } // setUuid()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -523,8 +637,11 @@ abstract class BasePDMedia extends BaseObject implements Persistent
             $this->file_name = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
             $this->extension = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
             $this->size = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
-            $this->created_at = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-            $this->updated_at = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+            $this->width = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
+            $this->height = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
+            $this->created_at = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+            $this->updated_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+            $this->uuid = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -534,7 +651,7 @@ abstract class BasePDMedia extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 9; // 9 = PDMediaPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 12; // 12 = PDMediaPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PDMedia object", $e);
@@ -805,11 +922,20 @@ abstract class BasePDMedia extends BaseObject implements Persistent
         if ($this->isColumnModified(PDMediaPeer::SIZE)) {
             $modifiedColumns[':p' . $index++]  = '`size`';
         }
+        if ($this->isColumnModified(PDMediaPeer::WIDTH)) {
+            $modifiedColumns[':p' . $index++]  = '`width`';
+        }
+        if ($this->isColumnModified(PDMediaPeer::HEIGHT)) {
+            $modifiedColumns[':p' . $index++]  = '`height`';
+        }
         if ($this->isColumnModified(PDMediaPeer::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`created_at`';
         }
         if ($this->isColumnModified(PDMediaPeer::UPDATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`updated_at`';
+        }
+        if ($this->isColumnModified(PDMediaPeer::UUID)) {
+            $modifiedColumns[':p' . $index++]  = '`uuid`';
         }
 
         $sql = sprintf(
@@ -843,11 +969,20 @@ abstract class BasePDMedia extends BaseObject implements Persistent
                     case '`size`':
                         $stmt->bindValue($identifier, $this->size, PDO::PARAM_INT);
                         break;
+                    case '`width`':
+                        $stmt->bindValue($identifier, $this->width, PDO::PARAM_INT);
+                        break;
+                    case '`height`':
+                        $stmt->bindValue($identifier, $this->height, PDO::PARAM_INT);
+                        break;
                     case '`created_at`':
                         $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
                         break;
                     case '`updated_at`':
                         $stmt->bindValue($identifier, $this->updated_at, PDO::PARAM_STR);
+                        break;
+                    case '`uuid`':
+                        $stmt->bindValue($identifier, $this->uuid, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -931,10 +1066,19 @@ abstract class BasePDMedia extends BaseObject implements Persistent
                 return $this->getSize();
                 break;
             case 7:
-                return $this->getCreatedAt();
+                return $this->getWidth();
                 break;
             case 8:
+                return $this->getHeight();
+                break;
+            case 9:
+                return $this->getCreatedAt();
+                break;
+            case 10:
                 return $this->getUpdatedAt();
+                break;
+            case 11:
+                return $this->getUuid();
                 break;
             default:
                 return null;
@@ -972,8 +1116,11 @@ abstract class BasePDMedia extends BaseObject implements Persistent
             $keys[4] => $this->getFileName(),
             $keys[5] => $this->getExtension(),
             $keys[6] => $this->getSize(),
-            $keys[7] => $this->getCreatedAt(),
-            $keys[8] => $this->getUpdatedAt(),
+            $keys[7] => $this->getWidth(),
+            $keys[8] => $this->getHeight(),
+            $keys[9] => $this->getCreatedAt(),
+            $keys[10] => $this->getUpdatedAt(),
+            $keys[11] => $this->getUuid(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1043,10 +1190,19 @@ abstract class BasePDMedia extends BaseObject implements Persistent
                 $this->setSize($value);
                 break;
             case 7:
-                $this->setCreatedAt($value);
+                $this->setWidth($value);
                 break;
             case 8:
+                $this->setHeight($value);
+                break;
+            case 9:
+                $this->setCreatedAt($value);
+                break;
+            case 10:
                 $this->setUpdatedAt($value);
+                break;
+            case 11:
+                $this->setUuid($value);
                 break;
         } // switch()
     }
@@ -1079,8 +1235,11 @@ abstract class BasePDMedia extends BaseObject implements Persistent
         if (array_key_exists($keys[4], $arr)) $this->setFileName($arr[$keys[4]]);
         if (array_key_exists($keys[5], $arr)) $this->setExtension($arr[$keys[5]]);
         if (array_key_exists($keys[6], $arr)) $this->setSize($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setCreatedAt($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setUpdatedAt($arr[$keys[8]]);
+        if (array_key_exists($keys[7], $arr)) $this->setWidth($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setHeight($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setCreatedAt($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setUpdatedAt($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setUuid($arr[$keys[11]]);
     }
 
     /**
@@ -1099,8 +1258,11 @@ abstract class BasePDMedia extends BaseObject implements Persistent
         if ($this->isColumnModified(PDMediaPeer::FILE_NAME)) $criteria->add(PDMediaPeer::FILE_NAME, $this->file_name);
         if ($this->isColumnModified(PDMediaPeer::EXTENSION)) $criteria->add(PDMediaPeer::EXTENSION, $this->extension);
         if ($this->isColumnModified(PDMediaPeer::SIZE)) $criteria->add(PDMediaPeer::SIZE, $this->size);
+        if ($this->isColumnModified(PDMediaPeer::WIDTH)) $criteria->add(PDMediaPeer::WIDTH, $this->width);
+        if ($this->isColumnModified(PDMediaPeer::HEIGHT)) $criteria->add(PDMediaPeer::HEIGHT, $this->height);
         if ($this->isColumnModified(PDMediaPeer::CREATED_AT)) $criteria->add(PDMediaPeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(PDMediaPeer::UPDATED_AT)) $criteria->add(PDMediaPeer::UPDATED_AT, $this->updated_at);
+        if ($this->isColumnModified(PDMediaPeer::UUID)) $criteria->add(PDMediaPeer::UUID, $this->uuid);
 
         return $criteria;
     }
@@ -1170,8 +1332,11 @@ abstract class BasePDMedia extends BaseObject implements Persistent
         $copyObj->setFileName($this->getFileName());
         $copyObj->setExtension($this->getExtension());
         $copyObj->setSize($this->getSize());
+        $copyObj->setWidth($this->getWidth());
+        $copyObj->setHeight($this->getHeight());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
+        $copyObj->setUuid($this->getUuid());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1346,8 +1511,11 @@ abstract class BasePDMedia extends BaseObject implements Persistent
         $this->file_name = null;
         $this->extension = null;
         $this->size = null;
+        $this->width = null;
+        $this->height = null;
         $this->created_at = null;
         $this->updated_at = null;
+        $this->uuid = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
@@ -1416,6 +1584,32 @@ abstract class BasePDMedia extends BaseObject implements Persistent
         $this->modifiedColumns[] = PDMediaPeer::UPDATED_AT;
 
         return $this;
+    }
+
+    // uuid behavior
+    /**
+    * Create UUID if is NULL Uuid*/
+    public function preInsert(PropelPDO $con = NULL) {
+
+        if(is_null($this->getUuid())) {
+            $this->setUuid(\Ramsey\Uuid\Uuid::uuid4()->__toString());
+        } else {
+            $uuid = $this->getUuid();
+            if(!\Ramsey\Uuid\Uuid::isValid($uuid)) {
+                throw new \InvalidArgumentException('UUID: ' . $uuid . ' in not valid');
+                return false;
+            }
+        }
+        return true;
+    }
+    /**
+    * If permanent UUID, throw exception p_d_media.uuid*/
+    public function preUpdate(PropelPDO $con = NULL) {
+            $uuid = $this->getUuid();
+        if(!is_null($uuid) && !\Ramsey\Uuid\Uuid::isValid($uuid)) {
+            throw new \InvalidArgumentException("UUID: $uuid in not valid");
+        }
+            return true;
     }
 
 }

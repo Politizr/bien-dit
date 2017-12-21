@@ -51,19 +51,6 @@ class DocumentController extends Controller
     }
 
     /**
-     *
-     */
-    public function deleteDocumentImageAction(Request $request)
-    {
-        dump('deleteDocumentImageAction');
-
-        $file = $request->get('file');
-        dump($file);
-
-        return new JsonResponse(array('success' => true));
-    }
-
-    /**
      * Common document "check" validity
      * beta
      *
@@ -112,6 +99,24 @@ class DocumentController extends Controller
         if ($document->getPublished()) {
             throw new InconsistentDataException(sprintf('Document already published.'));
         }
+    }
+
+    /**
+     * Build-in Medium editor delete image XHR action
+     */
+    public function deleteDocumentImageAction(Request $request)
+    {
+        // @todo waiting for https://github.com/orthes/medium-editor-insert-plugin/pull/428 to be merged
+        // in stable tag version to manage media uuid actually used as "alt" image attribute.
+        
+        // retrieve media by filename
+        // example: http://politizr.beta/uploads/documents/5a391ed0c25a7.jpg
+        $file = $request->get('file');
+
+        $fileName = basename($file);
+        $this->get('politizr.functional.document')->removeMediaByFilename($fileName);
+
+        return new JsonResponse(array('success' => true));
     }
 
     /* ######################################################################################################## */

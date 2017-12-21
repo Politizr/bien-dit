@@ -1,11 +1,13 @@
 <?php
 namespace Politizr\FrontBundle\Lib\Functional;
 
-use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\DomCrawler\Crawler;
 
 use Politizr\Exception\InconsistentDataException;
 
 use Politizr\Constant\ObjectTypeConstants;
+use Politizr\Constant\PathConstants;
+use Politizr\Constant\DocumentConstants;
 use Politizr\Constant\ReputationConstants;
 use Politizr\Constant\ListingConstants;
 use Politizr\Constant\LocalizationConstants;
@@ -18,6 +20,7 @@ use Politizr\Model\PUser;
 
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
+use Politizr\Model\PDMediaQuery;
 use Politizr\Model\PDDCommentQuery;
 use Politizr\Model\PDRCommentQuery;
 use Politizr\Model\PUserQuery;
@@ -29,6 +32,8 @@ use Politizr\Model\PUFollowDDQuery;
 use Politizr\Model\PUFollowUQuery;
 use Politizr\Model\PEOperationQuery;
 use Politizr\Model\PCTopicQuery;
+
+use Politizr\FrontBundle\Lib\SimpleImage;
 
 /**
  * Functional service for document management.
@@ -612,15 +617,15 @@ class DocumentService
     /**
      * Create new media
      *
-     * @param File $file
+     * @param SimpleImage $image
      * @param string $uuid  document uuid
      * @param string $type document type
-     * @return
+     * @return PDMedia
      */
-    public function createMediaFromFileByDocUuid(File $file, $uuid, $type)
+    public function createMediaFromSimpleImageByDocUuid(SimpleImage $image, $uuid, $type)
     {
         // get reaction's associated debate
-        if (!$file || !$uuid) {
+        if (!$image || !$uuid) {
             throw new InconsistentDataException('File null');
         }
 
@@ -648,19 +653,107 @@ class DocumentService
         $media = $this->documentManager->createMedia(
             $debateId,
             $reactionId,
-            $file->getPath(),
-            $file->getFilename(),
-            $file->getExtension(),
-            $file->getSize()
+            $image->getPath(),
+            $image->getBasename(),
+            $image->getExtension(),
+            $image->getSize(),
+            $image->getWidth(),
+            $image->getHeight()
         );
 
         return $media;
+    }
+
+    /**
+     * Remove a Media object by basename
+     *
+     * @param string $basename
+     * @return boolean
+     */
+    public function removeMediaByFilename($basename)
+    {
+        $medias = PDMediaQuery::create()
+            ->filterByFileName($basename)
+            ->find();
+
+        if (count($medias) > 1) {
+            throw new InconsistentDataException(sprintf('Several medias with basename %s have been found, cancel deletion'), $basename);
+        } elseif (count($medias) == 1) {
+            $medias->delete();
+
+            return true;
+        }
+
+        return false;
     }
 
     /* ######################################################################################################## */
     /*                                CONTEXT DOCUMENT COMPUTING                                                */
     /* ######################################################################################################## */
     
+    /**
+     * Compute and return the main image for a document
+     * return fileName if it exists (BC), else get the image in the first div if it exists
+     *
+     * @return string $path
+     */
+    public function findMainImagePath(PDocumentInterface $document)
+    {
+        $fileName = null;
+        if ($document->getFileName()) {
+            // old behaviour
+            $fileName = $document->getFileName();
+        } else {
+            // parse document to find 1st image
+            // cf https://symfony.com/doc/2.8/components/dom_crawler.html
+            $crawler = new Crawler($document->getDescription());
+            $nbImg = $crawler->filter('img')->count();
+            if ($nbImg > 0) {
+                $imgSrc = $crawler->filter('img')->first()->attr('src');
+                $uuid = $crawler->filter('img')->first()->attr('uuid');
+
+                dump($imgSrc);
+                dump($uuid);
+
+                // extract relative path from src / apply only with local uploads
+                if ($uuid) {
+                    $fileName = basename($imgSrc);
+                    dump($fileName);
+
+                    // check image attribute
+                    $media = PDMediaQuery::create()->filterByUuid($uuid)->findOne();
+                    if ($media) {
+                        // min width required to be used as post illustration
+                        $width = $media->getWidth();
+                        if ($width < DocumentConstants::DOC_MAIN_IMAGE_MIN_WIDTH) {
+                            $fileName = null;
+                        }
+                    }
+                }
+            }
+        }
+
+        // file found
+        if ($fileName) {
+            switch ($document->getType()) {
+                case ObjectTypeConstants::TYPE_DEBATE:
+                    $uploadWebPath = PathConstants::DEBATE_UPLOAD_WEB_PATH;
+                    $path = $uploadWebPath.$fileName;
+                    break;
+                case ObjectTypeConstants::TYPE_REACTION:
+                    $uploadWebPath = PathConstants::REACTION_UPLOAD_WEB_PATH;
+                    $path = $uploadWebPath.$fileName;
+                    break;
+                default:
+                    throw new InconsistentDataException(sprintf('Object type %s not managed', $document->getType()));
+            }
+
+            dump($path);
+            return $path;
+        }
+
+        return null;
+    }
 
     /**
      * Manage linked object depending of the context of edition

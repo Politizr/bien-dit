@@ -49,6 +49,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
     private $router;
 
+    private $documentService;
     private $timelineService;
     private $userService;
 
@@ -62,7 +63,9 @@ class PolitizrDocumentExtension extends \Twig_Extension
      * @security.token_storage
      * @security.authorization_checker
      * @router
+     * @politizr.functional.document
      * @politizr.functional.timeline
+     * @politizr.functional.user
      * @form.factory
      * @politizr.tools.global
      * @logger
@@ -71,6 +74,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
         $securityTokenStorage,
         $securityAuthorizationChecker,
         $router,
+        $documentService,
         $timelineService,
         $userService,
         $formFactory,
@@ -82,6 +86,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
         $this->router = $router;
 
+        $this->documentService = $documentService;
         $this->timelineService = $timelineService;
         $this->userService = $userService;
 
@@ -103,6 +108,11 @@ class PolitizrDocumentExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
+            new \Twig_SimpleFilter(
+                'mainImagePath',
+                array($this, 'mainImagePath'),
+                array('is_safe' => array('html'))
+            ),
             new \Twig_SimpleFilter(
                 'image',
                 array($this, 'image'),
@@ -295,7 +305,25 @@ class PolitizrDocumentExtension extends \Twig_Extension
     /* ######################################################################################################## */
 
     /**
+     * Return main image path if image exists
+     *
+     * @param PDocumentInterface $document
+     * @param string $filterName
+     * @param boolean $email
+     * @return html
+     */
+    public function mainImagePath(PDocumentInterface $document)
+    {
+        // $this->logger->info('*** mainImagePath');
+        // $this->logger->info('$document = '.print_r($document, true));
+
+        $path = $this->documentService->findMainImagePath($document);
+        return $path;
+    }
+
+    /**
      * Load an <img> html tag with the image of document and apply it a filter.
+     * @todo: check if deprecated
      *
      * @param PDocumentInterface $document
      * @param string $filterName
@@ -304,8 +332,8 @@ class PolitizrDocumentExtension extends \Twig_Extension
      */
     public function image(\Twig_Environment $env, PDocumentInterface $document, $filterName = 'debate_header', $email = false)
     {
-        // // $this->logger->info('*** image');
-        // // $this->logger->info('$document = '.print_r($document, true));
+        // $this->logger->info('*** image');
+        // $this->logger->info('$document = '.print_r($document, true));
 
         $fileName = $document->getFileName();
         
@@ -352,8 +380,8 @@ class PolitizrDocumentExtension extends \Twig_Extension
      */
     public function nbViews(PDocumentInterface $document)
     {
-        // // $this->logger->info('*** nbViews');
-        // // $this->logger->info('$document = '.print_r($document, true));
+        // $this->logger->info('*** nbViews');
+        // $this->logger->info('$document = '.print_r($document, true));
 
         $nbViews = $document->getNbViews();
 
@@ -376,8 +404,8 @@ class PolitizrDocumentExtension extends \Twig_Extension
      */
     public function nbElectedPublications(\Twig_Environment $env, PDocumentInterface $document)
     {
-        // // $this->logger->info('*** nbElectedPublications');
-        // // $this->logger->info('$document = '.print_r($document, true));
+        // $this->logger->info('*** nbElectedPublications');
+        // $this->logger->info('$document = '.print_r($document, true));
 
         $nbElectedPublications = 0;
         switch ($document->getType()) {
@@ -506,8 +534,8 @@ class PolitizrDocumentExtension extends \Twig_Extension
      */
     public function nbComments(PDocumentInterface $document, $paragraphNo = null, $label = false)
     {
-        // // $this->logger->info('*** nbComments');
-        // // $this->logger->info('$document = '.print_r($document, true));
+        // $this->logger->info('*** nbComments');
+        // $this->logger->info('$document = '.print_r($document, true));
 
         $nbComments = $document->countComments(true, $paragraphNo);
 
@@ -543,8 +571,8 @@ class PolitizrDocumentExtension extends \Twig_Extension
      */
     public function statsComments(PDocumentInterface $document)
     {
-        // // $this->logger->info('*** statsComments');
-        // // $this->logger->info('$document = '.print_r($document, true));
+        // $this->logger->info('*** statsComments');
+        // $this->logger->info('$document = '.print_r($document, true));
 
         $nbComments = $document->countComments(true);
 
@@ -622,8 +650,8 @@ class PolitizrDocumentExtension extends \Twig_Extension
      */
     public function readingTime(PDocumentInterface $document)
     {
-        // // $this->logger->info('*** readingTime');
-        // // $this->logger->info('$document = '.print_r($document, true));
+        // $this->logger->info('*** readingTime');
+        // $this->logger->info('$document = '.print_r($document, true));
 
         $nbWords = $this->globalTools->countWords($document->getDescription());
 
@@ -650,8 +678,8 @@ class PolitizrDocumentExtension extends \Twig_Extension
      */
     public function statsAvailable(PDocumentInterface $document)
     {
-        // // $this->logger->info('*** statsAvailable');
-        // // $this->logger->info('$document = '.print_r($document, true));
+        // $this->logger->info('*** statsAvailable');
+        // $this->logger->info('$document = '.print_r($document, true));
 
         $today = new \DateTime();
         if ($publishedAt = $document->getPublishedAt()) {
@@ -675,8 +703,8 @@ class PolitizrDocumentExtension extends \Twig_Extension
      */
     public function localizations(\Twig_Environment $env, PDocumentInterface $document, $inMail = false)
     {
-        // // $this->logger->info('*** localizations');
-        // // $this->logger->info('$document = '.print_r($document, true));
+        // $this->logger->info('*** localizations');
+        // $this->logger->info('$document = '.print_r($document, true));
 
         $localizations = $document->getPLocalizations();
 
@@ -730,10 +758,10 @@ class PolitizrDocumentExtension extends \Twig_Extension
      */
     public function excerpt($text, $nbParagraph = 1, $onlyP = false)
     {
-        // // $this->logger->info('*** excerpt');
-        // // $this->logger->info('$document = '.print_r($text, true));
-        // // $this->logger->info('$nbParagraph = '.print_r($nbParagraph, true));
-        // // $this->logger->info('$onlyP = '.print_r($onlyP, true));
+        // $this->logger->info('*** excerpt');
+        // $this->logger->info('$document = '.print_r($text, true));
+        // $this->logger->info('$nbParagraph = '.print_r($nbParagraph, true));
+        // $this->logger->info('$onlyP = '.print_r($onlyP, true));
 
         // Paragraphs explode
         $paragraphs = $this->globalTools->explodeParagraphs($text, $onlyP);
@@ -782,8 +810,8 @@ class PolitizrDocumentExtension extends \Twig_Extension
      */
     public function linkParentDocument(\Twig_Environment $env, PDCommentInterface $comment)
     {
-        // // $this->logger->info('*** linkParentDocument');
-        // // $this->logger->info('$comment = '.print_r($comment, true));
+        // $this->logger->info('*** linkParentDocument');
+        // $this->logger->info('$comment = '.print_r($comment, true));
 
         switch ($comment->getPDocumentType()) {
             case ObjectTypeConstants::TYPE_DEBATE:
@@ -852,8 +880,8 @@ class PolitizrDocumentExtension extends \Twig_Extension
      */
     public function linkSubscribeDebate(\Twig_Environment $env, PDDebate $debate)
     {
-        // // $this->logger->info('*** linkSubscribeDebate');
-        // // $this->logger->info('$debate = '.print_r($debate, true));
+        // $this->logger->info('*** linkSubscribeDebate');
+        // $this->logger->info('$debate = '.print_r($debate, true));
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -899,8 +927,8 @@ class PolitizrDocumentExtension extends \Twig_Extension
      */
     public function linkCharte(\Twig_Environment $env, PDocumentInterface $document)
     {
-        // // $this->logger->info('*** linkCharte');
-        // // $this->logger->info('$document = '.print_r($document, true));
+        // $this->logger->info('*** linkCharte');
+        // $this->logger->info('$document = '.print_r($document, true));
 
         $uuid = null;
         if ($topic = $document->getPCTopic()) {
@@ -928,8 +956,8 @@ class PolitizrDocumentExtension extends \Twig_Extension
      */
     public function followersDebate(\Twig_Environment $env, PDDebate $debate)
     {
-        // // $this->logger->info('*** followersDebate');
-        // // $this->logger->info('$debate = '.print_r($debate, true));
+        // $this->logger->info('*** followersDebate');
+        // $this->logger->info('$debate = '.print_r($debate, true));
 
         $nbC = 0;
         $nbQ = 0;
@@ -964,8 +992,8 @@ class PolitizrDocumentExtension extends \Twig_Extension
      */
     public function footer(\Twig_Environment $env, PDocumentInterface $document)
     {
-        // // $this->logger->info('*** footer');
-        // // $this->logger->info('$document = '.print_r($document, true));
+        // $this->logger->info('*** footer');
+        // $this->logger->info('$document = '.print_r($document, true));
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -995,8 +1023,8 @@ class PolitizrDocumentExtension extends \Twig_Extension
      */
     public function bookmark(\Twig_Environment $env, PDocumentInterface $document)
     {
-        // // $this->logger->info('*** bookmark');
-        // // $this->logger->info('$document = '.print_r($document, true));
+        // $this->logger->info('*** bookmark');
+        // $this->logger->info('$document = '.print_r($document, true));
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
@@ -1334,8 +1362,8 @@ class PolitizrDocumentExtension extends \Twig_Extension
      */
     public function timelineRow(\Twig_Environment $env, TimelineRow $timelineRow, $withContext = true)
     {
-        // // $this->logger->info('*** timelineRow');
-        // // $this->logger->info('$timelineRow = '.print_r($timelineRow, true));
+        // $this->logger->info('*** timelineRow');
+        // $this->logger->info('$timelineRow = '.print_r($timelineRow, true));
 
         $html = '';
         $this->timelineService->setTemplatingService($env);
@@ -1487,7 +1515,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
     public function publicationRow(\Twig_Environment $env, Publication $publicationRow, $withContext = true)
     {
         // $this->logger->info('*** publicationRow');
-        // // $this->logger->info('$publicationRow = '.print_r($publicationRow, true));
+        // $this->logger->info('$publicationRow = '.print_r($publicationRow, true));
 
         $html = '';
         $this->timelineService->setTemplatingService($env);

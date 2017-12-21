@@ -21,8 +21,6 @@ class DocumentValidationListener
         $type    = $event->getType();
         $request = $event->getRequest();
 
-        dump('onValidate');
-
         // do some validations
         // throw new ValidationException('Sorry! Always false.');
     }

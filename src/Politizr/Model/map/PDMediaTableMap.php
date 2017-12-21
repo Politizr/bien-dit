@@ -49,8 +49,11 @@ class PDMediaTableMap extends TableMap
         $this->addColumn('file_name', 'FileName', 'VARCHAR', false, 150, null);
         $this->addColumn('extension', 'Extension', 'VARCHAR', false, 150, null);
         $this->addColumn('size', 'Size', 'INTEGER', false, null, null);
+        $this->addColumn('width', 'Width', 'INTEGER', false, null, null);
+        $this->addColumn('height', 'Height', 'INTEGER', false, null, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
+        $this->addColumn('uuid', 'Uuid', 'CHAR', true, 36, null);
         // validators
     } // initialize()
 
@@ -80,6 +83,13 @@ class PDMediaTableMap extends TableMap
             'query_cache' =>  array (
   'backend' => 'apc',
   'lifetime' => 3600,
+),
+            'uuid' =>  array (
+  'name' => 'uuid',
+  'version' => '4',
+  'permanent' => 'false',
+  'required' => 'true',
+  'unique' => 'true',
 ),
         );
     } // getBehaviors()

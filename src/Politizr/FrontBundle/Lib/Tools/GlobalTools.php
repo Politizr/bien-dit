@@ -160,7 +160,7 @@ class GlobalTools
      */
     public function uploadXhrImage(Request $request, $inputName, $destPath, $maxWidth, $maxHeight, $sizeLimit = 20971520, $mimeTypes = 'image/*')
     {
-        $this->logger->info('*** uploadXhrImage');
+        // $this->logger->info('*** uploadXhrImage');
 
         $myRequestedFile = $request->files->get($inputName);
         if ($myRequestedFile === null) {
@@ -192,7 +192,7 @@ class GlobalTools
 
             //move the uploaded file to uploads folder;
             $movedFile = $myRequestedFile->move($destPath, $fileName);
-            $this->logger->info('$movedFile = '.print_r($movedFile, true));
+            // $this->logger->info('$movedFile = '.print_r($movedFile, true));
         }
 
         // Resize de la photo
@@ -204,16 +204,19 @@ class GlobalTools
     /**
      * Resize an image
      *
-     * @param
-     * @return boolean
+     * @param string $absolutePath
+     * @param int $maxWidth
+     * @param int $maxHeight
+     * @return SimpleImage
      */
     public function resizeImage($absolutePath, $maxWidth, $maxHeight)
     {
+        // $this->logger->info('*** resizeImage');
+
         // Resize de la photo
         $resized = false;
         $image = new SimpleImage();
         $image->load($absolutePath);
-        dump($image);
         if ($width = $image->getWidth() > $maxWidth) {
             $image->resizeToWidth($maxWidth);
             $resized = true;
@@ -226,7 +229,7 @@ class GlobalTools
             $image->save($absolutePath);
         }
 
-        return $resized;
+        return $image;
     }
 
     /**

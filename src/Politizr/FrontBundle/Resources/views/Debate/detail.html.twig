@@ -97,7 +97,7 @@
                     {% for paragraph in paragraphs %}
                         <div id="p-{{ loop.index }}" class="paragraph">
                             {% include 'PolitizrFrontBundle:Comment:_paragraph.html.twig' with { 'document': debate, 'noParagraph': loop.index } only %}
-                            {{ paragraph | purify('custom') }}
+                            {{ paragraph|raw }}
                         </div>
                     {% endfor %}
                     {% if not app.user %}

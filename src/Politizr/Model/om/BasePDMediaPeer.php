@@ -31,13 +31,13 @@ abstract class BasePDMediaPeer
     const TM_CLASS = 'Politizr\\Model\\map\\PDMediaTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 9;
+    const NUM_COLUMNS = 12;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 9;
+    const NUM_HYDRATE_COLUMNS = 12;
 
     /** the column name for the id field */
     const ID = 'p_d_media.id';
@@ -60,11 +60,20 @@ abstract class BasePDMediaPeer
     /** the column name for the size field */
     const SIZE = 'p_d_media.size';
 
+    /** the column name for the width field */
+    const WIDTH = 'p_d_media.width';
+
+    /** the column name for the height field */
+    const HEIGHT = 'p_d_media.height';
+
     /** the column name for the created_at field */
     const CREATED_AT = 'p_d_media.created_at';
 
     /** the column name for the updated_at field */
     const UPDATED_AT = 'p_d_media.updated_at';
+
+    /** the column name for the uuid field */
+    const UUID = 'p_d_media.uuid';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -85,12 +94,12 @@ abstract class BasePDMediaPeer
      * e.g. PDMediaPeer::$fieldNames[PDMediaPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'PDDebateId', 'PDReactionId', 'Path', 'FileName', 'Extension', 'Size', 'CreatedAt', 'UpdatedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pDDebateId', 'pDReactionId', 'path', 'fileName', 'extension', 'size', 'createdAt', 'updatedAt', ),
-        BasePeer::TYPE_COLNAME => array (PDMediaPeer::ID, PDMediaPeer::P_D_DEBATE_ID, PDMediaPeer::P_D_REACTION_ID, PDMediaPeer::PATH, PDMediaPeer::FILE_NAME, PDMediaPeer::EXTENSION, PDMediaPeer::SIZE, PDMediaPeer::CREATED_AT, PDMediaPeer::UPDATED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_D_DEBATE_ID', 'P_D_REACTION_ID', 'PATH', 'FILE_NAME', 'EXTENSION', 'SIZE', 'CREATED_AT', 'UPDATED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'p_d_debate_id', 'p_d_reaction_id', 'path', 'file_name', 'extension', 'size', 'created_at', 'updated_at', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'PDDebateId', 'PDReactionId', 'Path', 'FileName', 'Extension', 'Size', 'Width', 'Height', 'CreatedAt', 'UpdatedAt', 'Uuid', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'pDDebateId', 'pDReactionId', 'path', 'fileName', 'extension', 'size', 'width', 'height', 'createdAt', 'updatedAt', 'uuid', ),
+        BasePeer::TYPE_COLNAME => array (PDMediaPeer::ID, PDMediaPeer::P_D_DEBATE_ID, PDMediaPeer::P_D_REACTION_ID, PDMediaPeer::PATH, PDMediaPeer::FILE_NAME, PDMediaPeer::EXTENSION, PDMediaPeer::SIZE, PDMediaPeer::WIDTH, PDMediaPeer::HEIGHT, PDMediaPeer::CREATED_AT, PDMediaPeer::UPDATED_AT, PDMediaPeer::UUID, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'P_D_DEBATE_ID', 'P_D_REACTION_ID', 'PATH', 'FILE_NAME', 'EXTENSION', 'SIZE', 'WIDTH', 'HEIGHT', 'CREATED_AT', 'UPDATED_AT', 'UUID', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'p_d_debate_id', 'p_d_reaction_id', 'path', 'file_name', 'extension', 'size', 'width', 'height', 'created_at', 'updated_at', 'uuid', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, )
     );
 
     /**
@@ -100,12 +109,12 @@ abstract class BasePDMediaPeer
      * e.g. PDMediaPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PDDebateId' => 1, 'PDReactionId' => 2, 'Path' => 3, 'FileName' => 4, 'Extension' => 5, 'Size' => 6, 'CreatedAt' => 7, 'UpdatedAt' => 8, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pDDebateId' => 1, 'pDReactionId' => 2, 'path' => 3, 'fileName' => 4, 'extension' => 5, 'size' => 6, 'createdAt' => 7, 'updatedAt' => 8, ),
-        BasePeer::TYPE_COLNAME => array (PDMediaPeer::ID => 0, PDMediaPeer::P_D_DEBATE_ID => 1, PDMediaPeer::P_D_REACTION_ID => 2, PDMediaPeer::PATH => 3, PDMediaPeer::FILE_NAME => 4, PDMediaPeer::EXTENSION => 5, PDMediaPeer::SIZE => 6, PDMediaPeer::CREATED_AT => 7, PDMediaPeer::UPDATED_AT => 8, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_D_DEBATE_ID' => 1, 'P_D_REACTION_ID' => 2, 'PATH' => 3, 'FILE_NAME' => 4, 'EXTENSION' => 5, 'SIZE' => 6, 'CREATED_AT' => 7, 'UPDATED_AT' => 8, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_d_debate_id' => 1, 'p_d_reaction_id' => 2, 'path' => 3, 'file_name' => 4, 'extension' => 5, 'size' => 6, 'created_at' => 7, 'updated_at' => 8, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PDDebateId' => 1, 'PDReactionId' => 2, 'Path' => 3, 'FileName' => 4, 'Extension' => 5, 'Size' => 6, 'Width' => 7, 'Height' => 8, 'CreatedAt' => 9, 'UpdatedAt' => 10, 'Uuid' => 11, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'pDDebateId' => 1, 'pDReactionId' => 2, 'path' => 3, 'fileName' => 4, 'extension' => 5, 'size' => 6, 'width' => 7, 'height' => 8, 'createdAt' => 9, 'updatedAt' => 10, 'uuid' => 11, ),
+        BasePeer::TYPE_COLNAME => array (PDMediaPeer::ID => 0, PDMediaPeer::P_D_DEBATE_ID => 1, PDMediaPeer::P_D_REACTION_ID => 2, PDMediaPeer::PATH => 3, PDMediaPeer::FILE_NAME => 4, PDMediaPeer::EXTENSION => 5, PDMediaPeer::SIZE => 6, PDMediaPeer::WIDTH => 7, PDMediaPeer::HEIGHT => 8, PDMediaPeer::CREATED_AT => 9, PDMediaPeer::UPDATED_AT => 10, PDMediaPeer::UUID => 11, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'P_D_DEBATE_ID' => 1, 'P_D_REACTION_ID' => 2, 'PATH' => 3, 'FILE_NAME' => 4, 'EXTENSION' => 5, 'SIZE' => 6, 'WIDTH' => 7, 'HEIGHT' => 8, 'CREATED_AT' => 9, 'UPDATED_AT' => 10, 'UUID' => 11, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'p_d_debate_id' => 1, 'p_d_reaction_id' => 2, 'path' => 3, 'file_name' => 4, 'extension' => 5, 'size' => 6, 'width' => 7, 'height' => 8, 'created_at' => 9, 'updated_at' => 10, 'uuid' => 11, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, )
     );
 
     /**
@@ -186,8 +195,11 @@ abstract class BasePDMediaPeer
             $criteria->addSelectColumn(PDMediaPeer::FILE_NAME);
             $criteria->addSelectColumn(PDMediaPeer::EXTENSION);
             $criteria->addSelectColumn(PDMediaPeer::SIZE);
+            $criteria->addSelectColumn(PDMediaPeer::WIDTH);
+            $criteria->addSelectColumn(PDMediaPeer::HEIGHT);
             $criteria->addSelectColumn(PDMediaPeer::CREATED_AT);
             $criteria->addSelectColumn(PDMediaPeer::UPDATED_AT);
+            $criteria->addSelectColumn(PDMediaPeer::UUID);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.p_d_debate_id');
@@ -196,8 +208,11 @@ abstract class BasePDMediaPeer
             $criteria->addSelectColumn($alias . '.file_name');
             $criteria->addSelectColumn($alias . '.extension');
             $criteria->addSelectColumn($alias . '.size');
+            $criteria->addSelectColumn($alias . '.width');
+            $criteria->addSelectColumn($alias . '.height');
             $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
+            $criteria->addSelectColumn($alias . '.uuid');
         }
     }
 

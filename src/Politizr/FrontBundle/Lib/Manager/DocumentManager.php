@@ -2174,15 +2174,19 @@ GROUP BY p_d_debate_id
     }
 
     /**
-     * Create a new PDReaction associated with userId, debateId and optionnaly parentId
+     * Create a new PDMedia
      *
-     * @param int $userId
      * @param int $debateId
-     * @param int $parentId
-     * @param int $topicId
-     * @return PDReaction
+     * @param int $reactionId
+     * @param string $path
+     * @param string $fileName
+     * @param string $extension
+     * @param int $size
+     * @param int $width
+     * @param int $height
+     * @return PDMedia
      */
-    public function createMedia($debateId, $reactionId, $path, $fileName, $extension, $size)
+    public function createMedia($debateId, $reactionId, $path, $fileName, $extension, $size, $width, $height)
     {
         $media = new PDMedia();
 
@@ -2192,6 +2196,8 @@ GROUP BY p_d_debate_id
         $media->setFileName($fileName);
         $media->setExtension($extension);
         $media->setSize($size);
+        $media->setWidth($width);
+        $media->setHeight($height);
 
         $media->save();
 

@@ -65,7 +65,8 @@
         "lexik/maintenance-bundle": "^2.0",
         "eko/feedbundle": "^1.2",
         "algolia/algoliasearch-client-php": "^1.18",
-        "oneup/uploader-bundle": "^1.9"
+        "oneup/uploader-bundle": "^1.9",
+        "nelmio/security-bundle": "^2.4"
     },
     "require-dev": {
         "sensio/generator-bundle": "~3.0",

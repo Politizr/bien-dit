@@ -30,7 +30,7 @@ $(function () {
         editor: descriptionEditor,
         addons: {
             images: {
-                deleteScript: $('#postText').attr('delete'), // (string) A relative path to a delete script
+                deleteScript: $('#postText').attr('delete'),
                 fileUploadOptions: { // (object) File upload configuration. See https://github.com/blueimp/jQuery-File-Upload/wiki/Options
                     url: $('#postText').attr('path'),
                     acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i, // (regexp) Regexp of accepted file types
@@ -38,14 +38,76 @@ $(function () {
                     formData: {
                         uuid: $('#formDebateUpdate').attr('uuid'),
                         type: $('#formDebateUpdate').attr('type')
-                    },
+                    }
                     // native jquery resize not supported cf https://github.com/orthes/medium-editor-insert-plugin/issues/288
                     // disableImageResize: false,
+                },
+                styles: {
+                    wide: {
+                        label: '<span class="fa fa-align-justify"></span>',
+                        added: function (el) {
+                            triggerSaveDocument();
+                        },
+                        removed: function (el) {
+                            triggerSaveDocument();
+                        }
+                    },
+                    left: {
+                        label: '<span class="fa fa-align-left"></span>',
+                        added: function (el) {
+                            triggerSaveDocument();
+                        },
+                        removed: function (el) {
+                            triggerSaveDocument();
+                        }
+                    },
+                    right: {
+                        label: '<span class="fa fa-align-right"></span>',
+                        added: function (el) {
+                            triggerSaveDocument();
+                        },
+                        removed: function (el) {
+                            triggerSaveDocument();
+                        }
+                    },
+                    grid: {
+                        label: '<span class="fa fa-th"></span>',
+                        added: function (el) {
+                            triggerSaveDocument();
+                        },
+                        removed: function (el) {
+                            triggerSaveDocument();
+                        }
+                    }
+                },
+                captions: true,
+                captionPlaceholder: 'Légende de l\'image',
+                actions: {
+                    remove: {
+                        label: '<span class="fa fa-times"></span>',
+                        clicked: function (el) {
+                            console.log('actions.remove.clicked');
+
+                            var $event = $.Event('keydown');
+                            $event.which = 8;
+                            $(document).trigger($event);
+
+                            el.remove();
+                            triggerSaveDocument();
+                        }
+                    }
+                },
+                messages: {
+                    acceptFileTypesError: 'Ce format de fichier n\'est pas autorisé: ',
+                    maxFileSizeError: 'Ce fichier est trop gros: '
                 },
                 uploadCompleted: function (el, data) {
                     console.log('uploadCompleted');
                     console.log(el);
                     console.log(data);
+
+                    el.find("img").attr('uuid', data.result['media_uuid']);
+                    triggerSaveDocument();
                 },
                 uploadFailed: function (uploadErrors, data) {
                     console.log('uploadFailed');
