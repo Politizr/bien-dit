@@ -6,10 +6,10 @@
 function loadFbInsights() {
     // console.log('*** loadFbInsights');
 
-    var targetElement = $('.statFB');
-    var localLoader = $('.statFB').find('.ajaxLoader').first();
-    var uuid = $('.statFB').attr('uuid');
-    var type = $('.statFB').attr('type');
+    var targetElement = $('.activeStat');
+    var localLoader = $('.activeStat').find('.ajaxLoader').first();
+    var uuid = $('.activeStat').attr('uuid');
+    var type = $('.activeStat').attr('type');
 
     return fbInsights(targetElement, localLoader, uuid, type);
 }

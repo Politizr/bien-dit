@@ -9,7 +9,7 @@
 <div class="statViews"><i class="icon-graph"></i>{{ document | nbViews }}</div>
 <div class="statComments"><i class="icon-comment"></i>{{ document | statsComments }}</div>
 {% if facebook %}
-    <div class="statFB withLoaderInside" uuid="{{ document.uuid }}" type="{{ document.type }}">
+    <div class="statFB activeStat withLoaderInside" uuid="{{ document.uuid }}" type="{{ document.type }}">
         {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
     </div>
 {% elseif document.fbAdId %}
