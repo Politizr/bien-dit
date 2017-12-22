@@ -2,10 +2,10 @@
 
 /**
  * Data object containing the SQL and PHP code to migrate the database
- * up to version 1513591151.
- * Generated on 2017-12-18 10:59:11 by lionel
+ * up to version 1513938080.
+ * Generated on 2017-12-22 11:21:20 by lionel
  */
-class PropelMigration_1513591151
+class PropelMigration_1513938080
 {
 
     public function preUp($manager)
@@ -51,9 +51,13 @@ CREATE TABLE `p_d_media`
     `file_name` VARCHAR(150),
     `extension` VARCHAR(150),
     `size` INTEGER,
+    `width` INTEGER,
+    `height` INTEGER,
     `created_at` DATETIME,
     `updated_at` DATETIME,
+    `uuid` CHAR(36) NOT NULL,
     PRIMARY KEY (`id`),
+    UNIQUE INDEX `uuid_uuid_unique` (`uuid`(36)),
     INDEX `p_d_media_FI_1` (`p_d_debate_id`),
     INDEX `p_d_media_FI_2` (`p_d_reaction_id`),
     CONSTRAINT `p_d_media_FK_1`

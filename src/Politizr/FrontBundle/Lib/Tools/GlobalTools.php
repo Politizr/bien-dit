@@ -2,9 +2,8 @@
 namespace Politizr\FrontBundle\Lib\Tools;
 
 use Symfony\Component\HttpFoundation\Request;
-
 use Symfony\Component\Filesystem\Filesystem;
-
+use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Validator\Constraints\Image;
 
 use GuzzleHttp;
@@ -259,8 +258,6 @@ class GlobalTools
 
     /**
      * Explode HTML text in an array of containing all the paragraphs
-     * http://stackoverflow.com/questions/8757826/i-need-to-split-text-delimited-by-paragraph-tag
-     * http://stackoverflow.com/questions/7509774/php-explode-string-by-html-tag
      *
      * @param string $htmlText
      * @param boolean $onlyP Extract only <p></p> elements
@@ -268,36 +265,23 @@ class GlobalTools
      */
     public function explodeParagraphs($htmlText, $onlyP = false)
     {
-        // $htmlText = str_replace('</p>', '', $htmlText);
-        // $paragraphs = explode('<p>', $htmlText);
-        // array_shift($paragraphs);
-
         if (empty($htmlText)) {
             return array();
         }
 
-        // // $dom = new \DOMDocument('1.0', 'UTF-8');
-        // $dom = new \DOMDocument("4.0", "utf-8");
-        // // $dom->loadHTML($htmlText);
-        // $dom->loadHTML(mb_convert_encoding($htmlText, 'HTML-ENTITIES', 'UTF-8'));
-        // $xPath = new \DOMXPath($dom);
-        // $entries = $xPath->evaluate("//p|//h1|//h2|//blockquote|//ul//li");
-        // $paragraphs = array();
-        // foreach ($entries as $entry) {
-        //     dump($entry->nodeValue);
-        //     $paragraphs[] = '<' . $entry->tagName . '>' . $entry->nodeValue .  '</' . $entry->tagName . '>';
-        // }
-
         $paragraphs = array();
-        $count = preg_match_all('/<p[^>]*>(.*?)<\/p>|<div[^>]*>(.*?)<\/div>|<h\d[^>]*>(.*?)<\/h\d>|<ul[^>]*>(.*?)<\/ul>|<blockquote[^>]*>(.*?)<\/blockquote>|<iframe[^>]*>(.*?)<\/iframe>/is', $htmlText, $matches);
-        for ($i = 0; $i < $count; ++$i) {
-            if (!$onlyP) {
-                $paragraphs[] = $matches[0][$i];
-            } else {
-                if (!empty($matches[1][$i])) {
-                    $paragraphs[] = '<p>'.$matches[1][$i].'</p>';
-                }
-            }
+        $crawler = new Crawler($htmlText);
+
+        $rule = 'body > *';
+        if ($onlyP) {
+            $rule = 'body > p';
+        }
+
+        $nodes = $crawler->filter($rule);
+        foreach ($nodes as $node) {
+            // Add to do this shit > https://github.com/symfony/symfony/issues/18609#issuecomment-212952371
+            dump($node->ownerDocument->saveHtml($node));
+            $paragraphs[] = $node->ownerDocument->saveHtml($node);
         }
 
         return $paragraphs;

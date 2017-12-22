@@ -25,6 +25,7 @@ var descriptionEditor = new MediumEditor('.editable.description', {
     autoLink:true
 });
 
+// cf. https://github.com/orthes/medium-editor-insert-plugin/wiki/v2.x-Configuration
 $(function () {
     $('.editable.description').mediumInsert({
         editor: descriptionEditor,

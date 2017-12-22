@@ -712,14 +712,9 @@ class DocumentService
                 $imgSrc = $crawler->filter('img')->first()->attr('src');
                 $uuid = $crawler->filter('img')->first()->attr('uuid');
 
-                dump($imgSrc);
-                dump($uuid);
-
                 // extract relative path from src / apply only with local uploads
                 if ($uuid) {
                     $fileName = basename($imgSrc);
-                    dump($fileName);
-
                     // check image attribute
                     $media = PDMediaQuery::create()->filterByUuid($uuid)->findOne();
                     if ($media) {
@@ -747,8 +742,6 @@ class DocumentService
                 default:
                     throw new InconsistentDataException(sprintf('Object type %s not managed', $document->getType()));
             }
-
-            dump($path);
             return $path;
         }
 
