@@ -280,7 +280,6 @@ class GlobalTools
         $nodes = $crawler->filter($rule);
         foreach ($nodes as $node) {
             // Add to do this shit > https://github.com/symfony/symfony/issues/18609#issuecomment-212952371
-            dump($node->ownerDocument->saveHtml($node));
             $paragraphs[] = $node->ownerDocument->saveHtml($node);
         }
 
