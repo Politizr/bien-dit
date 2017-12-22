@@ -28,7 +28,7 @@
                 <span class="postTitle">{{ parent.title }}</span>
                 {% for paragraph in paragraphs %}
                     <div class="paragraph">
-                        {{ paragraph | purify }}
+                        {{ paragraph | purify('custom') }}
                     </div>
                 {% endfor %}
             </div>

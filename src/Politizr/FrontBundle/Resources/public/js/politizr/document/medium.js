@@ -36,8 +36,8 @@ $(function () {
                     acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i, // (regexp) Regexp of accepted file types
                     maxFileSize: 5000000, // 5MB
                     formData: {
-                        uuid: $('#formDebateUpdate').attr('uuid'),
-                        type: $('#formDebateUpdate').attr('type')
+                        uuid: uuid,
+                        type: type
                     }
                     // native jquery resize not supported cf https://github.com/orthes/medium-editor-insert-plugin/issues/288
                     // disableImageResize: false,
@@ -116,6 +116,43 @@ $(function () {
 
                     $('#infoBoxHolder .boxError .notifBoxText').html(uploadErrors);
                     $('#infoBoxHolder .boxError').show();
+                }
+            },
+            embeds: {
+                label: '<span class="fa fa-youtube-play"></span>',
+                placeholder: 'Copiez-collez ici un lien d\'une vidéo issu de YouTube, Vimeo, Facebook, Twitter ou Instagram et appuyez sur "Entrée"',
+                captions: true,
+                captionPlaceholder: 'Légende',
+                oembedProxy: null,
+                styles: {
+                    wide: {
+                        label: '<span class="fa fa-align-justify"></span>',
+                        added: function ($el) {
+                            triggerSaveDocument();
+                        },
+                        removed: function ($el) {
+                            triggerSaveDocument();
+                        }
+                    },
+                    left: {
+                        label: '<span class="fa fa-align-left"></span>'
+                    },
+                    right: {
+                        label: '<span class="fa fa-align-right"></span>'
+                    }
+                },
+                actions: {
+                    remove: {
+                        label: '<span class="fa fa-times"></span>',
+                        clicked: function ($el) {
+                            var $event = $.Event('keydown');
+                            
+                            $event.which = 8;
+                            $(document).trigger($event);   
+                            
+                            triggerSaveDocument();
+                        }
+                    }
                 }
             }
         }

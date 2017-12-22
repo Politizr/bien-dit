@@ -16,7 +16,7 @@ function dataRequest() {
     return triggerSaveDocument();
 }
 
-$('#debate_title, #reaction_title, #debate_copyright, #reaction_copyright, .editable.description').on('keyup', delayRequest);
+$('#debate_title, #reaction_title, .editable.description').on('keyup', delayRequest);
 
 /**
  *

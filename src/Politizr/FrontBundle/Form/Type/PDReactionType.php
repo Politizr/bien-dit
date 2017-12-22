@@ -31,14 +31,6 @@ class PDReactionType extends AbstractType
         $builder->add('description', 'hidden', array(
             'required' => true,
         ));
-
-        $builder->add('file_name', 'hidden', array(
-            'required' => false,
-        ));
-
-        $builder->add('copyright', 'textarea', array(
-            'required' => false,
-        ));
     }
 
     /**

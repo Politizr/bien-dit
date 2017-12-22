@@ -40,15 +40,15 @@ use Politizr\FrontBundle\Form\Type\PDDebateLocalizationType;
  */
 class DocumentController extends Controller
 {
-    /**
-     * Détail débat
-     * beta
-     */
-    public function testDropzoneAction()
-    {
-        return $this->render('PolitizrFrontBundle:Debate:testDropzone.html.twig', array(
-        ));
-    }
+//     /**
+//      * Détail débat
+//      * beta
+//      */
+//     public function testUploadAction()
+//     {
+//         return $this->render('PolitizrFrontBundle:Debate:testUpload.html.twig', array(
+//         ));
+//     }
 
     /**
      * Common document "check" validity

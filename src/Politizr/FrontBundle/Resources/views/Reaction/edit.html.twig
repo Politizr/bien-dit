@@ -1,6 +1,31 @@
 {# beta #}
 {% extends 'PolitizrFrontBundle::layoutConnected.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+
+    <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/medium-editor-insert-plugin.min.css') }}">
+
+    {# needed > /!\ medium plugin not compatible with imgLiquid #}
+    <style>
+        #postText img, .parentPost img {
+            max-width:100%;
+            max-height:100%;
+        }
+    </style>
+{% endblock %}
+
+{% block javascriptHeader %}
+    {{ parent() }}
+
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/medium-editor.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/handlebars-v4.0.11.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery-sortable-min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.ui.widget.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.iframe-transport.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.fileupload.js') }}"></script>
+{% endblock %}
+
 {% block title %}Éditer une réponse - {{ parent() }}{% endblock title %}
 
 {% block bodyClass %}
@@ -87,45 +112,22 @@
             </div>
         </div>
         <div class="editionPostCard">
-            {% set uploadAction = path('XhrGeneric', {'xhrRoute': constant('Politizr\\Constant\\XhrConstants::ROUTE_DOCUMENT_PHOTO_UPLOAD'), 'xhrService': 'document', 'xhrMethod': 'documentPhotoUpload', 'xhrType': constant('Politizr\\Constant\\XhrConstants::RETURN_URL')}) %}
-            <form method="POST" action="{{ uploadAction }}" name="debate" id="formReactionUpdate" class="autoSubmitForm" enctype="multipart/form-data">
+            <form method="POST" name="debate" id="formReactionUpdate" class="autoSubmitForm" uuid="{{ reaction.uuid }}" type="{{ constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION') }}">
                 <div class="formBlock">
                     <div class="formBlockHeader">
                         <label>Titre</label>
                     </div>
-                    {{ form_widget(form.title, { 'attr': {'placeholder': 'Donnez un titre à votre réponse'}}) }}
-                </div>
-                <div class="formBlock">
-                    <div class="formBlockHeader">
-                        <label>Illustration</label>
-                    </div>
-                    <div class="postIllustration">
-                        <div id="uploadedPhoto">
-                            {% if reaction.fileName %}
-                                {{ reaction | image('reaction_header', false) }}
-                            {% endif %}
-                        </div>
-                        <label for="fileName"><i class="icon-camera"></i></label>
-                    </div>
-                    <div class="uploadIllustration">
-                        <input type="file" name="fileName" id="fileName">
-                        <input type="hidden" name="uuid" value="{{ reaction.uuid }}">
-                        <input type="hidden" name="type" value="{{ constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION') }}">
-                        <label for="fileName">Sélectionner une image d'illustration</label>
-                        <a class="photoDelete" action="fileDelete" uuid="{{ reaction.uuid }}" type="{{ constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION') }}"><i class="icon-remove"></i>Supprimer</a>
-                        {{ form_widget(form.copyright, { 'attr': {'placeholder': 'Saississez ici la légende de votre illustration'}}) }}
-                    </div>
+                    {{ form_widget(form.title, { 'attr': {'placeholder': 'Titre de votre réponse'}}) }}
                 </div>
                 <div class="formBlock">
                     <div class="formBlockHeader">
                         <label>Texte</label>
                         {% include 'PolitizrFrontBundle:Navigation\\Helper:_textEditor.html.twig' %}
                     </div>
-                    <!-- idem alpha -->
-                    <div id="postText">
+                    <div id="postText" path="{{ oneup_uploader_endpoint('document') }}" delete="{{ path('DocImageDelete') }}">
                         <div class="paragraph">
                             <div class="editable description">
-                                {{ reaction.description | purify }}
+                                {{ reaction.description|raw }}
                             </div>
                         </div>
                     </div>
@@ -163,11 +165,10 @@
     {% javascripts
         '@PolitizrFrontBundle/Resources/public/js/smoke.min.js'
         '@PolitizrFrontBundle/Resources/public/js/medium-editor.min.js'
-        '@PolitizrFrontBundle/Resources/public/js/jquery.form.min.js'
-        '@PolitizrFrontBundle/Resources/public/js/politizr/tag/editTags.js'
+        '@PolitizrFrontBundle/Resources/public/js/medium-editor-insert-plugin.min.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/document/medium.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/document/edit.js'
-        '@PolitizrFrontBundle/Resources/public/js/politizr/document/editPhoto.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/tag/editTags.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/pages/editReaction.js'
         filter='uglifyjs2' %}
         <script src="{{ asset_url }}"></script>

@@ -65,8 +65,3 @@ ListingByTag:
     defaults: { _controller: PolitizrFrontBundle:Listing:tag }
     requirements:
         _method:        GET
-
-# Test
-TestDropzone:
-    pattern:  /test/dropzone
-    defaults: { _controller: PolitizrFrontBundle:Document:testDropzone }
