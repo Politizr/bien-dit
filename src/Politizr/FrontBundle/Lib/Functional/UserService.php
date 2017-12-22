@@ -407,23 +407,25 @@ class UserService
             }
 
             // elected profile can react
-            if ($this->securityAuthorizationChecker->isGranted('ROLE_ELECTED') && $reputationOk && $isValidated) {
-                if ($reason) {
-                    return DocumentConstants::REASON_USER_ELECTED;
-                } else {
-                    return true;
-                }
-            } elseif (!$reputationOk) {
-                if ($reason) {
-                    return DocumentConstants::REASON_NO_REPUTATION;
-                } else {
-                    return false;
-                }
-            } elseif (!$isValidated) {
-                if ($reason) {
-                    return DocumentConstants::REASON_USER_NOT_CERTIFIED;
-                } else {
-                    return false;
+            if ($this->securityAuthorizationChecker->isGranted('ROLE_ELECTED')) {
+                if ($reputationOk && $isValidated) {
+                    if ($reason) {
+                        return DocumentConstants::REASON_USER_ELECTED;
+                    } else {
+                        return true;
+                    }
+                } elseif (!$reputationOk) {
+                    if ($reason) {
+                        return DocumentConstants::REASON_NO_REPUTATION;
+                    } else {
+                        return false;
+                    }
+                } elseif (!$isValidated) {
+                    if ($reason) {
+                        return DocumentConstants::REASON_USER_NOT_CERTIFIED;
+                    } else {
+                        return false;
+                    }
                 }
             }
         }
