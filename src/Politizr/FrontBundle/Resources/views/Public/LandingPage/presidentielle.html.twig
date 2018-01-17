@@ -2,8 +2,8 @@
 {% extends layout %}
 {% set headerRight = false %}
 
-{% set metaTitle = 'Primaires et Présidentielle 2017' %}
-{% set metaDescription = 'Tous les avis sur les primaires et les débats sur la Présidentielle 2017 en France.' %}
+{% set metaTitle = 'Primaires et Présidentielle 2018' %}
+{% set metaDescription = 'Tous les avis sur les primaires et les débats sur la Présidentielle 2018 en France.' %}
 
 {% block title %}{{ metaTitle }} - {{ parent() }}{% endblock title %}
 {% block description %}{{ metaDescription }}{% endblock description %}
@@ -19,9 +19,9 @@
 {% block main %}
     <div id="lpHeader">
         <div class="center">
-            <h1>Toute la campagne présidentielle 2017 sur Politizr</h1>
+            <h1>Toute la campagne présidentielle 2018 sur Politizr</h1>
             <h2>
-                Primaires citoyennes, primaire écolo, primaire de la droite ou primaire de la gauche...<br> Exprimez vos analyses sur la campagne présidentielle 2017 et venez en débattre!
+                Primaires citoyennes, primaire écolo, primaire de la droite ou primaire de la gauche...<br> Exprimez vos analyses sur la campagne présidentielle 2018 et venez en débattre!
             </h2>
             <div class="centerCTA">
                 <a href="{{ path('InscriptionChoice') }}">Inscription</a>
@@ -32,7 +32,7 @@
     <div id="postSelection">
         <div class="center">
             <h1>Les discussions en cours</h1>
-            <h2>La présidentielle 2017 et les primaires</h2>
+            <h2>La présidentielle 2018 et les primaires</h2>
             
             {% for document in documents %}
                 {% if loop.first or loop.index0 is divisible by(3) %}
@@ -44,7 +44,7 @@
                 {% endif %}
             {% endfor %}
             
-            <div id="morePosts"><a href="{{ path('ListingByTag', {'slug' : 'presidentielle-2017'}) }}">Toutes les discussions en cours</a></div>
+            <div id="morePosts"><a href="{{ path('ListingByTag', {'slug' : 'presidentielle-2018'}) }}">Toutes les discussions en cours</a></div>
         </div>
     </div>
     
@@ -71,7 +71,7 @@
             <div id="bgBlockMarianne">
                 <div id="marianne"></div>
                 <div class="conceptCol conceptLeftCol">
-                    Politizr est un site web de <b>débat politique</b> à l'échelle nationale et locale. Venez discuter et échanger vos analyses sur la campagne présidentielle française de 2017.
+                    Politizr est un site web de <b>débat politique</b> à l'échelle nationale et locale. Venez discuter et échanger vos analyses sur la campagne présidentielle française de 2018.
                 </div>
                 
                 <div class="conceptCol conceptRightCol">
@@ -99,7 +99,7 @@
 
     {% if (app.environment == 'prod') %}
         <script type="text/javascript">
-            mixpanel.track("LP Présidentielle 2017");
+            mixpanel.track("LP Présidentielle 2018");
         </script>
     {% endif %}
 
