@@ -20,10 +20,11 @@
 
 {% block bodyClass %}
     {% spaceless %}
+        {% set circle = topic.PCircle %}
         {% if (isGrantedE() or isGrantedC()) %}
-            class="grp"
+            class="grp grp-{{ circle.PCOwner.slug }}"
         {% else %}    
-            class="grp public"
+            class="grp public grp-{{ circle.PCOwner.slug }}"
         {% endif %}
     {% endspaceless %}
 {% endblock bodyClass %}

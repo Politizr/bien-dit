@@ -53,6 +53,9 @@ builders:
                         default:                1
                         filters:
                             p_c_owner_id:       1
+                    "Hospi-09":
+                        filters:
+                            p_c_owner_id:       2
             display:                            [ logo_file_name, title, p_c_owner, online, created_at ]
             filtersMode:                        modal
             filters:                            [ id, p_c_owner, uuid, title, online, created_at ]

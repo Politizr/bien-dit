@@ -21,9 +21,9 @@
 {% block bodyClass %}
     {% spaceless %}
         {% if (isGrantedE() or isGrantedC()) %}
-            class="grp"
+            class="grp grp-{{ circle.PCOwner.slug }}"
         {% else %}    
-            class="grp public"
+            class="grp public grp-{{ circle.PCOwner.slug }}"
         {% endif %}
     {% endspaceless %}
 {% endblock bodyClass %}
@@ -64,8 +64,8 @@
                     {{ circle | authorizedReactionUsers() }}
                 </div>
                 <div class="grpChaptersList">
-                    <h1>Les 8 chapitres du budget primitif</h1>
-                    <h2>sur lesquels le Conseil départemental souhaite connaître votre opinion</h2>
+                    <h1>La liste des sujets</h1>
+                    <h2>sur laquelle vos élus souhaitent connaître votre opinion</h2>
                     {% for topic in topics %}
                         <div class="grpChaptersListItem">
                             <div class="grpCharterImg">
