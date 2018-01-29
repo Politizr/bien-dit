@@ -513,6 +513,8 @@ class XhrUser
                     // Envoi email
                     $dispatcher = $this->eventDispatcher->dispatch('upd_password_email', new GenericEvent($user));
                 }
+                $this->userManager->updateCanonicalFields($user);
+                $user->save();
             } elseif ($formTypeId == 4) {
                 // upd localization infos
                 $this->localizationService->updateUserGeoloc($user, $form);
