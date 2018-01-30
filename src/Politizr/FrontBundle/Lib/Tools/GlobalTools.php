@@ -270,7 +270,7 @@ class GlobalTools
         }
 
         $paragraphs = array();
-        $crawler = new Crawler($htmlText);
+        $crawler = new Crawler('<meta charset="utf-8">' . $htmlText);
 
         $rule = 'body > *';
         if ($onlyP) {
@@ -278,9 +278,24 @@ class GlobalTools
         }
 
         $nodes = $crawler->filter($rule);
+
+        // manage medium left / right thumbnail to not create new paragraph
+        $nodeToConcat = null;
         foreach ($nodes as $node) {
-            // Add to do this shit > https://github.com/symfony/symfony/issues/18609#issuecomment-212952371
-            $paragraphs[] = $node->ownerDocument->saveHtml($node);
+            if (
+                strpos($node->getAttribute('class'), 'medium-insert-images-left') !== false
+                || strpos($node->getAttribute('class'), 'medium-insert-images-right') !== false
+            ) {
+                $nodeToConcat = $node;
+            } else {
+                if ($nodeToConcat) {
+                    $paragraphs[] = $nodeToConcat->ownerDocument->saveHtml($nodeToConcat) . $node->ownerDocument->saveHtml($node);
+                    $nodeToConcat = null;
+                } else {
+                    // cf. https://github.com/symfony/symfony/issues/18609#issuecomment-212952371
+                    $paragraphs[] = $node->ownerDocument->saveHtml($node);
+                }
+            }
         }
 
         return $paragraphs;

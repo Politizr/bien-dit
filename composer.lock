@@ -2953,17 +2953,17 @@
         },
         {
             "name": "oneup/uploader-bundle",
-            "version": "1.9.1",
+            "version": "1.9.2",
             "target-dir": "Oneup/UploaderBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/1up-lab/OneupUploaderBundle.git",
-                "reference": "03231b8e00cee33658243ec2071a1576280e86f5"
+                "reference": "a32bc98019abfd51531d08cc79be19f849d87b84"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/1up-lab/OneupUploaderBundle/zipball/03231b8e00cee33658243ec2071a1576280e86f5",
-                "reference": "03231b8e00cee33658243ec2071a1576280e86f5",
+                "url": "https://api.github.com/repos/1up-lab/OneupUploaderBundle/zipball/a32bc98019abfd51531d08cc79be19f849d87b84",
+                "reference": "a32bc98019abfd51531d08cc79be19f849d87b84",
                 "shasum": ""
             },
             "require": {
@@ -3024,7 +3024,7 @@
                 "plupload",
                 "upload"
             ],
-            "time": "2017-11-23 09:12:03"
+            "time": "2017-12-18 12:41:59"
         },
         {
             "name": "pagerfanta/pagerfanta",
@@ -5205,7 +5205,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony2admingenerator/FormExtensionsBundle/zipball/c663150ce91079e033007f5d6525ba3fbf3317cd",
+                "url": "https://api.github.com/repos/symfony2admingenerator/FormExtensionsBundle/zipball/7820eeaa4b54f23fa3c5b9ca74a5d668b8a4ee34",
                 "reference": "46e0fc9440c13cb0e4efc95f09a24aff67d8e467",
                 "shasum": ""
             },
